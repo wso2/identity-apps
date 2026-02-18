@@ -239,7 +239,7 @@
     "i18nResourcePath": "",
     "idpConfigs": {
         "authorizeEndpointURL": "${serverOrigin}/oauth2/authorize",
-        "baseUrls": ["https://localhost:8900"],
+        "baseUrls": [],
         "clockTolerance": 300,
         "enableOIDCSessionManagement": true,
         "logoutEndpointURL": "${serverOrigin}/oidc/logout",

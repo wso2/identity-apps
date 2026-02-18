@@ -1,37 +1,44 @@
-import React, { useMemo, useState, useEffect } from "react";
-import {
-    PageLayout,
-    ListLayout,
-    PrimaryButton,
-    EmptyPlaceholder,
-    useConfirmationModalAlert,
-    LinkButton
-} from "@wso2is/react-components";
-import { DropdownProps, Icon } from "semantic-ui-react";
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+/**
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AlertLevels } from "@wso2is/core/models";
+import {
+    EmptyPlaceholder,
+    LinkButton,
+    ListLayout,
+    PageLayout,
+    PrimaryButton,
+    useConfirmationModalAlert
+} from "@wso2is/react-components";
+import React, { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Icon } from "semantic-ui-react";
 import { UnificationRulesList } from "../components/unification-rule-list";
 import { useUnificationRules } from "../hooks/use-unification-rules";
+import { DEFAULT_PAGE_SIZE } from "../models/constants";
 import { UnificationRuleModel } from "../models/unification-rules";
-import { AlertLevels } from "@wso2is/core/models";
-import { DropdownChild } from "@wso2is/forms";
-import { useTranslation } from "react-i18next";
-
-type SortKey = "rule_name" | "property_scope" | "priority";
 
 interface EnrichedRule extends UnificationRuleModel {
     property_scope: string;
 }
-
-const SORT_BY: DropdownChild[] = [
-    { key: 0, text: "Name", value: "rule_name" },
-    { key: 1, text: "Scope", value: "property_scope" },
-    { key: 2, text: "Priority", value: "priority" }
-];
-
-const LIST_ITEM_LIMIT: number = 10;
 
 const getPropertyScope = (propertyName: string): string => {
     if (propertyName?.startsWith("identity_attributes.")) return "Identity Attribute";
@@ -41,30 +48,22 @@ const getPropertyScope = (propertyName: string): string => {
     return "Default";
 };
 
-const sortRules = (list: EnrichedRule[], key: SortKey, ascending: boolean): EnrichedRule[] => {
-    return [ ...list ].sort((a, b) => {
-        const aVal = a[key];
-        const bVal = b[key];
-
-        if (aVal < bVal) return ascending ? -1 : 1;
-        if (aVal > bVal) return ascending ? 1 : -1;
-
-        return 0;
-    });
-};
-
 const extractSearchTerm = (query: string | null | undefined): string => {
     if (!query) return "";
 
     const trimmed: string = query.trim();
 
     const quotedMatch: RegExpMatchArray | null = trimmed.match(/^\w+\s+\w+\s+"(.*)"$/);
+
     if (quotedMatch?.[1] != null) {
+
         return quotedMatch[1];
     }
 
     const unquotedMatch: RegExpMatchArray | null = trimmed.match(/^\w+\s+\w+\s+(.+)$/);
+
     if (unquotedMatch?.[1] != null) {
+
         return unquotedMatch[1].trim();
     }
 
@@ -76,10 +75,8 @@ const ProfileUnificationRulePage: React.FC = () => {
     const { t } = useTranslation();
 
     const { data, error, isLoading, mutate } = useUnificationRules();
-    const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
+    const [ _alert, setAlert, alertComponent ] = useConfirmationModalAlert();
 
-    const [ sortBy, setSortBy ] = useState<DropdownChild>(SORT_BY[2]); // Priority
-    const [ sortOrder, setSortOrder ] = useState<boolean>(true); // true = ascending
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ activePage, setActivePage ] = useState<number>(1);
@@ -87,7 +84,8 @@ const ProfileUnificationRulePage: React.FC = () => {
     const enrichedRules: EnrichedRule[] = useMemo(() => {
         if (!data) return [];
 
-        const rules = Array.isArray(data) ? data : (data as any).rules;
+        const rules: any = Array.isArray(data) ? data : (data as any).rules;
+
         if (!rules) return [];
 
         return rules.map((rule: UnificationRuleModel) => ({
@@ -96,54 +94,38 @@ const ProfileUnificationRulePage: React.FC = () => {
         }));
     }, [ data ]);
 
-    const sortedRules: EnrichedRule[] = useMemo(() => {
-        return sortRules(enrichedRules, sortBy.value as SortKey, sortOrder);
-    }, [ enrichedRules, sortBy, sortOrder ]);
-
     const filteredRules: EnrichedRule[] = useMemo(() => {
         const trimmed: string = searchQuery?.trim() ?? "";
-        if (!trimmed) return sortedRules;
+
+        if (!trimmed) return enrichedRules;
 
         const query: string = trimmed.toLowerCase();
 
-        return sortedRules.filter((rule: EnrichedRule) =>
+        return enrichedRules.filter((rule: EnrichedRule) =>
             rule.rule_name?.toLowerCase().includes(query) ||
             rule.property_name?.toLowerCase().includes(query)
         );
-    }, [ sortedRules, searchQuery ]);
+    }, [ enrichedRules, searchQuery ]);
 
     const totalPages: number = useMemo(() => {
-        return Math.max(1, Math.ceil(filteredRules.length / LIST_ITEM_LIMIT));
+        return Math.max(1, Math.ceil(filteredRules.length / DEFAULT_PAGE_SIZE));
     }, [ filteredRules.length ]);
 
     const paginatedRules: EnrichedRule[] = useMemo(() => {
-        const offset: number = (activePage - 1) * LIST_ITEM_LIMIT;
-        return filteredRules.slice(offset, offset + LIST_ITEM_LIMIT);
+        const offset: number = (activePage - 1) * DEFAULT_PAGE_SIZE;
+
+        return filteredRules.slice(offset, offset + DEFAULT_PAGE_SIZE);
     }, [ filteredRules, activePage ]);
 
     useEffect(() => {
         setActivePage(1);
-    }, [ searchQuery, sortBy, sortOrder ]);
+    }, [ searchQuery ]);
 
     useEffect(() => {
         if (activePage > totalPages) {
             setActivePage(totalPages);
         }
     }, [ totalPages, activePage ]);
-
-    const handleSortStrategyChange = (_: React.SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
-        const selected: DropdownChild | undefined = SORT_BY.find(
-            (option: DropdownChild) => option.value === data.value
-        );
-
-        if (selected) {
-            setSortBy(selected);
-        }
-    };
-
-    const handleSortOrderChange = (isAscending: boolean): void => {
-        setSortOrder(isAscending);
-    };
 
     const handleRuleSearch = (query: string): void => {
         setSearchQuery(extractSearchTerm(query));
@@ -165,9 +147,9 @@ const ProfileUnificationRulePage: React.FC = () => {
     const handleRuleDeleted = (): void => {
         mutate();
         setAlert({
-            description: t("unificationRules.common.notifications.deleted.description"),
+            description: t("customerDataService:unificationRules.common.notifications.deleted.description"),
             level: AlertLevels.SUCCESS,
-            message: t("unificationRules.common.notifications.deleted.message")
+            message: t("customerDataService:unificationRules.common.notifications.deleted.message")
         });
     };
 
@@ -178,18 +160,18 @@ const ProfileUnificationRulePage: React.FC = () => {
     if (error) {
         return (
             <PageLayout
-                title={ t("unificationRules.list.page.title") }
-                description={ t("unificationRules.list.page.description") }
+                title={ t("customerDataService:unificationRules.list.page.title") }
+                description={ t("customerDataService:unificationRules.list.page.description") }
             >
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().genericError }
                     imageSize="tiny"
-                    title={ t("unificationRules.list.placeholders.error.title") }
-                    subtitle={ [ t("unificationRules.list.placeholders.error.subtitle") ] }
+                    title={ t("customerDataService:unificationRules.list.placeholders.error.title") }
+                    subtitle={ [ t("customerDataService:unificationRules.list.placeholders.error.subtitle") ] }
                     action={ (
                         <PrimaryButton onClick={ () => mutate() }>
                             <Icon name="refresh" />
-                            { t("unificationRules.list.buttons.retry") }
+                            { t("customerDataService:unificationRules.list.buttons.retry") }
                         </PrimaryButton>
                     ) }
                 />
@@ -202,12 +184,12 @@ const ProfileUnificationRulePage: React.FC = () => {
             { alertComponent }
 
             <PageLayout
-                title={ t("unificationRules.list.page.title") }
-                description={ t("unificationRules.list.page.description") }
+                title={ t("customerDataService:unificationRules.list.page.title") }
+                description={ t("customerDataService:unificationRules.list.page.description") }
                 action={ hasRules ? (
                     <PrimaryButton onClick={ handleAddRule }>
                         <Icon name="add" />
-                        { t("unificationRules.list.buttons.add") }
+                        { t("customerDataService:unificationRules.list.buttons.add") }
                     </PrimaryButton>
                 ) : null }
                 isLoading={ isLoading }
@@ -217,33 +199,30 @@ const ProfileUnificationRulePage: React.FC = () => {
                         action={ (
                             <PrimaryButton onClick={ handleAddRule }>
                                 <Icon name="add" />
-                                { t("unificationRules.list.buttons.add") }
+                                { t("customerDataService:unificationRules.list.buttons.add") }
                             </PrimaryButton>
                         ) }
                         image={ getEmptyPlaceholderIllustrations().newList }
                         imageSize="tiny"
-                        title={ t("unificationRules.list.placeholders.empty.title") }
-                        subtitle={ [ t("unificationRules.list.placeholders.empty.subtitle") ] }
+                        title={ t("customerDataService:unificationRules.list.placeholders.empty.title") }
+                        subtitle={ [ t("customerDataService:unificationRules.list.placeholders.empty.subtitle") ] }
                     />
                 ) : (
                     <ListLayout
                         showTopActionPanel={ hasRules }
                         currentListSize={ paginatedRules.length }
-                        listItemLimit={ LIST_ITEM_LIMIT }
+                        listItemLimit={ DEFAULT_PAGE_SIZE }
                         totalListSize={ filteredRules.length }
                         totalPages={ totalPages }
-                        sortOptions={ SORT_BY }
-                        sortStrategy={ sortBy }
-                        onSortStrategyChange={ handleSortStrategyChange }
-                        onSortOrderChange={ handleSortOrderChange }
                         isLoading={ isLoading }
                         onPageChange={ handlePageChange }
                         showPagination={ true }
                         advancedSearch={ (
                             <AdvancedSearchWithBasicFilters
+                                disableSearchFilterDropdown={ true }
                                 onFilter={ handleRuleSearch }
-                                filterAttributeOptions={ SORT_BY }
-                                placeholder="Search by Rule Name or Property"
+                                filterAttributeOptions={ [] }
+                                placeholder="Search by Rule Name or Attribute Name"
                                 defaultSearchAttribute="rule_name"
                                 defaultSearchOperator="co"
                                 triggerClearQuery={ triggerClearQuery }
@@ -254,15 +233,16 @@ const ProfileUnificationRulePage: React.FC = () => {
                             <EmptyPlaceholder
                                 action={ (
                                     <LinkButton onClick={ handleSearchQueryClear }>
-                                        { t("unificationRules.list.buttons.clearSearch") }
+                                        { t("customerDataService:unificationRules.list.buttons.clearSearch") }
                                     </LinkButton>
                                 ) }
                                 image={ getEmptyPlaceholderIllustrations().emptySearch }
                                 imageSize="tiny"
-                                title={ t("unificationRules.list.placeholders.noResults.title") }
+                                title={ t("customerDataService:unificationRules.list.placeholders.noResults.title") }
                                 subtitle={ [
-                                    t("unificationRules.list.placeholders.noResults.subtitle1", { 0: searchQuery }),
-                                    t("unificationRules.list.placeholders.noResults.subtitle2")
+                                    t("customerDataService:unificationRules.list.placeholders.noResults.subtitle1",
+                                        { 0: searchQuery }),
+                                    t("customerDataService:unificationRules.list.placeholders.noResults.subtitle2")
                                 ] }
                             />
                         ) : (
@@ -272,7 +252,7 @@ const ProfileUnificationRulePage: React.FC = () => {
                                 onDelete={ handleRuleDeleted }
                                 onSearchQueryClear={ handleSearchQueryClear }
                                 searchQuery={ searchQuery }
-                                 mutate={mutate} 
+                                mutate={ mutate }
                             />
                         ) }
                     </ListLayout>

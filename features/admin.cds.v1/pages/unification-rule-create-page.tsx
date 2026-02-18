@@ -104,28 +104,28 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
      * - Strips ONLY known-scope prefixes if present.
      * - Normalizes to lowercase for consistent comparisons.
      */
-    const buildPropertyName = useCallback((scope: ScopeValue, attributeValue: string): string => {
-        const raw: string = (attributeValue ?? "").trim();
-        if (!raw) return "";
+    const buildPropertyName: (scope: ScopeValue, attributeValue: string) =>
+         string = useCallback((scope: ScopeValue, attributeValue: string): string => {
+             const raw: string = (attributeValue ?? "").trim();
 
-        // If already qualified with selected scope, keep.
-        if (raw.startsWith(`${scope}.`)) {
-            return raw.toLowerCase();
-        }
+             if (!raw) return "";
 
-        // Strip only if the raw starts with a known scope.
-        const KNOWN_SCOPES: ScopeValue[] = [ IDENTITY_ATTRIBUTES, TRAITS ];
+             if (raw.startsWith(`${scope}.`)) {
+                 return raw.toLowerCase();
+             }
 
-        const otherScope: ScopeValue | undefined = KNOWN_SCOPES.find(
-            (s: ScopeValue) => raw.startsWith(`${s}.`)
-        );
+             // Strip only if the raw starts with a known scope.
+             const KNOWN_SCOPES: ScopeValue[] = [ IDENTITY_ATTRIBUTES, TRAITS ];
 
-        const suffix: string = otherScope ? raw.slice(otherScope.length + 1) : raw;
+             const otherScope: ScopeValue | undefined = KNOWN_SCOPES.find(
+                 (s: ScopeValue) => raw.startsWith(`${s}.`)
+             );
 
-        // Always attach selected scope.
-        return `${scope}.${suffix}`.toLowerCase();
-    }, []);
+             const suffix: string = otherScope ? raw.slice(otherScope.length + 1) : raw;
 
+             // Always attach selected scope.
+             return `${scope}.${suffix}`.toLowerCase();
+         }, []);
 
     const rulesArray: UnificationRuleModel[] = useMemo(() => {
         if (!existingRules) return [];
@@ -261,7 +261,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
 
     useEffect(() => {
         if (usedPriorities.has(Number(formData.priority))) {
-            setErrors((prev) => ({
+            setErrors((prev: Partial<Record<keyof FormData, string>>) => ({
                 ...prev,
                 priority: t(
                     "customerDataService:unificationRules.create.fields.priority.errors.alreadyUsed",
@@ -273,7 +273,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
         }
 
         // Clear only if it was the "already used" message.
-        setErrors((prev) => {
+        setErrors((prev: Partial<Record<keyof FormData, string>>) => {
             if (!prev.priority) return prev;
             if (!String(prev.priority).includes("already used")) return prev;
 
@@ -283,7 +283,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
 
     useEffect(() => {
         if (formData.attribute && attributeAlreadyUsed) {
-            setErrors((prev) => ({
+            setErrors((prev: Partial<Record<keyof FormData, string>>) => ({
                 ...prev,
                 attribute: t("customerDataService:unificationRules.create.fields.attribute.errors.alreadyUsed")
             }));
@@ -291,7 +291,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
             return;
         }
 
-        setErrors((prev) => {
+        setErrors((prev: Partial<Record<keyof FormData, string>>) => {
             if (!prev.attribute) return prev;
             if (!String(prev.attribute).includes("already used")) return prev;
 
@@ -302,7 +302,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
     const clearFieldError = (field: keyof FormData): void => {
         if (!errors[field]) return;
 
-        setErrors((prev) => ({
+        setErrors((prev: Partial<Record<keyof FormData, string>>) => ({
             ...prev,
             [field]: undefined
         }));
@@ -311,17 +311,17 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
     const handleRuleNameChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const value: string = event.target.value;
 
-        setFormData((prev) => ({ ...prev, ruleName: value }));
+        setFormData((prev: FormData) => ({ ...prev, ruleName: value }));
         clearFieldError("ruleName");
     };
 
     const handleScopeChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         const value: ScopeValue = event.target.value as ScopeValue;
 
-        setFormData((prev) => ({
+        setFormData((prev: FormData) => ({
+            attribute: "",
             ...prev,
-            scope: value,
-            attribute: ""
+            scope: value
         }));
 
         clearFieldError("attribute");
@@ -333,7 +333,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
     ): void => {
         const newAttribute: string = option?.value ?? "";
 
-        setFormData((prev) => ({
+        setFormData((prev: FormData) => ({
             ...prev,
             attribute: newAttribute
         }));
@@ -342,7 +342,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
             const propertyName: string = buildPropertyName(formData.scope, newAttribute);
 
             if (propertyName && usedPropertyNames.has(propertyName)) {
-                setErrors((prev) => ({
+                setErrors((prev: Partial<Record<keyof FormData, string>>) => ({
                     ...prev,
                     attribute: t("customerDataService:unificationRules.create.fields.attribute.errors.alreadyUsed")
                 }));
@@ -358,10 +358,10 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
         const parsed: number = parseInt(event.target.value, 10);
         const priority: number = Number.isFinite(parsed) ? parsed : 1;
 
-        setFormData((prev) => ({ ...prev, priority }));
+        setFormData((prev: FormData) => ({ ...prev, priority }));
 
-        setErrors((prev) => {
-            const next = { ...prev };
+        setErrors((prev: Partial<Record<keyof FormData, string>>) => {
+            const next: any = { ...prev };
 
             if (priority < 1) {
                 next.priority = t("customerDataService:unificationRules.create.fields.priority.errors.min");
@@ -379,7 +379,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
     };
 
     const handleActiveChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        setFormData((prev) => ({ ...prev, isActive: event.target.checked }));
+        setFormData((prev: FormData) => ({ ...prev, isActive: event.target.checked }));
     };
 
     const validate = (): boolean => {
@@ -514,7 +514,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
                     { /* ── Attribute (compound field: scope + attribute) ── */ }
                     <div data-componentid={ `${componentId}-attribute-group` }>
                         <Typography variant="body2" style={ { marginBottom: "6px" } }>
-                            { t("customerDataService:unificationRules.create.fields.attribute.label") }{" "}
+                            { t("customerDataService:unificationRules.create.fields.attribute.label") }{ " " }
                             <span style={ { color: "#d32f2f" } }>*</span>
                         </Typography>
 
@@ -530,7 +530,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
                                 } }
                                 data-componentid={ `${componentId}-scope` }
                             >
-                                { scopeOptions.map((option) => (
+                                { scopeOptions.map((option: { value: ScopeValue; label: string }) => (
                                     <MenuItem key={ option.value } value={ option.value }>
                                         { option.label }
                                     </MenuItem>
@@ -554,9 +554,9 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
                                     (!isScopeLoading && availableOptions.length === 0)
                                 }
                                 noOptionsText={
-                                    t("customerDataService:unificationRules.create.fields.attribute.noOptions") 
+                                    t("customerDataService:unificationRules.create.fields.attribute.noOptions")
                                 }
-                                renderInput={ (params) => (
+                                renderInput={ (params: any) => (
                                     <TextField
                                         { ...params }
                                         placeholder={
@@ -572,7 +572,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
                                                     { (rulesLoading || isScopeLoading) && (
                                                         <CircularProgress
                                                             size={ 16 }
-                                                            style={ { marginRight: "8px" } } 
+                                                            style={ { marginRight: "8px" } }
                                                         />
                                                     ) }
                                                     { params.InputProps.endAdornment }
@@ -600,7 +600,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
 
                         { rulesError && (
                             <Hint>{
-                                t("customerDataService:unificationRules.create.fields.attribute.rulesLoadFailedHint") 
+                                t("customerDataService:unificationRules.create.fields.attribute.rulesLoadFailedHint")
                             }</Hint>
                         ) }
 

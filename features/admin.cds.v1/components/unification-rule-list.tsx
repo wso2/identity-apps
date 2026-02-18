@@ -16,34 +16,30 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useMemo, useState } from "react";
-import {
-    DataTable,
-    AppAvatar,
-    AnimatedAvatar,
-    ConfirmationModal
-} from "@wso2is/react-components";
-import { TableActionsInterface, TableColumnInterface } from "@wso2is/react-components";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Switch from "@mui/material/Switch";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import { UnificationRuleModel } from "../models/unification-rules";
-import { deleteUnificationRule, updateUnificationRule } from "../api/unification-rules";
-import { Header, Label, SemanticICONS } from "semantic-ui-react";
-import { useDispatch } from "react-redux";
-import { useTranslation } from "react-i18next";
-import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
-
-/**
- * Temporary priority value used during the sequential swap to avoid
- * two rules having the same priority at any point.
- */
-const TEMP_PRIORITY: number = 999999;
+import { addAlert } from "@wso2is/core/store";
+import {
+    AnimatedAvatar,
+    AppAvatar,
+    ConfirmationModal,
+    DataTable,
+    TableActionsInterface,
+    TableColumnInterface
+} from "@wso2is/react-components";
+import React, { Dispatch, FunctionComponent, ReactElement, SyntheticEvent, useMemo, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Header, Label, SemanticICONS } from "semantic-ui-react";
+import { deleteUnificationRule, updateUnificationRule } from "../api/unification-rules";
+import { TEMP_PRIORITY } from "../models/constants";
+import { UnificationRuleModel } from "../models/unification-rules";
 
 interface UnificationRulesListProps {
     rules: UnificationRuleModel[];
@@ -52,9 +48,6 @@ interface UnificationRulesListProps {
     onUpdate?: () => void;
     onSearchQueryClear?: () => void;
     searchQuery?: string;
-    /**
-     * SWR mutate function to re-fetch the rules list after any mutation.
-     */
     mutate?: () => void;
 }
 
@@ -62,6 +55,7 @@ const getPropertyScope = (propertyName: string): string => {
     if (propertyName?.startsWith("identity_attributes.")) return "Identity Attribute";
     if (propertyName?.startsWith("application_data.")) return "Application Data";
     if (propertyName?.startsWith("traits.")) return "Trait";
+
     return "Default";
 };
 
@@ -69,6 +63,7 @@ const getPropertySuffix = (propertyName: string): string => {
     if (propertyName?.startsWith("identity_attributes.")) return propertyName.replace("identity_attributes.", "");
     if (propertyName?.startsWith("application_data.")) return propertyName.replace("application_data.", "");
     if (propertyName?.startsWith("traits.")) return propertyName.replace("traits.", "");
+
     return propertyName || "";
 };
 
@@ -76,25 +71,22 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
     rules,
     isLoading,
     onDelete,
-    onUpdate,
     searchQuery,
     mutate
 }: UnificationRulesListProps): ReactElement => {
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
     const { t } = useTranslation();
-
-    // ── Client-side search filtering ─────────────────────────
-    const filteredRules = useMemo(() => {
+    const filteredRules: UnificationRuleModel[] = useMemo(() => {
         if (!searchQuery?.trim()) return rules;
 
-        const query = searchQuery.toLowerCase().trim();
+        const query: string = searchQuery.toLowerCase().trim();
 
-        return rules.filter((rule) => {
-            const ruleName = rule.rule_name?.toLowerCase() || "";
-            const propertyName = rule.property_name?.toLowerCase() || "";
-            const propertySuffix = getPropertySuffix(rule.property_name)?.toLowerCase() || "";
-            const scope = getPropertyScope(rule.property_name)?.toLowerCase() || "";
+        return rules.filter((rule: UnificationRuleModel) => {
+            const ruleName: string = rule.rule_name?.toLowerCase() || "";
+            const propertyName: string = rule.property_name?.toLowerCase() || "";
+            const propertySuffix: string= getPropertySuffix(rule.property_name)?.toLowerCase() || "";
+            const scope: string = getPropertyScope(rule.property_name)?.toLowerCase() || "";
 
             return (
                 ruleName.includes(query) ||
@@ -103,38 +95,30 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                 scope.includes(query)
             );
         });
-    }, [rules, searchQuery]);
+    }, [ rules, searchQuery ]);
 
-    // ── Sorted rules for determining adjacent items ──────────
-    const sortedRules = useMemo(
-        () => [...filteredRules].sort((a, b) => a.priority - b.priority),
-        [filteredRules]
+    const sortedRules: UnificationRuleModel[] = useMemo(
+        () => [ ...filteredRules ].sort((a:UnificationRuleModel, b:UnificationRuleModel) => a.priority - b.priority),
+        [ filteredRules ]
     );
 
-    // ── Delete ────────────────────────────────────────────────
-    const [deletingRule, setDeletingRule] = useState<UnificationRuleModel | null>(null);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [isDeleting, setIsDeleting] = useState(false);
-
-    // ── Global swap lock — disables ALL arrows while a swap is in progress ──
-    const [isSwapping, setIsSwapping] = useState(false);
-
-    // ── Toggle confirmation ───────────────────────────────────
-    const [togglingRule, setTogglingRule] = useState<UnificationRuleModel | null>(null);
-    const [pendingToggleState, setPendingToggleState] = useState<boolean>(false);
-    const [showToggleModal, setShowToggleModal] = useState(false);
-    const [isToggleInProgress, setIsToggleInProgress] = useState(false);
-
-    // ── Priority helpers ──────────────────────────────────────
+    const [ deletingRule, setDeletingRule ] = useState<UnificationRuleModel | null>(null);
+    const [ showDeleteModal, setShowDeleteModal ] = useState(false);
+    const [ isDeleting, setIsDeleting ] = useState(false);
+    const [ isSwapping, setIsSwapping ] = useState(false);
+    const [ togglingRule, setTogglingRule ] = useState<UnificationRuleModel | null>(null);
+    const [ pendingToggleState, setPendingToggleState ] = useState<boolean>(false);
+    const [ showToggleModal, setShowToggleModal ] = useState(false);
+    const [ isToggleInProgress, setIsToggleInProgress ] = useState(false);
 
     const canMoveUp = (rule: UnificationRuleModel): boolean => {
-        const idx = sortedRules.findIndex((r) => r.rule_id === rule.rule_id);
+        const idx: number = sortedRules.findIndex((r: UnificationRuleModel) => r.rule_id === rule.rule_id);
 
         return idx > 0;
     };
 
     const canMoveDown = (rule: UnificationRuleModel): boolean => {
-        const idx = sortedRules.findIndex((r) => r.rule_id === rule.rule_id);
+        const idx: number = sortedRules.findIndex((r: UnificationRuleModel) => r.rule_id === rule.rule_id);
 
         return idx >= 0 && idx < sortedRules.length - 1;
     };
@@ -158,17 +142,17 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
     ): Promise<void> => {
         if (isSwapping) return;
 
-        const currentIndex = sortedRules.findIndex((r) => r.rule_id === rule.rule_id);
+        const currentIndex: number = sortedRules.findIndex((r: UnificationRuleModel) => r.rule_id === rule.rule_id);
 
         if (currentIndex === -1) return;
 
-        const swapIndex = direction === "up" ? currentIndex - 1 : currentIndex + 1;
+        const swapIndex: number = direction === "up" ? currentIndex - 1 : currentIndex + 1;
 
         if (swapIndex < 0 || swapIndex >= sortedRules.length) return;
 
-        const adjacentRule = sortedRules[swapIndex];
-        const originalPriority = rule.priority;
-        const targetPriority = adjacentRule.priority;
+        const adjacentRule: UnificationRuleModel = sortedRules[swapIndex];
+        const originalPriority: number = rule.priority;
+        const targetPriority: number = adjacentRule.priority;
 
         setIsSwapping(true);
 
@@ -181,23 +165,23 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
             await updateUnificationRule(rule.rule_id, { priority: targetPriority });
 
             dispatch(addAlert({
+                description: t("customerDataService:unificationRules.list.notifications.priorityUpdated" +
+                    ".success.description", { direction, ruleName: rule.rule_name }),
                 level: AlertLevels.SUCCESS,
                 message: t("customerDataService:unificationRules.list.notifications.priorityUpdated" +
-                    ".success.message"),
-                description: t("customerDataService:unificationRules.list.notifications.priorityUpdated" +
-                    ".success.description", { ruleName: rule.rule_name, direction })
+                    ".success.message")
             }));
 
             // Re-fetch the rules list.
             mutate?.();
         } catch (error) {
             dispatch(addAlert({
-                level: AlertLevels.ERROR,
-                message: t("customerDataService:unificationRules.list.notifications.priorityUpdated" +
-                    ".error.message"),
                 description: error?.message ||
                     t("customerDataService:unificationRules.list.notifications.priorityUpdated" +
-                        ".error.description")
+                        ".error.description"),
+                level: AlertLevels.ERROR,
+                message: t("customerDataService:unificationRules.list.notifications.priorityUpdated" +
+                    ".error.message")
             }));
             // Re-fetch even on error to restore consistent state.
             mutate?.();
@@ -205,8 +189,6 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
             setIsSwapping(false);
         }
     };
-
-    // ── Toggle handlers ───────────────────────────────────────
 
     const handleToggleChange = (
         _event: React.ChangeEvent<HTMLInputElement>,
@@ -220,32 +202,34 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
     const handleToggleConfirm = async (): Promise<void> => {
         if (!togglingRule) return;
         setIsToggleInProgress(true);
+
         try {
+
             await updateUnificationRule(togglingRule.rule_id, { is_active: pendingToggleState });
             dispatch(addAlert({
+                description: pendingToggleState
+                    ? t("customerDataService:unificationRules.list.notifications.ruleEnabled" +
+                    ".success.description", { ruleName: togglingRule.rule_name })
+                    : t("customerDataService:unificationRules.list.notifications.ruleDisabled" +
+                    ".success.description", { ruleName: togglingRule.rule_name }),
                 level: AlertLevels.SUCCESS,
                 message: pendingToggleState
                     ? t("customerDataService:unificationRules.list.notifications.ruleEnabled" +
                         ".success.message")
                     : t("customerDataService:unificationRules.list.notifications.ruleDisabled" +
-                        ".success.message"),
-                description: pendingToggleState
-                    ? t("customerDataService:unificationRules.list.notifications.ruleEnabled" +
-                        ".success.description", { ruleName: togglingRule.rule_name })
-                    : t("customerDataService:unificationRules.list.notifications.ruleDisabled" +
-                        ".success.description", { ruleName: togglingRule.rule_name })
+                        ".success.message")
             }));
             setShowToggleModal(false);
             // Re-fetch the rules list.
             mutate?.();
         } catch (error) {
             dispatch(addAlert({
-                level: AlertLevels.ERROR,
-                message: t("customerDataService:unificationRules.list.notifications.toggleFailed" +
-                    ".error.message"),
                 description: error?.message ||
                     t("customerDataService:unificationRules.list.notifications.toggleFailed" +
-                        ".error.description")
+                        ".error.description"),
+                level: AlertLevels.ERROR,
+                message: t("customerDataService:unificationRules.list.notifications.toggleFailed" +
+                    ".error.message")
             }));
         } finally {
             setIsToggleInProgress(false);
@@ -253,29 +237,29 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
         }
     };
 
-    // ── Delete handler ────────────────────────────────────────
     const handleDelete = async () => {
         if (!deletingRule) return;
         setIsDeleting(true);
+
         try {
             await deleteUnificationRule(deletingRule.rule_id);
             dispatch(addAlert({
-                level: AlertLevels.SUCCESS,
-                message: t("customerDataService:unificationRules.common.notifications.deleted.message"),
                 description: t("customerDataService:unificationRules.common.notifications" +
-                    ".deleted.description")
+                    ".deleted.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("customerDataService:unificationRules.common.notifications.deleted.message")
             }));
             onDelete?.();
             // Re-fetch the rules list.
             mutate?.();
         } catch (error) {
             dispatch(addAlert({
-                level: AlertLevels.ERROR,
-                message: t("customerDataService:unificationRules.common.notifications" +
-                    ".deletionFailed.message"),
                 description: error?.message ||
                     t("customerDataService:unificationRules.common.notifications" +
-                        ".deletionFailed.description")
+                        ".deletionFailed.description"),
+                level: AlertLevels.ERROR,
+                message: t("customerDataService:unificationRules.common.notifications" +
+                    ".deletionFailed.message")
             }));
         } finally {
             setIsDeleting(false);
@@ -284,15 +268,13 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
         }
     };
 
-    // ── Columns ───────────────────────────────────────────────
     const columns: TableColumnInterface[] = [
         {
             dataIndex: "rule_name",
             id: "rule_name",
             key: "rule_name",
-            title: t("customerDataService:unificationRules.list.columns.rule"),
             render: (rule: UnificationRuleModel) => (
-                <Box sx={ { display: "flex", alignItems: "center" } }>
+                <Box sx={ { alignItems: "center", display: "flex" } }>
                     <AppAvatar
                         image={ <AnimatedAvatar name={ rule.rule_name } size="mini" /> }
                         size="mini"
@@ -300,20 +282,21 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                     />
                     <Header.Content>{ rule.rule_name }</Header.Content>
                 </Box>
-            )
+            ),
+            title: t("customerDataService:unificationRules.list.columns.rule")
         },
         {
             dataIndex: "property_name",
             id: "property_name",
             key: "property_name",
-            title: t("customerDataService:unificationRules.list.columns.attribute"),
             render: (rule: UnificationRuleModel) => {
-                const suffix = getPropertySuffix(rule.property_name);
-                const scope = getPropertyScope(rule.property_name);
+                const suffix: string = getPropertySuffix(rule.property_name);
+                const scope: string = getPropertyScope(rule.property_name);
 
-                const scopeStyle = scope === "Identity Attribute"
-                    ? { color: "#00796b", fontWeight: 500, backgroundColor: "#e0f2f1" }
-                    : { color: "#0082c3", fontWeight: 500, backgroundColor: "#dcf0fa" };
+                const scopeStyle:
+                { color: string; fontWeight: number; backgroundColor: string } = scope === "Identity Attribute"
+                    ? { backgroundColor: "#e0f2f1", color: "#00796b", fontWeight: 500 }
+                    : { backgroundColor: "#dcf0fa", color: "#0082c3", fontWeight: 500 };
 
                 return (
                     <Header as="h6">
@@ -333,26 +316,26 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                         </Header.Content>
                     </Header>
                 );
-            }
+            },
+            title: t("customerDataService:unificationRules.list.columns.attribute")
         },
         {
             dataIndex: "priority",
             id: "priority",
             key: "priority",
-            title: t("customerDataService:unificationRules.list.columns.priority"),
             render: (rule: UnificationRuleModel) => {
-                const moveUpDisabled = !canMoveUp(rule) || isSwapping;
-                const moveDownDisabled = !canMoveDown(rule) || isSwapping;
+                const moveUpDisabled: boolean = !canMoveUp(rule) || isSwapping;
+                const moveDownDisabled: boolean = !canMoveDown(rule) || isSwapping;
 
                 return (
-                    <Box sx={ { display: "flex", alignItems: "center", gap: "4px" } }>
+                    <Box sx={ { alignItems: "center", display: "flex", gap: "4px" } }>
                         <Typography
                             variant="body2"
                             sx={ {
-                                minWidth: "24px",
-                                textAlign: "center",
+                                color: isSwapping ? "#9ca3af" : "#374151",
                                 fontWeight: 500,
-                                color: isSwapping ? "#9ca3af" : "#374151"
+                                minWidth: "24px",
+                                textAlign: "center"
                             } }
                         >
                             { rule.priority }
@@ -366,12 +349,12 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                                     onClick={ () => handlePriorityMove(rule, "up") }
                                     disabled={ moveUpDisabled }
                                     sx={ {
-                                        padding: "4px",
-                                        color: moveUpDisabled ? "#d1d5db" : "#6b7280",
                                         "&:hover": {
                                             backgroundColor: "rgba(0, 0, 0, 0.04)",
                                             color: "primary.main"
-                                        }
+                                        },
+                                        color: moveUpDisabled ? "#d1d5db" : "#6b7280",
+                                        padding: "2px"
                                     } }
                                 >
                                     <ArrowUpwardIcon fontSize="small" />
@@ -387,12 +370,12 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                                     onClick={ () => handlePriorityMove(rule, "down") }
                                     disabled={ moveDownDisabled }
                                     sx={ {
-                                        padding: "4px",
-                                        color: moveDownDisabled ? "#d1d5db" : "#6b7280",
                                         "&:hover": {
                                             backgroundColor: "rgba(0, 0, 0, 0.04)",
                                             color: "primary.main"
-                                        }
+                                        },
+                                        color: moveDownDisabled ? "#d1d5db" : "#6b7280",
+                                        padding: "2px"
                                     } }
                                 >
                                     <ArrowDownwardIcon fontSize="small" />
@@ -401,42 +384,47 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                         </Tooltip>
                     </Box>
                 );
-            }
+            },
+            title: t("customerDataService:unificationRules.list.columns.priority")
         },
         {
             dataIndex: "is_active",
             id: "is_active",
             key: "is_active",
-            title: t("customerDataService:unificationRules.list.columns.enabled"),
+
             render: (rule: UnificationRuleModel) => (
-                <Box sx={ { display: "flex", justifyContent: "flex-end", alignItems: "center" } }>
-                    <Tooltip title={ rule.is_active
-                        ? t("customerDataService:unificationRules.list.actions.disable")
-                        : t("customerDataService:unificationRules.list.actions.enable")
-                    }>
+                <Box sx={ { alignItems: "center", display: "flex", justifyContent: "flex-end" } }>
+                    <Tooltip
+                        title={ rule.is_active
+                            ? t("customerDataService:unificationRules.list.actions.disable")
+                            : t("customerDataService:unificationRules.list.actions.enable")
+                        }>
                         <Switch
                             checked={ rule.is_active }
-                            onChange={ (event) => handleToggleChange(event, rule) }
+                            onChange={ (event: React.ChangeEvent<HTMLInputElement>) => handleToggleChange(event, rule) }
                             disabled={ isSwapping }
                             size="small"
                             color="primary"
                         />
                     </Tooltip>
                 </Box>
-            )
+            ),
+            title: t("customerDataService:unificationRules.list.columns.enabled")
         },
         {
             allowToggleVisibility: false,
             dataIndex: "action",
             id: "action",
             key: "action",
-            title: "",
-            textAlign: "right"
+            textAlign: "right",
+            title: ""
         }
     ];
 
     const actions: TableActionsInterface[] = [
         {
+            hidden: (rule: UnificationRuleModel) =>
+                rule.property_name === "user_id" || isSwapping,
             icon: (): SemanticICONS => "trash alternate",
             onClick: (_: SyntheticEvent, rule: UnificationRuleModel): void => {
                 setDeletingRule(rule);
@@ -444,9 +432,7 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
             },
             popupText: (): string =>
                 t("customerDataService:unificationRules.list.actions.delete"),
-            renderer: "semantic-icon",
-            hidden: (rule: UnificationRuleModel) =>
-                rule.property_name === "user_id" || isSwapping
+            renderer: "semantic-icon"
         }
     ];
 
@@ -462,7 +448,7 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                 onRowClick={ () => {} }
             />
 
-            {/* ── Toggle confirmation modal ── */}
+            { /* ── Toggle confirmation modal ── */ }
             { togglingRule && (
                 <ConfirmationModal
                     onClose={ () => { setShowToggleModal(false); setTogglingRule(null); } }
@@ -492,17 +478,24 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                         }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
-                        { pendingToggleState
-                            ? t("customerDataService:unificationRules.list.confirmations" +
-                                ".toggle.enableContent", { ruleName: togglingRule.rule_name })
-                            : t("customerDataService:unificationRules.list.confirmations" +
-                                ".toggle.disableContent", { ruleName: togglingRule.rule_name })
-                        }
+                        { pendingToggleState ? (
+                            <Trans
+                                i18nKey="customerDataService:unificationRules.list.confirmations.toggle.enableContent"
+                                values={ { ruleName: togglingRule.rule_name } }
+                                components={ [ null, <strong key="0" /> ] }
+                            />
+                        ) : (
+                            <Trans
+                                i18nKey="customerDataService:unificationRules.list.confirmations.toggle.disableContent"
+                                values={ { ruleName: togglingRule.rule_name } }
+                                components={ [ null, <strong key="0" /> ] }
+                            />
+                        ) }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }
 
-            {/* ── Delete confirmation modal ── */}
+            { /* ── Delete confirmation modal ── */ }
             { deletingRule && (
                 <ConfirmationModal
                     onClose={ () => { setDeletingRule(null); setShowDeleteModal(false); } }
@@ -525,8 +518,11 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                         { t("customerDataService:unificationRules.list.confirmations.delete.message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
-                        { t("customerDataService:unificationRules.list.confirmations.delete.content",
-                            { ruleName: deletingRule.rule_name }) }
+                        <Trans
+                            i18nKey="customerDataService:unificationRules.list.confirmations.delete.content"
+                            values={ { ruleName: deletingRule.rule_name } }
+                            components={ [ null, <strong key="0" /> ] }
+                        />
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }

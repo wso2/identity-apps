@@ -157,30 +157,3 @@ export const searchSubAttributes = async (
 
     return Array.isArray(data) ? (data as ProfileSchemaAttribute[]) : [];
 };
-
-export const createProfileSchemaAttribute = (
-    scope: SchemaListingScope,
-    attribute: Omit<ProfileSchemaAttribute, "attribute_id">
-): Promise<void> => {
-    const requestConfig: RequestConfigInterface = {
-        data: attribute,
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.POST,
-        url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}`
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 201) {
-                return Promise.reject(new Error("Failed to create profile schema attribute."));
-            }
-
-            return Promise.resolve(response.data);
-        })
-        .catch((error: AxiosError) => {
-            return Promise.reject(error);
-        });
-};

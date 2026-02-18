@@ -34,12 +34,9 @@ import {
     UserGroupIcon,
     WebhookIcon
 } from "@oxygen-ui/react-icons";
-import {
-    ReactComponent as UnificationRuleIcon
-} from "@wso2is/admin.cds.v1/assets/images/icons/cds-profile-attributes.svg";
 import { ReactComponent as ProfilesIcon } from "@wso2is/admin.cds.v1/assets/images/icons/cds-profiles.svg";
 import {
-    ReactComponent as ProfileAttributesIcon
+    ReactComponent as UnificationRuleIcon
 } from "@wso2is/admin.cds.v1/assets/images/icons/unification-rules.svg";
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";

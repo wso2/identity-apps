@@ -290,15 +290,82 @@ export const customerDataService: CustomerDataServiceNS = {
             }
         },
         list: {
+            actions: {
+                delete: "Delete",
+                disable: "Disable",
+                enable: "Enable",
+                moveDown: "Move Down",
+                moveUp: "Move Up"
+            },
             buttons: {
                 add: "Add Unification Rule",
                 clearSearch: "Clear Search Query",
                 retry: "Retry"
             },
+            columns: {
+                attribute: "Attribute",
+                enabled: "Enabled",
+                priority: "Priority",
+                rule: "Rule"
+            },
+            confirmations: {
+                delete: {
+                    assertionHint: "Please confirm the deletion.",
+                    content: "Are you sure you want to delete the rule " +
+                        "<1>{{ruleName}}</1>? Deleting the rule will remove it " +
+                        "from engaging in matching and unification of user profiles. Existing " +
+                        "unification will not be affected.",
+                    header: "Delete Unification Rule",
+                    message: "Deleting this rule will permanently remove it and " +
+                        "it cannot be undone."
+                },
+                toggle: {
+                    disableContent: "Are you sure you want to disable the rule " +
+                        "<1>{{ruleName}}<1>?",
+                    disableHeader: "Disable Unification Rule",
+                    disableMessage: "Disabling this rule will prevent it from " +
+                        "participating in profile unification.",
+                    enableContent: "Are you sure you want to enable the rule " +
+                        "<1>{{ruleName}}<1>?",
+                    enableHeader: "Enable Unification Rule",
+                    enableMessage: "Enabling this rule will allow this rule to " +
+                        "be invoked in profile matching and unification."
+                }
+            },
             labels: {
                 scope: {
                     identity: "Identity Attribute",
                     trait: "Trait"
+                }
+            },
+            notifications: {
+                priorityUpdated: {
+                    error: {
+                        description: "Failed to update priority.",
+                        message: "Unification rule Update Failed"
+                    },
+                    success: {
+                        description: "\"{{ruleName}}\" priority has been {{direction}}.",
+                        message: "Unification rule Priority Updated"
+                    }
+                },
+                ruleDisabled: {
+                    success: {
+                        description: "\"{{ruleName}}\" has been disabled.",
+                        message: "Unification rule Disabled"
+                    }
+                },
+                ruleEnabled: {
+                    success: {
+                        description: "\"{{ruleName}}\" has been enabled.",
+                        message: "Unification R=rule Enabled"
+                    }
+                },
+                toggleFailed: {
+                    error: {
+                        description: "Failed to update unification rule status.",
+                        message: "Update Failed"
+                    }
                 }
             },
             page: {
@@ -318,76 +385,6 @@ export const customerDataService: CustomerDataServiceNS = {
                     subtitle1: "No unification rules match your search \"{0}\".",
                     subtitle2: "Try adjusting your search criteria.",
                     title: "No Results Found"
-                }
-            },
-            columns: {
-                rule: "Rule",
-                attribute: "Attribute",
-                priority: "Priority",
-                enabled: "Enabled"
-            },
-
-            actions: {
-                moveUp: "Move Up",
-                moveDown: "Move Down",
-                enable: "Enable",
-                disable: "Disable",
-                delete: "Delete"
-            },
-
-            confirmations: {
-                delete: {
-                    header: "Delete Unification Rule",
-                    message: "Deleting this rule will permanently remove it and " +
-                        "it cannot be undone.",
-                    content: "Are you sure you want to delete the rule " +
-                        "<1>{{ruleName}}</1>? Deleting the rule will remove it " +
-                        "from engaging in unification of user profiles. Existing " +
-                        "unification will not be affected.",
-                    assertionHint: "Please confirm the deletion."
-                },
-                toggle: {
-                    enableHeader: "Enable Unification Rule",
-                    disableHeader: "Disable Unification Rule",
-                    enableMessage: "Enabling this rule will allow it to " +
-                        "participate in profile unification.",
-                    disableMessage: "Disabling this rule will prevent it from " +
-                        "participating in profile unification.",
-                    enableContent: "Are you sure you want to enable the rule " +
-                        "{{ruleName}}?",
-                    disableContent: "Are you sure you want to disable the rule " +
-                        "{{ruleName}}?"
-                }
-            },
-
-            notifications: {
-                priorityUpdated: {
-                    success: {
-                        message: "Priority Updated",
-                        description: "\"{{ruleName}}\" moved {{direction}}."
-                    },
-                    error: {
-                        message: "Update Failed",
-                        description: "Failed to update priority."
-                    }
-                },
-                ruleEnabled: {
-                    success: {
-                        message: "Rule Enabled",
-                        description: "\"{{ruleName}}\" has been enabled."
-                    }
-                },
-                ruleDisabled: {
-                    success: {
-                        message: "Rule Disabled",
-                        description: "\"{{ruleName}}\" has been disabled."
-                    }
-                },
-                toggleFailed: {
-                    error: {
-                        message: "Update Failed",
-                        description: "Failed to toggle rule status."
-                    }
                 }
             }
         }
