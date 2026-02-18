@@ -357,7 +357,6 @@ const MultiEmailFieldForm: FunctionComponent<MultiEmailFieldFormPropsInterface> 
     const handleAddEmailAddress = (values: Record<string, string>): void => {
         setIsProfileUpdating(true);
 
-        console.log(values);
         const emailAddress: string = values["emailAddresses"];
         const data: PatchOperationRequest<ProfilePatchOperationValue> = {
             Operations: [],

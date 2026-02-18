@@ -376,7 +376,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     const resolveEmail = (): string => {
 
-        let username = resolveUsername();
+        const username = resolveUsername();
+        
         if (profileInfo?.emails?.length > 0) {
             
             const emails: any[] = profileInfo.emails as any[];
