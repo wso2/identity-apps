@@ -158,8 +158,6 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
     const { dropdownOptions: appDataOptions, isLoading: appDataLoading, error: schemaError } =
         useProfileSchemaDropdownOptions(APPLICATION_DATA as ProfileSchemaScope);
 
-    const isSchemaLoading: boolean = identityLoading || traitsLoading || appDataLoading;
-
     const scopeOptions: { value: ScopeValue; label: string }[] = useMemo(() => ([
         { label: t("customerDataService:unificationRules.create.fields.scope.options.identity"),
             value: IDENTITY_ATTRIBUTES },
@@ -414,6 +412,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
     };
 
     const handleSubmit = async (): Promise<void> => {
+        if (isSubmitting) return;
         if (!isRulesReady) {
             dispatch(addAlert({
                 description: t("customerDataService:unificationRules.create.notifications.loadingRules.description"),
@@ -515,7 +514,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
                     <div data-componentid={ `${componentId}-attribute-group` }>
                         <Typography variant="body2" style={ { marginBottom: "6px" } }>
                             { t("customerDataService:unificationRules.create.fields.attribute.label") }{ " " }
-                            <span style={ { color: "#d32f2f" } }>*</span>
+                            <span style={ { color: "theme.palette.error.main"  } }>*</span>
                         </Typography>
 
                         <div style={ { display: "flex", gap: "12px" } }>
@@ -653,15 +652,6 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
                         <Button
                             variant="contained"
                             onClick={ handleSubmit }
-                            disabled={
-                                isSubmitting ||
-                                isSchemaLoading ||
-                                rulesLoading ||
-                                !isRulesReady ||
-                                priorityConflict ||
-                                !!errors.priority ||
-                                attributeAlreadyUsed
-                            }
                             data-componentid={ `${componentId}-submit` }
                         >
                             { isSubmitting

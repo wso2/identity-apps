@@ -230,12 +230,12 @@ export const customerDataService: CustomerDataServiceNS = {
                         loadFailed: "Failed to load attributes for the selected scope.",
                         required: "Attribute is required."
                     },
-                    hint: "Pick what to unify on. Attributes already used in other rules are hidden to prevent duplicates.",
+                    hint: "Pick an attribute to resolve similar profiles.",
                     label: "Attribute",
                     loadingRulesHint: "Loading existing rules for duplicate validation…",
                     noAvailableForScopeHint: "No available attributes for this scope.",
                     noOptions: "No available attributes",
-                    placeholder: "Search and select an attribute",
+                    placeholder: "Select an attribute",
                     rulesLoadFailedHint: "Failed to load existing rules. Duplicate validation may be inaccurate.",
                     scopeAriaLabel: "Attribute scope"
                 },
@@ -244,23 +244,23 @@ export const customerDataService: CustomerDataServiceNS = {
                 },
                 priority: {
                     errors: {
-                        alreadyUsed: "Priority {{priority}} is already used by another rule. Choose a different value.",
+                        alreadyUsed: "Priority {{priority}} is already taken by another rule. Choose a different value.",
                         min: "Priority must be at least 1."
                     },
-                    hint: "Lower numbers = higher priority. Rules with higher priority are evaluated first.",
+                    hint: "Lower the number, higher the priority. Rules with higher priority are evaluated first.",
                     label: "Priority"
                 },
                 ruleName: {
                     errors: {
                         required: "Rule name is required."
                     },
-                    hint: "Must be unique.",
+                    hint: "Choose a rule name that describes the unification criteria, e.g., 'Unify on email'.",
                     label: "Rule Name",
-                    placeholder: "Enter a descriptive name"
+                    placeholder: "Enter a descriptive rule name."
                 },
                 scope: {
                     options: {
-                        identity: "Identity Attribute",
+                        identity: "Identity Attributes",
                         trait: "Trait"
                     }
                 }
@@ -321,12 +321,12 @@ export const customerDataService: CustomerDataServiceNS = {
                 },
                 toggle: {
                     disableContent: "Are you sure you want to disable the rule " +
-                        "<1>{{ruleName}}<1>?",
+                        "<1>{{ruleName}}</1>?",
                     disableHeader: "Disable Unification Rule",
                     disableMessage: "Disabling this rule will prevent it from " +
                         "participating in profile unification.",
                     enableContent: "Are you sure you want to enable the rule " +
-                        "<1>{{ruleName}}<1>?",
+                        "<1>{{ruleName}}</1>?",
                     enableHeader: "Enable Unification Rule",
                     enableMessage: "Enabling this rule will allow this rule to " +
                         "be invoked in profile matching and unification."
@@ -358,7 +358,7 @@ export const customerDataService: CustomerDataServiceNS = {
                 ruleEnabled: {
                     success: {
                         description: "\"{{ruleName}}\" has been enabled.",
-                        message: "Unification R=rule Enabled"
+                        message: "Unification rule Enabled"
                     }
                 },
                 toggleFailed: {
@@ -382,7 +382,7 @@ export const customerDataService: CustomerDataServiceNS = {
                     title: "Error Loading Rules"
                 },
                 noResults: {
-                    subtitle1: "No unification rules match your search \"{0}\".",
+                    subtitle1: "No unification rules match your search \"{{ruleFilter}} \".",
                     subtitle2: "Try adjusting your search criteria.",
                     title: "No Results Found"
                 }

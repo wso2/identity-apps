@@ -283,7 +283,8 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                     <Header.Content>{ rule.rule_name }</Header.Content>
                 </Box>
             ),
-            title: t("customerDataService:unificationRules.list.columns.rule")
+            title: t("customerDataService:unificationRules.list.columns.rule"),
+            width: 3
         },
         {
             dataIndex: "property_name",
@@ -302,22 +303,27 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                     <Header as="h6">
                         <Header.Content>
                             <Header.Subheader>
-                                { suffix }
-                                { scope && (
-                                    <Label
-                                        pointing="left"
-                                        size="mini"
-                                        style={ scopeStyle }
-                                    >
-                                        { scope }
-                                    </Label>
-                                ) }
+                                <Box
+                                    sx={ {
+                                        alignItems: "center", display: "inline-flex", gap: "6px", padding: "4px 0" } }>
+                                    { suffix }
+                                    { scope && (
+                                        <Label
+                                            pointing="left"
+                                            size="mini"
+                                            style={ scopeStyle }
+                                        >
+                                            { scope }
+                                        </Label>
+                                    ) }
+                                </Box>
                             </Header.Subheader>
                         </Header.Content>
                     </Header>
                 );
             },
-            title: t("customerDataService:unificationRules.list.columns.attribute")
+            title: t("customerDataService:unificationRules.list.columns.attribute"),
+            width: 5
         },
         {
             dataIndex: "priority",
@@ -328,13 +334,13 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                 const moveDownDisabled: boolean = !canMoveDown(rule) || isSwapping;
 
                 return (
-                    <Box sx={ { alignItems: "center", display: "flex", gap: "4px" } }>
+                    <Box sx={ { alignItems: "center", display: "flex", gap: "2px", justifyContent: "center" } }>
                         <Typography
                             variant="body2"
                             sx={ {
-                                color: isSwapping ? "#9ca3af" : "#374151",
+                                color: isSwapping ? "text.disabled" : "text.primary",
                                 fontWeight: 500,
-                                minWidth: "24px",
+                                minWidth: "20px",
                                 textAlign: "center"
                             } }
                         >
@@ -349,15 +355,11 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                                     onClick={ () => handlePriorityMove(rule, "up") }
                                     disabled={ moveUpDisabled }
                                     sx={ {
-                                        "&:hover": {
-                                            backgroundColor: "rgba(0, 0, 0, 0.04)",
-                                            color: "primary.main"
-                                        },
-                                        color: moveUpDisabled ? "#d1d5db" : "#6b7280",
+                                        color: moveUpDisabled ? "action.disabled" : "text.secondary",
                                         padding: "2px"
                                     } }
                                 >
-                                    <ArrowUpwardIcon fontSize="small" />
+                                    <ArrowUpwardIcon sx={ { fontSize: "16px" } } />
                                 </IconButton>
                             </span>
                         </Tooltip>
@@ -370,30 +372,27 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                                     onClick={ () => handlePriorityMove(rule, "down") }
                                     disabled={ moveDownDisabled }
                                     sx={ {
-                                        "&:hover": {
-                                            backgroundColor: "rgba(0, 0, 0, 0.04)",
-                                            color: "primary.main"
-                                        },
-                                        color: moveDownDisabled ? "#d1d5db" : "#6b7280",
+                                        color: moveDownDisabled ? "action.disabled" : "text.secondary",
                                         padding: "2px"
                                     } }
                                 >
-                                    <ArrowDownwardIcon fontSize="small" />
+                                    <ArrowDownwardIcon sx={ { fontSize: "16px" } } />
                                 </IconButton>
                             </span>
                         </Tooltip>
                     </Box>
                 );
             },
-            title: t("customerDataService:unificationRules.list.columns.priority")
+            textAlign: "center",
+            title: t("customerDataService:unificationRules.list.columns.priority"),
+            width: 2
         },
         {
             dataIndex: "is_active",
             id: "is_active",
             key: "is_active",
-
             render: (rule: UnificationRuleModel) => (
-                <Box sx={ { alignItems: "center", display: "flex", justifyContent: "flex-end" } }>
+                <Box sx={ { alignItems: "center", display: "flex", justifyContent: "center" } }>
                     <Tooltip
                         title={ rule.is_active
                             ? t("customerDataService:unificationRules.list.actions.disable")
@@ -401,7 +400,8 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                         }>
                         <Switch
                             checked={ rule.is_active }
-                            onChange={ (event: React.ChangeEvent<HTMLInputElement>) => handleToggleChange(event, rule) }
+                            onChange={ (event: React.ChangeEvent<HTMLInputElement>) =>
+                                handleToggleChange(event, rule) }
                             disabled={ isSwapping }
                             size="small"
                             color="primary"
@@ -409,7 +409,9 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                     </Tooltip>
                 </Box>
             ),
-            title: t("customerDataService:unificationRules.list.columns.enabled")
+            textAlign: "center",
+            title: t("customerDataService:unificationRules.list.columns.enabled"),
+            width: 2
         },
         {
             allowToggleVisibility: false,
@@ -417,7 +419,8 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
             id: "action",
             key: "action",
             textAlign: "right",
-            title: ""
+            title: "",
+            width: 1
         }
     ];
 

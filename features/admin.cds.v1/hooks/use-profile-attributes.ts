@@ -215,7 +215,7 @@ export const useProfileSchemaDropdown = (
         if (!data || !scope) return [];
 
         return toAttributeDropdownOptions(scope, data)
-            .sort(( a, b ) => a.label.localeCompare(b.label));
+            .sort(( a: FilterAttributeOption, b: FilterAttributeOption ) => a.label.localeCompare(b.label));
     }, [ data, scope ]);
 
     return {
