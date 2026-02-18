@@ -607,6 +607,42 @@ function UserProfile({ userId }) {
 }
 ```
 
+## Include changeset when sending a pull request
+
+A changeset documents the changes made in your pull request, enabling automated versioning and changelog generation while ensuring clear communication of features, fixes, or breaking changes.
+
+**Why:**
+- Changesets provide a clear record of what changes were made and their impact.
+- Helps automate versioning and changelog generation.
+- Ensures consistency in documenting changes across the project.
+- Improves collaboration by making it explicit what features, fixes, or breaking changes are included.
+
+**What to do:**
+Create a changeset file describing your changes using the changeset CLI before submitting your pull request.
+
+**Example:**
+
+Recommended:
+
+Run the following command from the project root
+
+```bash
+pnpm changeset
+```
+
+Then follow the prompts to describe your changes, selecting the appropriate change type (major, minor, patch).
+
+For the updates to **features**, **modules** directories, make sure to add console as well with a patch version update.
+
+Avoid:
+
+Submitting pull requests without documenting changes in a changeset file.
+
+```bash
+# Not recommended - skipping changeset documentation
+git push origin feature-branch
+```
+
 ## Typescript Doc Comments
 
 We follow [TSDoc](https://tsdoc.org/) comments when writing doc comments. Also we use [eslint-plugin-tsdoc](https://tsdoc.org/pages/packages/eslint-plugin-tsdoc/) ESLint plugin to ensure the validity of the TS doc comments. Please make sure that you adhere to the specified rules.
