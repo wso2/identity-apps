@@ -52,6 +52,7 @@ const StepHeaderContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }
 const Title: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
     color: theme.palette.text.primary,
     fontWeight: 600,
+    fontSize: "28px",
     lineHeight: 1.3
 }));
 
@@ -76,7 +77,7 @@ const StepHeader: FunctionComponent<StepHeaderPropsInterface> = (props: StepHead
 
     return (
         <StepHeaderContainer data-componentid={ componentId }>
-            <Title variant="h2">
+            <Title>
                 { title }
             </Title>
             { subtitle && (
