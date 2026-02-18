@@ -527,12 +527,7 @@ export class RouteUtils {
             },
             {
                 category: manage,
-                id: "profileAttributes",
-                parent: customerData
-            },
-            {
-                category: manage,
-                id: "unificationRules",
+                id: "customerDataUnificationRules",
                 parent: customerData
             },
             {

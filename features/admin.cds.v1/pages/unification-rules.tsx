@@ -1,30 +1,13 @@
-/**
- * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
- *
- * WSO2 LLC. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-
 import React, { useMemo, useState, useEffect } from "react";
 import {
     PageLayout,
     ListLayout,
     PrimaryButton,
     EmptyPlaceholder,
-    useConfirmationModalAlert
+    useConfirmationModalAlert,
+    LinkButton
 } from "@wso2is/react-components";
-import { DropdownItemProps, DropdownProps, Icon } from "semantic-ui-react";
+import { DropdownProps, Icon } from "semantic-ui-react";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -32,6 +15,9 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { UnificationRulesList } from "../components/unification-rule-list";
 import { useUnificationRules } from "../hooks/use-unification-rules";
 import { UnificationRuleModel } from "../models/unification-rules";
+import { AlertLevels } from "@wso2is/core/models";
+import { DropdownChild } from "@wso2is/forms";
+import { useTranslation } from "react-i18next";
 
 type SortKey = "rule_name" | "property_scope" | "priority";
 
@@ -39,160 +25,173 @@ interface EnrichedRule extends UnificationRuleModel {
     property_scope: string;
 }
 
-const SORT_BY: DropdownItemProps[] = [
+const SORT_BY: DropdownChild[] = [
     { key: 0, text: "Name", value: "rule_name" },
     { key: 1, text: "Scope", value: "property_scope" },
     { key: 2, text: "Priority", value: "priority" }
 ];
 
-const LIST_ITEM_LIMIT = 10;
+const LIST_ITEM_LIMIT: number = 10;
 
-/**
- * Derive property scope from property name
- */
 const getPropertyScope = (propertyName: string): string => {
     if (propertyName?.startsWith("identity_attributes.")) return "Identity Attribute";
     if (propertyName?.startsWith("application_data.")) return "Application Data";
     if (propertyName?.startsWith("traits.")) return "Trait";
+
     return "Default";
 };
 
-/**
- * Sort rules by a given key
- */
 const sortRules = (list: EnrichedRule[], key: SortKey, ascending: boolean): EnrichedRule[] => {
-    return [...list].sort((a, b) => {
+    return [ ...list ].sort((a, b) => {
         const aVal = a[key];
         const bVal = b[key];
-        
+
         if (aVal < bVal) return ascending ? -1 : 1;
         if (aVal > bVal) return ascending ? 1 : -1;
+
         return 0;
     });
 };
 
-/**
- * Paginate array
- */
-const paginate = <T,>(items: T[], limit: number, offset: number): T[] => {
-    return items.slice(offset, offset + limit);
+const extractSearchTerm = (query: string | null | undefined): string => {
+    if (!query) return "";
+
+    const trimmed: string = query.trim();
+
+    const quotedMatch: RegExpMatchArray | null = trimmed.match(/^\w+\s+\w+\s+"(.*)"$/);
+    if (quotedMatch?.[1] != null) {
+        return quotedMatch[1];
+    }
+
+    const unquotedMatch: RegExpMatchArray | null = trimmed.match(/^\w+\s+\w+\s+(.+)$/);
+    if (unquotedMatch?.[1] != null) {
+        return unquotedMatch[1].trim();
+    }
+
+    return trimmed;
 };
 
 const ProfileUnificationRulePage: React.FC = () => {
-    // Hooks
+
+    const { t } = useTranslation();
+
     const { data, error, isLoading, mutate } = useUnificationRules();
-    const [alert, setAlert, alertComponent] = useConfirmationModalAlert();
+    const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
 
-    // State
-    const [sortBy, setSortBy] = useState<DropdownItemProps>(SORT_BY[2]); // Default: Priority
-    const [sortOrder, setSortOrder] = useState<boolean>(true); // true = ascending
-    const [searchQuery, setSearchQuery] = useState<string>("");
-    const [triggerClearQuery, setTriggerClearQuery] = useState<boolean>(false);
-    const [offset, setOffset] = useState(0);
+    const [ sortBy, setSortBy ] = useState<DropdownChild>(SORT_BY[2]); // Priority
+    const [ sortOrder, setSortOrder ] = useState<boolean>(true); // true = ascending
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
+    const [ activePage, setActivePage ] = useState<number>(1);
 
-    // Enrich rules with property_scope
-    const enrichedRules = useMemo<EnrichedRule[]>(() => {
-        if (!data?.rules) return [];
-        
-        return data.rules.map(rule => ({
+    const enrichedRules: EnrichedRule[] = useMemo(() => {
+        if (!data) return [];
+
+        const rules = Array.isArray(data) ? data : (data as any).rules;
+        if (!rules) return [];
+
+        return rules.map((rule: UnificationRuleModel) => ({
             ...rule,
             property_scope: getPropertyScope(rule.property_name)
         }));
-    }, [data?.rules]);
+    }, [ data ]);
 
-    // Apply sorting
-    const sortedRules = useMemo(() => {
+    const sortedRules: EnrichedRule[] = useMemo(() => {
         return sortRules(enrichedRules, sortBy.value as SortKey, sortOrder);
-    }, [enrichedRules, sortBy, sortOrder]);
+    }, [ enrichedRules, sortBy, sortOrder ]);
 
-    // Apply search filtering
-    const filteredRules = useMemo(() => {
-        if (!searchQuery.trim()) return sortedRules;
+    const filteredRules: EnrichedRule[] = useMemo(() => {
+        const trimmed: string = searchQuery?.trim() ?? "";
+        if (!trimmed) return sortedRules;
 
-        const query = searchQuery.toLowerCase();
-        return sortedRules.filter(rule =>
+        const query: string = trimmed.toLowerCase();
+
+        return sortedRules.filter((rule: EnrichedRule) =>
             rule.rule_name?.toLowerCase().includes(query) ||
-            rule.property_name?.toLowerCase().includes(query) ||
-            rule.property_scope?.toLowerCase().includes(query)
+            rule.property_name?.toLowerCase().includes(query)
         );
-    }, [sortedRules, searchQuery]);
+    }, [ sortedRules, searchQuery ]);
 
-    // Apply pagination
-    const paginatedRules = useMemo(() => {
-        return paginate(filteredRules, LIST_ITEM_LIMIT, offset);
-    }, [filteredRules, offset]);
+    const totalPages: number = useMemo(() => {
+        return Math.max(1, Math.ceil(filteredRules.length / LIST_ITEM_LIMIT));
+    }, [ filteredRules.length ]);
 
-    // Reset pagination when filtered results change
+    const paginatedRules: EnrichedRule[] = useMemo(() => {
+        const offset: number = (activePage - 1) * LIST_ITEM_LIMIT;
+        return filteredRules.slice(offset, offset + LIST_ITEM_LIMIT);
+    }, [ filteredRules, activePage ]);
+
     useEffect(() => {
-        const maxOffset = Math.max(0, Math.floor((filteredRules.length - 1) / LIST_ITEM_LIMIT) * LIST_ITEM_LIMIT);
-        if (offset > maxOffset) {
-            setOffset(0);
-        }
-    }, [filteredRules.length, offset]);
+        setActivePage(1);
+    }, [ searchQuery, sortBy, sortOrder ]);
 
-    // Handlers
-    const handleSortStrategyChange = (_: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
-        const selected = SORT_BY.find(option => option.value === data.value);
+    useEffect(() => {
+        if (activePage > totalPages) {
+            setActivePage(totalPages);
+        }
+    }, [ totalPages, activePage ]);
+
+    const handleSortStrategyChange = (_: React.SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
+        const selected: DropdownChild | undefined = SORT_BY.find(
+            (option: DropdownChild) => option.value === data.value
+        );
+
         if (selected) {
             setSortBy(selected);
         }
     };
 
-    const handleSortOrderChange = (isAscending: boolean) => {
+    const handleSortOrderChange = (isAscending: boolean): void => {
         setSortOrder(isAscending);
     };
 
     const handleRuleSearch = (query: string): void => {
-        setSearchQuery(query);
-        setOffset(0); // Reset to first page when searching
+        setSearchQuery(extractSearchTerm(query));
     };
 
     const handleSearchQueryClear = (): void => {
-        setTriggerClearQuery(!triggerClearQuery);
         setSearchQuery("");
-        setOffset(0);
+        setTriggerClearQuery(!triggerClearQuery);
     };
 
-    const handlePageChange = (_: React.MouseEvent<HTMLAnchorElement>, data: any) => {
-        setOffset(((data.activePage as number) - 1) * LIST_ITEM_LIMIT);
+    const handlePageChange = (_: React.MouseEvent<HTMLAnchorElement>, data: any): void => {
+        setActivePage(data.activePage as number);
     };
 
     const handleAddRule = (): void => {
         history.push(AppConstants.getPaths().get("UNIFICATION_RULE_CREATE"));
     };
 
-    const handleRuleDeleted = () => {
-        mutate(); // Refresh the list
+    const handleRuleDeleted = (): void => {
+        mutate();
         setAlert({
-            description: "Unification rule has been deleted successfully.",
-            level: "success",
-            message: "Rule Deleted"
+            description: t("unificationRules.common.notifications.deleted.description"),
+            level: AlertLevels.SUCCESS,
+            message: t("unificationRules.common.notifications.deleted.message")
         });
     };
 
-    // Determine if we have any rules at all
-    const hasRules = enrichedRules.length > 0;
-    const hasSearchQuery = searchQuery.trim().length > 0;
-    const hasSearchResults = filteredRules.length > 0;
+    const hasRules: boolean = enrichedRules.length > 0;
+    const hasSearchQuery: boolean = (searchQuery?.trim()?.length ?? 0) > 0;
+    const hasSearchResults: boolean = filteredRules.length > 0;
 
-    // Show error state
     if (error) {
         return (
             <PageLayout
-                title="Unification Rules"
-                description="Manage profile unification rules."
+                title={ t("unificationRules.list.page.title") }
+                description={ t("unificationRules.list.page.description") }
             >
                 <EmptyPlaceholder
-                    image={getEmptyPlaceholderIllustrations().genericError}
+                    image={ getEmptyPlaceholderIllustrations().genericError }
                     imageSize="tiny"
-                    title="Error Loading Rules"
-                    subtitle={["Failed to load unification rules. Please try again."]}
-                    action={(
-                        <PrimaryButton onClick={() => mutate()}>
+                    title={ t("unificationRules.list.placeholders.error.title") }
+                    subtitle={ [ t("unificationRules.list.placeholders.error.subtitle") ] }
+                    action={ (
+                        <PrimaryButton onClick={ () => mutate() }>
                             <Icon name="refresh" />
-                            Retry
+                            { t("unificationRules.list.buttons.retry") }
                         </PrimaryButton>
-                    )}
+                    ) }
                 />
             </PageLayout>
         );
@@ -200,84 +199,84 @@ const ProfileUnificationRulePage: React.FC = () => {
 
     return (
         <>
-            {alertComponent}
+            { alertComponent }
+
             <PageLayout
-                title="Unification Rules"
-                description="Manage profile unification rules."
-                action={(
-                    <PrimaryButton onClick={handleAddRule}>
+                title={ t("unificationRules.list.page.title") }
+                description={ t("unificationRules.list.page.description") }
+                action={ hasRules ? (
+                    <PrimaryButton onClick={ handleAddRule }>
                         <Icon name="add" />
-                        Add Unification Rule
+                        { t("unificationRules.list.buttons.add") }
                     </PrimaryButton>
-                )}
-                isLoading={isLoading}
+                ) : null }
+                isLoading={ isLoading }
             >
-                {!hasRules && !isLoading ? (
-                    // No rules exist at all - show initial empty state
+                { !hasRules && !isLoading ? (
                     <EmptyPlaceholder
-                        action={(
-                            <PrimaryButton onClick={handleAddRule}>
+                        action={ (
+                            <PrimaryButton onClick={ handleAddRule }>
                                 <Icon name="add" />
-                                Add Unification Rule
+                                { t("unificationRules.list.buttons.add") }
                             </PrimaryButton>
-                        )}
-                        image={getEmptyPlaceholderIllustrations().newList}
+                        ) }
+                        image={ getEmptyPlaceholderIllustrations().newList }
                         imageSize="tiny"
-                        title="No Unification Rules Found"
-                        subtitle={["Please add a unification rule to start unifying your profiles."]}
+                        title={ t("unificationRules.list.placeholders.empty.title") }
+                        subtitle={ [ t("unificationRules.list.placeholders.empty.subtitle") ] }
                     />
                 ) : (
                     <ListLayout
-                        showTopActionPanel={hasRules}
-                        currentListSize={filteredRules.length}
-                        totalListSize={enrichedRules.length}
-                        sortOptions={SORT_BY}
-                        sortStrategy={sortBy}
-                        onSortStrategyChange={handleSortStrategyChange}
-                        onSortOrderChange={handleSortOrderChange}
-                        isLoading={isLoading}
-                        onPageChange={handlePageChange}
-                        totalPages={Math.ceil(filteredRules.length / LIST_ITEM_LIMIT)}
-                        advancedSearch={
+                        showTopActionPanel={ hasRules }
+                        currentListSize={ paginatedRules.length }
+                        listItemLimit={ LIST_ITEM_LIMIT }
+                        totalListSize={ filteredRules.length }
+                        totalPages={ totalPages }
+                        sortOptions={ SORT_BY }
+                        sortStrategy={ sortBy }
+                        onSortStrategyChange={ handleSortStrategyChange }
+                        onSortOrderChange={ handleSortOrderChange }
+                        isLoading={ isLoading }
+                        onPageChange={ handlePageChange }
+                        showPagination={ true }
+                        advancedSearch={ (
                             <AdvancedSearchWithBasicFilters
-                                onFilter={handleRuleSearch}
-                                filterAttributeOptions={SORT_BY}
-                                placeholder="Search by Rule Name or Scope"
+                                onFilter={ handleRuleSearch }
+                                filterAttributeOptions={ SORT_BY }
+                                placeholder="Search by Rule Name or Property"
                                 defaultSearchAttribute="rule_name"
                                 defaultSearchOperator="co"
-                                triggerClearQuery={triggerClearQuery}
+                                triggerClearQuery={ triggerClearQuery }
                             />
-                        }
+                        ) }
                     >
-                        {!hasSearchResults && hasSearchQuery ? (
-                            // Search returned no results
+                        { !hasSearchResults && hasSearchQuery ? (
                             <EmptyPlaceholder
-                                action={(
-                                    <PrimaryButton onClick={handleSearchQueryClear}>
-                                        <Icon name="refresh" />
-                                        Clear Search
-                                    </PrimaryButton>
-                                )}
-                                image={getEmptyPlaceholderIllustrations().emptySearch}
+                                action={ (
+                                    <LinkButton onClick={ handleSearchQueryClear }>
+                                        { t("unificationRules.list.buttons.clearSearch") }
+                                    </LinkButton>
+                                ) }
+                                image={ getEmptyPlaceholderIllustrations().emptySearch }
                                 imageSize="tiny"
-                                title="No Results Found"
-                                subtitle={[
-                                    `No unification rules match your search "${searchQuery}".`,
-                                    "Try adjusting your search criteria."
-                                ]}
+                                title={ t("unificationRules.list.placeholders.noResults.title") }
+                                subtitle={ [
+                                    t("unificationRules.list.placeholders.noResults.subtitle1", { 0: searchQuery }),
+                                    t("unificationRules.list.placeholders.noResults.subtitle2")
+                                ] }
                             />
                         ) : (
-                            // Show the list
                             <UnificationRulesList
-                                rules={paginatedRules}
-                                isLoading={isLoading}
-                                onDelete={handleRuleDeleted}
-                                onSearchQueryClear={handleSearchQueryClear}
-                                searchQuery={searchQuery}
+                                rules={ paginatedRules }
+                                isLoading={ isLoading }
+                                onDelete={ handleRuleDeleted }
+                                onSearchQueryClear={ handleSearchQueryClear }
+                                searchQuery={ searchQuery }
+                                 mutate={mutate} 
                             />
-                        )}
+                        ) }
                     </ListLayout>
-                )}
+                ) }
             </PageLayout>
         </>
     );

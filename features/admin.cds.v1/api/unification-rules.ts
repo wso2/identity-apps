@@ -20,11 +20,11 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosResponse } from "axios";
 
 import {
     CreateUnificationRulePayload,
     UnificationRuleModel,
-    UnificationRulesListResponse,
     UpdateUnificationRulePayload
 } from "../models/unification-rules";
 
@@ -35,102 +35,89 @@ const httpClient: HttpClientInstance =
     AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Fetcher for GET /unification-rules
- */
-export const fetchUnificationRules = async (): Promise<UnificationRulesListResponse> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.unificationRules
-    };
-
-    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
-
-    return response.data as UnificationRulesListResponse;
-};
-
-/**
- * Fetcher for GET /unification-rules/{rule_id}
- */
-export const fetchUnificationRuleDetails = async (ruleId: string): Promise<UnificationRuleModel> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.unificationRules}/${ruleId}`
-    };
-
-    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
-
-    return response.data as UnificationRuleModel;
-};
-
-/**
  * POST /unification-rules
- * Create a new unification rule
+ * Create a new unification rule.
  */
-export const createUnificationRule = async (
+export const createUnificationRule = (
     ruleData: CreateUnificationRulePayload
 ): Promise<UnificationRuleModel> => {
     const requestConfig: RequestConfigInterface = {
         data: ruleData,
         headers: {
-            Accept: "application/json",
+            "Accept": "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.unificationRules
+        url: store.getState().config.endpoints.cdsUnificationRules
     };
 
-    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 201) {
+                return Promise.reject(new Error("Failed to create unification rule."));
+            }
 
-    return response.data as UnificationRuleModel;
+            return Promise.resolve(response.data as UnificationRuleModel);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
 };
 
 /**
- * PUT /unification-rules/{rule_id}
- * Only rule_name, is_active, and priority can be updated
+ * PATCH /unification-rules/`{rule_id}`
+ * Partially update a unification rule.
  */
-export const updateUnificationRule = async (
+export const updateUnificationRule = (
     ruleId: string,
     ruleData: UpdateUnificationRulePayload
 ): Promise<UnificationRuleModel> => {
     const requestConfig: RequestConfigInterface = {
         data: ruleData,
         headers: {
-            Accept: "application/json",
+            "Accept": "application/json",
             "Content-Type": "application/json"
         },
-        method: HttpMethods.PUT,
-        url: `${store.getState().config.endpoints.unificationRules}/${ruleId}`
+        method: HttpMethods.PATCH,
+        url: `${store.getState().config.endpoints.cdsUnificationRules}/${ruleId}`
     };
 
-    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to update unification rule."));
+            }
 
-    return response.data as UnificationRuleModel;
+            return Promise.resolve(response.data as UnificationRuleModel);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
 };
 
 /**
- * DELETE /unification-rules/{rule_id}
+ * DELETE /unification-rules/`{rule_id}`
+ * Delete a unification rule by ID.
  */
-export const deleteUnificationRule = async (ruleId: string): Promise<void> => {
+export const deleteUnificationRule = (ruleId: string): Promise<void> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
-            Accept: "application/json",
+            "Accept": "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${store.getState().config.endpoints.unificationRules}/${ruleId}`
+        url: `${store.getState().config.endpoints.cdsUnificationRules}/${ruleId}`
     };
 
-    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 204) {
+                return Promise.reject(new Error("Failed to delete unification rule."));
+            }
 
-    if (response.status !== 204 && response.status !== 200) {
-        throw new Error(`Unexpected status code: ${response.status}`);
-    }
+            return Promise.resolve();
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
 };

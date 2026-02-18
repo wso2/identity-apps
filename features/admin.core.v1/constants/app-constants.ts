@@ -604,6 +604,11 @@ export class AppConstants {
     public static readonly CDS_PROFILES_ROUTE_ID: string = "customerDataProfiles";
 
     /**
+     * Route id of the customer data service unfication rule page.
+     */
+    public static readonly CDS_PROFILES_UNIFICATION_RULES_ROUTE_ID: string = "customerDataUnificationRules";
+
+    /**
      * Name of the root node
      */
     public static readonly PERMISSIONS_ROOT_NODE: string = "All Permissions";

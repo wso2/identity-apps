@@ -16,129 +16,79 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import useRequest, {
+    RequestConfigInterface,
+    RequestErrorInterface,
+    RequestResultInterface
+} from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import useSWR, { SWRResponse } from "swr";
-import useSWRMutation, { SWRMutationResponse } from "swr/mutation";
-
-import {
-    UnificationRuleModel,
-    UnificationRulesListResponse,
-    UpdateUnificationRulePayload
-} from "../models/unification-rules";
+import type { UnificationRuleModel } from "../models/unification-rules";
 
 /**
- * Initialize an auth-aware Http client.
+ * Hook to fetch all unification rules.
+ *
+ * @param shouldFetch - Should fetch the data.
+ * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const httpClient: HttpClientInstance =
-    AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
-
-/**
- * Hook to fetch all unification rules with SWR caching
- */
-export const useUnificationRules = (
+export const useUnificationRules = <Data = UnificationRuleModel[], Error = RequestErrorInterface>(
     shouldFetch: boolean = true
-): SWRResponse<UnificationRulesListResponse, any> => {
-    const fetcher = async (): Promise<UnificationRulesListResponse> => {
-        const requestConfig: RequestConfigInterface = {
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            method: HttpMethods.GET,
-            url: store.getState().config.endpoints.unificationRules
-        };
+): RequestResultInterface<Data, Error> => {
 
-        const response = await httpClient(requestConfig);
-        return response.data as UnificationRulesListResponse;
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.cdsUnificationRules
     };
 
-    const key = shouldFetch ? store.getState().config.endpoints.unificationRules : null;
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
+        shouldFetch ? requestConfig : null,
+        { shouldRetryOnError: false }
+    );
 
-    return useSWR<UnificationRulesListResponse, any>(key, fetcher);
+    return {
+        data: data as Data,
+        error,
+        isLoading,
+        isValidating,
+        mutate
+    };
 };
 
 /**
- * Hook to fetch a single unification rule by ID
+ * Hook to fetch a single unification rule by ID.
+ *
+ * @param ruleId - The ID of the unification rule to fetch.
+ * @param shouldFetch - Should fetch the data.
+ * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-export const useUnificationRuleDetails = (
+export const useUnificationRuleDetails = <Data = UnificationRuleModel, Error = RequestErrorInterface>(
     ruleId: string,
     shouldFetch: boolean = true
-): SWRResponse<UnificationRuleModel, any> => {
-    const fetcher = async (): Promise<UnificationRuleModel> => {
-        const requestConfig: RequestConfigInterface = {
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            method: HttpMethods.GET,
-            url: `${store.getState().config.endpoints.unificationRules}/${ruleId}`
-        };
+): RequestResultInterface<Data, Error> => {
 
-        const response = await httpClient(requestConfig);
-        return response.data as UnificationRuleModel;
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.cdsUnificationRules}/${ruleId}`
     };
 
-    const key = shouldFetch && ruleId
-        ? `${store.getState().config.endpoints.unificationRules}/${ruleId}`
-        : null;
-
-    return useSWR<UnificationRuleModel, any>(key, fetcher);
-};
-
-/**
- * Hook to update an existing unification rule
- * Only rule_name, is_active, and priority can be updated
- */
-export const useUpdateUnificationRule = (
-    ruleId: string
-): SWRMutationResponse<UnificationRuleModel, any, string, UpdateUnificationRulePayload> => {
-    const updateRule = async (
-        _key: string,
-        { arg }: { arg: UpdateUnificationRulePayload }
-    ): Promise<UnificationRuleModel> => {
-        const requestConfig: RequestConfigInterface = {
-            data: arg,
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            method: HttpMethods.PUT,
-            url: `${store.getState().config.endpoints.unificationRules}/${ruleId}`
-        };
-
-        const response = await httpClient(requestConfig);
-        return response.data as UnificationRuleModel;
-    };
-
-    return useSWRMutation(
-        `${store.getState().config.endpoints.unificationRules}/${ruleId}`,
-        updateRule
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
+        shouldFetch && ruleId ? requestConfig : null,
+        { shouldRetryOnError: false }
     );
-};
 
-/**
- * Hook to delete a unification rule
- */
-export const useDeleteUnificationRule = (): SWRMutationResponse<void, any, string, string> => {
-    const deleteRule = async (_key: string, { arg }: { arg: string }): Promise<void> => {
-        const requestConfig: RequestConfigInterface = {
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            method: HttpMethods.DELETE,
-            url: `${store.getState().config.endpoints.unificationRules}/${arg}`
-        };
-
-        const response = await httpClient(requestConfig);
-
-        if (response.status !== 204 && response.status !== 200) {
-            throw new Error(`Unexpected status code: ${response.status}`);
-        }
+    return {
+        data: data as Data,
+        error,
+        isLoading,
+        isValidating,
+        mutate
     };
-
-    return useSWRMutation(store.getState().config.endpoints.unificationRules, deleteRule);
 };

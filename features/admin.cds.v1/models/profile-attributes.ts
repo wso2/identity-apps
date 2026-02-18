@@ -61,11 +61,19 @@ export interface ProfileSchemaAttribute {
 
     // complex types
     sub_attributes?: ProfileSchemaSubAttributeRef[];
+
+    // Canonical values for attributes for options value type.
+    canonical_values?: CanonicalValues[];
 }
 
 export interface ProfileSchemaCoreAttribute {
     mutability: Mutability;
     value_type: ValueType;
+}
+
+interface CanonicalValues {
+  value: string;
+  label: string;
 }
 
 export interface ProfileSchemaFullResponse {

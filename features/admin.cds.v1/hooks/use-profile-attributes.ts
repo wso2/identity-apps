@@ -16,14 +16,17 @@
  * under the License.
  */
 
+import useRequest, {
+    RequestConfigInterface, RequestErrorInterface, RequestResultInterface
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError } from "axios";
 import { useMemo } from "react";
 import useSWR, { SWRConfiguration, SWRResponse } from "swr";
 
 import {
-    fetchFullProfileSchema,
     fetchProfileSchemaByScope,
-    fetchSchemaAttributeById,
     searchSubAttributes
 } from "../api/profile-attributes";
 import type { SchemaListingScope } from "../models/profile-attribute-listing";
@@ -37,21 +40,36 @@ import type {
 import { toAttributeDropdownOptions } from "../utils/profile-attribute-utils";
 
 /**
- * SWR Hook: GET /profile-schema
+ * Hook: GET /profile-schema
  *
- * @param config - SWR configuration options
- * @returns SWR response with full profile schema
+ * @param shouldFetch - Whether to fetch the data.
+ * @returns SWR response with full profile schema.
  */
-export const useFullProfileSchema = (
-    config?: SWRConfiguration<ProfileSchemaFullResponse, AxiosError>
-): SWRResponse<ProfileSchemaFullResponse, AxiosError> => {
-    const key: string = "profile-schema-full";
+export const useFullProfileSchema = <Data = ProfileSchemaFullResponse, Error = RequestErrorInterface>(
+    shouldFetch: boolean = true
+): RequestResultInterface<Data, Error> => {
 
-    return useSWR<ProfileSchemaFullResponse, AxiosError>(
-        key,
-        () => fetchFullProfileSchema(),
-        config
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.cdsProfileSchema
+    };
+
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
+        shouldFetch ? requestConfig : null,
+        { shouldRetryOnError: false }
     );
+
+    return {
+        data: data as Data,
+        error,
+        isLoading,
+        isValidating,
+        mutate
+    };
 };
 
 /**
@@ -80,24 +98,40 @@ export const useProfileSchemaByScope = (
 /**
  * SWR Hook: GET /profile-schema/`{scope}`/`{id}`
  *
- * @param scope - Schema scope
- * @param id - Attribute ID, or null to disable fetching
- * @param config - SWR configuration options
- * @returns SWR response with schema attribute details
+ * @param scope - Schema scope.
+ * @param id - Attribute ID, or null to skip.
+ * @param shouldFetch - Whether to fetch the data.
+ * @returns SWR response with schema attribute details.
  */
-export const useSchemaAttributeById = (
+export const useSchemaAttributeById = <Data = ProfileSchemaAttribute, Error = RequestErrorInterface>(
     scope: SchemaListingScope | null,
     id: string | null,
-    config?: SWRConfiguration<ProfileSchemaAttribute, AxiosError>
-): SWRResponse<ProfileSchemaAttribute, AxiosError> => {
-    const key: ["profile-schema-attribute", SchemaListingScope, string] | null =
-        scope && id ? [ "profile-schema-attribute", scope, id ] : null;
+    shouldFetch: boolean = true
+): RequestResultInterface<Data, Error> => {
 
-    return useSWR<ProfileSchemaAttribute, AxiosError>(
-        key,
-        scope && id ? () => fetchSchemaAttributeById(scope, id) : null,
-        config
+    const baseUrl: string = store.getState().config.endpoints.cdsProfileSchema;
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${baseUrl}/${scope}/${id}`
+    };
+
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
+        shouldFetch && scope && id ? requestConfig : null,
+        { shouldRetryOnError: false }
     );
+
+    return {
+        data: data as Data,
+        error,
+        isLoading,
+        isValidating,
+        mutate
+    };
 };
 
 /**
@@ -152,5 +186,44 @@ export const useProfileSchemaDropdownOptions = (
     return {
         ...swrResponse,
         dropdownOptions
+    };
+};
+
+export const useProfileSchemaDropdown = (
+    scope: ProfileSchemaScope | null,
+    filter?: string
+): RequestResultInterface<ProfileSchemaScopeResponse, RequestErrorInterface> & {
+    dropdownOptions: FilterAttributeOption[]
+} => {
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params: { filter },
+        url: `${store.getState().config.endpoints.profileSchema}/${scope}` // scope in URL
+    };
+
+    const { data, error, isLoading, isValidating, mutate } =
+        useRequest<ProfileSchemaScopeResponse, RequestErrorInterface>(
+            scope ? requestConfig : null, // null disables the request
+            { shouldRetryOnError: false }
+        );
+
+    const dropdownOptions: FilterAttributeOption[] = useMemo(() => {
+        if (!data || !scope) return [];
+
+        return toAttributeDropdownOptions(scope, data)
+            .sort(( a, b ) => a.label.localeCompare(b.label));
+    }, [ data, scope ]);
+
+    return {
+        data,
+        dropdownOptions,
+        error,
+        isLoading,
+        isValidating,
+        mutate
     };
 };

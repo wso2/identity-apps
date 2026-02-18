@@ -227,13 +227,15 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
                 }
             >
                 { showPlaceholders() ?? (
-                    <ProfilesList
-                        profiles={ profileList }
-                        isLoading={ isLoading }
-                        onRefresh={ () => mutate() }
-                        onSearchQueryClear={ handleSearchQueryClear }
-                        searchQuery={ searchQuery }
-                    />
+                    <div className="cds-profiles-list-surface">
+                        <ProfilesList
+                            profiles={ profileList }
+                            isLoading={ isLoading }
+                            onRefresh={ () => mutate() }
+                            onSearchQueryClear={ handleSearchQueryClear }
+                            searchQuery={ searchQuery }
+                        />
+                    </div>
                 ) }
             </ListLayout>
         </PageLayout>

@@ -24,14 +24,17 @@ export interface UnificationRuleModel {
     priority: number;
 }
 
-export interface UnificationRulesListResponse {
-    rules: UnificationRuleModel[];
-}
-
 /**
  * Only these fields can be updated
  */
 export interface UpdateUnificationRulePayload {
     is_active?: boolean;
     priority?: number;
+}
+
+export interface CreateUnificationRulePayload {
+    property_name: string;
+    rule_name: string;
+    is_active: boolean;
+    priority: number;
 }

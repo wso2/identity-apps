@@ -20,12 +20,11 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-
+import { AxiosError, AxiosResponse } from "axios";
 import type { SchemaListingScope } from "../models/profile-attribute-listing";
 import type {
     ApplicationDataSchemaMapResponse,
     ProfileSchemaAttribute,
-    ProfileSchemaFullResponse,
     ProfileSchemaScope,
     ProfileSchemaScopeResponse
 } from "../models/profile-attributes";
@@ -35,22 +34,6 @@ import type {
  */
 const httpClient: HttpClientInstance =
     AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
-
-/**
- * GET /profile-schema
- * Returns the complete schema (core + meta + identity + traits + application_data map)
- */
-export const fetchFullProfileSchema = async (): Promise<ProfileSchemaFullResponse> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: { "Content-Type": "application/json" },
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.cdsProfileSchema
-    };
-
-    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
-
-    return response.data as ProfileSchemaFullResponse;
-};
 
 /**
  * GET /profile-schema/`{scope}`
@@ -100,24 +83,6 @@ export const fetchProfileSchemaByScope = async (
     }
 
     return [];
-};
-
-/**
- * GET /profile-schema/`{scope}`/`{id}`
- */
-export const fetchSchemaAttributeById = async (
-    scope: SchemaListingScope,
-    id: string
-): Promise<ProfileSchemaAttribute> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: { "Content-Type": "application/json" },
-        method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}/${id}`
-    };
-
-    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
-
-    return response.data as ProfileSchemaAttribute;
 };
 
 /**
@@ -191,4 +156,31 @@ export const searchSubAttributes = async (
     const data: any = response.data;
 
     return Array.isArray(data) ? (data as ProfileSchemaAttribute[]) : [];
+};
+
+export const createProfileSchemaAttribute = (
+    scope: SchemaListingScope,
+    attribute: Omit<ProfileSchemaAttribute, "attribute_id">
+): Promise<void> => {
+    const requestConfig: RequestConfigInterface = {
+        data: attribute,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 201) {
+                return Promise.reject(new Error("Failed to create profile schema attribute."));
+            }
+
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
 };

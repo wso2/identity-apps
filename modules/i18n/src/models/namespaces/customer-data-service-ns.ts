@@ -223,30 +223,196 @@ export interface CustomerDataServiceNS {
             title:  string;
         },
     };
-    profileSchemaAttributes: {
-        page: {
-            title: string;
-            description: string;
-            backButton: string;
-            addAttribute: string;
-            sortByName: string;
-            sortByScope: string;
-            noAttributes: {
+    unificationRules: {
+        common: {
+            notifications: {
+              deleted: {
+                message: string;
+                description: string;
+              };
+              deletionFailed: {
+                message: string;
+                description: string;
+              };
+              loadedFailed: {
+                message: string;
+                description: string;
+              };
+            };
+        };
+        create: {
+            page: {
                 title: string;
-                subtitle: string;
-            },
-            search: {
-                placeholder: string;
-                attributeName: string;
-                startsWith :string;
-                contains: string;
-                equals: string;
-            },
-            errors: {
-                fetchFailed: string;
-                filterFailed: string;
-                error: string;
-            }
-        }
-    }
+                description: string;
+                backButton: string;
+            };
+            headings: {
+                ruleDetails: string;
+                ruleDetailsDescription: string;
+            };
+            fields: {
+                ruleName: {
+                    label: string;
+                    placeholder: string;
+                    hint: string;
+                    errors: {
+                        required: string;
+                    };
+                };
+                attribute: {
+                    label: string;
+                    placeholder: string;
+                    noOptions: string;
+                    hint: string;
+                    scopeAriaLabel: string;
+                    attributeAriaLabel: string;
+                    loadingRulesHint: string;
+                    rulesLoadFailedHint: string;
+                    noAvailableForScopeHint: string;
+                    errors: {
+                        required: string;
+                        loadFailed: string;
+                        alreadyUsed: string;
+                    };
+                };
+                scope: {
+                    options: {
+                        identity: string;
+                        trait: string;
+                    };
+                };
+                priority: {
+                    label: string;
+                    hint: string;
+                    errors: {
+                        min: string;
+                        alreadyUsed: string;
+                    };
+                };
+                isActive: {
+                    label: string;
+                };
+            };
+            buttons: {
+                create: string;
+                creating: string;
+                cancel: string;
+            };
+            notifications: {
+                loadingRules: {
+                message: string;
+                description: string;
+                };
+                created: {
+                message: string;
+                description: string;
+                };
+                creationFailed: {
+                message: string;
+                description: string;
+                };
+            };
+        };
+        /**
+         * List page.
+         */
+        list: {
+            page: {
+                title: string;
+                description: string;
+            };
+            buttons: {
+                add: string;
+                retry: string;
+                clearSearch: string;
+            };
+            placeholders: {
+                empty: {
+                    title: string;
+                    subtitle: string;
+                };
+                error: {
+                    title: string;
+                    subtitle: string;
+                };
+                noResults: {
+                    title: string;
+                    subtitle1: string;
+                    subtitle2: string;
+                };
+            };
+            labels: {
+                scope: {
+                    identity: string;
+                    trait: string
+                };
+            };
+            // unificationRules.list.columns
+            columns: {
+                rule: string;
+                attribute: string;
+                priority: string;
+                enabled: string;
+            };
+
+            // unificationRules.list.actions
+            actions: {
+                moveUp: string;
+                moveDown: string;
+                enable: string;
+                disable: string;
+                delete: string;
+            };
+
+            // unificationRules.list.confirmations  (add alongside existing fields)
+            confirmations: {
+                delete: {
+                    header: string;
+                    message: string;
+                    content: string;
+                    assertionHint: string;
+                };
+                toggle: {
+                    enableHeader: string;
+                    disableHeader: string;
+                    enableMessage: string;
+                    disableMessage: string;
+                    enableContent: string;
+                    disableContent: string;
+                };
+            };
+
+            // unificationRules.list.notifications
+            notifications: {
+                priorityUpdated: {
+                    success: {
+                        message: string;
+                        description: string;
+                    };
+                    error: {
+                        message: string;
+                        description: string;
+                    };
+                };
+                ruleEnabled: {
+                    success: {
+                        message: string;
+                        description: string;
+                    };
+                };
+                ruleDisabled: {
+                    success: {
+                        message: string;
+                        description: string;
+                    };
+                };
+                toggleFailed: {
+                    error: {
+                        message: string;
+                        description: string;
+                    };
+                };
+            };
+        };
+    };
 }
