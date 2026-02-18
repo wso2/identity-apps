@@ -61,6 +61,7 @@ export * from "./ai";
 export * from "./template-core";
 export * from "./application-templates";
 export * from "./impersonation";
+export * from "./issuer-usage-scope";
 export * from "./actions";
 export * from "./tenants";
 export * from "./sms-templates";

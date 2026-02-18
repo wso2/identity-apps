@@ -426,6 +426,8 @@ export class AppConstants {
             [ "OUTBOUND_PROVISIONING_SETTINGS",
                 `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ],
             [ "IMPERSONATION", `${AppConstants.getAdminViewBasePath()}/login-and-registration/impersonation` ],
+            [ "ISSUER_USAGE_SCOPE",
+                `${AppConstants.getAdminViewBasePath()}/login-and-registration/issuer-usage-scope` ],
             [ "ACTIONS",
                 `${AppConstants.getAdminViewBasePath()}/actions` ],
             [ "WEBHOOKS",
