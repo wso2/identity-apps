@@ -2553,6 +2553,11 @@
         {% else %}
             "enableOldUIForEmailProvider": false,
         {% endif %}
+        {% if console.ui.enable_blocking_outbound_provisioning is defined %}
+            "enableBlockingOutboundProvisioning": {{ console.ui.enable_blocking_outbound_provisioning }},
+        {% else %}
+            "enableBlockingOutboundProvisioning": false,
+        {% endif %}
         {% if console.ui.enable_provisioning_connection_v2 is defined %}
             "enableProvisioningConnectionV2": {{ console.ui.enable_provisioning_connection_v2 }},
         {% else %}

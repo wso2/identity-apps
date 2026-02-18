@@ -514,6 +514,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     enableProvisioningConnectionV2?: boolean;
     /**
+     * Enable/Disable blocking outbound provisioning feature.
+     */
+    enableBlockingOutboundProvisioning?: boolean;
+    /**
      * Enable signature validation certificate alias.
      */
     isSignatureValidationCertificateAliasEnabled?: boolean;

@@ -88,6 +88,8 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
 
     const { UIConfig } = useUIConfig();
 
+    const isBlockingOutboundProvisioningEnabled: boolean = UIConfig?.enableBlockingOutboundProvisioning ?? false;
+
     useEffect(() => {
         if (!idpList) {
             return;
@@ -295,35 +297,36 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                         </Grid.Row>
                     )
                 }
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <Field
-                            name="blocking"
-                            required={ false }
-                            requiredErrorMessage=""
-                            type="checkbox"
-                            children={ [
-                                {
-                                    label: t("applications:forms.outboundProvisioning" +
+                { isBlockingOutboundProvisioningEnabled &&
+                    (<Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Field
+                                name="blocking"
+                                required={ false }
+                                requiredErrorMessage=""
+                                type="checkbox"
+                                children={ [
+                                    {
+                                        label: t("applications:forms.outboundProvisioning" +
                                         ".fields.blocking.label"),
-                                    value: "blocking"
+                                        value: "blocking"
+                                    }
+                                ] }
+                                readOnly={ readOnly }
+                                value={ initialValues?.blocking ? [ "blocking" ] : [] }
+                                listen={
+                                    (values: Map<string, FormValue>) => {
+                                        setIsBlockingChecked(values.get("blocking").includes("blocking"));
+                                    }
                                 }
-                            ] }
-                            readOnly={ readOnly }
-                            value={ initialValues?.blocking ? [ "blocking" ] : [] }
-                            listen={
-                                (values: Map<string, FormValue>) => {
-                                    setIsBlockingChecked(values.get("blocking").includes("blocking"));
-                                }
-                            }
-                            data-testid={ `${ testId }-blocking-checkbox` }
-                        />
-                        <Hint>
-                            { t("applications:forms.outboundProvisioning.fields.blocking" +
+                                data-testid={ `${ testId }-blocking-checkbox` }
+                            />
+                            <Hint>
+                                { t("applications:forms.outboundProvisioning.fields.blocking" +
                                 ".hint") }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>) }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                         <Field

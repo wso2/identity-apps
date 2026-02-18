@@ -205,14 +205,14 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
     return (
         <Grid>
             <Grid.Row>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                     <Heading as="h4">
                         { t("authenticationProvider:forms.outboundProvisioningGroups.heading") }
                     </Heading>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                     <Autocomplete
                         multiple
                         disableCloseOnSelect
@@ -279,7 +279,7 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
             {
                 removedGroupsOptions?.length > 0 && (
                     <Grid.Row>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                             <>
                                 <Autocomplete
                                     multiple
@@ -341,7 +341,7 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
                 { t("authenticationProvider:forms.outboundProvisioningGroups.hint") }
             </Hint>
             <Grid.Row>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                     <>
                         {
                             !isReadOnly

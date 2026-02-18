@@ -144,17 +144,16 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
         [ initialValues, metadata ]
     );
 
-    // Track current authentication mode for conditional rendering.
     const [ currentAuthMode, setCurrentAuthMode ] = useState<string | undefined>(initialAuthMode);
-
-    // Track HTTP (non-secure) URLs for showing warnings.
     const [ httpUrlWarnings, setHttpUrlWarnings ] = useState<Record<string, boolean>>({});
-
-    // Track if user is in "edit authentication" mode (for SCIM2 in edit mode).
     const [ isAuthenticationUpdateMode, setIsAuthenticationUpdateMode ] = useState<boolean>(!isEditMode);
-
-    // Track the latest form values for validation.
     const formValuesRef: React.MutableRefObject<Record<string, any>> = useRef<Record<string, any>>({});
+
+    const onValidationChangeRef: React.MutableRefObject<
+        ((hasErrors: boolean) => void) | undefined
+    > = useRef<((hasErrors: boolean) => void) | undefined>(onValidationChange);
+
+    onValidationChangeRef.current = onValidationChange;
 
     /**
      * Get the value of a property from initialValues.
@@ -173,7 +172,6 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
 
     /**
      * Determine if a field should be visible based on authentication mode.
-     * This implements the authentication mode visibility logic for SCIM2 connector.
      *
      * @param propertyKey - The property key to check.
      * @param authMode - The authentication mode to check against (defaults to currentAuthMode).
@@ -210,11 +208,9 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                     || propertyKey === SCIM2_AUTH_PROPERTIES.API_KEY_VALUE;
 
             case OutboundProvisioningAuthenticationMode.NONE:
-                // Hide all auth credential fields when mode is NONE.
                 return false;
 
             default:
-                // If no auth mode is set, hide auth credential fields as a safety fallback.
                 return false;
         }
     };
@@ -238,7 +234,6 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
         propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
         authMode: string | undefined = currentAuthMode
     ): string | undefined => {
-        // Determine if field is required based on auth mode (for SCIM2) or metadata
         const isRequired: boolean = isFieldRequiredForAuthMode(
             propertyMetadata.key,
             propertyMetadata,
@@ -246,12 +241,10 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
             authMode
         );
 
-        // Skip validation if no value and not required.
         if (!value && !isRequired) {
             return undefined;
         }
 
-        // Required field validation for mandatory fields.
         if (isRequired) {
             // In edit mode, for confidential fields, special handling:
             if (isEditMode && propertyMetadata.isConfidential) {
@@ -275,14 +268,12 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
             }
         }
 
-        // URL validation for endpoint fields.
         if (isUrlField(propertyMetadata.key) && value) {
             if (!FormValidation.url(value)) {
                 return t("idp:forms.outboundProvisioningConnector.validations.invalidURL");
             }
         }
 
-        // Max length validation.
         if (propertyMetadata.maxLength && value && value.length > propertyMetadata.maxLength) {
             return t("common:maxValidation", { max: propertyMetadata.maxLength });
         }
@@ -396,7 +387,6 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
 
             let field: ReactElement;
 
-            // Handle different property types.
             if (isCheckboxWithSubProperties(metaProperty)) {
                 // Checkbox with sub-properties: render parent checkbox and sub-properties.
                 const subFields: ReactElement[] = (metaProperty?.subProperties ?? [])
@@ -700,11 +690,9 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
     };
 
     /**
-     * Handle cancel authentication change.
-     * Resets the auth mode field and state to initial values.
+     * Handle cancel authentication change. Resets the auth mode field and state to initial values.
      */
     const handleAuthenticationChangeCancel = (): void => {
-        // Reset auth mode state to initial value.
         setCurrentAuthMode(initialAuthMode);
 
         // Reset form field to initial value if form API is available.
@@ -714,7 +702,6 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
             formApi.change(authModeFieldName, initialAuthMode);
         }
 
-        // Exit authentication update mode.
         setIsAuthenticationUpdateMode(false);
     };
 
@@ -776,20 +763,17 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
      * Render authentication update widget (create mode or edit mode when editing).
      */
     const renderAuthenticationUpdateWidget = (): ReactElement => {
-        // Get authentication-related properties.
         const authProperties: CommonPluggableComponentMetaPropertyInterface[] = getSortedProperties(
             metadata?.properties ?? []
         ).filter((prop: CommonPluggableComponentMetaPropertyInterface) =>
             isAuthenticationProperty(prop.key)
         );
 
-        // Get the authentication mode property.
         const authModeProperty: CommonPluggableComponentMetaPropertyInterface | undefined = authProperties.find(
             (prop: CommonPluggableComponentMetaPropertyInterface) => prop.key ===
                 SCIM2_AUTH_PROPERTIES.AUTHENTICATION_MODE
         );
 
-        // Get authentication credential properties (username, password, token, etc.)
         const authCredentialProperties: CommonPluggableComponentMetaPropertyInterface[] = authProperties.filter(
             (prop: CommonPluggableComponentMetaPropertyInterface) => prop.key !==
                 SCIM2_AUTH_PROPERTIES.AUTHENTICATION_MODE
@@ -970,7 +954,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
         values: Record<string, any>,
         authMode: string | undefined = currentAuthMode
     ): void => {
-        if (!onValidationChange) {
+        if (!onValidationChangeRef.current) {
             return;
         }
 
@@ -1018,7 +1002,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
             }
         });
 
-        onValidationChange(hasValidationErrors);
+        onValidationChangeRef.current(hasValidationErrors);
     };
 
     /**
@@ -1026,8 +1010,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
      * This ensures validation runs even if FormSpy doesn't fire initially.
      */
     useEffect(() => {
-        // Only run if we have the validation callback.
-        if (onValidationChange) {
+        if (onValidationChangeRef.current) {
             // Use form values from ref if available, otherwise create empty object.
             // This ensures validation runs on mount even before FormSpy fires.
             const valuesToValidate: Record<string, any> = Object.keys(formValuesRef.current).length > 0
@@ -1036,7 +1019,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
 
             performValidation(valuesToValidate, currentAuthMode);
         }
-    }, [ metadata, currentAuthMode, isAuthenticationUpdateMode, onValidationChange ]);
+    }, [ metadata, currentAuthMode, isAuthenticationUpdateMode ]);
 
     /**
      * Render non-authentication properties for SCIM2 or all properties for other connectors.
@@ -1076,15 +1059,8 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                         setCurrentAuthMode(newAuthMode);
                     }
 
-                    // Clear irrelevant authentication properties based on selected mode.
                     clearIrrelevantAuthFields(values, newAuthMode);
-
-                    // Check URL fields for HTTP vs HTTPS.
                     updateHttpUrlWarnings(values);
-
-                    // Validate all fields and notify parent of validation state.
-                    // Use newAuthMode from form values instead of currentAuthMode state
-                    // to ensure validation happens against the latest selected mode.
                     performValidation(values, newAuthMode || currentAuthMode);
                 } }
             />

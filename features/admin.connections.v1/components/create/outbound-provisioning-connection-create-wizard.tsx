@@ -37,7 +37,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
-import React, { FC, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
+import React, { FC, MutableRefObject, ReactElement, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -139,7 +139,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
     const [ initWizard, setInitWizard ] = useState<boolean>(false);
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>([]);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(0);
-    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+    const [ alert, , alertComponent ] = useWizardAlert();
     const [ selectedConnectorId, setSelectedConnectorId ] = useState<string | null>(null);
     const [ connectorMetaData, setConnectorMetaData ] = useState<
         OutboundProvisioningConnectorMetaInterface | undefined
@@ -150,6 +150,10 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
         boolean | undefined
     >(undefined);
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
+
+    const handleConnectorValidationChange: (hasErrors: boolean) => void = useCallback((hasErrors: boolean) => {
+        setNextShouldBeDisabled(hasErrors);
+    }, []);
 
     const idpNameValidationCache: MutableRefObject<IdpNameValidationCache | null>
         = useRef<IdpNameValidationCache | null>(null);
@@ -189,6 +193,18 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
             setNextShouldBeDisabled(true);
         }
     }, [ currentWizardStep ]);
+
+    /**
+     * When the async name-uniqueness check resolves and finds the name is already taken,
+     * immediately disable the Next button so the user cannot proceed.
+     * The WizardPage validate function only runs on form value changes, so without this
+     * effect the Next button remains enabled after the debounced check completes.
+     */
+    useEffect(() => {
+        if (isUserInputIdpNameAlreadyTaken && currentWizardStep === 0) {
+            setNextShouldBeDisabled(true);
+        }
+    }, [ isUserInputIdpNameAlreadyTaken ]);
 
     /**
      * Get wizard steps configuration.
@@ -422,43 +438,41 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                 if (error?.response?.status === 403
                     && error?.response?.data?.code === identityAppsError.getErrorCode()) {
 
-                    setAlert({
-                        code: identityAppsError.getErrorCode(),
-                        description: t(
-                            identityAppsError.getErrorDescription()
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            identityAppsError.getErrorMessage()
-                        ),
-                        traceId: identityAppsError.getErrorTraceId()
-                    });
-                    setTimeout(() => setAlert(undefined), 4000);
+                    dispatch(
+                        addAlert({
+                            description: t(identityAppsError.getErrorDescription()),
+                            level: AlertLevels.ERROR,
+                            message: t(identityAppsError.getErrorMessage())
+                        })
+                    );
 
                     return;
                 }
 
-                if (error.response && error.response.data && error.response.data.description) {
-                    setAlert({
+                if (error?.response?.data?.description) {
+                    dispatch(
+                        addAlert({
+                            description: t("authenticationProvider:notifications." +
+                                "addIDP.error.description",
+                            { description: error.response.data.description }),
+                            level: AlertLevels.ERROR,
+                            message: t("authenticationProvider:notifications." +
+                                "addIDP.error.message")
+                        })
+                    );
+
+                    return;
+                }
+
+                dispatch(
+                    addAlert({
                         description: t("authenticationProvider:notifications." +
-                                        "addIDP.error.description",
-                        { description: error.response.data.description }),
+                            "addIDP.genericError.description"),
                         level: AlertLevels.ERROR,
                         message: t("authenticationProvider:notifications." +
-                                        "addIDP.error.message")
-                    });
-                    setTimeout(() => setAlert(undefined), 4000);
-
-                    return;
-                }
-                setAlert({
-                    description: t("authenticationProvider:notifications." +
-                                    "addIDP.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:notifications." +
-                                    "addIDP.genericError.message")
-                });
-                setTimeout(() => setAlert(undefined), 4000);
+                            "addIDP.genericError.message")
+                    })
+                );
             })
             .finally(() => {
                 setIsSubmitting(false);
@@ -515,28 +529,9 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                             maxLength={ IDP_NAME_LENGTH.max }
                             minLength={ IDP_NAME_LENGTH.min }
                             required={ true }
-                            listen={ (value: string) => {
+                            validate={ (value: string) => {
                                 if (value) {
                                     idpNameValidation(value.toString().trimStart());
-                                }
-                            } }
-                            validation={ (value: string) => {
-                                if (!value) {
-                                    return t("common:required");
-                                }
-                                if (value.length < IDP_NAME_LENGTH.min) {
-                                    return t("common:minValidation", { min: IDP_NAME_LENGTH.min });
-                                }
-                                if (value.length > IDP_NAME_LENGTH.max) {
-                                    return t("common:maxValidation", { max: IDP_NAME_LENGTH.max });
-                                }
-                                if (isUserInputIdpNameAlreadyTaken) {
-                                    return t("authenticationProvider:forms.generalDetails.name.validations.duplicate");
-                                }
-                                if (!FormValidation.isValidResourceName(value)) {
-                                    return t("authenticationProvider:templates.enterprise.validation.invalidName", {
-                                        idpName: value
-                                    });
                                 }
 
                                 return undefined;
@@ -633,9 +628,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                 <ConnectorConfigFormFields
                     metadata={ connectorMetaData }
                     fieldNamePrefix=""
-                    onValidationChange={ (hasErrors: boolean) => {
-                        setNextShouldBeDisabled(hasErrors);
-                    } }
+                    onValidationChange={ handleConnectorValidationChange }
                     data-componentid={ `${ componentId }-connector-config` }
                 />
             </WizardPage>
