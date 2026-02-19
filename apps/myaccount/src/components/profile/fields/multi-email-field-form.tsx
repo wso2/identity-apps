@@ -326,7 +326,7 @@ const MultiEmailFieldForm: FunctionComponent<MultiEmailFieldFormPropsInterface> 
 
         const updatedEmailsList: (string | Record<string, any>)[] = [];
 
-        for (const emailAddress of profileDetails?.profileInfo?.emails) {
+        for (const emailAddress of profileDetails?.profileInfo?.emails ?? []) {
             if (typeof emailAddress === "object" && emailAddress.primary !== true) {
                 updatedEmailsList.push(emailAddress);
             }
@@ -367,7 +367,7 @@ const MultiEmailFieldForm: FunctionComponent<MultiEmailFieldFormPropsInterface> 
         if (sortedEmailAddressesList.length === 0) {
             const updatedEmailsList: (string | Record<string, any>)[] = [];
 
-            for (const emailAddress of profileDetails?.profileInfo?.emails) {
+            for (const emailAddress of profileDetails?.profileInfo?.emails ?? []) {
                 if (typeof emailAddress === "object") {
                     updatedEmailsList.push(emailAddress);
                 }
@@ -442,7 +442,7 @@ const MultiEmailFieldForm: FunctionComponent<MultiEmailFieldFormPropsInterface> 
         if (selectedEmailAddress.isPrimary) {
             const updatedEmailsList: (string | MultiValue)[] = [];
 
-            for (const emailAddress of profileDetails?.profileInfo?.emails) {
+            for (const emailAddress of profileDetails?.profileInfo?.emails ?? []) {
                 if (typeof emailAddress === "string") {
                     updatedEmailsList.push("");
                 } else {

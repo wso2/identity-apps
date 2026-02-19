@@ -381,14 +381,14 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         if (profileInfo?.emails?.length > 0) {
 
             const emails: any[] = profileInfo.emails as any[];
-            
+
             // Look for primary email first
             const primaryEmail: any = emails.find((email: any) => email?.primary === true);
 
             if (primaryEmail?.value && primaryEmail.value !== username) {
                 return primaryEmail.value;
             }
-            
+
             // Look for string type email.
             for (const email of emails) {
                 if (typeof email === "string" && email && email !== username) {
@@ -402,7 +402,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     return email.value;
                 }
             }
-            
+
         }
 
         return "";
