@@ -25,7 +25,7 @@ This repository uses two UI component libraries:
 | **Oxygen UI** | Material UI 5(MUI) | Active | New components |
 | **Semantic UI React** | Custom SCSS | Legacy | Existing components |
 
-**Oxygen UI** (`@oxygen-ui/react`) is our design system built on MUI. It provides consistent theming, accessibility, and alignment with WSO2's product design language.
+**Oxygen UI** (`@oxygen-ui/react`) is our design system built on MUI. It provides consistent theming, accessibility, and alignment with WSO2's product design guidelines.
 
 **Semantic UI React** was our original component library. While it remains in the codebase for stability, we are progressively migrating away from it.
 
