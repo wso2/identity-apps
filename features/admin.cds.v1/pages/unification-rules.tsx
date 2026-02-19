@@ -32,6 +32,7 @@ import {
 import React, { Dispatch, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { AnyAction } from "redux";
 import { Icon } from "semantic-ui-react";
 import { UnificationRulesList } from "../components/unification-rule-list";
 import { useUnificationRules } from "../hooks/use-unification-rules";
@@ -75,16 +76,12 @@ const ProfileUnificationRulePage: React.FC = () => {
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ activePage, setActivePage ] = useState<number>(1);
-    const dispatch: Dispatch<any> = useDispatch();
+    const dispatch: Dispatch<AnyAction> = useDispatch();
 
     const enrichedRules: EnrichedRule[] = useMemo(() => {
         if (!data) return [];
 
-        const rules: any = Array.isArray(data) ? data : (data as any).rules;
-
-        if (!rules) return [];
-
-        return rules.map((rule: UnificationRuleModel) => ({
+        return data.map((rule: UnificationRuleModel) => ({
             ...rule,
             property_scope: getPropertyScope(rule.property_name)
         }));

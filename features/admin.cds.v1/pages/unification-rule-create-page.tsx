@@ -17,6 +17,7 @@
  */
 
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
@@ -473,15 +474,15 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
             showBottomDivider
         >
             <EmphasizedSegment padded="very" data-componentid={ `${componentId}-segment` }>
-                <div
-                    style={ { display: "flex", flexDirection: "column", gap: "24px", maxWidth: "600px" } }
+                <Box
+                    sx={ { display: "flex", flexDirection: "column", gap: 3, maxWidth: "600px" } }
                     data-componentid={ `${componentId}-form` }
                 >
                     <div>
                         <Typography variant="h4">
                             { t("customerDataService:unificationRules.create.headings.ruleDetails") }
                         </Typography>
-                        <Typography variant="body2" color="text.secondary" style={ { marginTop: "4px" } }>
+                        <Typography variant="body2" color="text.secondary" sx={ { mt: 0.5 } }>
                             { t("customerDataService:unificationRules.create.headings.ruleDetailsDescription") }
                         </Typography>
                     </div>
@@ -507,17 +508,17 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
 
                     { /* ── Attribute (compound field: scope + attribute) ── */ }
                     <div data-componentid={ `${componentId}-attribute-group` }>
-                        <Typography variant="body2" style={ { marginBottom: "6px" } }>
+                        <Typography variant="body2" sx={ { mb: 0.75 } }>
                             { t("customerDataService:unificationRules.create.fields.attribute.label") }{ " " }
-                            <span style={ { color: "theme.palette.error.main"  } }>*</span>
+                            <Box component="span" sx={ { color: "error.main" } }>*</Box>
                         </Typography>
 
-                        <div style={ { display: "flex", gap: "12px" } }>
+                        <Box sx={ { display: "flex", gap: 1.5 } }>
                             <TextField
                                 select
                                 value={ formData.scope }
                                 onChange={ handleScopeChange }
-                                style={ { flex: "0 0 180px", minWidth: "180px" } }
+                                sx={ { flex: "0 0 180px", minWidth: "180px" } }
                                 inputProps={ {
                                     "aria-label":
                                     t("customerDataService:unificationRules.create.fields.attribute.scopeAriaLabel")
@@ -566,7 +567,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
                                                     { (rulesLoading || isScopeLoading) && (
                                                         <CircularProgress
                                                             size={ 16 }
-                                                            style={ { marginRight: "8px" } }
+                                                            sx={ { mr: 1 } }
                                                         />
                                                     ) }
                                                     { params.InputProps.endAdornment }
@@ -584,7 +585,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
                                 ) }
                                 data-componentid={ `${componentId}-attribute-autocomplete` }
                             />
-                        </div>
+                        </Box>
 
                         { rulesLoading && (
                             <Hint>{
@@ -643,7 +644,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
                     />
 
                     { /* ── Actions ── */ }
-                    <div style={ { display: "flex", gap: "8px", justifyContent: "flex-start" } }>
+                    <Box sx={ { display: "flex", gap: 1, justifyContent: "flex-start" } }>
                         <Button
                             variant="contained"
                             onClick={ handleSubmit }
@@ -662,8 +663,8 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
                         >
                             { t("customerDataService:unificationRules.create.buttons.cancel") }
                         </Button>
-                    </div>
-                </div>
+                    </Box>
+                </Box>
             </EmphasizedSegment>
         </PageLayout>
     );
