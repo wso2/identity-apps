@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.93.1
+
+### Patch Changes
+
+- [#9622](https://github.com/wso2/identity-apps/pull/9622) [`896a5c6670aeb384fa2a7e3147174f0817c917e3`](https://github.com/wso2/identity-apps/commit/896a5c6670aeb384fa2a7e3147174f0817c917e3) Thanks [@savindi7](https://github.com/savindi7)! - Add improvements to user onboarding wizard.
+
+- Updated dependencies [[`896a5c6670aeb384fa2a7e3147174f0817c917e3`](https://github.com/wso2/identity-apps/commit/896a5c6670aeb384fa2a7e3147174f0817c917e3)]:
+  - @wso2is/admin.onboarding.v1@1.0.1
+
 ## 2.93.0
 
 ### Minor Changes
