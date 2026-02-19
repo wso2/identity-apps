@@ -709,6 +709,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 if (typeof email === "object" && email !== null && email.primary === true) {
                     return email.value;
                 }
+
                 return undefined;
             })
             .filter(Boolean)[0];
