@@ -633,7 +633,7 @@ pnpm changeset
 
 Then follow the prompts to describe your changes, selecting the appropriate change type (major, minor, patch).
 
-- For the updates to **features**, **modules** directories, make sure to add console/myaccount accordingly as well, with a patch version update.
+- For the updates to **features**, **modules** directories, make sure to also include the `apps/console` app (`@wso2is/console`) or `apps/myaccount` app (`@wso2is/myaccount`) in the changeset with a patch version update.
 - If there are new packages in the pull request, they should be mentioned as a major version update in the changeset.
 
 Avoid:
