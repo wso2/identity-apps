@@ -106,7 +106,7 @@ To create reusable components:
 - **Extend standard interfaces** - Inherit from `IdentifiableComponentInterface` for test IDs.
 
 ```tsx
-export interface ActionButtonProps extends IdentifiableComponentInterface {
+export interface ActionButtonPropsInterface extends IdentifiableComponentInterface {
     /**
      * Button variant determining visual style.
      */
@@ -166,18 +166,21 @@ import Box from "@oxygen-ui/react/Box";
 import Card from "@oxygen-ui/react/Card";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FC, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 
-export interface FeatureCardProps extends IdentifiableComponentInterface {
+export interface FeatureCardPropsInterface extends IdentifiableComponentInterface {
     title: string;
     description: string;
 }
 
-const FeatureCard: FC<FeatureCardProps> = ({
-    title,
-    description,
-    ["data-componentid"]: componentId = "feature-card"
-}): ReactElement => {
+const FeatureCard: FunctionComponent<FeatureCardPropsInterface> = (
+    props: FeatureCardPropsInterface
+): ReactElement => {
+    const {
+        title,
+        description,
+        ["data-componentid"]: componentId = "feature-card"
+    } = props;
     return (
         <Card data-componentid={ componentId }>
             <Box display="flex" flexDirection="column" gap={ 1 } p={ 2 }>
@@ -236,9 +239,9 @@ import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Typography from "@oxygen-ui/react/Typography";
 import { GearIcon, TrashIcon } from "@oxygen-ui/react-icons";
-import React, { FC, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 
-const ActionBar: FC = (): ReactElement => {
+const ActionBar: FunctionComponent = (): ReactElement => {
     return (
         <Box display="flex" gap={ 1 }>
             <Button startIcon={ <GearIcon /> } variant="outlined">
@@ -275,7 +278,7 @@ Use `useTheme` hook to access theme values in components:
 import { Theme } from "@oxygen-ui/react/models/theme";
 import { useTheme } from "@oxygen-ui/react/theme";
 
-const MyComponent: FC = (): ReactElement => {
+const MyComponent: FunctionComponent = (): ReactElement => {
     const theme: Theme = useTheme();
 
     return (
@@ -394,21 +397,21 @@ export default Theme;
 
 ### Using Theme in Styled Components
 
-Access theme values in styled components:
+Access theme values in styled components. Always type the `theme` parameter explicitly with `{ theme }: { theme: Theme }` and annotate the return type with `typeof BaseComponent`:
 
 ```tsx
 import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 
-export const StyledContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
+export const StyledContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     backgroundColor: theme.palette.background.paper,
     borderRadius: theme.shape.borderRadius * 2,
     boxShadow: theme.shadows[1],
     padding: theme.spacing(3)
 }));
 
-export const StyledHeader = styled(Box)(({ theme }: { theme: Theme }) => ({
+export const StyledHeader: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     alignItems: "center",
     borderBottom: `1px solid ${theme.palette.divider}`,
     display: "flex",
@@ -416,7 +419,7 @@ export const StyledHeader = styled(Box)(({ theme }: { theme: Theme }) => ({
     padding: theme.spacing(1.5, 4)
 }));
 
-export const ActionButton = styled(Button)(({ theme }: { theme: Theme }) => ({
+export const ActionButton: typeof Button = styled(Button)(({ theme }: { theme: Theme }) => ({
     borderRadius: theme.shape.borderRadius,
     textTransform: "none",
     "&:hover": {
@@ -427,21 +430,20 @@ export const ActionButton = styled(Button)(({ theme }: { theme: Theme }) => ({
 
 ### Accessing Color Schemes
 
-For dark mode-specific styles:
+For dark mode-specific styles, use `theme.palette` which automatically resolves to the active color scheme. Avoid casting `theme as any` — always use properly typed theme properties:
 
 ```tsx
-const MyComponent: FC = (): ReactElement => {
+const MyComponent: FunctionComponent = (): ReactElement => {
     const theme: Theme = useTheme();
 
     return (
         <Card
             sx={ {
-                // Access dark mode palette
-                backgroundColor: (theme as any).colorSchemes.dark.palette.background.default,
-                color: (theme as any).colorSchemes.dark.palette.text.primary
+                backgroundColor: theme.palette.background.default,
+                color: theme.palette.text.primary
             } }
         >
-            Dark mode content
+            Content adapts to the active color scheme
         </Card>
     );
 };
@@ -460,22 +462,22 @@ All new components must use Oxygen UI with the following approach:
 Use the `styled` API for component-level styles that are reusable and maintainable:
 
 ```tsx
-import { styled } from "@mui/material/styles";
+import { Theme, styled } from "@mui/material/styles";
 
-const StyledCard = styled("div")(({ theme }) => ({
+const StyledCard = styled("div")(({ theme }: { theme: Theme }) => ({
     padding: theme.spacing(2),
     borderRadius: theme.shape.borderRadius,
     backgroundColor: theme.palette.background.paper,
-    boxShadow: theme.shadows[1],
+    boxShadow: theme.shadows[1]
 }));
 
 // Variants using props
 const StyledButton = styled("button")<{ variant?: "primary" | "secondary" }>(
-    ({ theme, variant }) => ({
+    ({ theme, variant }: { theme: Theme; variant?: "primary" | "secondary" }) => ({
         padding: theme.spacing(1, 2),
         backgroundColor: variant === "primary"
             ? theme.palette.primary.main
-            : theme.palette.grey[200],
+            : theme.palette.grey[200]
     })
 );
 ```
@@ -551,6 +553,8 @@ When modifying legacy Semantic UI components:
 ### Styles to Avoid
 
 - **Inline style objects** - Use `styled` or `sx` instead of `style={{}}`
+- **`any` type assertions** - Never use `as any` on theme or styled component types. Always import and use `Theme` from `@mui/material/styles`
+- **Untyped theme parameters** - Always use `({ theme }: { theme: Theme })`, not `({ theme })`
 - **!important** - Indicates specificity issues; fix the root cause
 - **Magic numbers** - Use theme spacing/sizing tokens
 - **Deeply nested selectors** - Keep specificity flat
@@ -566,6 +570,7 @@ Our long-term objective is to:
 1. Fully adopt Oxygen UI as the sole styling solution
 2. Remove Semantic UI React dependency
 3. Eliminate legacy SCSS files
+4. Deprecate the shared `themes/` module — new assets (icons, images) should live in each feature's own `assets/` directory
 
 ### Approach
 
