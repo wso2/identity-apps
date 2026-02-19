@@ -59,3 +59,9 @@ export const APPLICATION_DATA: string = "application_data";
 export const IDENTITY_ATTRIBUTES: string = "identity_attributes";
 export const TRAITS: string = "traits";
 export const AND_OPERATOR: string = "and";
+
+/**
+ * Temporary priority value used during the sequential swap to avoid
+ * two rules having the same priority at any point.
+ */
+export const TEMP_PRIORITY: number = 999999;

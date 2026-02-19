@@ -35,6 +35,9 @@ import {
     WebhookIcon
 } from "@oxygen-ui/react-icons";
 import { ReactComponent as ProfilesIcon } from "@wso2is/admin.cds.v1/assets/images/icons/cds-profiles.svg";
+import {
+    ReactComponent as UnificationRuleIcon
+} from "@wso2is/admin.cds.v1/assets/images/icons/unification-rules.svg";
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
@@ -1692,9 +1695,40 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 icon: <ProfilesIcon className="icon" fill="black" />
             },
             id: "customerDataProfiles",
-            name: "Profiles",
+            name: "customerDataService:sidePanel.Profiles",
             order: 32,
             path: AppConstants.getPaths().get("PROFILES"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            category: "extensions:manage.sidePanel.categories.customerDataService",
+            children: [
+                {
+                    component: lazy(() => import("@wso2is/admin.cds.v1/pages/unification-rule-create-page")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "create unification rule",
+                    name: "Create Unification Rule",
+                    path: AppConstants.getPaths().get("UNIFICATION_RULE_CREATE"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() =>
+                import("@wso2is/admin.cds.v1/pages/unification-rules")
+            ),
+            exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_PROFILE_UNIFICATION_RULES,
+            icon: {
+                icon: <UnificationRuleIcon className="icon" fill="black" />
+            },
+            id: "customerDataUnificationRules",
+            name: "customerDataService:sidePanel.UnificationRules",
+            order: 34,
+            path: AppConstants.getPaths().get("UNIFICATION_RULES"),
             protected: true,
             showOnSidePanel: true
         },

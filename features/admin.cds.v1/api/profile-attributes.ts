@@ -20,12 +20,10 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-
 import type { SchemaListingScope } from "../models/profile-attribute-listing";
 import type {
     ApplicationDataSchemaMapResponse,
     ProfileSchemaAttribute,
-    ProfileSchemaFullResponse,
     ProfileSchemaScope,
     ProfileSchemaScopeResponse
 } from "../models/profile-attributes";
@@ -35,22 +33,6 @@ import type {
  */
 const httpClient: HttpClientInstance =
     AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
-
-/**
- * GET /profile-schema
- * Returns the complete schema (core + meta + identity + traits + application_data map)
- */
-export const fetchFullProfileSchema = async (): Promise<ProfileSchemaFullResponse> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: { "Content-Type": "application/json" },
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.cdsProfileSchema
-    };
-
-    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
-
-    return response.data as ProfileSchemaFullResponse;
-};
 
 /**
  * GET /profile-schema/`{scope}`
@@ -100,24 +82,6 @@ export const fetchProfileSchemaByScope = async (
     }
 
     return [];
-};
-
-/**
- * GET /profile-schema/`{scope}`/`{id}`
- */
-export const fetchSchemaAttributeById = async (
-    scope: SchemaListingScope,
-    id: string
-): Promise<ProfileSchemaAttribute> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: { "Content-Type": "application/json" },
-        method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}/${id}`
-    };
-
-    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
-
-    return response.data as ProfileSchemaAttribute;
 };
 
 /**

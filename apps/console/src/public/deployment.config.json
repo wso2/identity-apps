@@ -838,23 +838,36 @@
             },
             "customerDataProfiles": {
                 "disabledFeatures": [],
-                "enabled": true,
-                "featureFlags": [],
+                "enabled": false,
+                "featureFlags": [
+                    {
+                        "feature": "customerDataProfiles",
+                        "flag": ""
+                    }
+                ],
                 "scopes": {
-                    "create": [
-                        "internal_cds_profile_create"
-                    ],
-                    "delete": [
-                        "internal_cds_profile_delete"
-                    ],
+                    "create": [],
+                    "delete": [],
                     "feature": [],
-                    "read": [
-                        "internal_cds_admin_config_view",
-                        "internal_cds_profile_view"
-                    ],
-                    "update": [
-                        "internal_cds_profile_update"
-                    ]
+                    "read": [],
+                    "update": []
+                }
+            },
+            "customerDataUnificationRules": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [
+                    {
+                        "feature": "customerDataUnificationRules",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [],
+                    "update": []
                 }
             },
             "dynamicClientRegistration": {

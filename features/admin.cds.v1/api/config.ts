@@ -50,7 +50,7 @@ export const patchCDSConfig = (
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to update CDS configuration"));
+                return Promise.reject(new Error("Failed to update CDS configuration."));
             }
 
             return Promise.resolve(response.data as CDSConfig);

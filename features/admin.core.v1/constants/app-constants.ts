@@ -373,9 +373,10 @@ export class AppConstants {
             [ "PROFILES", `${AppConstants.getMainViewBasePath()}/profiles` ],
             [ "PROFILE", `${AppConstants.getMainViewBasePath()}/profiles/:id` ],
             [ "UNIFICATION_RULES", `${AppConstants.getMainViewBasePath()}/unification-rules` ],
-            [ "UNIFICATION_RULE", `${AppConstants.getMainViewBasePath()}/unification-rules/:id` ],
+            [ "UNIFICATION_RULE_CREATE", `${AppConstants.getMainViewBasePath()}/unification-rules/create` ],
             [ "PROFILE_ATTRIBUTES", `${AppConstants.getMainViewBasePath()}/profile-attributes` ],
             [ "PROFILE_ATTRIBUTE", `${AppConstants.getMainViewBasePath()}/profile-attributes/:scope/:id` ],
+            [ "PROFILE_ATTRIBUTE_CREATE", `${AppConstants.getMainViewBasePath()}/profile-attributes/create` ],
             [ "USERS", `${AppConstants.getAdminViewBasePath()}/users` ],
             [ "USER_EDIT", `${AppConstants.getAdminViewBasePath()}/users/:id` ],
             [ "USERSTORES", `${AppConstants.getAdminViewBasePath()}/user-stores` ],
@@ -602,6 +603,11 @@ export class AppConstants {
      * Route id of the customer data service page.
      */
     public static readonly CDS_PROFILES_ROUTE_ID: string = "customerDataProfiles";
+
+    /**
+     * Route id of the customer data service unification rule page.
+     */
+    public static readonly CDS_PROFILES_UNIFICATION_RULES_ROUTE_ID: string = "customerDataUnificationRules";
 
     /**
      * Name of the root node

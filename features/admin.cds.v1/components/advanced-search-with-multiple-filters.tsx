@@ -262,7 +262,6 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
             return;
         }
 
-        // Reset and close
         resetAll();
         onClose?.();
     };
@@ -388,7 +387,17 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
 
                     onFilter(cleanQuery);
                 } else {
+                    const prefix: string = `${defaultSearchAttribute} ${defaultSearchOperator} `;
+
+                    // If AdvancedSearch already processed the basic search, don't process again.
+                    if (query.startsWith(prefix)) {
+                        onFilter(query);
+
+                        return;
+                    }
+
                     if (processQuery) {
+                        // buildSearchQuery should only be used for raw terms, not already-processed query strings.
                         onFilter(SearchUtils.buildSearchQuery(query));
                     } else {
                         onFilter(`${defaultSearchAttribute} ${defaultSearchOperator} ${query}`);
@@ -507,6 +516,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                     name={ `app-${index}` }
                                                                     placeholder="Select Application"
                                                                     required
+                                                                    search
                                                                     type="dropdown"
                                                                     children={ apps.map((id: string) => ({
                                                                         key: id,
@@ -549,6 +559,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                                 "filterAttribute.placeholder"))
                                                                 }
                                                                 required
+                                                                search
                                                                 type="dropdown"
                                                                 disabled={ isLoadingAttrs ||
                                                                     (appScope && !row.applicationId) }

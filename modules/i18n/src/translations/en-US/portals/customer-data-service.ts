@@ -198,5 +198,204 @@ export const customerDataService: CustomerDataServiceNS = {
             pageTitle: "Profiles",
             title: "Profiles"
         }
+    },
+    sidePanel: {
+        Profiles: "Profiles",
+        UnificationRules: "Unification Rules"
+    },
+    unificationRules: {
+        common: {
+            notifications: {
+                deleted: {
+                    description: "Unification rule has been deleted successfully.",
+                    message: "Rule Deleted"
+                },
+                deletionFailed: {
+                    description: "Unable to delete the unification rule.",
+                    message: "Deletion failed"
+                },
+                loadedFailed: {
+                    description: "Unable to load unification rules.",
+                    message: "Loading failed"
+                }
+            }
+        },
+        create: {
+            buttons: {
+                cancel: "Cancel",
+                create: "Create Rule",
+                creating: "Creating..."
+            },
+            fields: {
+                attribute: {
+                    attributeAriaLabel: "Attribute",
+                    errors: {
+                        alreadyUsed: "This attribute is already used by another rule. Choose a different attribute.",
+                        loadFailed: "Failed to load attributes for the selected scope.",
+                        required: "Attribute is required."
+                    },
+                    hint: "Pick an attribute to resolve similar profiles.",
+                    label: "Attribute",
+                    loadingRulesHint: "Loading existing rules for duplicate validation…",
+                    noAvailableForScopeHint: "No available attributes for this scope.",
+                    noOptions: "No available attributes",
+                    placeholder: "Select an attribute",
+                    rulesLoadFailedHint: "Failed to load existing rules. Duplicate validation may be inaccurate.",
+                    scopeAriaLabel: "Attribute scope"
+                },
+                isActive: {
+                    label: "Enable this rule immediately"
+                },
+                priority: {
+                    errors: {
+                        alreadyUsed: "Priority {{priority}} is already taken by another rule. Choose a different value.",
+                        min: "Priority must be at least 1."
+                    },
+                    hint: "Lower the number, higher the priority. Rules with higher priority are evaluated first.",
+                    label: "Priority"
+                },
+                ruleName: {
+                    errors: {
+                        required: "Rule name is required."
+                    },
+                    hint: "Choose a rule name that describes the unification criteria, e.g., 'Unify on email'.",
+                    label: "Rule Name",
+                    placeholder: "Enter a descriptive rule name."
+                },
+                scope: {
+                    options: {
+                        identity: "Identity Attributes",
+                        trait: "Trait"
+                    }
+                }
+            },
+            headings: {
+                ruleDetails: "Rule Details",
+                ruleDetailsDescription: "Provide a name, choose the attribute to unify on, and configure priority."
+            },
+            notifications: {
+                created: {
+                    description: "Unification rule has been created successfully.",
+                    message: "Unification rule created."
+                },
+                creationFailed: {
+                    description: "Failed to create Unification rule.",
+                    message: "Unification rule creation failed"
+                },
+                loadingRules: {
+                    description: "Please wait until existing rules are loaded for duplicate validation.",
+                    message: "Loading Unification rules"
+                }
+            },
+            page: {
+                backButton: "Back to Unification Rules",
+                description: "Define a new profile unification rule to resolve and merge customer profiles.",
+                title: "Create Unification Rule"
+            }
+        },
+        list: {
+            actions: {
+                delete: "Delete",
+                disable: "Disable",
+                enable: "Enable",
+                moveDown: "Move Down",
+                moveUp: "Move Up"
+            },
+            buttons: {
+                add: "Add Unification Rule",
+                clearSearch: "Clear Search Query",
+                retry: "Retry"
+            },
+            columns: {
+                attribute: "Attribute",
+                enabled: "Enabled",
+                priority: "Priority",
+                rule: "Rule"
+            },
+            confirmations: {
+                delete: {
+                    assertionHint: "Please confirm the deletion.",
+                    content: "Are you sure you want to delete the rule " +
+                        "<1>{{ruleName}}</1>? Deleting the rule will remove it " +
+                        "from engaging in matching and unification of user profiles. Existing " +
+                        "unification will not be affected.",
+                    header: "Delete Unification Rule",
+                    message: "Deleting this rule will permanently remove it and " +
+                        "it cannot be undone."
+                },
+                toggle: {
+                    disableContent: "Are you sure you want to disable the rule " +
+                        "<1>{{ruleName}}</1>?",
+                    disableHeader: "Disable Unification Rule",
+                    disableMessage: "Disabling this rule will prevent it from " +
+                        "participating in profile unification.",
+                    enableContent: "Are you sure you want to enable the rule " +
+                        "<1>{{ruleName}}</1>?",
+                    enableHeader: "Enable Unification Rule",
+                    enableMessage: "Enabling this rule will allow this rule to " +
+                        "be invoked in profile matching and unification."
+                }
+            },
+            labels: {
+                scope: {
+                    identity: "Identity Attribute",
+                    trait: "Trait"
+                }
+            },
+            notifications: {
+                priorityUpdated: {
+                    error: {
+                        description: "Failed to update priority.",
+                        message: "Unification rule Update Failed"
+                    },
+                    rollbackError: {
+                        description: "Failed to rollback priority after update failure.",
+                        message: "Rollback Failed"
+                    },
+                    success: {
+                        description: "\"{{ruleName}}\" priority has been {{direction}}.",
+                        message: "Unification rule Priority Updated"
+                    }
+                },
+                ruleDisabled: {
+                    success: {
+                        description: "\"{{ruleName}}\" has been disabled.",
+                        message: "Unification rule Disabled"
+                    }
+                },
+                ruleEnabled: {
+                    success: {
+                        description: "\"{{ruleName}}\" has been enabled.",
+                        message: "Unification rule Enabled"
+                    }
+                },
+                toggleFailed: {
+                    error: {
+                        description: "Failed to update unification rule status.",
+                        message: "Update Failed"
+                    }
+                }
+            },
+            page: {
+                description: "Manage profile unification rules.",
+                title: "Unification Rules"
+            },
+            placeholders: {
+                empty: {
+                    subtitle: "Please add a unification rule to start unifying your profiles.",
+                    title: "No Unification Rules Found"
+                },
+                error: {
+                    subtitle: "Failed to load unification rules. Please try again.",
+                    title: "Error Loading Rules"
+                },
+                noResults: {
+                    subtitle1: "No unification rules match your search \"{{ruleFilter}} \".",
+                    subtitle2: "Try adjusting your search criteria.",
+                    title: "No Results Found"
+                },
+                search: "Search by Rule Name or Attribute Name"
+            }
+        }
     }
 };
