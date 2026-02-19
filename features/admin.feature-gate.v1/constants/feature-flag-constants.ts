@@ -60,6 +60,8 @@ class FeatureFlagConstants {
         LOGIN_AND_REGISTRATION_FRAUD_DETECTION: "loginAndRegistration.loginSecurity.fraudDetection",
         LOGIN_AND_REGISTRATION_ORGANIZATION_DISCOVERY: "loginAndRegistration.organizationSettings.discovery",
         LOGIN_AND_REGISTRATION_ORGANIZATION_IMPERSONATION: "loginAndRegistration.organizationSettings.impersonation",
+        LOGIN_AND_REGISTRATION_ORGANIZATION_ISSUER_USAGE_SCOPE:
+            "loginAndRegistration.organizationSettings.issuerUsageScope",
         LOGIN_AND_REGISTRATION_SELF_REGISTRATION_FLOW_BUILDER:
             "loginAndRegistration.userOnboarding.registrationFlowBuilder",
         LOGIN_AND_REGISTRATION_SESSION_MANAGEMENT: "console.loginAndRegistration.sessionManagement",

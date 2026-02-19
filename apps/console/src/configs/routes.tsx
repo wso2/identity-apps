@@ -311,6 +311,16 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 },
                 {
+                    component: lazy(() => import(
+                        "@wso2is/admin.issuer-usage-scope.v1/pages/issuer-usage-scope-configuration")),
+                    exact: true,
+                    id: "issuerUsageScopeConfiguration",
+                    name: "pages:issuerUsageScope.title",
+                    path: AppConstants.getPaths().get("ISSUER_USAGE_SCOPE"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
                     component: lazy(() =>
                         import(
                             "@wso2is/admin.server-configurations.v1/" +

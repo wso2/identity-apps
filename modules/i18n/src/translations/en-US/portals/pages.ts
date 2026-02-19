@@ -92,6 +92,10 @@ export const pages: pagesNS = {
         subTitle: "Invite and manage admins and developers.",
         title: "Admins & Developers"
     },
+    issuerUsageScope: {
+        subTitle: "Configure issuer usage scope settings for organization.",
+        title: "Issuer Usage Scope"
+    },
     oidcScopes: {
         subTitle: "Create and manage OpenID Connect (OIDC) scopes and the attributes bound to the scopes.",
         title: "OpenID Connect Scopes"
@@ -139,5 +143,5 @@ export const pages: pagesNS = {
     workflowRequestsPage: {
         subTitle: "View and manage workflow requests.",
         title: "Workflow Requests"
-    },
+    }
 };

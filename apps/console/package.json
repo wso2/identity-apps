@@ -75,6 +75,7 @@
         "@wso2is/admin.home.v1": "^1.7.114",
         "@wso2is/admin.identity-verification-providers.v1": "^2.27.205",
         "@wso2is/admin.impersonation.v1": "^1.6.206",
+        "@wso2is/admin.issuer-usage-scope.v1": "workspace:^",
         "@wso2is/admin.logs.v1": "^1.6.6",
         "@wso2is/admin.oidc-scopes.v1": "^2.26.2",
         "@wso2is/admin.onboarding.v1": "workspace:^",
