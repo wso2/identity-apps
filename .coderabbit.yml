@@ -13,4 +13,7 @@ reviews:
 knowledge_base:
   code_guidelines:
     enabled: true
-    filePatterns: ["docs/write-code/CODE_QUALITY.md"]
+    filePatterns:
+      - "docs/write-code/CODE_QUALITY.md"
+      - "CLAUDE.md"
+      - "docs/STYLE-GUIDE.md"

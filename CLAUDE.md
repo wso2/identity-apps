@@ -503,5 +503,6 @@ callback_url = "regexp=(https://localhost:9000/myaccount|...)"
 ## Documentation Reference
 
 - [AGENTS.md](./AGENTS.md) - Cross-tool AI agent instructions (open standard for Cursor, Copilot, Codex, etc.)
+- [docs/write-code/CODE_QUALITY.md](docs/write-code/CODE_QUALITY.md) - Code quality rules (also used by CodeRabbit for PR reviews)
 - [docs/STYLE-GUIDE.md](docs/STYLE-GUIDE.md) - Styling architecture, Oxygen UI usage, component guidelines, theming, migration strategy
 - [docs/FORMS.md](docs/FORMS.md) - Form component guidelines and field types
