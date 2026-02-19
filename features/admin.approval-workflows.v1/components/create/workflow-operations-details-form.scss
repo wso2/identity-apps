@@ -9,14 +9,14 @@
 .operations-autocomplete {
     display: flex;
     flex-direction: column;
-    gap: 8px; 
+    gap: 8px;
 
-    .operations-autocomplete-header  {
+    .operations-autocomplete-header {
         margin-bottom: 5px;
-        white-space: nowrap; 
+        white-space: nowrap;
 
         h6 {
-            color: #666666; 
+            color: #666666;
             margin: 0;
         }
 
@@ -29,7 +29,6 @@
     .operations-autocomplete-input {
         margin-bottom: 10px;
     }
-
 }
 
 .operations-table-container {
@@ -38,10 +37,6 @@
 
     .ui.table thead th {
         background-color: #fff !important;
-    }
-
-    .operation-name {
-        font-weight: 500;
     }
 
     .engagement-toggle {
@@ -59,7 +54,6 @@
                 font-weight: 500;
             }
         }
-
     }
 
     .operation-rules-actions {
