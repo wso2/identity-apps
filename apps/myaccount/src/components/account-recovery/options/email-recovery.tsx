@@ -200,14 +200,14 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
 
         if (response.emails && Array.isArray(response.emails) && response.emails.length > 0) {
             // First, check if we have a string email
-            const stringEmail = response.emails.find((email: any) => typeof email === "string");
-            
+            const stringEmail: string | undefined = response.emails.find((email: any) => typeof email === "string");
+
             if (stringEmail) {
                 emailAddress = stringEmail as string;
                 emailType = "array";
             } else {
                 // Look for the primary email in object format
-                const primaryEmail = response.emails.find((email: any) =>
+                const primaryEmail: any = response.emails.find((email: any) =>
                     typeof email === "object" && email !== null && email.primary === true
                 );
 

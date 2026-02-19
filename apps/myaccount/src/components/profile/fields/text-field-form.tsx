@@ -142,7 +142,7 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
             )
         ) {
             const schemaNames: string[] = schema.name.split(".");
-            
+
             modifiedSchemaName = `${schemaNames[0]}#${schemaNames[1]}.value`;
 
         // Special handling for Phone Number Schemas.
