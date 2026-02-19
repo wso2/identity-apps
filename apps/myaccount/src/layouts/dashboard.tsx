@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -109,12 +109,10 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const isApplicationsPageVisible: boolean = useSelector((state: AppState) => state.global.isApplicationsPageVisible);
 
-    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(
-        getDashboardLayoutRoutes()[ 0 ]
-    );
+    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface | null>(null);
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>();
     const [ showAnnouncement, setShowAnnouncement ] = useState<boolean>(true);
-    const [ dashboardLayoutRoutes, setDashboardLayoutRoutes ] = useState<RouteInterface[]>(getDashboardLayoutRoutes());
+    const [ dashboardLayoutRoutes, setDashboardLayoutRoutes ] = useState<RouteInterface[]>([]);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
 

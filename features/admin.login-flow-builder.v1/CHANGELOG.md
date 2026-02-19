@@ -1,5 +1,40 @@
 # @wso2is/admin.login-flow-builder.v1
 
+## 2.29.2
+
+### Patch Changes
+
+- Updated dependencies [[`d375e3117837c9109d51fc85950df4d7cd40b4e1`](https://github.com/wso2/identity-apps/commit/d375e3117837c9109d51fc85950df4d7cd40b4e1), [`4ccde0b53f0d28c2645429562989d20f7958de55`](https://github.com/wso2/identity-apps/commit/4ccde0b53f0d28c2645429562989d20f7958de55)]:
+  - @wso2is/admin.server-configurations.v1@2.37.0
+  - @wso2is/admin.extensions.v1@2.40.20
+  - @wso2is/admin.feature-gate.v1@1.8.1
+  - @wso2is/admin.applications.v1@2.41.2
+  - @wso2is/admin.core.v1@2.52.1
+  - @wso2is/admin.login-flow.ai.v1@2.27.107
+
+## 2.29.1
+
+### Patch Changes
+
+- Updated dependencies [[`b741e9f50c869949a986ef34fe6fde1539908d50`](https://github.com/wso2/identity-apps/commit/b741e9f50c869949a986ef34fe6fde1539908d50)]:
+  - @wso2is/admin.feature-gate.v1@1.8.0
+  - @wso2is/admin.core.v1@2.52.0
+  - @wso2is/admin.login-flow.ai.v1@2.27.106
+  - @wso2is/admin.server-configurations.v1@2.36.8
+
+## 2.29.0
+
+### Minor Changes
+
+- [#9577](https://github.com/wso2/identity-apps/pull/9577) [`5e96563efa7eb0807db57487b417a2f820474e36`](https://github.com/wso2/identity-apps/commit/5e96563efa7eb0807db57487b417a2f820474e36) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add visual editor notification system and improve api based login flow configuration
+
+### Patch Changes
+
+- Updated dependencies [[`5e96563efa7eb0807db57487b417a2f820474e36`](https://github.com/wso2/identity-apps/commit/5e96563efa7eb0807db57487b417a2f820474e36)]:
+  - @wso2is/admin.applications.v1@2.41.0
+  - @wso2is/admin.core.v1@2.50.5
+  - @wso2is/admin.server-configurations.v1@2.36.5
+
 ## 2.28.2
 
 ### Patch Changes

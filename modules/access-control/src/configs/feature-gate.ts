@@ -39,6 +39,11 @@ export const featureGateConfig: FeatureGateInterface  = {
                 }
             }
         },
+        loginAndRegistration: {
+            sessionManagement: {
+                status: FeatureStatus.DEFAULT
+            }
+        },
         previewFeatures: {
             status: FeatureStatus.DEFAULT
         },

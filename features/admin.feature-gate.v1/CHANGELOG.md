@@ -1,5 +1,26 @@
 # @wso2is/admin.feature-gate.v1
 
+## 1.8.1
+
+### Patch Changes
+
+- [#9587](https://github.com/wso2/identity-apps/pull/9587) [`d375e3117837c9109d51fc85950df4d7cd40b4e1`](https://github.com/wso2/identity-apps/commit/d375e3117837c9109d51fc85950df4d7cd40b4e1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for defining a maximum session timeout for a user session
+
+- Updated dependencies [[`d375e3117837c9109d51fc85950df4d7cd40b4e1`](https://github.com/wso2/identity-apps/commit/d375e3117837c9109d51fc85950df4d7cd40b4e1), [`4ccde0b53f0d28c2645429562989d20f7958de55`](https://github.com/wso2/identity-apps/commit/4ccde0b53f0d28c2645429562989d20f7958de55)]:
+  - @wso2is/access-control@3.5.1
+  - @wso2is/admin.core.v1@2.52.1
+
+## 1.8.0
+
+### Minor Changes
+
+- [#9608](https://github.com/wso2/identity-apps/pull/9608) [`b741e9f50c869949a986ef34fe6fde1539908d50`](https://github.com/wso2/identity-apps/commit/b741e9f50c869949a986ef34fe6fde1539908d50) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Improve cds sidepanels
+
+### Patch Changes
+
+- Updated dependencies [[`b741e9f50c869949a986ef34fe6fde1539908d50`](https://github.com/wso2/identity-apps/commit/b741e9f50c869949a986ef34fe6fde1539908d50)]:
+  - @wso2is/admin.core.v1@2.52.0
+
 ## 1.7.10
 
 ### Patch Changes

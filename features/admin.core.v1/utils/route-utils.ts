@@ -23,6 +23,7 @@ import {
     UserFlowIcon
 } from "@oxygen-ui/react-icons";
 import { FeatureStatus } from "@wso2is/access-control";
+import { ReactComponent as CustomerDataIcon } from "@wso2is/admin.cds.v1/assets/images/icons/customer-data.svg";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { NavCategory, NavRouteInterface, RouteInterface } from "@wso2is/core/models";
 import groupBy from "lodash-es/groupBy";
@@ -289,6 +290,13 @@ export class RouteUtils {
             order: 2
         };
 
+        const customerData: Omit<RouteInterface, "showOnSidePanel"> = {
+            icon: CustomerDataIcon,
+            id: "customerDataService",
+            name: "Customer Data",
+            order: 8
+        };
+
         const branding: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: PaletteIcon,
             id: "customization",
@@ -312,27 +320,32 @@ export class RouteUtils {
 
         const organizations: NavCategory = {
             id: "organizations",
-            order: 3
+            order: 4
+        };
+
+        const verifiableCredentials: NavCategory = {
+            id: "verifiableCredentials",
+            order: 2
         };
 
         const preferences: NavCategory = {
             id: "preferences",
-            order: 4
+            order: 5
         };
 
         const extensions: NavCategory = {
             id: "extensions",
-            order: 5
+            order: 6
         };
 
         const monitoring: NavCategory = {
             id: "monitoring",
-            order: 6
+            order: 7
         };
 
         const settings: NavCategory = {
             id: "settings",
-            order: 7
+            order: 9
         };
 
         const loginAndRegPathsToCheck: string[] = [
@@ -392,15 +405,14 @@ export class RouteUtils {
                 selected: history.location.pathname.includes("/mcp-servers")
             },
             {
-                category: build,
-                id: "verifiableCredentials",
-                order: 3,
-                selected: history.location.pathname.includes("/verifiable-credentials")
-            },
-            {
                 category: organizations,
                 id: "organizations",
                 selected: history.location.pathname.includes("/organizations")
+            },
+            {
+                category: verifiableCredentials,
+                id: "verifiableCredentials",
+                selected: history.location.pathname.includes("/verifiable-credentials")
             },
             {
                 category: workflows,
@@ -507,6 +519,11 @@ export class RouteUtils {
                 category: preferences,
                 id: "loginAndRegistration",
                 selected: loginAndRegPathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
+            },
+            {
+                category: manage,
+                id: "customerDataProfiles",
+                parent: customerData
             },
             {
                 category: preferences,

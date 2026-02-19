@@ -1376,6 +1376,9 @@ export const applications: ApplicationsNS = {
             sections: {
                 applicationNativeAuthentication: {
                     heading: "App-Native Authentication",
+                    alerts: {
+                        apiAuthCompatibilityWarning: "Please note that some authenticators configured in the authentication flow do not support app-native authentication."
+                    },
                     fields: {
                         enableAPIBasedAuthentication: {
                             hint: "Select to authorize application to perform browserless, in-app authentication via app-native authentication API.",
@@ -2144,9 +2147,7 @@ export const applications: ApplicationsNS = {
                     heading: "Subject Token"
                 },
                 requestObjectSignature: {
-                    description: "{{productName}} supports receiving an OIDC authentication request as " +
-                        "a request object that is passed in a single, self-contained <1>request</1> " +
-                        "parameter. Enable signature validation to accept only signed request objects " +
+                    description: "Select to enable signature validation to accept only signed <1>request objects</1> " +
                         "in the authorization request.",
                     fields: {
                         signatureValidation: {

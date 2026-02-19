@@ -930,6 +930,12 @@ export const authenticationProvider:AuthenticationProviderNS = {
                         required: "Enablin push notification device progressive enrollment is required."
                     }
                 }
+            },
+            totp: {
+                enrollUserInAuthenticationFlow: {
+                    hint: "When enabled, users may enroll their devices for TOTP at the moment they log in to the application.",
+                    label: "Enable TOTP device progressive enrollment"
+                }
             }
         },
         certificateSection: {

@@ -1,5 +1,52 @@
 # @wso2is/admin.extensions.v1
 
+## 2.40.20
+
+### Patch Changes
+
+- [#9587](https://github.com/wso2/identity-apps/pull/9587) [`d375e3117837c9109d51fc85950df4d7cd40b4e1`](https://github.com/wso2/identity-apps/commit/d375e3117837c9109d51fc85950df4d7cd40b4e1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for defining a maximum session timeout for a user session
+
+- Updated dependencies [[`d375e3117837c9109d51fc85950df4d7cd40b4e1`](https://github.com/wso2/identity-apps/commit/d375e3117837c9109d51fc85950df4d7cd40b4e1), [`4ccde0b53f0d28c2645429562989d20f7958de55`](https://github.com/wso2/identity-apps/commit/4ccde0b53f0d28c2645429562989d20f7958de55)]:
+  - @wso2is/admin.server-configurations.v1@2.37.0
+  - @wso2is/admin.feature-gate.v1@1.8.1
+  - @wso2is/i18n@2.33.2
+  - @wso2is/access-control@3.5.1
+  - @wso2is/admin.applications.v1@2.41.2
+  - @wso2is/admin.core.v1@2.52.1
+  - @wso2is/theme@2.9.1
+  - @wso2is/admin.users.v1@2.36.109
+  - @wso2is/admin.roles.v2@2.27.304
+
+## 2.40.19
+
+### Patch Changes
+
+- [#9581](https://github.com/wso2/identity-apps/pull/9581) [`b12c67f61552efde75264e64ee3aaad2df845ef2`](https://github.com/wso2/identity-apps/commit/b12c67f61552efde75264e64ee3aaad2df845ef2) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Change digital wallet application template name to vc client application
+
+* [#9556](https://github.com/wso2/identity-apps/pull/9556) [`c7571540bdbbb68fd650e9c356823ad3d7f9dade`](https://github.com/wso2/identity-apps/commit/c7571540bdbbb68fd650e9c356823ad3d7f9dade) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add digital wallet application template
+
+* Updated dependencies [[`b12c67f61552efde75264e64ee3aaad2df845ef2`](https://github.com/wso2/identity-apps/commit/b12c67f61552efde75264e64ee3aaad2df845ef2), [`b463a2e8339a6c237911e164d6faf174a5501d83`](https://github.com/wso2/identity-apps/commit/b463a2e8339a6c237911e164d6faf174a5501d83), [`c7571540bdbbb68fd650e9c356823ad3d7f9dade`](https://github.com/wso2/identity-apps/commit/c7571540bdbbb68fd650e9c356823ad3d7f9dade)]:
+  - @wso2is/admin.applications.v1@2.40.12
+  - @wso2is/i18n@2.32.1
+  - @wso2is/admin.core.v1@2.50.2
+  - @wso2is/admin.roles.v2@2.27.297
+  - @wso2is/admin.server-configurations.v1@2.36.2
+  - @wso2is/admin.users.v1@2.36.102
+
+## 2.40.18
+
+### Patch Changes
+
+- [#9570](https://github.com/wso2/identity-apps/pull/9570) [`6a610a51801cefbc7be622af214e6867d07f8fb1`](https://github.com/wso2/identity-apps/commit/6a610a51801cefbc7be622af214e6867d07f8fb1) Thanks [@hwupathum](https://github.com/hwupathum)! - Enable request object signature validation config by default
+
+- Updated dependencies [[`6a610a51801cefbc7be622af214e6867d07f8fb1`](https://github.com/wso2/identity-apps/commit/6a610a51801cefbc7be622af214e6867d07f8fb1)]:
+  - @wso2is/admin.applications.v1@2.40.11
+  - @wso2is/i18n@2.31.8
+  - @wso2is/admin.core.v1@2.49.132
+  - @wso2is/admin.roles.v2@2.27.294
+  - @wso2is/admin.server-configurations.v1@2.35.146
+  - @wso2is/admin.users.v1@2.36.99
+
 ## 2.40.17
 
 ### Patch Changes

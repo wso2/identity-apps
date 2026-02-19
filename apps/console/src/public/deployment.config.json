@@ -836,6 +836,27 @@
                     ]
                 }
             },
+            "customerDataProfiles": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                        "internal_cds_profile_create"
+                    ],
+                    "delete": [
+                        "internal_cds_profile_delete"
+                    ],
+                    "feature": [],
+                    "read": [
+                        "internal_cds_admin_config_view",
+                        "internal_cds_profile_view"
+                    ],
+                    "update": [
+                        "internal_cds_profile_update"
+                    ]
+                }
+            },
             "dynamicClientRegistration": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -1245,6 +1266,26 @@
                     "update": [
                         "internal_oidc_scope_mgt_update"
                     ]
+                }
+            },
+            "onboarding": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                        "internal_application_mgt_create",
+                        "internal_branding_preference_update",
+                        "internal_governance_update"
+                    ],
+                    "delete": [],
+                    "feature": [
+                        "console:applications",
+                        "console:branding",
+                        "console:loginAndRegistration"
+                    ],
+                    "read": [],
+                    "update": []
                 }
             },
             "organizationDiscovery": {

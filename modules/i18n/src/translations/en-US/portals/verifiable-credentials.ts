@@ -84,6 +84,11 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
                 placeholder: "Enter a display name",
                 hint: "A human-readable name for the credential template."
             },
+            attributes: {
+                label: "User Attributes",
+                placeholder: "Search and select user attributes",
+                hint: "Select the user attributes to include in the verifiable credential."
+            },
             submitButton: "Create"
         }
     },
@@ -102,15 +107,26 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
             identifier: {
                 label: "Identifier"
             },
+            format: {
+                label: "Credential Format",
+                placeholder: "Select a credential format",
+                options: {
+                    vcSdJwt: "dc+sd-jwt",
+                    jwtVcJson: "jwt_vc_json"
+                }
+            },
             expiresIn: {
                 label: "Validity Period",
                 placeholder: "Enter validity period in seconds",
                 hint: "Enter the validity period in seconds."
             },
             claims: {
-                label: "Attributes",
-                placeholder: "Search and select attributes",
+                label: "User Attributes",
+                placeholder: "Search and select user attributes",
                 hint: "Select the user attributes to include in the verifiable credential."
+            },
+            offer: {
+                label: "Offer"
             }
         },
         dangerZone: {

@@ -129,6 +129,7 @@ interface AccessTokenConfigurationInterface {
     revokeTokensWhenIDPSessionTerminated?: boolean;
     validateTokenBinding?: boolean;
     accessTokenAttributes?: string[];
+    enableJwtScopeAsArray?: boolean;
 }
 
 interface RefreshTokenConfigurationInterface {

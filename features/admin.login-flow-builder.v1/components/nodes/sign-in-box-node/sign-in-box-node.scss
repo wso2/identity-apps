@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -69,6 +69,16 @@
             margin-top: 16px;
 
             .oxygen-sign-in-option {
+                &.invalid {
+                    border: 1px solid var(--oxygen-palette-warning-light);
+                    border-radius: 20px;
+                    box-shadow: none;
+
+                    .oxygen-button {
+                        box-shadow: none;
+                    }
+                }
+
                 .remove-button {
                     position: absolute;
                     z-index: 999;

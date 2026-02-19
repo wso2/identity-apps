@@ -26,7 +26,7 @@ import {
 import get from "lodash-es/get";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { Grid } from "semantic-ui-react";
+import { Grid, SemanticWIDTHS } from "semantic-ui-react";
 import "./markdown-guide.scss";
 
 /**
@@ -45,6 +45,10 @@ export interface MarkdownGuidePropsInterface extends IdentifiableComponentInterf
      * Is the markdown data request loading.
      */
     isLoading?: boolean;
+    /**
+     * Column width for computer screens.
+     */
+    computerColumnWidth?: SemanticWIDTHS;
 }
 
 /**
@@ -56,6 +60,7 @@ export const MarkdownGuide: FunctionComponent<MarkdownGuidePropsInterface> = ({
     data,
     content,
     isLoading,
+    computerColumnWidth = 13,
     ["data-componentid"]: componentId = "markdown-guide"
 }: MarkdownGuidePropsInterface): ReactElement => {
 
@@ -100,7 +105,7 @@ export const MarkdownGuide: FunctionComponent<MarkdownGuidePropsInterface> = ({
     return (
         <Grid className="markdown-guide" data-componentid={ componentId }>
             <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 13 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerColumnWidth }>
                     {
                         isLoading || !moderatedContent
                             ? <ContentLoader inline="centered" active/>

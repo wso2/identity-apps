@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,6 +24,8 @@ export class SessionManagementConstants {
 
     public static readonly IDLE_SESSION_TIMEOUT_PATH: string = "/idleSessionTimeoutPeriod";
     public static readonly REMEMBER_ME_PERIOD_PATH: string = "/rememberMePeriod";
+    public static readonly ENABLE_MAXIMUM_SESSION_TIMEOUT_PATH: string = "/enableMaximumSessionTimeoutPeriod";
+    public static readonly MAXIMUM_SESSION_TIMEOUT_PATH: string = "/maximumSessionTimeoutPeriod";
     public static readonly REPLACE_OPERATION: string = "REPLACE";
     public static readonly REMOVE_OPERATION: string = "REMOVE";
 

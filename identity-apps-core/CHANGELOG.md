@@ -1,5 +1,26 @@
 # @wso2is/identity-apps-core
 
+## 3.3.37
+
+### Patch Changes
+
+- [#9594](https://github.com/wso2/identity-apps/pull/9594) [`4ccde0b53f0d28c2645429562989d20f7958de55`](https://github.com/wso2/identity-apps/commit/4ccde0b53f0d28c2645429562989d20f7958de55) Thanks [@savindi7](https://github.com/savindi7)! - Add the user onboarding console feature and related improvements.
+
+- Updated dependencies [[`4ccde0b53f0d28c2645429562989d20f7958de55`](https://github.com/wso2/identity-apps/commit/4ccde0b53f0d28c2645429562989d20f7958de55)]:
+  - @wso2is/theme@2.9.1
+
+## 3.3.36
+
+### Patch Changes
+
+- [#9588](https://github.com/wso2/identity-apps/pull/9588) [`cbc063fe85f4ec3ef02d6904d764d68ecf7ca4fd`](https://github.com/wso2/identity-apps/commit/cbc063fe85f4ec3ef02d6904d764d68ecf7ca4fd) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Bump identity-apps-core version
+
+## 3.3.35
+
+### Patch Changes
+
+- [#9582](https://github.com/wso2/identity-apps/pull/9582) [`233fa5ab52c4248de32a0a6344fd53803fcdcb6a`](https://github.com/wso2/identity-apps/commit/233fa5ab52c4248de32a0a6344fd53803fcdcb6a) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add HTML attribute encoding for query parameters
+
 ## 3.3.34
 
 ### Patch Changes

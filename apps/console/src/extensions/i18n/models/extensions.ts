@@ -406,6 +406,7 @@ export interface Extensions {
                         resourceText: {
                             apiResource: string;
                             genericResource: string;
+                            vcResource: string;
                         };
                         sections: {
                             apiSubscriptions: {
@@ -3336,7 +3337,9 @@ export interface Extensions {
                 attributeManagement: string;
                 AccountManagement: string;
                 userManagement: string;
+                verifiableCredentials: string;
                 workflows: string;
+                customerDataService: string;
                 organizationSettings: string;
             };
         };

@@ -1,5 +1,17 @@
 # @wso2is/theme
 
+## 2.9.1
+
+### Patch Changes
+
+- [#9594](https://github.com/wso2/identity-apps/pull/9594) [`4ccde0b53f0d28c2645429562989d20f7958de55`](https://github.com/wso2/identity-apps/commit/4ccde0b53f0d28c2645429562989d20f7958de55) Thanks [@savindi7](https://github.com/savindi7)! - Add the user onboarding console feature and related improvements.
+
+## 2.9.0
+
+### Minor Changes
+
+- [#9510](https://github.com/wso2/identity-apps/pull/9510) [`91b0b1df1fd63f08e507507e32fdb97f512e15ec`](https://github.com/wso2/identity-apps/commit/91b0b1df1fd63f08e507507e32fdb97f512e15ec) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve Sift configuration page
+
 ## 2.8.9
 
 ### Patch Changes

@@ -178,6 +178,8 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
         switch (actionId) {
             case "self-registration-orchestration":
                 return history.push(AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER"));
+            case "customer-data-service":
+                return history.push(AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER"));
             default:
                 return;
         }

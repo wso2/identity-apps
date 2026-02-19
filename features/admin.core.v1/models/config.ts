@@ -29,6 +29,7 @@ import {
     WorkflowsResourceEndpointsInterface
 } from "@wso2is/admin.approval-workflows.v1/models/endpoints";
 import { BrandingPreferenceResourceEndpointsInterface } from "@wso2is/admin.branding.v1/models/endpoints";
+import { CustomerDataServiceEndpointsInterface } from "@wso2is/admin.cds.v1/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificates.v1";
 import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
 import { ConnectionResourceEndpointsInterface } from "@wso2is/admin.connections.v1";
@@ -137,6 +138,10 @@ export interface FeatureConfigInterface {
      * Getting started feature.
      */
     gettingStarted?: FeatureAccessConfigInterface;
+    /**
+     * Onboarding wizard feature.
+     */
+    onboarding?: FeatureAccessConfigInterface;
     /**
      * SMS providers feature.
      */
@@ -301,6 +306,10 @@ export interface FeatureConfigInterface {
      * Workflow feature.
      */
     approvalWorkflows?: FeatureAccessConfigInterface;
+     /**
+     * Customer Data feature.
+     */
+    customerData?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -440,6 +449,16 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Set of authenticators to be hidden in application sign on methods.
      */
     hiddenAuthenticators?: string[];
+    /**
+     * Set of first factor authenticators available in application login flow builder.
+     * If not configured, falls back to default first factor authenticators.
+     */
+    loginFlowFirstFactorAuthenticators?: string[];
+    /**
+     * Set of second factor authenticators available in application login flow builder.
+     * If not configured, falls back to default second factor authenticators.
+     */
+    loginFlowSecondFactorAuthenticators?: string[];
     /**
      * Set of connections to be hidden.
      */
@@ -726,6 +745,7 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     OrganizationResourceEndpointsInterface,
     TenantResourceEndpointsInterface,
     ValidationServiceEndpointsInterface,
+    CustomerDataServiceEndpointsInterface,
     BrandingPreferenceResourceEndpointsInterface,
     ExtensionTemplatesEndpointsInterface,
     ApplicationsTemplatesEndpointsInterface,

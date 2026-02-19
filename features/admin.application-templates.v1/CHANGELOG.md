@@ -1,5 +1,17 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.5.10
+
+### Patch Changes
+
+- [#9581](https://github.com/wso2/identity-apps/pull/9581) [`b12c67f61552efde75264e64ee3aaad2df845ef2`](https://github.com/wso2/identity-apps/commit/b12c67f61552efde75264e64ee3aaad2df845ef2) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Change digital wallet application template name to vc client application
+
+* [#9556](https://github.com/wso2/identity-apps/pull/9556) [`c7571540bdbbb68fd650e9c356823ad3d7f9dade`](https://github.com/wso2/identity-apps/commit/c7571540bdbbb68fd650e9c356823ad3d7f9dade) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add digital wallet application template
+
+* Updated dependencies [[`b12c67f61552efde75264e64ee3aaad2df845ef2`](https://github.com/wso2/identity-apps/commit/b12c67f61552efde75264e64ee3aaad2df845ef2), [`c7571540bdbbb68fd650e9c356823ad3d7f9dade`](https://github.com/wso2/identity-apps/commit/c7571540bdbbb68fd650e9c356823ad3d7f9dade)]:
+  - @wso2is/admin.applications.v1@2.40.12
+  - @wso2is/admin.core.v1@2.50.2
+
 ## 1.5.9
 
 ### Patch Changes

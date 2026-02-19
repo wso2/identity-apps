@@ -16,17 +16,27 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import Autocomplete, {
+    AutocompleteRenderGetTagProps,
+    AutocompleteRenderInputParams
+} from "@oxygen-ui/react/Autocomplete";
+import Chip from "@oxygen-ui/react/Chip";
+import TextField from "@oxygen-ui/react/TextField";
+import { getAllExternalClaims, getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
+import { AlertInterface, AlertLevels, Claim, ExternalClaim, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form/src";
-import { Button } from "@wso2is/react-components";
+import { Button, Hint } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { useState } from "react";
+import React, { HTMLAttributes, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Modal } from "semantic-ui-react";
 import { addVCTemplate } from "../../api/verifiable-credentials";
+import { VerifiableCredentialsConstants } from "../../constants/verifiable-credentials";
 import { VCTemplate, VCTemplateCreationModel } from "../../models/verifiable-credentials";
+import { ClaimAttributeOption } from "../claim-attribute-option";
+import "./add-vc-template.scss";
 
 /**
  * Prop types for the Add VC Template Wizard component.
@@ -60,11 +70,87 @@ export default function AddVCTemplateWizard({
     closeWizard,
     onSuccess,
     [ "data-componentid" ]: componentId = "add-vc-template-wizard"
-}: AddVCTemplateWizardProps) {
+}: AddVCTemplateWizardProps): ReactElement {
     const { t } = useTranslation();
     const dispatch: any = useDispatch();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ localClaims, setLocalClaims ] = useState<Claim[]>([]);
+    const [ externalClaims, setExternalClaims ] = useState<ExternalClaim[]>([]);
+    const [ claimAttributes, setClaimAttributes ] = useState<ExternalClaim[]>([]);
+    const [ selectedClaims, setSelectedClaims ] = useState<ExternalClaim[]>([]);
+    const [ isClaimsLoading, setIsClaimsLoading ] = useState<boolean>(true);
+
+    /**
+     * Fetch local and external claims on component mount.
+     */
+    useEffect(() => {
+        fetchLocalClaims();
+        fetchExternalClaims();
+    }, []);
+
+    /**
+     * Map external claims with local claim display names.
+     */
+    useEffect(() => {
+        if (localClaims?.length > 0 && externalClaims?.length > 0) {
+            const updatedAttributes: ExternalClaim[] = externalClaims.map((externalClaim: ExternalClaim) => {
+                const matchedLocalClaim: Claim = localClaims.find((localClaim: Claim) =>
+                    localClaim.claimURI === externalClaim.mappedLocalClaimURI
+                );
+
+                if (matchedLocalClaim?.displayName) {
+                    return {
+                        ...externalClaim,
+                        localClaimDisplayName: matchedLocalClaim.displayName
+                    };
+                }
+
+                return externalClaim;
+            });
+
+            setClaimAttributes(updatedAttributes);
+        }
+    }, [ localClaims, externalClaims ]);
+
+    /**
+     * Fetch local claims.
+     */
+    const fetchLocalClaims = (): void => {
+        getAllLocalClaims(null)
+            .then((response: Claim[]) => {
+                setLocalClaims(response);
+            })
+            .catch(() => {
+                dispatch(addAlert<AlertInterface>({
+                    description: t("verifiableCredentials:notifications.fetchClaims.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("verifiableCredentials:notifications.fetchClaims.error.message")
+                }));
+            });
+    };
+
+    /**
+     * Fetch external claims from VC dialect.
+     */
+    const fetchExternalClaims = (): void => {
+        setIsClaimsLoading(true);
+
+        getAllExternalClaims(VerifiableCredentialsConstants.VC_CLAIM_DIALECT_ID, null)
+            .then((response: ExternalClaim[]) => {
+                setExternalClaims(response);
+            })
+            .catch(() => {
+                dispatch(addAlert<AlertInterface>({
+                    description: t("verifiableCredentials:notifications.fetchClaims.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("verifiableCredentials:notifications.fetchClaims.error.message")
+                }));
+            })
+            .finally(() => {
+                setIsClaimsLoading(false);
+            });
+    };
 
     /**
      * Validates the identifier to ensure it doesn't contain spaces.
@@ -73,11 +159,53 @@ export default function AddVCTemplateWizard({
      * @returns Error message if invalid, undefined if valid.
      */
     const validateIdentifier = (value: string): string | undefined => {
-        if (value && value.match(/\s/) !== null) {
+        if (!value) {
+            return t("common:required");
+        }
+
+        if (value.match(/\s/) !== null) {
             return t("verifiableCredentials:wizard.form.identifier.validation");
         }
 
         return undefined;
+    };
+
+    /**
+     * Validates the display name field.
+     *
+     * @param value - Display name value.
+     * @returns Error message if invalid, undefined if valid.
+     */
+    const validateDisplayName = (value: string): string | undefined => {
+        if (!value) {
+            return t("common:required");
+        }
+
+        return undefined;
+    };
+
+    /**
+     * Validates the form fields.
+     *
+     * @param values - Form values to validate.
+     * @returns A partial object containing validation errors.
+     */
+    const validateForm = (values: VCTemplateFormValues): Partial<VCTemplateFormValues> => {
+        const errors: Partial<VCTemplateFormValues> = {};
+
+        const identifierError: string | undefined = validateIdentifier(values?.identifier);
+
+        if (identifierError) {
+            errors.identifier = identifierError;
+        }
+
+        const displayNameError: string | undefined = validateDisplayName(values?.displayName);
+
+        if (displayNameError) {
+            errors.displayName = displayNameError;
+        }
+
+        return errors;
     };
 
     /**
@@ -86,7 +214,7 @@ export default function AddVCTemplateWizard({
      * @param values - Form values.
      */
     const handleFormSubmit = (values: VCTemplateFormValues): void => {
-        if (!values?.identifier) {
+        if (!values?.identifier || !values?.displayName) {
             return;
         }
 
@@ -99,8 +227,8 @@ export default function AddVCTemplateWizard({
         setIsSubmitting(true);
 
         const templateData: VCTemplateCreationModel = {
-            claims: [],
-            displayName: values.displayName || values.identifier,
+            claims: selectedClaims.map((claim: ExternalClaim) => claim.claimURI),
+            displayName: values.displayName,
             expiresIn: 31536000,
             format: "jwt_vc_json",
             identifier: values.identifier
@@ -153,6 +281,7 @@ export default function AddVCTemplateWizard({
             <Modal.Content>
                 <FinalForm
                     onSubmit={ handleFormSubmit }
+                    validate={ validateForm }
                     render={ ({ handleSubmit }: FormRenderProps) => {
                         return (
                             <form id="addVCTemplateForm" onSubmit={ handleSubmit }>
@@ -161,19 +290,102 @@ export default function AddVCTemplateWizard({
                                     label={ t("verifiableCredentials:wizard.form.identifier.label") }
                                     placeholder={ t("verifiableCredentials:wizard.form.identifier.placeholder") }
                                     required={ true }
-                                    autoComplete="new-password"
+                                    helperText={
+                                        (<Hint className="hint" compact>
+                                            { t("verifiableCredentials:wizard.form.identifier.hint") }
+                                        </Hint>)
+                                    }
                                     component={ TextFieldAdapter }
-                                    helperText={ t("verifiableCredentials:wizard.form.identifier.hint") }
+                                    maxLength={ 100 }
+                                    minLength={ 0 }
                                 />
                                 <FinalFormField
-                                    label={ t("verifiableCredentials:wizard.form.displayName.label") }
                                     name="displayName"
+                                    label={ t("verifiableCredentials:wizard.form.displayName.label") }
                                     placeholder={ t("verifiableCredentials:wizard.form.displayName.placeholder") }
-                                    className="mt-3"
-                                    autoComplete="new-password"
+                                    required={ true }
+                                    helperText={
+                                        (<Hint className="hint" compact>
+                                            { t("verifiableCredentials:wizard.form.displayName.hint") }
+                                        </Hint>)
+                                    }
                                     component={ TextFieldAdapter }
-                                    helperText={ t("verifiableCredentials:wizard.form.displayName.hint") }
+                                    maxLength={ 100 }
+                                    minLength={ 0 }
                                 />
+                                <div className="vc-wizard-attributes-section">
+                                    <label className="form-label">
+                                        { t("verifiableCredentials:wizard.form.attributes.label") }
+                                    </label>
+                                    <Autocomplete
+                                        className="vc-wizard-claims-dropdown"
+                                        size="small"
+                                        disablePortal
+                                        multiple
+                                        disableCloseOnSelect
+                                        loading={ isClaimsLoading }
+                                        options={ claimAttributes }
+                                        value={ selectedClaims }
+                                        data-componentid={ `${componentId}-claims-dropdown` }
+                                        getOptionLabel={ (claim: ExternalClaim) =>
+                                            claim.localClaimDisplayName || claim.claimURI
+                                        }
+                                        renderInput={ (
+                                            params: AutocompleteRenderInputParams
+                                        ) => (
+                                            <TextField
+                                                { ...params }
+                                                className="vc-wizard-claims-dropdown-input"
+                                                placeholder={
+                                                    t("verifiableCredentials:wizard.form.attributes.placeholder")
+                                                }
+                                            />
+                                        ) }
+                                        onChange={ (
+                                            _event: SyntheticEvent,
+                                            newValue: ExternalClaim[]
+                                        ) => {
+                                            setSelectedClaims(newValue);
+                                        } }
+                                        isOptionEqualToValue={ (
+                                            option: ExternalClaim,
+                                            value: ExternalClaim
+                                        ) =>
+                                            option.claimURI === value.claimURI
+                                        }
+                                        renderTags={ (
+                                            value: ExternalClaim[],
+                                            getTagProps: AutocompleteRenderGetTagProps
+                                        ) => value.map((
+                                            option: ExternalClaim,
+                                            index: number
+                                        ) => (
+                                            <Chip
+                                                { ...getTagProps({ index }) }
+                                                key={ option.claimURI }
+                                                label={
+                                                    option.localClaimDisplayName
+                                                    || option.claimURI
+                                                }
+                                            />
+                                        )) }
+                                        renderOption={ (
+                                            props: HTMLAttributes<HTMLLIElement>,
+                                            option: ExternalClaim,
+                                            { selected }: { selected: boolean }
+                                        ) => (
+                                            <ClaimAttributeOption
+                                                selected={ selected }
+                                                displayName={ option.localClaimDisplayName }
+                                                claimURI={ option.claimURI }
+                                                renderOptionProps={ props }
+                                            />
+                                        ) }
+                                    />
+                                    <Hint>
+                                        { t("verifiableCredentials:wizard.form.attributes.hint") }
+                                    </Hint>
+                                </div>
                             </form>
                         );
                     } }
