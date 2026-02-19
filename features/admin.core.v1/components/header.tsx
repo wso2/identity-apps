@@ -518,7 +518,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const resolveEmail = (): string => {
 
         if (profileInfo?.emails?.length > 0) {
-            
+
             const emails: any[] = profileInfo.emails as any[];
 
             // Look for primary email first
@@ -546,7 +546,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
 
         return "";
     };
-    
+
     /**
      * Get the update level from the runtime config.
      * @returns Update level as a string.
