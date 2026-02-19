@@ -86,6 +86,14 @@ export const SCIM2_AUTHENTICATION_MODES: AuthenticationModeDropdownOption[] = [
 ];
 
 /**
+ * SCIM2 outbound provisioning connector password property keys.
+ */
+export const SCIM2_PASSWORD_PROPERTIES: Record<string, string> = {
+    DEFAULT_PASSWORD: "scim2-default-pwd",
+    ENABLE_PASSWORD_PROVISIONING: "scim2-enable-pwd-provisioning"
+};
+
+/**
  * SCIM2 connector name constant for identifying SCIM2 connectors.
  */
 export const SCIM2_CONNECTOR_NAME: string = "scim2";

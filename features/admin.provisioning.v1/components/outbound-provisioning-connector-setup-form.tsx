@@ -353,6 +353,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                             }
                             readOnly={ isReadOnly }
                             data-testid={ `${ componentId }-jit-checkbox` }
+                            data-componentid={ `${componentId}-jit-checkbox` }
                         />
                         <Hint>
                             { t("applications:forms.outboundProvisioning.fields.jit.hint") }

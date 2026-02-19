@@ -44,6 +44,7 @@ import {
     SCIM2_AUTHENTICATION_MODES,
     SCIM2_AUTH_PROPERTIES,
     SCIM2_CONNECTOR_NAME,
+    SCIM2_PASSWORD_PROPERTIES,
     SCIM2_URL_PROPERTIES
 } from "../../../../constants/outbound-provisioning-constants";
 import {
@@ -89,12 +90,6 @@ interface ConnectorConfigFormFieldsProps extends IdentifiableComponentInterface 
     formApi?: FormApi;
 }
 
-/**
- * Shared metadata-driven field renderer for outbound provisioning connector config.
- *
- * @param props - ConnectorConfigFormFieldsProps.
- * @returns ReactElement.
- */
 /**
  * Helper function to get initial authentication mode value.
  */
@@ -147,6 +142,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
     const [ currentAuthMode, setCurrentAuthMode ] = useState<string | undefined>(initialAuthMode);
     const [ httpUrlWarnings, setHttpUrlWarnings ] = useState<Record<string, boolean>>({});
     const [ isAuthenticationUpdateMode, setIsAuthenticationUpdateMode ] = useState<boolean>(!isEditMode);
+    const [ isPasswordProvisioningEnabled, setIsPasswordProvisioningEnabled ] = useState<boolean>(true);
     const formValuesRef: React.MutableRefObject<Record<string, any>> = useRef<Record<string, any>>({});
 
     const onValidationChangeRef: React.MutableRefObject<
@@ -388,11 +384,21 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
             let field: ReactElement;
 
             if (isCheckboxWithSubProperties(metaProperty)) {
-                // Checkbox with sub-properties: render parent checkbox and sub-properties.
+                const isPasswordProvisioningParent: boolean =
+                    metaProperty.key === SCIM2_PASSWORD_PROPERTIES.ENABLE_PASSWORD_PROVISIONING;
+
                 const subFields: ReactElement[] = (metaProperty?.subProperties ?? [])
-                    .filter((subProp: CommonPluggableComponentMetaPropertyInterface) =>
-                        !isEmpty(subProp?.displayName)
-                    )
+                    .filter((subProp: CommonPluggableComponentMetaPropertyInterface) => {
+                        if (isEmpty(subProp?.displayName)) {
+                            return false;
+                        }
+                        // When password provisioning is enabled, hide the default-password sub property.
+                        if (isPasswordProvisioningParent && isPasswordProvisioningEnabled) {
+                            return subProp.key !== SCIM2_PASSWORD_PROPERTIES.DEFAULT_PASSWORD;
+                        }
+
+                        return true;
+                    })
                     .sort((a: CommonPluggableComponentMetaPropertyInterface,
                         b: CommonPluggableComponentMetaPropertyInterface) =>
                         (a.displayOrder ?? 0) - (b.displayOrder ?? 0)
@@ -1057,6 +1063,15 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                     // Update current auth mode state if it changed.
                     if (newAuthMode && newAuthMode !== currentAuthMode) {
                         setCurrentAuthMode(newAuthMode);
+                    }
+
+                    // Track password provisioning checkbox to show/hide the default password field.
+                    const pwdProvisioningFieldName: string =
+                        `${fieldNamePrefix}${SCIM2_PASSWORD_PROPERTIES.ENABLE_PASSWORD_PROVISIONING}`;
+                    const newPwdProvisioningEnabled: boolean = !!values[pwdProvisioningFieldName];
+
+                    if (newPwdProvisioningEnabled !== isPasswordProvisioningEnabled) {
+                        setIsPasswordProvisioningEnabled(newPwdProvisioningEnabled);
                     }
 
                     clearIrrelevantAuthFields(values, newAuthMode);

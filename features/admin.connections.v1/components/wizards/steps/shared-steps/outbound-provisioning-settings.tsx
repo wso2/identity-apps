@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    IdentifiableComponentInterface,
+    LoadableComponentInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import {
@@ -36,7 +40,7 @@ import {
  * Proptypes for the outbound provisioning settings wizard form component.
  */
 interface OutboundProvisioningSettingsWizardFormPropsInterface extends TestableComponentInterface,
-    LoadableComponentInterface {
+    LoadableComponentInterface, IdentifiableComponentInterface {
 
     metadata: OutboundProvisioningConnectorMetaInterface;
     initialValues: ConnectionInterface;
@@ -60,7 +64,8 @@ export const OutboundProvisioningSettings: FunctionComponent<OutboundProvisionin
         onSubmit,
         triggerSubmit,
         mode = AuthenticatorSettingsFormModes.CREATE,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        [ "data-componentid" ]: componentId = "outbound-provisioning-settings-wizard"
     } = props;
 
     const handleSubmit = (outboundProvisioningConnector: OutboundProvisioningConnectorInterface) => {
@@ -90,6 +95,7 @@ export const OutboundProvisioningSettings: FunctionComponent<OutboundProvisionin
                     triggerSubmit={ triggerSubmit }
                     enableSubmitButton={ false }
                     data-testid={ testId }
+                    data-componentid={ componentId }
                 />
             )
             : <ContentLoader/>

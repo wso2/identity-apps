@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue } from "@wso2is/form";
 import { useTrigger } from "@wso2is/forms";
@@ -54,7 +54,8 @@ import { getFilteredConnectorMetadataList } from "../../utils/provisioning-utils
 /**
  * Interface for the outbound provisioning create wizard props.
  */
-interface OutboundProvisioningConnectorCreateWizardPropsInterface extends TestableComponentInterface {
+interface OutboundProvisioningConnectorCreateWizardPropsInterface extends TestableComponentInterface,
+    IdentifiableComponentInterface {
     identityProvider: ConnectionInterface;
     updateIdentityProvider: (id: string) => void;
     closeWizard: () => void;
@@ -88,7 +89,8 @@ export const OutboundProvisioningConnectorCreateWizard:
             closeWizard,
             currentStep,
             onUpdate,
-            [ "data-testid" ]: testId
+            [ "data-testid" ]: testId,
+            [ "data-componentid" ]: componentId = "connection-edit-provisioning-connector-create-wizard"
         } = props;
 
         const { t } = useTranslation();
@@ -347,6 +349,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                         } }
                         connectorList={ outboundProvisioningConnectorsMetadataList }
                         data-testid={ `${ testId }-connector-selection` }
+                        data-componentid={ `${ componentId }-connector-selection` }
                     />
                 ),
                 icon: getOutboundProvisioningConnectorWizardIcons().connectorSelection,
@@ -366,6 +369,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                         defaultConnector={ defaultConnector }
                         mode={ AuthenticatorSettingsFormModes.CREATE }
                         data-testid={ `${ testId }-provisioning-settings` }
+                        data-componentid={ `${ componentId }-provisioning-settings` }
                     />
                 ),
                 icon: getOutboundProvisioningConnectorWizardIcons().connectorDetails,
@@ -383,8 +387,13 @@ export const OutboundProvisioningConnectorCreateWizard:
                 closeOnDimmerClick={ false }
                 closeOnEscape
                 data-testid={ `${ testId }-modal` }
+                data-componentid={ `${ componentId }-modal` }
             >
-                <Modal.Header className="wizard-header" data-testid={ `${ testId }-modal-header` }>
+                <Modal.Header
+                    className="wizard-header"
+                    data-testid={ `${ testId }-modal-header` }
+                    data-componentid={ `${ componentId }-modal-header` }
+                >
                     { t("authenticationProvider:modals.addProvisioningConnector.title") }
                     <Heading as="h6">
                         {
@@ -393,7 +402,11 @@ export const OutboundProvisioningConnectorCreateWizard:
                         }
                     </Heading>
                 </Modal.Header>
-                <Modal.Content className="steps-container" data-testid={ `${ testId }-modal-content-1` }>
+                <Modal.Content
+                    className="steps-container"
+                    data-testid={ `${ testId }-modal-content-1` }
+                    data-componentid={ `${ componentId }-modal-content-1` }
+                >
                     <Steps.Group
                         header={ t("authenticationProvider:wizards." +
                         "addProvisioningConnector.header") }
@@ -417,18 +430,28 @@ export const OutboundProvisioningConnectorCreateWizard:
                         }
                     </Steps.Group>
                 </Modal.Content>
-                <Modal.Content className="content-container" scrolling data-testid={ `${ testId }-modal-content-2` }>
+                <Modal.Content
+                    className="content-container"
+                    scrolling
+                    data-testid={ `${ testId }-modal-content-2` }
+                    data-componentid={ `${ componentId }-modal-content-2` }
+                >
                     { alert && alertComponent }
                     { STEPS[ currentWizardStep ].content }
                 </Modal.Content>
-                <Modal.Actions data-testid={ `${ testId }-modal-actions` }>
+                <Modal.Actions
+                    data-testid={ `${ testId }-modal-actions` }
+                    data-componentid={ `${ componentId }-modal-actions` }
+                >
                     <Grid>
                         <Grid.Row column={ 1 }>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                 <LinkButton
                                     floated="left"
                                     onClick={ () => closeWizard() }
-                                    data-testid={ `${ testId }-modal-cancel-button` }>
+                                    data-testid={ `${ testId }-modal-cancel-button` }
+                                    data-componentid={ `${ componentId }-modal-cancel-button` }
+                                >
                                     { t("common:cancel") }
                                 </LinkButton>
                             </Grid.Column>
@@ -440,6 +463,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                                         loading={ isConnectorMetadataRequestLoading }
                                         disabled={ isConnectorMetadataRequestLoading }
                                         data-testid={ `${ testId }-modal-next-button` }
+                                        data-componentid={ `${ componentId }-modal-next-button` }
                                     >
                                         { t("authenticationProvider:wizards.buttons.next") }
                                         <Icon name="arrow right"/>
@@ -452,6 +476,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                                         loading={ isSubmitting }
                                         disabled={ isSubmitting || isConnectorMetadataRequestLoading }
                                         data-testid={ `${ testId }-modal-finish-button` }
+                                        data-componentid={ `${ componentId }-modal-finish-button` }
                                     >
                                         { t("authenticationProvider:wizards.buttons.finish") }
                                     </PrimaryButton>
@@ -460,7 +485,9 @@ export const OutboundProvisioningConnectorCreateWizard:
                                     <LinkButton
                                         floated="right"
                                         onClick={ navigateToPrevious }
-                                        data-testid={ `${ testId }-modal-previous-button` }>
+                                        data-testid={ `${ testId }-modal-previous-button` }
+                                        data-componentid={ `${ componentId }-modal-previous-button` }
+                                    >
                                         <Icon name="arrow left"/>
                                         {
                                             t("authenticationProvider:wizards.buttons.previous")

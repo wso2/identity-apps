@@ -20,7 +20,7 @@ import {
     IdentityProviderInterface,
     IdentityProviderListResponseInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
@@ -38,7 +38,8 @@ import { ApplicationInterface, OutboundProvisioningConfigurationInterface } from
 /**
  * Interface for the outbound provisioning IDP create wizard props.
  */
-interface OutboundProvisioningIdpCreateWizardPropsInterface extends TestableComponentInterface {
+interface OutboundProvisioningIdpCreateWizardPropsInterface extends TestableComponentInterface,
+    IdentifiableComponentInterface {
     application: ApplicationInterface;
     closeWizard: () => void;
     currentStep?: number;
@@ -60,7 +61,8 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
             closeWizard,
             currentStep,
             onUpdate,
-            [ "data-testid" ]: testId
+            [ "data-testid" ]: testId,
+            [ "data-componentid" ]: componentId = "outbound-provisioning-idp-create-wizard"
         } = props;
 
         const { t } = useTranslation();
@@ -206,6 +208,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                         } }
                         idpList={ idpList }
                         data-testid={ `${ testId }-form` }
+                        data-componentid={ `${ componentId }-form` }
                         isSubmitting={ isSubmitting }
                     />
                 ),
@@ -223,6 +226,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                 size="small"
                 onClose={ closeWizard }
                 data-testid={ testId }
+                data-componentid={ componentId }
                 closeOnDimmerClick={ false }
                 closeOnEscape
             >
@@ -238,6 +242,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                     <Steps.Group
                         current={ currentWizardStep }
                         data-testid={ `${ testId }-steps` }
+                        data-componentid={ `${ componentId }-steps` }
                     >
                         { STEPS.map((
                             step: {
@@ -252,6 +257,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                                 icon={ step.icon }
                                 title={ step.title }
                                 data-testid={ `${ testId }-step-${ index }` }
+                                data-componentid={ `${ componentId }-step-${ index }` }
                             />
                         )) }
                     </Steps.Group>
@@ -267,6 +273,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                                     floated="left"
                                     onClick={ () => closeWizard() }
                                     data-testid={ `${ testId }-cancel-button` }
+                                    data-componentid={ `${ componentId }-cancel-button` }
                                 >
                                     { t("common:cancel") }
                                 </LinkButton>
@@ -277,6 +284,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                                         floated="right"
                                         onClick={ navigateToNext }
                                         data-testid={ `${ testId }-next-button` }
+                                        data-componentid={ `${ componentId }-next-button` }
                                     >
                                         { t("common:next") }
                                         <Icon name="arrow right"/>
@@ -287,6 +295,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                                         floated="right"
                                         onClick={ navigateToNext }
                                         data-testid={ `${ testId }-finish-button` }
+                                        data-componentid={ `${ componentId }-finish-button` }
                                         loading={ isSubmitting }
                                         disabled={ isSubmitting }
                                     >
@@ -298,6 +307,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                                         floated="right"
                                         onClick={ navigateToPrevious }
                                         data-testid={ `${ testId }-previous-button` }
+                                        data-componentid={ `${ componentId }-previous-button` }
                                     >
                                         <Icon name="arrow left"/>
                                         { t("common:previous") }
