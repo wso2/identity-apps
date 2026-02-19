@@ -431,7 +431,6 @@ export class Config {
             enableLegacySessionBoundTokenBehaviour:
                 window[ "AppUtils" ]?.getConfig()?.ui?.enableLegacySessionBoundTokenBehaviour ?? true,
             enableOldUIForEmailProvider: window[ "AppUtils" ]?.getConfig()?.ui?.enableOldUIForEmailProvider,
-            enableProvisioningConnectionV2: window[ "AppUtils" ]?.getConfig()?.ui?.enableProvisioningConnectionV2,
             features: window[ "AppUtils" ]?.getConfig()?.ui?.features,
             flowExecution: {
                 enableLegacyFlows: window[ "AppUtils" ]?.getConfig()?.ui?.flowExecution?.enableLegacyFlows ?? true

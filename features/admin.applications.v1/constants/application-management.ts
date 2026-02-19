@@ -29,7 +29,10 @@ import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } f
  */
 export enum ApplicationFeatureDictionaryKeys {
     ApplicationEditEnforceAuthorizedAPIUpdatePermission = "APPLICATION_EDIT_ENFORCE_AUTHORIZED_API_UPDATE_PERMISSION",
-    ApplicationEditEnforceClientSecretPermission = "APPLICATION_EDIT_ENFORCE_CLIENT_SECRET_PERMISSION"
+    ApplicationEditEnforceClientSecretPermission = "APPLICATION_EDIT_ENFORCE_CLIENT_SECRET_PERMISSION",
+    ApplicationOutboundProvisioning = "APPLICATION_OUTBOUND_PROVISIONING",
+    SubOrgApplicationOutboundProvisioning = "SUB_ORG_APPLICATION_OUTBOUND_PROVISIONING",
+    ApplicationInboundProvisioning = "APPLICATION_INBOUND_PROVISIONING",
 }
 
 /**
@@ -104,7 +107,13 @@ export class ApplicationManagementConstants {
         .set(ApplicationFeatureDictionaryKeys.ApplicationEditEnforceAuthorizedAPIUpdatePermission,
             "applications.enforceAuthorizedAPIUpdatePermission")
         .set(ApplicationFeatureDictionaryKeys.ApplicationEditEnforceClientSecretPermission,
-            "applications.enforceClientSecretPermission");
+            "applications.enforceClientSecretPermission")
+        .set(ApplicationFeatureDictionaryKeys.ApplicationInboundProvisioning,
+            "applications.inboundProvisioning")
+        .set(ApplicationFeatureDictionaryKeys.ApplicationOutboundProvisioning,
+            "applications.outboundProvisioning")
+        .set(ApplicationFeatureDictionaryKeys.SubOrgApplicationOutboundProvisioning,
+            "applications.outboundProvisioning.subOrg");
 
     /**
      * Key for the URL search param for application state.

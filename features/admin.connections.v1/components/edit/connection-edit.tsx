@@ -17,10 +17,10 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader, EmphasizedSegment, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, lazy, useEffect, useState } from "react";
@@ -37,7 +37,10 @@ import {
 } from "./settings";
 import CustomAuthenticatorSettings from "./settings/custom-authenticator-settings";
 import { JITProvisioningSettings } from "./settings/jit-provisioning-settings";
-import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
+import {
+    CommonAuthenticatorConstants,
+    ConnectionsFeatureDictionaryKeys
+} from "../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
 import { FederatedAuthenticatorConstants } from "../../constants/federated-authenticator-constants";
 import {
@@ -144,8 +147,12 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         ["data-testid"]: testId
     } = props;
 
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const { UIConfig } = useUIConfig();
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const isOutboundProvisioningConnectionV2Enabled: boolean = isFeatureEnabled(
+        featureConfig?.identityProviders,
+        CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
+            ConnectionsFeatureDictionaryKeys.OutboundProvisioningConnectionV2)
+    );
 
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface[]>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number | string>(0);
@@ -536,13 +543,13 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
     /**
      * Evaluate whether to show outbound provisioning tab.
-     * When `enableProvisioningConnectionV2` is enabled, always show the tab for outbound provisioning connections.
+     * When outbound provisioning connection v2 is enabled, always show the tab for outbound provisioning connections.
      * For other connections, show only if they already have outbound connectors configured.
-     * If the new config is not enabled, fallback to the old behavior.
+     * If the feature is not enabled, fallback to the old behavior.
      * @returns Should show outbound provisioning tab or not.
      */
     const shouldShowOutboundProvisioningTab = (): boolean => {
-        if (UIConfig?.enableProvisioningConnectionV2) {
+        if (isOutboundProvisioningConnectionV2Enabled) {
             if (isOutboundProvisioningConnection) {
                 return true;
             }

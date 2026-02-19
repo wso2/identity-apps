@@ -23,8 +23,15 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { HttpMethods } from "@wso2is/core/models";
-import { CommonAuthenticatorConstants } from "../constants/common-authenticator-constants";
+import { useSelector } from "react-redux";
+import {
+    CommonAuthenticatorConstants,
+    ConnectionsFeatureDictionaryKeys
+} from "../constants/common-authenticator-constants";
 import { ConnectionTemplateInterface } from "../models/connection";
 import { groupConnectionTemplates } from "../utils/connection-template-utils";
 
@@ -49,6 +56,12 @@ export const useGetConnectionTemplates = <Data = ConnectionTemplateInterface[], 
 
     const { resourceEndpoints } = useResourceEndpoints();
     const { UIConfig } = useUIConfig();
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const isOutboundProvisioningConnectionV2Enabled: boolean = isFeatureEnabled(
+        featureConfig?.identityProviders,
+        CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
+            ConnectionsFeatureDictionaryKeys.OutboundProvisioningConnectionV2)
+    );
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -89,7 +102,7 @@ export const useGetConnectionTemplates = <Data = ConnectionTemplateInterface[], 
                 .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER);
         }
 
-        if (!UIConfig?.enableProvisioningConnectionV2) {
+        if (!isOutboundProvisioningConnectionV2Enabled) {
             hiddenConnectionTemplateIds.push(CommonAuthenticatorConstants
                 .CONNECTION_TEMPLATE_IDS.OUTBOUND_PROVISIONING_CONNECTION);
         }

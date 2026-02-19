@@ -96,6 +96,15 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
     } = useIdentityProviderList(null, null, null, "provisioning");
 
     /**
+     * Keep the accordion expanded if only one connector is present.
+     */
+    useEffect(() => {
+        if (residentProvisioningConfiguration?.provisioningConfigurations?.outboundProvisioningIdps?.length === 1) {
+            setAccordionActiveIndexes([ 0 ]);
+        }
+    }, [ residentProvisioningConfiguration ]);
+
+    /**
      * Filter the IDP list based on the configured, enabled outbound provisioning connectors count.
      */
     useEffect(() => {
@@ -371,6 +380,9 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
                                                         `${ componentId }-${provisioningIdp.idp}-
                                                             outbound-connector-accordion`
                                                     }
+                                                    accordionContentStyle={ {
+                                                        backgroundColor: "var(--oxygen-palette-common-white)"
+                                                    } }
                                                 />
                                             );
                                         })
