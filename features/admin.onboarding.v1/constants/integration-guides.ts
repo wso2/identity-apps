@@ -109,61 +109,79 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 /**
  * Next.js application integration guide.
  */
+/* eslint-disable max-len */
 const NEXTJS_INTEGRATION: FrameworkIntegrationGuideInterface = {
     buttonCode: `"use client";
 
-import { useSession, signIn, signOut } from "@asgardeo/auth-nextjs/client";
+import { SignedIn, SignedOut, SignInButton, SignOutButton, User } from "@asgardeo/nextjs";
 
 export default function Home() {
-    const { data: session } = useSession();
-
-    if (session) {
-        return (
-            <>
-                <p>Welcome, {session.user?.name}</p>
-                <button onClick={() => signOut()}>Sign Out</button>
-            </>
-        );
-    }
-
-    return <button onClick={() => signIn("asgardeo")}>Sign In</button>;
+    return (
+        <>
+            <SignedIn>
+                <User>{(user) => <p>Welcome, {user.userName}</p>}</User>
+                <SignOutButton />
+            </SignedIn>
+            <SignedOut>
+                <SignInButton />
+            </SignedOut>
+        </>
+    );
 }`,
     buttonFile: "app/page.tsx",
     displayName: "Next.js",
     docsUrl: "https://is.docs.wso2.com/en/next/quick-starts/nextjs/",
-    installCommand: "npm install @asgardeo/auth-nextjs",
-    pnpmCommand: "pnpm add @asgardeo/auth-nextjs",
-    providerCode: `// app/api/auth/[...asgardeo]/route.ts
-import AsgardeoAuth from "@asgardeo/auth-nextjs";
+    installCommand: "npm install @asgardeo/nextjs",
+    pnpmCommand: "pnpm add @asgardeo/nextjs",
+    providerCode: `// middleware.ts
+import { asgardeoMiddleware } from "@asgardeo/nextjs/server";
 
-export const { handlers, auth, signIn, signOut } = AsgardeoAuth({
-    clientId: process.env.ASGARDEO_CLIENT_ID!,
-    clientSecret: process.env.ASGARDEO_CLIENT_SECRET!,
-    baseUrl: process.env.ASGARDEO_BASE_URL!
-});
+export default asgardeoMiddleware();
 
-export const { GET, POST } = handlers;
+export const config = {
+    matcher: [
+        "/((?!_next|[^?]*\\\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+        "/(api|trpc)(.*)"
+    ]
+};
+
+// app/layout.tsx
+import { AsgardeoProvider } from "@asgardeo/nextjs/server";
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+    return (
+        <html lang="en">
+            <body>
+                <AsgardeoProvider>{children}</AsgardeoProvider>
+            </body>
+        </html>
+    );
+}
 
 // Create a .env.local file with:
-// ASGARDEO_CLIENT_ID={clientId}
-// ASGARDEO_CLIENT_SECRET={clientSecret}
-// ASGARDEO_BASE_URL={baseUrl}`,
-    providerFile: "app/api/auth/[...asgardeo]/route.ts",
-    sdk: "@asgardeo/auth-nextjs",
-    yarnCommand: "yarn add @asgardeo/auth-nextjs"
+// NEXT_PUBLIC_ASGARDEO_BASE_URL={baseUrl}
+// NEXT_PUBLIC_ASGARDEO_CLIENT_ID={clientId}
+// ASGARDEO_CLIENT_SECRET={clientSecret}`,
+    providerFile: "middleware.ts & app/layout.tsx",
+    sdk: "@asgardeo/nextjs",
+    yarnCommand: "yarn add @asgardeo/nextjs"
 };
+/* eslint-enable max-len */
 
 /**
  * Angular application integration guide.
  */
 const ANGULAR_INTEGRATION: FrameworkIntegrationGuideInterface = {
     buttonCode: `import { Component } from "@angular/core";
+import { CommonModule } from "@angular/common";
 import { OAuthService } from "angular-oauth2-oidc";
 
 @Component({
     selector: "app-root",
+    standalone: true,
+    imports: [CommonModule],
     template: \`
-        <div *ngIf="isAuthenticated; else loginBtn">
+        <div *ngIf="isAuthorized; else loginBtn">
             <p>Welcome!</p>
             <button (click)="logout()">Sign Out</button>
         </div>
@@ -173,14 +191,12 @@ import { OAuthService } from "angular-oauth2-oidc";
     \`
 })
 export class AppComponent {
-    get isAuthenticated() {
-        return this.oauthService.hasValidAccessToken();
-    }
+    isAuthorized = this.oauthService.hasValidAccessToken();
 
     constructor(private oauthService: OAuthService) {}
 
-    login() { this.oauthService.initCodeFlow(); }
-    logout() { this.oauthService.logOut(); }
+    login() { this.oauthService.initLoginFlow(); }
+    logout() { this.oauthService.revokeTokenAndLogout(); }
 }`,
     buttonFile: "app.component.ts",
     displayName: "Angular",
@@ -188,15 +204,40 @@ export class AppComponent {
     installCommand: "npm install angular-oauth2-oidc@17",
     pnpmCommand: "pnpm add angular-oauth2-oidc@17",
     providerCode: `// app.config.ts
-import { AuthConfig } from "angular-oauth2-oidc";
+import { ApplicationConfig, APP_INITIALIZER } from "@angular/core";
+import { provideRouter } from "@angular/router";
+import { provideHttpClient } from "@angular/common/http";
+import { provideOAuthClient, OAuthService, AuthConfig } from "angular-oauth2-oidc";
+import { routes } from "./app.routes";
 
 export const authConfig: AuthConfig = {
     issuer: "{baseUrl}/oauth2/token",
     clientId: "{clientId}",
     redirectUri: "{redirectUrl}",
     responseType: "code",
-    scope: "openid profile",
-    showDebugInformation: true
+    scope: "openid profile internal_login",
+    strictDiscoveryDocumentValidation: false
+};
+
+function initializeOAuth(oauthService: OAuthService): () => Promise<void> {
+    return () => {
+        oauthService.configure(authConfig);
+        return oauthService.loadDiscoveryDocumentAndTryLogin().then(() => {});
+    };
+}
+
+export const appConfig: ApplicationConfig = {
+    providers: [
+        provideRouter(routes),
+        provideHttpClient(),
+        provideOAuthClient(),
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initializeOAuth,
+            deps: [OAuthService],
+            multi: true
+        }
+    ]
 };`,
     providerFile: "app.config.ts",
     sdk: "angular-oauth2-oidc@17",
