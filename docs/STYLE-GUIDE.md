@@ -11,6 +11,9 @@ This guide establishes conventions for styling, component architecture, and UI d
 - [Extended Theme](#extended-theme)
 - [Styling Best Practices](#styling-best-practices)
 - [Migration Strategy](#migration-strategy)
+- [Form Components](#form-components)
+- [Accessibility](#accessibility)
+- [Additional Resources](#additional-resources)
 
 ---
 
@@ -204,15 +207,10 @@ Icons are provided by the `@oxygen-ui/react-icons` package. Import icons individ
 
 ### Importing Icons
 
-```tsx
-// Import icons individually
-import { ArrowLeftIcon } from "@oxygen-ui/react-icons";
-import { GearIcon } from "@oxygen-ui/react-icons";
-import { TrashIcon } from "@oxygen-ui/react-icons";
-import { PlusIcon, MinusIcon } from "@oxygen-ui/react-icons";
+Use a single consolidated import statement for all icons from `@oxygen-ui/react-icons`:
 
-// Or import from a single line
-import { ChevronRightIcon, CheckIcon, DownloadIcon } from "@oxygen-ui/react-icons";
+```tsx
+import { ArrowLeftIcon, GearIcon, TrashIcon, PlusIcon, MinusIcon } from "@oxygen-ui/react-icons";
 ```
 
 ### Common Icons
