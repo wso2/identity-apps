@@ -1,5 +1,11 @@
 # @wso2is/common.users.v1
 
+## 1.0.6
+
+### Patch Changes
+
+- [#9620](https://github.com/wso2/identity-apps/pull/9620) [`26ebaef3394b43c7b8241c2914d0c09dcaf8cd91`](https://github.com/wso2/identity-apps/commit/26ebaef3394b43c7b8241c2914d0c09dcaf8cd91) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - SCIM compliant email handling
+
 ## 1.0.5
 
 ### Patch Changes

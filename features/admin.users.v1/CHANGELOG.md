@@ -1,5 +1,20 @@
 # @wso2is/admin.users.v1
 
+## 2.36.112
+
+### Patch Changes
+
+- [#9620](https://github.com/wso2/identity-apps/pull/9620) [`26ebaef3394b43c7b8241c2914d0c09dcaf8cd91`](https://github.com/wso2/identity-apps/commit/26ebaef3394b43c7b8241c2914d0c09dcaf8cd91) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - SCIM compliant email handling
+
+- Updated dependencies [[`26ebaef3394b43c7b8241c2914d0c09dcaf8cd91`](https://github.com/wso2/identity-apps/commit/26ebaef3394b43c7b8241c2914d0c09dcaf8cd91)]:
+  - @wso2is/common.users.v1@1.0.6
+  - @wso2is/admin.users.v1@2.36.112
+  - @wso2is/admin.core.v1@2.53.2
+  - @wso2is/admin.flow-builder-core.v1@0.10.137
+  - @wso2is/admin.roles.v2@2.27.307
+  - @wso2is/admin.flows.v1@1.0.106
+  - @wso2is/admin.server-configurations.v1@2.37.3
+
 ## 2.36.111
 
 ### Patch Changes

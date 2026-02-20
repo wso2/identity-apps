@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.onboarding.v1",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "User onboarding wizard for WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -18,7 +18,7 @@
         "@wso2is/admin.branding.v1": "workspace:^",
         "@wso2is/admin.claims.v1": "workspace:^",
         "@wso2is/admin.connections.v1": "workspace:^",
-        "@wso2is/admin.core.v1": "^2.53.1",
+        "@wso2is/admin.core.v1": "^2.53.2",
         "@wso2is/admin.extensions.v1": "workspace:^",
         "@wso2is/admin.organizations.v1": "workspace:^",
         "@wso2is/admin.server-configurations.v1": "workspace:^",
