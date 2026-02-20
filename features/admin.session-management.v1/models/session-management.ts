@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,8 @@
 export interface SessionManagementConfigFormValuesInterface {
     idleSessionTimeout?: number;
     rememberMePeriod?: number;
+    enableMaximumSessionTimeout?: boolean;
+    maximumSessionTimeout?: number;
 }
 
 /**
@@ -31,6 +33,7 @@ export interface SessionManagementConfigFormValuesInterface {
 export interface SessionManagementConfigFormErrorValidationsInterface {
     idleSessionTimeout?: string;
     rememberMePeriod?: string;
+    maximumSessionTimeout?: string;
 }
 
 /**
@@ -39,6 +42,8 @@ export interface SessionManagementConfigFormErrorValidationsInterface {
 export interface SessionManagementConfigAPIResponseInterface {
     idleSessionTimeoutPeriod?: string;
     rememberMePeriod?: string;
+    enableMaximumSessionTimeoutPeriod?: boolean;
+    maximumSessionTimeoutPeriod?: string;
 }
 
 /**

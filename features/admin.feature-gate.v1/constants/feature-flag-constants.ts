@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -50,6 +50,8 @@ class FeatureFlagConstants {
         ATTRIBUTE_DIALECTS: "attributeDialects",
         BRANDING: "branding",
         BRANDING_STYLES_AND_TEXT_TITLE: "branding.stylesAndText.application.title",
+        CUSTOMER_DATA_PROFILES: "customerDataProfiles",
+        CUSTOMER_DATA_PROFILES_UNIFICATION_RULES: "customerDataUnificationRules",
         CUSTOM_PAGE_EDITOR_FEATURE_ID: "console.branding.design.layout.custom",
         FLOWS: "flows",
         FLOWS_TYPES_REGISTRATION: "flows.types.list.registration",
@@ -58,8 +60,11 @@ class FeatureFlagConstants {
         LOGIN_AND_REGISTRATION_FRAUD_DETECTION: "loginAndRegistration.loginSecurity.fraudDetection",
         LOGIN_AND_REGISTRATION_ORGANIZATION_DISCOVERY: "loginAndRegistration.organizationSettings.discovery",
         LOGIN_AND_REGISTRATION_ORGANIZATION_IMPERSONATION: "loginAndRegistration.organizationSettings.impersonation",
+        LOGIN_AND_REGISTRATION_ORGANIZATION_ISSUER_USAGE_SCOPE:
+            "loginAndRegistration.organizationSettings.issuerUsageScope",
         LOGIN_AND_REGISTRATION_SELF_REGISTRATION_FLOW_BUILDER:
             "loginAndRegistration.userOnboarding.registrationFlowBuilder",
+        LOGIN_AND_REGISTRATION_SESSION_MANAGEMENT: "console.loginAndRegistration.sessionManagement",
         MCP_SERVERS: "mcpServers",
         ORGANIZATION_BRANDING_TEXT: "branding.stylesAndText.organization.text",
         PUSH_PROVIDERS: "pushProviders",

@@ -1,5 +1,15 @@
 # @wso2is/admin.userstores.v1
 
+## 2.27.41
+
+### Patch Changes
+
+- [#9627](https://github.com/wso2/identity-apps/pull/9627) [`3a5cb2ab691cedf73b372881d18b3c8cda92418f`](https://github.com/wso2/identity-apps/commit/3a5cb2ab691cedf73b372881d18b3c8cda92418f) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Disable remote userstores using optimized agent in role's Users tab
+
+- Updated dependencies [[`03a5f7c376174bfd6d6743606f4b7e70bbe6ad8e`](https://github.com/wso2/identity-apps/commit/03a5f7c376174bfd6d6743606f4b7e70bbe6ad8e)]:
+  - @wso2is/admin.core.v1@2.53.1
+  - @wso2is/i18n@2.33.3
+
 ## 2.27.40
 
 ### Patch Changes

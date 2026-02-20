@@ -18,6 +18,7 @@
 
 import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from "@wso2is/access-control";
+import  useCDSConfig  from "@wso2is/admin.cds.v1/hooks/use-config";
 import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
 import { Config } from "@wso2is/admin.core.v1/configs/app";
@@ -42,6 +43,7 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { featureGateConfig } from "@wso2is/admin.extensions.v1/configs/feature-gate";
 import useGetAllFeatures from "@wso2is/admin.feature-gate.v1/api/use-get-all-features";
+import { useOnboardingStatus } from "@wso2is/admin.onboarding.v1/hooks/use-onboarding-status";
 import { AGENT_USERSTORE_ID } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
@@ -80,7 +82,8 @@ import DecoratedApp from "./decorated-app";
 import "./app.scss";
 
 const Base = ({
-    onAgentManagementEnableStatusChange
+    onAgentManagementEnableStatusChange,
+    onCustomerDataServiceStatusChange
 }: AppComponentProps) => {
     /**
      * Listen for base name changes and updated the routes.
@@ -101,6 +104,12 @@ const Base = ({
         onAgentManagementEnableStatusChange(isAgentManagementEnabledForOrg);
 
     }, [ userStoresList, isUserStoresListFetchRequestLoading ]);
+
+    const { data: cdsConfig } = useCDSConfig(true);
+
+    useEffect(() => {
+        onCustomerDataServiceStatusChange(cdsConfig?.cds_enabled ?? false);
+    }, [ cdsConfig ]);
 
     return (
         <Switch>
@@ -152,8 +161,10 @@ const Base = ({
  * @returns App Root component.
  */
 export const App = ({
-    onAgentManagementEnableStatusChange
+    onAgentManagementEnableStatusChange,
+    onCustomerDataServiceStatusChange
 }: AppComponentProps): ReactElement => {
+
     const featureGateConfigUpdated : FeatureGateInterface = { ...featureGateConfig };
 
     const dispatch: Dispatch<any> = useDispatch();
@@ -182,6 +193,34 @@ export const App = ({
         data: allFeatures,
         error: featureGateAPIException
     } = useGetAllFeatures();
+
+    const { shouldShowOnboarding, isLoading: isOnboardingStatusLoading } = useOnboardingStatus();
+
+    /**
+     * Redirect to onboarding page if user should see onboarding.
+     */
+    useEffect(() => {
+        if (isOnboardingStatusLoading) {
+            return;
+        }
+
+        if (shouldShowOnboarding) {
+            const onboardingPath: string = AppConstants.getPaths().get("ONBOARDING");
+            const currentPath: string = window.location.pathname;
+
+            // Don't redirect from critical auth/error routes
+            const excludedPaths: string[] = [
+                AppConstants.getPaths().get("UNAUTHORIZED"),
+                AppConstants.getPaths().get("CREATE_TENANT"),
+                AppConstants.getPaths().get("STORING_DATA_DISABLED"),
+                AppConstants.getAppLogoutPath()
+            ];
+
+            if (currentPath !== onboardingPath && !excludedPaths.includes(currentPath)) {
+                history.push(onboardingPath);
+            }
+        }
+    }, [ shouldShowOnboarding, isOnboardingStatusLoading ]);
 
     /**
      * Set the deployment configs in redux state.
@@ -571,6 +610,9 @@ export const App = ({
                                                 <Base
                                                     onAgentManagementEnableStatusChange={
                                                         onAgentManagementEnableStatusChange
+                                                    }
+                                                    onCustomerDataServiceStatusChange={
+                                                        onCustomerDataServiceStatusChange
                                                     }
                                                 />
                                             </UserStoresProvider>

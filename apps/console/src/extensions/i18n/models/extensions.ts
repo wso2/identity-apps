@@ -3339,6 +3339,7 @@ export interface Extensions {
                 userManagement: string;
                 verifiableCredentials: string;
                 workflows: string;
+                customerDataService: string;
                 organizationSettings: string;
             };
         };

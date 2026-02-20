@@ -23,6 +23,7 @@ import {
     UserFlowIcon
 } from "@oxygen-ui/react-icons";
 import { FeatureStatus } from "@wso2is/access-control";
+import { ReactComponent as CustomerDataIcon } from "@wso2is/admin.cds.v1/assets/images/icons/customer-data.svg";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { NavCategory, NavRouteInterface, RouteInterface } from "@wso2is/core/models";
 import groupBy from "lodash-es/groupBy";
@@ -289,6 +290,13 @@ export class RouteUtils {
             order: 2
         };
 
+        const customerData: Omit<RouteInterface, "showOnSidePanel"> = {
+            icon: CustomerDataIcon,
+            id: "customerDataService",
+            name: "Customer Data",
+            order: 8
+        };
+
         const branding: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: PaletteIcon,
             id: "customization",
@@ -337,7 +345,7 @@ export class RouteUtils {
 
         const settings: NavCategory = {
             id: "settings",
-            order: 8
+            order: 9
         };
 
         const loginAndRegPathsToCheck: string[] = [
@@ -511,6 +519,16 @@ export class RouteUtils {
                 category: preferences,
                 id: "loginAndRegistration",
                 selected: loginAndRegPathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
+            },
+            {
+                category: manage,
+                id: "customerDataProfiles",
+                parent: customerData
+            },
+            {
+                category: manage,
+                id: "customerDataUnificationRules",
+                parent: customerData
             },
             {
                 category: preferences,

@@ -837,6 +837,40 @@
                     ]
                 }
             },
+            "customerDataProfiles": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [
+                    {
+                        "feature": "customerDataProfiles",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [],
+                    "update": []
+                }
+            },
+            "customerDataUnificationRules": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [
+                    {
+                        "feature": "customerDataUnificationRules",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [],
+                    "update": []
+                }
+            },
             "dynamicClientRegistration": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -1246,6 +1280,26 @@
                     "update": [
                         "internal_oidc_scope_mgt_update"
                     ]
+                }
+            },
+            "onboarding": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                        "internal_application_mgt_create",
+                        "internal_branding_preference_update",
+                        "internal_governance_update"
+                    ],
+                    "delete": [],
+                    "feature": [
+                        "console:applications",
+                        "console:branding",
+                        "console:loginAndRegistration"
+                    ],
+                    "read": [],
+                    "update": []
                 }
             },
             "organizationDiscovery": {

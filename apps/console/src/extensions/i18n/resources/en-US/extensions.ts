@@ -4019,7 +4019,7 @@ export const extensions: Extensions = {
                 userManagement: "Identity Management",
                 verifiableCredentials: "Verifiable Credentials",
                 workflows: "Workflows",
-
+                customerDataService : "Customer Data",
                 organizationSettings: "Organization Settings"
             }
         }

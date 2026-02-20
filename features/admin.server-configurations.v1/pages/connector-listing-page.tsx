@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,11 +17,12 @@
  */
 
 import Typography from "@oxygen-ui/react/Typography";
-import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface  } from "@wso2is/admin.core.v1/models/config";
 import { AppState, store  } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
@@ -111,6 +112,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
             ...featureConfig?.internalNotificationSending?.scopes?.read ?? []
         ]
     );
+    const sessionManagementFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["LOGIN_AND_REGISTRATION_SESSION_MANAGEMENT"]);
 
     const predefinedCategories: any = useMemo(() => {
         const originalConnectors: Array<any> = GovernanceConnectorUtils.getCombinedPredefinedConnectorCategories();
@@ -142,11 +145,17 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 }
 
                 if (isSubOrganization() && (connector.id === ServerConfigurationsConstants.SIFT_CONNECTOR_ID ||
-                    connector.id === ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY)) {
+                    connector.id === ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY ||
+                    connector.id === ServerConfigurationsConstants.ISSUER_USAGE_SCOPE)) {
                     return false;
                 }
 
                 if (!isLegacyFlowsEnabled && LEGACY_ONLY_CONNECTOR_IDS.includes(connector.id)) {
+                    return false;
+                }
+
+                if (connector.id === ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR_ID
+                    && sessionManagementFeatureStatus !== FeatureStatus.ENABLED) {
                     return false;
                 }
 

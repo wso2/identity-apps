@@ -1,0 +1,195 @@
+/**
+ * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import { ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
+import { PatternConstants } from "@wso2is/core/constants";
+import { Dispatch, SetStateAction, useCallback, useMemo } from "react";
+import { AppNameConstraints, RedirectUrlConstraints } from "../constants";
+import {
+    CreatedApplicationResultInterface,
+    OnboardingBrandingConfigInterface,
+    OnboardingDataInterface,
+    OnboardingStep,
+    SignInOptionsConfigInterface
+} from "../models";
+import { isValidSignInOptions } from "../utils/sign-in-options-validator";
+import { extractOrigins } from "../utils/url-utils";
+
+/**
+ * Validates an application name against the constraints.
+ * Uses the same validation pattern as the Console application creation flow.
+ *
+ * @param name - The application name to validate.
+ * @returns True if the name is valid, false otherwise.
+ */
+const isValidAppName = (name: string): boolean => {
+    if (!name) return false;
+
+    const trimmedName: string = name.trim();
+
+    if (trimmedName.length < AppNameConstraints.MIN_LENGTH) return false;
+    if (trimmedName.length > AppNameConstraints.MAX_LENGTH) return false;
+
+    return AppNameConstraints.PATTERN.test(trimmedName);
+};
+
+/**
+ * Custom hook for application name validation.
+ * Uses the same validation pattern as the Console application creation flow.
+ */
+export const useNameValidation = () => {
+    const validateName: (name: string) => boolean = useCallback((name: string): boolean => {
+        return isValidAppName(name);
+    }, []);
+
+    const getValidationError: (name: string) => string | null = useCallback((name: string): string | null => {
+        if (!name) return null;
+
+        const trimmedName: string = name.trim();
+
+        if (trimmedName.length < AppNameConstraints.MIN_LENGTH) {
+            return `Application name must be at least ${AppNameConstraints.MIN_LENGTH} characters`;
+        }
+
+        if (trimmedName.length > AppNameConstraints.MAX_LENGTH) {
+            return `Application name must not exceed ${AppNameConstraints.MAX_LENGTH} characters`;
+        }
+
+        if (!AppNameConstraints.PATTERN.test(trimmedName)) {
+            return "Application name can only contain alphanumeric characters, dots, " +
+                "underscores, hyphens, and single spaces between words";
+        }
+
+        return null;
+    }, []);
+
+    return { getValidationError, validateName };
+};
+
+/**
+ * Validate a URL string.
+ * Mobile apps accept custom URI schemes (e.g., com.yourapp://callback),
+ * while web apps require http:// or https://.
+ */
+const isValidUrl = (url: string, isMobile: boolean = false): boolean => {
+    if (!url.trim()) return false;
+    if (url.length > RedirectUrlConstraints.MAX_LENGTH) return false;
+
+    if (isMobile) {
+        return PatternConstants.MOBILE_DEEP_LINK_URL_REGEX_PATTERN.test(url);
+    }
+
+    return RedirectUrlConstraints.PATTERN.test(url);
+};
+
+/**
+ * Custom hook for onboarding step validation.
+ */
+export const useStepValidation = (currentStep: OnboardingStep, data: OnboardingDataInterface) => {
+    return useMemo(() => {
+        switch (currentStep) {
+            case OnboardingStep.WELCOME:
+                return !data.choice;
+            case OnboardingStep.NAME_APPLICATION:
+                return !data.applicationName || !isValidAppName(data.applicationName);
+            case OnboardingStep.SELECT_APPLICATION_TEMPLATE:
+                return !data.templateId;
+            case OnboardingStep.CONFIGURE_REDIRECT_URL: {
+                const isMobile: boolean = data.templateId === ApplicationTemplateIdTypes.MOBILE_APPLICATION;
+
+                return !data.redirectUrls?.length ||
+                       !data.redirectUrls.every((url: string) => isValidUrl(url, isMobile));
+            }
+            case OnboardingStep.SIGN_IN_OPTIONS:
+                return !isValidSignInOptions(data.signInOptions, false);
+            case OnboardingStep.DESIGN_LOGIN:
+                // Design step is always valid (has defaults)
+                return false;
+            case OnboardingStep.SUCCESS:
+                return false;
+            default:
+                return false;
+        }
+    }, [ currentStep, data ]);
+};
+
+/**
+ * Custom hook for managing onboarding data updates.
+ */
+export const useOnboardingDataInterface = (
+    initialData: OnboardingDataInterface,
+    setData: Dispatch<SetStateAction<OnboardingDataInterface>>
+) => {
+    const updateChoice: (choice: OnboardingDataInterface["choice"]) => void = useCallback(
+        (choice: OnboardingDataInterface["choice"]): void => {
+            setData((prevState: OnboardingDataInterface) => ({ ...prevState, choice }));
+        }, [ setData ]);
+
+    const updateApplicationName: (name: string) => void = useCallback((applicationName: string): void => {
+        setData((prevState: OnboardingDataInterface) => ({ ...prevState, applicationName }));
+    }, [ setData ]);
+
+    const updateIsRandomName: (isRandom: boolean) => void = useCallback((isRandomName: boolean): void => {
+        setData((prevState: OnboardingDataInterface) => ({ ...prevState, isRandomName }));
+    }, [ setData ]);
+
+    const updateApplicationType: (type: OnboardingDataInterface["applicationType"]) => void = useCallback(
+        (applicationType: OnboardingDataInterface["applicationType"]): void => {
+            setData((prevState: OnboardingDataInterface) => ({ ...prevState, applicationType }));
+        }, [ setData ]);
+
+    const updateTemplateSelection: (id: string, fw?: string) => void = useCallback(
+        (templateId: string, framework?: string): void => {
+            setData((prevState: OnboardingDataInterface) => ({ ...prevState, framework, templateId }));
+        }, [ setData ]);
+
+    const updateRedirectUrls: (urls: string[]) => void = useCallback((urls: string[]): void => {
+        setData((prevState: OnboardingDataInterface) => ({
+            ...prevState,
+            allowedOrigins: extractOrigins(urls),
+            redirectUrls: urls
+        }));
+    }, [ setData ]);
+
+    const updateSignInOptions: (opts: SignInOptionsConfigInterface) => void = useCallback(
+        (options: SignInOptionsConfigInterface): void => {
+            setData((prevState: OnboardingDataInterface) => ({ ...prevState, signInOptions: options }));
+        }, [ setData ]);
+
+    const updateBrandingConfig: (cfg: OnboardingBrandingConfigInterface) => void = useCallback(
+        (config: OnboardingBrandingConfigInterface): void => {
+            setData((prevState: OnboardingDataInterface) => ({ ...prevState, brandingConfig: config }));
+        }, [ setData ]);
+
+    const setCreatedApplication: (result: CreatedApplicationResultInterface) => void = useCallback(
+        (result: CreatedApplicationResultInterface): void => {
+            setData((prevState: OnboardingDataInterface) => ({ ...prevState, createdApplication: result }));
+        }, [ setData ]);
+
+    return {
+        setCreatedApplication,
+        updateApplicationName,
+        updateApplicationType,
+        updateBrandingConfig,
+        updateChoice,
+        updateIsRandomName,
+        updateRedirectUrls,
+        updateSignInOptions,
+        updateTemplateSelection
+    };
+};

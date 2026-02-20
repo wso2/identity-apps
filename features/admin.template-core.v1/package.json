@@ -1,12 +1,12 @@
 {
     "private": true,
     "name": "@wso2is/admin.template-core.v1",
-    "version": "1.5.160",
+    "version": "1.5.161",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/admin.core.v1": "^2.46.3",
+        "@wso2is/admin.core.v1": "^2.52.1",
         "@wso2is/core": "^2.7.0",
         "i18next": "^21.9.1",
         "react-markdown": "^9.0.1",

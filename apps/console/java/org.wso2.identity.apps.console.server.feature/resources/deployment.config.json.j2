@@ -2006,6 +2006,36 @@
                 }
             },
             {% endif %}
+            {% if console.onboarding is defined %}
+            "onboarding": {
+                "disabledFeatures": [
+                    {% if console.onboarding.disabled_features is defined %}
+                    {% for feature in console.onboarding.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.onboarding.enabled is defined %} {{ console.onboarding.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.onboarding.scopes is defined %}
+                    {% for operation, scopes in console.onboarding.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
             {% if console.ws_fed_configuration is defined %}
             "wsFedConfiguration": {
                 "disabledFeatures": [
@@ -2393,6 +2423,36 @@
                 }
             },
             {% endif %}
+            {% if console.verifiable_credentials is defined %}
+            "verifiableCredentials": {
+                "disabledFeatures": [
+                    {% if console.verifiable_credentials.disabled_features is defined %}
+                    {% for feature in console.verifiable_credentials.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.verifiable_credentials.enabled is defined %} {{ console.verifiable_credentials.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.verifiable_credentials.scopes is defined %}
+                    {% for operation, scopes in console.verifiable_credentials.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}            
             {% if console.webhooks is defined %}
             "webhooks": {
                 "disabledFeatures": [
@@ -2438,6 +2498,24 @@
                 {% endfor %}
             {% endif %}
         ],
+        {% if console.ui.loginFlowFirstFactorAuthenticators is defined %}
+        "loginFlowFirstFactorAuthenticators": [
+            {% if console.ui.loginFlowFirstFactorAuthenticators is defined %}
+                {% for value in console.ui.loginFlowFirstFactorAuthenticators %}
+                "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
+            {% endif %}
+        ],
+        {% endif %}
+        {% if console.ui.loginFlowSecondFactorAuthenticators is defined %}
+        "loginFlowSecondFactorAuthenticators": [
+            {% if console.ui.loginFlowSecondFactorAuthenticators is defined %}
+                {% for value in console.ui.loginFlowSecondFactorAuthenticators %}
+                "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
+            {% endif %}
+        ],
+        {% endif %}
         "hiddenConnectionTemplates": [
             {% if console.ui.hiddenConnectionTemplates is defined %}
                 {% for value in console.ui.hiddenConnectionTemplates %}

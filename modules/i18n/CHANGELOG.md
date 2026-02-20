@@ -1,5 +1,29 @@
 # @wso2is/i18n
 
+## 2.33.3
+
+### Patch Changes
+
+- [#9619](https://github.com/wso2/identity-apps/pull/9619) [`03a5f7c376174bfd6d6743606f4b7e70bbe6ad8e`](https://github.com/wso2/identity-apps/commit/03a5f7c376174bfd6d6743606f4b7e70bbe6ad8e) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Introduce the Issuer Usage Scope component for Login and Registration
+
+## 2.33.2
+
+### Patch Changes
+
+- [#9587](https://github.com/wso2/identity-apps/pull/9587) [`d375e3117837c9109d51fc85950df4d7cd40b4e1`](https://github.com/wso2/identity-apps/commit/d375e3117837c9109d51fc85950df4d7cd40b4e1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for defining a maximum session timeout for a user session
+
+## 2.33.1
+
+### Patch Changes
+
+- [#9611](https://github.com/wso2/identity-apps/pull/9611) [`90ccfd1696559082e98d7854884c3651bf1376f4`](https://github.com/wso2/identity-apps/commit/90ccfd1696559082e98d7854884c3651bf1376f4) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with Sift configuration update notification
+
+## 2.33.0
+
+### Minor Changes
+
+- [#9593](https://github.com/wso2/identity-apps/pull/9593) [`90460f77442dd987d1564dfe8e40ddf9e6fd5060`](https://github.com/wso2/identity-apps/commit/90460f77442dd987d1564dfe8e40ddf9e6fd5060) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Onboard cds
+
 ## 2.32.3
 
 ### Patch Changes
