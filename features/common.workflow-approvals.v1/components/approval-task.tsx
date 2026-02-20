@@ -35,8 +35,8 @@ import {
     Table
 } from "semantic-ui-react";
 import { ApprovalStatus, ApprovalTaskDetails } from "../models";
-import "./approval-task.scss";
 import { getOperationTypeTranslationKey } from "../utils/approval-utils";
+import "./approval-task.scss";
 
 dayjs.extend(localizedFormat);
 
