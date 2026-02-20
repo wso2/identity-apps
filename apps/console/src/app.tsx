@@ -210,7 +210,7 @@ export const App = ({
 
             // Don't redirect from critical auth/error routes
             const excludedPaths: string[] = [
-                AppConstants.getPaths().get("UNAUTHORIZE"),
+                AppConstants.getPaths().get("UNAUTHORIZED"),
                 AppConstants.getPaths().get("CREATE_TENANT"),
                 AppConstants.getPaths().get("STORING_DATA_DISABLED"),
                 AppConstants.getAppLogoutPath()
@@ -241,7 +241,9 @@ export const App = ({
      */
     useEffect(() => {
         dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
-        dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
+        dispatch(
+            setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig())
+        );
         setResourceEndpoints(Config.getServiceResourceEndpoints() as any);
     }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
