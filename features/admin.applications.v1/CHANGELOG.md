@@ -1,5 +1,18 @@
 # @wso2is/admin.applications.v1
 
+## 2.41.4
+
+### Patch Changes
+
+- [#9598](https://github.com/wso2/identity-apps/pull/9598) [`50c910e6d0c098c2a5a125eb7abd1a255d66e759`](https://github.com/wso2/identity-apps/commit/50c910e6d0c098c2a5a125eb7abd1a255d66e759) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Remove duplication of scope names for reused scopes under system APIs
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.32.94
+  - @wso2is/admin.core.v1@2.53.3
+  - @wso2is/admin.roles.v2@2.27.308
+  - @wso2is/admin.server-configurations.v1@2.37.4
+  - @wso2is/admin.users.v1@2.36.113
+
 ## 2.41.3
 
 ### Patch Changes
