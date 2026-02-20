@@ -19,6 +19,9 @@
 import { LinkInterface } from "@wso2is/core/models";
 import { FunctionComponent, SVGProps } from "react";
 
+/**
+ *  Captures API resources list properties.
+ */
 export interface APIResourcesListInterface {
     /**
      * List of roles in API resources.
