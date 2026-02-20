@@ -135,6 +135,7 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
         } else if (
             [
                 SCIMExtensionConfigs.scimUserSchema.emailsWork,
+                SCIMExtensionConfigs.scimUserSchema.emailsHome,
                 SCIMExtensionConfigs.scimUserSchema.emailsOther
             ].some(
                 (email: string) => !isEmpty(email) && email === schema.schemaUri
