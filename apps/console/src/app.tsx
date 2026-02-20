@@ -210,7 +210,7 @@ export const App = ({
 
             // Don't redirect from critical auth/error routes
             const excludedPaths: string[] = [
-                AppConstants.getPaths().get("UNAUTHORIZED"),
+                AppConstants.getPaths().get("UNAUTHORIZE"),
                 AppConstants.getPaths().get("CREATE_TENANT"),
                 AppConstants.getPaths().get("STORING_DATA_DISABLED"),
                 AppConstants.getAppLogoutPath()
