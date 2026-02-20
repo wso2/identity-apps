@@ -184,8 +184,10 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
      */
     useEffect(() => {
         if (allAuthorizedScopes) {
-            setCopyScopesValue(allAuthorizedScopes.map(
-                (scope: AuthorizedPermissionListItemInterface) => scope.name).join(" ")
+            setCopyScopesValue(
+                [ ...new Set(allAuthorizedScopes.map(
+                    (scope: AuthorizedPermissionListItemInterface) => scope.name
+                )) ].sort().join(" ")
             );
         }
     }, [ allAuthorizedScopes ]);
