@@ -802,7 +802,7 @@
         <httpcore.version>4.3.3.wso2v1</httpcore.version>
         <json.wso2.version>3.0.0.wso2v1</json.wso2.version>
         <taglibs-standard-impl.version>1.2.5</taglibs-standard-impl.version>
-        <apache.tomcat-catalina.version>9.0.11</apache.tomcat-catalina.version>
+        <apache.tomcat-catalina.version>9.0.110</apache.tomcat-catalina.version>
 
         <lint.exec.skip>true</lint.exec.skip>
         <bootstrap.exec.skip>false</bootstrap.exec.skip>
