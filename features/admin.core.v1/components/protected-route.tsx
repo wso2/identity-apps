@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,6 +21,7 @@ import { AuthenticateUtils } from "@wso2is/core/utils";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, RouteProps } from "react-router-dom";
+import RouteErrorBoundary from "./route-error-boundary";
 import { AppConstants } from "../constants/app-constants";
 import { AppState } from "../store";
 
@@ -59,7 +60,14 @@ export const ProtectedRoute: FunctionComponent<RouteProps> = (props: RouteProps)
             render={ (renderProps: RouteComponentProps<any>) =>
                 isAuthenticated
                     ? Component
-                        ? <Component { ...renderProps } />
+                        ? (
+                            <RouteErrorBoundary
+                                key={ renderProps.location.pathname }
+                                routeName={ renderProps.match?.path }
+                            >
+                                <Component { ...renderProps } />
+                            </RouteErrorBoundary>
+                        )
                         : null
                     : <Redirect to={ AppConstants.getAppLoginPath() } />
             }
