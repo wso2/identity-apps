@@ -26,13 +26,10 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
-import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
     AlertLevels,
-    AttributeMapping,
     Claim,
     ClaimDialect,
     ExternalClaim,
@@ -43,7 +40,6 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
-import { StringUtils } from "@wso2is/core/utils";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import {
     AnimatedAvatar,
@@ -268,33 +264,6 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     useEffect(() => {
         mutateUserStoreList();
     }, []);
-
-    /**
-     * This check if the input claim is mapped to attribute from every userstore.
-     *
-     * @param claim - The claim to be checked.
-     *
-     * @returns The array of userstore names without a mapped attribute.
-     */
-    const checkUserStoreMapping = (claim: Claim): string[] => {
-        const userStoresNotSet: string[] = [];
-
-        userStores
-            ?.filter((userStore: UserStoreListItem) => !systemReservedUserStores?.includes(userStore.name))
-            ?.forEach((userStore: UserStoreListItem) => {
-                claim?.attributeMapping?.find((attribute: AttributeMapping) => {
-                    return attribute.userstore.toLowerCase() === userStore.name.toLowerCase();
-                }) ?? userStoresNotSet.push(userStore.name);
-            });
-
-        claim?.attributeMapping?.find((attribute: AttributeMapping) => {
-            return attribute.userstore === primaryUserStoreDomainName;
-        }) ?? userStoresNotSet.push(StringUtils.isEqualCaseInsensitive(primaryUserStoreDomainName, PRIMARY_USERSTORE)
-            ? t("console:manage.features.users.userstores.userstoreOptions.primary")
-            : primaryUserStoreDomainName);
-
-        return userStoresNotSet;
-    };
 
     /**
      * This checks if the list data is a local claim.
@@ -697,54 +666,21 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     id: "displayName",
                     key: "displayName",
                     render: (claim: Claim) => {
-                        const userStoresNotMapped: string[] = checkUserStoreMapping(claim);
-                        const showWarning: boolean = userStoresNotMapped.length > 0;
 
                         return (
                             <Header as="h6" image>
-                                <>
-                                    { attributeConfig.attributes.showUserstoreMappingWarningIcon && showWarning && (
-                                        <Popup
-                                            trigger={ (
-                                                <Icon
-                                                    className="notification-icon"
-                                                    name="warning circle"
-                                                    size="small"
-                                                    color="red"
-                                                />
-                                            ) }
-                                            content={ (
-                                                <div>
-                                                    { t("claims:list.warning") }
-                                                    <ul>
-                                                        {
-                                                            userStoresNotMapped.map((store: string, index: number) => {
-                                                                return (
-                                                                    <li key={ index }>
-                                                                        { store }
-                                                                    </li>
-                                                                );
-                                                            })
-                                                        }
-                                                    </ul>
-                                                </div>
-                                            ) }
-                                            inverted
+                                <AppAvatar
+                                    image={ (
+                                        <AnimatedAvatar
+                                            name={ generateInitialLetter(claim) }
+                                            size="mini"
+                                            data-testid={ `${ testId }-item-image-inner` }
                                         />
                                     ) }
-                                    <AppAvatar
-                                        image={ (
-                                            <AnimatedAvatar
-                                                name={ generateInitialLetter(claim) }
-                                                size="mini"
-                                                data-testid={ `${ testId }-item-image-inner` }
-                                            />
-                                        ) }
-                                        size="mini"
-                                        spaced="right"
-                                        data-testid={ `${ testId }-item-image` }
-                                    />
-                                </>
+                                    size="mini"
+                                    spaced="right"
+                                    data-testid={ `${ testId }-item-image` }
+                                />
                                 <Header.Content>
                                     { claim.displayName }
                                     <Header.Subheader>
