@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -674,15 +674,20 @@ export const myAccount: MyAccountNS = {
                     scan: {
                         additionNote: "QR කේතය ඔබේ පැතිකඩට සාර්ථකව එකතු කර ඇත!",
                         authenticatorApps: "සත්‍යාපන යෙදුම්",
+                        copiedToClipboard: "පිටපත් කරන ලදී!",
+                        copyToClipboard: "පිටපත් කිරීමට පිටපත් කරන්න",
                         generate: "නව කේතයක් ජනනය කරන්න",
                         heading: "සත්‍යාපන යෙදුමක් භාවිතයෙන් මෙම QR කේතය පරිලෝකනය කරන්න",
+                        hideSecretKey: "රහස සඟවන්න",
+                        manualEntryLabel: "කේතය අතින් ඇතුළත් කරන්න",
                         messageBody: "ඔබට මෙහි ඇති සත්‍යාපන යෙදුම් ලැයිස්තුවක් සොයාගත හැකිය.",
                         messageHeading: "සත්‍යාපන යෙදුමක් ස්ථාපනය කර නොමැතිද?",
                         regenerateConfirmLabel: "නව QR කේතයක් පුනර්ජනනය කිරීම තහවුරු කරන්න",
                         regenerateWarning: {
                             extended: "ඔබ නව QR කේතයක් නැවත උත්පාදනය කරන විට, ඔබ එය පරිලෝකනය කර ඔබගේ සත්‍යාපන යෙදුම නැවත පිහිටුවිය යුතුය. ඔබට තවදුරටත් පෙර QR කේතය සමඟින් පුරනය වීමට නොහැකි වනු ඇත.",
                             generic: "ඔබ නව QR කේතයක් නැවත උත්පාදනය කරන විට, ඔබ එය පරිලෝකනය කර ඔබගේ සත්‍යාපන යෙදුම නැවත පිහිටුවිය යුතුය. ඔබගේ පෙර පිහිටුවීම තවදුරටත් ක්‍රියා නොකරනු ඇත."
-                        }
+                        },
+                        showSecretKey: "රහස පෙන්වන්න"
                     },
                     toolTip: "යෙදුමක් නැද්ද? <1>App Store</1> හෝ <3>Google Play</3> " +
                         "වෙතින් Google Authenticator වැනි සත්‍යාපන යෙදුමක් බාගන්න.",

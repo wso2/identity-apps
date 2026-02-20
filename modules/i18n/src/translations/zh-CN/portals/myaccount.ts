@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -657,15 +657,20 @@ export const myAccount: MyAccountNS = {
                     "scan": {
                         "additionNote": "QR码已成功添加到您的个人资料中！",
                         "authenticatorApps": "身份验证器应用程序",
+                        "copiedToClipboard": "已复制!",
+                        "copyToClipboard": "复制到剪贴板",
                         "generate": "生成新代码",
                         "heading": "使用Authenticator应用扫描下面的QR码",
+                        "hideSecretKey": "隐藏密钥",
+                        "manualEntryLabel": "手动输入代码",
                         "messageBody": "您可以在此处找到可用的身份验证应用程序列表。",
                         "messageHeading": "没有安装Authenticator应用程序？",
                         "regenerateConfirmLabel": "确认再生新的QR码",
                         "regenerateWarning": {
                             "extended": "当您重新生成新的QR码时，必须扫描并重新设置Authenticator应用程序。您将无法使用以前的QR码登录。",
                             "generic": "当您重新生成新的QR码时，必须扫描并重新设置Authenticator应用程序。您以前的设置将不再起作用。"
-                        }
+                        },
+                        "showSecretKey": "显示密钥"
                     },
                     "toolTip": "没有身份验证器应用程序？从<1> App Store或Google Play下载诸如Google Authenticator之类的身份验证器应用程序",
                     "verify": {

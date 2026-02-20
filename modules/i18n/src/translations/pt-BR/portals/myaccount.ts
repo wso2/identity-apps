@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -660,15 +660,20 @@ export const myAccount: MyAccountNS = {
                     scan: {
                         additionNote: "QR code foi adicionado com sucesso ao seu perfil!",
                         authenticatorApps: "Aplicativos Autenticadores",
+                        copiedToClipboard: "Copiado!",
+                        copyToClipboard: "Copiar para a área de transferência",
                         generate: "Gerar um novo código",
                         heading: "Escaneie o QR code abaixo usando um aplicativo autenticador",
+                        hideSecretKey: "Ocultar segredo",
+                        manualEntryLabel: "Digite o código manualmente",
                         messageBody: "Você pode encontrar uma lista de Aplicativos Autenticadores disponíveis aqui.",
                         messageHeading: "Não tem um Aplicativo Autenticador instalado?",
                         regenerateConfirmLabel: "Confirmar a regeneração de um novo QR code.",
                         regenerateWarning: {
                             extended: "Ao regenerar um novo QR code, você deve escaneá-lo e reconfigurar seu aplicativo autenticador. Você não poderá mais fazer login com o QR code anterior.",
                             generic: "Ao regenerar um novo QR code, você deve escaneá-lo e reconfigurar seu aplicativo autenticador. Sua configuração anterior não funcionará mais."
-                        }
+                        },
+                        showSecretKey: "Mostrar segredo"
                     },
                     toolTip: "Não tem um aplicativo autenticador? Baixe um aplicativo autenticador como o Google Authenticator da <1>App Store</1> ou <3>Google Play</3>",
                     verify: {
