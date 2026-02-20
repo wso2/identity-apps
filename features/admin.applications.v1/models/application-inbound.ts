@@ -167,6 +167,15 @@ interface SubjectConfigInterface {
     sectorIdentifierUri?: string;
 }
 
+/**
+ * CIBA authentication related properties.
+ */
+interface CibaAuthenticationConfigurationInterface {
+    cibaAuthReqExpiryTime?: number;
+    cibaNotificationChannels?: string[];
+    cibaDefaultNotificationChannel?: string;
+}
+
 interface OIDCLogoutConfigurationInterface {
     backChannelLogoutUrl?: string;
     frontChannelLogoutUrl?: string;
@@ -197,6 +206,7 @@ export interface OIDCDataInterface {
     subject?: SubjectConfigInterface;
     isFAPIApplication?: boolean;
     hybridFlow?: HybridFlowConfigurationInterface;
+    cibaAuthenticationRequest?: CibaAuthenticationConfigurationInterface;
 }
 
 /**
