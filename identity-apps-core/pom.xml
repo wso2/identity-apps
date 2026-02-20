@@ -723,6 +723,7 @@
                     <effort>Max</effort>
                     <threshold>Low</threshold>
                     <jvmArgs>--add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/sun.util.locale=ALL-UNNAMED</jvmArgs>
+                    <excludeFilterFile>spotbugs-exclude.xml</excludeFilterFile>
                 </configuration>
                 <executions>
                     <execution>
