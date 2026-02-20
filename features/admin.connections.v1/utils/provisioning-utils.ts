@@ -115,6 +115,12 @@ export const isFieldVisibleForAuthMode = (
             return propertyKey === SCIM2_AUTH_PROPERTIES.API_KEY_HEADER
                 || propertyKey === SCIM2_AUTH_PROPERTIES.API_KEY_VALUE;
 
+        case OutboundProvisioningAuthenticationMode.CLIENT_CREDENTIAL:
+            return propertyKey === SCIM2_AUTH_PROPERTIES.CLIENT_ID
+                || propertyKey === SCIM2_AUTH_PROPERTIES.CLIENT_SECRET
+                || propertyKey === SCIM2_AUTH_PROPERTIES.TOKEN_ENDPOINT
+                || propertyKey === SCIM2_AUTH_PROPERTIES.SCOPES;
+
         case OutboundProvisioningAuthenticationMode.NONE:
             // Hide all auth credential fields when mode is NONE
             return false;
@@ -172,6 +178,12 @@ export const isFieldRequiredForAuthMode = (
         case OutboundProvisioningAuthenticationMode.API_KEY:
             return propertyKey === SCIM2_AUTH_PROPERTIES.API_KEY_HEADER
                 || propertyKey === SCIM2_AUTH_PROPERTIES.API_KEY_VALUE;
+
+        case OutboundProvisioningAuthenticationMode.CLIENT_CREDENTIAL:
+            // SCOPES is optional; CLIENT_ID, CLIENT_SECRET, and TOKEN_ENDPOINT are required.
+            return propertyKey === SCIM2_AUTH_PROPERTIES.CLIENT_ID
+                || propertyKey === SCIM2_AUTH_PROPERTIES.CLIENT_SECRET
+                || propertyKey === SCIM2_AUTH_PROPERTIES.TOKEN_ENDPOINT;
 
         case OutboundProvisioningAuthenticationMode.NONE:
             // No auth credentials required when mode is NONE

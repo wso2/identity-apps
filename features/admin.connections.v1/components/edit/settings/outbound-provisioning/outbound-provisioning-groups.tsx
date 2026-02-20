@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -76,7 +76,7 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
 
     const excludedAttributes: string = "members,roles,meta";
 
-    const initialSelectedGroupsOptions: GroupInterface[] = idpRoles.outboundProvisioningRoles?.map(
+    const initialSelectedGroupsOptions: GroupInterface[] = idpRoles?.outboundProvisioningRoles?.map(
         (groupName: string) => ({
             id: groupName,
             name: groupName
@@ -205,14 +205,14 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
     return (
         <Grid>
             <Grid.Row>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                <Grid.Column mobile={ 16 } computer={ 12 }>
                     <Heading as="h4">
                         { t("authenticationProvider:forms.outboundProvisioningGroups.heading") }
                     </Heading>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                <Grid.Column mobile={ 16 } computer={ 12 }>
                     <Autocomplete
                         multiple
                         disableCloseOnSelect
@@ -279,7 +279,7 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
             {
                 removedGroupsOptions?.length > 0 && (
                     <Grid.Row>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                        <Grid.Column mobile={ 16 } computer={ 12 }>
                             <>
                                 <Autocomplete
                                     multiple
@@ -341,7 +341,7 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
                 { t("authenticationProvider:forms.outboundProvisioningGroups.hint") }
             </Hint>
             <Grid.Row>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                <Grid.Column mobile={ 16 } computer={ 12 }>
                     <>
                         {
                             !isReadOnly

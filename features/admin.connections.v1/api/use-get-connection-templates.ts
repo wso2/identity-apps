@@ -23,11 +23,8 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { HttpMethods } from "@wso2is/core/models";
-import { useSelector } from "react-redux";
 import {
     CommonAuthenticatorConstants,
     ConnectionsFeatureDictionaryKeys
@@ -56,9 +53,8 @@ export const useGetConnectionTemplates = <Data = ConnectionTemplateInterface[], 
 
     const { resourceEndpoints } = useResourceEndpoints();
     const { UIConfig } = useUIConfig();
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const isOutboundProvisioningConnectionV2Enabled: boolean = isFeatureEnabled(
-        featureConfig?.identityProviders,
+        UIConfig?.features?.identityProviders,
         CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
             ConnectionsFeatureDictionaryKeys.OutboundProvisioningConnectionV2)
     );
