@@ -48,10 +48,9 @@ import {
     authorizeAPI,
     removeAuthorizedAPI
 } from "../../api/api-authorization";
-import useSubscribedAPIResources from "../../api/use-subscribed-api-resources";
+import useApplicationManagement from "../../hooks/use-application-management";
 import {
-    AuthorizedAPIListItemInterface,
-    AuthorizedPermissionListItemInterface
+    AuthorizedAPIListItemInterface
 } from "../../models/api-authorization";
 
 /**
@@ -108,7 +107,6 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
     const [ isUnsubscribeAPIResourceLoading, setIsUnsubscribeAPIResourceLoading ] = useState<boolean>(false);
     const [ isAuthorizeAPIResourceWizardOpen, setIsAuthorizeAPIResourceWizardOpen ] = useState<boolean>(false);
     const [ isUpdateData, setIsUpdateData ] = useState<boolean>(false);
-    const [ allAuthorizedScopes, setAllAuthorizedScopes ] = useState<AuthorizedPermissionListItemInterface[]>([]);
     const [ hideAuthorizeAPIResourceButton, setHideAuthorizeAPIResourceButton ] = useState<boolean>(true);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -122,13 +120,14 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
         error: allAPIResourcesFetchRequestError,
         mutate: mutateAllAPIResourcesList
     } = useAPIResources(null, null, null, !readOnly);
-
     const {
-        data: subscribedAPIResourcesListData,
-        isLoading: isSubscribedAPIResourcesListLoading,
-        error: subscribedAPIResourcesFetchRequestError,
-        mutate: mutateSubscribedAPIResourcesList
-    } = useSubscribedAPIResources(appId);
+        allAuthorizedScopes,
+        subscribedAPIResourcesListData,
+        isSubscribedAPIResourcesListLoading,
+        subscribedAPIResourcesFetchRequestError,
+        bulkChangeAllAuthorizedScopes,
+        mutateSubscribedAPIResourcesList
+    } = useApplicationManagement();
 
     /**
      * Handles the is shown placeholders
@@ -168,21 +167,6 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
             )
         );
     }, [ isUpdateData, isAllAPIResourcesListLoading, isSubscribedAPIResourcesListLoading ]);
-
-    /**
-     * Initalize the all authorized scopes.
-     */
-    useEffect(() => {
-        if (subscribedAPIResourcesListData?.length > 0) {
-            let authorizedScopes: AuthorizedPermissionListItemInterface[] = [];
-
-            subscribedAPIResourcesListData.forEach((subscribedAPIResource: AuthorizedAPIListItemInterface) => {
-                authorizedScopes = authorizedScopes.concat(subscribedAPIResource.authorizedScopes);
-            });
-
-            setAllAuthorizedScopes(authorizedScopes);
-        }
-    }, [ subscribedAPIResourcesListData ]);
 
     /**
      * The following useEffect is used to update the API resources list once a mutate function is called.
@@ -303,29 +287,6 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
             });
     };
 
-    /**
-     * Bulk change the all authorized scopes.
-     *
-     * @param updatedScopes - Updated scopes.
-     * @param removed - `true` if scope removed.
-     *
-     * @returns `void`
-     */
-    const bulkChangeAllAuthorizedScopes = (updatedScopes: AuthorizedPermissionListItemInterface[],
-        removed: boolean): void => {
-
-        if (removed) {
-            setAllAuthorizedScopes(allAuthorizedScopes.filter(
-                (scope: AuthorizedPermissionListItemInterface) => !updatedScopes.some(
-                    (updatedScope: AuthorizedPermissionListItemInterface) => updatedScope.name === scope.name)));
-        } else {
-            const changedScopes: AuthorizedPermissionListItemInterface[]= updatedScopes.filter(
-                (updatedScope: AuthorizedPermissionListItemInterface) => !allAuthorizedScopes.some(
-                    (scope: AuthorizedPermissionListItemInterface) => updatedScope.name === scope.name));
-
-            setAllAuthorizedScopes([ ...allAuthorizedScopes, ...changedScopes ]);
-        }
-    };
 
     return (
         <Fragment>
@@ -382,7 +343,6 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
                     originalTemplateId={ originalTemplateId }
                     allAPIResourcesListData={ allAPIResourcesListData?.apiResources }
                     allAPIResourcesFetchRequestError={ allAPIResourcesFetchRequestError }
-                    allAuthorizedScopes={ allAuthorizedScopes }
                     subscribedAPIResourcesListData={ subscribedAPIResourcesListData }
                     subscribedAPIResourcesFetchRequestError=
                         { subscribedAPIResourcesFetchRequestError }

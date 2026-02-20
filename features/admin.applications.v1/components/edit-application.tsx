@@ -76,6 +76,7 @@ import { disableApplication, getInboundProtocolConfig } from "../api/application
 import { ApplicationManagementConstants } from "../constants/application-management";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
+import useApplicationManagement from "../hooks/use-application-management";
 import {
     ApplicationInterface,
     ApplicationTabTypes,
@@ -168,6 +169,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const { isSuperOrganization, isSubOrganization } = useGetCurrentOrganizationType();
     const dispatch: Dispatch = useDispatch();
     const { UIConfig } = useUIConfig();
+    const { allAuthorizedScopeNames, userScopes } = useApplicationManagement();
     const {
         templateMetadata: extensionTemplateMetadata,
         isTemplateMetadataRequestLoading: isExtensionTemplateMetadataFetchRequestLoading
@@ -747,6 +749,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     content={ guideContent }
                     isLoading={ isLoading }
                     protocolName={ firstProtocolName }
+                    apiScopes={ allAuthorizedScopeNames }
+                    userScopes={ userScopes }
                 />
             </ResourceTab.Pane>
         );
