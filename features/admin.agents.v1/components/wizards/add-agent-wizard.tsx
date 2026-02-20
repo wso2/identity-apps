@@ -20,7 +20,7 @@ import { AuthenticatedUserInfo } from "@asgardeo/auth-react";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form/src";
+import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter, CheckboxFieldAdapter } from "@wso2is/form/src";
 import { Button } from "@wso2is/react-components";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,7 +69,8 @@ export default function AddAgentWizard({
                             "urn:scim:wso2:agent:schema": {
                                 Description: values?.description,
                                 DisplayName: values?.name,
-                                Owner: authenticatedUserInfo?.username
+                                Owner: authenticatedUserInfo?.username,
+                                IsUserServingAgent: values?.isUserServingAgent || false
                             }
                         };
 
@@ -110,6 +111,12 @@ export default function AddAgentWizard({
                                     placeholder="Enter a description for the agent"
                                     component={ TextFieldAdapter }
                                 />
+                                <FinalFormField
+                                    name="isUserServingAgent"
+                                    label="Is this a user-serving agent?"
+                                    component={ CheckboxFieldAdapter }
+                                />
+                  
                             </form>
                         );
                     } }

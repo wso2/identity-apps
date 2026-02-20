@@ -27,6 +27,7 @@ export interface AgentSchema {
     Url?: string;
     Description?: string;
     DisplayName?: string;
+    IsUserServingAgent?: boolean;
     [key: string]: any;
 }
 

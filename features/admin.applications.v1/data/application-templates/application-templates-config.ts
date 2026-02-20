@@ -24,6 +24,7 @@ import { ComponentType, LazyExoticComponent, ReactElement, lazy } from "react";
 import GeneralApplicationTemplateCategory from "./categories/general-application-template-category.json";
 import DesktopApplicationTemplateGroup from "./groups/desktop-application-template-group.json";
 import WebApplicationTemplateGroup from "./groups/web-application-template-group.json";
+import AgentApplicationTemplate from "./templates/agent-application/agent-application.json";
 import CustomApplicationTemplate from "./templates/custom-application/custom-application.json";
 import CustomProtocolApplicationTemplate from
     "./templates/custom-protocol-application/custom-protocol-application.json";
@@ -165,7 +166,16 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
                         enabled: applicationConfig.templates.customProtocol,
                         id: CustomProtocolApplicationTemplate.id,
                         resource: CustomProtocolApplicationTemplate
+                    },
+                    {
+                        content: {
+                            wizardHelp: null
+                        },
+                        enabled: applicationConfig.templates.agent,
+                        id: AgentApplicationTemplate.id,
+                        resource: AgentApplicationTemplate
                     }
+
                 ], "id"),
                 keyBy(extensionsManager.getApplicationTemplatesConfig().templates, "id")
             )

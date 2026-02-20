@@ -231,6 +231,7 @@ export const applicationConfig: ApplicationConfig = {
                     || application?.templateId === SinglePageAppTemplate?.id
                     || application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
                     || application?.templateId === ApplicationTemplateIdTypes.VC_CLIENT_APPLICATION
+                    || application?.templateId === ApplicationTemplateIdTypes.AGENT_APPLICATION
                 )
                 && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
             ) {
@@ -276,7 +277,8 @@ export const applicationConfig: ApplicationConfig = {
                     || application?.templateId === OIDCWebAppTemplate?.id
                     || application?.templateId === SinglePageAppTemplate?.id
                     || application?.templateId === SamlWebAppTemplate?.id
-                    || application?.templateId === ApplicationTemplateIdTypes.VC_CLIENT_APPLICATION)
+                    || application?.templateId === ApplicationTemplateIdTypes.VC_CLIENT_APPLICATION
+                    || application?.templateId === ApplicationTemplateIdTypes.AGENT_APPLICATION)
                 )
                 && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
             ) {
@@ -642,6 +644,7 @@ export const applicationConfig: ApplicationConfig = {
         }
     },
     templates:{
+        agent: true,
         custom: true,
         customProtocol: true,
         m2m: !featureConfig?.applications?.disabledFeatures?.includes("m2mTemplate"),
