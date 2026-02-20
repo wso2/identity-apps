@@ -18,11 +18,11 @@
 
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FormValue } from "@wso2is/form";
+import { FinalForm, FormApi, FormRenderProps, FormValue } from "@wso2is/form";
 import { useTrigger } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
+import { ContentLoader, Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -30,18 +30,16 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import {
     OutboundProvisioningConnectors
 } from "./steps/outbound-provisioning-connectors";
-import { OutboundProvisioningSettings } from "./steps/shared-steps/outbound-provisioning-settings";
 import {
     getOutboundProvisioningConnectorMetadata,
     updateOutboundProvisioningConnector
 } from "../../api/connections";
 import useGetOutboundProvisioningConnectors from "../../api/use-get-outbound-provisioning-connectors";
 import { getOutboundProvisioningConnectorWizardIcons } from "../../configs/ui";
-import { AuthenticatorSettingsFormModes } from "../../models/authenticators";
 import {
+    CommonPluggableComponentMetaPropertyInterface,
     ConnectionInterface,
     OutboundProvisioningConnectorInterface,
-    OutboundProvisioningConnectorListItemInterface,
     OutboundProvisioningConnectorMetaDataInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../../models/connection";
@@ -50,6 +48,9 @@ import {
     handleUpdateOutboundProvisioningConnectorError
 } from "../../utils/connection-utils";
 import { getFilteredConnectorMetadataList } from "../../utils/provisioning-utils";
+import {
+    ConnectorConfigFormFields
+} from "../edit/forms/outbound-provisioning-connectors/connector-config-form-fields";
 
 /**
  * Interface for the outbound provisioning create wizard props.
@@ -97,8 +98,11 @@ export const OutboundProvisioningConnectorCreateWizard:
         const dispatch: Dispatch = useDispatch();
 
         const [ submitConnectorSelection, setSubmitConnectorSelection ] = useTrigger();
-        const [ submitConnectorSettings, setSubmitConnectorSettings ] = useTrigger();
 
+        const formRef: React.MutableRefObject<FormApi<Record<string, unknown>> | null> =
+            useRef<FormApi<Record<string, unknown>> | null>(null);
+
+        const [ hasConnectorValidationErrors, setHasConnectorValidationErrors ] = useState<boolean>(true);
         const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
         const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
         const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
@@ -109,8 +113,6 @@ export const OutboundProvisioningConnectorCreateWizard:
         ] = useState<OutboundProvisioningConnectorMetaInterface>(undefined);
         const [ newConnector, setNewConnector ] = useState(undefined);
         const [ isConnectorMetadataRequestLoading, setIsConnectorMetadataRequestLoading ] = useState<boolean>(false);
-        const [ defaultConnector, setDefaultConnector ] =
-        useState<OutboundProvisioningConnectorListItemInterface>(undefined);
         const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
         const [ alert, setAlert, alertComponent ] = useWizardAlert();
@@ -211,6 +213,8 @@ export const OutboundProvisioningConnectorCreateWizard:
             connector = {
                 ...connector,
                 connectorId: wizardState[ WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId,
+                isDefault: true,
+                isEnabled: true,
                 properties: wizardState[ WizardStepsFormTypes.CONNECTOR_DETAILS ]?.provisioning?.outboundConnectors?.
                     connectors[0]?.properties
             };
@@ -244,16 +248,6 @@ export const OutboundProvisioningConnectorCreateWizard:
             setIsConnectorMetadataRequestLoading(true);
 
             const selectedId: string = wizardState[ WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId;
-            let initialConnector: OutboundProvisioningConnectorListItemInterface =
-            outboundProvisioningConnectorsList.find((connector: OutboundProvisioningConnectorListItemInterface) =>
-                connector.connectorId === selectedId);
-
-            initialConnector = {
-                ...initialConnector,
-                isEnabled: true
-            };
-
-            setDefaultConnector(initialConnector);
 
             getOutboundProvisioningConnectorMetadata(selectedId)
                 .then((response: OutboundProvisioningConnectorMetaInterface) => {
@@ -267,22 +261,12 @@ export const OutboundProvisioningConnectorCreateWizard:
                 });
         }, [ wizardState && wizardState[ WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId ]);
 
-        useEffect(() => {
-            if (!wizardState && !defaultConnector) {
-                return;
-            }
-
-            const selectedId: string = wizardState[ WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId;
-            let initialConnector: OutboundProvisioningConnectorListItemInterface =
-            outboundProvisioningConnectorsList.find((connector: OutboundProvisioningConnectorListItemInterface) =>
-                connector.connectorId === selectedId);
-
-            initialConnector = {
-                ...initialConnector,
-                isEnabled: true
-            };
-            setDefaultConnector(initialConnector);
-        }, [ wizardState && wizardState[ WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId ]);
+        const handleConnectorValidationChange: (hasErrors: boolean) => void = useCallback(
+            (hasErrors: boolean): void => {
+                setHasConnectorValidationErrors(hasErrors);
+            },
+            []
+        );
 
         const navigateToNext = () => {
             switch (currentWizardStep) {
@@ -292,7 +276,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                     break;
                 case 1:
                     setIsSubmitting(true);
-                    setSubmitConnectorSettings();
+                    formRef.current?.submit();
 
                     break;
             }
@@ -358,19 +342,79 @@ export const OutboundProvisioningConnectorCreateWizard:
             },
             {
                 content: (
-                    <OutboundProvisioningSettings
-                        metadata={ connectorMetaData }
-                        isLoading={ isConnectorMetadataRequestLoading }
-                        initialValues={
-                            (wizardState && wizardState[ WizardStepsFormTypes.CONNECTOR_DETAILS ]) ?? identityProvider }
-                        onSubmit={ (values: ConnectionInterface): void => handleWizardFormSubmit(
-                            values, WizardStepsFormTypes.CONNECTOR_DETAILS) }
-                        triggerSubmit={ submitConnectorSettings }
-                        defaultConnector={ defaultConnector }
-                        mode={ AuthenticatorSettingsFormModes.CREATE }
-                        data-testid={ `${ testId }-provisioning-settings` }
-                        data-componentid={ `${ componentId }-provisioning-settings` }
-                    />
+                    isConnectorMetadataRequestLoading || !connectorMetaData
+                        ? <ContentLoader />
+                        : (
+                            <FinalForm
+                                onSubmit={ (values: Record<string, unknown>): void => {
+                                    const properties: { key: string; value: string }[] = [];
+
+                                    const processProperty = (
+                                        property: CommonPluggableComponentMetaPropertyInterface
+                                    ): void => {
+                                        if (!property.key) {
+                                            return;
+                                        }
+
+                                        const fieldValue: string = values[property.key] as string;
+
+                                        if (fieldValue !== undefined
+                                            && fieldValue !== null
+                                            && fieldValue !== "") {
+                                            properties.push({
+                                                key: property.key,
+                                                value: String(fieldValue)
+                                            });
+                                        } else if (property.defaultValue) {
+                                            properties.push({
+                                                key: property.key,
+                                                value: property.defaultValue
+                                            });
+                                        }
+
+                                        property.subProperties?.forEach(processProperty);
+                                    };
+
+                                    connectorMetaData.properties?.forEach(processProperty);
+
+                                    const selectedId: string =
+                                        wizardState[WizardStepsFormTypes.CONNECTOR_SELECTION]?.connectorId;
+
+                                    handleWizardFormSubmit(
+                                        {
+                                            provisioning: {
+                                                outboundConnectors: {
+                                                    connectors: [
+                                                        {
+                                                            connectorId: selectedId,
+                                                            isEnabled: true,
+                                                            properties
+                                                        }
+                                                    ],
+                                                    defaultConnectorId: selectedId
+                                                }
+                                            }
+                                        },
+                                        WizardStepsFormTypes.CONNECTOR_DETAILS
+                                    );
+                                } }
+                                render={ ({ handleSubmit, form }: FormRenderProps): ReactElement => {
+                                    formRef.current = form as FormApi<Record<string, unknown>>;
+
+                                    return (
+                                        <form onSubmit={ handleSubmit }>
+                                            <ConnectorConfigFormFields
+                                                metadata={ connectorMetaData }
+                                                onValidationChange={ handleConnectorValidationChange }
+                                                data-componentid={
+                                                    `${ componentId }-connector-config-fields`
+                                                }
+                                            />
+                                        </form>
+                                    );
+                                } }
+                            />
+                        )
                 ),
                 icon: getOutboundProvisioningConnectorWizardIcons().connectorDetails,
                 title: t("authenticationProvider:" +
@@ -474,7 +518,11 @@ export const OutboundProvisioningConnectorCreateWizard:
                                         floated="right"
                                         onClick={ navigateToNext }
                                         loading={ isSubmitting }
-                                        disabled={ isSubmitting || isConnectorMetadataRequestLoading }
+                                        disabled={
+                                            isSubmitting
+                                            || isConnectorMetadataRequestLoading
+                                            || hasConnectorValidationErrors
+                                        }
                                         data-testid={ `${ testId }-modal-finish-button` }
                                         data-componentid={ `${ componentId }-modal-finish-button` }
                                     >

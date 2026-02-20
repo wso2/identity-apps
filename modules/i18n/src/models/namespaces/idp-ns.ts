@@ -250,6 +250,10 @@ export interface IdpNS {
                         name: string;
                         description: string;
                     };
+                    clientCredential: {
+                        name: string;
+                        description: string;
+                    };
                 };
                 placeholder: string;
                 info: {

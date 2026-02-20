@@ -18,9 +18,7 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalForm, FormApi, FormRenderProps } from "@wso2is/form";
-import {
-    PrimaryButton
-} from "@wso2is/react-components";
+import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ConnectorConfigFormFields } from "./connector-config-form-fields";
@@ -80,7 +78,8 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
     } = props;
 
     const { t } = useTranslation();
-    const formRef: React.MutableRefObject<FormApi<any> | null> = useRef<FormApi<any>>(null);
+    const formRef: React.MutableRefObject<FormApi<Record<string, unknown>> | null> =
+        useRef<FormApi<Record<string, unknown>>>(null);
 
     const [ hasValidationErrors, setHasValidationErrors ] = useState<boolean>(false);
 
@@ -115,7 +114,7 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
     /**
      * Check if a confidential property value has been changed by the user.
      */
-    const hasConfidentialValueChanged = (propertyKey: string, currentValue: any): boolean => {
+    const hasConfidentialValueChanged = (propertyKey: string, currentValue: unknown): boolean => {
         const initialValue: string | undefined = getInitialPropertyValue(propertyKey);
 
         if (!initialValue) {
@@ -137,7 +136,7 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
      */
     const processProperty = (
         property: CommonPluggableComponentMetaPropertyInterface,
-        values: Record<string, any>,
+        values: Record<string, unknown>,
         properties: { key: string; value: string }[],
         currentAuthMode?: string
     ): void => {
@@ -145,7 +144,7 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
             return;
         }
 
-        const fieldValue: any = values[property.key];
+        const fieldValue: unknown = values[property.key];
         const isConfidential: boolean = property.isConfidential ?? false;
         const isFieldInForm: boolean = Object.hasOwn(values, property.key);
 
@@ -212,11 +211,12 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
         }
     };
 
-    const handleSubmit = (values: Record<string, any>): void => {
+    const handleSubmit = (values: Record<string, unknown>): void => {
         const properties: { key: string; value: string }[] = [];
 
         // Get current auth mode from form values for SCIM2 visibility checks
-        const currentAuthMode: string | undefined = values[SCIM2_AUTH_PROPERTIES.AUTHENTICATION_MODE];
+        const currentAuthMode: string | undefined =
+            values[SCIM2_AUTH_PROPERTIES.AUTHENTICATION_MODE] as string | undefined;
 
         metadata?.properties?.forEach((property: CommonPluggableComponentMetaPropertyInterface) => {
             processProperty(property, values, properties, currentAuthMode);
@@ -228,7 +228,7 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
         });
     };
 
-    const getFormInitialValues = (): Record<string, any> => {
+    const getFormInitialValues = (): Record<string, unknown> => {
         const formValues: Record<string, any> = {};
 
         initialValues?.properties?.forEach((property: CommonPluggableComponentPropertyInterface) => {
@@ -251,9 +251,7 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
                             isEditMode={ mode !== AuthenticatorSettingsFormModes.CREATE }
                             metadata={ metadata }
                             initialValues={ initialValues }
-                            fieldNamePrefix=""
                             readOnly={ isFieldReadOnly }
-                            formApi={ form }
                             onValidationChange={ handleValidationChange }
                             data-componentid={ `${ componentId }-fields` }
                         />

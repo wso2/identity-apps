@@ -36,6 +36,7 @@ import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
+import { useForm } from "react-final-form";
 import { Trans, useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import {
@@ -84,10 +85,6 @@ interface ConnectorConfigFormFieldsProps extends IdentifiableComponentInterface 
      * Callback to notify parent of validation state.
      */
     onValidationChange?: (hasErrors: boolean) => void;
-    /**
-     * Final Form API instance for programmatic form control.
-     */
-    formApi?: FormApi;
 }
 
 /**
@@ -127,11 +124,11 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
         readOnly = false,
         isEditMode = false,
         onValidationChange,
-        formApi,
         ["data-componentid"]: componentId = "connector-config-form-fields"
     } = props;
 
     const { t } = useTranslation();
+    const form: FormApi = useForm();
 
     // Store initial auth mode (never changes, used for reset).
     const initialAuthMode: string | undefined = useMemo(
@@ -202,6 +199,12 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
             case OutboundProvisioningAuthenticationMode.API_KEY:
                 return propertyKey === SCIM2_AUTH_PROPERTIES.API_KEY_HEADER
                     || propertyKey === SCIM2_AUTH_PROPERTIES.API_KEY_VALUE;
+
+            case OutboundProvisioningAuthenticationMode.CLIENT_CREDENTIAL:
+                return propertyKey === SCIM2_AUTH_PROPERTIES.CLIENT_ID
+                    || propertyKey === SCIM2_AUTH_PROPERTIES.CLIENT_SECRET
+                    || propertyKey === SCIM2_AUTH_PROPERTIES.TOKEN_ENDPOINT
+                    || propertyKey === SCIM2_AUTH_PROPERTIES.SCOPES;
 
             case OutboundProvisioningAuthenticationMode.NONE:
                 return false;
@@ -468,7 +471,11 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                         component={ CheckboxFieldAdapter }
                         disabled={ isReadOnly }
                         required={ isRequired }
-                        initialValue={ existingValue === "true" || propertyMetadata.defaultValue === "true" }
+                        initialValue={
+                            existingValue !== undefined
+                                ? existingValue === "true"
+                                : propertyMetadata.defaultValue === "true"
+                        }
                         hint={
                             propertyMetadata.description ? (
                                 <Hint compact>
@@ -683,6 +690,8 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                 return t("idp:forms.outboundProvisioningConnector.authentication.modes.bearer.name");
             case OutboundProvisioningAuthenticationMode.API_KEY:
                 return t("idp:forms.outboundProvisioningConnector.authentication.modes.apiKey.name");
+            case OutboundProvisioningAuthenticationMode.CLIENT_CREDENTIAL:
+                return t("idp:forms.outboundProvisioningConnector.authentication.modes.clientCredential.name");
             default:
                 return "";
         }
@@ -701,11 +710,10 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
     const handleAuthenticationChangeCancel = (): void => {
         setCurrentAuthMode(initialAuthMode);
 
-        // Reset form field to initial value if form API is available.
-        if (formApi && initialAuthMode) {
+        if (initialAuthMode) {
             const authModeFieldName: string = `${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.AUTHENTICATION_MODE}`;
 
-            formApi.change(authModeFieldName, initialAuthMode);
+            form.change(authModeFieldName, initialAuthMode);
         }
 
         setIsAuthenticationUpdateMode(false);
@@ -807,8 +815,14 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                                 }
                                 readOnly={ readOnly }
                                 required={ authModeProperty.isMandatory }
-                                options={ SCIM2_AUTHENTICATION_MODES.map(
-                                    (option: AuthenticationModeDropdownOption) => ({
+                                options={ SCIM2_AUTHENTICATION_MODES
+                                    .filter((option: AuthenticationModeDropdownOption) =>
+                                        !authModeProperty.options?.length
+                                        || authModeProperty.options.some((o: string) =>
+                                            o.toLowerCase() === option.value.toString().toLowerCase()
+                                        )
+                                    )
+                                    .map((option: AuthenticationModeDropdownOption) => ({
                                         key: option.key,
                                         text: t(option.text),
                                         value: option.value
@@ -891,6 +905,10 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                 values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.ACCESS_TOKEN}`] = "";
                 values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.API_KEY_HEADER}`] = "";
                 values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.API_KEY_VALUE}`] = "";
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.CLIENT_ID}`] = "";
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.CLIENT_SECRET}`] = "";
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.TOKEN_ENDPOINT}`] = "";
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.SCOPES}`] = "";
 
                 break;
 
@@ -899,6 +917,10 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                 values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.PASSWORD}`] = "";
                 values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.API_KEY_HEADER}`] = "";
                 values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.API_KEY_VALUE}`] = "";
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.CLIENT_ID}`] = "";
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.CLIENT_SECRET}`] = "";
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.TOKEN_ENDPOINT}`] = "";
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.SCOPES}`] = "";
 
                 break;
 
@@ -906,6 +928,19 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                 values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.USERNAME}`] = "";
                 values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.PASSWORD}`] = "";
                 values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.ACCESS_TOKEN}`] = "";
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.CLIENT_ID}`] = "";
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.CLIENT_SECRET}`] = "";
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.TOKEN_ENDPOINT}`] = "";
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.SCOPES}`] = "";
+
+                break;
+
+            case OutboundProvisioningAuthenticationMode.CLIENT_CREDENTIAL:
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.USERNAME}`] = "";
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.PASSWORD}`] = "";
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.ACCESS_TOKEN}`] = "";
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.API_KEY_HEADER}`] = "";
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.API_KEY_VALUE}`] = "";
 
                 break;
 
@@ -915,6 +950,10 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                 values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.ACCESS_TOKEN}`] = "";
                 values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.API_KEY_HEADER}`] = "";
                 values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.API_KEY_VALUE}`] = "";
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.CLIENT_ID}`] = "";
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.CLIENT_SECRET}`] = "";
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.TOKEN_ENDPOINT}`] = "";
+                values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.SCOPES}`] = "";
 
                 break;
 

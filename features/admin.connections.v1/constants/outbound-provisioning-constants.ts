@@ -24,6 +24,7 @@ export enum OutboundProvisioningAuthenticationMode {
     BASIC = "basic",
     BEARER = "bearer",
     API_KEY = "apiKey",
+    CLIENT_CREDENTIAL = "clientCredential",
     NONE = "none"
 }
 
@@ -36,7 +37,11 @@ export const SCIM2_AUTH_PROPERTIES: Record<string, string> = {
     API_KEY_HEADER: "scim2-api-key-header",
     API_KEY_VALUE: "scim2-api-key-value",
     AUTHENTICATION_MODE: "scim2-authentication-mode",
+    CLIENT_ID: "scim2-client-id",
+    CLIENT_SECRET: "scim2-client-secret",
     PASSWORD: "scim2-password",
+    SCOPES: "scim2-scopes",
+    TOKEN_ENDPOINT: "scim2-token-endpoint",
     USERNAME: "scim2-username"
 };
 
@@ -82,6 +87,11 @@ export const SCIM2_AUTHENTICATION_MODES: AuthenticationModeDropdownOption[] = [
         key: OutboundProvisioningAuthenticationMode.API_KEY,
         text: "idp:forms.outboundProvisioningConnector.authentication.modes.apiKey.name",
         value: OutboundProvisioningAuthenticationMode.API_KEY
+    },
+    {
+        key: OutboundProvisioningAuthenticationMode.CLIENT_CREDENTIAL,
+        text: "idp:forms.outboundProvisioningConnector.authentication.modes.clientCredential.name",
+        value: OutboundProvisioningAuthenticationMode.CLIENT_CREDENTIAL
     }
 ];
 

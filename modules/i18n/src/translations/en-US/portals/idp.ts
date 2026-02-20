@@ -321,6 +321,10 @@ export const idp: IdpNS = {
                     apiKey: {
                         name: "API Key",
                         description: "API key header-based authentication"
+                    },
+                    clientCredential: {
+                        name: "Client Credential",
+                        description: "OAuth 2.0 client credentials grant authentication"
                     }
                 },
                 placeholder: "Select authentication mode",

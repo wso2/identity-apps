@@ -433,16 +433,16 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                 onIDPCreate(EMPTY_STRING);
             })
             .catch((error: AxiosError) => {
-                const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
+                const creationLimitReachedError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
 
                 if (error?.response?.status === 403
-                    && error?.response?.data?.code === identityAppsError.getErrorCode()) {
+                    && error?.response?.data?.code === creationLimitReachedError.getErrorCode()) {
 
                     dispatch(
                         addAlert({
-                            description: t(identityAppsError.getErrorDescription()),
+                            description: t(creationLimitReachedError.getErrorDescription()),
                             level: AlertLevels.ERROR,
-                            message: t(identityAppsError.getErrorMessage())
+                            message: t(creationLimitReachedError.getErrorMessage())
                         })
                     );
 
@@ -512,7 +512,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
         >
             <Grid padded>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                    <Grid.Column mobile={ 16 } computer={ 12 }>
                         <FinalFormField
                             fullWidth
                             FormControlProps={ {
@@ -540,7 +540,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                    <Grid.Column mobile={ 16 } computer={ 12 }>
                         <FinalFormField
                             fullWidth
                             FormControlProps={ {
@@ -560,7 +560,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                    <Grid.Column mobile={ 16 }>
                         <Heading as="h5">
                             { t("authenticationProvider:wizards.addProvisioningConnector.steps." +
                                 "connectorSelection.subTitle") }

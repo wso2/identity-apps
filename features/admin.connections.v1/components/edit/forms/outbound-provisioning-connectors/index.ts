@@ -17,7 +17,6 @@
  */
 
 export * from "./common-outbound-provisioning-connector-form";
-export * from "./connector-config-form-fields";
 export * from "./outbound-provisioning-connector-config-form";
 
 export { FieldType } from "../helpers";

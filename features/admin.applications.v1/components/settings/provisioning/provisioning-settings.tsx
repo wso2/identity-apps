@@ -111,7 +111,7 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
         <EmphasizedSegment padded="very">
             <Grid>
                 { isApplicationInboundProvisioningEnabled && (<Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                    <Grid.Column mobile={ 16 } computer={ 12 }>
                         <InboundProvisioningConfigurations
                             appId={ application.id }
                             provisioningConfigurations={ provisioningConfigurations }
@@ -127,7 +127,7 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
                 </Grid.Row>) }
                 { shouldShowOutboundProvisioningConfigurations && (
                     <Grid.Row>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                        <Grid.Column mobile={ 16 } computer={ 12 }>
                             <OutboundProvisioningConfiguration
                                 application={ application }
                                 provisioningConfigurations={ provisioningConfigurations }
