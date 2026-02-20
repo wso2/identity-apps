@@ -212,7 +212,7 @@ export interface APIResourcePanesCommonPropsInterface {
  */
 export enum AddAPIResourceWizardStepsFormTypes {
     BASIC_DETAILS = "BasicDetails",
-    AUTHORIZATION = "Authorization",
+    AUTHORIZATION = "AUTHORIZATION",
     PERMISSIONS= "Permission",
 }
 
