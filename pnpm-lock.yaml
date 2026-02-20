@@ -19247,6 +19247,9 @@ importers:
       '@wso2is/admin.validation.v1':
         specifier: ^2.27.149
         version: link:../admin.validation.v1
+      '@wso2is/common.ui.shared-access.v1':
+        specifier: workspace:^
+        version: link:../common.ui.shared-access.v1
       '@wso2is/common.users.v1':
         specifier: workspace:^
         version: link:../common.users.v1

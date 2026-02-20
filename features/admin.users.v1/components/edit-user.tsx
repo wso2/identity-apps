@@ -39,6 +39,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, TabProps } from "semantic-ui-react";
+import { ShareUserForm } from "./share-user-form";
 import { UserGroupsList } from "./user-groups-edit";
 import { UserProfile } from "./user-profile";
 import { UserRolesList } from "./user-roles-list";
@@ -274,6 +275,17 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                                     (!isSelectedSuperAdmin && isSuperAdmin) ||
                                     (!isSelectedSuperAdmin && !isSuperAdmin))
                             }
+                        />
+                    </ResourceTab.Pane>
+                )
+            },
+            {
+                menuItem: t("users:editUser.tab.menuItems.4"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <ShareUserForm
+                            user={ user }
+                            readOnly={ isReadOnly }
                         />
                     </ResourceTab.Pane>
                 )

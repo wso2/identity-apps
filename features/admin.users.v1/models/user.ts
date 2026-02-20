@@ -479,3 +479,103 @@ export enum InvitationStatus {
     PENDING = "Pending",
     EXPIRED = "Expired"
 }
+
+/**
+ * Interface for role audiences in user sharing.
+ */
+export interface RoleAudiencesInterface {
+    display: string;
+    type: string;
+}
+
+/**
+ * Interface for role sharing in user sharing.
+ */
+export interface RoleSharingInterface {
+    displayName: string;
+    audience: RoleAudiencesInterface;
+}
+
+/**
+ * Interface for sharing the user with all organizations.
+ */
+export interface ShareUserWithAllOrganizationsDataInterface {
+    userId: string;
+    policy: string;
+    roleSharing: {
+        mode: string;
+        roles?: RoleSharingInterface[];
+    };
+}
+
+/**
+ * Interface for unsharing the user with all organizations.
+ */
+export interface UnshareUserWithAllOrganizationsDataInterface {
+    userId: string;
+}
+
+/**
+ * Interface for shared organization and roles for users.
+ */
+export interface SharedOrganizationAndRolesInterface {
+    orgId: string;
+    policy: string;
+    roleSharing: {
+        mode: string;
+        roles: RoleSharingInterface[];
+    };
+}
+
+/**
+ * Interface for sharing the user with selected organization and roles.
+ */
+export interface ShareUserWithSelectedOrganizationsAndRolesDataInterface {
+    userId: string;
+    organizations: SharedOrganizationAndRolesInterface[];
+}
+
+/**
+ * Interface for the patch operation to share the user with selected organizations and roles.
+ */
+export interface ShareOrganizationsAndRolesPatchOperationInterface {
+    op: string;
+    path: string;
+    value: RoleSharingInterface[];
+}
+
+/**
+ * Interface for the patch data to share the user with selected organizations and roles.
+ */
+export interface ShareOrganizationsAndRolesPatchDataInterface {
+    userId: string;
+    Operations: ShareOrganizationsAndRolesPatchOperationInterface[];
+}
+
+/**
+ * Interface for unsharing the user from organizations.
+ */
+export interface UnshareOrganizationsDataInterface {
+    userId: string;
+    orgIds: string[];
+}
+
+/**
+ * Interface for User.
+ */
+export interface UserInterface extends UserBasicInterface {
+    id: string;
+    associatedRoles?: {
+        allowedAudience?: string;
+    };
+}
+
+/**
+ * User sharing policy enum.
+ */
+export enum UserSharingPolicy {
+    ALL_EXISTING_ORGS_ONLY = "ALL_EXISTING_ORGS_ONLY",
+    ALL_EXISTING_AND_FUTURE_ORGS = "ALL_EXISTING_AND_FUTURE_ORGS",
+    SELECTED_ORG_ONLY = "SELECTED_ORG_ONLY",
+    SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN = "SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN"
+}
