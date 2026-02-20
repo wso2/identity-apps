@@ -62,6 +62,11 @@
         <Bug pattern="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION"/>
     </Match>
 
+    <Match>
+        <Class name="org.wso2.identity.apps.login.portal.layout.LayoutCompiler"/>
+        <Bug pattern="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION"/>
+    </Match>
+
     <!-- Exclude EI_EXPOSE_REP - May expose internal representation by returning reference to mutable object -->
     <Match>
         <Class name="org.wso2.identity.apps.taglibs.layout.controller.core.LocalTemplateEngine"/>
