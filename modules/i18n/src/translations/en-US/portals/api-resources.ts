@@ -52,7 +52,7 @@ export const apiResources: ApiResourcesNS = {
             },
             emptySearch: {
                 subTitle: {
-                    0: "We couldn't find the scope you searched for.",
+                    0: "Searched scope was not found.",
                     1: "Please try using a different parameter."
                 },
                 title: "No results found",
