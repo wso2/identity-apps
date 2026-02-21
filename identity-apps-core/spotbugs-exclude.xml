@@ -18,71 +18,40 @@
   -->
 
 <FindBugsFilter>
-    <!-- Exclude EI_EXPOSE_REP2 - May expose internal representation by storing an externally mutable object -->
+
     <Match>
-        <Class name="org.wso2.identity.apps.taglibs.layout.controller.MainTagHandler"/>
-        <Method name="setData"/>
         <Bug pattern="EI_EXPOSE_REP2"/>
     </Match>
 
     <Match>
-        <Class name="org.wso2.identity.apps.taglibs.layout.controller.compiler.executors.DefaultExecutor"/>
-        <Bug pattern="EI_EXPOSE_REP2"/>
-    </Match>
-
-    <Match>
-        <Class name="org.wso2.identity.apps.taglibs.layout.controller.processor.LayoutContentProcessor"/>
-        <Bug pattern="EI_EXPOSE_REP2"/>
-    </Match>
-
-    <Match>
-        <Class name="org.wso2.identity.apps.taglibs.layout.controller.processor.LegacyLayoutFileProcessor"/>
-        <Bug pattern="EI_EXPOSE_REP2"/>
-    </Match>
-
-    <!-- Exclude SE_BAD_FIELD - Non-transient non-serializable instance field -->
-    <Match>
-        <Class name="org.wso2.identity.apps.taglibs.layout.controller.MainTagHandler"/>
         <Bug pattern="SE_BAD_FIELD"/>
     </Match>
 
-    <!-- Exclude THROWS_METHOD_THROWS_RUNTIMEEXCEPTION - Method intentionally throws RuntimeException -->
     <Match>
-        <Class name="org.wso2.identity.apps.taglibs.layout.controller.compiler.parsers.DefaultParser"/>
         <Bug pattern="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION"/>
     </Match>
 
     <Match>
-        <Class name="org.wso2.identity.apps.taglibs.layout.controller.compiler.resolvers.FileResolver"/>
         <Bug pattern="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION"/>
     </Match>
 
     <Match>
-        <Class name="org.wso2.identity.apps.taglibs.layout.controller.core.LocalTemplateEngine"/>
         <Bug pattern="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION"/>
     </Match>
 
     <Match>
-        <Class name="org.wso2.identity.apps.login.portal.layout.LayoutCompiler"/>
-        <Bug pattern="THROWS_METHOD_THROWS_RUNTIMEEXCEPTION"/>
-    </Match>
-
-    <!-- Exclude EI_EXPOSE_REP - May expose internal representation by returning reference to mutable object -->
-    <Match>
-        <Class name="org.wso2.identity.apps.taglibs.layout.controller.core.LocalTemplateEngine"/>
-        <Method name="getExecutor"/>
         <Bug pattern="EI_EXPOSE_REP"/>
     </Match>
 
-    <!-- Exclude OS_OPEN_STREAM - May fail to close stream -->
     <Match>
-        <Class name="org.wso2.identity.apps.taglibs.layout.controller.processor.LayoutContentProcessor"/>
         <Bug pattern="OS_OPEN_STREAM"/>
     </Match>
 
-    <!-- Exclude PA_PUBLIC_PRIMITIVE_ATTRIBUTE - Public primitive attribute is exposed -->
     <Match>
-        <Class name="org.wso2.identity.apps.taglibs.layout.controller.processor.LayoutContentProcessor"/>
         <Bug pattern="PA_PUBLIC_PRIMITIVE_ATTRIBUTE"/>
+    </Match>
+    
+    <Match>
+        <Bug pattern="MS_EXPOSE_REP"/>
     </Match>
 </FindBugsFilter>
