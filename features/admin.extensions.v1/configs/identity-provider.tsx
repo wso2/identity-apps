@@ -119,28 +119,27 @@ export const identityProviderConfig: IdentityProviderConfig = {
                         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV,
                         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.APPLE,
                         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OUTBOUND_PROVISIONING_CONNECTION,
                         SIWEIdPTemplate.templateId
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.SETTINGS, new Set([
-                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OUTBOUND_PROVISIONING_CONNECTION
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.ATTRIBUTES, new Set([
                         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
-                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OUTBOUND_PROVISIONING_CONNECTION
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.CONNECTED_APPS, new Set([
-                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
-                    ])
-                ],
-                [
-                    IdentityProviderTabTypes.CONNECTED_APPS, new Set([
-                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OUTBOUND_PROVISIONING_CONNECTION
                     ])
                 ],
                 [
@@ -152,7 +151,8 @@ export const identityProviderConfig: IdentityProviderConfig = {
                         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.HYPR,
                         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.APPLE,
                         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
-                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OUTBOUND_PROVISIONING_CONNECTION
                     ])
                 ],
                 [
@@ -164,13 +164,15 @@ export const identityProviderConfig: IdentityProviderConfig = {
                 [
                     IdentityProviderTabTypes.JIT_PROVISIONING, new Set([
                         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
-                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OUTBOUND_PROVISIONING_CONNECTION
                     ])
                 ],
                 [
                     IdentityProviderTabTypes.ADVANCED, new Set([
                         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
-                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV,
+                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OUTBOUND_PROVISIONING_CONNECTION
                     ])
                 ]
             ]);

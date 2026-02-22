@@ -5218,6 +5218,9 @@ importers:
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.6.2
         version: link:../admin.feature-gate.v1
+      '@wso2is/admin.groups.v1':
+        specifier: workspace:^
+        version: link:../admin.groups.v1
       '@wso2is/admin.identity-providers.v1':
         specifier: ^2.27.0
         version: link:../admin.identity-providers.v1
@@ -5243,7 +5246,7 @@ importers:
         specifier: ^2.4.41
         version: link:../../modules/dynamic-forms
       '@wso2is/form':
-        specifier: ^2.7.1
+        specifier: workspace:^
         version: link:../../modules/form
       '@wso2is/forms':
         specifier: ^2.3.24

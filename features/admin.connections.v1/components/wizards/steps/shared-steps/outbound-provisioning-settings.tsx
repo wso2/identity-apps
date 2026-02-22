@@ -16,11 +16,15 @@
  * under the License.
  */
 
-import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    IdentifiableComponentInterface,
+    LoadableComponentInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { 
-    OutboundProvisioningConnectorFormFactory 
+import {
+    OutboundProvisioningConnectorFormFactory
 } from "../../../../components/edit/forms/factories/outbound-provisioning-connector-form-factory";
 import {
     AuthenticatorSettingsFormModes
@@ -36,23 +40,21 @@ import {
  * Proptypes for the outbound provisioning settings wizard form component.
  */
 interface OutboundProvisioningSettingsWizardFormPropsInterface extends TestableComponentInterface,
-    LoadableComponentInterface {
+    LoadableComponentInterface, IdentifiableComponentInterface {
 
     metadata: OutboundProvisioningConnectorMetaInterface;
     initialValues: ConnectionInterface;
     onSubmit: (values: ConnectionInterface) => void;
     triggerSubmit: boolean;
     defaultConnector?: OutboundProvisioningConnectorListItemInterface;
+    mode?: AuthenticatorSettingsFormModes;
 }
 
 /**
  * Outbound provisioning settings wizard form component.
- *
- * @param {OutboundProvisioningSettingsWizardFormPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
  */
 export const OutboundProvisioningSettings: FunctionComponent<OutboundProvisioningSettingsWizardFormPropsInterface> = (
-    props
+    props: OutboundProvisioningSettingsWizardFormPropsInterface
 ): ReactElement => {
 
     const {
@@ -61,7 +63,9 @@ export const OutboundProvisioningSettings: FunctionComponent<OutboundProvisionin
         isLoading,
         onSubmit,
         triggerSubmit,
-        [ "data-testid" ]: testId
+        mode = AuthenticatorSettingsFormModes.CREATE,
+        [ "data-testid" ]: testId,
+        [ "data-componentid" ]: componentId = "outbound-provisioning-settings-wizard"
     } = props;
 
     const handleSubmit = (outboundProvisioningConnector: OutboundProvisioningConnectorInterface) => {
@@ -84,13 +88,14 @@ export const OutboundProvisioningSettings: FunctionComponent<OutboundProvisionin
         !isLoading
             ? (
                 <OutboundProvisioningConnectorFormFactory
-                    mode={ AuthenticatorSettingsFormModes.EDIT }
+                    mode={ mode }
                     metadata={ metadata }
                     initialValues={ initialValues?.provisioning?.outboundConnectors?.connectors[ 0 ] }
                     onSubmit={ handleSubmit }
                     triggerSubmit={ triggerSubmit }
                     enableSubmitButton={ false }
                     data-testid={ testId }
+                    data-componentid={ componentId }
                 />
             )
             : <ContentLoader/>

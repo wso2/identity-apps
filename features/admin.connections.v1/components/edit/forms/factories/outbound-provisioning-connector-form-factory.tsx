@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,13 +19,13 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import {
+    AuthenticatorSettingsFormModes
+} from "../../../../models/authenticators";
+import {
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../../../../models/connection";
-import {
-    AuthenticatorSettingsFormModes
-} from "../../../../models/authenticators";
-import { CommonOutboundProvisioningConnectorForm } from "../outbound-provisioning-connectors";
+import { OutboundProvisioningConnectorConfigForm } from "../outbound-provisioning-connectors";
 
 interface OutboundProvisioningConnectorFormFactoryInterface extends TestableComponentInterface {
     /**
@@ -41,45 +41,44 @@ interface OutboundProvisioningConnectorFormFactoryInterface extends TestableComp
     triggerSubmit?: boolean;
     enableSubmitButton?: boolean;
     isReadOnly?: boolean;
+    isSubmitting?: boolean;
 }
 
 /**
  * Outbound provisioning connector form factory.
  *
- * @param {OutboundProvisioningConnectorFormFactoryInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
+ * @returns ReactElement
  */
 export const OutboundProvisioningConnectorFormFactory: FunctionComponent<
     OutboundProvisioningConnectorFormFactoryInterface
-> = (
-    props: OutboundProvisioningConnectorFormFactoryInterface
-): ReactElement => {
-
-    const {
-        metadata,
-        mode,
-        initialValues,
-        onSubmit,
-        type,
-        triggerSubmit,
-        enableSubmitButton,
-        isReadOnly,
-        [ "data-testid" ]: testId
-    } = props;
+> = ({
+    mode,
+    metadata,
+    initialValues,
+    onSubmit,
+    type,
+    triggerSubmit,
+    enableSubmitButton,
+    isReadOnly,
+    isSubmitting,
+    [ "data-testid" ]: testId = "idp-edit-outbound-provisioning-settings-form-factory"
+}: OutboundProvisioningConnectorFormFactoryInterface): ReactElement => {
 
     const generateConnector = (): ReactElement => {
         switch (type) {
             default:
                 return (
-                    <CommonOutboundProvisioningConnectorForm
+                    <OutboundProvisioningConnectorConfigForm
                         mode={ mode }
+                        metadata={ metadata ?? {} as OutboundProvisioningConnectorMetaInterface }
                         initialValues={ initialValues }
-                        metadata={ metadata }
                         onSubmit={ onSubmit }
-                        triggerSubmit={ triggerSubmit }
-                        enableSubmitButton={ enableSubmitButton }
-                        data-testid={ testId }
                         readOnly={ isReadOnly }
+                        isSubmitting={ isSubmitting }
+                        showSubmitButton={ enableSubmitButton }
+                        triggerSubmit={ triggerSubmit }
+                        data-componentid={ testId }
                     />
                 );
         }
@@ -90,15 +89,4 @@ export const OutboundProvisioningConnectorFormFactory: FunctionComponent<
             { generateConnector() }
         </>
     );
-};
-
-OutboundProvisioningConnectorFormFactory.defaultProps = {
-    enableSubmitButton: true
-};
-
-/**
- * Default proptypes for the IDP authenticator for factory component.
- */
-OutboundProvisioningConnectorFormFactory.defaultProps = {
-    "data-testid": "idp-edit-outbound-provisioning-settings-form-factory"
 };

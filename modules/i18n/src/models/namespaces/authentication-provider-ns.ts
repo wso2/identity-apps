@@ -1071,6 +1071,15 @@ export interface AuthenticationProviderNS {
                 content: string;
             };
         };
+        outboundProvisioningGroups: {
+            heading: string;
+            hint: string;
+            placeHolder: string;
+            label: string;
+            popup: {
+                content: string;
+            };
+        };
         certificateSection: {
             certificateEditSwitch: {
                 jwks: string;
@@ -2131,12 +2140,14 @@ export interface AuthenticationProviderNS {
             steps: {
                 connectorSelection: {
                     title: string;
+                    subTitle: string;
                     defaultSetup: {
                         title: string;
                         subTitle: string;
                     };
                 };
                 connectorConfiguration: {
+                    configureTitle: string;
                     title: string;
                 };
                 summary: {

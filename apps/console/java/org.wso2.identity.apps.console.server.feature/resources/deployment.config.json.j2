@@ -2631,6 +2631,11 @@
         {% else %}
             "enableOldUIForEmailProvider": false,
         {% endif %}
+        {% if console.ui.enable_blocking_outbound_provisioning is defined %}
+            "enableBlockingOutboundProvisioning": {{ console.ui.enable_blocking_outbound_provisioning }},
+        {% else %}
+            "enableBlockingOutboundProvisioning": false,
+        {% endif %}
         {% if console.ui.enable_custom_sms_templates is defined %}
             "enableCustomSmsTemplates": {{ console.ui.enable_custom_sms_templates }},
         {% else %}

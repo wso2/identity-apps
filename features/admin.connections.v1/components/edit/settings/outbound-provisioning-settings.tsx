@@ -20,8 +20,7 @@ import { Show } from "@wso2is/access-control";
 import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components/authenticator-accordion";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { RootOnlyComponent } from "@wso2is/admin.organizations.v1/components";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -38,7 +37,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, CheckboxProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
-import { OutboundProvisioningRoles } from "./outbound-provisioning";
+import { OutboundProvisioningGroups } from "./outbound-provisioning";
 import {
     getOutboundProvisioningConnector,
     getOutboundProvisioningConnectorMetadata,
@@ -69,7 +68,8 @@ import { OutboundProvisioningConnectorFormFactory } from "../forms";
 /**
  * Proptypes for the provisioning settings component.
  */
-interface ProvisioningSettingsPropsInterface extends TestableComponentInterface {
+interface ProvisioningSettingsPropsInterface extends TestableComponentInterface,
+    IdentifiableComponentInterface {
     /**
      * Currently editing idp.
      */
@@ -113,7 +113,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         isLoading,
         onUpdate,
         isReadOnly,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId = "idp-edit-outbound-provisioning-settings",
+        [ "data-componentid" ]: componentId = "idp-edit-outbound-provisioning-settings"
     } = props;
 
     const dispatch: Dispatch = useDispatch();
@@ -140,6 +141,10 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         fetchConnectors()
             .then((response: OutboundProvisioningConnectorWithMetaInterface[]) => {
                 setAvailableConnectors(response);
+                // Auto-open accordion if only one connector exists.
+                if (response?.length === 1) {
+                    setAccordionActiveIndexes([ 0 ]);
+                }
             });
     }, [ identityProvider ]);
 
@@ -378,7 +383,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     };
 
     return (
-        <EmphasizedSegment padded="very">
+        <EmphasizedSegment padded="very" data-componentid={ componentId }>
             <Grid.Row>
                 <Grid.Column width={ 8 }>
                     <Heading as="h4">
@@ -391,23 +396,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                 outboundConnectors.connectors.length > 0 ? (
                     (!isLoading)
                         ? (
-                            <div className="default-provisioning-connector-section">
+                            <div className="default-provisioning-connector-section" style={ { marginTop: "1rem" } }>
                                 <Grid>
-                                    <Grid.Row>
-                                        <Grid.Column>
-                                            <Show when={ featureConfig?.identityProviders?.scopes?.update }>
-                                                <PrimaryButton
-                                                    floated="right"
-                                                    onClick={ () => setShowWizard(true) }
-                                                    data-testid={ `${ testId }-add-connector-button` }
-                                                >
-                                                    <Icon name="add"/>
-                                                    { t("authenticationProvider:" +
-                                                            "buttons.addConnector") }
-                                                </PrimaryButton>
-                                            </Show>
-                                        </Grid.Column>
-                                    </Grid.Row>
                                     <Grid.Row>
                                         <Grid.Column>
                                             {
@@ -450,6 +440,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                                                 type={ connector.meta?.name }
                                                                                 data-testid={ `${testId}-${
                                                                                     connector.meta?.name }-content` }
+                                                                                data-componentid={ `${componentId}-${
+                                                                                    connector.meta?.name }-content` }
                                                                                 isReadOnly={ isReadOnly }
                                                                             />
                                                                         ),
@@ -466,9 +458,14 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                                     }
                                                                 ] }
                                                                 data-testid={ `${ testId }-accordion` }
+                                                                data-componentid={ `${ componentId }-accordion` }
                                                                 accordionActiveIndexes = { accordionActiveIndexes }
                                                                 accordionIndex = { index }
-                                                                handleAccordionOnClick = { handleAccordionOnClick }
+                                                                handleAccordionOnClick={ handleAccordionOnClick }
+                                                                accordionContentStyle={ {
+                                                                    backgroundColor:
+                                                                        "var(--oxygen-palette-common-white)"
+                                                                } }
                                                             />
                                                         );
                                                     })
@@ -502,7 +499,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                             <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                                                 <PrimaryButton
                                                     onClick={ () => setShowWizard(true) }
-                                                    data-testid={ `${ testId }-add-connector-button` }>
+                                                    data-testid={ `${ testId }-add-connector-button` }
+                                                    data-componentid={ `${ componentId }-add-connector-button` }>
                                                     <Icon name="add"/>
                                                     { t("authenticationProvider:" +
                                                             "buttons.addConnector") }
@@ -510,6 +508,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                             </Show>
                                         ) }
                                         data-testid={ `${ testId }-empty-placeholder` }
+                                        data-componentid={ `${ componentId }-empty-placeholder` }
                                     />
                                 </Segment>
                                 <Divider hidden />
@@ -544,20 +543,29 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                             (): void => handleDeleteConnector(deletingConnector)
                         }
                         data-testid={ `${ testId }-authenticator-delete-confirmation` }
+                        data-componentid={ `${ componentId }-authenticator-delete-confirmation` }
                         closeOnDimmerClick={ false }
                     >
-                        <ConfirmationModal.Header data-testid={ `${ testId }-authenticator-delete-confirmation` }>
+                        <ConfirmationModal.Header
+                            data-testid={ `${ testId }-authenticator-delete-confirmation` }
+                            data-componentid={ `${ componentId }-authenticator-delete-confirmation-header` }
+                        >
                             { t("authenticationProvider:confirmations." +
                                 "deleteConnector.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             negative
-                            data-testid={ `${ testId }-authenticator-delete-confirmation` }>
+                            data-testid={ `${ testId }-authenticator-delete-confirmation` }
+                            data-componentid={ `${ componentId }-authenticator-delete-confirmation-message` }
+                        >
                             { t("authenticationProvider:confirmations." +
                                 "deleteConnector.message") }
                         </ConfirmationModal.Message>
-                        <ConfirmationModal.Content data-testid={ `${ testId }-authenticator-delete-confirmation` }>
+                        <ConfirmationModal.Content
+                            data-testid={ `${ testId }-authenticator-delete-confirmation` }
+                            data-componentid={ `${ componentId }-authenticator-delete-confirmation-content` }
+                        >
                             { t("authenticationProvider:confirmations." +
                                 "deleteConnector.content") }
                         </ConfirmationModal.Content>
@@ -572,32 +580,23 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                         identityProvider={ identityProvider }
                         onUpdate={ onUpdate }
                         data-testid={ `${ testId }-connector-create-wizard` }
+                        data-componentid={ `${ componentId }-connector-create-wizard` }
                     />
                 )
             }
-
             {
-                (identityProvider?.roles && !isLoading)
+                (!isLoading)
                     ? (
-                        <RootOnlyComponent>
-                            <OutboundProvisioningRoles
-                                idpRoles={ identityProvider?.roles }
-                                idpId={ identityProvider?.id }
-                                data-testid={ `${ testId }-roles` }
-                                isReadOnly={ isReadOnly }
-                                onUpdate={ onUpdate }
-                            />
-                        </RootOnlyComponent>
+                        <OutboundProvisioningGroups
+                            idpRoles={ identityProvider?.roles }
+                            idpId={ identityProvider?.id }
+                            data-componentid={ `${ componentId }-groups` }
+                            isReadOnly={ isReadOnly }
+                            onUpdate={ onUpdate }
+                        />
                     )
                     : <ContentLoader/>
             }
         </EmphasizedSegment>
     );
-};
-
-/**
- * Default proptypes for the IDP outbound provisioning settings component.
- */
-OutboundProvisioningSettings.defaultProps = {
-    "data-testid": "idp-edit-outbound-provisioning-settings"
 };

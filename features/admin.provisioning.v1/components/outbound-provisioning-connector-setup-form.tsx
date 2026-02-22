@@ -93,6 +93,8 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
     const [ isJITChecked, setIsJITChecked ] = useState<boolean>(initialValues?.jit);
     const [ connector, setConnector ] = useState<string>(initialValues?.connector);
 
+    const isBlockingOutboundProvisioningEnabled: boolean = UIConfig?.enableBlockingOutboundProvisioning ?? false;
+
     useEffect(() => {
         if (!idpList) {
             return;
@@ -300,35 +302,36 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                         </Grid.Row>
                     )
                 }
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } computer={ 10 }>
-                        <Field
-                            name="blocking"
-                            required={ false }
-                            requiredErrorMessage=""
-                            type="checkbox"
-                            children={ [
-                                {
-                                    label: t("applications:forms.outboundProvisioning" +
-                                        ".fields.blocking.label"),
-                                    value: "blocking"
+                { isBlockingOutboundProvisioningEnabled && (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } computer={ 10 }>
+                            <Field
+                                name="blocking"
+                                required={ false }
+                                requiredErrorMessage=""
+                                type="checkbox"
+                                children={ [
+                                    {
+                                        label: t("applications:forms.outboundProvisioning" +
+                                            ".fields.blocking.label"),
+                                        value: "blocking"
+                                    }
+                                ] }
+                                readOnly={ isReadOnly }
+                                value={ initialValues?.blocking ? [ "blocking" ] : [] }
+                                listen={
+                                    (values: Map<string, FormValue>) => {
+                                        setIsBlockingChecked(values.get("blocking").includes("blocking"));
+                                    }
                                 }
-                            ] }
-                            readOnly={ isReadOnly }
-                            value={ initialValues?.blocking ? [ "blocking" ] : [] }
-                            listen={
-                                (values: Map<string, FormValue>) => {
-                                    setIsBlockingChecked(values.get("blocking").includes("blocking"));
-                                }
-                            }
-                            data-componentid={ `${ componentId }-blocking-checkbox` }
-                        />
-                        <Hint>
-                            { t("applications:forms.outboundProvisioning.fields.blocking" +
-                                ".hint") }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
+                                data-componentid={ `${componentId}-blocking-checkbox` }
+                            />
+                            <Hint>
+                                { t("applications:forms.outboundProvisioning.fields.blocking" +
+                                    ".hint") }
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row> ) }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } computer={ 10 }>
                         <Field
@@ -350,6 +353,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                             }
                             readOnly={ isReadOnly }
                             data-testid={ `${ componentId }-jit-checkbox` }
+                            data-componentid={ `${componentId}-jit-checkbox` }
                         />
                         <Hint>
                             { t("applications:forms.outboundProvisioning.fields.jit.hint") }

@@ -17,3 +17,4 @@
  */
 
 export * from "./outbound-provisioning-roles";
+export * from "./outbound-provisioning-groups";

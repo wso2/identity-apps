@@ -21,7 +21,8 @@
  */
 export enum GovernanceConnectorFeatureDictionaryKeys {
     HIDE_INVITED_USER_REGISTRATION_TOGGLE = "hideInvitedUserRegistrationToggle",
-    HIDE_FRAUD_DETECTION_EVENT_PUBLISHING_CONFIGURATION = "hideFraudDetectionEventPublishingConfiguration"
+    HIDE_FRAUD_DETECTION_EVENT_PUBLISHING_CONFIGURATION = "hideFraudDetectionEventPublishingConfiguration",
+    SUB_ORG_RESIDENT_OUTBOUND_PROVISIONING = "subOrgResidentOutboundProvisioning"
 }
 
 /**
@@ -38,7 +39,9 @@ export class GovernanceConnectorConstants {
         [GovernanceConnectorFeatureDictionaryKeys.HIDE_INVITED_USER_REGISTRATION_TOGGLE]:
             "governanceConnectors.invitedUserRegistration.enableDisableControl",
         [GovernanceConnectorFeatureDictionaryKeys.HIDE_FRAUD_DETECTION_EVENT_PUBLISHING_CONFIGURATION]:
-            "governanceConnectors.fraudDetection.eventPublishingConfigurations"
+            "governanceConnectors.fraudDetection.eventPublishingConfigurations",
+        [GovernanceConnectorFeatureDictionaryKeys.SUB_ORG_RESIDENT_OUTBOUND_PROVISIONING]:
+            "residentOutboundProvisioning.subOrg"
     };
 
     /**
