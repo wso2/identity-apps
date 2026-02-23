@@ -155,14 +155,14 @@
                             <input type="hidden" name="sessionDataKey" id="sessionDataKey"
                                 value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
 
-                            <div class="ui center aligned basic segment middle aligned" style="padding-left: 0; padding-right: 0;">
+                            <div class="ui center aligned basic segment middle aligned" style="padding-left: 0; padding-right: 0; margin-top: 0;">
                                 <form name="qrinp" style="margin-bottom: 2rem;">
                                     <input type="numeric" name="ECC" value="1" size="1" style="display:none" id="ecc">
                                     <div style="display: flex; justify-content: center; height: 150px;">
-                                        <canvas id="qrcanv" style="height: 180px; width: 180px; margin-left:40px"></canvas>
+                                        <canvas id="qrcanv" style="height: 180px; width: 180px; margin-left: 20px"></canvas>
                                     </div>
                                 </form>
-                                <div class="ui horizontal divider" style="margin-bottom: 2rem;">
+                                <div class="ui horizontal divider" style="margin-bottom: 2rem; margin-top: 2rem;">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%>
                                 </div>
                                 <div id="totpSecretContainer" style="display:none; margin-bottom: 2rem;">
@@ -233,7 +233,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="ui warning bottom attached message text-left display-flex" style="font-size: small;">
+                <div class="ui warning bottom attached message text-left display-flex" style="font-size: small; width: 430px;">
                     <i aria-hidden="true" class="warning circle icon"></i>
                     <div class="message-content">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "dont.have.app.download.google.authenticator")%>

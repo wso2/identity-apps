@@ -16,6 +16,13 @@
  * under the License.
  */
 
+.totp {
+    .totp-code-view-modal {
+        max-width: 480px;
+        margin: 0 auto;
+    }
+}
+
 .totp-secret-input {
     max-width: 420px !important;
     margin: 0 auto !important;

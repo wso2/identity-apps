@@ -971,7 +971,11 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 <Modal.Header className="wizard-header text-center">
                     { t(translateKey + "modals.heading") }
                 </Modal.Header>
-                <Modal.Content data-testid={ `${ testId }-view-modal-content` } scrolling>
+                <Modal.Content
+                    data-testid={ `${ testId }-view-modal-content` }
+                    className="totp-code-view-modal"
+                    scrolling
+                >
                     { renderViewTOTPWizardContent() }
                 </Modal.Content>
                 <Modal.Actions data-testid={ `${ testId }-view-modal-actions` } className ="actions">
