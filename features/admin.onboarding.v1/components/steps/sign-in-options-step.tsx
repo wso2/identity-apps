@@ -19,11 +19,11 @@
 import { Theme, styled } from "@mui/material/styles";
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
+import { getConnectionIcons } from "@wso2is/admin.connections.v1/configs/ui";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useCallback, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useMemo } from "react";
 import {
     DEFAULT_SIGN_IN_OPTIONS,
-    IDENTIFIER_OPTIONS,
     LOGIN_METHOD_OPTIONS,
     OnboardingComponentIds
 } from "../../constants";
@@ -49,8 +49,6 @@ interface SignInOptionsStepPropsInterface extends IdentifiableComponentInterface
     onSignInOptionsChange: (options: SignInOptionsConfigInterface) => void;
     /** Branding configuration for preview */
     brandingConfig?: OnboardingBrandingConfigInterface;
-    /** Whether alphanumeric username is enabled */
-    isAlphanumericUsername?: boolean;
 }
 
 /**
@@ -60,16 +58,6 @@ const OptionSection: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => (
     display: "flex",
     flexDirection: "column",
     gap: theme.spacing(1)
-}));
-
-/**
- * Fixed section for identifiers.
- */
-const FixedSection: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
-    display: "flex",
-    flexDirection: "column",
-    gap: theme.spacing(1.5),
-    marginBottom: theme.spacing(2)
 }));
 
 /**
@@ -102,7 +90,8 @@ const PreviewColumn: typeof Box = styled(RightColumn)(({ theme }: { theme: Theme
     backgroundColor: theme.palette.grey[50],
     borderRadius: theme.shape.borderRadius * 2,
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    overflowY: "auto",
     padding: theme.spacing(4)
 }));
 
@@ -117,21 +106,8 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepPropsInterface> = (
         signInOptions = DEFAULT_SIGN_IN_OPTIONS,
         onSignInOptionsChange,
         brandingConfig,
-        isAlphanumericUsername = true,
         ["data-componentid"]: componentId = OnboardingComponentIds.SIGN_IN_OPTIONS_STEP
     } = props;
-
-    const handleIdentifierToggle: (id: string, enabled: boolean) => void = useCallback(
-        (id: string, enabled: boolean): void => {
-            onSignInOptionsChange({
-                ...signInOptions,
-                identifiers: {
-                    ...signInOptions.identifiers,
-                    [id]: enabled
-                }
-            });
-        }, [ signInOptions, onSignInOptionsChange ]
-    );
 
     const handleLoginMethodToggle: (id: string, enabled: boolean) => void = useCallback(
         (id: string, enabled: boolean): void => {
@@ -146,72 +122,39 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepPropsInterface> = (
     );
 
     const validation: SignInOptionsValidationInterface = useMemo(
-        () => validateSignInOptions(signInOptions, isAlphanumericUsername),
-        [ signInOptions, isAlphanumericUsername ]
+        () => validateSignInOptions(signInOptions),
+        [ signInOptions ]
     );
 
-    // When alphanumeric username is disabled (email-as-username mode), hide email and username.
-    const visibleIdentifierOptions: SignInOptionDefinitionInterface[] = useMemo(() => {
-        if (!isAlphanumericUsername) {
-            return IDENTIFIER_OPTIONS.filter(
-                (option: SignInOptionDefinitionInterface) => option.id === "mobile"
-            );
-        }
+    const loginMethodIcons: Record<string, ReactNode> = useMemo(() => {
+        const icons: Record<string, unknown> = getConnectionIcons();
 
-        return IDENTIFIER_OPTIONS;
-    }, [ isAlphanumericUsername ]);
-
-    // When alphanumeric username is disabled, email IS the username, so always show it in the preview.
-    const previewSignInOptions: SignInOptionsConfigInterface = useMemo(() => {
-        if (!isAlphanumericUsername) {
-            return {
-                ...signInOptions,
-                identifiers: {
-                    ...signInOptions.identifiers,
-                    email: true,
-                    username: false
-                }
-            };
-        }
-
-        return signInOptions;
-    }, [ signInOptions, isAlphanumericUsername ]);
+        return {
+            emailOtp: icons.emailOTP as ReactNode,
+            magicLink: icons.magicLink as ReactNode,
+            passkey: icons.fido as ReactNode,
+            password: icons.basic as ReactNode,
+            pushNotification: icons.push as ReactNode,
+            totp: icons.totp as ReactNode
+        };
+    }, []);
 
     return (
         <TwoColumnLayout data-componentid={ componentId }>
             <LeftColumn>
                 <StepHeader
                     data-componentid={ `${componentId}-header` }
-                    subtitle="Choose how your application's users will identify themselves and verify their identity."
+                    subtitle="Choose how your users will verify their identity."
                     title="How do you want users to sign in?"
                 />
-                <FixedSection>
-                    <OptionSection>
-                        <SectionLabel>Identifiers</SectionLabel>
-                        { visibleIdentifierOptions.map((option: SignInOptionDefinitionInterface) => (
-                            <SignInOptionToggle
-                                isEnabled={
-                                    signInOptions.identifiers[
-                                        option.id as keyof typeof signInOptions.identifiers
-                                    ]
-                                }
-                                key={ option.id }
-                                onToggle={ (enabled: boolean) =>
-                                    handleIdentifierToggle(option.id, enabled)
-                                }
-                                option={ option }
-                                data-componentid={ `${componentId}-identifier-${option.id}` }
-                            />
-                        )) }
-                    </OptionSection>
-                </FixedSection>
                 <SectionLabel sx={ { marginBottom: 0 } }>
-                    Login Methods
+                    Sign-in methods
                 </SectionLabel>
                 <OptionsContainer>
                     <OptionSection>
                         { LOGIN_METHOD_OPTIONS.map((option: SignInOptionDefinitionInterface) => (
                             <SignInOptionToggle
+                                icon={ loginMethodIcons[option.id] }
                                 isEnabled={
                                     signInOptions.loginMethods[
                                         option.id as keyof typeof signInOptions.loginMethods
@@ -236,7 +179,7 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepPropsInterface> = (
             <PreviewColumn>
                 <LoginBoxPreview
                     brandingConfig={ brandingConfig }
-                    signInOptions={ previewSignInOptions }
+                    signInOptions={ signInOptions }
                     data-componentid={ `${componentId}-preview` }
                 />
             </PreviewColumn>

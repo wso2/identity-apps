@@ -116,7 +116,7 @@ export const useStepValidation = (currentStep: OnboardingStep, data: OnboardingD
                        !data.redirectUrls.every((url: string) => isValidUrl(url, isMobile));
             }
             case OnboardingStep.SIGN_IN_OPTIONS:
-                return !isValidSignInOptions(data.signInOptions, false);
+                return !isValidSignInOptions(data.signInOptions);
             case OnboardingStep.DESIGN_LOGIN:
                 // Design step is always valid (has defaults)
                 return false;

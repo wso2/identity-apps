@@ -71,8 +71,7 @@ const StyledCard: any = styled(Box, {
     transition: "all 0.2s ease-in-out",
     ...(variant === "compact" ? {
         gap: theme.spacing(1.5),
-        minWidth: 120,
-        padding: theme.spacing(1.5, 2)
+        padding: theme.spacing(2, 2.5)
     } : {
         gap: theme.spacing(2),
         padding: theme.spacing(2, 2.5)
@@ -90,16 +89,16 @@ const IconContainer: any = styled(Box, {
     shouldForwardProp: (prop: string) => prop !== "variant"
 })<IconContainerProps>(({ theme, variant = "default" }: IconContainerProps & { theme: Theme }) => ({
     "& img, & svg": {
-        height: 28,
-        width: 28
+        height: variant === "compact" ? 32 : 28,
+        width: variant === "compact" ? 32 : 28
     },
     alignItems: "center",
     display: "flex",
     flexShrink: 0,
     justifyContent: "center",
     ...(variant === "compact" ? {
-        height: 32,
-        width: 32
+        height: 40,
+        width: 40
     } : {
         backgroundColor: theme.palette.background.default,
         borderRadius: theme.shape.borderRadius,
@@ -126,15 +125,10 @@ interface CardTitleProps {
  */
 const CardTitle: any = styled(Typography, {
     shouldForwardProp: (prop: string) => prop !== "cardVariant"
-})<CardTitleProps>(({ theme, cardVariant = "default" }: CardTitleProps & { theme: Theme }) => ({
+})<CardTitleProps>(({ theme }: CardTitleProps & { theme: Theme }) => ({
     color: theme.palette.text.primary,
-    lineHeight: 1.4,
-    ...(cardVariant === "compact" ? {
-        fontSize: "0.9375rem",
-        fontWeight: 500
-    } : {
-        fontWeight: 600
-    })
+    fontWeight: 600,
+    lineHeight: 1.4
 }));
 
 /**

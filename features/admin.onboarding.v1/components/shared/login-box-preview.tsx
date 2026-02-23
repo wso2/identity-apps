@@ -89,6 +89,7 @@ const PreviewWrapper: typeof Box = styled(Box)({
     alignItems: "flex-start",
     display: "flex",
     justifyContent: "center",
+    margin: "auto 0",
     width: "100%"
 });
 
