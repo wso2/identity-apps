@@ -1,5 +1,14 @@
 # @wso2is/admin.session-management.v1
 
+## 2.26.1
+
+### Patch Changes
+
+- [#9641](https://github.com/wso2/identity-apps/pull/9641) [`c9957fa1e44a592d6238a8db8fdb53bcd2b3c7fc`](https://github.com/wso2/identity-apps/commit/c9957fa1e44a592d6238a8db8fdb53bcd2b3c7fc) Thanks [@hwupathum](https://github.com/hwupathum)! - Add preserveCurrentSessionAtPasswordUpdate config to UI
+
+- Updated dependencies [[`c9957fa1e44a592d6238a8db8fdb53bcd2b3c7fc`](https://github.com/wso2/identity-apps/commit/c9957fa1e44a592d6238a8db8fdb53bcd2b3c7fc)]:
+  - @wso2is/i18n@2.33.4
+
 ## 2.26.0
 
 ### Minor Changes
