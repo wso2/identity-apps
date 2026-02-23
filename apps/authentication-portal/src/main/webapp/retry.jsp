@@ -50,9 +50,11 @@
     String statusMsgAuthParam = null;
 
     if (StringUtils.isNotEmpty(errorKey)) {
-        AuthenticationRequestWrapper authRequest = (AuthenticationRequestWrapper) request;
-        statAuthParam = authRequest.getAuthParameter(Constants.STATUS);
-        statusMsgAuthParam = authRequest.getAuthParameter(Constants.STATUS_MSG);
+        if (request instanceof AuthenticationRequestWrapper) {
+            AuthenticationRequestWrapper authRequest = (AuthenticationRequestWrapper) request;
+            statAuthParam = authRequest.getAuthParameter(Constants.STATUS);
+            statusMsgAuthParam = authRequest.getAuthParameter(Constants.STATUS_MSG);
+        }
     }
 
     // If auth params are available, can skip i18n mapping validations. This is to allow displaying
