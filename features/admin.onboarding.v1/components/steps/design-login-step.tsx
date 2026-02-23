@@ -19,7 +19,7 @@
 import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useCallback, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useCallback } from "react";
 import { DEFAULT_BRANDING_CONFIG, OnboardingComponentIds } from "../../constants";
 import { OnboardingBrandingConfigInterface, SignInOptionsConfigInterface } from "../../models";
 import ColorPicker from "../shared/color-picker";
@@ -34,8 +34,6 @@ import StepHeader from "../shared/step-header";
 interface DesignLoginStepPropsInterface extends IdentifiableComponentInterface {
     /** Current branding configuration */
     brandingConfig?: OnboardingBrandingConfigInterface;
-    /** Whether alphanumeric username is enabled */
-    isAlphanumericUsername?: boolean;
     /** Callback when branding configuration changes */
     onBrandingConfigChange: (config: OnboardingBrandingConfigInterface) => void;
     /** Sign-in options for preview */
@@ -60,7 +58,8 @@ const PreviewColumn: typeof Box = styled(RightColumn)(({ theme }: { theme: Theme
     backgroundColor: theme.palette.grey[50],
     borderRadius: theme.shape.borderRadius * 2,
     display: "flex",
-    justifyContent: "center",
+    justifyContent: "flex-start",
+    overflowY: "auto",
     padding: theme.spacing(4)
 }));
 
@@ -73,30 +72,10 @@ const DesignLoginStep: FunctionComponent<DesignLoginStepPropsInterface> = (
 ): ReactElement => {
     const {
         brandingConfig = DEFAULT_BRANDING_CONFIG,
-        isAlphanumericUsername = true,
         onBrandingConfigChange,
         signInOptions,
         ["data-componentid"]: componentId = OnboardingComponentIds.DESIGN_LOGIN_STEP
     } = props;
-
-    const previewSignInOptions: SignInOptionsConfigInterface | undefined = useMemo(() => {
-        if (!signInOptions) {
-            return signInOptions;
-        }
-
-        if (!isAlphanumericUsername) {
-            return {
-                ...signInOptions,
-                identifiers: {
-                    ...signInOptions.identifiers,
-                    email: true,
-                    username: false
-                }
-            };
-        }
-
-        return signInOptions;
-    }, [ signInOptions, isAlphanumericUsername ]);
 
     const handleColorChange: (color: string) => void = useCallback((color: string): void => {
         onBrandingConfigChange({
@@ -142,7 +121,7 @@ const DesignLoginStep: FunctionComponent<DesignLoginStepPropsInterface> = (
             <PreviewColumn>
                 <LoginBoxPreview
                     brandingConfig={ brandingConfig }
-                    signInOptions={ previewSignInOptions }
+                    signInOptions={ signInOptions }
                     data-componentid={ `${componentId}-preview` }
                 />
             </PreviewColumn>

@@ -24,9 +24,6 @@ import { ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetExtensionTemplates from "@wso2is/admin.template-core.v1/api/use-get-extension-templates";
 import { ExtensionTemplateListInterface, ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
-import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
-import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
-import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { resolveUserDisplayName } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -51,7 +48,6 @@ import SuccessStep from "./steps/success-step";
 import WelcomeStep from "./steps/welcome-step";
 import { createOnboardingApplication } from "../api/create-onboarding-application";
 import { createTryItApplication } from "../api/create-try-it-application";
-import { updateMultiAttributeLoginConfig } from "../api/multi-attribute-login";
 import { isBrandingCustomized, updateApplicationBranding } from "../api/update-onboarding-branding";
 import {
     DEFAULT_BRANDING_CONFIG,
@@ -317,19 +313,6 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
 
     const isNextDisabled: boolean = useStepValidation(currentStep, onboardingData);
 
-    // Get validation config to determine if alphanumeric username is enabled
-    const { data: validationData, isLoading: isValidationDataLoading } = useValidationConfigData();
-    const isAlphanumericUsername: boolean = useMemo(() => {
-        if (!validationData || isValidationDataLoading) {
-            return true;
-        }
-
-        const usernameConfig: ValidationFormInterface = getUsernameConfiguration(validationData);
-
-        // Default to true unless explicitly disabled
-        return usernameConfig?.enableValidator !== "false";
-    }, [ validationData, isValidationDataLoading ]);
-
     const isM2M: boolean = useMemo(
         () => onboardingData.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION,
         [ onboardingData.templateId ]
@@ -388,17 +371,6 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
                 result = await createOnboardingApplication(onboardingData, mergedTemplate);
             }
 
-            if (onboardingData.signInOptions?.identifiers && !isM2M) {
-                try {
-                    await updateMultiAttributeLoginConfig(
-                        onboardingData.signInOptions.identifiers,
-                        isAlphanumericUsername
-                    );
-                } catch (_multiAttrError) {
-                    // Silently handle - app was created successfully, multi-attribute config is secondary
-                }
-            }
-
             // Update application branding if customized (logo or color changed from defaults)
             if (onboardingData.brandingConfig && isBrandingCustomized(onboardingData.brandingConfig)) {
                 try {
@@ -443,7 +415,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         }
     }, [
         onboardingData, mergedTemplate, setCreatedApplication, dispatch,
-        isAlphanumericUsername, isM2M, isTourFlow, tenantDomain, asgardeoTryItURL
+        isM2M, isTourFlow, tenantDomain, asgardeoTryItURL
     ]);
 
     const handleNext: () => Promise<void> = useCallback(async (): Promise<void> => {
@@ -534,7 +506,6 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
                     <SignInOptionsStep
                         brandingConfig={ onboardingData.brandingConfig }
                         data-componentid={ `${componentId}-sign-in-options` }
-                        isAlphanumericUsername={ isAlphanumericUsername }
                         onSignInOptionsChange={ updateSignInOptions }
                         signInOptions={ onboardingData.signInOptions }
                     />
@@ -544,7 +515,6 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
                     <DesignLoginStep
                         brandingConfig={ onboardingData.brandingConfig }
                         data-componentid={ `${componentId}-design-login` }
-                        isAlphanumericUsername={ isAlphanumericUsername }
                         onBrandingConfigChange={ updateBrandingConfig }
                         signInOptions={ onboardingData.signInOptions }
                     />

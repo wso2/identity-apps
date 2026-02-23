@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import BasicAuthIcon from "../../themes/default/assets/images/authenticators/basic-auth.png";
+import BasicAuthIcon from "../../themes/default/assets/images/authenticators/basic-auth.svg";
 import CustomAuthenticator from "../../themes/default/assets/images/authenticators/custom-authenticator.svg";
 import FIDOLogo from "../../themes/default/assets/images/authenticators/fido-passkey-black.svg";
 import SMSOTPIcon from "../../themes/default/assets/images/authenticators/sms-otp.svg";

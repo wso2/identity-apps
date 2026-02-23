@@ -89,14 +89,14 @@ export const FRAMEWORK_OPTIONS: readonly FrameworkOptionInterface[] = [
  */
 export const APPLICATION_TYPE_OPTIONS: readonly ApplicationTypeOptionInterface[] = [
     {
-        description: "For AI agents and tools accessing APIs without user sign-in.",
-        displayName: "AI / MCP Client",
+        description: "AI agents connecting via Model Context Protocol.",
+        displayName: "MCP client",
         icon: MCPLogo,
         id: "mcp-client",
         templateId: ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
     },
     {
-        description: "Native or hybrid mobile apps.",
+        description: "Native or cross-platform mobile apps.",
         displayName: "Mobile app",
         icon: MobileLogo,
         id: "mobile-app",
@@ -117,7 +117,7 @@ export const APPLICATION_TYPE_OPTIONS: readonly ApplicationTypeOptionInterface[]
         templateId: ApplicationTemplateIdTypes.M2M_APPLICATION
     },
     {
-        description: "Browser based SPAs.",
+        description: "Client-side apps that run entirely in the browser.",
         displayName: "Single page app",
         icon: WebLogo,
         id: "single-page-app",
