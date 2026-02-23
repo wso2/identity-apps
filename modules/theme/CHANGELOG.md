@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.9.2
+
+### Patch Changes
+
+- [#9640](https://github.com/wso2/identity-apps/pull/9640) [`d4bb11671903ab9df341e9685203065b764fec5c`](https://github.com/wso2/identity-apps/commit/d4bb11671903ab9df341e9685203065b764fec5c) Thanks [@savindi7](https://github.com/savindi7)! - Improvements to content and styling.
+
 ## 2.9.1
 
 ### Patch Changes
