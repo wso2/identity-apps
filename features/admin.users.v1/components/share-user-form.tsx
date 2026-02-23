@@ -92,7 +92,6 @@ import {
 import "./share-user-form.scss";
 
 enum RoleSharingModes {
-                    ALL = "ALL",
                     SELECTED = "SELECTED",
                     NONE = "NONE"
                 }
@@ -297,8 +296,8 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             const roleSharingMode: string = userShareData?.sharingMode?.roleAssignment?.mode;
 
             // Based on the role sharing mode, set the role share type.
-            if (roleSharingMode === RoleSharingModes.ALL) {
-                setRoleShareTypeAll(RoleShareType.SHARE_WITH_ALL);
+            if (roleSharingMode === RoleSharingModes.SELECTED) {
+                setRoleShareTypeAll(RoleShareType.SHARE_SELECTED);
             } else if (roleSharingMode === RoleSharingModes.SELECTED) {
                 setRoleShareTypeAll(RoleShareType.SHARE_SELECTED);
 
@@ -504,7 +503,14 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         const data: ShareUserWithAllOrganizationsDataInterface = {
             policy: sharingPolicy,
             roleSharing: {
-                mode: RoleSharingModes.ALL
+                mode: RoleSharingModes.SELECTED,
+                roles: userRolesList?.map(role => ({
+                    audience: {
+                        display: role.audience?.display ?? user?.userName,
+                        type: role.audience?.type
+                    },
+                    displayName: role.displayName
+                })) || []
             },
             userId: user.id
         };
@@ -839,9 +845,15 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                             : UserSharingPolicy.SELECTED_ORG_ONLY,
                         roleSharing: {
                             mode: shareAllRoles
-                                ? RoleSharingModes.ALL
+                                ? RoleSharingModes.SELECTED
                                 : RoleSharingModes.NONE,
-                            roles: []
+                            roles: shareAllRoles ? (userRolesList?.map(role => ({
+                                audience: {
+                                    display: role.audience?.display ?? user?.userName,
+                                    type: role.audience?.type
+                                },
+                                displayName: role.displayName
+                            })) || []) : []
                         }
                     };
                 }),
@@ -916,9 +928,15 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                             : UserSharingPolicy.SELECTED_ORG_ONLY,
                         roleSharing: {
                             mode: shareAllRoles
-                                ? RoleSharingModes.ALL
+                                ? RoleSharingModes.SELECTED
                                 : RoleSharingModes.NONE,
-                            roles: []
+                            roles: shareAllRoles ? (userRolesList?.map(role => ({
+                                audience: {
+                                    display: role.audience?.display ?? user?.userName,
+                                    type: role.audience?.type
+                                },
+                                displayName: role.displayName
+                            })) || []) : []
                         }
                     };
                 }),
@@ -1193,9 +1211,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             const currentRoleSharingMode: string = userShareData?.sharingMode?.roleAssignment?.mode;
             let shareSuccess: boolean = false;
 
-            if (currentRoleSharingMode === RoleSharingModes.ALL) {
-                shareSuccess = await shareAllRolesWithAllOrgs(UserSharingPolicy.ALL_EXISTING_ORGS_ONLY);
-            } else if (currentRoleSharingMode === RoleSharingModes.SELECTED) {
+            if (currentRoleSharingMode === RoleSharingModes.SELECTED) {
                 shareSuccess = await shareSelectedRolesWithAllOrgs();
             } else if (currentRoleSharingMode === RoleSharingModes.NONE) {
                 shareSuccess = await shareUserWithNoRolesWithAllOrgs(UserSharingPolicy.ALL_EXISTING_ORGS_ONLY);
