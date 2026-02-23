@@ -21,7 +21,7 @@ import {
     CopilotStreamChunk,
     clearCopilotChatApi,
     getCopilotChatHistory,
-    sendCopilotStreamingMessage
+    sendCopilotChatMessage
 } from "../../api/copilot-api";
 import {
     AddCopilotMessageActionInterface,
@@ -161,16 +161,16 @@ export const fetchCopilotHistory = () => {
     return async (dispatch: Dispatch, getState: any) => {
         try {
             console.log("[fetchCopilotHistory] Dispatching loading state...");
-            
+
             // Check if there are already messages (don't overwrite existing conversation)
             const currentState = getState();
             const currentMessages = currentState?.copilot?.messages || [];
-            
+
             if (currentMessages.length > 0) {
                 console.log("[fetchCopilotHistory] Messages already exist, skipping history load");
                 return;
             }
-            
+
             dispatch(setCopilotPanelLoading(true));
 
             console.log("[fetchCopilotHistory] Calling API...");
@@ -204,7 +204,7 @@ export const fetchCopilotHistory = () => {
                 // Only set history if we still don't have messages (avoid race condition)
                 const finalState = getState();
                 const finalMessages = finalState?.copilot?.messages || [];
-                
+
                 if (finalMessages.length === 0) {
                     dispatch(setCopilotChatHistory(messages));
                 }
@@ -269,7 +269,7 @@ export const sendCopilotMessage = (userMessage: string) => {
 
             console.log("[sendCopilotMessage] Sending message via streaming API");
 
-            const response: any = await sendCopilotStreamingMessage(
+            const response: any = await sendCopilotChatMessage(
                 userMessage,
                 (chunk: CopilotStreamChunk) => {
                     // Check if request was aborted
