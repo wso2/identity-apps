@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,7 +23,9 @@ import {
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
+import { getActionsResourceEndpoints } from "@wso2is/admin.actions.v1/configs/endpoints";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
+import { getConnectionResourceEndpoints } from "@wso2is/admin.connections.v1/configs/endpoints";
 import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
 import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -31,7 +33,10 @@ import { MultitenantConstants } from "@wso2is/admin.core.v1/constants/multitenan
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { AppComponentProps } from "@wso2is/admin.core.v1/models/common";
-import { DeploymentConfigInterface, UIConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import {
+    DeploymentConfigInterface,
+    UIConfigInterface
+} from "@wso2is/admin.core.v1/models/config";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { setFilteredDevelopRoutes, setSanitizedDevelopRoutes } from "@wso2is/admin.core.v1/store/actions/routes";
 import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
@@ -175,7 +180,12 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     response,
                     () => null,
                     (idToken: DecodedIDTokenPayload) => loginSuccessRedirect(idToken),
-                    () => setRenderApp(true)
+                    () => setRenderApp(true),
+                    () => ({
+                        ...Config.getServiceResourceEndpoints(),
+                        ...getActionsResourceEndpoints(Config.resolveServerHost()),
+                        ...getConnectionResourceEndpoints(Config.resolveServerHost())
+                    })
                 );
             } catch(e) {
                 // TODO: Handle error

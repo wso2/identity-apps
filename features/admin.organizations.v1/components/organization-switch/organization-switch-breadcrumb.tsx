@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,7 +18,10 @@
 
 import { BasicUserInfo } from "@asgardeo/auth-react";
 import { CloneIcon } from "@oxygen-ui/react-icons";
+import { getActionsResourceEndpoints } from "@wso2is/admin.actions.v1/configs/endpoints";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
+import { getConnectionResourceEndpoints } from "@wso2is/admin.connections.v1/configs/endpoints";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -194,7 +197,12 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                         window["AppUtils"].updateOrganizationName("");
                     }
                 },
-                () => null
+                () => null,
+                () => ({
+                    ...Config.getServiceResourceEndpoints(),
+                    ...getActionsResourceEndpoints(Config.resolveServerHost()),
+                    ...getConnectionResourceEndpoints(Config.resolveServerHost())
+                })
             );
 
             mutateOrganizationBreadCrumbFetchRequest();
