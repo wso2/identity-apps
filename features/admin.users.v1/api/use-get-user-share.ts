@@ -66,9 +66,9 @@ const useGetUserShare = (
     if (recursive !== undefined && recursive !== null) {
         params.append("recursive", String(recursive));
     }
-    if (filter) {
-        params.append("filter", filter);
-    }
+    // if (filter) {
+    //     params.append("filter", filter);
+    // }
     if (allAttributes) {
         params.append("attributes", allAttributes);
     }
@@ -82,8 +82,14 @@ const useGetUserShare = (
         params.append("after", after);
     }
 
+    if (filter) {
+        params.append("filter", filter);
+    } else {
+        params.append("filter","");
+    }
+
     const queryString: string = params.toString();
-    const url: string = `${resourceEndpoints.users}/${userId}/share${queryString ? `?${queryString}` : ""}`;
+    const url: string = `${resourceEndpoints.userSharingV2}/${userId}/share${queryString ? `?${queryString}` : ""}`;
 
     const requestConfig: RequestConfigInterface = {
         headers: {

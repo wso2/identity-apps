@@ -527,7 +527,7 @@ export const shareUserWithAllOrganizations = (data: any): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${ store.getState().config.endpoints.users }/share-with-all`
+        url: `${ store.getState().config.endpoints.userSharingV2 }/share-with-all`
     };
 
     return httpClient(requestConfig)
@@ -562,7 +562,7 @@ export const unShareUserWithAllOrganizations = (data: any): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${ store.getState().config.endpoints.users }/unshare-with-all`
+        url: `${ store.getState().config.endpoints.userSharingV2 }/unshare-with-all`
     };
 
     return httpClient(requestConfig)
@@ -598,7 +598,7 @@ export const shareUserWithSelectedOrganizationsAndRoles = (data: any): Promise<a
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${ store.getState().config.endpoints.users }/share`
+        url: `${ store.getState().config.endpoints.userSharingV2 }/share`
     };
 
     return httpClient(requestConfig)
@@ -634,7 +634,7 @@ export const unshareUserWithSelectedOrganizations = (data: any): Promise<any> =>
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${ store.getState().config.endpoints.users }/unshare`
+        url: `${ store.getState().config.endpoints.userSharingV2 }/unshare`
     };
 
     return httpClient(requestConfig)
@@ -670,7 +670,7 @@ export const editUserRolesOfExistingOrganizations = (data: any): Promise<any> =>
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: `${ store.getState().config.endpoints.users }/share`
+        url: `${ store.getState().config.endpoints.userSharingV2 }/share`
     };
 
     return httpClient(requestConfig)

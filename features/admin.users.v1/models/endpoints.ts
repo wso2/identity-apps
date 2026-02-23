@@ -33,6 +33,7 @@ export interface UsersResourceEndpointsInterface {
     guests: string;
     guestsList: string;
     resendCode: string;
+    userSharingV2: string;
 }
 
 /**
