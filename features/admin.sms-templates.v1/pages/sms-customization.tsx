@@ -199,8 +199,8 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
             }
         }
 
-        if (smsTemplateError?.response?.data?.code !== "NTM-65004" &&
-            smsTemplateError?.response?.data?.code !== "NTM-65002") {
+        if (smsTemplateError?.response?.data?.code !== SMSTemplateConstants.TEMPLATE_NOT_AVAILABLE_ERROR_CODE &&
+            smsTemplateError?.response?.data?.code !== SMSTemplateConstants.INVALID_TEMPLATE_TYPE_ERROR_CODE) {
             dispatch(
                 addAlert({
                     description: t("smsTemplates:notifications.getSmsTemplate.error.description"),
