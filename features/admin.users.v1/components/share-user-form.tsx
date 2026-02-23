@@ -438,7 +438,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             return;
         }
 
-        if (isUserShareOperationStatusEnabled) {
+        if (isUserShareOperationStatusEnabled && shareType !== ShareType.SHARE_ALL) {
             handleAsyncSharingNotification(shareType);
         }
 
@@ -500,6 +500,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
     const shareAllRolesWithAllOrgs = async (
         sharingPolicy: UserSharingPolicy = UserSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS
     ): Promise<boolean> => {
+        // Show notification when user confirms the action
+        if (isUserShareOperationStatusEnabled) {
+            handleAsyncSharingNotification(ShareType.SHARE_ALL);
+        }
+        
         const data: ShareUserWithAllOrganizationsDataInterface = {
             policy: sharingPolicy,
             roleSharing: {
@@ -547,6 +552,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
     const shareUserWithNoRolesWithAllOrgs = async (
         sharingPolicy: UserSharingPolicy = UserSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS
     ): Promise<boolean> => {
+        // Show notification when user confirms the action
+        if (isUserShareOperationStatusEnabled) {
+            handleAsyncSharingNotification(ShareType.SHARE_ALL);
+        }
+        
         const data: ShareUserWithAllOrganizationsDataInterface = {
             policy: sharingPolicy,
             roleSharing: {
@@ -977,6 +987,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
     };
 
     const shareSelectedRolesWithAllOrgs = async (): Promise<boolean> => {
+        // Show notification when user confirms the action
+        if (isUserShareOperationStatusEnabled) {
+            handleAsyncSharingNotification(ShareType.SHARE_ALL);
+        }
+
         // This should only happen when the selectedRoles have changed from the initial state.
         if (!isEmpty(selectedRoles) && JSON.stringify(selectedRoles) === JSON.stringify(initialSelectedRoles)) {
             // If the selected roles are the same as the initial roles, we can skip the sharing process.
