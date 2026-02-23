@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FormApi, FormRenderProps, FormValue } from "@wso2is/form";
@@ -96,6 +97,7 @@ export const OutboundProvisioningConnectorCreateWizard:
 
         const { t } = useTranslation();
         const dispatch: Dispatch = useDispatch();
+        const { UIConfig } = useUIConfig();
 
         const [ submitConnectorSelection, setSubmitConnectorSelection ] = useTrigger();
 
@@ -133,10 +135,11 @@ export const OutboundProvisioningConnectorCreateWizard:
         const outboundProvisioningConnectorsMetadataList: OutboundProvisioningConnectorMetaDataInterface[] = useMemo(
             () => getFilteredConnectorMetadataList(
                 outboundProvisioningConnectorsList ?? [],
-                isLoadingOutboundProvisioningConnectorsList as boolean
+                isLoadingOutboundProvisioningConnectorsList as boolean,
+                UIConfig?.hiddenOutboundProvisioningConnectors
             ),
-
-            [ outboundProvisioningConnectorsList, isLoadingOutboundProvisioningConnectorsList ]
+            [ UIConfig?.hiddenOutboundProvisioningConnectors, outboundProvisioningConnectorsList,
+                isLoadingOutboundProvisioningConnectorsList ]
         );
 
         /**

@@ -444,6 +444,8 @@ export class Config {
             hiddenApplicationTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenApplicationTemplates ?? [],
             hiddenAuthenticators: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenAuthenticators,
             hiddenConnectionTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenConnectionTemplates,
+            hiddenOutboundProvisioningConnectors:
+                window[ "AppUtils" ]?.getConfig()?.ui?.hiddenOutboundProvisioningConnectors ?? [],
             hiddenUserStores: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenUserStores,
             i18nConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.i18nConfigs,
             identityProviderTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.identityProviderTemplates,

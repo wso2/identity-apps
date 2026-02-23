@@ -17,6 +17,7 @@
  */
 
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -135,6 +136,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+    const { UIConfig } = useUIConfig();
 
     const [ initWizard, setInitWizard ] = useState<boolean>(false);
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>([]);
@@ -172,9 +174,11 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
     const outboundProvisioningConnectorsMetadataList: OutboundProvisioningConnectorMetaDataInterface[] = useMemo(
         () => getFilteredConnectorMetadataList(
             outboundProvisioningConnectorsList ?? [],
-            isLoadingOutboundProvisioningConnectorsList as boolean
+            isLoadingOutboundProvisioningConnectorsList as boolean,
+            UIConfig?.hiddenOutboundProvisioningConnectors
         ),
-        [ outboundProvisioningConnectorsList, isLoadingOutboundProvisioningConnectorsList ]
+        [ UIConfig?.hiddenOutboundProvisioningConnectors, outboundProvisioningConnectorsList,
+            isLoadingOutboundProvisioningConnectorsList ]
     );
 
     /**

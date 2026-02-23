@@ -266,6 +266,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             },
             hiddenAuthenticators: [],
             hiddenConnectionTemplates: [],
+            hiddenOutboundProvisioningConnectors: [],
             hiddenUserStores: [],
             i18nConfigs: null,
             identityProviderTemplates: {

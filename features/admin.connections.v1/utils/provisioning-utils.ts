@@ -34,11 +34,13 @@ import {
  *
  * @param connectorsList - Raw connector list from the API.
  * @param isLoading - Whether the connector list is still loading.
+ * @param hiddenConnectors - Connector names to hide.
  * @returns Enriched list of connector metadata.
  */
 export const getFilteredConnectorMetadataList = (
     connectorsList: OutboundProvisioningConnectorListItemInterface[],
-    isLoading: boolean
+    isLoading: boolean,
+    hiddenConnectors: string[] = []
 ): OutboundProvisioningConnectorMetaDataInterface[] => {
     if (isLoading || !connectorsList) {
         return [];
@@ -48,7 +50,10 @@ export const getFilteredConnectorMetadataList = (
         connectorsList.filter(
             (connector: OutboundProvisioningConnectorListItemInterface) =>
                 connector?.connectorId !==
-                CommonAuthenticatorConstants.DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID
+                CommonAuthenticatorConstants.DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID &&
+                !hiddenConnectors.some(
+                    (hidden: string) => hidden?.toLowerCase() === connector?.name?.toLowerCase()
+                )
         );
 
     const knownConnectorsMetaData: OutboundProvisioningConnectorMetaDataInterface[] =
