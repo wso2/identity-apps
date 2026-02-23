@@ -2189,6 +2189,20 @@ export const applications: ApplicationsNS = {
                             hint: "Select the allowed hybrid flow response type."
                         }
                     }
+                },
+                applicationTokenIssuer: {
+                    heading: "Application Token Issuer",
+                    fields: {
+                        tokenIssuer: {
+                            label: "Token Issuer",
+                            placeholder: "Select a token issuer for the application",
+                            hint: "Select the token issuer for this application. " +
+                                "This token issuer will be used in the access tokens " +
+                                "issued for this application.",
+                            loading: "Loading token issuers...",
+                            organization: "Organization"
+                        }
+                    }
                 }
             }
         },
