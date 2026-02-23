@@ -199,13 +199,16 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
             }
         }
 
-        dispatch(
-            addAlert({
-                description: t("smsTemplates:notifications.getSmsTemplate.error.description"),
-                level: AlertLevels.ERROR,
-                message: t("smsTemplates:notifications.getSmsTemplate.error.message")
-            })
-        );
+        if (smsTemplateError?.response?.data?.code !== "NTM-65004" &&
+            smsTemplateError?.response?.data?.code !== "NTM-65002") {
+            dispatch(
+                addAlert({
+                    description: t("smsTemplates:notifications.getSmsTemplate.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("smsTemplates:notifications.getSmsTemplate.error.message")
+                })
+            );
+        }
     }, [ smsTemplateError, isSystemTemplate, isInheritedTemplate ]);
 
     const handleTemplateIdChange = (event: SelectChangeEvent<string>): void => {
