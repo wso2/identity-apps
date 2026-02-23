@@ -17,12 +17,16 @@
  */
 
 .totp-secret-input {
-    max-width: 400px !important;
+    max-width: 420px !important;
     margin: 0 auto !important;
     width: auto !important;
 
     &.ui.input.icon.action > input {
         padding-right: 5em !important;
+        font-family: monospace;
+        letter-spacing: 3px;
+        font-size: 14px;
+        font-weight: bold;
     }
 
     &.ui.input.icon.action > i.icon {

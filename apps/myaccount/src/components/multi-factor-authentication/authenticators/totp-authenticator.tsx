@@ -442,7 +442,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                         <Container>
                             <Grid className="ml-3 mr-3">
                                 <Grid.Row textAlign="center" centered columns={ 6 } >
-                                    <Grid.Column >
+                                    <Grid.Column className="pr-2">
                                         <Form.Field >
                                             <input
                                                 autoFocus
@@ -463,7 +463,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                             />
                                         </Form.Field>
                                     </Grid.Column>
-                                    <Grid.Column >
+                                    <Grid.Column className="pr-2">
                                         <Form.Field>
                                             <input
                                                 ref = { pinCode2 }
@@ -482,7 +482,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 } }/>
                                         </Form.Field>
                                     </Grid.Column>
-                                    <Grid.Column >
+                                    <Grid.Column className="pr-2">
                                         <Form.Field >
                                             <input
                                                 ref = { pinCode3 }
@@ -501,7 +501,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 } }/>
                                         </Form.Field>
                                     </Grid.Column>
-                                    <Grid.Column>
+                                    <Grid.Column className="pr-2">
                                         <Form.Field>
                                             <input
                                                 ref = { pinCode4 }
@@ -520,7 +520,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 } }/>
                                         </Form.Field>
                                     </Grid.Column>
-                                    <Grid.Column >
+                                    <Grid.Column className="pr-2">
                                         <Form.Field>
                                             <input
                                                 ref = { pinCode5 }
@@ -539,7 +539,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 } }/>
                                         </Form.Field>
                                     </Grid.Column>
-                                    <Grid.Column >
+                                    <Grid.Column className="pr-2">
                                         <Form.Field>
                                             <input
                                                 ref = { pinCode6 }
@@ -563,6 +563,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                             <Button
+                                                size="small"
                                                 primary
                                                 type="submit"
                                                 className=" totp-verify-action-button"
@@ -579,6 +580,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                             <Grid.Row columns={ 1 }>
                                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                                     <Button
+                                                        size="small"
                                                         type="button"
                                                         onClick={ handleTOTPInitCancel }
                                                         className="link-button totp-verify-action-button"
@@ -615,8 +617,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                         }
                         <Divider className="pl-2 pr-2" horizontal>OR</Divider>
                         { renderTOTPSecretDisplay() }
+                        { renderTOTPVerifyForm() }
                     </Segment>
-                    { renderTOTPVerifyForm() }
                 </Segment>
             );
         }
@@ -804,7 +806,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                         </Segment>
                         <Divider className="pl-2 pr-2" horizontal>OR</Divider>
                         { renderTOTPSecretDisplay() }
-                        <div className="ml-3 mr-3">
+                        <div className="ml-3 mr-3 mt-3">
                             <Message className="display-flex" size="small" warning>
                                 <Icon name="warning sign" color="orange" corner />
                                 <Message.Content className="tiny">
@@ -828,6 +830,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Button
                                             primary
+                                            size="small"
                                             type="button"
                                             className=" totp-verify-action-button"
                                             onClick={ handleRegenerateQRCode }
@@ -847,6 +850,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Button
+                                            size="small"
                                             type="button"
                                             onClick={ () => {
                                                 setIsConfirmRegenerate(false);
@@ -936,6 +940,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
         return (
             <Button
                 primary
+                size="small"
                 className = "totp-verify-done-button"
                 data-testid={ `${ testId }-modal-actions-primary-button` }
                 onClick= { () => {

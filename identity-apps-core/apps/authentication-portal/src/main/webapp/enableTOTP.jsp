@@ -122,7 +122,7 @@
                 <% } %>
             </layout:component>
             <layout:component componentName="MainSection">
-                <div class="ui segment attached segment-with-attached mt-3">
+                <div class="ui segment attached segment-with-attached totp-enroll mt-3">
                     <%-- page content --%>
                     <h3 class="ui header text-center">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "enable.totp")%>
