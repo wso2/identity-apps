@@ -19,8 +19,7 @@
 // Export API functions
 export {
     clearCopilotChatApi,
-    sendCopilotChatMessage,
-    sendCopilotStreamingMessage
+    sendCopilotChatMessage
 } from "./copilot-api";
 
 // Export types
