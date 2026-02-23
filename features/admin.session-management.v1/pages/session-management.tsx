@@ -476,10 +476,11 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                         "preserveCurrentSessionAtPasswordUpdate.label") }
                                                     hint={ t("sessionManagement:form." +
                                                         "preserveCurrentSessionAtPasswordUpdate.hint") }
-                                                    checked={
+                                                    initialValue={
                                                         sessionManagementConfig?.preserveCurrentSessionAtPasswordUpdate
                                                     }
                                                     readOnly={ isSubOrganization() || !hasConnectorUpdatePermission }
+                                                    width={ 16 }
                                                     data-componentid={
                                                         `${ componentId }-preserve-current-session-at-password-update` }
                                                     ariaLabel="Preserve Current Session at Password Update Checkbox"
