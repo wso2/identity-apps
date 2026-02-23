@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -208,7 +208,9 @@ const useSignIn = (): UseSignInInterface => {
      * @param onTenantResolve - Callback to be triggered when tenant is resolved.
      * @param onSignInSuccessRedirect - Callback to be triggered when sign in is successful.
      * @param onAppReady - Callback to be triggered when the app is ready.
-     * @param resourceEndpoints - The resource endpoints.
+     * @param endpointResolver - Optional callback invoked after the server host is resolved
+     *   to produce the full set of service resource endpoints. Defaults to
+     *   `Config.getServiceResourceEndpoints()`.
      *
      * @returns A promise.
      */
@@ -217,14 +219,14 @@ const useSignIn = (): UseSignInInterface => {
         onTenantResolve: (tenantDomain: string) => void,
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
         onAppReady: () => void,
-        resourceEndpoints: Record<string, any> = Config.getServiceResourceEndpoints()
+        endpointResolver: () => Record<string, any> = Config.getServiceResourceEndpoints.bind(Config)
     ): Promise<void> => {
         await _onSignIn(
             response,
             onTenantResolve,
             onSignInSuccessRedirect,
             onAppReady,
-            resourceEndpoints
+            endpointResolver
         );
     };
 
@@ -235,7 +237,7 @@ const useSignIn = (): UseSignInInterface => {
      * @param onTenantResolve - Callback to be triggered when tenant is resolved.
      * @param onSignInSuccessRedirect - Callback to be triggered when sign in is successful.
      * @param onAppReady - Callback to be triggered when the app is ready.
-     * @param resourceEndpoints - The resource endpoints.
+     * @param endpointResolver - Callback invoked after server host resolution to produce endpoints.
      *
      * @returns A promise.
      */
@@ -244,7 +246,7 @@ const useSignIn = (): UseSignInInterface => {
         onTenantResolve: (tenantDomain: string) => void,
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
         onAppReady: () => void,
-        resourceEndpoints: Record<string, any>
+        endpointResolver: () => Record<string, string>
     ): Promise<void> => {
         const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
 
@@ -363,10 +365,10 @@ const useSignIn = (): UseSignInInterface => {
                 dispatch(setCurrentOrganization(orgName));
 
                 // This is to make sure the endpoints are generated with the organization path.
-                await dispatch(setServiceResourceEndpoints(resourceEndpoints));
+                await dispatch(setServiceResourceEndpoints(endpointResolver()));
 
                 // Sets the resource endpoints in the context.
-                setResourceEndpoints(resourceEndpoints as any);
+                setResourceEndpoints(endpointResolver() as any);
 
                 try {
                     response = await switchOrganization(orgId);
@@ -382,10 +384,10 @@ const useSignIn = (): UseSignInInterface => {
         dispatch(setGetOrganizationLoading(false));
 
         // Update the endpoints with tenant path.
-        await dispatch(setServiceResourceEndpoints(resourceEndpoints));
+        await dispatch(setServiceResourceEndpoints(endpointResolver()));
 
         // Sets the resource endpoints in the context.
-        setResourceEndpoints(resourceEndpoints as any);
+        setResourceEndpoints(endpointResolver() as any);
 
         // When the tenant domain changes, we have to reset the auth callback in session storage.
         // If not, it will hang and the app will be unresponsive with in the tab.

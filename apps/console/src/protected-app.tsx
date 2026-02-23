@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,7 +35,6 @@ import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { AppComponentProps } from "@wso2is/admin.core.v1/models/common";
 import {
     DeploymentConfigInterface,
-    ServiceResourceEndpointsInterface,
     UIConfigInterface
 } from "@wso2is/admin.core.v1/models/config";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
@@ -177,18 +176,16 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     response = { ...signInResponse };
                 }
 
-                const serviceResourceEndpoints: ServiceResourceEndpointsInterface = {
-                    ...Config.getServiceResourceEndpoints(),
-                    ...getActionsResourceEndpoints(Config.resolveServerHost()),
-                    ...getConnectionResourceEndpoints(Config.resolveServerHost())
-                };
-
                 await onSignIn(
                     response,
                     () => null,
                     (idToken: DecodedIDTokenPayload) => loginSuccessRedirect(idToken),
                     () => setRenderApp(true),
-                    serviceResourceEndpoints
+                    () => ({
+                        ...Config.getServiceResourceEndpoints(),
+                        ...getActionsResourceEndpoints(Config.resolveServerHost()),
+                        ...getConnectionResourceEndpoints(Config.resolveServerHost())
+                    })
                 );
             } catch(e) {
                 // TODO: Handle error

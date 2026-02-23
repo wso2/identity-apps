@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,8 +20,11 @@ import { BasicUserInfo } from "@asgardeo/auth-react";
 import Box from "@oxygen-ui/react/Box";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import Typography from "@oxygen-ui/react/Typography";
+import { getActionsResourceEndpoints } from "@wso2is/admin.actions.v1/configs/endpoints";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
+import { getConnectionResourceEndpoints } from "@wso2is/admin.connections.v1/configs/endpoints";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
@@ -189,7 +192,17 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
         try {
             response = await switchOrganization(organization.id);
             updateOrganizationSwitchRequestLoadingState(true);
-            await onSignIn(response, () => null, () => null, () => null);
+            await onSignIn(
+                response,
+                () => null,
+                () => null,
+                () => null,
+                () => ({
+                    ...Config.getServiceResourceEndpoints(),
+                    ...getActionsResourceEndpoints(Config.resolveServerHost()),
+                    ...getConnectionResourceEndpoints(Config.resolveServerHost())
+                })
+            );
 
             history.push(AppConstants.getPaths().get("GETTING_STARTED"));
         } catch(e) {
