@@ -113,6 +113,7 @@ export const user: userNS = {
                 commonRoleSharingHint: "This set of roles will be shared and assigned to the user in all existing and future organizations.",
                 commonRoleSharingLabel: "Commonly Shared Roles",
                 doNotShareUser: "Do not share user with any organization",
+                noRolesAndOrgsSharingMessage: "No roles will be assigned to the shared user in all existing and future organizations.",
                 individualRoleSharingHint: "Configure role sharing for specific organizations individually.",
                 individualRoleSharingLabel: "Individually shared roles",
                 notifications: {

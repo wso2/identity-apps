@@ -66,9 +66,6 @@ const useGetUserShare = (
     if (recursive !== undefined && recursive !== null) {
         params.append("recursive", String(recursive));
     }
-    // if (filter) {
-    //     params.append("filter", filter);
-    // }
     if (allAttributes) {
         params.append("attributes", allAttributes);
     }

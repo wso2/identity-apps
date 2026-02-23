@@ -189,7 +189,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         false,
         null,
         "roles",
-        1,
+        10,
         null,
         null,
         "sharingMode"
@@ -219,7 +219,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
     } = useGetOrganizations(
         isOrganizationManagementEnabled,
         null,
-        1,
+        15,
         null,
         null,
         false,
@@ -447,28 +447,8 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             // Unshare the user with all organizations
             unshareWithAllOrganizations();
         } else if (shareType === ShareType.SHARE_ALL) {
-            if (roleShareTypeAll === RoleShareType.SHARE_SELECTED) {
-                // Share selected roles with all organizations
-                // If the selected roles have changed from the initial state,
-                // This is a SHARE ALL operation and we need to show a warning modal
-                if (JSON.stringify(selectedRoles) !== JSON.stringify(initialSelectedRoles)) {
-                    setShowShareAllWarningModal(true);
-                } else {
-                    // If the selected roles are the same as the initial roles
-                    // this means its a patch operation and we can skip the warning modal
-                    shareSelectedRolesWithAllOrgs();
-                }
-            }
-
-            if (roleShareTypeAll === RoleShareType.SHARE_WITH_ALL) {
-                // Share all roles with all organizations
-                shareAllRolesWithAllOrgs();
-            }
-
-            if (roleShareTypeAll === RoleShareType.SHARE_NONE) {
-                // Share user with all organizations but do not assign any roles
-                shareUserWithNoRolesWithAllOrgs();
-            }
+            // Always show warning modal for share with all organizations operations
+            setShowShareAllWarningModal(true);
         } else if (shareType === ShareType.SHARE_SELECTED) {
             // logic to handle sharing the user with selected organizations
             if (roleShareTypeSelected === RoleShareType.SHARE_SELECTED) {
@@ -1369,7 +1349,16 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                     primaryAction={ t("common:confirm") }
                     secondaryAction={ t("common:cancel") }
                     onPrimaryActionClick={ (): void => {
-                        shareSelectedRolesWithAllOrgs();
+                        if (roleShareTypeAll === RoleShareType.SHARE_SELECTED) {
+                            // Share selected roles with all organizations
+                            shareSelectedRolesWithAllOrgs();
+                        } else if (roleShareTypeAll === RoleShareType.SHARE_WITH_ALL) {
+                            // Share all roles with all organizations
+                            shareAllRolesWithAllOrgs();
+                        } else if (roleShareTypeAll === RoleShareType.SHARE_NONE) {
+                            // Share user with all organizations but do not assign any roles
+                            shareUserWithNoRolesWithAllOrgs();
+                        }
                         setShowShareAllWarningModal(false);
                     } }
                     onSecondaryActionClick={ (): void => {
@@ -1467,7 +1456,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                                                 setRoleShareTypeAll(RoleShareType.SHARE_SELECTED);
                                                                 setClearAdvancedRoleSharing(true);
                                                             } else {
-                                                                setRoleShareTypeAll(RoleShareType.SHARE_WITH_ALL);
+                                                                setRoleShareTypeAll(RoleShareType.SHARE_NONE);
                                                             }
                                                         } }
                                                         data-componentid={
@@ -1479,11 +1468,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                             />
                                             <Divider hidden className="mb-0 mt-2" />
                                             {
-                                                roleShareTypeAll === RoleShareType.SHARE_WITH_ALL
+                                                roleShareTypeAll === RoleShareType.SHARE_NONE
                                                     ? (
                                                         <Alert severity="info">
                                                             { t("user:editUser.sections.sharedAccess." +
-                                                                "allRolesAndOrgsSharingMessage") }
+                                                                "noRolesAndOrgsSharingMessage") }
                                                         </Alert>
                                                     ) : (
                                                         <div className="role-share-all-container">
@@ -1492,53 +1481,6 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                                                 selectedRoles={ selectedRoles }
                                                                 setSelectedRoles={ setSelectedRoles }
                                                                 onRoleChange={ updateRoleSelectionForAllOrganizations }
-                                                            />
-                                                            <Typography
-                                                                variant="body1"
-                                                                marginTop={ 2 }
-                                                                marginBottom={ 1 }
-                                                            >
-                                                                { t("user:editUser.sections.sharedAccess." +
-                                                                    "individualRoleSharingLabel") }
-                                                                <Hint inline popup>
-                                                                    { t("user:editUser.sections.sharedAccess." +
-                                                                        "individualRoleSharingHint") }
-                                                                </Hint>
-                                                            </Typography>
-                                                            <SelectiveOrgShareWithSelectiveRoles
-                                                                userId={ user?.id }
-                                                                applicationRolesList={ userRolesList }
-                                                                selectedItems={ selectedOrgIds }
-                                                                setSelectedItems={ setSelectedOrgIds }
-                                                                addedOrgs={ addedOrgIds }
-                                                                setAddedOrgs={ setAddedOrgIds }
-                                                                removedOrgs={ removedOrgIds }
-                                                                setRemovedOrgs={ setRemovedOrgIds }
-                                                                roleSelections={ roleSelections }
-                                                                setRoleSelections={ setRoleSelections }
-                                                                addedRoles={ addedRoles }
-                                                                setAddedRoles={ setAddedRoles }
-                                                                removedRoles={ removedRoles }
-                                                                setRemovedRoles={ setRemovedRoles }
-                                                                shareAllRoles={ false }
-                                                                // Check the diff between
-                                                                // initialSelectedRoles and selectedRoles
-                                                                newlyAddedCommonRoles={ differenceBy(
-                                                                    selectedRoles,
-                                                                    initialSelectedRoles,
-                                                                    "displayName"
-                                                                ) }
-                                                                newlyRemovedCommonRoles={ differenceBy(
-                                                                    initialSelectedRoles,
-                                                                    selectedRoles,
-                                                                    "displayName"
-                                                                ) }
-                                                                clearAdvancedRoleSharing={ clearAdvancedRoleSharing }
-                                                                disableOrgSelection={ false }
-                                                                allRolesSharingMessage={
-                                                                    t("user:editUser.sections.sharedAccess.allUserRolesSharingMessage")
-                                                                }
-                                                                shareWithFutureChildOrgsLabel={ t("user:editUser.sections.sharedAccess.shareUserWithFutureChildOrgs") }
                                                             />
                                                         </div>
                                                     )
