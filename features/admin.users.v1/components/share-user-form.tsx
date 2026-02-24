@@ -296,10 +296,12 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             const roleSharingMode: string = userShareData?.sharingMode?.roleAssignment?.mode;
 
             // Based on the role sharing mode, set the role share type.
+            // Always default to disabled toggle and no selected roles for better UX
             if (roleSharingMode === RoleSharingModes.SELECTED) {
-                setRoleShareTypeAll(RoleShareType.SHARE_SELECTED);
+                // Keep toggle disabled by default - user can manually enable if needed
+                setRoleShareTypeAll(RoleShareType.SHARE_WITH_ALL);
 
-                // If there is selective role sharing, set the selected roles.
+                // Store initial roles for reference but don't auto-select them
                 const initialRoles: RolesInterface[] =
                     userShareData?.sharingMode?.roleAssignment?.roles?.map(
                         (role: RoleSharingInterface) => ({
@@ -313,7 +315,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                     );
 
                 if (initialRoles?.length > 0) {
-                    setSelectedRoles(initialRoles);
+                    // Don't auto-select roles - keep selection empty by default
                     setInitialSelectedRoles(initialRoles);
                 }
             } else if (roleSharingMode === RoleSharingModes.NONE) {
