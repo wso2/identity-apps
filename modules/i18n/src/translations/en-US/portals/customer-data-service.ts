@@ -45,6 +45,99 @@ export const customerDataService: CustomerDataServiceNS = {
             notAllowed: "Not allowed"
         }
     },
+    profileAttributes: {
+        edit: {
+            page: {
+                pageTitle: "Edit Attribute",
+                backButton: "Go back to Attributes"
+            },
+            tabs: {
+                general: "General"
+            },
+            fields: {
+                attribute: {
+                    label: "Attribute",
+                    hint: "This is the unique identifier of the attribute."
+                },
+                applicationIdentifier: {
+                    label: "Application Identifier",
+                    hint: "The application this attribute is scoped to."
+                },
+                valueType: {
+                    label: "Value Type",
+                    options: {
+                        text: "Text",
+                        integer: "Integer",
+                        decimal: "Decimal",
+                        boolean: "Boolean",
+                        complex: "Complex"
+                    }
+                },
+                mergeStrategy: {
+                    label: "Merge Strategy",
+                    hint: "Determines how values from multiple sources are combined. " +
+                        "Use Combine to accumulate values, or Overwrite to replace with the latest.",
+                    options: {
+                        combine: "Combine",
+                        overwrite: "Overwrite"
+                    }
+                },
+                multiValued: {
+                    label: "Allow Multiple Values for this attribute",
+                    hint: "Select this option if the attribute can have multiple values."
+                },
+                subAttributes: {
+                    label: "Sub Attributes",
+                    placeholder: "Select sub attributes"
+                }
+            },
+            notifications: {
+                fetchAttribute: {
+                    error: {
+                        message: "Retrieval Error",
+                        description: "Failed to retrieve the attribute details."
+                    }
+                },
+                updateAttribute: {
+                    success: {
+                        message: "Update Successful",
+                        description: "Attribute updated successfully."
+                    },
+                    error: {
+                        message: "Update Failed",
+                        description: "Failed to update the attribute."
+                    }
+                },
+                deleteAttribute: {
+                    success: {
+                        message: "Attribute Deleted",
+                        description: "The attribute has been deleted successfully."
+                    },
+                    error: {
+                        message: "Deletion Failed",
+                        description: "Failed to delete the attribute."
+                    }
+                }
+            },
+            dangerZone: {
+                delete: {
+                    actionTitle: "Delete Attribute",
+                    header: "Delete this attribute",
+                    subheader: "This action is irreversible and will permanently delete the attribute."
+                }
+            },
+            confirmations: {
+                deleteAttribute: {
+                    header: "Delete Attribute",
+                    message: "This action is irreversible!",
+                    assertionHint: "Please confirm the deletion.",
+                    content: "Are you sure you want to delete <1>{{attributeName}}</1>?"
+                }
+            },
+            identityAttributesNotice: "Identity attributes are read-only here. " +
+                "Please update identity attributes from the Attributes section."
+        }
+    },
     profiles: {
         details: {
             confirmations: {
@@ -200,6 +293,7 @@ export const customerDataService: CustomerDataServiceNS = {
         }
     },
     sidePanel: {
+        ProfileAttributes: "Profile Attributes",
         Profiles: "Profiles",
         UnificationRules: "Unification Rules"
     },

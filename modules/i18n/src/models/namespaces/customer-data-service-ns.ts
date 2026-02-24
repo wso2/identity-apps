@@ -223,8 +223,85 @@ export interface CustomerDataServiceNS {
             title:  string;
         },
     };
+    profileAttributes: {
+        edit: {
+            page: {
+                pageTitle: string;
+                backButton: string;
+            };
+            tabs: {
+                general: string;
+            };
+            fields: {
+                attribute: {
+                    label: string;
+                    hint: string;
+                };
+                applicationIdentifier: {
+                    label: string;
+                    hint: string;
+                };
+                valueType: {
+                    label: string;
+                    options: {
+                        text: string;
+                        integer: string;
+                        decimal: string;
+                        boolean: string;
+                        complex: string;
+                    };
+                };
+                mergeStrategy: {
+                    label: string;
+                    hint: string;
+                    options: {
+                        combine: string;
+                        overwrite: string;
+                    };
+                };
+                multiValued: {
+                    label: string;
+                    hint: string;
+                };
+                subAttributes: {
+                    label: string;
+                    placeholder: string;
+                };
+            };
+            notifications: {
+                fetchAttribute: {
+                    error: { message: string; description: string };
+                };
+                updateAttribute: {
+                    success: { message: string; description: string };
+                    error: { message: string; description: string };
+                };
+                deleteAttribute: {
+                    success: { message: string; description: string };
+                    error: { message: string; description: string };
+                };
+            };
+            dangerZone: {
+                delete: {
+                    header: string;
+                    subheader: string;
+                    actionTitle: string;
+                };
+            };
+            confirmations: {
+                deleteAttribute: {
+                    header: string;
+                    message: string;
+                    assertionHint: string;
+                    content: string;
+                };
+            };
+            identityAttributesNotice: string;
+        };
+    };
     sidePanel: {
         Profiles: string;
+        ProfileAttributes: string;
         UnificationRules: string;
     };
     unificationRules: {
