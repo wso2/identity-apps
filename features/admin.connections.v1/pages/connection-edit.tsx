@@ -70,7 +70,7 @@ import {
 import { Icon } from "semantic-ui-react";
 import {
     PrimaryButton, SecondaryButton
-} from "@wso2is/react-components";
+} from "@wso2is/oxygen-ui";
 import { ConnectionTemplateManagementUtils } from "../utils/connection-template-utils";
 import { ConnectionsManagementUtils, handleGetConnectionsMetaDataError } from "../utils/connection-utils";
 
@@ -703,9 +703,10 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         try {
             const axios = (await import("axios")).default;
             const payload = {
-                resourceId: connector.id,
                 resourceType: "IDP",
-                properties: {}
+                properties: {
+                    connectionId: connector.id
+                }
             };
 
             const response = await axios.post(
@@ -714,8 +715,8 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                 { withCredentials: true }
             );
 
-            const debugId = response.data?.result?.debugId;
-            const authorizationUrl = response.data?.result?.authorizationUrl;
+            const debugId = response.data?.debugId;
+            const authorizationUrl = response.data?.metadata?.authorizationUrl;
 
             if (debugId && authorizationUrl) {
                 // Navigate to test page with debug session data

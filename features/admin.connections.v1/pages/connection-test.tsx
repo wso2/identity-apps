@@ -48,7 +48,7 @@ interface RouteParams {
  * @returns React element.
  */
 const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) => {
-    const { id: idpId = "" } = props.match.params || {};
+    const { id: connectorId = "" } = props.match.params || {};
     const { location } = props;
 
     const { t } = useTranslation();
@@ -170,9 +170,9 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
         setHasError(false);
 
         // eslint-disable-next-line no-console
-        console.log("[ConnectionTest] Starting rerun test for idpId:", idpId);
+        console.log("[ConnectionTest] Starting rerun test for connectorId:", connectorId);
 
-        if (!idpId) {
+        if (!connectorId) {
             setError("Connection ID is missing. Cannot run test.");
             return;
         }
@@ -180,9 +180,10 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
         try {
             const axios = (await import("axios")).default;
             const payload = {
-                resourceId: idpId,
                 resourceType: "IDP",
-                properties: {}
+                properties: {
+                    connectionId: connectorId
+                }
             };
 
             // eslint-disable-next-line no-console
@@ -194,8 +195,8 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                 { withCredentials: true }
             );
 
-            const newDebugId = response.data.result.debugId;
-            const authorizationUrl = response.data.result.authorizationUrl;
+            const newDebugId = response.data.debugId;
+            const authorizationUrl = response.data.metadata.authorizationUrl;
 
             // eslint-disable-next-line no-console
             console.log("[ConnectionTest] Debug session created:", { newDebugId, authorizationUrl });
@@ -245,14 +246,14 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
 
     // Update error status based on result metadata
     useEffect(() => {
-        if (result && result.metadata) {
-            const metadata = result.metadata;
-            
+        if (result && result.metadata && result.metadata.steps) {
+            const steps = result.metadata.steps;
+
             // Check if any step explicitly failed (not pending or success)
             const hasStepError = (
-                (metadata.connectionStatus !== "success" && metadata.connectionStatus !== "pending") ||
-                (metadata.authenticationStatus !== "success" && metadata.authenticationStatus !== "pending") ||
-                (metadata.claimMappingStatus !== "success" && metadata.claimMappingStatus !== "pending") ||
+                (steps.connectionStatus !== "success" && steps.connectionStatus !== "pending") ||
+                (steps.authenticationStatus !== "success" && steps.authenticationStatus !== "pending") ||
+                (steps.claimMappingStatus !== "success" && steps.claimMappingStatus !== "pending") ||
                 result?.error
             );
             
@@ -275,7 +276,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
         const tenantDomain = tenantIndex !== -1 ? pathParts[tenantIndex + 1] : "carbon.super";
         
         // Navigate to the specific connection page
-        history.push(`/t/${tenantDomain}/console/connections/${idpId}`);
+        history.push(`/t/${tenantDomain}/console/connections/${connectorId}`);
     };
 
     // State for connector details - removed as we no longer display connector info on this page
@@ -309,7 +310,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                         };
                     };
 
-                    const idToken = result?.idToken;
+                    const idToken = result?.metadata?.idToken;
                     const decoded = decodeJWT(idToken);
 
                     return (
@@ -370,7 +371,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                 )}
                                 <Header as="h4" style={{ marginBottom: 8, marginTop: 24 }}>External Redirect URL</Header>
                                 <pre style={{ whiteSpace: "pre-wrap", wordBreak: "break-word", background: '#f8f8f8', borderRadius: 6, padding: 12, fontSize: 14, border: '1px solid #e0e0e0' }}>
-                                    {typeof result?.externalRedirectUrl === 'string' ? result.externalRedirectUrl : JSON.stringify(result?.externalRedirectUrl, null, 2)}
+                                    {typeof result?.metadata?.externalRedirectUrl === 'string' ? result.metadata.externalRedirectUrl : JSON.stringify(result?.metadata?.externalRedirectUrl, null, 2)}
                                 </pre>
                             </div>
                         </Tab.Pane>
@@ -380,7 +381,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
             {
                 menuItem: "Claims Mappings",
                 render: () => {
-                    const claimsArray = Array.isArray(result?.mappedClaims) ? result?.mappedClaims : [];
+                    const claimsArray = Array.isArray(result?.metadata?.mappedClaims) ? result?.metadata?.mappedClaims : [];
                     const sortedClaims = claimsArray.sort((a, b) => {
                         if (a.status === 'Successful' && b.status !== 'Successful') return -1;
                         if (a.status !== 'Successful' && b.status === 'Successful') return 1;
@@ -432,9 +433,9 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                 menuItem: "Logs",
                 render: () => {
                     const formatLogs = () => {
-                        const metadata = result?.metadata || {};
-                        const errorDetails = result?.error_details || null;
-                        const errorDescription = result?.error_description || null;
+                        const steps = result?.metadata?.steps || {};
+                        const errorDetails = result?.metadata?.error_details || null;
+                        const errorDescription = result?.metadata?.error_description || null;
                         
                         return (
                             <div>
@@ -462,7 +463,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                     </div>
                                 )}
 
-                                {Object.keys(metadata).length > 0 && (
+                                {Object.keys(steps).length > 0 && (
                                     <div>
                                         <div style={{ background: '#f9fafb', borderRadius: 6, padding: 12, marginBottom: 16, border: '1px solid #e0e0e0' }}>
                                             {[
@@ -470,7 +471,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                                 { key: 'authenticationStatus', label: 'Authentication' },
                                                 { key: 'claimMappingStatus', label: 'Claims Mapping' }
                                             ].map(({ key, label }) => (
-                                                key in metadata ? (
+                                                key in steps ? (
                                                     <div key={key} style={{ marginBottom: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                         <span style={{ fontFamily: 'monospace', color: '#666', fontSize: 13 }}>{label}:</span>
                                                         <span style={{
@@ -478,11 +479,11 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                                             fontSize: 13,
                                                             padding: '2px 8px',
                                                             borderRadius: 4,
-                                                            background: metadata[key] === 'success' ? '#e6ffe6' : metadata[key] === 'failed' || metadata[key] === 'error' ? '#ffe6e6' : '#f0f0f0',
-                                                            color: metadata[key] === 'success' ? '#21ba45' : metadata[key] === 'failed' || metadata[key] === 'error' ? '#db2828' : '#666',
+                                                            background: steps[key] === 'success' ? '#e6ffe6' : steps[key] === 'failed' || steps[key] === 'error' ? '#ffe6e6' : '#f0f0f0',
+                                                            color: steps[key] === 'success' ? '#21ba45' : steps[key] === 'failed' || steps[key] === 'error' ? '#db2828' : '#666',
                                                             fontWeight: 500
                                                         }}>
-                                                            {String(metadata[key])}
+                                                            {String(steps[key])}
                                                         </span>
                                                     </div>
                                                 ) : null
@@ -491,7 +492,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                     </div>
                                 )}
 
-                                {!errorDetails && !errorDescription && Object.keys(metadata).length === 0 && (
+                                {!errorDetails && !errorDescription && Object.keys(steps).length === 0 && (
                                     <div style={{ color: '#888', textAlign: 'center', padding: '24px' }}>
                                         <em>No log information available.</em>
                                     </div>
