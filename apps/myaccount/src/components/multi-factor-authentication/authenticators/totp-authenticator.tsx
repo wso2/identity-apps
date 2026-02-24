@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2019-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,9 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { GenericIcon, LinkButton, Popup } from "@wso2is/react-components";
+import { CopyInputField, GenericIcon, LinkButton, Popup } from "@wso2is/react-components";
 import QRCode from "qrcode.react";
 import React, { FormEvent, PropsWithChildren, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -27,6 +28,7 @@ import {
     Checkbox,
     CheckboxProps,
     Container,
+    Divider,
     Form,
     Grid,
     Icon,
@@ -52,6 +54,7 @@ import {
     EnabledAuthenticatorUpdateAction
 } from "../../../models";
 import { AppState } from "../../../store";
+import "./totp-authenticator.scss";
 
 /**
  * Property types for the TOTP component.
@@ -128,6 +131,61 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     useEffect(() => {
         setIsTOTPEnabled(enabledAuthenticators?.includes(totpAuthenticatorName) ?? false);
     }, [ enabledAuthenticators ]);
+
+    /**
+     * Extract the TOTP secret from an otpauth:// URI.
+     *
+     * @param otpauthUri - The otpauth URI string.
+     * @returns The TOTP secret or null if not found.
+     */
+    const extractTOTPSecret = (otpauthUri: string): string | null => {
+        try {
+            const url: URL = new URL(otpauthUri);
+
+            return url.searchParams.get("secret");
+        } catch {
+            return null;
+        }
+    };
+
+    /**
+     * Format a TOTP secret with a space every 4 characters for readability.
+     *
+     * @param secret - The raw TOTP secret string.
+     * @returns The formatted secret string.
+     */
+    const formatTOTPSecret = (secret: string): string => {
+        return secret.toUpperCase().replace(/(.{4})/g, "$1 ").trim();
+    };
+
+    /**
+     * Render a read-only input displaying the decoded TOTP secret with a copy button.
+     *
+     * @returns Rendered secret display component or null.
+     */
+    const renderTOTPSecretDisplay = (): React.ReactElement | null => {
+        const secret: string | null = qrCode ? extractTOTPSecret(qrCode) : null;
+
+        if (!secret) {
+            return null;
+        }
+
+        return (
+            <div>
+                <h5 className="text-center">
+                    { t(translateKey + "modals.scan.manualEntryLabel") }
+                </h5>
+                <CopyInputField
+                    className="totp-secret-input"
+                    secret
+                    hideSecretLabel={ t(translateKey + "modals.scan.hideSecretKey") }
+                    showSecretLabel={ t(translateKey + "modals.scan.showSecretKey") }
+                    value={ formatTOTPSecret(secret) }
+                    data-testid={ `${ testId }-totp-secret-input` }
+                />
+            </div>
+        );
+    };
 
     /**
      * Focus to next pin code after enter a value.
@@ -353,8 +411,15 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const renderTOTPVerifyForm = (isRegenerated: boolean = false): React.ReactElement => {
         return (
             <>
-                <h5 className=" text-center"> { t(translateKey + "modals.verify.heading") }</h5>
-                <Segment basic className="pl-0">
+                <Box
+                    sx={ {
+                        backgroundColor: "#faf9f8",
+                        borderRadius: 2,
+                        mt: 3,
+                        p: 2
+                    } }
+                >
+                    <h5 className=" text-center"> { t(translateKey + "modals.verify.heading") }</h5>
                     {
                         isTOTPError
                             ? (
@@ -372,7 +437,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                         <Container>
                             <Grid className="ml-3 mr-3">
                                 <Grid.Row textAlign="center" centered columns={ 6 } >
-                                    <Grid.Column >
+                                    <Grid.Column className="pr-2">
                                         <Form.Field >
                                             <input
                                                 autoFocus
@@ -393,7 +458,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                             />
                                         </Form.Field>
                                     </Grid.Column>
-                                    <Grid.Column >
+                                    <Grid.Column className="pr-2">
                                         <Form.Field>
                                             <input
                                                 ref = { pinCode2 }
@@ -412,7 +477,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 } }/>
                                         </Form.Field>
                                     </Grid.Column>
-                                    <Grid.Column >
+                                    <Grid.Column className="pr-2">
                                         <Form.Field >
                                             <input
                                                 ref = { pinCode3 }
@@ -431,7 +496,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 } }/>
                                         </Form.Field>
                                     </Grid.Column>
-                                    <Grid.Column>
+                                    <Grid.Column className="pr-2">
                                         <Form.Field>
                                             <input
                                                 ref = { pinCode4 }
@@ -450,7 +515,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 } }/>
                                         </Form.Field>
                                     </Grid.Column>
-                                    <Grid.Column >
+                                    <Grid.Column className="pr-2">
                                         <Form.Field>
                                             <input
                                                 ref = { pinCode5 }
@@ -469,7 +534,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                                 } }/>
                                         </Form.Field>
                                     </Grid.Column>
-                                    <Grid.Column >
+                                    <Grid.Column className="pr-2">
                                         <Form.Field>
                                             <input
                                                 ref = { pinCode6 }
@@ -493,6 +558,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                             <Button
+                                                size="small"
                                                 primary
                                                 type="submit"
                                                 className=" totp-verify-action-button"
@@ -505,10 +571,11 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                 </div>
                                 { !isRegenerated
                                     ? (
-                                        <div className = "totp-verify-step-btn">
+                                        <div className = "totp-verify-step-btn mb-3">
                                             <Grid.Row columns={ 1 }>
                                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                                     <Button
+                                                        size="small"
                                                         type="button"
                                                         onClick={ handleTOTPInitCancel }
                                                         className="link-button totp-verify-action-button"
@@ -523,7 +590,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                             </Grid>
                         </Container>
                     </Form>
-                </Segment>
+                </Box>
             </>
         );
     };
@@ -536,15 +603,17 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     const renderTOTPWizardContent = (): React.ReactElement => {
         if (TOTPModalCurrentStep === 0) {
             return (
-                <Segment basic >
-                    <h5 className=" text-center"> { t(translateKey + "modals.scan.heading") }</h5>
+                <Segment basic>
+                    <h5 className="text-center"> { t(translateKey + "modals.scan.heading") }</h5>
                     <Segment textAlign="center" basic className="qr-code">
                         { qrCode
                             ? <QRCode value={ qrCode } data-testid={ `${ testId }-modals-scan-qrcode` }/>
                             : null
                         }
+                        <Divider className="pl-2 pr-2" horizontal>OR</Divider>
+                        { renderTOTPSecretDisplay() }
+                        { renderTOTPVerifyForm() }
                     </Segment>
-                    { renderTOTPVerifyForm() }
                 </Segment>
             );
         }
@@ -729,8 +798,10 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                 ? <QRCode value={ qrCode } data-testid={ `${ testId }-view-modals-scan-qrcode` }/>
                                 : null
                             }
+                            <Divider className="pl-2 pr-2" horizontal>OR</Divider>
+                            { renderTOTPSecretDisplay() }
                         </Segment>
-                        <div className="ml-3 mr-3">
+                        <div className="ml-3 mr-3 mt-3">
                             <Message className="display-flex" size="small" warning>
                                 <Icon name="warning sign" color="orange" corner />
                                 <Message.Content className="tiny">
@@ -754,6 +825,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Button
                                             primary
+                                            size="small"
                                             type="button"
                                             className=" totp-verify-action-button"
                                             onClick={ handleRegenerateQRCode }
@@ -773,6 +845,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                         <Button
+                                            size="small"
                                             type="button"
                                             onClick={ () => {
                                                 setIsConfirmRegenerate(false);
@@ -796,6 +869,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                         <Segment textAlign="center" basic className="qr-code">
                             <QRCode value={ qrCode } data-testid={ `${ testId }-modals-scan-qrcode` }/>
                         </Segment>
+                        <Divider className="pl-2 pr-2" horizontal>OR</Divider>
+                        { renderTOTPSecretDisplay() }
                         { renderTOTPVerifyForm(true) }
                     </Segment>
                 );
@@ -860,6 +935,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
         return (
             <Button
                 primary
+                size="small"
                 className = "totp-verify-done-button"
                 data-testid={ `${ testId }-modal-actions-primary-button` }
                 onClick= { () => {
@@ -890,7 +966,11 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                 <Modal.Header className="wizard-header text-center">
                     { t(translateKey + "modals.heading") }
                 </Modal.Header>
-                <Modal.Content data-testid={ `${ testId }-view-modal-content` } scrolling>
+                <Modal.Content
+                    data-testid={ `${ testId }-view-modal-content` }
+                    className="totp-code-view-modal"
+                    scrolling
+                >
                     { renderViewTOTPWizardContent() }
                 </Modal.Content>
                 <Modal.Actions data-testid={ `${ testId }-view-modal-actions` } className ="actions">
