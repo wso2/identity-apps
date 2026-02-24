@@ -34,8 +34,7 @@ reviews:
             1. Check if any `.md` files in `.changeset/` directory are in the PR diff
             2. Exclude `.changeset/README.md` from consideration
 
-            If no changeset is found, the check should fail with a clear explanation that changesets are required for tracking
-  changes.
+            If no changeset is found, the check should fail with a clear explanation that changesets are required for tracking changes.
 knowledge_base:
   code_guidelines:
     enabled: true
