@@ -298,8 +298,6 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             // Based on the role sharing mode, set the role share type.
             if (roleSharingMode === RoleSharingModes.SELECTED) {
                 setRoleShareTypeAll(RoleShareType.SHARE_SELECTED);
-            } else if (roleSharingMode === RoleSharingModes.SELECTED) {
-                setRoleShareTypeAll(RoleShareType.SHARE_SELECTED);
 
                 // If there is selective role sharing, set the selected roles.
                 const initialRoles: RolesInterface[] =
@@ -319,7 +317,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                     setInitialSelectedRoles(initialRoles);
                 }
             } else if (roleSharingMode === RoleSharingModes.NONE) {
-                setRoleShareTypeAll(RoleShareType.SHARE_SELECTED);
+                setRoleShareTypeAll(RoleShareType.SHARE_WITH_ALL);
             }
         }
     }, [ userShareData ]);
@@ -1487,7 +1485,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                                                 setRoleShareTypeAll(RoleShareType.SHARE_SELECTED);
                                                                 setClearAdvancedRoleSharing(true);
                                                             } else {
-                                                                setRoleShareTypeAll(RoleShareType.SHARE_NONE);
+                                                                setRoleShareTypeAll(RoleShareType.SHARE_WITH_ALL);
                                                             }
                                                         } }
                                                         data-componentid={
@@ -1499,13 +1497,13 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                             />
                                             <Divider hidden className="mb-0 mt-2" />
                                             {
-                                                roleShareTypeAll === RoleShareType.SHARE_NONE
+                                                roleShareTypeAll === RoleShareType.SHARE_WITH_ALL
                                                     ? (
                                                         <Alert severity="info">
                                                             { t("user:editUser.sections.sharedAccess." +
                                                                 "noRolesAndOrgsSharingMessage") }
                                                         </Alert>
-                                                    ) : (
+                                                    ) : roleShareTypeAll === RoleShareType.SHARE_SELECTED && (
                                                         <div className="role-share-all-container">
                                                             <RolesShareWithAll
                                                                 user={ user }
