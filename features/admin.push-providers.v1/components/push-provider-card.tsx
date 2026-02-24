@@ -36,7 +36,7 @@ import "./push-provider-card.scss";
 import { useSelector } from "react-redux";
 import { PushProviderConstants } from "../constants/push-provider-constants";
 import { PushProviderTemplateFeatureStatus } from "../models/templates";
-import Chip from "@oxygen-ui/react/Chip/Chip";
+import Chip from "@oxygen-ui/react/Chip";
 
 /**
  * Props for the push provider card component.
@@ -147,7 +147,7 @@ const PushProviderCard: FunctionComponent<PushProviderCardPropsInterface> = ({
                             isDefault && (
                                 <>
                                     <span>&nbsp;&nbsp;</span>
-                                    <Chip label={t("common:default")}/>
+                                    <Chip variant="filled" color="default" size="medium" label={t("common:default")}/>
                                 </>
                             )
                         }
