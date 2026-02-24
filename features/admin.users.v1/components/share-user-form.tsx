@@ -54,7 +54,6 @@ import {
     Hint
 } from "@wso2is/react-components";
 import { AnimatePresence, motion } from "framer-motion";
-import differenceBy from "lodash-es/differenceBy";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     ChangeEvent,
@@ -296,12 +295,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             const roleSharingMode: string = userShareData?.sharingMode?.roleAssignment?.mode;
 
             // Based on the role sharing mode, set the role share type.
-            // Always default to disabled toggle and no selected roles for better UX
             if (roleSharingMode === RoleSharingModes.SELECTED) {
-                // Keep toggle disabled by default - user can manually enable if needed
-                setRoleShareTypeAll(RoleShareType.SHARE_WITH_ALL);
+                // Show toggle as enabled when roles are selected
+                setRoleShareTypeAll(RoleShareType.SHARE_SELECTED);
 
-                // Store initial roles for reference but don't auto-select them
+                // Store and display the shared roles
                 const initialRoles: RolesInterface[] =
                     userShareData?.sharingMode?.roleAssignment?.roles?.map(
                         (role: RoleSharingInterface) => ({
@@ -315,8 +313,8 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                     );
 
                 if (initialRoles?.length > 0) {
-                    // Don't auto-select roles - keep selection empty by default
                     setInitialSelectedRoles(initialRoles);
+                    setSelectedRoles(initialRoles); // Show the selected roles in the UI
                 }
             } else if (roleSharingMode === RoleSharingModes.NONE) {
                 setRoleShareTypeAll(RoleShareType.SHARE_WITH_ALL);
@@ -504,7 +502,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         if (isUserShareOperationStatusEnabled) {
             handleAsyncSharingNotification(ShareType.SHARE_ALL);
         }
-        
+
         const data: ShareUserWithAllOrganizationsDataInterface = {
             policy: sharingPolicy,
             roleSharing: {
@@ -556,7 +554,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         if (isUserShareOperationStatusEnabled) {
             handleAsyncSharingNotification(ShareType.SHARE_ALL);
         }
-        
+
         const data: ShareUserWithAllOrganizationsDataInterface = {
             policy: sharingPolicy,
             roleSharing: {
@@ -992,12 +990,8 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             handleAsyncSharingNotification(ShareType.SHARE_ALL);
         }
 
-        // This should only happen when the selectedRoles have changed from the initial state.
+        // If the selected roles are the same as the initial roles, no changes needed
         if (!isEmpty(selectedRoles) && JSON.stringify(selectedRoles) === JSON.stringify(initialSelectedRoles)) {
-            // If the selected roles are the same as the initial roles, we can skip the sharing process.
-            // But we have to perform the role patch operation.
-            shareIndividualRolesWithSelectedOrgs();
-
             return true;
         }
 
@@ -1023,7 +1017,18 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
 
         try {
             await shareUserWithAllOrganizations(data);
-            shareIndividualRolesWithSelectedOrgs();
+            
+            // Only show success alert if async notification is not enabled
+            if (!isUserShareOperationStatusEnabled) {
+                dispatch(addAlert({
+                    description: t("user:editUser.sections.sharedAccess.notifications.share." +
+                        "success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
+                }));
+            }
+
+            resetStates();
 
             return true;
         } catch (error) {
@@ -1223,22 +1228,29 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             // But we have to change the policy to selected org only from all existing and future orgs policy
             // Preserve the existing role sharing configuration
 
-            const currentRoleSharingMode: string = userShareData?.sharingMode?.roleAssignment?.mode;
-            let shareSuccess: boolean = false;
+            // Extract organization IDs and roles from existing userShareData
+            if (userShareData?.organizations && Array.isArray(userShareData.organizations)) {
+                const orgIds: string[] = userShareData.organizations.map(org => org.orgId);
+                const rolesMap: Record<string, SelectedOrganizationRoleInterface[]> = {};
 
-            if (currentRoleSharingMode === RoleSharingModes.SELECTED) {
-                shareSuccess = await shareSelectedRolesWithAllOrgs();
-            } else if (currentRoleSharingMode === RoleSharingModes.NONE) {
-                shareSuccess = await shareUserWithNoRolesWithAllOrgs(UserSharingPolicy.ALL_EXISTING_ORGS_ONLY);
-            } else {
-                // Fallback to sharing all roles if role sharing mode is undefined
-                shareSuccess = await shareAllRolesWithAllOrgs(UserSharingPolicy.ALL_EXISTING_ORGS_ONLY);
+                userShareData.organizations.forEach(org => {
+                    const roles: SelectedOrganizationRoleInterface[] = org?.roles?.map(role => ({
+                        ...role,
+                        id: role.displayName,
+                        selected: true // Mark all existing roles as selected
+                    }))
+
+                    if (roles?.length > 0) {
+                        rolesMap[org.orgId] = roles;
+                    }
+                });
+
+                setSelectedOrgIds(orgIds); // This makes the orgs appear as selected in the UI
+                setRoleSelections(rolesMap);
             }
 
-            if (shareSuccess) {
-                setShareType(ShareType.SHARE_SELECTED);
-                setRoleShareTypeSelected(RoleShareType.SHARE_SELECTED);
-            }
+            setShareType(ShareType.SHARE_SELECTED);
+            setRoleShareTypeSelected(RoleShareType.SHARE_SELECTED);
 
             setShowShareTypeSwitchModal(false);
         }

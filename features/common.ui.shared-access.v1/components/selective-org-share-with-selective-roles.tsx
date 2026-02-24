@@ -229,9 +229,11 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                 (org: OrganizationInterface) => org.id
             );
 
-            setSelectedItems(sharedOrgs);
-        } else {
-            setSelectedItems([]);
+            // Only update selectedItems if there are no pre-existing selections from props
+            // This allows parent components to set initial selections
+            if (selectedItems.length === 0) {
+                setSelectedItems(sharedOrgs);
+            }
         }
     }, [ totalApplicationOrganizations ]);
 
