@@ -141,7 +141,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
     const [ initWizard, setInitWizard ] = useState<boolean>(false);
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>([]);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(0);
-    const [ alert, , alertComponent ] = useWizardAlert();
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
     const [ selectedConnectorId, setSelectedConnectorId ] = useState<string | null>(null);
     const [ connectorMetaData, setConnectorMetaData ] = useState<
         OutboundProvisioningConnectorMetaInterface | undefined
@@ -165,6 +165,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
      */
     const {
         data: outboundProvisioningConnectorsList,
+        error: outboundProvisioningConnectorsListError,
         isLoading: isLoadingOutboundProvisioningConnectorsList
     } = useGetOutboundProvisioningConnectors();
 
@@ -180,6 +181,39 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
         [ UIConfig?.hiddenOutboundProvisioningConnectors, outboundProvisioningConnectorsList,
             isLoadingOutboundProvisioningConnectorsList ]
     );
+
+    /**
+     * Handles outbound provisioning connectors list fetch error.
+     */
+    useEffect(() => {
+        if (!outboundProvisioningConnectorsListError) {
+            return;
+        }
+
+        if (outboundProvisioningConnectorsListError.response?.data?.description) {
+            setAlert({
+                description: t("authenticationProvider:notifications." +
+                        "getOutboundProvisioningConnectorsList.error.description",
+                { description: outboundProvisioningConnectorsListError.response.data.description }
+                ),
+                level: AlertLevels.ERROR,
+                message: t("authenticationProvider:notifications." +
+                        "getOutboundProvisioningConnectorsList.error.message")
+            });
+
+            return;
+        }
+
+        setAlert({
+            description: t("authenticationProvider:notifications." +
+                    "getOutboundProvisioningConnectorsList." +
+                    "genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("authenticationProvider:notifications." +
+                    "getOutboundProvisioningConnectorsList." +
+                    "genericError.message")
+        });
+    }, [ outboundProvisioningConnectorsListError ]);
 
     /**
      * Initial form values.

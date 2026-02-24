@@ -25,7 +25,9 @@ import {
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../../../../models/connection";
-import { OutboundProvisioningConnectorConfigForm } from "../outbound-provisioning-connectors";
+import {
+    OutboundProvisioningConnectorConfigForm
+} from "../outbound-provisioning-connectors/outbound-provisioning-connector-config-form";
 
 interface OutboundProvisioningConnectorFormFactoryInterface extends TestableComponentInterface {
     /**

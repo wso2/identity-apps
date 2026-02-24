@@ -110,21 +110,23 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
     return (
         <EmphasizedSegment padded="very">
             <Grid>
-                { isApplicationInboundProvisioningEnabled && (<Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } computer={ 12 }>
-                        <InboundProvisioningConfigurations
-                            appId={ application.id }
-                            provisioningConfigurations={ provisioningConfigurations }
-                            onUpdate={ onUpdate }
-                            readOnly={
-                                readOnly
+                { isApplicationInboundProvisioningEnabled && (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } computer={ 12 }>
+                            <InboundProvisioningConfigurations
+                                appId={ application.id }
+                                provisioningConfigurations={ provisioningConfigurations }
+                                onUpdate={ onUpdate }
+                                readOnly={
+                                    readOnly
                                 || !hasApplicationUpdatePermissions
-                            }
-                            data-testid={ `${ componentId }-inbound-configuration` }
-                            data-componentid={ `${ componentId }-inbound-configuration` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>) }
+                                }
+                                data-testid={ `${ componentId }-inbound-configuration` }
+                                data-componentid={ `${ componentId }-inbound-configuration` }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                ) }
                 { shouldShowOutboundProvisioningConfigurations && (
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } computer={ 12 }>

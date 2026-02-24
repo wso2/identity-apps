@@ -2524,8 +2524,8 @@
             {% endif %}
         ],
         "hiddenOutboundProvisioningConnectors": [
-            {% if console.ui.hiddenOutboundProvisioningConnectors is defined %}
-                {% for value in console.ui.hiddenOutboundProvisioningConnectors %}
+            {% if console.ui.hidden_outbound_provisioning_connectors is defined %}
+                {% for value in console.ui.hidden_outbound_provisioning_connectors %}
                 "{{ value }}"{{ "," if not loop.last }}
                 {% endfor %}
             {% endif %}
