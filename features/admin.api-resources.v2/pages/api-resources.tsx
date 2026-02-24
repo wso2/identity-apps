@@ -63,13 +63,9 @@ type APIResourcesPageInterface = IdentifiableComponentInterface;
  * @param props - Props injected to the component.
  * @returns API Resources Page component
  */
-const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
-    props: APIResourcesPageInterface
-): ReactElement => {
-
-    const {
-        ["data-componentid"]: componentId
-    } = props;
+const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = ({
+    ["data-componentid"]: componentId = "api-resources"
+}): ReactElement => {
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -466,16 +462,4 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
     );
 };
 
-/**
- * Default props for the component.
- */
-APIResourcesPage.defaultProps = {
-    "data-componentid": "api-resources"
-};
-
-/**
- * A default export was added to support React.lazy.
- * TODO: Change this to a named export once react starts supporting named exports for code splitting.
- * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
- */
 export default APIResourcesPage;
