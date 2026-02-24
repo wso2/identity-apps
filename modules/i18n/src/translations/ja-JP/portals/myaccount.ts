@@ -658,7 +658,7 @@ export const myAccount: MyAccountNS = {
                         "additionNote": "QRコードはプロフィールに正常に追加されました！",
                         "authenticatorApps": "Authenticatorアプリ",
                         "copiedToClipboard": "コピーしました！",
-                        "copyToClipboard": "クリップボードにコピー",
+                        "copyToClipboard": "コピー",
                         "generate": "新しいコードを生成します",
                         "heading": "Authenticatorアプリを使用して、以下のQRコードをスキャンします",
                         "hideSecretKey": "シークレットを隠す",

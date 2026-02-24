@@ -680,7 +680,7 @@ export const myAccount: MyAccountNS = {
                         additionNote: "உங்கள் சுயவிவரத்தில் QR குறியீடு வெற்றிகரமாகச் சேர்க்கப்பட்டது!",
                         authenticatorApps: "உறுதிப்பாட்டு செயலிகள்",
                         copiedToClipboard: "பிரதி எடுக்கப்பட்டது!",
-                        copyToClipboard: "பிரதியை கிளிப்போர்டுக்கு நகலெடுக்கவும்",
+                        copyToClipboard: "நகலெடுக்கவும்",
                         generate: "புதிய குறியீட்டை உருவாக்கவும்",
                         heading: "ஒரு உறுதிப்பாட்டு செயலியை பயன்படுத்தி இந்த QR குறியீட்டை பதிவு செய்யுங்கள்",
                         hideSecretKey: "ரகசியத்தை மறைக்கவும்",

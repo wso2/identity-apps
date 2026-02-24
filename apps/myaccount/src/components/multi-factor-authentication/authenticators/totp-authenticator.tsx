@@ -149,11 +149,6 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
     };
 
     /**
-     * Render a read-only input displaying the decoded TOTP secret with a copy button.
-     *
-     * @returns Rendered secret display component or null.
-     */
-    /**
      * Format a TOTP secret with a space every 4 characters for readability.
      *
      * @param secret - The raw TOTP secret string.
@@ -803,9 +798,9 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                                 ? <QRCode value={ qrCode } data-testid={ `${ testId }-view-modals-scan-qrcode` }/>
                                 : null
                             }
+                            <Divider className="pl-2 pr-2" horizontal>OR</Divider>
+                            { renderTOTPSecretDisplay() }
                         </Segment>
-                        <Divider className="pl-2 pr-2" horizontal>OR</Divider>
-                        { renderTOTPSecretDisplay() }
                         <div className="ml-3 mr-3 mt-3">
                             <Message className="display-flex" size="small" warning>
                                 <Icon name="warning sign" color="orange" corner />

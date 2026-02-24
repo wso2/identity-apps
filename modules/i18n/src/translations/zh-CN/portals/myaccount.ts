@@ -658,7 +658,7 @@ export const myAccount: MyAccountNS = {
                         "additionNote": "QR码已成功添加到您的个人资料中！",
                         "authenticatorApps": "身份验证器应用程序",
                         "copiedToClipboard": "已复制!",
-                        "copyToClipboard": "复制到剪贴板",
+                        "copyToClipboard": "复制",
                         "generate": "生成新代码",
                         "heading": "使用Authenticator应用扫描下面的QR码",
                         "hideSecretKey": "隐藏密钥",

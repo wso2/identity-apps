@@ -658,7 +658,7 @@ export const myAccount: MyAccountNS = {
                         "additionNote": "¡El código QR se ha agregado con éxito a su perfil!",
                         "authenticatorApps": "Aplicaciones de autenticación",
                         "copiedToClipboard": "¡Copiado!",
-                        "copyToClipboard": "Copiar al portapapeles",
+                        "copyToClipboard": "Copiar",
                         "generate": "Generar un nuevo código",
                         "heading": "Escanee el código QR a continuación usando una aplicación de autenticación",
                         "hideSecretKey": "Ocultar secreto",

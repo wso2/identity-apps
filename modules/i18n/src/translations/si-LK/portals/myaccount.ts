@@ -675,7 +675,7 @@ export const myAccount: MyAccountNS = {
                         additionNote: "QR කේතය ඔබේ පැතිකඩට සාර්ථකව එකතු කර ඇත!",
                         authenticatorApps: "සත්‍යාපන යෙදුම්",
                         copiedToClipboard: "පිටපත් කරන ලදී!",
-                        copyToClipboard: "පිටපත් කිරීමට පිටපත් කරන්න",
+                        copyToClipboard: "පිටපත් කරන්න",
                         generate: "නව කේතයක් ජනනය කරන්න",
                         heading: "සත්‍යාපන යෙදුමක් භාවිතයෙන් මෙම QR කේතය පරිලෝකනය කරන්න",
                         hideSecretKey: "රහස සඟවන්න",
