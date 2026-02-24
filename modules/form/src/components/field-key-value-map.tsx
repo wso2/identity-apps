@@ -283,101 +283,120 @@ export const KeyValueMapField = ({
 
     return (
         <Box data-componentid={dataComponentId} aria-label={ariaLabel}>
-            <InputLabel required={required} sx={{ mb: 1 }}>
+            <InputLabel required={required} sx={{ mb: 1.5 }}>
                 {label}
             </InputLabel>
 
-            <Grid>
-                <Grid.Row className="pb-0">
-                    <Grid.Column mobile={16} tablet={6} computer={3} className="pb-2">
-                        <FormControl
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 2,
+                    mb: 2
+                }}
+            >
+                <Box
+                    sx={{
+                        minWidth: '200px',
+                        flex: '1 1 200px',
+                        maxWidth: { xs: '100%', sm: '250px' }
+                    }}
+                >
+                    <FormControl
+                        fullWidth
+                        size="small"
+                        variant="outlined"
+                        disabled={readOnly}
+                    >
+                        <Select
+                            value={selectedKey}
+                            onChange={(e) => setSelectedKey(e.target.value as string)}
+                            displayEmpty
+                            disabled={readOnly}
+                            data-componentid={`${dataComponentId}-key-select`}
+                        >
+                            <MenuItem value="" disabled>
+                                {`Select ${keyName ? keyName : "Key"}`}
+                            </MenuItem>
+                            {keyOptions
+                                .filter(option => !keyValuePairs.some(pair => pair.key === option.value))
+                                .map((option: DropDownItemInterface) => (
+                                    <MenuItem key={option.value} value={option.value}>
+                                        {option.text}
+                                    </MenuItem>
+                                ))}
+                        </Select>
+                    </FormControl>
+                </Box>
+
+                {valuetype == KeyValueMapValueFieldTypes.TEXT && (
+                    <Box
+                        sx={{
+                            flex: '1 1 300px',
+                            minWidth: '200px'
+                        }}
+                    >
+                        <TextField
                             fullWidth
                             size="small"
                             variant="outlined"
+                            placeholder={placeholder || ""}
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
                             disabled={readOnly}
-                        >
-                            <Select
-                                value={selectedKey}
-                                onChange={(e) => setSelectedKey(e.target.value as string)}
-                                displayEmpty
-                                disabled={readOnly}
-                                data-componentid={`${dataComponentId}-key-select`}
-                            >
-                                <MenuItem value="" disabled>
-                                    {`Select ${keyName ? keyName : "Key"}`}
-                                </MenuItem>
-                                {keyOptions
-                                    .filter(option => !keyValuePairs.some(pair => pair.key === option.value))
-                                    .map((option: DropDownItemInterface) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.text}
-                                        </MenuItem>
-                                    ))}
-                            </Select>
-                        </FormControl>
-                    </Grid.Column>
+                            data-componentid={`${dataComponentId}-value-input`}
+                        />
+                    </Box>
+                )}
 
-                    {valuetype == KeyValueMapValueFieldTypes.TEXT && (
-                        <Grid.Column mobile={16} tablet={6} computer={11} className="pb-2">
-                            <TextField
-                                fullWidth
-                                size="small"
-                                variant="outlined"
-                                placeholder={placeholder || ""}
-                                value={inputValue}
-                                onChange={(e) => setInputValue(e.target.value)}
-                                disabled={readOnly}
-                                data-componentid={`${dataComponentId}-value-input`}
-                            />
-                        </Grid.Column>
-                    )}
+                <Box
+                    sx={{
+                        minWidth: '100px',
+                        flex: '0 1 auto'
+                    }}
+                >
+                    <Button
+                        onClick={handleAddPair}
+                        disabled={readOnly || !selectedKey || !inputValue}
+                        data-componentid={`${dataComponentId}-add-button`}
+                        variant="outlined"
+                        color="primary"
+                        size="small"
+                        startIcon={<PlusIcon />}
+                        fullWidth
+                        sx={{ height: '40px' }}
+                    >
+                        {t("common:add")}
+                    </Button>
+                </Box>
+            </Box>
 
-                    <Grid.Column mobile={16} tablet={4} computer={2} className="pb-2">
-                        <Button
-                            onClick={handleAddPair}
-                            disabled={readOnly || !selectedKey || !inputValue}
-                            data-componentid={`${dataComponentId}-add-button`}
-                            variant="contained"
-                            color="secondary"
-                            size="small"
-                            startIcon={<PlusIcon />}
-                            fullWidth
-                        >
-                            {t("common:add")}
-                        </Button>
-                    </Grid.Column>
-                </Grid.Row>
-
-                <Grid.Row>
-                    <Grid.Column width={16}>
-                        <Box
-                            p={2}
-                            border="1px solid"
-                            borderColor="divider"
-                            borderRadius={1}
-                            minHeight={60}
-                        >
-                        
-                            <DataTable<{ key: string; value: string }>
-                                className="key-value-map-table"
-                                columnCount={3}
-                                loadingStateOptions={{
-                                    count: 5,
-                                    imageType: "square"
-                                }}
-                                onRowClick={() => null}
-                                showHeader={false}
-                                placeholders={showPlaceholders()}
-                                transparent={true}
-                                data-testid={dataComponentId}
-                                actions={resolveTableActions()}
-                                columns={resolveTableColumns()}
-                                data={keyValuePairs}
-                            />
-                        </Box>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+            <Box
+                p={2}
+                border="1px solid"
+                borderColor="divider"
+                borderRadius={1}
+                minHeight={60}
+                sx={{ overflowX: 'auto' }}
+            >
+            
+                <DataTable<{ key: string; value: string }>
+                    className="key-value-map-table"
+                    columnCount={3}
+                    loadingStateOptions={{
+                        count: 5,
+                        imageType: "square"
+                    }}
+                    onRowClick={() => null}
+                    showHeader={false}
+                    placeholders={showPlaceholders()}
+                    transparent={true}
+                    data-testid={dataComponentId}
+                    actions={resolveTableActions()}
+                    columns={resolveTableColumns()}
+                    data={keyValuePairs}
+                />
+            </Box>
         </Box>
     );
 };
