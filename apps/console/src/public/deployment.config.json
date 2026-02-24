@@ -1094,6 +1094,7 @@
                     ],
                     "read": [
                         "internal_claim_meta_view",
+                        "internal_group_mgt_view",
                         "internal_idp_view",
                         "internal_role_mgt_view",
                         "internal_userstore_view"

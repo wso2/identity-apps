@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components/authenticator-accordion";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -120,6 +120,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const hasUpdatePermission: boolean = useRequiredScopes(featureConfig?.identityProviders?.scopes?.update);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
@@ -344,6 +346,10 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     const createAccordionActions = (
         connector: OutboundProvisioningConnectorWithMetaInterface
     ): SegmentedAccordionTitleActionInterface[] => {
+        if (!hasUpdatePermission) {
+            return [];
+        }
+
         return [
             // Toggle Switch which enables/disables the connector state.
             {
@@ -416,14 +422,14 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                             <AuthenticatorAccordion
                                                                 key={ index }
                                                                 globalActions = {
-                                                                    [
+                                                                    hasUpdatePermission ? [
                                                                         {
                                                                             disabled: connector.data?.isEnabled,
                                                                             icon: "trash alternate",
                                                                             onClick: handleAuthenticatorDeleteOnClick,
                                                                             type: "icon"
                                                                         }
-                                                                    ]
+                                                                    ] : []
                                                                 }
                                                                 authenticators={ [
                                                                     {
@@ -479,7 +485,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                 ) : (
                     <Grid>
                         <Grid.Row>
-                            <Grid.Column width={ 8 }>
+                            <Grid.Column mobile={ 16 } computer={ 12 }>
                                 <Divider hidden />
                                 <Segment>
                                     <EmptyPlaceholder

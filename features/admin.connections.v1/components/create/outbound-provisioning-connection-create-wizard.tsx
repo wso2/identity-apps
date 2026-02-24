@@ -126,6 +126,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
     const {
         title,
         subTitle,
+        template,
         onWizardClose,
         onIDPCreate,
         ["data-componentid"]: componentId
@@ -413,7 +414,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                     uri: EMPTY_STRING
                 }
             },
-            description: values.description || EMPTY_STRING,
+            description: values.description || template?.description || EMPTY_STRING,
             federatedAuthenticators: {
                 authenticators: [],
                 defaultAuthenticatorId: EMPTY_STRING

@@ -15,17 +15,17 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { getConnections } from "@wso2is/admin.connections.v1/api/connections";
+import { useIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
 import {
     IdentityProviderInterface,
-    IdentityProviderListResponseInterface
+    OutboundProvisioningConnectorInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -73,8 +73,13 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
 
         const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
         const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
-        const [ idpList, setIdpList ] = useState<IdentityProviderInterface[]>(undefined);
         const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
+        const {
+            data: identityProviderList,
+            isLoading: isIdentityProviderListFetching,
+            error: identityProviderFetchError
+        } = useIdentityProviderList(null, null, null, "provisioning");
 
 
         /**
@@ -91,18 +96,41 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
         }, [ partiallyCompletedStep ]);
 
         /**
-     * Fetch the IDP list.
+     * Show error if something went wrong while fetching the IDP list.
      */
         useEffect(() => {
-            if (idpList) {
-                return;
+            if (!isIdentityProviderListFetching && identityProviderFetchError) {
+                dispatch(addAlert({
+                    description: identityProviderFetchError?.response?.data?.description
+                        ?? t("applications:notifications.updateApplication.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:notifications.updateApplication.genericError.message")
+                }));
+            }
+        }, [ identityProviderFetchError ]);
+
+        /**
+     * Filter the IDP list to only include IDPs with at least one enabled outbound provisioning
+     * connector, and exclude IDPs that are already configured.
+     */
+        const idpList: IdentityProviderInterface[] = useMemo(() => {
+            if (isIdentityProviderListFetching || identityProviderFetchError) {
+                return [];
             }
 
-            getConnections()
-                .then((response: IdentityProviderListResponseInterface) => {
-                    setIdpList(response.identityProviders);
-                });
-        }, []);
+            const alreadyConfiguredIdpNames: Set<string> = new Set(
+                application?.provisioningConfigurations?.outboundProvisioningIdps
+                    ?.map((configured: OutboundProvisioningConfigurationInterface) => configured.idp) ?? []
+            );
+
+            return identityProviderList?.identityProviders
+                ?.filter((idp: IdentityProviderInterface) =>
+                    !alreadyConfiguredIdpNames.has(idp.name) &&
+                    idp.provisioning?.outboundConnectors?.connectors?.some(
+                        (connector: OutboundProvisioningConnectorInterface) => connector.isEnabled
+                    )
+                ) ?? [];
+        }, [ identityProviderList, isIdentityProviderListFetching, identityProviderFetchError, application ]);
 
         const navigateToNext = () => {
             switch (currentWizardStep) {
@@ -157,7 +185,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
 
         const updateConfiguration = (values: any) => {
             const outboundConfigs: OutboundProvisioningConfigurationInterface[] =
-            application?.provisioningConfigurations?.outboundProvisioningIdps;
+            application?.provisioningConfigurations?.outboundProvisioningIdps ?? [];
 
             outboundConfigs.push(values);
 
@@ -173,7 +201,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
      */
         const handleWizardFormFinish = (values: any): void => {
         // Validate whether an IDP with the same connector already exists.
-            if (application?.provisioningConfigurations?.outboundProvisioningIdps.find(
+            if (application?.provisioningConfigurations?.outboundProvisioningIdps?.find(
                 (idp: OutboundProvisioningConfigurationInterface) =>
                     (idp.connector === values.connector) && (idp.idp === values.idp))
             ) {

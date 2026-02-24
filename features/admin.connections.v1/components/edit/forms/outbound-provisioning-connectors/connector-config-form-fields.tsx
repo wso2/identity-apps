@@ -21,7 +21,10 @@ import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Divider from "@oxygen-ui/react/Divider";
+import IconButton from "@oxygen-ui/react/IconButton";
+import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import Typography from "@oxygen-ui/react/Typography";
+import { EyeIcon, EyeSlashIcon, XMarkIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     CheckboxFieldAdapter,
@@ -38,7 +41,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-final-form";
 import { Trans, useTranslation } from "react-i18next";
-import { Grid } from "semantic-ui-react";
+import { Grid, Icon } from "semantic-ui-react";
 import {
     AuthenticationModeDropdownOption,
     OutboundProvisioningAuthenticationMode,
@@ -140,6 +143,8 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
     const [ httpUrlWarnings, setHttpUrlWarnings ] = useState<Record<string, boolean>>({});
     const [ isAuthenticationUpdateMode, setIsAuthenticationUpdateMode ] = useState<boolean>(!isEditMode);
     const [ isPasswordProvisioningEnabled, setIsPasswordProvisioningEnabled ] = useState<boolean>(true);
+    const [ editingConfidentialFields, setEditingConfidentialFields ] = useState<Set<string>>(new Set<string>());
+    const [ visiblePasswordFields, setVisiblePasswordFields ] = useState<Set<string>>(new Set<string>());
     const formValuesRef: React.MutableRefObject<Record<string, any>> = useRef<Record<string, any>>({});
 
     const onValidationChangeRef: React.MutableRefObject<
@@ -147,6 +152,49 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
     > = useRef<((hasErrors: boolean) => void) | undefined>(onValidationChange);
 
     onValidationChangeRef.current = onValidationChange;
+
+    const handleEditConfidentialField = (fieldKey: string, fieldName: string): void => {
+        setEditingConfidentialFields((prev: Set<string>) => {
+            const next: Set<string> = new Set<string>(prev);
+
+            next.add(fieldKey);
+
+            return next;
+        });
+        form.change(fieldName, "");
+    };
+
+    const handleCancelConfidentialFieldEdit = (fieldKey: string, fieldName: string, originalValue: string): void => {
+        setEditingConfidentialFields((prev: Set<string>) => {
+            const next: Set<string> = new Set<string>(prev);
+
+            next.delete(fieldKey);
+
+            return next;
+        });
+        setVisiblePasswordFields((prev: Set<string>) => {
+            const next: Set<string> = new Set<string>(prev);
+
+            next.delete(fieldKey);
+
+            return next;
+        });
+        form.change(fieldName, originalValue);
+    };
+
+    const handleTogglePasswordVisibility = (fieldKey: string): void => {
+        setVisiblePasswordFields((prev: Set<string>) => {
+            const next: Set<string> = new Set<string>(prev);
+
+            if (next.has(fieldKey)) {
+                next.delete(fieldKey);
+            } else {
+                next.add(fieldKey);
+            }
+
+            return next;
+        });
+    };
 
     /**
      * Get the value of a property from initialValues.
@@ -395,10 +443,6 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                         if (isEmpty(subProp?.displayName)) {
                             return false;
                         }
-                        // When password provisioning is enabled, hide the default-password sub property.
-                        if (isPasswordProvisioningParent && isPasswordProvisioningEnabled) {
-                            return subProp.key !== SCIM2_PASSWORD_PROPERTIES.DEFAULT_PASSWORD;
-                        }
 
                         return true;
                     })
@@ -406,9 +450,14 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                         b: CommonPluggableComponentMetaPropertyInterface) =>
                         (a.displayOrder ?? 0) - (b.displayOrder ?? 0)
                     )
-                    .map((subProp: CommonPluggableComponentMetaPropertyInterface) =>
-                        renderField(subProp)
-                    );
+                    .map((subProp: CommonPluggableComponentMetaPropertyInterface) => {
+                        const isDefaultPasswordDisabled: boolean =
+                            isPasswordProvisioningParent
+                            && isPasswordProvisioningEnabled
+                            && subProp.key === SCIM2_PASSWORD_PROPERTIES.DEFAULT_PASSWORD;
+
+                        return renderField(subProp, isDefaultPasswordDisabled);
+                    });
 
                 field = (
                     <React.Fragment key={ metaProperty?.key }>
@@ -440,11 +489,12 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
      * Render a single field based on property metadata, wrapped in Grid for proper spacing.
      */
     const renderField = (
-        propertyMetadata: CommonPluggableComponentMetaPropertyInterface
+        propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+        forceDisabled: boolean = false
     ): ReactElement => {
         const fieldName: string = `${ fieldNamePrefix }${ propertyMetadata.key }`;
         const existingValue: string | undefined = getPropertyValue(propertyMetadata.key);
-        const isReadOnly: boolean = readOnly || propertyMetadata.readOnly || false;
+        const isReadOnly: boolean = readOnly || propertyMetadata.readOnly || forceDisabled || false;
         const fieldType: FieldType = getFieldType(propertyMetadata);
         const isRequired: boolean = isFieldRequiredForAuthMode(
             propertyMetadata.key,
@@ -566,10 +616,11 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
 
             // Confidential → Password input.
             if (fieldType === FieldType.PASSWORD) {
+                const hasExistingValue: boolean = !!existingValue;
                 const confidentialHelperText: string = t(
                     "idp:forms.outboundProvisioningConnector.fields.confidential.helperText"
                 );
-                const helperTextContent: string = isEditMode
+                const helperTextContent: string = isEditMode && hasExistingValue
                     ? propertyMetadata.description
                         ? `${propertyMetadata.description} Note: ${confidentialHelperText}`
                         : confidentialHelperText
@@ -581,6 +632,92 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                     : t("idp:forms.outboundProvisioningConnector.fields.placeholder.enter",
                         { displayName: propertyMetadata.displayName });
 
+                const isBeingEdited: boolean = editingConfidentialFields.has(propertyMetadata.key);
+
+                // In edit mode with existing masked value, show locked display until user clicks Edit.
+                if (isEditMode && hasExistingValue && !isBeingEdited) {
+                    return (
+                        <FinalFormField
+                            key={ propertyMetadata.key }
+                            fullWidth
+                            FormControlProps={ {
+                                margin: "dense"
+                            } }
+                            aria-label={ propertyMetadata.displayName }
+                            data-componentid={ `${ componentId }-${ propertyMetadata.key }-locked` }
+                            name={ fieldName }
+                            type="password"
+                            label={ propertyMetadata.displayName }
+                            component={ TextFieldAdapter }
+                            initialValue={ existingValue }
+                            readOnly={ true }
+                            required={ isRequired }
+                            sx={ !isReadOnly ? {
+                                "& .MuiInputBase-root": {
+                                    backgroundColor: "white"
+                                }
+                            } : undefined }
+                            endAdornment={ !isReadOnly ? (
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        onClick={ (): void => handleEditConfidentialField(
+                                            propertyMetadata.key,
+                                            fieldName
+                                        ) }
+                                        edge="end"
+                                        size="small"
+                                        data-componentid={
+                                            `${ componentId }-${ propertyMetadata.key }-edit-button`
+                                        }
+                                    >
+                                        <Icon name="pencil alternate" />
+                                    </IconButton>
+                                </InputAdornment>
+                            ) : <InputAdornment position="end"/> }
+                            helperText={
+                                helperTextContent ? (
+                                    <Hint compact>
+                                        { helperTextContent }
+                                    </Hint>
+                                ) : null
+                            }
+                        />
+                    );
+                }
+
+                // Editing mode or create mode: show password field with eye toggle, confirm, and cancel.
+                const isPasswordVisible: boolean = visiblePasswordFields.has(propertyMetadata.key);
+
+                const editingAdornment: ReactElement = (
+                    <InputAdornment position="end">
+                        <IconButton
+                            onClick={ (): void => handleTogglePasswordVisibility(propertyMetadata.key) }
+                            size="small"
+                            data-componentid={
+                                `${ componentId }-${ propertyMetadata.key }-toggle-visibility-button`
+                            }
+                        >
+                            { isPasswordVisible ? <EyeSlashIcon /> : <EyeIcon /> }
+                        </IconButton>
+                        { isBeingEdited && (
+                            <IconButton
+                                onClick={ (): void => handleCancelConfidentialFieldEdit(
+                                    propertyMetadata.key,
+                                    fieldName,
+                                    existingValue ?? ""
+                                ) }
+                                size="small"
+                                edge="end"
+                                data-componentid={
+                                    `${ componentId }-${ propertyMetadata.key }-cancel-edit-button`
+                                }
+                            >
+                                <XMarkIcon />
+                            </IconButton>
+                        ) }
+                    </InputAdornment>
+                );
+
                 return (
                     <FinalFormField
                         key={ propertyMetadata.key }
@@ -591,15 +728,17 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                         aria-label={ propertyMetadata.displayName }
                         data-componentid={ `${ componentId }-${ propertyMetadata.key }` }
                         name={ fieldName }
-                        type="password"
+                        type={ isPasswordVisible ? "text" : "password" }
+                        autoComplete="new-password"
                         label={ propertyMetadata.displayName }
                         placeholder={ placeholder }
                         component={ TextFieldAdapter }
-                        initialValue={ existingValue ?? propertyMetadata.defaultValue }
+                        initialValue={ isBeingEdited ? "" : (existingValue ?? propertyMetadata.defaultValue) }
                         readOnly={ isReadOnly }
                         required={ isRequired }
                         maxLength={ propertyMetadata.maxLength ?? 1000 }
                         validation={ (value: string) => validateField(value, propertyMetadata) }
+                        endAdornment={ editingAdornment }
                         helperText={
                             helperTextContent ? (
                                 <Hint compact>
@@ -669,7 +808,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
 
         return (
             <Grid.Row columns={ 1 } key={ propertyMetadata.key }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                <Grid.Column mobile={ 16 } computer={ 12 }>
                     { renderFieldContent() }
                     { renderHttpWarningAlert() }
                 </Grid.Column>
@@ -725,7 +864,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
     const renderAuthenticationInfoBox = (): ReactElement => {
         return (
             <Grid.Row>
-                <Grid.Column width={ 16 }>
+                <Grid.Column mobile={ 16 } computer={ 12 }>
                     <Alert
                         icon={ false }
                         sx={ {
@@ -797,7 +936,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
             <>
                 { authModeProperty && (
                     <Grid.Row columns={ 1 } style={ { marginTop: "1em" } }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                        <Grid.Column mobile={ 16 } computer={ 12 }>
                             <FinalFormField
                                 key={ authModeProperty.key }
                                 fullWidth
@@ -848,7 +987,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                 }) }
                 { isEditMode && (
                     <Grid.Row>
-                        <Grid.Column width={ 16 }>
+                        <Grid.Column mobile={ 16 } computer={ 12 }>
                             <Button
                                 onClick={ handleAuthenticationChangeCancel }
                                 variant="outlined"
@@ -875,12 +1014,12 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
         return (
             <>
                 <Grid.Row>
-                    <Grid.Column width={ 16 }>
+                    <Grid.Column mobile={ 16 } computer={ 12 }>
                         <Divider sx={ { mt: 1 } } />
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
-                    <Grid.Column width={ 16 }>
+                    <Grid.Column mobile={ 16 } computer={ 12 }>
                         <Typography variant="h6">
                             { t("idp:forms.outboundProvisioningConnector.authentication.label") }
                         </Typography>

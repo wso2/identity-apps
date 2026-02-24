@@ -16,6 +16,8 @@
  * under the License.
  */
 import { getConnections } from "@wso2is/admin.connections.v1/api/connections";
+import { getOutboundProvisioningConnectorsMetaData } from "@wso2is/admin.connections.v1/components/meta/connectors";
+import { OutboundProvisioningConnectorMetaDataInterface } from "@wso2is/admin.connections.v1/models/connection";
 import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components/authenticator-accordion";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import {
@@ -72,6 +74,16 @@ interface OutboundProvisioningConfigurationPropsInterface extends TestableCompon
      */
     defaultActiveIndexes?: number[];
 }
+
+const resolveOutboundConnectorIcon = (
+    connectorName: string | undefined
+): string | undefined => {
+    return getOutboundProvisioningConnectorsMetaData()
+        ?.find(
+            (meta: OutboundProvisioningConnectorMetaDataInterface) =>
+                meta?.name?.toLowerCase() === connectorName?.toLowerCase()
+        )?.icon;
+};
 
 /**
  * Provisioning configurations form component.
@@ -328,10 +340,20 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                                                                         data-testid={ `${ testId }-form` }
                                                                         data-componentid={ `${ componentId }-form` }
                                                                         isSubmitting={ isSubmitting }
+                                                                        readOnly={ readOnly }
                                                                     />
                                                                 ),
+                                                                icon: {
+                                                                    icon: resolveOutboundConnectorIcon(
+                                                                        provisioningIdp?.connector
+                                                                    ),
+                                                                    verticalAlign: "middle"
+                                                                },
                                                                 id: provisioningIdp?.idp,
-                                                                title: provisioningIdp?.idp
+                                                                title: provisioningIdp?.idp,
+                                                                titleOptions: {
+                                                                    flex: true
+                                                                }
                                                             }
                                                         ]
                                                     }

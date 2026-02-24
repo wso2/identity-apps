@@ -164,6 +164,9 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                         }
                     });
                 setConnectorListOptions(connectorOptions);
+                if (connectorOptions.length === 1) {
+                    setConnector(connectorOptions[0].value);
+                }
             });
     }, [ selectedIdp ]);
 
@@ -233,33 +236,35 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                 }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } computer={ 10 }>
-                        <Field
-                            type="dropdown"
-                            label={
-                                t("applications:forms.outboundProvisioning.fields.connector" +
-                                    ".label")
-                            }
-                            placeholder={
-                                t("applications:forms.outboundProvisioning.fields.connector" +
-                                    ".placeholder")
-                            }
-                            name="connector"
-                            children={ connectorListOptions }
-                            requiredErrorMessage={
-                                t("applications:forms.outboundProvisioning.fields" +
-                                    ".connector.validations.empty")
-                            }
-                            readOnly={ isReadOnly }
-                            required={ true }
-                            value={ initialValues?.connector }
-                            listen={
-                                (values: Map<string, FormValue>) => {
-                                    setConnector(values.get("connector").toString());
+                        { connectorListOptions?.length > 0 && (
+                            <Field
+                                type="dropdown"
+                                label={
+                                    t("applications:forms.outboundProvisioning.fields.connector" +
+                                        ".label")
                                 }
-                            }
-                            data-componentid={ `${ componentId }-provisioning-connector-dropdown` }
-                        />
-                        { connectorListOptions?.length <= 0 && (
+                                placeholder={
+                                    t("applications:forms.outboundProvisioning.fields.connector" +
+                                        ".placeholder")
+                                }
+                                name="connector"
+                                children={ connectorListOptions }
+                                requiredErrorMessage={
+                                    t("applications:forms.outboundProvisioning.fields" +
+                                        ".connector.validations.empty")
+                                }
+                                readOnly={ connectorListOptions.length === 1 || isReadOnly }
+                                required={ true }
+                                value={ connector }
+                                listen={
+                                    (values: Map<string, FormValue>) => {
+                                        setConnector(values.get("connector").toString());
+                                    }
+                                }
+                                data-componentid={ `${ componentId }-provisioning-connector-dropdown` }
+                            />
+                        ) }
+                        { connectorListOptions?.length === 0 && (
                             <Hint icon="warning sign">
                                 {
                                     t("applications:edit.sections.provisioning." +
