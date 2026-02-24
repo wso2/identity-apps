@@ -130,10 +130,10 @@ const isMobileTemplate: (templateId?: string) => boolean = (templateId?: string)
  */
 const getStepTitle: (templateId?: string) => string = (templateId?: string): string => {
     if (isMobileTemplate(templateId)) {
-        return "Configure Redirect URI";
+        return "Where should users return after login?";
     }
 
-    return "Configure Authorized Redirect URL";
+    return "Where should users return after login?";
 };
 
 /**
@@ -143,12 +143,11 @@ const getStepTitle: (templateId?: string) => string = (templateId?: string): str
  */
 const getStepSubtitle: (templateId?: string) => string = (templateId?: string): string => {
     if (isMobileTemplate(templateId)) {
-        return "Authorize where your app can receive users after login. " +
-            "Enter the custom URI scheme configured in your mobile app.";
+        return "Your app's Authorized Redirect URI — the custom scheme where users land after signing in.";
     }
 
-    return "Authorize where your app can receive users after login. " +
-        "This is typically the URL in your browser when running your app locally.";
+    return "Your app's Authorized Redirect URL — where users land after signing in. " +
+        "Usually the URL you see in your browser when running locally.";
 };
 
 /**

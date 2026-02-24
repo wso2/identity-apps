@@ -294,7 +294,7 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
         }
 
         if (integrationGuide || guideContent) {
-            return "Follow the guide below to integrate login into your application.";
+            return "Use the AI prompt or integration guide below to add login to your app.";
         }
 
         if (!isGuideLoading) {

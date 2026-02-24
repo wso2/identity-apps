@@ -1,5 +1,19 @@
 # @wso2is/admin.connections.v1
 
+## 2.35.1
+
+### Patch Changes
+
+- [#9640](https://github.com/wso2/identity-apps/pull/9640) [`d4bb11671903ab9df341e9685203065b764fec5c`](https://github.com/wso2/identity-apps/commit/d4bb11671903ab9df341e9685203065b764fec5c) Thanks [@savindi7](https://github.com/savindi7)! - Improvements to content and styling.
+
+- Updated dependencies [[`d4bb11671903ab9df341e9685203065b764fec5c`](https://github.com/wso2/identity-apps/commit/d4bb11671903ab9df341e9685203065b764fec5c)]:
+  - @wso2is/admin.identity-providers.v1@2.27.1
+  - @wso2is/admin.applications.v1@2.41.5
+  - @wso2is/admin.connections.v1@2.35.1
+  - @wso2is/theme@2.9.2
+  - @wso2is/admin.core.v1@2.53.4
+  - @wso2is/admin.roles.v2@2.27.309
+
 ## 2.35.0
 
 ### Minor Changes

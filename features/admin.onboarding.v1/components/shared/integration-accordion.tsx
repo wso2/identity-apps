@@ -66,7 +66,8 @@ export interface IntegrationAccordionPropsInterface extends IdentifiableComponen
  */
 const StyledAccordion: typeof Accordion = styled(Accordion)(({ theme }: { theme: Theme }) => ({
     "&.Mui-expanded": {
-        margin: 0
+        marginBottom: theme.spacing(2),
+        marginTop: 0
     },
     "&:before": {
         display: "none"

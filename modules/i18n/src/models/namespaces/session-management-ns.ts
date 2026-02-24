@@ -38,6 +38,10 @@ export interface SessionManagementNS {
             label: string;
             placeholder: string;
         };
+        preserveCurrentSessionAtPasswordUpdate: {
+            hint: string;
+            label: string;
+        };
         validation: {
             rememberMePeriod: string;
             idleSessionTimeout: string;
