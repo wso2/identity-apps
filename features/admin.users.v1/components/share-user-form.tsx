@@ -283,11 +283,6 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         // Otherwise, user is shared with all organizations
         const orgSharingPolicy: string = userShareData.sharingMode?.policy;
 
-        // If the user is shared with all existing organizations only, set the share type to SHARE_SELECTED.
-        if (orgSharingPolicy === UserSharingPolicy.ALL_EXISTING_ORGS_ONLY) {
-            setShareType(ShareType.SHARE_SELECTED);
-        }
-
         // If the user is shared with all existing and future organizations, set the share type to SHARE_ALL.
         if (orgSharingPolicy === UserSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS) {
             setShareType(ShareType.SHARE_ALL);
