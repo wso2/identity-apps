@@ -276,6 +276,33 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         // If there is no sharing mode, it selective organization sharing is done.
         if (!userShareData.sharingMode) {
             setShareType(ShareType.SHARE_SELECTED);
+            
+            // Populate selected organizations and their role assignments for display
+            if (userShareData.organizations && Array.isArray(userShareData.organizations)) {
+                const orgIds: string[] = userShareData.organizations.map(org => org.orgId);
+                const rolesMap: Record<string, SelectedOrganizationRoleInterface[]> = {};
+                const shouldShareWithFutureChildOrgsMap: Record<string, boolean> = {};
+
+                userShareData.organizations.forEach(org => {
+                    // Track the sharing policy for each organization
+                    shouldShareWithFutureChildOrgsMap[org.orgId] = 
+                        org.sharingMode?.policy === UserSharingPolicy.SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN;
+                    
+                    // Map roles if they exist
+                    if (org.roles && org.roles.length > 0) {
+                        const roles: SelectedOrganizationRoleInterface[] = org.roles.map(role => ({
+                            ...role,
+                            id: role.displayName,
+                            selected: true // Mark all existing roles as selected
+                        }));
+                        rolesMap[org.orgId] = roles;
+                    }
+                });
+
+                setSelectedOrgIds(orgIds);
+                setRoleSelections(rolesMap);
+                setShouldShareWithFutureChildOrgsMap(shouldShareWithFutureChildOrgsMap);
+            }
 
             return;
         }
