@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2025, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2026, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -82,8 +82,8 @@
     String confirm = (String) request.getAttribute("confirm");
     String confirmLiteReg = (String) request.getAttribute("confirmLiteReg");
     String resendUsername = request.getParameter("username");
-    String sp = Encode.forJava(request.getParameter("sp"));
-    String spId = Encode.forJava(request.getParameter("spId"));
+    String sp = request.getParameter("sp");
+    String spId = request.getParameter("spId");
     String sessionDataKey = (String) request.getAttribute("sessionDataKey");
     String applicationAccessURLWithoutEncoding = null;
     String tenantedMyaccountURL = null;
@@ -350,7 +350,7 @@
                                 <script>
                                     <% if (StringUtils.isNotBlank(emailValue)) { %>
                                         maskEmail('<%= Encode.forJavaScript(emailValue) %>');
-                                    <% } %>                                
+                                    <% } %>
                                 </script>
                                 </br></br>
                         <%
