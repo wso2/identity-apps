@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.38
+
+### Patch Changes
+
+- [#9650](https://github.com/wso2/identity-apps/pull/9650) [`59aac70ce338cd97cb82b6581637f0c481ca185a`](https://github.com/wso2/identity-apps/commit/59aac70ce338cd97cb82b6581637f0c481ca185a) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Improve permission resolving for console roles
+
 ## 3.3.37
 
 ### Patch Changes
