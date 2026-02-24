@@ -129,7 +129,7 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
         throws IdentityRoleManagementException {
 
         RoleBasicInfo role = getRoleBasicInfo(roleId, tenantDomain);
-        if (!isConsoleRole(role)) {
+        if (shouldSkipPermissionResolution(role)) {
             return;
         }
 
@@ -149,14 +149,21 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
     public void postGetPermissionListOfRoles(List<String> permissions, List<String> roleIds, String tenantDomain)
         throws IdentityRoleManagementException {
 
-        boolean isConsoleRole = false;
+        boolean isConsoleRoleExist = false;
+        boolean isConsoleAdminRoleExist = false;
+
         for (String roleId : roleIds) {
-            if (isConsoleRole(roleId, tenantDomain)) {
-                isConsoleRole = true;
-                break;
+            RoleBasicInfo role = getRoleBasicInfo(roleId, tenantDomain);
+            if (CONSOLE_APP_AUDIENCE_NAME.equals(role.getAudienceName())) {
+                isConsoleRoleExist = true;
+                if (ADMINISTRATOR.equals(role.getName())) {
+                    isConsoleAdminRoleExist = true;
+                }
             }
         }
-        if (isConsoleRole) {
+        /* If there is a console role exist and there is no console Administrator role, then we need to resolve the
+           permissions of console roles from the static configuration. */
+        if (isConsoleRoleExist && !isConsoleAdminRoleExist) {
             List<Permission> resolvedRolePermissions = new ArrayList<>();
             Map<String, Permission> systemPermissionsMap = getSystemPermissionsMap(tenantDomain);
             permissions.forEach(permission -> {
@@ -179,7 +186,7 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                                             String tenantDomain) throws IdentityRoleManagementException {
 
         RoleBasicInfo role = getRoleBasicInfo(roleId, tenantDomain);
-        if (!isConsoleRole(role)) {
+        if (shouldSkipPermissionResolution(role)) {
             return;
         }
 
@@ -362,18 +369,14 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
             && CONSOLE_APP_AUDIENCE_NAME.equals(role.getAudienceName());
     }
 
-    /**
-     * Check whether the role is a console role. We consider all the console roles except the administrator role.
-     *
-     * @param roleId       Role id.
-     * @param tenantDomain Tenant domain.
-     * @return True if the role is a console role.
-     * @throws IdentityRoleManagementException If an error occurs while checking the role.
-     */
-    private boolean isConsoleRole(String roleId, String tenantDomain) throws IdentityRoleManagementException {
+    private boolean shouldSkipPermissionResolution(RoleBasicInfo role) {
 
-        RoleBasicInfo role = getRoleBasicInfo(roleId, tenantDomain);
-        return isConsoleRole(role);
+        // Permission handling only for console roles.
+        if (role == null || !CONSOLE_APP_AUDIENCE_NAME.equals(role.getAudienceName())) {
+            return true;
+        }
+        // Console Administrator role have all the permissions.
+        return ADMINISTRATOR.equals(role.getName());
     }
 
     /**
