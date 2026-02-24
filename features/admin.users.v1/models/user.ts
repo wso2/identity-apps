@@ -502,7 +502,7 @@ export interface RoleSharingInterface {
 export interface ShareUserWithAllOrganizationsDataInterface {
     userId: string;
     policy: string;
-    roleSharing: {
+    roleAssignment: {
         mode: string;
         roles?: RoleSharingInterface[];
     };
@@ -521,7 +521,7 @@ export interface UnshareUserWithAllOrganizationsDataInterface {
 export interface SharedOrganizationAndRolesInterface {
     orgId: string;
     policy: string;
-    roleSharing: {
+    roleAssignment: {
         mode: string;
         roles: RoleSharingInterface[];
     };

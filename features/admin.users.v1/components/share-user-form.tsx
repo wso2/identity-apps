@@ -399,6 +399,23 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
     }, [ triggerUserShare ]);
 
     /**
+     * Reset role sharing states when switching away from SHARE_ALL or SHARE_SELECTED modes.
+     */
+    useEffect(() => {
+        // Reset role sharing states when switching away from SHARE_ALL
+        if (shareType !== ShareType.SHARE_ALL) {
+            setRoleShareTypeAll(RoleShareType.SHARE_WITH_ALL);
+            setSelectedRoles([]);
+            setInitialSelectedRoles([]);
+        }
+
+        // Reset selected organization role sharing states when switching away from SHARE_SELECTED
+        if (shareType !== ShareType.SHARE_SELECTED) {
+            setRoleShareTypeSelected(RoleShareType.SHARE_SELECTED);
+        }
+    }, [shareType]);
+
+    /**
      * Triggers the display of a confirmation modal when the user attempts to start a new share
      * while one is ongoing, asking for confirmation to interrupt the current share.
      */
@@ -505,7 +522,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
 
         const data: ShareUserWithAllOrganizationsDataInterface = {
             policy: sharingPolicy,
-            roleSharing: {
+            roleAssignment: {
                 mode: RoleSharingModes.SELECTED,
                 roles: userRolesList?.map(role => ({
                     audience: {
@@ -557,7 +574,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
 
         const data: ShareUserWithAllOrganizationsDataInterface = {
             policy: sharingPolicy,
-            roleSharing: {
+            roleAssignment: {
                 mode: RoleSharingModes.NONE,
                 roles: []
             },
@@ -609,7 +626,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                         policy: tempShareWithFutureChildOrgsMap[orgId]
                             ? UserSharingPolicy.SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN
                             : UserSharingPolicy.SELECTED_ORG_ONLY,
-                        roleSharing: {
+                        roleAssignment: {
                             mode: tempAddedRoles[orgId] && tempAddedRoles[orgId].length > 0
                                 ? RoleSharingModes.SELECTED
                                 : RoleSharingModes.NONE,
@@ -707,7 +724,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                         policy: tempShareWithFutureChildOrgsMap[orgId]
                             ? UserSharingPolicy.SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN
                             : UserSharingPolicy.SELECTED_ORG_ONLY,
-                        roleSharing: {
+                        roleAssignment: {
                             mode: selectedRoles.length > 0
                                 ? RoleSharingModes.SELECTED
                                 : RoleSharingModes.NONE,
@@ -740,95 +757,23 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             return;
         }
 
-        const addOperations: ShareOrganizationsAndRolesPatchOperationInterface[] = Object.entries(tempAddedRoles)
-            .map(([ orgId, roles ]: [string, RoleSharingInterface[]]) => {
-                const roleData: RoleSharingInterface[] = roles.map(
-                    (role: RoleSharingInterface) => ({
-                        audience: {
-                            display: role.audience.display,
-                            type: role.audience.type
-                        },
-                        displayName: role.displayName
-                    })
-                );
-
-                if (isEmpty(roleData)) {
-                    return null;
-                }
-
-                return {
-                    op: "add",
-                    path: `organizations[orgId eq "${orgId}"].roles`,
-                    value: roleData
-                };
-            }).filter((item: any) => item !== null);
-
-        const removeOperations: ShareOrganizationsAndRolesPatchOperationInterface[] = Object.entries(tempRemovedRoles)
-            .map(([ orgId, roles ]: [string, RoleSharingInterface[]]) => {
-                const roleData: RoleSharingInterface[] = roles.map(
-                    (role: RoleSharingInterface) => ({
-                        audience: {
-                            display: role.audience.display,
-                            type: role.audience.type
-                        },
-                        displayName: role.displayName
-                    })
-                );
-
-                if (isEmpty(roleData)) {
-                    return null;
-                }
-
-                return {
-                    op: "remove",
-                    path: `organizations[orgId eq "${orgId}"].roles`,
-                    value: roleData
-                };
-            }).filter((item: any) => item !== null);
-
-        const data: ShareOrganizationsAndRolesPatchDataInterface = {
-            Operations: [
-                ...addOperations,
-                ...removeOperations
-            ],
-            userId: user.id
-        };
-
-        if (data?.Operations?.length > 0) {
-            editUserRolesOfExistingOrganizations(data)
-                .then(() => {
-                    // Only show success alert if async notification is not enabled
-                    if (!isUserShareOperationStatusEnabled) {
-                        dispatch(addAlert({
-                            description: t("user:editUser.sections.sharedAccess.notifications.share." +
-                                "success.description"),
-                            level: AlertLevels.SUCCESS,
-                            message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
-                        }));
-                    }
-
-                    resetStates();
-                })
-                .catch((error: Error) => {
-                    dispatch(addAlert({
-                        description: t("user:editUser.sections.sharedAccess.notifications.share." +
-                            "error.description",
-                        { error: error.message }),
-                        level: AlertLevels.ERROR,
-                        message: t("user:editUser.sections.sharedAccess.notifications.share.error.message")
-                    }));
-                })
-                .finally(() => {
-                    // onUserSharingCompleted();
-                });
+        // Handle individual role changes for existing organizations
+        // Only call patch operations if there are remaining roles to add/remove for existing organizations
+        const remainingAddedRoles: Record<string, RoleSharingInterface[]> = { ...tempAddedRoles };
+        const remainingRemovedRoles: Record<string, RoleSharingInterface[]> = { ...tempRemovedRoles };
+        
+        // Check if there are any role operations left to perform
+        const hasRemainingOperations: boolean = 
+            Object.keys(remainingAddedRoles).some(orgId => remainingAddedRoles[orgId]?.length > 0) ||
+            Object.keys(remainingRemovedRoles).some(orgId => remainingRemovedRoles[orgId]?.length > 0);
+            
+        if (hasRemainingOperations) {
+            shareIndividualRolesWithSelectedOrgs();
         } else {
-            // If there are no further operations to perform, just show a success notification
-            // and reset the state.
-            // Only show success alert if async notification is not enabled
+            // No additional role operations needed, just show success and reset state
             if (!isUserShareOperationStatusEnabled) {
                 dispatch(addAlert({
-                    description: t("user:editUser.sections.sharedAccess.notifications.share." +
-                        "success.description"),
+                    description: t("user:editUser.sections.sharedAccess.notifications.share.success.description"),
                     level: AlertLevels.SUCCESS,
                     message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
                 }));
@@ -851,7 +796,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                         policy: tempShareWithFutureChildOrgsMap[orgId]
                             ? UserSharingPolicy.SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN
                             : UserSharingPolicy.SELECTED_ORG_ONLY,
-                        roleSharing: {
+                        roleAssignment: {
                             mode: shareAllRoles
                                 ? RoleSharingModes.SELECTED
                                 : RoleSharingModes.NONE,
@@ -934,7 +879,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                         policy: tempShareWithFutureChildOrgsMap[orgId]
                             ? UserSharingPolicy.SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN
                             : UserSharingPolicy.SELECTED_ORG_ONLY,
-                        roleSharing: {
+                        roleAssignment: {
                             mode: shareAllRoles
                                 ? RoleSharingModes.SELECTED
                                 : RoleSharingModes.NONE,
@@ -997,7 +942,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
 
         const data: ShareUserWithAllOrganizationsDataInterface = {
             policy: UserSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS,
-            roleSharing: selectedRoles.length > 0 ? {
+            roleAssignment: selectedRoles.length > 0 ? {
                 mode: RoleSharingModes.SELECTED,
                 roles: selectedRoles.map((role: RolesInterface) => {
                     return {
@@ -1068,7 +1013,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
 
                 return {
                     op: "add",
-                    path: `organizations[orgId eq "${orgId}"].roles`,
+                    path: `organizations[orgId eq ${orgId}].roles`,
                     value: roleData
                 };
             }).filter((item: any) => item !== null);
@@ -1091,7 +1036,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
 
                 return {
                     op: "remove",
-                    path: `organizations[orgId eq "${orgId}"].roles`,
+                    path: `organizations[orgId eq ${orgId}].roles`,
                     value: roleData
                 };
             }).filter((item: any) => item !== null);
@@ -1156,7 +1101,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                 addAlert({
                     description: t("user:editUser.sections.shareUser.addAsyncSharingNotification"
                         + ".description"),
-                    level: AlertLevels.INFO,
+                    level: AlertLevels.SUCCESS,
                     message: t("user:editUser.sections.shareUser.addAsyncSharingNotification.message")
                 })
             );
@@ -1244,6 +1189,8 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                         rolesMap[org.orgId] = roles;
                     }
                 });
+
+                console.log(orgIds, rolesMap);
 
                 setSelectedOrgIds(orgIds); // This makes the orgs appear as selected in the UI
                 setRoleSelections(rolesMap);
