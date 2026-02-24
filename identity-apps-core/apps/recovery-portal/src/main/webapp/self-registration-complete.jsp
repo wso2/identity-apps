@@ -99,7 +99,7 @@
     */
     String srtenantDomain =  IdentityManagementEndpointUtil.getStringValue(request.getAttribute("srtenantDomain"));
     if (StringUtils.isNotBlank(srtenantDomain)) {
-       tenantDomain = srtenantDomain;
+        tenantDomain = srtenantDomain;
     }
 
     /**
@@ -127,7 +127,7 @@
         try {
             ApplicationDataRetrievalClient applicationDataRetrieval = new ApplicationDataRetrievalClient();
             if (!sp.equals("My Account")) {
-                sp = applicationDataRetrieval.getApplicationName(tenantDomain,spId);
+                sp = applicationDataRetrieval.getApplicationName(tenantDomain, Encode.forJava(spId));
             }
         } catch (Exception e) {
             // Ignored and fallback to my account page url.
@@ -139,7 +139,7 @@
         try {
                 // Retrieve application access url to redirect user back to the application.
                 ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
-                applicationAccessURLWithoutEncoding = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain,sp);
+                applicationAccessURLWithoutEncoding = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, Encode.forJava(sp));
                 showBackButton = true;
             } catch (Exception e) {
                  // Ignored and fallback to my account page url.
