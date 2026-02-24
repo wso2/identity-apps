@@ -4,4 +4,4 @@
 "@wso2is/console": patch
 ---
 
-Bring support to configure custom first factor and second factor authenticator names for application login flow UI
+Bring support to configure custom first-factor and second-factor authenticator names for application login flow UI

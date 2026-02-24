@@ -396,7 +396,7 @@ export class ApplicationManagementConstants {
                 try {
                     // Push the authenticator ID (encoded name).
                     firstFactorAuthenticators.push(btoa(authenticator));
-                } catch (error) {
+                } catch (error: unknown) {
                     // Catch the error and ignore.
                 }
             }
@@ -438,7 +438,7 @@ export class ApplicationManagementConstants {
                 try {
                     // Push the authenticator ID (encoded name).
                     secondFactorAuthenticators.push(btoa(authenticator));
-                } catch (error) {
+                } catch (error: unknown) {
                     // Catch the error and ignore.
                 }
             }
