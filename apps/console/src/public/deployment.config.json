@@ -2019,6 +2019,8 @@
             "roleMapping": false
         },
         "listAllAttributeDialects": true,
+        "loginFlowCustomFirstFactorAuthenticators": [],
+        "loginFlowCustomSecondFactorAuthenticators": [],
         "multiTenancy": {
             "isTenantDomainDotExtensionMandatory": true,
             "tenantDomainIllegalCharactersRegex": ".*[^a-z0-9._-].*",
