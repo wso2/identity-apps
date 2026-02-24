@@ -33,17 +33,17 @@ const httpClient: HttpClientInstance =
  * PATCH /cds/api/v1/config
  * Partially update the CDS configuration
  */
-export const patchCDSConfig = (
-    patch: Partial<CDSConfigUpdateRequest>
+export const updateCDSConfig = (
+    put: Partial<CDSConfigUpdateRequest>
 ): Promise<CDSConfig> => {
 
     const requestConfig: RequestConfigInterface = {
-        data: patch,
+        data: put,
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
-        method: HttpMethods.PATCH,
+        method: HttpMethods.PUT,
         url: store.getState().config.endpoints.cdsConfig
     };
 

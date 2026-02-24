@@ -607,7 +607,12 @@ export class AppConstants {
     /**
      * Route id of the customer data service unification rule page.
      */
-    public static readonly CDS_PROFILES_UNIFICATION_RULES_ROUTE_ID: string = "customerDataUnificationRules";
+    public static readonly CDS_PROFILE_UNIFICATION_RULES_ROUTE_ID: string = "customerDataUnificationRules";
+
+    /**
+    * Route id of the customer data service profile attributes page.
+    */
+    public static readonly CDS_PROFILE_ATTRIBUTES_ROUTE_ID: string = "customerDataProfileAttributes";
 
     /**
      * Name of the root node
