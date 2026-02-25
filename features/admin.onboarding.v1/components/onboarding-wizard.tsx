@@ -27,7 +27,6 @@ import { ExtensionTemplateListInterface, ResourceTypes } from "@wso2is/admin.tem
 import { resolveUserDisplayName } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { SessionStorageUtils } from "@wso2is/core/utils";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -57,6 +56,7 @@ import {
 } from "../constants";
 import { useOnboardingDataInterface, useStepValidation } from "../hooks/use-onboarding-validation";
 import { useStepTransition } from "../hooks/use-step-transition";
+import { useWizardUrlSync } from "../hooks/use-wizard-url-sync";
 import {
     CreatedApplicationResultInterface,
     OnboardingChoice,
@@ -70,6 +70,7 @@ import { generateRandomNames } from "../utils/random-name-generator";
  */
 export interface OnboardingWizardPropsInterface extends IdentifiableComponentInterface {
     initialData?: OnboardingDataInterface;
+    initialStep?: OnboardingStep;
     onComplete: (data: OnboardingDataInterface) => void;
     onSkip: () => void;
 }
@@ -164,7 +165,7 @@ const getPreviousStep = (currentStep: OnboardingStep, data: OnboardingDataInterf
 };
 
 /**
- * Validate if a step can be safely restored from session storage.
+ * Validate if a step can be safely restored from URL parameters.
  * Checks if required data exists for the given step.
  *
  * @param step - The step number to validate
@@ -172,16 +173,18 @@ const getPreviousStep = (currentStep: OnboardingStep, data: OnboardingDataInterf
  * @returns True if the step can be restored, false otherwise
  */
 const validateStepRestoration = (step: number, data: OnboardingDataInterface): boolean => {
+    const isTour: boolean = data.choice === OnboardingChoice.TOUR;
+
     switch (step) {
         case OnboardingStep.WELCOME:
         case OnboardingStep.NAME_APPLICATION:
-            return true; // These steps don't require prior data
+            return true;
         case OnboardingStep.SELECT_APPLICATION_TEMPLATE:
             return !!data.applicationName;
         case OnboardingStep.CONFIGURE_REDIRECT_URL:
             return !!data.templateId;
         case OnboardingStep.SIGN_IN_OPTIONS:
-            return !!data.redirectUrls?.length;
+            return isTour || !!data.redirectUrls?.length;
         case OnboardingStep.DESIGN_LOGIN:
             return !!data.signInOptions;
         case OnboardingStep.SUCCESS:
@@ -227,6 +230,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
 ): ReactElement => {
     const {
         initialData,
+        initialStep,
         onComplete,
         onSkip,
         ["data-componentid"]: componentId = OnboardingComponentIds.WIZARD
@@ -242,39 +246,15 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const greeting: string = resolveUserDisplayName(profileInfo) || "";
 
-    // Restore wizard step from sessionStorage if available (survives page reloads within the same tab)
-    const WIZARD_STEP_STORAGE_KEY: string = "onboarding_wizard_step";
-
-    const [ currentStep, setCurrentStep ] = useState<OnboardingStep>(() => {
-        const savedStep: string | null = SessionStorageUtils.getItemFromSessionStorage(WIZARD_STEP_STORAGE_KEY);
-
-        if (savedStep !== null) {
-            const parsed: number = parseInt(savedStep, 10);
-
-            if (!isNaN(parsed) && Object.values(OnboardingStep).includes(parsed)) {
-                // Don't restore to success step
-                if (parsed === OnboardingStep.SUCCESS) {
-                    SessionStorageUtils.clearItemFromSessionStorage(WIZARD_STEP_STORAGE_KEY);
-
-                    return OnboardingStep.WELCOME;
-                }
-
-                return parsed as OnboardingStep;
-            }
-        }
-
-        return OnboardingStep.WELCOME;
-    });
+    // Initialize step from URL params (parsed by the parent page)
+    const [ currentStep, setCurrentStep ] = useState<OnboardingStep>(
+        initialStep ?? OnboardingStep.WELCOME
+    );
 
     const [ direction, setDirection ] = useState<"forward" | "backward">("forward");
 
     // Manages the visual transition between steps.
     const { visibleStep, phase, isAnimating } = useStepTransition(currentStep);
-
-    // Persist current step to sessionStorage so the wizard can resume after unexpected reloads
-    useEffect(() => {
-        SessionStorageUtils.setItemToSessionStorage(WIZARD_STEP_STORAGE_KEY, String(currentStep));
-    }, [ currentStep ]);
 
     const [ onboardingData, setOnboardingDataInterface ] = useState<OnboardingDataInterface>({
         brandingConfig: DEFAULT_BRANDING_CONFIG,
@@ -284,15 +264,12 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
     });
     const [ isCreatingApp, setIsCreatingApp ] = useState<boolean>(false);
 
-    // Validate restored step on mount - ensure required data exists
+    // Validate restored step on mount - ensure required data exists for the URL-restored step
     useEffect(() => {
-        // Only validate if step was restored from session (not at WELCOME)
         if (currentStep !== OnboardingStep.WELCOME) {
             const canRestoreToStep: boolean = validateStepRestoration(currentStep, onboardingData);
 
             if (!canRestoreToStep) {
-                // Data incomplete - reset to beginning
-                SessionStorageUtils.clearItemFromSessionStorage(WIZARD_STEP_STORAGE_KEY);
                 setCurrentStep(OnboardingStep.WELCOME);
             }
         }
@@ -310,6 +287,9 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         updateSignInOptions,
         updateTemplateSelection
     } = useOnboardingDataInterface(onboardingData, setOnboardingDataInterface);
+
+    // Sync wizard state to URL query parameters
+    useWizardUrlSync(currentStep, onboardingData);
 
     const isNextDisabled: boolean = useStepValidation(currentStep, onboardingData);
 
@@ -422,7 +402,6 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         const nextStep: OnboardingStep = getNextStep(currentStep, onboardingData);
 
         if (currentStep === OnboardingStep.SUCCESS) {
-            SessionStorageUtils.clearItemFromSessionStorage(WIZARD_STEP_STORAGE_KEY);
             onComplete(onboardingData);
         } else if (
             // Create app when clicking Finish from Design Login
@@ -447,7 +426,6 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
     }, [ currentStep, onboardingData ]);
 
     const handleSkip: () => void = useCallback((): void => {
-        SessionStorageUtils.clearItemFromSessionStorage(WIZARD_STEP_STORAGE_KEY);
         onSkip();
     }, [ onSkip ]);
 

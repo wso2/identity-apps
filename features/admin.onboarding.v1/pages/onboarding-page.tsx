@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -32,31 +32,13 @@ import Header from "../components/shared/header";
 import { ContentArea } from "../components/shared/onboarding-styles";
 import { OnboardingComponentIds } from "../constants";
 import { useOnboardingStatus } from "../hooks/use-onboarding-status";
-import { ApplicationType, OnboardingChoice, OnboardingDataInterface } from "../models";
+import { OnboardingDataInterface, ParsedWizardUrlParamsInterface } from "../models";
+import { parseWizardUrlParams } from "../utils/parse-wizard-url-params";
 
 /**
  * Props interface for OnboardingPage component.
  */
 type OnboardingPageProps = IdentifiableComponentInterface & RouteComponentProps;
-
-/**
- * Map of URL param values to ApplicationType enum.
- */
-const APP_TYPE_MAP: Record<string, ApplicationType> = {
-    browser: ApplicationType.BROWSER,
-    machine: ApplicationType.MACHINE,
-    mobile: ApplicationType.MOBILE,
-    spa: ApplicationType.BROWSER,
-    web: ApplicationType.BROWSER
-};
-
-/**
- * Map of URL param values to OnboardingChoice enum.
- */
-const CHOICE_MAP: Record<string, OnboardingChoice> = {
-    setup: OnboardingChoice.SETUP,
-    tour: OnboardingChoice.TOUR
-};
 
 /**
  * Main wizard container with full viewport height.
@@ -76,33 +58,13 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
     } = props;
 
     /**
-     * Parse URL params to get initial onboarding data.
-     * Supported params: apptype, choice, appname
+     * Parse URL params to get initial onboarding data and step.
+     * Returns only fields explicitly present in the URL — wizard defaults apply for absent fields.
      */
-    const initialData: OnboardingDataInterface = useMemo(() => {
-        const params: URLSearchParams = new URLSearchParams(location.search);
-        const data: OnboardingDataInterface = {};
-
-        const appType: string | null = params.get("apptype");
-
-        if (appType && APP_TYPE_MAP[appType.toLowerCase()]) {
-            data.applicationType = APP_TYPE_MAP[appType.toLowerCase()];
-        }
-
-        const choice: string | null = params.get("choice");
-
-        if (choice && CHOICE_MAP[choice.toLowerCase()]) {
-            data.choice = CHOICE_MAP[choice.toLowerCase()];
-        }
-
-        const appName: string | null = params.get("appname");
-
-        if (appName) {
-            data.applicationName = appName;
-        }
-
-        return data;
-    }, [ location.search ]);
+    const { step: initialStep, data: initialData }: ParsedWizardUrlParamsInterface = useMemo(
+        () => parseWizardUrlParams(location.search),
+        [ location.search ]
+    );
 
     const {
         shouldShowOnboarding,
@@ -159,6 +121,7 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
                 <OnboardingWizard
                     data-componentid={ `${componentId}-wizard` }
                     initialData={ initialData }
+                    initialStep={ initialStep }
                     onComplete={ handleComplete }
                     onSkip={ handleSkip }
                 />
