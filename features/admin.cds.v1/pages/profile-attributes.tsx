@@ -242,12 +242,12 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
     const SORT_BY: DropdownItemProps[] = [
         {
             key: 0,
-            text: t("profileAttributes:list.sortBy.name"),
+            text: t("customerDataService:profileAttributes.list.sortBy.name"),
             value: SORT_BY_NAME
         },
         {
             key: 1,
-            text: t("profileAttributes:list.sortBy.scope"),
+            text: t("customerDataService:profileAttributes.list.sortBy.scope"),
             value: SORT_BY_SCOPE
         }
     ];
@@ -346,11 +346,13 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
         dispatch(
             addAlert({
                 description: t(
-                    "profileAttributes:list.notifications.filterProfileAttributes.genericError.description"
+                    "customerDataService:profileAttributes.list."+
+                    "notifications.filterProfileAttributes.genericError.description"
                 ),
                 level: AlertLevels.ERROR,
                 message: t(
-                    "profileAttributes:list.notifications.filterProfileAttributes.genericError.message"
+                    "customerDataService:profileAttributes.list."+
+                    "notifications.filterProfileAttributes.genericError.message"
                 )
             })
         );
@@ -455,15 +457,15 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
     return (
         <PageLayout
             isLoading={ isLoading }
-            title={ t("profileAttributes:list.page.title") }
-            pageTitle={ t("profileAttributes:list.page.pageTitle") }
-            description={ t("profileAttributes:list.page.description") }
+            title={ t("customerDataService:profileAttributes.list.page.title") }
+            pageTitle={ t("customerDataService:profileAttributes.list.page.pageTitle") }
+            description={ t("customerDataService:profileAttributes.list.page.description") }
             data-componentid={ `${componentId}-page-layout` }
             action={
                 (
                     <PrimaryButton onClick={ handleAddProfileAttribute }>
                         <Icon name="add" />
-                        { t("profileAttributes:list.buttons.add") }
+                        { t("customerDataService:profileAttributes.list.buttons.add") }
                     </PrimaryButton>
                 )
             }
@@ -489,7 +491,7 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
                             onFilter={ handleSchemaFilter }
                             filterAttributeOptions={ [] }
                             disableSearchFilterDropdown={ true }
-                            placeholder={ t("profileAttributes:list.search.placeholder") }
+                            placeholder={ t("customerDataService:profileAttributes.list.search.placeholder") }
                             defaultSearchAttribute="attribute_name"
                             defaultSearchOperator="sw"
                             triggerClearQuery={ triggerClearQuery }
@@ -505,15 +507,15 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
                             (
                                 <PrimaryButton onClick={ handleAddProfileAttribute }>
                                     <Icon name="add" />
-                                    { t("profileAttributes:list.buttons.add") }
+                                    { t("customerDataService:profileAttributes.list.buttons.add") }
                                 </PrimaryButton>
                             )
                         }
                         image={ getEmptyPlaceholderIllustrations().newList }
                         imageSize="tiny"
-                        title={ t("profileAttributes:list.placeholders.emptyList.title") }
+                        title={ t("customerDataService:profileAttributes.list.placeholders.emptyList.title") }
                         subtitle={ [
-                            t("profileAttributes:list.placeholders.emptyList.subtitles.0")
+                            t("customerDataService:profileAttributes.list.placeholders.emptyList.subtitles.0")
                         ] }
                         data-componentid={ `${componentId}-empty-placeholder` }
                     />
@@ -523,15 +525,15 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
                         action={
                             (
                                 <LinkButton onClick={ handleSearchQueryClear }>
-                                    { t("profileAttributes:list.placeholders.emptySearch.action") }
+                                    { t("customerDataService:profileAttributes.list.placeholders.emptySearch.action") }
                                 </LinkButton>
                             )
                         }
                         image={ getEmptyPlaceholderIllustrations().emptySearch }
                         imageSize="tiny"
-                        title={ t("profileAttributes:list.placeholders.emptySearch.title") }
+                        title={ t("customerDataService:profileAttributes.list.placeholders.emptySearch.title") }
                         subtitle={ [
-                            t("profileAttributes:list.placeholders.emptySearch.subtitles.0")
+                            t("customerDataService:profileAttributes.list.placeholders.emptySearch.subtitles.0")
                         ] }
                         data-componentid={ `${componentId}-empty-search-placeholder` }
                     />

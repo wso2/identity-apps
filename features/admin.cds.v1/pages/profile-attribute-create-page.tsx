@@ -76,7 +76,6 @@ interface AppListItemInterface {
     issuer?: string;
 }
 
-
 const StepActionsContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
     gap: theme.spacing(1),
@@ -161,8 +160,8 @@ const AttributeGeneralForm: React.ForwardRefExoticComponent<
         const [ appIdentifierOptions, setAppIdentifierOptions ] =
             useState<ApplicationIdentifierOptionInterface[]>([]);
 
-        const debounceTimer: MutableRefObject<ReturnType<typeof setTimeout>> =
-            useRef<ReturnType<typeof setTimeout>>(null);
+        const debounceTimer: React.MutableRefObject<ReturnType<typeof setTimeout> | null> =
+            useRef<ReturnType<typeof setTimeout> | null>(null);
 
         const shouldFetchApplications: boolean = scope === APPLICATION_DATA;
 
@@ -180,12 +179,12 @@ const AttributeGeneralForm: React.ForwardRefExoticComponent<
 
         const scopeOptions: { value: ScopeValue; label: string }[] = useMemo(() => [
             {
-                label: t("customerDataService:profileAttributes.create."+
+                label: t("customerDataService:profileAttributes.create." +
                     "forms.attributeGeneral.fields.scope.options.traits"),
                 value: TRAITS as ScopeValue
             },
             {
-                label: t("customerDataService:profileAttributes.create."+
+                label: t("customerDataService:profileAttributes.create." +
                     "forms.attributeGeneral.fields.scope.options.applicationData"),
                 value: APPLICATION_DATA as ScopeValue
             }
@@ -214,7 +213,7 @@ const AttributeGeneralForm: React.ForwardRefExoticComponent<
             }
 
             const appList: { applications?: AppListItemInterface[] } =
-            applicationListData as { applications?: AppListItemInterface[] };
+                applicationListData as { applications?: AppListItemInterface[] };
             const options: ApplicationIdentifierOptionInterface[] = (appList.applications ?? [])
                 .map((app: AppListItemInterface): ApplicationIdentifierOptionInterface | null => {
                     const id: string = app.clientId || app.issuer || "";
@@ -233,7 +232,7 @@ const AttributeGeneralForm: React.ForwardRefExoticComponent<
 
         useEffect((): (() => void) => {
             setIsNameAvailable(null);
-            clearTimeout(debounceTimer.current);
+            if (debounceTimer.current) clearTimeout(debounceTimer.current);
 
             if (!fullAttributeName) {
                 return (): void => undefined;
@@ -264,10 +263,23 @@ const AttributeGeneralForm: React.ForwardRefExoticComponent<
             setIsNameAvailable(null);
         };
 
+        const handleApplicationIdentifierChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+            setApplicationIdentifier(e.target.value);
+            setAppIdError("");
+            setName("");
+            setIsNameAvailable(null);
+        };
+
+        const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+            setName(e.target.value);
+            setNameError("");
+            setIsNameAvailable(null);
+        };
+
         const handleSubmit: () => void = (): void => {
             if (scope === APPLICATION_DATA && !applicationIdentifier.trim()) {
                 setAppIdError(
-                    t("customerDataService:profileAttributes.create."+
+                    t("customerDataService:profileAttributes.create." +
                         "forms.attributeGeneral.fields.applicationIdentifier.validations.empty")
                 );
 
@@ -276,7 +288,7 @@ const AttributeGeneralForm: React.ForwardRefExoticComponent<
 
             if (!name.trim()) {
                 setNameError(
-                    t("customerDataService:profileAttributes.create."+
+                    t("customerDataService:profileAttributes.create." +
                         "forms.attributeGeneral.fields.name.validations.empty")
                 );
 
@@ -285,7 +297,7 @@ const AttributeGeneralForm: React.ForwardRefExoticComponent<
 
             if (isNameAvailable === false) {
                 setNameError(
-                    t("customerDataService:profileAttributes.create."+
+                    t("customerDataService:profileAttributes.create." +
                         "forms.attributeGeneral.fields.name.validations.exists")
                 );
 
@@ -305,129 +317,116 @@ const AttributeGeneralForm: React.ForwardRefExoticComponent<
 
         return (
             <Grid container spacing={ 2 } data-componentid={ componentId }>
-
-                { /* ── Scope + Application Identifier + Name (compound attribute row) ── */ }
                 <Grid xs={ 12 }>
-                    <Typography variant="body2" sx={ { mb: 1 } }>
-                        { t("customerDataService:profileAttributes.create."+
-                        "forms.attributeGeneral.fields.attribute.label") }{ " " }
+                    <Typography variant="body2" sx={ { mb: 0.75 } }>
+                        { t("customerDataService:profileAttributes.create." +
+                            "forms.attributeGeneral.fields.attribute.label") }{ " " }
                         <Box component="span" sx={ { color: "error.main" } }>*</Box>
                     </Typography>
 
-                    { /* Single row: Scope | (App Identifier if APPLICATION_DATA) | Name */ }
-                    <Box
-                        sx={ {
-                            alignItems: "flex-start", display: "flex", gap: 1.5, overflow: "hidden", width: "100%" 
-                        } }>
-                        <TextField
-                            select
-                            label={ t("customerDataService:profileAttributes.create."+
-                                "forms.attributeGeneral.fields.scope.label") }
-                            value={ scope }
-                            onChange={ handleScopeChange }
-                            sx={ { flexShrink: 0, width: "160px" } }
-                            inputProps={ {
-                                "aria-label": t(
-                                    "customerDataService:profileAttributes.create."+
-                                    "forms.attributeGeneral.fields.scope.ariaLabel"
-                                )
-                            } }
-                            data-componentid={ `${componentId}-scope` }
-                        >
-                            { scopeOptions.map((opt: { value: ScopeValue; label: string }) => (
-                                <MenuItem key={ opt.value } value={ opt.value }>
-                                    { opt.label }
-                                </MenuItem>
-                            )) }
-                        </TextField>
+                    <Box sx={ { display: "flex", gap: 1.5, width: "100%" } }>
 
-                        { scope === APPLICATION_DATA && (
+                        <Box sx={ { flex: "0 0 160px" } }>
                             <TextField
                                 select
-                                required
-                                label={ t(
-                                    "customerDataService:profileAttributes.create."+
-                                    "forms.attributeGeneral.fields.applicationIdentifier.label"
-                                ) }
-                                value={ applicationIdentifier }
-                                onChange={ (e: React.ChangeEvent<HTMLInputElement>): void => {
-                                    setApplicationIdentifier(e.target.value);
-                                    setAppIdError("");
-                                    setName("");
-                                    setIsNameAvailable(null);
+                                value={ scope }
+                                onChange={ handleScopeChange }
+                                fullWidth
+                                inputProps={ {
+                                    "aria-label": t(
+                                        "customerDataService:profileAttributes.create." +
+                                        "forms.attributeGeneral.fields.scope.ariaLabel"
+                                    )
                                 } }
-                                error={ Boolean(appIdError) }
-                                helperText={ appIdError || " " }
-                                disabled={ isLoadingAppIds }
-                                sx={ { flexShrink: 0, width: "220px" } }
+                                data-componentid={ `${componentId}-scope` }
+                            >
+                                { scopeOptions.map((opt: { value: ScopeValue; label: string }) => (
+                                    <MenuItem key={ opt.value } value={ opt.value }>
+                                        { opt.label }
+                                    </MenuItem>
+                                )) }
+                            </TextField>
+                        </Box>
+
+                        { scope === APPLICATION_DATA && (
+                            <Box sx={ { flex: "0 0 220px", minWidth: 180 } }>
+                                <TextField
+                                    select
+                                    required
+                                    value={ applicationIdentifier }
+                                    onChange={ handleApplicationIdentifierChange }
+                                    error={ Boolean(appIdError) }
+                                    helperText={ appIdError || " " }
+                                    disabled={ isLoadingAppIds }
+                                    fullWidth
+                                    placeholder={ t(
+                                        "customerDataService:profileAttributes.create." +
+                                        "forms.attributeGeneral.fields.applicationIdentifier.placeholder"
+                                    ) }
+                                    InputProps={ {
+                                        endAdornment: isLoadingAppIds ? (
+                                            <InputAdornment position="end">
+                                                <CircularProgress size={ 16 } />
+                                            </InputAdornment>
+                                        ) : null
+                                    } }
+                                    data-componentid={ `${componentId}-app-identifier` }
+                                >
+                                    { isLoadingAppIds ? (
+                                        <MenuItem value="" disabled>
+                                            { t("customerDataService:profileAttributes.create." +
+                                                "forms.attributeGeneral.fields.applicationIdentifier.loading") }
+                                        </MenuItem>
+                                    ) : appIdentifierOptions.length === 0 ? (
+                                        <MenuItem value="" disabled>
+                                            { t("customerDataService:profileAttributes.create." +
+                                                "forms.attributeGeneral.fields.applicationIdentifier.noOptions") }
+                                        </MenuItem>
+                                    ) : (
+                                        appIdentifierOptions.map((opt: ApplicationIdentifierOptionInterface) => (
+                                            <MenuItem key={ opt.value } value={ opt.value }>
+                                                { opt.label }
+                                            </MenuItem>
+                                        ))
+                                    ) }
+                                </TextField>
+                            </Box>
+                        ) }
+
+                        <Box sx={ { flex: "1 1 auto", minWidth: 0 } }>
+                            <TextField
+                                required
+                                value={ name }
+                                onChange={ handleNameChange }
+                                error={ Boolean(nameError) || isNameAvailable === false }
+                                helperText={
+                                    nameError
+                                        ? nameError
+                                        : isNameAvailable === false
+                                            ? t(
+                                                "customerDataService:profileAttributes.create." +
+                                                "forms.attributeGeneral.fields.name.validations.exists"
+                                            )
+                                            : " "
+                                }
+                                placeholder={ t(
+                                    "customerDataService:profileAttributes.create." +
+                                    "forms.attributeGeneral.fields.name.placeholder"
+                                ) }
+                                disabled={ scope === APPLICATION_DATA && !applicationIdentifier.trim() }
+                                fullWidth
                                 InputProps={ {
-                                    endAdornment: isLoadingAppIds ? (
+                                    endAdornment: isCheckingName ? (
                                         <InputAdornment position="end">
                                             <CircularProgress size={ 16 } />
                                         </InputAdornment>
                                     ) : null
                                 } }
-                                data-componentid={ `${componentId}-app-identifier` }
-                            >
-                                { isLoadingAppIds ? (
-                                    <MenuItem value="" disabled>
-                                        { t("customerDataService:profileAttributes.create."+
-                                        "forms.attributeGeneral.fields.applicationIdentifier.loading") }
-                                    </MenuItem>
-                                ) : appIdentifierOptions.length === 0 ? (
-                                    <MenuItem value="" disabled>
-                                        { t("customerDataService:profileAttributes.create."+
-                                        "forms.attributeGeneral.fields.applicationIdentifier.noOptions") }
-                                    </MenuItem>
-                                ) : (
-                                    appIdentifierOptions.map((opt: ApplicationIdentifierOptionInterface) => (
-                                        <MenuItem key={ opt.value } value={ opt.value }>
-                                            { opt.label }
-                                        </MenuItem>
-                                    ))
-                                ) }
-                            </TextField>
-                        ) }
-
-                        <TextField
-                            required
-                            label=" "
-                            value={ name }
-                            onChange={ (e: React.ChangeEvent<HTMLInputElement>): void => {
-                                setName(e.target.value);
-                                setNameError("");
-                                setIsNameAvailable(null);
-                            } }
-                            error={ Boolean(nameError) || isNameAvailable === false }
-                            helperText={
-                                nameError
-                                    ? nameError
-                                    : isNameAvailable === false
-                                        ? t(
-                                            "customerDataService:profileAttributes.create."+
-                                            "forms.attributeGeneral.fields.name.validations.exists"
-                                        )
-                                        : " "
-                            }
-                            placeholder={ t(
-                                "customerDataService:profileAttributes.create."+
-                                "forms.attributeGeneral.fields.name.placeholder"
-                            ) }
-                            disabled={ scope === APPLICATION_DATA && !applicationIdentifier.trim() }
-                            sx={ { flexGrow: 1, minWidth: 0 } }
-                            InputProps={ {
-                                endAdornment: isCheckingName ? (
-                                    <InputAdornment position="end">
-                                        <CircularProgress size={ 16 } />
-                                    </InputAdornment>
-                                ) : null
-                            } }
-                            data-componentid={ `${componentId}-name-field` }
-                        />
+                                data-componentid={ `${componentId}-name-field` }
+                            />
+                        </Box>
                     </Box>
-
                 </Grid>
-
             </Grid>
         );
     }
@@ -446,7 +445,7 @@ interface TypeAndAdvancedFormPropsInterface {
 const TypeAndAdvancedForm: React.ForwardRefExoticComponent<
     TypeAndAdvancedFormPropsInterface & React.RefAttributes<StepFormRefInterface>
 > = forwardRef<StepFormRefInterface, TypeAndAdvancedFormPropsInterface>(
-    (props: TypeAndAdvancedFormPropsInterface, ref): ReactElement => {
+    (props: TypeAndAdvancedFormPropsInterface, ref: React.ForwardedRef<StepFormRefInterface>): ReactElement => {
         const {
             initialValues,
             scope,
@@ -494,6 +493,21 @@ const TypeAndAdvancedForm: React.ForwardRefExoticComponent<
                     label: t("customerDataService:profileAttributes.create."+
                         "forms.typeConfig.fields.valueType.options.boolean.label"),
                     value: "boolean" as ValueType
+                },
+                {
+                    label: t("customerDataService:profileAttributes.create."+
+                        "forms.typeConfig.fields.valueType.options.date.label"),
+                    value: "date" as ValueType
+                },
+                {
+                    label: t("customerDataService:profileAttributes.create."+
+                        "forms.typeConfig.fields.valueType.options.date_time.label"),
+                    value: "date_time" as ValueType
+                },
+                {
+                    label: t("customerDataService:profileAttributes.create."+
+                        "forms.typeConfig.fields.valueType.options.epoch.label"),
+                    value: "epoch" as ValueType
                 },
                 {
                     label: t("customerDataService:profileAttributes.create."+
@@ -652,7 +666,7 @@ const TypeAndAdvancedForm: React.ForwardRefExoticComponent<
                         } }
                         data-componentid={ `${componentId}-value-type-field` }
                     >
-                        { valueTypeOptions.map((opt) => (
+                        { valueTypeOptions.map((opt: { value: ValueType; label: string }) => (
                             <MenuItem key={ opt.value } value={ opt.value }>
                                 { opt.label }
                             </MenuItem>
@@ -668,8 +682,7 @@ const TypeAndAdvancedForm: React.ForwardRefExoticComponent<
                     <Grid xs={ 12 }>
                         <Hint>
                             { t("customerDataService:profileAttributes.create."+
-                            "forms.advancedSettings.fields.canonicalValues.hint")
-                                || "Define the allowed label-value pairs for this attribute." }
+                            "forms.advancedSettings.fields.canonicalValues.hint") }
                         </Hint>
                         <DynamicField
                             data={ canonicalValues.map(
@@ -689,8 +702,8 @@ const TypeAndAdvancedForm: React.ForwardRefExoticComponent<
                                 t("customerDataService:profileAttributes.create."+
                                     "forms.advancedSettings.fields.canonicalValues.validations.atLeastOne") }
                             valueRequiredErrorMessage={
-                                t("customerDataService:profileAttributes.create.f"+
-                                    "orms.advancedSettings.fields.canonicalValues.validations.atLeastOne") }
+                                t("customerDataService:profileAttributes.create."+
+                                    "forms.advancedSettings.fields.canonicalValues.validations.atLeastOne") }
                             requiredField={ false }
                             listen={ (data: KeyValue[]): void => {
                                 setCanonicalValues(
@@ -714,7 +727,7 @@ const TypeAndAdvancedForm: React.ForwardRefExoticComponent<
                             label={ t("customerDataService:profileAttributes.create."+
                                 "forms.advancedSettings.fields.subAttributes.label") }
                             placeholder={ t("customerDataService:profileAttributes.create."+
-                                "forms.advancedSettings.fieldssubAttributes.placeholder") }
+                                "forms.advancedSettings.fields.subAttributes.placeholder") }
                             value=""
                             disabled={ isLoadingSubAttrs || subAttributeOptions.length === 0
                                 || availableSubAttributeOptions.length === 0 }
@@ -936,8 +949,7 @@ const ProfileAttributeCreatePage: FunctionComponent<ProfileAttributeCreatePagePr
         const payload: Array<Partial<ProfileSchemaAttribute>> = [
             {
                 attribute_name: attributeName,
-                // Always send canonical_values — empty array explicitly clears saved values.
-                canonical_values: values.canonicalValues as any,
+                canonical_values: values.canonicalValues ?? [],
                 merge_strategy: values.mergeStrategy,
                 multi_valued: values.multiValued,
                 mutability: values.mutability,
@@ -951,7 +963,9 @@ const ProfileAttributeCreatePage: FunctionComponent<ProfileAttributeCreatePagePr
 
         setIsSubmitting(true);
         createSchemaAttributes(scope, payload)
-            .then((): void => {
+            .then((created: ProfileSchemaAttribute[]): void => {
+                const createdAttribute: ProfileSchemaAttribute | undefined = created?.[0];
+
                 dispatch(
                     addAlert({
                         description: t(
@@ -965,6 +979,18 @@ const ProfileAttributeCreatePage: FunctionComponent<ProfileAttributeCreatePagePr
                         )
                     })
                 );
+
+                if (createdAttribute?.attribute_id) {
+                    history.push(
+                        AppConstants.getPaths()
+                            .get("PROFILE_ATTRIBUTE")
+                            .replace(":scope", scope)
+                            .replace(":id", createdAttribute.attribute_id)
+                    );
+
+                    return;
+                }
+
                 history.push(AppConstants.getPaths().get("PROFILE_ATTRIBUTES"));
             })
             .catch((): void => {
