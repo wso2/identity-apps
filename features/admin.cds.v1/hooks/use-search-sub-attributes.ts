@@ -33,7 +33,7 @@ const SCOPE_PREFIXES: Partial<Record<SchemaListingScope, string>> = {
 };
 
 /**
- * Hook: GET /profile-schema/{scope}?filter=attribute_name+co+{attributeName}.
+ * Hook: GET /profile-schema/`{scope}`?filter=attribute_name+co+`{attributeName}`.
  *
  * Fetches sub-attributes of a complex attribute by searching for all attribute
  * names that start with `{attributeName}.` within the given scope.

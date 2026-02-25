@@ -45,7 +45,7 @@ export const useProfileSchemaByScope = <
         scope: ProfileSchemaScope,
         filter?: string,
         shouldFetch: boolean = true
-): RequestResultInterface<Data, Error> => {
+    ): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
