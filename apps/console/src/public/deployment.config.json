@@ -870,6 +870,23 @@
                     "update": []
                 }
             },
+            "customerDataService" : {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [
+                    {
+                        "feature": "customerDataService",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [],
+                    "update": []
+                }
+            },
             "customerDataUnificationRules": {
                 "disabledFeatures": [],
                 "enabled": false,
