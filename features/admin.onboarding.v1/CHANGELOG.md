@@ -1,5 +1,17 @@
 # @wso2is/admin.onboarding.v1
 
+## 1.0.9
+
+### Patch Changes
+
+- [#9659](https://github.com/wso2/identity-apps/pull/9659) [`313e8a9542faae47dfa69ac007219b0e1aedafcb`](https://github.com/wso2/identity-apps/commit/313e8a9542faae47dfa69ac007219b0e1aedafcb) Thanks [@savindi7](https://github.com/savindi7)! - Add URL param support for user onboarding wizard.
+
+- Updated dependencies [[`313e8a9542faae47dfa69ac007219b0e1aedafcb`](https://github.com/wso2/identity-apps/commit/313e8a9542faae47dfa69ac007219b0e1aedafcb)]:
+  - @wso2is/admin.core.v1@2.53.7
+  - @wso2is/admin.branding.v1@2.32.98
+  - @wso2is/admin.server-configurations.v1@2.37.8
+  - @wso2is/admin.users.v1@2.36.117
+
 ## 1.0.8
 
 ### Patch Changes

@@ -1,5 +1,29 @@
 # @wso2is/console
 
+## 2.95.7
+
+### Patch Changes
+
+- [#9659](https://github.com/wso2/identity-apps/pull/9659) [`313e8a9542faae47dfa69ac007219b0e1aedafcb`](https://github.com/wso2/identity-apps/commit/313e8a9542faae47dfa69ac007219b0e1aedafcb) Thanks [@savindi7](https://github.com/savindi7)! - Add URL param support for user onboarding wizard.
+
+* [#9660](https://github.com/wso2/identity-apps/pull/9660) [`e0157c88b410c42099ec0788af76423e8ea989ce`](https://github.com/wso2/identity-apps/commit/e0157c88b410c42099ec0788af76423e8ea989ce) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for deleting scopes using the scope ID as the unique identifier
+
+* Updated dependencies [[`313e8a9542faae47dfa69ac007219b0e1aedafcb`](https://github.com/wso2/identity-apps/commit/313e8a9542faae47dfa69ac007219b0e1aedafcb), [`e0157c88b410c42099ec0788af76423e8ea989ce`](https://github.com/wso2/identity-apps/commit/e0157c88b410c42099ec0788af76423e8ea989ce)]:
+  - @wso2is/admin.onboarding.v1@1.0.9
+  - @wso2is/admin.core.v1@2.53.7
+  - @wso2is/admin.api-resources.v2@2.26.7
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.142
+  - @wso2is/admin.branding.v1@2.32.98
+  - @wso2is/admin.email-management.v1@2.25.306
+  - @wso2is/admin.flows.v1@1.0.111
+  - @wso2is/admin.home.v1@1.7.121
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.142
+  - @wso2is/admin.server-configurations.v1@2.37.8
+  - @wso2is/admin.users.v1@2.36.117
+  - @wso2is/admin.registration-flow-builder.v1@0.10.102
+  - @wso2is/admin.agents.v1@1.0.157
+  - @wso2is/admin.roles.v2@2.27.312
+
 ## 2.95.6
 
 ### Patch Changes
