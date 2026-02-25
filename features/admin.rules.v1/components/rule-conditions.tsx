@@ -425,21 +425,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             expressionField?.includes("permissions") ||
             expressionField?.includes("audience");
 
-        // Fix URL path - remove /api/server/v1 prefix if present since apiRoot already includes it
-        const normalizeUrl = (url: string): string => {
-            if (url?.startsWith('/api/server/v1/')) {
-                return url.replace('/api/server/v1', '');
-            }
-            if (url?.startsWith('/scim2/')) {
-                // SCIM endpoints should use scim2 base, not apiRoot
-                return url;
-            }
-            return url;
-        };
-        
-        const normalizedInitialUrl = normalizeUrl(initialResourcesLoadUrl);
-        const normalizedFilterUrl = normalizeUrl(filterBaseResourcesUrl);
-
         // TODO: Handle other resource types once the API is updated with the required data.
         if (expressionField === "application") {
             resourceType = "applications";
@@ -447,14 +432,14 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         } else if (expressionField === "claim") {
             shouldFetch = false;
         } else if (useGenericList) {
-        // For generic workflow fields, we'll handle them below
+            // For generic workflow fields, we'll handle them below
             shouldFetch = true;
         }
 
         const {
             data: fetchedResourcesList,
             isLoading: isResourcesListLoading
-        } = useGetResourceListOrResourceDetails(normalizedInitialUrl, shouldFetch);
+        } = useGetResourceListOrResourceDetails(initialResourcesLoadUrl, shouldFetch);
 
         // Only fetch resource details for application fields (not for workflow fields like domain, groups, roles)
         const shouldFetchResourceDetails: boolean = expressionField === "application" && shouldFetch && !!expressionValue;
