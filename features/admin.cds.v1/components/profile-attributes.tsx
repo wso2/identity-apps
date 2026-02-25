@@ -141,6 +141,30 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingProps> 
 
     const actions: TableActionsInterface[] = useMemo(() => ([
         {
+            hidden: (row: ProfileSchemaListingRow): boolean =>
+                !row.attribute_id ||
+                row.scope === "identity_attributes" ||
+                !row.editable,
+
+            icon: (): SemanticICONS => "pencil alternate",
+
+            onClick: (e: SyntheticEvent, row: ProfileSchemaListingRow): void => {
+                e?.stopPropagation?.();
+
+                history.push(
+                    AppConstants.getPaths()
+                        .get("PROFILE_ATTRIBUTE")
+                        .replace(":scope", row.scope)
+                        .replace(":id", row.attribute_id)
+                );
+            },
+
+            popupText: (): string =>
+                t("profileAttributes.list.actions.edit"),
+
+            renderer: "semantic-icon"
+        },
+        {
             hidden: (row: ProfileSchemaListingRow): boolean => !row.deletable || !row.attribute_id,
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, row: ProfileSchemaListingRow): void => {

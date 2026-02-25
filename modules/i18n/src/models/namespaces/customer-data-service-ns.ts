@@ -277,6 +277,8 @@ export interface CustomerDataServiceNS {
         list: {
             actions: {
                 delete: string;
+                edit: string;
+                view: string;
             };
             buttons: {
                 add: string;

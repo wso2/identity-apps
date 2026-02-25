@@ -304,7 +304,7 @@ export const customerDataService: CustomerDataServiceNS = {
                     }
                 }
             },
-            identityAttributesNotice: "Identity attributes are read-only in this section." +
+            identityAttributesNotice: "Identity attributes are read-only in this section. " +
                 "To make changes, please update them from the Attributes section.",
             notifications: {
                 deleteAttribute: {
@@ -344,7 +344,9 @@ export const customerDataService: CustomerDataServiceNS = {
         },
         list: {
             actions: {
-                delete: "Delete"
+                delete: "Delete",
+                edit: "Edit",
+                view: "View"
             },
             buttons: {
                 add: "Add Profile Attribute",
@@ -357,7 +359,7 @@ export const customerDataService: CustomerDataServiceNS = {
             confirmations: {
                 deleteAttribute: {
                     assertionHint: "Please confirm the deletion.",
-                    content: "Are you sure you want to delete <1>{{attributeName}}</1>?." +
+                    content: "Are you sure you want to delete <1>{{attributeName}}</1>?. " +
                         "Deleting this attribute will remove the attribute from the schema and the profiles.",
                     header: "Delete Attribute",
                     message: "This action is irreversible!"
