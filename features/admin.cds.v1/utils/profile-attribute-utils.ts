@@ -16,8 +16,10 @@
  * under the License.
  */
 
-import { ProfileSchemaListingRow, SchemaListingScope, SCOPE_CONFIG } from "../models/profile-attribute-listing";
-import type { FilterAttributeOption, ProfileSchemaAttribute, ProfileSchemaFullResponse } from "../models/profile-attributes";
+import { ProfileSchemaListingRow, SCOPE_CONFIG, SchemaListingScope } from "../models/profile-attribute-listing";
+import type {
+    FilterAttributeOption, ProfileSchemaAttribute, ProfileSchemaFullResponse
+} from "../models/profile-attributes";
 
 /**
  * Returns the attribute name relative to its scope prefix.
@@ -33,18 +35,13 @@ import type { FilterAttributeOption, ProfileSchemaAttribute, ProfileSchemaFullRe
 const relativeName = (scope: string, attributeName: string): string => {
     if (!attributeName) return "";
     const prefix = `${scope}.`;
+
     return attributeName.startsWith(prefix) ? attributeName.slice(prefix.length) : attributeName;
 };
 
-// ---------------------------------------------------------------------------
-// Row-id helper (unchanged)
-// ---------------------------------------------------------------------------
 const rowId = (scope: SchemaListingScope, attributeName: string, attributeId?: string): string =>
     attributeId ? `${scope}:${attributeId}` : `${scope}:${attributeName}`;
 
-// ---------------------------------------------------------------------------
-// Public utilities
-// ---------------------------------------------------------------------------
 
 /**
  * Transform schema attributes to dropdown options for AdvancedSearch component.
@@ -152,21 +149,21 @@ export const toProfileSchemaListingRows = (schema: ProfileSchemaFullResponse): P
     // ── core ─────────────────────────────────────────────────────────────────
     // No chip, no belongs_to, no delete, no edit.
     rows.push({
-        id: rowId("core", "profile_id"),
-        scope: "core",
         attribute_name: "profile_id",
+        deletable: false,
         display_name: "profile_id",
         editable: false,
-        deletable: false
+        id: rowId("core", "profile_id"),
+        scope: "core"
     });
 
     rows.push({
-        id: rowId("core", "user_id"),
-        scope: "core",
         attribute_name: "user_id",
+        deletable: false,
         display_name: "user_id",
         editable: false,
-        deletable: false
+        id: rowId("core", "user_id"),
+        scope: "core"
     });
 
     // ── identity_attributes ──────────────────────────────────────────────────
@@ -188,6 +185,7 @@ export const toProfileSchemaListingRows = (schema: ProfileSchemaFullResponse): P
     // Chip shown, deletion allowed.
     (schema.traits ?? []).forEach((a: ProfileSchemaAttribute) => {
         const name: string = a.attribute_name ?? "";
+
         rows.push({
             id: rowId("traits", name, a.attribute_id),
             scope: "traits",
@@ -201,10 +199,8 @@ export const toProfileSchemaListingRows = (schema: ProfileSchemaFullResponse): P
     });
 
     // ── application_data ─────────────────────────────────────────────────────
-    // Chip + belongs_to appId shown, deletion allowed.
-    // display_name strips "application_data.<appId>." so only the field path
-    // (e.g. "profile.email") is shown; belongs_to carries the appId separately.
     const appData = schema.application_data ?? {};
+
     Object.entries(appData).forEach(([ appId, attrs ]) => {
         (attrs ?? []).forEach((a: ProfileSchemaAttribute) => {
             const fullName: string = a.attribute_name ?? "";

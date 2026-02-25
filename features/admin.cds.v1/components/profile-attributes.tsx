@@ -38,16 +38,13 @@ import React, {
     useMemo,
     useState
 } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Header, Label, SemanticICONS, SemanticWIDTHS } from "semantic-ui-react";
 
 import { deleteSchemaAttributeById } from "../api/profile-attributes";
 import { ProfileSchemaListingRow, SCOPE_CONFIG } from "../models/profile-attribute-listing";
 
-// =============================================================================
-// Column width constants (Semantic UI 16-unit grid)
-// Attribute(7) + Scope(7) + Actions(2) = 16
-// =============================================================================
 const COL_WIDTH_ATTRIBUTE: SemanticWIDTHS = 7;
 const COL_WIDTH_SCOPE: SemanticWIDTHS = 7;
 const COL_WIDTH_ACTIONS: SemanticWIDTHS = 2;
@@ -66,12 +63,12 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingProps> 
 }: ProfileSchemaListingProps): ReactElement => {
 
     const dispatch: Dispatch<any> = useDispatch();
+    const { t } = useTranslation("customerDataService");
 
     const [ deleting, setDeleting ] = useState<ProfileSchemaListingRow | null>(null);
     const [ showDeleteModal, setShowDeleteModal ] = useState<boolean>(false);
 
     const columns: TableColumnInterface[] = useMemo(() => ([
-        // ── Column 1: Attribute (fills majority of row) ───────────────────────
         {
             allowToggleVisibility: false,
             dataIndex: "display_name",
@@ -95,18 +92,16 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingProps> 
                     </Header.Content>
                 </Header>
             ),
-            title: "Attribute",
+            title: t("profileAttributes.list.columns.attribute"),
             width: COL_WIDTH_ATTRIBUTE
         },
-
-        // ── Column 2: Scope (chip + optional belongs_to label) ────────────────
         {
             allowToggleVisibility: false,
             dataIndex: "scope",
             id: "scope",
-            key: "scope",
+            key: "",
             render: (row: ProfileSchemaListingRow): ReactNode => {
-                const config = SCOPE_CONFIG[row.scope];
+                const config: typeof SCOPE_CONFIG[keyof typeof SCOPE_CONFIG] = SCOPE_CONFIG[row.scope];
 
                 if (!config?.label) return null;
 
@@ -117,7 +112,6 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingProps> 
                             size="small"
                             variant="outlined"
                             sx={ {
-                                // backgroundColor: config.backgroundColor,
                                 color: config.chipColor,
                                 fontWeight: 500
                             } }
@@ -131,11 +125,9 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingProps> 
                 );
             },
             textAlign: "left",
-            title: "Scope",
+            title: "",
             width: COL_WIDTH_SCOPE
         },
-
-        // ── Column 3: Actions ─────────────────────────────────────────────────
         {
             allowToggleVisibility: false,
             dataIndex: "action",
@@ -145,7 +137,7 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingProps> 
             title: "",
             width: COL_WIDTH_ACTIONS
         }
-    ]), [ componentId ]);
+    ]), [ componentId, t ]);
 
     const actions: TableActionsInterface[] = useMemo(() => ([
         {
@@ -156,10 +148,10 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingProps> 
                 setDeleting(row);
                 setShowDeleteModal(true);
             },
-            popupText: (): string => "Delete",
+            popupText: (): string => t("profileAttributes.list.actions.delete"),
             renderer: "semantic-icon"
         }
-    ]), []);
+    ]), [ t ]);
 
     const handleDelete = async (): Promise<void> => {
         try {
@@ -168,17 +160,18 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingProps> 
             await deleteSchemaAttributeById(deleting.scope, deleting.attribute_id);
 
             dispatch(addAlert({
-                description: "Attribute deleted successfully.",
+                description: t("profileAttributes.list.notifications.deleteAttribute.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: "Deleted"
+                message: t("profileAttributes.list.notifications.deleteAttribute.success.message")
             }));
 
             onRefresh();
         } catch (err: any) {
             dispatch(addAlert({
-                description: err?.message ?? "Failed to delete the attribute.",
+                description: err?.message
+                    ?? t("profileAttributes.list.notifications.deleteAttribute.error.description"),
                 level: AlertLevels.ERROR,
-                message: "Delete failed"
+                message: t("profileAttributes.list.notifications.deleteAttribute.error.message")
             }));
         } finally {
             setShowDeleteModal(false);
@@ -214,7 +207,7 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingProps> 
 
             { deleting && (
                 <ConfirmationModal
-                    assertionHint="Please confirm the deletion."
+                    assertionHint={ t("profileAttributes.list.confirmations.deleteAttribute.assertionHint") }
                     assertionType="checkbox"
                     closeOnDimmerClick={ false }
                     data-componentid={ `${componentId}-delete-confirmation-modal` }
@@ -228,19 +221,21 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingProps> 
                         setDeleting(null);
                     } }
                     open={ showDeleteModal }
-                    primaryAction="Confirm"
-                    secondaryAction="Cancel"
+                    primaryAction={ t("common.buttons.confirm") }
+                    secondaryAction={ t("common.buttons.cancel") }
                     type="negative"
                 >
                     <>
                         <ConfirmationModal.Header>
-                            Delete Attribute
+                            { t("profileAttributes.list.confirmations.deleteAttribute.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message attached negative>
-                            This action is irreversible!
+                            { t("profileAttributes.list.confirmations.deleteAttribute.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            Are you sure you want to delete <b>{ deleting.attribute_name }</b>?
+                            { t("profileAttributes.list.confirmations.deleteAttribute.content", {
+                                attributeName: deleting.attribute_name
+                            }) }
                         </ConfirmationModal.Content>
                     </>
                 </ConfirmationModal>

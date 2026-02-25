@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import Button from "@oxygen-ui/react/Button";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
-import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     EmptyPlaceholder,
+    LinkButton,
     ListLayout,
     PageLayout,
     PrimaryButton
@@ -43,16 +43,12 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { ProfileSchemaListing } from "../components/profile-attributes";
 import { useFullProfileSchema } from "../hooks/use-profile-schema";
 import { useProfileSchemaByScope } from "../hooks/use-profile-schema-by-scope";
-import { toProfileSchemaListingRows } from "../utils/profile-attribute-utils";
-import { ProfileSchemaListing } from "../components/profile-attributes";
 import type { ProfileSchemaListingRow, SchemaListingScope } from "../models/profile-attribute-listing";
 import type { ProfileSchemaAttribute } from "../models/profile-attributes";
-
-// =============================================================================
-// Constants
-// =============================================================================
+import { toProfileSchemaListingRows } from "../utils/profile-attribute-utils";
 
 const SORT_BY_NAME: string = "display_name";
 const SORT_BY_SCOPE: string = "scope";
@@ -71,10 +67,6 @@ const SEARCHABLE_SCOPES: SchemaListingScope[] = [
     "application_data"
 ];
 
-// =============================================================================
-// Local types
-// =============================================================================
-
 interface BasicFilterInterface {
     attribute: string;
     operator: string;
@@ -82,10 +74,6 @@ interface BasicFilterInterface {
 }
 
 type ProfileSchemaPagePropsInterface = IdentifiableComponentInterface;
-
-// =============================================================================
-// Utilities (module-level — no closures over component state)
-// =============================================================================
 
 /**
  * Parses a basic filter query string into its constituent parts.
@@ -122,12 +110,9 @@ const withScopePrefix = (scope: SchemaListingScope, value: string): string => {
 
 /**
  * Converts a raw scope response into listing rows for the given scope.
- */
-/**
- * Converts a raw scope response into listing rows for the given scope.
  *
  * - identity_attributes / traits → API returns ProfileSchemaAttribute[]
- * - application_data             → API returns Record<string, ProfileSchemaAttribute[]>
+ * - application_data             → API returns Record (string, ProfileSchemaAttribute[])
  */
 const toRowsFromScopeResponse = (
     scope: SchemaListingScope,
@@ -138,9 +123,9 @@ const toRowsFromScopeResponse = (
 
     // ── application_data: object keyed by appId ──────────────────────────────
     if (scope === "application_data") {
-        const appData = data as Record<string, ProfileSchemaAttribute[]>;
+        const appData: Record<string, ProfileSchemaAttribute[]> = data as Record<string, ProfileSchemaAttribute[]>;
 
-        return Object.entries(appData).flatMap(([ appId, attrs ]) =>
+        return Object.entries(appData).flatMap(([ appId, attrs ]: [ string, ProfileSchemaAttribute[] ]) =>
             (attrs ?? []).map((a: ProfileSchemaAttribute): ProfileSchemaListingRow => {
                 const fullName: string = a.attribute_name ?? "";
                 const withoutScope: string = fullName.startsWith("application_data.")
@@ -166,8 +151,7 @@ const toRowsFromScopeResponse = (
         );
     }
 
-    // ── identity_attributes / traits: flat array ─────────────────────────────
-    const attrs = data as ProfileSchemaAttribute[];
+    const attrs: ProfileSchemaAttribute[] = data as ProfileSchemaAttribute[];
 
     return attrs.map((a: ProfileSchemaAttribute): ProfileSchemaListingRow => {
         const fullName: string = a.attribute_name ?? "";
@@ -183,7 +167,7 @@ const toRowsFromScopeResponse = (
             chip_label: scope,
             deletable: scope === "traits",
             display_name: display,
-            editable: scope !== "identity_attributes",
+            editable: true,
             id: `${scope}:${a.attribute_id ?? fullName}`,
             scope
         };
@@ -240,10 +224,6 @@ const sortRows = (
     );
 };
 
-// =============================================================================
-// Component
-// =============================================================================
-
 /**
  * Profile schema listing page.
  *
@@ -259,23 +239,18 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-
-    // -------------------------------------------------------------------------
-    // Dropdown configs
-    // -------------------------------------------------------------------------
-
     const SORT_BY: DropdownItemProps[] = [
         {
             key: 0,
-            text: t("traits:page.sortByName", { defaultValue: "Name" }),
+            text: t("profileAttributes:list.sortBy.name"),
             value: SORT_BY_NAME
         },
-        { key: 1, text: "Scope", value: SORT_BY_SCOPE }
+        {
+            key: 1,
+            text: t("profileAttributes:list.sortBy.scope"),
+            value: SORT_BY_SCOPE
+        }
     ];
-
-    // -------------------------------------------------------------------------
-    // State
-    // -------------------------------------------------------------------------
 
     const [ offset, setOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(
@@ -285,19 +260,7 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
     const [ sortAscending, setSortAscending ] = useState<boolean>(true);
     const [ activeFilter, setActiveFilter ] = useState<string>("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
-
-    // filterRows holds results when a search is active; null means "use full schema".
-    const [ filterRows, setFilterRows ] = useState<ProfileSchemaListingRow[] | null>(
-        null
-    );
-    const [ isFiltering, setIsFiltering ] = useState<boolean>(false);
-    const [ filterError, setFilterError ] = useState<boolean>(false);
-
     const isInitialRender: React.MutableRefObject<boolean> = useRef<boolean>(true);
-
-    // -------------------------------------------------------------------------
-    // Data — full schema (SWR-cached; used when no search is active)
-    // -------------------------------------------------------------------------
 
     const {
         data: fullSchema,
@@ -314,16 +277,11 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
         [ fullSchema ]
     );
 
-    // -------------------------------------------------------------------------
-    // Scoped search — driven by activeFilter (set after debounce in handler)
-    // -------------------------------------------------------------------------
-
     const parsedFilter: BasicFilterInterface | null = useMemo(
         (): BasicFilterInterface | null => parseBasicFilterQuery(activeFilter),
         [ activeFilter ]
     );
 
-    // We fire one hook call per scope. shouldFetch is false when no active filter.
     const shouldFetchFilter: boolean = Boolean(parsedFilter);
 
     const scopeFilterResults: Array<ReturnType<typeof useProfileSchemaByScope>> = [
@@ -378,31 +336,25 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
                 }
             );
         },
-        // scopeFilterResults are stable references from the hooks — safe to spread here.
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [ shouldFetchFilter, isFilterLoading, ...scopeFilterResults.map((r) => r.data) ]
+        [ shouldFetchFilter, isFilterLoading,
+            ...scopeFilterResults.map((r: ReturnType<typeof useProfileSchemaByScope>) => r.data) ]
     );
 
-    // Alert on filter error.
     useEffect((): void => {
         if (!hasFilterError) return;
 
         dispatch(
             addAlert({
                 description: t(
-                    "profileAttributes:notifications.filterProfileAttributes.genericError.description"
+                    "profileAttributes:list.notifications.filterProfileAttributes.genericError.description"
                 ),
                 level: AlertLevels.ERROR,
                 message: t(
-                    "profileAttributes:notifications.filterProfileAttributes.genericError.message"
+                    "profileAttributes:list.notifications.filterProfileAttributes.genericError.message"
                 )
             })
         );
     }, [ hasFilterError ]);
-
-    // -------------------------------------------------------------------------
-    // Derive active rows (filtered or full) and apply sort
-    // -------------------------------------------------------------------------
 
     const unsortedRows: ProfileSchemaListingRow[] =
         assembledFilterRows ?? baseRows;
@@ -430,11 +382,6 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
     );
 
     const isLoading: boolean = isLoadingSchema || isFilterLoading;
-
-    // -------------------------------------------------------------------------
-    // Event handlers
-    // -------------------------------------------------------------------------
-
     const handleAddProfileAttribute: () => void = (): void => {
         history.push(AppConstants.getPaths().get("PROFILE_ATTRIBUTE_CREATE"));
     };
@@ -480,11 +427,12 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
         setSortAscending(isAscending);
     };
 
-    const handleSchemaFilter: (query: string) => void = (query: string): void => {
+    const handleSchemaFilter = (query: string): void => {
         const trimmed: string = (query ?? "").trim();
 
         if (!trimmed) {
-            handleSearchQueryClear();
+            setActiveFilter("");
+            setOffset(0);
 
             return;
         }
@@ -500,102 +448,103 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
     };
 
     const handleRefresh: () => void = (): void => {
-        // Revalidate the full schema SWR cache and clear any active filter.
         mutateSchema();
         handleSearchQueryClear();
     };
 
-    // -------------------------------------------------------------------------
-    // Render
-    // -------------------------------------------------------------------------
-
     return (
         <PageLayout
             isLoading={ isLoading }
-            title={ t("profileAttributes:pageLayout.list.title") }
-            pageTitle={ t("profileAttributes:pageLayout.list.title") }
-            description={ t("profileAttributes:pageLayout.list.description") }
+            title={ t("profileAttributes:list.page.title") }
+            pageTitle={ t("profileAttributes:list.page.pageTitle") }
+            description={ t("profileAttributes:list.page.description") }
             data-componentid={ `${componentId}-page-layout` }
             action={
                 (
-                    <PrimaryButton onClick={ handleAddProfileAttribute} > 
-                    <Icon name="add" />
-                        { t("profileAttributes:pageLayout.list.primaryAction") }
+                    <PrimaryButton onClick={ handleAddProfileAttribute }>
+                        <Icon name="add" />
+                        { t("profileAttributes:list.buttons.add") }
                     </PrimaryButton>
                 )
             }
         >
-            { activeRows.length === 0 && !isLoading ? (
-                <EmptyPlaceholder
-                    action={
-                        (
-                            <PrimaryButton onClick={ handleAddProfileAttribute} >
-                                <Icon name="add" />
-                                { t("profileAttributes:pageLayout.list.primaryAction") }
-                            </PrimaryButton>
-                        )
-                    }
-                    image={ getEmptyPlaceholderIllustrations().newList }
-                    imageSize="tiny"
-                    title={ t("profileAttributes:placeholders.emptyList.title") }
-                    subtitle={ [
-                        t("profileAttributes:placeholders.emptyList.subtitles.0")
-                    ] }
-                    data-componentid={ `${componentId}-empty-placeholder` }
-                />
-            ) : (
-                <ListLayout
-                    currentListSize={ paginatedRows.length }
-                    listItemLimit={ listItemLimit }
-                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                    onPageChange={ handlePaginationChange }
-                    showPagination={ true }
-                    showTopActionPanel={ true }
-                    totalPages={ Math.ceil(activeRows.length / listItemLimit) }
-                    totalListSize={ activeRows.length }
-                    sortOptions={ SORT_BY }
-                    sortStrategy={ sortBy }
-                    onSortStrategyChange={ handleSortStrategyChange }
-                    onSortOrderChange={ handleSortOrderChange }
-                    onSearchQueryClear={ handleSearchQueryClear }
-                    isLoading={ isLoading }
-                    advancedSearch={
-                        (
-                            <AdvancedSearchWithBasicFilters
-                                onFilter={ handleSchemaFilter }
-                                filterAttributeOptions={ [
-                                    {
-                                        key: 0,
-                                        text: t(
-                                            "profileAttributes:search.filterAttributes.attributeName"
-                                        ),
-                                        value: "attribute_name"
-                                    }
-                                ] }
-                                disableSearchFilterDropdown={ false }
-                                placeholder={ t("profileAttributes:search.placeholder") }
-                                defaultSearchAttribute="attribute_name"
-                                defaultSearchOperator="sw"
-                                filterConditionOptions={ [
-                                    { key: 0, text: t("common:startsWith"), value: "sw" },
-                                    { key: 1, text: t("common:contains"), value: "co" },
-                                    { key: 2, text: t("common:equals"), value: "eq" }
-                                ] }
-                                triggerClearQuery={ triggerClearQuery }
-                                data-componentid={ `${componentId}-search` }
-                            />
-                        )
-                    }
-                    data-componentid={ `${componentId}-list-layout` }
-                >
+            <ListLayout
+                currentListSize={ paginatedRows.length }
+                listItemLimit={ listItemLimit }
+                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                onPageChange={ handlePaginationChange }
+                showPagination={ activeRows.length > 0 }
+                showTopActionPanel={ true }
+                totalPages={ Math.ceil(activeRows.length / listItemLimit) }
+                totalListSize={ activeRows.length }
+                sortOptions={ SORT_BY }
+                sortStrategy={ sortBy }
+                onSortStrategyChange={ handleSortStrategyChange }
+                onSortOrderChange={ handleSortOrderChange }
+                onSearchQueryClear={ handleSearchQueryClear }
+                isLoading={ isLoading }
+                advancedSearch={
+                    (
+                        <AdvancedSearchWithBasicFilters
+                            onFilter={ handleSchemaFilter }
+                            filterAttributeOptions={ [] }
+                            disableSearchFilterDropdown={ true }
+                            placeholder={ t("profileAttributes:list.search.placeholder") }
+                            defaultSearchAttribute="attribute_name"
+                            defaultSearchOperator="sw"
+                            triggerClearQuery={ triggerClearQuery }
+                            data-componentid={ `${componentId}-search` }
+                        />
+                    )
+                }
+                data-componentid={ `${componentId}-list-layout` }
+            >
+                { !isLoading && activeRows.length === 0 && !activeFilter && (
+                    <EmptyPlaceholder
+                        action={
+                            (
+                                <PrimaryButton onClick={ handleAddProfileAttribute }>
+                                    <Icon name="add" />
+                                    { t("profileAttributes:list.buttons.add") }
+                                </PrimaryButton>
+                            )
+                        }
+                        image={ getEmptyPlaceholderIllustrations().newList }
+                        imageSize="tiny"
+                        title={ t("profileAttributes:list.placeholders.emptyList.title") }
+                        subtitle={ [
+                            t("profileAttributes:list.placeholders.emptyList.subtitles.0")
+                        ] }
+                        data-componentid={ `${componentId}-empty-placeholder` }
+                    />
+                ) }
+                { !isLoading && activeRows.length === 0 && activeFilter && (
+                    <EmptyPlaceholder
+                        action={
+                            (
+                                <LinkButton onClick={ handleSearchQueryClear }>
+                                    { t("profileAttributes:list.placeholders.emptySearch.action") }
+                                </LinkButton>
+                            )
+                        }
+                        image={ getEmptyPlaceholderIllustrations().emptySearch }
+                        imageSize="tiny"
+                        title={ t("profileAttributes:list.placeholders.emptySearch.title") }
+                        subtitle={ [
+                            t("profileAttributes:list.placeholders.emptySearch.subtitles.0")
+                        ] }
+                        data-componentid={ `${componentId}-empty-search-placeholder` }
+                    />
+                ) }
+                { activeRows.length > 0 && (
                     <ProfileSchemaListing
                         rows={ paginatedRows }
                         isLoading={ isLoading }
                         onRefresh={ handleRefresh }
                         data-componentid={ `${componentId}-listing` }
                     />
-                </ListLayout>
-            ) }
+                ) }
+            </ListLayout>
         </PageLayout>
     );
 };

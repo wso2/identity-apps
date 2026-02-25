@@ -24,6 +24,7 @@ export interface CustomerDataServiceNS {
             close: string;
             confirm: string;
             delete: string;
+            update: string; // NEW
         };
         dangerZone: {
             header: string;
@@ -36,325 +37,532 @@ export interface CustomerDataServiceNS {
                     message: string;
                     description: string;
                 };
-            }
+            };
         };
     };
 
-    profiles: {
-
-        /**
-         * Profiles LIST PAGE
-         */
-        list: {
-            page?: {
-                title?: string;
-                description?: string;
-            };
-
-            columns: {
-                profile: string;
-                user: string;
-                unifiedProfiles: string;
-            };
-
-            chips: {
-                anonymous: string;
-                unified: string;
-            };
-
-            search?: {
-                placeholder: string;
-            };
-
-            placeholders?: {
-                emptyList: {
-                    title: string;
-                    subtitle: string;
+    profileAttributes: {
+        create: {
+            forms: {
+                advancedSettings: {
+                    fields: {
+                        canonicalValues: {
+                            hint: string;
+                            label: string;
+                            labelField: string;
+                            labelPlaceholder: string;
+                            validations: {
+                                atLeastOne: string;
+                                empty: string;
+                            };
+                            valueField: string;
+                            valuePlaceholder: string;
+                        };
+                        mergeStrategy: {
+                            label: string;
+                            options: {
+                                combine:   { hint: string; label: string };
+                                overwrite: { hint: string; label: string };
+                            };
+                        };
+                        subAttributes: {
+                            hint: string;
+                            label: string;
+                            noOptions: string;
+                            placeholder: string;
+                        };
+                    };
                 };
-                emptySearch: {
-                    action: string;
-                    title: string;
-                    subtitle: string;
-                };
-            };
 
-            confirmations: {
-                delete: {
-                    header: string;
-                    message: string;
-                    content: string;
-                    assertionHint: string;
+                attributeGeneral: {
+                    fields: {
+                        // NEW (used by the Create page’s compound row)
+                        attribute: {
+                            label: string;
+                        };
+                        scope: {
+                            ariaLabel: string;
+                            label: string;
+                            options: {
+                                traits: string;
+                                applicationData: string;
+                            };
+                        };
+                        applicationIdentifier: {
+                            label: string;
+                            loading: string;
+                            noOptions: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+
+                        // existing
+                        description: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                        };
+                        displayName: {
+                            hint: string;
+                            label: string;
+                            placeholder: string;
+                        };
+                        name: {
+                            fullNameHint: string;
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                available: string;
+                                empty: string;
+                                exists: string;
+                            };
+                        };
+                    };
+                };
+
+                typeConfig: {
+                    fields: {
+                        multiValued: {
+                            hint: string;
+                            label: string;
+                        };
+                        mutability: {
+                            hint?: string; // optional (create page uses this)
+                            label: string;
+                            options: {
+                                immutable:  { hint: string; label: string };
+                                readOnly:   { hint: string; label: string };
+                                readWrite:  { hint: string; label: string };
+                                writeOnce:  { hint: string; label: string };
+                            };
+                        };
+                        valueType: {
+                            hint?: string; // optional (create page uses this)
+                            label: string;
+                            options: {
+                                boolean:   { hint: string; label: string };
+                                complex:   { hint: string; label: string };
+                                date:      { hint: string; label: string };
+                                date_time: { hint: string; label: string };
+                                decimal:   { hint: string; label: string };
+                                epoch:     { hint: string; label: string };
+                                integer:   { hint: string; label: string };
+                                options:   { hint: string; label: string };
+                                string:    { hint: string; label: string };
+                            };
+                        };
+                    };
                 };
             };
 
             notifications: {
-                delete: {
+                addProfileAttribute: {
+                    genericError: {
+                        description: string;
+                        message: string;
+                    };
                     success: {
-                        message: string;
                         description: string;
-                    };
-                    error: {
                         message: string;
-                        description: string;
                     };
                 };
-                fetchProfiles: {
-                    error: {
-                        description: string;
-                        message: string;
-                    }
+            };
+
+            pageLayout: {
+                back: string;
+                description: string;
+                stepper: {
+                    step1: { description: string; title: string };
+                    step2: { description: string; title: string };
                 };
+                title: string;
             };
         };
 
-        /**
-         * PROFILE DETAILS PAGE
-         */
-        details: {
-            page: {
-                pageTitle: string;
-                fallbackTitle: string;
-                description: string;
-                backButton: string;
-            };
-
-            tabs: {
-                general: string;
-                unifiedProfiles: string;
-            };
-
-            form: {
-                profileId: { label: string };
-                userId: { label: string };
-                createdDate: { label: string };
-                updatedDate: { label: string };
-                location: { label: string };
-                profileData: { label: string };
-            };
-
-            profileData: {
-                actions: {
-                    view: string;
-                    copy: string;
-                    export: string;
-                };
-                modal: {
-                    title: string;
-                };
-                copy: {
-                    success: {
-                        message: string;
-                        description: string;
-                    };
-                };
-                export: {
-                    success: {
-                        message: string;
-                        description: string;
-                    };
+        edit: {
+            confirmations: {
+                deleteAttribute: {
+                    assertionHint: string;
+                    content: string;
+                    header: string;
+                    message: string;
                 };
             };
-
-            section: {
-                profileData: {
-                    title:  string;
-                    description: string;
-                }
-            };
-
-            unifiedProfiles: {
-                description: string;
-                title: string;
-                empty: string;
-                columns: {
-                    profileId: string;
-                    reason: string;
-                };
-            };
-
             dangerZone: {
                 delete: {
+                    actionTitle: string;
                     header: string;
                     subheader: string;
-                    actionTitle: string;
                 };
-            };
-
-            confirmations: {
-                deleteProfile: {
-                    header: string;
-                    message: string;
-                    assertionHint: string;
-                    content: string;
-                };
-            };
-
-            notifications: {
-
-                fetchProfile: {
-                    error: {
-                        message: string;
-                        description: string;
-                    };
-                };
-
-                deleteProfile: {
-
-                    notAllowed: {
-                        message: string;
-                        description: string;
-                    };
-
-                    success: {
-                        message: string;
-                        description: string;
-                    };
-
-                    error: {
-                        message: string;
-                        description: string;
-                    };
-                };
-            };
-        };
-        page: {
-            description: string;
-            pageTitle: string;
-            title:  string;
-        },
-    };
-    profileAttributes: {
-        edit: {
-            page: {
-                pageTitle: string;
-                backButton: string;
-            };
-            tabs: {
-                general: string;
             };
             fields: {
-                attribute: {
-                    label: string;
-                    hint: string;
-                };
                 applicationIdentifier: {
-                    label: string;
                     hint: string;
-                };
-                valueType: {
                     label: string;
-                    options: {
-                        text: string;
-                        integer: string;
-                        decimal: string;
-                        boolean: string;
-                        complex: string;
-                    };
+                };
+                attribute: {
+                    hint: string;
+                    label: string;
                 };
                 mergeStrategy: {
-                    label: string;
                     hint: string;
+                    label: string;
                     options: {
                         combine: string;
                         overwrite: string;
                     };
                 };
                 multiValued: {
-                    label: string;
                     hint: string;
+                    label: string;
                 };
+
+                // UPDATED / expanded
+                mutability: {
+                    hint: string;
+                    label: string;
+                };
+
+                // UPDATED / expanded
                 subAttributes: {
+                    allAdded: string;
+                    empty: string;
+                    hint: string;
                     label: string;
                     placeholder: string;
+                    validationError: string;
+                    validationErrorMessage: string;
+                };
+
+                // UPDATED / expanded
+                valueType: {
+                    label: string;
+                    options: {
+                        boolean: string;
+                        complex: string;
+                        date: string;
+                        dateTime: string;
+                        decimal: string;
+                        epoch: string;
+                        integer: string;
+                        text: string;
+                    };
+                };
+            };
+            identityAttributesNotice: string;
+            notifications: {
+                deleteAttribute: {
+                    error: { description: string; message: string };
+                    success: { description: string; message: string };
+                };
+                fetchAttribute: {
+                    error: { description: string; message: string };
+                };
+                updateAttribute: {
+                    error: { description: string; message: string };
+                    success: { description: string; message: string };
+                };
+            };
+            page: {
+                backButton: string;
+                pageTitle: string;
+            };
+            tabs: {
+                general: string;
+            };
+        };
+
+        list: {
+            actions: {
+                delete: string;
+            };
+            buttons: {
+                add: string;
+                clearSearch: string;
+                retry: string;
+            };
+            columns: {
+                attribute: string;
+            };
+            confirmations: {
+                deleteAttribute: {
+                    assertionHint: string;
+                    content: string;
+                    header: string;
+                    message: string;
                 };
             };
             notifications: {
-                fetchAttribute: {
-                    error: { message: string; description: string };
-                };
-                updateAttribute: {
-                    success: { message: string; description: string };
-                    error: { message: string; description: string };
-                };
                 deleteAttribute: {
-                    success: { message: string; description: string };
-                    error: { message: string; description: string };
+                    error: {
+                        description: string;
+                        message: string;
+                    };
+                    success: {
+                        description: string;
+                        message: string;
+                    };
+                };
+                filterProfileAttributes: {
+                    genericError: {
+                        description: string;
+                        message: string;
+                    };
+                };
+            };
+            page: {
+                description: string;
+                pageTitle: string;
+                title: string;
+            };
+            placeholders: {
+                emptyList: {
+                    subtitles: {
+                        0: string;
+                    };
+                    title: string;
+                };
+                emptySearch: {
+                    action: string;
+                    subtitles: {
+                        0: string;
+                    };
+                    title: string;
+                };
+            };
+            search: {
+                placeholder: string;
+            };
+            sortBy: {
+                name: string;
+                scope: string;
+            };
+        };
+    };
+
+    profiles: {
+        list: {
+            chips: {
+                anonymous: string;
+                unified: string;
+            };
+            columns: {
+                profile: string;
+                unifiedProfiles: string;
+                user: string;
+            };
+            confirmations: {
+                delete: {
+                    assertionHint: string;
+                    content: string;
+                    header: string;
+                    message: string;
+                };
+            };
+            notifications: {
+                delete: {
+                    error: {
+                        description: string;
+                        message: string;
+                    };
+                    success: {
+                        description: string;
+                        message: string;
+                    };
+                };
+                fetchProfiles: {
+                    error: {
+                        description: string;
+                        message: string;
+                    };
+                };
+            };
+            page?: {
+                description?: string;
+                title?: string;
+            };
+            placeholders?: {
+                emptyList: {
+                    subtitle: string;
+                    title: string;
+                };
+                emptySearch: {
+                    action: string;
+                    subtitle: string;
+                    title: string;
+                };
+            };
+            search?: {
+                placeholder: string;
+            };
+        };
+        details: {
+            confirmations: {
+                deleteProfile: {
+                    assertionHint: string;
+                    content: string;
+                    header: string;
+                    message: string;
                 };
             };
             dangerZone: {
                 delete: {
+                    actionTitle: string;
                     header: string;
                     subheader: string;
-                    actionTitle: string;
                 };
             };
-            confirmations: {
-                deleteAttribute: {
-                    header: string;
-                    message: string;
-                    assertionHint: string;
-                    content: string;
+            form: {
+                createdDate: { label: string };
+                location: { label: string };
+                profileData: { label: string };
+                profileId: { label: string };
+                updatedDate: { label: string };
+                userId: { label: string };
+            };
+            notifications: {
+                deleteProfile: {
+                    error: {
+                        description: string;
+                        message: string;
+                    };
+                    notAllowed: {
+                        description: string;
+                        message: string;
+                    };
+                    success: {
+                        description: string;
+                        message: string;
+                    };
+                };
+                fetchProfile: {
+                    error: {
+                        description: string;
+                        message: string;
+                    };
                 };
             };
-            identityAttributesNotice: string;
+            page: {
+                backButton: string;
+                description: string;
+                fallbackTitle: string;
+                pageTitle: string;
+            };
+            profileData: {
+                actions: {
+                    copy: string;
+                    export: string;
+                    view: string;
+                };
+                copy: {
+                    success: {
+                        description: string;
+                        message: string;
+                    };
+                };
+                export: {
+                    success: {
+                        description: string;
+                        message: string;
+                    };
+                };
+                modal: {
+                    title: string;
+                };
+            };
+            section: {
+                profileData: {
+                    description: string;
+                    title: string;
+                };
+            };
+            tabs: {
+                general: string;
+                unifiedProfiles: string;
+            };
+            unifiedProfiles: {
+                columns: {
+                    profileId: string;
+                    reason: string;
+                };
+                description: string;
+                empty: string;
+                title: string;
+            };
+        };
+
+        page: {
+            description: string;
+            pageTitle: string;
+            title: string;
         };
     };
+
     sidePanel: {
-        Profiles: string;
         ProfileAttributes: string;
+        Profiles: string;
         UnificationRules: string;
     };
+
     unificationRules: {
         common: {
             notifications: {
-              deleted: {
-                message: string;
-                description: string;
-              };
-              deletionFailed: {
-                message: string;
-                description: string;
-              };
-              loadedFailed: {
-                message: string;
-                description: string;
-              };
+                deleted: {
+                    description: string;
+                    message: string;
+                };
+                deletionFailed: {
+                    description: string;
+                    message: string;
+                };
+                loadedFailed: {
+                    description: string;
+                    message: string;
+                };
             };
         };
         create: {
-            page: {
-                title: string;
-                description: string;
-                backButton: string;
-            };
-            headings: {
-                ruleDetails: string;
-                ruleDetailsDescription: string;
+            buttons: {
+                cancel: string;
+                create: string;
+                creating: string;
             };
             fields: {
-                ruleName: {
-                    label: string;
-                    placeholder: string;
-                    hint: string;
-                    errors: {
-                        required: string;
-                    };
-                };
                 attribute: {
-                    label: string;
-                    placeholder: string;
-                    noOptions: string;
-                    hint: string;
-                    scopeAriaLabel: string;
                     attributeAriaLabel: string;
+                    errors: {
+                        alreadyUsed: string;
+                        loadFailed: string;
+                        required: string;
+                    };
+                    hint: string;
+                    label: string;
                     loadingRulesHint: string;
-                    rulesLoadFailedHint: string;
                     noAvailableForScopeHint: string;
+                    noOptions: string;
+                    placeholder: string;
+                    rulesLoadFailedHint: string;
+                    scopeAriaLabel: string;
+                };
+                isActive: {
+                    label: string;
+                };
+                priority: {
+                    errors: {
+                        alreadyUsed: string;
+                        min: string;
+                    };
+                    hint: string;
+                    label: string;
+                };
+                ruleName: {
                     errors: {
                         required: string;
-                        loadFailed: string;
-                        alreadyUsed: string;
                     };
+                    hint: string;
+                    label: string;
+                    placeholder: string;
                 };
                 scope: {
                     options: {
@@ -362,143 +570,126 @@ export interface CustomerDataServiceNS {
                         trait: string;
                     };
                 };
-                priority: {
-                    label: string;
-                    hint: string;
-                    errors: {
-                        min: string;
-                        alreadyUsed: string;
-                    };
-                };
-                isActive: {
-                    label: string;
-                };
             };
-            buttons: {
-                create: string;
-                creating: string;
-                cancel: string;
+            headings: {
+                ruleDetails: string;
+                ruleDetailsDescription: string;
             };
             notifications: {
-                loadingRules: {
-                message: string;
-                description: string;
-                };
                 created: {
-                message: string;
-                description: string;
+                    description: string;
+                    message: string;
                 };
                 creationFailed: {
-                message: string;
-                description: string;
+                    description: string;
+                    message: string;
+                };
+                loadingRules: {
+                    description: string;
+                    message: string;
                 };
             };
-        };
-        /**
-         * List page.
-         */
-        list: {
             page: {
-                title: string;
+                backButton: string;
                 description: string;
+                title: string;
+            };
+        };
+        list: {
+            actions: {
+                delete: string;
+                disable: string;
+                enable: string;
+                moveDown: string;
+                moveUp: string;
             };
             buttons: {
                 add: string;
-                retry: string;
                 clearSearch: string;
+                retry: string;
             };
-            placeholders: {
-                empty: {
-                    title: string;
-                    subtitle: string;
+            columns: {
+                attribute: string;
+                enabled: string;
+                priority: string;
+                rule: string;
+            };
+            confirmations: {
+                delete: {
+                    assertionHint: string;
+                    content: string;
+                    header: string;
+                    message: string;
                 };
-                error: {
-                    title: string;
-                    subtitle: string;
+                toggle: {
+                    disableContent: string;
+                    disableHeader: string;
+                    disableMessage: string;
+                    enableContent: string;
+                    enableHeader: string;
+                    enableMessage: string;
                 };
-                noResults: {
-                    title: string;
-                    subtitle1: string;
-                    subtitle2: string;
-                };
-                search: string;
             };
             labels: {
                 scope: {
                     identity: string;
-                    trait: string
+                    trait: string;
                 };
             };
-            // unificationRules.list.columns
-            columns: {
-                rule: string;
-                attribute: string;
-                priority: string;
-                enabled: string;
-            };
-
-            // unificationRules.list.actions
-            actions: {
-                moveUp: string;
-                moveDown: string;
-                enable: string;
-                disable: string;
-                delete: string;
-            };
-
-            // unificationRules.list.confirmations  (add alongside existing fields)
-            confirmations: {
-                delete: {
-                    header: string;
-                    message: string;
-                    content: string;
-                    assertionHint: string;
-                };
-                toggle: {
-                    enableHeader: string;
-                    disableHeader: string;
-                    enableMessage: string;
-                    disableMessage: string;
-                    enableContent: string;
-                    disableContent: string;
-                };
-            };
-
-            // unificationRules.list.notifications
             notifications: {
                 priorityUpdated: {
-                    success: {
-                        message: string;
-                        description: string;
-                    };
                     error: {
-                        message: string;
                         description: string;
+                        message: string;
                     };
                     rollbackError: {
-                        message: string;
                         description: string;
+                        message: string;
                     };
-                };
-                ruleEnabled: {
                     success: {
-                        message: string;
                         description: string;
+                        message: string;
                     };
                 };
                 ruleDisabled: {
                     success: {
-                        message: string;
                         description: string;
+                        message: string;
+                    };
+                };
+                ruleEnabled: {
+                    success: {
+                        description: string;
+                        message: string;
                     };
                 };
                 toggleFailed: {
                     error: {
-                        message: string;
                         description: string;
+                        message: string;
                     };
                 };
             };
+            page: {
+                description: string;
+                title: string;
+            };
+            placeholders: {
+                empty: {
+                    subtitle: string;
+                    title: string;
+                };
+                error: {
+                    subtitle: string;
+                    title: string;
+                };
+                noResults: {
+                    subtitle1: string;
+                    subtitle2: string;
+                    title: string;
+                };
+                search: string;
+            };
         };
     };
-}
+};
