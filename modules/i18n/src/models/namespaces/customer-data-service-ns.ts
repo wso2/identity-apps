@@ -59,6 +59,7 @@ export interface CustomerDataServiceNS {
                             valuePlaceholder: string;
                         };
                         mergeStrategy: {
+                            hint: string;
                             label: string;
                             options: {
                                 combine:   { hint: string; label: string };

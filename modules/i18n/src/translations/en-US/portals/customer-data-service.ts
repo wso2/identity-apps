@@ -54,7 +54,7 @@ export const customerDataService: CustomerDataServiceNS = {
                         canonicalValues: {
                             hint: "Define the allowed label-value pairs for this attribute.",
                             label: "Options",
-                            labelField: "Label",
+                            labelField: "Display value",
                             labelPlaceholder: "e.g. Color",
                             validations: {
                                 atLeastOne: "At least one option is required.",
@@ -64,6 +64,7 @@ export const customerDataService: CustomerDataServiceNS = {
                             valuePlaceholder: "e.g. Blue"
                         },
                         mergeStrategy: {
+                            hint : "Determines how value of the attribute from multiple profiles are merged when profile unification occurs. " ,
                             label: "Merge Strategy",
                             options: {
                                 combine: {
@@ -134,8 +135,8 @@ export const customerDataService: CustomerDataServiceNS = {
                 typeConfig: {
                     fields: {
                         multiValued: {
-                            hint: "Allow this attribute to hold more than one value at a time.",
-                            label: "Allow Multiple Values"
+                            hint: "Select this option if the attribute can have multiple values.",
+                            label: "Allow Multiple Values for this attribute"
                         },
                         mutability: {
                             hint: "Controls whether this attribute can be updated after it is set.",
@@ -168,8 +169,8 @@ export const customerDataService: CustomerDataServiceNS = {
                                     label: "Boolean"
                                 },
                                 complex: {
-                                    hint: "A nested object composed of other attributes.",
-                                    label: "Object (Complex)"
+                                    hint: "A complex object composed of sub attributes.",
+                                    label: "Object"
                                 },
                                 date: {
                                     hint: "A calendar date (YYYY-MM-DD).",
@@ -192,7 +193,7 @@ export const customerDataService: CustomerDataServiceNS = {
                                     label: "Integer"
                                 },
                                 options: {
-                                    hint: "A fixed set of label-value pairs.",
+                                    hint: "A fixed set of key-value pairs.",
                                     label: "Options"
                                 },
                                 string: {
@@ -250,11 +251,11 @@ export const customerDataService: CustomerDataServiceNS = {
             },
             fields: {
                 applicationIdentifier: {
-                    hint: "The application this attribute is scoped to.",
+                    hint: "The application this attribute belongs to.",
                     label: "Application Identifier"
                 },
                 attribute: {
-                    hint: "This is the unique identifier of the attribute.",
+                    hint: "The name of this attribute.",
                     label: "Attribute"
                 },
                 mergeStrategy: {

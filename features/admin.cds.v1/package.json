@@ -31,7 +31,7 @@
         "@mui/system": "^5.12.3",
         "@mui/utils": "^5.12.3",
         "@oxygen-ui/react": "^2.4.6",
-        "@wso2is/admin.core.v1": "^2.52.0",
+        "@wso2is/admin.core.v1": "^2.53.0",
         "@wso2is/admin.applications.v1": "^2.41.2",
         "@wso2is/access-control": "^3.4.1",
         "@wso2is/core": "^2.9.3",
