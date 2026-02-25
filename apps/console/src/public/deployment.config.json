@@ -239,7 +239,7 @@
     "i18nResourcePath": "",
     "idpConfigs": {
         "authorizeEndpointURL": "${serverOrigin}/oauth2/authorize",
-        "baseUrls": [],
+        "baseUrls": ["https://localhost:8900"],
         "clockTolerance": 300,
         "enableOIDCSessionManagement": true,
         "logoutEndpointURL": "${serverOrigin}/oidc/logout",
@@ -836,6 +836,23 @@
                     ]
                 }
             },
+            "customerDataProfileAttributes": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [
+                    {
+                        "feature": "customerDataProfileAttributes",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [],
+                    "update": []
+                }
+            },
             "customerDataProfiles": {
                 "disabledFeatures": [],
                 "enabled": false,
@@ -855,7 +872,7 @@
             },
             "customerDataUnificationRules": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "featureFlags": [
                     {
                         "feature": "customerDataUnificationRules",
@@ -1999,7 +2016,7 @@
         "isDefaultDialectEditingEnabled": false,
         "isDialectAddingEnabled": false,
         "isEditingSystemRolesAllowed": true,
-        "isFeatureGateEnabled": false,
+        "isFeatureGateEnabled": true,
         "isGOTEnabledForSuperTenantOnly": true,
         "isGroupAndRoleSeparationEnabled": true,
         "isHeaderAvatarLabelAllowed": false,

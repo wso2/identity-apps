@@ -1738,18 +1738,18 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             category: "extensions:manage.sidePanel.categories.customerDataService",
             children: [
-                // {
-                //     component: lazy(() => import("@wso2is/admin.cds.v1/pages/profile-attribute-create-page")),
-                //     exact: true,
-                //     icon: {
-                //         icon: getSidePanelIcons().childIcon
-                //     },
-                //     id: "createProfileAttribute",
-                //     name: "Create profile attribute",
-                //     path: AppConstants.getPaths().get("PROFILE_ATTRIBUTE_CREATE"),
-                //     protected: true,
-                //     showOnSidePanel: false
-                // },
+                {
+                    component: lazy(() => import("@wso2is/admin.cds.v1/pages/profile-attribute-create-page")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "createProfileAttribute",
+                    name: "Create profile attribute",
+                    path: AppConstants.getPaths().get("PROFILE_ATTRIBUTE_CREATE"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
                 {
                     component: lazy(() => import("@wso2is/admin.cds.v1/components/profile-attribute")),
                     exact: true,

@@ -668,7 +668,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                                 </Grid.Column>
                             </Grid.Row>
 
-                            {/* Multi valued */}
+                            { /* Multi valued */ }
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Field.Checkbox
@@ -686,7 +686,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                                 </Grid.Column>
                             </Grid.Row>
 
-                            {/* Submit */}
+                            { /* Submit */ }
                             { !isIdentityScope && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
