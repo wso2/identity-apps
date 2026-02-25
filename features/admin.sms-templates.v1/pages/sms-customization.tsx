@@ -199,13 +199,16 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
             }
         }
 
-        dispatch(
-            addAlert({
-                description: t("smsTemplates:notifications.getSmsTemplate.error.description"),
-                level: AlertLevels.ERROR,
-                message: t("smsTemplates:notifications.getSmsTemplate.error.message")
-            })
-        );
+        if (smsTemplateError?.response?.data?.code !== SMSTemplateConstants.TEMPLATE_NOT_AVAILABLE_ERROR_CODE &&
+            smsTemplateError?.response?.data?.code !== SMSTemplateConstants.INVALID_TEMPLATE_TYPE_ERROR_CODE) {
+            dispatch(
+                addAlert({
+                    description: t("smsTemplates:notifications.getSmsTemplate.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("smsTemplates:notifications.getSmsTemplate.error.message")
+                })
+            );
+        }
     }, [ smsTemplateError, isSystemTemplate, isInheritedTemplate ]);
 
     const handleTemplateIdChange = (event: SelectChangeEvent<string>): void => {

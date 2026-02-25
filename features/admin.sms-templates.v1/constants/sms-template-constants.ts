@@ -27,4 +27,6 @@ export class SMSTemplateConstants {
 
     public static readonly DEAFULT_LOCALE_FORMATTED: string = "en_US";
     public static readonly DEAFULT_LOCALE: string = "en-US";
+    public static readonly INVALID_TEMPLATE_TYPE_ERROR_CODE: string = "NTM-65002";
+    public static readonly TEMPLATE_NOT_AVAILABLE_ERROR_CODE: string = "NTM-65004";
 }

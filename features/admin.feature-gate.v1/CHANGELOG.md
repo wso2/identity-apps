@@ -1,5 +1,16 @@
 # @wso2is/admin.feature-gate.v1
 
+## 1.9.0
+
+### Minor Changes
+
+- [#9626](https://github.com/wso2/identity-apps/pull/9626) [`e170e8b339e5d52b509c0ace9dafaf04a60bc41f`](https://github.com/wso2/identity-apps/commit/e170e8b339e5d52b509c0ace9dafaf04a60bc41f) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - add cds unification rules
+
+### Patch Changes
+
+- Updated dependencies [[`e170e8b339e5d52b509c0ace9dafaf04a60bc41f`](https://github.com/wso2/identity-apps/commit/e170e8b339e5d52b509c0ace9dafaf04a60bc41f)]:
+  - @wso2is/admin.core.v1@2.53.0
+
 ## 1.8.1
 
 ### Patch Changes

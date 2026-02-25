@@ -20,30 +20,18 @@ import { SignInOptionsConfigInterface, SignInOptionsValidationInterface } from "
 
 /**
  * Validate sign-in options configuration.
- * Simplified validation for the Identifier First approach.
- *
- * When alphanumeric username is disabled, email IS the username (email-as-username mode).
- * In this case, no explicit identifier selection is required.
+ * Checks that at least one login method is selected.
  *
  * @param options - Sign-in options configuration
- * @param isAlphanumericUsername - Whether alphanumeric username is enabled
  * @returns Validation result with errors array
  */
 export const validateSignInOptions: (
-    options: SignInOptionsConfigInterface,
-    isAlphanumericUsername: boolean
+    options: SignInOptionsConfigInterface
 ) => SignInOptionsValidationInterface = (
-    options: SignInOptionsConfigInterface,
-    isAlphanumericUsername: boolean
+    options: SignInOptionsConfigInterface
 ): SignInOptionsValidationInterface => {
     const errors: string[] = [];
-    const { identifiers, loginMethods } = options;
-    const hasIdentifier: boolean = !isAlphanumericUsername ||
-        identifiers.username || identifiers.email || identifiers.mobile;
-
-    if (!hasIdentifier) {
-        errors.push("Select at least one identifier (Username, Email, or Mobile)");
-    }
+    const { loginMethods } = options;
 
     // Must have at least one login method
     const hasLoginMethod: boolean = loginMethods.password || loginMethods.passkey ||
@@ -65,17 +53,14 @@ export const validateSignInOptions: (
  * Wrapper around the full validator.
  *
  * @param options - Sign-in options configuration
- * @param isAlphanumericUsername - Whether alphanumeric username is enabled
  * @returns True if valid, false otherwise
  */
 export const isValidSignInOptions: (
-    options: SignInOptionsConfigInterface | undefined,
-    isAlphanumericUsername: boolean
+    options: SignInOptionsConfigInterface | undefined
 ) => boolean = (
-    options: SignInOptionsConfigInterface | undefined,
-    isAlphanumericUsername: boolean
+    options: SignInOptionsConfigInterface | undefined
 ): boolean => {
     if (!options) return false;
 
-    return validateSignInOptions(options, isAlphanumericUsername).isValid;
+    return validateSignInOptions(options).isValid;
 };

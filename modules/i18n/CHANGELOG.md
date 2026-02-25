@@ -1,5 +1,17 @@
 # @wso2is/i18n
 
+## 2.33.4
+
+### Patch Changes
+
+- [#9641](https://github.com/wso2/identity-apps/pull/9641) [`c9957fa1e44a592d6238a8db8fdb53bcd2b3c7fc`](https://github.com/wso2/identity-apps/commit/c9957fa1e44a592d6238a8db8fdb53bcd2b3c7fc) Thanks [@hwupathum](https://github.com/hwupathum)! - Add preserveCurrentSessionAtPasswordUpdate config to UI
+
+## 2.33.3
+
+### Patch Changes
+
+- [#9619](https://github.com/wso2/identity-apps/pull/9619) [`03a5f7c376174bfd6d6743606f4b7e70bbe6ad8e`](https://github.com/wso2/identity-apps/commit/03a5f7c376174bfd6d6743606f4b7e70bbe6ad8e) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Introduce the Issuer Usage Scope component for Login and Registration
+
 ## 2.33.2
 
 ### Patch Changes

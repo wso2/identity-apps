@@ -2498,24 +2498,20 @@
                 {% endfor %}
             {% endif %}
         ],
-        {% if console.ui.loginFlowFirstFactorAuthenticators is defined %}
-        "loginFlowFirstFactorAuthenticators": [
-            {% if console.ui.loginFlowFirstFactorAuthenticators is defined %}
-                {% for value in console.ui.loginFlowFirstFactorAuthenticators %}
+        "loginFlowCustomFirstFactorAuthenticators": [
+            {% if console.ui.login_flow_custom_first_factor_authenticators is defined %}
+                {% for value in console.ui.login_flow_custom_first_factor_authenticators %}
                 "{{ value }}"{{ "," if not loop.last }}
                 {% endfor %}
             {% endif %}
         ],
-        {% endif %}
-        {% if console.ui.loginFlowSecondFactorAuthenticators is defined %}
-        "loginFlowSecondFactorAuthenticators": [
-            {% if console.ui.loginFlowSecondFactorAuthenticators is defined %}
-                {% for value in console.ui.loginFlowSecondFactorAuthenticators %}
+        "loginFlowCustomSecondFactorAuthenticators": [
+            {% if console.ui.login_flow_custom_second_factor_authenticators is defined %}
+                {% for value in console.ui.login_flow_custom_second_factor_authenticators %}
                 "{{ value }}"{{ "," if not loop.last }}
                 {% endfor %}
             {% endif %}
         ],
-        {% endif %}
         "hiddenConnectionTemplates": [
             {% if console.ui.hiddenConnectionTemplates is defined %}
                 {% for value in console.ui.hiddenConnectionTemplates %}

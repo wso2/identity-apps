@@ -138,6 +138,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             guestsList: "",
             identityProviders: "",
             impersonationConfigurations: "",
+            issuerUsageScope: "",
             localAuthenticators: "",
             localClaims: "",
             loginPolicies: "",
@@ -234,6 +235,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 defaultWhiteLogoUrl: ""
             },
             enableCustomEmailTemplates: undefined,
+            enableCustomSmsTemplates: undefined,
             enableLegacySessionBoundTokenBehaviour: false,
             enableOldUIForEmailProvider: undefined,
             features: {

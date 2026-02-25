@@ -1,5 +1,73 @@
 # @wso2is/admin.email-management.v1
 
+## 2.25.304
+
+### Patch Changes
+
+- Updated dependencies [[`dc6b3662200e53d4fc4cfedf8f79922ebe4ac70f`](https://github.com/wso2/identity-apps/commit/dc6b3662200e53d4fc4cfedf8f79922ebe4ac70f)]:
+  - @wso2is/admin.core.v1@2.53.5
+  - @wso2is/admin.branding.v1@2.32.96
+  - @wso2is/admin.flow-builder-core.v1@0.10.140
+  - @wso2is/admin.flows.v1@1.0.109
+  - @wso2is/admin.server-configurations.v1@2.37.6
+
+## 2.25.303
+
+### Patch Changes
+
+- Updated dependencies [[`d4bb11671903ab9df341e9685203065b764fec5c`](https://github.com/wso2/identity-apps/commit/d4bb11671903ab9df341e9685203065b764fec5c)]:
+  - @wso2is/theme@2.9.2
+  - @wso2is/admin.branding.v1@2.32.95
+  - @wso2is/admin.core.v1@2.53.4
+  - @wso2is/admin.flow-builder-core.v1@0.10.139
+  - @wso2is/admin.flows.v1@1.0.108
+  - @wso2is/admin.server-configurations.v1@2.37.5
+
+## 2.25.302
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.32.94
+  - @wso2is/admin.core.v1@2.53.3
+  - @wso2is/admin.flow-builder-core.v1@0.10.138
+  - @wso2is/admin.flows.v1@1.0.107
+  - @wso2is/admin.server-configurations.v1@2.37.4
+
+## 2.25.301
+
+### Patch Changes
+
+- Updated dependencies [[`26ebaef3394b43c7b8241c2914d0c09dcaf8cd91`](https://github.com/wso2/identity-apps/commit/26ebaef3394b43c7b8241c2914d0c09dcaf8cd91)]:
+  - @wso2is/admin.core.v1@2.53.2
+  - @wso2is/admin.flow-builder-core.v1@0.10.137
+  - @wso2is/admin.branding.v1@2.32.93
+  - @wso2is/admin.flows.v1@1.0.106
+  - @wso2is/admin.server-configurations.v1@2.37.3
+
+## 2.25.300
+
+### Patch Changes
+
+- Updated dependencies [[`03a5f7c376174bfd6d6743606f4b7e70bbe6ad8e`](https://github.com/wso2/identity-apps/commit/03a5f7c376174bfd6d6743606f4b7e70bbe6ad8e)]:
+  - @wso2is/admin.server-configurations.v1@2.37.2
+  - @wso2is/admin.core.v1@2.53.1
+  - @wso2is/i18n@2.33.3
+  - @wso2is/admin.branding.v1@2.32.92
+  - @wso2is/admin.flow-builder-core.v1@0.10.136
+  - @wso2is/admin.flows.v1@1.0.105
+
+## 2.25.299
+
+### Patch Changes
+
+- Updated dependencies [[`e170e8b339e5d52b509c0ace9dafaf04a60bc41f`](https://github.com/wso2/identity-apps/commit/e170e8b339e5d52b509c0ace9dafaf04a60bc41f)]:
+  - @wso2is/admin.core.v1@2.53.0
+  - @wso2is/admin.flows.v1@1.0.104
+  - @wso2is/admin.flow-builder-core.v1@0.10.135
+  - @wso2is/admin.branding.v1@2.32.91
+  - @wso2is/admin.server-configurations.v1@2.37.1
+
 ## 2.25.298
 
 ### Patch Changes

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,7 +26,10 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-management-utils";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import {
+    PRIMARY_USERSTORE,
+    RemoteUserStoreManagerType
+} from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
@@ -187,6 +190,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
 
                         if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && isEnabled) {
                             const storeOption: UserStoreDropdownItem = {
+                                disabled: store.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager,
                                 key: index,
                                 text: store.name,
                                 value: store.name

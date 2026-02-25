@@ -46,6 +46,7 @@ export const getServerConfigurationsResourceEndpoints = (
         fraudDetectionConfigurations: `${ serverHost }/api/server/v1/configs/fraud-detection`,
         governanceConnectorCategories: `${ serverHost }/api/server/v1/identity-governance`,
         impersonationConfigurations: `${ serverHost }/api/server/v1/configs/impersonation`,
+        issuerUsageScope: `${ serverHost }/api/server/v1/configs/authentication/inbound/oauth2/issuer/usage-scope`,
         loginPolicies: `${ serverHost }/api/server/v1/identity-governance/${
             ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
         }`,

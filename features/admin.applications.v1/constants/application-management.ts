@@ -377,14 +377,32 @@ export class ApplicationManagementConstants {
 
     /**
      * First factor authenticators available in application login flow builder.
-     * Configurable via deployment.config.json (ui.loginFlowFirstFactorAuthenticators).
-     * Falls back to defaults if not configured.
+     * Custom authenticators can be added via
+     * deployment.config.json (console.ui.loginFlowCustomFirstFactorAuthenticators).
      */
     public static get FIRST_FACTOR_AUTHENTICATORS(): string[] {
-        const configAuthenticators: string[] =
-            window?.[ "AppUtils" ]?.getConfig()?.ui?.loginFlowFirstFactorAuthenticators;
+        const customAuthenticators: string[] =
+            window?.[ "AppUtils" ]?.getConfig()?.ui?.loginFlowCustomFirstFactorAuthenticators ?? [];
+        const firstFactorAuthenticators: string[] = [
+            ...ApplicationManagementConstants.DEFAULT_FIRST_FACTOR_AUTHENTICATORS ];
 
-        return configAuthenticators ?? ApplicationManagementConstants.DEFAULT_FIRST_FACTOR_AUTHENTICATORS;
+        // Push custom authenticator name and encoded name(ID) to the list. This is because in the login flow builder,
+        // both the name and the ID are being used to identify the authenticators in different scenarios.
+        if (customAuthenticators.length > 0) {
+            for (const authenticator of customAuthenticators) {
+                // Push the authenticator name.
+                firstFactorAuthenticators.push(authenticator);
+
+                try {
+                    // Push the authenticator ID (encoded name).
+                    firstFactorAuthenticators.push(btoa(authenticator));
+                } catch (error: unknown) {
+                    // Catch the error and ignore.
+                }
+            }
+        }
+
+        return firstFactorAuthenticators;
     }
 
     // Default second factor authenticators (used as fallback).
@@ -400,15 +418,33 @@ export class ApplicationManagementConstants {
     ];
 
     /**
-     * Second factor authenticators available in application login flow builder.
-     * Configurable via deployment.config.json (ui.loginFlowSecondFactorAuthenticators).
-     * Falls back to defaults if not configured.
+     * Second factor only authenticators available in application login flow builder.
+     * Custom authenticators can be added via
+     * deployment.config.json (console.ui.loginFlowCustomSecondFactorAuthenticators).
      */
     public static get SECOND_FACTOR_AUTHENTICATORS(): string[] {
-        const configAuthenticators: string[] =
-            window?.[ "AppUtils" ]?.getConfig()?.ui?.loginFlowSecondFactorAuthenticators;
+        const customAuthenticators: string[] =
+            window?.[ "AppUtils" ]?.getConfig()?.ui?.loginFlowCustomSecondFactorAuthenticators ?? [];
+        const secondFactorAuthenticators: string[] = [
+            ...ApplicationManagementConstants.DEFAULT_SECOND_FACTOR_AUTHENTICATORS ];
 
-        return configAuthenticators ?? ApplicationManagementConstants.DEFAULT_SECOND_FACTOR_AUTHENTICATORS;
+        // Push custom authenticator name and encoded name(ID) to the list. This is because in the login flow builder,
+        // both the name and the ID are being used to identify the authenticators in different scenarios.
+        if (customAuthenticators.length > 0) {
+            for (const authenticator of customAuthenticators) {
+                // Push the authenticator name.
+                secondFactorAuthenticators.push(authenticator);
+
+                try {
+                    // Push the authenticator ID (encoded name).
+                    secondFactorAuthenticators.push(btoa(authenticator));
+                } catch (error: unknown) {
+                    // Catch the error and ignore.
+                }
+            }
+        }
+
+        return secondFactorAuthenticators;
     }
 
     // Known social authenticators.

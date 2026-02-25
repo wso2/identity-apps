@@ -1,5 +1,61 @@
 # @wso2is/admin.applications.v1
 
+## 2.41.6
+
+### Patch Changes
+
+- [#9649](https://github.com/wso2/identity-apps/pull/9649) [`dc6b3662200e53d4fc4cfedf8f79922ebe4ac70f`](https://github.com/wso2/identity-apps/commit/dc6b3662200e53d4fc4cfedf8f79922ebe4ac70f) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bring support to configure custom first-factor and second-factor authenticator names for application login flow UI
+
+- Updated dependencies [[`dc6b3662200e53d4fc4cfedf8f79922ebe4ac70f`](https://github.com/wso2/identity-apps/commit/dc6b3662200e53d4fc4cfedf8f79922ebe4ac70f)]:
+  - @wso2is/admin.core.v1@2.53.5
+  - @wso2is/admin.branding.v1@2.32.96
+  - @wso2is/admin.roles.v2@2.27.310
+  - @wso2is/admin.server-configurations.v1@2.37.6
+  - @wso2is/admin.users.v1@2.36.115
+
+## 2.41.5
+
+### Patch Changes
+
+- [#9640](https://github.com/wso2/identity-apps/pull/9640) [`d4bb11671903ab9df341e9685203065b764fec5c`](https://github.com/wso2/identity-apps/commit/d4bb11671903ab9df341e9685203065b764fec5c) Thanks [@savindi7](https://github.com/savindi7)! - Improvements to content and styling.
+
+- Updated dependencies [[`d4bb11671903ab9df341e9685203065b764fec5c`](https://github.com/wso2/identity-apps/commit/d4bb11671903ab9df341e9685203065b764fec5c)]:
+  - @wso2is/admin.identity-providers.v1@2.27.1
+  - @wso2is/admin.connections.v1@2.35.1
+  - @wso2is/admin.branding.v1@2.32.95
+  - @wso2is/admin.core.v1@2.53.4
+  - @wso2is/admin.roles.v2@2.27.309
+  - @wso2is/admin.server-configurations.v1@2.37.5
+  - @wso2is/admin.users.v1@2.36.114
+
+## 2.41.4
+
+### Patch Changes
+
+- [#9598](https://github.com/wso2/identity-apps/pull/9598) [`50c910e6d0c098c2a5a125eb7abd1a255d66e759`](https://github.com/wso2/identity-apps/commit/50c910e6d0c098c2a5a125eb7abd1a255d66e759) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Remove duplication of scope names for reused scopes under system APIs
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.32.94
+  - @wso2is/admin.core.v1@2.53.3
+  - @wso2is/admin.roles.v2@2.27.308
+  - @wso2is/admin.server-configurations.v1@2.37.4
+  - @wso2is/admin.users.v1@2.36.113
+
+## 2.41.3
+
+### Patch Changes
+
+- [#9619](https://github.com/wso2/identity-apps/pull/9619) [`03a5f7c376174bfd6d6743606f4b7e70bbe6ad8e`](https://github.com/wso2/identity-apps/commit/03a5f7c376174bfd6d6743606f4b7e70bbe6ad8e) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Introduce the Issuer Usage Scope component for Login and Registration
+
+- Updated dependencies [[`3a5cb2ab691cedf73b372881d18b3c8cda92418f`](https://github.com/wso2/identity-apps/commit/3a5cb2ab691cedf73b372881d18b3c8cda92418f), [`03a5f7c376174bfd6d6743606f4b7e70bbe6ad8e`](https://github.com/wso2/identity-apps/commit/03a5f7c376174bfd6d6743606f4b7e70bbe6ad8e)]:
+  - @wso2is/admin.userstores.v1@2.27.41
+  - @wso2is/admin.roles.v2@2.27.306
+  - @wso2is/admin.server-configurations.v1@2.37.2
+  - @wso2is/admin.core.v1@2.53.1
+  - @wso2is/i18n@2.33.3
+  - @wso2is/admin.branding.v1@2.32.92
+  - @wso2is/admin.users.v1@2.36.111
+
 ## 2.41.2
 
 ### Patch Changes

@@ -90,31 +90,6 @@ const SMSCustomizationForm: FunctionComponent<SMSCustomizationFormPropsInterface
         });
     };
 
-    const renderFormFields = (): ReactElement => {
-        return (
-            <FinalFormField
-                key="smsBody"
-                width={ 16 }
-                FormControlProps={ {
-                    margin: "dense"
-                } }
-                ariaLabel="SMS Body Input"
-                required={ true }
-                data-componentid={ `${componentId}-sms-body` }
-                name="smsBody"
-                type="text"
-                label={ t("smsTemplates:form.inputs.body.label") }
-                placeholder={ t("smsTemplates:form.inputs.body.placeholder") }
-                value={ selectedSmsTemplate?.body }
-                defaultValue={ selectedSmsTemplate?.body }
-                component={ TextFieldAdapter }
-                readOnly={ readOnly }
-                multiline={ true }
-                minRows={ 4 }
-            />
-        );
-    };
-
     if (isSmsTemplatesListLoading) {
         return <ContentLoader />;
     }
@@ -138,12 +113,32 @@ const SMSCustomizationForm: FunctionComponent<SMSCustomizationFormPropsInterface
                 <Grid xs={ 12 } lg={ 11 } xl={ 10 } marginTop={ 2 }>
                     <FinalForm
                         onSubmit={ onSubmit }
+                        keepDirtyOnReinitialize={ true }
                         initialValues={ { smsBody: selectedSmsTemplate?.body } }
                         render={ ({ handleSubmit }: FormRenderProps) => (
                             <>
                                 <FormSpy subscription={ { values: true } } onChange={ onFormUpdate } />
                                 <form onSubmit={ handleSubmit } data-componentid={ componentId }>
-                                    { renderFormFields() }
+                                    <FinalFormField
+                                        key="smsBody"
+                                        width={ 16 }
+                                        FormControlProps={ {
+                                            margin: "dense"
+                                        } }
+                                        ariaLabel="SMS Body Input"
+                                        required={ true }
+                                        data-componentid={ `${componentId}-sms-body` }
+                                        name="smsBody"
+                                        type="text"
+                                        label={ t("smsTemplates:form.inputs.body.label") }
+                                        placeholder={ t("smsTemplates:form.inputs.body.placeholder") }
+                                        value={ selectedSmsTemplate?.body }
+                                        defaultValue={ selectedSmsTemplate?.body }
+                                        component={ TextFieldAdapter }
+                                        readOnly={ readOnly }
+                                        multiline={ true }
+                                        minRows={ 4 }
+                                    />
                                 </form>
                             </>
                         ) }

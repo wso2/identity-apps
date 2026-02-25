@@ -515,6 +515,38 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         );
     };
 
+    const resolveEmail = (): string => {
+
+        if (profileInfo?.emails?.length > 0) {
+
+            const emails: any[] = profileInfo.emails as any[];
+
+            // Look for primary email first
+            const primaryEmail: any = emails.find((email: any) => email?.primary === true);
+
+            if (primaryEmail?.value) {
+                return primaryEmail.value;
+            }
+
+            // Look for string type email.
+            for (const email of emails) {
+                if (typeof email === "string" && email) {
+                    return email;
+                }
+            }
+
+            // Fallback to first email
+            for (const email of emails) {
+                if (email?.value) {
+                    return email.value;
+                }
+            }
+
+        }
+
+        return "";
+    };
+
     /**
      * Get the update level from the runtime config.
      * @returns Update level as a string.
@@ -555,10 +587,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                     title: config.ui.appName
                 } }
                 user={ {
-                    email:
-                        profileInfo?.email ?? typeof profileInfo?.emails[0] === "string"
-                            ? (profileInfo?.emails[0] as string)
-                            : profileInfo?.emails[0]?.value,
+                    email: resolveEmail(),
                     image: profileInfo?.profileUrl,
                     name: resolveUsername()
                 } }

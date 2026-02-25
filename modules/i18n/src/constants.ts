@@ -102,6 +102,11 @@ export class I18nModuleConstants {
     public static readonly IMPERSONATION_NAMESPACE: string = "impersonation";
 
     /**
+     * Issuer Usage Scope namespace.
+     */
+    public static readonly ISSUER_USAGE_SCOPE_NAMESPACE: string = "issuerUsageScope";
+
+    /**
      * transferList namespace.
      */
     public static readonly TRANSFER_LIST_NAMESPACE: string = "transferList";

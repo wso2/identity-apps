@@ -427,6 +427,7 @@ export class Config {
                 defaultWhiteLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultWhiteLogoUrl
             },
             enableCustomEmailTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.enableCustomEmailTemplates,
+            enableCustomSmsTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.enableCustomSmsTemplates,
             enableEmailDomain: window[ "AppUtils" ]?.getConfig()?.ui?.enableEmailDomain ?? false,
             enableIdentityClaims: window[ "AppUtils" ]?.getConfig()?.ui?.enableIdentityClaims ?? true,
             enableLegacySessionBoundTokenBehaviour:

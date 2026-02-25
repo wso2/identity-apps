@@ -34,23 +34,21 @@ import SelectableCard from "../shared/selectable-card";
 import StepHeader from "../shared/step-header";
 
 /**
- * Framework selection container - horizontal scrollable row
+ * Framework selection container
  */
 const FrameworkGrid: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
-    alignItems: "center",
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: theme.spacing(2)
+    display: "grid",
+    gap: theme.spacing(2),
+    gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))"
 }));
 
 /**
- * Application type grid - 2 columns
+ * Application type grid
  */
 const AppTypeGrid: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "grid",
     gap: theme.spacing(2),
-    gridTemplateColumns: "repeat(4, 1fr)"
+    gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))"
 }));
 
 /**
@@ -170,7 +168,7 @@ const SelectApplicationTemplateStep: FunctionComponent<SelectApplicationTemplate
                     </FrameworkGrid>
                 </Box>
 
-                <Divider textAlign="left" sx={ { my: 4 } }>
+                <Divider textAlign="left" sx={ { my: 3 } }>
                     <Typography
                         variant="body2"
                         sx={ {

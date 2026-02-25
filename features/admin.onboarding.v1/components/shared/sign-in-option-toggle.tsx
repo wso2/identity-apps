@@ -23,7 +23,7 @@ import Switch from "@oxygen-ui/react/Switch";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, memo } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, memo } from "react";
 import { OnboardingComponentIds } from "../../constants";
 import { SignInOptionDefinitionInterface } from "../../models";
 
@@ -41,6 +41,8 @@ export interface SignInOptionTogglePropsInterface extends IdentifiableComponentI
     disabled?: boolean;
     /** Reason for being disabled (shown in tooltip) */
     disabledReason?: string;
+    /** Icon to display beside the label */
+    icon?: ReactNode;
 }
 
 /**
@@ -73,35 +75,47 @@ interface OptionLabelContentProps {
     label: string;
     /** Optional description text */
     description?: string;
+    /** Optional icon */
+    icon?: ReactNode;
 }
 
 /**
- * Custom label content with title and optional description.
+ * Custom label content with icon, title, and optional description.
  */
 const OptionLabelContent: FunctionComponent<OptionLabelContentProps> = ({
     label,
-    description
+    description,
+    icon
 }: OptionLabelContentProps): ReactElement => (
-    <Box>
-        <Typography
-            sx={ {
-                color: "text.primary",
-                fontSize: "0.9375rem",
-                fontWeight: 500
-            } }
-        >
-            { label }
-        </Typography>
-        { description && (
+    <Box sx={ { alignItems: "flex-start", display: "flex", gap: 1.5 } }>
+        { icon && (
+            <Box sx={ { display: "flex", flexShrink: 0, height: 20, mt: 0.25, width: 20 } }>
+                { typeof icon === "string"
+                    ? <img alt="" src={ icon } style={ { height: "100%", width: "100%" } } />
+                    : icon }
+            </Box>
+        ) }
+        <Box>
             <Typography
                 sx={ {
-                    color: "text.secondary",
-                    fontSize: "0.8125rem"
+                    color: "text.primary",
+                    fontSize: "0.9375rem",
+                    fontWeight: 500
                 } }
             >
-                { description }
+                { label }
             </Typography>
-        ) }
+            { description && (
+                <Typography
+                    sx={ {
+                        color: "text.secondary",
+                        fontSize: "0.8125rem"
+                    } }
+                >
+                    { description }
+                </Typography>
+            ) }
+        </Box>
     </Box>
 );
 
@@ -117,6 +131,7 @@ const SignInOptionToggle: FunctionComponent<SignInOptionTogglePropsInterface> = 
         onToggle,
         disabled = false,
         disabledReason,
+        icon,
         ["data-componentid"]: componentId = OnboardingComponentIds.SIGN_IN_OPTION_TOGGLE
     } = props;
 
@@ -141,6 +156,7 @@ const SignInOptionToggle: FunctionComponent<SignInOptionTogglePropsInterface> = 
             label={
                 (<OptionLabelContent
                     description={ option.description }
+                    icon={ icon }
                     label={ option.label }
                 />)
             }
