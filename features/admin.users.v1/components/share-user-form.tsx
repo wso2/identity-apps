@@ -16,14 +16,12 @@
  * under the License.
  */
 
-import Alert from "@oxygen-ui/react/Alert";
 import Button from "@oxygen-ui/react/Button";
 import FormControl from "@oxygen-ui/react/FormControl";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
 import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
-import Switch from "@oxygen-ui/react/Switch";
 import Typography from "@oxygen-ui/react/Typography";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { OperationStatus } from "@wso2is/admin.core.v1/models/common";
@@ -78,6 +76,7 @@ import {
 } from "../api/users";
 import { UserManagementConstants } from "../constants/user-management-constants";
 import { RoleShareType, ShareType, ShareTypeSwitchApproach } from "../constants/user-roles";
+import { SharedOrganizationInterface } from "../models/endpoints";
 import {
     RoleSharingInterface,
     ShareOrganizationsAndRolesPatchDataInterface,
@@ -171,7 +170,6 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
     const [ removedRoles, setRemovedRoles ] = useState<Record<string, RoleSharingInterface[]>>({});
     const [ addedOrgIds, setAddedOrgIds ] = useState<string[]>([]);
     const [ removedOrgIds, setRemovedOrgIds ] = useState<string[]>([]);
-    const [ clearAdvancedRoleSharing, setClearAdvancedRoleSharing ] = useState<boolean>(false);
 
     // This is used to determine if the user is shared with all organizations or not.
     // and this will change the radio button option based on the result.
@@ -276,25 +274,28 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         // If there is no sharing mode, it selective organization sharing is done.
         if (!userShareData.sharingMode) {
             setShareType(ShareType.SHARE_SELECTED);
-            
+
             // Populate selected organizations and their role assignments for display
             if (userShareData.organizations && Array.isArray(userShareData.organizations)) {
-                const orgIds: string[] = userShareData.organizations.map(org => org.orgId);
+                const orgIds: string[] =
+                    userShareData.organizations.map((org: SharedOrganizationInterface) => org.orgId);
                 const rolesMap: Record<string, SelectedOrganizationRoleInterface[]> = {};
                 const shouldShareWithFutureChildOrgsMap: Record<string, boolean> = {};
 
-                userShareData.organizations.forEach(org => {
+                userShareData.organizations.forEach((org: SharedOrganizationInterface) => {
                     // Track the sharing policy for each organization
-                    shouldShareWithFutureChildOrgsMap[org.orgId] = 
-                        org.sharingMode?.policy === UserSharingPolicy.SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN;
-                    
+                    shouldShareWithFutureChildOrgsMap[org.orgId] =
+                        org.sharingMode?.policy ===
+                            UserSharingPolicy.SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN;
                     // Map roles if they exist
                     if (org.roles && org.roles.length > 0) {
-                        const roles: SelectedOrganizationRoleInterface[] = org.roles.map(role => ({
+                        const roles: SelectedOrganizationRoleInterface[] =
+                        org.roles.map((role: RoleSharingInterface) => ({
                             ...role,
                             id: role.displayName,
                             selected: true // Mark all existing roles as selected
                         }));
+
                         rolesMap[org.orgId] = roles;
                     }
                 });
@@ -435,7 +436,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         if (shareType !== ShareType.SHARE_SELECTED) {
             setRoleShareTypeSelected(RoleShareType.SHARE_SELECTED);
         }
-    }, [shareType]);
+    }, [ shareType ]);
 
     /**
      * Triggers the display of a confirmation modal when the user attempts to start a new share
@@ -458,7 +459,6 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         setAddedOrgIds([]);
         setRemovedOrgIds([]);
         setShouldShareWithFutureChildOrgsMap({});
-        setClearAdvancedRoleSharing(false);
         shouldMutate && mutateUserShareDataFetchRequest();
     };
 
@@ -546,7 +546,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             policy: sharingPolicy,
             roleAssignment: {
                 mode: RoleSharingModes.SELECTED,
-                roles: userRolesList?.map(role => ({
+                roles: userRolesList?.map((role: RoleSharingInterface) => ({
                     audience: {
                         display: role.audience?.display ?? user?.userName,
                         type: role.audience?.type
@@ -783,12 +783,12 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         // Only call patch operations if there are remaining roles to add/remove for existing organizations
         const remainingAddedRoles: Record<string, RoleSharingInterface[]> = { ...tempAddedRoles };
         const remainingRemovedRoles: Record<string, RoleSharingInterface[]> = { ...tempRemovedRoles };
-        
+
         // Check if there are any role operations left to perform
-        const hasRemainingOperations: boolean = 
-            Object.keys(remainingAddedRoles).some(orgId => remainingAddedRoles[orgId]?.length > 0) ||
-            Object.keys(remainingRemovedRoles).some(orgId => remainingRemovedRoles[orgId]?.length > 0);
-            
+        const hasRemainingOperations: boolean =
+            Object.keys(remainingAddedRoles).some((orgId: string) => remainingAddedRoles[orgId]?.length > 0) ||
+            Object.keys(remainingRemovedRoles).some((orgId: string) => remainingRemovedRoles[orgId]?.length > 0);
+
         if (hasRemainingOperations) {
             shareIndividualRolesWithSelectedOrgs();
         } else {
@@ -822,7 +822,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                             mode: shareAllRoles
                                 ? RoleSharingModes.SELECTED
                                 : RoleSharingModes.NONE,
-                            roles: shareAllRoles ? (userRolesList?.map(role => ({
+                            roles: shareAllRoles ? (userRolesList?.map((role: RoleSharingInterface) => ({
                                 audience: {
                                     display: role.audience?.display ?? user?.userName,
                                     type: role.audience?.type
@@ -905,7 +905,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                             mode: shareAllRoles
                                 ? RoleSharingModes.SELECTED
                                 : RoleSharingModes.NONE,
-                            roles: shareAllRoles ? (userRolesList?.map(role => ({
+                            roles: shareAllRoles ? (userRolesList?.map((role: RoleSharingInterface) => ({
                                 audience: {
                                     display: role.audience?.display ?? user?.userName,
                                     type: role.audience?.type
@@ -984,7 +984,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
 
         try {
             await shareUserWithAllOrganizations(data);
-            
+
             // Only show success alert if async notification is not enabled
             if (!isUserShareOperationStatusEnabled) {
                 dispatch(addAlert({
@@ -1197,22 +1197,23 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
 
             // Extract organization IDs and roles from existing userShareData
             if (userShareData?.organizations && Array.isArray(userShareData.organizations)) {
-                const orgIds: string[] = userShareData.organizations.map(org => org.orgId);
+                const orgIds: string[] = userShareData.organizations.map(
+                    (org: SharedOrganizationInterface) => org.orgId
+                );
                 const rolesMap: Record<string, SelectedOrganizationRoleInterface[]> = {};
 
-                userShareData.organizations.forEach(org => {
-                    const roles: SelectedOrganizationRoleInterface[] = org?.roles?.map(role => ({
-                        ...role,
-                        id: role.displayName,
-                        selected: true // Mark all existing roles as selected
-                    }))
+                userShareData.organizations.forEach((org: SharedOrganizationInterface) => {
+                    const roles: SelectedOrganizationRoleInterface[] =
+                        org?.roles?.map((role: RoleSharingInterface) => ({
+                            ...role,
+                            id: role.displayName,
+                            selected: true // Mark all existing roles as selected
+                        }));
 
                     if (roles?.length > 0) {
                         rolesMap[org.orgId] = roles;
                     }
                 });
-
-                console.log(orgIds, rolesMap);
 
                 setSelectedOrgIds(orgIds); // This makes the orgs appear as selected in the UI
                 setRoleSelections(rolesMap);
@@ -1459,44 +1460,14 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                             transition={ { duration: 0.3 } }
                                             className="ml-5"
                                         >
-                                            <FormControlLabel
-                                                control={ (
-                                                    <Switch
-                                                        checked={ roleShareTypeAll === RoleShareType.SHARE_SELECTED }
-                                                        onChange={ (_event: ChangeEvent, checked: boolean) => {
-                                                            if (checked) {
-                                                                setRoleShareTypeAll(RoleShareType.SHARE_SELECTED);
-                                                                setClearAdvancedRoleSharing(true);
-                                                            } else {
-                                                                setRoleShareTypeAll(RoleShareType.SHARE_WITH_ALL);
-                                                            }
-                                                        } }
-                                                        data-componentid={
-                                                            `${ componentId }-share-selected-roles-all-orgs-toggle` }
-                                                    />
-                                                ) }
-                                                label={ t("user:editUser.sections.sharedAccess." +
-                                                    "shareRoleSubsetWithAllOrgs") }
-                                            />
-                                            <Divider hidden className="mb-0 mt-2" />
-                                            {
-                                                roleShareTypeAll === RoleShareType.SHARE_WITH_ALL
-                                                    ? (
-                                                        <Alert severity="info">
-                                                            { t("user:editUser.sections.sharedAccess." +
-                                                                "noRolesAndOrgsSharingMessage") }
-                                                        </Alert>
-                                                    ) : roleShareTypeAll === RoleShareType.SHARE_SELECTED && (
-                                                        <div className="role-share-all-container">
-                                                            <RolesShareWithAll
-                                                                user={ user }
-                                                                selectedRoles={ selectedRoles }
-                                                                setSelectedRoles={ setSelectedRoles }
-                                                                onRoleChange={ updateRoleSelectionForAllOrganizations }
-                                                            />
-                                                        </div>
-                                                    )
-                                            }
+                                            <div className="role-share-all-container">
+                                                <RolesShareWithAll
+                                                    user={ user }
+                                                    selectedRoles={ selectedRoles }
+                                                    setSelectedRoles={ setSelectedRoles }
+                                                    onRoleChange={ updateRoleSelectionForAllOrganizations }
+                                                />
+                                            </div>
                                         </motion.div>
                                     )
                                 }
@@ -1578,8 +1549,14 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                                         setShouldShareWithFutureChildOrgsMap
                                                     }
                                                     disableOrgSelection={ false }
-                                                    allRolesSharingMessage={ t("user:editUser.sections.sharedAccess.allUserRolesSharingMessage") }
-                                                    shareWithFutureChildOrgsLabel={ t("user:editUser.sections.sharedAccess.shareUserWithFutureChildOrgs") }
+                                                    allRolesSharingMessage={
+                                                        t("user:editUser.sections.sharedAccess." +
+                                                            "allUserRolesSharingMessage")
+                                                    }
+                                                    shareWithFutureChildOrgsLabel={
+                                                        t("user:editUser.sections.sharedAccess." +
+                                                            "shareUserWithFutureChildOrgs")
+                                                    }
                                                 />
                                             </Grid>
                                         </motion.div>

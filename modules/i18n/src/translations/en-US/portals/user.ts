@@ -110,12 +110,12 @@ export const user: userNS = {
             sharedAccess: {
                 allRolesAndOrgsSharingMessage: "All roles will be shared with all existing and future organizations.",
                 allUserRolesSharingMessage: "All roles of the user in the current organization will be shared and assigned.",
-                commonRoleSharingHint: "This set of roles will be shared and assigned to the user in all existing and future organizations.",
-                commonRoleSharingLabel: "Commonly Shared Roles",
+                commonRoleSharingHint: "Configure the set of roles that will be assigned to the shared user in all existing and future organizations.",
+                commonRoleSharingLabel: "Assigned roles",
                 doNotShareUser: "Do not share user with any organization",
-                noRolesAndOrgsSharingMessage: "No roles will be assigned to the shared user in all existing and future organizations.",
                 individualRoleSharingHint: "Configure role sharing for specific organizations individually.",
                 individualRoleSharingLabel: "Individually shared roles",
+                noRolesAndOrgsSharingMessage: "No roles will be assigned to the shared user in all existing and future organizations.",
                 notifications: {
                     fetchOrganizations: {
                         genericError: {

@@ -77,6 +77,24 @@ export interface RoleInterface {
 }
 
 /**
+ * Interface for shared organization information.
+ */
+export interface SharedOrganizationInterface {
+    orgId: string;
+    orgName: string;
+    sharedUserId: string;
+    sharedType: string;
+    sharingMode?: {
+        policy: string;
+        roleAssignment?: {
+            mode: string;
+            roles?: Array<RoleInterface>;
+        };
+    };
+    roles?: Array<RoleInterface>;
+}
+
+/**
  * Interface for the user shared organizations response.
  */
 export interface UserSharedOrganizationsResponse {
@@ -100,19 +118,6 @@ export interface UserSharedOrganizationsResponse {
     /**
      * List of organizations where the user has shared access.
      */
-    organizations?: Array<{
-        orgId: string;
-        orgName: string;
-        sharedUserId: string;
-        sharedType: string;
-        sharingMode?: {
-            policy: string;
-            roleAssignment?: {
-                mode: string;
-                roles?: Array<RoleInterface>;
-            };
-        };
-        roles?: Array<RoleInterface>;
-    }>;
+    organizations?: Array<SharedOrganizationInterface>;
 }
 
