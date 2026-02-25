@@ -34,7 +34,7 @@ import type {
  */
 const relativeName = (scope: string, attributeName: string): string => {
     if (!attributeName) return "";
-    const prefix = `${scope}.`;
+    const prefix: string = `${scope}.`;
 
     return attributeName.startsWith(prefix) ? attributeName.slice(prefix.length) : attributeName;
 };
@@ -170,14 +170,14 @@ export const toProfileSchemaListingRows = (schema: ProfileSchemaFullResponse): P
     // Chip shown, deletion not allowed.
     (schema.identity_attributes ?? []).forEach((a: ProfileSchemaAttribute) => {
         rows.push({
-            id: rowId("identity_attributes", a.attribute_name, a.attribute_id),
-            scope: "identity_attributes",
             attribute_id: a.attribute_id,
             attribute_name: a.attribute_name,
-            display_name: relativeName("identity_attributes", a.attribute_name),
             chip_label: getScopeLabel("identity_attributes"),
+            deletable: false,
+            display_name: relativeName("identity_attributes", a.attribute_name),
             editable: true,
-            deletable: false
+            id: rowId("identity_attributes", a.attribute_name, a.attribute_id),
+            scope: "identity_attributes"
         });
     });
 
@@ -187,21 +187,21 @@ export const toProfileSchemaListingRows = (schema: ProfileSchemaFullResponse): P
         const name: string = a.attribute_name ?? "";
 
         rows.push({
-            id: rowId("traits", name, a.attribute_id),
-            scope: "traits",
             attribute_id: a.attribute_id,
             attribute_name: name,
-            display_name: relativeName("traits", name),
             chip_label: getScopeLabel("traits"),
+            deletable: true,
+            display_name: relativeName("traits", name),
             editable: true,
-            deletable: true
+            id: rowId("traits", name, a.attribute_id),
+            scope: "traits"
         });
     });
 
     // ── application_data ─────────────────────────────────────────────────────
-    const appData = schema.application_data ?? {};
+    const appData: Record<string, ProfileSchemaAttribute[]> = schema.application_data ?? {};
 
-    Object.entries(appData).forEach(([ appId, attrs ]) => {
+    Object.entries(appData).forEach(([ appId, attrs ]: [ string, ProfileSchemaAttribute[] ]) => {
         (attrs ?? []).forEach((a: ProfileSchemaAttribute) => {
             const fullName: string = a.attribute_name ?? "";
             // relativeName strips "application_data." → "<appId>.<field...>"
@@ -213,15 +213,15 @@ export const toProfileSchemaListingRows = (schema: ProfileSchemaFullResponse): P
                 : withoutScope;
 
             rows.push({
-                id: rowId("application_data", fullName, a.attribute_id),
-                scope: "application_data",
                 attribute_id: a.attribute_id,
                 attribute_name: fullName,
-                display_name: fieldPath || fullName,
-                chip_label: getScopeLabel("application_data"),
                 belongs_to: appId,
+                chip_label: getScopeLabel("application_data"),
+                deletable: true,
+                display_name: fieldPath || fullName,
                 editable: true,
-                deletable: true
+                id: rowId("application_data", fullName, a.attribute_id),
+                scope: "application_data"
             });
         });
     });
