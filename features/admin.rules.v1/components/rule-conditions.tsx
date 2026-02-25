@@ -417,11 +417,13 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         let shouldFetch: boolean = false;
 
         // Check if this is a generic workflow field (domain, groups, roles, etc.)
-        const useGenericList = expressionField?.includes('domain') || 
-                            expressionField?.includes('groups') || 
-                            expressionField?.includes('roles') ||
-                            expressionField?.includes('permissions') ||
-                            expressionField?.includes('audience');
+        const useGenericList =
+            expressionField?.includes("domain") ||
+            expressionField?.includes("groups") ||
+            expressionField?.includes("roles") ||
+            expressionField?.includes("id") ||
+            expressionField?.includes("permissions") ||
+            expressionField?.includes("audience");
 
         // Fix URL path - remove /api/server/v1 prefix if present since apiRoot already includes it
         const normalizeUrl = (url: string): string => {
@@ -631,6 +633,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 resourceList = fetchedResourcesList.Resources;
             } else if (fetchedResourcesList?.userStores) {
                 resourceList = fetchedResourcesList.userStores;
+            } else if (fetchedResourcesList?.applications) {
+                resourceList = fetchedResourcesList.applications;
             }
 
             if (expressionValue === "" && resourceList.length > 0) {
@@ -834,6 +838,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 const isWorkflowField = expressionField?.includes('domain') || 
                                        expressionField?.includes('groups') || 
                                        expressionField?.includes('roles') ||
+                                       expressionField?.includes('id') ||
                                        expressionField?.includes('permissions') ||
                                        expressionField?.includes('audience');
 

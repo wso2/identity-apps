@@ -17,7 +17,6 @@
  */
 
 export class ApprovalWorkflowConstants {
-
     private constructor() {}
     public static getPaths(): Map<string, string> {
         return new Map<string, string>().set(
@@ -44,7 +43,7 @@ export const APPROVAL_WORKFLOW_VALIDATION_REGEX_PATTERNS: ApprovalWorkflowValida
 export enum ApprovalWorkflowEditTabIDs {
     GENERAL = "general",
     OPERATIONS = "workflow operations",
-    CONFIGURATIONS = "approval steps",
+    CONFIGURATIONS = "approval steps"
 }
 
 export const ENTITY_TYPES: any = {
@@ -52,7 +51,7 @@ export const ENTITY_TYPES: any = {
     USERS: "users"
 } as const;
 
-export type EntityType = (typeof ENTITY_TYPES)[keyof typeof ENTITY_TYPES];
+export type EntityType = typeof ENTITY_TYPES[keyof typeof ENTITY_TYPES];
 
 /**
  * Flow type
@@ -69,42 +68,23 @@ export const WORKFLOW_ENGINE: string = "WorkflowEngine";
  * Used to filter available fields in the rule builder per operation type.
  */
 export const OPERATION_FIELD_MAPPING: Record<string, string[]> = {
-    ADD_USER: [
-        "user.domain",
-        "initiator.domain",
-        "initiator.groups",
-        "initiator.roles"
-    ],
+    ADD_USER: ["user.domain"],
     DELETE_USER: [
         "user.domain",
         "user.groups",
-        "user.roles",
-        "initiator.domain",
-        "initiator.groups",
-        "initiator.roles"
+        "user.roles"
     ],
-    ADD_ROLE: [
-        "role.audience",
-        "role.permissions",
-        "initiator.domain",
-        "initiator.groups",
-        "initiator.roles"
-    ],
+    ADD_ROLE: ["role.audience", "role.permissions"],
     UPDATE_ROLES_OF_USERS: [
-        "role.name",
+        "role.id",
         "role.audience",
-        "role.hasAddedUsers",
-        "role.hasDeletedUsers",
+        "role.hasAssignedUsers",
+        "role.hasUnassignedUsers",
         "user.domain",
         "user.groups",
-        "user.roles",
-        "initiator.domain",
-        "initiator.groups",
-        "initiator.roles"
+        "user.roles"
     ],
-    SELF_REGISTER_USER: [
-        "user.domain"
-    ]
+    SELF_REGISTER_USER: ["user.domain"]
 };
 
 export default ApprovalWorkflowConstants;
