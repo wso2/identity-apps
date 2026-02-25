@@ -94,25 +94,31 @@ export const parseWizardUrlParams: (search: string) => ParsedWizardUrlParamsInte
             (method: string) => method.trim()
         );
 
-        const loginMethods: SignInLoginMethodsConfigInterface = {
-            emailOtp: false,
-            magicLink: false,
-            passkey: false,
-            password: false,
-            pushNotification: false,
-            totp: false
-        };
+        const validEnabledMethods: (keyof SignInLoginMethodsConfigInterface)[] = enabledMethods.filter(
+            (id: string): id is keyof SignInLoginMethodsConfigInterface =>
+                VALID_LOGIN_METHOD_IDS.includes(id as keyof SignInLoginMethodsConfigInterface)
+        );
 
-        for (const methodId of enabledMethods) {
-            if (VALID_LOGIN_METHOD_IDS.includes(methodId as keyof SignInLoginMethodsConfigInterface)) {
-                loginMethods[methodId as keyof SignInLoginMethodsConfigInterface] = true;
+        // Only override defaults if at least one valid method ID was found
+        if (validEnabledMethods.length > 0) {
+            const loginMethods: SignInLoginMethodsConfigInterface = {
+                emailOtp: false,
+                magicLink: false,
+                passkey: false,
+                password: false,
+                pushNotification: false,
+                totp: false
+            };
+
+            for (const methodId of validEnabledMethods) {
+                loginMethods[methodId] = true;
             }
-        }
 
-        data.signInOptions = {
-            identifiers: DEFAULT_SIGN_IN_OPTIONS.identifiers,
-            loginMethods
-        };
+            data.signInOptions = {
+                identifiers: DEFAULT_SIGN_IN_OPTIONS.identifiers,
+                loginMethods
+            };
+        }
     }
 
     const brandingColorParam: string | null = params.get(WizardUrlParams.BRANDING_COLOR);
