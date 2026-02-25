@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,7 +20,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import debounce from "lodash-es/debounce";
 import { useEffect, useRef } from "react";
 import { OnboardingDataInterface, OnboardingStep } from "../models";
-import { serializeWizardUrlParams } from "../utils/wizard-url-params";
+import { serializeWizardUrlParams } from "../utils/serialize-wizard-url-params";
 
 const URL_SYNC_DEBOUNCE_MS: number = 300;
 
