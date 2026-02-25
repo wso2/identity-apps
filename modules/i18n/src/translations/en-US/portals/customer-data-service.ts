@@ -35,6 +35,12 @@ export const customerDataService: CustomerDataServiceNS = {
         dangerZone: {
             header: "Danger Zone"
         },
+        featurePreview: {
+            action: "Try Customer Data Service",
+            description: "Customer Data Service (CDS) enables you to build and manage unified customer profiles by defining profile attributes, configuring unification rules, and tracking anonymous profiles — giving you a single, consistent view of every customer.",
+            message: "Once Customer Data Service (CDS) is enabled, you can configure profile attributes and unification rules, and start building unified customer profiles.",
+            name: "Customer Data Service"
+        },
         notifications: {
             error: "Error",
             loadAttributes: {

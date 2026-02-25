@@ -29,6 +29,12 @@ export interface CustomerDataServiceNS {
         dangerZone: {
             header: string;
         };
+        featurePreview: {
+            name: string;
+            action: string;
+            description: string
+            message: string;
+        };
         notifications: {
             error: string;
             notAllowed: string;
