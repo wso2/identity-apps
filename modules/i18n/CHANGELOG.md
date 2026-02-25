@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.34.0
+
+### Minor Changes
+
+- [#9610](https://github.com/wso2/identity-apps/pull/9610) [`7ee7c85fe57835628c6f9a46490bd7898617f65b`](https://github.com/wso2/identity-apps/commit/7ee7c85fe57835628c6f9a46490bd7898617f65b) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Display TOTP masked secret
+
 ## 2.33.4
 
 ### Patch Changes
