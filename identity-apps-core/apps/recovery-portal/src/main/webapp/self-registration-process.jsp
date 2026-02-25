@@ -67,6 +67,9 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<%-- Resolve request headers --%>
+<jsp:directive.include file="request-header-resolver.jsp"/>
+
 <%
     Log log = LogFactory.getLog(this.getClass());
     String ERROR_MESSAGE = "errorMsg";
@@ -415,6 +418,9 @@
         if (request.getParameter("g-recaptcha-response") != null) {
             requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
         }
+
+        // Add client IP and user agent to the request headers.
+        addNetworkRequestHeaders(requestHeaders, request);
 
         SelfRegisterApi selfRegisterApi = new SelfRegisterApi();
         String responseContent = selfRegisterApi.mePostCall(selfUserRegistrationRequest, requestHeaders);

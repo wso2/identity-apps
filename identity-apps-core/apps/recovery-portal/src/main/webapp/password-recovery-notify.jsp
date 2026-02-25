@@ -31,6 +31,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.RecoveryInitiatingRequest" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URISyntaxException" %>
 <%@ page import="java.net.URLEncoder" %>
@@ -43,6 +44,9 @@
 
 <%-- Include tenant context --%>
 <jsp:directive.include file="tenant-resolve.jsp"/>
+
+<%-- Resolve request headers --%>
+<jsp:directive.include file="request-header-resolver.jsp"/>
 
 <%
     String username = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("username"));
@@ -111,6 +115,7 @@
         if (request.getParameter("g-recaptcha-response") != null) {
             requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
         }
+        addNetworkRequestHeaders(requestHeaders, request);
         notificationApi.recoverPasswordPost(recoveryInitiatingRequest, null, null, requestHeaders);
         request.setAttribute("accessUrl", modifiedAccessUrl);
         request.getRequestDispatcher("password-reset-success.jsp").forward(request, response);
