@@ -1874,6 +1874,18 @@ export interface ApplicationsNS {
                         };
                     }
                 };
+                applicationTokenIssuer: {
+                    heading: string;
+                    fields: {
+                        tokenIssuer: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                            loading: string;
+                            organization: string;
+                        };
+                    };
+                };
             };
             messages: {
                 revokeDisclaimer: {

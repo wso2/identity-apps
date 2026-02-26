@@ -33,7 +33,7 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
-import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { OrganizationManagementConstants, OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { RoleAudienceTypes, RoleConstants } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { AGENT_USERSTORE_ID } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
@@ -46,6 +46,7 @@ import { AlertLevels, FeatureAccessConfigInterface,
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import {
+    Code,
     ContentLoader,
     DocumentationLink,
     Heading,
@@ -53,6 +54,7 @@ import {
     LinkButton,
     PrimaryButton,
     SelectionCard,
+    Text,
     useDocumentation,
     useWizardAlert
 } from "@wso2is/react-components";
@@ -81,7 +83,11 @@ import { Card, Checkbox, CheckboxProps, Dimmer, Divider, Grid } from "semantic-u
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-settings-wizard-form";
 import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
-import { createApplication, getApplicationList, getApplicationTemplateData } from "../../api/application";
+import {
+    createApplication,
+    getApplicationList,
+    getApplicationTemplateData
+} from "../../api/application";
 import { getInboundProtocolLogos } from "../../configs/ui";
 import { ApplicationManagementConstants } from "../../constants/application-management";
 import CustomApplicationTemplate
@@ -90,6 +96,7 @@ import MobileApplicationTemplate
     from "../../data/application-templates/templates/mobile-application/mobile-application.json";
 import SinglePageApplicationTemplate
     from "../../data/application-templates/templates/single-page-application/single-page-application.json";
+import useAllowedIssuers from "../../hooks/use-allowed-issuers";
 import {
     ApplicationListInterface,
     ApplicationTemplateIdTypes,
@@ -100,6 +107,7 @@ import {
     URLFragmentTypes
 } from "../../models/application";
 import {
+    AllowedIssuerInterface,
     SAMLConfigModes,
     SupportedAuthProtocolTypes
 } from "../../models/application-inbound";
@@ -196,6 +204,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const isFAPIAppCreationEnabled: boolean = isFeatureEnabled(featureConfig?.applications,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("FAPI_APP_CREATION"));
+    const isTokenIssuerSelectionEnabled: boolean = isFeatureEnabled(featureConfig?.organizations,
+        OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_APPLICATION_TOKEN_ISSUER_SELECTION"));
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
@@ -219,6 +229,16 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
     const [ isAppSharingEnabled, setIsAppSharingEnabled ] = useState<boolean>(false);
     const [ isAgentCompliantApp, setIsAgentCompliantApp ] = useState<boolean>(false);
+
+    const {
+        tokenEndpoints,
+        selectedTokenEndpoint,
+        setSelectedTokenEndpoint,
+        isLoadingTokenEndpoints,
+        orgNameMap
+    } = useAllowedIssuers(
+        orgType === OrganizationType.SUBORGANIZATION && isOrganizationManagementEnabled
+    );
 
     const [ showAppShareModal, setShowAppShareModal ] = useState(false);
     const [ applicationId, setApplicationId ] = useState<string>(undefined);
@@ -422,6 +442,27 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 "inboundProtocolConfiguration.oidc.accessToken.userAccessTokenExpiryInSeconds",
                 3600
             );
+        }
+
+        // Add issuer for sub-organization applications
+        if (orgType === OrganizationType.SUBORGANIZATION && isOrganizationManagementEnabled) {
+            let issuerToUse: AllowedIssuerInterface | undefined;
+
+            if (tokenEndpoints.length === 1) {
+                issuerToUse = tokenEndpoints[0];
+            } else if (tokenEndpoints.length > 1 && selectedTokenEndpoint) {
+                issuerToUse = tokenEndpoints.find(
+                    (ep: AllowedIssuerInterface) => ep.value === selectedTokenEndpoint
+                );
+            }
+
+            if (issuerToUse) {
+                set(application, "inboundProtocolConfiguration.oidc.issuer", {
+                    organizationId: issuerToUse.organizationId,
+                    tenantDomain: issuerToUse.tenantDomain,
+                    value: issuerToUse.value
+                });
+            }
         }
 
         setIsSubmitting(true);
@@ -1245,6 +1286,93 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                 application to be accessible by AI agents.
                                     </Hint>
                                 </div>
+                            </Show>
+                        )
+                    }
+                    {
+                        isOrganizationManagementEnabled
+                        && isTokenIssuerSelectionEnabled
+                        && orgType === OrganizationType.SUBORGANIZATION
+                        && tokenEndpoints.length > 1
+                        && (
+                            <Show
+                                when={ featureConfig?.applications?.scopes?.update }
+                            >
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                                        <Field
+                                            name="applicationTokenIssuer"
+                                            label={ t("applications:forms.inboundOIDC" +
+                                                ".sections.applicationTokenIssuer.fields.tokenIssuer.label") }
+                                            type="dropdown"
+                                            required={ false }
+                                            value={ selectedTokenEndpoint }
+                                            children={
+                                                isLoadingTokenEndpoints
+                                                    ? [
+                                                        {
+                                                            key: "loading",
+                                                            text: t("applications:forms.inboundOIDC" +
+                                                                ".sections.applicationTokenIssuer" +
+                                                                ".fields.tokenIssuer.loading"),
+                                                            value: ""
+                                                        }
+                                                    ]
+                                                    : tokenEndpoints.map((endpoint: AllowedIssuerInterface) => ({
+                                                        content: (
+                                                            <div>
+                                                                <div>
+                                                                    <Text muted display="inline">
+                                                                        { t("applications:forms.inboundOIDC" +
+                                                                            ".sections.applicationTokenIssuer" +
+                                                                            ".fields.tokenIssuer.organization") }
+                                                                        &nbsp;
+                                                                    </Text>
+                                                                    <Text display="inline">
+                                                                        { orgNameMap[endpoint.organizationId]
+                                                                            ?? endpoint.tenantDomain }
+                                                                    </Text>
+                                                                </div>
+                                                                <div style={ { marginTop: 4 } } />
+                                                                <Code compact withBackground>
+                                                                    <span style={ { fontSize: "0.75em" } }>
+                                                                        { endpoint.value }
+                                                                    </span>
+                                                                </Code>
+                                                            </div>
+                                                        ),
+                                                        key: endpoint.organizationId,
+                                                        text: (
+                                                            <div>
+                                                                <Text muted display="inline">
+                                                                    { t("applications:forms.inboundOIDC" +
+                                                                        ".sections.applicationTokenIssuer" +
+                                                                        ".fields.tokenIssuer.organization") }
+                                                                    &nbsp;
+                                                                </Text>
+                                                                <Text display="inline">
+                                                                    { orgNameMap[endpoint.organizationId]
+                                                                        ?? endpoint.tenantDomain }
+                                                                </Text>
+                                                            </div>
+                                                        ),
+                                                        value: endpoint.value
+                                                    }))
+                                            }
+                                            listen={ (values: Map<string, FormValue>) => {
+                                                setSelectedTokenEndpoint(
+                                                    values.get("applicationTokenIssuer") as string
+                                                );
+                                            } }
+                                            disabled={ isLoadingTokenEndpoints }
+                                            data-componentid={ `${ componentId }-token-issuer-dropdown` }
+                                        />
+                                        <Hint>
+                                            { t("applications:forms.inboundOIDC" +
+                                                ".sections.applicationTokenIssuer.fields.tokenIssuer.hint") }
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
                             </Show>
                         )
                     }
