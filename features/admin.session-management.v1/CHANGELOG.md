@@ -1,5 +1,14 @@
 # @wso2is/admin.session-management.v1
 
+## 2.26.3
+
+### Patch Changes
+
+- Updated dependencies [[`d0761e466c899df3701b2f918c955e89f1dce1e3`](https://github.com/wso2/identity-apps/commit/d0761e466c899df3701b2f918c955e89f1dce1e3)]:
+  - @wso2is/admin.organizations.v1@2.28.1
+  - @wso2is/i18n@2.34.1
+  - @wso2is/admin.core.v1@2.53.8
+
 ## 2.26.2
 
 ### Patch Changes

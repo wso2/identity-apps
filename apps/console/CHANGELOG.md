@@ -1,5 +1,31 @@
 # @wso2is/console
 
+## 2.95.8
+
+### Patch Changes
+
+- [#9645](https://github.com/wso2/identity-apps/pull/9645) [`d0761e466c899df3701b2f918c955e89f1dce1e3`](https://github.com/wso2/identity-apps/commit/d0761e466c899df3701b2f918c955e89f1dce1e3) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Enable issuer selection for sub organization applications
+
+- Updated dependencies [[`d0761e466c899df3701b2f918c955e89f1dce1e3`](https://github.com/wso2/identity-apps/commit/d0761e466c899df3701b2f918c955e89f1dce1e3)]:
+  - @wso2is/admin.organizations.v1@2.28.1
+  - @wso2is/admin.applications.v1@2.41.7
+  - @wso2is/i18n@2.34.1
+  - @wso2is/admin.actions.v1@1.15.2
+  - @wso2is/admin.onboarding.v1@1.0.10
+  - @wso2is/admin.session-management.v1@2.26.3
+  - @wso2is/admin.agents.v1@1.0.158
+  - @wso2is/admin.branding.v1@2.32.99
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.143
+  - @wso2is/admin.core.v1@2.53.8
+  - @wso2is/admin.email-management.v1@2.25.307
+  - @wso2is/admin.flows.v1@1.0.112
+  - @wso2is/admin.home.v1@1.7.122
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.143
+  - @wso2is/admin.server-configurations.v1@2.37.9
+  - @wso2is/admin.users.v1@2.36.118
+  - @wso2is/admin.roles.v2@2.27.313
+  - @wso2is/admin.registration-flow-builder.v1@0.10.103
+
 ## 2.95.7
 
 ### Patch Changes

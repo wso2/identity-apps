@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.34.1
+
+### Patch Changes
+
+- [#9645](https://github.com/wso2/identity-apps/pull/9645) [`d0761e466c899df3701b2f918c955e89f1dce1e3`](https://github.com/wso2/identity-apps/commit/d0761e466c899df3701b2f918c955e89f1dce1e3) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Enable issuer selection for sub organization applications
+
 ## 2.34.0
 
 ### Minor Changes
