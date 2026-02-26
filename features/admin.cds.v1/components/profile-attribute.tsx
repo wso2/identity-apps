@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
 import IconButton from "@oxygen-ui/react/IconButton";
 import { TrashIcon } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -36,6 +37,7 @@ import {
     TabPageLayout,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -70,7 +72,7 @@ interface SubAttributeOption {
 
 type Mutability = "readWrite" | "readOnly" | "immutable" | "writeOnce";
 
-interface CanonicalValueInterface {
+interface CanonicalValues {
     label: string;
     value: string;
 }
@@ -106,7 +108,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
     const [ currentValueType, setCurrentValueType ] = useState<ValueType>(null);
 
     // Canonical values editor
-    const [ canonicalValues, setCanonicalValues ] = useState<CanonicalValueInterface[]>([]);
+    const [ canonicalValues, setCanonicalValues ] = useState<CanonicalValues[]>([]);
 
     useEffect((): void => {
         if (!fetchedAttribute) return;
@@ -114,7 +116,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
         setAttribute(fetchedAttribute);
         setSubAttributes(fetchedAttribute?.sub_attributes ?? []);
         setCurrentValueType(fetchedAttribute?.value_type ?? null);
-        setCanonicalValues((fetchedAttribute?.canonical_values as any) ?? []);
+        setCanonicalValues((fetchedAttribute?.canonical_values as CanonicalValues[]) ?? []);
     }, [ fetchedAttribute ]);
 
     useEffect((): void => {
@@ -200,7 +202,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
 
         const payload: Partial<ProfileSchemaAttribute> = {
             attribute_name: attribute.attribute_name,
-            canonical_values: canonicalValues as any,
+            canonical_values: canonicalValues as CanonicalValues[],
             merge_strategy: values.merge_strategy,
             multi_valued: Boolean(values.multi_valued),
             mutability: isIdentityScope ? attribute.mutability : values.mutability,
@@ -224,7 +226,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                 // truth for canonical_values — its response is what the useEffect re-seeds from.
                 mutate();
             })
-            .catch((err: any): void => {
+            .catch((err: AxiosError): void => {
                 dispatch(addAlert({
                     description: err?.message || t("customerDataService:profileAttributes.edit.notifications" +
                         ".updateAttribute.error.description"),
@@ -251,9 +253,11 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
             }));
 
             history.push(AppConstants.getPaths().get("PROFILE_ATTRIBUTES"));
-        } catch (err: any) {
+        } catch (err: unknown) {
+            const axiosErr: AxiosError = err as AxiosError;
+
             setModalAlert({
-                description: err?.message || t("customerDataService:profileAttributes.edit.notifications" +
+                description: axiosErr?.message || t("customerDataService:profileAttributes.edit.notifications" +
                     ".deleteAttribute.error.description"),
                 level: AlertLevels.ERROR,
                 message: t("customerDataService:profileAttributes.edit.notifications" +
@@ -519,7 +523,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
 
                                         <DynamicField
                                             data={ canonicalValues.map(
-                                                (cv: CanonicalValueInterface): KeyValue => ({
+                                                (cv: CanonicalValues): KeyValue => ({
                                                     key: cv.label,
                                                     value: cv.value
                                                 })
@@ -537,7 +541,7 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                                             requiredField={ true }
                                             listen={ (data: KeyValue[]): void => {
                                                 setCanonicalValues(
-                                                    data.map((item: KeyValue): CanonicalValueInterface => ({
+                                                    data.map((item: KeyValue): CanonicalValues => ({
                                                         label: item.key,
                                                         value: item.value
                                                     }))
@@ -608,19 +612,19 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                                         }
 
                                         { subAttributes.length > 0 && (
-                                            <div style={ { marginTop: "1rem" } }>
+                                            <Box sx={ { marginTop: "1rem" } }>
                                                 { subAttributes.map((subAttr: ProfileSchemaSubAttributeRef) => (
-                                                    <div
+                                                    <Box
                                                         key={ subAttr.attribute_id }
-                                                        style={ {
+                                                        sx={ {
                                                             alignItems: "center",
                                                             display: "flex",
                                                             padding: "0.25rem 0"
                                                         } }
                                                     >
-                                                        <span style={ { fontSize: "0.875rem" } }>
+                                                        <Box component="span" sx={ { fontSize: "0.875rem" } }>
                                                             { stripScopePrefix(scope, subAttr.attribute_name) }
-                                                        </span>
+                                                        </Box>
                                                         <IconButton
                                                             sx={ { marginLeft: "auto" } }
                                                             size="small"
@@ -628,15 +632,15 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                                                                 handleSubAttributeRemove(subAttr.attribute_id)
                                                             }
                                                             data-componentid={
-                                                                `${componentId}-delete-sub-attribute-
-                                                                ${subAttr.attribute_id}`
+                                                                // eslint-disable-next-line max-len
+                                                                `${componentId}-delete-sub-attribute-${subAttr.attribute_id}`
                                                             }
                                                         >
                                                             <TrashIcon />
                                                         </IconButton>
-                                                    </div>
+                                                    </Box>
                                                 )) }
-                                            </div>
+                                            </Box>
                                         ) }
                                     </Grid.Column>
                                 </Grid.Row>

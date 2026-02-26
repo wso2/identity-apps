@@ -173,8 +173,8 @@ const AttributeGeneralForm: React.ForwardRefExoticComponent<
             null,
             null,
             null,
-            true,
-            shouldFetchApplications
+            shouldFetchApplications,
+            true
         );
 
         const scopeOptions: { value: ScopeValue; label: string }[] = useMemo(() => [

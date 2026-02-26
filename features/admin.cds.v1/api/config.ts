@@ -30,8 +30,8 @@ const httpClient: HttpClientInstance =
     AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * PATCH /cds/api/v1/config
- * Partially update the CDS configuration
+ * PUT /cds/api/v1/config
+ * Update the CDS configuration
  */
 export const updateCDSConfig = (
     put: Partial<CDSConfigUpdateRequest>

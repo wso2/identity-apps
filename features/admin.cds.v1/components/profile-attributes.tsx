@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import Chip from "@oxygen-ui/react/Chip/Chip";
+import Chip from "@oxygen-ui/react/Chip";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -30,7 +30,6 @@ import {
     TableColumnInterface
 } from "@wso2is/react-components";
 import React, {
-    Dispatch,
     FunctionComponent,
     ReactElement,
     ReactNode,
@@ -40,6 +39,7 @@ import React, {
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Header, Label, SemanticICONS, SemanticWIDTHS } from "semantic-ui-react";
 
 import { deleteSchemaAttributeById } from "../api/profile-attributes";
@@ -49,18 +49,18 @@ const COL_WIDTH_ATTRIBUTE: SemanticWIDTHS = 7;
 const COL_WIDTH_SCOPE: SemanticWIDTHS = 7;
 const COL_WIDTH_ACTIONS: SemanticWIDTHS = 2;
 
-interface ProfileSchemaListingProps extends IdentifiableComponentInterface {
+interface ProfileSchemaListingPropsInterface extends IdentifiableComponentInterface {
     isLoading: boolean;
     onRefresh: () => void;
     rows: ProfileSchemaListingRow[];
 }
 
-export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingProps> = ({
+export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingPropsInterface> = ({
     isLoading,
     onRefresh,
     rows,
     ["data-componentid"]: componentId = "profile-schema-listing"
-}: ProfileSchemaListingProps): ReactElement => {
+}: ProfileSchemaListingPropsInterface): ReactElement => {
 
     const dispatch: Dispatch<any> = useDispatch();
     const { t } = useTranslation("customerDataService");

@@ -41,10 +41,11 @@ import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate
 import updateFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/update-flow-config";
 import useGetFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-config";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
-import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import NewCDSFeatureImage from "../../assets/illustrations/preview-features/new-cds-feature.png";
 import NewSelfRegistrationImage from "../../assets/illustrations/preview-features/new-self-registration.png";
 import { AppConstants } from "../../constants/app-constants";
@@ -128,7 +129,7 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
 }: FeaturePreviewModalPropsInterface): ReactElement => {
 
     const { t } = useTranslation();
-
+    const dispatch: any = useDispatch();
     const { selectedPreviewFeatureToShow } = useFeatureGate();
 
     const loginAndRegistrationFeatureConfig: FeatureAccessConfigInterface = useSelector(
@@ -195,7 +196,9 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
     const accessibleFeatures: PreviewFeaturesListInterface[] = useMemo(() => (
         previewFeaturesList.filter((feature: PreviewFeaturesListInterface) => {
             if (feature.id === "self-registration-orchestration") return hasSelfRegScopes;
-            if (feature.id === "customer-data-service") return hasCDSScopes;
+            if (feature.id === "customer-data-service") {
+                return hasCDSScopes && !!cdsFeatureConfig?.enabled;
+            }
 
             return true;
         })
@@ -265,21 +268,27 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
         let nextApps: string[];
 
         if (enable) {
-            // Seed CONSOLE when the list would otherwise be empty.
             nextApps = currentApps.length === 0
                 ? [ CDS_CONSOLE_APP ]
                 : currentApps;
         } else {
-            // Strip CONSOLE on disable; preserve any other entries.
             nextApps = currentApps.filter((app: string) => app !== CDS_CONSOLE_APP);
         }
 
-        await updateCDSConfig({
-            cds_enabled: enable,
-            system_applications: nextApps
-        });
+        try {
+            await updateCDSConfig({
+                cds_enabled: enable,
+                system_applications: nextApps
+            });
 
-        mutateCDSConfig();
+            mutateCDSConfig();
+        } catch (error) {
+            dispatch(addAlert({
+                description: t("customerDataService:common.featurePreview.updateError"),
+                level: AlertLevels.ERROR,
+                message: t("common:error")
+            }));
+        }
     };
 
     return (

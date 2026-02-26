@@ -32,8 +32,9 @@ export interface CustomerDataServiceNS {
         featurePreview: {
             name: string;
             action: string;
-            description: string
+            description: string;
             message: string;
+            updateError: string;
         };
         notifications: {
             error: string;
