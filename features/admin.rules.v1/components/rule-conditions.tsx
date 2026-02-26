@@ -439,7 +439,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         const {
             data: fetchedResourcesList,
             isLoading: isResourcesListLoading
-        } = useGetResourceListOrResourceDetails(initialResourcesLoadUrl, shouldFetch);
+        } = useGetResourceListOrResourceDetails(initialResourcesLoadUrl, true);
 
         // Only fetch resource details for application fields (not for workflow fields like domain, groups, roles)
         const shouldFetchResourceDetails: boolean = expressionField === "application" && shouldFetch && !!expressionValue;
