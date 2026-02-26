@@ -355,7 +355,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const subjectToken: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const applicationSubjectTokenExpiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const authReqExpiryTime: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
-    const notificationChannels: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const notificationChannels: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
 
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
     const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
@@ -1601,14 +1601,18 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
 
             if (showCibaFields) {
+                const serverChannels: string[] =
+                    values.get("cibaServerChannels") as unknown as string[] || [];
+                const clientChannels: string[] =
+                    values.get("cibaExternalChannel") as unknown as string[] || [];
+
                 inboundConfigFormValues = {
                     ...inboundConfigFormValues,
                     cibaAuthenticationRequest: {
                         authReqExpiryTime: values.get("authReqExpiryTime")
-                            ? parseInt(values.get("authReqExpiryTime"), 10)
+                            ? parseInt(values.get("authReqExpiryTime") as string, 10)
                             : undefined,
-                        notificationChannels:
-                            values.get("notificationChannels") as unknown as string[] || []
+                        notificationChannels: [ ...serverChannels, ...clientChannels ]
                     }
                 };
             } else {
@@ -2194,18 +2198,18 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 showCibaFields && (
                     <>
                         <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Grid.Column mobile={ 16 }>
                                 <Divider />
                                 <Divider hidden />
                             </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Grid.Column mobile={ 16 }>
                                 <Heading as="h4">
                                     { t("applications:forms.inboundOIDC.fields.ciba.heading") }
                                 </Heading>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Grid.Column mobile={ 16 }>
                                 <Field
                                     ref={ authReqExpiryTime }
                                     name="authReqExpiryTime"
@@ -2247,46 +2251,96 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
+                                <div
                                     ref={ notificationChannels }
-                                    name="notificationChannels"
+                                    className="field"
+                                >
+                                    <label>
+                                        { t("applications:forms.inboundOIDC.fields." +
+                                            "ciba.notificationChannels.label") }
+                                    </label>
+                                    <Hint>
+                                        { t("applications:forms.inboundOIDC.fields." +
+                                            "ciba.notificationChannels.hint") }
+                                    </Hint>
+                                </div>
+                                <Field
+                                    name="cibaServerChannels"
                                     label={
                                         t("applications:forms.inboundOIDC.fields." +
-                                            "ciba.notificationChannels.label")
+                                            "ciba.notificationChannels.serverChannelsLabel")
                                     }
                                     type="checkbox"
                                     required={ false }
                                     value={
-                                        initialValues?.cibaAuthenticationRequest?.notificationChannels
-                                            ?? []
+                                        initialValues?.cibaAuthenticationRequest
+                                            ?.notificationChannels
+                                            ?.filter(
+                                                (ch: string) => ch !== "external"
+                                            ) ?? []
                                     }
                                     readOnly={ readOnly }
-                                    data-componentid={ `${ testId }-ciba-notification-channels` }
+                                    data-componentid={
+                                        `${ testId }-ciba-server-channels`
+                                    }
                                     children={
-                                        metadata?.cibaMetadata?.supportedNotificationChannels?.map(
-                                            (channel: CIBANotificationChannelInterface):
-                                                { label: string | ReactElement; value: string } => ({
-                                                label: channel.name === "external"
-                                                    ? (
-                                                        <label>
-                                                            { channel.displayName }
-                                                            <div className="ui-hint compact">
-                                                                { t("applications:forms" +
-                                                                    ".inboundOIDC.fields.ciba" +
-                                                                    ".notificationChannels" +
-                                                                    ".externalHint") }
-                                                            </div>
-                                                        </label>
-                                                    )
-                                                    : channel.displayName,
-                                                value: channel.name
-                                            })
-                                        ) ?? []
+                                        metadata?.cibaMetadata
+                                            ?.supportedNotificationChannels
+                                            ?.filter(
+                                                (channel:
+                                                    CIBANotificationChannelInterface) =>
+                                                    channel.name !== "external"
+                                            )
+                                            ?.map(
+                                                (channel:
+                                                    CIBANotificationChannelInterface):
+                                                    CheckboxChild => ({
+                                                    label: channel.displayName,
+                                                    value: channel.name
+                                                })
+                                            ) ?? []
                                     }
                                 />
+                                <Field
+                                    name="cibaExternalChannel"
+                                    label={
+                                        t("applications:forms.inboundOIDC.fields." +
+                                            "ciba.notificationChannels.clientChannelLabel")
+                                    }
+                                    type="checkbox"
+                                    required={ false }
+                                    value={
+                                        initialValues?.cibaAuthenticationRequest
+                                            ?.notificationChannels
+                                            ?.includes("external")
+                                            ? [ "external" ]
+                                            : []
+                                    }
+                                    readOnly={ readOnly }
+                                    data-componentid={
+                                        `${ testId }-ciba-external-channel`
+                                    }
+                                    children={ [
+                                        {
+                                            label: metadata?.cibaMetadata
+                                                ?.supportedNotificationChannels
+                                                ?.find(
+                                                    (ch:
+                                                        CIBANotificationChannelInterface
+                                                    ) =>
+                                                        ch.name === "external"
+                                                )?.displayName ?? "External",
+                                            value: "external"
+                                        }
+                                    ] as CheckboxChild[] }
+                                />
                                 <Hint>
-                                    { t("applications:forms.inboundOIDC.fields." +
-                                        "ciba.notificationChannels.hint") }
+                                    { t("applications:forms" +
+                                        ".inboundOIDC.fields.ciba" +
+                                        ".notificationChannels" +
+                                        ".externalHint",
+                                    { productName:
+                                        config.ui.productName }) }
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>

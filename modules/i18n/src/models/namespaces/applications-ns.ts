@@ -1463,7 +1463,7 @@ export interface ApplicationsNS {
                         ciba: {
                             hint: string;
                             label: string;
-                        },
+                        };
                         client_credential: {
                             hint: string;
                             label: string;
@@ -1516,9 +1516,11 @@ export interface ApplicationsNS {
                         };
                     };
                     notificationChannels: {
+                        clientChannelLabel: string;
                         externalHint: string;
                         hint: string;
                         label: string;
+                        serverChannelsLabel: string;
                     };
                     heading: string;
                 }

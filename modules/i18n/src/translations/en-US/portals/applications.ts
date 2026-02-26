@@ -1773,11 +1773,17 @@ export const applications: ApplicationsNS = {
                         }
                     },
                     notificationChannels: {
-                        externalHint: "The server will not send notifications. Instead, the " +
-                            "authentication details will be returned in the response for the " +
-                            "application to handle notification delivery.",
-                        hint: "Select the notification channels allowed for CIBA authentication requests.",
-                        label: "Notification Channels"
+                        clientChannelLabel: "Client managed",
+                        externalHint: "The client application delivers the " +
+                            "authentication request to the user. When configured " +
+                            "alongside server channels, the client must include " +
+                            "notification_channel=external in the CIBA request " +
+                            "to use this channel; otherwise {{productName}} " +
+                            "defaults to the server channels.",
+                        hint: "Configure which notification methods this " +
+                            "application supports.",
+                        label: "Notification Delivery",
+                        serverChannelsLabel: "Server managed"
                     },
                     heading: "Client Initiated Backchannel Authentication"
                 }
