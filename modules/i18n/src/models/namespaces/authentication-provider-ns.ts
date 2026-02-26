@@ -1025,6 +1025,15 @@ export interface AuthenticationProviderNS {
                 label: string;
                 infoMessage: string;
             };
+            idpGroupSyncMethod: {
+                hint: string;
+                label: string;
+                checkboxLabel: string;
+                children: {
+                    mergeWithExisting: string;
+                    overrideAll: string;
+                };
+            };
         };
         roleMapping: {
             heading: string;

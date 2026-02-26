@@ -1072,7 +1072,16 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 label: "Skip user provisioning when no local account is found",
                 infoMessage: "If a matching local account is not found, a new account will be created by default. " +
                     "This configuration allows you to override this behavior."
-            }
+            },
+            idpGroupSyncMethod: {
+                children: {
+                    mergeWithExisting: "Merge With Existing",
+                    overrideAll: "Override all"
+                },
+                checkboxLabel: "Override existing roles with external IDP group roles",
+                hint: "When enabled, existing roles will be replaced with new external IDP group roles during each login.",
+                label: "IDP group role synchronization method"
+            },
         },
         outboundConnectorAccordion: {
             default: {
