@@ -2519,6 +2519,13 @@
                 {% endfor %}
             {% endif %}
         ],
+        "hiddenOutboundProvisioningConnectors": [
+            {% if console.ui.hidden_outbound_provisioning_connectors is defined %}
+                {% for value in console.ui.hidden_outbound_provisioning_connectors %}
+                "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
+            {% endif %}
+        ],
         "hiddenApplicationTemplates": [
             {% if console.ui.hiddenApplicationTemplates is defined %}
                 {% for value in console.ui.hiddenApplicationTemplates %}
@@ -2626,6 +2633,11 @@
             "enableOldUIForEmailProvider": {{ console.ui.enable_old_ui_for_email_provider }},
         {% else %}
             "enableOldUIForEmailProvider": false,
+        {% endif %}
+        {% if console.ui.enable_blocking_outbound_provisioning is defined %}
+            "enableBlockingOutboundProvisioning": {{ console.ui.enable_blocking_outbound_provisioning }},
+        {% else %}
+            "enableBlockingOutboundProvisioning": false,
         {% endif %}
         {% if console.ui.enable_custom_sms_templates is defined %}
             "enableCustomSmsTemplates": {{ console.ui.enable_custom_sms_templates }},

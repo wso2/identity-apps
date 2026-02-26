@@ -2604,10 +2604,10 @@ export const applications: ApplicationsNS = {
                     }
                 },
                 idp: {
-                    label: "Identity Provider",
-                    placeholder: "Select identity provider",
+                    label: "Provisioning Connection",
+                    placeholder: "Select provisioning connection",
                     validations: {
-                        empty: "It is mandatory to select an IDP."
+                        empty: "It is mandatory to select a provisioning connection."
                     }
                 },
                 jit: {
@@ -3515,10 +3515,10 @@ export const applications: ApplicationsNS = {
                 form: {
                     fields: {
                         connection: {
-                            label: "Connection",
-                            placeholder: "Select connection",
+                            label: "Provisioning Connection",
+                            placeholder: "Select provisioning connection",
                             validations: {
-                                empty: "It is mandatory to select connection."
+                                empty: "It is mandatory to select a provisioning connection."
                             }
                         }
                     }

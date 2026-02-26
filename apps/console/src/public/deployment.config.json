@@ -328,6 +328,7 @@
             "defaultLogoUrl": "/libs/themes/default/assets/images/branding/logo.svg",
             "defaultWhiteLogoUrl": "/libs/themes/default/assets/images/branding/logo-inverted.svg"
         },
+        "enableBlockingOutboundProvisioning": true,
         "enableCustomEmailTemplates": true,
         "enableCustomSmsTemplates": true,
         "enableEmailDomain": false,
@@ -1093,6 +1094,7 @@
                     ],
                     "read": [
                         "internal_claim_meta_view",
+                        "internal_group_mgt_view",
                         "internal_idp_view",
                         "internal_role_mgt_view",
                         "internal_userstore_view"
@@ -2057,6 +2059,7 @@
                 "oidcScopes": "v0.0.0",
                 "organizations": "v0.0.0",
                 "password-recovery": "v1.0.0",
+                "residentOutboundProvisioning": "v0.0.0",
                 "roles": "v0.0.0",
                 "self-registration-connector": "v1.0.0",
                 "smsTemplates": "v0.0.0",

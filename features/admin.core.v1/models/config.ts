@@ -466,6 +466,11 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     hiddenConnectionTemplates?: string[];
     /**
+     * Set of outbound provisioning connectors to be hidden.
+     * Use connector names (e.g., "googleapps", "salesforce", "scim").
+     */
+    hiddenOutboundProvisioningConnectors?: string[];
+    /**
      * Set of application templates to be hidden.
      * Include the IDs of application templates.
      */
@@ -530,6 +535,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Enable/Disable custom email template feature
      */
     enableCustomEmailTemplates: boolean;
+    /**
+     * Enable/Disable blocking outbound provisioning feature.
+     */
+    enableBlockingOutboundProvisioning?: boolean;
     /**
      * Enable/Disable custom SMS template feature
      */

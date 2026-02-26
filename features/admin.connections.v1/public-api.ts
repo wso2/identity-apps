@@ -19,3 +19,7 @@
 export { default as ConnectionTemplatesPage } from "./pages/connection-templates";
 export { default as ConnectionsPage } from "./pages/connections";
 export { default as ConnectionEditPage } from "./pages/connection-edit";
+export {
+    CommonAuthenticatorConstants,
+    ConnectionsFeatureDictionaryKeys
+} from "./constants/common-authenticator-constants";

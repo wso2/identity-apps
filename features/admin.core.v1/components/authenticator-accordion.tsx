@@ -64,6 +64,10 @@ export interface AuthenticatorAccordionPropsInterface extends TestableComponentI
      * Handle accordion on click method.
      */
     handleAccordionOnClick?: SegmentedAccordionTitlePropsInterface["handleAccordionOnClick"];
+    /**
+     * Additional styles for the accordion content.
+     */
+    accordionContentStyle?: React.CSSProperties;
 }
 
 /**
@@ -131,6 +135,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
         accordionActiveIndexes,
         hideChevron,
         orderBy,
+        accordionContentStyle,
         [ "data-testid" ]: testId
     } = props;
 
@@ -183,7 +188,8 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                                         <SegmentedAccordion.Content
                                             className="padded"
                                             active={ accordionActiveIndexes?.includes(accordionIndex) || false }
-                                            data-testid={ `${ testId }-${ authenticator.id }-content` }
+                                            data-testid={ `${testId}-${authenticator.id}-content` }
+                                            style={ accordionContentStyle }
                                         >
                                             { authenticator.content }
                                         </SegmentedAccordion.Content>

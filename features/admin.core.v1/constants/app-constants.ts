@@ -543,6 +543,7 @@ export class AppConstants {
         "oidcScopes": "v0.0.0",
         "organizations": "v0.0.0",
         "password-recovery": "v1.0.0",
+        "residentOutboundProvisioning": "v0.0.0",
         "roles": "v0.0.0",
         "self-registration-connector": "v1.0.0",
         "smsTemplates": "v0.0.0",
