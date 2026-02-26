@@ -17,6 +17,7 @@
  */
 
 export class ApprovalWorkflowConstants {
+
     private constructor() {}
     public static getPaths(): Map<string, string> {
         return new Map<string, string>().set(
@@ -43,7 +44,7 @@ export const APPROVAL_WORKFLOW_VALIDATION_REGEX_PATTERNS: ApprovalWorkflowValida
 export enum ApprovalWorkflowEditTabIDs {
     GENERAL = "general",
     OPERATIONS = "workflow operations",
-    CONFIGURATIONS = "approval steps"
+    CONFIGURATIONS = "approval steps",
 }
 
 export const ENTITY_TYPES: any = {
@@ -51,7 +52,7 @@ export const ENTITY_TYPES: any = {
     USERS: "users"
 } as const;
 
-export type EntityType = typeof ENTITY_TYPES[keyof typeof ENTITY_TYPES];
+export type EntityType = (typeof ENTITY_TYPES)[keyof typeof ENTITY_TYPES];
 
 /**
  * Flow type
@@ -69,11 +70,7 @@ export const WORKFLOW_ENGINE: string = "WorkflowEngine";
  */
 export const OPERATION_FIELD_MAPPING: Record<string, string[]> = {
     ADD_USER: ["user.domain"],
-    DELETE_USER: [
-        "user.domain",
-        "user.groups",
-        "user.roles"
-    ],
+    DELETE_USER: ["user.domain", "user.groups", "user.roles"],
     ADD_ROLE: ["role.audience", "role.permissions"],
     UPDATE_ROLES_OF_USERS: [
         "role.id",
