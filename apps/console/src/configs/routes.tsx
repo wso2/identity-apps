@@ -34,6 +34,9 @@ import {
     UserGroupIcon,
     WebhookIcon
 } from "@oxygen-ui/react-icons";
+import {
+    ReactComponent as ProfileAttributesIcon
+} from "@wso2is/admin.cds.v1/assets/images/icons/cds-profile-attributes.svg";
 import { ReactComponent as ProfilesIcon } from "@wso2is/admin.cds.v1/assets/images/icons/cds-profiles.svg";
 import {
     ReactComponent as UnificationRuleIcon
@@ -1715,12 +1718,55 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             category: "extensions:manage.sidePanel.categories.customerDataService",
             children: [
                 {
+                    component: lazy(() => import("@wso2is/admin.cds.v1/pages/profile-attribute-create-page")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "createProfileAttribute",
+                    name: "Create profile attribute",
+                    path: AppConstants.getPaths().get("PROFILE_ATTRIBUTE_CREATE"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.cds.v1/components/profile-attribute")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "UpdateProfileAttribute",
+                    name: "Update profile attribute",
+                    path: AppConstants.getPaths().get("PROFILE_ATTRIBUTE"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() =>
+                import("@wso2is/admin.cds.v1/pages/profile-attributes")
+            ),
+            exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_PROFILE_ATTRIBUTES,
+            icon: {
+                icon: <ProfileAttributesIcon className="icon" fill="black" />
+            },
+            id: "customerDataProfileAttributes",
+            name: "customerDataService:sidePanel.ProfileAttributes",
+            order: 33,
+            path: AppConstants.getPaths().get("PROFILE_ATTRIBUTES"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            category: "extensions:manage.sidePanel.categories.customerDataService",
+            children: [
+                {
                     component: lazy(() => import("@wso2is/admin.cds.v1/pages/unification-rule-create-page")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
                     },
-                    id: "create unification rule",
+                    id: "createUnificationRule",
                     name: "Create Unification Rule",
                     path: AppConstants.getPaths().get("UNIFICATION_RULE_CREATE"),
                     protected: true,

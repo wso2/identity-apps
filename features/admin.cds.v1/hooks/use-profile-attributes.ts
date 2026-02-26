@@ -25,52 +25,15 @@ import { AxiosError } from "axios";
 import { useMemo } from "react";
 import useSWR, { SWRConfiguration, SWRResponse } from "swr";
 
-import {
-    fetchProfileSchemaByScope,
-    searchSubAttributes
-} from "../api/profile-attributes";
+import { fetchProfileSchemaByScope } from "../api/profile-attributes";
 import type { SchemaListingScope } from "../models/profile-attribute-listing";
 import type {
     FilterAttributeOption,
     ProfileSchemaAttribute,
-    ProfileSchemaFullResponse,
     ProfileSchemaScope,
     ProfileSchemaScopeResponse
 } from "../models/profile-attributes";
 import { toAttributeDropdownOptions } from "../utils/profile-attribute-utils";
-
-/**
- * Hook: GET /profile-schema
- *
- * @param shouldFetch - Whether to fetch the data.
- * @returns SWR response with full profile schema.
- */
-export const useFullProfileSchema = <Data = ProfileSchemaFullResponse, Error = RequestErrorInterface>(
-    shouldFetch: boolean = true
-): RequestResultInterface<Data, Error> => {
-
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.cdsProfileSchema
-    };
-
-    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
-        shouldFetch ? requestConfig : null,
-        { shouldRetryOnError: false }
-    );
-
-    return {
-        data: data as Data,
-        error,
-        isLoading,
-        isValidating,
-        mutate
-    };
-};
 
 /**
  * SWR Hook: GET /profile-schema/`{scope}`
@@ -132,29 +95,6 @@ export const useSchemaAttributeById = <Data = ProfileSchemaAttribute, Error = Re
         isValidating,
         mutate
     };
-};
-
-/**
- * SWR Hook: Search sub-attributes
- *
- * @param scope - Schema scope
- * @param attributeName - Parent attribute name, or null to disable fetching
- * @param config - SWR configuration options
- * @returns SWR response with sub-attributes
- */
-export const useSubAttributes = (
-    scope: SchemaListingScope | null,
-    attributeName: string | null,
-    config?: SWRConfiguration<ProfileSchemaAttribute[], AxiosError>
-): SWRResponse<ProfileSchemaAttribute[], AxiosError> => {
-    const key: ["profile-schema-sub-attributes", SchemaListingScope, string] | null =
-        scope && attributeName ? [ "profile-schema-sub-attributes", scope, attributeName ] : null;
-
-    return useSWR<ProfileSchemaAttribute[], AxiosError>(
-        key,
-        scope && attributeName ? () => searchSubAttributes(scope, attributeName) : null,
-        config
-    );
 };
 
 /**

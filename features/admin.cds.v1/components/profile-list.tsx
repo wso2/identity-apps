@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import Chip from "@oxygen-ui/react/Chip/Chip";
+import Chip from "@oxygen-ui/react/Chip";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels } from "@wso2is/core/models";
@@ -36,7 +36,6 @@ import React, {
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Header, SemanticICONS } from "semantic-ui-react";
-
 import { deleteCDSProfile } from "../api/profiles";
 import type { ProfileModel } from "../models/profiles";
 

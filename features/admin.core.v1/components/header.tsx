@@ -125,6 +125,10 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     );
     const loginAndRegistrationFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.loginAndRegistration);
+
+    const cdsFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state?.config?.ui?.features?.customerDataService);
+
     const isCentralDeploymentEnabled: boolean = useSelector((state: AppState) => {
         return state?.config?.deployment?.centralDeploymentEnabled;
     });
@@ -680,7 +684,10 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                         ),
                         <Show key="feature.preview" featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
                             <Show
-                                when={ loginAndRegistrationFeatureConfig?.scopes?.update }
+                                when={ [
+                                    ...(loginAndRegistrationFeatureConfig?.scopes?.update ?? []),
+                                    ...(cdsFeatureConfig?.scopes?.update ?? [])
+                                ] }
                                 featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
                             >
                                 <MenuItem onClick={ () => setShowPreviewFeaturesModal(true) }>

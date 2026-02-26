@@ -29,10 +29,18 @@ export const customerDataService: CustomerDataServiceNS = {
             cancel: "Cancel",
             close: "Close",
             confirm: "Confirm",
-            delete: "Delete"
+            delete: "Delete",
+            update: "Update"
         },
         dangerZone: {
             header: "Danger Zone"
+        },
+        featurePreview: {
+            action: "Try Customer Data Service",
+            description: "Customer Data Service (CDS) enables you to build and manage unified customer profiles by defining profile attributes, configuring unification rules, and tracking anonymous profiles — giving you a single, consistent view of every customer.",
+            message: "Once Customer Data Service (CDS) is enabled, you can configure profile attributes and unification rules, and start building unified customer profiles.",
+            name: "Customer Data Service",
+            updateError: "Failed to update Customer Data Service settings. Please try again."
         },
         notifications: {
             error: "Error",
@@ -43,6 +51,372 @@ export const customerDataService: CustomerDataServiceNS = {
                 }
             },
             notAllowed: "Not allowed"
+        }
+    },
+    profileAttributes: {
+        create: {
+            forms: {
+                advancedSettings: {
+                    fields: {
+                        canonicalValues: {
+                            hint: "Define the allowed label-value pairs for this attribute.",
+                            label: "Options",
+                            labelField: "Display value",
+                            labelPlaceholder: "e.g. Color",
+                            validations: {
+                                atLeastOne: "At least one option is required.",
+                                empty: "Both label and value are required."
+                            },
+                            valueField: "Value",
+                            valuePlaceholder: "e.g. Blue"
+                        },
+                        mergeStrategy: {
+                            hint : "Determines how value of the attribute from multiple profiles are merged when profile unification occurs. " ,
+                            label: "Merge Strategy",
+                            options: {
+                                combine: {
+                                    hint: "All values from different sources are combined.",
+                                    label: "Combine"
+                                },
+                                overwrite: {
+                                    hint: "The incoming value replaces the stored one.",
+                                    label: "Overwrite"
+                                }
+                            }
+                        },
+                        subAttributes: {
+                            hint: "Select the child attributes that make up this complex attribute.",
+                            label: "Sub-attributes",
+                            noOptions: "No available sub-attributes found.",
+                            placeholder: "Select a sub-attribute"
+                        }
+                    }
+                },
+                attributeGeneral: {
+                    fields: {
+                        // NEW: application identifier field (application_data scope)
+                        applicationIdentifier: {
+                            label: "Application Identifier",
+                            loading: "Loading applications…",
+                            noOptions: "No applications found.",
+                            validations: {
+                                empty: "Application identifier is required."
+                            }
+                        },
+                        // NEW: compound attribute row
+                        attribute: {
+                            label: "Attribute"
+                        },
+                        // existing fields
+                        description: {
+                            hint: "A short description explaining the purpose of this attribute.",
+                            label: "Description",
+                            placeholder: "Enter a description"
+                        },
+                        displayName: {
+                            hint: "A human-readable name shown in the UI.",
+                            label: "Display Name",
+                            placeholder: "Enter a display name"
+                        },
+                        name: {
+                            fullNameHint: "Full attribute name: {{fullName}}",
+                            label: "Attribute Name",
+                            placeholder: "Enter an attribute name",
+                            validations: {
+                                available: "This attribute name is available.",
+                                empty: "Attribute name is required.",
+                                exists: "An attribute with this name already exists."
+                            }
+                        },
+                        // NEW: scope selection
+                        scope: {
+                            ariaLabel: "Attribute scope",
+                            label: "Scope",
+                            options: {
+                                applicationData: "Application Data",
+                                traits: "Traits"
+                            }
+                        }
+                    }
+                },
+                typeConfig: {
+                    fields: {
+                        multiValued: {
+                            hint: "Select this option if the attribute can have multiple values.",
+                            label: "Allow Multiple Values for this attribute"
+                        },
+                        mutability: {
+                            hint: "Controls whether this attribute can be updated after it is set.",
+                            label: "Mutability",
+                            options: {
+                                immutable: {
+                                    hint: "The attribute value cannot be changed after it is set.",
+                                    label: "Immutable"
+                                },
+                                readOnly: {
+                                    hint: "The attribute can only be read; it cannot be modified.",
+                                    label: "Read Only"
+                                },
+                                readWrite: {
+                                    hint: "The attribute value can be read and updated freely.",
+                                    label: "Read & Write"
+                                },
+                                writeOnce: {
+                                    hint: "The attribute can only be written once.",
+                                    label: "Write Once"
+                                }
+                            }
+                        },
+                        valueType: {
+                            hint: "Select the data type for this attribute.",
+                            label: "Value Type",
+                            options: {
+                                boolean: {
+                                    hint: "A true / false flag.",
+                                    label: "Boolean"
+                                },
+                                complex: {
+                                    hint: "A complex object composed of sub attributes.",
+                                    label: "Object"
+                                },
+                                date: {
+                                    hint: "A calendar date (YYYY-MM-DD).",
+                                    label: "Date"
+                                },
+                                date_time: {
+                                    hint: "A date and time value.",
+                                    label: "Date & Time"
+                                },
+                                decimal: {
+                                    hint: "A number with decimal precision.",
+                                    label: "Decimal"
+                                },
+                                epoch: {
+                                    hint: "A Unix timestamp (seconds since epoch).",
+                                    label: "Epoch"
+                                },
+                                integer: {
+                                    hint: "A whole number.",
+                                    label: "Integer"
+                                },
+                                options: {
+                                    hint: "A fixed set of key-value pairs.",
+                                    label: "Options"
+                                },
+                                string: {
+                                    hint: "A plain text value.",
+                                    label: "Text"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            notifications: {
+                addProfileAttribute: {
+                    genericError: {
+                        description: "An error occurred while creating the attribute. Please try again.",
+                        message: "Attribute Creation Failed"
+                    },
+                    success: {
+                        description: "The attribute has been created successfully.",
+                        message: "Attribute Created"
+                    }
+                }
+            },
+            pageLayout: {
+                back: "Go back to Attributes",
+                description: "Create a new profile schema attribute.",
+                stepper: {
+                    step1: {
+                        description: "Provide a name and description for the attribute.",
+                        title: "General Details"
+                    },
+                    step2: {
+                        description: "Choose the value type, mutability, and cardinality.",
+                        title: "Type & Configuration"
+                    }
+                },
+                title: "Create Attribute"
+            }
+        },
+        edit: {
+            confirmations: {
+                deleteAttribute: {
+                    assertionHint: "Please confirm the deletion.",
+                    content: "Are you sure you want to delete <1>{{attributeName}}</1>?",
+                    header: "Delete Attribute",
+                    message: "This action is irreversible!"
+                }
+            },
+            dangerZone: {
+                delete: {
+                    actionTitle: "Delete Attribute",
+                    header: "Delete this attribute",
+                    subheader: "This action is irreversible and will permanently delete the attribute."
+                }
+            },
+            fields: {
+                applicationIdentifier: {
+                    hint: "The application this attribute belongs to.",
+                    label: "Application Identifier"
+                },
+                attribute: {
+                    hint: "The name of this attribute.",
+                    label: "Attribute"
+                },
+                mergeStrategy: {
+                    hint: "Determines how value of the attribute from multiple profiles are merged when profile unification occurs. " +
+                        "Use Combine to accumulate values, or Overwrite to replace with the latest updated value.",
+                    label: "Merge Strategy",
+                    options: {
+                        combine: "Combine",
+                        overwrite: "Overwrite"
+                    }
+                },
+                multiValued: {
+                    hint: "Select this option if the attribute can have multiple values.",
+                    label: "Allow Multiple Values for this attribute"
+                },
+
+                // NEW/UPDATED: mutability in edit page
+                mutability: {
+                    hint: "Controls whether this attribute can be updated after it is set.",
+                    label: "Mutability"
+                },
+
+                // UPDATED: subAttributes supports richer UI states + validation
+                subAttributes: {
+                    allAdded: "All available sub-attributes have already been added.",
+                    empty: "No available sub-attributes found.",
+                    hint: "Pick child attributes that make up this complex attribute.",
+                    label: "Sub Attributes",
+                    placeholder: "Select sub attributes",
+                    validationError: "A complex attribute must have at least one sub-attribute.",
+                    validationErrorMessage: "Sub-attribute required"
+                },
+
+                // UPDATED: expanded valueType options used by edit page
+                valueType: {
+                    label: "Value Type",
+                    options: {
+                        boolean: "Boolean",
+                        complex: "Complex",
+                        date: "Date",
+                        dateTime: "Date & Time",
+                        decimal: "Decimal",
+                        epoch: "Epoch",
+                        integer: "Integer",
+                        text: "Text"
+                    }
+                }
+            },
+            identityAttributesNotice: "Identity attributes are read-only in this section. " +
+                "To make changes, please update them from the Attributes section.",
+            notifications: {
+                deleteAttribute: {
+                    error: {
+                        description: "Failed to delete the attribute.",
+                        message: "Deletion Failed"
+                    },
+                    success: {
+                        description: "The attribute has been deleted successfully.",
+                        message: "Attribute Deleted"
+                    }
+                },
+                fetchAttribute: {
+                    error: {
+                        description: "Failed to retrieve the attribute details.",
+                        message: "Retrieval Error"
+                    }
+                },
+                updateAttribute: {
+                    error: {
+                        description: "Failed to update the attribute.",
+                        message: "Update Failed"
+                    },
+                    success: {
+                        description: "Attribute updated successfully.",
+                        message: "Update Successful"
+                    }
+                }
+            },
+            page: {
+                backButton: "Go back to Attributes",
+                pageTitle: "Edit Attribute"
+            },
+            tabs: {
+                general: "General"
+            }
+        },
+        list: {
+            actions: {
+                delete: "Delete",
+                edit: "Edit",
+                view: "View"
+            },
+            buttons: {
+                add: "Add Profile Attribute",
+                clearSearch: "Clear Search Query",
+                retry: "Retry"
+            },
+            columns: {
+                attribute: "Attribute"
+            },
+            confirmations: {
+                deleteAttribute: {
+                    assertionHint: "Please confirm the deletion.",
+                    content: "Are you sure you want to delete <1>{{attributeName}}</1>?. " +
+                        "Deleting this attribute will remove the attribute from the schema and the profiles.",
+                    header: "Delete Attribute",
+                    message: "This action is irreversible!"
+                }
+            },
+            notifications: {
+                deleteAttribute: {
+                    error: {
+                        description: "Failed to delete the attribute.",
+                        message: "Delete Failed"
+                    },
+                    success: {
+                        description: "Attribute deleted successfully.",
+                        message: "Deleted"
+                    }
+                },
+                filterProfileAttributes: {
+                    genericError: {
+                        description: "An error occurred while filtering the profile attributes. Please try again.",
+                        message: "Filter Failed"
+                    }
+                }
+            },
+            page: {
+                description: "Manage the attributes that make up the customer profiles.",
+                pageTitle: "Profile Attributes",
+                title: "Profile Attributes"
+            },
+            placeholders: {
+                emptyList: {
+                    subtitles: {
+                        0: "Create an attribute to see it listed here."
+                    },
+                    title: "No attributes found"
+                },
+                emptySearch: {
+                    action: "Clear search query",
+                    subtitles: {
+                        0: "We couldn't find any attributes matching your search query. Please try again with different query."
+                    },
+                    title: "No results found"
+                }
+            },
+            search: {
+                placeholder: "Search by attribute name"
+            },
+            sortBy: {
+                name: "Name",
+                scope: "Scope"
+            }
         }
     },
     profiles: {
@@ -60,7 +434,8 @@ export const customerDataService: CustomerDataServiceNS = {
                 delete: {
                     actionTitle: "Delete profile",
                     header: "Delete this profile",
-                    subheader: "This profile is not linked to a user ID and can be deleted. Deleting a profile is irreversible and will also delete the unified profiles merged into this profile."
+                    subheader: "This profile is not linked to a user ID and can be deleted. " +
+                        "Deleting a profile is irreversible and will also delete the unified profiles merged into this profile."
                 }
             },
             form: {
@@ -123,7 +498,7 @@ export const customerDataService: CustomerDataServiceNS = {
             },
             section: {
                 profileData: {
-                    description: "This section contains the profile's identity attributes, traits and application data. ",
+                    description: "This section contains the profile's identity attributes, traits and application data.",
                     title: "Profile Data"
                 }
             },
@@ -136,7 +511,8 @@ export const customerDataService: CustomerDataServiceNS = {
                     profileId: "Profile ID",
                     reason: "Unification Rule involved"
                 },
-                description: "This profile has been unified with the following profiles based on the unification rules configured. The data from all these profiles are consolidated into this profile.",
+                description: "This profile has been unified with the following profiles based on the unification " +
+                    "rules configured. The data from all these profiles are consolidated into this profile.",
                 empty: "No unified profiles found for this profile.",
                 title: "Unified Profiles"
             }
@@ -189,8 +565,8 @@ export const customerDataService: CustomerDataServiceNS = {
                     title: "No results found"
                 }
             },
-            search : {
-                placeholder: "Search by profile ID "
+            search: {
+                placeholder: "Search by profile ID"
             }
         },
         page: {
@@ -200,6 +576,7 @@ export const customerDataService: CustomerDataServiceNS = {
         }
     },
     sidePanel: {
+        ProfileAttributes: "Profile Attributes",
         Profiles: "Profiles",
         UnificationRules: "Unification Rules"
     },
@@ -320,20 +697,15 @@ export const customerDataService: CustomerDataServiceNS = {
                         "from engaging in matching and unification of user profiles. Existing " +
                         "unification will not be affected.",
                     header: "Delete Unification Rule",
-                    message: "Deleting this rule will permanently remove it and " +
-                        "it cannot be undone."
+                    message: "Deleting this rule will permanently remove it and it cannot be undone."
                 },
                 toggle: {
-                    disableContent: "Are you sure you want to disable the rule " +
-                        "<1>{{ruleName}}</1>?",
+                    disableContent: "Are you sure you want to disable the rule <1>{{ruleName}}</1>?",
                     disableHeader: "Disable Unification Rule",
-                    disableMessage: "Disabling this rule will prevent it from " +
-                        "participating in profile unification.",
-                    enableContent: "Are you sure you want to enable the rule " +
-                        "<1>{{ruleName}}</1>?",
+                    disableMessage: "Disabling this rule will prevent it from participating in profile unification.",
+                    enableContent: "Are you sure you want to enable the rule <1>{{ruleName}}</1>?",
                     enableHeader: "Enable Unification Rule",
-                    enableMessage: "Enabling this rule will allow this rule to " +
-                        "be invoked in profile matching and unification."
+                    enableMessage: "Enabling this rule will allow this rule to be invoked in profile matching and unification."
                 }
             },
             labels: {
@@ -390,7 +762,7 @@ export const customerDataService: CustomerDataServiceNS = {
                     title: "Error Loading Rules"
                 },
                 noResults: {
-                    subtitle1: "No unification rules match your search \"{{ruleFilter}} \".",
+                    subtitle1: "No unification rules match your search.",
                     subtitle2: "Try adjusting your search criteria.",
                     title: "No Results Found"
                 },

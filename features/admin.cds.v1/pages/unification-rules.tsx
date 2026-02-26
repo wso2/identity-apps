@@ -233,8 +233,7 @@ const ProfileUnificationRulePage: React.FC = () => {
                                 imageSize="tiny"
                                 title={ t("customerDataService:unificationRules.list.placeholders.noResults.title") }
                                 subtitle={ [
-                                    t("customerDataService:unificationRules.list.placeholders.noResults.subtitle1",
-                                        { 0: searchQuery }),
+                                    t("customerDataService:unificationRules.list.placeholders.noResults.subtitle1"),
                                     t("customerDataService:unificationRules.list.placeholders.noResults.subtitle2")
                                 ] }
                             />
