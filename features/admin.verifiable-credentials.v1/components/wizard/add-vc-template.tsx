@@ -34,7 +34,7 @@ import { useDispatch } from "react-redux";
 import { Modal } from "semantic-ui-react";
 import { addVCTemplate } from "../../api/verifiable-credentials";
 import { VerifiableCredentialsConstants } from "../../constants/verifiable-credentials";
-import { VCTemplate, VCTemplateCreationModel } from "../../models/verifiable-credentials";
+import { VCTemplate, VCTemplateClaim, VCTemplateCreationModel } from "../../models/verifiable-credentials";
 import { ClaimAttributeOption } from "../claim-attribute-option";
 import "./add-vc-template.scss";
 
@@ -227,7 +227,11 @@ export default function AddVCTemplateWizard({
         setIsSubmitting(true);
 
         const templateData: VCTemplateCreationModel = {
-            claims: selectedClaims.map((claim: ExternalClaim) => claim.claimURI),
+            claims: selectedClaims.map((claim: ExternalClaim): VCTemplateClaim => ({
+                claimUri: claim.claimURI,
+                name: claim.claimURI,
+                type: "LOCAL"
+            })),
             displayName: values.displayName,
             expiresIn: 31536000,
             format: "jwt_vc_json",
