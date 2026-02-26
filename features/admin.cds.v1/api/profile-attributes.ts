@@ -117,10 +117,10 @@ export const fetchProfileSchemaByScope = async (
 export const updateSchemaAttributeById = async (
     scope: SchemaListingScope,
     id: string,
-    patch: Partial<ProfileSchemaAttribute>
+    payload: Partial<ProfileSchemaAttribute>
 ): Promise<void> => {
     const requestConfig: RequestConfigInterface = {
-        data: patch,
+        data: payload,
         headers: { "Content-Type": "application/json" },
         method: HttpMethods.PUT,
         url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}/${id}`
