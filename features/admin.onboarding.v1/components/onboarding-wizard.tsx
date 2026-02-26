@@ -71,8 +71,8 @@ import { generateRandomNames } from "../utils/random-name-generator";
 export interface OnboardingWizardPropsInterface extends IdentifiableComponentInterface {
     initialData?: OnboardingDataInterface;
     initialStep?: OnboardingStep;
-    onComplete: (data: OnboardingDataInterface) => void;
-    onSkip: () => void;
+    onComplete: (data: OnboardingDataInterface) => Promise<void>;
+    onSkip: () => Promise<void>;
 }
 
 /**
@@ -402,7 +402,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         const nextStep: OnboardingStep = getNextStep(currentStep, onboardingData);
 
         if (currentStep === OnboardingStep.SUCCESS) {
-            onComplete(onboardingData);
+            await onComplete(onboardingData);
         } else if (
             // Create app when clicking Finish from Design Login
             currentStep === OnboardingStep.DESIGN_LOGIN ||
@@ -425,8 +425,8 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         setCurrentStep(previousStep);
     }, [ currentStep, onboardingData ]);
 
-    const handleSkip: () => void = useCallback((): void => {
-        onSkip();
+    const handleSkip: () => Promise<void> = useCallback(async (): Promise<void> => {
+        await onSkip();
     }, [ onSkip ]);
 
     const isFirstStep: boolean = visibleStep === OnboardingStep.WELCOME;

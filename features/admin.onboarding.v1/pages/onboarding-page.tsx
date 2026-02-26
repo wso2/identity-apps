@@ -86,9 +86,9 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
         }
     }, [ isLoading, shouldShowOnboarding, hasRequiredCreateScopes ]);
 
-    const handleComplete: (data: OnboardingDataInterface) => void = useCallback(
-        (data: OnboardingDataInterface): void => {
-            markOnboardingComplete();
+    const handleComplete: (data: OnboardingDataInterface) => Promise<void> = useCallback(
+        async (data: OnboardingDataInterface): Promise<void> => {
+            await markOnboardingComplete();
 
             const applicationId: string | undefined = data.createdApplication?.applicationId;
 
@@ -105,8 +105,8 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
         [ markOnboardingComplete ]
     );
 
-    const handleSkip: () => void = useCallback((): void => {
-        markOnboardingComplete();
+    const handleSkip: () => Promise<void> = useCallback(async (): Promise<void> => {
+        await markOnboardingComplete();
         history.push(AppConstants.getAppHomePath());
     }, [ markOnboardingComplete ]);
 

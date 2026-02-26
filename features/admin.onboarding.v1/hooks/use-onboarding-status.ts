@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,34 +20,31 @@ import { useApplicationList } from "@wso2is/admin.applications.v1/api/applicatio
 import { ApplicationListInterface } from "@wso2is/admin.applications.v1/models/application";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
-import { FeatureAccessConfigInterface } from "@wso2is/core/models";
-import { LocalStorageUtils, SessionStorageUtils } from "@wso2is/core/utils";
+import { UserAccountTypes } from "@wso2is/admin.users.v1/constants/user-management-constants";
+import { FeatureAccessConfigInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { hashForStorageKey } from "../utils/url-utils";
+import { getOnboardingWizardClaim } from "../api/get-onboarding-claim";
+import { dismissOnboardingWizardClaim } from "../api/update-onboarding-claim";
 
 /**
  * Return type for the useOnboardingStatus hook.
  */
 interface UseOnboardingStatusReturn {
     isLoading: boolean;
-    markOnboardingComplete: () => void;
+    markOnboardingComplete: () => Promise<void>;
     shouldShowOnboarding: boolean;
 }
 
 /**
- * SessionStorage key prefix for caching the onboarding evaluation result.
- */
-const SESSION_CACHE_KEY: string = "onboarding_status";
-
-/**
  * Determines whether the onboarding wizard should be shown to the current user.
  *
- * Evaluates feature flags, user type, org type, existing apps, and local
- * completion status — then caches the result in sessionStorage so subsequent
- * renders skip all checks. Gates on `uuid` which is set last in the sign-in
- * flow, ensuring all Redux state is settled before evaluation.
+ * Evaluates feature flags, user type, org type, existing apps, and the SCIM2
+ * `showOnboardingWizard` claim. The claim is the single source of truth for
+ * wizard visibility. Gates on `uuid` which is set last in the sign-in flow,
+ * ensuring all Redux state is settled before evaluation.
  */
 export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
     const [ shouldShowOnboarding, setShouldShowOnboarding ] = useState<boolean>(false);
@@ -57,7 +54,10 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
 
     const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);
     const username: string = useSelector((state: AppState) => state.auth.username);
-    const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+    const profileInfo: ProfileInfoInterface = useSelector(
+        (state: AppState) => state.profile.profileInfo
+    );
+    const userAccountType: string = profileInfo?.[SCIMConfigs.scim.systemSchema]?.userAccountType;
     const organizationType: string = useSelector(
         (state: AppState) => state?.organization?.organizationType
     );
@@ -66,18 +66,16 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
     );
     const onboardingFeatureConfig: FeatureAccessConfigInterface = featureConfig?.onboarding;
 
-    // Check session cache — if a previous evaluation already decided "hide",
-    // skip all API calls for the rest of this browser session.
-    const userId: string = username || uuid;
-    const hashedUserId: string = userId ? hashForStorageKey(userId) : "";
-    const isStatusCached: boolean = !!hashedUserId &&
-        SessionStorageUtils.getItemFromSessionStorage(`${SESSION_CACHE_KEY}_${hashedUserId}`) === "hide";
+    // Only show wizard for org owners, collaborators and priviledged users.
+    const isEligibleUserType: boolean =
+        userAccountType === UserAccountTypes.OWNER ||
+        userAccountType === UserAccountTypes.COLLABORATOR ||
+        userAccountType === UserAccountTypes.CUSTOMER;
 
-    // Fetch application count — only when sync checks would pass and no session cache.
+    // Fetch application count — only when sync checks would pass.
     const shouldFetchApps: boolean =
-        !isStatusCached &&
         !!onboardingFeatureConfig?.enabled &&
-        !isPrivilegedUser &&
+        isEligibleUserType &&
         organizationType !== OrganizationType.SUBORGANIZATION &&
         !!uuid;
 
@@ -105,17 +103,6 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
 
         hasEvaluated.current = true;
 
-        const resolvedUserId: string = username || uuid;
-        const hashedId: string = resolvedUserId ? hashForStorageKey(resolvedUserId) : "";
-
-        // Fast path: session cache says "hide" — skip all checks
-        if (isStatusCached) {
-            setShouldShowOnboarding(false);
-            setIsLoading(false);
-
-            return;
-        }
-
         // Check 1: Feature flag must be enabled
         if (!onboardingFeatureConfig?.enabled) {
             setShouldShowOnboarding(false);
@@ -124,8 +111,8 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
             return;
         }
 
-        // Check 2: Exclude privileged/federated users (enterprise IDP)
-        if (isPrivilegedUser) {
+        // Check 2: Only show wizard for org owners, collaborators and priviledged users.
+        if (!isEligibleUserType) {
             setShouldShowOnboarding(false);
             setIsLoading(false);
 
@@ -146,59 +133,46 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
             // eslint-disable-next-line no-console
             console.warn("Failed to fetch application list for onboarding check:", appListError);
         } else if (appListData && appListData.totalResults > 0) {
-            SessionStorageUtils.setItemToSessionStorage(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
             setShouldShowOnboarding(false);
             setIsLoading(false);
 
             return;
         }
 
-        // Check 5: Check localStorage for completion/skip status.
-        if (!resolvedUserId) {
-            setShouldShowOnboarding(false);
-            setIsLoading(false);
+        // Check 5: Read the showOnboardingWizard SCIM claim from the server.
+        // Uses /scim2/Users endpoint.
+        const evaluateScimClaim: () => Promise<void> = async (): Promise<void> => {
+            try {
+                const shouldShow: boolean = await getOnboardingWizardClaim(uuid);
 
-            return;
-        }
-
-        // Check hashed key first, then fall back to legacy unhashed key for migration
-        const hashedKey: string = `onboarding_completed_${hashedId}`;
-        const legacyKey: string = `onboarding_completed_${resolvedUserId}`;
-        let hasCompletedOnboarding: string | null = LocalStorageUtils.getValueFromLocalStorage(hashedKey);
-
-        if (!hasCompletedOnboarding) {
-            hasCompletedOnboarding = LocalStorageUtils.getValueFromLocalStorage(legacyKey);
-
-            if (hasCompletedOnboarding) {
-                // Migrate to hashed key and remove legacy key
-                LocalStorageUtils.setValueInLocalStorage(hashedKey, hasCompletedOnboarding);
-                LocalStorageUtils.clearItemFromLocalStorage(legacyKey);
+                setShouldShowOnboarding(shouldShow);
+            } catch (_error: unknown) {
+                setShouldShowOnboarding(false);
+            } finally {
+                setIsLoading(false);
             }
-        }
+        };
 
-        if (hasCompletedOnboarding) {
-            SessionStorageUtils.setItemToSessionStorage(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
-        }
-
-        setShouldShowOnboarding(!hasCompletedOnboarding);
-        setIsLoading(false);
+        evaluateScimClaim();
     }, [
-        uuid, username, isPrivilegedUser, organizationType,
+        uuid, username, isEligibleUserType, organizationType,
         onboardingFeatureConfig,
-        isStatusCached, shouldFetchApps, isAppListLoading, appListData
+        shouldFetchApps, isAppListLoading, appListData
     ]);
 
-    const markOnboardingComplete: () => void = useCallback((): void => {
-        const resolvedUserId: string = username || uuid;
+    const markOnboardingComplete: () => Promise<void> = useCallback(
+        async (): Promise<void> => {
+            try {
+                await dismissOnboardingWizardClaim();
+            } catch (_error: unknown) {
+                // eslint-disable-next-line no-console
+                console.warn("Failed to update onboarding wizard claim. Proceeding with navigation.");
+            }
 
-        if (resolvedUserId) {
-            const hashedId: string = hashForStorageKey(resolvedUserId);
-
-            LocalStorageUtils.setValueInLocalStorage(`onboarding_completed_${hashedId}`, "true");
-            SessionStorageUtils.setItemToSessionStorage(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
             setShouldShowOnboarding(false);
-        }
-    }, [ uuid, username ]);
+        },
+        []
+    );
 
     return {
         isLoading,
