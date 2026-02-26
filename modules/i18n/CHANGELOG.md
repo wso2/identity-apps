@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.34.2
+
+### Patch Changes
+
+- [#9589](https://github.com/wso2/identity-apps/pull/9589) [`9c98499dd77a7ac7d4f30be22710342f4e000257`](https://github.com/wso2/identity-apps/commit/9c98499dd77a7ac7d4f30be22710342f4e000257) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Revamp outbound provisioning.
+
 ## 2.34.1
 
 ### Patch Changes
