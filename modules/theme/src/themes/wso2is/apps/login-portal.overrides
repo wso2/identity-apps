@@ -773,6 +773,11 @@
     border-bottom-right-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
     margin-top: 1em;
+
+    &.totp-enroll {
+        max-width: none !important;
+        width: 430px !important;
+    }
 }
 
 .consent-item-bullet {

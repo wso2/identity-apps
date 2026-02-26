@@ -168,13 +168,13 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
     /**
      * Handles API scope delete action.
      *
-     * @param deletingScopeName - Name of the scope that needs to be deleted.
+     * @param deletingScopeId - Id of the scope that needs to be deleted.
      * @param callback - Callback function to be executed after the update is completed.
      */
-    const handleDeleteAPIScope = (deletingScopeName: string, callback?: () => void): void => {
+    const handleDeleteAPIScope = (deletingScopeId: string, callback?: () => void): void => {
         setIsSubmitting(true);
 
-        deleteScopeFromAPIResource(apiResourceData.id, deletingScopeName)
+        deleteScopeFromAPIResource(apiResourceData.id, deletingScopeId)
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.apiResource.notifications.updateAPIResource.success" +

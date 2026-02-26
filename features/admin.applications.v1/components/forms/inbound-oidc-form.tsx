@@ -35,7 +35,7 @@ import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { ImpersonationConfigConstants } from "@wso2is/admin.impersonation.v1/constants/impersonation-configuration";
 import { getSharedOrganizations } from "@wso2is/admin.organizations.v1/api";
-import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { OrganizationManagementConstants, OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { OrganizationInterface, OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -103,6 +103,7 @@ import OIDCWebApplicationTemplate from
     "../../data/application-templates/templates/oidc-web-application/oidc-web-application.json";
 import SinglePageApplicationTemplate from
     "../../data/application-templates/templates/single-page-application/single-page-application.json";
+import useAllowedIssuers from "../../hooks/use-allowed-issuers";
 import {
     ApplicationInterface,
     ApplicationTemplateIdTypes,
@@ -113,6 +114,7 @@ import {
     additionalSpProperty
 } from "../../models/application";
 import {
+    AllowedIssuerInterface,
     GrantTypeInterface,
     GrantTypeMetaDataInterface,
     MetadataPropertyInterface,
@@ -237,6 +239,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         state?.config?.ui?.features?.applications?.disabledFeatures);
     const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
         state?.config?.ui?.features?.applications);
+    const organizationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.organizations);
     const isBackChannelLogoutEnabled: boolean = isFeatureEnabled(
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_BACK_CHANNEL_LOGOUT")
@@ -249,6 +253,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get(
             ApplicationFeatureDictionaryKeys.ApplicationEditEnforceClientSecretPermission)
+    );
+    const isTokenIssuerSelectionEnabled: boolean = isFeatureEnabled(
+        organizationsFeatureConfig,
+        OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_APPLICATION_TOKEN_ISSUER_SELECTION")
     );
 
     const hasClientSecretReadPermission: boolean = useRequiredScopes(
@@ -367,6 +375,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
+
+    const {
+        tokenEndpoints,
+        selectedTokenEndpoint,
+        setSelectedTokenEndpoint,
+        isLoadingTokenEndpoints,
+        orgNameMap
+    } = useAllowedIssuers(
+        isSubOrganization() && isOrganizationManagementEnabled,
+        initialValues?.issuer
+    );
 
     const isIdTokenEncryptionSettingEnabled: boolean = useMemo(() =>
         applicationConfig.inboundOIDCForm.showIdTokenEncryption
@@ -1634,6 +1653,24 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 };
             }
 
+            // Add the selected token endpoint issuer if in a sub-organization context.
+            if (isSubOrganization() && selectedTokenEndpoint) {
+                const selectedIssuer: AllowedIssuerInterface | undefined = tokenEndpoints.find(
+                    (endpoint: AllowedIssuerInterface) => endpoint.value === selectedTokenEndpoint
+                );
+
+                if (selectedIssuer) {
+                    inboundConfigFormValues = {
+                        ...inboundConfigFormValues,
+                        issuer: {
+                            organizationId: selectedIssuer.organizationId,
+                            tenantDomain: selectedIssuer.tenantDomain,
+                            value: selectedIssuer.value
+                        }
+                    };
+                }
+            }
+
             finalConfiguration = {
                 general: {
                     advancedConfigurations: {
@@ -1800,6 +1837,24 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 ...inboundConfigFormValues,
                 clientSecret: initialValues.clientSecret
             };
+        }
+
+        // Add the selected issuer if in a sub-organization context.
+        if (isSubOrganization() && selectedTokenEndpoint) {
+            const selectedIssuer: AllowedIssuerInterface | undefined = tokenEndpoints.find(
+                (endpoint: AllowedIssuerInterface) => endpoint.value === selectedTokenEndpoint
+            );
+
+            if (selectedIssuer) {
+                inboundConfigFormValues = {
+                    ...inboundConfigFormValues,
+                    issuer: {
+                        organizationId: selectedIssuer.organizationId,
+                        tenantDomain: selectedIssuer.tenantDomain,
+                        value: selectedIssuer.value
+                    }
+                };
+            }
         }
 
         return { inbound: { ...inboundConfigFormValues } };
@@ -4204,6 +4259,97 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 isRequired={ true }
                                 triggerSubmit={ triggerCertSubmit }
                             />
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
+            { /* Application Token Issuer */ }
+            {
+                isSubOrganization()
+                && isTokenIssuerSelectionEnabled
+                && !isSystemApplication
+                && !isDefaultApplication
+                && (
+                    <Grid.Row columns={ 1 } data-componentid={ `${ componentId }-application-token-issuer` }>
+                        <Grid.Column mobile={ 16 }>
+                            <Divider />
+                            <Divider hidden />
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 }>
+                            <Heading as="h5">
+                                { t("applications:forms.inboundOIDC" +
+                                    ".sections.applicationTokenIssuer.heading") }
+                            </Heading>
+                            <Field
+                                name="applicationTokenIssuer"
+                                label={ t("applications:forms.inboundOIDC" +
+                                    ".sections.applicationTokenIssuer.fields.tokenIssuer.label") }
+                                type="dropdown"
+                                required={ false }
+                                value={ selectedTokenEndpoint }
+                                children={
+                                    isLoadingTokenEndpoints
+                                        ? [ {
+                                            key: "loading",
+                                            text: t("applications:forms.inboundOIDC" +
+                                                ".sections.applicationTokenIssuer" +
+                                                ".fields.tokenIssuer.loading"),
+                                            value: ""
+                                        } ]
+                                        : tokenEndpoints.map((endpoint: AllowedIssuerInterface) => ({
+                                            content: (
+                                                <div>
+                                                    <div>
+                                                        <Text muted display="inline">
+                                                            { t("applications:forms.inboundOIDC" +
+                                                                ".sections.applicationTokenIssuer" +
+                                                                ".fields.tokenIssuer.organization") }
+                                                            &nbsp;
+                                                        </Text>
+                                                        <Text display="inline">
+                                                            { orgNameMap[endpoint.organizationId]
+                                                                ?? endpoint.tenantDomain }
+                                                        </Text>
+                                                    </div>
+                                                    <div style={ { marginTop: 4 } } />
+                                                    <Code compact withBackground>
+                                                        <span style={ { fontSize: "0.75em" } }>
+                                                            { endpoint.value }
+                                                        </span>
+                                                    </Code>
+                                                </div>
+                                            ),
+                                            key: endpoint.organizationId,
+                                            text: (
+                                                <div>
+                                                    <Text muted display="inline">
+                                                        { t("applications:forms.inboundOIDC" +
+                                                            ".sections.applicationTokenIssuer" +
+                                                            ".fields.tokenIssuer.organization") }
+                                                        &nbsp;
+                                                    </Text>
+                                                    <Text display="inline">
+                                                        { orgNameMap[endpoint.organizationId]
+                                                            ?? endpoint.tenantDomain }
+                                                    </Text>
+                                                </div>
+                                            ),
+                                            value: endpoint.value
+                                        }))
+                                }
+                                placeholder={ t("applications:forms.inboundOIDC" +
+                                    ".sections.applicationTokenIssuer.fields.tokenIssuer.placeholder") }
+                                listen={ (values: Map<string, FormValue>) => {
+                                    setSelectedTokenEndpoint(values.get("applicationTokenIssuer") as string);
+                                } }
+                                disabled={ isLoadingTokenEndpoints }
+                                readOnly={ readOnly }
+                                data-componentid={ `${ componentId }-application-token-issuer-dropdown` }
+                            />
+                            <Hint>
+                                { t("applications:forms.inboundOIDC" +
+                                    ".sections.applicationTokenIssuer.fields.tokenIssuer.hint") }
+                            </Hint>
                         </Grid.Column>
                     </Grid.Row>
                 )

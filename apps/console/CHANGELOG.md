@@ -1,5 +1,104 @@
 # @wso2is/console
 
+## 2.95.8
+
+### Patch Changes
+
+- [#9645](https://github.com/wso2/identity-apps/pull/9645) [`d0761e466c899df3701b2f918c955e89f1dce1e3`](https://github.com/wso2/identity-apps/commit/d0761e466c899df3701b2f918c955e89f1dce1e3) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Enable issuer selection for sub organization applications
+
+- Updated dependencies [[`d0761e466c899df3701b2f918c955e89f1dce1e3`](https://github.com/wso2/identity-apps/commit/d0761e466c899df3701b2f918c955e89f1dce1e3)]:
+  - @wso2is/admin.organizations.v1@2.28.1
+  - @wso2is/admin.applications.v1@2.41.7
+  - @wso2is/i18n@2.34.1
+  - @wso2is/admin.actions.v1@1.15.2
+  - @wso2is/admin.onboarding.v1@1.0.10
+  - @wso2is/admin.session-management.v1@2.26.3
+  - @wso2is/admin.agents.v1@1.0.158
+  - @wso2is/admin.branding.v1@2.32.99
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.143
+  - @wso2is/admin.core.v1@2.53.8
+  - @wso2is/admin.email-management.v1@2.25.307
+  - @wso2is/admin.flows.v1@1.0.112
+  - @wso2is/admin.home.v1@1.7.122
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.143
+  - @wso2is/admin.server-configurations.v1@2.37.9
+  - @wso2is/admin.users.v1@2.36.118
+  - @wso2is/admin.roles.v2@2.27.313
+  - @wso2is/admin.registration-flow-builder.v1@0.10.103
+
+## 2.95.7
+
+### Patch Changes
+
+- [#9659](https://github.com/wso2/identity-apps/pull/9659) [`313e8a9542faae47dfa69ac007219b0e1aedafcb`](https://github.com/wso2/identity-apps/commit/313e8a9542faae47dfa69ac007219b0e1aedafcb) Thanks [@savindi7](https://github.com/savindi7)! - Add URL param support for user onboarding wizard.
+
+* [#9660](https://github.com/wso2/identity-apps/pull/9660) [`e0157c88b410c42099ec0788af76423e8ea989ce`](https://github.com/wso2/identity-apps/commit/e0157c88b410c42099ec0788af76423e8ea989ce) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for deleting scopes using the scope ID as the unique identifier
+
+* Updated dependencies [[`313e8a9542faae47dfa69ac007219b0e1aedafcb`](https://github.com/wso2/identity-apps/commit/313e8a9542faae47dfa69ac007219b0e1aedafcb), [`e0157c88b410c42099ec0788af76423e8ea989ce`](https://github.com/wso2/identity-apps/commit/e0157c88b410c42099ec0788af76423e8ea989ce)]:
+  - @wso2is/admin.onboarding.v1@1.0.9
+  - @wso2is/admin.core.v1@2.53.7
+  - @wso2is/admin.api-resources.v2@2.26.7
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.142
+  - @wso2is/admin.branding.v1@2.32.98
+  - @wso2is/admin.email-management.v1@2.25.306
+  - @wso2is/admin.flows.v1@1.0.111
+  - @wso2is/admin.home.v1@1.7.121
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.142
+  - @wso2is/admin.server-configurations.v1@2.37.8
+  - @wso2is/admin.users.v1@2.36.117
+  - @wso2is/admin.registration-flow-builder.v1@0.10.102
+  - @wso2is/admin.agents.v1@1.0.157
+  - @wso2is/admin.roles.v2@2.27.312
+
+## 2.95.6
+
+### Patch Changes
+
+- [#9648](https://github.com/wso2/identity-apps/pull/9648) [`bc78d8089c1354c55b8a1f1399c3352f0b1eccd2`](https://github.com/wso2/identity-apps/commit/bc78d8089c1354c55b8a1f1399c3352f0b1eccd2) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix not being able to enable custom sms template edit in console UI
+
+- Updated dependencies [[`bc78d8089c1354c55b8a1f1399c3352f0b1eccd2`](https://github.com/wso2/identity-apps/commit/bc78d8089c1354c55b8a1f1399c3352f0b1eccd2), [`7ee7c85fe57835628c6f9a46490bd7898617f65b`](https://github.com/wso2/identity-apps/commit/7ee7c85fe57835628c6f9a46490bd7898617f65b)]:
+  - @wso2is/admin.sms-templates.v1@1.0.206
+  - @wso2is/admin.core.v1@2.53.6
+  - @wso2is/i18n@2.34.0
+  - @wso2is/theme@2.9.3
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.141
+  - @wso2is/admin.branding.v1@2.32.97
+  - @wso2is/admin.email-management.v1@2.25.305
+  - @wso2is/admin.flows.v1@1.0.110
+  - @wso2is/admin.home.v1@1.7.120
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.141
+  - @wso2is/admin.server-configurations.v1@2.37.7
+  - @wso2is/admin.users.v1@2.36.116
+  - @wso2is/admin.onboarding.v1@1.0.8
+  - @wso2is/admin.registration-flow-builder.v1@0.10.101
+  - @wso2is/admin.agents.v1@1.0.156
+  - @wso2is/admin.roles.v2@2.27.311
+
+## 2.95.5
+
+### Patch Changes
+
+- [#9649](https://github.com/wso2/identity-apps/pull/9649) [`dc6b3662200e53d4fc4cfedf8f79922ebe4ac70f`](https://github.com/wso2/identity-apps/commit/dc6b3662200e53d4fc4cfedf8f79922ebe4ac70f) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Bring support to configure custom first-factor and second-factor authenticator names for application login flow UI
+
+* [#9644](https://github.com/wso2/identity-apps/pull/9644) [`f7ee27a7ac0da77dc33fbcefa4201e32e4edd846`](https://github.com/wso2/identity-apps/commit/f7ee27a7ac0da77dc33fbcefa4201e32e4edd846) Thanks [@hwupathum](https://github.com/hwupathum)! - Fix minor UI issue in session management settings page component
+
+* Updated dependencies [[`dc6b3662200e53d4fc4cfedf8f79922ebe4ac70f`](https://github.com/wso2/identity-apps/commit/dc6b3662200e53d4fc4cfedf8f79922ebe4ac70f), [`f7ee27a7ac0da77dc33fbcefa4201e32e4edd846`](https://github.com/wso2/identity-apps/commit/f7ee27a7ac0da77dc33fbcefa4201e32e4edd846)]:
+  - @wso2is/admin.applications.v1@2.41.6
+  - @wso2is/admin.core.v1@2.53.5
+  - @wso2is/admin.session-management.v1@2.26.2
+  - @wso2is/admin.agents.v1@1.0.155
+  - @wso2is/admin.branding.v1@2.32.96
+  - @wso2is/admin.onboarding.v1@1.0.7
+  - @wso2is/admin.roles.v2@2.27.310
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.140
+  - @wso2is/admin.email-management.v1@2.25.304
+  - @wso2is/admin.flows.v1@1.0.109
+  - @wso2is/admin.home.v1@1.7.119
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.140
+  - @wso2is/admin.server-configurations.v1@2.37.6
+  - @wso2is/admin.users.v1@2.36.115
+  - @wso2is/admin.registration-flow-builder.v1@0.10.100
+
 ## 2.95.4
 
 ### Patch Changes

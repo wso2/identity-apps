@@ -540,6 +540,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     enableBlockingOutboundProvisioning?: boolean;
     /**
+     * Enable/Disable custom SMS template feature
+     */
+    enableCustomSmsTemplates: boolean;
+    /**
      * Enable signature validation certificate alias.
      */
     isSignatureValidationCertificateAliasEnabled?: boolean;

@@ -1,5 +1,17 @@
 # @wso2is/myaccount
 
+## 2.26.0
+
+### Minor Changes
+
+- [#9610](https://github.com/wso2/identity-apps/pull/9610) [`7ee7c85fe57835628c6f9a46490bd7898617f65b`](https://github.com/wso2/identity-apps/commit/7ee7c85fe57835628c6f9a46490bd7898617f65b) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Display TOTP masked secret
+
+### Patch Changes
+
+- Updated dependencies [[`7ee7c85fe57835628c6f9a46490bd7898617f65b`](https://github.com/wso2/identity-apps/commit/7ee7c85fe57835628c6f9a46490bd7898617f65b)]:
+  - @wso2is/i18n@2.34.0
+  - @wso2is/theme@2.9.3
+
 ## 2.25.22
 
 ### Patch Changes
