@@ -1,5 +1,14 @@
 # @wso2is/admin.api-resources.v2
 
+## 2.26.7
+
+### Patch Changes
+
+- [#9660](https://github.com/wso2/identity-apps/pull/9660) [`e0157c88b410c42099ec0788af76423e8ea989ce`](https://github.com/wso2/identity-apps/commit/e0157c88b410c42099ec0788af76423e8ea989ce) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for deleting scopes using the scope ID as the unique identifier
+
+- Updated dependencies [[`313e8a9542faae47dfa69ac007219b0e1aedafcb`](https://github.com/wso2/identity-apps/commit/313e8a9542faae47dfa69ac007219b0e1aedafcb)]:
+  - @wso2is/admin.core.v1@2.53.7
+
 ## 2.26.6
 
 ### Patch Changes
