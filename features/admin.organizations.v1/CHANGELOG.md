@@ -1,5 +1,18 @@
 # @wso2is/admin.organizations.v1
 
+## 2.28.1
+
+### Patch Changes
+
+- [#9645](https://github.com/wso2/identity-apps/pull/9645) [`d0761e466c899df3701b2f918c955e89f1dce1e3`](https://github.com/wso2/identity-apps/commit/d0761e466c899df3701b2f918c955e89f1dce1e3) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Enable issuer selection for sub organization applications
+
+- Updated dependencies [[`d0761e466c899df3701b2f918c955e89f1dce1e3`](https://github.com/wso2/identity-apps/commit/d0761e466c899df3701b2f918c955e89f1dce1e3)]:
+  - @wso2is/admin.applications.v1@2.41.7
+  - @wso2is/i18n@2.34.1
+  - @wso2is/admin.core.v1@2.53.8
+  - @wso2is/admin.users.v1@2.36.118
+  - @wso2is/admin.roles.v2@2.27.313
+
 ## 2.28.0
 
 ### Minor Changes
