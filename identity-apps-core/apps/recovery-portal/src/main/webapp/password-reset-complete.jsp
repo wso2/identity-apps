@@ -61,6 +61,9 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<%-- Resolve request headers --%>
+<jsp:directive.include file="request-header-resolver.jsp"/>
+
 <%
     String ERROR_MESSAGE = "errorMsg";
     String ERROR_CODE = "errorCode";
@@ -214,8 +217,12 @@
         resetPasswordRequest.setPassword(newPassword);
         resetPasswordRequest.setProperties(properties);
 
+        Map<String, String> requestHeaders = new HashedMap();
+        // Add client IP and user agent to the request headers.
+        addNetworkRequestHeaders(requestHeaders, request);
+
         try {
-            User user = notificationApi.setUserPasswordPost(resetPasswordRequest);
+            User user = notificationApi.setUserPasswordPost(resetPasswordRequest, requestHeaders);
             username = user.getUsername();
             userStoreDomain = user.getRealm();
 

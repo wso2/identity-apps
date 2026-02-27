@@ -48,6 +48,9 @@
 <%-- Include tenant context --%>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
+<%-- Resolve request headers --%>
+<jsp:directive.include file="request-header-resolver.jsp"/>
+
 <%!
     /**
      * UsernameRecoveryStage represents the two steps of recovery in the UsernameRecovery V2.
@@ -354,6 +357,8 @@
             recoveryRequest.setRecoveryCode(recoveryCode);
             try {
                 Map<String, String> requestHeaders = new HashedMap();
+                // Add client IP and user agent to the request headers.
+                addNetworkRequestHeaders(requestHeaders, request);
                 RecoveryResponse recoveryResponse = recoveryApiV2.recoverPassword(recoveryRequest,
                         tenantDomain, requestHeaders);
                 notificationChannel = recoveryResponse.getNotificationChannel();

@@ -18,6 +18,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<%@ page import="org.apache.commons.collections.map.HashedMap" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.base.MultitenantConstants" %>
@@ -48,6 +49,9 @@
 
 <%-- Include tenant context --%>
 <jsp:directive.include file="tenant-resolve.jsp"/>
+
+<%-- Resolve request headers --%>
+<jsp:directive.include file="request-header-resolver.jsp"/>
 
 <%
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
@@ -143,7 +147,11 @@
         validationRequest.setCode(confirmationKey);
         validationRequest.setProperties(properties);
 
-        User user = selfRegisterApi.validateCodeUserPostCall(validationRequest);
+        Map<String, String> requestHeaders = new HashedMap();
+        // Add client IP and user agent to the request headers.
+        addNetworkRequestHeaders(requestHeaders, request);
+
+        User user = selfRegisterApi.validateCodeUserPostCall(validationRequest, requestHeaders);
         username = user.getUsername();
         String userStoreDomain = user.getRealm();
         tenantDomain = user.getTenantDomain();
