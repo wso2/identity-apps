@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -62,6 +62,10 @@ interface WelcomeStepPropsInterface extends IdentifiableComponentInterface {
      */
     greeting?: string;
     /**
+     * Whether the user is returning via the Setup Guide FAB (not a first-time visit).
+     */
+    isReturningUser?: boolean;
+    /**
      * Currently selected choice.
      */
     selectedChoice?: OnboardingChoice;
@@ -78,6 +82,7 @@ interface WelcomeStepPropsInterface extends IdentifiableComponentInterface {
 const WelcomeStep: FunctionComponent<WelcomeStepPropsInterface> = (props: WelcomeStepPropsInterface): ReactElement => {
     const {
         greeting,
+        isReturningUser = false,
         onChoiceSelect,
         selectedChoice,
         ["data-componentid"]: componentId = OnboardingComponentIds.WELCOME_STEP
@@ -105,8 +110,14 @@ const WelcomeStep: FunctionComponent<WelcomeStepPropsInterface> = (props: Welcom
             <LeftColumn>
                 <StepHeader
                     data-componentid={ `${componentId}-header` }
-                    subtitle="We can help you get started faster"
-                    title={ `Hi${greeting ? ` ${greeting}` : ""}, What would you like to do first?` }
+                    subtitle={ isReturningUser
+                        ? "Set up a new app or preview the login experience"
+                        : "We can help you get started faster"
+                    }
+                    title={ isReturningUser
+                        ? `Hi${greeting ? ` ${greeting}` : ""}, What would you like to do?`
+                        : `Hi${greeting ? ` ${greeting}` : ""}, What would you like to do first?`
+                    }
                 />
                 <CardsRow>
                     <SelectableCard

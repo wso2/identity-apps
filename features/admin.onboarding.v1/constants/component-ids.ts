@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,7 @@ export const OnboardingComponentIds: Record<string, string> = {
     COLOR_PICKER: "color-picker",
     CONFIGURE_REDIRECT_URL_STEP: "configure-redirect-url-step",
     DESIGN_LOGIN_STEP: "design-login-step",
+    FAB: "onboarding-fab",
     LOGIN_BOX_PREVIEW: "login-box-preview",
     LOGO_SELECTOR: "logo-selector",
     NAME_APP_STEP: "name-application-step",

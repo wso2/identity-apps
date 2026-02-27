@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,6 +18,7 @@
 
 import { GearIcon } from "@oxygen-ui/react-icons";
 import { FeatureAccessConfigInterface, Show } from "@wso2is/access-control";
+import { OnboardingFab } from "@wso2is/admin.onboarding.v1/public-api";
 import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { getGeneralIcons } from "@wso2is/admin.core.v1/configs/ui";
@@ -792,6 +793,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         data-componentid="application"
                     />
                 </ListLayout>
+                <OnboardingFab />
             </PageLayout>
         </ExtensionTemplatesProvider>
     );

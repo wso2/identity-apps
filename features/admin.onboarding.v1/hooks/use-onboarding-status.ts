@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
-import { ApplicationListInterface } from "@wso2is/admin.applications.v1/models/application";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
@@ -41,7 +39,7 @@ interface UseOnboardingStatusReturn {
 /**
  * Determines whether the onboarding wizard should be shown to the current user.
  *
- * Evaluates feature flags, user type, org type, existing apps, and the SCIM2
+ * Evaluates feature flags, user type, org type, and the SCIM2
  * `showOnboardingWizard` claim. The claim is the single source of truth for
  * wizard visibility. Gates on `uuid` which is set last in the sign-in flow,
  * ensuring all Redux state is settled before evaluation.
@@ -72,19 +70,6 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
         userAccountType === UserAccountTypes.COLLABORATOR ||
         userAccountType === UserAccountTypes.CUSTOMER;
 
-    // Fetch application count — only when sync checks would pass.
-    const shouldFetchApps: boolean =
-        !!onboardingFeatureConfig?.enabled &&
-        isEligibleUserType &&
-        organizationType !== OrganizationType.SUBORGANIZATION &&
-        !!uuid;
-
-    const {
-        data: appListData,
-        error: appListError,
-        isLoading: isAppListLoading
-    } = useApplicationList<ApplicationListInterface>(undefined, 1, 0, undefined, shouldFetchApps, true);
-
     useEffect(() => {
         // Wait until uuid and featureConfig are set — ensures all required Redux state
         // (feature config, org type, privileged user status) is settled before evaluation.
@@ -94,10 +79,6 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
 
         // Only evaluate once to prevent state churn from causing wizard resets
         if (hasEvaluated.current) {
-            return;
-        }
-
-        if (shouldFetchApps && isAppListLoading) {
             return;
         }
 
@@ -127,20 +108,7 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
             return;
         }
 
-        // Check 4: If the organization already has user-created applications, skip wizard.
-        // If app-list fetch fails, log error and fail open (show wizard) to avoid blocking new users.
-        if (appListError) {
-            // eslint-disable-next-line no-console
-            console.warn("Failed to fetch application list for onboarding check:", appListError);
-        } else if (appListData && appListData.totalResults > 0) {
-            setShouldShowOnboarding(false);
-            setIsLoading(false);
-
-            return;
-        }
-
-        // Check 5: Read the showOnboardingWizard SCIM claim from the server.
-        // Uses /scim2/Users endpoint.
+        // Check 4: Read the showOnboardingWizard SCIM claim from the server.
         const evaluateScimClaim: () => Promise<void> = async (): Promise<void> => {
             try {
                 const shouldShow: boolean = await getOnboardingWizardClaim(uuid);
@@ -156,8 +124,7 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
         evaluateScimClaim();
     }, [
         uuid, username, isEligibleUserType, organizationType,
-        onboardingFeatureConfig,
-        shouldFetchApps, isAppListLoading, appListData
+        onboardingFeatureConfig
     ]);
 
     const markOnboardingComplete: () => Promise<void> = useCallback(

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -71,6 +71,7 @@ import { generateRandomNames } from "../utils/random-name-generator";
 export interface OnboardingWizardPropsInterface extends IdentifiableComponentInterface {
     initialData?: OnboardingDataInterface;
     initialStep?: OnboardingStep;
+    isReturningUser?: boolean;
     onComplete: (data: OnboardingDataInterface) => Promise<void>;
     onSkip: () => Promise<void>;
 }
@@ -231,6 +232,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
     const {
         initialData,
         initialStep,
+        isReturningUser = false,
         onComplete,
         onSkip,
         ["data-componentid"]: componentId = OnboardingComponentIds.WIZARD
@@ -447,6 +449,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
                     <WelcomeStep
                         data-componentid={ `${componentId}-welcome` }
                         greeting={ greeting }
+                        isReturningUser={ isReturningUser }
                         onChoiceSelect={ updateChoice }
                         selectedChoice={ onboardingData.choice }
                     />
