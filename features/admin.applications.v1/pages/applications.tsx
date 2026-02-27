@@ -18,7 +18,6 @@
 
 import { GearIcon } from "@oxygen-ui/react-icons";
 import { FeatureAccessConfigInterface, Show } from "@wso2is/access-control";
-import { OnboardingFab } from "@wso2is/admin.onboarding.v1/public-api";
 import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { getGeneralIcons } from "@wso2is/admin.core.v1/configs/ui";
@@ -30,6 +29,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { OnboardingFab } from "@wso2is/admin.onboarding.v1/public-api";
 import { OrganizationFeatureDictionaryKeys, OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationManagementConstants } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
