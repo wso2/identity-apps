@@ -419,7 +419,7 @@ export const extensions: Extensions = {
                         resourceText: {
                             apiResource: "API resource",
                             genericResource: "resource",
-                            vcResource: "Verifiable Credential"
+                            digitalWalletResource: "Digital Wallet"
                         },
                         sections: {
                             apiSubscriptions: {

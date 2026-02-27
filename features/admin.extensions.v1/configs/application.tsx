@@ -230,7 +230,7 @@ export const applicationConfig: ApplicationConfig = {
                     || application?.templateId === OIDCWebAppTemplate?.id
                     || application?.templateId === SinglePageAppTemplate?.id
                     || application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
-                    || application?.templateId === ApplicationTemplateIdTypes.VC_CLIENT_APPLICATION
+                    || application?.templateId === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION
                 )
                 && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
             ) {
@@ -246,7 +246,7 @@ export const applicationConfig: ApplicationConfig = {
                                 "extensions:develop.applications.edit.sections.resourceAuthorization.title"
                             )
                             : (application?.originalTemplateId
-                                === ApplicationTemplateIdTypes.VC_CLIENT_APPLICATION)
+                                === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION)
                                 ? I18n.instance.t(
                                     "extensions:develop.applications.edit.sections.resourceAuthorization.title"
                                 )
@@ -276,7 +276,7 @@ export const applicationConfig: ApplicationConfig = {
                     || application?.templateId === OIDCWebAppTemplate?.id
                     || application?.templateId === SinglePageAppTemplate?.id
                     || application?.templateId === SamlWebAppTemplate?.id
-                    || application?.templateId === ApplicationTemplateIdTypes.VC_CLIENT_APPLICATION)
+                    || application?.templateId === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION)
                 )
                 && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
             ) {
@@ -502,7 +502,7 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.PASSWORD,
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
         ],
-        [ "vc-client-application" ]: [
+        [ "digital-wallet-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT
         ]

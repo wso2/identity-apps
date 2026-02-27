@@ -194,9 +194,9 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
             removingApplicationTemplateIds.push(ApplicationTemplateConstants.CUSTOM_PROTOCOL_APPLICATION_TEMPLATE_ID);
         }
 
-        // Remove VC Client template if VC feature is not enabled.
+        // Remove Digital Wallet template if VC feature is not enabled.
         if (!isVcFeatureEnabled) {
-            removingApplicationTemplateIds.push(ApplicationTemplateConstants.VC_CLIENT_APPLICATION);
+            removingApplicationTemplateIds.push(ApplicationTemplateConstants.DIGITAL_WALLET_APPLICATION);
         }
 
         // Remove hidden application templates based on the UI config.

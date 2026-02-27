@@ -406,7 +406,7 @@ export interface Extensions {
                         resourceText: {
                             apiResource: string;
                             genericResource: string;
-                            vcResource: string;
+                            digitalWalletResource: string;
                         };
                         sections: {
                             apiSubscriptions: {

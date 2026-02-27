@@ -99,7 +99,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const isVCClient: boolean = originalTemplateId === "vc-client-application";
+    const isDigitalWallet: boolean = originalTemplateId === "digital-wallet-application";
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ isUpdateButtonDisabled, setIsUpdateButtonDisabled ] = useState<boolean>(true);
@@ -374,7 +374,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
         setIsUpdateButtonDisabled(true);
     };
 
-    if (isVCClient) {
+    if (isDigitalWallet) {
         return null;
     }
 
