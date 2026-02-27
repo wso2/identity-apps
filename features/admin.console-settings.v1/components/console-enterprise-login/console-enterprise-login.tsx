@@ -22,9 +22,6 @@ import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Typography from "@oxygen-ui/react/Typography";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
-import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -49,9 +46,6 @@ const ConsoleEnterpriseLogin: FunctionComponent<ConsoleEnterpriseLoginPropsInter
     } = props;
 
     const { t } = useTranslation();
-
-    const { isSubOrganization } = useGetCurrentOrganizationType();
-    const { tierName }: UseSubscriptionInterface = useSubscription();
 
     const supportEmail: string = useSelector(
         (state: AppState) => state.config.deployment.extensions?.supportEmail as string
