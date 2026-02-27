@@ -46,6 +46,21 @@ export interface GrantTypeMetaDataInterface {
 }
 
 /**
+ * CIBA notification channel metadata.
+ */
+export interface CIBANotificationChannelInterface {
+    name?: string;
+    displayName?: string;
+}
+
+/**
+ * CIBA related metadata.
+ */
+export interface CIBAMetaDataInterface {
+    supportedNotificationChannels?: CIBANotificationChannelInterface[];
+}
+
+/**
  * FAPI related metadata.
  */
 export interface FapiMetaDataInterface {
@@ -90,6 +105,7 @@ export interface OIDCMetadataInterface {
     tlsClientAuthSubjectDn?: string;
     fapiMetadata?: FapiMetaDataInterface;
     allowedIssuers?: AllowedIssuerInterface[];
+    cibaMetadata?: CIBAMetaDataInterface;
 }
 
 export enum State {
@@ -177,6 +193,14 @@ interface SubjectConfigInterface {
     sectorIdentifierUri?: string;
 }
 
+/**
+ * CIBA authentication related properties.
+ */
+export interface CIBAAuthenticationConfigurationInterface {
+    authReqExpiryTime?: number;
+    notificationChannels?: string[];
+}
+
 interface OIDCLogoutConfigurationInterface {
     backChannelLogoutUrl?: string;
     frontChannelLogoutUrl?: string;
@@ -207,6 +231,7 @@ export interface OIDCDataInterface {
     subject?: SubjectConfigInterface;
     isFAPIApplication?: boolean;
     hybridFlow?: HybridFlowConfigurationInterface;
+    cibaAuthenticationRequest?: CIBAAuthenticationConfigurationInterface;
     issuer?: AllowedIssuerInterface;
 }
 

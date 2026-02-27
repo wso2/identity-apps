@@ -1714,6 +1714,10 @@ export const applications: ApplicationsNS = {
                 },
                 grant: {
                     children: {
+                        ciba: {
+                            label: "Client Initiated Backchannel Authentication",
+                            hint: "Allow clients to initiate authentication flow without user interaction on the consumption device."
+                        },
                         client_credential: {
                             hint: "This grant type does not support the 'openid' scope.",
                             label: "(openid scope not allowed)"
@@ -1757,6 +1761,31 @@ export const applications: ApplicationsNS = {
                             }
                         }
                     }
+                },
+                ciba: {
+                    authReqExpiryTime: {
+                        hint: "Specify the expiry time for the CIBA authentication request in seconds.",
+                        label: "CIBA Authentication Request Expiry Time",
+                        placeholder: "Enter expiry time",
+                        validations: {
+                            empty: "This is a required field.",
+                            invalid: "Please enter a valid positive integer."
+                        }
+                    },
+                    notificationChannels: {
+                        clientChannelLabel: "Client managed",
+                        externalHint: "The client application delivers the " +
+                            "authentication request to the user. When configured " +
+                            "alongside server channels, the client must include " +
+                            "notification_channel=external in the CIBA request " +
+                            "to use this channel; otherwise {{productName}} " +
+                            "defaults to the server channels.",
+                        hint: "Configure which notification methods this " +
+                            "application supports.",
+                        label: "Notification Delivery",
+                        serverChannelsLabel: "Server managed"
+                    },
+                    heading: "Client Initiated Backchannel Authentication"
                 }
             },
             messages: {
