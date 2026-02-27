@@ -238,6 +238,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             enableCustomSmsTemplates: undefined,
             enableLegacySessionBoundTokenBehaviour: false,
             enableOldUIForEmailProvider: undefined,
+            enabledFeatureOverridesInConsoleRolePermissions: [],
             features: {
                 applications: null,
                 approvals: null,

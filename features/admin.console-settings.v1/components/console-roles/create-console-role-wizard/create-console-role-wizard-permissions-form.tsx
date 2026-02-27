@@ -126,6 +126,8 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
     );
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const enabledFeatureOverridesInConsoleRolePermissions: string[] = useSelector(
+        (state: AppState) => state.config.ui.enabledFeatureOverridesInConsoleRolePermissions);
 
     const [ expandedAccordions, setExpandedAccordions ] = useState<string[]>([]);
     const [ selectedPermissions, setSelectedPermissions ] = useState<SelectedPermissionsInterface>(initialValues || {
@@ -198,7 +200,8 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                     (item: APIResourceCollectionInterface) =>
                         !filteringAPIResourceCollectionNames.includes(item?.name) &&
                         (
-                            flattenedFeatureConfig?.[item?.name]?.enabled
+                            enabledFeatureOverridesInConsoleRolePermissions?.includes(item?.name)
+                            || flattenedFeatureConfig?.[item?.name]?.enabled
                             || flattenedFeatureConfig?.[UIConstants.CONSOLE_FEATURE_MAP[item?.name]]?.enabled
                         )
 
@@ -222,8 +225,17 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
 
         clonedOrganizationAPIResourceCollections.apiResourceCollections =
                 clonedOrganizationAPIResourceCollections?.apiResourceCollections?.filter(
-                    (item: APIResourceCollectionInterface) =>
-                        !filteringAPIResourceCollectionNames.includes(item?.name)
+                    (item: APIResourceCollectionInterface) => {
+                        const featureNameWithoutOrgPrefix: string = item?.name?.replace("org_", "");
+
+                        return !filteringAPIResourceCollectionNames.includes(item?.name) &&
+                            (
+                                enabledFeatureOverridesInConsoleRolePermissions?.includes(featureNameWithoutOrgPrefix)
+                                || flattenedFeatureConfig?.[featureNameWithoutOrgPrefix]?.enabled
+                                || flattenedFeatureConfig?.[UIConstants.CONSOLE_FEATURE_MAP[
+                                    featureNameWithoutOrgPrefix]]?.enabled
+                            );
+                    }
                 );
 
         return clonedOrganizationAPIResourceCollections;
