@@ -226,9 +226,13 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         clonedOrganizationAPIResourceCollections.apiResourceCollections =
                 clonedOrganizationAPIResourceCollections?.apiResourceCollections?.filter(
                     (item: APIResourceCollectionInterface) => {
-                        const featureNameWithoutOrgPrefix: string = item?.name?.replace("org_", "");
+                        const itemName: string = item?.name ?? "";
+                        const featureNameWithoutOrgPrefix: string = itemName.startsWith(
+                            ConsoleRolesOnboardingConstants.ORG_PREFIX)
+                            ? itemName.substring(ConsoleRolesOnboardingConstants.ORG_PREFIX.length)
+                            : itemName;
 
-                        return !filteringAPIResourceCollectionNames.includes(item?.name) &&
+                        return !filteringAPIResourceCollectionNames.includes(itemName) &&
                             (
                                 enabledFeatureOverridesInConsoleRolePermissions?.includes(featureNameWithoutOrgPrefix)
                                 || flattenedFeatureConfig?.[featureNameWithoutOrgPrefix]?.enabled
