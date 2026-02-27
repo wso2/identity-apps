@@ -1,5 +1,30 @@
 # @wso2is/admin.core.v1
 
+## 2.54.1
+
+### Patch Changes
+
+- [#9673](https://github.com/wso2/identity-apps/pull/9673) [`a4db7d691345f8849a92e26e9fb904dfc7d7bcef`](https://github.com/wso2/identity-apps/commit/a4db7d691345f8849a92e26e9fb904dfc7d7bcef) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add a config to conditionally enable some disabled feature resources in console roles permissions section
+
+- Updated dependencies [[`de69aa76bfed65e0cb6c85e6b060365c3029cb49`](https://github.com/wso2/identity-apps/commit/de69aa76bfed65e0cb6c85e6b060365c3029cb49), [`a4db7d691345f8849a92e26e9fb904dfc7d7bcef`](https://github.com/wso2/identity-apps/commit/a4db7d691345f8849a92e26e9fb904dfc7d7bcef), [`462c16471302dd0b197ef8cad758146e10af2ab0`](https://github.com/wso2/identity-apps/commit/462c16471302dd0b197ef8cad758146e10af2ab0)]:
+  - @wso2is/admin.verifiable-credentials.v1@1.0.2
+  - @wso2is/admin.console-settings.v1@2.26.8
+  - @wso2is/admin.applications.v1@2.41.9
+  - @wso2is/admin.extensions.v1@2.40.22
+  - @wso2is/i18n@2.34.3
+  - @wso2is/admin.flow-builder-core.v1@0.10.145
+  - @wso2is/admin.agents.v1@1.0.160
+  - @wso2is/admin.branding.v1@2.32.101
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.145
+  - @wso2is/admin.email-management.v1@2.25.309
+  - @wso2is/admin.flows.v1@1.0.114
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.145
+  - @wso2is/admin.server-configurations.v1@2.37.11
+  - @wso2is/admin.users.v1@2.36.120
+  - @wso2is/admin.roles.v2@2.27.315
+  - @wso2is/admin.registration-flow-builder.v1@0.10.105
+  - @wso2is/admin.connections.v1@2.35.3
+
 ## 2.54.0
 
 ### Minor Changes

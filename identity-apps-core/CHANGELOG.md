@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.4.1
+
+### Patch Changes
+
+- [#9672](https://github.com/wso2/identity-apps/pull/9672) [`d945a23adfaab4ab85915cc2265781c26ff77ec4`](https://github.com/wso2/identity-apps/commit/d945a23adfaab4ab85915cc2265781c26ff77ec4) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Send IP and UA information through recovery API clients.
+
 ## 3.4.0
 
 ### Minor Changes
