@@ -55,7 +55,7 @@ const ConsoleEnterpriseLogin: FunctionComponent<ConsoleEnterpriseLoginPropsInter
         <Box data-componentid={ componentId } sx={ { mt: 2 } }>
             <Alert
                 severity="info"
-                action={
+                action={ (
                     <Button
                         color="inherit"
                         size="small"
@@ -64,7 +64,7 @@ const ConsoleEnterpriseLogin: FunctionComponent<ConsoleEnterpriseLoginPropsInter
                     >
                         { t("consoleSettings:enterpriseLogin.banner.action") }
                     </Button>
-                }
+                ) }
             >
                 <AlertTitle>
                     { t("consoleSettings:enterpriseLogin.banner.title") }
