@@ -208,7 +208,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                 );
 
         return clonedTenantAPIResourceCollections;
-    }, [ tenantAPIResourceCollections, flattenedFeatureConfig ]);
+    }, [ tenantAPIResourceCollections, flattenedFeatureConfig, enabledFeatureOverridesInConsoleRolePermissions ]);
 
     const filteredOrganizationAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
 
@@ -243,7 +243,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                 );
 
         return clonedOrganizationAPIResourceCollections;
-    }, [ organizationAPIResourceCollections ]);
+    }, [ organizationAPIResourceCollections, flattenedFeatureConfig, enabledFeatureOverridesInConsoleRolePermissions ]);
 
     /**
      * Handles the accordion expand event.
