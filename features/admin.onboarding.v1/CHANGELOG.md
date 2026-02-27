@@ -1,5 +1,19 @@
 # @wso2is/admin.onboarding.v1
 
+## 1.0.13
+
+### Patch Changes
+
+- Updated dependencies [[`8bf98aba6e17b25d20231894e6f21e285a00c648`](https://github.com/wso2/identity-apps/commit/8bf98aba6e17b25d20231894e6f21e285a00c648)]:
+  - @wso2is/admin.application-templates.v1@1.5.11
+  - @wso2is/admin.applications.v1@2.41.10
+  - @wso2is/admin.extensions.v1@2.40.23
+  - @wso2is/admin.branding.v1@2.32.102
+  - @wso2is/admin.core.v1@2.54.2
+  - @wso2is/admin.connections.v1@2.35.4
+  - @wso2is/admin.server-configurations.v1@2.37.12
+  - @wso2is/admin.users.v1@2.36.121
+
 ## 1.0.12
 
 ### Patch Changes
