@@ -53,7 +53,7 @@ import { ClaimAttributeOption } from "../components/claim-attribute-option";
 import { VCTemplateOffer } from "../components/vc-template-offer";
 import { VerifiableCredentialsConstants } from "../constants/verifiable-credentials";
 import { useGetVCTemplate } from "../hooks/use-get-vc-template";
-import { VCTemplateUpdateModel } from "../models/verifiable-credentials";
+import { VCTemplateClaim, VCTemplateUpdateModel } from "../models/verifiable-credentials";
 import "./vc-template-edit.scss";
 
 /**
@@ -169,8 +169,11 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
             return;
         }
 
+        const templateClaimUris: string[] = vcTemplate.claims?.map(
+            (claim: VCTemplateClaim) => claim.claimUri
+        ) || [];
         const selected: ExternalClaim[] = claimAttributes.filter((claim: ExternalClaim) =>
-            vcTemplate.claims?.includes(claim.claimURI)
+            templateClaimUris.includes(claim.claimURI)
         );
 
         setSelectedClaims(selected);
@@ -276,7 +279,11 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
         setIsSubmitting(true);
 
         const updateData: VCTemplateUpdateModel = {
-            claims: selectedClaims.map((claim: ExternalClaim) => claim.claimURI),
+            claims: selectedClaims.map((claim: ExternalClaim): VCTemplateClaim => ({
+                claimUri: claim.claimURI,
+                name: claim.claimURI,
+                type: "LOCAL"
+            })),
             displayName: values.displayName,
             expiresIn: Number(values.expiresIn),
             format: values.format || DEFAULT_VC_FORMAT
