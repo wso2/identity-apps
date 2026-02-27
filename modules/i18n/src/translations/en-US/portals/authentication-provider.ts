@@ -1081,7 +1081,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 checkboxLabel: "Override existing roles with external IDP group roles",
                 hint: "When enabled, existing roles will be replaced with new external IDP group roles during each login.",
                 label: "IDP group role synchronization method"
-            },
+            }
         },
         outboundConnectorAccordion: {
             default: {
