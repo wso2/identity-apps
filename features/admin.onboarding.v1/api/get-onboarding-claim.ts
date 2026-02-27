@@ -62,7 +62,7 @@ export const getOnboardingWizardClaim = (userId: string): Promise<boolean> => {
             || systemSchemaData?.[SHOW_ONBOARDING_WIZARD_ATTRIBUTE] === true;
         })
         .catch((error: AxiosError) => {
-            // Graceful failure: default to NOT showing the wizard
+            // Graceful failure: default to not showing the wizard
             // eslint-disable-next-line no-console
             console.warn("Failed to read onboarding wizard claim:", error);
 

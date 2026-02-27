@@ -39,10 +39,10 @@ interface UseOnboardingStatusReturn {
 /**
  * Determines whether the onboarding wizard should be shown to the current user.
  *
- * Evaluates feature flags, user type, org type, and the SCIM2
- * `showOnboardingWizard` claim. The claim is the single source of truth for
- * wizard visibility. Gates on `uuid` which is set last in the sign-in flow,
- * ensuring all Redux state is settled before evaluation.
+ * Evaluates feature flag, user type, org type, and the SCIM2
+ * `showOnboardingWizard` claim — in that order. The claim is only checked
+ * after all other prerequisites pass. Gates on `uuid` which is set last in
+ * the sign-in flow, ensuring all Redux state is settled before evaluation.
  */
 export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
     const [ shouldShowOnboarding, setShouldShowOnboarding ] = useState<boolean>(false);
