@@ -43,7 +43,6 @@ export const getOnboardingWizardClaim = (userId: string): Promise<boolean> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -58,8 +57,7 @@ export const getOnboardingWizardClaim = (userId: string): Promise<boolean> => {
             const systemSchemaData: Record<string, unknown> =
                 response?.data?.[systemSchema] as Record<string, unknown>;
 
-            return !systemSchemaData?.[SHOW_ONBOARDING_WIZARD_ATTRIBUTE]
-            || systemSchemaData?.[SHOW_ONBOARDING_WIZARD_ATTRIBUTE] === true;
+            return systemSchemaData?.[SHOW_ONBOARDING_WIZARD_ATTRIBUTE] !== false;
         })
         .catch((error: AxiosError) => {
             // Graceful failure: default to not showing the wizard
