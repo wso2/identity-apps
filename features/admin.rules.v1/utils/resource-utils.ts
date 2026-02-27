@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -42,7 +42,7 @@ export const normalizeResourceResponse = (response: any): NormalizedResourceList
         return { count: 0, items: [], totalResults: 0 };
     }
 
-    // 1. Plain array (e.g., userstores, claims)
+    // Plain array (e.g., userstores)
     if (Array.isArray(response)) {
         return {
             count: response.length,
@@ -51,7 +51,6 @@ export const normalizeResourceResponse = (response: any): NormalizedResourceList
         };
     }
 
-    // 2. SCIM format (e.g., Groups, Roles) — has "Resources" key
     if (Array.isArray(response.Resources)) {
         return {
             count: response.itemsPerPage ?? response.Resources.length,
@@ -60,7 +59,6 @@ export const normalizeResourceResponse = (response: any): NormalizedResourceList
         };
     }
 
-    // 3. Applications format (Legacy WSO2 Server API) — has "applications" key
     if (Array.isArray(response.applications)) {
         return {
             count: response.count ?? response.applications.length,
@@ -69,20 +67,5 @@ export const normalizeResourceResponse = (response: any): NormalizedResourceList
         };
     }
 
-    // ========================================================================
-    // HOW TO ADD A NEW API RESOURCE SHAPE:
-    // If a new API endpoint returns data under a different key (e.g., "devices"),
-    // simply add a new explicit block here:
-    //
-    // if (Array.isArray(response.devices)) {
-    //     return {
-    //         count: response.count ?? response.devices.length,
-    //         items: response.devices,
-    //         totalResults: response.totalResults ?? response.devices.length
-    //     };
-    // }
-    // ========================================================================
-
-    // Fallback if no known structure is matched
     return { count: 0, items: [], totalResults: 0 };
 };

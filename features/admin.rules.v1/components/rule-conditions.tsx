@@ -37,16 +37,8 @@ import { MinusIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code } from "@wso2is/react-components";
 import debounce from "lodash-es/debounce";
-import React, {
-    ChangeEvent,
-    Dispatch,
-    Fragment,
-    FunctionComponent,
-    HTMLAttributes,
-    ReactElement,
-    useEffect,
-    useState
-} from "react";
+import React, { ChangeEvent, Dispatch, Fragment, FunctionComponent, HTMLAttributes, ReactElement, useEffect,
+    useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { DropdownProps } from "semantic-ui-react";
 import useGetResourceListOrResourceDetails from "../api/use-get-resource-list-or-resource-details";
@@ -232,14 +224,10 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             ? filterBaseResourcesUrl?.replace("filter=", `filter=name+sw+${inputValueLabel}`)
             : initialResourcesLoadUrl;
 
-        const { data: initialResources = [], isLoading: isInitialLoading } = useGetResourceListOrResourceDetails(
-            initialResourcesLoadUrl,
-            shouldFetch
-        );
-        const { data: filteredResources = [], isLoading: isFiltering } = useGetResourceListOrResourceDetails(
-            filterUrl,
-            shouldFetch
-        );
+        const { data: initialResources = [], isLoading: isInitialLoading } =
+            useGetResourceListOrResourceDetails(initialResourcesLoadUrl, shouldFetch);
+        const { data: filteredResources = [], isLoading: isFiltering } =
+            useGetResourceListOrResourceDetails(filterUrl, shouldFetch);
 
         useEffect(() => {
             if (resourceDetails) {
@@ -292,22 +280,18 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 options={ [
                     ...options,
                     ...(hasMoreItems
-                        ? [
-                            {
-                                id: MORE_ITEMS,
-                                isDisabled: true,
-                                label: t("rules:fields.autocomplete.moreItemsMessage")
-                            }
-                        ]
+                        ? [ {
+                            id: MORE_ITEMS,
+                            isDisabled: true,
+                            label: t("rules:fields.autocomplete.moreItemsMessage")
+                        } ]
                         : []),
                     ...(inputValueLabel
-                        ? [
-                            {
-                                id: CLEAR_OPTION,
-                                isDisabled: false,
-                                label: t("rules:fields.autocomplete.clearFilterActionText")
-                            }
-                        ]
+                        ? [ {
+                            id: CLEAR_OPTION,
+                            isDisabled: false,
+                            label: t("rules:fields.autocomplete.clearFilterActionText")
+                        } ]
                         : [])
                 ] }
                 filterOptions={ (options: ValueInputAutocompleteOptionsInterface[]) => options }
@@ -316,7 +300,9 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 isOptionEqualToValue={ (
                     option: ValueInputAutocompleteOptionsInterface,
                     value: ValueInputAutocompleteOptionsInterface
-                ) => value?.id && option.id === value.id }
+                ) =>
+                    value?.id && option.id === value.id
+                }
                 loading={ isFiltering }
                 onChange={ (e: React.ChangeEvent, value: ResourceInterface) => {
                     if (value?.isDisabled) return; // Prevent selection of disabled option
@@ -365,7 +351,11 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 renderOption={ (props: ListItemProps, option: { label: string; id: string; isDisabled: boolean }) => {
                     if (option.id === MORE_ITEMS) {
                         return (
-                            <li { ...props } className="MuiAutocomplete-moreItemsAvailableMessage" key={ option.id }>
+                            <li
+                                { ...props }
+                                className="MuiAutocomplete-moreItemsAvailableMessage"
+                                key={ option.id }
+                            >
                                 { option.label }
                             </li>
                         );
@@ -373,7 +363,10 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
                     if (option.id === CLEAR_OPTION) {
                         return (
-                            <li { ...props } key={ option.id }>
+                            <li
+                                { ...props }
+                                key={ option.id }
+                            >
                                 <Link className="MuiAutocomplete-clearFilterLink">
                                     <TrashIcon className="icon" /> <span className="text">{ option.label }</span>
                                 </Link>
@@ -381,7 +374,11 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         );
                     }
 
-                    return <li { ...props }>{ option.label }</li>;
+                    return (
+                        <li { ...props }>
+                            { option.label }
+                        </li>
+                    );
                 } }
             />
         );
