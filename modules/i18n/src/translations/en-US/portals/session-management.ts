@@ -46,6 +46,10 @@ export const sessionManagement: SessionManagementNS = {
             label: "Maximum Session Timeout",
             placeholder: "Enter the maximum session timeout in minutes"
         },
+        preserveCurrentSessionAtPasswordUpdate: {
+            hint: "If enabled, the current session and token will NOT be terminated or revoked when the user updates their password.",
+            label: "Skip terminating current session and token on password update"
+        },
         validation: {
             idleSessionTimeout: "Idle Session Timeout should be a positive integer.",
             rememberMePeriod: "Remember Me Period should be a positive integer.",

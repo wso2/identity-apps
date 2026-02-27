@@ -1,5 +1,17 @@
 # @wso2is/admin.sms-templates.v1
 
+## 1.0.206
+
+### Patch Changes
+
+- [#9648](https://github.com/wso2/identity-apps/pull/9648) [`bc78d8089c1354c55b8a1f1399c3352f0b1eccd2`](https://github.com/wso2/identity-apps/commit/bc78d8089c1354c55b8a1f1399c3352f0b1eccd2) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix not being able to enable custom sms template edit in console UI
+
+- Updated dependencies [[`bc78d8089c1354c55b8a1f1399c3352f0b1eccd2`](https://github.com/wso2/identity-apps/commit/bc78d8089c1354c55b8a1f1399c3352f0b1eccd2), [`7ee7c85fe57835628c6f9a46490bd7898617f65b`](https://github.com/wso2/identity-apps/commit/7ee7c85fe57835628c6f9a46490bd7898617f65b)]:
+  - @wso2is/admin.core.v1@2.53.6
+  - @wso2is/i18n@2.34.0
+  - @wso2is/theme@2.9.3
+  - @wso2is/admin.branding.v1@2.32.97
+
 ## 1.0.205
 
 ### Patch Changes

@@ -1,5 +1,24 @@
 # @wso2is/identity-apps-core
 
+## 3.4.0
+
+### Minor Changes
+
+- [#9610](https://github.com/wso2/identity-apps/pull/9610) [`7ee7c85fe57835628c6f9a46490bd7898617f65b`](https://github.com/wso2/identity-apps/commit/7ee7c85fe57835628c6f9a46490bd7898617f65b) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Display TOTP masked secret
+
+### Patch Changes
+
+- [#9656](https://github.com/wso2/identity-apps/pull/9656) [`7e1acff6cead6e9d27ab6d800c33d4f5170cd245`](https://github.com/wso2/identity-apps/commit/7e1acff6cead6e9d27ab6d800c33d4f5170cd245) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix application access URL retrieval issue
+
+- Updated dependencies [[`7ee7c85fe57835628c6f9a46490bd7898617f65b`](https://github.com/wso2/identity-apps/commit/7ee7c85fe57835628c6f9a46490bd7898617f65b)]:
+  - @wso2is/theme@2.9.3
+
+## 3.3.38
+
+### Patch Changes
+
+- [#9650](https://github.com/wso2/identity-apps/pull/9650) [`59aac70ce338cd97cb82b6581637f0c481ca185a`](https://github.com/wso2/identity-apps/commit/59aac70ce338cd97cb82b6581637f0c481ca185a) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Improve permission resolving for console roles
+
 ## 3.3.37
 
 ### Patch Changes

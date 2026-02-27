@@ -25,6 +25,7 @@ export interface SessionManagementConfigFormValuesInterface {
     rememberMePeriod?: number;
     enableMaximumSessionTimeout?: boolean;
     maximumSessionTimeout?: number;
+    preserveCurrentSessionAtPasswordUpdate?: boolean;
 }
 
 /**
@@ -34,6 +35,7 @@ export interface SessionManagementConfigFormErrorValidationsInterface {
     idleSessionTimeout?: string;
     rememberMePeriod?: string;
     maximumSessionTimeout?: string;
+    preserveCurrentSessionAtPasswordUpdate?: string;
 }
 
 /**
@@ -44,6 +46,7 @@ export interface SessionManagementConfigAPIResponseInterface {
     rememberMePeriod?: string;
     enableMaximumSessionTimeoutPeriod?: boolean;
     maximumSessionTimeoutPeriod?: string;
+    preserveCurrentSessionAtPasswordUpdate?: boolean;
 }
 
 /**

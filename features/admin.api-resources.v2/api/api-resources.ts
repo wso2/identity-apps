@@ -315,17 +315,17 @@ export const createAPIResource = (
  * Delete a scope from an API resource.
  *
  * @param apiResourceId - UUID of the API resource.
- * @param deleteScopeName - Name of the scope that needs to be deleted.
+ * @param deletingScopeId - Id of the scope that needs to be deleted.
  * @returns `Promise<null | IdentityAppsApiException>`
  */
 export const deleteScopeFromAPIResource = (
     apiResourceId: string,
-    deletingScopeName: string
+    deletingScopeId: string
 ): Promise<null | IdentityAppsApiException> => {
 
     const requestConfig: AxiosRequestConfig = {
         method: HttpMethods.DELETE,
-        url: `${store.getState().config.endpoints.apiResources}/${apiResourceId}/scopes/${deletingScopeName}`
+        url: `${store.getState().config.endpoints.apiResources}/${apiResourceId}/scopes/id/${deletingScopeId}`
     };
 
     return httpClient(requestConfig)

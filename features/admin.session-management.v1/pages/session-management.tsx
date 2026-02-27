@@ -95,6 +95,8 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                 originalSessionManagementConfig.enableMaximumSessionTimeoutPeriod ?? false,
             idleSessionTimeout: parseInt(originalSessionManagementConfig.idleSessionTimeoutPeriod),
             maximumSessionTimeout: parseInt(originalSessionManagementConfig.maximumSessionTimeoutPeriod),
+            preserveCurrentSessionAtPasswordUpdate:
+                originalSessionManagementConfig.preserveCurrentSessionAtPasswordUpdate ?? false,
             rememberMePeriod: parseInt(originalSessionManagementConfig.rememberMePeriod)
         });
     }, [ originalSessionManagementConfig ]);
@@ -216,7 +218,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
             {
                 "operation": SessionManagementConstants.REPLACE_OPERATION,
                 "path": SessionManagementConstants.IDLE_SESSION_TIMEOUT_PATH,
-                "value": values.idleSessionTimeout.toString()
+                "value": values.idleSessionTimeout?.toString()
             },
             {
                 "operation": SessionManagementConstants.REPLACE_OPERATION,
@@ -232,6 +234,11 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                 "operation": SessionManagementConstants.REPLACE_OPERATION,
                 "path": SessionManagementConstants.MAXIMUM_SESSION_TIMEOUT_PATH,
                 "value": values.maximumSessionTimeout?.toString()
+            },
+            {
+                "operation": SessionManagementConstants.REPLACE_OPERATION,
+                "path": SessionManagementConstants.PRESERVE_CURRENT_SESSION_AT_PASSWORD_UPDATE_PATH,
+                "value": values.preserveCurrentSessionAtPasswordUpdate ? "true" : "false"
             }
         ];
 
@@ -266,6 +273,10 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
             {
                 "operation": SessionManagementConstants.REMOVE_OPERATION,
                 "path": SessionManagementConstants.MAXIMUM_SESSION_TIMEOUT_PATH
+            },
+            {
+                "operation": SessionManagementConstants.REMOVE_OPERATION,
+                "path": SessionManagementConstants.PRESERVE_CURRENT_SESSION_AT_PASSWORD_UPDATE_PATH
             }
         ];
 
@@ -458,6 +469,22 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                     <input />
                                                     <Label>{ t("common:minutes") }</Label>
                                                 </Field.Input>
+                                                <Divider />
+                                                <Field.Checkbox
+                                                    name="preserveCurrentSessionAtPasswordUpdate"
+                                                    label={ t("sessionManagement:form." +
+                                                        "preserveCurrentSessionAtPasswordUpdate.label") }
+                                                    hint={ t("sessionManagement:form." +
+                                                        "preserveCurrentSessionAtPasswordUpdate.hint") }
+                                                    initialValue={
+                                                        sessionManagementConfig?.preserveCurrentSessionAtPasswordUpdate
+                                                    }
+                                                    readOnly={ isSubOrganization() || !hasConnectorUpdatePermission }
+                                                    width={ 16 }
+                                                    data-componentid={
+                                                        `${ componentId }-preserve-current-session-at-password-update` }
+                                                    ariaLabel="Preserve Current Session at Password Update Checkbox"
+                                                />
                                                 {
                                                     !isSubOrganization() && hasConnectorUpdatePermission && (
                                                         <Field.Button

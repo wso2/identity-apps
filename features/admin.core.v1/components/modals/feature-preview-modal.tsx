@@ -34,31 +34,30 @@ import ListItemText from "@oxygen-ui/react/ListItemText";
 import Stack from "@oxygen-ui/react/Stack";
 import Switch from "@oxygen-ui/react/Switch";
 import Typography from "@oxygen-ui/react/Typography";
+import { useRequiredScopes } from "@wso2is/access-control";
+import { updateCDSConfig } from "@wso2is/admin.cds.v1/api/config";
+import useCDSConfig from "@wso2is/admin.cds.v1/hooks/use-config";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import updateFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/update-flow-config";
 import useGetFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-config";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import NewCDSFeatureImage from "../../assets/illustrations/preview-features/new-cds-feature.png";
 import NewSelfRegistrationImage from "../../assets/illustrations/preview-features/new-self-registration.png";
 import { AppConstants } from "../../constants/app-constants";
-import "./feature-preview-modal.scss";
 import { history } from "../../helpers/history";
+import { AppState } from "../../store";
+import "./feature-preview-modal.scss";
 
+/** Added or removed as a system application when CDS is toggled. */
+const CDS_CONSOLE_APP:string = "CONSOLE";
 
-/**
- * Feature preview modal component props interface. {@link FeaturePreviewModal}
- */
 interface FeaturePreviewModalPropsInterface extends IdentifiableComponentInterface {
-    /**
-     * Modal open state.
-     */
     open: boolean;
-
-    /**
-     * Modal close callback
-     */
     onClose: () => void;
 }
 
@@ -105,9 +104,12 @@ interface PreviewFeaturesListInterface {
      * Feature value.
      */
     value: string;
+
     /**
-     * Feature message.
+     * Required scopes to access the feature. If not provided, the feature will be accessible to all users.
      */
+    requiredScopes?: string[];
+
     message?: {
         type: "info" | "warning" | "error";
         content: string;
@@ -127,43 +129,90 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
 }: FeaturePreviewModalPropsInterface): ReactElement => {
 
     const { t } = useTranslation();
-
+    const dispatch: any = useDispatch();
     const { selectedPreviewFeatureToShow } = useFeatureGate();
 
+    const loginAndRegistrationFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.loginAndRegistration
+    );
+    const cdsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.customerDataService
+    );
+
     const {
-        data: registrationFlowConfig, mutate:
-        mutateRegistrationFlowConfig
+        data: registrationFlowConfig,
+        mutate: mutateRegistrationFlowConfig
     } = useGetFlowConfig(FlowTypes.REGISTRATION);
 
-    {/* TODO: Get this from an Organization Preferences API */}
+    const {
+        data: cdsConfig,
+        mutate: mutateCDSConfig
+    } = useCDSConfig();
+
+    const hasSelfRegScopes: boolean = useRequiredScopes(
+        loginAndRegistrationFeatureConfig?.scopes?.update
+    );
+
+    const hasCDSScopes: boolean = useRequiredScopes(
+        cdsFeatureConfig?.scopes?.update
+    );
+
+
     const previewFeaturesList: PreviewFeaturesListInterface[] = useMemo(() => ([
         {
             action: "Try Flow Composer",
-            description: "This feature enables you to customize the user self-registration flow and " +
+            description:
+                "This feature enables you to customize the user self-registration flow and " +
                 "secure your user onboarding experience with multiple authentication methods and verification steps.",
             enabled: registrationFlowConfig?.isEnabled,
             id: "self-registration-orchestration",
             image: NewSelfRegistrationImage,
             message: {
-                content: "Once this feature is enabled, existing self-registration flow configurations will be " +
+                content:
+                    "Once this feature is enabled, existing self-registration flow configurations will be " +
                     "changed. So, update your settings accordingly.",
                 type: "warning" as const
             },
             name: "Self-Registration Orchestration",
+            requiredScopes: loginAndRegistrationFeatureConfig?.scopes?.update,
             value: "SelfRegistration.EnableDynamicPortal"
+        },
+        {
+            action: t("customerDataService:common.featurePreview.action"),
+            description: t("customerDataService:common.featurePreview.description"),
+            enabled: cdsConfig?.cds_enabled,
+            id: "customer-data-service",
+            image: NewCDSFeatureImage,
+            message: {
+                content: t("customerDataService:common.featurePreview.message"),
+                type: "warning" as const
+            },
+            name: t("customerDataService:common.featurePreview.name"),
+            requiredScopes: cdsFeatureConfig?.scopes?.update,
+            value: "CDS.Enable"
         }
-    ].filter(Boolean)), [
-        registrationFlowConfig
-    ]);
+    ].filter(Boolean)), [ registrationFlowConfig, cdsConfig, loginAndRegistrationFeatureConfig, cdsFeatureConfig, t ]);
+
+    const accessibleFeatures: PreviewFeaturesListInterface[] = useMemo(() => (
+        previewFeaturesList.filter((feature: PreviewFeaturesListInterface) => {
+            if (feature.id === "self-registration-orchestration") return hasSelfRegScopes;
+            if (feature.id === "customer-data-service") {
+                return hasCDSScopes && !!cdsFeatureConfig?.enabled;
+            }
+
+            return true;
+        })
+    ), [ previewFeaturesList, hasSelfRegScopes, hasCDSScopes ]);
 
     const [ selectedFeatureIndex, setSelectedFeatureIndex ] = useState(0);
 
-    const selected: PreviewFeaturesListInterface = useMemo(() => {
-        return previewFeaturesList[selectedFeatureIndex];
-    }, [ selectedFeatureIndex, previewFeaturesList ]);
+    const selected: PreviewFeaturesListInterface = useMemo(
+        () => accessibleFeatures[selectedFeatureIndex],
+        [ selectedFeatureIndex, accessibleFeatures ]
+    );
 
     useEffect(() => {
-        const activePreviewFeatureIndex: number = previewFeaturesList.findIndex(
+        const activePreviewFeatureIndex: number = accessibleFeatures.findIndex(
             (feature: PreviewFeaturesListInterface) => feature?.id === selectedPreviewFeatureToShow
         );
 
@@ -179,24 +228,66 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
             case "self-registration-orchestration":
                 return history.push(AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER"));
             case "customer-data-service":
-                return history.push(AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER"));
+                return history.push(AppConstants.getPaths().get("PROFILES"));
             default:
                 return;
         }
     };
 
     const handleToggleChange = async (e: ChangeEvent<HTMLInputElement>, actionId: string) => {
+        const isChecked: boolean = e.target.checked;
+
         switch (actionId) {
             case "self-registration-orchestration":
                 await updateFlowConfig({
                     flowType: FlowTypes.REGISTRATION,
-                    isEnabled: e.target.checked
+                    isEnabled: isChecked
                 });
                 mutateRegistrationFlowConfig();
 
                 break;
+            case "customer-data-service":
+                await handleCDSToggle(isChecked);
+
+                break;
+
             default:
                 break;
+        }
+    };
+
+    /**
+     * Handles CDS enable/disable via PATCH.
+     *
+     * Enabling  → set cds_enabled: true; if system_applications is empty, seed it with ["CONSOLE"].
+     * Disabling → set cds_enabled: false; remove "CONSOLE" from system_applications (leave others intact).
+     */
+    const handleCDSToggle = async (enable: boolean): Promise<void> => {
+        const currentApps: string[] = cdsConfig?.system_applications ?? [];
+
+        let nextApps: string[];
+
+        if (enable) {
+            nextApps = currentApps.length === 0
+                ? [ CDS_CONSOLE_APP ]
+                : currentApps;
+        } else {
+            nextApps = currentApps.filter((app: string) => app !== CDS_CONSOLE_APP);
+        }
+
+        try {
+            await updateCDSConfig({
+                cds_enabled: enable,
+                system_applications: nextApps
+            });
+
+            mutateCDSConfig();
+        } catch (error) {
+            dispatch(addAlert({
+                description: t("customerDataService:common.featurePreview.updateError"),
+                level: AlertLevels.ERROR,
+                message: t("common:error")
+            }));
         }
     };
 
@@ -205,10 +296,10 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
             onClose={ handleClose }
             open={ open }
             data-componentid={ componentId }
-            maxWidth={ (previewFeaturesList?.length) > 1 ? "lg" : "md" }
+            maxWidth={ accessibleFeatures?.length > 1 ? "lg" : "md" }
             className="preview-features-modal"
         >
-            { (previewFeaturesList?.length > 1)
+            { accessibleFeatures?.length > 1
                 ? <DialogTitle>{ t("Feature Preview") }</DialogTitle>
                 : (
                     <DialogTitle>
@@ -224,21 +315,22 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                                         checked={ selected?.enabled }
                                     />
                                 ) }
-                                label={ selected?.enabled ?
-                                    t("common:enabled") : t("common:disabled") }
+                                label={ selected?.enabled ? t("common:enabled") : t("common:disabled") }
                                 labelPlacement="start"
                             />
                         </Stack>
                     </DialogTitle>
                 )
             }
+
             <DialogContent className="add-feature-preview-modal-content" dividers>
                 <Container sx={ { mt: 4 } }>
                     <Grid container spacing={ 2 }>
-                        { (previewFeaturesList?.length > 1) && (
+
+                        { accessibleFeatures?.length > 1 && (
                             <Grid xs={ 4 }>
                                 <List style={ { padding: "0" } }>
-                                    { previewFeaturesList?.map((item: PreviewFeaturesListInterface, index: number) => (
+                                    { accessibleFeatures?.map((item: PreviewFeaturesListInterface, index: number) => (
                                         <ListItem key={ item.name } disablePadding>
                                             <Card className="preview-feature-menu-card">
                                                 <ListItemButton
@@ -254,68 +346,64 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                             </Grid>
                         ) }
 
-                        <Grid xs={ (previewFeaturesList?.length) > 1 ? 8 : 12 }>
-                            {
-                                (previewFeaturesList?.length > 1) && (
-                                    <Stack
-                                        direction="row"
-                                        justifyContent="space-between"
-                                        sx={ { alignItems: "center", marginBottom: "20px" } }
-                                    >
-                                        <Typography variant="h6">{ selected?.name }</Typography>
-                                        <FormControlLabel
-                                            control={ (
-                                                <Switch
-                                                    onChange={
-                                                        (e: ChangeEvent<HTMLInputElement>) =>
-                                                            handleToggleChange(e, selected?.id)
-                                                    }
-                                                    value={ selected?.value }
-                                                    checked={ selected?.enabled }
-                                                />
-                                            ) }
-                                            label={ selected?.enabled ?
-                                                t("common:enabled") : t("common:disabled") }
-                                            labelPlacement="start"
-                                        />
-                                    </Stack>
-                                )
-                            }
+                        <Grid xs={ accessibleFeatures?.length > 1 ? 8 : 12 }>
+                            { accessibleFeatures?.length > 1 && (
+                                <Stack
+                                    direction="row"
+                                    justifyContent="space-between"
+                                    sx={ { alignItems: "center", marginBottom: "20px" } }
+                                >
+                                    <Typography variant="h6">{ selected?.name }</Typography>
+                                    <FormControlLabel
+                                        control={ (
+                                            <Switch
+                                                onChange={
+                                                    (e: ChangeEvent<HTMLInputElement>) =>
+                                                        handleToggleChange(e, selected?.id)
+                                                }
+                                                value={ selected?.value }
+                                                checked={ selected?.enabled }
+                                            />
+                                        ) }
+                                        label={ selected?.enabled ? t("common:enabled") : t("common:disabled") }
+                                        labelPlacement="start"
+                                    />
+                                </Stack>
+                            ) }
+
                             <div>
                                 <p>{ selected?.description }</p>
                             </div>
+
                             { selected?.message?.type && selected?.message?.content && (
                                 <Alert severity={ selected?.message?.type } sx={ { marginTop: "10px" } }>
                                     { selected?.message?.content }
                                 </Alert>
                             ) }
 
-                            { selected?.image &&
-                                (
-                                    <img
-                                        src={ selected.image }
-                                        style={ { marginBottom: "20px", marginTop: "20px", width: "100%" } }
-                                    />
-                                )
-                            }
+                            { selected?.image && (
+                                <img
+                                    src={ selected.image }
+                                    style={ { marginBottom: "20px", marginTop: "20px", width: "100%" } }
+                                />
+                            ) }
+
                             { selected?.component && selected?.component }
-                            {
-                                previewFeaturesList?.length > 1 && selected?.enabled &&
-                                 (
-                                     <Stack direction="row" justifyContent="flex-end">
-                                         <Button
-                                             onClick={ () => {
-                                                 handleClose();
-                                                 handlePageRedirection(selected?.id);
-                                             } }
-                                             color="primary"
-                                             variant="contained"
-                                         >
-                                             { selected?.action || "Try it out" }
-                                         </Button>
-                                     </Stack>
-                                 )
-                            }
+
+                            { accessibleFeatures?.length > 1 && selected?.enabled && (
+                                <Stack direction="row" justifyContent="flex-end">
+                                    <Button
+                                        onClick={ () => {
+                                            handleClose();
+                                            handlePageRedirection(selected?.id);
+                                        } }
+                                        color="primary"
+                                        variant="contained"
+                                    >
+                                        { selected?.action || "Try it out" }
+                                    </Button>
+                                </Stack>
+                            ) }
                         </Grid>
                     </Grid>
                 </Container>
@@ -326,20 +414,18 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                         <Button onClick={ handleClose } color="primary">
                             { t("common:close") }
                         </Button>
-                        {
-                            previewFeaturesList?.length === 1 && selected?.enabled && (
-                                <Button
-                                    onClick={ () => {
-                                        handleClose();
-                                        handlePageRedirection(selected?.id);
-                                    } }
-                                    color="primary"
-                                    variant="contained"
-                                >
-                                    { selected?.action || "Try it out" }
-                                </Button>
-                            )
-                        }
+                        { accessibleFeatures?.length === 1 && selected?.enabled && (
+                            <Button
+                                onClick={ () => {
+                                    handleClose();
+                                    handlePageRedirection(selected?.id);
+                                } }
+                                color="primary"
+                                variant="contained"
+                            >
+                                { selected?.action || "Try it out" }
+                            </Button>
+                        ) }
                     </Stack>
                 </Box>
             </DialogActions>

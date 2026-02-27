@@ -232,8 +232,13 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                     : [];
 
                 const emails: unknown[] = Array.isArray(value) ? (value as unknown[]) : [];
+                // Handle both formats: string (old) or object with primary: true (new)
                 const primaryEmail: string = emails.find(
-                    (email: unknown): email is string => typeof email === "string");
+                    (email: unknown): email is string => typeof email === "string"
+                ) || emails.find(
+                    (email: unknown): email is { primary: boolean; value: string } =>
+                        typeof email === "object" && email !== null && (email as any).primary === true
+                )?.value;
 
                 if (isMultipleEmailAndMobileNumberEnabled && isEmpty(emailAddresses)) {
                     if (primaryEmail) {
@@ -395,8 +400,13 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                          * }
                          * ```
                          */
+                        // Handle both formats: string (old) or object with primary: true (new)
                         const primaryEmail: string = (preparedInitialValues[schemaNameParts[0]] as unknown[])?.find(
-                            (email: unknown): email is string => typeof email === "string");
+                            (email: unknown): email is string => typeof email === "string"
+                        ) || (preparedInitialValues[schemaNameParts[0]] as unknown[])?.find(
+                            (email: unknown): email is { primary: boolean; value: string } =>
+                                typeof email === "object" && email !== null && (email as any).primary === true
+                        )?.value;
 
                         _flattenedInitialValues[schemaNameParts[0]] = primaryEmail;
                     }

@@ -25,6 +25,7 @@ import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/s
 import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -37,6 +38,10 @@ import { Dispatch } from "redux";
 import { Placeholder, Ref } from "semantic-ui-react";
 import { getConnectorCategories, getConnectorCategory } from "../api/governance-connectors";
 import GovernanceConnectorCategoriesGrid from "../components/governance-connector-grid";
+import {
+    GovernanceConnectorConstants,
+    GovernanceConnectorFeatureDictionaryKeys
+} from "../constants/governance-connector-constants";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorOverrideConfig,
@@ -95,6 +100,12 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     const hasResidentOutboundProvisioningFeaturePermission: boolean = useRequiredScopes(
         featureConfig?.residentOutboundProvisioning?.scopes?.feature
     );
+    const isSubOrgResidentOutboundProvisioningEnabled: boolean = isFeatureEnabled(
+        featureConfig?.residentOutboundProvisioning,
+        GovernanceConnectorConstants.featureDictionary[
+            GovernanceConnectorFeatureDictionaryKeys.SUB_ORG_RESIDENT_OUTBOUND_PROVISIONING
+        ]
+    );
     const hasInternalNotificationSendingReadPermission: boolean = useRequiredScopes(
         [
             ...featureConfig?.internalNotificationSending?.scopes?.feature ?? [],
@@ -110,7 +121,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         const refinedConnectorCategories: Array<any> = [];
 
         const isResidentOutboundProvisioningEnabled: boolean = featureConfig?.residentOutboundProvisioning?.enabled
-            && hasResidentOutboundProvisioningFeaturePermission;
+            && hasResidentOutboundProvisioningFeaturePermission
+            && (isSubOrganization() ? isSubOrgResidentOutboundProvisioningEnabled : true);
 
         const isConfiguringInternalNotificationSendingEnabled: boolean = featureConfig?.
             internalNotificationSending?.enabled
@@ -154,7 +166,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         }
 
         return refinedConnectorCategories;
-    }, [ featureConfig, UIConfig, allowedScopes ]);
+    }, [ featureConfig, UIConfig, allowedScopes, isSubOrgResidentOutboundProvisioningEnabled ]);
 
     const [
         dynamicConnectorCategories,

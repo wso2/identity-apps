@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,7 +24,8 @@ export enum ConnectionsFeatureDictionaryKeys {
     SAMLArtifactBinding = "CONNECTIONS_SAML_ARTIFACT_BINDING",
     SAMLAttributeConsumingServiceIndex = "CONNECTIONS_SAML_ATTRIBUTE_CONSUMING_SERVICE_INDEX",
     LocalEmailOTPAuthenticator = "CONNECTIONS_LOCAL_EMAIL_OTP_AUTHENTICATOR",
-    LocalSMSOTPAuthenticator = "CONNECTIONS_LOCAL_SMS_OTP_AUTHENTICATOR"
+    LocalSMSOTPAuthenticator = "CONNECTIONS_LOCAL_SMS_OTP_AUTHENTICATOR",
+    OutboundProvisioningConnectionV2 = "CONNECTIONS_OUTBOUND_PROVISIONING_CONNECTION_V2"
 }
 
 /**
@@ -56,6 +57,7 @@ export class CommonAuthenticatorConstants {
         MICROSOFT: string;
         OIDC: string;
         ORGANIZATION_ENTERPRISE_IDP: string;
+        OUTBOUND_PROVISIONING_CONNECTION: string;
         SAML: string;
         SIGNICAT: string;
         SWE: string;
@@ -77,6 +79,7 @@ export class CommonAuthenticatorConstants {
             MICROSOFT: "microsoft-idp",
             OIDC: "enterprise-oidc-idp",
             ORGANIZATION_ENTERPRISE_IDP: "organization-enterprise-idp",
+            OUTBOUND_PROVISIONING_CONNECTION: "outbound-provisioning-connection",
             SAML: "enterprise-saml-idp",
             SIGNICAT: "signicat",
             SWE: "swe-idp",
@@ -123,6 +126,8 @@ export class CommonAuthenticatorConstants {
         [ ConnectionsFeatureDictionaryKeys.SAMLAttributeConsumingServiceIndex,
             "identityProviders.saml.attributeConsumingServiceIndex" ],
         [ ConnectionsFeatureDictionaryKeys.LocalEmailOTPAuthenticator, "authenticators.local.emailOTP" ],
-        [ ConnectionsFeatureDictionaryKeys.LocalSMSOTPAuthenticator, "authenticators.local.smsOTP" ]
+        [ ConnectionsFeatureDictionaryKeys.LocalSMSOTPAuthenticator, "authenticators.local.smsOTP" ],
+        [ ConnectionsFeatureDictionaryKeys.OutboundProvisioningConnectionV2,
+            "identityProviders.outboundProvisioningConnectionV2" ]
     ]);
 }

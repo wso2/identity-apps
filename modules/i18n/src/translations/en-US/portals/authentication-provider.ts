@@ -1093,6 +1093,15 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 content: "Add Role"
             }
         },
+        outboundProvisioningGroups: {
+            heading: "Outbound Provisioning Groups",
+            hint: "Select groups to automatically provision users when they are added, and deprovision them when they are removed.",
+            label: "Group",
+            placeHolder: "Select Group",
+            popup: {
+                content: "Add Group"
+            }
+        },
         roleMapping: {
             heading: "Role Mapping",
             hint: "Map local roles with the Identity Provider roles",
@@ -2219,6 +2228,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
             header: "Fill the basic information about the provisioning connector.",
             steps: {
                 connectorConfiguration: {
+                    configureTitle: "Configure {{connectorName}} Connector",
                     title: "Connector Details"
                 },
                 connectorSelection: {
@@ -2226,6 +2236,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
                         subTitle: "Select the type of the new outbound provisioning connector",
                         title: "Connector Types"
                     },
+                    subTitle: "Select an outbound provisioning connector",
                     title: "Connector selection"
                 },
                 summary: {

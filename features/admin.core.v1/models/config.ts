@@ -450,19 +450,26 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     hiddenAuthenticators?: string[];
     /**
-     * Set of first factor authenticators available in application login flow builder.
-     * If not configured, falls back to default first factor authenticators.
+     * Set of custom first factor authenticator names available in application login flow builder.
+     * Merged with the default first factor authenticators list.
+     * When merging, both the name and the ID (encoded name) of the authenticators are added to the list.
      */
-    loginFlowFirstFactorAuthenticators?: string[];
+    loginFlowCustomFirstFactorAuthenticators?: string[];
     /**
-     * Set of second factor authenticators available in application login flow builder.
-     * If not configured, falls back to default second factor authenticators.
+     * Set of custom second factor only authenticator names available in application login flow builder.
+     * Merged with the default second factor authenticators list.
+     * When merging, both the name and the ID (encoded name) of the authenticators are added to the list.
      */
-    loginFlowSecondFactorAuthenticators?: string[];
+    loginFlowCustomSecondFactorAuthenticators?: string[];
     /**
      * Set of connections to be hidden.
      */
     hiddenConnectionTemplates?: string[];
+    /**
+     * Set of outbound provisioning connectors to be hidden.
+     * Use connector names (e.g., "googleapps", "salesforce", "scim").
+     */
+    hiddenOutboundProvisioningConnectors?: string[];
     /**
      * Set of application templates to be hidden.
      * Include the IDs of application templates.
@@ -528,6 +535,14 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Enable/Disable custom email template feature
      */
     enableCustomEmailTemplates: boolean;
+    /**
+     * Enable/Disable blocking outbound provisioning feature.
+     */
+    enableBlockingOutboundProvisioning?: boolean;
+    /**
+     * Enable/Disable custom SMS template feature
+     */
+    enableCustomSmsTemplates: boolean;
     /**
      * Enable signature validation certificate alias.
      */

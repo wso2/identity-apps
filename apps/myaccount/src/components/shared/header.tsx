@@ -375,14 +375,37 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     };
 
     const resolveEmail = (): string => {
-        let email: string = profileInfo?.email ?? profileInfo?.emails[profileInfo.emails.length - 1];
 
-        if (email === resolveUsername()) {
-            // When both the username and email are the same, the email is not shown.
-            email = "";
+        const username: string = resolveUsername();
+
+        if (profileInfo?.emails?.length > 0) {
+
+            const emails: any[] = profileInfo.emails as any[];
+
+            // Look for primary email first
+            const primaryEmail: any = emails.find((email: any) => email?.primary === true);
+
+            if (primaryEmail?.value && primaryEmail.value !== username) {
+                return primaryEmail.value;
+            }
+
+            // Look for string type email.
+            for (const email of emails) {
+                if (typeof email === "string" && email && email !== username) {
+                    return email;
+                }
+            }
+
+            // Fallback to first email
+            for (const email of emails) {
+                if (email?.value && email.value !== username) {
+                    return email.value;
+                }
+            }
+
         }
 
-        return email;
+        return "";
     };
 
     return (

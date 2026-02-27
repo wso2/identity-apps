@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms";
 import { GenericIcon, Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
@@ -30,7 +30,8 @@ import {
 /**
  * Interface for the outbound provisioning connectors props.
  */
-interface OutboundProvisioningConnectorsPropsInterface extends TestableComponentInterface {
+interface OutboundProvisioningConnectorsPropsInterface extends TestableComponentInterface,
+    IdentifiableComponentInterface {
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
     initialSelection: string;
@@ -46,7 +47,8 @@ export const OutboundProvisioningConnectors: FunctionComponent<OutboundProvision
         onSubmit,
         triggerSubmit,
         connectorList,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        [ "data-componentid" ]: componentId = "outbound-provisioning-connectors"
     } = props;
 
     const { t } = useTranslation();
@@ -110,6 +112,7 @@ export const OutboundProvisioningConnectors: FunctionComponent<OutboundProvision
                             }
                             size="small"
                             data-testid={ `${ testId }-connector-${ index }` }
+                            data-componentid={ `${ componentId }-connector-${ index }` }
                         >
                             <Card.Content className="p-4">
                                 <GenericIcon

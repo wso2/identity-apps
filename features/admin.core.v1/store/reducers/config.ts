@@ -235,6 +235,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 defaultWhiteLogoUrl: ""
             },
             enableCustomEmailTemplates: undefined,
+            enableCustomSmsTemplates: undefined,
             enableLegacySessionBoundTokenBehaviour: false,
             enableOldUIForEmailProvider: undefined,
             features: {
@@ -266,6 +267,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             },
             hiddenAuthenticators: [],
             hiddenConnectionTemplates: [],
+            hiddenOutboundProvisioningConnectors: [],
             hiddenUserStores: [],
             i18nConfigs: null,
             identityProviderTemplates: {

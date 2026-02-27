@@ -45,23 +45,27 @@ export interface ProfileSchemaListingRow {
  * - application_data.<name>   (no appId in name)
  */
 export const SCOPE_CONFIG: Record<SchemaListingScope, {
-  label: string;
-  prefix: string;
-  order: number;
-  supportsSubAttributes: boolean;
-  readOnlyName: boolean;
-  allowValueTypeEdit: boolean;
-  allowMergeStrategyEdit: boolean;
-  allowMutabilityEdit: boolean;
-  allowMultiValuedEdit: boolean;
+    allowMergeStrategyEdit: boolean;
+    allowMultiValuedEdit: boolean;
+    allowMutabilityEdit: boolean;
+    allowValueTypeEdit: boolean;
+    backgroundColor?: string;
+    chipColor?: string;
+    label: string;
+    order: number;
+    prefix: string;
+    readOnlyName: boolean;
+    supportsSubAttributes: boolean;
 }> = {
     application_data: {
         allowMergeStrategyEdit: true,
         allowMultiValuedEdit: true,
         allowMutabilityEdit: true,
         allowValueTypeEdit: true,
+        backgroundColor: "#ede7f6",
+        chipColor: "#5e35b1",
         label: "Application Data",
-        order: 3,
+        order: 1,
         prefix: "application_data.",
         readOnlyName: true,
         supportsSubAttributes: true
@@ -71,7 +75,7 @@ export const SCOPE_CONFIG: Record<SchemaListingScope, {
         allowMultiValuedEdit: false,
         allowMutabilityEdit: false,
         allowValueTypeEdit: false,
-        label: "Core",
+        label: "",
         order: 0,
         prefix: "",
         readOnlyName: true,
@@ -82,8 +86,10 @@ export const SCOPE_CONFIG: Record<SchemaListingScope, {
         allowMultiValuedEdit: false,
         allowMutabilityEdit: false,
         allowValueTypeEdit: false,
+        backgroundColor: "#00796b",
+        chipColor: "#00796b",
         label: "Identity Attributes",
-        order: 1,
+        order: 3,
         prefix: "identity_attributes.",
         readOnlyName: true,
         supportsSubAttributes: false
@@ -93,50 +99,12 @@ export const SCOPE_CONFIG: Record<SchemaListingScope, {
         allowMultiValuedEdit: true,
         allowMutabilityEdit: true,
         allowValueTypeEdit: true,
+        backgroundColor: "#dcf0fa",
+        chipColor: "#0082c3",
         label: "Traits",
         order: 2,
         prefix: "traits.",
         readOnlyName: true,
         supportsSubAttributes: true
     }
-};
-
-export const getScopeLabel = (scope: SchemaListingScope): string =>
-    SCOPE_CONFIG[scope]?.label ?? scope;
-
-export const getScopeOrder = (scope: SchemaListingScope): number =>
-    SCOPE_CONFIG[scope]?.order ?? 999;
-
-export const stripScopePrefix = (scope: SchemaListingScope, attributeName: string): string => {
-    const prefix:string = SCOPE_CONFIG[scope]?.prefix ?? "";
-
-    if (!attributeName) return "";
-
-    return prefix && attributeName.startsWith(prefix) ? attributeName.slice(prefix.length) : attributeName;
-};
-
-export const getDisplayNameFromAttributeName = (scope: SchemaListingScope, attributeName: string): string => {
-    const stripped:string = stripScopePrefix(scope, attributeName);
-
-    return stripped.split(".").pop() || stripped;
-};
-
-export const toListingRow = (
-    scope: SchemaListingScope,
-    attr: { attribute_id?: string; attribute_name: string; application_identifier?: string; }
-): ProfileSchemaListingRow => {
-
-    const displayName:string = getDisplayNameFromAttributeName(scope, attr.attribute_name);
-
-    return {
-        attribute_id: attr.attribute_id,
-        attribute_name: attr.attribute_name,
-        belongs_to: scope === "application_data" ? (attr.application_identifier ?? "") : undefined,
-        chip_label: scope === "core" ? undefined : getScopeLabel(scope),
-        deletable: scope === "traits" || scope === "application_data",
-        display_name: displayName,
-        editable: scope !== "core",
-        id: `${scope}:${attr.attribute_id ?? attr.attribute_name}`,
-        scope
-    };
 };

@@ -16,17 +16,35 @@
  * under the License.
  */
 
-import type { FilterAttributeOption, ProfileSchemaAttribute } from "../models/profile-attributes";
+import { ProfileSchemaListingRow, SCOPE_CONFIG, SchemaListingScope } from "../models/profile-attribute-listing";
+import type {
+    FilterAttributeOption, ProfileSchemaAttribute, ProfileSchemaFullResponse
+} from "../models/profile-attributes";
 
 /**
- * Transform schema attributes to dropdown options for AdvancedSearch component
+ * Returns the attribute name relative to its scope prefix.
  *
- * @param scope - The schema scope (identity_attributes, traits, application_data)
- * @param attributes - Array of profile schema attributes
- * @returns Array of dropdown options with label, value, key, and scope
+ * Examples:
+ *   ("identity_attributes", "identity_attributes.address.street") → "address.street"
+ *   ("traits",              "traits.nickname")                     → "nickname"
+ *   ("application_data",   "application_data.app1.email")         → "app1.email"
  *
- * @example
- * const options = toAttributeDropdownOptions("identity_attributes", attributes);
+ * If the name does not start with the expected prefix it is returned as-is,
+ * so the function is safe to call even on already-stripped names.
+ */
+const relativeName = (scope: string, attributeName: string): string => {
+    if (!attributeName) return "";
+    const prefix: string = `${scope}.`;
+
+    return attributeName.startsWith(prefix) ? attributeName.slice(prefix.length) : attributeName;
+};
+
+const rowId = (scope: SchemaListingScope, attributeName: string, attributeId?: string): string =>
+    attributeId ? `${scope}:${attributeId}` : `${scope}:${attributeName}`;
+
+
+/**
+ * Transform schema attributes to dropdown options for AdvancedSearch component.
  */
 export const toAttributeDropdownOptions = (
     scope: string,
@@ -36,14 +54,13 @@ export const toAttributeDropdownOptions = (
     return (attributes ?? []).map((attr: ProfileSchemaAttribute) => {
         const fullName: string = attr.attribute_name ?? "";
 
-        const stripLeadingScope = (name: string, s: string): string =>
-            name.startsWith(`${s}.`) ? name.slice(s.length + 1) : name;
-
         if (scope === "application_data") {
             // Expected format: application_data.<appId>.<field...>
-            const parts: string[] = fullName.split(".");
-            const appId: string = parts.length > 1 ? parts[1] : "";
-            const fieldPath: string = parts.length > 2 ? parts.slice(2).join(".") : "";
+            // Strip the leading "application_data." prefix then split off the appId.
+            const relative: string = relativeName(scope, fullName);
+            const dotIndex: number = relative.indexOf(".");
+            const appId: string = dotIndex > -1 ? relative.slice(0, dotIndex) : relative;
+            const fieldPath: string = dotIndex > -1 ? relative.slice(dotIndex + 1) : "";
 
             return {
                 applicationId: appId,
@@ -54,9 +71,8 @@ export const toAttributeDropdownOptions = (
             };
         }
 
-        // For identity_attributes / traits:
-        // Keep nested/complex attributes, only remove the leading scope prefix
-        const displayName: string = stripLeadingScope(fullName, scope);
+        // identity_attributes / traits: preserve nested path, just strip the scope prefix.
+        const displayName: string = relativeName(scope, fullName);
 
         return {
             key: fullName,
@@ -73,4 +89,142 @@ export const getPropertyScope = (propertyName: string): string => {
     if (propertyName?.startsWith("traits.")) return "Trait";
 
     return "Default";
+};
+
+export const getScopeLabel = (scope: SchemaListingScope): string =>
+    SCOPE_CONFIG[scope]?.label ?? scope;
+
+export const getScopeOrder = (scope: SchemaListingScope): number =>
+    SCOPE_CONFIG[scope]?.order ?? 999;
+
+export const stripScopePrefix = (scope: SchemaListingScope, attributeName: string): string => {
+    const prefix: string = SCOPE_CONFIG[scope]?.prefix ?? "";
+
+    if (!attributeName) return "";
+
+    return prefix && attributeName.startsWith(prefix) ? attributeName.slice(prefix.length) : attributeName;
+};
+
+/**
+ * Returns the display name for an attribute relative to its scope prefix.
+ * Replaces the previous `lastSegment` behaviour so that nested attributes
+ * like `address.street` are shown in full rather than just `street`.
+ */
+export const getDisplayNameFromAttributeName = (scope: SchemaListingScope, attributeName: string): string =>
+    relativeName(scope, attributeName) || attributeName;
+
+/**
+ * Single-attribute convenience factory used by external callers.
+ */
+export const toListingRow = (
+    scope: SchemaListingScope,
+    attr: { attribute_id?: string; attribute_name: string; application_identifier?: string; }
+): ProfileSchemaListingRow => {
+
+    const displayName: string = getDisplayNameFromAttributeName(scope, attr.attribute_name);
+
+    return {
+        attribute_id: attr.attribute_id,
+        attribute_name: attr.attribute_name,
+        belongs_to: scope === "application_data" ? (attr.application_identifier ?? "") : undefined,
+        chip_label: scope === "core" ? undefined : getScopeLabel(scope),
+        deletable: scope === "traits" || scope === "application_data",
+        display_name: displayName,
+        editable: scope !== "core",
+        id: `${scope}:${attr.attribute_id ?? attr.attribute_name}`,
+        scope
+    };
+};
+
+/**
+ * Transforms a full schema response into a flat list of listing rows.
+ *
+ * display_name is now the attribute name relative to its scope prefix, so
+ * nested attributes like `identity_attributes.address.street` are shown as
+ * `address.street` rather than just `street`.
+ */
+export const toProfileSchemaListingRows = (schema: ProfileSchemaFullResponse): ProfileSchemaListingRow[] => {
+    const rows: ProfileSchemaListingRow[] = [];
+
+    // ── core ─────────────────────────────────────────────────────────────────
+    // No chip, no belongs_to, no delete, no edit.
+    rows.push({
+        attribute_name: "profile_id",
+        deletable: false,
+        display_name: "profile_id",
+        editable: false,
+        id: rowId("core", "profile_id"),
+        scope: "core"
+    });
+
+    rows.push({
+        attribute_name: "user_id",
+        deletable: false,
+        display_name: "user_id",
+        editable: false,
+        id: rowId("core", "user_id"),
+        scope: "core"
+    });
+
+    // ── identity_attributes ──────────────────────────────────────────────────
+    // Chip shown, deletion not allowed.
+    (schema.identity_attributes ?? []).forEach((a: ProfileSchemaAttribute) => {
+        rows.push({
+            attribute_id: a.attribute_id,
+            attribute_name: a.attribute_name,
+            chip_label: getScopeLabel("identity_attributes"),
+            deletable: false,
+            display_name: relativeName("identity_attributes", a.attribute_name),
+            editable: true,
+            id: rowId("identity_attributes", a.attribute_name, a.attribute_id),
+            scope: "identity_attributes"
+        });
+    });
+
+    // ── traits ───────────────────────────────────────────────────────────────
+    // Chip shown, deletion allowed.
+    (schema.traits ?? []).forEach((a: ProfileSchemaAttribute) => {
+        const name: string = a.attribute_name ?? "";
+
+        rows.push({
+            attribute_id: a.attribute_id,
+            attribute_name: name,
+            chip_label: getScopeLabel("traits"),
+            deletable: true,
+            display_name: relativeName("traits", name),
+            editable: true,
+            id: rowId("traits", name, a.attribute_id),
+            scope: "traits"
+        });
+    });
+
+    // ── application_data ─────────────────────────────────────────────────────
+    const appData: Record<string, ProfileSchemaAttribute[]> = schema.application_data ?? {};
+
+    Object.entries(appData).forEach(([ appId, attrs ]: [ string, ProfileSchemaAttribute[] ]) => {
+        (attrs ?? []).forEach((a: ProfileSchemaAttribute) => {
+            const fullName: string = a.attribute_name ?? "";
+            // relativeName strips "application_data." → "<appId>.<field...>"
+            // We then strip the appId segment to get just the field path.
+            const withoutScope: string = relativeName("application_data", fullName);
+            const appPrefix: string = `${appId}.`;
+            const fieldPath: string = withoutScope.startsWith(appPrefix)
+                ? withoutScope.slice(appPrefix.length)
+                : withoutScope;
+
+            rows.push({
+                attribute_id: a.attribute_id,
+                attribute_name: fullName,
+                belongs_to: appId,
+                chip_label: getScopeLabel("application_data"),
+                deletable: true,
+                display_name: fieldPath || fullName,
+                editable: true,
+                id: rowId("application_data", fullName, a.attribute_id),
+                scope: "application_data"
+            });
+        });
+    });
+
+    return rows;
 };

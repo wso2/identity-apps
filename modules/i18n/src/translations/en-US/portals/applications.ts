@@ -2189,6 +2189,20 @@ export const applications: ApplicationsNS = {
                             hint: "Select the allowed hybrid flow response type."
                         }
                     }
+                },
+                applicationTokenIssuer: {
+                    heading: "Application Token Issuer",
+                    fields: {
+                        tokenIssuer: {
+                            label: "Token Issuer",
+                            placeholder: "Select a token issuer for the application",
+                            hint: "Select the token issuer for this application. " +
+                                "This token issuer will be used in the access tokens " +
+                                "issued for this application.",
+                            loading: "Loading token issuers...",
+                            organization: "Organization"
+                        }
+                    }
                 }
             }
         },
@@ -2590,10 +2604,10 @@ export const applications: ApplicationsNS = {
                     }
                 },
                 idp: {
-                    label: "Identity Provider",
-                    placeholder: "Select identity provider",
+                    label: "Provisioning Connection",
+                    placeholder: "Select provisioning connection",
                     validations: {
-                        empty: "It is mandatory to select an IDP."
+                        empty: "It is mandatory to select a provisioning connection."
                     }
                 },
                 jit: {
@@ -3501,10 +3515,10 @@ export const applications: ApplicationsNS = {
                 form: {
                     fields: {
                         connection: {
-                            label: "Connection",
-                            placeholder: "Select connection",
+                            label: "Provisioning Connection",
+                            placeholder: "Select provisioning connection",
                             validations: {
-                                empty: "It is mandatory to select connection."
+                                empty: "It is mandatory to select a provisioning connection."
                             }
                         }
                     }

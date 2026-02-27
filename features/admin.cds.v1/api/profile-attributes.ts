@@ -35,6 +35,32 @@ const httpClient: HttpClientInstance =
     AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
+ * POST /profile-schema/`{scope}`
+ *
+ * Creates one or more new attributes under the given scope.
+ * Works for both `traits` and `application_data` scopes.
+ *
+ * @param scope - The profile schema scope to create attributes under.
+ * @param attributes - Array of attribute definitions to create.
+ * @returns The created `ProfileSchemaAttribute` records.
+ */
+export const createSchemaAttributes = async (
+    scope: ProfileSchemaScope,
+    attributes: Array<Partial<ProfileSchemaAttribute>>
+): Promise<ProfileSchemaAttribute[]> => {
+    const requestConfig: RequestConfigInterface = {
+        data: attributes,
+        headers: { "Content-Type": "application/json" },
+        method: HttpMethods.POST,
+        url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}`
+    };
+
+    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
+
+    return Array.isArray(response.data) ? (response.data as ProfileSchemaAttribute[]) : [];
+};
+
+/**
  * GET /profile-schema/`{scope}`
  *
  * If application_data comes as a map, this function flattens it and injects application_identifier.
@@ -85,18 +111,18 @@ export const fetchProfileSchemaByScope = async (
 };
 
 /**
- * PATCH /profile-schema/`{scope}`/`{id}`
- * Only send what changed.
+ * PUT /profile-schema/`{scope}`/`{id}`
+ * Replace the attribute with the given payload.
  */
 export const updateSchemaAttributeById = async (
     scope: SchemaListingScope,
     id: string,
-    patch: Partial<ProfileSchemaAttribute>
+    payload: Partial<ProfileSchemaAttribute>
 ): Promise<void> => {
     const requestConfig: RequestConfigInterface = {
-        data: patch,
+        data: payload,
         headers: { "Content-Type": "application/json" },
-        method: HttpMethods.PATCH,
+        method: HttpMethods.PUT,
         url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}/${id}`
     };
 
@@ -117,42 +143,4 @@ export const deleteSchemaAttributeById = async (
     };
 
     await httpClient(requestConfig);
-};
-
-/**
- * Search for sub-attributes of a complex attribute
- */
-export const searchSubAttributes = async (
-    scope: SchemaListingScope,
-    attributeName: string
-): Promise<ProfileSchemaAttribute[]> => {
-
-    const SCOPE_TRAITS: string = "traits";
-    const SCOPE_APPLICATION_DATA: string = "application_data";
-
-    const scopePrefix: string =
-        scope === SCOPE_TRAITS
-            ? "traits."
-            : scope === SCOPE_APPLICATION_DATA
-                ? "application_data."
-                : "";
-
-    const baseAttrName: string = attributeName.startsWith(scopePrefix)
-        ? attributeName.substring(scopePrefix.length)
-        : attributeName;
-
-    const searchPrefix: string = `${scopePrefix}${baseAttrName}.`;
-    const filter: string = `attribute_name+co+${searchPrefix}`;
-
-    const requestConfig: RequestConfigInterface = {
-        headers: { "Content-Type": "application/json" },
-        method: HttpMethods.GET,
-        params: { filter },
-        url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}`
-    };
-
-    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
-    const data: any = response.data;
-
-    return Array.isArray(data) ? (data as ProfileSchemaAttribute[]) : [];
 };

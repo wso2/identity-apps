@@ -55,6 +55,15 @@ export interface FapiMetaDataInterface {
 }
 
 /**
+ * Allowed issuer interface for token endpoints.
+ */
+export interface AllowedIssuerInterface {
+    value: string;
+    organizationId: string;
+    tenantDomain: string;
+}
+
+/**
  * OIDC related metadata.
  */
 export interface OIDCMetadataInterface {
@@ -80,6 +89,7 @@ export interface OIDCMetadataInterface {
     subjectType?: MetadataPropertyInterface;
     tlsClientAuthSubjectDn?: string;
     fapiMetadata?: FapiMetaDataInterface;
+    allowedIssuers?: AllowedIssuerInterface[];
 }
 
 export enum State {
@@ -197,6 +207,7 @@ export interface OIDCDataInterface {
     subject?: SubjectConfigInterface;
     isFAPIApplication?: boolean;
     hybridFlow?: HybridFlowConfigurationInterface;
+    issuer?: AllowedIssuerInterface;
 }
 
 /**
