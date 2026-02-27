@@ -420,10 +420,10 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             expressionField !== "claim" && !!expressionValue && !!detailBaseUrl && needsDetailFetch;
         const detailsUrl: string = shouldFetchDetails ? `${detailBaseUrl}/${expressionValue}` : null;
 
-        const { data: fetchedResourcesList, isLoading: isResourcesListLoading } = useGetResourceListOrResourceDetails(
-            initialResourcesLoadUrl,
-            true
-        );
+        const {
+            data: fetchedResourcesList,
+            isLoading: isResourcesListLoading
+        } = useGetResourceListOrResourceDetails(initialResourcesLoadUrl, true);
 
         const {
             data: resourcesDetails,
@@ -468,17 +468,15 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                  * @param claimsList - List of claims.
                  * @returns - Filtered claims list.
                  */
-                const filterOutRoleClaimAttribute = (
-                    claimsList: ValueInputAutocompleteOptionsInterface[]
-                ): ValueInputAutocompleteOptionsInterface[] => {
+                const filterOutRoleClaimAttribute = (claimsList: ValueInputAutocompleteOptionsInterface[]):
+                ValueInputAutocompleteOptionsInterface[] => {
                     const excludedClaims: Set<string> = new Set([
                         "http://wso2.org/claims/roles",
                         "http://wso2.org/claims/applicationRoles"
                     ]);
 
-                    return claimsList?.filter(
-                        (claim: ValueInputAutocompleteOptionsInterface) => !excludedClaims.has(claim?.id)
-                    );
+                    return claimsList?.filter((claim: ValueInputAutocompleteOptionsInterface) =>
+                        !excludedClaims.has(claim?.id));
                 };
 
                 const claimList: ValueInputAutocompleteOptionsInterface[] = filterOutRoleClaimAttribute(sortedClaims);
@@ -547,15 +545,16 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         }
                     } }
                     options={ claimList }
-                    getOptionLabel={ (claim: DropdownProps) => claim?.label }
-                    isOptionEqualToValue={ (
-                        option: ValueInputAutocompleteOptionsInterface,
-                        value: ValueInputAutocompleteOptionsInterface
-                    ) => value?.id && option.id === value.id }
-                    renderOption={ (
-                        props: HTMLAttributes<HTMLLIElement>,
-                        option: ValueInputAutocompleteOptionsInterface
-                    ) => (
+                    getOptionLabel={ (claim: DropdownProps) =>
+                        claim?.label
+                    }
+                    isOptionEqualToValue={
+                        (option: ValueInputAutocompleteOptionsInterface,
+                            value: ValueInputAutocompleteOptionsInterface) =>
+                            value?.id && option.id === value.id
+                    }
+                    renderOption={ (props: HTMLAttributes<HTMLLIElement>,
+                        option: ValueInputAutocompleteOptionsInterface) => (
                         <li { ...props } key={ option.id }>
                             <div className="multiline">
                                 <div>{ option?.label }</div>
@@ -741,24 +740,22 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             );
                         } }
                     >
-                        { metaValue.values
-                            ?.filter((item: ListDataInterface) => !hiddenValues.includes(item.name))
-                            .map((item: ListDataInterface, index: number) => (
-                                <MenuItem value={ item.name } key={ `${expressionId}-${index}` }>
-                                    { item.displayName }
-                                </MenuItem>
-                            )) }
+                        { metaValue.values?.filter((item: ListDataInterface) =>
+                            !hiddenValues.includes(item.name)
+                        ).map((item: ListDataInterface, index: number) => (
+                            <MenuItem value={ item.name } key={ `${expressionId}-${index}` }>
+                                { item.displayName }
+                            </MenuItem>
+                        )) }
                     </Select>
                 );
             }
 
             if (metaValue?.links?.length >= 1) {
                 const initialResourcesLoadUrl: string = metaValue?.links.find(
-                    (link: LinkInterface) => link.rel === "values"
-                )?.href;
+                    (link: LinkInterface) => link.rel === "values")?.href;
                 const filterBaseResourcesUrl: string = metaValue?.links.find(
-                    (link: LinkInterface) => link.rel === "filter"
-                )?.href;
+                    (link: LinkInterface) => link.rel === "filter")?.href;
 
                 if (initialResourcesLoadUrl) {
                     return (
