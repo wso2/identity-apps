@@ -309,10 +309,12 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
             attributeSyncMethod: values?.get(
                 JITProvisioningConstants.ATTRIBUTE_SYNC_METHOD
             ) ?? initialValues?.attributeSyncMethod,
-            idpGroupSyncMethod: values.get(JITProvisioningConstants.IDP_GROUP_SYNC_METHOD)
-                ?.includes(JITProvisioningConstants.IDP_GROUP_SYNC_METHOD)
-                ? SupportedIdpGroupSyncMethods.OVERRIDE_ALL
-                : SupportedIdpGroupSyncMethods.MERGE_WITH_EXISTING,
+            idpGroupSyncMethod: values.get(JITProvisioningConstants.IDP_GROUP_SYNC_METHOD) !== undefined
+                ? (values.get(JITProvisioningConstants.IDP_GROUP_SYNC_METHOD)
+                    ?.includes(JITProvisioningConstants.IDP_GROUP_SYNC_METHOD)
+                    ? SupportedIdpGroupSyncMethods.OVERRIDE_ALL
+                    : SupportedIdpGroupSyncMethods.MERGE_WITH_EXISTING)
+                : initialValues?.idpGroupSyncMethod,
             isEnabled: values.get(
                 JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY
             ).includes(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY) ?? initialValues?.isEnabled,
@@ -636,7 +638,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                         value: JITProvisioningConstants.IDP_GROUP_SYNC_METHOD
                                     } ] }
                                     disabled={ !isJITProvisioningEnabled }
-                                    data-testid={ `${ testId }-idp-group-sync-method` }
+                                    data-componentid={ `${ testId }-idp-group-sync-method` }
                                     readOnly={ isReadOnly }
                                 />
                                 <Hint>
