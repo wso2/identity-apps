@@ -66,6 +66,14 @@ export const consoleSettings: ConsoleSettingsNS = {
             view: "View"
         }
     },
+    enterpriseLogin: {
+        banner: {
+            action: "Contact Us",
+            description: "Reach out to us to configure enterprise login for your console setup.",
+            title: "Configure Enterprise Login"
+        },
+        tabLabel: "Enterprise Login"
+    },
     sharedAccess: {
         description: "Select the following options to share the application roles with the organizations.",
         sharingRolesTakeTimeMessage: "Sharing roles may take sometime to reflect across the organization.",

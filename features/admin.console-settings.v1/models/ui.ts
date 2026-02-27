@@ -39,7 +39,11 @@ export enum ConsoleSettingsModes {
     /**
      * Shared access tab mode.
      */
-    SHARED_ACCESS = "shared-access"
+    SHARED_ACCESS = "shared-access",
+    /**
+     * Enterprise login tab mode.
+     */
+    ENTERPRISE_LOGIN = "enterprise-login"
 }
 
 /**
@@ -65,5 +69,9 @@ export enum ConsoleSettingsTabIDs {
     /**
      * Shared access tab ID.
      */
-    SHARED_ACCESS = 4
+    SHARED_ACCESS = 4,
+    /**
+     * Enterprise login tab ID.
+     */
+    ENTERPRISE_LOGIN = 5
 }
