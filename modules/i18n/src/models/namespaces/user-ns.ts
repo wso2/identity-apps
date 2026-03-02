@@ -142,6 +142,7 @@ export interface userNS {
                 allRolesAndOrgsSharingMessage: string;
                 allUserRolesSharingMessage: string;
                 noRolesAndOrgsSharingMessage: string;
+                roleAvailabilityInfo: string;
                 shareUserWithFutureChildOrgs: string;
                 shareTypeSwitchModal: {
                     description: string;

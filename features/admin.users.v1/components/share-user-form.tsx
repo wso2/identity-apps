@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import Button from "@oxygen-ui/react/Button";
 import FormControl from "@oxygen-ui/react/FormControl";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
@@ -1460,6 +1461,9 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                             transition={ { duration: 0.3 } }
                                             className="ml-5"
                                         >
+                                            <Alert severity="info" className="mb-3">
+                                                { t("user:editUser.sections.sharedAccess.roleAvailabilityInfo") }
+                                            </Alert>
                                             <div className="role-share-all-container">
                                                 <RolesShareWithAll
                                                     user={ user }

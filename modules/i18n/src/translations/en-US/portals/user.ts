@@ -154,6 +154,7 @@ export const user: userNS = {
                         }
                     }
                 },
+                roleAvailabilityInfo: "Only roles that are already available in the child organizations will be assigned to the shared user.",
                 searchAvailableRolesPlaceholder: "Search available roles",
                 shareAllRoles: "Assign all roles",
                 shareAllUser: "Share user with all organizations",
