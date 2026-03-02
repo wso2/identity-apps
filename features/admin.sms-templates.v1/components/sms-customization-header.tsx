@@ -26,7 +26,7 @@ import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { DropdownItemProps, DropdownProps, Grid, Header, Segment } from "semantic-ui-react";
+import { Grid, Header, Segment } from "semantic-ui-react";
 import { SMSTemplateType } from "../models/sms-templates";
 import "./sms-customization-header.scss";
 
@@ -63,17 +63,17 @@ interface SMSCustomizationHeaderProps extends IdentifiableComponentInterface {
      * Callback to be called when the locale is change
      * @param locale - selected locale for template
      */
-    onLocaleChanged: (localeOption: DropdownProps) => void;
+    onLocaleChanged: (localeOption: LocaleOption | null) => void;
 }
 
-type LocaleOption = DropdownChild & {
+export type LocaleOption = DropdownChild & {
     name: string;
 };
 
 type LocaleOptionList = LocaleOption[];
 
 /**
- * Email customization header.
+ * SMS customization header.
  *
  * @param props - Props injected to the component.
  *
@@ -122,7 +122,7 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
 
         const localeList: LocaleOption[] = [];
 
-        Object.keys(supportedI18nLanguages).map((key: string) => {
+        Object.keys(supportedI18nLanguages).forEach((key: string) => {
             localeList.push({
                 key: supportedI18nLanguages[key].code,
                 name: `${ supportedI18nLanguages[key].name }, ${ supportedI18nLanguages[key].code }`,
@@ -141,7 +141,7 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
 
     return (
         <Segment
-            className="mb-4 p-4"
+            className="mb-4 p-4 sms-customization-header"
             data-componentid={ componentId }
             padded={ "very" }
         >
@@ -156,7 +156,7 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
                         computer={ 8 }
                     >
                         <Field.Dropdown
-                            ariaLabel="Email Template Dropdown"
+                            ariaLabel="SMS Template Dropdown"
                             name="selectedSMSTemplate"
                             label={ t("extensions:develop.smsTemplates.form.inputs.template.label") }
                             options={ smsTemplateListOptions }
@@ -185,7 +185,7 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
                                 defaultValue={ selectedLocale }
                                 value={ selectedLocale }
                                 listen={ (localeValue: string) =>
-                                    onLocaleChanged({ value: localeValue } as DropdownProps)
+                                    onLocaleChanged({ value: localeValue } as unknown as LocaleOption)
                                 }
                             />
                         ) : (
@@ -213,18 +213,18 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
                                 } }
                                 data-componentid={ `${componentId}-api` }
                                 isOptionEqualToValue={
-                                    (option: DropdownItemProps, value: DropdownItemProps) =>
+                                    (option: LocaleOption, value: LocaleOption) =>
                                         option.value === value.value
                                 }
-                                getOptionLabel={ (option: DropdownItemProps) => {
+                                getOptionLabel={ (option: LocaleOption) => {
                                     return option?.name;
                                 } }
                                 options={ localeList }
                                 onChange={ (
                                     _event: SyntheticEvent<HTMLElement>,
-                                    data: DropdownProps
+                                    localeOption: LocaleOption | null
                                 ) => {
-                                    onLocaleChanged(data);
+                                    onLocaleChanged(localeOption);
                                 } }
                                 noOptionsText={ t("common:noResultsFound") }
                                 renderInput={ (params: AutocompleteRenderInputParams) => {
@@ -232,32 +232,27 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
                                     return (
                                         <TextField
                                             { ...params }
-                                            label="Locale"
+                                            label={ t("smsTemplates:form.inputs.locale.label") }
                                             required
-                                            placeholder="Select Locale"
+                                            placeholder={ t("smsTemplates:form.inputs.locale.placeholder") }
                                             size="small"
                                             variant="outlined"
                                         />
                                     );
                                 } }
-                                renderOption={ (props: any, localeOption: any) => {
+                                renderOption={ (props: React.ComponentProps<"li">, localeOption: LocaleOption) => {
                                     return (
-                                        <div { ...props }>
+                                        <li { ...props }>
                                             <Header.Content>
                                                 { localeOption.text }
                                             </Header.Content>
-                                        </div>
+                                        </li>
                                     );
                                 } }
                                 key="locale"
-                                defaultValue={ {
-                                    code: "en-US",
-                                    flag: "us",
-                                    name: "English (United States), en-US"
-                                } }
                                 value={ localeList.find(
                                     (locale: LocaleOption) => locale.value === selectedLocale
-                                ) }
+                                ) ?? null }
                             />
                         ) }
                     </Grid.Column>

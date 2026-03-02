@@ -232,7 +232,7 @@ export class CommonUtils {
      *
      * @returns List of locale objects.
      */
-    public static getLocaleList() {
+    public static getLocaleList(): typeof locales {
         return locales;
     }
 

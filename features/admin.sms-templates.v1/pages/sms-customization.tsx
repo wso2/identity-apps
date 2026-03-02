@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { SelectChangeEvent } from "@mui/material";
 import Card from "@oxygen-ui/react/Card";
 import Grid from "@oxygen-ui/react/Grid";
 import Typography from "@oxygen-ui/react/Typography";
@@ -45,12 +44,11 @@ import useGetSmsTemplate from "../api/use-get-sms-template";
 import useGetSmsTemplatesList from "../api/use-get-sms-templates-list";
 import SMSCustomizationFooter from "../components/sms-customization-footer";
 import SMSCustomizationForm from "../components/sms-customization-form";
-import SMSCustomizationHeader from "../components/sms-customization-header";
+import SMSCustomizationHeader, { LocaleOption } from "../components/sms-customization-header";
 import SMSTemplatePreview from "../components/sms-template-preview";
 import { SMSTemplateConstants } from "../constants/sms-template-constants";
 import { SMSTemplate, SMSTemplateType } from "../models/sms-templates";
 import "./sms-customization.scss";
-import { DropdownProps } from "semantic-ui-react";
 
 type SMSCustomizationPageInterface = IdentifiableComponentInterface;
 
@@ -232,14 +230,15 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         setIsTemplateNotAvailable(false);
     };
 
-    const handleLocaleChange = (localeOption: DropdownProps): void => {
+    const handleLocaleChange = (localeOption: LocaleOption | null): void => {
+        const safeLocale: string = (localeOption?.value as string) ?? selectedLocale;
 
         setShouldFetch(false);
         setCurrentSmsTemplate({ ...selectedSmsTemplate });
         setIsTemplateNotAvailable(true);
         setIsSystemTemplate(false);
         setIsInheritedTemplate(false);
-        setSelectedLocale(localeOption?.value as string);
+        setSelectedLocale(safeLocale);
         setShouldFetch(true);
     };
 

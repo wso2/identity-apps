@@ -26,7 +26,7 @@ import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { DropdownItemProps, DropdownProps, Grid, Header, Segment } from "semantic-ui-react";
+import { Grid, Header, Segment } from "semantic-ui-react";
 import { EmailTemplateType } from "../models";
 import "./email-customization-header.scss";
 
@@ -63,12 +63,12 @@ interface EmailCustomizationHeaderProps extends IdentifiableComponentInterface {
      * Callback to be called when the locale is change
      * @param locale - selected locale for template
      */
-    onLocaleChanged: (localeOption: DropdownProps) => void;
+    onLocaleChanged: (localeOption: LocaleOption | null | undefined) => void;
 }
 
-type LocaleOptionList = DropdownChild & {
+export type LocaleOption = DropdownChild & {
     name: string;
-}[];
+};
 
 /**
  * Email customization header.
@@ -90,7 +90,7 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
     const { t } = useTranslation();
 
     const [ localeList, setLocaleList ] =
-        useState<LocaleOptionList[]>([]);
+        useState<LocaleOption[]>([]);
 
     const enableLegacyLocaleDropdown: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.enableLegacyLocaleDropdown
@@ -118,9 +118,9 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
             return;
         }
 
-        const localeList: LocaleOptionList[] = [];
+        const localeList: LocaleOption[] = [];
 
-        Object.keys(supportedI18nLanguages).map((key: string) => {
+        Object.keys(supportedI18nLanguages).forEach((key: string) => {
             localeList.push({
                 key: supportedI18nLanguages[key].code,
                 name: `${ supportedI18nLanguages[key].name }, ${ supportedI18nLanguages[key].code }`,
@@ -139,7 +139,7 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
 
     return (
         <Segment
-            className="mb-4 p-4"
+            className="mb-4 p-4 email-customization-header"
             data-componentid={ componentId }
             padded={ "very" }
         >
@@ -183,7 +183,7 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
                                 defaultValue={ selectedLocale }
                                 value={ selectedLocale }
                                 listen={ (localeValue: string) =>
-                                    onLocaleChanged({ value: localeValue } as DropdownProps)
+                                    onLocaleChanged({ value: localeValue } as unknown as LocaleOption)
                                 }
                             />
                         ) : (
@@ -211,18 +211,18 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
                                 } }
                                 data-componentid={ `${componentId}-api` }
                                 isOptionEqualToValue={
-                                    (option: DropdownItemProps, value: DropdownItemProps) =>
+                                    (option: LocaleOption, value: LocaleOption) =>
                                         option.value === value.value
                                 }
-                                getOptionLabel={ (option: DropdownItemProps) => {
+                                getOptionLabel={ (option: LocaleOption) => {
                                     return option?.name;
                                 } }
                                 options={ localeList }
                                 onChange={ (
                                     _event: SyntheticEvent<HTMLElement>,
-                                    data: DropdownProps
+                                    localeOption: LocaleOption | null
                                 ) => {
-                                    onLocaleChanged(data);
+                                    onLocaleChanged(localeOption);
                                 } }
                                 noOptionsText={ t("common:noResultsFound") }
                                 renderInput={ (params: AutocompleteRenderInputParams) => {
@@ -230,32 +230,29 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
                                     return (
                                         <TextField
                                             { ...params }
-                                            label="Locale"
+                                            label={ t("extensions:develop.emailTemplates.form.inputs.locale.label") }
                                             required
-                                            placeholder="Select Locale"
+                                            placeholder={
+                                                t("extensions:develop.emailTemplates.form.inputs.locale.placeholder")
+                                            }
                                             size="small"
                                             variant="outlined"
                                         />
                                     );
                                 } }
-                                renderOption={ (props: any, localeOption: any) => {
+                                renderOption={ (props: React.ComponentProps<"li">, localeOption: LocaleOption) => {
                                     return (
-                                        <div { ...props }>
+                                        <li { ...props }>
                                             <Header.Content>
                                                 { localeOption.text }
                                             </Header.Content>
-                                        </div>
+                                        </li>
                                     );
                                 } }
                                 key="locale"
-                                defaultValue={ {
-                                    code: "en-US",
-                                    flag: "us",
-                                    name: "English (United States), en-US"
-                                } }
                                 value={ localeList.find(
-                                    (locale: LocaleOptionList) => locale.value === selectedLocale
-                                ) }
+                                    (locale: LocaleOption) => locale.value === selectedLocale
+                                ) ?? null }
                             />
                         ) }
                     </Grid.Column>

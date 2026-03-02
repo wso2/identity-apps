@@ -16,10 +16,12 @@
  * under the License.
  */
 
-.MuiFormControl-root {
-    .MuiInputBase-root {
-        input {
-            border: none !important;
+.sms-customization-header {
+    .MuiFormControl-root {
+        .MuiInputBase-root {
+            input {
+                border: none;
+            }
         }
     }
 }

@@ -44,7 +44,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownProps, TabProps } from "semantic-ui-react";
+import { TabProps } from "semantic-ui-react";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import {
     createNewEmailTemplate,
@@ -55,7 +55,7 @@ import {
 } from "../api";
 import { EmailCustomizationForm, EmailTemplatePreview } from "../components";
 import EmailCustomizationFooter from "../components/email-customization-footer";
-import EmailCustomizationHeader from "../components/email-customization-header";
+import EmailCustomizationHeader, { LocaleOption } from "../components/email-customization-header";
 import { EmailManagementConstants } from "../constants/email-management-constants";
 import { EmailTemplate, EmailTemplateType } from "../models";
 
@@ -297,12 +297,14 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         setSelectedEmailTemplate({ ...selectedEmailTemplate, ...updatedTemplateAttributes });
     };
 
-    const handleLocaleChange = (localeOption: DropdownProps) => {
+    const handleLocaleChange = (localeOption: LocaleOption | null | undefined): void => {
+        const safeLocale: string = (localeOption?.value as string) ?? selectedLocale;
+
         setCurrentEmailTemplate({ ...selectedEmailTemplate });
         setIsTemplateNotAvailable(false);
         setIsSystemTemplate(false);
         setIsInheritedTemplate(false);
-        setSelectedLocale(localeOption?.value as string);
+        setSelectedLocale(safeLocale);
     };
 
     const handleSubmit = () => {
