@@ -277,6 +277,11 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 open={ open }
                 onOpen={ () => setOpen(true) }
                 onClose={ () => setOpen(false) }
+                componentsProps={ {
+                    popper: {
+                        style: { zIndex: 9999 }
+                    }
+                } }
                 options={ [
                     ...options,
                     ...(hasMoreItems
