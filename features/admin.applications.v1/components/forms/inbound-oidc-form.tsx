@@ -1159,10 +1159,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             );
         }
 
-        if (value === ApplicationManagementConstants.CIBA_GRANT) {
-            return t("applications:forms.inboundOIDC.fields.grant.children.ciba.label");
-        }
-
         return label;
     };
 
