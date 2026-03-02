@@ -430,6 +430,7 @@ export class Config {
                 window["AppUtils"]?.getConfig()?.ui?.enableBlockingOutboundProvisioning,
             enableCustomEmailTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.enableCustomEmailTemplates,
             enableCustomSmsTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.enableCustomSmsTemplates,
+            enableLegacyLocaleDropdown: window[ "AppUtils" ]?.getConfig()?.ui?.enableLegacyLocaleDropdown ?? false,
             enableEmailDomain: window[ "AppUtils" ]?.getConfig()?.ui?.enableEmailDomain ?? false,
             enableIdentityClaims: window[ "AppUtils" ]?.getConfig()?.ui?.enableIdentityClaims ?? true,
             enableLegacySessionBoundTokenBehaviour:

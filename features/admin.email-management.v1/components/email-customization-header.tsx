@@ -96,7 +96,6 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
         (state: AppState) => state?.config?.ui?.enableLegacyLocaleDropdown
     );
 
-    console.log("enableLegacyLocaleDropdown: ", enableLegacyLocaleDropdown);
     const supportedI18nLanguagesFromStore: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
     );
