@@ -20,6 +20,7 @@ import Box from "@oxygen-ui/react/Box";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Grid from "@oxygen-ui/react/Grid";
 import Typography from "@oxygen-ui/react/Typography";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -54,14 +55,15 @@ const TenantGrid: FunctionComponent<TenantGridProps> = ({
         tenantListLimit,
         setTenantListLimit,
         isInitialRenderingComplete,
-        searchQuery
+        searchQuery,
+        accumulatedTenants
     } = useTenants();
 
     /**
      * Handles the load more action in the infinite scroll component.
      */
     const handleLoadMore = (): void => {
-        setTenantListLimit((prevLimit: number) => prevLimit + 10);
+        setTenantListLimit((prevLimit: number) => prevLimit + UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT);
     };
 
     const resolveHasMore = (): boolean => {
@@ -83,7 +85,7 @@ const TenantGrid: FunctionComponent<TenantGridProps> = ({
     return (
         <div className="tenant-grid">
             <InfiniteScroll
-                dataLength={ tenantList?.totalResults ?? 0 }
+                dataLength={ accumulatedTenants?.length ?? 0 }
                 next={ handleLoadMore }
                 hasMore={ resolveHasMore() }
                 loader={
@@ -106,7 +108,7 @@ const TenantGrid: FunctionComponent<TenantGridProps> = ({
                     data-componentid={ componentId }
                     onAddTenantModalTrigger={ onAddTenantModalTrigger }
                 >
-                    { tenantList?.tenants?.map((tenant: Tenant) => (
+                    { accumulatedTenants?.map((tenant: Tenant) => (
                         <Grid key={ tenant.id } xs={ 12 } sm={ 12 } md={ 6 } lg={ 4 } xl={ 3 }>
                             <TenantCard tenant={ tenant } />
                         </Grid>

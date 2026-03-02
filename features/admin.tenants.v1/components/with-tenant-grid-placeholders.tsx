@@ -67,7 +67,8 @@ const WithTenantGridPlaceholders: FunctionComponent<WithTenantGridPlaceholdersPr
         tenantList,
         isTenantListLoading,
         setSearchQueryClearTrigger,
-        searchQueryClearTrigger
+        searchQueryClearTrigger,
+        accumulatedTenants
     } = useTenants();
 
     const tenantFeatureConfig: FeatureAccessConfigInterface = useSelector(
@@ -181,9 +182,13 @@ const WithTenantGridPlaceholders: FunctionComponent<WithTenantGridPlaceholdersPr
         );
     }
 
-    // Sometimes, `tenants` array is undefined but `totalResults` is available.
-    // TODO: Tracker: https://github.com/wso2/product-is/issues/21459
-    if (!tenantList?.tenants || tenantList?.totalResults <= 0) {
+    // For search queries, use tenantList?.tenants to check if there are results
+    // For infinite scroll, use accumulatedTenants to check if there are any tenants loaded
+    const hasLoadedTenants: boolean = searchQuery
+        ? (tenantList?.tenants && tenantList.tenants.length > 0)
+        : (accumulatedTenants && accumulatedTenants.length > 0);
+
+    if (!hasLoadedTenants) {
         return <Box className="with-tenant-grid-placeholders">{ showPlaceholders() }</Box>;
     }
 
@@ -192,12 +197,12 @@ const WithTenantGridPlaceholders: FunctionComponent<WithTenantGridPlaceholdersPr
             <Typography
                 align="right"
                 className={ classNames("tenants-grid-display-count", {
-                    hidden: !isTenantListLoading && tenantList?.tenants?.length > 0 && searchQuery
+                    hidden: !isTenantListLoading && hasLoadedTenants && searchQuery
                 }) }
                 variant="body2"
             >
                 { t("tenants:listing.count", {
-                    results: tenantList?.tenants?.length,
+                    results: searchQuery ? tenantList?.tenants?.length : accumulatedTenants?.length,
                     totalResults: tenantList?.totalResults
                 }) }
             </Typography>
