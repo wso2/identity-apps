@@ -422,6 +422,34 @@ describe("CommonUtils", () => {
 
     });
 
+    describe("getLocaleList", () => {
+
+        it("should return a non-empty locale list", () => {
+
+            const locales: ReturnType<typeof CommonUtils.getLocaleList> = CommonUtils.getLocaleList();
+
+            expect(locales).toBeDefined();
+
+            expect(Object.keys(locales).length).toBeGreaterThan(0);
+
+        });
+
+        it("should return locale entries with expected properties", () => {
+
+            const locales: ReturnType<typeof CommonUtils.getLocaleList> = CommonUtils.getLocaleList();
+
+            const firstLocale: (typeof locales)[keyof typeof locales] = Object.values(locales)[0];
+
+            expect(firstLocale).toHaveProperty("code");
+
+            expect(firstLocale).toHaveProperty("flag");
+
+            expect(firstLocale).toHaveProperty("name");
+
+        });
+
+    });
+
     describe("scrollToTarget", () => {
 
         let mockElement: Element;
