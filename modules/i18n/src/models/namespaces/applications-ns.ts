@@ -1460,10 +1460,6 @@ export interface ApplicationsNS {
                 };
                 grant: {
                     children: {
-                        ciba: {
-                            hint: string;
-                            label: string;
-                        };
                         client_credential: {
                             hint: string;
                             label: string;

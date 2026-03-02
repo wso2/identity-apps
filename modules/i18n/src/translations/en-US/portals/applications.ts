@@ -1714,10 +1714,6 @@ export const applications: ApplicationsNS = {
                 },
                 grant: {
                     children: {
-                        ciba: {
-                            label: "Client Initiated Backchannel Authentication",
-                            hint: "Allow clients to initiate authentication flow without user interaction on the consumption device."
-                        },
                         client_credential: {
                             hint: "This grant type does not support the 'openid' scope.",
                             label: "(openid scope not allowed)"
