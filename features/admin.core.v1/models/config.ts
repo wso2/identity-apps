@@ -544,6 +544,12 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     enableCustomSmsTemplates: boolean;
     /**
+     * Enable/Disable the legacy locale dropdown (using supported i18n languages from store)
+     * in email and SMS template edit pages. When true, the old dropdown is shown instead of
+     * the new autocomplete input that lists all locales.
+     */
+    enableLegacyLocaleDropdown?: boolean;
+    /**
      * List of features to be enabled in console role permissions, even if the feature is disabled
      * in the feature config. This is to allow certain features to be assignable in console roles,
      * even if they are not generally available for use in the console.

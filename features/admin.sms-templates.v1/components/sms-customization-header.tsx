@@ -18,12 +18,14 @@
 
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import { DropdownChild, Field, Form } from "@wso2is/form";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Grid, Header, Segment } from "semantic-ui-react";
 import { SMSTemplateType } from "../models/sms-templates";
 import "./sms-customization-header.scss";
@@ -92,7 +94,17 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
     const [ localeList, setLocaleList ] =
         useState<LocaleOptionList>([]);
 
-    const supportedI18nLanguages: SupportedLanguagesMeta = CommonUtils.getLocaleList();
+    const enableLegacyLocaleDropdown: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.enableLegacyLocaleDropdown
+    );
+
+    const supportedI18nLanguagesFromStore: SupportedLanguagesMeta = useSelector(
+        (state: AppState) => state.global.supportedI18nLanguages
+    );
+
+    const supportedI18nLanguages: SupportedLanguagesMeta = enableLegacyLocaleDropdown
+        ? supportedI18nLanguagesFromStore
+        : CommonUtils.getLocaleList();
 
     const smsTemplateListOptions: { text: string, value: string }[] = useMemo(() => {
         return smsTemplatesList?.map((template: SMSTemplateType) => {
@@ -161,74 +173,93 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
                         mobile={ 16 }
                         computer={ 8 }
                     >
-                        <Autocomplete
-                            disablePortal
-                            fullWidth
-                            aria-label="Email Template Locale Dropdown"
-                            className="pt-1"
-                            componentsProps={ {
-                                paper: {
-                                    elevation: 2
-                                },
-                                popper: {
-                                    modifiers: [
-                                        {
-                                            enabled: false,
-                                            name: "flip"
-                                        },
-                                        {
-                                            enabled: false,
-                                            name: "preventOverflow"
-                                        }
-                                    ]
+                        { enableLegacyLocaleDropdown ? (
+                            <Field.Dropdown
+                                ariaLabel="SMS Template Locale Dropdown"
+                                name="selectedSMSTemplateLocale"
+                                label={ t("smsTemplates:form.inputs.locale.label") }
+                                options={ localeList }
+                                required={ true }
+                                data-componentid={ `${ componentId }-sms-template-locale` }
+                                placeholder={ t("smsTemplates:form.inputs.locale.placeholder") }
+                                defaultValue={ selectedLocale }
+                                value={ selectedLocale }
+                                listen={ (localeValue: string) =>
+                                    onLocaleChanged({ value: localeValue } as DropdownProps)
                                 }
-                            } }
-                            data-componentid={ `${componentId}-api` }
-                            isOptionEqualToValue={
-                                (option: DropdownItemProps, value: DropdownItemProps) =>
-                                    option.value === value.value
-                            }
-                            getOptionLabel={ (option: DropdownItemProps) => {
-                                return option?.name;
-                            } }
-                            options={ localeList }
-                            onChange={ (
-                                _event: SyntheticEvent<HTMLElement>,
-                                data: DropdownProps
-                            ) => {
-                                onLocaleChanged(data);
-                            } }
-                            noOptionsText={ t("common:noResultsFound") }
-                            renderInput={ (params: AutocompleteRenderInputParams) => {
+                            />
+                        ) : (
+                            <Autocomplete
+                                disablePortal
+                                fullWidth
+                                aria-label="SMS Template Locale Dropdown"
+                                className="pt-1"
+                                componentsProps={ {
+                                    paper: {
+                                        elevation: 2
+                                    },
+                                    popper: {
+                                        modifiers: [
+                                            {
+                                                enabled: false,
+                                                name: "flip"
+                                            },
+                                            {
+                                                enabled: false,
+                                                name: "preventOverflow"
+                                            }
+                                        ]
+                                    }
+                                } }
+                                data-componentid={ `${componentId}-api` }
+                                isOptionEqualToValue={
+                                    (option: DropdownItemProps, value: DropdownItemProps) =>
+                                        option.value === value.value
+                                }
+                                getOptionLabel={ (option: DropdownItemProps) => {
+                                    return option?.name;
+                                } }
+                                options={ localeList }
+                                onChange={ (
+                                    _event: SyntheticEvent<HTMLElement>,
+                                    data: DropdownProps
+                                ) => {
+                                    onLocaleChanged(data);
+                                } }
+                                noOptionsText={ t("common:noResultsFound") }
+                                renderInput={ (params: AutocompleteRenderInputParams) => {
 
-                                return (
-                                    <TextField
-                                        { ...params }
-                                        label="Locale"
-                                        required
-                                        placeholder="Select Locale"
-                                        size="small"
-                                        variant="outlined"
-                                    />
-                                );
-                            } }
-                            renderOption={ (props: any, localeOption: any) => {
-                                return (
-                                    <div { ...props }>
-                                        <Header.Content>
-                                            { localeOption.text }
-                                        </Header.Content>
-                                    </div>
-                                );
-                            } }
-                            key="locale"
-                            defaultValue={ {
-                                code: "en-US",
-                                flag: "us",
-                                name: "English (United States), en-US"
-                            } }
-                            value={ localeList.find((locale: LocaleOption) => locale.value === selectedLocale) }
-                        />
+                                    return (
+                                        <TextField
+                                            { ...params }
+                                            label="Locale"
+                                            required
+                                            placeholder="Select Locale"
+                                            size="small"
+                                            variant="outlined"
+                                        />
+                                    );
+                                } }
+                                renderOption={ (props: any, localeOption: any) => {
+                                    return (
+                                        <div { ...props }>
+                                            <Header.Content>
+                                                { localeOption.text }
+                                            </Header.Content>
+                                        </div>
+                                    );
+                                } }
+                                key="locale"
+                                defaultValue={ {
+                                    code: "en-US",
+                                    flag: "us",
+                                    name: "English (United States), en-US"
+                                } }
+                                value={ localeList.find(
+                                    (locale: LocaleOption) => locale.value === selectedLocale
+                                ) }
+                            />
+                        ) }
                     </Grid.Column>
                 </Grid>
             </Form>

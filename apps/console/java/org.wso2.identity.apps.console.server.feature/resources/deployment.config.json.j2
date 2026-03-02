@@ -2634,6 +2634,11 @@
         {% else %}
             "enableOldUIForEmailProvider": false,
         {% endif %}
+        {% if console.ui.enable_legacy_locale_dropdown is defined %}
+            "enableLegacyLocaleDropdown": {{ console.ui.enable_legacy_locale_dropdown }},
+        {% else %}
+            "enableLegacyLocaleDropdown": false,
+        {% endif %}
         {% if console.ui.enable_blocking_outbound_provisioning is defined %}
             "enableBlockingOutboundProvisioning": {{ console.ui.enable_blocking_outbound_provisioning }},
         {% else %}
