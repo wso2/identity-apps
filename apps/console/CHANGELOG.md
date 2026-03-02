@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.95.13
+
+### Patch Changes
+
+- [#9679](https://github.com/wso2/identity-apps/pull/9679) [`a77435fde0add768f803d71462306804ea7a8200`](https://github.com/wso2/identity-apps/commit/a77435fde0add768f803d71462306804ea7a8200) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - trigger release
+
 ## 2.95.12
 
 ### Patch Changes
