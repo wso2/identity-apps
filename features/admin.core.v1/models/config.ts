@@ -356,6 +356,25 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
 }
 
 /**
+ * Default value for enableLegacyFlows when not returned by the compatibility settings API.
+ */
+export const COMPATIBILITY_FLOW_EXECUTION_LEGACY_FLOWS_DEFAULT: string = "false";
+
+/**
+ * Flow execution compatibility settings from the tenant/sub-org API.
+ */
+export interface FlowExecutionCompatibilityInterface {
+    enableLegacyFlows?: string;
+}
+
+/**
+ * Tenant/sub-organization compatibility settings from /api/server/v1/configs/compatibility-settings.
+ */
+export interface CompatibilitySettingsInterface extends Record<string, unknown> {
+    flowExecution?: FlowExecutionCompatibilityInterface;
+}
+
+/**
  * Interface for defining settings and configs of an external app.
  */
 interface ExternalAppConfigInterface {
@@ -787,6 +806,7 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     FlowBuilderCoreResourceEndpointsInterface {
 
     CORSOrigins: string;
+    compatibilitySettings: string;
     // TODO: Remove this endpoint and use ID token to get the details
     me: string;
     saml2Meta: string;

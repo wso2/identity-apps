@@ -85,6 +85,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
         },
         endpoints: {
             CORSOrigins: "",
+            compatibilitySettings: "",
             accountDisabling: "",
             accountLocking: "",
             accountRecovery: "",

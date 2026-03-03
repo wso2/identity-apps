@@ -49,10 +49,13 @@ export * from "./constants/shared/role-management";
  */
 export * from "./providers/app-config-provider";
 export * from "./providers/app-settings-provider";
+export { default as CompatibilitySettingsProvider } from "./providers/compatibility-settings-provider";
 
 /**
  * Export hooks.
  */
+export * from "./hooks/use-compatibility-settings";
+export * from "./hooks/use-enable-legacy-flows";
 export * from "./hooks/use-resource-endpoints";
 export * from "./hooks/use-routes";
 export * from "./hooks/use-ui-configs";

@@ -368,6 +368,7 @@ export class Config {
             ...getVCTemplateEndpoints(this.resolveServerHost()),
             ...getCustomerDataServiceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,
+            compatibilitySettings: `${ this.resolveServerHost(true) }/api/server/v1/configs/compatibility-settings`,
             asyncStatus: `${ this.resolveServerHost(false, true) }/api/server/v1/async-operations`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,
