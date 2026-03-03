@@ -1,5 +1,28 @@
 # @wso2is/admin.core.v1
 
+## 2.54.4
+
+### Patch Changes
+
+- [#9245](https://github.com/wso2/identity-apps/pull/9245) [`1d64e4c1973e5177906a6a15a0b85fd16d420e11`](https://github.com/wso2/identity-apps/commit/1d64e4c1973e5177906a6a15a0b85fd16d420e11) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update locale dropdown in email and SMS template edit page to display all available locales
+
+- Updated dependencies [[`1d64e4c1973e5177906a6a15a0b85fd16d420e11`](https://github.com/wso2/identity-apps/commit/1d64e4c1973e5177906a6a15a0b85fd16d420e11)]:
+  - @wso2is/admin.email-management.v1@2.25.312
+  - @wso2is/admin.sms-templates.v1@1.0.207
+  - @wso2is/core@2.12.8
+  - @wso2is/i18n@2.34.5
+  - @wso2is/admin.flow-builder-core.v1@0.10.148
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.148
+  - @wso2is/admin.branding.v1@2.32.104
+  - @wso2is/admin.flows.v1@1.0.117
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.148
+  - @wso2is/admin.server-configurations.v1@2.37.14
+  - @wso2is/admin.users.v1@2.36.123
+  - @wso2is/admin.registration-flow-builder.v1@0.10.108
+  - @wso2is/admin.agents.v1@1.0.163
+  - @wso2is/admin.roles.v2@2.27.318
+  - @wso2is/admin.connections.v1@2.35.6
+
 ## 2.54.3
 
 ### Patch Changes
