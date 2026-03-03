@@ -415,10 +415,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         const valueReferenceAttribute: string = findMetaValuesAgainst?.value?.valueReferenceAttribute || "id";
         const valueDisplayAttribute: string = findMetaValuesAgainst?.value?.valueDisplayAttribute || "name";
 
-        // Metadata-driven detail fetching.
-        // If the reference attribute differs from the display attribute, we need to fetch
-        // individual resource details to resolve the display name (e.g., UUID → "Marketing Group").
-        // Fields where ref === display (e.g., user.domain with name/name) skip the detail fetch.
         const needsDetailFetch: boolean = valueReferenceAttribute !== valueDisplayAttribute;
         const detailBaseUrl: string = initialResourcesLoadUrl?.split("?")[0];
         const shouldFetchDetails: boolean =
@@ -587,7 +583,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 />
             );
         } else {
-            // Unified generic path: handles applications, groups, roles, domains, audience, etc.
             // Uses normalizeResourceResponse to extract items from any API response format.
             const { items: normalizedItems, totalResults, count } = normalizeResourceResponse(fetchedResourcesList);
 
