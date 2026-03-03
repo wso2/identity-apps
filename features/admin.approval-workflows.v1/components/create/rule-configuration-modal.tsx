@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,12 @@
  * under the License.
  */
 
+import Button from "@oxygen-ui/react/Button";
+import Dialog from "@oxygen-ui/react/Dialog";
+import DialogActions from "@oxygen-ui/react/DialogActions";
+import DialogContent from "@oxygen-ui/react/DialogContent";
+import DialogTitle from "@oxygen-ui/react/DialogTitle";
+import Typography from "@oxygen-ui/react/Typography";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import Rules from "@wso2is/admin.rules.v1/components/rules";
 import { useRulesContext } from "@wso2is/admin.rules.v1/hooks/use-rules-context";
@@ -23,10 +29,9 @@ import { ConditionExpressionMetaInterface } from "@wso2is/admin.rules.v1/models/
 import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { RulesProvider } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { ConfirmationModal, ContentLoader, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { ConfirmationModal, ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Modal } from "semantic-ui-react";
 import { FLOW_TYPE, OPERATION_FIELD_MAPPING } from "../../constants/approval-workflow-constants";
 import { DropdownPropsInterface } from "../../models/ui";
 import "./rule-configuration-modal.scss";
@@ -114,28 +119,33 @@ const RuleConfigurationModalContent: FunctionComponent<RuleConfigurationModalCon
 
     return (
         <>
-            <Modal.Content scrolling className="rule-configuration-modal-content">
+            <DialogContent
+                className="rule-configuration-modal-content"
+                dividers
+            >
                 <Rules
                     data-componentid={ `${componentId}-rules` }
                     disableLastRuleDelete={ false }
                     onRemoveRule={ handleRemoveRuleRequest }
                     executeText="Engage"
                 />
-            </Modal.Content>
-            <Modal.Actions>
-                <LinkButton
+            </DialogContent>
+            <DialogActions>
+                <Button
+                    variant="text"
                     onClick={ onClose }
                     data-componentid={ `${componentId}-cancel-button` }
                 >
                     { t("common:cancel") }
-                </LinkButton>
-                <PrimaryButton
+                </Button>
+                <Button
+                    variant="contained"
                     onClick={ handleSave }
                     data-componentid={ `${componentId}-finish-button` }
                 >
                     { t("common:finish") }
-                </PrimaryButton>
-            </Modal.Actions>
+                </Button>
+            </DialogActions>
             <ConfirmationModal
                 onClose={ () => setPendingDeleteRuleId(null) }
                 type="negative"
@@ -209,28 +219,29 @@ const RuleConfigurationModal: FunctionComponent<RuleConfigurationModalPropsInter
     }, [ rulesMetaData, operation.value ]);
 
     return (
-        <Modal
+        <Dialog
             open
             onClose={ onClose }
-            size="small"
+            maxWidth="sm"
+            fullWidth
             className="rule-configuration-modal"
             data-componentid={ componentId }
         >
-            <Modal.Header>
-                <Heading as="h3">
+            <DialogTitle>
+                <Typography variant="h5" sx={ { mb: 2 } }>
                     { t("approvalWorkflows:pageLayout.create.ruleConditions.modal.title", {
                         operation: operation.text
                     }) }
-                </Heading>
-                <p className="modal-subtitle">
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
                     { t("approvalWorkflows:pageLayout.create.ruleConditions.modal.subtitle") }
-                </p>
-            </Modal.Header>
+                </Typography>
+            </DialogTitle>
 
             { isRulesMetaLoading ? (
-                <Modal.Content>
+                <DialogContent>
                     <ContentLoader dimmer />
-                </Modal.Content>
+                </DialogContent>
             ) : (
                 <RulesProvider
                     conditionExpressionsMetaData={ filteredConditionExpressionsMeta }
@@ -246,7 +257,7 @@ const RuleConfigurationModal: FunctionComponent<RuleConfigurationModalPropsInter
                     />
                 </RulesProvider>
             ) }
-        </Modal>
+        </Dialog>
     );
 };
 

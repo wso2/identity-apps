@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,37 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- 
-.rule-configuration-modal {
-    &.ui.modal {
-        .header {
-            padding: 24px 32px 16px;
-            border-bottom: 1px solid var(--oxygen-palette-divider);
 
-            h3 {
-                margin: 0 0 8px 0;
-            }
-
-            .modal-subtitle {
-                color: var(--oxygen-palette-text-secondary);
-                font-size: 14px;
-                margin: 0;
-            }
-        }
-
-        .rule-configuration-modal-content {
-            padding: 24px 32px;
-            max-height: 60vh;
-            overflow-y: auto;
-        }
-
-        .actions {
-            padding: 16px 32px;
-            border-top: 1px solid var(--oxygen-palette-divider);
-            background-color: var(--oxygen-palette-background-paper);
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-        }
-    }
+.rule-configuration-modal-content.OxygenDialogContent-root {
+    max-height: 60vh;
+    overflow-y: auto;
 }
