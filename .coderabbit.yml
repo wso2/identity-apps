@@ -17,7 +17,9 @@ reviews:
         - name: "Changeset Required"
           mode: error
           instructions: |
-            Check if the CHANGED FILE LIST in the pull request includes at least one changeset file.
+            Check if the CHANGED FILE LIST IN THE PULL REQUEST includes at least one changeset file.
+            
+            IMPORTANT: DO NOT consider the existing md files that are NOT part of the changed file list in the pull request being reviewed. ALWAYS consider ONLY the changed files in the pull request.
 
             A changeset file is any file matching the pattern `.changeset/*.md` (excluding `.changeset/README.md`). It should contain all the changed packages in the pull request along with the version update type.
 
