@@ -25,6 +25,7 @@ import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
@@ -36,7 +37,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { addApprovalWorkflow } from "../api/approval-workflow";
 import { addWorkflowAssociation } from "../api/workflow-associations";
-import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import ConfigurationsForm, { ConfigurationsFormRef } from "../components/create/configuration-details-form";
 import GeneralApprovalWorkflowDetailsForm, {
     GeneralApprovalWorkflowDetailsFormRef
@@ -230,7 +230,9 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                         approvalWorkflowFormData.workflowOperationsDetails.matchedOperations.map(
                             (operation: DropdownPropsInterface) => {
                                 const rule: RuleWithoutIdInterface =
-                                    approvalWorkflowFormData.workflowOperationsDetails.operationRules?.[operation.value];
+                                    approvalWorkflowFormData.workflowOperationsDetails.operationRules?.[
+                                        operation.value
+                                    ];
 
                                 return {
                                     associationName: `Association for ${operation.value ?? operation.value}`,

@@ -280,7 +280,18 @@ export const approvalWorkflows: approvalWorkflowsNS = {
             ruleConditions: {
                 addRule: "Add Rule",
                 configured: "Configured",
+                confirmClear: {
+                    content: "This action is irreversible and will permanently delete the rule.",
+                    message: "If you delete this rule, approval workflow will be always engaged when " +
+                        "{{operation}} is triggered. Please proceed with caution.",
+                    title: "Confirm Clear Rule"
+                },
                 editRule: "Edit Rule",
+                engagement: {
+                    always: "Always",
+                    column: "Engagement",
+                    configured: "Conditional"
+                },
                 modal: {
                     subtitle: "Define conditions to determine when the approval workflow should be engaged for this operation. If no rule is configured, the workflow will always be engaged.",
                     title: "Engagement Rule for {{operation}}"
@@ -288,17 +299,6 @@ export const approvalWorkflows: approvalWorkflowsNS = {
                 table: {
                     operation: "Operation",
                     rules: "Rules"
-                },
-                engagement: {
-                    always: "Always",
-                    column: "Engagement",
-                    configured: "Conditional"
-                },
-                confirmClear: {
-                    content: "This action is irreversible and will permanently delete the rule.",
-                    message: "If you delete this rule, approval workflow will be always engaged when " +
-                        "{{operation}} is triggered. Please proceed with caution.",
-                    title: "Are you sure?"
                 }
             },
             stepper: {

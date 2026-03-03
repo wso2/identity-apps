@@ -18,12 +18,12 @@
 import Divider from "@oxygen-ui/react/Divider";
 import Grid from "@oxygen-ui/react/Grid";
 import Skeleton from "@oxygen-ui/react/Skeleton";
-import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -514,14 +514,14 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
         // Handle updated operations (rule changes)
         for (const operation of updatedOperations) {
             const associationName: string = `Association for ${operation.operation}`;
-            
+
             // Determine the rule value: if rule was deleted (undefined), send empty object {}
             // to explicitly tell the backend to remove the rule
             const currentRule: RuleWithoutIdInterface = operationRules[operation.operation];
-            const rulePayload: RuleWithoutIdInterface = currentRule !== undefined 
-                ? currentRule 
+            const rulePayload: RuleWithoutIdInterface = currentRule !== undefined
+                ? currentRule
                 : {} as RuleWithoutIdInterface;
-            
+
             const workflowAssociationPayload: WorkflowAssociationPayload = {
                 associationName,
                 operation: operation.operation,
@@ -563,7 +563,8 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
     /**
      * Sends request to update an existing workflow-operation association.
      */
-    const handleWorkflowAssociationUpdate = (associationId: string, workflowAssociationPayload: WorkflowAssociationPayload): void => {
+    const handleWorkflowAssociationUpdate = (associationId: string, workflowAssociationPayload:
+        WorkflowAssociationPayload): void => {
         updateWorkflowAssociationById(associationId, workflowAssociationPayload)
             .then(() => {
                 // Update initialOperationRules to match current operationRules after successful update

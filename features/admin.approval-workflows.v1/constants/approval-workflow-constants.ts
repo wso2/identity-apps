@@ -69,9 +69,10 @@ export const WORKFLOW_ENGINE: string = "WorkflowEngine";
  * Used to filter available fields in the rule builder per operation type.
  */
 export const OPERATION_FIELD_MAPPING: Record<string, string[]> = {
-    ADD_USER: ["user.domain"],
-    DELETE_USER: ["user.domain", "user.groups", "user.roles"],
-    ADD_ROLE: ["role.audience", "role.permissions"],
+    ADD_ROLE: [ "role.audience", "role.permissions" ],
+    ADD_USER: [ "user.domain" ],
+    DELETE_USER: [ "user.domain", "user.groups", "user.roles" ],
+    SELF_REGISTER_USER: [ "user.domain" ],
     UPDATE_ROLES_OF_USERS: [
         "role.id",
         "role.audience",
@@ -80,8 +81,8 @@ export const OPERATION_FIELD_MAPPING: Record<string, string[]> = {
         "user.domain",
         "user.groups",
         "user.roles"
-    ],
-    SELF_REGISTER_USER: ["user.domain"]
+    ]
+
 };
 
 export default ApprovalWorkflowConstants;
