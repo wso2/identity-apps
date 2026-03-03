@@ -61,11 +61,10 @@ interface RuleConfigurationModalPropsInterface extends IdentifiableComponentInte
 /**
  * Props interface for RuleConfigurationModalContent component.
  */
-interface RuleConfigurationModalContentPropsInterface {
+interface RuleConfigurationModalContentPropsInterface extends IdentifiableComponentInterface {
     onSave: (rule: RuleWithoutIdInterface) => void;
     onClose: () => void;
     operationName: string;
-    componentId: string;
 }
 
 /**
@@ -80,7 +79,7 @@ const RuleConfigurationModalContent: FunctionComponent<RuleConfigurationModalCon
         onSave,
         onClose,
         operationName,
-        componentId
+        ["data-componentid"]: componentId = "rule-configuration-modal-content"
     } = props;
 
     const { t } = useTranslation();
@@ -253,7 +252,7 @@ const RuleConfigurationModal: FunctionComponent<RuleConfigurationModalPropsInter
                         onSave={ onSave }
                         onClose={ onClose }
                         operationName={ operation.text }
-                        componentId={ componentId }
+                        data-componentid={ componentId }
                     />
                 </RulesProvider>
             ) }
