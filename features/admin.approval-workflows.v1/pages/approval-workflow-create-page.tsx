@@ -152,7 +152,7 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
 
     /**
      * Handles the step details form submission.
-     * @param values - Step 04 form values.
+     * @param values - Step 03 form values.
      */
     const onConfigurationDetailsFormSubmit = (values: ConfigurationsFormValuesInterface) => {
         //Check if there are any empty steps
