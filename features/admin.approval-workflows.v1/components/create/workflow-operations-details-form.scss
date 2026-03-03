@@ -9,14 +9,14 @@
 .operations-autocomplete {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 8px; 
 
-    .operations-autocomplete-header {
+    .operations-autocomplete-header  {
         margin-bottom: 5px;
-        white-space: nowrap;
+        white-space: nowrap; 
 
         h6 {
-            color: #666666;
+            color: #666666; 
             margin: 0;
         }
 
