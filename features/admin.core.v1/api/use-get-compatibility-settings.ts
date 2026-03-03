@@ -40,7 +40,7 @@ export const useGetCompatibilitySettings = <
     Error = RequestErrorInterface
 >(
         enabled: boolean = true
-):  RequestResultInterface<Data, Error> => {
+    ):  RequestResultInterface<Data, Error> => {
     const url: string = useSelector(
         (state: AppState) => state?.config?.endpoints?.compatibilitySettings ?? ""
     );

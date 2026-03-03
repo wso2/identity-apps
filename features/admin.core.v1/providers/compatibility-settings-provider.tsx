@@ -19,7 +19,10 @@
 import { useAuthContext } from "@asgardeo/auth-react";
 import React, { PropsWithChildren, ReactElement, useMemo } from "react";
 import { useGetCompatibilitySettings } from "../api/use-get-compatibility-settings";
-import { CompatibilitySettingsContext, CompatibilitySettingsContextInterface } from "../context/compatibility-settings-context";
+import { 
+    CompatibilitySettingsContext, 
+    CompatibilitySettingsContextInterface 
+} from "../context/compatibility-settings-context";
 import { CompatibilitySettingsInterface } from "../models/config";
 
 /**
