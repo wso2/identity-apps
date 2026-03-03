@@ -49,6 +49,7 @@ export * from "./constants/shared/role-management";
  */
 export * from "./providers/app-config-provider";
 export * from "./providers/app-settings-provider";
+
 export { default as CompatibilitySettingsProvider } from "./providers/compatibility-settings-provider";
 
 /**

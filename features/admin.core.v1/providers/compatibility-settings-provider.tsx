@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,31 +19,25 @@
 import { useAuthContext } from "@asgardeo/auth-react";
 import React, { PropsWithChildren, ReactElement, useMemo } from "react";
 import { useGetCompatibilitySettings } from "../api/use-get-compatibility-settings";
-import { CompatibilitySettingsContext } from "../context/compatibility-settings-context";
-import {
-    COMPATIBILITY_FLOW_EXECUTION_LEGACY_FLOWS_DEFAULT,
-    CompatibilitySettingsInterface
-} from "../models/config";
+import { CompatibilitySettingsContext, CompatibilitySettingsContextInterface } from "../context/compatibility-settings-context";
+import { CompatibilitySettingsInterface } from "../models/config";
 
 /**
- * Normalizes raw API response: missing flowExecution.enableLegacyFlows defaults to "false".
+ * Normalizes raw API response. Preserves existing nested keys.
+ * Does not set enableLegacyFlows when the API did not return it, so
+ * useEnableLegacyFlows can fall back to deployment config.
  */
 const normalizeCompatibilitySettings = (
     raw: CompatibilitySettingsInterface | null | undefined
 ): CompatibilitySettingsInterface => {
     if (!raw) {
-        return {
-            flowExecution: {
-                enableLegacyFlows: COMPATIBILITY_FLOW_EXECUTION_LEGACY_FLOWS_DEFAULT
-            }
-        };
+        return { flowExecution: {} };
     }
+
     return {
         ...raw,
         flowExecution: {
-            enableLegacyFlows:
-                raw.flowExecution?.enableLegacyFlows ??
-                COMPATIBILITY_FLOW_EXECUTION_LEGACY_FLOWS_DEFAULT
+            ...raw.flowExecution
         }
     };
 };
@@ -69,10 +63,11 @@ const CompatibilitySettingsProvider = (
         if (error || data === undefined || data === null) {
             return normalizeCompatibilitySettings(null);
         }
+
         return normalizeCompatibilitySettings(data as CompatibilitySettingsInterface);
     }, [ data, error ]);
 
-    const value = useMemo(
+    const value: CompatibilitySettingsContextInterface = useMemo(
         () => ({
             compatibilitySettings,
             isLoading

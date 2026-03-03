@@ -24,9 +24,9 @@ import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import useEnableLegacyFlows from "@wso2is/admin.core.v1/hooks/use-enable-legacy-flows";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
-import useEnableLegacyFlows from "@wso2is/admin.core.v1/hooks/use-enable-legacy-flows";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
