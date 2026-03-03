@@ -31,9 +31,6 @@ export interface NormalizedResourceList {
  * Normalizes different API response shapes into a standard format.
  * Acts as a central registry for supported API response structures.
  *
- * When a new API endpoint returns data under a different key, add an explicit
- * block here to handle that format.
- *
  * @param response - The raw API response.
  * @returns The normalized resource list.
  */
