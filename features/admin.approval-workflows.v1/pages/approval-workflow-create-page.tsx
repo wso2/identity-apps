@@ -431,7 +431,7 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                             />
                             <div
                                 className="step-actions-container"
-                                data-componentid={ `${componentId}-step-3-actions-container` }
+                                data-componentid={ `${componentId}-step-actions-container` }
                             >
                                 <Button
                                     variant="outlined"
@@ -442,7 +442,7 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                                         setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
                                         setHasErrors(false);
                                     } }
-                                    data-componentid={ `${componentId}-step-3-previous-button` }
+                                    data-componentid={ `${componentId}-previous-button` }
                                 >
                                     { t("common:previous") }
                                 </Button>
@@ -454,7 +454,7 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                                             configurationsFormRef.current.triggerSubmit();
                                     } }
                                     loading={ isApprovalWorkflowCreateRequestLoading }
-                                    data-componentid={ `${componentId}-step-3-finish-button` }
+                                    data-componentid={ `${componentId}-finish-button` }
                                 >
                                     { t("common:finish") }
                                 </Button>
