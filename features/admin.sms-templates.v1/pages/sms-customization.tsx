@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { SelectChangeEvent } from "@mui/material";
 import Card from "@oxygen-ui/react/Card";
 import Grid from "@oxygen-ui/react/Grid";
 import Typography from "@oxygen-ui/react/Typography";
@@ -45,7 +44,7 @@ import useGetSmsTemplate from "../api/use-get-sms-template";
 import useGetSmsTemplatesList from "../api/use-get-sms-templates-list";
 import SMSCustomizationFooter from "../components/sms-customization-footer";
 import SMSCustomizationForm from "../components/sms-customization-form";
-import SMSCustomizationHeader from "../components/sms-customization-header";
+import SMSCustomizationHeader, { LocaleOption } from "../components/sms-customization-header";
 import SMSTemplatePreview from "../components/sms-template-preview";
 import { SMSTemplateConstants } from "../constants/sms-template-constants";
 import { SMSTemplate, SMSTemplateType } from "../models/sms-templates";
@@ -211,8 +210,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         }
     }, [ smsTemplateError, isSystemTemplate, isInheritedTemplate ]);
 
-    const handleTemplateIdChange = (event: SelectChangeEvent<string>): void => {
-        const templateId: string = event.target.value;
+    const handleTemplateIdChange = (templateId: string): void => {
 
         setShouldFetch(false);
         setIsTemplateNotAvailable(false);
@@ -232,15 +230,15 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         setIsTemplateNotAvailable(false);
     };
 
-    const handleLocaleChange = (event: SelectChangeEvent<string>): void => {
-        const locale: string = event.target.value;
+    const handleLocaleChange = (localeOption: LocaleOption | null): void => {
+        const safeLocale: string = (localeOption?.value as string) ?? selectedLocale;
 
         setShouldFetch(false);
         setCurrentSmsTemplate({ ...selectedSmsTemplate });
         setIsTemplateNotAvailable(true);
         setIsSystemTemplate(false);
         setIsInheritedTemplate(false);
-        setSelectedLocale(locale);
+        setSelectedLocale(safeLocale);
         setShouldFetch(true);
     };
 
@@ -378,8 +376,8 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                 data-componentid={ componentId }
             >
                 <SMSCustomizationHeader
-                    selectedSmsTemplateId={ selectedSmsTemplateId }
-                    selectedSmsTemplateDescription={ selectedSmsTemplateDescription }
+                    selectedSMSTemplateId={ selectedSmsTemplateId }
+                    selectedSMSTemplateDescription={ selectedSmsTemplateDescription }
                     selectedLocale={ selectedLocale }
                     smsTemplatesList={ availableSmsTemplatesList }
                     onTemplateSelected={ handleTemplateIdChange }
