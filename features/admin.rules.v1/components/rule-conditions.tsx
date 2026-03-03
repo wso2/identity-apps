@@ -221,7 +221,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         const CLEAR_OPTION: string = "clear-option";
 
         const filterUrl: string = inputValueLabel
-            ? filterBaseResourcesUrl?.replace("filter=", `filter=name+sw+${inputValueLabel}`)
+            ? filterBaseResourcesUrl?.replace("filter=", `filter=${valueDisplayAttribute}+sw+${inputValueLabel}`)
             : initialResourcesLoadUrl;
 
         const { data: initialResources = [], isLoading: isInitialLoading } =
