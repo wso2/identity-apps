@@ -1,5 +1,35 @@
 # @wso2is/console
 
+## 2.96.0
+
+### Minor Changes
+
+- [#9691](https://github.com/wso2/identity-apps/pull/9691) [`379ee617965223d218f80b41c51b1125a672f7e9`](https://github.com/wso2/identity-apps/commit/379ee617965223d218f80b41c51b1125a672f7e9) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Fix cds enable
+
+### Patch Changes
+
+- [#9693](https://github.com/wso2/identity-apps/pull/9693) [`7875b8053d9af4ca38138818bf15596946c83ebe`](https://github.com/wso2/identity-apps/commit/7875b8053d9af4ca38138818bf15596946c83ebe) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Fix Digital Wallet Application Authorization resource name
+
+* [#9694](https://github.com/wso2/identity-apps/pull/9694) [`89273a887431c2e7e2bf346bc166dea0667cfc45`](https://github.com/wso2/identity-apps/commit/89273a887431c2e7e2bf346bc166dea0667cfc45) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix formatting issues in #9686
+
+* Updated dependencies [[`7875b8053d9af4ca38138818bf15596946c83ebe`](https://github.com/wso2/identity-apps/commit/7875b8053d9af4ca38138818bf15596946c83ebe), [`89273a887431c2e7e2bf346bc166dea0667cfc45`](https://github.com/wso2/identity-apps/commit/89273a887431c2e7e2bf346bc166dea0667cfc45), [`379ee617965223d218f80b41c51b1125a672f7e9`](https://github.com/wso2/identity-apps/commit/379ee617965223d218f80b41c51b1125a672f7e9)]:
+  - @wso2is/admin.applications.v1@2.41.13
+  - @wso2is/admin.core.v1@2.54.7
+  - @wso2is/admin.cds.v1@1.5.0
+  - @wso2is/admin.agents.v1@1.0.166
+  - @wso2is/admin.branding.v1@2.32.107
+  - @wso2is/admin.onboarding.v1@1.0.18
+  - @wso2is/admin.roles.v2@2.27.321
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.151
+  - @wso2is/admin.email-management.v1@2.25.315
+  - @wso2is/admin.flows.v1@1.0.120
+  - @wso2is/admin.home.v1@1.7.130
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.151
+  - @wso2is/admin.server-configurations.v1@2.37.17
+  - @wso2is/admin.users.v1@2.36.126
+  - @wso2is/admin.connections.v1@2.35.9
+  - @wso2is/admin.registration-flow-builder.v1@0.10.111
+
 ## 2.95.17
 
 ### Patch Changes
