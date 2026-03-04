@@ -147,7 +147,7 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
     const {
         data: cdsConfig,
         mutate: mutateCDSConfig
-    } = useCDSConfig();
+    } = useCDSConfig(open && (cdsFeatureConfig?.enabled ?? false));
 
     const hasSelfRegScopes: boolean = useRequiredScopes(
         loginAndRegistrationFeatureConfig?.scopes?.update
