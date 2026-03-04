@@ -801,7 +801,6 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     FlowBuilderCoreResourceEndpointsInterface {
 
     CORSOrigins: string;
-    compatibilitySettings: string;
     // TODO: Remove this endpoint and use ID token to get the details
     me: string;
     saml2Meta: string;
