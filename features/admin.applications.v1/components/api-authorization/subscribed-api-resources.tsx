@@ -153,7 +153,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
     const resourceText: string = isMCPClient
         ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.genericResource")
         : isDigitalWallet
-            ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.digitalWalletResource")
+            ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.vcResource")
             : t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.apiResource");
 
     const [ activeSubscribedAPIResource, setActiveSubscribedAPIResource ] = useState<string>(null);
@@ -503,7 +503,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                                                         + ".resourceText.genericResource")
                                                     : isDigitalWallet
                                                         ? t("extensions:develop.applications.edit.sections" +
-                                                            ".apiAuthorization.resourceText.digitalWalletResource")
+                                                            ".apiAuthorization.resourceText.vcResource")
                                                         : t("extensions:develop.applications.edit.sections" +
                                                             ".apiAuthorization.resourceText.apiResource")
                                             }) }

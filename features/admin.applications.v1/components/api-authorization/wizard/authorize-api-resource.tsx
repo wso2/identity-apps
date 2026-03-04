@@ -105,7 +105,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const resourceText: string = isMCPClient
         ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.genericResource")
         : isDigitalWallet
-            ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.digitalWalletResource")
+            ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.vcResource")
             : t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.apiResource");
 
     const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector(
