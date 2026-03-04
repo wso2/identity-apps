@@ -293,7 +293,7 @@ export const approvalWorkflows: approvalWorkflowsNS = {
                     configured: "Conditional"
                 },
                 modal: {
-                    subtitle: "Define conditions to determine when the approval workflow should be engaged for this operation. If no rule is configured, the workflow will always be engaged.",
+                    subtitle: "Define conditions to determine when the approval workflow should be engaged for this operation.",
                     title: "Engagement Rule for {{operation}}"
                 },
                 table: {

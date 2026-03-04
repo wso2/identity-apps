@@ -149,6 +149,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
             const [ selectedOperations, setSelectedOperations ] = useState<DropdownPropsInterface[]>([]);
             const [ editingOperation, setEditingOperation ] = useState<DropdownPropsInterface | null>(null);
             const [ isModalOpen, setIsModalOpen ] = useState<boolean>(false);
+            const [ shouldShowErrors, setShouldShowErrors ] = useState<boolean>(false);
 
             // Fetch existing workflow associations for all operations.
             // For edit mode with workflowId, fetch only current workflow's associations.
@@ -396,10 +397,19 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                     initialValues={ initialValues }
                     validate={ validateForm }
                     render={ ({ handleSubmit, errors }: FormRenderProps) => {
-                        triggerFormSubmit.current = handleSubmit;
+                        triggerFormSubmit.current = () => {
+                            setShouldShowErrors(true);
+                            handleSubmit();
+                        };
 
                         return (
-                            <form onSubmit={ handleSubmit } className="workflow-operations-details-form">
+                            <form
+                                onSubmit={ (event: React.FormEvent) => {
+                                    setShouldShowErrors(true);
+                                    handleSubmit(event);
+                                } }
+                                className="workflow-operations-details-form"
+                            >
                                 <Grid
                                     xs={ 12 }
                                     sm={ 4 }
@@ -432,8 +442,8 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                     placeholder={ t(
                                                         "approvalWorkflows:forms.operations.dropDown.placeholder"
                                                     ) }
-                                                    helperText={ errors.matchedOperations }
-                                                    error={ !!errors.matchedOperations }
+                                                    helperText={ shouldShowErrors ? errors.matchedOperations : undefined }
+                                                    error={ shouldShowErrors && !!errors.matchedOperations }
                                                     data-componentid={ `${componentId}-field-operation-search` }
                                                 />
                                             ) }

@@ -415,11 +415,30 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         const valueReferenceAttribute: string = findMetaValuesAgainst?.value?.valueReferenceAttribute || "id";
         const valueDisplayAttribute: string = findMetaValuesAgainst?.value?.valueDisplayAttribute || "name";
 
+        let resourceType: string;
+        let shouldFetch: boolean = false;
+
+        // TODO: Handle other resource types once the API is updated with the required data.
+        if (expressionField === "application") {
+            resourceType = "applications";
+            shouldFetch = true;
+        } else if (expressionField === "claim") {
+            shouldFetch = false;
+        }
+
+        // Generic detail fetch for non-claim, non-application fields.
         const needsDetailFetch: boolean = valueReferenceAttribute !== valueDisplayAttribute;
         const detailBaseUrl: string = initialResourcesLoadUrl?.split("?")[0];
-        const shouldFetchDetails: boolean =
-            expressionField !== "claim" && !!expressionValue && !!detailBaseUrl && needsDetailFetch;
-        const detailsUrl: string = shouldFetchDetails ? `${detailBaseUrl}/${expressionValue}` : null;
+
+        // For application: use /resourceType/{id}; For generic: use detailBaseUrl/{id}; For claim: skip.
+        const shouldFetchDetails: boolean = (expressionField === "application")
+            ? !!expressionValue
+            : (expressionField !== "claim" && !!expressionValue && !!detailBaseUrl && needsDetailFetch);
+        const detailsUrl: string = shouldFetchDetails
+            ? ((expressionField === "application")
+                ? `/${resourceType}/${expressionValue}`
+                : `${detailBaseUrl}/${expressionValue}`)
+            : null;
 
         const {
             data: fetchedResourcesList,
@@ -582,7 +601,70 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     data-componentid={ `${componentId}-select-attributes` }
                 />
             );
+        } else if (expressionField === "application") {
+            // Application-specific logic (preserving original actions feature behavior).
+            // Set first value of the list if option is empty.
+            if (expressionValue === "") {
+                handleExpressionChangeDebounced(
+                    fetchedResourcesList[resourceType][0]?.id,
+                    ruleId,
+                    conditionId,
+                    expressionId,
+                    ExpressionFieldTypes.Value,
+                    false
+                );
+            }
+
+            if (fetchedResourcesList.totalResults > fetchedResourcesList.count) {
+                return (
+                    <ValueInputAutocomplete
+                        conditionId={ conditionId }
+                        ruleId={ ruleId }
+                        expressionId={ expressionId }
+                        expressionValue={ expressionValue }
+                        resourceDetails={ resourceDetails }
+                        valueReferenceAttribute={ valueReferenceAttribute }
+                        valueDisplayAttribute={ valueDisplayAttribute }
+                        initialResourcesLoadUrl={ initialResourcesLoadUrl }
+                        filterBaseResourcesUrl={ filterBaseResourcesUrl }
+                        shouldFetch={ true }
+                        hiddenResources={ hiddenResources }
+                    />
+                );
+            }
+
+            return (
+                <Select
+                    disabled={ readonly }
+                    value={ expressionValue }
+                    data-componentid={ componentId }
+                    MenuProps={ {
+                        disablePortal: false,
+                        sx: { zIndex: 9999 }
+                    } }
+                    onChange={ (e: SelectChangeEvent) => {
+                        updateConditionExpression(
+                            e.target.value,
+                            ruleId,
+                            conditionId,
+                            expressionId,
+                            ExpressionFieldTypes.Value,
+                            true
+                        );
+                    } }
+                >
+                    { fetchedResourcesList[resourceType]?.filter(
+                        (resource: ResourceInterface) =>
+                            !hiddenResources.includes(resource[valueReferenceAttribute])
+                    ).map((resource: ResourceInterface, index: number) => (
+                        <MenuItem value={ resource[valueReferenceAttribute] } key={ `${expressionId}-${index}` }>
+                            { resource[valueDisplayAttribute] }
+                        </MenuItem>
+                    )) }
+                </Select>
+            );
         } else {
+            // Generic path for all other fields (e.g., approval workflow fields).
             // Uses normalizeResourceResponse to extract items from any API response format.
             const { items: normalizedItems, totalResults, count } = normalizeResourceResponse(fetchedResourcesList);
 

@@ -16,11 +16,13 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Dialog from "@oxygen-ui/react/Dialog";
 import DialogActions from "@oxygen-ui/react/DialogActions";
 import DialogContent from "@oxygen-ui/react/DialogContent";
 import DialogTitle from "@oxygen-ui/react/DialogTitle";
+import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import Rules from "@wso2is/admin.rules.v1/components/rules";
@@ -130,20 +132,24 @@ const RuleConfigurationModalContent: FunctionComponent<RuleConfigurationModalCon
                 />
             </DialogContent>
             <DialogActions>
-                <Button
-                    variant="text"
-                    onClick={ onClose }
-                    data-componentid={ `${componentId}-cancel-button` }
-                >
-                    { t("common:cancel") }
-                </Button>
-                <Button
-                    variant="contained"
-                    onClick={ handleSave }
-                    data-componentid={ `${componentId}-finish-button` }
-                >
-                    { t("common:finish") }
-                </Button>
+                <Box className="rule-configuration-modal-actions">
+                    <Stack direction="row" justifyContent="space-between">
+                        <Button
+                            variant="text"
+                            onClick={ onClose }
+                            data-componentid={ `${componentId}-cancel-button` }
+                        >
+                            { t("common:cancel") }
+                        </Button>
+                        <Button
+                            variant="contained"
+                            onClick={ handleSave }
+                            data-componentid={ `${componentId}-finish-button` }
+                        >
+                            { t("common:finish") }
+                        </Button>
+                    </Stack>
+                </Box>
             </DialogActions>
             <ConfirmationModal
                 onClose={ () => setPendingDeleteRuleId(null) }
@@ -227,12 +233,12 @@ const RuleConfigurationModal: FunctionComponent<RuleConfigurationModalPropsInter
             data-componentid={ componentId }
         >
             <DialogTitle>
-                <Typography variant="h5" sx={ { mb: 2 } }>
+                <Typography variant="h4">
                     { t("approvalWorkflows:pageLayout.create.ruleConditions.modal.title", {
                         operation: operation.text
                     }) }
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2">
                     { t("approvalWorkflows:pageLayout.create.ruleConditions.modal.subtitle") }
                 </Typography>
             </DialogTitle>
