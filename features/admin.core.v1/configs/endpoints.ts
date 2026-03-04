@@ -16,20 +16,21 @@
  * under the License.
  */
 
-import { Context, createContext } from "react";
-import { CompatibilitySettingsInterface } from "../models/config";
-
 /**
- * Context value for tenant/sub-org compatibility settings.
+ * Endpoints for compatibility settings (tenant/sub-org).
  */
-export interface CompatibilitySettingsContextInterface {
-    compatibilitySettings: CompatibilitySettingsInterface;
-    isLoading: boolean;
+export interface CompatibilitySettingsResourceEndpointsInterface {
+    compatibilitySettings: string;
 }
 
-const CompatibilitySettingsContext: Context<CompatibilitySettingsContextInterface | undefined> =
-    createContext<CompatibilitySettingsContextInterface | undefined>(undefined);
-
-CompatibilitySettingsContext.displayName = "CompatibilitySettingsContext";
-
-export default CompatibilitySettingsContext;
+/**
+ * Get the resource endpoints for compatibility settings.
+ *
+ * @param serverOrigin - Server origin (tenant or org-qualified).
+ * @returns Compatibility settings resource endpoints.
+ */
+export const getCompatibilitySettingsResourceEndpoints = (
+    serverOrigin: string
+): CompatibilitySettingsResourceEndpointsInterface => ({
+    compatibilitySettings: `${ serverOrigin }/api/server/v1/configs/compatibility-settingss`
+});

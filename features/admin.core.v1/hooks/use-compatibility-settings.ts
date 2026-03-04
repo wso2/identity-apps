@@ -17,14 +17,12 @@
  */
 
 import { useContext } from "react";
-import {
-    CompatibilitySettingsContext,
+import CompatibilitySettingsContext, {
     CompatibilitySettingsContextInterface
 } from "../context/compatibility-settings-context";
 
 /**
  * Hook to read tenant/sub-org compatibility settings from context.
- * Must be used within CompatibilitySettingsProvider.
  *
  * @returns Context value: compatibilitySettings, isLoading
  */

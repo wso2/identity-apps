@@ -356,11 +356,6 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
 }
 
 /**
- * Default value for enableLegacyFlows when not returned by the compatibility settings API.
- */
-export const COMPATIBILITY_FLOW_EXECUTION_LEGACY_FLOWS_DEFAULT: string = "false";
-
-/**
  * Flow execution compatibility settings from the tenant/sub-org API.
  */
 export interface FlowExecutionCompatibilityInterface {

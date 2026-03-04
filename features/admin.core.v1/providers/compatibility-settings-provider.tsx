@@ -16,19 +16,13 @@
  * under the License.
  */
 
-import { useAuthContext } from "@asgardeo/auth-react";
 import React, { PropsWithChildren, ReactElement, useMemo } from "react";
 import { useGetCompatibilitySettings } from "../api/use-get-compatibility-settings";
-import {
-    CompatibilitySettingsContext,
-    CompatibilitySettingsContextInterface
-} from "../context/compatibility-settings-context";
+import CompatibilitySettingsContext from "../context/compatibility-settings-context";
 import { CompatibilitySettingsInterface } from "../models/config";
 
 /**
  * Normalizes raw API response. Preserves existing nested keys.
- * Does not set enableLegacyFlows when the API did not return it, so
- * useEnableLegacyFlows can fall back to deployment config.
  */
 const normalizeCompatibilitySettings = (
     raw: CompatibilitySettingsInterface | null | undefined
@@ -45,41 +39,26 @@ const normalizeCompatibilitySettings = (
     };
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-type CompatibilitySettingsProviderPropsInterface = {};
-
 /**
  * Provider that fetches tenant/sub-org compatibility settings from the API
- * (after user is authenticated) and exposes them via React Context.
- * API call is delegated to useGetCompatibilitySettings; follows same pattern as other providers.
  */
-const CompatibilitySettingsProvider = (
-    props: PropsWithChildren<CompatibilitySettingsProviderPropsInterface>
-): ReactElement => {
+const CompatibilitySettingsProvider = (props: PropsWithChildren): ReactElement => {
     const { children } = props;
 
-    const { state: { isAuthenticated } } = useAuthContext();
-
-    const { data, error, isLoading } = useGetCompatibilitySettings(isAuthenticated);
+    const { data, error, isLoading } = useGetCompatibilitySettings();
 
     const compatibilitySettings: CompatibilitySettingsInterface = useMemo(() => {
-        if (error || data === undefined || data === null) {
+        if (error || !data) {
             return normalizeCompatibilitySettings(null);
         }
 
         return normalizeCompatibilitySettings(data as CompatibilitySettingsInterface);
     }, [ data, error ]);
 
-    const value: CompatibilitySettingsContextInterface = useMemo(
-        () => ({
-            compatibilitySettings,
-            isLoading
-        }),
-        [ compatibilitySettings, isLoading ]
-    );
-
     return (
-        <CompatibilitySettingsContext.Provider value={ value }>
+        <CompatibilitySettingsContext.Provider
+            value={ { compatibilitySettings, isLoading } }
+        >
             { children }
         </CompatibilitySettingsContext.Provider>
     );

@@ -22,7 +22,6 @@ import type { AppState } from "../store";
 
 /**
  * Returns the effective enableLegacyFlows flag (boolean).
- * Compatibility settings (tenant/sub-org, from context) override deployment.config.json (Redux).
  *
  * @returns Effective enableLegacyFlows
  */
@@ -34,7 +33,7 @@ export const useEnableLegacyFlows = (): boolean => {
     const fromCompatibility: string | undefined =
         compatibilitySettings?.flowExecution?.enableLegacyFlows;
 
-    if (fromCompatibility !== undefined && fromCompatibility !== null) {
+    if (fromCompatibility) {
         return fromCompatibility === "true";
     }
 

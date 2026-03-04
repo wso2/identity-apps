@@ -28,23 +28,17 @@ import { AppState } from "../store";
 
 /**
  * Hook to fetch tenant/sub-org compatibility settings from the API.
- * Uses the same pattern as other API hooks: URL from config.endpoints.
- * Subscribes via useSelector so the request runs after endpoints are loaded.
- * Request is authenticated (Bearer token).
  *
- * @param enabled - When true, the request is sent (e.g. when user is authenticated).
  * @returns Request result: data, error, isLoading, mutate
  */
 export const useGetCompatibilitySettings = <
     Data = CompatibilitySettingsInterface,
     Error = RequestErrorInterface
->(
-        enabled: boolean = true
-    ):  RequestResultInterface<Data, Error> => {
+>(): RequestResultInterface<Data, Error> => {
     const url: string = useSelector(
         (state: AppState) => state?.config?.endpoints?.compatibilitySettings ?? ""
     );
-    const shouldFetch: boolean = enabled && Boolean(url);
+    const shouldFetch: boolean = Boolean(url);
 
     const requestConfig: RequestConfigInterface | null = shouldFetch
         ? {
@@ -58,13 +52,7 @@ export const useGetCompatibilitySettings = <
         : null;
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
-        requestConfig,
-        {
-            attachToken: true,
-            revalidateOnFocus: false,
-            revalidateOnReconnect: false,
-            shouldRetryOnError: false
-        }
+        requestConfig
     );
 
     return {

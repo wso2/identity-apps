@@ -32,6 +32,7 @@ import {
 import { getBrandingResourceEndpoints } from "@wso2is/admin.branding.v1/configs/endpoints";
 import { getCustomerDataServiceEndpoints } from "@wso2is/admin.cds.v1/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "@wso2is/admin.certificates.v1";
+import { getCompatibilitySettingsResourceEndpoints } from "./endpoints";
 import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpoints";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { getConnectionResourceEndpoints } from "@wso2is/admin.connections.v1";
@@ -367,9 +368,9 @@ export class Config {
             ...getFlowBuilderCoreResourceEndpoints(this.resolveServerHost()),
             ...getVCTemplateEndpoints(this.resolveServerHost()),
             ...getCustomerDataServiceEndpoints(this.resolveServerHost()),
+            ...getCompatibilitySettingsResourceEndpoints(this.resolveServerHost(true)),
             CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,
             asyncStatus: `${ this.resolveServerHost(false, true) }/api/server/v1/async-operations`,
-            compatibilitySettings: `${ this.resolveServerHost(true) }/api/server/v1/configs/compatibility-settings`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,
             saml2Meta: `${ this.resolveServerHost(false, true) }/identity/metadata/saml2`,
