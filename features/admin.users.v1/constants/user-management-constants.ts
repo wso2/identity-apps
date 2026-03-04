@@ -33,6 +33,7 @@ export enum UserFeatureDictionaryKeys {
     UserGroups = "USER_GROUPS",
     UserRoles = "USER_ROLES",
     UserSharedProfiles = "USER_SHARED_PROFILES",
+    UserSharedAccess = "USER_SHARED_ACCESS",
     UserImpersonation = "USER_IMPERSONATION",
     UserLegacyProfile = "USER_LEGACY_PROFILE",
     UserLegacyAddUser = "USER_LEGACY_ADD_USER",
@@ -88,6 +89,7 @@ export class UserManagementConstants {
         .set("USER_GROUPS", "users.edit.groups")
         .set("USER_ROLES", "users.edit.roles")
         .set("USER_SHARED_PROFILES", "users.updateSharedProfiles")
+        .set("USER_SHARED_ACCESS", "users.sharedAccess")
         .set("USER_IMPERSONATION", "users.user.impersonation")
         .set(UserFeatureDictionaryKeys.HideReadOnlyAttributesWhenEmpty, "profile.hideReadonlyAttributesWhenEmpty")
         .set(UserFeatureDictionaryKeys.UserLegacyProfile, "users.profile.legacy")

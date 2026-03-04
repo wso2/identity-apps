@@ -116,6 +116,10 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         usersFeatureConfig,
         UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UserGroups)
     );
+    const isSharedAccessEnabled: boolean = isFeatureEnabled(
+        usersFeatureConfig,
+        UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UserSharedAccess)
+    );
 
     useEffect(() => {
         if (!isSuperOrganization()) {
@@ -278,8 +282,11 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         />
                     </ResourceTab.Pane>
                 )
-            },
-            {
+            }
+        );
+
+        if (isSharedAccessEnabled) {
+            _panes.push({
                 menuItem: t("users:editUser.tab.menuItems.4"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
@@ -289,14 +296,14 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         />
                     </ResourceTab.Pane>
                 )
-            }
-        );
+            });
+        }
 
         return _panes;
     }, [
         user,
         isUserGroupsEnabled,
-        connectorProperties,
+        isSharedAccessEnabled,        connectorProperties,
         isSuperAdminIdentifierFetchRequestLoading,
         hideTermination,
         isSelectedSuperAdmin,
