@@ -285,7 +285,7 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                 type: "LOCAL"
             })),
             displayName: values.displayName,
-            expiresIn: Number(values.expiresIn),
+            expiresIn: Number(values.expiresIn) * VerifiableCredentialsConstants.SECONDS_PER_DAY,
             format: values.format || DEFAULT_VC_FORMAT
         };
 
@@ -383,7 +383,11 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                                     validate={ validateForm }
                                     initialValues={ {
                                         displayName: vcTemplate?.displayName,
-                                        expiresIn: vcTemplate?.expiresIn?.toString(),
+                                        expiresIn: vcTemplate?.expiresIn
+                                            ? (vcTemplate.expiresIn /
+                                                VerifiableCredentialsConstants.SECONDS_PER_DAY).toString()
+                                            : (VerifiableCredentialsConstants.DEFAULT_EXPIRES_IN /
+                                                VerifiableCredentialsConstants.SECONDS_PER_DAY).toString(),
                                         format: vcTemplate?.format || DEFAULT_VC_FORMAT
                                     } }
                                     render={ ({ handleSubmit }: FormRenderProps) => (

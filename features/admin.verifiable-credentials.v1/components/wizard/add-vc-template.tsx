@@ -233,8 +233,8 @@ export default function AddVCTemplateWizard({
                 type: "LOCAL"
             })),
             displayName: values.displayName,
-            expiresIn: 31536000,
-            format: "jwt_vc_json",
+            expiresIn: VerifiableCredentialsConstants.DEFAULT_EXPIRES_IN,
+            format: VerifiableCredentialsConstants.CREDENTIAL_FORMATS.VC_SD_JWT,
             identifier: values.identifier
         };
 
