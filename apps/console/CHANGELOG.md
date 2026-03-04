@@ -1,5 +1,28 @@
 # @wso2is/console
 
+## 2.95.16
+
+### Patch Changes
+
+- [#9675](https://github.com/wso2/identity-apps/pull/9675) [`e775d9c4454e20e29a506327c99aba687957f3ce`](https://github.com/wso2/identity-apps/commit/e775d9c4454e20e29a506327c99aba687957f3ce) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Improve default token issuer selection based on the current organization id
+
+- Updated dependencies [[`e775d9c4454e20e29a506327c99aba687957f3ce`](https://github.com/wso2/identity-apps/commit/e775d9c4454e20e29a506327c99aba687957f3ce)]:
+  - @wso2is/admin.applications.v1@2.41.12
+  - @wso2is/admin.agents.v1@1.0.164
+  - @wso2is/admin.branding.v1@2.32.105
+  - @wso2is/admin.onboarding.v1@1.0.16
+  - @wso2is/admin.core.v1@2.54.5
+  - @wso2is/admin.roles.v2@2.27.319
+  - @wso2is/admin.connections.v1@2.35.7
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.149
+  - @wso2is/admin.email-management.v1@2.25.313
+  - @wso2is/admin.flows.v1@1.0.118
+  - @wso2is/admin.home.v1@1.7.128
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.149
+  - @wso2is/admin.server-configurations.v1@2.37.15
+  - @wso2is/admin.users.v1@2.36.124
+  - @wso2is/admin.registration-flow-builder.v1@0.10.109
+
 ## 2.95.15
 
 ### Patch Changes
