@@ -24,6 +24,7 @@ import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
 import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { AppConfigProvider } from "@wso2is/admin.core.v1/providers/app-config-provider";
 import AppSettingsProvider from "@wso2is/admin.core.v1/providers/app-settings-provider";
+import CompatibilitySettingsProvider from "@wso2is/admin.core.v1/providers/compatibility-settings-provider";
 import GlobalVariablesProvider from "@wso2is/admin.core.v1/providers/global-variables-provider";
 import { store } from "@wso2is/admin.core.v1/store";
 import OrganizationsProvider from "@wso2is/admin.organizations.v1/providers/organizations-provider";
@@ -110,7 +111,9 @@ const RootWithConfig = (): ReactElement => {
                             >
                                 <AppConfigProvider>
                                     <OrganizationsProvider>
-                                        <ProtectedApp />
+                                        <CompatibilitySettingsProvider>
+                                            <ProtectedApp />
+                                        </CompatibilitySettingsProvider>
                                     </OrganizationsProvider>
                                 </AppConfigProvider>
                             </AuthProvider>

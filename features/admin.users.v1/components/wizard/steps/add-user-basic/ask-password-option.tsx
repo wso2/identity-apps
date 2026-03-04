@@ -19,7 +19,7 @@
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AppState } from "@wso2is/admin.core.v1/store";
+import useEnableLegacyFlows from "@wso2is/admin.core.v1/hooks/use-enable-legacy-flows";
 import {
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
@@ -30,7 +30,6 @@ import { Claim, IdentifiableComponentInterface, ProfileSchemaInterface } from "@
 import { Link, Message, Popup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { Grid, Menu } from "semantic-ui-react";
 import { AskPasswordOptionTypes } from "../../../../constants/user-management-constants";
 import { isFieldDisplayableInUserCreationWizard } from "../../../../utils/user-management-utils";
@@ -75,9 +74,7 @@ const AskPasswordOption: FunctionComponent<AskPasswordOptionPropsInterface> = ({
 }: AskPasswordOptionPropsInterface): ReactElement => {
     const { t } = useTranslation();
 
-    const isLegacyFlowsEnabled: boolean = useSelector(
-        (state: AppState) => state.config.ui?.flowExecution?.enableLegacyFlows
-    );
+    const isLegacyFlowsEnabled: boolean = useEnableLegacyFlows();
 
     /**
      * Process connector properties to determine ask password verification option.
