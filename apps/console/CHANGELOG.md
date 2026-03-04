@@ -1,5 +1,32 @@
 # @wso2is/console
 
+## 2.95.17
+
+### Patch Changes
+
+- [#9686](https://github.com/wso2/identity-apps/pull/9686) [`11f78e74d83aa13af412513cf1010ab92f9989ad`](https://github.com/wso2/identity-apps/commit/11f78e74d83aa13af412513cf1010ab92f9989ad) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Add Compatibility Settings UI support.
+
+* [#9688](https://github.com/wso2/identity-apps/pull/9688) [`bbdc05651633f04305710158afc355ea6f16d8c0`](https://github.com/wso2/identity-apps/commit/bbdc05651633f04305710158afc355ea6f16d8c0) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Improve VC creation UX
+
+* Updated dependencies [[`11f78e74d83aa13af412513cf1010ab92f9989ad`](https://github.com/wso2/identity-apps/commit/11f78e74d83aa13af412513cf1010ab92f9989ad), [`bbdc05651633f04305710158afc355ea6f16d8c0`](https://github.com/wso2/identity-apps/commit/bbdc05651633f04305710158afc355ea6f16d8c0)]:
+  - @wso2is/admin.server-configurations.v1@2.37.16
+  - @wso2is/admin.claims.v1@2.30.2
+  - @wso2is/admin.users.v1@2.36.125
+  - @wso2is/admin.core.v1@2.54.6
+  - @wso2is/admin.verifiable-credentials.v1@1.0.3
+  - @wso2is/i18n@2.34.6
+  - @wso2is/admin.onboarding.v1@1.0.17
+  - @wso2is/admin.agents.v1@1.0.165
+  - @wso2is/admin.roles.v2@2.27.320
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.150
+  - @wso2is/admin.branding.v1@2.32.106
+  - @wso2is/admin.email-management.v1@2.25.314
+  - @wso2is/admin.flows.v1@1.0.119
+  - @wso2is/admin.home.v1@1.7.129
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.150
+  - @wso2is/admin.connections.v1@2.35.8
+  - @wso2is/admin.registration-flow-builder.v1@0.10.110
+
 ## 2.95.16
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @wso2is/admin.verifiable-credentials.v1
 
+## 1.0.3
+
+### Patch Changes
+
+- [#9688](https://github.com/wso2/identity-apps/pull/9688) [`bbdc05651633f04305710158afc355ea6f16d8c0`](https://github.com/wso2/identity-apps/commit/bbdc05651633f04305710158afc355ea6f16d8c0) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Improve VC creation UX
+
+- Updated dependencies [[`11f78e74d83aa13af412513cf1010ab92f9989ad`](https://github.com/wso2/identity-apps/commit/11f78e74d83aa13af412513cf1010ab92f9989ad), [`bbdc05651633f04305710158afc355ea6f16d8c0`](https://github.com/wso2/identity-apps/commit/bbdc05651633f04305710158afc355ea6f16d8c0)]:
+  - @wso2is/admin.claims.v1@2.30.2
+  - @wso2is/admin.core.v1@2.54.6
+  - @wso2is/i18n@2.34.6
+
 ## 1.0.2
 
 ### Patch Changes
