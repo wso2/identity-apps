@@ -114,6 +114,7 @@ interface ValueInputAutocompleteProps extends ComponentCommonPropsInterface {
     filterBaseResourcesUrl: string;
     shouldFetch: boolean;
     hiddenResources?: string[];
+    showClearFilter?: boolean;
 }
 
 /**
@@ -210,7 +211,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         conditionId,
         expressionId,
         shouldFetch,
-        hiddenResources = []
+        hiddenResources = [],
+        showClearFilter = true
     }: ValueInputAutocompleteProps) => {
         const [ inputValue, setInputValue ] = useState<string>(null);
         const [ inputValueLabel, setInputValueLabel ] = useState<string>(null);
@@ -291,7 +293,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             label: t("rules:fields.autocomplete.moreItemsMessage")
                         } ]
                         : []),
-                    ...(inputValueLabel
+                    ...(showClearFilter && inputValueLabel
                         ? [ {
                             id: CLEAR_OPTION,
                             isDisabled: false,
@@ -664,87 +666,22 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 </Select>
             );
         } else {
-            // Generic path for all other fields (e.g., approval workflow fields).
-            // Uses normalizeResourceResponse to extract items from any API response format.
-            const { items: normalizedItems, totalResults, count } = normalizeResourceResponse(fetchedResourcesList);
-
-            // If we have resource details for the current value but it's not in the fetched list,
-            // prepend it so the Select dropdown can display the current selection correctly.
-            const items: ResourceInterface[] =
-                resourceDetails &&
-                expressionValue &&
-                !normalizedItems.some((item: ResourceInterface) => item[valueReferenceAttribute] === expressionValue)
-                    ? [ resourceDetails, ...normalizedItems ]
-                    : normalizedItems;
-
-            // Auto-select first value if expression value is empty.
-            if (expressionValue === "" && items.length > 0) {
-                handleExpressionChangeDebounced(
-                    items[0]?.[valueReferenceAttribute],
-                    ruleId,
-                    conditionId,
-                    expressionId,
-                    ExpressionFieldTypes.Value,
-                    false
-                );
-            }
-
-            // If paginated and a filter URL exists, show autocomplete for search.
-            if (totalResults > count && filterBaseResourcesUrl) {
-                return (
-                    <ValueInputAutocomplete
-                        conditionId={ conditionId }
-                        ruleId={ ruleId }
-                        expressionId={ expressionId }
-                        expressionValue={ expressionValue }
-                        resourceDetails={ resourceDetails }
-                        valueReferenceAttribute={ valueReferenceAttribute }
-                        valueDisplayAttribute={ valueDisplayAttribute }
-                        initialResourcesLoadUrl={ initialResourcesLoadUrl }
-                        filterBaseResourcesUrl={ filterBaseResourcesUrl }
-                        shouldFetch={ true }
-                        hiddenResources={ hiddenResources }
-                    />
-                );
-            }
-
-            // Simple select dropdown for non-paginated or filter-URL-less responses.
+            // Generic path for all approval workflow fields.
             return (
-                <Select
-                    disabled={ readonly }
-                    value={ expressionValue }
-                    data-componentid={ componentId }
-                    MenuProps={ {
-                        disablePortal: false,
-                        sx: { zIndex: 9999 }
-                    } }
-                    onChange={ (e: SelectChangeEvent) => {
-                        updateConditionExpression(
-                            e.target.value,
-                            ruleId,
-                            conditionId,
-                            expressionId,
-                            ExpressionFieldTypes.Value,
-                            true
-                        );
-                    } }
-                >
-                    { items
-                        ?.filter(
-                            (resource: ResourceInterface) =>
-                                !hiddenResources.includes(resource[valueReferenceAttribute])
-                        )
-                        .map((resource: ResourceInterface, index: number) => (
-                            <MenuItem value={ resource[valueReferenceAttribute] } key={ `${expressionId}-${index}` }>
-                                { resource[valueDisplayAttribute] }
-                            </MenuItem>
-                        )) }
-                    { totalResults > count && (
-                        <MenuItem disabled key={ `${expressionId}-more-items` }>
-                            { t("rules:fields.autocomplete.moreItemsMessage") }
-                        </MenuItem>
-                    ) }
-                </Select>
+                <ValueInputAutocomplete
+                    conditionId={ conditionId }
+                    ruleId={ ruleId }
+                    expressionId={ expressionId }
+                    expressionValue={ expressionValue }
+                    resourceDetails={ resourceDetails }
+                    valueReferenceAttribute={ valueReferenceAttribute }
+                    valueDisplayAttribute={ valueDisplayAttribute }
+                    initialResourcesLoadUrl={ initialResourcesLoadUrl }
+                    filterBaseResourcesUrl={ filterBaseResourcesUrl }
+                    shouldFetch={ true }
+                    hiddenResources={ hiddenResources }
+                    showClearFilter={ false }
+                />
             );
         }
     };
@@ -923,14 +860,33 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             sx: { zIndex: 9999 }
                         } }
                         onChange={ (e: SelectChangeEvent) => {
+                            const newField: string = e.target.value;
+
+                            const meta: ConditionExpressionMetaInterface | undefined = conditionExpressionsMeta.find(
+                                (expressionMeta: ConditionExpressionMetaInterface) =>
+                                    expressionMeta?.field?.name === newField
+                            );
+
+                            const defaultOperator: string = meta?.operators?.[0]?.name || "";
+
                             updateConditionExpression(
-                                e.target.value,
+                                newField,
                                 ruleId,
                                 conditionId,
                                 expression.id,
                                 ExpressionFieldTypes.Field,
                                 true
                             );
+
+                            updateConditionExpression(
+                                defaultOperator,
+                                ruleId,
+                                conditionId,
+                                expression.id,
+                                ExpressionFieldTypes.Operator,
+                                true
+                            );
+
                             updateConditionExpression(
                                 "",
                                 ruleId,
