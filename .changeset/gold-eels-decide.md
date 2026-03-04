@@ -3,4 +3,4 @@
 "@wso2is/console": patch
 ---
 
-Fix Digital Wallet Application Authroization resource name
+Fix Digital Wallet Application Authorization resource name
