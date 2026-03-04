@@ -48,9 +48,6 @@ const httpClient: HttpInstance = AsgardeoSPAClient.getInstance().httpRequest.bin
 export const updatePassword = (currentPassword: string, newPassword: string, isSubOrgUser: boolean = false,
     userOrganizationHandle: string = null): Promise<HttpResponse<unknown>> => {
 
-    // In case the password contains non-ascii characters, converting to valid ascii format.
-    const encoder: TextEncoder = new TextEncoder();
-    const encodedCurrentPassword: string = String.fromCharCode(...encoder.encode(currentPassword));
     const url: string = store.getState().config.endpoints.passwordChange;
     let updatedUrl: string = url;
 
@@ -60,7 +57,7 @@ export const updatePassword = (currentPassword: string, newPassword: string, isS
 
     const requestConfig: HttpRequestConfig = {
         data: {
-            currentPassword: encodedCurrentPassword,
+            currentPassword: currentPassword,
             newPassword: newPassword
         },
         headers: {
