@@ -32,7 +32,6 @@ import {
 import { getBrandingResourceEndpoints } from "@wso2is/admin.branding.v1/configs/endpoints";
 import { getCustomerDataServiceEndpoints } from "@wso2is/admin.cds.v1/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "@wso2is/admin.certificates.v1";
-import { getCompatibilitySettingsResourceEndpoints } from "./endpoints";
 import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpoints";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { getConnectionResourceEndpoints } from "@wso2is/admin.connections.v1";
@@ -80,6 +79,7 @@ import {
     SupportedLanguagesMeta,
     generateBackendPaths
 } from "@wso2is/i18n";
+import { getCompatibilitySettingsResourceEndpoints } from "./endpoints";
 import { getWorkflowRequestsResourceEndpoints } from "../../admin.workflow-requests.v1/types/workflow-requests";
 import { AppConstants } from "../constants/app-constants";
 import { I18nConstants } from "../constants/i18n-constants";
