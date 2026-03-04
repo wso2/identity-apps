@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { PasswordValidation, ValidationStatusInterface } from "@wso2is/react-components";
@@ -82,11 +81,6 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
         state?.config?.ui?.isPasswordInputValidationEnabled);
 
     const endUserSession: () => Promise<boolean> = useEndUserSession();
-
-    const userOrganizationHandle: string
-        = useSelector((state: AppState) => state?.organization?.userOrganizationHandle);
-    const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
-    const isSubOrgUser: boolean = (organizationType === OrganizationType.SUBORGANIZATION);
 
     /**
      * Get the configurations.
@@ -183,7 +177,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
      */
     const changePassword = () => {
 
-        updatePassword(currentPassword, newPassword, isSubOrgUser, userOrganizationHandle)
+        updatePassword(currentPassword, newPassword)
             .then((response: any) => {
                 if (response.status && response.status === 204) {
                     // reset the form.
@@ -210,7 +204,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                 // Axios throws a generic `Network Error` for 401 status.
                 // As a temporary solution, a check to see if a response
                 // is available has be used.
-                if (!error.response || error.response.status === 401) {
+                if (!error.response || error.response.status === 400) {
                     // set an error in the current password field.
                     setErrors({
                         ...errors,

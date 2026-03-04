@@ -40,20 +40,10 @@ const httpClient: HttpInstance = AsgardeoSPAClient.getInstance().httpRequest.bin
  *
  * @param currentPassword - currently registered password.
  * @param newPassword - newly assigned password.
- * @param isSubOrgUser - Whether the user belongs to a sub-organization.
- * @param userOrganizationHandle - The user's organization Handle.
  *
  * @returns A promise that resolves with the HTTP response when the request succeeds with status `204`.
  */
-export const updatePassword = (currentPassword: string, newPassword: string, isSubOrgUser: boolean = false,
-    userOrganizationHandle: string = null): Promise<HttpResponse<unknown>> => {
-
-    const url: string = store.getState().config.endpoints.passwordChange;
-    let updatedUrl: string = url;
-
-    if (isSubOrgUser) {
-        updatedUrl = url.replace(/\/t\/[^/]+\//, `/t/${userOrganizationHandle}/`);
-    }
+export const updatePassword = (currentPassword: string, newPassword: string): Promise<HttpResponse<unknown>> => {
 
     const requestConfig: HttpRequestConfig = {
         data: {
@@ -64,7 +54,7 @@ export const updatePassword = (currentPassword: string, newPassword: string, isS
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: updatedUrl
+        url: store.getState().config.endpoints.passwordChange
     };
 
     return httpClient(requestConfig)
