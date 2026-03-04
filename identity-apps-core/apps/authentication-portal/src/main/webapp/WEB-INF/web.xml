@@ -382,6 +382,11 @@
         <jsp-file>/select_org.jsp</jsp-file>
     </servlet>
 
+    <servlet>
+        <servlet-name>invalid_tenant_domain.do</servlet-name>
+        <jsp-file>/invalid_tenant_domain_response.jsp</jsp-file>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>totp_enroll.do</servlet-name>
         <url-pattern>/totp_enroll.do</url-pattern>
@@ -595,6 +600,11 @@
     <servlet-mapping>
         <servlet-name>duo_error.do</servlet-name>
         <url-pattern>/duo_error.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>invalid_tenant_domain.do</servlet-name>
+        <url-pattern>/invalid_tenant_domain.do</url-pattern>
     </servlet-mapping>
 
     <error-page>
