@@ -30,20 +30,20 @@ const httpClient: HttpClientInstance =
     AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * PUT /cds/api/v1/config
+ * PATCH /cds/api/v1/config
  * Update the CDS configuration
  */
 export const updateCDSConfig = (
-    put: Partial<CDSConfigUpdateRequest>
+    payload: Partial<CDSConfigUpdateRequest>
 ): Promise<CDSConfig> => {
 
     const requestConfig: RequestConfigInterface = {
-        data: put,
+        data: payload,
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
-        method: HttpMethods.PUT,
+        method: HttpMethods.PATCH,
         url: store.getState().config.endpoints.cdsConfig
     };
 
