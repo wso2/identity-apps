@@ -32,5 +32,5 @@ export interface CompatibilitySettingsResourceEndpointsInterface {
 export const getCompatibilitySettingsResourceEndpoints = (
     serverOrigin: string
 ): CompatibilitySettingsResourceEndpointsInterface => ({
-    compatibilitySettings: `${ serverOrigin }/api/server/v1/configs/compatibility-settingss`
+    compatibilitySettings: `${ serverOrigin }/api/server/v1/configs/compatibility-settings`
 });
