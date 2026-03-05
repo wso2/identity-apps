@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FeatureAccessConfigInterface } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -117,6 +117,9 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UserGroups)
     );
     const isSharedAccessEnabled: boolean = usersFeatureConfig?.subFeatures?.userSharingV2?.enabled ?? false;
+    const hasSharedAccessReadPermission: boolean = useRequiredScopes(
+        usersFeatureConfig?.subFeatures?.userSharingV2?.scopes?.read
+    );
 
     useEffect(() => {
         if (!isSuperOrganization()) {
@@ -282,7 +285,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             }
         );
 
-        if (isSharedAccessEnabled) {
+        if (isSharedAccessEnabled && hasSharedAccessReadPermission) {
             _panes.push({
                 menuItem: t("users:editUser.tab.menuItems.4"),
                 render: () => (
@@ -300,7 +303,9 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     }, [
         user,
         isUserGroupsEnabled,
-        isSharedAccessEnabled,        connectorProperties,
+        isSharedAccessEnabled,
+        hasSharedAccessReadPermission,
+        connectorProperties,
         isSuperAdminIdentifierFetchRequestLoading,
         hideTermination,
         isSelectedSuperAdmin,
