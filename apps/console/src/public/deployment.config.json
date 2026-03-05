@@ -1955,6 +1955,27 @@
                         "internal_session_delete",
                         "internal_user_mgt_update"
                     ]
+                },
+                "subFeatures": {
+                    "userSharingV2": {
+                        "disabledFeatures": [
+                        ],
+                        "enabled": true,
+                        "scopes": {
+                            "create": [
+                                    "internal_user_share"
+                            ],
+                            "delete": [
+                                    "internal_user_unshare"
+                            ],
+                            "read": [
+                                    "internal_user_shared_access_view"
+                            ],
+                            "update": [
+                                    "internal_user_shared_access_update"
+                            ]
+                        }
+                    }
                 }
             },
             "verifiableCredentials": {
