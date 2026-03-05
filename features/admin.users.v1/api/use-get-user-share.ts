@@ -82,7 +82,7 @@ const useGetUserShare = (
     if (filter) {
         params.append("filter", filter);
     } else {
-        params.append("filter","");
+        params.append("filter", "");
     }
 
     const queryString: string = params.toString();
