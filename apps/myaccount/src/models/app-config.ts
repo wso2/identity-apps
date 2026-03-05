@@ -80,7 +80,8 @@ export interface ServiceResourceEndpointsInterface {
     jwks: string;
     logout: string;
     me: string;
-    mfaEnabledAuthenticators: string
+    mfaEnabledAuthenticators: string;
+    passwordChange: string;
     preference: string;
     profileSchemas: string;
     push: string;
