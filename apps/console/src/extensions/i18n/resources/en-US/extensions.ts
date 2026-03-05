@@ -1656,8 +1656,8 @@ export const extensions: Extensions = {
         emailProviders: {
             configureEmailTemplates: "Configure Email Templates",
             heading: "Email Provider",
-            subHeading: "Configure a SMTP server to send emails to your users with your own email address.",
-            description: "Configure organization specific SMTP settings. If unconfigured, the server settings will apply.",
+            subHeading: "Configure a SMTP/HTTP server to send emails to your users with your own email address.",
+            description: "Configure organization specific SMTP/HTTP settings. If unconfigured, the server settings will apply.",
             note: "SMTP settings for the super organization can only be configured via server settings.",
             info: "You can customize the email content using <1>Email Templates</1>.",
             updateButton: "Update",
@@ -1718,6 +1718,48 @@ export const extensions: Extensions = {
                     placeholder: "Enter a display name",
                     hint: "The Display Name is used to specify the name that recipients will see in their email " +
                         "inbox when they receive your message."
+                },
+                smtpProvider: {
+                    name: "SMTP",
+                    subHeading: "SMTP Provider Settings"
+                },
+                httpProvider: {
+                    authentication: {
+                        required: "Authentication scheme is required. Please select an authentication " +
+                            "scheme before proceeding.",
+                        updateRequired: "Please reconfigure the authentication details before proceeding."
+                    },
+                    body: {
+                        hint: "The payload template of the API request. Use {{subject}} to represent the email subject. Use " +
+                            "{{body}} to represent the generated email body. Use {{footer}} to represent the email footer. " +
+                            "Use {{send-to}} to represent the recipient email address.",
+                        label: "Payload Template",
+                        placeholder: "{\"subject\": \"{{subject}}\", \"body\": {{body}}, \"footer\": {{footer}}," +
+                            "\"to\": \"{{send-to}}\"}"
+                    },
+                    contentType: {
+                        hint: "The content type of the API request. Accepted values are 'FORM' or 'JSON'.",
+                        label: "Content Type",
+                        placeholder: "JSON"
+                    },
+                    headers: {
+                        hint: "Comma separated list of HTTP headers to be included in the Email API request.",
+                        label: "HTTP Headers",
+                        placeholder: "X-Custom-Header: value, X-Another-Header: value"
+                    },
+                    httpMethod: {
+                        hint: "The HTTP method of the API request. Accepted values are 'POST' or 'PUT'.",
+                        label: "HTTP Method",
+                        placeholder: "POST"
+                    },
+                    mandatoryFieldsRequired: "Please fill in all required fields before proceeding.",
+                    name: "HTTP",
+                    providerUrl: {
+                        hint: "The URL of the HTTP endpoint that will handle email delivery.",
+                        label: "Email Provider URL",
+                        placeholder: "Enter the Email Provider URL"
+                    },
+                    subHeading: "HTTP Provider Settings"
                 },
                 validations: {
                     required: "This field cannot be empty",
