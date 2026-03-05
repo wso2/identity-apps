@@ -37,7 +37,6 @@ export const featureGateConfig: FeatureGateInterface  = {
             },
             status: FeatureStatus.DEFAULT
         },
-        
         branding: {
             design: {
                 layout: {

@@ -254,7 +254,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const oidcFrontChannelLogoutFeatureStatus: FeatureStatus = useCheckFeatureStatus(
         FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["OIDC_FRONT_CHANNEL_LOGOUT"]);
     const isFrontChannelLogoutGated: boolean = isFrontChannelLogoutEnabled
-        && oidcFrontChannelLogoutFeatureStatus !== FeatureStatus.DISABLED;
+        && oidcFrontChannelLogoutFeatureStatus === FeatureStatus.ENABLED;
     const isEnforceClientSecretPermissionEnabled: boolean = isFeatureEnabled(
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get(
@@ -1518,7 +1518,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     backChannelLogoutUrl: isBackChannelLogoutEnabled
                         ? values.get("backChannelLogoutUrl")
                         : initialValues?.logout?.backChannelLogoutUrl,
-                    frontChannelLogoutUrl: values.get("frontChannelLogoutUrl")
+                    frontChannelLogoutUrl: isFrontChannelLogoutGated
+                        ? values.get("frontChannelLogoutUrl")
+                        : initialValues?.logout?.frontChannelLogoutUrl
                 },
                 publicClient: !isMobileApplication ? values.get("supportPublicClients")?.length > 0 : true,
                 refreshToken: {
