@@ -281,6 +281,21 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 onClose={ () => setOpen(false) }
                 componentsProps={ {
                     popper: {
+                        modifiers: [
+                            {
+                                enabled: true,
+                                fn: ({ state }: { state: any }) => {
+                                    state.styles.popper.width = `${state.rects.reference.width}px`;
+                                },
+                                name: "sameWidth",
+                                phase: "beforeWrite",
+                                requires: [ "computeStyles" ]
+                            },
+                            {
+                                enabled: false,
+                                name: "flip"
+                            }
+                        ],
                         style: { zIndex: 9999 }
                     }
                 } }
@@ -667,21 +682,81 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             );
         } else {
             // Generic path for all approval workflow fields.
+            // If filtering is supported, use searchable autocomplete.
+            if (filterBaseResourcesUrl  && initialResourcesLoadUrl) {
+                return (
+                    <ValueInputAutocomplete
+                        conditionId={ conditionId }
+                        ruleId={ ruleId }
+                        expressionId={ expressionId }
+                        expressionValue={ expressionValue }
+                        resourceDetails={ resourceDetails }
+                        valueReferenceAttribute={ valueReferenceAttribute }
+                        valueDisplayAttribute={ valueDisplayAttribute }
+                        initialResourcesLoadUrl={ initialResourcesLoadUrl }
+                        filterBaseResourcesUrl={ filterBaseResourcesUrl }
+                        shouldFetch={ true }
+                        hiddenResources={ hiddenResources }
+                        showClearFilter={ false }
+                    />
+                );
+            }
+
+            // Otherwise fallback to a normal Select dropdown.
+            const { items: normalizedItems } = normalizeResourceResponse(fetchedResourcesList);
+
+            const items: ResourceInterface[] =
+                resourceDetails &&
+                expressionValue &&
+                !normalizedItems.some(
+                    (item: ResourceInterface) => item[valueReferenceAttribute] === expressionValue
+                )
+                    ? [ resourceDetails, ...normalizedItems ]
+                    : normalizedItems;
+
             return (
-                <ValueInputAutocomplete
-                    conditionId={ conditionId }
-                    ruleId={ ruleId }
-                    expressionId={ expressionId }
-                    expressionValue={ expressionValue }
-                    resourceDetails={ resourceDetails }
-                    valueReferenceAttribute={ valueReferenceAttribute }
-                    valueDisplayAttribute={ valueDisplayAttribute }
-                    initialResourcesLoadUrl={ initialResourcesLoadUrl }
-                    filterBaseResourcesUrl={ filterBaseResourcesUrl }
-                    shouldFetch={ true }
-                    hiddenResources={ hiddenResources }
-                    showClearFilter={ false }
-                />
+                <Select
+                    disabled={ readonly }
+                    value={ expressionValue || "" }
+                    displayEmpty
+                    data-componentid={ componentId }
+                    MenuProps={ {
+                        disablePortal: false,
+                        sx: { zIndex: 9999 }
+                    } }
+                    onChange={ (e: SelectChangeEvent) => {
+                        updateConditionExpression(
+                            e.target.value,
+                            ruleId,
+                            conditionId,
+                            expressionId,
+                            ExpressionFieldTypes.Value,
+                            true
+                        );
+                    } }
+                    renderValue={ (selected: string) => {
+                        if (!selected) {
+                            return (
+                                <Box component="span" sx={ { color: "text.disabled" } }>
+                                    { t("rules:fields.autocomplete.selectPlaceholderText") }
+                                </Box>
+                            );
+                        }
+
+                        return selected;
+                    } }
+                >
+                    { items
+                        ?.filter(
+                            (resource: ResourceInterface) =>
+                                !hiddenResources.includes(resource[valueReferenceAttribute])
+                        )
+                        .map((resource: ResourceInterface, index: number) => (
+                            <MenuItem value={ resource[valueReferenceAttribute] } key={ `${expressionId}-${index}` }>
+                                { resource[valueDisplayAttribute] }
+                            </MenuItem>
+                        )) }
+                </Select>
             );
         }
     };
