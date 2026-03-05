@@ -691,6 +691,9 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                         </div>
 
                         <Divider className="divider-container" />
+                        <Grid className="common-section-heading">
+                            <Heading as="h4">{ t("approvalWorkflows:sections.operations.heading") }</Heading>
+                        </Grid>
                         <div className=" ">
                             <WorkflowOperationsDetailsForm
                                 ref={ workflowOperationsDetailsFormRef }
@@ -711,8 +714,8 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                         <Divider className="divider-container" />
 
                         <div className="workflow-model-configuration-settings">
-                            <Grid className="operations-autocomplete-header">
-                                <Heading as="h6">{ "Approval Steps" }</Heading>
+                            <Grid className="common-section-heading">
+                                <Heading as="h4">{ t("approvalWorkflows:sections.approvalSteps.heading") }</Heading>
                             </Grid>
                             <ConfigurationsForm
                                 ref={ configurationsFormRef }

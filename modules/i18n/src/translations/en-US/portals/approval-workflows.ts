@@ -157,7 +157,7 @@ export const approvalWorkflows: approvalWorkflowsNS = {
         operations: {
             dropDown: {
                 disabledHint: "A workflow already exists for this operation",
-                label: "Operations",
+                label: "Configure Operations",
                 nullValidationErrorMessage: "Please select at least one operation",
                 placeholder: "Type operation/s to search and assign"
             }
@@ -336,6 +336,14 @@ export const approvalWorkflows: approvalWorkflowsNS = {
             },
             primaryAction: "New Approval Workflow",
             title: "Approval Workflows"
+        }
+    },
+    sections: {
+        approvalSteps: {
+            heading: "Approval Steps"
+        },
+        operations: {
+            heading: "Operations"
         }
     }
 };

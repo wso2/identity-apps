@@ -327,4 +327,12 @@ export interface approvalWorkflowsNS {
             name: string;
         };
     };
+    sections: {
+        operations: {
+            heading: string;
+        };
+        approvalSteps: {
+            heading: string;
+        };
+    };
 }

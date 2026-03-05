@@ -37,8 +37,8 @@ import { MinusIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code } from "@wso2is/react-components";
 import debounce from "lodash-es/debounce";
-import React, { ChangeEvent, Dispatch, Fragment, FunctionComponent, HTMLAttributes, ReactElement, useEffect,
-    useState } from "react";
+import React, { ChangeEvent, Dispatch, Fragment, FunctionComponent, HTMLAttributes, ReactElement, useCallback,
+    useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { DropdownProps } from "semantic-ui-react";
 import useGetResourceListOrResourceDetails from "../api/use-get-resource-list-or-resource-details";
@@ -191,7 +191,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         ) => {
             updateConditionExpression(changedValue, ruleId, conditionId, expressionId, fieldName, isUserOnChange);
         },
-        300
+        3000
     );
 
     /**
@@ -216,14 +216,20 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
     }: ValueInputAutocompleteProps) => {
         const [ inputValue, setInputValue ] = useState<string>(null);
         const [ inputValueLabel, setInputValueLabel ] = useState<string>(null);
+        const [ debouncedSearchQuery, setDebouncedSearchQuery ] = useState<string>(null);
         const [ options, setOptions ] = useState<ValueInputAutocompleteOptionsInterface[]>([]);
         const [ open, setOpen ] = useState<boolean>(false);
 
         const MORE_ITEMS: string = "more-items";
         const CLEAR_OPTION: string = "clear-option";
 
-        const filterUrl: string = inputValueLabel
-            ? filterBaseResourcesUrl?.replace("filter=", `filter=${valueDisplayAttribute}+sw+${inputValueLabel}`)
+        const setDebouncedSearchQueryDebounced: (value: string) => void = useCallback(
+            debounce((value: string) => setDebouncedSearchQuery(value), 500),
+            []
+        );
+
+        const filterUrl: string = debouncedSearchQuery
+            ? filterBaseResourcesUrl?.replace("filter=", `filter=${valueDisplayAttribute}+sw+${debouncedSearchQuery}`)
             : initialResourcesLoadUrl;
 
         const { data: initialResources = [], isLoading: isInitialLoading } =
@@ -235,11 +241,12 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             if (resourceDetails) {
                 setInputValue(resourceDetails[valueReferenceAttribute] || null);
                 setInputValueLabel(resourceDetails[valueDisplayAttribute] || null);
+                setDebouncedSearchQuery(resourceDetails[valueDisplayAttribute] || null);
             }
         }, [ resourceDetails ]);
 
         useEffect(() => {
-            if (inputValueLabel && filterUrl) {
+            if (debouncedSearchQuery && filterUrl) {
                 const { items: filteredItems } = normalizeResourceResponse(filteredResources);
                 const filteredOptions: ValueInputAutocompleteOptionsInterface[] = filteredItems
                     .filter(
@@ -264,7 +271,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
                 setOptions(initialOptions);
             }
-        }, [ inputValueLabel, initialResources, filteredResources, filterUrl ]);
+        }, [ debouncedSearchQuery, initialResources, filteredResources, filterUrl ]);
 
         const { totalResults: filteredTotalResults, count: filteredCount } = normalizeResourceResponse(
             filteredResources
@@ -331,6 +338,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
                     if (value?.id === CLEAR_OPTION) {
                         setInputValueLabel("");
+                        setDebouncedSearchQuery("");
                         setTimeout(() => setOpen(true), 0);
 
                         return;
@@ -350,6 +358,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 inputValue={ inputValueLabel }
                 onInputChange={ (event: ChangeEvent, value: string) => {
                     setInputValueLabel(value);
+                    setDebouncedSearchQueryDebounced(value);
                 } }
                 renderInput={ (params: AutocompleteRenderInputParams) => (
                     <TextField
