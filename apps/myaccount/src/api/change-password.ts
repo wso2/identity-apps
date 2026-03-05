@@ -29,7 +29,6 @@ const httpClient: HttpInstance = AsgardeoSPAClient.getInstance().httpRequest.bin
     AsgardeoSPAClient.getInstance()
 );
 
-
 /**
  * Updates the signed-in user's password.
  *
