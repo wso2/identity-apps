@@ -356,6 +356,20 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
 }
 
 /**
+ * Flow execution compatibility settings from the tenant/sub-org API.
+ */
+export interface FlowExecutionCompatibilityInterface {
+    enableLegacyFlows?: string;
+}
+
+/**
+ * Tenant/sub-organization compatibility settings from /api/server/v1/configs/compatibility-settings.
+ */
+export interface CompatibilitySettingsInterface extends Record<string, unknown> {
+    flowExecution?: FlowExecutionCompatibilityInterface;
+}
+
+/**
  * Interface for defining settings and configs of an external app.
  */
 interface ExternalAppConfigInterface {

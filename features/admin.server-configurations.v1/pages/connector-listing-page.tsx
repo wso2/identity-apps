@@ -18,9 +18,10 @@
 
 import Typography from "@oxygen-ui/react/Typography";
 import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
+import useEnableLegacyFlows from "@wso2is/admin.core.v1/hooks/use-enable-legacy-flows";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import { FeatureConfigInterface  } from "@wso2is/admin.core.v1/models/config";
-import { AppState, store  } from "@wso2is/admin.core.v1/store";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
 import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -87,8 +88,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     const { UIConfig } = useUIConfig();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const isLegacyFlowsEnabled: boolean = useSelector(
-        (state: AppState) => state.config.ui.flowExecution.enableLegacyFlows);
+    const isLegacyFlowsEnabled: boolean = useEnableLegacyFlows();
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPasswordInputValidationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isPasswordInputValidationEnabled);

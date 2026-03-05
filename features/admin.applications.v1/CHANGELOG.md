@@ -1,5 +1,33 @@
 # @wso2is/admin.applications.v1
 
+## 2.41.13
+
+### Patch Changes
+
+- [#9693](https://github.com/wso2/identity-apps/pull/9693) [`7875b8053d9af4ca38138818bf15596946c83ebe`](https://github.com/wso2/identity-apps/commit/7875b8053d9af4ca38138818bf15596946c83ebe) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Fix Digital Wallet Application Authorization resource name
+
+- Updated dependencies [[`89273a887431c2e7e2bf346bc166dea0667cfc45`](https://github.com/wso2/identity-apps/commit/89273a887431c2e7e2bf346bc166dea0667cfc45)]:
+  - @wso2is/admin.core.v1@2.54.7
+  - @wso2is/admin.branding.v1@2.32.107
+  - @wso2is/admin.roles.v2@2.27.321
+  - @wso2is/admin.server-configurations.v1@2.37.17
+  - @wso2is/admin.users.v1@2.36.126
+  - @wso2is/admin.connections.v1@2.35.9
+
+## 2.41.12
+
+### Patch Changes
+
+- [#9675](https://github.com/wso2/identity-apps/pull/9675) [`e775d9c4454e20e29a506327c99aba687957f3ce`](https://github.com/wso2/identity-apps/commit/e775d9c4454e20e29a506327c99aba687957f3ce) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Improve default token issuer selection based on the current organization id
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.32.105
+  - @wso2is/admin.core.v1@2.54.5
+  - @wso2is/admin.roles.v2@2.27.319
+  - @wso2is/admin.connections.v1@2.35.7
+  - @wso2is/admin.server-configurations.v1@2.37.15
+  - @wso2is/admin.users.v1@2.36.124
+
 ## 2.41.11
 
 ### Patch Changes

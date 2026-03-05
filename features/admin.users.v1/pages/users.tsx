@@ -24,6 +24,7 @@ import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import useEnableLegacyFlows from "@wso2is/admin.core.v1/hooks/use-enable-legacy-flows";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -200,9 +201,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ invitedUserListOffset, setInvitedUserListOffset ] = useState<number>(1);
 
-    const isLegacyFlowsEnabled: boolean = useSelector(
-        (state: AppState) => state.config.ui.flowExecution.enableLegacyFlows
-    );
+    const isLegacyFlowsEnabled: boolean = useEnableLegacyFlows();
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state?.profile?.profileSchemas);
     const systemReservedUserStores: string[] =
         useSelector((state: AppState) => state?.config?.ui?.systemReservedUserStores);

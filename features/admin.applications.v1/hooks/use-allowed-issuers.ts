@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetOrganizationBreadCrumb } from "@wso2is/admin.organizations.v1/api";
 import { BreadcrumbItem } from "@wso2is/admin.organizations.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -23,7 +24,7 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { getAuthProtocolMetadata } from "../api/application";
 import { AllowedIssuerInterface, OIDCMetadataInterface } from "../models/application-inbound";
@@ -74,6 +75,10 @@ const useAllowedIssuers = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
+    const currentOrganizationId: string = useSelector(
+        (state: AppState) => state.organization.organization.id
+    );
+
     const [ selectedTokenEndpoint, setSelectedTokenEndpoint ] = useState<string>("");
     const [ tokenEndpoints, setTokenEndpoints ] = useState<AllowedIssuerInterface[]>([]);
     const [ isLoadingTokenEndpoints, setIsLoadingTokenEndpoints ] = useState<boolean>(false);
@@ -81,7 +86,7 @@ const useAllowedIssuers = (
 
     /**
      * Tracks whether the initial default selection has already been applied.
-     * Prevents the tenant-aware default from overriding a user's manual dropdown selection.
+     * Prevents the default from overriding a user's manual dropdown selection.
      */
     const hasSetInitialSelection: React.MutableRefObject<boolean> = useRef<boolean>(false);
 
@@ -147,8 +152,8 @@ const useAllowedIssuers = (
                     setSelectedTokenEndpoint(initialIssuer.value);
                     hasSetInitialSelection.current = true;
                 } else {
-                    // Temporary fallback; the tenant-aware effect replaces this once
-                    // breadcrumb data arrives.
+                    // Temporary fallback; the org-aware effect below will replace this
+                    // once currentOrganizationId is available.
                     setSelectedTokenEndpoint(merged[0]?.value ?? "");
                 }
             })
@@ -169,14 +174,14 @@ const useAllowedIssuers = (
     }, [ shouldFetch ]);
 
     /**
-     * Once both `tokenEndpoints` and `breadcrumbData` are available, replace the
-     * temporary first-entry default with the issuer that belongs to the tenant.
+     * Once `tokenEndpoints` and `currentOrganizationId` are available, replace the
+     * temporary first-entry default with the first issuer that does NOT belong to
+     * the current sub-organization.
      *
-     * The breadcrumb is ordered tenant → current org:
-     *   index 0                = tenant (first element — always the tenant)
-     *   index length - 1       = current sub-org (last element)
-     *
-     * The default selection is always the tenant issuer (breadcrumb[0]).
+     * In a sub-org context the allowedIssuers list contains entries from ancestor
+     * organizations (e.g. the tenant). Defaulting to the first issuer whose
+     * `organizationId` differs from the current org effectively pre-selects the
+     * parent/tenant issuer without depending on the breadcrumb ordering.
      *
      * Only runs once per mount (guarded by `hasSetInitialSelection`) and is skipped
      * entirely when `initialIssuer` is already set.
@@ -186,22 +191,19 @@ const useAllowedIssuers = (
             hasSetInitialSelection.current
             || initialIssuer
             || tokenEndpoints.length === 0
-            || !breadcrumbData
-            || breadcrumbData.length === 0
+            || !currentOrganizationId
         ) {
             return;
         }
 
-        // The first breadcrumb item is always the tenant.
-        const tenantBreadcrumbItem: BreadcrumbItem = breadcrumbData[0];
-
-        const tenantIssuer: AllowedIssuerInterface | undefined = tokenEndpoints.find(
-            (ep: AllowedIssuerInterface) => ep.organizationId === tenantBreadcrumbItem.id
+        // Default to the first issuer that belongs to a different (parent/tenant) organization.
+        const parentIssuer: AllowedIssuerInterface | undefined = tokenEndpoints.find(
+            (ep: AllowedIssuerInterface) => ep.organizationId !== currentOrganizationId
         );
 
-        setSelectedTokenEndpoint(tenantIssuer?.value ?? tokenEndpoints[0]?.value ?? "");
+        setSelectedTokenEndpoint(parentIssuer?.value ?? tokenEndpoints[0]?.value ?? "");
         hasSetInitialSelection.current = true;
-    }, [ tokenEndpoints, breadcrumbData ]);
+    }, [ tokenEndpoints, currentOrganizationId ]);
 
     return {
         isLoadingTokenEndpoints,

@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.34.6
+
+### Patch Changes
+
+- [#9688](https://github.com/wso2/identity-apps/pull/9688) [`bbdc05651633f04305710158afc355ea6f16d8c0`](https://github.com/wso2/identity-apps/commit/bbdc05651633f04305710158afc355ea6f16d8c0) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Improve VC creation UX
+
 ## 2.34.5
 
 ### Patch Changes
