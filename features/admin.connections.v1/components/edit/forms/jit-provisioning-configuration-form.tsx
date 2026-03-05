@@ -53,6 +53,7 @@ import {
     SupportedAttributeSyncMethods,
     SupportedJITProvisioningSchemes
 } from "../../../models/connection";
+import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import "./jit-provisioning-configuration-form.scss";
 
 /**
@@ -81,14 +82,6 @@ enum JITProvisioningConstants {
     FIRST_MATCH_RULE_LOCAL_ATTRIBUTE = "firstMatchRuleLocalAttribute",
     FALLBACK_MATCH_RULE_FEDERATED_ATTRIBUTE = "fallbackMatchRuleFederatedAttribute",
     FALLBACK_MATCH_RULE_LOCAL_ATTRIBUTE = "fallbackMatchRuleLocalAttribute"
-}
-
-/**
- * Supported IDP group sync methods.
- */
-enum SupportedIdpGroupSyncMethods {
-    MERGE_WITH_EXISTING = "MERGE_WITH_EXISTING",
-    OVERRIDE_ALL = "OVERRIDE_ALL"
 }
 
 /**
@@ -312,8 +305,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
             idpGroupSyncMethod: values.get(JITProvisioningConstants.IDP_GROUP_SYNC_METHOD) !== undefined
                 ? (values.get(JITProvisioningConstants.IDP_GROUP_SYNC_METHOD)
                     ?.includes(JITProvisioningConstants.IDP_GROUP_SYNC_METHOD)
-                    ? SupportedIdpGroupSyncMethods.OVERRIDE_ALL
-                    : SupportedIdpGroupSyncMethods.MERGE_WITH_EXISTING)
+                    ? ConnectionUIConstants.SUPPORTED_IDP_GROUP_SYNC_METHODS.OVERRIDE_ALL
+                    : ConnectionUIConstants.SUPPORTED_IDP_GROUP_SYNC_METHODS.MERGE_WITH_EXISTING)
                 : initialValues?.idpGroupSyncMethod,
             isEnabled: values.get(
                 JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY
@@ -619,7 +612,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                     identityProviderConfig?.jitProvisioningSettings?.idpGroupSyncMethodField?.show &&
                         isJITProvisioningEnabled && (
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                 <Field
                                     name={ JITProvisioningConstants.IDP_GROUP_SYNC_METHOD }
                                     label={ t("authenticationProvider:" +
@@ -627,7 +620,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                     required={ false }
                                     requiredErrorMessage=""
                                     value={
-                                        initialValues?.idpGroupSyncMethod === SupportedIdpGroupSyncMethods.OVERRIDE_ALL
+                                        initialValues?.idpGroupSyncMethod
+                                            === ConnectionUIConstants.SUPPORTED_IDP_GROUP_SYNC_METHODS.OVERRIDE_ALL
                                             ? [ JITProvisioningConstants.IDP_GROUP_SYNC_METHOD ]
                                             : []
                                     }
