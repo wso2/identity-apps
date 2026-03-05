@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.4.2
+
+### Patch Changes
+
+- [#9696](https://github.com/wso2/identity-apps/pull/9696) [`fba762a069005000d96fceee24bb8830a7635766`](https://github.com/wso2/identity-apps/commit/fba762a069005000d96fceee24bb8830a7635766) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for an invalid tenant domain error page within the authentication portal
+
 ## 3.4.1
 
 ### Patch Changes
