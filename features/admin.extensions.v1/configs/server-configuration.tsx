@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,6 +19,7 @@
 /* eslint-disable sort-keys */
 
 import {
+    PasswordExpiryEnforcementScope,
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import {
@@ -205,9 +206,16 @@ const serverConfigurationConfig: ServerConfigurationConfig = {
 
         setPasswordExpiryEnabled(isEnabled);
 
+        const enforcementScopeProperty: ConnectorPropertyInterface | undefined =
+            passwordExpiry?.properties?.find(
+                (property: ConnectorPropertyInterface) =>
+                    property.name === ServerConfigurationsConstants.PASSWORD_EXPIRY_ENFORCEMENT_SCOPE
+            );
+
         return {
             ...initialValues,
             passwordExpiryEnabled: isEnabled,
+            passwordExpiryEnforcementScope: enforcementScopeProperty?.value ?? PasswordExpiryEnforcementScope.ORG_WIDE,
             passwordExpiryTime: parseInt(
                 passwordExpiry?.properties?.filter(
                     (property: ConnectorPropertyInterface) =>
@@ -219,9 +227,11 @@ const serverConfigurationConfig: ServerConfigurationConfig = {
     processPasswordExpirySubmitData: (data: PasswordExpiryInterface) => {
         let passwordExpiryTime: number | undefined = parseInt((data.passwordExpiryTime as string));
         const passwordExpiryEnabled: boolean | undefined = data.passwordExpiryEnabled;
+        const passwordExpiryEnforcementScope: string | undefined = data.passwordExpiryEnforcementScope;
 
         delete data.passwordExpiryTime;
         delete data.passwordExpiryEnabled;
+        delete data.passwordExpiryEnforcementScope;
 
         if (passwordExpiryEnabled && passwordExpiryTime === 0) {
             passwordExpiryTime = 30;
@@ -237,6 +247,10 @@ const serverConfigurationConfig: ServerConfigurationConfig = {
                 {
                     name: ServerConfigurationsConstants.PASSWORD_EXPIRY_TIME,
                     value: passwordExpiryTime?.toString()
+                },
+                {
+                    name: ServerConfigurationsConstants.PASSWORD_EXPIRY_ENFORCEMENT_SCOPE,
+                    value: passwordExpiryEnforcementScope ?? PasswordExpiryEnforcementScope.ORG_WIDE
                 }
             ]
         };
@@ -249,6 +263,7 @@ const serverConfigurationConfig: ServerConfigurationConfig = {
         const passwordExpirySkipFallback: boolean | undefined = data.passwordExpirySkipFallback || false;
         const passwordExpiryRules: Record<string, string> | undefined =
             data?.passwordExpiryRules || {};
+        const passwordExpiryEnforcementScope: string | undefined = data.passwordExpiryEnforcementScope;
         let passwordHistoryCount: number | undefined = parseInt((data.passwordHistoryCount as string));
         const passwordHistoryCountEnabled: boolean | undefined = data.passwordHistoryCountEnabled;
 
@@ -258,6 +273,7 @@ const serverConfigurationConfig: ServerConfigurationConfig = {
         delete data.passwordHistoryCountEnabled;
         delete data.skipPasswordExpiryFallback;
         delete data.passwordExpiryRules;
+        delete data.passwordExpiryEnforcementScope;
 
         // Default password expiry time.
         if (passwordExpiryEnabled && !passwordExpirySkipFallback && passwordExpiryTime === 0) {
@@ -280,6 +296,10 @@ const serverConfigurationConfig: ServerConfigurationConfig = {
             {
                 name: ServerConfigurationsConstants.PASSWORD_EXPIRY_SKIP_IF_NO_APPLICABLE_RULES,
                 value: passwordExpirySkipFallback?.toString()
+            },
+            {
+                name: ServerConfigurationsConstants.PASSWORD_EXPIRY_ENFORCEMENT_SCOPE,
+                value: passwordExpiryEnforcementScope ?? PasswordExpiryEnforcementScope.ORG_WIDE
             }
         ];
 

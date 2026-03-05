@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -65,6 +65,17 @@ export interface validationNS {
     goBackToApplication: string;
     goBackToValidationConfig: string;
     passwordExpiry: {
+        enforcementScope: {
+            heading: string;
+            orgWide: {
+                label: string;
+                hint: string;
+            };
+            appWithEnforcer: {
+                label: string;
+                hint: string;
+            };
+        };
         heading: string;
         rules: {
             buttons: {
