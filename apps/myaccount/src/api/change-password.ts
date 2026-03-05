@@ -34,9 +34,6 @@ const httpClient: HttpInstance = AsgardeoSPAClient.getInstance().httpRequest.bin
  * Updates the signed-in user's password.
  *
  * Sends a `POST` request to the password change endpoint with the current and new passwords.
- * If the user belongs to a sub-organization, the tenant segment in the endpoint URL is replaced
- * with the provided organization handle.
- *
  *
  * @param currentPassword - currently registered password.
  * @param newPassword - newly assigned password.

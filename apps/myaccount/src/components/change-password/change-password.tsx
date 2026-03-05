@@ -201,11 +201,8 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                 }
             })
             .catch((error: any) => {
-                // Axios throws a generic `Network Error` for 401 status.
-                // As a temporary solution, a check to see if a response
-                // is available has be used.
-                if (!error.response || error.response.status === 400) {
-                    // set an error in the current password field.
+                if (error.response && error.response.status === 400) {
+                    // Set an error in the current password field.
                     setErrors({
                         ...errors,
                         currentPassword: t(
