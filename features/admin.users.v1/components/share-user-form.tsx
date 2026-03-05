@@ -26,8 +26,6 @@ import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import Typography from "@oxygen-ui/react/Typography";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { OperationStatus } from "@wso2is/admin.core.v1/models/common";
-import { AppState } from "@wso2is/admin.core.v1/store";
-
 import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
 import {
     SelectedOrganizationRoleInterface
@@ -37,10 +35,8 @@ import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constan
 import { RolesV2Interface } from "@wso2is/admin.roles.v2/models/roles";
 import SelectiveOrgShareWithSelectiveRoles from
     "@wso2is/common.ui.shared-access.v1/components/selective-org-share-with-selective-roles";
-import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
-    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
     ProfileInfoInterface,
     RolesInterface
@@ -63,7 +59,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import RolesShareWithAll from "./roles-share-with-all";
@@ -75,7 +71,6 @@ import {
     unShareUserWithAllOrganizations,
     unshareUserWithSelectedOrganizations
 } from "../api/users";
-import { UserManagementConstants } from "../constants/user-management-constants";
 import { RoleShareType, ShareType, ShareTypeSwitchApproach } from "../constants/user-roles";
 import { SharedOrganizationInterface } from "../models/endpoints";
 import {
@@ -118,10 +113,6 @@ export interface UserShareFormPropsInterface
      */
     isSharingInProgress?: boolean;
     /**
-     * Callback when user sharing starts.
-     */
-    onOperationStarted?: () => void;
-    /**
      * Specifies the current sharing status of the user.
      */
     operationStatus?: OperationStatus;
@@ -138,22 +129,15 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         readOnly,
         isSharingInProgress,
         operationStatus,
-        onOperationStarted,
         ["data-componentid"]: componentId = "user-share-form"
     } = props;
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const userFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
-        state?.config?.ui?.features?.users);
-    const isUserShareOperationStatusEnabled: boolean = isFeatureEnabled(
-        userFeatureConfig,
-        UserManagementConstants.FEATURE_DICTIONARY.get("USER_SHARED_ACCESS_STATUS"));
     const userAudience: string = user?.associatedRoles?.allowedAudience ?? RoleAudienceTypes.ORGANIZATION;
 
     const [ shareType, setShareType ] = useState<ShareType>(ShareType.UNSHARE);
-    const [ roleShareTypeAll, setRoleShareTypeAll ] = useState<RoleShareType>(RoleShareType.SHARE_WITH_ALL);
     const [ roleShareTypeSelected, setRoleShareTypeSelected ] = useState<RoleShareType>(RoleShareType.SHARE_SELECTED);
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const [ showConfirmationModal, setShowConfirmationModal ] = useState<boolean>(false);
@@ -320,9 +304,6 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
 
             // Based on the role sharing mode, set the role share type.
             if (roleSharingMode === RoleSharingModes.SELECTED) {
-                // Show toggle as enabled when roles are selected
-                setRoleShareTypeAll(RoleShareType.SHARE_SELECTED);
-
                 // Store and display the shared roles
                 const initialRoles: RolesInterface[] =
                     userShareData?.sharingMode?.roleAssignment?.roles?.map(
@@ -340,8 +321,6 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                     setInitialSelectedRoles(initialRoles);
                     setSelectedRoles(initialRoles); // Show the selected roles in the UI
                 }
-            } else if (roleSharingMode === RoleSharingModes.NONE) {
-                setRoleShareTypeAll(RoleShareType.SHARE_WITH_ALL);
             }
         }
     }, [ userShareData ]);
@@ -428,7 +407,6 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
     useEffect(() => {
         // Reset role sharing states when switching away from SHARE_ALL
         if (shareType !== ShareType.SHARE_ALL) {
-            setRoleShareTypeAll(RoleShareType.SHARE_WITH_ALL);
             setSelectedRoles([]);
             setInitialSelectedRoles([]);
         }
@@ -474,10 +452,6 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             }));
 
             return;
-        }
-
-        if (isUserShareOperationStatusEnabled && shareType !== ShareType.SHARE_ALL) {
-            handleAsyncSharingNotification(shareType);
         }
 
         if (shareType === ShareType.UNSHARE) {
@@ -527,86 +501,6 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                 }),
                 level: AlertLevels.ERROR,
                 message: t("user:editUser.sections.sharedAccess.notifications.unshare.error.message")
-            }));
-
-            return false;
-        } finally {
-            // onUserSharingCompleted();
-        }
-    };
-
-    const shareAllRolesWithAllOrgs = async (
-        sharingPolicy: UserSharingPolicy = UserSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS
-    ): Promise<boolean> => {
-        const data: ShareUserWithAllOrganizationsDataInterface = {
-            policy: sharingPolicy,
-            roleAssignment: {
-                mode: RoleSharingModes.SELECTED,
-                roles: userRolesList?.map((role: RoleSharingInterface) => ({
-                    audience: {
-                        display: role.audience?.display ?? user?.userName,
-                        type: role.audience?.type
-                    },
-                    displayName: role.displayName
-                })) || []
-            },
-            userId: user.id
-        };
-
-        try {
-            await shareUserWithAllOrganizations(data);
-            resetStates();
-            dispatch(addAlert({
-                description: t("user:editUser.sections.sharedAccess.notifications.share.success.description"),
-                level: AlertLevels.SUCCESS,
-                message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
-            }));
-
-            return true;
-        } catch (error) {
-            dispatch(addAlert({
-                description: t("user:editUser.sections.sharedAccess.notifications.share." +
-                    "error.description",
-                { error: error.message }),
-                level: AlertLevels.ERROR,
-                message: t("user:editUser.sections.sharedAccess.notifications.share.error.message")
-            }));
-
-            return false;
-        } finally {
-            // onUserSharingCompleted();
-        }
-    };
-
-    const shareUserWithNoRolesWithAllOrgs = async (
-        sharingPolicy: UserSharingPolicy = UserSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS
-    ): Promise<boolean> => {
-        const data: ShareUserWithAllOrganizationsDataInterface = {
-            policy: sharingPolicy,
-            roleAssignment: {
-                mode: RoleSharingModes.NONE,
-                roles: []
-            },
-            userId: user.id
-        };
-
-        try {
-            await shareUserWithAllOrganizations(data);
-            resetStates();
-            dispatch(addAlert({
-                description: t("user:editUser.sections.sharedAccess.notifications.share.success.description"),
-                level: AlertLevels.SUCCESS,
-                message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
-            }));
-
-            return true;
-        } catch (error) {
-            dispatch(addAlert({
-                description: t("user:editUser.sections.sharedAccess.notifications.share." +
-                    "error.description",
-                { error: error.message }),
-                level: AlertLevels.ERROR,
-                message: t("user:editUser.sections.sharedAccess.notifications.share.error.message")
             }));
 
             return false;
@@ -801,13 +695,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             shareIndividualRolesWithSelectedOrgs();
         } else {
             // No additional role operations needed, just show success and reset state
-            if (!isUserShareOperationStatusEnabled) {
-                dispatch(addAlert({
-                    description: t("user:editUser.sections.sharedAccess.notifications.share.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
-                }));
-            }
+            dispatch(addAlert({
+                description: t("user:editUser.sections.sharedAccess.notifications.share.success.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
+            }));
 
             resetStates();
         }
@@ -943,14 +835,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
 
         // If org sharing was successful, show success notification
         if (orgSharingSuccess) {
-            // Only show success alert if async notification is not enabled
-            if (!isUserShareOperationStatusEnabled) {
-                dispatch(addAlert({
-                    description: t("user:editUser.sections.sharedAccess.notifications.share.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
-                }));
-            }
+            dispatch(addAlert({
+                description: t("user:editUser.sections.sharedAccess.notifications.share.success.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
+            }));
 
             resetStates();
         }
@@ -1072,15 +961,12 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         if (data?.Operations?.length > 0) {
             editUserRolesOfExistingOrganizations(data)
                 .then(() => {
-                    // Only show success alert if async notification is not enabled
-                    if (!isUserShareOperationStatusEnabled) {
-                        dispatch(addAlert({
-                            description: t("user:editUser.sections.sharedAccess.notifications.share." +
-                                "success.description"),
-                            level: AlertLevels.SUCCESS,
-                            message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
-                        }));
-                    }
+                    dispatch(addAlert({
+                        description: t("user:editUser.sections.sharedAccess.notifications.share." +
+                            "success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
+                    }));
 
                     resetStates();
                 })
@@ -1099,32 +985,15 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         } else {
             // If there are no further operations to perform, just show a success notification
             // and reset the state.
-            // Only show success alert if async notification is not enabled
-            if (!isUserShareOperationStatusEnabled) {
-                dispatch(addAlert({
-                    description: t("user:editUser.sections.sharedAccess.notifications.share." +
-                        "success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
-                }));
-            }
+            dispatch(addAlert({
+                description: t("user:editUser.sections.sharedAccess.notifications.share." +
+                    "success.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
+            }));
 
             resetStates();
             // onUserSharingCompleted();
-        }
-    };
-
-    const handleAsyncSharingNotification = (shareType: ShareType): void => {
-        if (shareType === ShareType.SHARE_ALL || shareType === ShareType.SHARE_SELECTED) {
-            onOperationStarted?.();
-            dispatch(
-                addAlert({
-                    description: t("user:editUser.sections.shareUser.addAsyncSharingNotification"
-                        + ".description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("user:editUser.sections.shareUser.addAsyncSharingNotification.message")
-                })
-            );
         }
     };
 
