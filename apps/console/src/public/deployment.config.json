@@ -1955,6 +1955,35 @@
                         "internal_session_delete",
                         "internal_user_mgt_update"
                     ]
+                },
+                "subFeatures": {
+                    "userSharingV2": {
+                        "disabledFeatures": [
+                        ],
+                        "enabled": true,
+                        "scopes": {
+                            "create": [
+                                    "internal_user_share"
+                            ],
+                            "delete": [
+                                    "internal_user_unshare"
+                            ],
+                            "read": [
+                                    "internal_governance_view",
+                                    "internal_group_mgt_view",
+                                    "internal_organization_view",
+                                    "internal_role_mgt_view",
+                                    "internal_user_mgt_list",
+                                    "internal_user_mgt_view",
+                                    "internal_user_shared_access_view",
+                                    "internal_userstore_view"
+
+                            ],
+                            "update": [
+                                    "internal_user_shared_access_update"
+                            ]
+                        }
+                    }
                 }
             },
             "verifiableCredentials": {

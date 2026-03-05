@@ -181,6 +181,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             updateSecret: "",
             updateSecretType: "",
             userSessions: "",
+            userSharingV2: "",
             userStores: "",
             users: "",
             usersOrganization: "",

@@ -559,6 +559,12 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                                     selectedRoles,
                                     "displayName"
                                 ) }
+                                allRolesSharingMessage={
+                                    t("applications:edit.sections.sharedAccess.allApplicationRolesSharingMessage")
+                                }
+                                shareWithFutureChildOrgsLabel={
+                                    t("applications:edit.sections.sharedAccess.shareApplicationWithFutureChildOrgs")
+                                }
                             />
                         </RadioGroup>
                     </FormControl>
