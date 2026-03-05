@@ -97,7 +97,7 @@ const useGetUserShare = (
         url: shouldFetch ? url : null
     };
 
-    const { data, error, isValidating, mutate } = useRequest<UserSharedOrganizationsResponse, RequestErrorInterface>(
+    const { data, error, isLoading, isValidating, mutate } = useRequest<UserSharedOrganizationsResponse, RequestErrorInterface>(
         requestConfig,
         {
             shouldRetryOnError: false
