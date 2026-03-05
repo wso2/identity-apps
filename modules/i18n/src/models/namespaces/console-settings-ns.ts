@@ -58,6 +58,14 @@ export interface ConsoleSettingsNS {
             view: string;
         };
     };
+    enterpriseLogin: {
+        banner: {
+            action: string;
+            description: string;
+            title: string;
+        };
+        tabLabel: string;
+    };
     sharedAccess: {
         description: string;
         selectRolesForOrganization: string;
