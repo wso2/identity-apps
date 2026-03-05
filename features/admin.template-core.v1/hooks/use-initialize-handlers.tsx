@@ -24,6 +24,7 @@ import {
     FieldHandlerTypes
 } from "../models/dynamic-fields";
 import extractTemplatedFields from "../utils/extract-templated-fields";
+import extractObjectField from "../utils/extract-object-field";
 
 /**
  * Function definition for custom initialize handler.
@@ -74,6 +75,14 @@ const useInitializeHandlers = (
                         values,
                         field?.name,
                         props?.propertyPath as string
+                    );
+
+                    break;
+                case CommonInitializeHandlers.EXTRACT_OBJECT_FIELDS:
+                    extractObjectField(
+                        values,
+                        field?.name,
+                        props?.delimiter as string
                     );
 
                     break;

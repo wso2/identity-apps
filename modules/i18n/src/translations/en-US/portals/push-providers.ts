@@ -39,6 +39,16 @@ export const pushProviders: pushProvidersNS = {
                 description: "Push provider configurations deleted succesfully",
                 message: "Deleted successfully"
             }
+        },
+        updateDefault: {
+            error: {
+                description: "Error occurred while updating default push sender configuration.",
+                message: "Something went wrong"
+            },
+            success: {
+                description: "Default push sender configuration updated successfully.",
+                message: "Updated successfully."
+            }
         }
     },
     dangerZoneGroup: {
@@ -60,6 +70,10 @@ export const pushProviders: pushProvidersNS = {
             heading: "Are you sure?",
             message: "This action is irreversible and will permanently delete the current push provider configuration."
         }
+    },
+    pushProviderSettings: {
+        defaultSender: "Set as Default Push Sender",
+        defaultSenderDescription: "Select this provider as the default push notification sender."
     },
     subHeading: "Configure a push provider to send push notifications to your users.",
     updateButton: "Update"
