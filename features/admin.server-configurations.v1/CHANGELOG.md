@@ -1,5 +1,41 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.37.17
+
+### Patch Changes
+
+- Updated dependencies [[`89273a887431c2e7e2bf346bc166dea0667cfc45`](https://github.com/wso2/identity-apps/commit/89273a887431c2e7e2bf346bc166dea0667cfc45)]:
+  - @wso2is/admin.core.v1@2.54.7
+  - @wso2is/admin.flow-builder-core.v1@0.10.151
+  - @wso2is/admin.flows.v1@1.0.120
+  - @wso2is/admin.server-configurations.v1@2.37.17
+  - @wso2is/admin.users.v1@2.36.126
+
+## 2.37.16
+
+### Patch Changes
+
+- [#9686](https://github.com/wso2/identity-apps/pull/9686) [`11f78e74d83aa13af412513cf1010ab92f9989ad`](https://github.com/wso2/identity-apps/commit/11f78e74d83aa13af412513cf1010ab92f9989ad) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Add Compatibility Settings UI support.
+
+- Updated dependencies [[`11f78e74d83aa13af412513cf1010ab92f9989ad`](https://github.com/wso2/identity-apps/commit/11f78e74d83aa13af412513cf1010ab92f9989ad), [`bbdc05651633f04305710158afc355ea6f16d8c0`](https://github.com/wso2/identity-apps/commit/bbdc05651633f04305710158afc355ea6f16d8c0)]:
+  - @wso2is/admin.server-configurations.v1@2.37.16
+  - @wso2is/admin.users.v1@2.36.125
+  - @wso2is/admin.core.v1@2.54.6
+  - @wso2is/i18n@2.34.6
+  - @wso2is/admin.flow-builder-core.v1@0.10.150
+  - @wso2is/admin.flows.v1@1.0.119
+
+## 2.37.15
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.5
+  - @wso2is/admin.flow-builder-core.v1@0.10.149
+  - @wso2is/admin.flows.v1@1.0.118
+  - @wso2is/admin.server-configurations.v1@2.37.15
+  - @wso2is/admin.users.v1@2.36.124
+
 ## 2.37.14
 
 ### Patch Changes
