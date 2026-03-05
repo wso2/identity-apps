@@ -139,8 +139,8 @@ export const user: userNS = {
                             message: "Error occurred while sharing user"
                         },
                         success: {
-                            description: "User shared successfully.",
-                            message: "User shared successfully"
+                            description: "User shared with all organizations successfully.",
+                            message: "Shared successfully"
                         }
                     },
                     unshare: {
@@ -150,7 +150,7 @@ export const user: userNS = {
                         },
                         success: {
                             description: "User unshared successfully.",
-                            message: "User unshared successfully"
+                            message: "Unshared successfully"
                         }
                     }
                 },
@@ -173,9 +173,9 @@ export const user: userNS = {
                 shareUserWithFutureChildOrgs: "Share user and roles with future child organizations",
                 showShareAllWarningModal: {
                     assertionHint: "Please confirm your action.",
-                    description: "This will share the selected roles with ALL existing and future organizations. This action will affect all current and future organizations in your system.",
+                    description: "This will share the user with selected roles across ALL existing and future organizations. This action will affect all current and future organizations in your system.",
                     header: "Share with all organizations",
-                    message: "You are about to share user roles with all organizations."
+                    message: "You are about to share this user, along with their assigned roles, across all organizations."
                 },
                 subTitle: "Configure how this user should be shared across organizations",
                 title: "Sharing Policy"

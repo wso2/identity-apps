@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -27,7 +28,6 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
-    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
     ProfileInfoInterface
 } from "@wso2is/core/models";
@@ -116,10 +116,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         usersFeatureConfig,
         UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UserGroups)
     );
-    const isSharedAccessEnabled: boolean = isFeatureEnabled(
-        usersFeatureConfig,
-        UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UserSharedAccess)
-    );
+    const isSharedAccessEnabled: boolean = usersFeatureConfig?.subFeatures?.userSharingV2?.enabled ?? false;
 
     useEffect(() => {
         if (!isSuperOrganization()) {

@@ -538,11 +538,6 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
     const shareAllRolesWithAllOrgs = async (
         sharingPolicy: UserSharingPolicy = UserSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS
     ): Promise<boolean> => {
-        // Show notification when user confirms the action
-        if (isUserShareOperationStatusEnabled) {
-            handleAsyncSharingNotification(ShareType.SHARE_ALL);
-        }
-
         const data: ShareUserWithAllOrganizationsDataInterface = {
             policy: sharingPolicy,
             roleAssignment: {
@@ -561,15 +556,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         try {
             await shareUserWithAllOrganizations(data);
             resetStates();
-
-            // Only show success alert if async notification is not enabled
-            if (!isUserShareOperationStatusEnabled) {
-                dispatch(addAlert({
-                    description: t("user:editUser.sections.sharedAccess.notifications.share.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
-                }));
-            }
+            dispatch(addAlert({
+                description: t("user:editUser.sections.sharedAccess.notifications.share.success.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
+            }));
 
             return true;
         } catch (error) {
@@ -590,11 +581,6 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
     const shareUserWithNoRolesWithAllOrgs = async (
         sharingPolicy: UserSharingPolicy = UserSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS
     ): Promise<boolean> => {
-        // Show notification when user confirms the action
-        if (isUserShareOperationStatusEnabled) {
-            handleAsyncSharingNotification(ShareType.SHARE_ALL);
-        }
-
         const data: ShareUserWithAllOrganizationsDataInterface = {
             policy: sharingPolicy,
             roleAssignment: {
@@ -607,15 +593,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         try {
             await shareUserWithAllOrganizations(data);
             resetStates();
-
-            // Only show success alert if async notification is not enabled
-            if (!isUserShareOperationStatusEnabled) {
-                dispatch(addAlert({
-                    description: t("user:editUser.sections.sharedAccess.notifications.share.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
-                }));
-            }
+            dispatch(addAlert({
+                description: t("user:editUser.sections.sharedAccess.notifications.share.success.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
+            }));
 
             return true;
         } catch (error) {
@@ -791,6 +773,31 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             Object.keys(remainingRemovedRoles).some((orgId: string) => remainingRemovedRoles[orgId]?.length > 0);
 
         if (hasRemainingOperations) {
+            // Before sending the PATCH for role changes, POST to update the sharing policy
+            // for ALL currently shared organizations to SELECTED_ORG_ONLY.
+            const policyUpdateData: ShareUserWithSelectedOrganizationsAndRolesDataInterface = {
+                organizations: (userShareData?.organizations ?? []).map(
+                    (org: SharedOrganizationInterface) => ({
+                        orgId: org.orgId,
+                        policy: UserSharingPolicy.SELECTED_ORG_ONLY
+                    })
+                ),
+                userId: user.id
+            };
+
+            try {
+                await shareUserWithSelectedOrganizationsAndRoles(policyUpdateData);
+            } catch (error) {
+                dispatch(addAlert({
+                    description: t("user:editUser.sections.sharedAccess.notifications.share.error.description",
+                        { error: error.message }),
+                    level: AlertLevels.ERROR,
+                    message: t("user:editUser.sections.sharedAccess.notifications.share.error.message")
+                }));
+
+                return;
+            }
+
             shareIndividualRolesWithSelectedOrgs();
         } else {
             // No additional role operations needed, just show success and reset state
@@ -953,11 +960,6 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
     };
 
     const shareSelectedRolesWithAllOrgs = async (): Promise<boolean> => {
-        // Show notification when user confirms the action
-        if (isUserShareOperationStatusEnabled) {
-            handleAsyncSharingNotification(ShareType.SHARE_ALL);
-        }
-
         // If the selected roles are the same as the initial roles, no changes needed
         if (!isEmpty(selectedRoles) && JSON.stringify(selectedRoles) === JSON.stringify(initialSelectedRoles)) {
             return true;
@@ -985,17 +987,12 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
 
         try {
             await shareUserWithAllOrganizations(data);
-
-            // Only show success alert if async notification is not enabled
-            if (!isUserShareOperationStatusEnabled) {
-                dispatch(addAlert({
-                    description: t("user:editUser.sections.sharedAccess.notifications.share." +
-                        "success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
-                }));
-            }
-
+            dispatch(addAlert({
+                description: t("user:editUser.sections.sharedAccess.notifications.share." +
+                    "success.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
+            }));
             resetStates();
 
             return true;
@@ -1192,37 +1189,71 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
 
             setShowShareTypeSwitchModal(false);
         } else if (shareTypeSwitchApproach === ShareTypeSwitchApproach.WITHOUT_UNSHARE) {
-            // Switch to selective sharing without unsharing the user with all organizations
-            // But we have to change the policy to selected org only from all existing and future orgs policy
-            // Preserve the existing role sharing configuration
+            // Switch to selective sharing without unsharing the user with all organizations.
+            // Make a POST to update the policy for each existing org from ALL to SELECTED,
+            // preserving the current role assignments. Subsequent role changes will be
+            // handled via PATCH when the user clicks Save.
 
-            // Extract organization IDs and roles from existing userShareData
             if (userShareData?.organizations && Array.isArray(userShareData.organizations)) {
+                // In SHARE_ALL mode, roles are stored globally in sharingMode.roleAssignment.roles.
+                const globalRoles: RoleSharingInterface[] =
+                    (userShareData.sharingMode?.roleAssignment?.roles as RoleSharingInterface[]) ?? [];
+
+                const shareData: ShareUserWithSelectedOrganizationsAndRolesDataInterface = {
+                    organizations: userShareData.organizations.map((org: SharedOrganizationInterface) => ({
+                        orgId: org.orgId,
+                        policy: UserSharingPolicy.SELECTED_ORG_ONLY,
+                        roleAssignment: globalRoles.length > 0 ? {
+                            mode: RoleSharingModes.SELECTED,
+                            roles: globalRoles
+                        } : {
+                            mode: RoleSharingModes.NONE,
+                            roles: []
+                        }
+                    })),
+                    userId: user.id
+                };
+
+                try {
+                    await shareUserWithSelectedOrganizationsAndRoles(shareData);
+                } catch (error) {
+                    dispatch(addAlert({
+                        description: t("user:editUser.sections.sharedAccess.notifications.share.error.description",
+                            { error: (error as Error).message }),
+                        level: AlertLevels.ERROR,
+                        message: t("user:editUser.sections.sharedAccess.notifications.share.error.message")
+                    }));
+                    setShowShareTypeSwitchModal(false);
+
+                    return;
+                }
+
+                // Build role selection map from preserved global roles for UI display.
+                const globalRoleSelections: SelectedOrganizationRoleInterface[] = globalRoles.map(
+                    (role: RoleSharingInterface) => ({
+                        ...role,
+                        id: role.displayName,
+                        selected: true
+                    })
+                );
+
                 const orgIds: string[] = userShareData.organizations.map(
                     (org: SharedOrganizationInterface) => org.orgId
                 );
                 const rolesMap: Record<string, SelectedOrganizationRoleInterface[]> = {};
 
                 userShareData.organizations.forEach((org: SharedOrganizationInterface) => {
-                    const roles: SelectedOrganizationRoleInterface[] =
-                        org?.roles?.map((role: RoleSharingInterface) => ({
-                            ...role,
-                            id: role.displayName,
-                            selected: true // Mark all existing roles as selected
-                        }));
-
-                    if (roles?.length > 0) {
-                        rolesMap[org.orgId] = roles;
+                    if (globalRoleSelections.length > 0) {
+                        rolesMap[org.orgId] = globalRoleSelections;
                     }
                 });
 
-                setSelectedOrgIds(orgIds); // This makes the orgs appear as selected in the UI
+                setSelectedOrgIds(orgIds);
                 setRoleSelections(rolesMap);
             }
 
             setShareType(ShareType.SHARE_SELECTED);
             setRoleShareTypeSelected(RoleShareType.SHARE_SELECTED);
-
             setShowShareTypeSwitchModal(false);
         }
     };
@@ -1363,16 +1394,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                     primaryAction={ t("common:confirm") }
                     secondaryAction={ t("common:cancel") }
                     onPrimaryActionClick={ (): void => {
-                        if (roleShareTypeAll === RoleShareType.SHARE_SELECTED) {
-                            // Share selected roles with all organizations
-                            shareSelectedRolesWithAllOrgs();
-                        } else if (roleShareTypeAll === RoleShareType.SHARE_WITH_ALL) {
-                            // Share all roles with all organizations
-                            shareAllRolesWithAllOrgs();
-                        } else if (roleShareTypeAll === RoleShareType.SHARE_NONE) {
-                            // Share user with all organizations but do not assign any roles
-                            shareUserWithNoRolesWithAllOrgs();
-                        }
+                        shareSelectedRolesWithAllOrgs();
                         setShowShareAllWarningModal(false);
                     } }
                     onSecondaryActionClick={ (): void => {

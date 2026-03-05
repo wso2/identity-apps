@@ -518,7 +518,7 @@ export const shareUserWithAllOrganizations = (data: any): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         data: {
             policy: data.policy,
-            roleAssignment: data.roleSharing,
+            roleAssignment: data.roleAssignment,
             userCriteria: {
                 userIds: [ data.userId ]
             }
