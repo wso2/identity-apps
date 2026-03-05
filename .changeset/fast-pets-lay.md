@@ -5,4 +5,4 @@
 "@wso2is/console": patch
 ---
 
-Add override all support for IDP group / role mapping
+Add override all support for IDP group / role mapping 
