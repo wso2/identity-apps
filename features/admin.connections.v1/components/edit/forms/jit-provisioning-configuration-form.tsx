@@ -46,6 +46,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, DropdownItemProps, Grid, Header, Icon, Segment } from "semantic-ui-react";
+import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import {
     ConnectionInterface,
     JITProvisioningAccountLinkingAttributeMappingInterface,
@@ -53,7 +54,6 @@ import {
     SupportedAttributeSyncMethods,
     SupportedJITProvisioningSchemes
 } from "../../../models/connection";
-import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import "./jit-provisioning-configuration-form.scss";
 
 /**
