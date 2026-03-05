@@ -21,6 +21,13 @@ import { FeatureGateInterface, FeatureStatus } from "@wso2is/access-control";
 export const featureGateConfig: FeatureGateInterface  = {
     console:  {
         application: {
+            edit: {
+                accessConfiguration: {
+                    oidcFrontChannelLogout: {
+                        status: FeatureStatus.DEFAULT
+                    }
+                }
+            },
             signIn: {
                 adaptiveAuth : {
                     status: FeatureStatus.DEFAULT,
@@ -30,6 +37,7 @@ export const featureGateConfig: FeatureGateInterface  = {
             },
             status: FeatureStatus.DEFAULT
         },
+        
         branding: {
             design: {
                 layout: {
