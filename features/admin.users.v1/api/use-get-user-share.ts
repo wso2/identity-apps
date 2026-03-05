@@ -107,7 +107,7 @@ const useGetUserShare = (
     return {
         data,
         error,
-        isLoading: !error && !data,
+        isLoading,
         isValidating,
         mutate
     };
