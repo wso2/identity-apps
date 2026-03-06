@@ -193,6 +193,28 @@ export interface AuthenticationFlowNS {
             };
             header: string;
         };
+        passwordResetEnforcer: {
+            form: {
+                actionButton: string;
+                fields: {
+                    currentPassword: {
+                        label: string;
+                        placeholder: string;
+                    };
+                    newPassword: {
+                        label: string;
+                        placeholder: string;
+                    };
+                    repeatPassword: {
+                        label: string;
+                        placeholder: string;
+                    };
+                };
+                matchHint: string;
+                validationHints: string[];
+            };
+            header: string;
+        };
     };
     revertConfirmationModal: {
         assertionHint: string;

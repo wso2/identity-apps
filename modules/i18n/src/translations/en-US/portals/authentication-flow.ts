@@ -201,6 +201,32 @@ export const authenticationFlow: AuthenticationFlowNS = {
                 help: "Terminate active sessions to continue."
             },
             header: "Multiple Active Sessions Found"
+        },
+        passwordResetEnforcer: {
+            form: {
+                actionButton: "Change Password",
+                fields: {
+                    currentPassword: {
+                        label: "Current Password",
+                        placeholder: "Current Password"
+                    },
+                    newPassword: {
+                        label: "New Password",
+                        placeholder: "New Password"
+                    },
+                    repeatPassword: {
+                        label: "Repeat Password",
+                        placeholder: "Repeat Password"
+                    }
+                },
+                matchHint: "Both passwords should match",
+                validationHints: [
+                    "Must be between 8 and 64 characters",
+                    "At least 1 uppercase and 1 lowercase character(s)",
+                    "At least 1 number(s)"
+                ]
+            },
+            header: "Change your password"
         }
     },
     revertConfirmationModal: {

@@ -2692,6 +2692,7 @@
         {% else %}
         "isPasswordInputValidationEnabled": true,
         {% endif %}
+        "isPasswordResetEnforcementScopeEnabled": {{ console.ui.is_password_reset_enforcement_scope_enabled }},
         "passwordPolicyConfigs": {
             {% if identity_mgt.password_policy.max_password_allowed_length is defined %}
             "maxPasswordAllowedLength": {{ identity_mgt.password_policy.max_password_allowed_length }}

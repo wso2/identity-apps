@@ -112,8 +112,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const { getLink } = useDocumentation();
     const isPasswordInputValidationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isPasswordInputValidationEnabled);
-    const isPasswordResetEnforcerEnabled: boolean = useSelector((state: AppState) =>
-        state?.config?.ui?.isPasswordResetEnforcerEnabled ?? false);
+    const isPasswordResetEnforcementScopeEnabled: boolean = useSelector((state: AppState) =>
+        state?.config?.ui?.isPasswordResetEnforcementScopeEnabled ?? false);
     const disabledFeatures: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.features?.loginAndRegistration?.disabledFeatures);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
@@ -1125,6 +1125,10 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     };
 
     const resolvePasswordValidation: () => ReactElement = (): ReactElement => {
+        if (!isPasswordResetEnforcementScopeEnabled) {
+            return <></>;
+        }
+
         return (
             <div className="validation-configurations-form">
                 <Divider className="heading-divider" />
@@ -1738,6 +1742,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                             color: "text.secondary",
                                             display: "block",
                                             fontSize: "0.75rem",
+                                            maxWidth: "60%",
                                             mb: 0.5,
                                             mt: 0.25
                                         } }
