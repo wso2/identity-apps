@@ -1104,76 +1104,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     </Grid>
                 </Grid>
                 <Divider hidden/>
-                <Grid alignContent="center">
-                    <FormControl disabled={ isReadOnly || !passwordExpiryEnabled }>
-                        <FormLabel sx={ { mb: 1 } }>
-                            { t("validation:passwordExpiry.enforcementScope.heading") }
-                        </FormLabel>
-                        <RadioGroup
-                            aria-label={ t("validation:passwordExpiry.enforcementScope.heading") }
-                            value={ passwordExpiryEnforcementScope }
-                            onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
-                                setPasswordExpiryEnforcementScope(event.target.value);
-                            } }
-                            data-componentid={ `${ componentId }-password-expiry-enforcement-scope` }
-                        >
-                            <FormControlLabel
-                                value={ PasswordExpiryEnforcementScope.ORG_WIDE }
-                                label={ (
-                                    <>
-                                        { t("validation:passwordExpiry.enforcementScope.orgWide.label") }
-                                        <Typography
-                                            component="span"
-                                            sx={ {
-                                                color: "text.secondary",
-                                                display: "block",
-                                                fontSize: "0.75rem",
-                                                mb: 0.5,
-                                                mt: 0.25
-                                            } }
-                                        >
-                                            { t("validation:passwordExpiry.enforcementScope.orgWide.hint") }
-                                        </Typography>
-                                    </>
-                                ) }
-                                control={ (
-                                    <Radio
-                                        disabled={ isReadOnly || !passwordExpiryEnabled }
-                                        sx={ { pt: "2px" } }
-                                    />
-                                ) }
-                                sx={ { alignItems: "flex-start", mb: 1 } }
-                            />
-                            <FormControlLabel
-                                value={ PasswordExpiryEnforcementScope.APP_WITH_ENFORCER }
-                                label={ (
-                                    <>
-                                        { t("validation:passwordExpiry.enforcementScope.appWithEnforcer.label") }
-                                        <Typography
-                                            component="span"
-                                            sx={ {
-                                                color: "text.secondary",
-                                                display: "block",
-                                                fontSize: "0.75rem",
-                                                maxWidth: "60%",
-                                                mt: 0.25
-                                            } }
-                                        >
-                                            { t("validation:passwordExpiry.enforcementScope.appWithEnforcer.hint") }
-                                        </Typography>
-                                    </>
-                                ) }
-                                control={ (
-                                    <Radio
-                                        disabled={ isReadOnly || !passwordExpiryEnabled }
-                                        sx={ { pt: "2px" } }
-                                    />
-                                ) }
-                                sx={ { alignItems: "flex-start" } }
-                            />
-                        </RadioGroup>
-                    </FormControl>
-                </Grid>
+                { renderPasswordExpiryEnforcementScope() }
                 <Divider hidden/>
                 <PasswordExpiryRuleList
                     componentId={ `${componentId}-password-expiry-rules` }
@@ -1776,86 +1707,83 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         );
     };
 
-    const resolvePasswordExpiryEnforcementScope: () => ReactElement | null = (): ReactElement | null => {
-        if (!passwordExpiryEnabled || !isPasswordResetEnforcerEnabled) {
-            return null;
-        }
-
+    /**
+     * Renders the password expiry enforcement scope section.
+     *
+     * @returns ReactElement
+     */
+    const renderPasswordExpiryEnforcementScope: () => ReactElement = (): ReactElement => {
         return (
-            <div className="criteria">
-                <label>
-                    { t(
-                        "extensions:manage.serverConfigurations" +
-                        ".passwordExpiry.enforcementScope.heading"
-                    ) }
-                </label>
-                <RadioGroup
-                    aria-label={ t(
-                        "extensions:manage.serverConfigurations" +
-                        ".passwordExpiry.enforcementScope.heading"
-                    ) }
-                    value={ passwordExpiryEnforcementScope }
-                    onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
-                        setPasswordExpiryEnforcementScope(event.target.value);
-                    } }
-                    data-componentid={ `${ componentId }-password-expiry-enforcement-scope` }
-                >
-                    <FormControlLabel
-                        value={ PasswordExpiryEnforcementScope.ORG_WIDE }
-                        label={ (
-                            <>
-                                { t(
-                                    "extensions:manage.serverConfigurations" +
-                                    ".passwordExpiry.enforcementScope.orgWide.label"
-                                ) }
-                                <Typography
-                                    component="span"
-                                    sx={ {
-                                        color: "text.secondary",
-                                        display: "block",
-                                        fontSize: "0.75rem",
-                                        mt: 0.25
-                                    } }
-                                >
-                                    { t(
-                                        "extensions:manage.serverConfigurations" +
-                                        ".passwordExpiry.enforcementScope.orgWide.hint"
-                                    ) }
-                                </Typography>
-                            </>
-                        ) }
-                        control={ (<Radio disabled={ isReadOnly } sx={ { pt: "2px" } } />) }
-                        sx={ { alignItems: "flex-start", mb: 1 } }
-                    />
-                    <FormControlLabel
-                        value={ PasswordExpiryEnforcementScope.APP_WITH_ENFORCER }
-                        label={ (
-                            <>
-                                { t(
-                                    "extensions:manage.serverConfigurations" +
-                                    ".passwordExpiry.enforcementScope.appWithEnforcer.label"
-                                ) }
-                                <Typography
-                                    component="span"
-                                    sx={ {
-                                        color: "text.secondary",
-                                        display: "block",
-                                        fontSize: "0.75rem",
-                                        mt: 0.25
-                                    } }
-                                >
-                                    { t(
-                                        "extensions:manage.serverConfigurations" +
-                                        ".passwordExpiry.enforcementScope.appWithEnforcer.hint"
-                                    ) }
-                                </Typography>
-                            </>
-                        ) }
-                        control={ (<Radio disabled={ isReadOnly } sx={ { pt: "2px" } } />) }
-                        sx={ { alignItems: "flex-start" } }
-                    />
-                </RadioGroup>
-            </div>
+            <Grid alignContent="center">
+                <FormControl disabled={ isReadOnly || !passwordExpiryEnabled }>
+                    <FormLabel sx={ { mb: 1 } }>
+                        { t("validation:passwordExpiry.enforcementScope.heading") }
+                    </FormLabel>
+                    <RadioGroup
+                        aria-label={ t("validation:passwordExpiry.enforcementScope.heading") }
+                        value={ passwordExpiryEnforcementScope }
+                        onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
+                            setPasswordExpiryEnforcementScope(event.target.value);
+                        } }
+                        data-componentid={ `${ componentId }-password-expiry-enforcement-scope` }
+                    >
+                        <FormControlLabel
+                            value={ PasswordExpiryEnforcementScope.ORG_WIDE }
+                            label={ (
+                                <>
+                                    { t("validation:passwordExpiry.enforcementScope.orgWide.label") }
+                                    <Typography
+                                        component="span"
+                                        sx={ {
+                                            color: "text.secondary",
+                                            display: "block",
+                                            fontSize: "0.75rem",
+                                            mb: 0.5,
+                                            mt: 0.25
+                                        } }
+                                    >
+                                        { t("validation:passwordExpiry.enforcementScope.orgWide.hint") }
+                                    </Typography>
+                                </>
+                            ) }
+                            control={ (
+                                <Radio
+                                    disabled={ isReadOnly || !passwordExpiryEnabled }
+                                    sx={ { pt: "2px" } }
+                                />
+                            ) }
+                            sx={ { alignItems: "flex-start", mb: 1 } }
+                        />
+                        <FormControlLabel
+                            value={ PasswordExpiryEnforcementScope.APP_WITH_ENFORCER }
+                            label={ (
+                                <>
+                                    { t("validation:passwordExpiry.enforcementScope.appWithEnforcer.label") }
+                                    <Typography
+                                        component="span"
+                                        sx={ {
+                                            color: "text.secondary",
+                                            display: "block",
+                                            fontSize: "0.75rem",
+                                            maxWidth: "60%",
+                                            mt: 0.25
+                                        } }
+                                    >
+                                        { t("validation:passwordExpiry.enforcementScope.appWithEnforcer.hint") }
+                                    </Typography>
+                                </>
+                            ) }
+                            control={ (
+                                <Radio
+                                    disabled={ isReadOnly || !passwordExpiryEnabled }
+                                    sx={ { pt: "2px" } }
+                                />
+                            ) }
+                            sx={ { alignItems: "flex-start" } }
+                        />
+                    </RadioGroup>
+                </FormControl>
+            </Grid>
         );
     };
 
@@ -1917,18 +1845,13 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                                 <div className="validation-configurations-form">
                                                     { isRuleBasedPasswordExpiryDisabled
                                                         ? (
-                                                            <>
-                                                                { serverConfigurationConfig.passwordExpiryComponent(
-                                                                    componentId,
-                                                                    passwordExpiryEnabled,
-                                                                    setPasswordExpiryEnabled,
-                                                                    t,
-                                                                    isReadOnly
-                                                                ) }
-                                                                { resolvePasswordExpiryEnforcementScope() }
-                                                            </>
-                                                        )
-                                                        : resolvePasswordExpiration() }
+                                                            serverConfigurationConfig.passwordExpiryComponent(
+                                                                componentId,
+                                                                passwordExpiryEnabled,
+                                                                setPasswordExpiryEnabled,
+                                                                t,
+                                                                isReadOnly )
+                                                        ) : resolvePasswordExpiration() }
                                                     <Divider className="heading-divider" />
                                                     { serverConfigurationConfig.passwordHistoryCountComponent(
                                                         componentId,

@@ -62,8 +62,10 @@ export const validation: validationNS = {
             },
             heading: "Enforce password expiry for",
             orgWide: {
-                hint: "Password expiry is automatically enforced for all users when they sign in, regardless of the application.",
-                label: "All users in the organization"
+                hint: "Password expiry is enforced globally at sign-in across all applications. " +
+                    "If a user signs in after their password has expired, they will be required " +
+                    "to change their password at the end of the login flow.",
+                label: "All application login flows"
             }
         },
         heading: "Password Expiration",
