@@ -133,6 +133,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
             const triggerFormSubmit: MutableRefObject<() => void> = useRef<(() => void) | null>(null);
 
             const [ selectedOperations, setSelectedOperations ] = useState<DropdownPropsInterface[]>([]);
+            const [ hasInteracted, setHasInteracted ] = useState<boolean>(false);
 
             // Fetch existing workflow associations for all operations.
             // For edit mode with workflowId, fetch only current workflow's associations.
@@ -158,6 +159,8 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                     mutateWorkflowAssociations();
                 },
                 triggerSubmit: () => {
+                    // Mark as interacted when Next button is clicked
+                    setHasInteracted(true);
                     if (triggerFormSubmit.current) {
                         triggerFormSubmit.current();
                     }
@@ -183,6 +186,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 Partial<WorkflowOperationsDetailsFormValuesInterface> => {
                 const error: Partial<WorkflowOperationsDetailsFormValuesInterface> = {};
 
+                // Always validate, but the error display is controlled by hasInteracted in the UI
                 if (selectedOperations.length === 0) {
                     error.matchedOperations = t(
                         "approvalWorkflows:forms.operations.dropDown.nullValidationErrorMessage"
@@ -245,6 +249,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 event: SyntheticEvent,
                 newSelectedOperations: DropdownPropsInterface[]
             ): void => {
+                setHasInteracted(true);
                 setSelectedOperations(newSelectedOperations);
                 onChange?.(newSelectedOperations);
             };
@@ -291,14 +296,15 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                 isOperationDisabled(option)
                                             }
                                             value={ selectedOperations }
+                                            onBlur={ () => setHasInteracted(true) }
                                             renderInput={ (params: AutocompleteRenderInputParams) => (
                                                 <TextField
                                                     { ...params }
                                                     placeholder={
                                                         t("approvalWorkflows:forms.operations.dropDown.placeholder")
                                                     }
-                                                    helperText={ errors.matchedOperations }
-                                                    error={ !!errors.matchedOperations }
+                                                    helperText={ hasInteracted ? errors.matchedOperations : undefined }
+                                                    error={ hasInteracted && !!errors.matchedOperations }
                                                     data-componentid={ `${componentId}-field-operation-search` }
                                                 />
                                             ) }
