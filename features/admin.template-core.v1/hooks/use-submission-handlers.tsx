@@ -25,9 +25,9 @@ import {
     FieldHandlerTypes
 } from "../models/dynamic-fields";
 import disableProperty from "../utils/disable-property";
+import expandObjectFields from "../utils/expand-object-fields";
 import templatedProperty from "../utils/templated-property";
 import uniqueIDGenerator from "../utils/unique-id-generator";
-import expandObjectFields from "../utils/expand-object-fields";
 
 /**
  * Function definition for custom submission handler.
@@ -110,7 +110,8 @@ const useSubmissionHandlers = (
                         values,
                         field?.name,
                         props?.delimiter as string
-                    )
+                    );
+
                     break;
                 default:
                     if (customSubmissionHandlers) {

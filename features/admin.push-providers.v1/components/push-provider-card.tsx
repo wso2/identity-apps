@@ -18,6 +18,7 @@
 
 import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
+import Chip from "@oxygen-ui/react/Chip";
 import Typography from "@oxygen-ui/react/Typography";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
@@ -36,7 +37,6 @@ import "./push-provider-card.scss";
 import { useSelector } from "react-redux";
 import { PushProviderConstants } from "../constants/push-provider-constants";
 import { PushProviderTemplateFeatureStatus } from "../models/templates";
-import Chip from "@oxygen-ui/react/Chip";
 
 /**
  * Props for the push provider card component.
@@ -147,7 +147,7 @@ const PushProviderCard: FunctionComponent<PushProviderCardPropsInterface> = ({
                             isDefault && (
                                 <>
                                     <span>&nbsp;&nbsp;</span>
-                                    <Chip variant="filled" color="default" size="medium" label={t("common:default")}/>
+                                    <Chip variant="filled" color="default" size="medium" label={ t("common:default") }/>
                                 </>
                             )
                         }

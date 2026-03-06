@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { EmphasizedSegment } from "@wso2is/react-components";
 import { TemplateDynamicForm } from "@wso2is/admin.template-core.v1/components/template-dynamic-form";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import IdVPEditDangerZone from "./danger-zone";
@@ -97,7 +97,7 @@ const DynamicSettingsForm: FunctionComponent<DynamicSettingsFormPropsInterface> 
 
     return (
         <EmphasizedSegment
-            data-componentid={`${componentId}-form`}
+            data-componentid={ `${componentId}-form` }
             padded="very"
         >
             <TemplateDynamicForm

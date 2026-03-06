@@ -23,9 +23,9 @@ import {
     FilePickerAdapter,
     FinalFormField,
     FormApi,
+    KeyValueMapAdapter,
     TextFieldAdapter,
-    __DEPRECATED__SelectFieldAdapter,
-    KeyValueMapAdapter
+    __DEPRECATED__SelectFieldAdapter
 } from "@wso2is/form";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
@@ -271,8 +271,8 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                             ) : null
                         }
                     />
-                );    
-                
+                );
+
             default:
                 return (
                     <FinalFormField

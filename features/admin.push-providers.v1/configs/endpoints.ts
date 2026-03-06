@@ -27,8 +27,8 @@ import { PushProviderResourceEndpointsInterface, PushProviderTemplateInterface }
 
 export const getPushProviderResourceEndpoints = (serverHost: string): PushProviderResourceEndpointsInterface => {
     return {
-        pushProviders: `${serverHost}/api/server/v1/notification-senders/push`,
-        pushNotificationConfigs: `${serverHost}/api/server/v1/notification-senders/configs/push`
+        pushNotificationConfigs: `${serverHost}/api/server/v1/notification-senders/configs/push`,
+        pushProviders: `${serverHost}/api/server/v1/notification-senders/push`
     };
 };
 

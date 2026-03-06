@@ -32,11 +32,16 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
-import { createPushProvider, deletePushProvider, updateDefaultPushProviderConfig, updatePushProvider } from "../api/push-provider";
+import {
+    createPushProvider,
+    deletePushProvider,
+    updateDefaultPushProviderConfig,
+    updatePushProvider
+} from "../api/push-provider";
+import useGetPushNotificationConfigs from "../api/use-get-push-notification-configs";
 import useGetPushProviderTemplate from "../api/use-get-push-provider-template";
 import useGetPushProviderTemplateMetadata from "../api/use-get-push-provider-template-metadata";
 import useGetPushProvidersList from "../api/use-get-push-providers";
-import useGetPushNotificationConfigs from "../api/use-get-push-notification-configs";
 import { PushProviderSettings } from "../components/push-provider-settings";
 import PushProvidersGrid from "../components/push-providers-grid";
 import { PushProviderConstants } from "../constants/push-provider-constants";
@@ -106,12 +111,16 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
                 let foundProvider: PushProviderAPIResponseInterface = null;
 
                 for (const template of availableTemplates) {
-                    const matchingProvider = pushProvidersList.find((provider: PushProviderAPIResponseInterface) => 
-                        PushProviderConstants.PUSH_PROVIDER_TEMPLATE_NAME_MAPPING.get(template.id) === provider.provider
+                    const matchingProvider: PushProviderAPIResponseInterface | undefined = pushProvidersList.find(
+                        (provider: PushProviderAPIResponseInterface) =>
+                            PushProviderConstants.PUSH_PROVIDER_TEMPLATE_NAME_MAPPING
+                                .get(template.id) === provider.provider
                     );
+
                     if (matchingProvider) {
                         foundTemplate = template;
                         foundProvider = matchingProvider;
+
                         break;
                     }
                 }
@@ -130,14 +139,18 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
                 setPushProvider(null);
             }
             setIsInitialized(true);
+
             return;
         }
 
         // If already initialized, just update the provider for the selected template
         if (selectedTemplate) {
-            const matchingProvider = pushProvidersList?.find(provider => 
-                PushProviderConstants.PUSH_PROVIDER_TEMPLATE_NAME_MAPPING.get(selectedTemplate.id) === provider.provider
+            const matchingProvider: PushProviderAPIResponseInterface | undefined = pushProvidersList?.find(
+                (provider: PushProviderAPIResponseInterface) =>
+                    PushProviderConstants.PUSH_PROVIDER_TEMPLATE_NAME_MAPPING
+                        .get(selectedTemplate.id) === provider.provider
             );
+
             setPushProvider(matchingProvider || null);
         }
 
@@ -145,9 +158,11 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
 
     useEffect(() => {
         if (pushNotificationConfigs?.defaultPushProvider) {
-            for (const [ templateId, providerName ] of PushProviderConstants.PUSH_PROVIDER_TEMPLATE_NAME_MAPPING.entries()) {
+            for (const [ templateId, providerName ] of
+                PushProviderConstants.PUSH_PROVIDER_TEMPLATE_NAME_MAPPING.entries()) {
                 if (providerName === pushNotificationConfigs.defaultPushProvider) {
                     setDefaultPushProviderTempId(templateId);
+
                     return;
                 }
             }
@@ -163,10 +178,10 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
 
     const handlePushTemplateSelect = (template: ExtensionTemplateListInterface) => {
         setSelectedTemplate(template);
-        setPushProvider(pushProvidersList?.find(provider => 
+        setPushProvider(pushProvidersList?.find((provider: PushProviderAPIResponseInterface) =>
             PushProviderConstants.PUSH_PROVIDER_TEMPLATE_NAME_MAPPING.get(template.id) === provider.provider
         ) || null);
-    }
+    };
 
     const handleDefaultPushProviderConfigUpdate = (pushProvider: string | null): void => {
         updateDefaultPushProviderConfig(pushProvider)
@@ -189,7 +204,7 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
             .finally(() => {
                 mutatePushNotificationConfigsFetchRequest();
             });
-    }
+    };
 
     const handlePushProviderDelete = (): void => {
         deletePushProvider(pushProvider.name)

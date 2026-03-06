@@ -38,7 +38,7 @@ const expandObjectFields = (
         const objectValue: Record<string, unknown> = fieldValue as Record<string, unknown>;
 
         // Expand each key-value pair in the object
-        for (const [key, value] of Object.entries(objectValue)) {
+        for (const [ key, value ] of Object.entries(objectValue)) {
             const expandedKey: string = `${fieldName}${delimiter}${key}`;
 
             set(formValues, expandedKey, value);

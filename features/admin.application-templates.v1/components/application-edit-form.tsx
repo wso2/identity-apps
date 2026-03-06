@@ -29,11 +29,11 @@ import {
     SupportedAuthProtocolTypes,
     WSTrustConfigurationInterface
 } from "@wso2is/admin.applications.v1/models/application-inbound";
-import { EmphasizedSegment } from "@wso2is/react-components";
 import { TemplateDynamicForm } from "@wso2is/admin.template-core.v1/components/template-dynamic-form";
 import { DynamicFieldInterface } from "@wso2is/admin.template-core.v1/models/dynamic-fields";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEqual from "lodash-es/isEqual";
@@ -280,7 +280,7 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
 
     return (
         <EmphasizedSegment
-            data-componentid={`${componentId}-form`}
+            data-componentid={ `${componentId}-form` }
             padded="very"
         >
             <TemplateDynamicForm

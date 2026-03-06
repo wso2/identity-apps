@@ -16,18 +16,18 @@
  * under the License.
  */
 
-import cloneDeep from "lodash-es/cloneDeep";
 import { TemplateDynamicForm } from "@wso2is/admin.template-core.v1/components/template-dynamic-form";
 import {
     DynamicFilePickerFieldInterface, DynamicFormInterface,
     DynamicInputFieldTypes
 } from "@wso2is/admin.template-core.v1/models/dynamic-fields";
-import { EmphasizedSegment, Hint } from "@wso2is/react-components";
-import { Checkbox, CheckboxProps, Divider } from "semantic-ui-react";
 import { ExtensionTemplateCommonInterface } from "@wso2is/admin.template-core.v1/models/templates";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { EmphasizedSegment, Hint } from "@wso2is/react-components";
+import cloneDeep from "lodash-es/cloneDeep";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Checkbox, CheckboxProps, Divider } from "semantic-ui-react";
 import { PushProviderAPIInterface, PushProviderPropertiesInterface } from "../models/push-providers";
 import { PushProviderTemplateInterface, PushProviderTemplateMetadataInterface } from "../models/templates";
 
@@ -144,7 +144,7 @@ export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsIn
         return formMetadata;
     }, [ pushProviderTemplateMetadata ]);
 
-    const [isDefaultProvider, setIsDefaultProvider] = useState<boolean>( false );
+    const [ isDefaultProvider, setIsDefaultProvider ] = useState<boolean>( false );
 
     if (defaultPushProvider && pushProvider?.provider === defaultPushProvider && !isDefaultProvider) {
         setIsDefaultProvider(true);
@@ -175,36 +175,38 @@ export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsIn
             });
         }
 
-        
+
         if (pushProvider) {
             const payload: PushProviderAPIInterface = {
                 properties: providerProperties,
                 provider: pushProviderTemplateData.payload.provider
             };
+
             handleUpdate(payload, callback);
         } else {
             const payload: PushProviderAPIInterface = {
                 properties: providerProperties,
                 provider: pushProviderTemplateData.payload.provider
             };
+
             handleCreate(payload, callback);
         }
     };
 
     return (
         <EmphasizedSegment
-            data-componentid={`${componentId}-form`}
+            data-componentid={ `${componentId}-form` }
             padded="very"
         >
             <Checkbox
                 label={ t("pushProviders:pushProviderSettings.defaultSender") }
-                checked={isDefaultProvider}
-                onChange={handleToggleChange}
+                checked={ isDefaultProvider }
+                onChange={ handleToggleChange }
                 toggle
-                disabled={pushProvider == null} // Disable the toggle if push provider is not configured
-                data-componentid={`${componentId}-default-push-provider`}
+                disabled={ pushProvider == null } // Disable the toggle if push provider is not configured
+                data-componentid={ `${componentId}-default-push-provider` }
             />
-            <Hint data-componentid={`${componentId}-default-push-provider-description`}>
+            <Hint data-componentid={ `${componentId}-default-push-provider-description` }>
                 { t("pushProviders:pushProviderSettings.defaultSenderDescription") }
             </Hint>
             <Divider hidden />

@@ -122,7 +122,9 @@ export const deletePushProvider = async (name: string): Promise<AxiosResponse> =
         });
 };
 
-export const updateDefaultPushProviderConfig = async (pushProvider: string | null): Promise<HttpResponse | undefined> => {
+export const updateDefaultPushProviderConfig = async (
+    pushProvider: string | null
+): Promise<HttpResponse | undefined> => {
 
     const requestConfig: RequestConfigInterface = {
         data: {

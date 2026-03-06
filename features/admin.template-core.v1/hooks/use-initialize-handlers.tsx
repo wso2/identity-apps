@@ -23,8 +23,8 @@ import {
     DynamicFieldInterface,
     FieldHandlerTypes
 } from "../models/dynamic-fields";
-import extractTemplatedFields from "../utils/extract-templated-fields";
 import extractObjectField from "../utils/extract-object-field";
+import extractTemplatedFields from "../utils/extract-templated-fields";
 
 /**
  * Function definition for custom initialize handler.

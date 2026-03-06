@@ -21,13 +21,13 @@ import Button from "@oxygen-ui/react/Button";
 import FormControl from "@oxygen-ui/react/FormControl";
 import InputLabel from "@oxygen-ui/react/InputLabel";
 import MenuItem from "@oxygen-ui/react/MenuItem";
-import Select from "@oxygen-ui/react/Select";
+import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
-import { useTranslation } from "react-i18next";
 import { PlusIcon } from "@oxygen-ui/react-icons";
 import { DataTable, EmptyPlaceholder, TableActionsInterface, TableColumnInterface } from "@wso2is/react-components";
 import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
-import { Grid, Header, Label, SemanticICONS } from "semantic-ui-react";
+import { useTranslation } from "react-i18next";
+import { Header, Label, SemanticICONS } from "semantic-ui-react";
 
 /**
  * Interface for the items passed as key options.
@@ -36,6 +36,7 @@ interface DropDownItemInterface {
     text: ReactNode;
     value: string;
 }
+
 /**
  * Supported value types for key value map fields.
  */
@@ -108,11 +109,11 @@ export interface KeyValueMapProps {
 }
 
 export const KeyValueMapField = ({
-    fullWidth = true,
-    FormControlProps = {},
+    fullWidth: _fullWidth = true,
+    FormControlProps: _FormControlProps = {},
     "aria-label": ariaLabel,
     "data-componentid": dataComponentId = "key-value-map-field",
-    name,
+    name: _name,
     label,
     placeholder,
     readOnly = false,
@@ -126,38 +127,42 @@ export const KeyValueMapField = ({
 
     const { t } = useTranslation();
 
-    const [selectedKey, setSelectedKey] = useState<string>("");
-    const [inputValue, setInputValue] = useState<string>("");
-    const [keyValuePairs, setKeyValuePairs] = useState<{ key: string; value: string }[]>(() => {
+    const [ selectedKey, setSelectedKey ] = useState<string>("");
+    const [ inputValue, setInputValue ] = useState<string>("");
+    const [ keyValuePairs, setKeyValuePairs ] = useState<{ key: string; value: string }[]>(() => {
         // Initialize from form value if provided
-        if (value && typeof value === 'object') {
+        if (value && typeof value === "object") {
             return Object.entries(value)
-                .filter(([_, val]) => val)
-                .map(([key, val]) => ({ key, value: val as string }));
+                .filter(([ _, val ]: [ string, string ]) => val)
+                .map(([ key, val ]: [ string, string ]) => ({ key, value: val as string }));
         }
+
         return [];
     });
 
     useEffect(() => {
         // Update local state if form value changes externally
-        if (value && typeof value === 'object' && Object.keys(value).length > 0) {
+        if (value && typeof value === "object" && Object.keys(value).length > 0) {
             setKeyValuePairs(
                 Object.entries(value)
-                    .filter(([_, val]) => val)
-                    .map(([key, val]) => ({ key, value: val as string }))
+                    .filter(([ _, val ]: [ string, string ]) => val)
+                    .map(([ key, val ]: [ string, string ]) => ({ key, value: val as string }))
             );
         } else {
             // Clear the pairs when form is reset or value is empty
             setKeyValuePairs([]);
         }
-    }, [value]);
+    }, [ value ]);
 
     /**
      * Handles adding a new key-value pair.
      */
     const handleAddPair = (): void => {
         if (selectedKey && inputValue) {
-            const updatedPairs: { key: string; value: string }[] = [...keyValuePairs, { key: selectedKey, value: inputValue }];
+            const updatedPairs: { key: string; value: string }[] = [
+                ...keyValuePairs,
+                { key: selectedKey, value: inputValue }
+            ];
 
             setSelectedKey("");
             setInputValue("");
@@ -166,7 +171,7 @@ export const KeyValueMapField = ({
             if (onChange) {
                 const formValue: Record<string, string> = {};
 
-                updatedPairs.forEach(pair => {
+                updatedPairs.forEach((pair: { key: string; value: string }) => {
                     formValue[pair.key] = pair.value;
                 });
                 onChange(formValue);
@@ -179,7 +184,7 @@ export const KeyValueMapField = ({
      */
     const handleRemovePair = (pair: { key: string; value: string }): void => {
         const updatedPairs: { key: string; value: string }[] = keyValuePairs.filter(
-            p => p.key !== pair.key
+            (p: { key: string; value: string }) => p.key !== pair.key
         );
 
         // Update form value
@@ -190,7 +195,7 @@ export const KeyValueMapField = ({
             } else {
                 const formValue: Record<string, string> = {};
 
-                updatedPairs.forEach(p => {
+                updatedPairs.forEach((p: { key: string; value: string }) => {
                     formValue[p.key] = p.value;
                 });
                 onChange(formValue);
@@ -229,9 +234,9 @@ export const KeyValueMapField = ({
                 id: "key",
                 key: "key",
                 render: (pair: { key: string; value: string }): ReactNode => (
-                    <Header as="h6" data-testid={`${dataComponentId}-key-${pair.key}`}>
+                    <Header as="h6" data-testid={ `${dataComponentId}-key-${pair.key}` }>
                         <Header.Content>
-                            {keyOptions.find(option => option.value === pair.key)?.text}
+                            { keyOptions.find((option: DropDownItemInterface) => option.value === pair.key)?.text }
                         </Header.Content>
                     </Header>
                 ),
@@ -244,10 +249,10 @@ export const KeyValueMapField = ({
                 id: "value",
                 key: "value",
                 render: (pair: { key: string; value: string }): ReactNode => (
-                    <Header as="h6" data-testid={`${dataComponentId}-value-${pair.key}`}>
+                    <Header as="h6" data-testid={ `${dataComponentId}-value-${pair.key}` }>
                         <Header.Content>
                             <Label>
-                                {pair.value}
+                                { pair.value }
                             </Label>
                         </Header.Content>
                     </Header>
@@ -273,7 +278,7 @@ export const KeyValueMapField = ({
         if (keyValuePairs?.length === 0) {
             return (
                 <EmptyPlaceholder
-                    subtitle={[`No ${label} are added yet`]}
+                    subtitle={ [ `No ${label} are added yet` ] }
                 />
             );
         }
@@ -282,119 +287,123 @@ export const KeyValueMapField = ({
     };
 
     return (
-        <Box data-componentid={dataComponentId} aria-label={ariaLabel}>
-            <InputLabel required={required} sx={{ mb: 1.5 }}>
-                {label}
+        <Box data-componentid={ dataComponentId } aria-label={ ariaLabel }>
+            <InputLabel required={ required } sx={ { mb: 1.5 } }>
+                { label }
             </InputLabel>
 
             <Box
-                sx={{
-                    display: 'flex',
-                    flexWrap: 'wrap',
+                sx={ {
+                    display: "flex",
+                    flexWrap: "wrap",
                     gap: 2,
                     mb: 2
-                }}
+                } }
             >
                 <Box
-                    sx={{
-                        minWidth: '200px',
-                        flex: '1 1 200px',
-                        maxWidth: { xs: '100%', sm: '250px' }
-                    }}
+                    sx={ {
+                        flex: "1 1 200px",
+                        maxWidth: { sm: "250px", xs: "100%" },
+                        minWidth: "200px"
+                    } }
                 >
                     <FormControl
                         fullWidth
                         size="small"
                         variant="outlined"
-                        disabled={readOnly}
+                        disabled={ readOnly }
                     >
                         <Select
-                            value={selectedKey}
-                            onChange={(e) => setSelectedKey(e.target.value as string)}
+                            value={ selectedKey }
+                            onChange={ (e: SelectChangeEvent<string>) => setSelectedKey(e.target.value as string) }
                             displayEmpty
-                            disabled={readOnly}
-                            data-componentid={`${dataComponentId}-key-select`}
+                            disabled={ readOnly }
+                            data-componentid={ `${dataComponentId}-key-select` }
                         >
                             <MenuItem value="" disabled>
-                                {`Select ${keyName ? keyName : "Key"}`}
+                                { `Select ${keyName ? keyName : "Key"}` }
                             </MenuItem>
-                            {keyOptions
-                                .filter(option => !keyValuePairs.some(pair => pair.key === option.value))
+                            { keyOptions
+                                .filter((option: DropDownItemInterface) =>
+                                    !keyValuePairs.some(
+                                        (pair: { key: string; value: string }) => pair.key === option.value
+                                    )
+                                )
                                 .map((option: DropDownItemInterface) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                        {option.text}
+                                    <MenuItem key={ option.value } value={ option.value }>
+                                        { option.text }
                                     </MenuItem>
-                                ))}
+                                )) }
                         </Select>
                     </FormControl>
                 </Box>
 
-                {valuetype == KeyValueMapValueFieldTypes.TEXT && (
+                { valuetype == KeyValueMapValueFieldTypes.TEXT && (
                     <Box
-                        sx={{
-                            flex: '1 1 300px',
-                            minWidth: '200px'
-                        }}
+                        sx={ {
+                            flex: "1 1 300px",
+                            minWidth: "200px"
+                        } }
                     >
                         <TextField
                             fullWidth
                             size="small"
                             variant="outlined"
-                            placeholder={placeholder || ""}
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                            disabled={readOnly}
-                            data-componentid={`${dataComponentId}-value-input`}
+                            placeholder={ placeholder || "" }
+                            value={ inputValue }
+                            onChange={ (e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value) }
+                            disabled={ readOnly }
+                            data-componentid={ `${dataComponentId}-value-input` }
                         />
                     </Box>
-                )}
+                ) }
 
                 <Box
-                    sx={{
-                        minWidth: '100px',
-                        flex: '0 1 auto'
-                    }}
+                    sx={ {
+                        flex: "0 1 auto",
+                        minWidth: "100px"
+                    } }
                 >
                     <Button
-                        onClick={handleAddPair}
-                        disabled={readOnly || !selectedKey || !inputValue}
-                        data-componentid={`${dataComponentId}-add-button`}
+                        onClick={ handleAddPair }
+                        disabled={ readOnly || !selectedKey || !inputValue }
+                        data-componentid={ `${dataComponentId}-add-button` }
                         variant="outlined"
                         color="primary"
                         size="small"
-                        startIcon={<PlusIcon />}
+                        startIcon={ <PlusIcon /> }
                         fullWidth
-                        sx={{ height: '40px' }}
+                        sx={ { height: "40px" } }
                     >
-                        {t("common:add")}
+                        { t("common:add") }
                     </Button>
                 </Box>
             </Box>
 
             <Box
-                p={2}
+                p={ 2 }
                 border="1px solid"
                 borderColor="divider"
-                borderRadius={1}
-                minHeight={60}
-                sx={{ overflowX: 'auto' }}
+                borderRadius={ 1 }
+                minHeight={ 60 }
+                sx={ { overflowX: "auto" } }
             >
-            
+
                 <DataTable<{ key: string; value: string }>
                     className="key-value-map-table"
-                    columnCount={3}
-                    loadingStateOptions={{
+                    columnCount={ 3 }
+                    loadingStateOptions={ {
                         count: 5,
                         imageType: "square"
-                    }}
-                    onRowClick={() => null}
-                    showHeader={false}
-                    placeholders={showPlaceholders()}
-                    transparent={true}
-                    data-testid={dataComponentId}
-                    actions={resolveTableActions()}
-                    columns={resolveTableColumns()}
-                    data={keyValuePairs}
+                    } }
+                    onRowClick={ () => null }
+                    showHeader={ false }
+                    placeholders={ showPlaceholders() }
+                    transparent={ true }
+                    data-testid={ dataComponentId }
+                    actions={ resolveTableActions() }
+                    columns={ resolveTableColumns() }
+                    data={ keyValuePairs }
                 />
             </Box>
         </Box>
