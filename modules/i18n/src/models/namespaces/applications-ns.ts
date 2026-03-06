@@ -1514,11 +1514,10 @@ export interface ApplicationsNS {
                         };
                     };
                     notificationChannels: {
-                        clientChannelLabel: string;
                         externalHint: string;
+                        externalLabel: string;
                         hint: string;
                         label: string;
-                        serverChannelsLabel: string;
                     };
                     heading: string;
                 }

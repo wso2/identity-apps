@@ -1597,10 +1597,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
 
             if (showCibaFields) {
-                const serverChannels: string[] =
-                    values.get("cibaServerChannels") as unknown as string[] || [];
-                const clientChannels: string[] =
-                    values.get("cibaExternalChannel") as unknown as string[] || [];
+                const notificationChannels: string[] =
+                    values.get("cibaNotificationChannels") as unknown as string[] || [];
 
                 inboundConfigFormValues = {
                     ...inboundConfigFormValues,
@@ -1608,7 +1606,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         authReqExpiryTime: values.get("authReqExpiryTime")
                             ? parseInt(values.get("authReqExpiryTime") as string, 10)
                             : undefined,
-                        notificationChannels: [ ...serverChannels, ...clientChannels ]
+                        notificationChannels: notificationChannels
                     }
                 };
             } else {
@@ -2261,74 +2259,41 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     </Hint>
                                 </div>
                                 <Field
-                                    name="cibaServerChannels"
-                                    label={
-                                        t("applications:forms.inboundOIDC.fields." +
-                                            "ciba.notificationChannels.serverChannelsLabel")
-                                    }
+                                    name="cibaNotificationChannels"
                                     type="checkbox"
                                     required={ false }
                                     value={
                                         initialValues?.cibaAuthenticationRequest
-                                            ?.notificationChannels
-                                            ?.filter(
-                                                (ch: string) => ch !== "external"
-                                            ) ?? []
+                                            ?.notificationChannels ?? []
                                     }
                                     readOnly={ readOnly }
                                     data-componentid={
-                                        `${ testId }-ciba-server-channels`
+                                        `${ testId }-ciba-notification-channels`
                                     }
                                     children={
-                                        metadata?.cibaMetadata
-                                            ?.supportedNotificationChannels
-                                            ?.filter(
-                                                (channel:
-                                                    CIBANotificationChannelInterface) =>
-                                                    channel.name !== "external"
+                                        [ ...(metadata?.cibaMetadata
+                                            ?.supportedNotificationChannels ?? []) ]
+                                            .sort(
+                                                (a: CIBANotificationChannelInterface,
+                                                    b: CIBANotificationChannelInterface
+                                                ): number =>
+                                                    a.name === "external" ? 1
+                                                        : b.name === "external" ? -1 : 0
                                             )
                                             ?.map(
                                                 (channel:
                                                     CIBANotificationChannelInterface):
                                                     CheckboxChild => ({
-                                                    label: channel.displayName,
+                                                    label: channel.name === "external"
+                                                        ? t("applications:forms" +
+                                                            ".inboundOIDC.fields.ciba" +
+                                                            ".notificationChannels" +
+                                                            ".externalLabel")
+                                                        : channel.displayName,
                                                     value: channel.name
                                                 })
                                             ) ?? []
                                     }
-                                />
-                                <Field
-                                    name="cibaExternalChannel"
-                                    label={
-                                        t("applications:forms.inboundOIDC.fields." +
-                                            "ciba.notificationChannels.clientChannelLabel")
-                                    }
-                                    type="checkbox"
-                                    required={ false }
-                                    value={
-                                        initialValues?.cibaAuthenticationRequest
-                                            ?.notificationChannels
-                                            ?.includes("external")
-                                            ? [ "external" ]
-                                            : []
-                                    }
-                                    readOnly={ readOnly }
-                                    data-componentid={
-                                        `${ testId }-ciba-external-channel`
-                                    }
-                                    children={ [
-                                        {
-                                            label: metadata?.cibaMetadata
-                                                ?.supportedNotificationChannels
-                                                ?.find(
-                                                    (ch:
-                                                        CIBANotificationChannelInterface
-                                                    ) =>
-                                                        ch.name === "external"
-                                                )?.displayName ?? "External",
-                                            value: "external"
-                                        }
-                                    ] as CheckboxChild[] }
                                 />
                                 <Hint>
                                     { t("applications:forms" +
