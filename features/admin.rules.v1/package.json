@@ -33,6 +33,7 @@
         "@oxygen-ui/react": "^2.4.6",
         "@wso2is/admin.core.v1": "^2.49.82",
         "@wso2is/admin.roles.v2": "workspace:^",
+        "@wso2is/admin.extensions.v1": "workspace:^",
         "@wso2is/core": "^2.12.3",
         "i18next": "^21.9.1",
         "react-i18next": "^11.18.5",

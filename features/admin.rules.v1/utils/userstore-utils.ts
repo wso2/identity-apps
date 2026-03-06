@@ -16,34 +16,47 @@
  * under the License.
  */
 
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
 import { ResourceInterface } from "../models/resource";
 
-const INTERNAL_USERSTORES: string[] = [
-    "AGENT"
-];
-
+/**
+ * Normalizes the user store list by:
+ *  - Removing system reserved user stores
+ *  - Ensuring the primary user store always exists in the list
+ *
+ * @param stores - Raw user store list from API
+ * @param systemReservedUserStores - Reserved user stores configured in UI config
+ * @returns Normalized user store list
+ */
 export const normalizeUserstoreList = (
-    stores: ResourceInterface[]
+    stores: ResourceInterface[],
+    systemReservedUserStores: string[] = []
 ): ResourceInterface[] => {
 
     if (!stores) {
         return [];
     }
 
-    // Remove internal/system stores.
+    const primaryUserStoreName: string = userstoresConfig.primaryUserstoreName;
+
+    // Remove internal/system reserved stores
     let filteredStores: ResourceInterface[] = stores.filter(
         (store: ResourceInterface) =>
-            !INTERNAL_USERSTORES.includes(store.name)
+            !systemReservedUserStores?.includes(store.name?.toUpperCase())
     );
 
-    // Ensure PRIMARY always exists.
+    // Ensure PRIMARY (configured primary user store) always exists
     const primaryExists: boolean = filteredStores.some(
-        (store: ResourceInterface) => store.name === "PRIMARY"
+        (store: ResourceInterface) =>
+            store.name?.toUpperCase() === primaryUserStoreName?.toUpperCase()
     );
 
     if (!primaryExists) {
         filteredStores = [
-            { id: "PRIMARY", name: "PRIMARY" } as ResourceInterface,
+            {
+                id: primaryUserStoreName,
+                name: primaryUserStoreName
+            } as ResourceInterface,
             ...filteredStores
         ];
     }

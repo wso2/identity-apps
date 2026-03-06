@@ -34,12 +34,14 @@ import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
 import { MinusIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code } from "@wso2is/react-components";
 import debounce from "lodash-es/debounce";
 import React, { ChangeEvent, Dispatch, Fragment, FunctionComponent, HTMLAttributes, ReactElement, useCallback,
     useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { DropdownProps } from "semantic-ui-react";
 import AutoCompleteRenderOption from "./auto-complete-render-option";
 import useGetResourceListOrResourceDetails from "../api/use-get-resource-list-or-resource-details";
@@ -466,6 +468,10 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         const valueReferenceAttribute: string = findMetaValuesAgainst?.value?.valueReferenceAttribute || "id";
         const valueDisplayAttribute: string = findMetaValuesAgainst?.value?.valueDisplayAttribute || "name";
 
+        const systemReservedUserStores: string[] = useSelector(
+            (state: AppState) => state?.config?.ui?.systemReservedUserStores
+        );
+
         let resourceType: string;
         let shouldFetch: boolean = false;
 
@@ -743,8 +749,11 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             // Special handling for userstores (user.domain / initiator.domain)
             let processedItems: ResourceInterface[] = normalizedItems;
 
-            if (initialResourcesLoadUrl?.includes("/userstores")) {
-                processedItems = normalizeUserstoreList(normalizedItems);
+            if (initialResourcesLoadUrl?.toLowerCase().includes("/userstores")) {
+                processedItems = normalizeUserstoreList(
+                    normalizedItems,
+                    systemReservedUserStores
+                );
             }
 
             const items: ResourceInterface[] =

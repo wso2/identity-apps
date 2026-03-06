@@ -15597,6 +15597,9 @@ importers:
       '@wso2is/admin.core.v1':
         specifier: ^2.49.82
         version: link:../admin.core.v1
+      '@wso2is/admin.extensions.v1':
+        specifier: workspace:^
+        version: link:../admin.extensions.v1
       '@wso2is/admin.roles.v2':
         specifier: workspace:^
         version: link:../admin.roles.v2
