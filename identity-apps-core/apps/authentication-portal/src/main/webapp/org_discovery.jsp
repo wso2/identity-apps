@@ -132,7 +132,7 @@
                      </span>
                   </div>
                   <input id="prompt" name="prompt" type="hidden" value="orgName">
-                  <% if (idp != null && !idp.trim().isEmpty()) { %>
+                  <% if (StringUtils.isNotBlank(idp)) { %>
                         <input id="idp" name="idp" type="hidden" value="<%=Encode.forHtmlAttribute(idp)%>"/>
                   <% } %>
                   <input id="authenticator" name="authenticator" type="hidden" value="<%=Encode.forHtmlAttribute(authenticator)%>"/>
