@@ -90,7 +90,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
     const [ selectedIdp, setSelectedIdp ] = useState<string>();
     const [ isBlockingChecked, setIsBlockingChecked ] = useState<boolean>(initialValues?.blocking ?? false);
     const [ isRulesChecked, setIsRulesChecked ] = useState<boolean>(initialValues?.rules ?? false);
-    const [ isJITChecked, setIsJITChecked ] = useState<boolean>(initialValues?.jit);
+    const [ isJITChecked, setIsJITChecked ] = useState<boolean>(initialValues?.jit ?? false);
     const [ connector, setConnector ] = useState<string>(initialValues?.connector);
 
     const isBlockingOutboundProvisioningEnabled: boolean = UIConfig?.enableBlockingOutboundProvisioning ?? false;
