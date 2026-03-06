@@ -69,6 +69,8 @@ export const WORKFLOW_ENGINE: string = "WorkflowEngine";
  * Used to filter available fields in the rule builder per operation type.
  */
 export const OPERATION_FIELD_MAPPING: Record<string, string[]> = {
+    // Enable initiator.(domain|groups|roles) when the backend supports,
+    // providing data for these fields for the respective operations.
     ADD_ROLE: [ "role.audience", "role.permissions" ],
     ADD_USER: [ "user.domain" ],
     DELETE_USER: [ "user.domain", "user.groups", "user.roles" ],
@@ -77,10 +79,11 @@ export const OPERATION_FIELD_MAPPING: Record<string, string[]> = {
         "role.id",
         "role.audience",
         "role.hasAssignedUsers",
-        "role.hasUnassignedUsers",
-        "user.domain",
-        "user.groups",
-        "user.roles"
+        "role.hasUnassignedUsers"
+        // Enable the following fields when they support the data providing in the backend for this operation.
+        // "user.domain",
+        // "user.groups",
+        // "user.roles"
     ]
 
 };
