@@ -35,5 +35,6 @@ export interface AgentScimSchema {
     id?: string;
     userName?: string;
     password?: string;
+    applicationClientId?: string;
     "urn:scim:wso2:agent:schema"?: AgentSchema;
 }

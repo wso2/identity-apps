@@ -42,6 +42,68 @@ export default function AddAgentWizard({
 
     const authenticatedUserInfo: AuthenticatedUserInfo = useSelector((state: AppState) => state?.auth);
     const [ isNewAgentFormSubmitting, setIsNewAgentFormSubmitting ] = useState<boolean>(false);
+    const [ currentStep, setCurrentStep ] = useState<number>(0);
+    const [ stepOneValues, setStepOneValues ] = useState<{ name?: string; description?: string }>({});
+    const [ stepOneErrors, setStepOneErrors ] = useState<{ name?: string }>({});
+
+    const handleClose = () => {
+        setCurrentStep(0);
+        setStepOneValues({});
+        setStepOneErrors({});
+        onClose(null);
+    };
+
+    const handleNext = (values: any) => {
+        if (!values?.name) {
+            setStepOneErrors({ name: "Agent name is required." });
+
+            return;
+        }
+
+        setStepOneErrors({});
+        setStepOneValues({ description: values?.description, name: values?.name });
+        setCurrentStep(1);
+    };
+
+    const handleBack = () => {
+        setCurrentStep(0);
+    };
+
+    const handleCreate = (values: any) => {
+        setIsNewAgentFormSubmitting(true);
+
+        // Capture the checkbox value here — the backend response does NOT return
+        // IsUserServingAgent, so we must carry this value forward ourselves.
+        const isUserServing: boolean = values?.isUserServingAgent || false;
+
+        const addAgentPayload: AgentScimSchema = {
+            "urn:scim:wso2:agent:schema": {
+                Description: stepOneValues?.description,
+                DisplayName: stepOneValues?.name,
+                IsUserServingAgent: isUserServing,
+                Owner: authenticatedUserInfo?.username
+            }
+        };
+
+        addAgent(addAgentPayload)
+            .then((response: AgentScimSchema) => {
+                // Attach isUserServingAgent to the response so the parent (agents.tsx)
+                // knows which value the user selected, without relying on the backend
+                // to echo it back.
+                onClose({ ...response, isUserServingAgent: isUserServing });
+            })
+            .catch((_err: unknown) => {
+                dispatch(
+                    addAlert({
+                        description: "Creating agent failed",
+                        level: AlertLevels.ERROR,
+                        message: "Something went wrong"
+                    })
+                );
+            }).finally(() => {
+                setIsNewAgentFormSubmitting(false);
+            });
+    };
 
     return (
         <Modal
@@ -51,104 +113,115 @@ export default function AddAgentWizard({
             className="wizard"
             dimmer="blurring"
             size="tiny"
-            onClose={ onClose }
+            onClose={ handleClose }
             closeOnDimmerClick={ false }
             closeOnEscape
         >
             <Modal.Header>New Agent</Modal.Header>
-            <Modal.Content>
-                <FinalForm
-                    onSubmit={ (values: any) => {
-                        if (!values?.name) {
-                            return;
-                        }
 
-                        setIsNewAgentFormSubmitting(true);
-
-                        const addAgentPayload: AgentScimSchema = {
-                            "urn:scim:wso2:agent:schema": {
-                                Description: values?.description,
-                                DisplayName: values?.name,
-                                Owner: authenticatedUserInfo?.username,
-                                IsUserServingAgent: values?.isUserServingAgent || false
-                            }
-                        };
-
-                        addAgent(addAgentPayload)
-                            .then((response: AgentScimSchema) => {
-                                onClose(response);
-                            })
-                            .catch((_err: unknown) => {
-                                dispatch(
-                                    addAlert({
-                                        description: "Creating agent failed",
-                                        level: AlertLevels.ERROR,
-                                        message: "Something went wrong"
-                                    })
+            { currentStep === 0 && (
+                <>
+                    <Modal.Content>
+                        <FinalForm
+                            onSubmit={ handleNext }
+                            initialValues={ stepOneValues }
+                            render={ ({ handleSubmit }: FormRenderProps) => {
+                                return (
+                                    <form id="addAgentStepOneForm" onSubmit={ handleSubmit }>
+                                        <FinalFormField
+                                            name="name"
+                                            label="Name"
+                                            required={ true }
+                                            autoComplete="new-password"
+                                            component={ TextFieldAdapter }
+                                            error={ stepOneErrors?.name }
+                                        />
+                                        <FinalFormField
+                                            label="Description"
+                                            name="description"
+                                            className="mt-3"
+                                            multiline
+                                            rows={ 4 }
+                                            maxRows={ 4 }
+                                            autoComplete="new-password"
+                                            placeholder="Enter a description for the agent"
+                                            component={ TextFieldAdapter }
+                                        />
+                                    </form>
                                 );
-                            }).finally(() => {
-                                setIsNewAgentFormSubmitting(false);
-                            });
-                    } }
-                    render={ ({ handleSubmit }: FormRenderProps) => {
-                        return (
-                            <form id="addAgentForm" onSubmit={ handleSubmit }>
-                                <FinalFormField
-                                    name="name"
-                                    label="Name"
-                                    required={ true }
-                                    autoComplete="new-password"
-                                    component={ TextFieldAdapter }
-                                />
-                                <FinalFormField
-                                    label="Description"
-                                    name="description"
-                                    className="mt-3"
-                                    multiline
-                                    rows={ 4 }
-                                    maxRows={ 4 }
-                                    autoComplete="new-password"
-                                    placeholder="Enter a description for the agent"
-                                    component={ TextFieldAdapter }
-                                />
-                                <FinalFormField
-                                    name="isUserServingAgent"
-                                    label="Is this a user-serving agent?"
-                                    component={ CheckboxFieldAdapter }
-                                />
-                  
-                            </form>
-                        );
-                    } }
-                />
-
-            </Modal.Content>
-
-            <Modal.Actions>
-                <Button
-                    className="link-button"
-                    basic
-                    primary
-                    onClick={ () => onClose(null) }
-                    data-testid={ `${componentId}-confirmation-modal-actions-cancel-button` }
-                >
+                            } }
+                        />
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button
+                            className="link-button"
+                            basic
+                            primary
+                            onClick={ handleClose }
+                            data-testid={ `${componentId}-step-one-cancel-button` }
+                        >
                             Cancel
-                </Button>
-                <Button
-                    primary={ true }
-                    type="submit"
-                    disabled={ isNewAgentFormSubmitting }
-                    loading={ isNewAgentFormSubmitting }
-                    onClick={ () => {
-                        document
-                            .getElementById("addAgentForm")
-                            .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
-                    } }
-                    data-testid={ `${componentId}-confirmation-modal-actions-continue-button` }
-                >
+                        </Button>
+                        <Button
+                            primary={ true }
+                            onClick={ () => {
+                                document
+                                    .getElementById("addAgentStepOneForm")
+                                    .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+                            } }
+                            data-testid={ `${componentId}-step-one-next-button` }
+                        >
+                            Next
+                        </Button>
+                    </Modal.Actions>
+                </>
+            ) }
+
+            { currentStep === 1 && (
+                <>
+                    <Modal.Content>
+                        <FinalForm
+                            onSubmit={ handleCreate }
+                            render={ ({ handleSubmit }: FormRenderProps) => {
+                                return (
+                                    <form id="addAgentStepTwoForm" onSubmit={ handleSubmit }>
+                                        <FinalFormField
+                                            name="isUserServingAgent"
+                                            label="Is this a user-serving agent?"
+                                            component={ CheckboxFieldAdapter }
+                                        />
+                                    </form>
+                                );
+                            } }
+                        />
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button
+                            className="link-button"
+                            basic
+                            primary
+                            onClick={ handleBack }
+                            data-testid={ `${componentId}-step-two-back-button` }
+                        >
+                            Back
+                        </Button>
+                        <Button
+                            primary={ true }
+                            type="submit"
+                            disabled={ isNewAgentFormSubmitting }
+                            loading={ isNewAgentFormSubmitting }
+                            onClick={ () => {
+                                document
+                                    .getElementById("addAgentStepTwoForm")
+                                    .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+                            } }
+                            data-testid={ `${componentId}-step-two-create-button` }
+                        >
                             Create
-                </Button>
-            </Modal.Actions>
+                        </Button>
+                    </Modal.Actions>
+                </>
+            ) }
         </Modal>
     );
 }

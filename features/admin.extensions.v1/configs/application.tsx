@@ -381,8 +381,10 @@ export const applicationConfig: ApplicationConfig = {
                     });
             }
 
-            // Hide danger zone for Enterprise IDP Login Applications.
-            return !(application.name.startsWith("WSO2_LOGIN_FOR_") || isEnterpriseLoginMgt === "true");
+            // Hide danger zone for Enterprise IDP Login Applications and Agent Applications.
+            return !(application.name.startsWith("WSO2_LOGIN_FOR_")
+                || isEnterpriseLoginMgt === "true"
+                || application?.templateId === ApplicationTemplateIdTypes.AGENT_APPLICATION);
         },
         showDeleteButton: (application: ApplicationInterface): boolean => {
             let isEnterpriseLoginMgt: string;
@@ -396,8 +398,10 @@ export const applicationConfig: ApplicationConfig = {
                     });
             }
 
-            // Hide delete button for Enterprise IDP Login Applications.
-            return !(application.name.startsWith("WSO2_LOGIN_FOR_") || isEnterpriseLoginMgt === "true");
+            // Hide delete button for Enterprise IDP Login Applications and Agent Applications.
+            return !(application.name.startsWith("WSO2_LOGIN_FOR_")
+                || isEnterpriseLoginMgt === "true"
+                || application?.templateId === ApplicationTemplateIdTypes.AGENT_APPLICATION);
         },
         showProvisioningSettings: true
     },
