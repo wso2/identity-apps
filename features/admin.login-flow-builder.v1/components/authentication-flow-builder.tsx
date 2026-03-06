@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -63,6 +63,7 @@ import {
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 import { AuthenticationFlowBuilderModes, AuthenticationFlowBuilderModesInterface } from "../models/flow-builder";
 import "./sign-in-methods.scss";
+import VisualEditorNotificationProvider from "../providers/visual-editor-notification-provider";
 
 /**
  * Proptypes for the Authentication flow builder component.
@@ -573,14 +574,16 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                             data-componentid={ `${componentId}-visual-builder` }
                         >
                             <ReactFlowProvider>
-                                <AuthenticationFlowVisualEditor
-                                    onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
-                                    className="visual-editor"
-                                    onUpdate={ (
-                                        sequence: AuthenticationSequenceInterface,
-                                        isRevertFlow?: boolean
-                                    ) => handleOnUpdate(sequence, isRevertFlow) }
-                                />
+                                <VisualEditorNotificationProvider>
+                                    <AuthenticationFlowVisualEditor
+                                        onIDPCreateWizardTrigger={ onIDPCreateWizardTrigger }
+                                        className="visual-editor"
+                                        onUpdate={ (
+                                            sequence: AuthenticationSequenceInterface,
+                                            isRevertFlow?: boolean
+                                        ) => handleOnUpdate(sequence, isRevertFlow) }
+                                    />
+                                </VisualEditorNotificationProvider>
                             </ReactFlowProvider>
                             { isAdaptiveAuthAvailable && (
                                 <ScriptBasedFlowSwitch readOnly={ isPremiumOrReadOnly || isScriptUpdateReadOnly } />

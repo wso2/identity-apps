@@ -87,6 +87,10 @@ export interface pagesNS {
         title: string;
         subTitle: string;
     };
+    issuerUsageScope: {
+        title: string;
+        subTitle: string;
+    };
     organizations: {
         title: string;
         subTitle: string;

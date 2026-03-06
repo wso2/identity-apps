@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,7 +25,7 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form, FormPropsInterface } from "@wso2is/form";
+import { Field, Form } from "@wso2is/form";
 import { DangerZone, DangerZoneGroup, EmphasizedSegment, PageLayout } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
@@ -58,7 +58,6 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
     const { [ "data-componentid" ]: componentId } = props;
 
     const pageContextRef: MutableRefObject<any> = useRef(null);
-    const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
 
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const hasConnectorUpdatePermission: boolean = useRequiredScopes(featureConfig.governanceConnectors.scopes?.update);
@@ -91,14 +90,15 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
             return;
         }
 
-        // Validate if the email provider config exists.
-        if (originalSessionManagementConfig.idleSessionTimeoutPeriod
-            && originalSessionManagementConfig.rememberMePeriod) {
-            setSessionManagementConfig({
-                idleSessionTimeout: parseInt(originalSessionManagementConfig.idleSessionTimeoutPeriod),
-                rememberMePeriod: parseInt(originalSessionManagementConfig.rememberMePeriod)
-            });
-        }
+        setSessionManagementConfig({
+            enableMaximumSessionTimeout:
+                originalSessionManagementConfig.enableMaximumSessionTimeoutPeriod ?? false,
+            idleSessionTimeout: parseInt(originalSessionManagementConfig.idleSessionTimeoutPeriod),
+            maximumSessionTimeout: parseInt(originalSessionManagementConfig.maximumSessionTimeoutPeriod),
+            preserveCurrentSessionAtPasswordUpdate:
+                originalSessionManagementConfig.preserveCurrentSessionAtPasswordUpdate ?? false,
+            rememberMePeriod: parseInt(originalSessionManagementConfig.rememberMePeriod)
+        });
     }, [ originalSessionManagementConfig ]);
 
     /**
@@ -181,6 +181,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
     ): SessionManagementConfigFormErrorValidationsInterface => {
         const error: SessionManagementConfigFormErrorValidationsInterface = {
             idleSessionTimeout: undefined,
+            maximumSessionTimeout: undefined,
             rememberMePeriod: undefined
         };
 
@@ -198,6 +199,12 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
             );
         }
 
+        if (values?.maximumSessionTimeout && (!FormValidation.isInteger(values.maximumSessionTimeout as number)
+            || values.maximumSessionTimeout as number <= 0)) {
+            error.maximumSessionTimeout = t(
+                "sessionManagement:form.validation.maximumSessionTimeout"
+            );
+        }
 
         return error;
     };
@@ -211,12 +218,27 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
             {
                 "operation": SessionManagementConstants.REPLACE_OPERATION,
                 "path": SessionManagementConstants.IDLE_SESSION_TIMEOUT_PATH,
-                "value": values.idleSessionTimeout.toString()
+                "value": values.idleSessionTimeout?.toString()
             },
             {
                 "operation": SessionManagementConstants.REPLACE_OPERATION,
                 "path": SessionManagementConstants.REMEMBER_ME_PERIOD_PATH,
                 "value": values.rememberMePeriod.toString()
+            },
+            {
+                "operation": SessionManagementConstants.REPLACE_OPERATION,
+                "path": SessionManagementConstants.ENABLE_MAXIMUM_SESSION_TIMEOUT_PATH,
+                "value": values.enableMaximumSessionTimeout ? "true" : "false"
+            },
+            {
+                "operation": SessionManagementConstants.REPLACE_OPERATION,
+                "path": SessionManagementConstants.MAXIMUM_SESSION_TIMEOUT_PATH,
+                "value": values.maximumSessionTimeout?.toString()
+            },
+            {
+                "operation": SessionManagementConstants.REPLACE_OPERATION,
+                "path": SessionManagementConstants.PRESERVE_CURRENT_SESSION_AT_PASSWORD_UPDATE_PATH,
+                "value": values.preserveCurrentSessionAtPasswordUpdate ? "true" : "false"
             }
         ];
 
@@ -243,6 +265,18 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
             {
                 "operation": SessionManagementConstants.REMOVE_OPERATION,
                 "path": SessionManagementConstants.REMEMBER_ME_PERIOD_PATH
+            },
+            {
+                "operation": SessionManagementConstants.REMOVE_OPERATION,
+                "path": SessionManagementConstants.ENABLE_MAXIMUM_SESSION_TIMEOUT_PATH
+            },
+            {
+                "operation": SessionManagementConstants.REMOVE_OPERATION,
+                "path": SessionManagementConstants.MAXIMUM_SESSION_TIMEOUT_PATH
+            },
+            {
+                "operation": SessionManagementConstants.REMOVE_OPERATION,
+                "path": SessionManagementConstants.PRESERVE_CURRENT_SESSION_AT_PASSWORD_UPDATE_PATH
             }
         ];
 
@@ -327,7 +361,6 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                 onSubmit={ handleSubmit }
                                                 initialValues={ sessionManagementConfig }
                                                 enableReinitialize={ true }
-                                                ref={ formRef }
                                                 noValidate={ true }
                                                 validate={ validateForm }
                                             >
@@ -382,6 +415,76 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                     <input />
                                                     <Label>{ t("common:minutes") }</Label>
                                                 </Field.Input>
+                                                <Divider />
+                                                <Field.Checkbox
+                                                    ariaLabel="Enable Maximum Session Timeout"
+                                                    name="enableMaximumSessionTimeout"
+                                                    label={
+                                                        t("sessionManagement:form.enableMaximumSessionTimeout.label")
+                                                    }
+                                                    hint={
+                                                        t("sessionManagement:form.enableMaximumSessionTimeout.hint")
+                                                    }
+                                                    initialValue={
+                                                        sessionManagementConfig?.enableMaximumSessionTimeout
+                                                    }
+                                                    readOnly={ isSubOrganization() || !hasConnectorUpdatePermission }
+                                                    listen={ (value: boolean) => {
+                                                        setSessionManagementConfig({
+                                                            ...sessionManagementConfig,
+                                                            enableMaximumSessionTimeout: value
+                                                        });
+                                                    } }
+                                                    width={ 16 }
+                                                    data-componentid={
+                                                        `${ componentId }-enable-maximum-session-timeout`
+                                                    }
+                                                />
+                                                <Field.Input
+                                                    min={ SessionManagementConstants
+                                                        .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
+                                                    ariaLabel="Maximum Session Timeout Period Field"
+                                                    inputType="number"
+                                                    name="maximumSessionTimeout"
+                                                    label={ t("sessionManagement:form.maximumSessionTimeout.label") }
+                                                    placeholder={
+                                                        t("sessionManagement:form.maximumSessionTimeout.placeholder")
+                                                    }
+                                                    hint={ t("sessionManagement:form.maximumSessionTimeout.hint") }
+                                                    required={ sessionManagementConfig?.enableMaximumSessionTimeout }
+                                                    value={ sessionManagementConfig?.maximumSessionTimeout }
+                                                    readOnly={ isSubOrganization()
+                                                        || !hasConnectorUpdatePermission
+                                                        || !sessionManagementConfig?.enableMaximumSessionTimeout }
+                                                    disabled={ !sessionManagementConfig?.enableMaximumSessionTimeout }
+                                                    maxLength={ null }
+                                                    minLength={ SessionManagementConstants
+                                                        .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
+                                                    width="100%"
+                                                    data-componentid={
+                                                        `${ componentId }-maximum-session-timeout`
+                                                    }
+                                                    labelPosition="right"
+                                                >
+                                                    <input />
+                                                    <Label>{ t("common:minutes") }</Label>
+                                                </Field.Input>
+                                                <Divider />
+                                                <Field.Checkbox
+                                                    name="preserveCurrentSessionAtPasswordUpdate"
+                                                    label={ t("sessionManagement:form." +
+                                                        "preserveCurrentSessionAtPasswordUpdate.label") }
+                                                    hint={ t("sessionManagement:form." +
+                                                        "preserveCurrentSessionAtPasswordUpdate.hint") }
+                                                    initialValue={
+                                                        sessionManagementConfig?.preserveCurrentSessionAtPasswordUpdate
+                                                    }
+                                                    readOnly={ isSubOrganization() || !hasConnectorUpdatePermission }
+                                                    width={ 16 }
+                                                    data-componentid={
+                                                        `${ componentId }-preserve-current-session-at-password-update` }
+                                                    ariaLabel="Preserve Current Session at Password Update Checkbox"
+                                                />
                                                 {
                                                     !isSubOrganization() && hasConnectorUpdatePermission && (
                                                         <Field.Button
@@ -393,9 +496,6 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                                 `${ componentId }-update-button`
                                                             }
                                                             loading={ isSubmitting }
-                                                            onClick={ () => {
-                                                                formRef?.current?.triggerSubmit();
-                                                            } }
                                                             ariaLabel="Session management form update button"
                                                             label={ t("common:update") }
                                                         />

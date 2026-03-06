@@ -613,8 +613,10 @@ export const applications: ApplicationsNS = {
                 allRolesSharingMessage: "All roles of the application will be shared with the organization.",
                 allRolesAndOrgsSharingMessage: "All roles of the application will be shared with all the organizations.",
                 allRolesAndOrgsNotSharingMessage: "No roles will be shared with any organization.",
+                allApplicationRolesSharingMessage: "All roles of the application will be shared and assigned.",
                 doNotShareRolesWithAllOrgs: "Do not share roles with all organizations.",
                 manageRoleSharing: "Manage role sharing",
+                shareApplicationWithFutureChildOrgs: "Share application and roles with future child organizations",
                 viewRoleSharing: "View shared roles",
                 noSharedOrgs: "This application is not shared with any organizations.",
                 noRolesAvailableForOrg: "No roles available for the selected organization.",
@@ -1376,6 +1378,9 @@ export const applications: ApplicationsNS = {
             sections: {
                 applicationNativeAuthentication: {
                     heading: "App-Native Authentication",
+                    alerts: {
+                        apiAuthCompatibilityWarning: "Please note that some authenticators configured in the authentication flow do not support app-native authentication."
+                    },
                     fields: {
                         enableAPIBasedAuthentication: {
                             hint: "Select to authorize application to perform browserless, in-app authentication via app-native authentication API.",
@@ -1754,6 +1759,31 @@ export const applications: ApplicationsNS = {
                             }
                         }
                     }
+                },
+                ciba: {
+                    authReqExpiryTime: {
+                        hint: "Specify the expiry time for the CIBA authentication request in seconds.",
+                        label: "CIBA Authentication Request Expiry Time",
+                        placeholder: "Enter expiry time",
+                        validations: {
+                            empty: "This is a required field.",
+                            invalid: "Please enter a valid positive integer."
+                        }
+                    },
+                    notificationChannels: {
+                        clientChannelLabel: "Client managed",
+                        externalHint: "The client application delivers the " +
+                            "authentication request to the user. When configured " +
+                            "alongside server channels, the client must include " +
+                            "notification_channel=external in the CIBA request " +
+                            "to use this channel; otherwise {{productName}} " +
+                            "defaults to the server channels.",
+                        hint: "Configure which notification methods this " +
+                            "application supports.",
+                        label: "Notification Delivery",
+                        serverChannelsLabel: "Server managed"
+                    },
+                    heading: "Client Initiated Backchannel Authentication"
                 }
             },
             messages: {
@@ -2186,6 +2216,20 @@ export const applications: ApplicationsNS = {
                             hint: "Select the allowed hybrid flow response type."
                         }
                     }
+                },
+                applicationTokenIssuer: {
+                    heading: "Application Token Issuer",
+                    fields: {
+                        tokenIssuer: {
+                            label: "Token Issuer",
+                            placeholder: "Select a token issuer for the application",
+                            hint: "Select the token issuer for this application. " +
+                                "This token issuer will be used in the access tokens " +
+                                "issued for this application.",
+                            loading: "Loading token issuers...",
+                            organization: "Organization"
+                        }
+                    }
                 }
             }
         },
@@ -2587,10 +2631,10 @@ export const applications: ApplicationsNS = {
                     }
                 },
                 idp: {
-                    label: "Identity Provider",
-                    placeholder: "Select identity provider",
+                    label: "Provisioning Connection",
+                    placeholder: "Select provisioning connection",
                     validations: {
-                        empty: "It is mandatory to select an IDP."
+                        empty: "It is mandatory to select a provisioning connection."
                     }
                 },
                 jit: {
@@ -3498,10 +3542,10 @@ export const applications: ApplicationsNS = {
                 form: {
                     fields: {
                         connection: {
-                            label: "Connection",
-                            placeholder: "Select connection",
+                            label: "Provisioning Connection",
+                            placeholder: "Select provisioning connection",
                             validations: {
-                                empty: "It is mandatory to select connection."
+                                empty: "It is mandatory to select a provisioning connection."
                             }
                         }
                     }

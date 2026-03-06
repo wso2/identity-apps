@@ -1,5 +1,51 @@
 # @wso2is/identity-apps-core
 
+## 3.4.3
+
+### Patch Changes
+
+- [#9690](https://github.com/wso2/identity-apps/pull/9690) [`1f34ebf16f5b05fc1fc781ac3acda62e573b2575`](https://github.com/wso2/identity-apps/commit/1f34ebf16f5b05fc1fc781ac3acda62e573b2575) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Improve discovery pages to use for non federated authenticators
+
+## 3.4.2
+
+### Patch Changes
+
+- [#9696](https://github.com/wso2/identity-apps/pull/9696) [`fba762a069005000d96fceee24bb8830a7635766`](https://github.com/wso2/identity-apps/commit/fba762a069005000d96fceee24bb8830a7635766) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for an invalid tenant domain error page within the authentication portal
+
+## 3.4.1
+
+### Patch Changes
+
+- [#9672](https://github.com/wso2/identity-apps/pull/9672) [`d945a23adfaab4ab85915cc2265781c26ff77ec4`](https://github.com/wso2/identity-apps/commit/d945a23adfaab4ab85915cc2265781c26ff77ec4) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Send IP and UA information through recovery API clients.
+
+## 3.4.0
+
+### Minor Changes
+
+- [#9610](https://github.com/wso2/identity-apps/pull/9610) [`7ee7c85fe57835628c6f9a46490bd7898617f65b`](https://github.com/wso2/identity-apps/commit/7ee7c85fe57835628c6f9a46490bd7898617f65b) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Display TOTP masked secret
+
+### Patch Changes
+
+- [#9656](https://github.com/wso2/identity-apps/pull/9656) [`7e1acff6cead6e9d27ab6d800c33d4f5170cd245`](https://github.com/wso2/identity-apps/commit/7e1acff6cead6e9d27ab6d800c33d4f5170cd245) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix application access URL retrieval issue
+
+- Updated dependencies [[`7ee7c85fe57835628c6f9a46490bd7898617f65b`](https://github.com/wso2/identity-apps/commit/7ee7c85fe57835628c6f9a46490bd7898617f65b)]:
+  - @wso2is/theme@2.9.3
+
+## 3.3.38
+
+### Patch Changes
+
+- [#9650](https://github.com/wso2/identity-apps/pull/9650) [`59aac70ce338cd97cb82b6581637f0c481ca185a`](https://github.com/wso2/identity-apps/commit/59aac70ce338cd97cb82b6581637f0c481ca185a) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Improve permission resolving for console roles
+
+## 3.3.37
+
+### Patch Changes
+
+- [#9594](https://github.com/wso2/identity-apps/pull/9594) [`4ccde0b53f0d28c2645429562989d20f7958de55`](https://github.com/wso2/identity-apps/commit/4ccde0b53f0d28c2645429562989d20f7958de55) Thanks [@savindi7](https://github.com/savindi7)! - Add the user onboarding console feature and related improvements.
+
+- Updated dependencies [[`4ccde0b53f0d28c2645429562989d20f7958de55`](https://github.com/wso2/identity-apps/commit/4ccde0b53f0d28c2645429562989d20f7958de55)]:
+  - @wso2is/theme@2.9.1
+
 ## 3.3.36
 
 ### Patch Changes

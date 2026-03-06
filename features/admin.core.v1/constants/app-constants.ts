@@ -263,6 +263,7 @@ export class AppConstants {
     public static getPaths(): Map<string, string> {
         const paths: Map<string, string> = new Map<string, string>([
             [ "GETTING_STARTED", `${ AppConstants.getDeveloperViewBasePath() }/getting-started` ],
+            [ "ONBOARDING", `${ AppConstants.getFullScreenViewBasePath() }/onboarding` ],
             [ "ADMIN_OVERVIEW", `${ AppConstants.getAdminViewBasePath() }/overview` ],
             [ "ADMIN_ADVISORY_BANNER", `${ AppConstants.getAdminViewBasePath() }/admin-advisory` ],
             [ "ADMIN_ADVISORY_BANNER_EDIT", `${ AppConstants.getAdminViewBasePath() }/server/admin-advisory` ],
@@ -280,6 +281,7 @@ export class AppConstants {
             [ "APPLICATION_ROLES", `${ AppConstants.getAdminViewBasePath() }/application-roles` ],
             [ "APPLICATION_ROLES_EDIT",
                 `${ AppConstants.getAdminViewBasePath() }/application-roles/:applicationId/:roleId` ],
+            [ "APPLICATION_DATA", `${ AppConstants.getAdminViewBasePath() }/application-data` ],
             [ "APPLICATION_ROLES_SUB", `${ AppConstants.getAdminViewBasePath() }/roles/application-roles` ],
             [ "APPLICATION_ROLES_EDIT_SUB",
                 `${ AppConstants.getAdminViewBasePath() }/roles/application-roles/:applicationId/:roleId` ],
@@ -368,6 +370,13 @@ export class AppConstants {
             [ "GOVERNANCE_CONNECTORS", `${AppConstants.getAdminViewBasePath()}/governance-connectors/:id` ],
             [ "MULTI_ATTRIBUTE_LOGIN", `${AppConstants.getAdminViewBasePath()}/multi-attribute-login` ],
             [ "UNAUTHORIZED", `${AppConstants.getMainViewBasePath()}/unauthorized` ],
+            [ "PROFILES", `${AppConstants.getMainViewBasePath()}/profiles` ],
+            [ "PROFILE", `${AppConstants.getMainViewBasePath()}/profiles/:id` ],
+            [ "UNIFICATION_RULES", `${AppConstants.getMainViewBasePath()}/unification-rules` ],
+            [ "UNIFICATION_RULE_CREATE", `${AppConstants.getMainViewBasePath()}/unification-rules/create` ],
+            [ "PROFILE_ATTRIBUTES", `${AppConstants.getMainViewBasePath()}/profile-attributes` ],
+            [ "PROFILE_ATTRIBUTE", `${AppConstants.getMainViewBasePath()}/profile-attributes/:scope/:id` ],
+            [ "PROFILE_ATTRIBUTE_CREATE", `${AppConstants.getMainViewBasePath()}/profile-attributes/create` ],
             [ "USERS", `${AppConstants.getAdminViewBasePath()}/users` ],
             [ "USER_EDIT", `${AppConstants.getAdminViewBasePath()}/users/:id` ],
             [ "USERSTORES", `${AppConstants.getAdminViewBasePath()}/user-stores` ],
@@ -426,6 +435,8 @@ export class AppConstants {
             [ "OUTBOUND_PROVISIONING_SETTINGS",
                 `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ],
             [ "IMPERSONATION", `${AppConstants.getAdminViewBasePath()}/login-and-registration/impersonation` ],
+            [ "ISSUER_USAGE_SCOPE",
+                `${AppConstants.getAdminViewBasePath()}/login-and-registration/issuer-usage-scope` ],
             [ "ACTIONS",
                 `${AppConstants.getAdminViewBasePath()}/actions` ],
             [ "WEBHOOKS",
@@ -532,6 +543,7 @@ export class AppConstants {
         "oidcScopes": "v0.0.0",
         "organizations": "v0.0.0",
         "password-recovery": "v1.0.0",
+        "residentOutboundProvisioning": "v0.0.0",
         "roles": "v0.0.0",
         "self-registration-connector": "v1.0.0",
         "smsTemplates": "v0.0.0",
@@ -589,6 +601,21 @@ export class AppConstants {
      * Route id of the verifiable credentials page.
      */
     public static readonly VC_TEMPLATES_ROUTE: string = "verifiable-credentials";
+
+    /**
+     * Route id of the customer data service page.
+     */
+    public static readonly CDS_PROFILES_ROUTE_ID: string = "customerDataProfiles";
+
+    /**
+     * Route id of the customer data service unification rule page.
+     */
+    public static readonly CDS_PROFILE_UNIFICATION_RULES_ROUTE_ID: string = "customerDataUnificationRules";
+
+    /**
+    * Route id of the customer data service profile attributes page.
+    */
+    public static readonly CDS_PROFILE_ATTRIBUTES_ROUTE_ID: string = "customerDataProfileAttributes";
 
     /**
      * Name of the root node

@@ -1000,8 +1000,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                     data-componentid={ `${ componentId }-next-button` }
                                     floated="right"
                                     onClick={ navigateToNext }
-                                    loading={ isBasicDetailsLoading }
-                                    disabled = { isBasicDetailsLoading }
+                                    loading={ isBasicDetailsLoading  || isSubmitting }
+                                    disabled = { isBasicDetailsLoading || isSubmitting }
                                 >
                                     { currentWizardStep === wizardSteps.length - 2
                                         ? t("user:modals.addUserWizard.buttons.saveAndContinue")

@@ -1452,6 +1452,14 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                                 ) }
                                                                 clearAdvancedRoleSharing={ clearAdvancedRoleSharing }
                                                                 disableOrgSelection={ true }
+                                                                allRolesSharingMessage={
+                                                                    t("applications:edit.sections.sharedAccess." +
+                                                                    "allApplicationRolesSharingMessage")
+                                                                }
+                                                                shareWithFutureChildOrgsLabel={
+                                                                    t("applications:edit.sections.sharedAccess." +
+                                                                    "shareApplicationWithFutureChildOrgs")
+                                                                }
                                                             />
                                                         </div>
                                                     )
@@ -1537,6 +1545,14 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                         setShouldShareWithFutureChildOrgsMap
                                                     }
                                                     disableOrgSelection={ false }
+                                                    allRolesSharingMessage={
+                                                        t("applications:edit.sections.sharedAccess." +
+                                                        "allApplicationRolesSharingMessage")
+                                                    }
+                                                    shareWithFutureChildOrgsLabel={
+                                                        t("applications:edit.sections.sharedAccess." +
+                                                        "shareApplicationWithFutureChildOrgs")
+                                                    }
                                                 />
                                             </Grid>
                                         </motion.div>

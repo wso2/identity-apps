@@ -125,7 +125,7 @@ export const PermissionAPIResource: FunctionComponent<PermissionAPIResourceInter
      */
     const deletePermission = (): void => {
         handleDeleteAPIScope(
-            deletingAPIResourcePermission.name,
+            deletingAPIResourcePermission.id,
             (): void => setDeletingAPIResourcePermission(null)
         );
     };

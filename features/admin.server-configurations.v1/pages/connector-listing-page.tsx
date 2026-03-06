@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,13 +17,16 @@
  */
 
 import Typography from "@oxygen-ui/react/Typography";
-import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
+import useEnableLegacyFlows from "@wso2is/admin.core.v1/hooks/use-enable-legacy-flows";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import { FeatureConfigInterface  } from "@wso2is/admin.core.v1/models/config";
-import { AppState, store  } from "@wso2is/admin.core.v1/store";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -36,6 +39,10 @@ import { Dispatch } from "redux";
 import { Placeholder, Ref } from "semantic-ui-react";
 import { getConnectorCategories, getConnectorCategory } from "../api/governance-connectors";
 import GovernanceConnectorCategoriesGrid from "../components/governance-connector-grid";
+import {
+    GovernanceConnectorConstants,
+    GovernanceConnectorFeatureDictionaryKeys
+} from "../constants/governance-connector-constants";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorOverrideConfig,
@@ -81,8 +88,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     const { UIConfig } = useUIConfig();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const isLegacyFlowsEnabled: boolean = useSelector(
-        (state: AppState) => state.config.ui.flowExecution.enableLegacyFlows);
+    const isLegacyFlowsEnabled: boolean = useEnableLegacyFlows();
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPasswordInputValidationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isPasswordInputValidationEnabled);
@@ -94,12 +100,20 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     const hasResidentOutboundProvisioningFeaturePermission: boolean = useRequiredScopes(
         featureConfig?.residentOutboundProvisioning?.scopes?.feature
     );
+    const isSubOrgResidentOutboundProvisioningEnabled: boolean = isFeatureEnabled(
+        featureConfig?.residentOutboundProvisioning,
+        GovernanceConnectorConstants.featureDictionary[
+            GovernanceConnectorFeatureDictionaryKeys.SUB_ORG_RESIDENT_OUTBOUND_PROVISIONING
+        ]
+    );
     const hasInternalNotificationSendingReadPermission: boolean = useRequiredScopes(
         [
             ...featureConfig?.internalNotificationSending?.scopes?.feature ?? [],
             ...featureConfig?.internalNotificationSending?.scopes?.read ?? []
         ]
     );
+    const sessionManagementFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["LOGIN_AND_REGISTRATION_SESSION_MANAGEMENT"]);
 
     const predefinedCategories: any = useMemo(() => {
         const originalConnectors: Array<any> = GovernanceConnectorUtils.getCombinedPredefinedConnectorCategories();
@@ -107,7 +121,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         const refinedConnectorCategories: Array<any> = [];
 
         const isResidentOutboundProvisioningEnabled: boolean = featureConfig?.residentOutboundProvisioning?.enabled
-            && hasResidentOutboundProvisioningFeaturePermission;
+            && hasResidentOutboundProvisioningFeaturePermission
+            && (isSubOrganization() ? isSubOrgResidentOutboundProvisioningEnabled : true);
 
         const isConfiguringInternalNotificationSendingEnabled: boolean = featureConfig?.
             internalNotificationSending?.enabled
@@ -130,11 +145,17 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 }
 
                 if (isSubOrganization() && (connector.id === ServerConfigurationsConstants.SIFT_CONNECTOR_ID ||
-                    connector.id === ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY)) {
+                    connector.id === ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY ||
+                    connector.id === ServerConfigurationsConstants.ISSUER_USAGE_SCOPE)) {
                     return false;
                 }
 
                 if (!isLegacyFlowsEnabled && LEGACY_ONLY_CONNECTOR_IDS.includes(connector.id)) {
+                    return false;
+                }
+
+                if (connector.id === ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR_ID
+                    && sessionManagementFeatureStatus !== FeatureStatus.ENABLED) {
                     return false;
                 }
 
@@ -145,7 +166,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         }
 
         return refinedConnectorCategories;
-    }, [ featureConfig, UIConfig, allowedScopes ]);
+    }, [ featureConfig, UIConfig, allowedScopes, isSubOrgResidentOutboundProvisioningEnabled ]);
 
     const [
         dynamicConnectorCategories,

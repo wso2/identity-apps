@@ -341,6 +341,16 @@ export const governanceConnectors: governanceConnectorsNS = {
                         }
                     },
                     notifications: {
+                        configurationUpdate: {
+                            error: {
+                                description: "An error occurred while updating the Sift configuration.",
+                                message: "Update Error"
+                            },
+                            success: {
+                                description: "Successfully updated the Sift configuration.",
+                                message: "Update Successful"
+                            }
+                        },
                         eventPropertiesUpdate: {
                             error: {
                                 description: "An error occurred while updating the event publishing configurations.",

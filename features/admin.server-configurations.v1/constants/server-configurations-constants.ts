@@ -469,6 +469,7 @@ export class ServerConfigurationsConstants {
     public static readonly ORGANIZATION_SETTINGS_CATEGORY_ID: string = "organization-settings";
     public static readonly EMAIL_DOMAIN_DISCOVERY: string = "ZW1haWwtZG9tYWluLWRpc2NvdmVyeQ==";
     public static readonly IMPERSONATION: string = "impersonation";
+    public static readonly ISSUER_USAGE_SCOPE: string = "issuer-usage-scope";
 
     /**
      * Login Security Category Constants.

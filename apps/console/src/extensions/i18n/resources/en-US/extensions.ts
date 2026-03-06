@@ -419,7 +419,7 @@ export const extensions: Extensions = {
                         resourceText: {
                             apiResource: "API resource",
                             genericResource: "resource",
-                            vcResource: "Verifiable Credential"
+                            vcResource: "verifiable credential"
                         },
                         sections: {
                             apiSubscriptions: {
@@ -4019,7 +4019,7 @@ export const extensions: Extensions = {
                 userManagement: "Identity Management",
                 verifiableCredentials: "Verifiable Credentials",
                 workflows: "Workflows",
-
+                customerDataService : "Customer Data",
                 organizationSettings: "Organization Settings"
             }
         }

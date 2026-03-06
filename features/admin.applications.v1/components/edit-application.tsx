@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -73,7 +73,10 @@ import { ProvisioningSettings } from "./settings/provisioning/provisioning-setti
 import { SharedAccess } from "./settings/shared-access";
 import { SignOnMethods } from "./settings/sign-on-methods/sign-on-methods";
 import { disableApplication, getInboundProtocolConfig } from "../api/application";
-import { ApplicationManagementConstants } from "../constants/application-management";
+import {
+    ApplicationFeatureDictionaryKeys,
+    ApplicationManagementConstants
+} from "../constants/application-management";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
@@ -236,6 +239,16 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         OrganizationManagementConstants.FEATURE_DICTIONARY.get(
             OrganizationFeatureDictionaryKeys.OrganizationApplicationAdvancedSettings
         ));
+
+    const isApplicationEditProvisioningSettingsEnabled: boolean = isFeatureEnabled(featureConfig?.applications,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"));
+
+    const isSubOrgApplicationOutboundProvisioningEnabled: boolean = isFeatureEnabled(featureConfig?.applications,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get(
+            ApplicationFeatureDictionaryKeys.SubOrgApplicationOutboundProvisioning));
+
+    const shouldShowProvisioningSettingsTab: boolean = isApplicationEditProvisioningSettingsEnabled && (
+        isSubOrganization() ? isSubOrgApplicationOutboundProvisioningEnabled : true );
 
     /**
      * Called when an application updates.
@@ -654,6 +667,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             <AdvancedSettings
                 appId={ application.id }
                 advancedConfigurations={ application.advancedConfigurations }
+                authenticationSequence={ application.authenticationSequence }
                 onUpdate={ handleApplicationUpdate }
                 featureConfig={ featureConfig }
                 readOnly={ readOnly }
@@ -664,7 +678,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     );
 
     const ProvisioningSettingsTabPane = (): ReactElement => (
-        applicationConfig.editApplication.showProvisioningSettings
+        shouldShowProvisioningSettingsTab
             ? (
                 < ResourceTab.Pane controlledSegmentation>
                     <ProvisioningSettings
@@ -877,10 +891,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                       render: SignOnMethodsTabPane
                   });
             }
-            if (applicationConfig.editApplication.showProvisioningSettings
-                && isFeatureEnabled(featureConfig?.applications,
-                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))
-                && !isSubOrganization()
+            if (shouldShowProvisioningSettingsTab
                 && !isM2MApplication
                 && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
                     application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
@@ -1003,7 +1014,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 menuItem: t("applications:edit.sections.signOnMethod.tabName"),
                 render: SignOnMethodsTabPane
             },
-            applicationConfig.editApplication.showProvisioningSettings && {
+            shouldShowProvisioningSettingsTab && {
                 componentId: "provisioning",
                 "data-tabid": ApplicationTabIDs.PROVISIONING,
                 menuItem: t("applications:edit.sections.provisioning.tabName"),

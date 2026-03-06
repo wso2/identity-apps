@@ -173,8 +173,7 @@ const ProfileFieldFormRenderer: FunctionComponent<
     // Render single valued email address field.
     if (
         [
-            SCIMExtensionConfigs.scimUserSchema.emails,
-            SCIMExtensionConfigs.scimUserSchema.emailsHome
+            SCIMExtensionConfigs.scimUserSchema.emails
         ].includes(fieldSchema.schemaUri)
     ) {
         // Extract the pending email address.

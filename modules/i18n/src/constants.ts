@@ -102,6 +102,11 @@ export class I18nModuleConstants {
     public static readonly IMPERSONATION_NAMESPACE: string = "impersonation";
 
     /**
+     * Issuer Usage Scope namespace.
+     */
+    public static readonly ISSUER_USAGE_SCOPE_NAMESPACE: string = "issuerUsageScope";
+
+    /**
      * transferList namespace.
      */
     public static readonly TRANSFER_LIST_NAMESPACE: string = "transferList";
@@ -388,6 +393,11 @@ export class I18nModuleConstants {
      * Verifiable Credentials namespace.
      */
     public static readonly VERIFIABLE_CREDENTIALS_NAMESPACE: string = "verifiableCredentials";
+
+    /**
+     * Customer Data Service namespace.
+     */
+    public static readonly CUSTOMER_DATA_SERVICE_NAMESPACE: string = "customerDataService";
 
     /**
      * Constant representing the locale preference key.

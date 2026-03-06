@@ -159,6 +159,10 @@
     <script>
 
         var proxyContextPathGlobal = "<%= htmlWebpackPlugin.options.proxyContextPath %>";
+        var proxyContextPathConsole = window.__WSO2_IS_RUNTIME_CONFIG__ ? window.__WSO2_IS_RUNTIME_CONFIG__.server.proxyContextPath : null;
+        if (proxyContextPathConsole) {
+            proxyContextPathGlobal = proxyContextPathConsole;
+        }
         var isSuperTenantRequiredInUrl = "<%= htmlWebpackPlugin.options.isSuperTenantRequiredInUrl %>";
         var userAccessedPath = window.location.href;
         var applicationDomain = window.location.origin;

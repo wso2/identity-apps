@@ -30,6 +30,7 @@ import {
     getAskPasswordFlowBuilderResourceEndpoints
 } from "@wso2is/admin.ask-password-flow-builder.v1/configs/endpoints";
 import { getBrandingResourceEndpoints } from "@wso2is/admin.branding.v1/configs/endpoints";
+import { getCustomerDataServiceEndpoints } from "@wso2is/admin.cds.v1/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "@wso2is/admin.certificates.v1";
 import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpoints";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
@@ -78,6 +79,7 @@ import {
     SupportedLanguagesMeta,
     generateBackendPaths
 } from "@wso2is/i18n";
+import { getCompatibilitySettingsResourceEndpoints } from "./endpoints";
 import { getWorkflowRequestsResourceEndpoints } from "../../admin.workflow-requests.v1/types/workflow-requests";
 import { AppConstants } from "../constants/app-constants";
 import { I18nConstants } from "../constants/i18n-constants";
@@ -288,7 +290,8 @@ export class Config {
                 I18nConstants.AGENTS_NAMESPACE,
                 I18nConstants.FLOWS_NAMESPACE,
                 I18nConstants.COMMON_USERS_NAMESPACE,
-                I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE
+                I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE,
+                I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE
             ],
             preload: []
         };
@@ -364,6 +367,8 @@ export class Config {
             ...getAgentsResourceEndpoints(this.resolveServerHost()),
             ...getFlowBuilderCoreResourceEndpoints(this.resolveServerHost()),
             ...getVCTemplateEndpoints(this.resolveServerHost()),
+            ...getCustomerDataServiceEndpoints(this.resolveServerHost()),
+            ...getCompatibilitySettingsResourceEndpoints(this.resolveServerHost(true)),
             CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,
             asyncStatus: `${ this.resolveServerHost(false, true) }/api/server/v1/async-operations`,
             // TODO: Remove this endpoint and use ID token to get the details
@@ -423,12 +428,18 @@ export class Config {
                 defaultLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultLogoUrl,
                 defaultWhiteLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultWhiteLogoUrl
             },
+            enableBlockingOutboundProvisioning:
+                window["AppUtils"]?.getConfig()?.ui?.enableBlockingOutboundProvisioning,
             enableCustomEmailTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.enableCustomEmailTemplates,
+            enableCustomSmsTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.enableCustomSmsTemplates,
             enableEmailDomain: window[ "AppUtils" ]?.getConfig()?.ui?.enableEmailDomain ?? false,
             enableIdentityClaims: window[ "AppUtils" ]?.getConfig()?.ui?.enableIdentityClaims ?? true,
+            enableLegacyLocaleDropdown: window[ "AppUtils" ]?.getConfig()?.ui?.enableLegacyLocaleDropdown ?? false,
             enableLegacySessionBoundTokenBehaviour:
                 window[ "AppUtils" ]?.getConfig()?.ui?.enableLegacySessionBoundTokenBehaviour ?? true,
             enableOldUIForEmailProvider: window[ "AppUtils" ]?.getConfig()?.ui?.enableOldUIForEmailProvider,
+            enabledFeatureOverridesInConsoleRolePermissions:
+                window[ "AppUtils" ]?.getConfig()?.ui?.enabledFeatureOverridesInConsoleRolePermissions,
             features: window[ "AppUtils" ]?.getConfig()?.ui?.features,
             flowExecution: {
                 enableLegacyFlows: window[ "AppUtils" ]?.getConfig()?.ui?.flowExecution?.enableLegacyFlows ?? true
@@ -439,6 +450,8 @@ export class Config {
             hiddenApplicationTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenApplicationTemplates ?? [],
             hiddenAuthenticators: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenAuthenticators,
             hiddenConnectionTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenConnectionTemplates,
+            hiddenOutboundProvisioningConnectors:
+                window[ "AppUtils" ]?.getConfig()?.ui?.hiddenOutboundProvisioningConnectors ?? [],
             hiddenUserStores: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenUserStores,
             i18nConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.i18nConfigs,
             identityProviderTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.identityProviderTemplates,

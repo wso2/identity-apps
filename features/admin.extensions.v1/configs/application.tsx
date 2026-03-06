@@ -232,6 +232,7 @@ export const applicationConfig: ApplicationConfig = {
                     || application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
                     || application?.templateId === ApplicationTemplateIdTypes.VC_CLIENT_APPLICATION
                     || application?.templateId === ApplicationTemplateIdTypes.AGENT_APPLICATION
+                    || application?.templateId === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION
                 )
                 && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
             ) {
@@ -247,7 +248,7 @@ export const applicationConfig: ApplicationConfig = {
                                 "extensions:develop.applications.edit.sections.resourceAuthorization.title"
                             )
                             : (application?.originalTemplateId
-                                === ApplicationTemplateIdTypes.VC_CLIENT_APPLICATION)
+                                === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION)
                                 ? I18n.instance.t(
                                     "extensions:develop.applications.edit.sections.resourceAuthorization.title"
                                 )
@@ -279,6 +280,7 @@ export const applicationConfig: ApplicationConfig = {
                     || application?.templateId === SamlWebAppTemplate?.id
                     || application?.templateId === ApplicationTemplateIdTypes.VC_CLIENT_APPLICATION
                     || application?.templateId === ApplicationTemplateIdTypes.AGENT_APPLICATION)
+                    || application?.templateId === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION)
                 )
                 && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
             ) {
@@ -470,8 +472,13 @@ export const applicationConfig: ApplicationConfig = {
                 ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
                 ApplicationManagementConstants.SAML2_BEARER,
                 ApplicationManagementConstants.JWT_BEARER,
-                ApplicationManagementConstants.IWA_NTLM
+                ApplicationManagementConstants.IWA_NTLM,
+                ApplicationManagementConstants.CIBA_GRANT
             ],
+        [ "digital-wallet-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT
+        ],
         [ "m2m-application" ]: [
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
         ],
@@ -507,10 +514,6 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.PASSWORD,
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
-        ],
-        [ "vc-client-application" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT
         ]
     }),
     hiddenGrantTypes: [ ApplicationManagementConstants.ACCOUNT_SWITCH_GRANT ],

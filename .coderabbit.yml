@@ -1,0 +1,41 @@
+language: en-US
+tone_instructions: ""
+early_access: false
+enable_free_tier: true
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: false
+  sequence_diagrams: false
+  estimate_code_review_effort: false
+  auto_assign_reviewers: true
+  poem: false
+  auto_review:
+    ignore_usernames: ["wso2-jenkins-bot"]
+  pre_merge_checks:
+      custom_checks:
+        - name: "Changeset Required"
+          mode: error
+          instructions: |
+            Check if the CHANGED FILE LIST IN THE PULL REQUEST includes at least one changeset file.
+            
+            IMPORTANT: DO NOT consider the existing md files that are NOT part of the changed file list in the pull request being reviewed. ALWAYS consider ONLY the changed files in the pull request.
+
+            A changeset file is any file matching the pattern `.changeset/*.md` (excluding `.changeset/README.md`). It should contain all the changed packages in the pull request along with the version update type.
+
+            For the updates to "features", "modules" directories, make sure to also include `@wso2is/console`, `@wso2is/myaccount` or `@wso2is/identity-apps-core` in 
+            the changeset with a patch version update accordingly. If there are new packages in the pull request, they should be mentioned as a major version update in the changeset.
+            
+            **Pass Criteria:**
+            - At least one new or modified `.md` file exists in the `.changeset/` directory in the CHANGED FILE LIST of the pull request.
+            - The file should NOT be `.changeset/README.md`
+
+            **Fail Criteria:**
+            - No changeset files are present in the CHANGED FILE LIST of the pull request.
+            - Only `.changeset/README.md` is modified
+
+            If no changeset is found, the check should fail with a clear explanation that changesets are required for tracking changes.
+knowledge_base:
+  code_guidelines:
+    enabled: true
+    filePatterns: ["docs/write-code/CODE_QUALITY.md"]

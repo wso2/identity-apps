@@ -1,5 +1,23 @@
 # @wso2is/theme
 
+## 2.9.3
+
+### Patch Changes
+
+- [#9610](https://github.com/wso2/identity-apps/pull/9610) [`7ee7c85fe57835628c6f9a46490bd7898617f65b`](https://github.com/wso2/identity-apps/commit/7ee7c85fe57835628c6f9a46490bd7898617f65b) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Display TOTP masked secret
+
+## 2.9.2
+
+### Patch Changes
+
+- [#9640](https://github.com/wso2/identity-apps/pull/9640) [`d4bb11671903ab9df341e9685203065b764fec5c`](https://github.com/wso2/identity-apps/commit/d4bb11671903ab9df341e9685203065b764fec5c) Thanks [@savindi7](https://github.com/savindi7)! - Improvements to content and styling.
+
+## 2.9.1
+
+### Patch Changes
+
+- [#9594](https://github.com/wso2/identity-apps/pull/9594) [`4ccde0b53f0d28c2645429562989d20f7958de55`](https://github.com/wso2/identity-apps/commit/4ccde0b53f0d28c2645429562989d20f7958de55) Thanks [@savindi7](https://github.com/savindi7)! - Add the user onboarding console feature and related improvements.
+
 ## 2.9.0
 
 ### Minor Changes

@@ -328,10 +328,12 @@
             "defaultLogoUrl": "/libs/themes/default/assets/images/branding/logo.svg",
             "defaultWhiteLogoUrl": "/libs/themes/default/assets/images/branding/logo-inverted.svg"
         },
+        "enableBlockingOutboundProvisioning": true,
         "enableCustomEmailTemplates": true,
         "enableCustomSmsTemplates": true,
         "enableEmailDomain": false,
         "enableIdentityClaims": true,
+        "enableLegacyLocaleDropdown": false,
         "enableLegacySessionBoundTokenBehaviour": false,
         "enableOldUIForEmailProvider": false,
         "features": {
@@ -836,6 +838,108 @@
                     ]
                 }
             },
+            "customerDataProfileAttributes": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [
+                    {
+                        "feature": "customerDataProfileAttributes",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    "create": [
+                        "internal_cds_profile_schema_create"
+                    ],
+                    "delete": [
+                        "internal_cds_profile_schema_delete"
+                    ],
+                    "feature": ["console:customerData"],
+                    "read": [
+                        "internal_cds_profile_schema_view",
+                         "internal_cds_profile_view"
+                    ],
+                    "update": [
+                        "internal_cds_profile_schema_update",
+                         "internal_cds_profile_update"
+                    ]
+                }
+            },
+            "customerDataProfiles": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [
+                    {
+                        "feature": "customerDataProfiles",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    "create": [
+                        "internal_cds_profile_create"
+                    ],
+                    "delete": [
+                        "internal_cds_profile_delete"
+                    ],
+                    "feature": ["console:customerData"],
+                    "read": [
+                        "internal_cds_admin_config_view",
+                        "internal_cds_profile_view"
+                    ],
+                    "update": [
+                        "internal_cds_admin_config_update",
+                        "internal_cds_profile_update"
+                    ]
+                }
+            },
+            "customerDataService" : {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [
+                    {
+                        "feature": "customerDataService",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [
+                        "internal_cds_admin_config_view"
+                    ],
+                    "update": [
+                        "internal_cds_profile_update"
+                    ]
+                }
+            },
+            "customerDataUnificationRules": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [
+                    {
+                        "feature": "customerDataUnificationRules",
+                        "flag": ""
+                    }
+                ],
+                "scopes": {
+                    "create": [
+                        "internal_cds_unification_rule_create"
+                    ],
+                    "delete": [
+                        "internal_cds_unification_rule_delete"
+                    ],
+                    "feature": ["console:customerData"],
+                    "read": [
+                        "internal_cds_admin_config_view",
+                        "internal_cds_unification_rule_view"
+                    ],
+                    "update": [
+                        "internal_cds_admin_config_update",
+                        "internal_cds_unification_rule_update"
+                    ]
+                }
+            },
             "dynamicClientRegistration": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -1059,6 +1163,7 @@
                     ],
                     "read": [
                         "internal_claim_meta_view",
+                        "internal_group_mgt_view",
                         "internal_idp_view",
                         "internal_role_mgt_view",
                         "internal_userstore_view"
@@ -1245,6 +1350,26 @@
                     "update": [
                         "internal_oidc_scope_mgt_update"
                     ]
+                }
+            },
+            "onboarding": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                        "internal_application_mgt_create",
+                        "internal_branding_preference_update",
+                        "internal_governance_update"
+                    ],
+                    "delete": [],
+                    "feature": [
+                        "console:applications",
+                        "console:branding",
+                        "console:loginAndRegistration"
+                    ],
+                    "read": [],
+                    "update": []
                 }
             },
             "organizationDiscovery": {
@@ -1830,6 +1955,35 @@
                         "internal_session_delete",
                         "internal_user_mgt_update"
                     ]
+                },
+                "subFeatures": {
+                    "userSharingV2": {
+                        "disabledFeatures": [
+                        ],
+                        "enabled": true,
+                        "scopes": {
+                            "create": [
+                                    "internal_user_share"
+                            ],
+                            "delete": [
+                                    "internal_user_unshare"
+                            ],
+                            "read": [
+                                    "internal_governance_view",
+                                    "internal_group_mgt_view",
+                                    "internal_organization_view",
+                                    "internal_role_mgt_view",
+                                    "internal_user_mgt_list",
+                                    "internal_user_mgt_view",
+                                    "internal_user_shared_access_view",
+                                    "internal_userstore_view"
+
+                            ],
+                            "update": [
+                                    "internal_user_shared_access_update"
+                            ]
+                        }
+                    }
                 }
             },
             "verifiableCredentials": {
@@ -1965,6 +2119,8 @@
             "roleMapping": false
         },
         "listAllAttributeDialects": true,
+        "loginFlowCustomFirstFactorAuthenticators": [],
+        "loginFlowCustomSecondFactorAuthenticators": [],
         "multiTenancy": {
             "isTenantDomainDotExtensionMandatory": true,
             "tenantDomainIllegalCharactersRegex": ".*[^a-z0-9._-].*",
@@ -2001,6 +2157,7 @@
                 "oidcScopes": "v0.0.0",
                 "organizations": "v0.0.0",
                 "password-recovery": "v1.0.0",
+                "residentOutboundProvisioning": "v0.0.0",
                 "roles": "v0.0.0",
                 "self-registration-connector": "v1.0.0",
                 "smsTemplates": "v0.0.0",

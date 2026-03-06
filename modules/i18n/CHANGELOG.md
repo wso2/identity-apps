@@ -1,5 +1,92 @@
 # @wso2is/i18n
 
+## 2.34.7
+
+### Patch Changes
+
+- [#9568](https://github.com/wso2/identity-apps/pull/9568) [`6f37a9068f902c2020fdcd22d06caa0f76eecf90`](https://github.com/wso2/identity-apps/commit/6f37a9068f902c2020fdcd22d06caa0f76eecf90) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Introduce UI support for B2B User Sharing
+
+## 2.34.6
+
+### Patch Changes
+
+- [#9688](https://github.com/wso2/identity-apps/pull/9688) [`bbdc05651633f04305710158afc355ea6f16d8c0`](https://github.com/wso2/identity-apps/commit/bbdc05651633f04305710158afc355ea6f16d8c0) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Improve VC creation UX
+
+## 2.34.5
+
+### Patch Changes
+
+- [#9245](https://github.com/wso2/identity-apps/pull/9245) [`1d64e4c1973e5177906a6a15a0b85fd16d420e11`](https://github.com/wso2/identity-apps/commit/1d64e4c1973e5177906a6a15a0b85fd16d420e11) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update locale dropdown in email and SMS template edit page to display all available locales
+
+- Updated dependencies [[`1d64e4c1973e5177906a6a15a0b85fd16d420e11`](https://github.com/wso2/identity-apps/commit/1d64e4c1973e5177906a6a15a0b85fd16d420e11)]:
+  - @wso2is/core@2.12.8
+
+## 2.34.4
+
+### Patch Changes
+
+- [#9677](https://github.com/wso2/identity-apps/pull/9677) [`c3b6f90a9fab3ca270c0ae7b9b09798558fa0869`](https://github.com/wso2/identity-apps/commit/c3b6f90a9fab3ca270c0ae7b9b09798558fa0869) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Remove hardcoded ciba grant name
+
+## 2.34.3
+
+### Patch Changes
+
+- [#9609](https://github.com/wso2/identity-apps/pull/9609) [`462c16471302dd0b197ef8cad758146e10af2ab0`](https://github.com/wso2/identity-apps/commit/462c16471302dd0b197ef8cad758146e10af2ab0) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Add CIBA support for protocol configuration
+
+## 2.34.2
+
+### Patch Changes
+
+- [#9589](https://github.com/wso2/identity-apps/pull/9589) [`9c98499dd77a7ac7d4f30be22710342f4e000257`](https://github.com/wso2/identity-apps/commit/9c98499dd77a7ac7d4f30be22710342f4e000257) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Revamp outbound provisioning.
+
+## 2.34.1
+
+### Patch Changes
+
+- [#9645](https://github.com/wso2/identity-apps/pull/9645) [`d0761e466c899df3701b2f918c955e89f1dce1e3`](https://github.com/wso2/identity-apps/commit/d0761e466c899df3701b2f918c955e89f1dce1e3) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Enable issuer selection for sub organization applications
+
+## 2.34.0
+
+### Minor Changes
+
+- [#9610](https://github.com/wso2/identity-apps/pull/9610) [`7ee7c85fe57835628c6f9a46490bd7898617f65b`](https://github.com/wso2/identity-apps/commit/7ee7c85fe57835628c6f9a46490bd7898617f65b) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Display TOTP masked secret
+
+## 2.33.4
+
+### Patch Changes
+
+- [#9641](https://github.com/wso2/identity-apps/pull/9641) [`c9957fa1e44a592d6238a8db8fdb53bcd2b3c7fc`](https://github.com/wso2/identity-apps/commit/c9957fa1e44a592d6238a8db8fdb53bcd2b3c7fc) Thanks [@hwupathum](https://github.com/hwupathum)! - Add preserveCurrentSessionAtPasswordUpdate config to UI
+
+## 2.33.3
+
+### Patch Changes
+
+- [#9619](https://github.com/wso2/identity-apps/pull/9619) [`03a5f7c376174bfd6d6743606f4b7e70bbe6ad8e`](https://github.com/wso2/identity-apps/commit/03a5f7c376174bfd6d6743606f4b7e70bbe6ad8e) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Introduce the Issuer Usage Scope component for Login and Registration
+
+## 2.33.2
+
+### Patch Changes
+
+- [#9587](https://github.com/wso2/identity-apps/pull/9587) [`d375e3117837c9109d51fc85950df4d7cd40b4e1`](https://github.com/wso2/identity-apps/commit/d375e3117837c9109d51fc85950df4d7cd40b4e1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for defining a maximum session timeout for a user session
+
+## 2.33.1
+
+### Patch Changes
+
+- [#9611](https://github.com/wso2/identity-apps/pull/9611) [`90ccfd1696559082e98d7854884c3651bf1376f4`](https://github.com/wso2/identity-apps/commit/90ccfd1696559082e98d7854884c3651bf1376f4) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with Sift configuration update notification
+
+## 2.33.0
+
+### Minor Changes
+
+- [#9593](https://github.com/wso2/identity-apps/pull/9593) [`90460f77442dd987d1564dfe8e40ddf9e6fd5060`](https://github.com/wso2/identity-apps/commit/90460f77442dd987d1564dfe8e40ddf9e6fd5060) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Onboard cds
+
+## 2.32.3
+
+### Patch Changes
+
+- [#9577](https://github.com/wso2/identity-apps/pull/9577) [`5e96563efa7eb0807db57487b417a2f820474e36`](https://github.com/wso2/identity-apps/commit/5e96563efa7eb0807db57487b417a2f820474e36) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add visual editor notification system and improve api based login flow configuration
+
 ## 2.32.2
 
 ### Patch Changes

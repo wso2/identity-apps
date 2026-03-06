@@ -17,7 +17,7 @@
  */
 
 import { FunctionComponent, SVGProps } from "react";
-import BasicAuthIcon from "../../themes/default/assets/images/authenticators/basic-auth.png";
+import { ReactComponent as BasicAuthIcon } from "../../themes/default/assets/images/authenticators/basic-auth.svg";
 import { ReactComponent as EmailOTPIcon } from "../../themes/default/assets/images/authenticators/email-otp.svg";
 import FIDOLogo from "../../themes/default/assets/images/authenticators/fido-passkey-black.svg";
 import { ReactComponent as SMSOTPIcon } from "../../themes/default/assets/images/authenticators/sms-otp.svg";
@@ -228,7 +228,7 @@ export const getApplicationWizardStepIcons = (): {
 
 export const getAuthenticatorIcons = (): {
     apple: FunctionComponent<SVGProps<SVGSVGElement>>;
-    basic: string;
+    basic: FunctionComponent<SVGProps<SVGSVGElement>>;
     default: FunctionComponent<SVGProps<SVGSVGElement>>;
     emailOTP: FunctionComponent<SVGProps<SVGSVGElement>>;
     facebook: FunctionComponent<SVGProps<SVGSVGElement>>;

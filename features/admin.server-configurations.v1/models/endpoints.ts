@@ -41,4 +41,5 @@ export interface ServerConfigurationsResourceEndpointsInterface {
     serverConfigurations: string;
     serverSupportedSchemas: string;
     fraudDetectionConfigurations: string;
+    issuerUsageScope: string;
 }

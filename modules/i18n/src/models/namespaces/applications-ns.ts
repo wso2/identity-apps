@@ -819,9 +819,11 @@ export interface ApplicationsNS {
                 shareSelectedApplication: string;
                 allRolesAndOrgsSharingMessage: string;
                 allRolesAndOrgsNotSharingMessage: string;
+                allApplicationRolesSharingMessage: string;
                 selectAnOrganizationToMangage: string;
                 allRolesSharingMessage: string;
                 doNotShareRolesWithAllOrgs: string;
+                shareApplicationWithFutureChildOrgs: string;
                 toManageOrganizationSelectLeftPanel: string;
                 subTitle: string;
                 tabName: string;
@@ -1151,6 +1153,9 @@ export interface ApplicationsNS {
             sections: {
                 applicationNativeAuthentication: {
                     heading: string;
+                    alerts: {
+                        apiAuthCompatibilityWarning: string;
+                    };
                     fields: {
                         enableAPIBasedAuthentication: {
                             hint: string;
@@ -1497,6 +1502,25 @@ export interface ApplicationsNS {
                             }
                         }
                     }
+                },
+                ciba: {
+                    authReqExpiryTime: {
+                        hint: string;
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                            invalid: string;
+                        };
+                    };
+                    notificationChannels: {
+                        clientChannelLabel: string;
+                        externalHint: string;
+                        hint: string;
+                        label: string;
+                        serverChannelsLabel: string;
+                    };
+                    heading: string;
                 }
             };
             mobileApp: {
@@ -1870,6 +1894,18 @@ export interface ApplicationsNS {
                             hint: string;
                         };
                     }
+                };
+                applicationTokenIssuer: {
+                    heading: string;
+                    fields: {
+                        tokenIssuer: {
+                            label: string;
+                            placeholder: string;
+                            hint: string;
+                            loading: string;
+                            organization: string;
+                        };
+                    };
                 };
             };
             messages: {

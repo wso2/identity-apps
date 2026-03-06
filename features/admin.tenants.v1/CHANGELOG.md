@@ -1,5 +1,11 @@
 # @wso2is/admin.tenants.v1
 
+## 2.29.24
+
+### Patch Changes
+
+- [#9681](https://github.com/wso2/identity-apps/pull/9681) [`93e8e87cccec91029508eb10cbd91c2ba78f46f6`](https://github.com/wso2/identity-apps/commit/93e8e87cccec91029508eb10cbd91c2ba78f46f6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix infinite scrolling of root tenant list in Console
+
 ## 2.29.23
 
 ### Patch Changes

@@ -400,6 +400,10 @@ export interface governanceConnectorsNS {
                         };
                     };
                     notifications: {
+                        configurationUpdate: {
+                            success: NotificationItem;
+                            error: NotificationItem;
+                        };
                         eventPropertiesUpdate: {
                             error: NotificationItem;
                         };

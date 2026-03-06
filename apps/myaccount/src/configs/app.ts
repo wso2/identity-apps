@@ -123,6 +123,7 @@ export class Config {
             logout: `${this.getDeploymentConfig()?.serverHost}/oidc/logout`,
             me: `${this.getDeploymentConfig()?.serverHost}/scim2/Me`,
             mfaEnabledAuthenticators: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/mfa/authenticators`,
+            passwordChange: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/change-password`,
             preference: `${this.getDeploymentConfig()?.serverHost}/api/server/v1/identity-governance/preferences`,
             profileSchemas: `${this.getDeploymentConfig()?.serverHost}/scim2/Schemas`,
             push: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/push`,

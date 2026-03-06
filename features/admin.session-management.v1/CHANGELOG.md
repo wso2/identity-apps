@@ -1,5 +1,46 @@
 # @wso2is/admin.session-management.v1
 
+## 2.26.3
+
+### Patch Changes
+
+- Updated dependencies [[`d0761e466c899df3701b2f918c955e89f1dce1e3`](https://github.com/wso2/identity-apps/commit/d0761e466c899df3701b2f918c955e89f1dce1e3)]:
+  - @wso2is/admin.organizations.v1@2.28.1
+  - @wso2is/i18n@2.34.1
+  - @wso2is/admin.core.v1@2.53.8
+
+## 2.26.2
+
+### Patch Changes
+
+- [#9644](https://github.com/wso2/identity-apps/pull/9644) [`f7ee27a7ac0da77dc33fbcefa4201e32e4edd846`](https://github.com/wso2/identity-apps/commit/f7ee27a7ac0da77dc33fbcefa4201e32e4edd846) Thanks [@hwupathum](https://github.com/hwupathum)! - Fix minor UI issue in session management settings page component
+
+- Updated dependencies [[`dc6b3662200e53d4fc4cfedf8f79922ebe4ac70f`](https://github.com/wso2/identity-apps/commit/dc6b3662200e53d4fc4cfedf8f79922ebe4ac70f)]:
+  - @wso2is/admin.core.v1@2.53.5
+
+## 2.26.1
+
+### Patch Changes
+
+- [#9641](https://github.com/wso2/identity-apps/pull/9641) [`c9957fa1e44a592d6238a8db8fdb53bcd2b3c7fc`](https://github.com/wso2/identity-apps/commit/c9957fa1e44a592d6238a8db8fdb53bcd2b3c7fc) Thanks [@hwupathum](https://github.com/hwupathum)! - Add preserveCurrentSessionAtPasswordUpdate config to UI
+
+- Updated dependencies [[`c9957fa1e44a592d6238a8db8fdb53bcd2b3c7fc`](https://github.com/wso2/identity-apps/commit/c9957fa1e44a592d6238a8db8fdb53bcd2b3c7fc)]:
+  - @wso2is/i18n@2.33.4
+
+## 2.26.0
+
+### Minor Changes
+
+- [#9587](https://github.com/wso2/identity-apps/pull/9587) [`d375e3117837c9109d51fc85950df4d7cd40b4e1`](https://github.com/wso2/identity-apps/commit/d375e3117837c9109d51fc85950df4d7cd40b4e1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for defining a maximum session timeout for a user session
+
+### Patch Changes
+
+- Updated dependencies [[`d375e3117837c9109d51fc85950df4d7cd40b4e1`](https://github.com/wso2/identity-apps/commit/d375e3117837c9109d51fc85950df4d7cd40b4e1), [`4ccde0b53f0d28c2645429562989d20f7958de55`](https://github.com/wso2/identity-apps/commit/4ccde0b53f0d28c2645429562989d20f7958de55)]:
+  - @wso2is/i18n@2.33.2
+  - @wso2is/access-control@3.5.1
+  - @wso2is/admin.core.v1@2.52.1
+  - @wso2is/theme@2.9.1
+
 ## 2.25.220
 
 ### Patch Changes

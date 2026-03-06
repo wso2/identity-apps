@@ -29,6 +29,7 @@ import {
     WorkflowsResourceEndpointsInterface
 } from "@wso2is/admin.approval-workflows.v1/models/endpoints";
 import { BrandingPreferenceResourceEndpointsInterface } from "@wso2is/admin.branding.v1/models/endpoints";
+import { CustomerDataServiceEndpointsInterface } from "@wso2is/admin.cds.v1/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificates.v1";
 import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
 import { ConnectionResourceEndpointsInterface } from "@wso2is/admin.connections.v1";
@@ -137,6 +138,10 @@ export interface FeatureConfigInterface {
      * Getting started feature.
      */
     gettingStarted?: FeatureAccessConfigInterface;
+    /**
+     * Onboarding wizard feature.
+     */
+    onboarding?: FeatureAccessConfigInterface;
     /**
      * SMS providers feature.
      */
@@ -301,6 +306,10 @@ export interface FeatureConfigInterface {
      * Workflow feature.
      */
     approvalWorkflows?: FeatureAccessConfigInterface;
+     /**
+     * Customer Data feature.
+     */
+    customerData?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -344,6 +353,20 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * This is used to enable/disable the region selection in the organization creation page.
      */
     regionSelectionEnabled?: boolean;
+}
+
+/**
+ * Flow execution compatibility settings from the tenant/sub-org API.
+ */
+export interface FlowExecutionCompatibilityInterface {
+    enableLegacyFlows?: string;
+}
+
+/**
+ * Tenant/sub-organization compatibility settings from /api/server/v1/configs/compatibility-settings.
+ */
+export interface CompatibilitySettingsInterface extends Record<string, unknown> {
+    flowExecution?: FlowExecutionCompatibilityInterface;
 }
 
 /**
@@ -441,9 +464,26 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     hiddenAuthenticators?: string[];
     /**
+     * Set of custom first factor authenticator names available in application login flow builder.
+     * Merged with the default first factor authenticators list.
+     * When merging, both the name and the ID (encoded name) of the authenticators are added to the list.
+     */
+    loginFlowCustomFirstFactorAuthenticators?: string[];
+    /**
+     * Set of custom second factor only authenticator names available in application login flow builder.
+     * Merged with the default second factor authenticators list.
+     * When merging, both the name and the ID (encoded name) of the authenticators are added to the list.
+     */
+    loginFlowCustomSecondFactorAuthenticators?: string[];
+    /**
      * Set of connections to be hidden.
      */
     hiddenConnectionTemplates?: string[];
+    /**
+     * Set of outbound provisioning connectors to be hidden.
+     * Use connector names (e.g., "googleapps", "salesforce", "scim").
+     */
+    hiddenOutboundProvisioningConnectors?: string[];
     /**
      * Set of application templates to be hidden.
      * Include the IDs of application templates.
@@ -509,6 +549,26 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Enable/Disable custom email template feature
      */
     enableCustomEmailTemplates: boolean;
+    /**
+     * Enable/Disable blocking outbound provisioning feature.
+     */
+    enableBlockingOutboundProvisioning?: boolean;
+    /**
+     * Enable/Disable custom SMS template feature
+     */
+    enableCustomSmsTemplates: boolean;
+    /**
+     * Enable/Disable the legacy locale dropdown (using supported i18n languages from store)
+     * in email and SMS template edit pages. When true, the old dropdown is shown instead of
+     * the new autocomplete input that lists all locales.
+     */
+    enableLegacyLocaleDropdown?: boolean;
+    /**
+     * List of features to be enabled in console role permissions, even if the feature is disabled
+     * in the feature config. This is to allow certain features to be assignable in console roles,
+     * even if they are not generally available for use in the console.
+     */
+    enabledFeatureOverridesInConsoleRolePermissions?: string[];
     /**
      * Enable signature validation certificate alias.
      */
@@ -726,6 +786,7 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     OrganizationResourceEndpointsInterface,
     TenantResourceEndpointsInterface,
     ValidationServiceEndpointsInterface,
+    CustomerDataServiceEndpointsInterface,
     BrandingPreferenceResourceEndpointsInterface,
     ExtensionTemplatesEndpointsInterface,
     ApplicationsTemplatesEndpointsInterface,

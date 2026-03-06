@@ -55,7 +55,7 @@ import {
 } from "../api";
 import { EmailCustomizationForm, EmailTemplatePreview } from "../components";
 import EmailCustomizationFooter from "../components/email-customization-footer";
-import EmailCustomizationHeader from "../components/email-customization-header";
+import EmailCustomizationHeader, { LocaleOption } from "../components/email-customization-header";
 import { EmailManagementConstants } from "../constants/email-management-constants";
 import { EmailTemplate, EmailTemplateType } from "../models";
 
@@ -297,12 +297,14 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         setSelectedEmailTemplate({ ...selectedEmailTemplate, ...updatedTemplateAttributes });
     };
 
-    const handleLocaleChange = (locale: string) => {
+    const handleLocaleChange = (localeOption: LocaleOption | null | undefined): void => {
+        const safeLocale: string = (localeOption?.value as string) ?? selectedLocale;
+
         setCurrentEmailTemplate({ ...selectedEmailTemplate });
         setIsTemplateNotAvailable(false);
         setIsSystemTemplate(false);
         setIsInheritedTemplate(false);
-        setSelectedLocale(locale);
+        setSelectedLocale(safeLocale);
     };
 
     const handleSubmit = () => {

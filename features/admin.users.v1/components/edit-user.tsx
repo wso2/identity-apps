@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -27,7 +28,6 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
-    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
     ProfileInfoInterface
 } from "@wso2is/core/models";
@@ -39,6 +39,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, TabProps } from "semantic-ui-react";
+import { ShareUserForm } from "./share-user-form";
 import { UserGroupsList } from "./user-groups-edit";
 import { UserProfile } from "./user-profile";
 import { UserRolesList } from "./user-roles-list";
@@ -114,6 +115,10 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const isUserGroupsEnabled: boolean = isFeatureEnabled(
         usersFeatureConfig,
         UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UserGroups)
+    );
+    const isSharedAccessEnabled: boolean = usersFeatureConfig?.subFeatures?.userSharingV2?.enabled ?? false;
+    const hasSharedAccessReadPermission: boolean = useRequiredScopes(
+        usersFeatureConfig?.subFeatures?.userSharingV2?.scopes?.read
     );
 
     useEffect(() => {
@@ -280,10 +285,26 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             }
         );
 
+        if (isSharedAccessEnabled && hasSharedAccessReadPermission) {
+            _panes.push({
+                menuItem: t("users:editUser.tab.menuItems.4"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <ShareUserForm
+                            user={ user }
+                            readOnly={ isReadOnly }
+                        />
+                    </ResourceTab.Pane>
+                )
+            });
+        }
+
         return _panes;
     }, [
         user,
         isUserGroupsEnabled,
+        isSharedAccessEnabled,
+        hasSharedAccessReadPermission,
         connectorProperties,
         isSuperAdminIdentifierFetchRequestLoading,
         hideTermination,

@@ -88,11 +88,14 @@ const TenantProvider = ({
     const [ isTenantStatusUpdateRequestLoading, setIsTenantStatusUpdateRequestLoading ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ searchQueryClearTrigger, setSearchQueryClearTrigger ] = useState<boolean>(false);
+    const [ accumulatedTenants, setAccumulatedTenants ] = useState<Tenant[]>([]);
+    const [ isLoadingMore, setIsLoadingMore ] = useState<boolean>(false);
+    const [ fetchOffset, setFetchOffset ] = useState<number>(0);
 
     const { data: tenantList, isLoading: isTenantListLoading, mutate: mutateTenantList } = useGetTenants({
         filter: searchQuery,
-        limit: tenantListLimit,
-        offset: 0,
+        limit: searchQuery ? tenantListLimit : UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT,
+        offset: searchQuery ? 0 : fetchOffset,
         sortBy: "domainName",
         sortOrder: "asc"
     });
@@ -100,8 +103,52 @@ const TenantProvider = ({
     useEffect(() => {
         if (tenantList && tenantList?.tenants?.length > 0) {
             setIsInitialRenderingComplete(true);
+
+            // For search queries, replace the accumulated tenants with search results
+            if (searchQuery) {
+                setAccumulatedTenants(tenantList.tenants);
+            } else {
+                // For infinite scroll, append new tenants to existing ones
+                if (fetchOffset === 0) {
+                    // Initial load
+                    setAccumulatedTenants(tenantList.tenants);
+                } else {
+                    // Loading more - append new tenants
+                    setAccumulatedTenants((prev: Tenant[]) => [ ...prev, ...tenantList.tenants ]);
+                }
+                setIsLoadingMore(false);
+            }
+        } else if (tenantList && tenantList?.tenants?.length === 0) {
+            setIsInitialRenderingComplete(true);
+
+            // Only clear accumulated tenants if this is the initial load (fetchOffset === 0)
+            // or if it's a search query.
+            if (fetchOffset === 0 || searchQuery) {
+                setAccumulatedTenants([]);
+            }
+            // If fetchOffset > 0 and no search, it means we've reached the end of the list
+            // so we keep the existing accumulated tenants.
+            setIsLoadingMore(false);
         }
-    }, [ tenantList ]);
+    }, [ tenantList, searchQuery ]);
+
+    // Handle tenantListLimit changes to trigger more data loading
+    useEffect(() => {
+        if (tenantListLimit > UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT && !searchQuery) {
+            setIsLoadingMore(true);
+            setFetchOffset(accumulatedTenants.length);
+        }
+    }, [ tenantListLimit, searchQuery ]);
+
+    // Reset accumulated tenants when search query changes or is cleared
+    useEffect(() => {
+        if (searchQueryClearTrigger) {
+            setAccumulatedTenants([]);
+            setTenantListLimit(UIConstants.DEFAULT_RESOURCE_GRID_ITEM_LIMIT);
+            setFetchOffset(0);
+            setSearchQueryClearTrigger(false);
+        }
+    }, [ searchQueryClearTrigger ]);
 
     /**
      * Handles the tenant deletion after the user confirms the action.
@@ -207,6 +254,7 @@ const TenantProvider = ({
     return (
         <TenantContext.Provider
             value={ {
+                accumulatedTenants,
                 deleteTenant: (tenant: Tenant): void => {
                     setShowDeleteConfirmationModal(true);
                     setDeletingTenant(tenant);
@@ -219,6 +267,7 @@ const TenantProvider = ({
                     handleTenantStatusUpdateConfirmation(tenant);
                 },
                 isInitialRenderingComplete,
+                isLoadingMore,
                 isTenantListLoading,
                 mutateTenantList,
                 searchQuery,

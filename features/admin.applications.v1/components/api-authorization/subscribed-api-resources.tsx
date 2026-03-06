@@ -148,11 +148,11 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
 
     const { t } = useTranslation();
 
-    const isVCClient: boolean = originalTemplateId === "vc-client-application";
+    const isDigitalWallet: boolean = originalTemplateId === "digital-wallet-application";
     const isMCPClient: boolean = originalTemplateId === "mcp-client-application";
     const resourceText: string = isMCPClient
         ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.genericResource")
-        : isVCClient
+        : isDigitalWallet
             ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.vcResource")
             : t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.apiResource");
 
@@ -184,8 +184,10 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
      */
     useEffect(() => {
         if (allAuthorizedScopes) {
-            setCopyScopesValue(allAuthorizedScopes.map(
-                (scope: AuthorizedPermissionListItemInterface) => scope.name).join(" ")
+            setCopyScopesValue(
+                [ ...new Set(allAuthorizedScopes.map(
+                    (scope: AuthorizedPermissionListItemInterface) => scope.name
+                )) ].sort().join(" ")
             );
         }
     }, [ allAuthorizedScopes ]);
@@ -499,7 +501,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                                                 resourceText:  isMCPClient
                                                     ? t("extensions:develop.applications.edit.sections.apiAuthorization"
                                                         + ".resourceText.genericResource")
-                                                    : isVCClient
+                                                    : isDigitalWallet
                                                         ? t("extensions:develop.applications.edit.sections" +
                                                             ".apiAuthorization.resourceText.vcResource")
                                                         : t("extensions:develop.applications.edit.sections" +
@@ -528,7 +530,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                                                                     data-componentid={
                                                                         `${componentId}-title`
                                                                     }
-                                                                    active={ !isVCClient &&
+                                                                    active={ !isDigitalWallet &&
                                                                         activeSubscribedAPIResource
                                                                         === subscribedAPIResource.id }
                                                                     accordionIndex={ subscribedAPIResource.id }
@@ -539,13 +541,13 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                                                                         resolveSubscribedAPIResourcesListHeader(
                                                                             subscribedAPIResource)
                                                                     ) }
-                                                                    hideChevron={ isVCClient }
+                                                                    hideChevron={ isDigitalWallet }
                                                                     actions={
                                                                         createAccordionAction(subscribedAPIResource)
                                                                     }
                                                                 />
                                                                 <SegmentedAccordion.Content
-                                                                    active={ !isVCClient &&
+                                                                    active={ !isDigitalWallet &&
                                                                         activeSubscribedAPIResource
                                                                         === subscribedAPIResource.id }
                                                                     data-componentid={

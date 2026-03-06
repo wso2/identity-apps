@@ -29,7 +29,10 @@ import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } f
  */
 export enum ApplicationFeatureDictionaryKeys {
     ApplicationEditEnforceAuthorizedAPIUpdatePermission = "APPLICATION_EDIT_ENFORCE_AUTHORIZED_API_UPDATE_PERMISSION",
-    ApplicationEditEnforceClientSecretPermission = "APPLICATION_EDIT_ENFORCE_CLIENT_SECRET_PERMISSION"
+    ApplicationEditEnforceClientSecretPermission = "APPLICATION_EDIT_ENFORCE_CLIENT_SECRET_PERMISSION",
+    ApplicationOutboundProvisioning = "APPLICATION_OUTBOUND_PROVISIONING",
+    SubOrgApplicationOutboundProvisioning = "SUB_ORG_APPLICATION_OUTBOUND_PROVISIONING",
+    ApplicationInboundProvisioning = "APPLICATION_INBOUND_PROVISIONING",
 }
 
 /**
@@ -104,7 +107,13 @@ export class ApplicationManagementConstants {
         .set(ApplicationFeatureDictionaryKeys.ApplicationEditEnforceAuthorizedAPIUpdatePermission,
             "applications.enforceAuthorizedAPIUpdatePermission")
         .set(ApplicationFeatureDictionaryKeys.ApplicationEditEnforceClientSecretPermission,
-            "applications.enforceClientSecretPermission");
+            "applications.enforceClientSecretPermission")
+        .set(ApplicationFeatureDictionaryKeys.ApplicationInboundProvisioning,
+            "applications.inboundProvisioning")
+        .set(ApplicationFeatureDictionaryKeys.ApplicationOutboundProvisioning,
+            "applications.outboundProvisioning")
+        .set(ApplicationFeatureDictionaryKeys.SubOrgApplicationOutboundProvisioning,
+            "applications.outboundProvisioning.subOrg");
 
     /**
      * Key for the URL search param for application state.
@@ -211,6 +220,7 @@ export class ApplicationManagementConstants {
     public static readonly CODE_IDTOKEN: string = "code id_token";
     public static readonly CODE_IDTOKEN_TOKEN: string = "code id_token token";
     public static readonly  HYBRID_FLOW_ENABLE_CONFIG:string = "enable-hybrid-flow";
+    public static readonly CIBA_GRANT: string = "urn:openid:params:grant-type:ciba";
     public static readonly HYBRID_FLOW_RESPONSE_TYPE: string = "hybridFlowResponseType";
 
     /**
@@ -228,7 +238,8 @@ export class ApplicationManagementConstants {
         this.IWA_NTLM,
         this.DEVICE_GRANT,
         this.OAUTH2_TOKEN_EXCHANGE,
-        this.ACCOUNT_SWITCH_GRANT
+        this.ACCOUNT_SWITCH_GRANT,
+        this.CIBA_GRANT
     ];
 
     /**
@@ -364,8 +375,8 @@ export class ApplicationManagementConstants {
         LocalAuthenticatorConstants.AUTHENTICATOR_IDS.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
     ];
 
-    // First factor authenticators.
-    public static readonly FIRST_FACTOR_AUTHENTICATORS: string[] = [
+    // Default first factor authenticators (used as fallback).
+    private static readonly DEFAULT_FIRST_FACTOR_AUTHENTICATORS: string[] = [
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.FIDO_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME,
@@ -375,8 +386,38 @@ export class ApplicationManagementConstants {
         LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID
     ];
 
-    // Second factor authenticators.
-    public static readonly SECOND_FACTOR_AUTHENTICATORS: string[] = [
+    /**
+     * First factor authenticators available in application login flow builder.
+     * Custom authenticators can be added via
+     * deployment.config.json (console.ui.loginFlowCustomFirstFactorAuthenticators).
+     */
+    public static get FIRST_FACTOR_AUTHENTICATORS(): string[] {
+        const customAuthenticators: string[] =
+            window?.[ "AppUtils" ]?.getConfig()?.ui?.loginFlowCustomFirstFactorAuthenticators ?? [];
+        const firstFactorAuthenticators: string[] = [
+            ...ApplicationManagementConstants.DEFAULT_FIRST_FACTOR_AUTHENTICATORS ];
+
+        // Push custom authenticator name and encoded name(ID) to the list. This is because in the login flow builder,
+        // both the name and the ID are being used to identify the authenticators in different scenarios.
+        if (customAuthenticators.length > 0) {
+            for (const authenticator of customAuthenticators) {
+                // Push the authenticator name.
+                firstFactorAuthenticators.push(authenticator);
+
+                try {
+                    // Push the authenticator ID (encoded name).
+                    firstFactorAuthenticators.push(btoa(authenticator));
+                } catch (error: unknown) {
+                    // Catch the error and ignore.
+                }
+            }
+        }
+
+        return firstFactorAuthenticators;
+    }
+
+    // Default second factor authenticators (used as fallback).
+    private static readonly DEFAULT_SECOND_FACTOR_AUTHENTICATORS: string[] = [
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID,
         FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.IPROOV_AUTHENTICATOR_NAME,
@@ -386,6 +427,36 @@ export class ApplicationManagementConstants {
         FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME,
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.PASSWORD_RESET_ENFORCER_AUTHENTICATOR_ID
     ];
+
+    /**
+     * Second factor only authenticators available in application login flow builder.
+     * Custom authenticators can be added via
+     * deployment.config.json (console.ui.loginFlowCustomSecondFactorAuthenticators).
+     */
+    public static get SECOND_FACTOR_AUTHENTICATORS(): string[] {
+        const customAuthenticators: string[] =
+            window?.[ "AppUtils" ]?.getConfig()?.ui?.loginFlowCustomSecondFactorAuthenticators ?? [];
+        const secondFactorAuthenticators: string[] = [
+            ...ApplicationManagementConstants.DEFAULT_SECOND_FACTOR_AUTHENTICATORS ];
+
+        // Push custom authenticator name and encoded name(ID) to the list. This is because in the login flow builder,
+        // both the name and the ID are being used to identify the authenticators in different scenarios.
+        if (customAuthenticators.length > 0) {
+            for (const authenticator of customAuthenticators) {
+                // Push the authenticator name.
+                secondFactorAuthenticators.push(authenticator);
+
+                try {
+                    // Push the authenticator ID (encoded name).
+                    secondFactorAuthenticators.push(btoa(authenticator));
+                } catch (error: unknown) {
+                    // Catch the error and ignore.
+                }
+            }
+        }
+
+        return secondFactorAuthenticators;
+    }
 
     // Known social authenticators.
     public static readonly SOCIAL_AUTHENTICATORS: string[] = [

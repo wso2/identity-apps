@@ -49,7 +49,7 @@ const getKnownOutboundProvisioningConnectorsMetaData = (): OutboundProvisioningC
             description: "Provision users to SCIM 2.0 applications.",
             displayName: "SCIM2",
             icon: getConnectorIcons().scim,
-            name: "scim",
+            name: "SCIM2",
             self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/U0NJTTI"
         }
     ];

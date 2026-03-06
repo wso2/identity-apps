@@ -433,6 +433,15 @@ export class GovernanceConnectorUtils {
                         status: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
                             .LOGIN_AND_REGISTRATION_ORGANIZATION_IMPERSONATION,
                         testId: "impersonation-card"
+                    },
+                    {
+                        description: I18n.instance.t("pages:issuerUsageScope.subTitle"),
+                        header: I18n.instance.t("pages:issuerUsageScope.title"),
+                        id: ServerConfigurationsConstants.ISSUER_USAGE_SCOPE,
+                        route: AppConstants.getPaths().get("ISSUER_USAGE_SCOPE"),
+                        status: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                            .LOGIN_AND_REGISTRATION_ORGANIZATION_ISSUER_USAGE_SCOPE,
+                        testId: "issuer-usage-scope-card"
                     }
                 ],
                 displayOrder: 0,

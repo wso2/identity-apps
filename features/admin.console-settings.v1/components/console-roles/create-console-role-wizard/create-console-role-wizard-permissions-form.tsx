@@ -126,6 +126,8 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
     );
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const enabledFeatureOverridesInConsoleRolePermissions: string[] = useSelector(
+        (state: AppState) => state.config.ui.enabledFeatureOverridesInConsoleRolePermissions);
 
     const [ expandedAccordions, setExpandedAccordions ] = useState<string[]>([]);
     const [ selectedPermissions, setSelectedPermissions ] = useState<SelectedPermissionsInterface>(initialValues || {
@@ -198,14 +200,15 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                     (item: APIResourceCollectionInterface) =>
                         !filteringAPIResourceCollectionNames.includes(item?.name) &&
                         (
-                            flattenedFeatureConfig?.[item?.name]?.enabled
+                            enabledFeatureOverridesInConsoleRolePermissions?.includes(item?.name)
+                            || flattenedFeatureConfig?.[item?.name]?.enabled
                             || flattenedFeatureConfig?.[UIConstants.CONSOLE_FEATURE_MAP[item?.name]]?.enabled
                         )
 
                 );
 
         return clonedTenantAPIResourceCollections;
-    }, [ tenantAPIResourceCollections, flattenedFeatureConfig ]);
+    }, [ tenantAPIResourceCollections, flattenedFeatureConfig, enabledFeatureOverridesInConsoleRolePermissions ]);
 
     const filteredOrganizationAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
 
@@ -222,12 +225,25 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
 
         clonedOrganizationAPIResourceCollections.apiResourceCollections =
                 clonedOrganizationAPIResourceCollections?.apiResourceCollections?.filter(
-                    (item: APIResourceCollectionInterface) =>
-                        !filteringAPIResourceCollectionNames.includes(item?.name)
+                    (item: APIResourceCollectionInterface) => {
+                        const itemName: string = item?.name ?? "";
+                        const featureNameWithoutOrgPrefix: string = itemName.startsWith(
+                            ConsoleRolesOnboardingConstants.ORG_PREFIX)
+                            ? itemName.substring(ConsoleRolesOnboardingConstants.ORG_PREFIX.length)
+                            : itemName;
+
+                        return !filteringAPIResourceCollectionNames.includes(itemName) &&
+                            (
+                                enabledFeatureOverridesInConsoleRolePermissions?.includes(featureNameWithoutOrgPrefix)
+                                || flattenedFeatureConfig?.[featureNameWithoutOrgPrefix]?.enabled
+                                || flattenedFeatureConfig?.[UIConstants.CONSOLE_FEATURE_MAP[
+                                    featureNameWithoutOrgPrefix]]?.enabled
+                            );
+                    }
                 );
 
         return clonedOrganizationAPIResourceCollections;
-    }, [ organizationAPIResourceCollections ]);
+    }, [ organizationAPIResourceCollections, flattenedFeatureConfig, enabledFeatureOverridesInConsoleRolePermissions ]);
 
     /**
      * Handles the accordion expand event.
