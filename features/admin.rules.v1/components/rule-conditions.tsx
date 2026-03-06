@@ -41,6 +41,7 @@ import React, { ChangeEvent, Dispatch, Fragment, FunctionComponent, HTMLAttribut
     useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { DropdownProps } from "semantic-ui-react";
+import AutoCompleteRenderOption from "./auto-complete-render-option";
 import useGetResourceListOrResourceDetails from "../api/use-get-resource-list-or-resource-details";
 import { useRulesContext } from "../hooks/use-rules-context";
 import {
@@ -223,6 +224,9 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
         const MORE_ITEMS: string = "more-items";
         const CLEAR_OPTION: string = "clear-option";
+        const ROLES_ENDPOINT: string = "/Roles";
+
+        const isRolesResource: boolean = initialResourcesLoadUrl?.includes(ROLES_ENDPOINT);
 
         const setDebouncedSearchQueryDebounced: (value: string) => void = useCallback(
             debounce((value: string) => setDebouncedSearchQuery(value), 500),
@@ -254,6 +258,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         (resource: ResourceInterface) => !hiddenResources.includes(resource[valueReferenceAttribute])
                     )
                     .map((resource: ResourceInterface) => ({
+                        audience: resource?.audience?.type,
+                        audienceDisplay: resource?.audience?.display,
                         id: resource[valueReferenceAttribute],
                         label: resource[valueDisplayAttribute]
                     }));
@@ -266,6 +272,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         (resource: ResourceInterface) => !hiddenResources.includes(resource[valueReferenceAttribute])
                     )
                     .map((resource: ResourceInterface) => ({
+                        audience: resource?.audience?.type,
+                        audienceDisplay: resource?.audience?.display,
                         id: resource[valueReferenceAttribute],
                         label: resource[valueDisplayAttribute]
                     }));
@@ -380,7 +388,12 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         } }
                     />
                 ) }
-                renderOption={ (props: ListItemProps, option: { label: string; id: string; isDisabled: boolean }) => {
+                renderOption={ (props: ListItemProps, option: {
+                    label: string;
+                    id: string;
+                    isDisabled: boolean;
+                    audience?: string;
+                    audienceDisplay?: string }) => {
                     if (option.id === MORE_ITEMS) {
                         return (
                             <li
@@ -403,6 +416,17 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                     <TrashIcon className="icon" /> <span className="text">{ option.label }</span>
                                 </Link>
                             </li>
+                        );
+                    }
+
+                    if (isRolesResource) {
+                        return (
+                            <AutoCompleteRenderOption
+                                renderOptionProps={ props }
+                                displayName={ option.label }
+                                audience={ option.audience }
+                                audienceDisplay={ option.audienceDisplay }
+                            />
                         );
                     }
 
@@ -714,6 +738,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
             // Otherwise fallback to a normal Select dropdown.
             const { items: normalizedItems } = normalizeResourceResponse(fetchedResourcesList);
+            const ROLES_ENDPOINT: string = "/Roles";
 
             // Special handling for userstores (user.domain / initiator.domain)
             let processedItems: ResourceInterface[] = normalizedItems;
@@ -768,11 +793,36 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             (resource: ResourceInterface) =>
                                 !hiddenResources.includes(resource[valueReferenceAttribute])
                         )
-                        .map((resource: ResourceInterface, index: number) => (
-                            <MenuItem value={ resource[valueReferenceAttribute] } key={ `${expressionId}-${index}` }>
-                                { resource[valueDisplayAttribute] }
-                            </MenuItem>
-                        )) }
+                        .map((resource: ResourceInterface, index: number) => {
+
+                            const isRolesResource: boolean =
+                                initialResourcesLoadUrl?.includes(ROLES_ENDPOINT);
+
+                            if (isRolesResource) {
+                                return (
+                                    <MenuItem
+                                        value={ resource[valueReferenceAttribute] }
+                                        key={ `${expressionId}-${index}` }
+                                    >
+                                        <AutoCompleteRenderOption
+                                            displayName={ resource[valueDisplayAttribute] }
+                                            audience={ resource.audience?.type }
+                                            audienceDisplay={ resource.audience?.display }
+                                            renderOptionProps={ {} as any }
+                                        />
+                                    </MenuItem>
+                                );
+                            }
+
+                            return (
+                                <MenuItem
+                                    value={ resource[valueReferenceAttribute] }
+                                    key={ `${expressionId}-${index}` }
+                                >
+                                    { resource[valueDisplayAttribute] }
+                                </MenuItem>
+                            );
+                        }) }
                 </Select>
             );
         }
