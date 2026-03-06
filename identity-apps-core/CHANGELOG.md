@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.4.3
+
+### Patch Changes
+
+- [#9690](https://github.com/wso2/identity-apps/pull/9690) [`1f34ebf16f5b05fc1fc781ac3acda62e573b2575`](https://github.com/wso2/identity-apps/commit/1f34ebf16f5b05fc1fc781ac3acda62e573b2575) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Improve discovery pages to use for non federated authenticators
+
 ## 3.4.2
 
 ### Patch Changes
