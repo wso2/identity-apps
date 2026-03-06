@@ -59,6 +59,7 @@ import {
     RuleInterface
 } from "../models/rules";
 import { normalizeResourceResponse } from "../utils/resource-utils";
+import { normalizeUserstoreList } from "../utils/userstore-utils";
 import "./rule-conditions.scss";
 
 /**
@@ -714,14 +715,21 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             // Otherwise fallback to a normal Select dropdown.
             const { items: normalizedItems } = normalizeResourceResponse(fetchedResourcesList);
 
+            // Special handling for userstores (user.domain / initiator.domain)
+            let processedItems: ResourceInterface[] = normalizedItems;
+
+            if (initialResourcesLoadUrl?.includes("/userstores")) {
+                processedItems = normalizeUserstoreList(normalizedItems);
+            }
+
             const items: ResourceInterface[] =
                 resourceDetails &&
                 expressionValue &&
-                !normalizedItems.some(
+                !processedItems.some(
                     (item: ResourceInterface) => item[valueReferenceAttribute] === expressionValue
                 )
-                    ? [ resourceDetails, ...normalizedItems ]
-                    : normalizedItems;
+                    ? [ resourceDetails, ...processedItems ]
+                    : processedItems;
 
             return (
                 <Select
