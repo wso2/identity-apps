@@ -48,7 +48,7 @@ jobs:
             matrix:
                 node-version: [lts/*]
                 maven-version: [3.8.6]
-                java-version: [11]
+                java-version: [21]
                 pnpm-version: [8.7.4]
         steps:
             - name: ⬇️ Checkout
@@ -70,7 +70,7 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
 
-            - name: ☕ Set up JDK 11
+            - name: ☕ Set up JDK 21
               id: jdk-setup
               uses: actions/setup-java@v3
               with:
