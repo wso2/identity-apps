@@ -1,5 +1,25 @@
 # @wso2is/admin.core.v1
 
+## 2.54.12
+
+### Patch Changes
+
+- [#9710](https://github.com/wso2/identity-apps/pull/9710) [`fbfab599240cdb46d3508c5817c3aba05157f860`](https://github.com/wso2/identity-apps/commit/fbfab599240cdb46d3508c5817c3aba05157f860) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Remove Self Registration From Feature Preview.
+
+- Updated dependencies []:
+  - @wso2is/admin.flow-builder-core.v1@0.10.156
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.156
+  - @wso2is/admin.branding.v1@2.32.112
+  - @wso2is/admin.email-management.v1@2.25.320
+  - @wso2is/admin.flows.v1@1.0.125
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.156
+  - @wso2is/admin.server-configurations.v1@2.37.22
+  - @wso2is/admin.users.v1@2.37.3
+  - @wso2is/admin.registration-flow-builder.v1@0.10.116
+  - @wso2is/admin.agents.v1@1.0.171
+  - @wso2is/admin.roles.v2@2.27.326
+  - @wso2is/admin.connections.v1@2.35.14
+
 ## 2.54.11
 
 ### Patch Changes
