@@ -2692,7 +2692,11 @@
         {% else %}
         "isPasswordInputValidationEnabled": true,
         {% endif %}
+        {% if console.ui.is_password_reset_enforcement_scope_enabled is defined %}
         "isPasswordResetEnforcementScopeEnabled": {{ console.ui.is_password_reset_enforcement_scope_enabled }},
+        {% else %}
+        "isPasswordResetEnforcementScopeEnabled": false,
+        {% endif %}
         "passwordPolicyConfigs": {
             {% if identity_mgt.password_policy.max_password_allowed_length is defined %}
             "maxPasswordAllowedLength": {{ identity_mgt.password_policy.max_password_allowed_length }}

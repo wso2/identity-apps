@@ -23,7 +23,7 @@ import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { MouseEvent, ReactElement } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import BasicSignInOptionControls from "./basic-sign-in-option-controls";
 import { StepOptionActionsDataInterface } from "../../../../models/visual-editor";
@@ -49,7 +49,8 @@ export interface PasswordResetEnforcerFragmentPropsInterface extends Identifiabl
  * @param props - Props injected to the component.
  * @returns Password Reset Enforcer fragment as a React component.
  */
-const PasswordResetEnforcerFragment = (props: PasswordResetEnforcerFragmentPropsInterface): ReactElement => {
+const PasswordResetEnforcerFragment: FunctionComponent<PasswordResetEnforcerFragmentPropsInterface> = (
+    props: PasswordResetEnforcerFragmentPropsInterface): ReactElement => {
     const {
         onOptionRemove,
         ["data-componentid"]: componentId
