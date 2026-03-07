@@ -37,7 +37,7 @@
 
             int responseCode = flowExecutionResponse.getStatusCode();
             JSONObject responseObject = flowExecutionResponse.getResponse();
-            if (responseCode == 0  || responseObject == null) {
+            if (responseCode == 0 || responseObject == null) {
                 out.print("{\"error\": {\"code\": \"500\"}}");
                 return;
             }
