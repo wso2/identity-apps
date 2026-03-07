@@ -38,16 +38,12 @@ import { useRequiredScopes } from "@wso2is/access-control";
 import { updateCDSConfig } from "@wso2is/admin.cds.v1/api/config";
 import useCDSConfig from "@wso2is/admin.cds.v1/hooks/use-config";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
-import updateFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/update-flow-config";
-import useGetFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-config";
-import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import NewCDSFeatureImage from "../../assets/illustrations/preview-features/new-cds-feature.png";
-import NewSelfRegistrationImage from "../../assets/illustrations/preview-features/new-self-registration.png";
 import { AppConstants } from "../../constants/app-constants";
 import { history } from "../../helpers/history";
 import { AppState } from "../../store";
@@ -132,26 +128,14 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
     const dispatch: any = useDispatch();
     const { selectedPreviewFeatureToShow } = useFeatureGate();
 
-    const loginAndRegistrationFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.loginAndRegistration
-    );
     const cdsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.customerDataService
     );
 
     const {
-        data: registrationFlowConfig,
-        mutate: mutateRegistrationFlowConfig
-    } = useGetFlowConfig(FlowTypes.REGISTRATION);
-
-    const {
         data: cdsConfig,
         mutate: mutateCDSConfig
     } = useCDSConfig(open && (cdsFeatureConfig?.enabled ?? false));
-
-    const hasSelfRegScopes: boolean = useRequiredScopes(
-        loginAndRegistrationFeatureConfig?.scopes?.update
-    );
 
     const hasCDSScopes: boolean = useRequiredScopes(
         cdsFeatureConfig?.scopes?.update
@@ -159,24 +143,6 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
 
 
     const previewFeaturesList: PreviewFeaturesListInterface[] = useMemo(() => ([
-        {
-            action: "Try Flow Composer",
-            description:
-                "This feature enables you to customize the user self-registration flow and " +
-                "secure your user onboarding experience with multiple authentication methods and verification steps.",
-            enabled: registrationFlowConfig?.isEnabled,
-            id: "self-registration-orchestration",
-            image: NewSelfRegistrationImage,
-            message: {
-                content:
-                    "Once this feature is enabled, existing self-registration flow configurations will be " +
-                    "changed. So, update your settings accordingly.",
-                type: "warning" as const
-            },
-            name: "Self-Registration Orchestration",
-            requiredScopes: loginAndRegistrationFeatureConfig?.scopes?.update,
-            value: "SelfRegistration.EnableDynamicPortal"
-        },
         {
             action: t("customerDataService:common.featurePreview.action"),
             description: t("customerDataService:common.featurePreview.description"),
@@ -191,18 +157,17 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
             requiredScopes: cdsFeatureConfig?.scopes?.update,
             value: "CDS.Enable"
         }
-    ].filter(Boolean)), [ registrationFlowConfig, cdsConfig, loginAndRegistrationFeatureConfig, cdsFeatureConfig, t ]);
+    ].filter(Boolean)), [ cdsConfig, cdsFeatureConfig, t ]);
 
     const accessibleFeatures: PreviewFeaturesListInterface[] = useMemo(() => (
         previewFeaturesList.filter((feature: PreviewFeaturesListInterface) => {
-            if (feature.id === "self-registration-orchestration") return hasSelfRegScopes;
             if (feature.id === "customer-data-service") {
                 return hasCDSScopes && !!cdsFeatureConfig?.enabled;
             }
 
             return true;
         })
-    ), [ previewFeaturesList, hasSelfRegScopes, hasCDSScopes ]);
+    ), [ previewFeaturesList, hasCDSScopes, cdsFeatureConfig?.enabled ]);
 
     const [ selectedFeatureIndex, setSelectedFeatureIndex ] = useState(0);
 
@@ -225,8 +190,6 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
 
     const handlePageRedirection = (actionId: string) => {
         switch (actionId) {
-            case "self-registration-orchestration":
-                return history.push(AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER"));
             case "customer-data-service":
                 return history.push(AppConstants.getPaths().get("PROFILES"));
             default:
@@ -238,14 +201,6 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
         const isChecked: boolean = e.target.checked;
 
         switch (actionId) {
-            case "self-registration-orchestration":
-                await updateFlowConfig({
-                    flowType: FlowTypes.REGISTRATION,
-                    isEnabled: isChecked
-                });
-                mutateRegistrationFlowConfig();
-
-                break;
             case "customer-data-service":
                 await handleCDSToggle(isChecked);
 
