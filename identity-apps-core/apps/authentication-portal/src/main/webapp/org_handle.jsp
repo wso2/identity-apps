@@ -30,9 +30,11 @@
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
+    final String ORG_IDENTIFIER_HANDLER = "OrganizationIdentifierHandler";
     String idp = request.getParameter("idp");
     String authenticator = request.getParameter("authenticator");
     String sessionDataKey = request.getParameter(Constants.SESSION_DATA_KEY);
+    boolean isOrgIdentifierHandler = ORG_IDENTIFIER_HANDLER.equals(authenticator);
 
     String errorMessage = i18n(resourceBundle, customText, "error.retry");
     String authenticationFailed = "false";
@@ -100,7 +102,10 @@
             <layout:component componentName="MainSection">
                 <div class="ui segment">
                     <%-- page content --%>
-                    <h2><%=i18n(resourceBundle, customText, "sign.in.with")%> <%= StringUtils.isNotBlank(idp) ? Encode.forHtmlContent(idp) : i18n(resourceBundle, customText, "organization.login") %></h2>
+                    <h2><%=i18n(resourceBundle, customText, "sign.in.with")%>
+                        <%= isOrgIdentifierHandler
+                            ? i18n(resourceBundle, customText, "organization.identifier.handler")
+                            : (StringUtils.isNotBlank(idp) ? Encode.forHtmlContent(idp) : i18n(resourceBundle, customText, "organization.login")) %></h2>
                     <div class="ui divider hidden"></div>
 
                     <%
