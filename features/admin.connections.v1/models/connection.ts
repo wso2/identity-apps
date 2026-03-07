@@ -239,6 +239,7 @@ export interface JITProvisioningResponseInterface {
     userstore?: string;
     associateLocalUser?: boolean;
     attributeSyncMethod?: string;
+    idpGroupSyncMethod?: string;
     /**
      * Account linking attribute mappings.
      */

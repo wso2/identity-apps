@@ -46,6 +46,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, DropdownItemProps, Grid, Header, Icon, Segment } from "semantic-ui-react";
+import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import {
     ConnectionInterface,
     JITProvisioningAccountLinkingAttributeMappingInterface,
@@ -75,6 +76,7 @@ enum JITProvisioningConstants {
     PROVISIONING_SCHEME_TYPE_KEY = "provisioningScheme",
     ASSOCIATE_LOCAL_USER = "associateLocalUser",
     ATTRIBUTE_SYNC_METHOD = "attributeSyncMethod",
+    IDP_GROUP_SYNC_METHOD = "idpGroupSyncMethod",
     SKIP_JIT_FOR_NO_RULE_MATCH = "skipJITForNoRuleMatch",
     FIRST_MATCH_RULE_FEDERATED_ATTRIBUTE = "firstMatchRuleFederatedAttribute",
     FIRST_MATCH_RULE_LOCAL_ATTRIBUTE = "firstMatchRuleLocalAttribute",
@@ -300,6 +302,12 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
             attributeSyncMethod: values?.get(
                 JITProvisioningConstants.ATTRIBUTE_SYNC_METHOD
             ) ?? initialValues?.attributeSyncMethod,
+            idpGroupSyncMethod: values.get(JITProvisioningConstants.IDP_GROUP_SYNC_METHOD) !== undefined
+                ? (values.get(JITProvisioningConstants.IDP_GROUP_SYNC_METHOD)
+                    ?.includes(JITProvisioningConstants.IDP_GROUP_SYNC_METHOD)
+                    ? ConnectionUIConstants.SUPPORTED_IDP_GROUP_SYNC_METHODS.OVERRIDE_ALL
+                    : ConnectionUIConstants.SUPPORTED_IDP_GROUP_SYNC_METHODS.MERGE_WITH_EXISTING)
+                : initialValues?.idpGroupSyncMethod,
             isEnabled: values.get(
                 JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY
             ).includes(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY) ?? initialValues?.isEnabled,
@@ -596,6 +604,41 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                             "forms.jitProvisioning.attributeSyncMethod.hint") }
                                     </Hint>
                                 </Fragment>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
+                {
+                    identityProviderConfig?.jitProvisioningSettings?.idpGroupSyncMethodField?.show &&
+                        isJITProvisioningEnabled && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                <Field
+                                    name={ JITProvisioningConstants.IDP_GROUP_SYNC_METHOD }
+                                    label={ t("authenticationProvider:" +
+                                        "forms.jitProvisioning.idpGroupSyncMethod.label") }
+                                    required={ false }
+                                    requiredErrorMessage=""
+                                    value={
+                                        initialValues?.idpGroupSyncMethod
+                                            === ConnectionUIConstants.SUPPORTED_IDP_GROUP_SYNC_METHODS.OVERRIDE_ALL
+                                            ? [ JITProvisioningConstants.IDP_GROUP_SYNC_METHOD ]
+                                            : []
+                                    }
+                                    type="checkbox"
+                                    children={ [ {
+                                        label: t("authenticationProvider:forms." +
+                                            "jitProvisioning.idpGroupSyncMethod.checkboxLabel"),
+                                        value: JITProvisioningConstants.IDP_GROUP_SYNC_METHOD
+                                    } ] }
+                                    disabled={ !isJITProvisioningEnabled }
+                                    data-componentid={ `${ testId }-idp-group-sync-method` }
+                                    readOnly={ isReadOnly }
+                                />
+                                <Hint>
+                                    { t("authenticationProvider:" +
+                                        "forms.jitProvisioning.idpGroupSyncMethod.hint") }
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
                     )

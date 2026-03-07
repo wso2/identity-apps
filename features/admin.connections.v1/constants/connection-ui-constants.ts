@@ -453,4 +453,15 @@ export class ConnectionUIConstants {
      * Custom authenticator identifier prefix.
      */
     public static readonly CUSTOM_AUTHENTICATOR_IDENTIFIER_PREFIX: string = "custom-";
+
+    /**
+     * Supported IDP group sync methods.
+     */
+    public static readonly SUPPORTED_IDP_GROUP_SYNC_METHODS: {
+        MERGE_WITH_EXISTING: string;
+        OVERRIDE_ALL: string;
+    } = {
+            MERGE_WITH_EXISTING: "MERGE_WITH_EXISTING",
+            OVERRIDE_ALL: "OVERRIDE_ALL"
+        };
 }
