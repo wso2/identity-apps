@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.97.4
+
+### Patch Changes
+
+- [#9667](https://github.com/wso2/identity-apps/pull/9667) [`ad69b9379651fec0b7a42eaabe5b6921a830d423`](https://github.com/wso2/identity-apps/commit/ad69b9379651fec0b7a42eaabe5b6921a830d423) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add override all support for IDP group / role mapping
+
+- Updated dependencies [[`ad69b9379651fec0b7a42eaabe5b6921a830d423`](https://github.com/wso2/identity-apps/commit/ad69b9379651fec0b7a42eaabe5b6921a830d423), [`d939b57796a1b27ca90b2011e71c9b7c167f08b3`](https://github.com/wso2/identity-apps/commit/d939b57796a1b27ca90b2011e71c9b7c167f08b3)]:
+  - @wso2is/admin.connections.v1@2.35.15
+  - @wso2is/admin.extensions.v1@2.40.25
+  - @wso2is/i18n@2.34.9
+  - @wso2is/theme@2.9.4
+  - @wso2is/admin.onboarding.v1@1.0.24
+
 ## 2.97.3
 
 ### Patch Changes

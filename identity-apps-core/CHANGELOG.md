@@ -1,5 +1,18 @@
 # @wso2is/identity-apps-core
 
+## 3.4.5
+
+### Patch Changes
+
+- [#9717](https://github.com/wso2/identity-apps/pull/9717) [`0f7da05933fbe8543a1f079a8902b1c02b3f88ba`](https://github.com/wso2/identity-apps/commit/0f7da05933fbe8543a1f079a8902b1c02b3f88ba) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Integrate flow data retrieval client to invoke flow execute api in accounts webapp
+
+* [#9718](https://github.com/wso2/identity-apps/pull/9718) [`861c888dff4ca8e88e7ec1b7228ef3956a92e293`](https://github.com/wso2/identity-apps/commit/861c888dff4ca8e88e7ec1b7228ef3956a92e293) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add encoding for html attributes in jsps
+
+- [#9716](https://github.com/wso2/identity-apps/pull/9716) [`d939b57796a1b27ca90b2011e71c9b7c167f08b3`](https://github.com/wso2/identity-apps/commit/d939b57796a1b27ca90b2011e71c9b7c167f08b3) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add org identifier handler related changes
+
+- Updated dependencies [[`d939b57796a1b27ca90b2011e71c9b7c167f08b3`](https://github.com/wso2/identity-apps/commit/d939b57796a1b27ca90b2011e71c9b7c167f08b3)]:
+  - @wso2is/theme@2.9.4
+
 ## 3.4.4
 
 ### Patch Changes
