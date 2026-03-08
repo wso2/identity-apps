@@ -191,7 +191,7 @@
             <% if (isEmailOTPVerification) { %>
             + "&isEmailOTPVerification=true"
             <% } %>
-            + "&<%=Encode.forHtmlAttribute(AuthenticationEndpointUtil.cleanErrorMessages(request.getQueryString()))%>";
+            + "&<%=Encode.forJavaScriptBlock(AuthenticationEndpointUtil.cleanErrorMessages(request.getQueryString()))%>";
         <% } %>
     }
 
