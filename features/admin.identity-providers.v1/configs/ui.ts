@@ -19,6 +19,8 @@
 import BasicAuthIcon from "../../themes/default/assets/images/authenticators/basic-auth.svg";
 import CustomAuthenticator from "../../themes/default/assets/images/authenticators/custom-authenticator.svg";
 import FIDOLogo from "../../themes/default/assets/images/authenticators/fido-passkey-black.svg";
+import OrganizationIdentifierHandlerIcon
+    from "../../themes/default/assets/images/authenticators/organization-identifier-handler.svg";
 import SMSOTPIcon from "../../themes/default/assets/images/authenticators/sms-otp.svg";
 import BackupCodesAuthenticatorLogo from "../../themes/default/assets/images/icons/backup-code-icon.svg";
 import CertificateColoredIcon from "../../themes/default/assets/images/icons/certificate-colored-icon.svg";
@@ -27,8 +29,6 @@ import ConnectionIcon from "../../themes/default/assets/images/icons/connection.
 import { ReactComponent as DocumentIcon } from "../../themes/default/assets/images/icons/document-icon.svg";
 import { ReactComponent as GearsIcon } from "../../themes/default/assets/images/icons/gears-icon.svg";
 import MagicLinkLogo from "../../themes/default/assets/images/icons/magic-link-icon.svg";
-import OrganizationIdentifierHandlerIcon
-    from "../../themes/default/assets/images/authenticators/organization-identifier-handler.svg";
 import MagnifierColoredIcon from "../../themes/default/assets/images/icons/magnifier-colored-icon.svg";
 import TOTPIcon from "../../themes/default/assets/images/icons/outline-icons/clock-outline.svg";
 import PushIcon from "../../themes/default/assets/images/icons/push.svg";
@@ -84,6 +84,7 @@ export const getAuthenticatorIcons = (): any => {
         GoogleOIDCAuthenticator: GoogleLogo,
         MagicLinkAuthenticator: MagicLinkLogo,
         Microsoft: MicrosoftLogo,
+        OrganizationIdentifierHandler: OrganizationIdentifierHandlerIcon,
         apple: AppleLogo,
         backupCode: BackupCodesAuthenticatorLogo,
         basic: BasicAuthIcon,
@@ -99,7 +100,6 @@ export const getAuthenticatorIcons = (): any => {
         magicLink: MagicLinkLogo,
         microsoft: MicrosoftLogo,
         office365: Office365Logo,
-        OrganizationIdentifierHandler: OrganizationIdentifierHandlerIcon,
         push: PushIcon,
         "push-notification-authenticator": PushIcon,
         sessionExecutor: ClockColoredIcon,
