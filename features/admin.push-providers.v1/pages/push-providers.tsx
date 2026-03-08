@@ -32,7 +32,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
-import { createPushProvider, deletePushProvider, updatePushProvider } from "../api/push-provider";
+import {
+    createPushProvider,
+    deletePushProvider,
+    updateDefaultPushProviderConfig,
+    updatePushProvider
+} from "../api/push-provider";
+import useGetPushNotificationConfigs from "../api/use-get-push-notification-configs";
 import useGetPushProviderTemplate from "../api/use-get-push-provider-template";
 import useGetPushProviderTemplateMetadata from "../api/use-get-push-provider-template-metadata";
 import useGetPushProvidersList from "../api/use-get-push-providers";
@@ -64,6 +70,8 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
     const [ pushProvider, setPushProvider ] = useState<PushProviderAPIResponseInterface>(null);
     const [ isOpenRevertConfigModal, setOpenRevertConfigModal ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ isInitialized, setIsInitialized ] = useState<boolean>(false);
+    const [ defaultPushProviderTempId, setDefaultPushProviderTempId ] = useState<string>(null);
 
     const {
         data: pushProviderTemplate,
@@ -83,35 +91,132 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
         mutate: mutatePushProvidersListFetchRequest
     } = useGetPushProvidersList();
 
+    const {
+        data: pushNotificationConfigs,
+        isLoading: isPushNotificationConfigsLoading,
+        mutate: mutatePushNotificationConfigsFetchRequest
+    } = useGetPushNotificationConfigs();
+
     useEffect(() => {
-        if (pushProvidersList?.length > 0) {
-            setPushProvider(pushProvidersList[0]);
-            const providerType: string = pushProvidersList[0].provider;
+        // Only run initialization logic when data is ready and not yet initialized
+        if (!availableTemplates || availableTemplates.length === 0 || isPushProvidersListLoading) {
+            return;
+        }
 
-            availableTemplates?.forEach((template: ExtensionTemplateListInterface) => {
-                if (PushProviderConstants.PUSH_PROVIDER_TEMPLATE_NAME_MAPPING.get(template.id) === providerType) {
-                    setSelectedTemplate(template);
+        // Initial setup: Select template based on existing provider or default to first template
+        if (!isInitialized) {
+            if (pushProvidersList?.length > 0) {
+                // Find the first template that has a configured provider
+                let foundTemplate: ExtensionTemplateListInterface = null;
+                let foundProvider: PushProviderAPIResponseInterface = null;
+
+                for (const template of availableTemplates) {
+                    const matchingProvider: PushProviderAPIResponseInterface | undefined = pushProvidersList.find(
+                        (provider: PushProviderAPIResponseInterface) =>
+                            PushProviderConstants.PUSH_PROVIDER_TEMPLATE_NAME_MAPPING
+                                .get(template.id) === provider.provider
+                    );
+
+                    if (matchingProvider) {
+                        foundTemplate = template;
+                        foundProvider = matchingProvider;
+
+                        break;
+                    }
                 }
-            });
-        }
-        if (availableTemplates?.length > 0 && !selectedTemplate) {
-            setSelectedTemplate(availableTemplates[0]);
+
+                if (foundTemplate) {
+                    setSelectedTemplate(foundTemplate);
+                    setPushProvider(foundProvider);
+                } else {
+                    // Provider exists but no matching template, use first template
+                    setSelectedTemplate(availableTemplates[0]);
+                    setPushProvider(null);
+                }
+            } else {
+                // No provider exists, select first template
+                setSelectedTemplate(availableTemplates[0]);
+                setPushProvider(null);
+            }
+            setIsInitialized(true);
+
+            return;
         }
 
-    }, [ pushProvidersList, availableTemplates ]);
+        // If already initialized, just update the provider for the selected template
+        if (selectedTemplate) {
+            const matchingProvider: PushProviderAPIResponseInterface | undefined = pushProvidersList?.find(
+                (provider: PushProviderAPIResponseInterface) =>
+                    PushProviderConstants.PUSH_PROVIDER_TEMPLATE_NAME_MAPPING
+                        .get(selectedTemplate.id) === provider.provider
+            );
+
+            setPushProvider(matchingProvider || null);
+        }
+
+    }, [ pushProvidersList, availableTemplates, pushNotificationConfigs ]);
+
+    useEffect(() => {
+        if (pushNotificationConfigs?.defaultPushProvider) {
+            for (const [ templateId, providerName ] of
+                PushProviderConstants.PUSH_PROVIDER_TEMPLATE_NAME_MAPPING.entries()) {
+                if (providerName === pushNotificationConfigs.defaultPushProvider) {
+                    setDefaultPushProviderTempId(templateId);
+
+                    return;
+                }
+            }
+            setDefaultPushProviderTempId(null);
+        } else {
+            setDefaultPushProviderTempId(null);
+        }
+    }, [ pushNotificationConfigs?.defaultPushProvider ]);
 
     const handleBackButtonClick = () => {
         history.push(`${AppConstants.getPaths().get("NOTIFICATION_CHANNELS")}`);
     };
 
+    const handlePushTemplateSelect = (template: ExtensionTemplateListInterface) => {
+        setSelectedTemplate(template);
+        setPushProvider(pushProvidersList?.find((provider: PushProviderAPIResponseInterface) =>
+            PushProviderConstants.PUSH_PROVIDER_TEMPLATE_NAME_MAPPING.get(template.id) === provider.provider
+        ) || null);
+    };
+
+    const handleDefaultPushProviderConfigUpdate = (pushProvider: string | null): void => {
+        updateDefaultPushProviderConfig(pushProvider)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("pushProviders:alerts.updateDefault.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("pushProviders:alerts.updateDefault.success.message")
+                }));
+            })
+            .catch((error: IdentityAppsApiException) => {
+                dispatch(addAlert({
+                    description: error?.response?.data?.description
+                        || t("pushProviders:alerts.updateDefault.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.response?.data?.message
+                        || t("pushProviders:alerts.updateDefault.error.message")
+                }));
+            })
+            .finally(() => {
+                mutatePushNotificationConfigsFetchRequest();
+            });
+    };
+
     const handlePushProviderDelete = (): void => {
-        deletePushProvider()
+        deletePushProvider(pushProvider.name)
             .then(() => {
                 dispatch(addAlert({
                     description: t("pushProviders:alerts.delete.success.description"),
                     level: AlertLevels.SUCCESS,
                     message: t("pushProviders:alerts.delete.success.message")
                 }));
+                if (pushProvider.provider === pushNotificationConfigs?.defaultPushProvider) {
+                    handleDefaultPushProviderConfigUpdate(null);
+                }
             })
             .catch((error: IdentityAppsApiException) => {
                 dispatch(addAlert({
@@ -132,8 +237,8 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
             });;
     };
 
-    const handlePushProviderUpdate = ( data: PushProviderAPIInterface ): void => {
-        updatePushProvider(data)
+    const handlePushProviderUpdate = ( data: PushProviderAPIInterface, callback: () => void ): void => {
+        updatePushProvider(pushProvider.name, data)
             .then(() => {
                 dispatch(addAlert({
                     description: t("pushProviders:alerts.create.success.description"),
@@ -151,6 +256,7 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
                 }));
             })
             .finally(() => {
+                callback();
                 setIsSubmitting(false);
                 mutatePushProvidersListFetchRequest();
                 mutatePushProviderTemplateFetchRequest();
@@ -204,26 +310,28 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
                 categories={ PushProviderConstants.NOTIFICATION_PROVIDER_CATEGORIES_INFO }
             >
                 <PushProvidersGrid
-                    onTemplateSelect={ (template: ExtensionTemplateListInterface) => {
-                        setSelectedTemplate(template);
-                    } }
+                    onTemplateSelect={ handlePushTemplateSelect }
                     onTemplatesLoad={ (templates: ExtensionTemplateListInterface[]) => {
                         setAvailableTemplates(templates);
                     } }
                     selectedTemplate={ selectedTemplate }
+                    defaultPushProviderId={ defaultPushProviderTempId }
                 />
                 <PushProviderSettings
                     pushProvider={ pushProvider }
                     pushProviderTemplateInfo={ selectedTemplate }
                     pushProviderTemplateData={ pushProviderTemplate }
                     pushProviderTemplateMetadata={ pushProviderTemplateMetadata }
+                    defaultPushProvider={ pushNotificationConfigs?.defaultPushProvider }
                     isLoading={ isPushProviderTemplateLoading
                         || isPushProviderTemplateMetadataLoading
                         || isPushProvidersListLoading
+                        || isPushNotificationConfigsLoading
                     }
                     handleDelete={ handlePushProviderDelete }
                     handleUpdate={ handlePushProviderUpdate }
                     handleCreate={ handlePushProviderCreate }
+                    handleDefaultUpdate={ handleDefaultPushProviderConfigUpdate }
                 />
                 <Show
                     when={ featureConfig?.notificationChannels?.scopes?.delete }
@@ -238,6 +346,9 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
                             header={ t("pushProviders:dangerZoneGroup.revertConfig.heading") }
                             subheader={ t("pushProviders:dangerZoneGroup.revertConfig.subHeading") }
                             onActionClick={ (): void => {
+                                if (!pushProvider) {
+                                    return;
+                                }
                                 setOpenRevertConfigModal(true);
                             } }
                         />

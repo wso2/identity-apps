@@ -48,6 +48,14 @@ export interface pushProvidersNS {
         delete: {
             success: NotificationItem;
             error: NotificationItem;
-        }
-    }
+        };
+        updateDefault: {
+            success: NotificationItem;
+            error: NotificationItem;
+        };
+    };
+    pushProviderSettings: {
+        defaultSender: string;
+        defaultSenderDescription: string;
+    };
 }

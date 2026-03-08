@@ -25,6 +25,7 @@ import {
     FieldHandlerTypes
 } from "../models/dynamic-fields";
 import disableProperty from "../utils/disable-property";
+import expandObjectFields from "../utils/expand-object-fields";
 import templatedProperty from "../utils/templated-property";
 import uniqueIDGenerator from "../utils/unique-id-generator";
 
@@ -101,6 +102,14 @@ const useSubmissionHandlers = (
                         values,
                         field?.name,
                         props?.propertyPath as string
+                    );
+
+                    break;
+                case CommonSubmissionHandlers.EXPAND_OBJECT_PROPERTY:
+                    expandObjectFields(
+                        values,
+                        field?.name,
+                        props?.delimiter as string
                     );
 
                     break;

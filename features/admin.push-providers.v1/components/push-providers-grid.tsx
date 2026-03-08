@@ -46,6 +46,10 @@ export interface PushProvidersGridPropsInterface extends IdentifiableComponentIn
      * Selected template.
      */
     selectedTemplate: ExtensionTemplateListInterface;
+    /**
+     * Default push provider
+     */
+    defaultPushProviderId: string | null;
 }
 
 /**
@@ -59,6 +63,7 @@ const PushProvidersGrid: FunctionComponent<PushProvidersGridPropsInterface> = ({
     onTemplateSelect,
     onTemplatesLoad,
     selectedTemplate,
+    defaultPushProviderId,
     ["data-componentid"]: componentId = "push-providers-grid"
 }: PushProvidersGridPropsInterface): ReactElement => {
 
@@ -118,6 +123,7 @@ const PushProvidersGrid: FunctionComponent<PushProvidersGridPropsInterface> = ({
                                                         handleTemplateSelection(e, template);
                                                     } }
                                                     selected={ selectedTemplate === template }
+                                                    isDefault={ defaultPushProviderId === template.id }
                                                 />
                                             );
                                         })

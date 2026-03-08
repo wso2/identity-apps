@@ -182,6 +182,7 @@ export const common: CommonNS = {
     createdOn: "Créé le",
     dangerZone: "Zone de danger",
     darkMode: "Mode sombre",
+    default: "Défaut",
     delete: "Supprimer",
     deprecated: "Cette configuration est obsolète et sera supprimée dans une version future.",
     description: "Description",

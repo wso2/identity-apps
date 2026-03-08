@@ -18,6 +18,7 @@
 
 import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
+import Chip from "@oxygen-ui/react/Chip";
 import Typography from "@oxygen-ui/react/Typography";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
@@ -53,12 +54,18 @@ export interface PushProviderCardPropsInterface extends IdentifiableComponentInt
     template: ExtensionTemplateListInterface;
 
     selected: boolean
+
+    /**
+     * Is this the default push provider.
+     */
+    isDefault: boolean;
 }
 
 const PushProviderCard: FunctionComponent<PushProviderCardPropsInterface> = ({
     template,
     onClick,
     selected,
+    isDefault,
     ["data-componentid"]: componentId = "push-provider-card"
 }: PushProviderCardPropsInterface): ReactElement => {
 
@@ -136,6 +143,14 @@ const PushProviderCard: FunctionComponent<PushProviderCardPropsInterface> = ({
                 <div className="push-provider-template-name-label">
                     <Typography variant="h6">
                         { template?.name }
+                        {
+                            isDefault && (
+                                <>
+                                    <span>&nbsp;&nbsp;</span>
+                                    <Chip variant="filled" color="default" size="medium" label={ t("common:default") }/>
+                                </>
+                            )
+                        }
                     </Typography>
                 </div>
                 {

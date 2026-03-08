@@ -18,6 +18,7 @@
 
 export interface PushProviderResourceEndpointsInterface {
     pushProviders: string;
+    pushNotificationConfigs: string;
 }
 
 export interface PushProviderTemplateInterface {

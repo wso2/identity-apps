@@ -23,6 +23,7 @@ import {
     DynamicFieldInterface,
     FieldHandlerTypes
 } from "../models/dynamic-fields";
+import extractObjectField from "../utils/extract-object-field";
 import extractTemplatedFields from "../utils/extract-templated-fields";
 
 /**
@@ -74,6 +75,14 @@ const useInitializeHandlers = (
                         values,
                         field?.name,
                         props?.propertyPath as string
+                    );
+
+                    break;
+                case CommonInitializeHandlers.EXTRACT_OBJECT_FIELDS:
+                    extractObjectField(
+                        values,
+                        field?.name,
+                        props?.delimiter as string
                     );
 
                     break;
