@@ -27,6 +27,7 @@ export interface AgentSchema {
     Url?: string;
     Description?: string;
     DisplayName?: string;
+    IsUserServingAgent?: boolean;
     [key: string]: any;
 }
 
@@ -34,5 +35,6 @@ export interface AgentScimSchema {
     id?: string;
     userName?: string;
     password?: string;
+    applicationClientId?: string;
     "urn:scim:wso2:agent:schema"?: AgentSchema;
 }

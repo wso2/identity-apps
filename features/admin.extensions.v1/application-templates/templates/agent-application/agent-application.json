@@ -1,0 +1,18 @@
+{
+    "id": "agent-application",
+    "templateId": "agent-application",
+    "name": "Agent Application",
+    "description": "Application auto-created for AI agents using OAuth2 client credentials.",
+    "image": "m2m",
+    "authenticationProtocol": "oidc",
+    "category": "DEFAULT",
+    "displayOrder": -1,
+    "self": "",
+    "subTemplatesSectionTitle": "",
+    "templateGroup": "",
+    "grant_type":"",
+    "types": [
+        "oauth2"
+    ],
+    "application": null
+}
