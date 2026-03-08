@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.4.6
+
+### Patch Changes
+
+- [#9719](https://github.com/wso2/identity-apps/pull/9719) [`6287ee8da534f772b8f3020341fded201fe4fec3`](https://github.com/wso2/identity-apps/commit/6287ee8da534f772b8f3020341fded201fe4fec3) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Use char[] data type to hold password values in the runtime
+
 ## 3.4.5
 
 ### Patch Changes
