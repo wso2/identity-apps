@@ -197,7 +197,9 @@ export interface actionsNS {
             info: {
                 title: string;
                 message: {
-                    preIssueAccessToken: string;
+                    preIssueAccessToken: string | {
+                        [key: string]: string;
+                    };
                     preUpdatePassword: string;
                 }
             };
