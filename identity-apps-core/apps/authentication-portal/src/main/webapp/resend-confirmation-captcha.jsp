@@ -87,7 +87,7 @@
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.confirmation.page.title")%>
                 </h3>
 
-                <form action="login.do?resend_username=<%=Encode.forHtml(URLEncoder.encode(request.getParameter("failedUsername"), UTF_8))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>" method="post" id="resendForm">
+                <form action="login.do?resend_username=<%=Encode.forHtml(URLEncoder.encode(request.getParameter("failedUsername"), UTF_8))%>&<%=Encode.forHtmlAttribute(AuthenticationEndpointUtil.cleanErrorMessages(request.getQueryString()))%>" method="post" id="resendForm">
 
                     <div><%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.confirmation.page.message")%></div>
 
