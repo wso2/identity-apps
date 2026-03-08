@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -53,6 +53,21 @@ export const validation: validationNS = {
     },
     pageTitle: "Password Validation",
     passwordExpiry: {
+        enforcementScope: {
+            appWithEnforcer: {
+                hint: "Password expiry will only be enforced in login flows where the Password Reset " +
+                    "Enforcer is added as an authentication step. " +
+                    "Organization-wide enforcement will be disabled.",
+                label: "Selected application login flows"
+            },
+            heading: "Enforce password expiry for",
+            orgWide: {
+                hint: "Password expiry is enforced globally at sign-in across all applications. " +
+                    "If a user signs in after their password has expired, they will be required " +
+                    "to change their password at the end of the login flow.",
+                label: "All application login flows"
+            }
+        },
         heading: "Password Expiration",
         rules: {
             actions: {

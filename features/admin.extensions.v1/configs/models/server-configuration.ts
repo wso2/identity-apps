@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -89,6 +89,7 @@ export interface PasswordHistoryCountInterface extends ValidationFormInterface {
 export interface PasswordExpiryInterface extends ValidationFormInterface {
     passwordExpiryTime?: number | string;
     passwordExpiryEnabled?: boolean;
+    passwordExpiryEnforcementScope?: string;
 }
 
 export interface PasswordPoliciesInterface extends ValidationFormInterface {
@@ -98,4 +99,5 @@ export interface PasswordPoliciesInterface extends ValidationFormInterface {
     passwordHistoryCountEnabled?: boolean;
     passwordExpiryRules?: Record<string, string>;
     passwordExpirySkipFallback?: boolean;
+    passwordExpiryEnforcementScope?: string;
 }
