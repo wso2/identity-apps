@@ -198,7 +198,9 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 const error: Partial<WorkflowOperationsDetailsFormValuesInterface> = {};
 
                 if (selectedOperations.length === 0) {
-                    error.matchedOperations = t("approvalWorkflows:forms.operations.dropDown.nullValidationErrorMessage");
+                    error.matchedOperations = t(
+                        "approvalWorkflows:forms.operations.dropDown.nullValidationErrorMessage"
+                    );
                 }
 
                 return error;
@@ -264,7 +266,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
             /**
          * Checks if a rule is configured for an operation.
          */
-            const isRuleConfigured = useCallback(
+            const isRuleConfigured: (operationValue: string) => boolean = useCallback(
                 (operationValue: string): boolean => {
                     const rule: RuleWithoutIdInterface = operationRules?.[operationValue];
 
@@ -335,22 +337,22 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                     dataIndex: "text",
                     id: "operation",
                     key: "operation",
-                    title: "",
-                    width: 8,
                     render: (operation: DropdownPropsInterface): ReactNode => (
-                        <div className="operation-name" data-componentid={ `${componentId}-operation-${operation.value}` }>
+                        <div
+                            className="operation-name"
+                            data-componentid={ `${componentId}-operation-${operation.value}` }
+                        >
                             { operation.text }
                         </div>
-                    )
+                    ),
+                    title: "",
+                    width: 8
                 },
                 {
                     allowToggleVisibility: false,
                     dataIndex: "rules",
                     id: "rules",
                     key: "rules",
-                    textAlign: "right",
-                    title: "",
-                    width: 8,
                     render: (operation: DropdownPropsInterface): ReactNode => {
                         const configured: boolean = isRuleConfigured(operation.value);
 
@@ -372,7 +374,10 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                 </Button>
                             </div>
                         );
-                    }
+                    },
+                    textAlign: "right",
+                    title: "",
+                    width: 8
                 },
                 {
                     allowToggleVisibility: false,
@@ -442,7 +447,9 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                     placeholder={ t(
                                                         "approvalWorkflows:forms.operations.dropDown.placeholder"
                                                     ) }
-                                                    helperText={ shouldShowErrors ? errors.matchedOperations : undefined }
+                                                    helperText={
+                                                        shouldShowErrors ? errors.matchedOperations : undefined
+                                                    }
                                                     error={ shouldShowErrors && !!errors.matchedOperations }
                                                     data-componentid={ `${componentId}-field-operation-search` }
                                                 />
@@ -481,7 +488,9 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                         subTitle={ subTitle }
                                                         disabled={ disabled }
                                                         renderOptionProps={ props }
-                                                        data-componentid={ `${componentId}-option-operation-${option.key}` }
+                                                        data-componentid={
+                                                            `${componentId}-option-operation-${option.key}`
+                                                        }
                                                     />
                                                 );
                                             } }

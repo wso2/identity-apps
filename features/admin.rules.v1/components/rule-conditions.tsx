@@ -473,14 +473,14 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         );
 
         let resourceType: string;
-        let shouldFetch: boolean = false;
+        let _shouldFetch: boolean = false;
 
         // TODO: Handle other resource types once the API is updated with the required data.
         if (expressionField === "application") {
             resourceType = "applications";
-            shouldFetch = true;
+            _shouldFetch = true;
         } else if (expressionField === "claim") {
-            shouldFetch = false;
+            _shouldFetch = false;
         }
 
         // Generic detail fetch for non-claim, non-application fields.
