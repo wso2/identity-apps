@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -71,8 +71,9 @@ import { generateRandomNames } from "../utils/random-name-generator";
 export interface OnboardingWizardPropsInterface extends IdentifiableComponentInterface {
     initialData?: OnboardingDataInterface;
     initialStep?: OnboardingStep;
-    onComplete: (data: OnboardingDataInterface) => void;
-    onSkip: () => void;
+    isReturningUser?: boolean;
+    onComplete: (data: OnboardingDataInterface) => Promise<void>;
+    onSkip: () => Promise<void>;
 }
 
 /**
@@ -231,6 +232,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
     const {
         initialData,
         initialStep,
+        isReturningUser = false,
         onComplete,
         onSkip,
         ["data-componentid"]: componentId = OnboardingComponentIds.WIZARD
@@ -402,7 +404,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         const nextStep: OnboardingStep = getNextStep(currentStep, onboardingData);
 
         if (currentStep === OnboardingStep.SUCCESS) {
-            onComplete(onboardingData);
+            await onComplete(onboardingData);
         } else if (
             // Create app when clicking Finish from Design Login
             currentStep === OnboardingStep.DESIGN_LOGIN ||
@@ -425,8 +427,8 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         setCurrentStep(previousStep);
     }, [ currentStep, onboardingData ]);
 
-    const handleSkip: () => void = useCallback((): void => {
-        onSkip();
+    const handleSkip: () => Promise<void> = useCallback(async (): Promise<void> => {
+        await onSkip();
     }, [ onSkip ]);
 
     const isFirstStep: boolean = visibleStep === OnboardingStep.WELCOME;
@@ -447,6 +449,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
                     <WelcomeStep
                         data-componentid={ `${componentId}-welcome` }
                         greeting={ greeting }
+                        isReturningUser={ isReturningUser }
                         onChoiceSelect={ updateChoice }
                         selectedChoice={ onboardingData.choice }
                     />
