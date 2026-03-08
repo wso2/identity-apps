@@ -21,6 +21,13 @@ import { FeatureGateInterface, FeatureStatus } from "../models/feature-gate";
 export const featureGateConfig: FeatureGateInterface  = {
     console:  {
         application: {
+            edit: {
+                accessConfiguration: {
+                    oidcFrontChannelLogout: {
+                        status: FeatureStatus.DEFAULT
+                    }
+                }
+            },
             signIn: {
                 adaptiveAuth : {
                     status: FeatureStatus.DEFAULT,

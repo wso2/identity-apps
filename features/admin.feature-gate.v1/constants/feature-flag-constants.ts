@@ -67,6 +67,7 @@ class FeatureFlagConstants {
             "loginAndRegistration.userOnboarding.registrationFlowBuilder",
         LOGIN_AND_REGISTRATION_SESSION_MANAGEMENT: "console.loginAndRegistration.sessionManagement",
         MCP_SERVERS: "mcpServers",
+        OIDC_FRONT_CHANNEL_LOGOUT: "console.application.edit.accessConfiguration.oidcFrontChannelLogout",
         ORGANIZATION_BRANDING_TEXT: "branding.stylesAndText.organization.text",
         PUSH_PROVIDERS: "pushProviders",
         PUSH_PROVIDER_TEMPLATES: "pushProviders.templates",
