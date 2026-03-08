@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,29 +16,11 @@
  * under the License.
  */
 
-export interface rulesNS {
-    alerts: {
-        resourceNotFound: {
-            description: string;
-            title: string;
-        };
-    };
-    buttons: {
-        and: string;
-        clearRule: string;
-        newRule: string;
-        or: string;
-    };
-    fields: {
-        autocomplete: {
-            clearFilterActionText: string;
-            moreItemsMessage: string;
-            placeholderText: string;
-            selectPlaceholderText: string;
-        };
-    };
-    texts: {
-        execute: string;
-        if: string;
-    };
+.rule-configuration-modal-content.OxygenDialogContent-root {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.rule-configuration-modal-actions {
+    width: 100%;
 }

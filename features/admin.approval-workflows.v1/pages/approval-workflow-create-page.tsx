@@ -25,6 +25,7 @@ import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
@@ -118,10 +119,35 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
         setApprovalWorkflowFormData((prevData: ApprovalWorkflowFormDataInterface) => {
             return {
                 ...prevData,
-                workflowOperationsDetails: values
+                workflowOperationsDetails: {
+                    ...values,
+                    operationRules: prevData?.workflowOperationsDetails?.operationRules
+                }
             };
         });
         setActiveStep(2);
+    };
+
+    /**
+     * Handles rule configuration updates for operations.
+     * @param operationValue - The operation identifier.
+     * @param rule - The configured rule.
+     */
+    const handleRuleUpdate = (operationValue: string, rule: RuleWithoutIdInterface) => {
+        setApprovalWorkflowFormData((prevData: ApprovalWorkflowFormDataInterface) => {
+            const updatedOperationRules: Record<string, RuleWithoutIdInterface> = {
+                ...prevData?.workflowOperationsDetails?.operationRules,
+                [operationValue]: rule
+            };
+
+            return {
+                ...prevData,
+                workflowOperationsDetails: {
+                    ...prevData?.workflowOperationsDetails,
+                    operationRules: updatedOperationRules
+                }
+            };
+        });
     };
 
     /**
@@ -202,11 +228,19 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                 try {
                     const associationPayloads: WorkflowAssociationPayload[] =
                         approvalWorkflowFormData.workflowOperationsDetails.matchedOperations.map(
-                            (operation: DropdownPropsInterface) => ({
-                                associationName: `Association for ${operation.value ?? operation.value}`,
-                                operation: operation.value,
-                                workflowId: response.id
-                            })
+                            (operation: DropdownPropsInterface) => {
+                                const rule: RuleWithoutIdInterface =
+                                    approvalWorkflowFormData.workflowOperationsDetails.operationRules?.[
+                                        operation.value
+                                    ];
+
+                                return {
+                                    associationName: `Association for ${operation.value ?? operation.value}`,
+                                    operation: operation.value,
+                                    workflowId: response.id,
+                                    ...(rule && rule.rules && rule.rules.length > 0 ? { rule } : {})
+                                };
+                            }
                         );
 
                     // Wait for all associations to complete
@@ -336,6 +370,10 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                                 isReadOnly={ !hasApprovalWorkflowCreatePermission }
                                 initialValues={ approvalWorkflowFormData?.workflowOperationsDetails ?? {} }
                                 onSubmit={ onWorkflowOperationsDetailsFormSubmit }
+                                operationRules={
+                                    approvalWorkflowFormData?.workflowOperationsDetails?.operationRules ?? {}
+                                }
+                                onRuleUpdate={ handleRuleUpdate }
                                 data-componentid={ `${componentId}-workflow-operations-details-form` }
                             />
                             <div
@@ -378,11 +416,11 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                                 </Typography>)
                             }
                         >
-                            <Typography variant="h4" data-componentid={ `${componentId}-step-2-title` }>
+                            <Typography variant="h4" data-componentid={ `${componentId}-step-3-title` }>
                                 { t("approvalWorkflows:pageLayout.create.stepper.step3.title") }
                             </Typography>
                         </StepLabel>
-                        <StepContent data-componentid={ `${componentId}-step-2-content` }>
+                        <StepContent data-componentid={ `${componentId}-step-3-content` }>
                             <ConfigurationsForm
                                 ref={ configurationsFormRef }
                                 isReadOnly={ !hasApprovalWorkflowCreatePermission }

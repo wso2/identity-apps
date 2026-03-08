@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,20 +17,24 @@
  */
 
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import Button from "@oxygen-ui/react/Button";
 import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
+import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FormRenderProps } from "@wso2is/form";
-import { Heading, Hint } from "@wso2is/react-components";
+import { DataTable, Heading, Hint, TableActionsInterface, TableColumnInterface } from "@wso2is/react-components";
 import React, {
     ForwardRefExoticComponent,
     ForwardedRef,
     MutableRefObject,
     ReactElement,
+    ReactNode,
     RefAttributes,
     SyntheticEvent,
     forwardRef,
+    useCallback,
     useEffect,
     useImperativeHandle,
     useRef,
@@ -39,7 +43,9 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { SemanticICONS } from "semantic-ui-react";
 import AutoCompleteRenderOption from "./auto-complete-render-option";
+import RuleConfigurationModal from "./rule-configuration-modal";
 import { useGetWorkflowAssociations } from "../../api/use-get-workflow-associations";
 import { DropdownPropsInterface, WorkflowOperationsDetailsFormValuesInterface } from "../../models/ui";
 import "./general-approval-workflow-details-form.scss";
@@ -81,6 +87,14 @@ interface WorkflowOperationsDetailsPropsInterface extends IdentifiableComponentI
      * The workflow ID being edited (optional, only for edit mode).
      */
     workflowId?: string;
+    /**
+     * Current rule configurations for operations.
+     */
+    operationRules?: Record<string, RuleWithoutIdInterface>;
+    /**
+     * Callback to update rule for a specific operation.
+     */
+    onRuleUpdate?: (operationValue: string, rule: RuleWithoutIdInterface) => void;
 }
 
 /**
@@ -121,18 +135,21 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 isEditPage,
                 onChange,
                 workflowId,
-                ["data-componentid"]: componentId
-                = "workflow-operations"
+                operationRules = {},
+                onRuleUpdate,
+                ["data-componentid"]: componentId = "workflow-operations"
             }: WorkflowOperationsDetailsPropsInterface,
             ref: ForwardedRef<WorkflowOperationsDetailsFormRef>
         ): ReactElement => {
-
             const { t } = useTranslation();
             const dispatch: Dispatch = useDispatch();
 
             const triggerFormSubmit: MutableRefObject<() => void> = useRef<(() => void) | null>(null);
 
             const [ selectedOperations, setSelectedOperations ] = useState<DropdownPropsInterface[]>([]);
+            const [ editingOperation, setEditingOperation ] = useState<DropdownPropsInterface | null>(null);
+            const [ isModalOpen, setIsModalOpen ] = useState<boolean>(false);
+            const [ shouldShowErrors, setShouldShowErrors ] = useState<boolean>(false);
 
             // Fetch existing workflow associations for all operations.
             // For edit mode with workflowId, fetch only current workflow's associations.
@@ -144,9 +161,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
             } = useGetWorkflowAssociations(null, null, null);
 
             // Fetch current workflow's associations separately when in edit mode
-            const {
-                data: currentWorkflowAssociationsData
-            } = useGetWorkflowAssociations(
+            const { data: currentWorkflowAssociationsData } = useGetWorkflowAssociations(
                 null,
                 null,
                 workflowId ? `workflowId eq ${workflowId}` : null,
@@ -171,30 +186,27 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
             }, [ initialValues ]);
 
             /**
-             * Refresh workflow associations when initial values change (indicating an update occurred).
-             */
+         * Refresh workflow associations when initial values change (indicating an update occurred).
+         */
             useEffect(() => {
                 if (initialValues?.matchedOperations && isEditPage) {
                     mutateWorkflowAssociations();
                 }
             }, [ initialValues?.matchedOperations ]);
 
-            const validateForm = ():
-                Partial<WorkflowOperationsDetailsFormValuesInterface> => {
+            const validateForm = (): Partial<WorkflowOperationsDetailsFormValuesInterface> => {
                 const error: Partial<WorkflowOperationsDetailsFormValuesInterface> = {};
 
                 if (selectedOperations.length === 0) {
-                    error.matchedOperations = t(
-                        "approvalWorkflows:forms.operations.dropDown.nullValidationErrorMessage"
-                    );
+                    error.matchedOperations = t("approvalWorkflows:forms.operations.dropDown.nullValidationErrorMessage");
                 }
 
                 return error;
             };
 
             /**
-             * Show an alert if fetching workflow associations fails.
-             */
+         * Show an alert if fetching workflow associations fails.
+         */
             useEffect(() => {
                 if (workflowAssociationsError) {
                     dispatch(
@@ -238,9 +250,9 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
             };
 
             /**
-             * Handles the selection change in the autocomplete.
-             * @param selectedOperations - The newly selected operations.
-             */
+         * Handles the selection change in the autocomplete.
+         * @param selectedOperations - The newly selected operations.
+         */
             const handleOperationSelectionChange = (
                 event: SyntheticEvent,
                 newSelectedOperations: DropdownPropsInterface[]
@@ -248,6 +260,129 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 setSelectedOperations(newSelectedOperations);
                 onChange?.(newSelectedOperations);
             };
+
+            /**
+         * Checks if a rule is configured for an operation.
+         */
+            const isRuleConfigured = useCallback(
+                (operationValue: string): boolean => {
+                    const rule: RuleWithoutIdInterface = operationRules?.[operationValue];
+
+                    return rule && rule.rules && rule.rules.length > 0;
+                },
+                [ operationRules ]
+            );
+
+            /**
+         * Removes an operation from the selected operations list.
+         */
+            const handleOperationRemove = (operation: DropdownPropsInterface): void => {
+                const newSelectedOperations: DropdownPropsInterface[] = selectedOperations.filter(
+                    (op: DropdownPropsInterface) => op.value !== operation.value
+                );
+
+                setSelectedOperations(newSelectedOperations);
+                onChange?.(newSelectedOperations);
+            };
+
+            /**
+         * Opens the rule configuration modal for a specific operation.
+         */
+            const handleOpenRuleModal = (operation: DropdownPropsInterface): void => {
+                setEditingOperation(operation);
+                setIsModalOpen(true);
+            };
+
+            /**
+         * Closes the rule configuration modal.
+         */
+            const handleCloseModal = (): void => {
+                setIsModalOpen(false);
+                setEditingOperation(null);
+            };
+
+            /**
+         * Saves the configured rule for the editing operation.
+         */
+            const handleSaveRule = (rule: RuleWithoutIdInterface): void => {
+                if (editingOperation && onRuleUpdate) {
+                    onRuleUpdate(editingOperation.value, rule);
+                }
+                handleCloseModal();
+            };
+
+            /**
+         * Resolves data table actions for the operations table.
+         */
+            const resolveTableActions = (): TableActionsInterface[] => [
+                {
+                    hidden: (): boolean => isReadOnly,
+                    icon: (): SemanticICONS => "trash alternate",
+                    onClick: (_e: SyntheticEvent, operation: DropdownPropsInterface): void => {
+                        handleOperationRemove(operation);
+                    },
+                    popupText: (): string => t("common:remove"),
+                    renderer: "semantic-icon"
+                }
+            ];
+
+            /**
+         * Resolves data table columns for the operations table.
+         */
+            const resolveTableColumns = (): TableColumnInterface[] => [
+                {
+                    allowToggleVisibility: false,
+                    dataIndex: "text",
+                    id: "operation",
+                    key: "operation",
+                    title: "",
+                    width: 8,
+                    render: (operation: DropdownPropsInterface): ReactNode => (
+                        <div className="operation-name" data-componentid={ `${componentId}-operation-${operation.value}` }>
+                            { operation.text }
+                        </div>
+                    )
+                },
+                {
+                    allowToggleVisibility: false,
+                    dataIndex: "rules",
+                    id: "rules",
+                    key: "rules",
+                    textAlign: "right",
+                    title: "",
+                    width: 8,
+                    render: (operation: DropdownPropsInterface): ReactNode => {
+                        const configured: boolean = isRuleConfigured(operation.value);
+
+                        return (
+                            <div
+                                className="operation-rules-actions"
+                                data-componentid={ `${componentId}-rules-${operation.value}` }
+                            >
+                                <Button
+                                    variant="outlined"
+                                    size="small"
+                                    disabled={ isReadOnly }
+                                    onClick={ () => handleOpenRuleModal(operation) }
+                                    data-componentid={ `${componentId}-rule-button-${operation.value}` }
+                                >
+                                    { configured
+                                        ? t("approvalWorkflows:pageLayout.create.ruleConditions.editRule")
+                                        : t("approvalWorkflows:pageLayout.create.ruleConditions.addRule") }
+                                </Button>
+                            </div>
+                        );
+                    }
+                },
+                {
+                    allowToggleVisibility: false,
+                    dataIndex: "action",
+                    id: "actions",
+                    key: "actions",
+                    textAlign: "right",
+                    title: ""
+                }
+            ];
 
             return (
                 <FinalForm
@@ -262,10 +397,19 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                     initialValues={ initialValues }
                     validate={ validateForm }
                     render={ ({ handleSubmit, errors }: FormRenderProps) => {
-                        triggerFormSubmit.current = handleSubmit;
+                        triggerFormSubmit.current = () => {
+                            setShouldShowErrors(true);
+                            handleSubmit();
+                        };
 
                         return (
-                            <form onSubmit={ handleSubmit } className="workflow-operations-details-form">
+                            <form
+                                onSubmit={ (event: React.FormEvent) => {
+                                    setShouldShowErrors(true);
+                                    handleSubmit(event);
+                                } }
+                                className="workflow-operations-details-form"
+                            >
                                 <Grid
                                     xs={ 12 }
                                     sm={ 4 }
@@ -291,14 +435,15 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                 isOperationDisabled(option)
                                             }
                                             value={ selectedOperations }
+                                            renderTags={ () => null }
                                             renderInput={ (params: AutocompleteRenderInputParams) => (
                                                 <TextField
                                                     { ...params }
-                                                    placeholder={
-                                                        t("approvalWorkflows:forms.operations.dropDown.placeholder")
-                                                    }
-                                                    helperText={ errors.matchedOperations }
-                                                    error={ !!errors.matchedOperations }
+                                                    placeholder={ t(
+                                                        "approvalWorkflows:forms.operations.dropDown.placeholder"
+                                                    ) }
+                                                    helperText={ shouldShowErrors ? errors.matchedOperations : undefined }
+                                                    error={ shouldShowErrors && !!errors.matchedOperations }
                                                     data-componentid={ `${componentId}-field-operation-search` }
                                                 />
                                             ) }
@@ -308,9 +453,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                 { inputValue }: { inputValue: string }
                                             ) =>
                                                 options.filter((option: DropdownPropsInterface) =>
-                                                    option.text
-                                                        .toLowerCase()
-                                                        .includes(inputValue.toLowerCase())
+                                                    option.text.toLowerCase().includes(inputValue.toLowerCase())
                                                 )
                                             }
                                             isOptionEqualToValue={ (
@@ -326,7 +469,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                 const subTitle: string = disabled
                                                     ? t(
                                                         "approvalWorkflows:forms.operations.dropDown." +
-                                                        "alreadyAssignedMessage",
+                                                          "alreadyAssignedMessage",
                                                         { defaultValue: "Already assigned to another workflow" }
                                                     )
                                                     : undefined;
@@ -338,23 +481,46 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                         subTitle={ subTitle }
                                                         disabled={ disabled }
                                                         renderOptionProps={ props }
-                                                        data-componentid={
-                                                            `${componentId}-option-operation-${option.key}`
-                                                        }
+                                                        data-componentid={ `${componentId}-option-operation-${option.key}` }
                                                     />
                                                 );
                                             } }
                                         />
-                                        { isEditPage && (<Hint className="hint" compact>
-                                            { t("approvalWorkflows:pageLayout.create.stepper.step2.hint") }
-                                        </Hint>) }
                                     </div>
                                 </Grid>
+
+                                { selectedOperations.length > 0 && (
+                                    <Grid xs={ 12 } className="operations-table-container">
+                                        <DataTable<DropdownPropsInterface>
+                                            data-componentid={ `${componentId}-operations-data-table` }
+                                            actions={ resolveTableActions() }
+                                            columns={ resolveTableColumns() }
+                                            data={ selectedOperations }
+                                            onRowClick={ () => void 0 }
+                                            showHeader={ false }
+                                        />
+                                    </Grid>
+                                ) }
+
+                                { isEditPage && (
+                                    <Hint className="hint" compact>
+                                        { t("approvalWorkflows:pageLayout.create.stepper.step2.hint") }
+                                    </Hint>
+                                ) }
+
+                                { isModalOpen && editingOperation && (
+                                    <RuleConfigurationModal
+                                        operation={ editingOperation }
+                                        initialRule={ operationRules?.[editingOperation.value] }
+                                        onSave={ handleSaveRule }
+                                        onClose={ handleCloseModal }
+                                        data-componentid={ `${componentId}-rule-config-modal` }
+                                    />
+                                ) }
                             </form>
                         );
                     } }
                 />
-
             );
         }
     );
