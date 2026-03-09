@@ -33,11 +33,15 @@ export const useEnableLegacyFlows = (): boolean => {
     const fromCompatibility: string | undefined =
         compatibilitySettings?.flowExecution?.enableLegacyFlows;
 
+    if (deploymentValue === true) {
+        return true;
+    }
+
     if (fromCompatibility) {
         return fromCompatibility === "true";
     }
 
-    return deploymentValue ?? true;
+    return true;
 };
 
 export default useEnableLegacyFlows;
