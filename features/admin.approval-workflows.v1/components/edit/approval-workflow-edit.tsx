@@ -527,7 +527,12 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                 workflowId: approvalWorkflowId
             };
 
-            handleWorkflowAssociationUpdate(operation.associationId, workflowAssociationPayload);
+            handleWorkflowAssociationUpdate(
+                operation.associationId,
+                workflowAssociationPayload,
+                operation.operation,
+                rulePayload
+            );
         }
 
         // Handle deleted operations
@@ -561,12 +566,27 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
     /**
      * Sends request to update an existing workflow-operation association.
      */
-    const handleWorkflowAssociationUpdate = (associationId: string, workflowAssociationPayload:
-        WorkflowAssociationPayload): void => {
+    const handleWorkflowAssociationUpdate = (
+        associationId: string,
+        workflowAssociationPayload: WorkflowAssociationPayload,
+        operationName: string,
+        syncedRule: RuleWithoutIdInterface
+    ): void => {
         updateWorkflowAssociationById(associationId, workflowAssociationPayload)
             .then(() => {
-                // Update initialOperationRules to match current operationRules after successful update
-                setInitialOperationRules({ ...operationRules });
+                // Update only this operation's entry in the baseline to avoid incorrectly
+                // marking other concurrent updates as synced.
+                setInitialOperationRules((prev: Record<string, RuleWithoutIdInterface>) => {
+                    const updated: Record<string, RuleWithoutIdInterface> = { ...prev };
+
+                    if (syncedRule && Object.keys(syncedRule).length > 0) {
+                        updated[operationName] = syncedRule;
+                    } else {
+                        delete updated[operationName];
+                    }
+
+                    return updated;
+                });
                 mutateWorkflowAssociationDetails();
                 // Refresh the workflow associations in the form to update validation
                 workflowOperationsDetailsFormRef?.current?.refreshWorkflowAssociations();
