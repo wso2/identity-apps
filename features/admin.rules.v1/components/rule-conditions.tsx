@@ -248,6 +248,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             if (resourceDetails) {
                 setInputValue(resourceDetails[valueReferenceAttribute] || null);
                 setInputValueLabel(resourceDetails[valueDisplayAttribute] || null);
+                setDebouncedSearchQuery(resourceDetails[valueDisplayAttribute] || null);
             }
         }, [ resourceDetails ]);
 
@@ -335,7 +336,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 ] }
                 filterOptions={ (options: ValueInputAutocompleteOptionsInterface[]) => options }
                 getOptionLabel={ (option: ValueInputAutocompleteOptionsInterface) => option.label || "" }
-                value={ (inputValue && inputValueLabel) ? { id: inputValue, label: inputValueLabel } : null }
+                value={ resourceDetails ? { id: inputValue, label: inputValueLabel } : null }
                 isOptionEqualToValue={ (
                     option: ValueInputAutocompleteOptionsInterface,
                     value: ValueInputAutocompleteOptionsInterface
@@ -347,7 +348,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     if (value?.isDisabled) return; // Prevent selection of disabled option
 
                     if (value?.id === CLEAR_OPTION) {
-                        setInputValue(null);
                         setInputValueLabel("");
                         setDebouncedSearchQuery("");
                         setTimeout(() => setOpen(true), 0);
@@ -356,9 +356,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     }
 
                     if (value) {
-                        // Immediately reflect the selection — the option already carries id and label.
-                        setInputValue(value.id);
-                        setInputValueLabel(value.label);
                         handleExpressionChangeDebounced(
                             value.id,
                             ruleId,
@@ -370,8 +367,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     }
                 } }
                 inputValue={ inputValueLabel }
-                onInputChange={ (event: ChangeEvent, value: string, reason: AutocompleteInputChangeReason) => {
-                    if (reason === "reset") return;
+                onInputChange={ (event: ChangeEvent, value: string) => {
                     setInputValueLabel(value);
                     setDebouncedSearchQueryDebounced(value);
                 } }

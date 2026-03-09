@@ -694,7 +694,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                         <Grid className="common-section-heading">
                             <Heading as="h4">{ t("approvalWorkflows:sections.operations.heading") }</Heading>
                         </Grid>
-                        <div className=" ">
+                        <div className="workflow-association-operations">
                             <WorkflowOperationsDetailsForm
                                 ref={ workflowOperationsDetailsFormRef }
                                 isReadOnly={ isPageReadOnly || !hasApprovalWorkflowUpdatePermissions }
