@@ -195,7 +195,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         ) => {
             updateConditionExpression(changedValue, ruleId, conditionId, expressionId, fieldName, isUserOnChange);
         },
-        3000
+        300
     );
 
     /**

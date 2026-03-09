@@ -85,7 +85,6 @@ export const OPERATION_FIELD_MAPPING: Record<string, string[]> = {
         // "user.groups",
         // "user.roles"
     ]
-
 };
 
 export default ApprovalWorkflowConstants;

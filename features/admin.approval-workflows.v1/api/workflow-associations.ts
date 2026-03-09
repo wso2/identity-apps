@@ -21,7 +21,7 @@ import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request"
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { WorkflowAssociationPayload } from "../models/workflow-associations";
+import { WorkflowAssociationListItemInterface, WorkflowAssociationPayload } from "../models/workflow-associations";
 
 /**
  * Get an axios instance.
@@ -88,7 +88,10 @@ export const deleteWorkflowAssociationById = (id: string): Promise<any> => {
  * @param data - The data used to update the workflow association.
  * @returns A promise that resolves to the updated workflow association.
  */
-export const updateWorkflowAssociationById = (id: string, data: WorkflowAssociationPayload): Promise<any> => {
+export const updateWorkflowAssociationById = (
+    id: string,
+    data: WorkflowAssociationPayload
+): Promise<WorkflowAssociationListItemInterface> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
@@ -100,11 +103,11 @@ export const updateWorkflowAssociationById = (id: string, data: WorkflowAssociat
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
+        .then((response: AxiosResponse<WorkflowAssociationListItemInterface>) => {
             return Promise.resolve(response.data);
         })
         .catch((error: AxiosError) => {
-            return Promise.reject(error?.response?.data);
+            return Promise.reject(error?.response?.data as WorkflowAssociationListItemInterface | unknown);
         });
 };
 
