@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.4.7
+
+### Patch Changes
+
+- [#9357](https://github.com/wso2/identity-apps/pull/9357) [`4217a2cf28d5c553b4298ae5a73748a2556a7693`](https://github.com/wso2/identity-apps/commit/4217a2cf28d5c553b4298ae5a73748a2556a7693) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix CSS issue in Approvals Page in My Account app in dark theme
+
 ## 3.4.6
 
 ### Patch Changes
