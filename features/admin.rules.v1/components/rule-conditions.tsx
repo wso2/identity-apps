@@ -39,7 +39,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code } from "@wso2is/react-components";
 import debounce from "lodash-es/debounce";
 import React, { ChangeEvent, Dispatch, Fragment, FunctionComponent, HTMLAttributes, ReactElement, useCallback,
-    useEffect, useState } from "react";
+    useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { DropdownProps } from "semantic-ui-react";
@@ -231,7 +231,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         const isRolesResource: boolean = initialResourcesLoadUrl?.includes(ROLES_ENDPOINT);
 
         const setDebouncedSearchQueryDebounced: (value: string) => void = useCallback(
-            debounce((value: string) => setDebouncedSearchQuery(value), 500),
+            debounce((value: string) => setDebouncedSearchQuery(value), 700),
             []
         );
 
@@ -289,6 +289,31 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         );
         const hasMoreItems: boolean = filteredTotalResults > filteredCount;
 
+        const autocompleteComponentsProps: object = useMemo(() => ({
+            popper: {
+                modifiers: [
+                    {
+                        enabled: true,
+                        fn: ({ state }: { state: any }) => {
+                            state.styles.popper.width = `${state.rects.reference.width}px`;
+                        },
+                        name: "sameWidth",
+                        phase: "beforeWrite",
+                        requires: [ "computeStyles" ]
+                    },
+                    {
+                        enabled: false,
+                        name: "flip"
+                    },
+                    {
+                        enabled: false,
+                        name: "preventOverflow"
+                    }
+                ],
+                style: { zIndex: 9999 }
+            }
+        }), []);
+
         return (
             <Autocomplete
                 className="autocomplete"
@@ -297,26 +322,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 open={ open }
                 onOpen={ () => setOpen(true) }
                 onClose={ () => setOpen(false) }
-                componentsProps={ {
-                    popper: {
-                        modifiers: [
-                            {
-                                enabled: true,
-                                fn: ({ state }: { state: any }) => {
-                                    state.styles.popper.width = `${state.rects.reference.width}px`;
-                                },
-                                name: "sameWidth",
-                                phase: "beforeWrite",
-                                requires: [ "computeStyles" ]
-                            },
-                            {
-                                enabled: false,
-                                name: "flip"
-                            }
-                        ],
-                        style: { zIndex: 9999 }
-                    }
-                } }
+                componentsProps={ autocompleteComponentsProps }
                 options={ [
                     ...options,
                     ...(hasMoreItems
