@@ -39,23 +39,6 @@
         background-color: #fff !important;
     }
 
-    .engagement-toggle {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 8px;
-
-        .engagement-label {
-            font-size: 13px;
-            color: var(--oxygen-palette-text-secondary);
-
-            &.configured {
-                color: #2e7d32;
-                font-weight: 500;
-            }
-        }
-    }
-
     .operation-rules-actions {
         button {
             padding: 4px 12px;
