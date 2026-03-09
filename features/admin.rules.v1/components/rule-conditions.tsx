@@ -248,7 +248,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             if (resourceDetails) {
                 setInputValue(resourceDetails[valueReferenceAttribute] || null);
                 setInputValueLabel(resourceDetails[valueDisplayAttribute] || null);
-                setDebouncedSearchQuery(resourceDetails[valueDisplayAttribute] || null);
             }
         }, [ resourceDetails ]);
 
