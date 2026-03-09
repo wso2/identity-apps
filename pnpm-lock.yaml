@@ -531,7 +531,7 @@ importers:
         specifier: ^2.30.2
         version: link:../../features/admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.35.16
+        specifier: ^2.35.17
         version: link:../../features/admin.connections.v1
       '@wso2is/admin.console-settings.v1':
         specifier: ^2.26.9
@@ -5207,7 +5207,7 @@ importers:
         specifier: ^2.30.2
         version: link:../admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.35.16
+        specifier: ^2.35.17
         version: 'link:'
       '@wso2is/admin.console-settings.v1':
         specifier: ^2.26.9

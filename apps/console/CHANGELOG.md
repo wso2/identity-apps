@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.97.6
+
+### Patch Changes
+
+- [#9703](https://github.com/wso2/identity-apps/pull/9703) [`7a7c182b5fec43b2cac70ff65c321c6484270348`](https://github.com/wso2/identity-apps/commit/7a7c182b5fec43b2cac70ff65c321c6484270348) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Change outbound provisioning client credentials properties
+
+- Updated dependencies [[`7a7c182b5fec43b2cac70ff65c321c6484270348`](https://github.com/wso2/identity-apps/commit/7a7c182b5fec43b2cac70ff65c321c6484270348)]:
+  - @wso2is/admin.connections.v1@2.35.17
+  - @wso2is/admin.onboarding.v1@1.0.26
+
 ## 2.97.5
 
 ### Patch Changes
