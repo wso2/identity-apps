@@ -234,7 +234,7 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
                 mutatePushProvidersListFetchRequest();
                 mutatePushProviderTemplateFetchRequest();
                 mutatePushProviderTemplateMetadataFetchRequest();
-            });;
+            });
     };
 
     const handlePushProviderUpdate = ( data: PushProviderAPIInterface, callback: () => void ): void => {
