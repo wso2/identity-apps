@@ -1100,7 +1100,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         hiddenValues={ hiddenValues }
                     />
                 </FormControl>
-                { (!readonly || (readonly && !isConditionLast)) && (
+                { ((!readonly) || (readonly && !isConditionLast)) && (
                     <FormControl sx={ { mt: 1 } } size="small">
                         <Button
                             disabled={ readonly }
@@ -1149,13 +1149,13 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                     { condition.expressions?.map(
                                         (expression: ConditionExpressionInterface, exprIndex: number) => (
                                             <Box sx={ { mt: 2 } } key={ exprIndex }>
-                                                { condition.expressions.length === exprIndex + 1 }
+                                                { (condition.expressions.length === (exprIndex + 1)) }
                                                 <RuleExpression
                                                     expression={ expression }
                                                     ruleId={ ruleInstance.id }
                                                     conditionId={ condition.id }
                                                     index={ exprIndex }
-                                                    isConditionLast={ condition.expressions.length === exprIndex + 1 }
+                                                    isConditionLast={ condition.expressions.length === (exprIndex + 1) }
                                                     isConditionExpressionRemovable={
                                                         condition.expressions.length > 1 ||
                                                         ruleInstance.rules.length > 1
@@ -1169,8 +1169,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                     ) }
                                 </>
                             ) }
-                            { ((!readonly && condition.expressions?.length > 0) ||
-                                (readonly && condition.expressions?.length !== index)) && (
+                            { ((!readonly && (condition.expressions?.length > 0)) ||
+                                (readonly && (condition.expressions?.length !== index))) && (
                                 <Divider sx={ { mb: 1, mt: 2 } }>
                                     <Button
                                         disabled={ readonly }
