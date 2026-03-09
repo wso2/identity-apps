@@ -134,7 +134,6 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 initialValues,
                 isEditPage,
                 onChange,
-                workflowId,
                 operationRules = {},
                 onRuleUpdate,
                 ["data-componentid"]: componentId = "workflow-operations"
@@ -151,22 +150,10 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
             const [ isModalOpen, setIsModalOpen ] = useState<boolean>(false);
             const [ shouldShowErrors, setShouldShowErrors ] = useState<boolean>(false);
 
-            // Fetch existing workflow associations for all operations.
-            // For edit mode with workflowId, fetch only current workflow's associations.
-            // For create mode or without workflowId, fetch all associations to check conflicts.
             const {
-                data: workflowAssociationsData,
                 error: workflowAssociationsError,
                 mutate: mutateWorkflowAssociations
             } = useGetWorkflowAssociations(null, null, null);
-
-            // Fetch current workflow's associations separately when in edit mode
-            const { data: currentWorkflowAssociationsData } = useGetWorkflowAssociations(
-                null,
-                null,
-                workflowId ? `workflowId eq ${workflowId}` : null,
-                !!workflowId
-            );
 
             useImperativeHandle(ref, () => ({
                 refreshWorkflowAssociations: () => {
@@ -223,32 +210,8 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 }
             }, [ workflowAssociationsError ]);
 
-            const isOperationDisabled = (operation: DropdownPropsInterface): boolean => {
-                if (!workflowAssociationsData?.workflowAssociations) {
-                    return false;
-                }
-
-                // Check if this operation has any workflow association
-                const hasAssociation: boolean = workflowAssociationsData.workflowAssociations.some(
-                    (association: { operation: string }) => association.operation === operation.value
-                );
-
-                if (!hasAssociation) {
-                    return false;
-                }
-
-                // If in edit mode with workflowId, check if the operation belongs to current workflow
-                if (workflowId && currentWorkflowAssociationsData?.workflowAssociations) {
-                    const belongsToCurrentWorkflow: boolean = currentWorkflowAssociationsData.workflowAssociations.some(
-                        (association: { operation: string }) => association.operation === operation.value
-                    );
-
-                    // Disable if it has an association but doesn't belong to current workflow
-                    return !belongsToCurrentWorkflow;
-                }
-
-                // In create mode, disable all operations with existing associations
-                return true;
+            const isOperationDisabled = (_operation: DropdownPropsInterface): boolean => {
+                return false;
             };
 
             /**
