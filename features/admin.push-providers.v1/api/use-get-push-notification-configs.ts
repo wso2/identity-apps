@@ -34,13 +34,16 @@ const useGetPushNotificationConfigs = <Data = Record<string, string>, Error = Re
     shouldFetch: boolean = true
 ): RequestResultInterface<Data,Error> => {
 
+    const pushNotificationConfigsEndpoint: string | undefined =
+        store.getState().config.endpoints.pushNotificationConfigs;
+
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": AcceptHeaderValues.APP_JSON,
             "Content-Type": ContentTypeHeaderValues.APP_JSON
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.pushNotificationConfigs
+        url: pushNotificationConfigsEndpoint
     };
     const {
         data,
@@ -48,7 +51,9 @@ const useGetPushNotificationConfigs = <Data = Record<string, string>, Error = Re
         isLoading,
         isValidating,
         mutate
-    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null);
+    } = useRequest<Data, Error>(
+        shouldFetch && Boolean(pushNotificationConfigsEndpoint) ? requestConfig : null
+    );
 
     return {
         data,
