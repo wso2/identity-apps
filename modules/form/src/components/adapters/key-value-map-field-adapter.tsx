@@ -18,14 +18,17 @@
 
 import { FormControlProps } from "@oxygen-ui/react/FormControl";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
-import React, { FunctionComponent, ReactElement } from "react";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 import { FieldRenderProps } from "react-final-form";
-import { KeyValueMapField } from "../field-key-value-map";
+import { KeyValueMapField, KeyValueMapValueFieldTypes } from "../field-key-value-map";
 
 /**
  * Props for the KeyValueMapAdapter component.
  */
-export interface KeyValueMapAdapterPropsInterface extends FieldRenderProps<any, HTMLElement> {
+export interface KeyValueMapAdapterPropsInterface
+    extends FieldRenderProps<Record<string, string>, HTMLElement>,
+        IdentifiableComponentInterface {
     /**
      * The label to display above the field.
      */
@@ -39,9 +42,37 @@ export interface KeyValueMapAdapterPropsInterface extends FieldRenderProps<any, 
      */
     FormControlProps?: FormControlProps;
     /**
-     * Additional KeyValueMap specific props.
+     * Helper text to display below the field.
      */
-    [key: string]: any;
+    helperText?: string;
+    /**
+     * Name of the key column.
+     */
+    keyName?: string;
+    /**
+     * Options for the key dropdown.
+     */
+    keyOptions?: { text: ReactNode; value: string }[];
+    /**
+     * Placeholder text.
+     */
+    placeholder?: string;
+    /**
+     * Whether the field is read only.
+     */
+    readOnly?: boolean;
+    /**
+     * Whether the field is required.
+     */
+    required?: boolean;
+    /**
+     * Value field type.
+     */
+    valuetype?: KeyValueMapValueFieldTypes;
+    /**
+     * Aria label for accessibility.
+     */
+    "aria-label"?: string;
 }
 
 /**
