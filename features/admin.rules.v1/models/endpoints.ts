@@ -22,4 +22,5 @@
 export interface RulesEndpointsInterface {
     apiRoot: string;
     rulesMetaData: string;
+    serverHost: string;
 }

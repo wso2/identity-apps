@@ -42,7 +42,7 @@ const useGetResourceListOrResourceDetails = <Data = any, Error = RequestErrorInt
     // SCIM endpoints use serverOrigin, not apiRoot
     const isScimEndpoint: boolean = endpointPath?.startsWith("/scim2/") || false;
     const baseUrl: string = isScimEndpoint
-        ? store.getState().config.deployment.serverOrigin
+        ? store.getState().config.endpoints.serverHost
         : store.getState().config.endpoints.apiRoot;
 
     const requestConfig: RequestConfigInterface = {
