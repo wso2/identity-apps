@@ -846,6 +846,7 @@ export enum ApplicationTemplateIdTypes {
     SAML_WEB_APPLICATION = "saml-web-application",
     MOBILE_APPLICATION = "mobile-application",
     M2M_APPLICATION = "m2m-application",
+    AGENT_APPLICATION = "agent-application",
     CUSTOM_APPLICATION = "custom-application",
     MCP_CLIENT_APPLICATION = "mcp-client-application",
     DIGITAL_WALLET_APPLICATION = "digital-wallet-application",

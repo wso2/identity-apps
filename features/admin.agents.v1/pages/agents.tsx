@@ -17,15 +17,12 @@
  */
 
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
-import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
-import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AGENT_USERSTORE_ID } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DocumentationLink, EmphasizedSegment, EmptyPlaceholder,
     ListLayout, PageLayout, PrimaryButton, useDocumentation } from "@wso2is/react-components";
 import React, { useMemo, useState } from "react";
@@ -34,7 +31,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Icon } from "semantic-ui-react";
 import AgentList from "../components/agent-list";
-import { AgentSecretShowModal } from "../components/edit/agent-secret-show-modal";
 import AddAgentWizard from "../components/wizards/add-agent-wizard";
 import { useGetAgents } from "../hooks/use-get-agents";
 import "./agents.scss";
@@ -44,14 +40,11 @@ type AgentPageProps = IdentifiableComponentInterface;
 export default function Agents ({
     "data-componentid": componentId
 }: AgentPageProps) {
-    const [ newAgent, setNewAgent ] = useState<any>(null);
-
     const dispatch: Dispatch = useDispatch();
 
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     const [ isAddAgentWizardOpen,setIsAddAgentWizardOpen ] = useState(false);
-    const [ isAgentCredentialWizardOpen, setIsAgentCredentialWizardOpen ] = useState(false);
 
     const [ searchQuery, setSearchQuery ] = useState<string>(null);
     const [ startIndex, setStartIndex ] = useState<number>(1);
@@ -244,39 +237,20 @@ export default function Agents ({
                 />
             </ListLayout>) }
 
-            <AddAgentWizard
-                isOpen={ isAddAgentWizardOpen }
-                onClose={ (newCreatedAgent: any) => {
-                    if (newCreatedAgent) {
-                        setNewAgent(newCreatedAgent);
-                        setIsAgentCredentialWizardOpen(true);
-                    }
+            {isAddAgentWizardOpen && (
+                <AddAgentWizard
+                    isOpen={ isAddAgentWizardOpen }
+                    onClose={ (creationResult: any) => {
+                        // Close the wizard
+                        setIsAddAgentWizardOpen(false);
 
-                    setIsAddAgentWizardOpen(false);
-                } }
-            />
-
-            <AgentSecretShowModal
-                title={ t("agents:new.title") }
-                agentId={ newAgent?.id }
-                agentSecret={ newAgent?.password }
-                isOpen={ isAgentCredentialWizardOpen }
-                onClose={ () => {
-                    dispatch(
-                        addAlert({
-                            description: t("agents:new.alerts.success.description"),
-                            level: AlertLevels.SUCCESS,
-                            message: t("agents:new.alerts.success.message")
-                        })
-                    );
-                    if (newAgent?.id) {
-                        history.push(
-                            AppConstants.getPaths().get("AGENT_EDIT").replace(":id", newAgent?.id )
-                        );
-                    }
-                } }
-
-            />
+                        // If agent was created successfully, refresh the list
+                        if (creationResult?.agentId) {
+                            mutateAgentList();
+                        }
+                    } }
+                />
+            )}
 
         </PageLayout>
     );

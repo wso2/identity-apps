@@ -41,6 +41,145 @@ export interface AgentsNS {
         };
         title: string;
     };
+    wizard: {
+        title: string;
+        subtitle: string;
+        fields: {
+            name: {
+                label: string;
+                placeholder: string;
+                validations: {
+                    required: string;
+                };
+            };
+            description: {
+                label: string;
+                placeholder: string;
+            };
+            isUserServingAgent: {
+                label: string;
+            };
+            agentType: {
+                label: string;
+                validations: {
+                    required: string;
+                };
+                options: {
+                    interactive: {
+                        label: string;
+                    };
+                    background: {
+                        label: string;
+                    };
+                };
+            };
+            callbackUrl: {
+                label: string;
+                placeholder: string;
+                helperText: string;
+            };
+            cibaAuthReqExpiryTime: {
+                label: string;
+                placeholder: string;
+                helperText: string;
+            };
+            notificationChannels: {
+                label: string;
+                hint: string;
+                options: {
+                    email: string;
+                    sms: string;
+                };
+            };
+        };
+        buttons: {
+            cancel: string;
+            create: string;
+            done: string;
+        };
+        alerts: {
+            created: {
+                message: string;
+                description: string;
+            };
+            error: {
+                message: string;
+                description: string;
+            };
+            clientIdFetchFailed: {
+                message: string;
+                description: string;
+            };
+            configUpdateFailed: {
+                message: string;
+                description: string;
+            };
+        };
+        success: {
+            title: string;
+            subtitle: string;
+            warning: string;
+            fields: {
+                agentId: {
+                    label: string;
+                };
+                agentSecret: {
+                    label: string;
+                };
+                oauthClientId: {
+                    label: string;
+                    unavailable: string;
+                };
+            };
+        };
+        help: {
+            name: {
+                title: string;
+                description: string;
+            };
+            description: {
+                title: string;
+                description: string;
+            };
+            isUserServingAgent: {
+                title: string;
+                description: string;
+            };
+            agentType: {
+                title: string;
+                description: string;
+            };
+            interactive: {
+                title: string;
+                description: string;
+            };
+            background: {
+                title: string;
+                description: string;
+            };
+            callbackUrl: {
+                title: string;
+                description: string;
+                hint: string;
+            };
+            success: {
+                title: string;
+                description: string;
+                agentId: {
+                    title: string;
+                    description: string;
+                };
+                agentSecret: {
+                    title: string;
+                    description: string;
+                };
+                oauthClientId: {
+                    title: string;
+                    description: string;
+                };
+            };
+        };
+    };
     list: {
         confirmations: {
             deleteItem: {

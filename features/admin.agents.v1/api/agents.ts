@@ -21,7 +21,7 @@ import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request"
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { AgentScimSchema } from "../models/agents";
+import { AgentScimSchema, AgentType } from "../models/agents";
 
 /**
  * Initialize an axios Http client.
@@ -185,4 +185,93 @@ export const updateAgentPassword = (agentId: string, newPassword: string): Promi
         .catch((error: AxiosError) => {
             return Promise.reject(error);
         });
+};
+
+/**
+ * Interface for agent application configuration update parameters.
+ */
+export interface UpdateAgentApplicationConfigInterface {
+    agentType?: AgentType;
+    callbackUrl?: string;
+    cibaAuthReqExpiryTime?: number;
+    notificationChannels?: string[];
+}
+
+/**
+ * Updates the OAuth/OIDC configuration for a user-serving agent's application.
+ * This function updates the application's OIDC inbound protocol after the agent is created via SCIM.
+ * 
+ * @param applicationId - The application ID (same as agent ID for user-serving agents).
+ * @param config - The OAuth configuration to update (grant types, callback URL, CIBA settings).
+ *
+ * @returns response.
+ */
+export const updateAgentApplicationConfiguration = async (
+    applicationId: string,
+    config: UpdateAgentApplicationConfigInterface
+): Promise<AxiosResponse> => {
+    try {
+        const getRequestConfig: RequestConfigInterface = {
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            method: HttpMethods.GET,
+            url: `${store.getState().config.endpoints.applications}/${applicationId}/inbound-protocols/oidc`
+        };
+
+        const existingOidcConfigResponse: any = await httpClient(getRequestConfig);
+        const existingOidcConfig: any = existingOidcConfigResponse.data;
+
+        const updatedOidcConfig: any = {
+            ...existingOidcConfig
+        };
+
+        if (config.agentType === AgentType.INTERACTIVE) {
+
+            updatedOidcConfig.grantTypes = [ "authorization_code", "refresh_token" ];
+
+            if (config.callbackUrl) {
+                updatedOidcConfig.callbackURLs = [ config.callbackUrl ];
+            }
+
+            if (updatedOidcConfig.cibaAuthenticationRequest) {
+                delete updatedOidcConfig.cibaAuthenticationRequest;
+            }
+        } else if (config.agentType === AgentType.BACKGROUND) {
+
+            updatedOidcConfig.grantTypes = [ "urn:openid:params:grant-type:ciba"];
+
+            updatedOidcConfig.cibaAuthenticationRequest = {
+                ...existingOidcConfig.cibaAuthenticationRequest,
+                authReqExpiryTime: config.cibaAuthReqExpiryTime || 300
+            };
+
+            if (config.notificationChannels && config.notificationChannels.length > 0) {
+                updatedOidcConfig.cibaAuthenticationRequest.notificationChannels = config.notificationChannels;
+            }
+
+            updatedOidcConfig.callbackURLs = [];
+        }
+
+        const putRequestConfig: RequestConfigInterface = {
+            data: updatedOidcConfig,
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            method: HttpMethods.PUT,
+            url: `${store.getState().config.endpoints.applications}/${applicationId}/inbound-protocols/oidc`
+        };
+
+        return httpClient(putRequestConfig)
+            .then((response: AxiosResponse) => {
+                return Promise.resolve(response);
+            })
+            .catch((error: AxiosError) => {
+                return Promise.reject(error);
+            });
+    } catch (error) {
+        return Promise.reject(error);
+    }
 };

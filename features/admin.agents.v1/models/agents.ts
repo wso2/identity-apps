@@ -23,10 +23,20 @@ export interface AddAgentInterface {
     url?: string;
     owner?: string;
 }
+export enum AgentType {
+    INTERACTIVE = "INTERACTIVE",
+    BACKGROUND = "BACKGROUND"
+}
+
 export interface AgentSchema {
     Url?: string;
     Description?: string;
     DisplayName?: string;
+    IsUserServingAgent?: boolean;
+    AgentType?: AgentType;
+    CallbackUrl?: string;
+    CibaAuthReqExpiryTime?: number;
+    NotificationChannels?: string;
     [key: string]: any;
 }
 
