@@ -703,7 +703,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                                 } }
                                 operationRules={ operationRules }
                                 onRuleUpdate={ handleRuleUpdate }
-                                data-componentid={ `${componentId}-general-details-form` }
+                                data-componentid={ `${componentId}-operations-details-form` }
                                 isEditPage={ true }
                                 workflowId={ approvalWorkflowId }
                             />
