@@ -18,14 +18,54 @@
 import { insightsNS } from "../../../models";
 
 export const insights: insightsNS = {
-    pageTitle: "Insights",
-    title: "Insights",
-    description: "Understand user behavior better with usage statistics.",
-    durationMessage: "Showing results from <1>{{ startTimestamp }}</1> to <1>{{ endTimestamp }}</1>",
-    durationOption: "Last {{ duration }} days",
-    lastFetchedMessage: {
-        label: "Last fetched at {{ time }}",
-        tooltipText: "Insights for the latest activity will take few minues to be reflected in the graphs"
+    activityType: {
+        login: {
+            filters: {
+                authenticator: {
+                    attributeName: "Connection Type",
+                    values: {
+                        apple: "Apple",
+                        backupCodes: "Backup Code",
+                        basic: "Username & Password",
+                        emailOtp: "Email OTP",
+                        facebook: "Facebook",
+                        fido2: "FIDO2",
+                        github: "GitHub",
+                        google: "Google",
+                        hypr: "HYPR",
+                        identifierFirst: "Identifier First",
+                        magicLink: "Magic Link",
+                        oidc: "OIDC IdP",
+                        organizationLogin: "Organization Login",
+                        saml: "SAML IdP",
+                        smsOtp: "SMS OTP",
+                        iproov: "IPROOV",
+                        totp: "TOTP"
+                    }
+                },
+                identityProvider: "Connection ID",
+                serviceProvider: "Application",
+                userStore: "User Store"
+            }
+        },
+        m2m: {
+            filters: {
+                clientId: "Client ID",
+                tenantDomain: "Organization Handle"
+            }
+        },
+        registration: {
+            filters: {
+                onboardingMethod: {
+                    attributeName: "Onboarding Method",
+                    values: {
+                        adminInitiated: "By administrator",
+                        selfSignUp: "Self-registration",
+                        userInvited: "Email invitation"
+                    }
+                }
+            }
+        }
     },
     advancedFilter: {
         filterAttribute: "Filter attribute",
@@ -35,65 +75,34 @@ export const insights: insightsNS = {
     commonFilters: {
         userId: "User ID"
     },
-    activityType: {
-        login: {
-            filters: {
-                userStore: "User Store",
-                serviceProvider: "Application",
-                authenticator: {
-                    attributeName: "Connection Type",
-                    values: {
-                        basic: "Username & Password",
-                        identifierFirst: "Identifier First",
-                        fido2: "FIDO2",
-                        magicLink: "Magic Link",
-                        emailOtp: "Email OTP",
-                        smsOtp: "SMS OTP",
-                        totp: "TOTP",
-                        backupCodes: "Backup Code",
-                        google: "Google",
-                        facebook: "Facebook",
-                        github: "GitHub",
-                        apple: "Apple",
-                        oidc: "OIDC IdP",
-                        saml: "SAML IdP",
-                        hypr: "HYPR",
-                        iproov: "IPROOV",
-                        organizationLogin: "Organization Login"
-                    }
-                },
-                identityProvider: "Connection ID"
-            }
-        },
-        registration: {
-            filters: {
-                onboardingMethod: {
-                    attributeName: "Onboarding Method",
-                    values: {
-                        adminInitiated: "By administrator",
-                        userInvited: "Email invitation",
-                        selfSignUp: "Self-registration"
-                    }
-                }
-            }
-        }
-    },
+    compareToLastPeriodMessage: "Compare to last period",
+    description: "Understand user behavior better with usage statistics.",
+    durationMessage: "Showing results from <1>{{ startTimestamp }}</1> to <1>{{ endTimestamp }}</1>",
+    durationOption: "Last {{ duration }} days",
     graphs: {
         activeUsers: {
             title: "Active Users",
             titleHint: "Number of unique users that signed in to your organization within the selected period"
         },
-        successLogins: {
-            title: "Total Logins",
-            titleHint: "Number of successful logins to your organization within the selected period"
-        },
         failedLogins: {
             title: "Failed Logins"
+        },
+        m2mAuthentications: {
+            title: "M2M Authentications",
+            titleHint: "Number of M2M token requests made to your organization within the selected period"
         },
         signups: {
             title: "User Signups",
             titleHint: "Total user signups occurred within the selected period"
+        },
+        successLogins: {
+            title: "Total Logins",
+            titleHint: "Number of successful logins to your organization within the selected period"
         }
+    },
+    lastFetchedMessage: {
+        label: "Last fetched at {{ time }}",
+        tooltipText: "Insights for the latest activity will take few minues to be reflected in the graphs"
     },
     notifications: {
         fetchInsights: {
@@ -103,5 +112,6 @@ export const insights: insightsNS = {
             }
         }
     },
-    compareToLastPeriodMessage: "Compare to last period"
+    pageTitle: "Insights",
+    title: "Insights"
 };

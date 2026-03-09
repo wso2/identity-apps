@@ -35,6 +35,7 @@ export enum ResourceType {
     LOGIN_FAILURE = "LOGIN_FAILURE",
     MONTHLY_ACTIVE_USERS = "MAU",
     USER_REGISTRATION = "USER_REGISTRATION",
+    M2M_AUTHENTICATION = "M2M",
 }
 
 /**
@@ -105,6 +106,7 @@ export enum ActivityType {
     LOGIN = "Login",
     REGISTRATION = "Registration",
     USER_RECOVERY = "User Recovery",
+    M2M = "M2M",
 }
 
 export type FilterCondition = DropdownChild
@@ -115,6 +117,7 @@ export enum OrgInsightsFeature {
     COMPARE_WITH_LAST_PERIOD = "compareWithLastPeriod",
     ADVANCED_INSIGHT_FILTERING = "advancedInsightFiltering",
     REGISTRATION_INSIGHTS = "registrationInsights",
+    M2M_INSIGHTS = "m2mInsights",
 }
 
 export enum OnboardingMethodFilterValue {
