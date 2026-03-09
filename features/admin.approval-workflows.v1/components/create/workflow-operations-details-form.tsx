@@ -94,7 +94,7 @@ interface WorkflowOperationsDetailsPropsInterface extends IdentifiableComponentI
     /**
      * Callback to update rule for a specific operation.
      */
-    onRuleUpdate?: (operationValue: string, rule: RuleWithoutIdInterface) => void;
+    onRuleUpdate?: (operationValue: string, rule: RuleWithoutIdInterface | null) => void;
 }
 
 /**
@@ -269,7 +269,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
             /**
          * Saves the configured rule for the editing operation.
          */
-            const handleSaveRule = (rule: RuleWithoutIdInterface): void => {
+            const handleSaveRule = (rule: RuleWithoutIdInterface | null): void => {
                 if (editingOperation && onRuleUpdate) {
                     onRuleUpdate(editingOperation.value, rule);
                 }

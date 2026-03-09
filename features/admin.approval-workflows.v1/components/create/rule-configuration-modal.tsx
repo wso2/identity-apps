@@ -53,7 +53,7 @@ interface RuleConfigurationModalPropsInterface extends IdentifiableComponentInte
     /**
      * Callback when rule is saved.
      */
-    onSave: (rule: RuleWithoutIdInterface) => void;
+    onSave: (rule: RuleWithoutIdInterface | null) => void;
     /**
      * Callback when modal is closed.
      */
@@ -64,7 +64,7 @@ interface RuleConfigurationModalPropsInterface extends IdentifiableComponentInte
  * Props interface for RuleConfigurationModalContent component.
  */
 interface RuleConfigurationModalContentPropsInterface extends IdentifiableComponentInterface {
-    onSave: (rule: RuleWithoutIdInterface) => void;
+    onSave: (rule: RuleWithoutIdInterface | null) => void;
     onClose: () => void;
     operationName: string;
 }

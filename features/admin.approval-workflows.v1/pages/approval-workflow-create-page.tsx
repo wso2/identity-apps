@@ -133,7 +133,7 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
      * @param operationValue - The operation identifier.
      * @param rule - The configured rule.
      */
-    const handleRuleUpdate = (operationValue: string, rule: RuleWithoutIdInterface) => {
+    const handleRuleUpdate = (operationValue: string, rule: RuleWithoutIdInterface | null) => {
         setApprovalWorkflowFormData((prevData: ApprovalWorkflowFormDataInterface) => {
             const updatedOperationRules: Record<string, RuleWithoutIdInterface> = {
                 ...prevData?.workflowOperationsDetails?.operationRules,
