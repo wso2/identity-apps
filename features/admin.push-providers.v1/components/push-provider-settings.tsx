@@ -25,9 +25,9 @@ import { ExtensionTemplateCommonInterface } from "@wso2is/admin.template-core.v1
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmphasizedSegment, Hint } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
-import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Checkbox, CheckboxProps, Divider } from "semantic-ui-react";
+import { Checkbox, CheckboxProps } from "semantic-ui-react";
 import { PushProviderAPIInterface, PushProviderPropertiesInterface } from "../models/push-providers";
 import { PushProviderTemplateInterface, PushProviderTemplateMetadataInterface } from "../models/templates";
 
@@ -144,15 +144,15 @@ export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsIn
         return formMetadata;
     }, [ pushProviderTemplateMetadata ]);
 
-    const [ isDefaultProvider, setIsDefaultProvider ] = useState<boolean>( false );
+    const [ isDefaultProvider, setIsDefaultProvider ] = useState<boolean>(false);
 
-    if (defaultPushProvider && pushProvider?.provider === defaultPushProvider && !isDefaultProvider) {
-        setIsDefaultProvider(true);
-    } else if (defaultPushProvider && pushProvider?.provider !== defaultPushProvider && isDefaultProvider) {
-        setIsDefaultProvider(false);
-    } else if (!defaultPushProvider && isDefaultProvider) {
-        setIsDefaultProvider(false);
-    }
+    useEffect(() => {
+        if (defaultPushProvider && pushProvider?.provider === defaultPushProvider) {
+            setIsDefaultProvider(true);
+        } else {
+            setIsDefaultProvider(false);
+        }
+    }, [ defaultPushProvider, pushProvider ]);
 
     const handleToggleChange = (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
         setIsDefaultProvider(data.checked);
@@ -198,18 +198,20 @@ export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsIn
             data-componentid={ `${componentId}-form` }
             padded="very"
         >
-            <Checkbox
-                label={ t("pushProviders:pushProviderSettings.defaultSender") }
-                checked={ isDefaultProvider }
-                onChange={ handleToggleChange }
-                toggle
-                disabled={ pushProvider == null } // Disable the toggle if push provider is not configured
-                data-componentid={ `${componentId}-default-push-provider` }
-            />
-            <Hint data-componentid={ `${componentId}-default-push-provider-description` }>
-                { t("pushProviders:pushProviderSettings.defaultSenderDescription") }
-            </Hint>
-            <Divider hidden />
+
+            <div style={ { marginBottom: "2rem" } }>
+                <Checkbox
+                    label={ t("pushProviders:pushProviderSettings.defaultSender") }
+                    checked={ isDefaultProvider }
+                    onChange={ handleToggleChange }
+                    toggle
+                    disabled={ pushProvider == null } // Disable the toggle if push provider is not configured
+                    data-componentid={ `${componentId}-default-push-provider` }
+                />
+                <Hint data-componentid={ `${componentId}-default-push-provider-description` }>
+                    { t("pushProviders:pushProviderSettings.defaultSenderDescription") }
+                </Hint>
+            </div>
             <TemplateDynamicForm
                 key = { pushProviderTemplateInfo?.id }
                 form={ renderFormMetadata }
