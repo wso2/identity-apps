@@ -35,6 +35,7 @@ import {
     PrimaryButton
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -490,11 +491,8 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                 const currentRule: RuleWithoutIdInterface = operationRules[prev.operation];
                 const initialRule: RuleWithoutIdInterface = initialOperationRules[prev.operation];
 
-                // Compare rules (deep comparison)
-                const currentRuleStr: string = JSON.stringify(currentRule || {});
-                const initialRuleStr: string = JSON.stringify(initialRule || {});
-
-                return currentRuleStr !== initialRuleStr;
+                // Compare rules (deep equality, order-independent)
+                return !isEqual(currentRule ?? {}, initialRule ?? {});
             }
         );
 
