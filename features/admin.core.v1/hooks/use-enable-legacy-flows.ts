@@ -41,7 +41,7 @@ export const useEnableLegacyFlows = (): boolean => {
         return fromCompatibility === "true";
     }
 
-    return true;
+    return deploymentValue ?? true;
 };
 
 export default useEnableLegacyFlows;
