@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -663,7 +663,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                 // Phone numbers are submitted as an array of phone number objects:
                 //   [ { type: "mobile", value: "1234567890" }, { type: "work", value: "1234567890" }].
                 for (const [ type, value ] of Object.entries(
-                    values[fieldName] as Record<string, string>)) {
+                    (values[fieldName] ?? {}) as Record<string, string>)) {
                     if (type === "primary") {
                         patchValue.push(value);
                     } else {
@@ -687,7 +687,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                 // [{ type: "home", formatted: "123 Main St" }, { type: "work", formatted: "456 Business St" }].
                 // "formatted" property is added from UI.
                 for (const [ type, value ] of Object.entries(
-                    values[fieldName] as Record<string, string>)) {
+                    (values[fieldName] ?? {}) as Record<string, string>)) {
                     patchValue.push({
                         formatted: value,
                         type: type
