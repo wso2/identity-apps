@@ -1399,28 +1399,6 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                             className="ml-5"
                                         >
                                             <Grid xs={ 12 }>
-                                                <Button
-                                                    variant="text"
-                                                    size="small"
-                                                    data-componentid={
-                                                        `${ componentId }-share-all-roles-with-selected-orgs-btn` }
-                                                    onClick={ () => {
-                                                        if (roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL) {
-                                                            setRoleShareTypeSelected(RoleShareType.SHARE_SELECTED);
-                                                        } else if (roleShareTypeSelected ===
-                                                            RoleShareType.SHARE_SELECTED) {
-                                                            setRoleShareTypeSelected(RoleShareType.SHARE_WITH_ALL);
-                                                        }
-                                                    } }
-                                                    disabled={ readOnly }
-                                                >
-                                                    {
-                                                        roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL
-                                                            ? t("user:editUser.sections.sharedAccess." +
-                                                                "shareSelectedRoles")
-                                                            : t("user:editUser.sections.sharedAccess.shareAllRoles")
-                                                    }
-                                                </Button>
                                                 <SelectiveOrgShareWithSelectiveRoles
                                                     userId={ user?.id }
                                                     applicationRolesList={ userRolesList }
