@@ -24,10 +24,10 @@ reviews:
             A changeset file is any file matching the pattern `.changeset/*.md` (excluding `.changeset/README.md`). It should contain all the changed packages in the pull request along with the version update type.
 
             For the updates to "features", "modules" directories, make sure to also include `@wso2is/console`, `@wso2is/myaccount` or `@wso2is/identity-apps-core` in 
-            the changeset with a patch version update accordingly. If there are new packages in the pull request, they should be mentioned as a major version update in the changeset.
+            the changeset with a proper version update accordingly. If there are new packages in the pull request, those new packages should be mentioned as a major version update in the changeset.
             
             **Pass Criteria:**
-            - At least one new or modified `.md` file exists in the `.changeset/` directory in the CHANGED FILE LIST of the pull request.
+            - At least one NEW `.md` file exists in the `.changeset/` directory in the CHANGED FILE LIST of the pull request.
             - The file should NOT be `.changeset/README.md`
 
             **Fail Criteria:**
