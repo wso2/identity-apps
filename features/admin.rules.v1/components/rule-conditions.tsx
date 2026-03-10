@@ -66,6 +66,26 @@ import { normalizeUserstoreList } from "../utils/userstore-utils";
 import "./rule-conditions.scss";
 
 /**
+ * Normalizes resource items, applying userstore-specific normalization when applicable.
+ *
+ * @param items - Raw resource items.
+ * @param initialResourcesLoadUrl - The URL used to load resources.
+ * @param systemReservedUserStores - List of system-reserved userstore names to filter out.
+ * @returns Processed resource items.
+ */
+const processResourceItems = (
+    items: ResourceInterface[],
+    initialResourcesLoadUrl: string,
+    systemReservedUserStores: string[]
+): ResourceInterface[] => {
+    if (initialResourcesLoadUrl?.toLowerCase().includes("/userstores")) {
+        return normalizeUserstoreList(items, systemReservedUserStores);
+    }
+
+    return items;
+};
+
+/**
  * Value input autocomplete options interface.
  */
 interface ValueInputAutocompleteOptionsInterface {
@@ -228,6 +248,10 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         const CLEAR_OPTION: string = "clear-option";
         const ROLES_ENDPOINT: string = "/Roles";
 
+        const systemReservedUserStores: string[] = useSelector(
+            (state: AppState) => state?.config?.ui?.systemReservedUserStores
+        );
+
         const isRolesResource: boolean = initialResourcesLoadUrl?.includes(ROLES_ENDPOINT);
 
         const setDebouncedSearchQueryDebounced: (value: string) => void = useCallback(
@@ -254,7 +278,12 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         useEffect(() => {
             if (debouncedSearchQuery && filterUrl) {
                 const { items: filteredItems } = normalizeResourceResponse(filteredResources);
-                const filteredOptions: ValueInputAutocompleteOptionsInterface[] = filteredItems
+                const processedFilteredItems: ResourceInterface[] = processResourceItems(
+                    filteredItems,
+                    initialResourcesLoadUrl,
+                    systemReservedUserStores
+                );
+                const filteredOptions: ValueInputAutocompleteOptionsInterface[] = processedFilteredItems
                     .filter(
                         (resource: ResourceInterface) => !hiddenResources.includes(resource[valueReferenceAttribute])
                     )
@@ -268,7 +297,12 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 setOptions(filteredOptions);
             } else {
                 const { items: initialItems } = normalizeResourceResponse(initialResources);
-                const initialOptions: ValueInputAutocompleteOptionsInterface[] = initialItems
+                const processedInitialItems: ResourceInterface[] = processResourceItems(
+                    initialItems,
+                    initialResourcesLoadUrl,
+                    systemReservedUserStores
+                );
+                const initialOptions: ValueInputAutocompleteOptionsInterface[] = processedInitialItems
                     .filter(
                         (resource: ResourceInterface) => !hiddenResources.includes(resource[valueReferenceAttribute])
                     )
@@ -752,14 +786,11 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             const ROLES_ENDPOINT: string = "/Roles";
 
             // Special handling for userstores (user.domain / initiator.domain)
-            let processedItems: ResourceInterface[] = normalizedItems;
-
-            if (initialResourcesLoadUrl?.toLowerCase().includes("/userstores")) {
-                processedItems = normalizeUserstoreList(
-                    normalizedItems,
-                    systemReservedUserStores
-                );
-            }
+            const processedItems: ResourceInterface[] = processResourceItems(
+                normalizedItems,
+                initialResourcesLoadUrl,
+                systemReservedUserStores
+            );
 
             const items: ResourceInterface[] =
                 resourceDetails &&
