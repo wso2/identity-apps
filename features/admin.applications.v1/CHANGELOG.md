@@ -1,5 +1,24 @@
 # @wso2is/admin.applications.v1
 
+## 2.41.17
+
+### Patch Changes
+
+- [#9699](https://github.com/wso2/identity-apps/pull/9699) [`413d08d82b88fb248b45e6a6e6e668a84d7f6a19`](https://github.com/wso2/identity-apps/commit/413d08d82b88fb248b45e6a6e6e668a84d7f6a19) Thanks [@piraveena](https://github.com/piraveena)! - Add feature gate logic for OIDC front-channel logout
+
+- Updated dependencies [[`413d08d82b88fb248b45e6a6e6e668a84d7f6a19`](https://github.com/wso2/identity-apps/commit/413d08d82b88fb248b45e6a6e6e668a84d7f6a19)]:
+  - @wso2is/admin.extensions.v1@2.40.27
+  - @wso2is/admin.feature-gate.v1@1.9.1
+  - @wso2is/access-control@3.5.2
+  - @wso2is/admin.branding.v1@2.32.114
+  - @wso2is/admin.login-flow-builder.v1@2.29.4
+  - @wso2is/admin.login-flow.ai.v1@2.27.109
+  - @wso2is/admin.core.v1@2.54.14
+  - @wso2is/admin.roles.v2@2.27.328
+  - @wso2is/admin.server-configurations.v1@2.37.24
+  - @wso2is/admin.users.v1@2.37.5
+  - @wso2is/admin.connections.v1@2.35.18
+
 ## 2.41.16
 
 ### Patch Changes

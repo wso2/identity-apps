@@ -1,5 +1,31 @@
 # @wso2is/console
 
+## 2.97.7
+
+### Patch Changes
+
+- [#9699](https://github.com/wso2/identity-apps/pull/9699) [`413d08d82b88fb248b45e6a6e6e668a84d7f6a19`](https://github.com/wso2/identity-apps/commit/413d08d82b88fb248b45e6a6e6e668a84d7f6a19) Thanks [@piraveena](https://github.com/piraveena)! - Add feature gate logic for OIDC front-channel logout
+
+- Updated dependencies [[`413d08d82b88fb248b45e6a6e6e668a84d7f6a19`](https://github.com/wso2/identity-apps/commit/413d08d82b88fb248b45e6a6e6e668a84d7f6a19)]:
+  - @wso2is/admin.applications.v1@2.41.17
+  - @wso2is/admin.extensions.v1@2.40.27
+  - @wso2is/admin.feature-gate.v1@1.9.1
+  - @wso2is/access-control@3.5.2
+  - @wso2is/admin.agents.v1@1.0.173
+  - @wso2is/admin.branding.v1@2.32.114
+  - @wso2is/admin.onboarding.v1@1.0.27
+  - @wso2is/admin.flows.v1@1.0.127
+  - @wso2is/admin.core.v1@2.54.14
+  - @wso2is/admin.roles.v2@2.27.328
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.158
+  - @wso2is/admin.email-management.v1@2.25.322
+  - @wso2is/admin.home.v1@1.7.137
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.158
+  - @wso2is/admin.registration-flow-builder.v1@0.10.118
+  - @wso2is/admin.server-configurations.v1@2.37.24
+  - @wso2is/admin.users.v1@2.37.5
+  - @wso2is/admin.connections.v1@2.35.18
+
 ## 2.97.6
 
 ### Patch Changes
