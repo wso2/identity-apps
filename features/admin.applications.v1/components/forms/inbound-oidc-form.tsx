@@ -23,7 +23,12 @@ import Autocomplete, {
 import Box from "@oxygen-ui/react/Box";
 import Chip from "@oxygen-ui/react/Chip";
 import TextField from "@oxygen-ui/react/TextField";
-import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import {
+    FeatureAccessConfigInterface,
+    FeatureStatus,
+    useCheckFeatureStatus,
+    useRequiredScopes
+} from "@wso2is/access-control";
 import {
     ApplicationTabComponentsFilter
 } from "@wso2is/admin.application-templates.v1/components/application-tab-components-filter";
@@ -32,6 +37,7 @@ import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v1";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { ImpersonationConfigConstants } from "@wso2is/admin.impersonation.v1/constants/impersonation-configuration";
 import { getSharedOrganizations } from "@wso2is/admin.organizations.v1/api";
@@ -250,6 +256,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_FRONT_CHANNEL_LOGOUT")
     );
+    const oidcFrontChannelLogoutFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["OIDC_FRONT_CHANNEL_LOGOUT"]);
+    const isFrontChannelLogoutGated: boolean = isFrontChannelLogoutEnabled
+        && oidcFrontChannelLogoutFeatureStatus === FeatureStatus.ENABLED;
     const isEnforceClientSecretPermissionEnabled: boolean = isFeatureEnabled(
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get(
@@ -1513,7 +1523,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     backChannelLogoutUrl: isBackChannelLogoutEnabled
                         ? values.get("backChannelLogoutUrl")
                         : initialValues?.logout?.backChannelLogoutUrl,
-                    frontChannelLogoutUrl: values.get("frontChannelLogoutUrl")
+                    frontChannelLogoutUrl: isFrontChannelLogoutGated
+                        ? values.get("frontChannelLogoutUrl")
+                        : initialValues?.logout?.frontChannelLogoutUrl
                 },
                 publicClient: !isMobileApplication ? values.get("supportPublicClients")?.length > 0 : true,
                 refreshToken: {
@@ -1773,7 +1785,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 expiryInSeconds: Number(values.get("idExpiryInSeconds"))
             },
             logout: {
-                frontChannelLogoutUrl: isFrontChannelLogoutEnabled
+                frontChannelLogoutUrl: isFrontChannelLogoutGated
                     ? values.get("frontChannelLogoutUrl")
                     : initialValues?.logout?.frontChannelLogoutUrl
             },
@@ -4241,7 +4253,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             {
                 !isSubOrganization()
                 && ((isBackChannelLogoutEnabled && !isSPAApplication)
-                    || (isFrontChannelLogoutEnabled && !isMobileApplication
+                    || (isFrontChannelLogoutGated && !isMobileApplication
                         && !isMcpClientApplication && !isM2MApplication))
                 && !isSystemApplication
                 && !isDefaultApplication
@@ -4255,7 +4267,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Heading as="h4">
                                 {
                                     ((isBackChannelLogoutEnabled && !isSPAApplication)
-                                        && (isFrontChannelLogoutEnabled && !isMobileApplication
+                                        && (isFrontChannelLogoutGated && !isMobileApplication
                                             && !isMcpClientApplication && !isM2MApplication))
                                         ? t("applications:forms.inboundOIDC.sections" +
                                             ".logoutURLs.heading")
@@ -4300,7 +4312,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </Grid.Row>
                 )
             }
-            { isFrontChannelLogoutEnabled
+            { isFrontChannelLogoutGated
                 && !isSystemApplication
                 && !isDefaultApplication
                 && !isMobileApplication
