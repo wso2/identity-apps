@@ -1,5 +1,14 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.37.25
+
+### Patch Changes
+
+- [#9733](https://github.com/wso2/identity-apps/pull/9733) [`4d6a03e28d19248a2a24ae1ddafbc41e41f6b917`](https://github.com/wso2/identity-apps/commit/4d6a03e28d19248a2a24ae1ddafbc41e41f6b917) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Enable issuer usage scope configuration tile based on deployment.config.json configuration
+
+- Updated dependencies [[`4d6a03e28d19248a2a24ae1ddafbc41e41f6b917`](https://github.com/wso2/identity-apps/commit/4d6a03e28d19248a2a24ae1ddafbc41e41f6b917)]:
+  - @wso2is/admin.server-configurations.v1@2.37.25
+
 ## 2.37.24
 
 ### Patch Changes
