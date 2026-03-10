@@ -24,7 +24,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo, useRef } from "react";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import OnboardingWizard from "../components/onboarding-wizard";
@@ -66,6 +66,13 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
         [ location.search ]
     );
 
+    // Capture source=fab once on mount. Uses a ref so the wizard URL sync
+    // (which rewrites query params) cannot invalidate the bypass flag.
+    const isIntentionalAccessRef: React.MutableRefObject<boolean> = useRef<boolean>(
+        new URLSearchParams(location.search).get("source") === "fab"
+    );
+    const isIntentionalAccess: boolean = isIntentionalAccessRef.current;
+
     const {
         shouldShowOnboarding,
         isLoading,
@@ -79,16 +86,29 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
         featureConfig?.onboarding?.scopes?.create as string[]
     );
 
-    // Route guard: redirect to home if user shouldn't see onboarding or lacks scopes
+    const isFeatureEnabled: boolean = !!featureConfig?.onboarding?.enabled;
+
+    // Route guard: always enforce feature flag and scopes.
+    // Only skip the SCIM claim check when the user intentionally navigated via the FAB.
     useEffect(() => {
-        if (!isLoading && (!shouldShowOnboarding || !hasRequiredCreateScopes)) {
+        if (isLoading) {
+            return;
+        }
+
+        if (!isFeatureEnabled || !hasRequiredCreateScopes) {
+            history.push(AppConstants.getAppHomePath());
+
+            return;
+        }
+
+        if (!isIntentionalAccess && !shouldShowOnboarding) {
             history.push(AppConstants.getAppHomePath());
         }
-    }, [ isLoading, shouldShowOnboarding, hasRequiredCreateScopes ]);
+    }, [ isLoading, isFeatureEnabled, shouldShowOnboarding, hasRequiredCreateScopes, isIntentionalAccess ]);
 
-    const handleComplete: (data: OnboardingDataInterface) => void = useCallback(
-        (data: OnboardingDataInterface): void => {
-            markOnboardingComplete();
+    const handleComplete: (data: OnboardingDataInterface) => Promise<void> = useCallback(
+        async (data: OnboardingDataInterface): Promise<void> => {
+            await markOnboardingComplete();
 
             const applicationId: string | undefined = data.createdApplication?.applicationId;
 
@@ -105,12 +125,16 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
         [ markOnboardingComplete ]
     );
 
-    const handleSkip: () => void = useCallback((): void => {
-        markOnboardingComplete();
+    const handleSkip: () => Promise<void> = useCallback(async (): Promise<void> => {
+        await markOnboardingComplete();
         history.push(AppConstants.getAppHomePath());
     }, [ markOnboardingComplete ]);
 
-    if (isLoading || !shouldShowOnboarding || !hasRequiredCreateScopes) {
+    if (!isFeatureEnabled || !hasRequiredCreateScopes) {
+        return null;
+    }
+
+    if (!isIntentionalAccess && (isLoading || !shouldShowOnboarding)) {
         return null;
     }
 
@@ -122,6 +146,7 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
                     data-componentid={ `${componentId}-wizard` }
                     initialData={ initialData }
                     initialStep={ initialStep }
+                    isReturningUser={ isIntentionalAccess }
                     onComplete={ handleComplete }
                     onSkip={ handleSkip }
                 />
