@@ -63,6 +63,9 @@
 <jsp:directive.include file="plugins/basicauth-extensions.jsp"/>
 
 <script>
+    // Client-side submission lock to avoid duplicate form submits.
+    var isLoginSubmitting = false;
+
     function goBack() {
         document.getElementById("restartFlowForm").submit();
     }
@@ -89,7 +92,10 @@
         $.fn.preventDoubleSubmission = function() {
             $(this).on('submit',function(e){
                 var $form = $(this);
-                if ($form.data('submitted') === true) {
+                var signInButton = document.getElementById("sign-in-button");
+
+                // Ignore repeated submit events while an earlier submission is in-flight.
+                if (isLoginSubmitting || $form.data('submitted') === true) {
                     // Previously submitted - don't submit again.
                     e.preventDefault();
                     console.warn("Prevented a possible double submit event");
@@ -127,6 +133,14 @@
                     }
 
                     if (userName.value) {
+                        // Lock before async work starts so repeat submits are blocked immediately.
+                        isLoginSubmitting = true;
+                        $form.data('submitted', true);
+                        if (signInButton) {
+                            signInButton.disabled = true;
+                            signInButton.classList.add("loading");
+                        }
+
                         $.ajax({
                             type: "GET",
                             url: "<%= Encode.forJavaScriptBlock(loginContextRequestUrl)%>",
@@ -134,11 +148,16 @@
                             success: function (data) {
                                 if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {
                                     window.location.href = data.redirectUrl;
-                                } else if ($form.data('submitted') !== true) {
-                                    $form.data('submitted', true);
-                                    document.getElementById("loginForm").submit();
                                 } else {
-                                    console.warn("Prevented a possible double submit event.");
+                                    HTMLFormElement.prototype.submit.call(document.getElementById("loginForm"));
+                                }
+                            },
+                            error: function () {
+                                isLoginSubmitting = false;
+                                $form.data('submitted', false);
+                                if (signInButton) {
+                                    signInButton.disabled = false;
+                                    signInButton.classList.remove("loading");
                                 }
                             },
                             cache: false
