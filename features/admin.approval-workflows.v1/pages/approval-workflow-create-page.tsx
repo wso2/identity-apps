@@ -40,6 +40,9 @@ import ConfigurationsForm, { ConfigurationsFormRef } from "../components/create/
 import GeneralApprovalWorkflowDetailsForm, {
     GeneralApprovalWorkflowDetailsFormRef
 } from "../components/create/general-approval-workflow-details-form";
+import NotificationDetailsForm, {
+    NotificationDetailsFormRef
+} from "../components/create/notification-details-form";
 import WorkflowOperationsDetailsForm, {
     WorkflowOperationsDetailsFormRef
 } from "../components/create/workflow-operations-details-form";
@@ -51,6 +54,7 @@ import {
     ConfigurationsFormValuesInterface,
     DropdownPropsInterface,
     GeneralDetailsFormValuesInterface,
+    NotificationDetailsFormValuesInterface,
     WorkflowOperationsDetailsFormValuesInterface
 } from "../models/ui";
 import { WorkflowAssociationPayload } from "../models/workflow-associations";
@@ -81,6 +85,9 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
     const workflowOperationsDetailsFormRef: MutableRefObject<WorkflowOperationsDetailsFormRef> = useRef<
         WorkflowOperationsDetailsFormRef
     >(null);
+    const notificationDetailsFormRef: MutableRefObject<NotificationDetailsFormRef> = useRef<
+        NotificationDetailsFormRef
+    >(null);
     const configurationsFormRef: MutableRefObject<ConfigurationsFormRef> = useRef<ConfigurationsFormRef>(null);
 
     //Set relevant scopes
@@ -97,6 +104,8 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
     );
     const [ activeStep, setActiveStep ] = useState<number>(0);
     const [ hasErrors, setHasErrors ] = useState<boolean>(false);
+    const [ notificationData, setNotificationData ] =
+        useState<NotificationDetailsFormValuesInterface>(null);
 
     /**
      * Handles the general details form submission.
@@ -125,11 +134,24 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
     };
 
     /**
-     * Handles the step details form submission.
+     * Handles the notification details form submission.
      * @param values - Step 03 form values.
      */
+    const onNotificationDetailsFormSubmit = (values: NotificationDetailsFormValuesInterface) => {
+        setNotificationData(values);
+        setApprovalWorkflowFormData((prevData: ApprovalWorkflowFormDataInterface) => ({
+            ...prevData,
+            notificationDetails: values
+        }));
+        setActiveStep(3);
+    };
+
+    /**
+     * Handles the step details form submission.
+     * @param values - Step 04 form values.
+     */
     const onConfigurationDetailsFormSubmit = (values: ConfigurationsFormValuesInterface) => {
-        //Check if there are any empty steps
+//Check if there are any empty steps
         const hasInvalidSteps: boolean = values.approvalSteps.some(
             (step: ApprovalSteps) => step.users.length === 0 && step.roles.length === 0
         );
@@ -147,6 +169,7 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
 
         const workflowTemplate: WorkflowTemplate = {
             name: "MultiStepApprovalTemplate",
+            notificationsForApprovers: notificationData?.notificationsForApprovers,
             steps: values.approvalSteps.map((step: ApprovalSteps, index: number) => ({
                 options: [
                     {
@@ -166,6 +189,7 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
             description: approvalWorkflowFormData.generalDetails.description,
             engine: WORKFLOW_ENGINE,
             name: approvalWorkflowFormData.generalDetails.name,
+            notificationsForInitiator: notificationData?.notificationsForInitiator,
             template: workflowTemplate
         };
 
@@ -378,11 +402,65 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                                 </Typography>)
                             }
                         >
-                            <Typography variant="h4" data-componentid={ `${componentId}-step-2-title` }>
+                            <Typography variant="h4" data-componentid={ `${componentId}-step-3-title` }>
                                 { t("approvalWorkflows:pageLayout.create.stepper.step3.title") }
                             </Typography>
                         </StepLabel>
-                        <StepContent data-componentid={ `${componentId}-step-2-content` }>
+                        <StepContent data-componentid={ `${componentId}-step-3-content` }>
+                            <EmphasizedSegment padded="very" secondary>
+                                <NotificationDetailsForm
+                                    ref={ notificationDetailsFormRef }
+                                    isReadOnly={ !hasApprovalWorkflowCreatePermission }
+                                    initialValues={ notificationData }
+                                    onSubmit={ onNotificationDetailsFormSubmit }
+                                    data-componentid={ `${componentId}-notification-details-form` }
+                                />
+                            </EmphasizedSegment>
+                            <div
+                                className="step-actions-container"
+                                data-componentid={ `${componentId}-step-actions-container` }
+                            >
+                                <Button
+                                    variant="outlined"
+                                    disabled={
+                                        !hasApprovalWorkflowCreatePermission || isApprovalWorkflowCreateRequestLoading
+                                    }
+                                    onClick={ () => {
+                                        setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
+                                    } }
+                                    data-componentid={ `${componentId}-previous-button` }
+                                >
+                                    { t("common:previous") }
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    disabled={ null }
+                                    onClick={ () => {
+                                        if (notificationDetailsFormRef?.current?.triggerSubmit)
+                                            notificationDetailsFormRef.current.triggerSubmit();
+                                    } }
+                                    loading={ isApprovalWorkflowCreateRequestLoading }
+                                    data-componentid={ `${componentId}-next-button` }
+                                >
+                                    { t("common:next") }
+                                </Button>
+                            </div>
+                        </StepContent>
+                    </Step>
+
+                    <Step data-componentid={ `${componentId}-step-4` }>
+                        <StepLabel
+                            optional={
+                                (<Typography variant="body2" data-componentid={ `${componentId}-step-4-description` }>
+                                    { t("approvalWorkflows:pageLayout.create.stepper.step4.description") }
+                                </Typography>)
+                            }
+                        >
+                            <Typography variant="h4" data-componentid={ `${componentId}-step-4-title` }>
+                                { t("approvalWorkflows:pageLayout.create.stepper.step4.title") }
+                            </Typography>
+                        </StepLabel>
+                        <StepContent data-componentid={ `${componentId}-step-4-content` }>
                             <ConfigurationsForm
                                 ref={ configurationsFormRef }
                                 isReadOnly={ !hasApprovalWorkflowCreatePermission }

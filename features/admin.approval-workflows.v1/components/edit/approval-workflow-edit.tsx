@@ -59,6 +59,7 @@ import {
     ConfigurationsFormValuesInterface,
     DropdownPropsInterface,
     GeneralDetailsFormValuesInterface,
+    NotificationDetailsFormValuesInterface,
     WorkflowOperationsDetailsFormValuesInterface
 } from "../../models/ui";
 import { WorkflowAssociationPayload, WorkflowOperations } from "../../models/workflow-associations";
@@ -66,6 +67,9 @@ import ConfigurationsForm, { ConfigurationsFormRef } from "../create/configurati
 import GeneralApprovalWorkflowDetailsForm, {
     GeneralApprovalWorkflowDetailsFormRef
 } from "../create/general-approval-workflow-details-form";
+import NotificationDetailsForm, {
+    NotificationDetailsFormRef
+} from "../create/notification-details-form";
 import WorkflowOperationsDetailsForm, {
     WorkflowOperationsDetailsFormRef,
     operations
@@ -137,6 +141,9 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
     const workflowOperationsDetailsFormRef: MutableRefObject<WorkflowOperationsDetailsFormRef> = useRef<
         WorkflowOperationsDetailsFormRef
     >(null);
+    const notificationDetailsFormRef: MutableRefObject<NotificationDetailsFormRef> = useRef<
+        NotificationDetailsFormRef
+    >(null);
     const configurationsFormRef: MutableRefObject<ConfigurationsFormRef> = useRef<ConfigurationsFormRef>(null);
 
     const [ showApprovalWorkflowDeleteConfirmation, setShowApprovalWorkflowDeleteConfirmationModal ] = useState(false);
@@ -145,6 +152,10 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
     const [ matchedOperations, setMatchedOperations ] = useState<WorkflowOperationsDetailsFormValuesInterface>(null);
     const [ hasErrors, setHasErrors ] = useState<boolean>(false);
     const [ stepValues, setStepValues ] = useState<ConfigurationsFormValuesInterface>();
+    const [ notificationValues, setNotificationValues ] =
+        useState<NotificationDetailsFormValuesInterface>(null);
+    const notificationDataRef: MutableRefObject<NotificationDetailsFormValuesInterface> =
+        useRef<NotificationDetailsFormValuesInterface>(null);
     const [ isGeneralDetailsSubmitted, setGeneralDetailsSubmitted ] = useState<boolean>(false);
     const [ isOperationDetailsNull, setIsOperationDetailsNull ] = useState<boolean>(true);
 
@@ -234,6 +245,14 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
             }
         ) ?? [];
 
+        const notificationDetails: Partial<NotificationDetailsFormValuesInterface> = {
+            notificationsForApprovers: approvalWorkflowDetails.template?.notificationsForApprovers,
+            notificationsForInitiator: approvalWorkflowDetails.notificationsForInitiator
+        };
+
+        notificationDataRef.current = notificationDetails;
+        setNotificationValues(notificationDetails);
+
         setApprovalProcessFormData({
             configurations: {
                 approvalSteps: steps
@@ -243,6 +262,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                 engine: approvalWorkflowDetails.engine,
                 name: approvalWorkflowDetails.name
             },
+            notificationDetails,
             workflowOperationsDetails: {
                 matchedOperations: []
             }
@@ -282,7 +302,8 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
     const onConfigurationDetailsFormSubmit = (values: ConfigurationsFormValuesInterface) => {
         const updatedData: any = {
             ...approvalProcessFormData,
-            configurations: values
+            configurations: values,
+            notificationDetails: notificationDataRef.current
         };
 
         setApprovalProcessFormData(updatedData);
@@ -290,11 +311,25 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
     };
 
     /**
+     * Handles submission of the notification details form.
+     */
+    const onNotificationDetailsFormSubmit = (values: NotificationDetailsFormValuesInterface): void => {
+        notificationDataRef.current = values;
+        setNotificationValues(values);
+        setApprovalProcessFormData((prev: ApprovalWorkflowFormDataInterface) => ({
+            ...prev,
+            notificationDetails: values
+        }));
+    };
+
+    /**
      * Creates the approval workflow payload and triggers update.
      */
-    const createPayload = (updatedApprovalProcessFormData: ApprovalWorkflowFormDataInterface) => {
+    const createPayload = (updatedApprovalProcessFormData: ApprovalWorkflowFormDataInterface): void => {
         const workflowTemplate: WorkflowTemplate = {
             name: "MultiStepApprovalTemplate",
+            notificationsForApprovers:
+                updatedApprovalProcessFormData.notificationDetails?.notificationsForApprovers,
             steps: updatedApprovalProcessFormData.configurations.approvalSteps.map(
                 (step: ApprovalSteps, index: number) => ({
                     options: [
@@ -316,6 +351,8 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
             description: updatedApprovalProcessFormData.generalDetails.description,
             engine: WORKFLOW_ENGINE,
             name: updatedApprovalProcessFormData.generalDetails.name,
+            notificationsForInitiator:
+                updatedApprovalProcessFormData.notificationDetails?.notificationsForInitiator,
             template: workflowTemplate
         };
 
@@ -499,8 +536,12 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
 
     /**
      * Handles update button click.
+     * Order matters: notification must update ref before config submit reads it.
      */
     const handleUpdateButtonClick = (): void => {
+        // First, trigger notification submit to update notificationDataRef synchronously
+        notificationDetailsFormRef?.current?.triggerSubmit();
+
         const isEdited: boolean = generalApprovalWorkflowDetailsFormRef?.current?.isFormEdited();
 
         if (isEdited) {
@@ -593,6 +634,25 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                                 isEditPage={ true }
                                 workflowId={ approvalWorkflowId }
                             />
+                        </div>
+
+                        <Divider className="divider-container" />
+
+                        <div className="workflow-notification-settings">
+                            <Grid className="operations-autocomplete-header">
+                                <Heading as="h6">
+                                    { t("approvalWorkflows:pageLayout.create.stepper.step3.title") }
+                                </Heading>
+                            </Grid>
+                            <EmphasizedSegment padded="very" secondary>
+                                <NotificationDetailsForm
+                                    ref={ notificationDetailsFormRef }
+                                    isReadOnly={ isPageReadOnly || !hasApprovalWorkflowUpdatePermissions }
+                                    initialValues={ notificationValues }
+                                    onSubmit={ onNotificationDetailsFormSubmit }
+                                    data-componentid={ `${componentId}-notification-details-form` }
+                                />
+                            </EmphasizedSegment>
                         </div>
 
                         <Divider className="divider-container" />

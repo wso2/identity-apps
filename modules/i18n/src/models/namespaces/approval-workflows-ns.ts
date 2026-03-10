@@ -165,6 +165,11 @@ export interface approvalWorkflowsNS {
                     title:  string,
                     description: string,
                     hint: string
+                },
+                step4: {
+                    title:  string,
+                    description: string,
+                    hint: string
                 }
             }
         };
@@ -211,6 +216,20 @@ export interface approvalWorkflowsNS {
                     label: string
                 }
             }
+        };
+        notifications: {
+            initiator: {
+                label: string;
+                hint: string;
+            };
+            approver: {
+                label: string;
+                hint: string;
+            };
+            channels: {
+                email: string;
+                sms: string;
+            };
         };
         connection: {
             updatePassword: string;

@@ -1,0 +1,13 @@
+.notification-details-form {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+
+    .notification-config {
+        flex: 1;
+
+        .ui.header {
+            margin-bottom: 0;
+        }
+    }
+}

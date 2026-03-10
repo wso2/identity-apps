@@ -70,6 +70,31 @@ export interface WorkflowOperationsDetailsFormValuesInterface {
 }
 
 /**
+ * Notification channel configuration.
+ */
+export interface NotificationConfig {
+    /**
+     * Notification channels.
+     */
+    channels: string[];
+}
+
+/**
+ * Form values interface for workflow notification configuration.
+ */
+export interface NotificationDetailsFormValuesInterface {
+    /**
+     * Notification configuration for the initiator.
+     */
+    notificationsForInitiator?: NotificationConfig;
+
+    /**
+     * Notification configuration for the approvers.
+     */
+    notificationsForApprovers?: NotificationConfig;
+}
+
+/**
  * Form values interface for workflow configurations.
  */
 export interface ConfigurationsFormValuesInterface {
@@ -103,10 +128,15 @@ export interface ApprovalWorkflowFormDataInterface {
      */
     generalDetails: Partial<GeneralDetailsFormValuesInterface>;
 
-     /**
+    /**
      * Workflow operations details.
      */
     workflowOperationsDetails: Partial<WorkflowOperationsDetailsFormValuesInterface>;
+
+    /**
+     * Notification details of the workflow.
+     */
+    notificationDetails?: Partial<NotificationDetailsFormValuesInterface>;
 
     /**
      * Configurations of the workflow, including approval steps.
