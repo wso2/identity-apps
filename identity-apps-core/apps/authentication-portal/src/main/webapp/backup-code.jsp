@@ -100,23 +100,15 @@
         <![endif]-->
 
         <script>
-            // Handle form submission preventing double submission.
+            var isBackupCodeSubmitting = false;
+
+            // Handle form submission via a single guarded path.
             $(document).ready(function(){
-                $.fn.preventDoubleSubmission = function() {
-                    $(this).on('submit',function(e){
-                        var $form = $(this);
-                        if ($form.data('submitted') === true) {
-                            // Previously submitted - don't submit again.
-                            e.preventDefault();
-                            console.warn("Prevented a possible double submit event");
-                        } else {
-                            // Mark it so that the next submit can be ignored.
-                            $form.data('submitted', true);
-                        }
-                    });
-                    return this;
-                };
-                $('#backupCodeForm').preventDoubleSubmission();
+                $('#backupCodeForm').on('submit', function (e) {
+                    e.preventDefault();
+                    handleSubmit();
+                    return false;
+                });
             });
         </script>
         <script type="text/javascript">
@@ -245,9 +237,13 @@
                                     value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>' />
                             <div class="ui divider hidden"></div>
                             <div>
-                                <input type="submit" id="subButton" onclick="sub(); return false;"
-                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
-                                class="ui primary fluid large button" />
+                                <button
+                                    type="submit"
+                                    id="subButton"
+                                    class="ui primary fluid large button"
+                                >
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>
+                                </button>
                             </div>
                             <div class="ui divider hidden"></div>
                             <div class="text-center mt-1">
@@ -311,7 +307,11 @@
                     }
                 }
             }
-            function sub() {
+            function handleSubmit() {
+                if (isBackupCodeSubmitting) {
+                    return false;
+                }
+
                 var pin1 = document.getElementById("pincode-1").value;
                 var pin2 = document.getElementById("pincode-2").value;
                 var pin3 = document.getElementById("pincode-3").value;
@@ -320,12 +320,18 @@
                 var pin6 = document.getElementById("pincode-6").value;
                 var token = pin1 + pin2 + pin3 + pin4 + pin5 + pin6;
                 document.getElementById('BackupCode').value = token;
-                if ( pin1 !=null &  pin2 !=null & pin3 !=null & pin5 !=null & pin6 !=null) {
+                var isValidToken = pin1 !== "" && pin2 !== "" && pin3 !== "" && pin4 !== "" && pin5 !== "" && pin6 !== "";
+                if (isValidToken) {
+                    isBackupCodeSubmitting = true;
+                    $('#subButton').attr('disabled', true);
+                    $('#subButton').addClass('loading');
                     trackEvent("authentication-portal-backup-code-click-continue", {
                         "tenant": insightsTenantIdentifier != "null" ? insightsTenantIdentifier : ""
                     });
                     document.getElementById("backupCodeForm").submit();
                 }
+
+                return false;
             }
             // Handle paste events
             function handlePaste(e) {
