@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.97.8
+
+### Patch Changes
+
+- [#9733](https://github.com/wso2/identity-apps/pull/9733) [`4d6a03e28d19248a2a24ae1ddafbc41e41f6b917`](https://github.com/wso2/identity-apps/commit/4d6a03e28d19248a2a24ae1ddafbc41e41f6b917) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Enable issuer usage scope configuration tile based on deployment.config.json configuration
+
+* [#9732](https://github.com/wso2/identity-apps/pull/9732) [`22331b80b5ca8b15d5e3b52abd5a5bb46b069640`](https://github.com/wso2/identity-apps/commit/22331b80b5ca8b15d5e3b52abd5a5bb46b069640) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add VC claim dialect to SYSTEM_DIALECTS
+
+* Updated dependencies [[`4d6a03e28d19248a2a24ae1ddafbc41e41f6b917`](https://github.com/wso2/identity-apps/commit/4d6a03e28d19248a2a24ae1ddafbc41e41f6b917), [`22331b80b5ca8b15d5e3b52abd5a5bb46b069640`](https://github.com/wso2/identity-apps/commit/22331b80b5ca8b15d5e3b52abd5a5bb46b069640)]:
+  - @wso2is/admin.server-configurations.v1@2.37.25
+  - @wso2is/admin.claims.v1@2.30.3
+  - @wso2is/admin.onboarding.v1@1.0.28
+
 ## 2.97.7
 
 ### Patch Changes
