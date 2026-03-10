@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2021-2026, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -435,11 +435,11 @@
                 const reg = new RegExp(/^\d+$/);
                 if (reg.test(value)) {
                     value = value.substring(0, 6);
-                    
+
                     for (let n = 0; n < value.length && n < 6; ++n) {
                         $("#pincode-" + (n+1)).val(value[n]);
                     }
-                    
+
                     if (value.length < 6) {
                         $("#pincode-" + (value.length + 1)).focus();
                     } else {
@@ -448,7 +448,7 @@
                     }
                 }
             }
-            
+
             // Add paste event listener to all input fields
             for (let i = 1; i <= 6; i++) {
                 document.getElementById('pincode-' + i).addEventListener('paste', handlePaste);

@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2021-2026, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -315,7 +315,7 @@
     <div class="field">
      <% if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT) &&
         Boolean.parseBoolean(request.getParameter(IS_SAAS_APP))) { %>
-        
+
             <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "email")%></label>
             <div class="ui fluid left icon input">
                 <input
@@ -365,7 +365,7 @@
     <% } %>
     </div>
     <%
-    if (genericReCaptchaEnabled) { 
+    if (genericReCaptchaEnabled) {
         String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
     %>
         <div class="field">

@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2014-2025, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2014-2026, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -197,7 +197,7 @@
     }
 
     function showResendReCaptcha() {
-        <% 
+        <%
             String failedUsername = request.getParameter("failedUsername");
             boolean isEmailVerification = IdentityCoreConstants.USER_EMAIL_NOT_VERIFIED_ERROR_CODE.equals(errorCode);
             boolean isEmailOTPVerification = IdentityCoreConstants.USER_EMAIL_OTP_NOT_VERIFIED_ERROR_CODE.equals(errorCode);
@@ -347,7 +347,7 @@
     String recoveryScenarioProp = "RecoveryScenario";
     String emailVerificationScenario = "EMAIL_VERIFICATION";
     String emailOTPVerificationScenario = "EMAIL_VERIFICATION_OTP";
-    
+
     try {
         if (sp.equals("My Account")) {
             spId = "My_Account";
@@ -553,15 +553,15 @@
     %>
 <% } else if (Boolean.parseBoolean(loginFailed) && errorCode.equals(IdentityCoreConstants.USER_EMAIL_OTP_NOT_VERIFIED_ERROR_CODE) && request.getParameter("resend_username") == null) { %>
     <div class="ui visible warning message" id="error-msg" data-testid="login-page-error-message">
-        
+
         <h5 class="ui heading"><strong><%= AuthenticationEndpointUtil.i18n(resourceBundle, "no.email.confirmation.mail.heading") %></strong></h5>
-        
+
         <%= AuthenticationEndpointUtil.i18n(resourceBundle, Encode.forJava(errorMessage)) %>
-        
+
         <div class="ui divider hidden"></div>
-        
+
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "generic.no.confirmation.mail.otp")%>
-        
+
         <a id="registerLink"
             href="javascript:showResendReCaptcha();"
             data-testid="login-page-resend-confirmation-email-link"
