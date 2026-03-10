@@ -640,6 +640,57 @@ Avoid:
 
 Submitting pull requests without documenting changes in a changeset file.
 
+## Include screenshots or screen recordings in PR descriptions for UI changes
+
+When your pull request introduces new UI components or significantly updates the appearance of existing UI, include screenshots or screen recordings in the PR description. This helps reviewers quickly understand the visual changes and provides context for evaluating the user experience without requiring them to run the code locally.
+
+**Why:**
+- Enables reviewers to assess UI/UX changes without running the code locally.
+- Provides clear visual context for design decisions and layout modifications.
+- Helps catch visual inconsistencies, alignment issues, or styling problems early.
+- Improves communication by showing the final result alongside code changes.
+- Reduces back-and-forth discussions about visual appearance.
+
+**What to do:**
+Include one or more of the following in your PR description for UI-related changes:
+- **Screenshots**: Static images showing the new or updated UI in different states (default, hover, loading, error, etc.).
+- **Screen recordings**: Short videos demonstrating interactive features, animations, or multi-step workflows.
+- **Before/after comparisons**: Side-by-side images showing the previous and new UI for update PRs.
+
+**Example:**
+
+Recommended:
+
+```markdown
+## Description
+This PR implements a new onboarding wizard for application creation.
+
+## Screenshots
+### Step 1: Application Details
+![Application details form](./screenshots/step-1-app-details.png)
+
+### Step 2: Sign-in Method Selection
+![Sign-in method selection](./screenshots/step-2-signin-method.png)
+
+## Screen Recording
+https://user-images.githubusercontent.com/xxxxx/video-walkthrough.mp4
+
+## Changes
+- Added new wizard component with multi-step flow
+- Updated form styling to use Oxygen UI
+```
+
+Avoid:
+
+```markdown
+## Description
+This PR implements a new onboarding wizard for application creation with improved UI.
+
+## Changes
+- Added new wizard component
+- Updated form styling
+```
+
 ## Typescript Doc Comments
 
 We follow [TSDoc](https://tsdoc.org/) comments when writing doc comments. Also we use [eslint-plugin-tsdoc](https://tsdoc.org/pages/packages/eslint-plugin-tsdoc/) ESLint plugin to ensure the validity of the TS doc comments. Please make sure that you adhere to the specified rules.
