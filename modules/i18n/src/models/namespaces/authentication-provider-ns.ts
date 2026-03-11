@@ -1093,8 +1093,14 @@ export interface AuthenticationProviderNS {
             certificateEditSwitch: {
                 jwks: string;
                 pem: string;
+                samlMetadataUri: string;
             };
             noCertificateAlert: string;
+            samlMetadataUrl: {
+                hint: string;
+                label: string;
+                placeholder: string;
+            };
         };
     };
     helpPanel: {
@@ -1366,6 +1372,32 @@ export interface AuthenticationProviderNS {
             validation: {
                 name: string;
                 invalidName: string;
+            };
+            wizard: {
+                certificates: {
+                    heading: string;
+                    mode: {
+                        jwks: string;
+                        samlMetadataUri: string;
+                        pem: string;
+                    };
+                    jwksUrl: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    samlMetadataUri: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    pem: {
+                        hint: string;
+                        uploadButtonText: string;
+                        dropzoneText: string;
+                        pasteAreaPlaceholderText: string;
+                    };
+                };
             };
         };
         trustedTokenIssuer: {

@@ -342,6 +342,14 @@ export class ConnectionUIConstants {
             min: 0
         };
 
+    public static readonly SAML_METADATA_URI_LENGTH: {
+        min: number;
+        max: number;
+    } = {
+            max: 2048,
+            min: 0
+        };
+
     public static readonly GROUP_CLAIM_LENGTH: {
         min: number;
         max: number;
