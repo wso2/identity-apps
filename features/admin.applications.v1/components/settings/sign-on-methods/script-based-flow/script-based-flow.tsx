@@ -565,7 +565,11 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     };
 
     const resetAdaptiveScriptTemplateToDefaultHandler = () => {
-        setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
+        const defaultScript: string[] = AdaptiveScriptUtils.generateScript(authenticationSteps + 1);
+
+        setSourceCode(defaultScript);
+        setInternalScript(defaultScript.join(ApplicationManagementConstants.LINE_BREAK));
+        setInternalStepCount(authenticationSteps);
         setIsScriptFromTemplate(false);
         onAdaptiveScriptReset();
         onConditionalAuthenticationToggle(false);
