@@ -31,6 +31,28 @@
         width: 100%;
         box-sizing: border-box;
         scroll-behavior: auto;
+
+        .copilot-load-earlier-container {
+            display: flex;
+            justify-content: center;
+            padding: 4px $copilot-spacing-lg 8px;
+
+            .copilot-load-earlier-btn {
+                font-size: 12px;
+                color: $copilot-text-color-secondary;
+                text-transform: none;
+                padding: 4px 12px;
+                border-radius: 16px;
+
+                &:hover {
+                    background-color: rgba(0, 0, 0, 0.04);
+                }
+
+                .MuiButton-startIcon {
+                    margin-right: 4px;
+                }
+            }
+        }
   
         .copilot-empty-state {
             padding: $copilot-spacing-xxl;
@@ -124,7 +146,7 @@
                         }
 
                         // Markdown content styling within message bubbles
-                        .markdown-content {
+                        .markdown {
                             // Optimize rendering performance during streaming
                             contain: layout style;
 
