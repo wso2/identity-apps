@@ -25,10 +25,11 @@ import { AlertLevels, FeatureAccessConfigInterface,
     IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import { EnhancedOrganizationLoginToggle } from "./enhanced-organization-login-toggle";
 import { ApplicationManagementConstants } from "../../constants/application-management";
 import { ApplicationInterface } from "../../models/application";
 import { ApplicationShareForm } from "../forms/share-application-form";
@@ -114,6 +115,8 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
         subjectId: application.id
     });
 
+    const handleUpdate: () => void = useCallback((): void => onUpdate(application.id), [ onUpdate, application.id ]);
+
     const handleChildStartedOperation = () => {
         setSharingState(OperationStatus.IN_PROGRESS);
         startPolling();
@@ -150,6 +153,12 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
                         )
                 }
             </EmphasizedSegment>
+            <EnhancedOrganizationLoginToggle
+                appId={ application.id }
+                isEnabled={ application.enhancedOrgAuthenticationEnabled ?? false }
+                onUpdate={ handleUpdate }
+                readOnly={ readOnly || sharingState === OperationStatus.IN_PROGRESS }
+            />
         </>
     );
 };
