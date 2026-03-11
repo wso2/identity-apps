@@ -17,7 +17,9 @@
  */
 
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import HistoryIcon from "@mui/icons-material/History";
 import Box from "@oxygen-ui/react/Box";
+import Button from "@oxygen-ui/react/Button";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
@@ -25,7 +27,7 @@ import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Markdown } from "@wso2is/react-components";
-import React, { ReactElement, useCallback, useEffect, useRef, useState } from "react";
+import React, { ReactElement, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useCopilotPanel } from "../hooks";
 import "./copilot-chat.scss";
 import { CopilotMessage } from "../store/types";
@@ -39,6 +41,52 @@ export interface CopilotChatProps extends IdentifiableComponentInterface {
      */
     className?: string;
 }
+
+/**
+ * Normalize partial markdown while a message is still streaming.
+ * This helps completed markdown segments render with styles before
+ * the full answer arrives.
+ *
+ * @param content - Partial markdown content.
+ * @returns Markdown content with temporary closing delimiters.
+ */
+const normalizeStreamingMarkdown = (content: string): string => {
+    if (!content) {
+        return content;
+    }
+
+    let normalizedContent: string = content;
+    const fencedCodeBlockCount: number = normalizedContent.match(/```/g)?.length ?? 0;
+
+    if (fencedCodeBlockCount % 2 === 1) {
+        normalizedContent = `${normalizedContent}\n\n\`\`\``;
+    }
+
+    const contentWithoutFencedBlocks: string = normalizedContent.replace(/```[\s\S]*?```/g, "");
+    const inlineCodeCount: number = contentWithoutFencedBlocks.match(/`/g)?.length ?? 0;
+
+    if (inlineCodeCount % 2 === 1) {
+        normalizedContent = `${normalizedContent}\``;
+    }
+
+    const boldAsteriskCount: number = normalizedContent.match(/\*\*/g)?.length ?? 0;
+
+    if (boldAsteriskCount % 2 === 1) {
+        normalizedContent = `${normalizedContent}**`;
+    }
+
+    const boldUnderscoreCount: number = normalizedContent.match(/__/g)?.length ?? 0;
+
+    if (boldUnderscoreCount % 2 === 1) {
+        normalizedContent = `${normalizedContent}__`;
+    }
+
+    if (/\[[^\]]*\]\([^)]*$/.test(normalizedContent)) {
+        normalizedContent = `${normalizedContent})`;
+    }
+
+    return normalizedContent;
+};
 
 /**
  * Chat component for the copilot panel.
@@ -57,12 +105,21 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
     const {
         messages,
         isLoading,
-        sendMessage
+        sendMessage,
+        statusMessage,
+        hasMoreHistory,
+        isLoadingMoreHistory,
+        loadMoreHistory
     } = useCopilotPanel();
 
     const [ inputValue, setInputValue ] = useState<string>("");
     const messagesEndRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+    const messagesContainerRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
     const scrollTimeoutRef: React.MutableRefObject<NodeJS.Timeout | null> = useRef<NodeJS.Timeout | null>(null);
+    /** Stores the scrollHeight snapshot taken just before a prepend so we can restore position. */
+    const prevScrollHeightRef: React.MutableRefObject<number | null> = useRef<number | null>(null);
+    /** When true the next messages-change effect skips the scroll-to-bottom. */
+    const suppressScrollRef: React.MutableRefObject<boolean> = useRef<boolean>(false);
 
     /**
      * Scroll to bottom of messages.
@@ -119,11 +176,43 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
     }, [ scrollToBottom ]);
 
     /**
-     * Scroll to bottom when messages change - use throttled scroll during streaming.
+     * Scroll to bottom when messages change - suppressed when loading earlier messages.
      */
     useEffect(() => {
+        if (suppressScrollRef.current) {
+            suppressScrollRef.current = false;
+            return;
+        }
         throttledScrollToBottom();
     }, [ messages, throttledScrollToBottom ]);
+
+    /**
+     * Restore the scroll anchor after older messages are prepended.
+     * useLayoutEffect fires synchronously after the DOM is updated but before the
+     * browser paints, so the user never sees a scroll jump.
+     */
+    useLayoutEffect(() => {
+        if (prevScrollHeightRef.current !== null && messagesContainerRef.current) {
+            const scrollDiff: number =
+                messagesContainerRef.current.scrollHeight - prevScrollHeightRef.current;
+
+            messagesContainerRef.current.scrollTop += scrollDiff;
+            prevScrollHeightRef.current = null;
+        }
+    }, [ messages.length ]);
+
+    /**
+     * Handle "Load earlier messages" click.
+     * Captures the current scrollHeight so that useLayoutEffect can restore the
+     * visual position once the prepended messages inflate the container.
+     */
+    const handleLoadMore: () => void = useCallback(() => {
+        if (messagesContainerRef.current) {
+            prevScrollHeightRef.current = messagesContainerRef.current.scrollHeight;
+            suppressScrollRef.current = true;
+        }
+        loadMoreHistory();
+    }, [ loadMoreHistory ]);
 
     /**
      * Cleanup timeout on unmount.
@@ -142,6 +231,9 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
     const renderMessage = (message: CopilotMessage): ReactElement => {
         const isUser: boolean = message.sender === "user";
         const isError: boolean = message.type === "error";
+        const renderedContent: string = message.type === "streaming"
+            ? normalizeStreamingMarkdown(message.content)
+            : message.content;
 
         if (isUser) {
             // User message - orange bubble on the right
@@ -152,12 +244,6 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
                     data-componentid={ `${componentId}-message-${message.id}` }
                 >
                     <Box className="copilot-message-content">
-                        <Typography variant="caption" className="copilot-message-time">
-                            { new Date(message.timestamp).toLocaleTimeString([], {
-                                hour: "2-digit",
-                                minute: "2-digit"
-                            }) }
-                        </Typography>
                         <Paper elevation={ 0 } className="copilot-message-bubble">
                             { message.content }
                         </Paper>
@@ -177,18 +263,12 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
                             <Typography variant="caption" className="copilot-message-sender">
                                 Copilot
                             </Typography>
-                            <Typography variant="caption" className="copilot-message-time">
-                                { new Date(message.timestamp).toLocaleTimeString([], {
-                                    hour: "2-digit",
-                                    minute: "2-digit"
-                                }) }
-                            </Typography>
                         </Box>
                         <Paper
                             elevation={ 0 }
                             className={ `copilot-message-bubble ${isError ? "error-message" : ""}` }
                         >
-                            <Markdown source={ message.content } />
+                            <Markdown source={ renderedContent } />
                         </Paper>
                     </Box>
                 </Box>
@@ -203,7 +283,25 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
 
         >
             { /* Messages Area */ }
-            <Box className="copilot-chat-messages">
+            <Box className="copilot-chat-messages" ref={ messagesContainerRef }>
+                { /* Load Earlier Messages button */ }
+                { hasMoreHistory && (
+                    <Box className="copilot-load-earlier-container">
+                        <Button
+                            variant="text"
+                            size="small"
+                            startIcon={ isLoadingMoreHistory
+                                ? <CircularProgress size={ 14 } />
+                                : <HistoryIcon fontSize="small" /> }
+                            onClick={ handleLoadMore }
+                            disabled={ isLoadingMoreHistory }
+                            data-componentid={ `${componentId}-load-earlier-btn` }
+                            className="copilot-load-earlier-btn"
+                        >
+                            { isLoadingMoreHistory ? "Loading..." : "Load earlier messages" }
+                        </Button>
+                    </Box>
+                ) }
                 { messages.length === 0 ? (
                     <Box className="copilot-empty-state">
                         <Typography variant="body2" className="copilot-empty-text">
@@ -230,7 +328,7 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
                                 <Box className="copilot-loading-content">
                                     <CircularProgress size={ 16 } className="copilot-loading-spinner" />
                                     <Typography variant="body2" className="copilot-loading-text">
-                                        Thinking...
+                                        {statusMessage || "Thinking..."}
                                     </Typography>
                                 </Box>
                             </Paper>

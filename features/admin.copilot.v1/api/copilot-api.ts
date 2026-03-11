@@ -23,20 +23,18 @@ import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
 /**
  * Get an axios instance with automatic token handling.
+ * Used for non-streaming requests (history, clear).
  */
 const httpClient: HttpClientInstance =
     AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Safely parse JSON string, returning empty object if parsing fails.
+ * Get a streaming request function with automatic token handling.
+ * Used for streaming requests (chat).
  */
-const safeParse = (str: string) => {
-    try {
-        return JSON.parse(str);
-    } catch {
-        return {};
-    }
-};
+const httpStreamClient = (AsgardeoSPAClient.getInstance() as any).httpStreamRequest.bind(
+    AsgardeoSPAClient.getInstance()
+);
 
 /**
  * Interface for chat message request.
@@ -55,17 +53,32 @@ export interface CopilotChatResponse {
 }
 
 /**
- * Interface for streaming chat chunk.
+ * SSE event types from the backend.
  */
-export interface CopilotStreamChunk {
-    type: string;
-    content: string;
+export type SSEEventType = "STATUS" | "STREAM" | "STREAM_END" | "ERROR";
+
+/**
+ * Interface for a parsed SSE event from the backend.
+ */
+export interface SSEEvent {
+    type: SSEEventType;
+    content?: string;
+    message?: string;
 }
 
 /**
- * Type for streaming callback function.
+ * Callbacks for SSE streaming.
  */
-export type StreamingCallback = (chunk: CopilotStreamChunk) => void;
+export interface StreamCallbacks {
+    /** Called when a STATUS event is received (e.g., "Searching docs...") */
+    onStatus?: (step: string) => void;
+    /** Called for each STREAM token (the answer typing out) */
+    onToken?: (content: string) => void;
+    /** Called when the stream completes */
+    onComplete?: () => void;
+    /** Called when an error occurs */
+    onError?: (error: string) => void;
+}
 
 /**
  * Interface for clear chat response.
@@ -92,135 +105,171 @@ export interface CopilotHistoryResponse {
         question: string;
         answer: string;
     }[];
-    summary: string;
-}
-
-/**
- * Interface for history response.
- */
-export interface CopilotHistoryResponse {
-    history: {
-        question: string;
-        answer: string;
-    }[];
-    summary: string;
+    /** Total number of history records stored for the user. */
+    total: number;
+    /** Maximum records requested per page. */
+    limit: number;
+    /** Reverse offset applied — most-recent records skipped before this page. */
+    offset: number;
+    /** True when there are older records beyond this page. */
+    has_more: boolean;
 }
 
 // Local development URL (copilot runs on port 8443, separate from identity server on 9443)
-const COPILOT_BASE_URL: string = "http://localhost:8443/t/carbon.super/api/server/v1/copilot";
+//const COPILOT_BASE_URL: string = "http://localhost:8443/t/carbon.super/api/server/v1/copilot";
 
 // Production URL
-// const COPILOT_BASE_URL: string = `${store.getState().config.deployment.serverHost}/t/${
-//     store.getState().config.deployment.tenant
-// }/api/server/v1/copilot`;
+const COPILOT_BASE_URL: string = `${store.getState().config.deployment.serverHost}/t/${
+     store.getState().config.deployment.tenant
+}/api/server/v1/copilot`;
 
 /**
- * Send a chat message to the copilot.
- * Uses AsgardeoSPAClient.httpRequest for automatic token handling.
+ * Parse formal SSE chunks into events.
+ * Handles partial events by accumulating a buffer across calls.
+ */
+const parseSSEChunk = (chunk: string, buffer: string): { events: SSEEvent[]; remaining: string } => {
+    const combined: string = buffer + chunk;
+    const events: SSEEvent[] = [];
+
+    // Events are separated by double newlines (\n\n)
+    const parts: string[] = combined.split("\n\n");
+
+    // Last part may be an incomplete event — keep as buffer
+    const remaining: string = parts.pop() || "";
+
+    for (const part of parts) {
+        // Collect all "data: ..." lines within this event block
+        const dataLines: string[] = part
+            .split("\n")
+            .filter((line: string) => line.startsWith("data: "))
+            .map((line: string) => line.slice(6)); // strip "data: " prefix
+
+        if (dataLines.length === 0) continue;
+
+        const jsonStr: string = dataLines.join("");
+
+        try {
+            const parsed: SSEEvent = JSON.parse(jsonStr);
+
+            events.push(parsed);
+        } catch (e) {
+            console.warn("[CopilotAPI] Failed to parse SSE event:", jsonStr);
+        }
+    }
+
+    return { events, remaining };
+};
+
+/**
+ * Send a chat message using SSE streaming.
+ * Uses AsgardeoSPAClient.httpStreamRequest — token injection and web worker
+ * transport are handled automatically by the SDK.
  *
  * @param question - The user's question.
- * @param onStream - Optional callback for streaming responses.
- * @returns The chat response.
+ * @param callbacks - Callbacks for status, token, complete, and error events.
+ * @param signal - Optional AbortSignal for cancellation.
+ * @returns The complete answer string.
  */
 export const sendCopilotChatMessage = async (
     question: string,
-    onStream?: StreamingCallback
+    callbacks?: StreamCallbacks,
+    signal?: AbortSignal
 ): Promise<CopilotChatResponse> => {
     if (!question.trim()) {
         throw new Error("Question cannot be empty");
     }
 
-    const requestId: string = crypto.randomUUID();
     const correlationId: string = `corr-${Date.now()}`;
+    const requestId: string = crypto.randomUUID();
 
-    const requestConfig: AxiosRequestConfig = {
-        data: {
-            question: question.trim()
-        },
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json",
-            "correlation-id": correlationId,
-            "x-request-id": requestId
-        },
-        method: HttpMethods.POST,
-        url: `${COPILOT_BASE_URL}/chat`
-    };
+    console.log("[CopilotAPI] Starting SSE stream for chat via httpStreamRequest...");
 
-    console.log("[CopilotAPI] Sending message via httpClient...");
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
-                throw new Error(`HTTP ${response.status}: Failed to send message`);
-            }
-
-            // Process the response data (may be streaming format as text)
-            return processStreamingResponse(response.data, onStream);
-        })
-        .catch((error: AxiosError) => {
-            console.error("[CopilotAPI] Error sending message:", error);
-            const errorData: any = error?.response?.data || {};
-
-            throw new Error(
-                errorData.detail || errorData.message || error.message || "Failed to send message"
-            );
+    const stream: ReadableStream<Uint8Array> | undefined =
+        await (AsgardeoSPAClient.getInstance() as any).httpStreamRequest({
+            data: { question: question.trim() },
+            headers: {
+                "Accept": "text/event-stream",
+                "Content-Type": "application/json",
+                "correlation-id": correlationId,
+                "x-request-id": requestId
+            },
+            method: "POST",
+            url: `${COPILOT_BASE_URL}/chat`
         });
-};
 
-/**
- * Process streaming response data.
- * The axios httpClient receives the complete response, which we parse line-by-line
- * to extract streaming chunks and invoke the callback.
- *
- * @param data - The response data (string or object).
- * @param onStream - Optional callback for streaming chunks.
- * @returns The assembled chat response.
- */
-const processStreamingResponse = (data: any, onStream?: StreamingCallback): CopilotChatResponse => {
-    let fullAnswer: string = "";
-
-    // If data is already a parsed object with an answer, use it directly
-    if (typeof data === "object" && data !== null) {
-        if (data.answer) {
-            return {
-                answer: data.answer,
-                conversationId: data.conversationId,
-                messageId: data.messageId
-            };
-        }
+    if (!stream) {
+        throw new Error("No stream returned — httpStreamRequest requires WebWorker storage.");
     }
 
-    // If data is a string, parse line-by-line for streaming chunks
-    if (typeof data === "string") {
-        const lines: string[] = data.split("\n");
+    if (signal?.aborted) {
+        throw new Error("Request was aborted before streaming began.");
+    }
 
-        for (const line of lines) {
-            const trimmedLine: string = line.trim();
+    const reader: ReadableStreamDefaultReader<Uint8Array> = stream.getReader();
+    const decoder: TextDecoder = new TextDecoder();
+    let fullAnswer: string = "";
+    let sseBuffer: string = "";
 
-            if (!trimmedLine) continue;
+    // Abort-signal wiring: cancel the reader if signal fires
+    const abortHandler = (): void => { reader.cancel(); };
 
-            const parsed: CopilotStreamChunk = safeParse(trimmedLine) as CopilotStreamChunk;
+    signal?.addEventListener("abort", abortHandler);
 
-            if (parsed && parsed.type === "STREAM" && parsed.content) {
-                fullAnswer += parsed.content;
-                if (onStream) {
-                    onStream(parsed);
+    try {
+        while (true) {
+            const { done, value }: ReadableStreamReadResult<Uint8Array> = await reader.read();
+
+            if (done) break;
+
+            const chunk: string = decoder.decode(value, { stream: true });
+            const { events, remaining } = parseSSEChunk(chunk, sseBuffer);
+
+            sseBuffer = remaining;
+
+            for (const event of events) {
+                switch (event.type) {
+                    case "STATUS":
+                        if (callbacks?.onStatus && event.content) {
+                            callbacks.onStatus(event.content);
+                        }
+                        break;
+
+                    case "STREAM":
+                        if (event.content) {
+                            fullAnswer += event.content;
+                            if (callbacks?.onToken) {
+                                callbacks.onToken(event.content);
+                            }
+                        }
+                        break;
+
+                    case "STREAM_END":
+                        console.log("[CopilotAPI] Stream completed, total answer:", fullAnswer.length, "chars");
+                        if (callbacks?.onComplete) {
+                            callbacks.onComplete();
+                        }
+                        break;
+
+                    case "ERROR":
+                        console.error("[CopilotAPI] Server error:", event.message);
+                        if (callbacks?.onError) {
+                            callbacks.onError(event.message || "Unknown server error");
+                        }
+
+                        throw new Error(event.message || "Server error during chat processing");
+
+                    default:
+                        console.warn("[CopilotAPI] Unknown event type:", event.type);
                 }
-            } else if (parsed && parsed.type === "STREAM_END") {
-                break;
             }
         }
+    } finally {
+        signal?.removeEventListener("abort", abortHandler);
+        reader.releaseLock();
     }
 
-    return {
-        answer: fullAnswer || (typeof data === "string" ? data : ""),
-        conversationId: undefined,
-        messageId: undefined
-    };
+    return { answer: fullAnswer };
 };
-
-
 
 /**
  * Clear the chat conversation.
@@ -270,12 +319,20 @@ export const clearCopilotChatApi = async (): Promise<CopilotClearResponse> => {
 };
 
 /**
- * Get the chat history for the user.
+ * Get a page of the chat history for the user.
  * Uses AsgardeoSPAClient.httpRequest for automatic token handling.
  *
- * @returns The chat history.
+ * History uses reverse-offset pagination: ``offset=0`` returns the most-recent
+ * ``limit`` records; incrementing ``offset`` by ``limit`` loads older pages.
+ *
+ * @param limit  - Maximum records to return (1–50, default 10).
+ * @param offset - Most-recent records to skip (default 0).
+ * @returns The paginated chat history.
  */
-export const getCopilotChatHistory = async (): Promise<CopilotHistoryResponse> => {
+export const getCopilotChatHistory = async (
+    limit: number = 10,
+    offset: number = 0
+): Promise<CopilotHistoryResponse> => {
     const requestId: string = crypto.randomUUID();
     const correlationId: string = `corr-${Date.now()}`;
 
@@ -287,10 +344,11 @@ export const getCopilotChatHistory = async (): Promise<CopilotHistoryResponse> =
             "x-request-id": requestId
         },
         method: HttpMethods.GET,
+        params: { limit, offset },
         url: `${COPILOT_BASE_URL}/history`
     };
 
-    console.log("[CopilotAPI] Fetching chat history...");
+    console.log(`[CopilotAPI] Fetching chat history (limit=${limit}, offset=${offset})...`);
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {

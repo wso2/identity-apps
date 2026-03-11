@@ -18,7 +18,6 @@
 
 import { Dispatch } from "redux";
 import {
-    CopilotStreamChunk,
     clearCopilotChatApi,
     getCopilotChatHistory,
     sendCopilotChatMessage
@@ -29,10 +28,14 @@ import {
     CopilotActionTypes,
     CopilotContentType,
     CopilotMessage,
+    HistoryPaginationPayload,
+    PrependCopilotMessagesActionInterface,
     SetCopilotChatHistoryActionInterface,
     SetCopilotContentTypeActionInterface,
+    SetCopilotHistoryPaginationActionInterface,
     SetCopilotPanelLoadingActionInterface,
     SetCopilotPanelVisibilityActionInterface,
+    SetCopilotStatusMessageActionInterface,
     ToggleCopilotPanelActionInterface,
     UpdateCopilotMessageActionInterface
 } from "../types/copilot-action-types";
@@ -88,7 +91,9 @@ export const addCopilotMessage = (message: CopilotMessage): AddCopilotMessageAct
  * @param update - The message update containing id and content.
  * @returns An action of type `UPDATE_COPILOT_MESSAGE`.
  */
-export const updateCopilotMessage = (update: { id: string; content: string }): UpdateCopilotMessageActionInterface => ({
+export const updateCopilotMessage = (
+    update: { id: string; content: string; type?: CopilotMessage["type"] }
+): UpdateCopilotMessageActionInterface => ({
     payload: update,
     type: CopilotActionTypes.UPDATE_COPILOT_MESSAGE
 });
@@ -100,6 +105,19 @@ export const updateCopilotMessage = (update: { id: string; content: string }): U
  */
 export const clearCopilotChat = (): ClearCopilotChatActionInterface => ({
     type: CopilotActionTypes.CLEAR_COPILOT_CHAT
+});
+
+/**
+ * Redux action to set the copilot status message (agent step progress).
+ *
+ * @param message - The status message to display, or null to clear.
+ * @returns An action of type `SET_COPILOT_STATUS_MESSAGE`.
+ */
+export const setCopilotStatusMessage = (
+    message: string | null
+): SetCopilotStatusMessageActionInterface => ({
+    payload: message,
+    type: CopilotActionTypes.SET_COPILOT_STATUS_MESSAGE
 });
 
 /**
@@ -116,8 +134,9 @@ export const clearCopilotChatWithApi = () => {
             currentRequestController = null;
         }
 
-        // Reset loading state
+        // Reset loading and status states
         dispatch(setCopilotPanelLoading(false));
+        dispatch(setCopilotStatusMessage(null));
 
         // Clear the chat
         dispatch(clearCopilotChat());
@@ -152,8 +171,37 @@ export const setCopilotChatHistory = (messages: CopilotMessage[]): SetCopilotCha
 });
 
 /**
- * Redux thunk action to fetch the chat history.
- * Uses AsgardeoSPAClient for automatic token handling.
+ * Redux action to set the history pagination metadata.
+ *
+ * @param payload - Pagination metadata.
+ * @returns An action of type `SET_COPILOT_HISTORY_PAGINATION`.
+ */
+export const setHistoryPagination = (
+    payload: HistoryPaginationPayload
+): SetCopilotHistoryPaginationActionInterface => ({
+    payload,
+    type: CopilotActionTypes.SET_COPILOT_HISTORY_PAGINATION
+});
+
+/**
+ * Redux action to prepend older messages to the chat list (load-earlier).
+ *
+ * @param messages - Older messages to prepend.
+ * @returns An action of type `PREPEND_COPILOT_MESSAGES`.
+ */
+export const prependCopilotMessages = (messages: CopilotMessage[]): PrependCopilotMessagesActionInterface => ({
+    payload: messages,
+    type: CopilotActionTypes.PREPEND_COPILOT_MESSAGES
+});
+
+/**
+ * Default number of history records to load per page.
+ */
+const HISTORY_PAGE_SIZE: number = 2;
+
+/**
+ * Redux thunk action to fetch the most-recent page of chat history.
+ * Uses reverse-offset pagination: offset=0 returns the latest records.
  *
  * @returns A thunk function.
  */
@@ -173,8 +221,8 @@ export const fetchCopilotHistory = () => {
 
             dispatch(setCopilotPanelLoading(true));
 
-            console.log("[fetchCopilotHistory] Calling API...");
-            const response = await getCopilotChatHistory();
+            console.log("[fetchCopilotHistory] Calling API (offset=0)...");
+            const response = await getCopilotChatHistory(HISTORY_PAGE_SIZE, 0);
 
             console.log("[fetchCopilotHistory] Response received:", response);
 
@@ -207,6 +255,12 @@ export const fetchCopilotHistory = () => {
 
                 if (finalMessages.length === 0) {
                     dispatch(setCopilotChatHistory(messages));
+                    // Store pagination metadata so the UI can offer "load earlier"
+                    dispatch(setHistoryPagination({
+                        hasMoreHistory: response.has_more,
+                        nextOffset: HISTORY_PAGE_SIZE,
+                        total: response.total
+                    }));
                 }
             }
         } catch (error: any) {
@@ -217,6 +271,71 @@ export const fetchCopilotHistory = () => {
             if (!currentRequestController) {
                 dispatch(setCopilotPanelLoading(false));
             }
+        }
+    };
+};
+
+/**
+ * Redux thunk action to load an older page of chat history and prepend it.
+ * Increments the stored offset so repeated calls walk further into the past.
+ *
+ * @returns A thunk function.
+ */
+export const loadMoreCopilotHistory = () => {
+    return async (dispatch: Dispatch, getState: any) => {
+        const state = getState();
+        const { hasMoreHistory, historyOffset, isLoadingMoreHistory } = state?.copilot || {};
+
+        if (!hasMoreHistory || isLoadingMoreHistory) {
+            return;
+        }
+
+        try {
+            dispatch({ type: CopilotActionTypes.SET_COPILOT_HISTORY_PAGINATION, payload: {
+                hasMoreHistory,
+                nextOffset: historyOffset,
+                total: state?.copilot?.historyTotal ?? 0
+            } as HistoryPaginationPayload });
+
+            console.log(`[loadMoreCopilotHistory] Fetching older history (offset=${historyOffset})...`);
+            const response = await getCopilotChatHistory(HISTORY_PAGE_SIZE, historyOffset);
+
+            if (response.history && Array.isArray(response.history) && response.history.length > 0) {
+                const olderMessages: CopilotMessage[] = [];
+
+                response.history.forEach((record: any, index: number) => {
+                    olderMessages.push({
+                        content: record.question,
+                        id: `hist-older-user-${historyOffset + index}-${Date.now()}`,
+                        sender: "user",
+                        timestamp: Date.now() - (response.total - historyOffset - index) * 60000,
+                        type: "text"
+                    });
+                    olderMessages.push({
+                        content: record.answer,
+                        id: `hist-older-ai-${historyOffset + index}-${Date.now()}`,
+                        sender: "copilot",
+                        timestamp: Date.now() - (response.total - historyOffset - index) * 60000 + 1000,
+                        type: "text"
+                    });
+                });
+
+                dispatch(prependCopilotMessages(olderMessages));
+                dispatch(setHistoryPagination({
+                    hasMoreHistory: response.has_more,
+                    nextOffset: historyOffset + HISTORY_PAGE_SIZE,
+                    total: response.total
+                }));
+            } else {
+                // No more records
+                dispatch(setHistoryPagination({
+                    hasMoreHistory: false,
+                    nextOffset: historyOffset,
+                    total: state?.copilot?.historyTotal ?? 0
+                }));
+            }
+        } catch (error: any) {
+            console.error("[loadMoreCopilotHistory] Error:", error);
         }
     };
 };
@@ -233,10 +352,107 @@ export const setCopilotContentType = (contentType: CopilotContentType): SetCopil
 });
 
 /**
- * Redux thunk action to send a user message and get AI response.
- * Uses AsgardeoSPAClient for automatic token handling.
+ * Minimum time (ms) to display each status message before allowing the next.
+ */
+const STATUS_MIN_DISPLAY_MS: number = 800;
+
+/**
+ * Status message queue that guarantees each message displays for a minimum duration.
+ * This creates the smooth step-by-step progression the user sees.
+ */
+class StatusQueue {
+    private queue: string[] = [];
+    private isProcessing: boolean = false;
+    private lastDisplayTime: number = 0;
+    private dispatch: Dispatch;
+    private cancelled: boolean = false;
+
+    constructor(dispatch: Dispatch) {
+        this.dispatch = dispatch;
+    }
+
+    /**
+     * Add a status message to the queue. It will be shown after the current
+     * message has been displayed for at least STATUS_MIN_DISPLAY_MS.
+     */
+    enqueue(message: string): void {
+        if (this.cancelled) return;
+        this.queue.push(message);
+        if (!this.isProcessing) {
+            this.processNext();
+        }
+    }
+
+    /**
+     * Process the next message in the queue.
+     */
+    private processNext(): void {
+        if (this.cancelled || this.queue.length === 0) {
+            this.isProcessing = false;
+            return;
+        }
+
+        this.isProcessing = true;
+        const message: string = this.queue.shift()!;
+        const now: number = Date.now();
+        const elapsed: number = now - this.lastDisplayTime;
+        const delay: number = Math.max(0, STATUS_MIN_DISPLAY_MS - elapsed);
+
+        setTimeout(() => {
+            if (this.cancelled) return;
+            this.dispatch(setCopilotStatusMessage(message));
+            this.lastDisplayTime = Date.now();
+            this.processNext();
+        }, delay);
+    }
+
+    /**
+     * Drain any remaining messages in the queue, showing each for the minimum time.
+     * Returns a promise that resolves when the queue is empty.
+     */
+    async drain(): Promise<void> {
+        while (this.queue.length > 0 && !this.cancelled) {
+            const message: string = this.queue.shift()!;
+            const now: number = Date.now();
+            const elapsed: number = now - this.lastDisplayTime;
+            const remaining: number = Math.max(0, STATUS_MIN_DISPLAY_MS - elapsed);
+
+            if (remaining > 0) {
+                await new Promise<void>((resolve: () => void) => setTimeout(resolve, remaining));
+            }
+
+            if (this.cancelled) return;
+            this.dispatch(setCopilotStatusMessage(message));
+            this.lastDisplayTime = Date.now();
+        }
+
+        // Wait for the last message to be visible for the minimum time
+        if (!this.cancelled) {
+            const finalElapsed: number = Date.now() - this.lastDisplayTime;
+            const finalRemaining: number = Math.max(0, STATUS_MIN_DISPLAY_MS - finalElapsed);
+
+            if (finalRemaining > 0) {
+                await new Promise<void>((resolve: () => void) => setTimeout(resolve, finalRemaining));
+            }
+        }
+    }
+
+    /**
+     * Cancel the queue and stop processing.
+     */
+    cancel(): void {
+        this.cancelled = true;
+        this.queue = [];
+    }
+}
+
+/**
+ * Redux thunk action to send a user message and get AI response via SSE streaming.
+ * The answer types out token-by-token in real-time, like ChatGPT.
+ * Status messages are queued with a minimum display time for smooth progression.
  *
  * @param userMessage - The user's message.
+ * @param getAccessToken - Function from useAuthContext() to get the access token.
  * @returns A thunk function.
  */
 export const sendCopilotMessage = (userMessage: string) => {
@@ -261,82 +477,106 @@ export const sendCopilotMessage = (userMessage: string) => {
 
         dispatch(addCopilotMessage(userMsg));
         dispatch(setCopilotPanelLoading(true));
+        dispatch(setCopilotStatusMessage("Submitting your question..."));
+
+        // Create status queue for smooth step-by-step progression
+        const statusQueue: StatusQueue = new StatusQueue(dispatch);
+
+        // Create a placeholder AI message that will be updated as tokens arrive
+        const aiMessageId: string = `ai-${Date.now()}`;
+        const aiPlaceholder: CopilotMessage = {
+            content: "",
+            id: aiMessageId,
+            sender: "copilot",
+            timestamp: Date.now(),
+            type: "streaming"
+        };
+
+        // We'll add the AI message once the first token arrives
+        let aiMessageAdded: boolean = false;
+        let pendingTokens: string[] = [];
+        let drainingStatus: boolean = false;
 
         try {
-            let accumulatedContent: string = "";
-            let isFirstChunk: boolean = true;
-            let assistantMessageId: string;
+            console.log("[sendCopilotMessage] Starting SSE stream");
 
-            console.log("[sendCopilotMessage] Sending message via streaming API");
-
-            const response: any = await sendCopilotChatMessage(
+            await sendCopilotChatMessage(
                 userMessage,
-                (chunk: CopilotStreamChunk) => {
-                    // Check if request was aborted
-                    if (signal.aborted) {
-                        return;
-                    }
+                {
+                    onComplete: () => {
+                        console.log("[sendCopilotMessage] Stream completed");
 
-                    if (isFirstChunk) {
-                        assistantMessageId = `ai-${Date.now()}`;
-                        const aiResponse: CopilotMessage = {
-                            content: "",
-                            id: assistantMessageId,
-                            sender: "copilot",
-                            timestamp: Date.now(),
-                            type: "text"
-                        };
-
-                        dispatch(addCopilotMessage(aiResponse));
-                        dispatch(setCopilotPanelLoading(false));
-                        dispatch(setCopilotPanelLoading(false));
-                        isFirstChunk = false;
-                    }
-
-                    if (chunk.content) {
-                        accumulatedContent += chunk.content;
                         dispatch(updateCopilotMessage({
-                            content: accumulatedContent,
-                            id: assistantMessageId
+                            content: "",
+                            id: aiMessageId,
+                            type: "text"
                         }));
+                    },
+                    onError: (error: string) => {
+                        console.error("[sendCopilotMessage] Stream error:", error);
+                    },
+                    onStatus: (step: string) => {
+                        if (signal.aborted) return;
+                        statusQueue.enqueue(step);
+                    },
+                    onToken: (content: string) => {
+                        if (signal.aborted) return;
+
+                        if (!aiMessageAdded) {
+                            // Buffer this token
+                            pendingTokens.push(content);
+
+                            // On the very first token, kick off the status drain in the background.
+                            // Once it finishes, flush all buffered tokens one-by-one then go live.
+                            if (!drainingStatus) {
+                                drainingStatus = true;
+                                statusQueue.drain().then(() => {
+                                    if (signal.aborted) return;
+                                    aiMessageAdded = true;
+                                    dispatch(setCopilotStatusMessage(null));
+                                    dispatch(addCopilotMessage(aiPlaceholder));
+                                    dispatch(setCopilotPanelLoading(false));
+
+                                    // Flush every buffered token individually so the reducer
+                                    // appends one at a time → typing effect for the buffered part
+                                    const toFlush: string[] = pendingTokens.splice(0);
+
+                                    for (const t of toFlush) {
+                                        dispatch(updateCopilotMessage({ content: t, id: aiMessageId }));
+                                    }
+                                });
+                            }
+                        } else {
+                            // Already live — dispatch token directly for real-time typing effect
+                            dispatch(updateCopilotMessage({
+                                content,
+                                id: aiMessageId
+                            }));
+                        }
                     }
-                }
+                },
+                signal
             );
 
-            // Check if request was aborted before adding final message
-            if (signal.aborted) {
-                return;
+            // If stream ended before any token arrived (e.g. empty response),
+            // still drain the status queue and clean up.
+            if (!aiMessageAdded) {
+                await statusQueue.drain();
             }
 
-            if (isFirstChunk) {
-                const aiResponse: CopilotMessage = {
-                    content: response.answer || "I received your message but couldn't generate a response.",
-                    id: `ai-${Date.now()}`,
-                    sender: "copilot",
-                    timestamp: Date.now(),
-                    type: "text"
-                };
-
-                dispatch(addCopilotMessage(aiResponse));
-            } else {
-                if (response.answer && response.answer !== accumulatedContent) {
-                    dispatch(updateCopilotMessage({
-                        content: response.answer,
-                        id: assistantMessageId
-                    }));
-                }
-            }
             dispatch(setCopilotPanelLoading(false));
-
-            // Clear the controller reference when done
+            dispatch(setCopilotStatusMessage(null));
             currentRequestController = null;
+
         } catch (error: any) {
             console.error("[sendCopilotMessage] Error details:", error);
+            statusQueue.cancel();
 
             // Don't show error if request was aborted intentionally
             if (error.name === "AbortError" || signal.aborted) {
                 console.log("[sendCopilotMessage] Request was cancelled");
                 dispatch(setCopilotPanelLoading(false));
+                dispatch(setCopilotStatusMessage(null));
                 currentRequestController = null;
                 return;
             }
@@ -349,6 +589,8 @@ export const sendCopilotMessage = (userMessage: string) => {
                 errorContent = "Request was cancelled.";
             } else if (error.message?.includes("Failed to fetch")) {
                 errorContent = "Connection failed. Please check if the server is running and try again.";
+            } else if (error.message?.includes("timed out")) {
+                errorContent = "The request took too long. Please try again with a simpler question.";
             }
 
             const errorMessage: CopilotMessage = {
@@ -363,6 +605,7 @@ export const sendCopilotMessage = (userMessage: string) => {
             currentRequestController = null;
         } finally {
             dispatch(setCopilotPanelLoading(false));
+            dispatch(setCopilotStatusMessage(null));
         }
     };
 };
