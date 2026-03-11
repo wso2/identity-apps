@@ -104,8 +104,7 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
     );
     const [ activeStep, setActiveStep ] = useState<number>(0);
     const [ hasErrors, setHasErrors ] = useState<boolean>(false);
-    const [ notificationData, setNotificationData ] =
-        useState<NotificationDetailsFormValuesInterface>(null);
+    const [ notificationData, setNotificationData ] = useState<NotificationDetailsFormValuesInterface | null>(null);
 
     /**
      * Handles the general details form submission.

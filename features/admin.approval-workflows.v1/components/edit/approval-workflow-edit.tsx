@@ -287,12 +287,10 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
      * Handles submission of the general details form.
      */
     const onGeneralDetailsFormSubmit = (values: GeneralDetailsFormValuesInterface) => {
-        const updatedData: any = {
-            ...approvalProcessFormData,
+        setApprovalProcessFormData((prev: ApprovalWorkflowFormDataInterface) => ({
+            ...prev,
             generalDetails: values
-        };
-
-        setApprovalProcessFormData(updatedData);
+        }));
         setGeneralDetailsSubmitted(true);
     };
 
@@ -300,7 +298,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
      * Handles submission of the configuration form.
      */
     const onConfigurationDetailsFormSubmit = (values: ConfigurationsFormValuesInterface) => {
-        const updatedData: any = {
+        const updatedData: ApprovalWorkflowFormDataInterface = {
             ...approvalProcessFormData,
             configurations: values,
             notificationDetails: notificationDataRef.current
@@ -316,10 +314,6 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
     const onNotificationDetailsFormSubmit = (values: NotificationDetailsFormValuesInterface): void => {
         notificationDataRef.current = values;
         setNotificationValues(values);
-        setApprovalProcessFormData((prev: ApprovalWorkflowFormDataInterface) => ({
-            ...prev,
-            notificationDetails: values
-        }));
     };
 
     /**
@@ -328,8 +322,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
     const createPayload = (updatedApprovalProcessFormData: ApprovalWorkflowFormDataInterface): void => {
         const workflowTemplate: WorkflowTemplate = {
             name: "MultiStepApprovalTemplate",
-            notificationsForApprovers:
-                updatedApprovalProcessFormData.notificationDetails?.notificationsForApprovers,
+            notificationsForApprovers: notificationDataRef.current?.notificationsForApprovers,
             steps: updatedApprovalProcessFormData.configurations.approvalSteps.map(
                 (step: ApprovalSteps, index: number) => ({
                     options: [
@@ -351,8 +344,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
             description: updatedApprovalProcessFormData.generalDetails.description,
             engine: WORKFLOW_ENGINE,
             name: updatedApprovalProcessFormData.generalDetails.name,
-            notificationsForInitiator:
-                updatedApprovalProcessFormData.notificationDetails?.notificationsForInitiator,
+            notificationsForInitiator: notificationDataRef.current?.notificationsForInitiator,
             template: workflowTemplate
         };
 
