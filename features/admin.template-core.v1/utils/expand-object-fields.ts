@@ -17,6 +17,7 @@
  */
 
 import get from "lodash-es/get";
+import isPlainObject from "lodash-es/isPlainObject";
 import set from "lodash-es/set";
 import unset from "lodash-es/unset";
 
@@ -34,18 +35,20 @@ const expandObjectFields = (
 ): void => {
     const fieldValue: unknown = get(formValues, fieldName);
 
-    if (fieldValue && typeof fieldValue === "object" && !Array.isArray(fieldValue)) {
-        const objectValue: Record<string, unknown> = fieldValue as Record<string, unknown>;
-
-        // Expand each key-value pair in the object
-        for (const [ key, value ] of Object.entries(objectValue)) {
-            const expandedKey: string = `${fieldName}${delimiter}${key}`;
-
-            set(formValues, expandedKey, value);
-        }
-        // Remove the original object field
-        unset(formValues, fieldName);
+    if (!isPlainObject(fieldValue)) {
+        return;
     }
+
+    const objectValue: Record<string, unknown> = fieldValue as Record<string, unknown>;
+
+    // Expand each key-value pair in the object
+    for (const [ key, value ] of Object.entries(objectValue)) {
+        const expandedKey: string = `${fieldName}${delimiter}${key}`;
+
+        set(formValues, expandedKey, value);
+    }
+    // Remove the original object field
+    unset(formValues, fieldName);
 };
 
 export default expandObjectFields;
