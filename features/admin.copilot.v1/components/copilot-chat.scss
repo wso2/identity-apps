@@ -187,17 +187,60 @@
                                 margin: $copilot-spacing-xs 0;
                             }
 
-                            // Code blocks
-                            pre {
-                                background-color: rgba(0, 0, 0, 0.05);
-                                border: 1px solid rgba(0, 0, 0, 0.1);
-                                border-radius: $copilot-border-radius-sm;
-                                padding: $copilot-spacing-md;
+                            // CodeEditor (Markdown Fenced Code Blocks)
+                            .code-segment {
                                 margin: $copilot-spacing-md 0;
-                                overflow-x: auto;
-                                font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-                                font-size: $copilot-font-size-sm;
-                                line-height: $copilot-line-height-tight;
+                                border-radius: $copilot-border-radius-sm;
+                                overflow: hidden;
+                                border: $copilot-border-width solid rgba(0, 0, 0, 0.1);
+                            }
+
+                            .code-editor {
+                                margin: 0; // The margin is now handled by the .code-segment wrapper
+
+                                // Force light theme regardless of CodeMirror's applied theme
+                                .CodeMirror {
+                                    background-color: rgba(0, 0, 0, 0.05) !important;
+                                    color: $copilot-text-color-primary !important;
+                                    border-radius: $copilot-border-radius-sm;
+                                    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+                                    font-size: $copilot-font-size-sm;
+                                    line-height: $copilot-line-height-tight;
+                                    padding: $copilot-spacing-md;
+                                    padding-right: 40px; // Make room for the copy button
+
+                                    .CodeMirror-gutters {
+                                        display: none !important;
+                                    }
+
+                                    // Suppress all dark-theme syntax token colors
+                                    span[class^="cm-"],
+                                    span[class*=" cm-"] {
+                                        color: $copilot-text-color-primary !important;
+                                    }
+
+                                    .CodeMirror-scroll {
+                                        overflow-x: auto;
+                                    }
+                                }
+
+                                // Orange copy button
+                                .editor-actions {
+                                    .editor-action {
+                                        border-radius: $copilot-border-radius-sm;
+                                        transition: background-color $copilot-transition-duration-fast ease;
+
+                                        &:hover {
+                                            background-color: rgba($copilot-primary-color, 0.15);
+                                        }
+
+                                        .theme-icon {
+                                            path {
+                                                fill: $copilot-primary-color !important;
+                                            }
+                                        }
+                                    }
+                                }
                             }
 
                             // Inline code
