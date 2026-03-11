@@ -202,7 +202,7 @@ const RuleConfigurationModal: FunctionComponent<RuleConfigurationModalPropsInter
 
     const { t } = useTranslation();
 
-    // Fetch rules metadata for approvalWorkflow flow
+    // Fetch rules metadata for approvalWorkflow flow.
     const {
         data: rulesMetaData,
         isLoading: isRulesMetaLoading

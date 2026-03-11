@@ -785,7 +785,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             const { items: normalizedItems } = normalizeResourceResponse(fetchedResourcesList);
             const ROLES_ENDPOINT: string = "/Roles";
 
-            // Special handling for userstores (user.domain / initiator.domain)
+            // Special handling for userstores (user.domain / initiator.domain).
             const processedItems: ResourceInterface[] = processResourceItems(
                 normalizedItems,
                 initialResourcesLoadUrl,

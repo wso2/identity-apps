@@ -178,12 +178,12 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
 
             setOperationDetails(ops);
 
-            // Extract rules from associations
+            // Extract rules from associations.
             const rules: Record<string, RuleWithoutIdInterface> = {};
 
             workflowAssociationDetails.workflowAssociations.forEach(
                 (association: WorkflowAssociationListItemInterface) => {
-                    // Only add rule if it has actual rule data (not empty object)
+                    // Only add rule if it has actual rule data (not empty object).
                     if (association.rule && Object.keys(association.rule).length > 0) {
                         rules[association.operation] = association.rule;
                     }
@@ -400,10 +400,10 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
             const updatedRules: Record<string, RuleWithoutIdInterface> = { ...prevRules };
 
             if (rule === null || (rule && Object.keys(rule).length === 0)) {
-                // Remove the rule if it's null or empty
+                // Remove the rule if it's null or empty.
                 delete updatedRules[operationValue];
             } else {
-                // Add or update the rule
+                // Add or update the rule.
                 updatedRules[operationValue] = rule;
             }
 
@@ -474,29 +474,29 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
             (op: string) => !operationDetails.some((prev: WorkflowOperations) => prev.operation === op)
         );
 
-        // Find deleted operations WITH their associationId
+        // Find deleted operations WITH their associationId.
         const deletedOperations: any = operationDetails.filter(
             (prev: WorkflowOperations) => !currentOperations.includes(prev.operation)
         );
 
-        // Find existing operations with updated rules
+        // Find existing operations with updated rules.
         const updatedOperations: WorkflowOperations[] = operationDetails.filter(
             (prev: WorkflowOperations) => {
-                // Check if operation still exists in current operations
+                // Check if operation still exists in current operations.
                 if (!currentOperations.includes(prev.operation)) {
                     return false;
                 }
 
-                // Check if rule has changed
+                // Check if rule has changed.
                 const currentRule: RuleWithoutIdInterface = operationRules[prev.operation];
                 const initialRule: RuleWithoutIdInterface = initialOperationRules[prev.operation];
 
-                // Compare rules (deep equality, order-independent)
+                // Compare rules (deep equality, order-independent).
                 return !isEqual(currentRule ?? {}, initialRule ?? {});
             }
         );
 
-        // Handle added operations
+        // Handle added operations.
         for (const operation of addedOperations) {
             const associationName: string = `Association for ${operation ?? operation}`;
             const workflowAssociationPayload: WorkflowAssociationPayload = {
@@ -509,12 +509,12 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
             handleWorkflowAssociationsRegistration(workflowAssociationPayload);
         }
 
-        // Handle updated operations (rule changes)
+        // Handle updated operations (rule changes).
         for (const operation of updatedOperations) {
             const associationName: string = `Association for ${operation.operation}`;
 
             // Determine the rule value: if rule was deleted (undefined), send empty object {}
-            // to explicitly tell the backend to remove the rule
+            // to explicitly tell the backend to remove the rule.
             const currentRule: RuleWithoutIdInterface = operationRules[operation.operation];
             const rulePayload: RuleWithoutIdInterface = currentRule !== undefined
                 ? currentRule
@@ -535,7 +535,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
             );
         }
 
-        // Handle deleted operations
+        // Handle deleted operations.
         for (const operation of deletedOperations) {
             handleWorkflowAssociationDeletion(operation.associationId);
         }
@@ -588,7 +588,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                     return updated;
                 });
                 mutateWorkflowAssociationDetails();
-                // Refresh the workflow associations in the form to update validation
+                // Refresh the workflow associations in the form to update validation.
                 workflowOperationsDetailsFormRef?.current?.refreshWorkflowAssociations();
             })
             .catch(() => {

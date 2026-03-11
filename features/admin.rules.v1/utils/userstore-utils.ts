@@ -39,13 +39,13 @@ export const normalizeUserstoreList = (
 
     const primaryUserStoreName: string = userstoresConfig.primaryUserstoreName;
 
-    // Remove internal/system reserved stores
+    // Remove internal/system reserved stores.
     let filteredStores: ResourceInterface[] = stores.filter(
         (store: ResourceInterface) =>
             !systemReservedUserStores?.includes(store.name?.toUpperCase())
     );
 
-    // Ensure PRIMARY (configured primary user store) always exists
+    // Ensure PRIMARY (configured primary user store) always exists.
     const primaryExists: boolean = filteredStores.some(
         (store: ResourceInterface) =>
             store.name?.toUpperCase() === primaryUserStoreName?.toUpperCase()

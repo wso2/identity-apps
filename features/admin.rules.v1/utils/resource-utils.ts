@@ -39,7 +39,7 @@ export const normalizeResourceResponse = (response: any): NormalizedResourceList
         return { count: 0, items: [], totalResults: 0 };
     }
 
-    // Plain array (e.g., userstores)
+    // Plain array (e.g., userstores).
     if (Array.isArray(response)) {
         return {
             count: response.length,
