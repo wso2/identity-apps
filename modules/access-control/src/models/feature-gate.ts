@@ -62,13 +62,6 @@ export enum FeatureTags {
 export interface FeatureGateInterface {
     console:  {
         application: {
-            edit: {
-                accessConfiguration: {
-                    oidcFrontChannelLogout: {
-                        status: FeatureStatus
-                    }
-                }
-            },
             signIn: {
                 adaptiveAuth : {
                     status: FeatureStatus
