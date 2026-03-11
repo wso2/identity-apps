@@ -407,15 +407,13 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                             </Typography>
                         </StepLabel>
                         <StepContent data-componentid={ `${componentId}-step-3-content` }>
-                            <EmphasizedSegment padded="very" secondary>
-                                <NotificationDetailsForm
-                                    ref={ notificationDetailsFormRef }
-                                    isReadOnly={ !hasApprovalWorkflowCreatePermission }
-                                    initialValues={ notificationData }
-                                    onSubmit={ onNotificationDetailsFormSubmit }
-                                    data-componentid={ `${componentId}-notification-details-form` }
-                                />
-                            </EmphasizedSegment>
+                            <NotificationDetailsForm
+                                ref={ notificationDetailsFormRef }
+                                isReadOnly={ !hasApprovalWorkflowCreatePermission }
+                                initialValues={ notificationData }
+                                onSubmit={ onNotificationDetailsFormSubmit }
+                                data-componentid={ `${componentId}-notification-details-form` }
+                            />
                             <div
                                 className="step-actions-container"
                                 data-componentid={ `${componentId}-step-actions-container` }

@@ -156,7 +156,7 @@ export const approvalWorkflows: approvalWorkflowsNS = {
         },
         notifications: {
             approver: {
-                hint: "Notify assigned approvers",
+                hint: "Send notifications to users assigned to approve the request.",
                 label: "Approver Notifications"
             },
             channels: {
@@ -164,7 +164,7 @@ export const approvalWorkflows: approvalWorkflowsNS = {
                 sms: "SMS"
             },
             initiator: {
-                hint: "Notify the request initiator",
+                hint: "Send notifications to the user who initiated the request.",
                 label: "Initiator Notifications"
             }
         },

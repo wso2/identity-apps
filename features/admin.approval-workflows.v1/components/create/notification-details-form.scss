@@ -1,13 +1,23 @@
 .notification-details-form {
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
+    margin-top: 8px;
 
-    .notification-config {
-        flex: 1;
+    .notification-channels {
+        display: flex;
+        flex-direction: column;
+        gap: 3.5rem;
+        margin-top: 32px;
 
-        .ui.header {
-            margin-bottom: 0;
+        .notification-config {
+            .sub-heading {
+                font-size: 0.875rem !important;
+                margin-bottom: 12px;
+            }
+
+            .fields {
+                .MuiFormControlLabel-root {
+                    margin-bottom: 0;
+                }
+            }
         }
     }
 }

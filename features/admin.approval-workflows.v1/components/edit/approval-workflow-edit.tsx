@@ -639,20 +639,13 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                         <Divider className="divider-container" />
 
                         <div className="workflow-notification-settings">
-                            <Grid className="operations-autocomplete-header">
-                                <Heading as="h6">
-                                    { t("approvalWorkflows:pageLayout.create.stepper.step3.title") }
-                                </Heading>
-                            </Grid>
-                            <EmphasizedSegment padded="very" secondary>
-                                <NotificationDetailsForm
-                                    ref={ notificationDetailsFormRef }
-                                    isReadOnly={ isPageReadOnly || !hasApprovalWorkflowUpdatePermissions }
-                                    initialValues={ notificationValues }
-                                    onSubmit={ onNotificationDetailsFormSubmit }
-                                    data-componentid={ `${componentId}-notification-details-form` }
-                                />
-                            </EmphasizedSegment>
+                            <NotificationDetailsForm
+                                ref={ notificationDetailsFormRef }
+                                isReadOnly={ isPageReadOnly || !hasApprovalWorkflowUpdatePermissions }
+                                initialValues={ notificationValues }
+                                onSubmit={ onNotificationDetailsFormSubmit }
+                                data-componentid={ `${componentId}-notification-details-form` }
+                            />
                         </div>
 
                         <Divider className="divider-container" />
