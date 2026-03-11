@@ -289,6 +289,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ showHybridFlowEnableConfig, setHybridFlowEnableConfig ] = useState<boolean>(false);
     const [ showCallbackURLField, setShowCallbackURLField ] = useState<boolean>(undefined);
     const [ hideRefreshTokenGrantType, setHideRefreshTokenGrantType ] = useState<boolean>(false);
+    const [ isRenewRefreshTokenEnabled, setIsRenewRefreshTokenEnabled ] =
+        useState<boolean>(initialValues?.refreshToken?.renewRefreshToken ?? false);
     const [ selectedGrantTypes, setSelectedGrantTypes ] = useState<string[]>(undefined);
     const [ selectedHybridFlowResponseTypes, setSelectedHybridFlowResponseTypes ] = useState<string[]>([]);
     const [ isJWTAccessTokenTypeSelected, setJWTAccessTokenTypeSelected ] = useState<boolean>(false);
@@ -3667,6 +3669,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ? [ "refreshToken" ]
                                             : []
                                     }
+                                    listen={ (values: Map<string, FormValue>): void => {
+                                        setIsRenewRefreshTokenEnabled(
+                                            values.get("RefreshToken")?.length > 0
+                                        );
+                                    } }
                                     children={ [
                                         {
                                             label: t("applications:forms.inboundOIDC" +
@@ -3691,42 +3698,44 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Field
-                                    ref={ extendExpiryTime }
-                                    name="extendExpiryTime"
-                                    label=""
-                                    required={ false }
-                                    type="checkbox"
-                                    value={
-                                        initialValues?.refreshToken?.extendRenewedRefreshTokenExpiryTime
-                                            ? [ "extendExpiryTime" ]
-                                            : []
-                                    }
-                                    children={ [
-                                        {
-                                            label: t("applications:forms.inboundOIDC.sections.refreshToken."
-                                                + "fields.extendRenewedRefreshTokenExpiryTime.label"),
-                                            value: "extendExpiryTime"
+                        { isRenewRefreshTokenEnabled && (
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Field
+                                        ref={ extendExpiryTime }
+                                        name="extendExpiryTime"
+                                        label=""
+                                        required={ false }
+                                        type="checkbox"
+                                        value={
+                                            initialValues?.refreshToken?.extendRenewedRefreshTokenExpiryTime
+                                                ? [ "extendExpiryTime" ]
+                                                : []
                                         }
-                                    ] }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-extend-refresh-token-expiry-time-checkbox` }
-                                />
-                                <Hint>
-                                    <Trans
-                                        i18nKey={
-                                            "applications:forms.inboundOIDC.sections" +
-                                            ".refreshToken.fields.extendRenewedRefreshTokenExpiryTime.hint"
-                                        }
-                                    >
-                                        Select to ensure renewed refresh tokens retain the remaining validity period
-                                         from the original token instead of receiving a fresh expiry time.
-                                    </Trans>
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
+                                        children={ [
+                                            {
+                                                label: t("applications:forms.inboundOIDC.sections.refreshToken."
+                                                    + "fields.extendRenewedRefreshTokenExpiryTime.label"),
+                                                value: "extendExpiryTime"
+                                            }
+                                        ] }
+                                        readOnly={ readOnly }
+                                        data-testid={ `${ testId }-extend-refresh-token-expiry-time-checkbox` }
+                                    />
+                                    <Hint>
+                                        <Trans
+                                            i18nKey={
+                                                "applications:forms.inboundOIDC.sections" +
+                                                ".refreshToken.fields.extendRenewedRefreshTokenExpiryTime.hint"
+                                            }
+                                        >
+                                            Select to ensure renewed refresh tokens retain the remaining validity period
+                                            from the original token instead of receiving a fresh expiry time.
+                                        </Trans>
+                                    </Hint>
+                                </Grid.Column>
+                            </Grid.Row>
+                        ) }
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
