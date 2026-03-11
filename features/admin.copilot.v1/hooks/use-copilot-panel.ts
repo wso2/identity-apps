@@ -23,6 +23,7 @@ import {
     addCopilotMessage,
     clearCopilotChatWithApi,
     fetchCopilotHistory,
+    loadMoreCopilotHistory,
     sendCopilotMessage,
     setCopilotContentType,
     setCopilotPanelLoading,
@@ -55,6 +56,14 @@ export interface UseCopilotPanelInterface {
      * The current content type.
      */
     contentType: CopilotContentType;
+    /**
+     * Whether there are older history records available to load.
+     */
+    hasMoreHistory: boolean;
+    /**
+     * Whether a "load earlier" history request is in progress.
+     */
+    isLoadingMoreHistory: boolean;
     /**
      * Function to show the copilot panel.
      */
@@ -91,6 +100,14 @@ export interface UseCopilotPanelInterface {
      * Function to load chat history.
      */
     loadHistory: () => void;
+    /**
+     * Function to load the next (older) page of history and prepend it.
+     */
+    loadMoreHistory: () => void;
+    /**
+     * The current status message (agent step progress), or null.
+     */
+    statusMessage: string | null;
 }
 
 /**
@@ -148,19 +165,27 @@ const useCopilotPanel = (): UseCopilotPanelInterface => {
         dispatch(fetchCopilotHistory() as any);
     }, [dispatch]);
 
+    const loadMoreHistory: () => void = useCallback(() => {
+        dispatch(loadMoreCopilotHistory() as any);
+    }, [dispatch]);
+
     return {
         addMessage,
         clearChat,
         loadHistory,
+        loadMoreHistory,
         contentType: copilotState?.contentType || CopilotContentType.CHAT,
+        hasMoreHistory: copilotState?.hasMoreHistory || false,
         hidePanel,
         isLoading: copilotState?.isLoading || false,
+        isLoadingMoreHistory: copilotState?.isLoadingMoreHistory || false,
         isVisible: copilotState?.isVisible || false,
         messages: copilotState?.messages || [],
         sendMessage,
         setContentType,
         setLoading,
         showPanel,
+        statusMessage: copilotState?.statusMessage || null,
         togglePanel
     };
 };

@@ -51,7 +51,19 @@ export enum CopilotActionTypes {
     /**
      * Action type to set copilot chat history.
      */
-    SET_COPILOT_CHAT_HISTORY = "SET_COPILOT_CHAT_HISTORY"
+    SET_COPILOT_CHAT_HISTORY = "SET_COPILOT_CHAT_HISTORY",
+    /**
+     * Action type to set copilot status message (agent step progress).
+     */
+    SET_COPILOT_STATUS_MESSAGE = "SET_COPILOT_STATUS_MESSAGE",
+    /**
+     * Action type to set history pagination metadata.
+     */
+    SET_COPILOT_HISTORY_PAGINATION = "SET_COPILOT_HISTORY_PAGINATION",
+    /**
+     * Action type to prepend older messages to the chat (load-earlier).
+     */
+    PREPEND_COPILOT_MESSAGES = "PREPEND_COPILOT_MESSAGES"
 }
 
 /**
@@ -62,7 +74,7 @@ export interface CopilotMessage {
     content: string;
     sender: "user" | "copilot";
     timestamp: number;
-    type?: "text" | "code" | "error";
+    type?: "text" | "code" | "error" | "streaming";
 }
 
 /**
@@ -82,6 +94,15 @@ export interface CopilotPanelState {
     isLoading: boolean;
     messages: CopilotMessage[];
     contentType: CopilotContentType;
+    statusMessage: string | null;
+    /** Whether there are older history records available to load. */
+    hasMoreHistory: boolean;
+    /** Current reverse-offset used for the next "load earlier" request. */
+    historyOffset: number;
+    /** Total number of history records stored for the user. */
+    historyTotal: number;
+    /** Whether a "load earlier" request is in progress. */
+    isLoadingMoreHistory: boolean;
 }
 
 /**
@@ -122,6 +143,7 @@ export interface UpdateCopilotMessageActionInterface {
     payload: {
         id: string;
         content: string;
+        type?: CopilotMessage["type"];
     };
     type: CopilotActionTypes.UPDATE_COPILOT_MESSAGE;
 }
@@ -150,6 +172,40 @@ export interface SetCopilotChatHistoryActionInterface {
 }
 
 /**
+ * Set copilot status message action interface.
+ */
+export interface SetCopilotStatusMessageActionInterface {
+    payload: string | null;
+    type: CopilotActionTypes.SET_COPILOT_STATUS_MESSAGE;
+}
+
+/**
+ * History pagination metadata payload.
+ */
+export interface HistoryPaginationPayload {
+    hasMoreHistory: boolean;
+    /** Next offset to use for loading earlier messages. */
+    nextOffset: number;
+    total: number;
+}
+
+/**
+ * Set history pagination state action interface.
+ */
+export interface SetCopilotHistoryPaginationActionInterface {
+    payload: HistoryPaginationPayload;
+    type: CopilotActionTypes.SET_COPILOT_HISTORY_PAGINATION;
+}
+
+/**
+ * Prepend older messages action interface (used when loading earlier history).
+ */
+export interface PrependCopilotMessagesActionInterface {
+    payload: CopilotMessage[];
+    type: CopilotActionTypes.PREPEND_COPILOT_MESSAGES;
+}
+
+/**
  * Export action interfaces.
  */
 export type CopilotActions = SetCopilotPanelVisibilityActionInterface
@@ -159,4 +215,7 @@ export type CopilotActions = SetCopilotPanelVisibilityActionInterface
     | UpdateCopilotMessageActionInterface
     | ClearCopilotChatActionInterface
     | SetCopilotContentTypeActionInterface
-    | SetCopilotChatHistoryActionInterface;
+    | SetCopilotChatHistoryActionInterface
+    | SetCopilotStatusMessageActionInterface
+    | SetCopilotHistoryPaginationActionInterface
+    | PrependCopilotMessagesActionInterface;

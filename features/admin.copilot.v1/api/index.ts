@@ -19,7 +19,8 @@
 // Export API functions
 export {
     clearCopilotChatApi,
-    sendCopilotChatMessage
+    sendCopilotChatMessage,
+    getCopilotChatHistory
 } from "./copilot-api";
 
 // Export types
@@ -28,6 +29,8 @@ export type {
     CopilotChatRequest,
     CopilotChatResponse,
     CopilotClearResponse,
-    CopilotStreamChunk,
-    StreamingCallback
+    CopilotHistoryResponse,
+    SSEEvent,
+    SSEEventType,
+    StreamCallbacks
 } from "./copilot-api";

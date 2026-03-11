@@ -30,9 +30,14 @@ import {
  */
 const initialState: CopilotPanelState = {
     contentType: CopilotContentType.CHAT,
+    hasMoreHistory: false,
+    historyOffset: 0,
+    historyTotal: 0,
     isLoading: false,
+    isLoadingMoreHistory: false,
     isVisible: false,
-    messages: []
+    messages: [],
+    statusMessage: null
 };
 
 /**
@@ -74,13 +79,20 @@ export const copilotReducer: Reducer<CopilotPanelState> = (
                 ...state,
                 messages: state.messages.map((message: CopilotMessage) =>
                     message.id === action.payload.id
-                        ? { ...message, content: action.payload.content }
+                        ? {
+                            ...message,
+                            content: message.content + action.payload.content,
+                            type: action.payload.type ?? message.type
+                        }
                         : message
                 )
             };
         case CopilotActionTypes.CLEAR_COPILOT_CHAT:
             return {
                 ...state,
+                hasMoreHistory: false,
+                historyOffset: 0,
+                historyTotal: 0,
                 messages: []
             };
         case CopilotActionTypes.SET_COPILOT_CONTENT_TYPE:
@@ -92,6 +104,24 @@ export const copilotReducer: Reducer<CopilotPanelState> = (
             return {
                 ...state,
                 messages: action.payload
+            };
+        case CopilotActionTypes.SET_COPILOT_STATUS_MESSAGE:
+            return {
+                ...state,
+                statusMessage: action.payload
+            };
+        case CopilotActionTypes.SET_COPILOT_HISTORY_PAGINATION:
+            return {
+                ...state,
+                hasMoreHistory: action.payload.hasMoreHistory,
+                historyOffset: action.payload.nextOffset,
+                historyTotal: action.payload.total,
+                isLoadingMoreHistory: false
+            };
+        case CopilotActionTypes.PREPEND_COPILOT_MESSAGES:
+            return {
+                ...state,
+                messages: [ ...action.payload, ...state.messages ]
             };
         default:
             return state;
