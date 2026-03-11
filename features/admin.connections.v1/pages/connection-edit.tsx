@@ -70,7 +70,7 @@ import {
 import { Icon } from "semantic-ui-react";
 import {
     PrimaryButton, SecondaryButton
-} from "@wso2is/oxygen-ui";
+} from "@wso2is/react-components";
 import { ConnectionTemplateManagementUtils } from "../utils/connection-template-utils";
 import { ConnectionsManagementUtils, handleGetConnectionsMetaDataError } from "../utils/connection-utils";
 
@@ -695,6 +695,14 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
      */
     const handleTestConnection = async (): Promise<void> => {
         if (!connector?.id) {
+            dispatch(
+                addAlert({
+                    description: "Connection ID is not available.",
+                    level: AlertLevels.ERROR,
+                    message: t("authenticationProvider:notifications.getIDP.error.message")
+                })
+            );
+
             return;
         }
 
@@ -702,16 +710,10 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
 
         try {
             const axios = (await import("axios")).default;
-            const payload = {
-                resourceType: "IDP",
-                properties: {
-                    connectionId: connector.id
-                }
-            };
 
             const response = await axios.post(
-                resourceEndpoints.debug,
-                payload,
+                `${resourceEndpoints.debug}/idp`,
+                { connectionId: connector.id },
                 { withCredentials: true }
             );
 
@@ -735,19 +737,20 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                 // Handle case where debug session data is incomplete
                 dispatch(
                     addAlert({
-                        description: t("authenticationProvider:notifications.testConnection.error.description"),
+                        description: t("authenticationProvider:notifications.getIDP.error.description", 
+                            { description: "Debug session data is incomplete." }),
                         level: AlertLevels.ERROR,
-                        message: t("authenticationProvider:notifications.testConnection.error.message")
+                        message: t("authenticationProvider:notifications.getIDP.error.message")
                     })
                 );
             }
         } catch (error: any) {
             dispatch(
                 addAlert({
-                    description: error?.response?.data?.message || error?.message || 
-                        t("authenticationProvider:notifications.testConnection.genericError.description"),
+                    description: error?.response?.data?.message || error?.response?.data?.description || 
+                        error?.message || t("authenticationProvider:notifications.getIDP.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:notifications.testConnection.genericError.message")
+                    message: t("authenticationProvider:notifications.getIDP.genericError.message")
                 })
             );
         } finally {

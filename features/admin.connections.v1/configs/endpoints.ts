@@ -39,6 +39,6 @@ export const getConnectionResourceEndpoints = (serverHost: string): ConnectionRe
             CommonAuthenticatorConstants.MFA_CONNECTOR_CATEGORY_ID
         }`,
         debug: `${ serverHost }/api/server/v1/debug`,
-        debugResult: `${ serverHost }/api/server/v1/debug/result`
+        debugResult: `${ serverHost }/api/server/v1/debug`
     };
 };

@@ -139,7 +139,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
         try {
             const axios = (await import("axios")).default;
             const response = await axios.get(
-                `${resourceEndpoints.debugResult}/${sid}`,
+                `${resourceEndpoints.debug}/${sid}/result`,
                 { withCredentials: true }
             );
             setResult(response.data);
@@ -180,17 +180,14 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
         try {
             const axios = (await import("axios")).default;
             const payload = {
-                resourceType: "IDP",
-                properties: {
-                    connectionId: connectorId
-                }
+                connectionId: connectorId
             };
 
             // eslint-disable-next-line no-console
             console.log("[ConnectionTest] Posting debug request with payload:", payload);
 
             const response = await axios.post(
-                resourceEndpoints.debug,
+                `${resourceEndpoints.debug}/idp`,
                 payload,
                 { withCredentials: true }
             );
@@ -246,18 +243,31 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
 
     // Update error status based on result metadata
     useEffect(() => {
-        if (result && result.metadata && result.metadata.steps) {
-            const steps = result.metadata.steps;
+        if (result) {
+            // Handle nested metadata structure
+            const metadataObj = result?.metadata?.metadata || result?.metadata || {};
+            const steps = metadataObj?.steps || {
+                connectionStatus: metadataObj?.connectionStatus,
+                authenticationStatus: metadataObj?.authenticationStatus,
+                claimMappingStatus: metadataObj?.claimMappingStatus,
+                claimExtractionStatus: metadataObj?.claimExtractionStatus
+            };
 
+            // Check for top-level FAILURE status first
+            const topLevelFailure = result?.status === "FAILURE";
+            
             // Check if any step explicitly failed (not pending or success)
             const hasStepError = (
-                (steps.connectionStatus !== "success" && steps.connectionStatus !== "pending") ||
-                (steps.authenticationStatus !== "success" && steps.authenticationStatus !== "pending") ||
-                (steps.claimMappingStatus !== "success" && steps.claimMappingStatus !== "pending") ||
+                (steps.connectionStatus && steps.connectionStatus !== "success" && steps.connectionStatus !== "pending") ||
+                (steps.authenticationStatus && steps.authenticationStatus !== "success" && steps.authenticationStatus !== "pending") ||
+                (steps.claimMappingStatus && steps.claimMappingStatus !== "success" && steps.claimMappingStatus !== "pending") ||
                 result?.error
             );
             
-            if (hasStepError) {
+            // Check for error fields in metadata
+            const hasErrorFields = metadataObj?.error_details || metadataObj?.error_description || metadataObj?.error_code;
+            
+            if (topLevelFailure || hasStepError || hasErrorFields) {
                 setHasError(true);
                 setActiveTab(2); // Switch to Logs tab (index 2)
             } else {
@@ -433,16 +443,41 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                 menuItem: "Logs",
                 render: () => {
                     const formatLogs = () => {
-                        const steps = result?.metadata?.steps || {};
-                        const errorDetails = result?.metadata?.error_details || null;
-                        const errorDescription = result?.metadata?.error_description || null;
+                        // Handle nested metadata structure
+                        const metadataObj = result?.metadata?.metadata || result?.metadata || {};
+                        const steps = metadataObj?.steps || {
+                            connectionStatus: metadataObj?.connectionStatus,
+                            authenticationStatus: metadataObj?.authenticationStatus,
+                            claimMappingStatus: metadataObj?.claimMappingStatus,
+                            claimExtractionStatus: metadataObj?.claimExtractionStatus
+                        };
+                        const errorDetails = metadataObj?.error_details || result?.metadata?.error_details || null;
+                        const errorDescription = metadataObj?.error_description || result?.metadata?.error_description || null;
+                        const errorCode = metadataObj?.error_code || result?.metadata?.error_code || null;
+                        const topLevelStatus = result?.status;
                         
                         return (
                             <div>
-                                {(errorDetails || errorDescription) && (
+                                {topLevelStatus === "FAILURE" && (
+                                    <div style={{ marginBottom: 16 }}>
+                                        <div style={{ background: '#fff5f5', borderRadius: 6, borderLeft: '4px solid #db2828', padding: 12, marginBottom: 12 }}>
+                                            <span style={{ fontWeight: 600, color: '#db2828', fontSize: 14 }}>Test Status: FAILURE</span>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {(errorDetails || errorDescription || errorCode) && (
                                     <div style={{ marginBottom: 16 }}>
                                         <Header as="h5" style={{ marginBottom: 12, color: '#db2828' }}>Error Information</Header>
                                         <div style={{ background: '#fff5f5', borderRadius: 6, borderLeft: '4px solid #db2828', padding: 12, marginBottom: 12 }}>
+                                            {errorCode && (
+                                                <div style={{ marginBottom: 8 }}>
+                                                    <span style={{ fontWeight: 600, color: '#db2828' }}>Error Code:</span>
+                                                    <p style={{ fontFamily: 'monospace', fontSize: 13, color: '#db2828', margin: '4px 0 0 0', wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
+                                                        {errorCode}
+                                                    </p>
+                                                </div>
+                                            )}
                                             {errorDescription && (
                                                 <div style={{ marginBottom: 8 }}>
                                                     <span style={{ fontWeight: 600, color: '#db2828' }}>Description:</span>
@@ -492,7 +527,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                     </div>
                                 )}
 
-                                {!errorDetails && !errorDescription && Object.keys(steps).length === 0 && (
+                                {!errorDetails && !errorDescription && !errorCode && Object.keys(steps).length === 0 && topLevelStatus !== "FAILURE" && (
                                     <div style={{ color: '#888', textAlign: 'center', padding: '24px' }}>
                                         <em>No log information available.</em>
                                     </div>
