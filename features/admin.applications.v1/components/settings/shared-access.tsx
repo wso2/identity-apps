@@ -25,7 +25,7 @@ import { AlertLevels, FeatureAccessConfigInterface,
     IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useCallback, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -117,7 +117,7 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
         subjectId: application.id
     });
 
-    const handleUpdate: () => void = useCallback((): void => onUpdate(application.id), [ onUpdate, application.id ]);
+    const handleUpdate: () => void = (): void => onUpdate(application.id);
 
     const handleChildStartedOperation = () => {
         setSharingState(OperationStatus.IN_PROGRESS);
