@@ -1,5 +1,27 @@
 # @wso2is/admin.core.v1
 
+## 2.54.16
+
+### Patch Changes
+
+- [#9736](https://github.com/wso2/identity-apps/pull/9736) [`37f1eae32f0b30c5a060432e41fe5e13285aef01`](https://github.com/wso2/identity-apps/commit/37f1eae32f0b30c5a060432e41fe5e13285aef01) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add enable enhanced organization login toggle
+
+- Updated dependencies [[`37f1eae32f0b30c5a060432e41fe5e13285aef01`](https://github.com/wso2/identity-apps/commit/37f1eae32f0b30c5a060432e41fe5e13285aef01)]:
+  - @wso2is/admin.applications.v1@2.41.18
+  - @wso2is/i18n@2.34.10
+  - @wso2is/admin.agents.v1@1.0.175
+  - @wso2is/admin.branding.v1@2.32.116
+  - @wso2is/admin.flow-builder-core.v1@0.10.160
+  - @wso2is/admin.roles.v2@2.27.330
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.160
+  - @wso2is/admin.email-management.v1@2.25.324
+  - @wso2is/admin.flows.v1@1.0.129
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.160
+  - @wso2is/admin.server-configurations.v1@2.37.27
+  - @wso2is/admin.users.v1@2.37.7
+  - @wso2is/admin.connections.v1@2.35.20
+  - @wso2is/admin.registration-flow-builder.v1@0.10.120
+
 ## 2.54.15
 
 ### Patch Changes

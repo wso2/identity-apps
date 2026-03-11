@@ -1,5 +1,15 @@
 # @wso2is/identity-apps-core
 
+## 3.5.0
+
+### Minor Changes
+
+- [#9639](https://github.com/wso2/identity-apps/pull/9639) [`ea10762573ace80ce4905ac23494ecd9ab97f7e9`](https://github.com/wso2/identity-apps/commit/ea10762573ace80ce4905ac23494ecd9ab97f7e9) Thanks [@Zeta201](https://github.com/Zeta201)! - Add support for java 21
+
+### Patch Changes
+
+- [#9731](https://github.com/wso2/identity-apps/pull/9731) [`8786b3f93fae14597469306843cee15757d3fd84`](https://github.com/wso2/identity-apps/commit/8786b3f93fae14597469306843cee15757d3fd84) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix double submission issues
+
 ## 3.4.7
 
 ### Patch Changes

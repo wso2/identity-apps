@@ -1,5 +1,16 @@
 # @wso2is/myaccount
 
+## 2.27.0
+
+### Minor Changes
+
+- [#9639](https://github.com/wso2/identity-apps/pull/9639) [`ea10762573ace80ce4905ac23494ecd9ab97f7e9`](https://github.com/wso2/identity-apps/commit/ea10762573ace80ce4905ac23494ecd9ab97f7e9) Thanks [@Zeta201](https://github.com/Zeta201)! - Add support for java 21
+
+### Patch Changes
+
+- Updated dependencies [[`37f1eae32f0b30c5a060432e41fe5e13285aef01`](https://github.com/wso2/identity-apps/commit/37f1eae32f0b30c5a060432e41fe5e13285aef01)]:
+  - @wso2is/i18n@2.34.10
+
 ## 2.26.2
 
 ### Patch Changes
