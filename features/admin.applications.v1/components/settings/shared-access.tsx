@@ -82,6 +82,8 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_ROLE_SHARING"));
     const asyncOperationStatusPollingInterval: number = useSelector((state: AppState) =>
         state?.config?.ui?.asyncOperationStatusPollingInterval);
+    const isEnhancedOrganizationAuthenticationFeatureEnabled: boolean = useSelector((state: AppState) =>
+        state?.config?.ui?.isEnhancedOrganizationAuthenticationFeatureEnabled);
 
     const statusToi18nKeyMap: Map<OperationStatus, { alertLevel: AlertLevels, i18nKey: string }> =
         new Map<OperationStatus, { alertLevel: AlertLevels, i18nKey: string }>([
@@ -153,12 +155,14 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
                         )
                 }
             </EmphasizedSegment>
-            <EnhancedOrganizationLoginToggle
-                appId={ application.id }
-                isEnabled={ application.enhancedOrgAuthenticationEnabled ?? false }
-                onUpdate={ handleUpdate }
-                readOnly={ readOnly || sharingState === OperationStatus.IN_PROGRESS }
-            />
+            { isEnhancedOrganizationAuthenticationFeatureEnabled && (
+                <EnhancedOrganizationLoginToggle
+                    appId={ application.id }
+                    isEnabled={ application.enhancedOrgAuthenticationEnabled ?? false }
+                    onUpdate={ handleUpdate }
+                    readOnly={ readOnly || sharingState === OperationStatus.IN_PROGRESS }
+                />
+            ) }
         </>
     );
 };
