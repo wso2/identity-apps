@@ -1,4 +1,5 @@
 ---
+"@wso2is/console": minor
 "@wso2is/admin.application-templates.v1": minor
 "@wso2is/admin.identity-verification-providers.v1": minor
 "@wso2is/admin.push-providers.v1": minor
