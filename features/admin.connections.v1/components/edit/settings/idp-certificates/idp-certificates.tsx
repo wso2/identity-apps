@@ -71,15 +71,21 @@ export interface IdpCertificatesV2Props extends IdentifiableComponentInterface {
      */
     isPEMEnabled?: boolean;
     /**
+     * Is SAML Metadata URI configuring enabled?
+     */
+    isSamlMetadataURIEnabled?: boolean;
+    /**
      * Type of the template.
      */
     templateType?: string;
 }
 
-export type CertificateConfigurationMode = "jwks" | "certificates";
+export type CertificateConfigurationMode = "jwks" | "certificates" | "samlMetadataUri";
 
 const FORM_ID: string = "idp-certificate-jwks-input-form";
+const SAML_METADATA_URI_FORM_ID: string = "idp-certificate-saml-metadata-uri-form";
 const JWKS: string = "jwks";
+const SAML_METADATA_URI: string = "samlMetadataUri";
 
 /**
  * This is the certificates component for IdPs.
@@ -149,6 +155,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
         isReadOnly,
         isJWKSEnabled = true,
         isPEMEnabled = true,
+        isSamlMetadataURIEnabled = false,
         templateType
     } = props;
 
@@ -160,9 +167,44 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isJwksValueValid, setIsJwksValueValid ] = useState<boolean>(false);
     const [ jwksValue, setJwksValue ] = useState<string>();
+    const [ isSamlMetadataURIValueValid, setIsSamlMetadataURIValueValid ] = useState<boolean>(false);
+    const [ samlMetadataURIValue, setSamlMetadataURIValue ] = useState<string>();
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const doOnSuccess = () => {
+        dispatch(addAlert({
+            description: t("authenticationProvider:notifications." +
+                "updateIDPCertificate.success" +
+                ".description"),
+            level: AlertLevels.SUCCESS,
+            message: t("authenticationProvider:notifications." +
+                "updateIDPCertificate.success.message")
+        }));
+        onUpdate(editingIDP.id);
+    };
+
+    const ifTheresAnyError = (error: IdentityAppsApiException) => {
+        if (error.response && error.response.data && error.response.data.description) {
+            dispatch(addAlert({
+                description: error.response.data.description,
+                level: AlertLevels.ERROR,
+                message: t("authenticationProvider:notifications." +
+                    "updateIDPCertificate.error.message")
+            }));
+
+            return;
+        }
+        dispatch(addAlert({
+            description: t("authenticationProvider:notifications." +
+                "updateIDPCertificate.genericError" +
+                ".description"),
+            level: AlertLevels.ERROR,
+            message: t("authenticationProvider:notifications." +
+                "updateIDPCertificate.genericError.message")
+        }));
+    };
 
     useEffect(() => {
         setInitialModeOfConfiguration();
@@ -182,6 +224,13 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 setJwksValue(editingIDP?.certificate?.jwksUri ?? "");
                 setSelectedConfigurationMode("jwks");
             }
+        } else if (isSamlMetadataURIEnabled) {
+            if (editingIDP?.certificate?.certificates?.length > 0) {
+                setSelectedConfigurationMode("certificates");
+            } else {
+                setSamlMetadataURIValue(editingIDP?.certificate?.samlMetadataUri ?? "");
+                setSelectedConfigurationMode("samlMetadataUri");
+            }
         } else {
             // If JWKS is disabled for this IdP, then no questions asked
             // the only thing we show is certificates.
@@ -199,6 +248,35 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
 
     const closeAddCertificateWizard = (): void => {
         setAddCertificateModalOpen(false);
+    };
+
+    /**
+     * The following function update the IDP SAML metadata URI.
+     * @param values - Form values.
+     */
+    const onSamlMetadataURIFormSubmit = (values: Record<string, any>) => {
+
+        const operation: string = editingIDP?.certificate?.samlMetadataUri
+            ? samlMetadataURIValue ? "REPLACE" : "REMOVE"
+            : "ADD";
+
+        const PATCH_OBJECT: CertificatePatchRequestInterface[] = [
+            {
+                "operation": operation,
+                "path": "/certificate/samlMetadataUri",
+                "value": values.saml_metadata_uri
+            }
+        ];
+
+        setIsSubmitting(true);
+
+        updateIDPCertificate(editingIDP.id, PATCH_OBJECT)
+            .then(doOnSuccess)
+            .catch(ifTheresAnyError)
+            .finally(() => {
+                setIsSubmitting(false);
+            });
+
     };
 
     /**
@@ -221,39 +299,6 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
 
         setIsSubmitting(true);
 
-        const doOnSuccess = () => {
-            dispatch(addAlert({
-                description: t("authenticationProvider:notifications." +
-                    "updateIDPCertificate.success" +
-                    ".description"),
-                level: AlertLevels.SUCCESS,
-                message: t("authenticationProvider:notifications." +
-                    "updateIDPCertificate.success.message")
-            }));
-            onUpdate(editingIDP.id);
-        };
-
-        const ifTheresAnyError = (error: IdentityAppsApiException) => {
-            if (error.response && error.response.data && error.response.data.description) {
-                dispatch(addAlert({
-                    description: error.response.data.description,
-                    level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:notifications." +
-                        "updateIDPCertificate.error.message")
-                }));
-
-                return;
-            }
-            dispatch(addAlert({
-                description: t("authenticationProvider:notifications." +
-                    "updateIDPCertificate.genericError" +
-                    ".description"),
-                level: AlertLevels.ERROR,
-                message: t("authenticationProvider:notifications." +
-                    "updateIDPCertificate.genericError.message")
-            }));
-        };
-
         updateIDPCertificate(editingIDP.id, PATCH_OBJECT)
             .then(doOnSuccess)
             .catch(ifTheresAnyError)
@@ -262,6 +307,65 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
             });
 
     };
+
+    const samlMetadataURIInputForm: ReactNode = (
+        <Form
+            id={ SAML_METADATA_URI_FORM_ID }
+            uncontrolledForm={ true }
+            initialValues={ { saml_metadata_uri: editingIDP?.certificate?.samlMetadataUri } }
+            onSubmit={ onSamlMetadataURIFormSubmit }
+        >
+            <Field.Input
+                hint={ t("authenticationProvider:forms.certificateSection.samlMetadataUrl.hint",
+                    { productName: config.ui.productName }) }
+                label={ t("authenticationProvider:forms.certificateSection.samlMetadataUrl.label") }
+                ariaLabel={ t("authenticationProvider:forms.certificateSection.samlMetadataUrl.label") }
+                inputType="url"
+                width={ 16 }
+                validation={ (value: string) => {
+                    if (value && !FormValidation.url(value)) {
+                        setIsSamlMetadataURIValueValid(false);
+
+                        return t("applications:forms.inboundSAML" +
+                            ".fields.metaURL.validations.invalid");
+                    }
+                    if (commonConfig?.blockLoopBackCalls && URLUtils.isLoopBackCall(value)) {
+                        setIsSamlMetadataURIValueValid(false);
+
+                        return t("idp:forms.common.internetResolvableErrorMessage");
+                    }
+                    setIsSamlMetadataURIValueValid(true);
+
+                    return undefined;
+                } }
+                listen={ (value: string) => setSamlMetadataURIValue(value) }
+                placeholder={ t("authenticationProvider:forms.certificateSection.samlMetadataUrl.placeholder") }
+                maxLength={ ConnectionUIConstants.JWKS_URL_LENGTH.max }
+                minLength={ ConnectionUIConstants.JWKS_URL_LENGTH.min }
+                name="saml_metadata_uri"
+                disabled={ isReadOnly }
+            />
+            <Show when={ featureConfig?.identityProviders?.scopes?.update }>
+                <Field.Button
+                    form={ SAML_METADATA_URI_FORM_ID }
+                    data-testid={ `${ testId }-saml-metadata-uri-save-button` }
+                    loading={ isSubmitting }
+                    ariaLabel={ t("authenticationProvider:forms.certificateSection.samlMetadataUrl.label") }
+                    name="saml_metadata_uri_submit"
+                    size="small"
+                    buttonType="primary_btn"
+                    label={ t("common:update") }
+                    disabled={
+                        (
+                            !isSamlMetadataURIValueValid ||
+                            samlMetadataURIValue === editingIDP?.certificate?.samlMetadataUri
+                        ) ||
+                        isSubmitting
+                    }
+                />
+            </Show>
+        </Form>
+    );
 
     const jwksInputForm: ReactNode = (
         <Form
@@ -391,9 +495,9 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
      * @returns `true` if the IDP is not a trusted token issuer, `false` otherwise.
      */
     const shouldShowCertificatesInfo = (): boolean => templateType !==
-        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER;
+        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER && !isSamlMetadataURIEnabled;
 
-    if (!isJWKSEnabled && !isPEMEnabled) {
+    if (!isJWKSEnabled && !isPEMEnabled && !isSamlMetadataURIEnabled) {
         return null;
     }
 
@@ -428,7 +532,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                         />
                     </Grid>
                 ) }
-                { isJWKSEnabled && isPEMEnabled && (
+                { (isJWKSEnabled || isSamlMetadataURIEnabled) && isPEMEnabled && (
                     <Grid md={ 12 } lg={ 6 }>
                         <FormControl>
                             <RadioGroup
@@ -438,19 +542,33 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                                 data-testid={ `${ testId }-radio-group` }
                                 value={ selectedConfigurationMode }
                             >
-                                <FormControlLabel
-                                    control={ <Radio checked={ selectedConfigurationMode === "jwks" } /> }
-                                    label={
-                                        t("console:develop.features.authenticationProvider.forms." +
-                                        "certificateSection.certificateEditSwitch.jwks")
-                                    }
-                                    value="jwks"
-                                />
+                                { isJWKSEnabled && (
+                                    <FormControlLabel
+                                        control={ <Radio checked={ selectedConfigurationMode === "jwks" } /> }
+                                        label={
+                                            t("authenticationProvider:forms.certificateSection" +
+                                            ".certificateEditSwitch.jwks")
+                                        }
+                                        value="jwks"
+                                    />
+                                ) }
+                                { isSamlMetadataURIEnabled && (
+                                    <FormControlLabel
+                                        control={
+                                            <Radio checked={ selectedConfigurationMode === "samlMetadataUri" } />
+                                        }
+                                        label={
+                                            t("authenticationProvider:forms.certificateSection" +
+                                            ".certificateEditSwitch.samlMetadataUri")
+                                        }
+                                        value="samlMetadataUri"
+                                    />
+                                ) }
                                 <FormControlLabel
                                     control={ <Radio checked={ selectedConfigurationMode === "certificates" } /> }
                                     label={
-                                        t("console:develop.features.authenticationProvider.forms." +
-                                        "certificateSection.certificateEditSwitch.pem")
+                                        t("authenticationProvider:forms.certificateSection" +
+                                        ".certificateEditSwitch.pem")
                                     }
                                     value="certificates"
                                 />
@@ -461,16 +579,18 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 <Grid md={ 12 } lg={ 6 }>
                     { selectedConfigurationMode === JWKS
                         ? jwksInputForm
-                        : (
-                            <>
-                                { certificateForm }
-                                <Hint>
-                                    Upload certificate(s) for this Identity Provider. You can include
-                                    multiple certificates in case if there&apos;s any certificate rotations.
-                                    You can upload { supportedMimes() } types of certificates.
-                                </Hint>
-                            </>
-                        )
+                        : selectedConfigurationMode === SAML_METADATA_URI
+                            ? samlMetadataURIInputForm
+                            : (
+                                <>
+                                    { certificateForm }
+                                    <Hint>
+                                        Upload certificate(s) for this Identity Provider. You can include
+                                        multiple certificates in case if there&apos;s any certificate rotations.
+                                        You can upload { supportedMimes() } types of certificates.
+                                    </Hint>
+                                </>
+                            )
                     }
                 </Grid>
             </Grid>

@@ -133,6 +133,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const certificateOptionsForTemplate: {
         PEM: boolean;
         JWKS: boolean;
+        SAML_METADATA_URI: boolean;
     } = useMemo(() => {
         return getCertificateOptionsForTemplate(editingIDP?.templateId);
     }, []);
@@ -472,6 +473,11 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             certificateOptionsForTemplate !== undefined
                                 ? certificateOptionsForTemplate.JWKS
                                 : !isSaml
+                        }
+                        isSamlMetadataURIEnabled={
+                            certificateOptionsForTemplate !== undefined
+                                ? certificateOptionsForTemplate.SAML_METADATA_URI
+                                : isSaml
                         }
                         templateType={ templateType }
                         isReadOnly={ isReadOnly }

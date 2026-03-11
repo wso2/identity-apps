@@ -941,10 +941,18 @@ export const authenticationProvider:AuthenticationProviderNS = {
         certificateSection: {
             certificateEditSwitch: {
                 jwks: "Use JWKS Endpoint",
-                pem: "Provide Certificates"
+                pem: "Provide Certificates",
+                samlMetadataUri: "Use SAML Metadata Endpoint"
             },
             noCertificateAlert: "There are no certificates available for this trusted token issuer. " +
-                "Therefore {{productName}} will no longer be able to validate tokens issued from this issuer."
+                "Therefore {{productName}} will no longer be able to validate tokens issued from this issuer.",
+            samlMetadataUrl: {
+                hint: "The SAML metadata URL must point to a valid XML metadata document that contains " +
+                    "the IdP's public certificate. {{productName}} will use this URL to obtain the " +
+                    "certificate to verify response signing and logout request signing from your external IdP.",
+                label: "SAML Metadata URL",
+                placeholder: "https://{ saml-provider-url }/saml/metadata"
+            }
         },
         common: {
             customProperties: "Custom Properties",

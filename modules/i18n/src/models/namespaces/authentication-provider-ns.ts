@@ -1093,8 +1093,14 @@ export interface AuthenticationProviderNS {
             certificateEditSwitch: {
                 jwks: string;
                 pem: string;
+                samlMetadataUri: string;
             };
             noCertificateAlert: string;
+            samlMetadataUrl: {
+                hint: string;
+                label: string;
+                placeholder: string;
+            };
         };
     };
     helpPanel: {
