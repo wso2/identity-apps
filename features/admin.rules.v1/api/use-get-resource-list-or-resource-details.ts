@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -38,13 +38,20 @@ const useGetResourceListOrResourceDetails = <Data = any, Error = RequestErrorInt
     endpointPath: string,
     shouldFetch: boolean
 ): RequestResultInterface<Data, Error> => {
+    // Determine the base URL based on endpoint type
+    // SCIM endpoints use serverOrigin, not apiRoot
+    const isScimEndpoint: boolean = endpointPath?.startsWith("/scim2/") || false;
+    const baseUrl: string = isScimEndpoint
+        ? store.getState().config.endpoints.serverHost
+        : store.getState().config.endpoints.apiRoot;
+
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.apiRoot + endpointPath
+        url: baseUrl + endpointPath
     };
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
