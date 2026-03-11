@@ -151,7 +151,7 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
      * @param values - Step 04 form values.
      */
     const onConfigurationDetailsFormSubmit = (values: ConfigurationsFormValuesInterface) => {
-//Check if there are any empty steps
+        //Check if there are any empty steps
         const hasInvalidSteps: boolean = values.approvalSteps.some(
             (step: ApprovalSteps) => step.users.length === 0 && step.roles.length === 0
         );

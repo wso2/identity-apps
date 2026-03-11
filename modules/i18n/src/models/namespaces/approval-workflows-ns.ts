@@ -167,7 +167,7 @@ export interface approvalWorkflowsNS {
                     hint: string
                 },
                 step4: {
-                    title:  string,
+                    title: string,
                     description: string,
                     hint: string
                 }
