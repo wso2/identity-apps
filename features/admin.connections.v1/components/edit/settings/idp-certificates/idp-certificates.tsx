@@ -340,15 +340,15 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesV2Props> = (props
                 } }
                 listen={ (value: string) => setSamlMetadataURIValue(value) }
                 placeholder={ t("authenticationProvider:forms.certificateSection.samlMetadataUrl.placeholder") }
-                maxLength={ ConnectionUIConstants.JWKS_URL_LENGTH.max }
-                minLength={ ConnectionUIConstants.JWKS_URL_LENGTH.min }
+                maxLength={ ConnectionUIConstants.SAML_METADATA_URI_LENGTH.max }
+                minLength={ ConnectionUIConstants.SAML_METADATA_URI_LENGTH.min }
                 name="saml_metadata_uri"
                 disabled={ isReadOnly }
             />
             <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                 <Field.Button
                     form={ SAML_METADATA_URI_FORM_ID }
-                    data-testid={ `${ testId }-saml-metadata-uri-save-button` }
+                    data-componentid={ `${ testId }-saml-metadata-uri-save-button` }
                     loading={ isSubmitting }
                     ariaLabel={ t("authenticationProvider:forms.certificateSection.samlMetadataUrl.label") }
                     name="saml_metadata_uri_submit"

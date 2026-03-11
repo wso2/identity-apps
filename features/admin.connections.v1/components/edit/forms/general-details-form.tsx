@@ -253,7 +253,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
         if ((certificateOptionsForTemplate !== undefined
             && !certificateOptionsForTemplate.JWKS
-            && !certificateOptionsForTemplate.PEM)
+            && !certificateOptionsForTemplate.PEM
+            && !certificateOptionsForTemplate.SAML_METADATA_URI)
             || isIDPOrganizationSSO() || isIDPIproov()) {
             showCertificate = false;
         }
