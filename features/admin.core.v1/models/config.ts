@@ -510,6 +510,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isClientSecretHashEnabled?: boolean;
     /**
+     * Flag to check if the enhanced organization authentication feature is enabled.
+     */
+    isEnhancedOrganizationAuthenticationFeatureEnabled?: boolean;
+    /**
      * Flag to check if the feature gate should be enabled.
      */
     isFeatureGateEnabled?: boolean;
