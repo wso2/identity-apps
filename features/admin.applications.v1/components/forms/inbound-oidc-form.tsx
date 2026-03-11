@@ -768,6 +768,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     };
 
+    useEffect((): void => {
+        setIsRenewRefreshTokenEnabled(initialValues?.refreshToken?.renewRefreshToken ?? false);
+    }, [ initialValues?.refreshToken?.renewRefreshToken ]);
+
     /**
      * Check whether to enable validate token bindings.
      */
