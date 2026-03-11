@@ -170,7 +170,6 @@ export const identityProviderConfig: IdentityProviderConfig = {
                 ],
                 [
                     IdentityProviderTabTypes.ADVANCED, new Set([
-                        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER,
                         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IPROOV,
                         CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OUTBOUND_PROVISIONING_CONNECTION
                     ])
