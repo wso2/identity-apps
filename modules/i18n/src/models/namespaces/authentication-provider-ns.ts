@@ -1367,6 +1367,32 @@ export interface AuthenticationProviderNS {
                 name: string;
                 invalidName: string;
             };
+            wizard: {
+                certificates: {
+                    heading: string;
+                    mode: {
+                        jwks: string;
+                        samlMetadataUri: string;
+                        pem: string;
+                    };
+                    jwksUrl: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    samlMetadataUri: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    pem: {
+                        hint: string;
+                        uploadButtonText: string;
+                        dropzoneText: string;
+                        pasteAreaPlaceholderText: string;
+                    };
+                };
+            };
         };
         trustedTokenIssuer: {
             addWizard: {

@@ -1899,6 +1899,35 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 invalidName: "{{idpName}} is not a valid name. It should not contain any other" +
                     " alphanumerics except for periods (.), dashes (-), underscores (_) and spaces.",
                 name: "Identity verification provider name is not valid"
+            },
+            wizard: {
+                certificates: {
+                    heading: "Mode of certificate configuration",
+                    jwksUrl: {
+                        hint: "{{productName}} will use this URL to obtain keys to verify the" +
+                            " signed responses from your external IdP.",
+                        label: "JWKS endpoint URL",
+                        placeholder: "Enter JWKS endpoint URL"
+                    },
+                    mode: {
+                        jwks: "JWKS endpoint",
+                        pem: "Use PEM certificate",
+                        samlMetadataUri: "Metadata URI"
+                    },
+                    pem: {
+                        dropzoneText: "Drag and drop a certificate file here.",
+                        hint: "{{productName}} will use this certificate to verify the signed" +
+                            " responses from your external IdP.",
+                        pasteAreaPlaceholderText: "Paste IdP certificate in PEM format.",
+                        uploadButtonText: "Upload Certificate File"
+                    },
+                    samlMetadataUri: {
+                        hint: "{{productName}} will use this URI to obtain the certificate to" +
+                            " verify the signed responses from your external IdP.",
+                        label: "SAML metadata URI",
+                        placeholder: "Enter SAML metadata URI"
+                    }
+                }
             }
         },
         expert: {
