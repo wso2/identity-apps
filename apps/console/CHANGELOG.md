@@ -1,5 +1,38 @@
 # @wso2is/console
 
+## 2.99.0
+
+### Minor Changes
+
+- [#9707](https://github.com/wso2/identity-apps/pull/9707) [`98be11798211c36636778c925819b578d4fbeabd`](https://github.com/wso2/identity-apps/commit/98be11798211c36636778c925819b578d4fbeabd) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce password reset enforcement scope configuration
+
+* [#9744](https://github.com/wso2/identity-apps/pull/9744) [`3ebcd80a19cabc51a4ee840bafb0da213e0c97e1`](https://github.com/wso2/identity-apps/commit/3ebcd80a19cabc51a4ee840bafb0da213e0c97e1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Automatic refresh for SAML IDP Certificates from Metadata URL
+
+- [#9683](https://github.com/wso2/identity-apps/pull/9683) [`8f189290049855d403087514cbdc0b9ca2892ab8`](https://github.com/wso2/identity-apps/commit/8f189290049855d403087514cbdc0b9ca2892ab8) Thanks [@nishagii](https://github.com/nishagii)! - Add rule based engaging support for approval workflows
+
+### Patch Changes
+
+- Updated dependencies [[`98be11798211c36636778c925819b578d4fbeabd`](https://github.com/wso2/identity-apps/commit/98be11798211c36636778c925819b578d4fbeabd), [`3ebcd80a19cabc51a4ee840bafb0da213e0c97e1`](https://github.com/wso2/identity-apps/commit/3ebcd80a19cabc51a4ee840bafb0da213e0c97e1), [`8f189290049855d403087514cbdc0b9ca2892ab8`](https://github.com/wso2/identity-apps/commit/8f189290049855d403087514cbdc0b9ca2892ab8)]:
+  - @wso2is/admin.server-configurations.v1@2.38.0
+  - @wso2is/admin.validation.v1@2.28.0
+  - @wso2is/admin.connections.v1@2.36.0
+  - @wso2is/admin.extensions.v1@2.40.28
+  - @wso2is/i18n@2.34.11
+  - @wso2is/admin.approval-workflows.v1@1.1.0
+  - @wso2is/admin.core.v1@2.54.17
+  - @wso2is/admin.onboarding.v1@1.0.31
+  - @wso2is/admin.registration-flow-builder.v1@0.10.121
+  - @wso2is/admin.users.v1@2.37.8
+  - @wso2is/admin.actions.v1@1.15.3
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.161
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.161
+  - @wso2is/admin.agents.v1@1.0.176
+  - @wso2is/admin.branding.v1@2.32.117
+  - @wso2is/admin.email-management.v1@2.25.325
+  - @wso2is/admin.flows.v1@1.0.130
+  - @wso2is/admin.home.v1@1.7.140
+  - @wso2is/admin.roles.v2@2.27.331
+
 ## 2.98.0
 
 ### Minor Changes
