@@ -199,7 +199,7 @@ export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsIn
             padded="very"
         >
 
-            <div style={ { marginBottom: "2rem" } }>
+            <div className="mb-5">
                 <Checkbox
                     label={ t("pushProviders:pushProviderSettings.defaultSender") }
                     checked={ isDefaultProvider }
