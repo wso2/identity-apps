@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -717,6 +717,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Disable email template feature for free tier tenants.
      */
     disableEmailTemplateForFreeTier: boolean;
+    /**
+     * Flag to check whether the password reset enforcer authenticator is enabled.
+     */
+    isPasswordResetEnforcerEnabled?: boolean;
 }
 
 /**

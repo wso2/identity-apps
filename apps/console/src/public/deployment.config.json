@@ -2108,6 +2108,7 @@
         "isMarketingConsentBannerEnabled": false,
         "isMultipleEmailsAndMobileNumbersEnabled": true,
         "isPasswordInputValidationEnabled": true,
+        "isPasswordResetEnforcementScopeEnabled": false,
         "isRequestPathAuthenticationEnabled": false,
         "isSAASDeployment": false,
         "isSignatureValidationCertificateAliasEnabled": false,
