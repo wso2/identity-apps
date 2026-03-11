@@ -22,8 +22,8 @@ import { ConfirmationModal, DangerZone } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { CheckboxProps } from "semantic-ui-react";
 import { Dispatch } from "redux";
+import { CheckboxProps } from "semantic-ui-react";
 import { updateApplicationConfigurations } from "../../api/application";
 
 /**
