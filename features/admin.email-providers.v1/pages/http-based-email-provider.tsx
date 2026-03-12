@@ -45,7 +45,6 @@ import { AuthType, HTTPEmailAuthDropdownChild, HTTPEmailProviderFormInterface } 
 interface HttpBasedEmailProviderPageInterface extends IdentifiableComponentInterface {
     isLoading?: boolean;
     isReadOnly: boolean;
-    "data-componentid": string;
     onSubmit: (values: HTTPEmailProviderFormInterface) => void;
     hasExistingConfig?: boolean;
     currentAuthType?: AuthType;
@@ -109,7 +108,7 @@ const HttpBasedEmailProvider: FunctionComponent<HttpBasedEmailProviderPageInterf
 
     return (
         <EmphasizedSegment
-            padded={ "very" }
+            padded="very"
             data-componentid={ `${componentId}-tab` }
         >
             <Grid>

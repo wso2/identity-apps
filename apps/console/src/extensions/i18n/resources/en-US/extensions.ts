@@ -1734,7 +1734,7 @@ export const extensions: Extensions = {
                             "{{body}} to represent the generated email body. Use {{footer}} to represent the email footer. " +
                             "Use {{send-to}} to represent the recipient email address.",
                         label: "Payload Template",
-                        placeholder: "{\"subject\": \"{{subject}}\", \"body\": {{body}}, \"footer\": {{footer}}," +
+                        placeholder: "{\"subject\": \"{{subject}}\", \"body\": \"{{body}}\", \"footer\": \"{{footer}}\"," +
                             "\"to\": \"{{send-to}}\"}"
                     },
                     contentType: {
