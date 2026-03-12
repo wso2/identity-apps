@@ -1,5 +1,35 @@
 # @wso2is/console
 
+## 2.103.0
+
+### Minor Changes
+
+- [#9751](https://github.com/wso2/identity-apps/pull/9751) [`bb844d3b938f1c1432af84086c3df3b29f03047c`](https://github.com/wso2/identity-apps/commit/bb844d3b938f1c1432af84086c3df3b29f03047c) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Introduce M2M Insights
+
+### Patch Changes
+
+- [#9752](https://github.com/wso2/identity-apps/pull/9752) [`fdcc23b24755b9179b6ecab7bcb4eabe6694d5b9`](https://github.com/wso2/identity-apps/commit/fdcc23b24755b9179b6ecab7bcb4eabe6694d5b9) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix user sharing role assignment policy display issues
+
+- Updated dependencies [[`bb844d3b938f1c1432af84086c3df3b29f03047c`](https://github.com/wso2/identity-apps/commit/bb844d3b938f1c1432af84086c3df3b29f03047c), [`fdcc23b24755b9179b6ecab7bcb4eabe6694d5b9`](https://github.com/wso2/identity-apps/commit/fdcc23b24755b9179b6ecab7bcb4eabe6694d5b9)]:
+  - @wso2is/admin.org-insights.v1@2.26.0
+  - @wso2is/i18n@2.37.0
+  - @wso2is/admin.console-settings.v1@2.26.10
+  - @wso2is/admin.users.v1@2.37.11
+  - @wso2is/admin.agents.v1@1.0.179
+  - @wso2is/admin.onboarding.v1@1.0.35
+  - @wso2is/admin.core.v1@2.54.20
+  - @wso2is/admin.roles.v2@2.27.334
+  - @wso2is/admin.connections.v1@2.36.4
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.164
+  - @wso2is/admin.branding.v1@2.32.120
+  - @wso2is/admin.email-management.v1@2.25.328
+  - @wso2is/admin.flows.v1@1.0.133
+  - @wso2is/admin.home.v1@1.7.143
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.164
+  - @wso2is/admin.server-configurations.v1@2.38.3
+  - @wso2is/admin.approval-workflows.v1@1.2.2
+  - @wso2is/admin.registration-flow-builder.v1@0.10.124
+
 ## 2.102.0
 
 ### Minor Changes
