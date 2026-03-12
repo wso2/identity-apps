@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,12 +17,17 @@
  */
 
 import { TemplateDynamicForm } from "@wso2is/admin.template-core.v1/components/template-dynamic-form";
-import { DynamicFilePickerFieldInterface, DynamicFormInterface,
-    DynamicInputFieldTypes }from "@wso2is/admin.template-core.v1/models/dynamic-fields";
+import {
+    DynamicFilePickerFieldInterface, DynamicFormInterface,
+    DynamicInputFieldTypes
+} from "@wso2is/admin.template-core.v1/models/dynamic-fields";
 import { ExtensionTemplateCommonInterface } from "@wso2is/admin.template-core.v1/models/templates";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import { EmphasizedSegment, Hint } from "@wso2is/react-components";
+import cloneDeep from "lodash-es/cloneDeep";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Checkbox, CheckboxProps } from "semantic-ui-react";
 import { PushProviderAPIInterface, PushProviderPropertiesInterface } from "../models/push-providers";
 import { PushProviderTemplateInterface, PushProviderTemplateMetadataInterface } from "../models/templates";
 
@@ -52,6 +57,11 @@ interface PushProviderSettingsPropsInterface extends IdentifiableComponentInterf
     pushProviderTemplateMetadata: PushProviderTemplateMetadataInterface;
 
     /**
+     * Default push provider name
+     */
+    defaultPushProvider: string | null;
+
+    /**
      * Flag to determine if the data is still loading
      */
     isLoading?: boolean;
@@ -70,16 +80,25 @@ interface PushProviderSettingsPropsInterface extends IdentifiableComponentInterf
      * Callback to create the push provider
      */
     handleCreate: (data: PushProviderAPIInterface, callback?: () => void) => void;
+
+    /**
+     * Callback to update the default push provider
+     */
+    handleDefaultUpdate: (providerName: string | null) => void;
 }
 
 export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsInterface> = (
     {
         pushProvider,
+        pushProviderTemplateInfo,
         pushProviderTemplateData,
         pushProviderTemplateMetadata,
+        defaultPushProvider,
         isLoading,
         handleDelete,
         handleCreate,
+        handleUpdate,
+        handleDefaultUpdate,
         ["data-componentid"]: componentId = "push-provider-settings"
     }: PushProviderSettingsPropsInterface
 ): ReactElement => {
@@ -108,7 +127,7 @@ export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsIn
             return null;
         }
 
-        const templateMetadata: PushProviderTemplateMetadataInterface = pushProviderTemplateMetadata;
+        const templateMetadata: PushProviderTemplateMetadataInterface = cloneDeep(pushProviderTemplateMetadata);
         const { form: formMetadata } = templateMetadata?.edit;
 
         formMetadata.fields = formMetadata.fields.map((field: DynamicFilePickerFieldInterface) => {
@@ -124,6 +143,21 @@ export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsIn
 
         return formMetadata;
     }, [ pushProviderTemplateMetadata ]);
+
+    const [ isDefaultProvider, setIsDefaultProvider ] = useState<boolean>(false);
+
+    useEffect(() => {
+        if (defaultPushProvider && pushProvider?.provider === defaultPushProvider) {
+            setIsDefaultProvider(true);
+        } else {
+            setIsDefaultProvider(false);
+        }
+    }, [ defaultPushProvider, pushProvider ]);
+
+    const handleToggleChange = (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
+        setIsDefaultProvider(data.checked);
+        handleDefaultUpdate(data.checked ? pushProvider?.provider : null);
+    };
 
     const handleFormSubmission = (
         values: Record<string, unknown>,
@@ -141,25 +175,55 @@ export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsIn
             });
         }
 
-        const payload: PushProviderAPIInterface = {
-            properties: providerProperties,
-            provider: pushProviderTemplateData.payload.provider
-        };
 
-        handleCreate(payload, callback);
+        if (pushProvider) {
+            const payload: PushProviderAPIInterface = {
+                properties: providerProperties,
+                provider: pushProviderTemplateData.payload.provider
+            };
+
+            handleUpdate(payload, callback);
+        } else {
+            const payload: PushProviderAPIInterface = {
+                properties: providerProperties,
+                provider: pushProviderTemplateData.payload.provider
+            };
+
+            handleCreate(payload, callback);
+        }
     };
 
     return (
-        <TemplateDynamicForm
-            form={ renderFormMetadata }
-            initialFormValues={ initialFormValues as unknown as Record<string, unknown> }
-            templatePayload={ pushProviderTemplateData?.payload as unknown as Record<string, unknown> }
-            buttonText={ t("common:update") }
-            onFormSubmit={ handleFormSubmission }
-            isLoading={ isLoading }
-            readOnly={ false }
-            data-componentid= { `${componentId}-form` }
-        />
+        <EmphasizedSegment
+            data-componentid={ `${componentId}-form` }
+            padded="very"
+        >
+
+            <div className="mb-5">
+                <Checkbox
+                    label={ t("pushProviders:pushProviderSettings.defaultSender") }
+                    checked={ isDefaultProvider }
+                    onChange={ handleToggleChange }
+                    toggle
+                    disabled={ pushProvider == null } // Disable the toggle if push provider is not configured
+                    data-componentid={ `${componentId}-default-push-provider` }
+                />
+                <Hint data-componentid={ `${componentId}-default-push-provider-description` }>
+                    { t("pushProviders:pushProviderSettings.defaultSenderDescription") }
+                </Hint>
+            </div>
+            <TemplateDynamicForm
+                key = { pushProviderTemplateInfo?.id }
+                form={ renderFormMetadata }
+                initialFormValues={ initialFormValues as unknown as Record<string, unknown> }
+                templatePayload={ pushProviderTemplateData?.payload as unknown as Record<string, unknown> }
+                buttonText={ t("common:update") }
+                onFormSubmit={ handleFormSubmission }
+                isLoading={ isLoading }
+                readOnly={ false }
+                data-componentid= { `${componentId}-form` }
+            />
+        </EmphasizedSegment>
     );
 
 };

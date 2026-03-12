@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,7 @@ import {
     FilePickerAdapter,
     FinalFormField,
     FormApi,
+    KeyValueMapAdapter,
     TextFieldAdapter,
     __DEPRECATED__SelectFieldAdapter
 } from "@wso2is/form";
@@ -34,7 +35,8 @@ import {
     DynamicDropdownFieldInterface,
     DynamicFieldInterface,
     DynamicFilePickerFieldInterface,
-    DynamicInputFieldTypes
+    DynamicInputFieldTypes,
+    DynamicKeyValueMapFieldInterface
 } from "../models/dynamic-fields";
 import "./form-dynamic-field.scss";
 
@@ -243,6 +245,34 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         onDelete={ (field as DynamicFilePickerFieldInterface)?.onDelete }
                     />
                 );
+            case DynamicInputFieldTypes.KEYVALUEMAP:
+                return (
+                    <FinalFormField
+                        fullWidth
+                        FormControlProps={ {
+                            margin: "dense"
+                        } }
+                        aria-label={ field?.["aria-label"] }
+                        data-componentid={ field?.dataComponentId }
+                        name={ field?.name }
+                        label={ field?.label }
+                        placeholder={ field?.placeholder }
+                        component={ KeyValueMapAdapter }
+                        readOnly={ readOnly || field?.readOnly }
+                        required={ field?.required }
+                        valuetype={ (field as DynamicKeyValueMapFieldInterface)?.valueType }
+                        keyName={ (field as DynamicKeyValueMapFieldInterface)?.keyName }
+                        keyOptions={ (field as DynamicKeyValueMapFieldInterface)?.keyOptions }
+                        helperText={
+                            field?.helperText ? (
+                                <Hint compact>
+                                    { renderHelperText(field?.helperText) }
+                                </Hint>
+                            ) : null
+                        }
+                    />
+                );
+
             default:
                 return (
                     <FinalFormField

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,7 +22,6 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalForm, FormRenderProps, MutableState, Tools } from "@wso2is/form";
 import {
     ContentLoader,
-    EmphasizedSegment,
     PrimaryButton
 } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -184,10 +183,7 @@ export const TemplateDynamicForm: FunctionComponent<TemplateDynamicFormPropsInte
     };
 
     return (
-        <EmphasizedSegment
-            data-componentid={ `${componentId}-form` }
-            padded="very"
-        >
+        <>
             {
                 !formInitialValues || isLoading
                     ? <ContentLoader inline="centered" active/>
@@ -258,6 +254,6 @@ export const TemplateDynamicForm: FunctionComponent<TemplateDynamicFormPropsInte
                         />
                     )
             }
-        </EmphasizedSegment>
+        </>
     );
 };

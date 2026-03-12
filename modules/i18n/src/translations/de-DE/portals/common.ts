@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -181,6 +181,7 @@ export const common: CommonNS = {
     "createdOn": " Angelegt am ",
     "dangerZone": "Gefahrenzone",
     "darkMode": "Dunkler Modus",
+    "default": "Standard",
     "delete": "Löschen",
     "deprecated": "Diese Konfiguration ist veraltet und wird in einer zukünftigen Version entfernt.",
     "description": "Beschreibung",

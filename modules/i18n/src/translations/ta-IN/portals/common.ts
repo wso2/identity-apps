@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -182,6 +182,7 @@ export const common: CommonNS = {
     createdOn: "உருவாக்கப்பட்ட தினம்",
     dangerZone: "ஆபத்து மண்டலம்",
     darkMode: "இருண்ட தீம்",
+    default: "இயல்புநிலை",
     delete: "அழி",
     deprecated: "இந்த கட்டமைப்பு பழமையானது மற்றும் எதிர்கால வெளியீட்டில் நீக்கப்படும்.",
     description: "விபரம்",

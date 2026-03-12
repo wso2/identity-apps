@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,6 +18,7 @@
 
 import { TemplateDynamicForm } from "@wso2is/admin.template-core.v1/components/template-dynamic-form";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import IdVPEditDangerZone from "./danger-zone";
@@ -95,7 +96,10 @@ const DynamicSettingsForm: FunctionComponent<DynamicSettingsFormPropsInterface> 
     };
 
     return (
-        <>
+        <EmphasizedSegment
+            data-componentid={ `${componentId}-form` }
+            padded="very"
+        >
             <TemplateDynamicForm
                 customValidations={ customValidations }
                 customInitializers={ customInitializers }
@@ -109,7 +113,7 @@ const DynamicSettingsForm: FunctionComponent<DynamicSettingsFormPropsInterface> 
                 data-componentid={ componentId }
             />
             { resolveDangerZone() }
-        </>
+        </EmphasizedSegment>
     );
 };
 
