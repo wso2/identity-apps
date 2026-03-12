@@ -120,9 +120,11 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
                 enableConsoleAdminRole
                 || !(role.displayName === UIConstants.ADMINISTRATOR_ROLE_DISPLAY_NAME
                     && role.audience?.type?.toUpperCase() === RoleAudienceTypes.APPLICATION
-                    && role.audience?.display === "Console")
+                    && role.audience?.display === UIConstants.CONSOLE_APP_AUDIENCE_DISPLAY)
             );
         }
+
+        return [];
     }, [ originalUserRoles, enableConsoleAdminRole ]);
 
     useEffect(() => {

@@ -320,7 +320,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         isReadOnly,
         isUserStoresLoading,
         isReadOnlyUserStore,
-        isUserManagedByParentOrg
+        isUserManagedByParentOrg,
+        enableConsoleAdminRole
     ]);
 
     return (

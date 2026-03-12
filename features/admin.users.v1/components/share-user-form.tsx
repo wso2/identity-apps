@@ -239,9 +239,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                 enableConsoleAdminRole
                 || !(role.displayName === UIConstants.ADMINISTRATOR_ROLE_DISPLAY_NAME
                     && role.audience?.type?.toUpperCase() === RoleAudienceTypes.APPLICATION
-                    && role.audience?.display === "Console")
+                    && role.audience?.display === UIConstants.CONSOLE_APP_AUDIENCE_DISPLAY)
             );
         }
+
+        return [];
     }, [ originalUserRoles, enableConsoleAdminRole ]);
 
     useEffect(() => {
@@ -284,7 +286,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                         const roles: SelectedOrganizationRoleInterface[] =
                             sharingModeRoles.map((role: RoleSharingInterface) => ({
                                 ...role,
-                                id: role.displayName,
+                                id: `${role.displayName}:${role.audience?.type}:${role.audience?.display}`,
                                 selected: true // Mark all existing roles as selected
                             }));
 
@@ -355,8 +357,10 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                 const existing: SelectedOrganizationRoleInterface[] = prevRoleSelections[orgId];
 
                 updated[orgId] = userRolesList.map((role: RolesV2Interface) => {
+                    const compositeId: string =
+                        `${role.displayName}:${role.audience?.type}:${role.audience?.display}`;
                     const existingEntry: SelectedOrganizationRoleInterface | undefined = existing.find(
-                        (r: SelectedOrganizationRoleInterface) => r.displayName === role.displayName
+                        (r: SelectedOrganizationRoleInterface) => r.id === compositeId
                     );
 
                     return {
@@ -365,7 +369,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                             type: role.audience?.type
                         },
                         displayName: role.displayName,
-                        id: role.displayName,
+                        id: compositeId,
                         selected: existingEntry?.selected ?? false
                     };
                 });
