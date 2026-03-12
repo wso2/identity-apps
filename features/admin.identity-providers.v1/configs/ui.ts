@@ -19,6 +19,8 @@
 import BasicAuthIcon from "../../themes/default/assets/images/authenticators/basic-auth.svg";
 import CustomAuthenticator from "../../themes/default/assets/images/authenticators/custom-authenticator.svg";
 import FIDOLogo from "../../themes/default/assets/images/authenticators/fido-passkey-black.svg";
+import OrganizationIdentifierHandlerIcon
+    from "../../themes/default/assets/images/authenticators/organization-identifier-handler.svg";
 import SMSOTPIcon from "../../themes/default/assets/images/authenticators/sms-otp.svg";
 import BackupCodesAuthenticatorLogo from "../../themes/default/assets/images/icons/backup-code-icon.svg";
 import CertificateColoredIcon from "../../themes/default/assets/images/icons/certificate-colored-icon.svg";
@@ -82,6 +84,7 @@ export const getAuthenticatorIcons = (): any => {
         GoogleOIDCAuthenticator: GoogleLogo,
         MagicLinkAuthenticator: MagicLinkLogo,
         Microsoft: MicrosoftLogo,
+        OrganizationIdentifierHandler: OrganizationIdentifierHandlerIcon,
         apple: AppleLogo,
         backupCode: BackupCodesAuthenticatorLogo,
         basic: BasicAuthIcon,

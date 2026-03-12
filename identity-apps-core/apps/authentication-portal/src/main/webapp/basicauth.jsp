@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2014-2025, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2014-2026, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -63,6 +63,9 @@
 <jsp:directive.include file="plugins/basicauth-extensions.jsp"/>
 
 <script>
+    // Client-side submission lock to avoid duplicate form submits.
+    var isLoginSubmitting = false;
+
     function goBack() {
         document.getElementById("restartFlowForm").submit();
     }
@@ -89,7 +92,10 @@
         $.fn.preventDoubleSubmission = function() {
             $(this).on('submit',function(e){
                 var $form = $(this);
-                if ($form.data('submitted') === true) {
+                var signInButton = document.getElementById("sign-in-button");
+
+                // Ignore repeated submit events while an earlier submission is in-flight.
+                if (isLoginSubmitting || $form.data('submitted') === true) {
                     // Previously submitted - don't submit again.
                     e.preventDefault();
                     console.warn("Prevented a possible double submit event");
@@ -127,6 +133,14 @@
                     }
 
                     if (userName.value) {
+                        // Lock before async work starts so repeat submits are blocked immediately.
+                        isLoginSubmitting = true;
+                        $form.data('submitted', true);
+                        if (signInButton) {
+                            signInButton.disabled = true;
+                            signInButton.classList.add("loading");
+                        }
+
                         $.ajax({
                             type: "GET",
                             url: "<%= Encode.forJavaScriptBlock(loginContextRequestUrl)%>",
@@ -134,11 +148,16 @@
                             success: function (data) {
                                 if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {
                                     window.location.href = data.redirectUrl;
-                                } else if ($form.data('submitted') !== true) {
-                                    $form.data('submitted', true);
-                                    document.getElementById("loginForm").submit();
                                 } else {
-                                    console.warn("Prevented a possible double submit event.");
+                                    HTMLFormElement.prototype.submit.call(document.getElementById("loginForm"));
+                                }
+                            },
+                            error: function () {
+                                isLoginSubmitting = false;
+                                $form.data('submitted', false);
+                                if (signInButton) {
+                                    signInButton.disabled = false;
+                                    signInButton.classList.remove("loading");
                                 }
                             },
                             cache: false
@@ -178,7 +197,7 @@
     }
 
     function showResendReCaptcha() {
-        <% 
+        <%
             String failedUsername = request.getParameter("failedUsername");
             boolean isEmailVerification = IdentityCoreConstants.USER_EMAIL_NOT_VERIFIED_ERROR_CODE.equals(errorCode);
             boolean isEmailOTPVerification = IdentityCoreConstants.USER_EMAIL_OTP_NOT_VERIFIED_ERROR_CODE.equals(errorCode);
@@ -191,7 +210,7 @@
             <% if (isEmailOTPVerification) { %>
             + "&isEmailOTPVerification=true"
             <% } %>
-            + "&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
+            + "&<%=Encode.forJavaScriptBlock(AuthenticationEndpointUtil.cleanErrorMessages(request.getQueryString()))%>";
         <% } %>
     }
 
@@ -328,7 +347,7 @@
     String recoveryScenarioProp = "RecoveryScenario";
     String emailVerificationScenario = "EMAIL_VERIFICATION";
     String emailOTPVerificationScenario = "EMAIL_VERIFICATION_OTP";
-    
+
     try {
         if (sp.equals("My Account")) {
             spId = "My_Account";
@@ -534,15 +553,15 @@
     %>
 <% } else if (Boolean.parseBoolean(loginFailed) && errorCode.equals(IdentityCoreConstants.USER_EMAIL_OTP_NOT_VERIFIED_ERROR_CODE) && request.getParameter("resend_username") == null) { %>
     <div class="ui visible warning message" id="error-msg" data-testid="login-page-error-message">
-        
+
         <h5 class="ui heading"><strong><%= AuthenticationEndpointUtil.i18n(resourceBundle, "no.email.confirmation.mail.heading") %></strong></h5>
-        
+
         <%= AuthenticationEndpointUtil.i18n(resourceBundle, Encode.forJava(errorMessage)) %>
-        
+
         <div class="ui divider hidden"></div>
-        
+
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "generic.no.confirmation.mail.otp")%>
-        
+
         <a id="registerLink"
             href="javascript:showResendReCaptcha();"
             data-testid="login-page-resend-confirmation-email-link"

@@ -1,5 +1,85 @@
 # @wso2is/admin.applications.v1
 
+## 2.41.19
+
+### Patch Changes
+
+- [#9742](https://github.com/wso2/identity-apps/pull/9742) [`041d7e4c3b1ae6a82839ea7d698bd12c25056123`](https://github.com/wso2/identity-apps/commit/041d7e4c3b1ae6a82839ea7d698bd12c25056123) Thanks [@Malith-19](https://github.com/Malith-19)! - Improve the UI to hide the refresh token extend configuration while refresh renew token is disabled.
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.32.119
+  - @wso2is/admin.core.v1@2.54.19
+  - @wso2is/admin.roles.v2@2.27.333
+  - @wso2is/admin.connections.v1@2.36.2
+  - @wso2is/admin.server-configurations.v1@2.38.2
+  - @wso2is/admin.users.v1@2.37.10
+
+## 2.41.18
+
+### Patch Changes
+
+- [#9736](https://github.com/wso2/identity-apps/pull/9736) [`37f1eae32f0b30c5a060432e41fe5e13285aef01`](https://github.com/wso2/identity-apps/commit/37f1eae32f0b30c5a060432e41fe5e13285aef01) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add enable enhanced organization login toggle
+
+- Updated dependencies [[`37f1eae32f0b30c5a060432e41fe5e13285aef01`](https://github.com/wso2/identity-apps/commit/37f1eae32f0b30c5a060432e41fe5e13285aef01)]:
+  - @wso2is/admin.core.v1@2.54.16
+  - @wso2is/i18n@2.34.10
+  - @wso2is/admin.branding.v1@2.32.116
+  - @wso2is/admin.roles.v2@2.27.330
+  - @wso2is/admin.server-configurations.v1@2.37.27
+  - @wso2is/admin.users.v1@2.37.7
+  - @wso2is/admin.connections.v1@2.35.20
+
+## 2.41.17
+
+### Patch Changes
+
+- [#9699](https://github.com/wso2/identity-apps/pull/9699) [`413d08d82b88fb248b45e6a6e6e668a84d7f6a19`](https://github.com/wso2/identity-apps/commit/413d08d82b88fb248b45e6a6e6e668a84d7f6a19) Thanks [@piraveena](https://github.com/piraveena)! - Add feature gate logic for OIDC front-channel logout
+
+- Updated dependencies [[`413d08d82b88fb248b45e6a6e6e668a84d7f6a19`](https://github.com/wso2/identity-apps/commit/413d08d82b88fb248b45e6a6e6e668a84d7f6a19)]:
+  - @wso2is/admin.extensions.v1@2.40.27
+  - @wso2is/admin.feature-gate.v1@1.9.1
+  - @wso2is/access-control@3.5.2
+  - @wso2is/admin.branding.v1@2.32.114
+  - @wso2is/admin.login-flow-builder.v1@2.29.4
+  - @wso2is/admin.login-flow.ai.v1@2.27.109
+  - @wso2is/admin.core.v1@2.54.14
+  - @wso2is/admin.roles.v2@2.27.328
+  - @wso2is/admin.server-configurations.v1@2.37.24
+  - @wso2is/admin.users.v1@2.37.5
+  - @wso2is/admin.connections.v1@2.35.18
+
+## 2.41.16
+
+### Patch Changes
+
+- [#9706](https://github.com/wso2/identity-apps/pull/9706) [`d1e3d8f53406ef45be4483a3eb5a7663dfbdad68`](https://github.com/wso2/identity-apps/commit/d1e3d8f53406ef45be4483a3eb5a7663dfbdad68) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Improvements to the ciba protocol configuration
+
+* [#9709](https://github.com/wso2/identity-apps/pull/9709) [`b256fb1cf7c979c91f7bf9cb70932cd514d8434c`](https://github.com/wso2/identity-apps/commit/b256fb1cf7c979c91f7bf9cb70932cd514d8434c) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Improvements to the ciba protocol configuration
+
+* Updated dependencies [[`d1e3d8f53406ef45be4483a3eb5a7663dfbdad68`](https://github.com/wso2/identity-apps/commit/d1e3d8f53406ef45be4483a3eb5a7663dfbdad68), [`b256fb1cf7c979c91f7bf9cb70932cd514d8434c`](https://github.com/wso2/identity-apps/commit/b256fb1cf7c979c91f7bf9cb70932cd514d8434c)]:
+  - @wso2is/admin.extensions.v1@2.40.24
+  - @wso2is/i18n@2.34.8
+  - @wso2is/admin.branding.v1@2.32.111
+  - @wso2is/admin.core.v1@2.54.11
+  - @wso2is/admin.roles.v2@2.27.325
+  - @wso2is/admin.connections.v1@2.35.13
+  - @wso2is/admin.server-configurations.v1@2.37.21
+  - @wso2is/admin.users.v1@2.37.2
+
+## 2.41.15
+
+### Patch Changes
+
+- [#9701](https://github.com/wso2/identity-apps/pull/9701) [`7da789c6ba254f3e6e66c63ebceb7e7108b151a8`](https://github.com/wso2/identity-apps/commit/7da789c6ba254f3e6e66c63ebceb7e7108b151a8) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Address outbound provisioning blocking mode issue.
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.32.110
+  - @wso2is/admin.core.v1@2.54.10
+  - @wso2is/admin.roles.v2@2.27.324
+  - @wso2is/admin.connections.v1@2.35.12
+  - @wso2is/admin.server-configurations.v1@2.37.20
+  - @wso2is/admin.users.v1@2.37.1
+
 ## 2.41.14
 
 ### Patch Changes

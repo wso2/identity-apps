@@ -83,9 +83,9 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
     const [ idpListOptions, setIdpListOptions ] = useState<DropdownOptionsInterface[]>([]);
     const [ connectorListOptions, setConnectorListOptions ] = useState<DropdownOptionsInterface[]>(undefined);
     const [ selectedIdp, setSelectedIdp ] = useState<string>();
-    const [ isBlockingChecked, setIsBlockingChecked ] = useState<boolean>(initialValues?.blocking);
-    const [ isJITChecked, setIsJITChecked ] = useState<boolean>(initialValues?.jit);
-    const [ isRulesChecked, setIsRulesChecked ] = useState<boolean>(initialValues?.rules);
+    const [ isBlockingChecked, setIsBlockingChecked ] = useState<boolean>(initialValues?.blocking ?? false);
+    const [ isJITChecked, setIsJITChecked ] = useState<boolean>(initialValues?.jit ?? false);
+    const [ isRulesChecked, setIsRulesChecked ] = useState<boolean>(initialValues?.rules ?? false);
     const [ connector, setConnector ] = useState<string>(initialValues?.connector);
 
     const { UIConfig } = useUIConfig();
@@ -182,16 +182,16 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
      * @param values - Form values.
      * @returns Prepared values.
      */
-    const getFormValues = (values: any): Record<string, unknown> => {
-        const idpName: string = (idpListOptions.find(
-            (idp: DropdownOptionsInterface) => idp.value === selectedIdp)).text;
+    const getFormValues = (_: any): Record<string, unknown> => {
+        const idpName: string = idpListOptions.find(
+            (idp: DropdownOptionsInterface) => idp.value === selectedIdp)?.text ?? "";
 
         return {
-            blocking: isBlockingChecked ? isBlockingChecked : !!values.get("blocking").includes("blocking"),
+            blocking: isBlockingChecked,
             connector: connector,
             idp: idpName,
-            jit: isJITChecked ? isJITChecked : !!values.get("jit").includes("jit"),
-            rules: isRulesChecked ? isRulesChecked : !!values.get("blocking").includes("blocking")
+            jit: isJITChecked,
+            rules: isRulesChecked
         };
     };
 

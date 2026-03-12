@@ -785,6 +785,48 @@ export const applications: ApplicationsNS = {
                     partiallyCompleted: "Application sharing partially completed."
                 }
             },
+            enhancedOrganizationLogin: {
+                title: "Enable enhanced organization login",
+                description: "Enabling this switches the application to the enhanced organization login. " +
+                    "This change may require manual updates to your existing application setup " +
+                    "and configurations.",
+                hint: "Learn more about the enhanced organization login.",
+                confirmation: {
+                    header: "Are you sure?",
+                    message: "Changing the enhanced organization login mode will affect the current application. " +
+                        "Proceed with caution.",
+                    content: {
+                        0: "This change may require manual updates to your application setup " +
+                            "and configurations."
+                    }
+                },
+                notifications: {
+                    enable: {
+                        success: {
+                            message: "Enhanced organization login enabled.",
+                            description: "Enhanced organization login has been successfully enabled for " +
+                                "this application."
+                        },
+                        error: {
+                            message: "Failed to enable enhanced organization login.",
+                            description: "An error occurred while enabling enhanced organization login. " +
+                                "Please try again."
+                        }
+                    },
+                    disable: {
+                        success: {
+                            message: "Enhanced organization login disabled.",
+                            description: "Enhanced organization login has been successfully disabled for " +
+                                "this application."
+                        },
+                        error: {
+                            message: "Failed to disable enhanced organization login.",
+                            description: "An error occurred while disabling enhanced organization login. " +
+                                "Please try again."
+                        }
+                    }
+                }
+            },
             signOnMethod: {
                 sections: {
                     authenticationFlow: {
@@ -1771,17 +1813,15 @@ export const applications: ApplicationsNS = {
                         }
                     },
                     notificationChannels: {
-                        clientChannelLabel: "Client managed",
-                        externalHint: "The client application delivers the " +
-                            "authentication request to the user. When configured " +
-                            "alongside server channels, the client must include " +
-                            "notification_channel=external in the CIBA request " +
-                            "to use this channel; otherwise {{productName}} " +
-                            "defaults to the server channels.",
-                        hint: "Configure which notification methods this " +
-                            "application supports.",
-                        label: "Notification Delivery",
-                        serverChannelsLabel: "Server managed"
+                        externalHint: "If the client includes " +
+                            "notification_channel=external in the request, " +
+                            "{{productName}} returns the notification details " +
+                            "in the response, enabling the client application " +
+                            "to deliver the notification through its own channel.",
+                        externalLabel: "External (Client Application Handles Delivery)",
+                        hint: "Select the notification delivery methods that " +
+                            "this client application is permitted to request.",
+                        label: "Allowed Notification Delivery Methods"
                     },
                     heading: "Client Initiated Backchannel Authentication"
                 }

@@ -279,6 +279,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ showHybridFlowEnableConfig, setHybridFlowEnableConfig ] = useState<boolean>(false);
     const [ showCallbackURLField, setShowCallbackURLField ] = useState<boolean>(undefined);
     const [ hideRefreshTokenGrantType, setHideRefreshTokenGrantType ] = useState<boolean>(false);
+    const [ isRenewRefreshTokenEnabled, setIsRenewRefreshTokenEnabled ] =
+        useState<boolean>(initialValues?.refreshToken?.renewRefreshToken ?? false);
     const [ selectedGrantTypes, setSelectedGrantTypes ] = useState<string[]>(undefined);
     const [ selectedHybridFlowResponseTypes, setSelectedHybridFlowResponseTypes ] = useState<string[]>([]);
     const [ isJWTAccessTokenTypeSelected, setJWTAccessTokenTypeSelected ] = useState<boolean>(false);
@@ -755,6 +757,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         return selectedGrantTypes?.includes(("refresh_token")) && selectedGrantTypes?.length === 1;
 
     };
+
+    useEffect((): void => {
+        setIsRenewRefreshTokenEnabled(initialValues?.refreshToken?.renewRefreshToken ?? false);
+    }, [ initialValues?.refreshToken?.renewRefreshToken ]);
 
     /**
      * Check whether to enable validate token bindings.
@@ -1597,10 +1603,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             }
 
             if (showCibaFields) {
-                const serverChannels: string[] =
-                    values.get("cibaServerChannels") as unknown as string[] || [];
-                const clientChannels: string[] =
-                    values.get("cibaExternalChannel") as unknown as string[] || [];
+                const notificationChannels: string[] =
+                    values.get("cibaNotificationChannels") as unknown as string[] || [];
 
                 inboundConfigFormValues = {
                     ...inboundConfigFormValues,
@@ -1608,7 +1612,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         authReqExpiryTime: values.get("authReqExpiryTime")
                             ? parseInt(values.get("authReqExpiryTime") as string, 10)
                             : undefined,
-                        notificationChannels: [ ...serverChannels, ...clientChannels ]
+                        notificationChannels: notificationChannels
                     }
                 };
             } else {
@@ -2261,74 +2265,41 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     </Hint>
                                 </div>
                                 <Field
-                                    name="cibaServerChannels"
-                                    label={
-                                        t("applications:forms.inboundOIDC.fields." +
-                                            "ciba.notificationChannels.serverChannelsLabel")
-                                    }
+                                    name="cibaNotificationChannels"
                                     type="checkbox"
                                     required={ false }
                                     value={
                                         initialValues?.cibaAuthenticationRequest
-                                            ?.notificationChannels
-                                            ?.filter(
-                                                (ch: string) => ch !== "external"
-                                            ) ?? []
+                                            ?.notificationChannels ?? []
                                     }
                                     readOnly={ readOnly }
                                     data-componentid={
-                                        `${ testId }-ciba-server-channels`
+                                        `${ testId }-ciba-notification-channels`
                                     }
                                     children={
-                                        metadata?.cibaMetadata
-                                            ?.supportedNotificationChannels
-                                            ?.filter(
-                                                (channel:
-                                                    CIBANotificationChannelInterface) =>
-                                                    channel.name !== "external"
+                                        [ ...(metadata?.cibaMetadata
+                                            ?.supportedNotificationChannels ?? []) ]
+                                            .sort(
+                                                (a: CIBANotificationChannelInterface,
+                                                    b: CIBANotificationChannelInterface
+                                                ): number =>
+                                                    a.name === "external" ? 1
+                                                        : b.name === "external" ? -1 : 0
                                             )
                                             ?.map(
                                                 (channel:
                                                     CIBANotificationChannelInterface):
                                                     CheckboxChild => ({
-                                                    label: channel.displayName,
+                                                    label: channel.name === "external"
+                                                        ? t("applications:forms" +
+                                                            ".inboundOIDC.fields.ciba" +
+                                                            ".notificationChannels" +
+                                                            ".externalLabel")
+                                                        : channel.displayName,
                                                     value: channel.name
                                                 })
                                             ) ?? []
                                     }
-                                />
-                                <Field
-                                    name="cibaExternalChannel"
-                                    label={
-                                        t("applications:forms.inboundOIDC.fields." +
-                                            "ciba.notificationChannels.clientChannelLabel")
-                                    }
-                                    type="checkbox"
-                                    required={ false }
-                                    value={
-                                        initialValues?.cibaAuthenticationRequest
-                                            ?.notificationChannels
-                                            ?.includes("external")
-                                            ? [ "external" ]
-                                            : []
-                                    }
-                                    readOnly={ readOnly }
-                                    data-componentid={
-                                        `${ testId }-ciba-external-channel`
-                                    }
-                                    children={ [
-                                        {
-                                            label: metadata?.cibaMetadata
-                                                ?.supportedNotificationChannels
-                                                ?.find(
-                                                    (ch:
-                                                        CIBANotificationChannelInterface
-                                                    ) =>
-                                                        ch.name === "external"
-                                                )?.displayName ?? "External",
-                                            value: "external"
-                                        }
-                                    ] as CheckboxChild[] }
                                 />
                                 <Hint>
                                     { t("applications:forms" +
@@ -3690,6 +3661,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ? [ "refreshToken" ]
                                             : []
                                     }
+                                    listen={ (values: Map<string, FormValue>): void => {
+                                        setIsRenewRefreshTokenEnabled(
+                                            values.get("RefreshToken")?.length > 0
+                                        );
+                                    } }
                                     children={ [
                                         {
                                             label: t("applications:forms.inboundOIDC" +
@@ -3714,42 +3690,44 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Field
-                                    ref={ extendExpiryTime }
-                                    name="extendExpiryTime"
-                                    label=""
-                                    required={ false }
-                                    type="checkbox"
-                                    value={
-                                        initialValues?.refreshToken?.extendRenewedRefreshTokenExpiryTime
-                                            ? [ "extendExpiryTime" ]
-                                            : []
-                                    }
-                                    children={ [
-                                        {
-                                            label: t("applications:forms.inboundOIDC.sections.refreshToken."
-                                                + "fields.extendRenewedRefreshTokenExpiryTime.label"),
-                                            value: "extendExpiryTime"
+                        { isRenewRefreshTokenEnabled && (
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Field
+                                        ref={ extendExpiryTime }
+                                        name="extendExpiryTime"
+                                        label=""
+                                        required={ false }
+                                        type="checkbox"
+                                        value={
+                                            initialValues?.refreshToken?.extendRenewedRefreshTokenExpiryTime
+                                                ? [ "extendExpiryTime" ]
+                                                : []
                                         }
-                                    ] }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-extend-refresh-token-expiry-time-checkbox` }
-                                />
-                                <Hint>
-                                    <Trans
-                                        i18nKey={
-                                            "applications:forms.inboundOIDC.sections" +
-                                            ".refreshToken.fields.extendRenewedRefreshTokenExpiryTime.hint"
-                                        }
-                                    >
-                                        Select to ensure renewed refresh tokens retain the remaining validity period
-                                         from the original token instead of receiving a fresh expiry time.
-                                    </Trans>
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
+                                        children={ [
+                                            {
+                                                label: t("applications:forms.inboundOIDC.sections.refreshToken."
+                                                    + "fields.extendRenewedRefreshTokenExpiryTime.label"),
+                                                value: "extendExpiryTime"
+                                            }
+                                        ] }
+                                        readOnly={ readOnly }
+                                        data-testid={ `${ testId }-extend-refresh-token-expiry-time-checkbox` }
+                                    />
+                                    <Hint>
+                                        <Trans
+                                            i18nKey={
+                                                "applications:forms.inboundOIDC.sections" +
+                                                ".refreshToken.fields.extendRenewedRefreshTokenExpiryTime.hint"
+                                            }
+                                        >
+                                            Select to ensure renewed refresh tokens retain the remaining validity period
+                                            from the original token instead of receiving a fresh expiry time.
+                                        </Trans>
+                                    </Hint>
+                                </Grid.Column>
+                            </Grid.Row>
+                        ) }
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field

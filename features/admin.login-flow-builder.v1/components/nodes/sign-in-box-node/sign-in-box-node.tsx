@@ -61,6 +61,7 @@ import ActiveSessionsLimitFragment from "./fragments/active-sessions-limit-fragm
 import BasicAuthFragment from "./fragments/basic-auth-fragment";
 import EmailOTPFragment from "./fragments/email-otp-fragment";
 import IdentifierFirstFragment from "./fragments/identifier-first-fragment";
+import PasswordResetEnforcerFragment from "./fragments/password-reset-enforcer-fragment";
 import PushNotificationFragment from "./fragments/push-notification-fragment";
 import SMSOTPFragment from "./fragments/sms-otp-fragment";
 import TOTPFragment from "./fragments/totp-fragment";
@@ -251,6 +252,10 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                 .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME) {
                 basicSignInOption = LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
                     .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME;
+            } else if (option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                .PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME) {
+                basicSignInOption = LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME;
             }
 
             if (filteredOptions.length === 1) {
@@ -321,7 +326,9 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                 fullWidth
             >
                 {
-                    authenticator.displayName.startsWith("Sign In With")
+                    authenticator.displayName.startsWith("Sign In With") ||
+                    authenticator.name === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                        .PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME
                         ? authenticator.displayName
                         : t("authenticationFlow:options.displayName",
                             { displayName: authenticator.displayName })
@@ -493,6 +500,20 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             );
         }
 
+        if (activeBasicSignInOption === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+            .PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME) {
+            return (
+                <PasswordResetEnforcerFragment
+                    onOptionRemove={ (e: MouseEvent<HTMLButtonElement>, { toRemove }: { toRemove: string }) => {
+                        onSignInOptionRemove(e, {
+                            stepIndex,
+                            toRemove
+                        });
+                    } }
+                />
+            );
+        }
+
         if (activeBasicSignInOption === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.PUSH_AUTHENTICATOR_NAME) {
             return (
                 <PushNotificationFragment
@@ -510,6 +531,18 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             <></>
         );
     };
+
+    /**
+     * Check whether the password reset enforcer authenticator is present in the step.
+     * When present, it is the sole enforced option and no additional sign-in options should be allowed.
+     */
+    const hasPasswordResetEnforcer: boolean = useMemo(() => {
+        return authenticationSequence?.steps?.[stepIndex]?.options?.some(
+            (option: AuthenticatorInterface) =>
+                option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME
+        ) ?? false;
+    }, [ authenticationSequence, stepIndex ]);
 
     /**
      * Check whether the backup codes is enabled for the step
@@ -541,7 +574,8 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                 [
                     LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
                     LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME,
-                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME,
+                    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME
                 ].includes(option.authenticator)
             ) {
                 shouldShowSubjectIdentifierCheck = false;
@@ -635,7 +669,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
                                     (getBasicSignInOption() !==
                                     LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
                                         .ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_NAME)
-                                    &&
+                                    && !hasPasswordResetEnforcer &&
                                     (<Button
                                         fullWidth
                                         startIcon={ <PlusIcon /> }

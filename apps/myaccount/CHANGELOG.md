@@ -1,5 +1,26 @@
 # @wso2is/myaccount
 
+## 2.27.0
+
+### Minor Changes
+
+- [#9639](https://github.com/wso2/identity-apps/pull/9639) [`ea10762573ace80ce4905ac23494ecd9ab97f7e9`](https://github.com/wso2/identity-apps/commit/ea10762573ace80ce4905ac23494ecd9ab97f7e9) Thanks [@Zeta201](https://github.com/Zeta201)! - Add support for java 21
+
+### Patch Changes
+
+- Updated dependencies [[`37f1eae32f0b30c5a060432e41fe5e13285aef01`](https://github.com/wso2/identity-apps/commit/37f1eae32f0b30c5a060432e41fe5e13285aef01)]:
+  - @wso2is/i18n@2.34.10
+
+## 2.26.2
+
+### Patch Changes
+
+- [#9357](https://github.com/wso2/identity-apps/pull/9357) [`07f6716b1fb74010d40790837f025f29195a1c0a`](https://github.com/wso2/identity-apps/commit/07f6716b1fb74010d40790837f025f29195a1c0a) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix CSS issue in Approvals Page in My Account app in dark theme
+
+- Updated dependencies [[`07f6716b1fb74010d40790837f025f29195a1c0a`](https://github.com/wso2/identity-apps/commit/07f6716b1fb74010d40790837f025f29195a1c0a)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.13
+  - @wso2is/common.branding.v1@2.28.2
+
 ## 2.26.1
 
 ### Patch Changes

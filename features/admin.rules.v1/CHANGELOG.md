@@ -1,5 +1,34 @@
 # @wso2is/admin.rules.v1
 
+## 0.7.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.19
+  - @wso2is/admin.roles.v2@2.27.333
+
+## 0.7.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.18
+  - @wso2is/admin.roles.v2@2.27.332
+
+## 0.7.0
+
+### Minor Changes
+
+- [#9683](https://github.com/wso2/identity-apps/pull/9683) [`8f189290049855d403087514cbdc0b9ca2892ab8`](https://github.com/wso2/identity-apps/commit/8f189290049855d403087514cbdc0b9ca2892ab8) Thanks [@nishagii](https://github.com/nishagii)! - Add rule based engaging support for approval workflows
+
+### Patch Changes
+
+- Updated dependencies [[`98be11798211c36636778c925819b578d4fbeabd`](https://github.com/wso2/identity-apps/commit/98be11798211c36636778c925819b578d4fbeabd), [`8f189290049855d403087514cbdc0b9ca2892ab8`](https://github.com/wso2/identity-apps/commit/8f189290049855d403087514cbdc0b9ca2892ab8)]:
+  - @wso2is/admin.extensions.v1@2.40.28
+  - @wso2is/admin.core.v1@2.54.17
+  - @wso2is/admin.roles.v2@2.27.331
+
 ## 0.6.1
 
 ### Patch Changes

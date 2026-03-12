@@ -6,12 +6,18 @@
     margin-left: 5px;
 }
 
-.workflow-association-operations {
+.workflow-association-operations,
+.workflow-notification-settings {
     display: flex;
     flex-direction: column;
     margin-bottom: 15px;
     margin-left: 5px;
     margin-top: 15px;
+}
+
+.common-section-heading {
+    margin-top: 25px;
+    margin-bottom: 20px;
 }
 
 .workflow-model-configuration-settings {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -154,10 +154,24 @@ export const approvalWorkflows: approvalWorkflowsNS = {
                 }
             }
         },
+        notifications: {
+            approver: {
+                hint: "Send notifications to users assigned to approve the request.",
+                label: "Approver Notifications"
+            },
+            channels: {
+                email: "Email",
+                sms: "SMS"
+            },
+            initiator: {
+                hint: "Send notifications to the user who initiated the request.",
+                label: "Initiator Notifications"
+            }
+        },
         operations: {
             dropDown: {
                 disabledHint: "A workflow already exists for this operation",
-                label: "Operations",
+                label: "Configure Operations",
                 nullValidationErrorMessage: "Please select at least one operation",
                 placeholder: "Type operation/s to search and assign"
             }
@@ -277,18 +291,47 @@ export const approvalWorkflows: approvalWorkflowsNS = {
         create: {
             back: "Go back to approval workflows",
             description: "Follow the steps to create a new approval workflow.",
+            ruleConditions: {
+                addRule: "Add Rule",
+                configured: "Configured",
+                confirmClear: {
+                    content: "This action is irreversible and will permanently delete the rule.",
+                    message: "If you delete this rule, approval workflow will be always engaged when " +
+                        "{{operation}} is triggered. Please proceed with caution.",
+                    title: "Confirm Clear Rule"
+                },
+                editRule: "Edit Rule",
+                engagement: {
+                    always: "Always",
+                    column: "Engagement",
+                    configured: "Conditional"
+                },
+                modal: {
+                    subtitle: "Define conditions to determine when the approval workflow should be engaged for this operation.",
+                    title: "Engagement Rule for {{operation}}"
+                },
+                table: {
+                    operation: "Operation",
+                    rules: "Rules"
+                }
+            },
             stepper: {
                 step1: {
                     description: "Provide the basic details of the approval workflow you want to create.",
                     title: "General Details"
                 },
                 step2: {
-                    description: "Select the operations that would trigger this approval workflow",
+                    description: "Select the operations that would trigger this approval workflow and configure rule conditions.",
                     hint: "This approval workflow will be triggered when any of the selected operations are initiated.",
                     title:  "Workflow Operation Details"
                 },
                 step3: {
-                    description: "Configure the approval steps of the model. Approval by any selected user or role member will complete each step.",
+                    description: "Configure notification channels for the initiator and approvers.",
+                    hint: "Select how the initiator and approvers will be notified during the workflow.",
+                    title: "Notification Configuration"
+                },
+                step4: {
+                    description: "Configure the approval steps of the workflow. Approval by any selected user or role member will complete each step.",
                     hint: "You can add multiple approval steps to the workflow. Each step can have different approvers. Approval by any selected user or role member will complete each step.",
                     title:  "Approval Step Details"
                 }
@@ -312,6 +355,14 @@ export const approvalWorkflows: approvalWorkflowsNS = {
             },
             primaryAction: "New Approval Workflow",
             title: "Approval Workflows"
+        }
+    },
+    sections: {
+        approvalSteps: {
+            heading: "Approval Steps"
+        },
+        operations: {
+            heading: "Operations"
         }
     }
 };

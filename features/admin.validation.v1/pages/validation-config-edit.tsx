@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,14 @@
  * under the License.
  */
 
+import FormControl from "@oxygen-ui/react/FormControl";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
+import FormLabel from "@oxygen-ui/react/FormLabel";
 import Grid from "@oxygen-ui/react/Grid";
+import Radio from "@oxygen-ui/react/Radio";
+import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import Switch from "@oxygen-ui/react/Switch";
+import Typography from "@oxygen-ui/react/Typography";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -31,6 +37,7 @@ import {
     revertGovernanceConnectorProperties
 } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
 import {
+    PasswordExpiryEnforcementScope,
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import {
@@ -105,6 +112,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     const { getLink } = useDocumentation();
     const isPasswordInputValidationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isPasswordInputValidationEnabled);
+    const isPasswordResetEnforcementScopeEnabled: boolean = useSelector((state: AppState) =>
+        state?.config?.ui?.isPasswordResetEnforcementScopeEnabled ?? false);
     const disabledFeatures: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.features?.loginAndRegistration?.disabledFeatures);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
@@ -134,6 +143,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         boolean
     >(false);
     const [ passwordExpiryEnabled, setPasswordExpiryEnabled ] = useState<boolean>(false);
+    const [ passwordExpiryEnforcementScope, setPasswordExpiryEnforcementScope ] =
+        useState<string>(PasswordExpiryEnforcementScope.ORG_WIDE);
     const [ defaultPasswordExpiryTime, setDefaultPasswordExpiryTime ] = useState<number>(30);
     const [ passwordExpirySkipFallback, setPasswordExpirySkipFallback ] = useState<boolean>(false);
     const [ initialPasswordExpiryRules, setInitialPasswordExpiryRules ] = useState<PasswordExpiryRule[]>([]);
@@ -429,6 +440,16 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             setPasswordExpiryEnabled
         );
 
+        const enforcementScopeProperty: ConnectorPropertyInterface | undefined =
+            passwordExpiryData?.properties?.find(
+                (property: ConnectorPropertyInterface) =>
+                    property.name === ServerConfigurationsConstants.PASSWORD_EXPIRY_ENFORCEMENT_SCOPE
+            );
+
+        setPasswordExpiryEnforcementScope(
+            enforcementScopeProperty?.value ?? PasswordExpiryEnforcementScope.ORG_WIDE
+        );
+
         if (!isPasswordInputValidationEnabled) {
 
             updatedInitialFormValues = legacyPasswordPolicies.reduce(
@@ -712,7 +733,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
 
         const processedFormValues: ValidationFormInterface = {
             ...values,
-            passwordExpiryEnabled: passwordExpiryEnabled
+            passwordExpiryEnabled: passwordExpiryEnabled,
+            passwordExpiryEnforcementScope: passwordExpiryEnforcementScope
         };
 
         if (!isRuleBasedPasswordExpiryDisabled) {
@@ -1082,6 +1104,8 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     </Grid>
                 </Grid>
                 <Divider hidden/>
+                { renderPasswordExpiryEnforcementScope() }
+                <Divider hidden/>
                 <PasswordExpiryRuleList
                     componentId={ `${componentId}-password-expiry-rules` }
                     isPasswordExpiryEnabled={ passwordExpiryEnabled }
@@ -1101,6 +1125,10 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
     };
 
     const resolvePasswordValidation: () => ReactElement = (): ReactElement => {
+        if (!isPasswordResetEnforcementScopeEnabled) {
+            return <></>;
+        }
+
         return (
             <div className="validation-configurations-form">
                 <Divider className="heading-divider" />
@@ -1683,6 +1711,87 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         );
     };
 
+    /**
+     * Renders the password expiry enforcement scope section.
+     *
+     * @returns ReactElement
+     */
+    const renderPasswordExpiryEnforcementScope: () => ReactElement = (): ReactElement => {
+        return (
+            <Grid alignContent="center">
+                <FormControl disabled={ isReadOnly || !passwordExpiryEnabled }>
+                    <FormLabel sx={ { mb: 1 } }>
+                        { t("validation:passwordExpiry.enforcementScope.heading") }
+                    </FormLabel>
+                    <RadioGroup
+                        aria-label={ t("validation:passwordExpiry.enforcementScope.heading") }
+                        value={ passwordExpiryEnforcementScope }
+                        onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
+                            setPasswordExpiryEnforcementScope(event.target.value);
+                        } }
+                        data-componentid={ `${ componentId }-password-expiry-enforcement-scope` }
+                    >
+                        <FormControlLabel
+                            value={ PasswordExpiryEnforcementScope.ORG_WIDE }
+                            label={ (
+                                <>
+                                    { t("validation:passwordExpiry.enforcementScope.orgWide.label") }
+                                    <Typography
+                                        component="span"
+                                        sx={ {
+                                            color: "text.secondary",
+                                            display: "block",
+                                            fontSize: "0.75rem",
+                                            maxWidth: "60%",
+                                            mb: 0.5,
+                                            mt: 0.25
+                                        } }
+                                    >
+                                        { t("validation:passwordExpiry.enforcementScope.orgWide.hint") }
+                                    </Typography>
+                                </>
+                            ) }
+                            control={ (
+                                <Radio
+                                    disabled={ isReadOnly || !passwordExpiryEnabled }
+                                    sx={ { pt: "2px" } }
+                                />
+                            ) }
+                            sx={ { alignItems: "flex-start", mb: 1 } }
+                        />
+                        <FormControlLabel
+                            value={ PasswordExpiryEnforcementScope.APP_WITH_ENFORCER }
+                            label={ (
+                                <>
+                                    { t("validation:passwordExpiry.enforcementScope.appWithEnforcer.label") }
+                                    <Typography
+                                        component="span"
+                                        sx={ {
+                                            color: "text.secondary",
+                                            display: "block",
+                                            fontSize: "0.75rem",
+                                            maxWidth: "60%",
+                                            mt: 0.25
+                                        } }
+                                    >
+                                        { t("validation:passwordExpiry.enforcementScope.appWithEnforcer.hint") }
+                                    </Typography>
+                                </>
+                            ) }
+                            control={ (
+                                <Radio
+                                    disabled={ isReadOnly || !passwordExpiryEnabled }
+                                    sx={ { pt: "2px" } }
+                                />
+                            ) }
+                            sx={ { alignItems: "flex-start" } }
+                        />
+                    </RadioGroup>
+                </FormControl>
+            </Grid>
+        );
+    };
+
     return (
         <PageLayout
             pageTitle={ t("validation:pageTitle") }
@@ -1740,13 +1849,14 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                                             { isRuleType && (
                                                 <div className="validation-configurations-form">
                                                     { isRuleBasedPasswordExpiryDisabled
-                                                        ? serverConfigurationConfig.passwordExpiryComponent(
-                                                            componentId,
-                                                            passwordExpiryEnabled,
-                                                            setPasswordExpiryEnabled,
-                                                            t,
-                                                            isReadOnly )
-                                                        : resolvePasswordExpiration() }
+                                                        ? (
+                                                            serverConfigurationConfig.passwordExpiryComponent(
+                                                                componentId,
+                                                                passwordExpiryEnabled,
+                                                                setPasswordExpiryEnabled,
+                                                                t,
+                                                                isReadOnly )
+                                                        ) : resolvePasswordExpiration() }
                                                     <Divider className="heading-divider" />
                                                     { serverConfigurationConfig.passwordHistoryCountComponent(
                                                         componentId,

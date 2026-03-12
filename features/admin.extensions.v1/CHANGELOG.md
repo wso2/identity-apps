@@ -1,5 +1,78 @@
 # @wso2is/admin.extensions.v1
 
+## 2.40.28
+
+### Patch Changes
+
+- [#9707](https://github.com/wso2/identity-apps/pull/9707) [`98be11798211c36636778c925819b578d4fbeabd`](https://github.com/wso2/identity-apps/commit/98be11798211c36636778c925819b578d4fbeabd) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce password reset enforcement scope configuration
+
+- Updated dependencies [[`98be11798211c36636778c925819b578d4fbeabd`](https://github.com/wso2/identity-apps/commit/98be11798211c36636778c925819b578d4fbeabd), [`3ebcd80a19cabc51a4ee840bafb0da213e0c97e1`](https://github.com/wso2/identity-apps/commit/3ebcd80a19cabc51a4ee840bafb0da213e0c97e1), [`8f189290049855d403087514cbdc0b9ca2892ab8`](https://github.com/wso2/identity-apps/commit/8f189290049855d403087514cbdc0b9ca2892ab8)]:
+  - @wso2is/admin.server-configurations.v1@2.38.0
+  - @wso2is/admin.validation.v1@2.28.0
+  - @wso2is/admin.connections.v1@2.36.0
+  - @wso2is/i18n@2.34.11
+  - @wso2is/admin.core.v1@2.54.17
+  - @wso2is/admin.users.v1@2.37.8
+  - @wso2is/admin.roles.v2@2.27.331
+
+## 2.40.27
+
+### Patch Changes
+
+- [#9699](https://github.com/wso2/identity-apps/pull/9699) [`413d08d82b88fb248b45e6a6e6e668a84d7f6a19`](https://github.com/wso2/identity-apps/commit/413d08d82b88fb248b45e6a6e6e668a84d7f6a19) Thanks [@piraveena](https://github.com/piraveena)! - Add feature gate logic for OIDC front-channel logout
+
+- Updated dependencies [[`413d08d82b88fb248b45e6a6e6e668a84d7f6a19`](https://github.com/wso2/identity-apps/commit/413d08d82b88fb248b45e6a6e6e668a84d7f6a19)]:
+  - @wso2is/admin.applications.v1@2.41.17
+  - @wso2is/admin.feature-gate.v1@1.9.1
+  - @wso2is/access-control@3.5.2
+  - @wso2is/admin.core.v1@2.54.14
+  - @wso2is/admin.roles.v2@2.27.328
+  - @wso2is/admin.server-configurations.v1@2.37.24
+  - @wso2is/admin.users.v1@2.37.5
+  - @wso2is/admin.connections.v1@2.35.18
+
+## 2.40.26
+
+### Patch Changes
+
+- [#9723](https://github.com/wso2/identity-apps/pull/9723) [`2438f2b5caa45edc9780f3e1734c724ada01ce7d`](https://github.com/wso2/identity-apps/commit/2438f2b5caa45edc9780f3e1734c724ada01ce7d) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add missing grant types for Express.js and Angular templates
+
+- Updated dependencies [[`b4a65c9ddb89a02095eab1fb66192a810437d3ab`](https://github.com/wso2/identity-apps/commit/b4a65c9ddb89a02095eab1fb66192a810437d3ab), [`4c7a50c94a76a5536c8176ff17a0e245da62907f`](https://github.com/wso2/identity-apps/commit/4c7a50c94a76a5536c8176ff17a0e245da62907f)]:
+  - @wso2is/admin.core.v1@2.54.13
+  - @wso2is/admin.users.v1@2.37.4
+  - @wso2is/admin.server-configurations.v1@2.37.23
+  - @wso2is/admin.roles.v2@2.27.327
+  - @wso2is/admin.connections.v1@2.35.16
+
+## 2.40.25
+
+### Patch Changes
+
+- [#9667](https://github.com/wso2/identity-apps/pull/9667) [`ad69b9379651fec0b7a42eaabe5b6921a830d423`](https://github.com/wso2/identity-apps/commit/ad69b9379651fec0b7a42eaabe5b6921a830d423) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add override all support for IDP group / role mapping
+
+- Updated dependencies [[`ad69b9379651fec0b7a42eaabe5b6921a830d423`](https://github.com/wso2/identity-apps/commit/ad69b9379651fec0b7a42eaabe5b6921a830d423), [`d939b57796a1b27ca90b2011e71c9b7c167f08b3`](https://github.com/wso2/identity-apps/commit/d939b57796a1b27ca90b2011e71c9b7c167f08b3)]:
+  - @wso2is/admin.connections.v1@2.35.15
+  - @wso2is/i18n@2.34.9
+  - @wso2is/admin.identity-providers.v1@2.27.2
+  - @wso2is/theme@2.9.4
+
+## 2.40.24
+
+### Patch Changes
+
+- [#9706](https://github.com/wso2/identity-apps/pull/9706) [`d1e3d8f53406ef45be4483a3eb5a7663dfbdad68`](https://github.com/wso2/identity-apps/commit/d1e3d8f53406ef45be4483a3eb5a7663dfbdad68) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Improvements to the ciba protocol configuration
+
+* [#9709](https://github.com/wso2/identity-apps/pull/9709) [`b256fb1cf7c979c91f7bf9cb70932cd514d8434c`](https://github.com/wso2/identity-apps/commit/b256fb1cf7c979c91f7bf9cb70932cd514d8434c) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Improvements to the ciba protocol configuration
+
+* Updated dependencies [[`d1e3d8f53406ef45be4483a3eb5a7663dfbdad68`](https://github.com/wso2/identity-apps/commit/d1e3d8f53406ef45be4483a3eb5a7663dfbdad68), [`b256fb1cf7c979c91f7bf9cb70932cd514d8434c`](https://github.com/wso2/identity-apps/commit/b256fb1cf7c979c91f7bf9cb70932cd514d8434c)]:
+  - @wso2is/admin.applications.v1@2.41.16
+  - @wso2is/i18n@2.34.8
+  - @wso2is/admin.core.v1@2.54.11
+  - @wso2is/admin.roles.v2@2.27.325
+  - @wso2is/admin.connections.v1@2.35.13
+  - @wso2is/admin.server-configurations.v1@2.37.21
+  - @wso2is/admin.users.v1@2.37.2
+
 ## 2.40.23
 
 ### Patch Changes

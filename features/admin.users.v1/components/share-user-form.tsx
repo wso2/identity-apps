@@ -1058,44 +1058,15 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
 
             setShowShareTypeSwitchModal(false);
         } else if (shareTypeSwitchApproach === ShareTypeSwitchApproach.WITHOUT_UNSHARE) {
-            // Switch to selective sharing without unsharing the user with all organizations.
-            // Make a POST to update the policy for each existing org from ALL to SELECTED,
-            // preserving the current role assignments. Subsequent role changes will be
-            // handled via PATCH when the user clicks Save.
+            // Switch to selective sharing without an immediate API call.
+            // Populate the UI with the currently shared organizations and their role assignments
+            // so the user can review/adjust before saving. The actual API call is deferred
+            // until the user clicks the Save button.
 
             if (userShareData?.organizations && Array.isArray(userShareData.organizations)) {
                 // In SHARE_ALL mode, roles are stored globally in sharingMode.roleAssignment.roles.
                 const globalRoles: RoleSharingInterface[] =
                     (userShareData.sharingMode?.roleAssignment?.roles as RoleSharingInterface[]) ?? [];
-
-                const shareData: ShareUserWithSelectedOrganizationsAndRolesDataInterface = {
-                    organizations: userShareData.organizations.map((org: SharedOrganizationInterface) => ({
-                        orgId: org.orgId,
-                        policy: UserSharingPolicy.SELECTED_ORG_ONLY,
-                        roleAssignment: globalRoles.length > 0 ? {
-                            mode: RoleSharingModes.SELECTED,
-                            roles: globalRoles
-                        } : {
-                            mode: RoleSharingModes.NONE,
-                            roles: []
-                        }
-                    })),
-                    userId: user.id
-                };
-
-                try {
-                    await shareUserWithSelectedOrganizationsAndRoles(shareData);
-                } catch (error) {
-                    dispatch(addAlert({
-                        description: t("user:editUser.sections.sharedAccess.notifications.share.error.description",
-                            { error: (error as Error).message }),
-                        level: AlertLevels.ERROR,
-                        message: t("user:editUser.sections.sharedAccess.notifications.share.error.message")
-                    }));
-                    setShowShareTypeSwitchModal(false);
-
-                    return;
-                }
 
                 // Build role selection map from preserved global roles for UI display.
                 const globalRoleSelections: SelectedOrganizationRoleInterface[] = globalRoles.map(
@@ -1110,15 +1081,27 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                     (org: SharedOrganizationInterface) => org.orgId
                 );
                 const rolesMap: Record<string, SelectedOrganizationRoleInterface[]> = {};
+                // addedRolesMap is initialised to globalRoles for each org so that:
+                // - resolveRoleRemoval (in the UI widget) will trim roles from addedRoles
+                //   rather than pushing them into removedRoles, keeping removedRoles clean.
+                // - On Save, shareSelectedRolesWithSelectedOrgs POSTs addedOrgIds with the
+                //   complete (and user-adjusted) role set from addedRoles.
+                const addedRolesMap: Record<string, RoleSharingInterface[]> = {};
+                const futureChildOrgsMap: Record<string, boolean> = {};
 
                 userShareData.organizations.forEach((org: SharedOrganizationInterface) => {
                     if (globalRoleSelections.length > 0) {
                         rolesMap[org.orgId] = globalRoleSelections;
                     }
+                    addedRolesMap[org.orgId] = [ ...globalRoles ];
+                    futureChildOrgsMap[org.orgId] = true;
                 });
 
                 setSelectedOrgIds(orgIds);
+                setAddedOrgIds(orgIds);
                 setRoleSelections(rolesMap);
+                setAddedRoles(addedRolesMap);
+                setShouldShareWithFutureChildOrgsMap(futureChildOrgsMap);
             }
 
             setShareType(ShareType.SHARE_SELECTED);
@@ -1399,28 +1382,6 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                             className="ml-5"
                                         >
                                             <Grid xs={ 12 }>
-                                                <Button
-                                                    variant="text"
-                                                    size="small"
-                                                    data-componentid={
-                                                        `${ componentId }-share-all-roles-with-selected-orgs-btn` }
-                                                    onClick={ () => {
-                                                        if (roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL) {
-                                                            setRoleShareTypeSelected(RoleShareType.SHARE_SELECTED);
-                                                        } else if (roleShareTypeSelected ===
-                                                            RoleShareType.SHARE_SELECTED) {
-                                                            setRoleShareTypeSelected(RoleShareType.SHARE_WITH_ALL);
-                                                        }
-                                                    } }
-                                                    disabled={ readOnly }
-                                                >
-                                                    {
-                                                        roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL
-                                                            ? t("user:editUser.sections.sharedAccess." +
-                                                                "shareSelectedRoles")
-                                                            : t("user:editUser.sections.sharedAccess.shareAllRoles")
-                                                    }
-                                                </Button>
                                                 <SelectiveOrgShareWithSelectiveRoles
                                                     userId={ user?.id }
                                                     applicationRolesList={ userRolesList }

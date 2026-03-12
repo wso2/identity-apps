@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -28,9 +28,11 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 <%
+   final String ORG_IDENTIFIER_HANDLER = "OrganizationIdentifierHandler";
    String idp = request.getParameter("idp");
    String authenticator = request.getParameter("authenticator");
    String sessionDataKey = request.getParameter(Constants.SESSION_DATA_KEY);
+   boolean isOrgIdentifierHandler = ORG_IDENTIFIER_HANDLER.equals(authenticator);
    boolean isSelfRegistration = Boolean.parseBoolean(request.getParameter("isSelfRegistration"));
 
    String errorMessage = i18n(resourceBundle, customText, "error.retry");
@@ -105,7 +107,10 @@
                <%
                   } else {
                %>
-               <h2><%=i18n(resourceBundle, customText, "sign.in.with")%> <%= StringUtils.isNotBlank(idp) ? Encode.forHtmlContent(idp) : i18n(resourceBundle, customText, "organization.login") %></h2>
+               <h2><%=i18n(resourceBundle, customText, "sign.in.with")%>
+                  <%= isOrgIdentifierHandler
+                     ? i18n(resourceBundle, customText, "organization.identifier.handler")
+                     : (StringUtils.isNotBlank(idp) ? Encode.forHtmlContent(idp) : i18n(resourceBundle, customText, "organization.login")) %></h2>
                <%
                   }
                %>
@@ -132,7 +137,9 @@
                      </span>
                   </div>
                   <input id="prompt" name="prompt" type="hidden" value="orgName">
-                  <input id="idp" name="idp" type="hidden" value="<%=Encode.forHtmlAttribute(idp)%>"/>
+                  <% if (StringUtils.isNotBlank(idp)) { %>
+                        <input id="idp" name="idp" type="hidden" value="<%=Encode.forHtmlAttribute(idp)%>"/>
+                  <% } %>
                   <input id="authenticator" name="authenticator" type="hidden" value="<%=Encode.forHtmlAttribute(authenticator)%>"/>
                   <input id="sessionDataKey" name="sessionDataKey" type="hidden" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
                   <div class="ui divider hidden"></div>
