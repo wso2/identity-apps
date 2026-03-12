@@ -1,5 +1,19 @@
 # @wso2is/admin.applications.v1
 
+## 2.41.19
+
+### Patch Changes
+
+- [#9742](https://github.com/wso2/identity-apps/pull/9742) [`041d7e4c3b1ae6a82839ea7d698bd12c25056123`](https://github.com/wso2/identity-apps/commit/041d7e4c3b1ae6a82839ea7d698bd12c25056123) Thanks [@Malith-19](https://github.com/Malith-19)! - Improve the UI to hide the refresh token extend configuration while refresh renew token is disabled.
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.32.119
+  - @wso2is/admin.core.v1@2.54.19
+  - @wso2is/admin.roles.v2@2.27.333
+  - @wso2is/admin.connections.v1@2.36.2
+  - @wso2is/admin.server-configurations.v1@2.38.2
+  - @wso2is/admin.users.v1@2.37.10
+
 ## 2.41.18
 
 ### Patch Changes
