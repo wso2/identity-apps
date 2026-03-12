@@ -23020,6 +23020,9 @@ importers:
       react-final-form:
         specifier: ^6.5.3
         version: 6.5.9(final-form@4.20.10)(react@18.3.1)
+      react-i18next:
+        specifier: ^11.18.5
+        version: 11.18.6(i18next@21.10.0)(react-dom@18.3.1)(react@18.3.1)
       react-infinite-scroll-component:
         specifier: ^6.1.0
         version: 6.1.0(react@18.3.1)
@@ -23165,7 +23168,7 @@ importers:
         version: 4.17.21
       react-i18next:
         specifier: ^11.18.5
-        version: 11.18.6(i18next@21.10.0)(react-dom@18.3.1)(react@18.3.1)
+        version: 11.18.6(i18next@21.10.0)(react@18.3.1)
     devDependencies:
       '@types/i18next':
         specifier: 8.4.3
@@ -28299,7 +28302,7 @@ packages:
       moment-jalaali:
         optional: true
     dependencies:
-      '@babel/runtime': 7.26.7
+      '@babel/runtime': 7.28.2
       '@emotion/react': 11.14.0(@types/react@18.0.18)(react@18.3.1)
       '@emotion/styled': 11.14.0(@emotion/react@11.14.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/base': 5.0.0-beta.70(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
@@ -44406,8 +44409,6 @@ packages:
     peerDependenciesMeta:
       webpack:
         optional: true
-      webpack-sources:
-        optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@4.10.0)
       webpack-sources: 3.2.3
@@ -48291,7 +48292,7 @@ packages:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
     dependencies:
-      '@babel/runtime': 7.26.7
+      '@babel/runtime': 7.28.2
       classnames: 2.5.1
       rc-util: 5.44.3(react-dom@18.3.1)(react@18.3.1)
       react: 18.3.1
@@ -48321,7 +48322,7 @@ packages:
       classnames: 2.5.1
       rc-motion: 2.9.5(react-dom@18.3.1)(react@18.3.1)
       rc-util: 5.44.3(react-dom@18.3.1)(react@18.3.1)
-      rc-virtual-list: 3.18.1
+      rc-virtual-list: 3.18.1(react-dom@18.3.1)(react@18.3.1)
     dev: false
 
   /rc-tree@4.2.2(react-dom@18.3.1)(react@18.3.1):
@@ -48345,23 +48346,10 @@ packages:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
     dependencies:
-      '@babel/runtime': 7.26.7
+      '@babel/runtime': 7.28.2
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       react-is: 18.3.1
-
-  /rc-virtual-list@3.18.1:
-    resolution: {integrity: sha512-ARSsD/dey/I4yNQHFYYUaKLUkD1wnD4lRZIvb3rCLMbTMmoFQJRVrWuSfbNt5P5MzMNooEBDvqrUPM4QN7BMNA==}
-    engines: {node: '>=8.x'}
-    peerDependencies:
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    dependencies:
-      '@babel/runtime': 7.28.2
-      classnames: 2.5.1
-      rc-resize-observer: 1.4.3(react-dom@18.3.1)(react@18.3.1)
-      rc-util: 5.44.3(react-dom@18.3.1)(react@18.3.1)
-    dev: false
 
   /rc-virtual-list@3.18.1(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-ARSsD/dey/I4yNQHFYYUaKLUkD1wnD4lRZIvb3rCLMbTMmoFQJRVrWuSfbNt5P5MzMNooEBDvqrUPM4QN7BMNA==}
@@ -48370,7 +48358,7 @@ packages:
       react: '>=16.9.0'
       react-dom: '>=16.9.0'
     dependencies:
-      '@babel/runtime': 7.26.7
+      '@babel/runtime': 7.28.2
       classnames: 2.5.1
       rc-resize-observer: 1.4.3(react-dom@18.3.1)(react@18.3.1)
       rc-util: 5.44.3(react-dom@18.3.1)(react@18.3.1)
@@ -48672,6 +48660,25 @@ packages:
       i18next: 21.10.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
+    dev: false
+
+  /react-i18next@11.18.6(i18next@21.10.0)(react@18.3.1):
+    resolution: {integrity: sha512-yHb2F9BiT0lqoQDt8loZ5gWP331GwctHz9tYQ8A2EIEUu+CcEdjBLQWli1USG3RdWQt3W+jqQLg/d4rrQR96LA==}
+    peerDependencies:
+      i18next: '>= 19.0.0'
+      react: '>= 16.8.0'
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.28.2
+      html-parse-stringify: 3.0.1
+      i18next: 21.10.0
+      react: 18.3.1
     dev: false
 
   /react-infinite-scroll-component@6.1.0(react@18.3.1):
