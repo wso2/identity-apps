@@ -1,5 +1,31 @@
 # @wso2is/console
 
+## 2.100.0
+
+### Minor Changes
+
+- [#9734](https://github.com/wso2/identity-apps/pull/9734) [`c211c3b9390ab23e03937f4ad2ea7c6cbc849bf7`](https://github.com/wso2/identity-apps/commit/c211c3b9390ab23e03937f4ad2ea7c6cbc849bf7) Thanks [@nilasini](https://github.com/nilasini)! - Add notification configuration
+
+### Patch Changes
+
+- Updated dependencies [[`c211c3b9390ab23e03937f4ad2ea7c6cbc849bf7`](https://github.com/wso2/identity-apps/commit/c211c3b9390ab23e03937f4ad2ea7c6cbc849bf7)]:
+  - @wso2is/admin.approval-workflows.v1@1.2.0
+  - @wso2is/i18n@2.35.0
+  - @wso2is/admin.users.v1@2.37.9
+  - @wso2is/admin.agents.v1@1.0.177
+  - @wso2is/admin.onboarding.v1@1.0.32
+  - @wso2is/admin.core.v1@2.54.18
+  - @wso2is/admin.roles.v2@2.27.332
+  - @wso2is/admin.connections.v1@2.36.1
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.162
+  - @wso2is/admin.branding.v1@2.32.118
+  - @wso2is/admin.email-management.v1@2.25.326
+  - @wso2is/admin.flows.v1@1.0.131
+  - @wso2is/admin.home.v1@1.7.141
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.162
+  - @wso2is/admin.server-configurations.v1@2.38.1
+  - @wso2is/admin.registration-flow-builder.v1@0.10.122
+
 ## 2.99.0
 
 ### Minor Changes
