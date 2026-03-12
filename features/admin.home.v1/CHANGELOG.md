@@ -1,5 +1,14 @@
 # @wso2is/admin.home.v1
 
+## 1.7.144
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.flow-builder-core.v1@0.10.165
+  - @wso2is/admin.core.v1@2.54.21
+  - @wso2is/admin.flows.v1@1.0.134
+
 ## 1.7.143
 
 ### Patch Changes
