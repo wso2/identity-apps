@@ -75,6 +75,12 @@ export interface insightsNS {
                 };
             };
         };
+        m2m: {
+            filters: {
+                clientId: string;
+                tenantDomain: string;
+            };
+        };
     };
     graphs: {
         activeUsers: {
@@ -89,6 +95,10 @@ export interface insightsNS {
             title: string;
         };
         signups: {
+            title: string;
+            titleHint: string;
+        };
+        m2mAuthentications: {
             title: string;
             titleHint: string;
         };
