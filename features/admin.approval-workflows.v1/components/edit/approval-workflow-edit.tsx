@@ -19,6 +19,7 @@ import Divider from "@oxygen-ui/react/Divider";
 import Grid from "@oxygen-ui/react/Grid";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import { useRequiredScopes } from "@wso2is/access-control";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
@@ -48,7 +49,7 @@ import {
     deleteWorkflowAssociationById,
     updateWorkflowAssociationById
 } from "../../api/workflow-associations";
-import { WORKFLOW_ENGINE } from "../../constants/approval-workflow-constants";
+import { FEATURE_FLAG_RULE_BASED_WORKFLOW_ENGAGEMENT, WORKFLOW_ENGINE } from "../../constants/approval-workflow-constants";
 import {
     ApprovalWorkflowPayload,
     OptionDetails,
@@ -132,6 +133,11 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
     const isPageReadOnly: boolean = isReadOnly || (approvalWorkflowDetails?.engine !== WORKFLOW_ENGINE);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const isRuleBasedWorkflowEngagementEnabled: boolean = isFeatureEnabled(
+        featureConfig?.approvalWorkflows,
+        FEATURE_FLAG_RULE_BASED_WORKFLOW_ENGAGEMENT
+    );
 
     const hasApprovalWorkflowUpdatePermissions: boolean = useRequiredScopes(
         featureConfig?.approvalWorkflows?.scopes?.update
@@ -509,21 +515,23 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
         );
 
         // Find existing operations with updated rules.
-        const updatedOperations: WorkflowOperations[] = operationDetails.filter(
-            (prev: WorkflowOperations) => {
-                // Check if operation still exists in current operations.
-                if (!currentOperations.includes(prev.operation)) {
-                    return false;
+        const updatedOperations: WorkflowOperations[] = isRuleBasedWorkflowEngagementEnabled
+            ? operationDetails.filter(
+                (prev: WorkflowOperations) => {
+                    // Check if operation still exists in current operations.
+                    if (!currentOperations.includes(prev.operation)) {
+                        return false;
+                    }
+
+                    // Check if rule has changed.
+                    const currentRule: RuleWithoutIdInterface = operationRules[prev.operation];
+                    const initialRule: RuleWithoutIdInterface = initialOperationRules[prev.operation];
+
+                    // Compare rules (deep equality, order-independent).
+                    return !isEqual(currentRule ?? {}, initialRule ?? {});
                 }
-
-                // Check if rule has changed.
-                const currentRule: RuleWithoutIdInterface = operationRules[prev.operation];
-                const initialRule: RuleWithoutIdInterface = initialOperationRules[prev.operation];
-
-                // Compare rules (deep equality, order-independent).
-                return !isEqual(currentRule ?? {}, initialRule ?? {});
-            }
-        );
+            )
+            : [];
 
         // Handle added operations.
         for (const operation of addedOperations) {
@@ -756,6 +764,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                                 } }
                                 operationRules={ operationRules }
                                 onRuleUpdate={ handleRuleUpdate }
+                                isRuleBasedWorkflowEngagementEnabled={ isRuleBasedWorkflowEngagementEnabled }
                                 data-componentid={ `${componentId}-operations-details-form` }
                                 isEditPage={ true }
                                 workflowId={ approvalWorkflowId }

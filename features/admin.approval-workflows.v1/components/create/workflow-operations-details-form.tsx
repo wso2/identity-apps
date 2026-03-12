@@ -95,6 +95,10 @@ interface WorkflowOperationsDetailsPropsInterface extends IdentifiableComponentI
      * Callback to update rule for a specific operation.
      */
     onRuleUpdate?: (operationValue: string, rule: RuleWithoutIdInterface | null) => void;
+    /**
+     * Whether the rule-based workflow engagement feature is enabled.
+     */
+    isRuleBasedWorkflowEngagementEnabled?: boolean;
 }
 
 /**
@@ -136,6 +140,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 onChange,
                 operationRules = {},
                 onRuleUpdate,
+                isRuleBasedWorkflowEngagementEnabled = false,
                 ["data-componentid"]: componentId = "workflow-operations"
             }: WorkflowOperationsDetailsPropsInterface,
             ref: ForwardedRef<WorkflowOperationsDetailsFormRef>
@@ -311,7 +316,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                     title: "",
                     width: 8
                 },
-                {
+                ...( isRuleBasedWorkflowEngagementEnabled ? [ {
                     allowToggleVisibility: false,
                     dataIndex: "rules",
                     id: "rules",
@@ -341,7 +346,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                     textAlign: "right",
                     title: "",
                     width: 8
-                },
+                } ] : [] ),
                 {
                     allowToggleVisibility: false,
                     dataIndex: "action",
@@ -480,7 +485,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                     </Hint>
                                 ) }
 
-                                { isModalOpen && editingOperation && (
+                                { isRuleBasedWorkflowEngagementEnabled && isModalOpen && editingOperation && (
                                     <RuleConfigurationModal
                                         operation={ editingOperation }
                                         initialRule={ operationRules?.[editingOperation.value] }
