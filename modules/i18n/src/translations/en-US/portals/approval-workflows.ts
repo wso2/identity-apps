@@ -154,6 +154,20 @@ export const approvalWorkflows: approvalWorkflowsNS = {
                 }
             }
         },
+        notifications: {
+            approver: {
+                hint: "Send notifications to users assigned to approve the request.",
+                label: "Approver Notifications"
+            },
+            channels: {
+                email: "Email",
+                sms: "SMS"
+            },
+            initiator: {
+                hint: "Send notifications to the user who initiated the request.",
+                label: "Initiator Notifications"
+            }
+        },
         operations: {
             dropDown: {
                 disabledHint: "A workflow already exists for this operation",
@@ -312,6 +326,11 @@ export const approvalWorkflows: approvalWorkflowsNS = {
                     title:  "Workflow Operation Details"
                 },
                 step3: {
+                    description: "Configure notification channels for the initiator and approvers.",
+                    hint: "Select how the initiator and approvers will be notified during the workflow.",
+                    title: "Notification Configuration"
+                },
+                step4: {
                     description: "Configure the approval steps of the workflow. Approval by any selected user or role member will complete each step.",
                     hint: "You can add multiple approval steps to the workflow. Each step can have different approvers. Approval by any selected user or role member will complete each step.",
                     title:  "Approval Step Details"

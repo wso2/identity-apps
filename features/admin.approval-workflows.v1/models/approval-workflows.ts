@@ -99,6 +99,13 @@ export interface WorkflowDetails {
      * Template structure for the workflow.
      */
     template: WorkflowTemplate;
+
+    /**
+     * Notification configuration for the initiator (root level in API response).
+     */
+    notificationsForInitiator?: {
+        channels: string[];
+    };
 }
 
 /**
@@ -144,6 +151,13 @@ export interface ApprovalWorkflowPayload {
      * Workflow template used in the model.
      */
     template: WorkflowTemplate;
+
+    /**
+     * Notification configuration for the initiator (root level).
+     */
+    notificationsForInitiator?: {
+        channels: string[];
+    };
 }
 
 /**
@@ -159,6 +173,21 @@ export interface WorkflowTemplate {
      * List of step parameters.
      */
     steps: WorkflowTemplateParameters[];
+
+    /**
+     * Notification configuration for the initiator.
+     * Present in API response (read); sent at root level in payload (write).
+     */
+    notificationsForInitiator?: {
+        channels: string[];
+    };
+
+    /**
+     * Notification configuration for the approvers (inside template).
+     */
+    notificationsForApprovers?: {
+        channels: string[];
+    };
 }
 
 /**
