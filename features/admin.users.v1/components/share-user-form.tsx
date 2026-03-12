@@ -24,15 +24,16 @@ import Grid from "@oxygen-ui/react/Grid";
 import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import Typography from "@oxygen-ui/react/Typography";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { OperationStatus } from "@wso2is/admin.core.v1/models/common";
 import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
 import {
     SelectedOrganizationRoleInterface
 } from "@wso2is/admin.organizations.v1/models";
-import useGetApplicationRolesByAudience from "@wso2is/admin.roles.v2/api/use-get-application-roles-by-audience";
+import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
-import { RolesV2Interface } from "@wso2is/admin.roles.v2/models/roles";
+import { RolesV2Interface, RolesV2ResponseInterface } from "@wso2is/admin.roles.v2/models/roles";
 import SelectiveOrgShareWithSelectiveRoles from
     "@wso2is/common.ui.shared-access.v1/components/selective-org-share-with-selective-roles";
 import {
@@ -135,8 +136,6 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const userAudience: string = user?.associatedRoles?.allowedAudience ?? RoleAudienceTypes.ORGANIZATION;
-
     const [ shareType, setShareType ] = useState<ShareType>(ShareType.UNSHARE);
     const [ roleShareTypeSelected, setRoleShareTypeSelected ] = useState<RoleShareType>(RoleShareType.SHARE_SELECTED);
     const { isOrganizationManagementEnabled } = useGlobalVariables();
@@ -176,16 +175,12 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         "sharingMode"
     );
 
-    // Fetch the user roles by audience.
-    // This will fetch the roles that are available for the user to share with the organizations.
+    // Fetch all roles (both organization and application audience) available for sharing.
     const {
         data: originalUserRoles,
         isLoading: isUserRolesFetchRequestLoading,
         error: userRolesFetchRequestError
-    } = useGetApplicationRolesByAudience(
-        userAudience,
-        user?.id,
-        null,
+    } = useGetRolesList<RolesV2ResponseInterface>(
         null,
         null,
         null,
@@ -233,10 +228,15 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         isUserRolesFetchRequestLoading
     ]);
 
-    // user roles available in the user to be shared with the organizations.
+    // Roles available for sharing, excluding the Console Administrator role which is
+    // only configurable from the console settings shared-access page.
     const userRolesList: RolesV2Interface[] = useMemo(() => {
         if (originalUserRoles?.Resources?.length > 0) {
-            return originalUserRoles.Resources;
+            return originalUserRoles.Resources.filter((role: RolesV2Interface) =>
+                !(role.displayName === UIConstants.ADMINISTRATOR_ROLE_DISPLAY_NAME
+                    && role.audience?.type?.toUpperCase() === RoleAudienceTypes.APPLICATION
+                    && role.audience?.display === "Console")
+            );
         }
     }, [ originalUserRoles ]);
 

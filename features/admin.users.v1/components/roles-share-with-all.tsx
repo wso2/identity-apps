@@ -24,10 +24,11 @@ import Autocomplete, {
 import Chip from "@oxygen-ui/react/Chip";
 import TextField from "@oxygen-ui/react/TextField";
 import { useRequiredScopes } from "@wso2is/access-control";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import useGetApplicationRolesByAudience from "@wso2is/admin.roles.v2/api/use-get-application-roles-by-audience";
+import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
-import { RolesV2Interface } from "@wso2is/admin.roles.v2/models/roles";
+import { RolesV2Interface, RolesV2ResponseInterface } from "@wso2is/admin.roles.v2/models/roles";
 import {
     AlertLevels,
     FeatureAccessConfigInterface,
@@ -93,26 +94,27 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
     const [ searchQuery, setSearchQuery ] = useState<string>();
     const [ isSearching, setIsSearching ] = useState<boolean>(false);
 
-    const userAudience: string = user?.associatedRoles?.allowedAudience ?? RoleAudienceTypes.ORGANIZATION;
-
     const {
         data: originalUserRoles,
         isLoading: isUserRolesFetchRequestLoading,
         error: userRolesFetchRequestError
-    } = useGetApplicationRolesByAudience(
-        userAudience,
-        user?.id,
+    } = useGetRolesList<RolesV2ResponseInterface>(
+        null,
+        null,
         searchQuery,
-        null,
-        null,
-        null,
         "users,groups,permissions,associatedApplications",
         !isEmpty(user?.id)
     );
 
+    // Roles available for sharing, excluding the Console Administrator role which is
+    // only configurable from the console settings shared-access page.
     const userRolesList: RolesV2Interface[] = useMemo(() => {
         if (originalUserRoles?.Resources?.length > 0) {
-            return originalUserRoles.Resources;
+            return originalUserRoles.Resources.filter((role: RolesV2Interface) =>
+                !(role.displayName === UIConstants.ADMINISTRATOR_ROLE_DISPLAY_NAME
+                    && role.audience?.type?.toUpperCase() === RoleAudienceTypes.APPLICATION
+                    && role.audience?.display === "Console")
+            );
         }
     }, [ originalUserRoles ]);
 
