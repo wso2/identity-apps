@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.35.0
+
+### Minor Changes
+
+- [#9734](https://github.com/wso2/identity-apps/pull/9734) [`c211c3b9390ab23e03937f4ad2ea7c6cbc849bf7`](https://github.com/wso2/identity-apps/commit/c211c3b9390ab23e03937f4ad2ea7c6cbc849bf7) Thanks [@nilasini](https://github.com/nilasini)! - Add notification configuration
+
 ## 2.34.11
 
 ### Patch Changes
