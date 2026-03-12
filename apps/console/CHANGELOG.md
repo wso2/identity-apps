@@ -1,5 +1,34 @@
 # @wso2is/console
 
+## 2.101.0
+
+### Minor Changes
+
+- [#9728](https://github.com/wso2/identity-apps/pull/9728) [`400e6bfa0511ca762a3dc15a6f868b5fa9edce87`](https://github.com/wso2/identity-apps/commit/400e6bfa0511ca762a3dc15a6f868b5fa9edce87) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Provide UI Support for configure HTTP-based Email Providers
+
+### Patch Changes
+
+- [#9742](https://github.com/wso2/identity-apps/pull/9742) [`041d7e4c3b1ae6a82839ea7d698bd12c25056123`](https://github.com/wso2/identity-apps/commit/041d7e4c3b1ae6a82839ea7d698bd12c25056123) Thanks [@Malith-19](https://github.com/Malith-19)! - Improve the UI to hide the refresh token extend configuration while refresh renew token is disabled.
+
+- Updated dependencies [[`041d7e4c3b1ae6a82839ea7d698bd12c25056123`](https://github.com/wso2/identity-apps/commit/041d7e4c3b1ae6a82839ea7d698bd12c25056123), [`400e6bfa0511ca762a3dc15a6f868b5fa9edce87`](https://github.com/wso2/identity-apps/commit/400e6bfa0511ca762a3dc15a6f868b5fa9edce87)]:
+  - @wso2is/admin.applications.v1@2.41.19
+  - @wso2is/admin.email-providers.v1@2.28.0
+  - @wso2is/admin.agents.v1@1.0.178
+  - @wso2is/admin.branding.v1@2.32.119
+  - @wso2is/admin.onboarding.v1@1.0.33
+  - @wso2is/admin.core.v1@2.54.19
+  - @wso2is/admin.roles.v2@2.27.333
+  - @wso2is/admin.connections.v1@2.36.2
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.163
+  - @wso2is/admin.email-management.v1@2.25.327
+  - @wso2is/admin.flows.v1@1.0.132
+  - @wso2is/admin.home.v1@1.7.142
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.163
+  - @wso2is/admin.server-configurations.v1@2.38.2
+  - @wso2is/admin.users.v1@2.37.10
+  - @wso2is/admin.approval-workflows.v1@1.2.1
+  - @wso2is/admin.registration-flow-builder.v1@0.10.123
+
 ## 2.100.0
 
 ### Minor Changes
