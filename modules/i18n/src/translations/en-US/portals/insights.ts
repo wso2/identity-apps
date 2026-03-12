@@ -34,12 +34,12 @@ export const insights: insightsNS = {
                         google: "Google",
                         hypr: "HYPR",
                         identifierFirst: "Identifier First",
+                        iproov: "IPROOV",
                         magicLink: "Magic Link",
                         oidc: "OIDC IdP",
                         organizationLogin: "Organization Login",
                         saml: "SAML IdP",
                         smsOtp: "SMS OTP",
-                        iproov: "IPROOV",
                         totp: "TOTP"
                     }
                 },
@@ -102,7 +102,7 @@ export const insights: insightsNS = {
     },
     lastFetchedMessage: {
         label: "Last fetched at {{ time }}",
-        tooltipText: "Insights for the latest activity will take few minues to be reflected in the graphs"
+        tooltipText: "Insights for the latest activity will take few minutes to be reflected in the graphs"
     },
     notifications: {
         fetchInsights: {
