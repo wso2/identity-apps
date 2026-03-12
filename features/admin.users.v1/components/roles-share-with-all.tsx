@@ -64,6 +64,11 @@ interface RolesShareWithAllPropsInterface extends IdentifiableComponentInterface
     selectedRoles: RolesInterface[];
     setSelectedRoles: (roles: RolesInterface[]) => void;
     onRoleChange: (role: RolesV2Interface, isSelected: boolean) => void;
+    /**
+     * Whether to include the Console Administrator role in the role list.
+     * Should only be true in the console settings administrator edit view.
+     */
+    enableConsoleAdminRole?: boolean;
 }
 
 /**
@@ -79,7 +84,8 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
         user,
         selectedRoles,
         setSelectedRoles,
-        onRoleChange
+        onRoleChange,
+        enableConsoleAdminRole = false
     } = props;
 
     const usersFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
@@ -106,17 +112,18 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
         !isEmpty(user?.id)
     );
 
-    // Roles available for sharing, excluding the Console Administrator role which is
-    // only configurable from the console settings shared-access page.
+    // Roles available for sharing. The Console Administrator role is excluded unless
+    // enableConsoleAdminRole is true (e.g. in the console settings administrator edit view).
     const userRolesList: RolesV2Interface[] = useMemo(() => {
         if (originalUserRoles?.Resources?.length > 0) {
             return originalUserRoles.Resources.filter((role: RolesV2Interface) =>
-                !(role.displayName === UIConstants.ADMINISTRATOR_ROLE_DISPLAY_NAME
+                enableConsoleAdminRole
+                || !(role.displayName === UIConstants.ADMINISTRATOR_ROLE_DISPLAY_NAME
                     && role.audience?.type?.toUpperCase() === RoleAudienceTypes.APPLICATION
                     && role.audience?.display === "Console")
             );
         }
-    }, [ originalUserRoles ]);
+    }, [ originalUserRoles, enableConsoleAdminRole ]);
 
     useEffect(() => {
         if (userRolesFetchRequestError) {

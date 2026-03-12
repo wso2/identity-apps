@@ -72,6 +72,11 @@ interface EditUserPropsInterface extends IdentifiableComponentInterface {
      * Whether the user store is read-only.
      */
     isReadOnlyUserStore?: boolean;
+    /**
+     * Whether to include the Console Administrator role in the role sharing dropdowns.
+     * Should only be true in the console settings administrator edit view.
+     */
+    enableConsoleAdminRole?: boolean;
 }
 
 /**
@@ -89,7 +94,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         connectorProperties,
         isLoading,
         isReadOnly = false,
-        isReadOnlyUserStore = false
+        isReadOnlyUserStore = false,
+        enableConsoleAdminRole = false
     } = props;
 
     const { t } = useTranslation();
@@ -293,6 +299,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         <ShareUserForm
                             user={ user }
                             readOnly={ isReadOnly }
+                            enableConsoleAdminRole={ enableConsoleAdminRole }
                         />
                     </ResourceTab.Pane>
                 )

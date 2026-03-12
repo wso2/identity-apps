@@ -117,6 +117,11 @@ export interface UserShareFormPropsInterface
      * Specifies the current sharing status of the user.
      */
     operationStatus?: OperationStatus;
+    /**
+     * Whether to include the Console Administrator role in the role sharing dropdowns.
+     * Should only be true in the console settings administrator edit view.
+     */
+    enableConsoleAdminRole?: boolean;
 }
 
 export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
@@ -130,6 +135,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         readOnly,
         isSharingInProgress,
         operationStatus,
+        enableConsoleAdminRole = false,
         ["data-componentid"]: componentId = "user-share-form"
     } = props;
 
@@ -228,17 +234,18 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         isUserRolesFetchRequestLoading
     ]);
 
-    // Roles available for sharing, excluding the Console Administrator role which is
-    // only configurable from the console settings shared-access page.
+    // Roles available for sharing. The Console Administrator role is excluded unless
+    // enableConsoleAdminRole is true (e.g. in the console settings administrator edit view).
     const userRolesList: RolesV2Interface[] = useMemo(() => {
         if (originalUserRoles?.Resources?.length > 0) {
             return originalUserRoles.Resources.filter((role: RolesV2Interface) =>
-                !(role.displayName === UIConstants.ADMINISTRATOR_ROLE_DISPLAY_NAME
+                enableConsoleAdminRole
+                || !(role.displayName === UIConstants.ADMINISTRATOR_ROLE_DISPLAY_NAME
                     && role.audience?.type?.toUpperCase() === RoleAudienceTypes.APPLICATION
                     && role.audience?.display === "Console")
             );
         }
-    }, [ originalUserRoles ]);
+    }, [ originalUserRoles, enableConsoleAdminRole ]);
 
     useEffect(() => {
         // If there is no user share data, it means the user is not shared with any organization.
@@ -1344,6 +1351,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                                     selectedRoles={ selectedRoles }
                                                     setSelectedRoles={ setSelectedRoles }
                                                     onRoleChange={ updateRoleSelectionForAllOrganizations }
+                                                    enableConsoleAdminRole={ enableConsoleAdminRole }
                                                 />
                                             </div>
                                         </motion.div>
