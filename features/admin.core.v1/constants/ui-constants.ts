@@ -92,6 +92,11 @@ export class UIConstants {
     public static readonly ADMINISTRATOR_ROLE_DISPLAY_NAME: string = "Administrator";
 
     /**
+     * Display name of the Console application audience, used when filtering Console-app-scoped roles.
+     */
+    public static readonly CONSOLE_APP_AUDIENCE_DISPLAY: string = "Console";
+
+    /**
      * Console feature map.
      *
      * Some of the API resource names have been changed in the backend since IS 7.0 release

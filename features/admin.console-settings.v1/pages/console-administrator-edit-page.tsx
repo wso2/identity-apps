@@ -359,6 +359,7 @@ const ConsoleAdministratorsEditPage: FunctionComponent<ConsoleAdministratorsEdit
                     isLoading={ isUserDetailsRequestLoading }
                     isReadOnly={ isReadOnly }
                     isReadOnlyUserStore={ isReadOnlyUserStore }
+                    enableConsoleAdminRole={ true }
                 />
                 {
                     showEditAvatarModal && (
