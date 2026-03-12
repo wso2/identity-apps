@@ -331,7 +331,6 @@ export const approvalWorkflows: approvalWorkflowsNS = {
                     title: "Notification Configuration"
                 },
                 step4: {
-                    description: "Configure the approval steps of the model. Approval by any selected user or role member will complete each step.",
                     description: "Configure the approval steps of the workflow. Approval by any selected user or role member will complete each step.",
                     hint: "You can add multiple approval steps to the workflow. Each step can have different approvers. Approval by any selected user or role member will complete each step.",
                     title:  "Approval Step Details"
