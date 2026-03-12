@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -81,7 +81,8 @@ export class LocalAuthenticatorConstants {
         MAGIC_LINK_AUTHENTICATOR_NAME: string;
         ORGANIZATION_IDENTIFIER_HANDLER_AUTHENTICATOR_NAME: string;
         PASSIVE_STS_AUTHENTICATOR_NAME: string;
-        PUSH_AUTHENTICATOR_NAME: string,
+        PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME: string;
+        PUSH_AUTHENTICATOR_NAME: string;
         SMS_OTP_AUTHENTICATOR_NAME: string;
         TOTP_AUTHENTICATOR_NAME: string;
     } = {
@@ -94,6 +95,7 @@ export class LocalAuthenticatorConstants {
             MAGIC_LINK_AUTHENTICATOR_NAME: "MagicLinkAuthenticator",
             ORGANIZATION_IDENTIFIER_HANDLER_AUTHENTICATOR_NAME: "OrganizationIdentifierHandler",
             PASSIVE_STS_AUTHENTICATOR_NAME: "PassiveSTSAuthenticator",
+            PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME: "password-reset-enforcer",
             PUSH_AUTHENTICATOR_NAME: "push-notification-authenticator",
             SMS_OTP_AUTHENTICATOR_NAME: "sms-otp-authenticator",
             TOTP_AUTHENTICATOR_NAME: "totp"

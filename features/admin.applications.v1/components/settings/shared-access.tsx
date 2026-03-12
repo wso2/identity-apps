@@ -29,6 +29,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import { EnhancedOrganizationLoginToggle } from "./enhanced-organization-login-toggle";
 import { ApplicationManagementConstants } from "../../constants/application-management";
 import { ApplicationInterface } from "../../models/application";
 import { ApplicationShareForm } from "../forms/share-application-form";
@@ -81,6 +82,8 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_ROLE_SHARING"));
     const asyncOperationStatusPollingInterval: number = useSelector((state: AppState) =>
         state?.config?.ui?.asyncOperationStatusPollingInterval);
+    const isEnhancedOrganizationAuthenticationFeatureEnabled: boolean = useSelector((state: AppState) =>
+        state?.config?.ui?.isEnhancedOrganizationAuthenticationFeatureEnabled);
 
     const statusToi18nKeyMap: Map<OperationStatus, { alertLevel: AlertLevels, i18nKey: string }> =
         new Map<OperationStatus, { alertLevel: AlertLevels, i18nKey: string }>([
@@ -113,6 +116,8 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
         pollingInterval: asyncOperationStatusPollingInterval,
         subjectId: application.id
     });
+
+    const handleUpdate: () => void = (): void => onUpdate(application.id);
 
     const handleChildStartedOperation = () => {
         setSharingState(OperationStatus.IN_PROGRESS);
@@ -150,6 +155,14 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
                         )
                 }
             </EmphasizedSegment>
+            { isEnhancedOrganizationAuthenticationFeatureEnabled && (
+                <EnhancedOrganizationLoginToggle
+                    appId={ application.id }
+                    isEnabled={ application.enhancedOrgAuthenticationEnabled ?? false }
+                    onUpdate={ handleUpdate }
+                    readOnly={ readOnly || sharingState === OperationStatus.IN_PROGRESS }
+                />
+            ) }
         </>
     );
 };

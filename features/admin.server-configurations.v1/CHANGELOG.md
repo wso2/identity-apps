@@ -1,5 +1,55 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.38.0
+
+### Minor Changes
+
+- [#9707](https://github.com/wso2/identity-apps/pull/9707) [`98be11798211c36636778c925819b578d4fbeabd`](https://github.com/wso2/identity-apps/commit/98be11798211c36636778c925819b578d4fbeabd) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce password reset enforcement scope configuration
+
+### Patch Changes
+
+- Updated dependencies [[`98be11798211c36636778c925819b578d4fbeabd`](https://github.com/wso2/identity-apps/commit/98be11798211c36636778c925819b578d4fbeabd), [`3ebcd80a19cabc51a4ee840bafb0da213e0c97e1`](https://github.com/wso2/identity-apps/commit/3ebcd80a19cabc51a4ee840bafb0da213e0c97e1), [`8f189290049855d403087514cbdc0b9ca2892ab8`](https://github.com/wso2/identity-apps/commit/8f189290049855d403087514cbdc0b9ca2892ab8)]:
+  - @wso2is/admin.server-configurations.v1@2.38.0
+  - @wso2is/admin.validation.v1@2.28.0
+  - @wso2is/admin.extensions.v1@2.40.28
+  - @wso2is/i18n@2.34.11
+  - @wso2is/admin.core.v1@2.54.17
+  - @wso2is/admin.users.v1@2.37.8
+  - @wso2is/admin.flow-builder-core.v1@0.10.161
+  - @wso2is/admin.flows.v1@1.0.130
+
+## 2.37.27
+
+### Patch Changes
+
+- Updated dependencies [[`37f1eae32f0b30c5a060432e41fe5e13285aef01`](https://github.com/wso2/identity-apps/commit/37f1eae32f0b30c5a060432e41fe5e13285aef01)]:
+  - @wso2is/admin.core.v1@2.54.16
+  - @wso2is/i18n@2.34.10
+  - @wso2is/admin.flow-builder-core.v1@0.10.160
+  - @wso2is/admin.flows.v1@1.0.129
+  - @wso2is/admin.server-configurations.v1@2.37.27
+  - @wso2is/admin.users.v1@2.37.7
+
+## 2.37.26
+
+### Patch Changes
+
+- Updated dependencies [[`9f537f26f51b488c26b3e920fe0579d38ef893f9`](https://github.com/wso2/identity-apps/commit/9f537f26f51b488c26b3e920fe0579d38ef893f9)]:
+  - @wso2is/admin.users.v1@2.37.6
+  - @wso2is/admin.core.v1@2.54.15
+  - @wso2is/admin.flow-builder-core.v1@0.10.159
+  - @wso2is/admin.flows.v1@1.0.128
+  - @wso2is/admin.server-configurations.v1@2.37.26
+
+## 2.37.25
+
+### Patch Changes
+
+- [#9733](https://github.com/wso2/identity-apps/pull/9733) [`4d6a03e28d19248a2a24ae1ddafbc41e41f6b917`](https://github.com/wso2/identity-apps/commit/4d6a03e28d19248a2a24ae1ddafbc41e41f6b917) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Enable issuer usage scope configuration tile based on deployment.config.json configuration
+
+- Updated dependencies [[`4d6a03e28d19248a2a24ae1ddafbc41e41f6b917`](https://github.com/wso2/identity-apps/commit/4d6a03e28d19248a2a24ae1ddafbc41e41f6b917)]:
+  - @wso2is/admin.server-configurations.v1@2.37.25
+
 ## 2.37.24
 
 ### Patch Changes

@@ -154,7 +154,8 @@ export class ClaimManagementConstants {
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM_SCHEMAS_CORE"),
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("XML_SOAP"),
         ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_SCHEMAS_EXT_SYSTEM"),
-        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_FOR_AGENTS")
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_FOR_AGENTS"),
+        ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("VC")
     ];
 
     public static readonly CUSTOM_MAPPING: string = SCIMConfigs.custom;

@@ -149,6 +149,7 @@ export interface ConnectionRolesInterface {
 export interface CertificateConfigInterface {
     certificates?: string[];
     jwksUri?: string;
+    samlMetadataUri?: string;
 }
 
 export interface OutboundProvisioningConnectorMetaInterface extends CommonPluggableComponentMetaInterface {

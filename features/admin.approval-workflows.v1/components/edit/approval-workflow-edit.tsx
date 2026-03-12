@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,7 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -34,6 +35,7 @@ import {
     PrimaryButton
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import isEqual from "lodash-es/isEqual";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -43,7 +45,8 @@ import { deleteApprovalWorkflowById, updateApprovalWorkflow } from "../../api/ap
 import { useGetWorkflowAssociations } from "../../api/use-get-workflow-associations";
 import {
     addWorkflowAssociation,
-    deleteWorkflowAssociationById
+    deleteWorkflowAssociationById,
+    updateWorkflowAssociationById
 } from "../../api/workflow-associations";
 import { WORKFLOW_ENGINE } from "../../constants/approval-workflow-constants";
 import {
@@ -62,7 +65,11 @@ import {
     NotificationDetailsFormValuesInterface,
     WorkflowOperationsDetailsFormValuesInterface
 } from "../../models/ui";
-import { WorkflowAssociationPayload, WorkflowOperations } from "../../models/workflow-associations";
+import {
+    WorkflowAssociationListItemInterface,
+    WorkflowAssociationPayload,
+    WorkflowOperations
+} from "../../models/workflow-associations";
 import ConfigurationsForm, { ConfigurationsFormRef } from "../create/configuration-details-form";
 import GeneralApprovalWorkflowDetailsForm, {
     GeneralApprovalWorkflowDetailsFormRef
@@ -150,6 +157,8 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
     const [ approvalProcessFormData, setApprovalProcessFormData ] = useState<ApprovalWorkflowFormDataInterface>(null);
     const [ operationDetails, setOperationDetails ] = useState<WorkflowOperations[]>(null);
     const [ matchedOperations, setMatchedOperations ] = useState<WorkflowOperationsDetailsFormValuesInterface>(null);
+    const [ operationRules, setOperationRules ] = useState<Record<string, RuleWithoutIdInterface>>({});
+    const [ initialOperationRules, setInitialOperationRules ] = useState<Record<string, RuleWithoutIdInterface>>({});
     const [ hasErrors, setHasErrors ] = useState<boolean>(false);
     const [ stepValues, setStepValues ] = useState<ConfigurationsFormValuesInterface>();
     const [ notificationValues, setNotificationValues ] =
@@ -179,6 +188,21 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
             );
 
             setOperationDetails(ops);
+
+            // Extract rules from associations.
+            const rules: Record<string, RuleWithoutIdInterface> = {};
+
+            workflowAssociationDetails.workflowAssociations.forEach(
+                (association: WorkflowAssociationListItemInterface) => {
+                    // Only add rule if it has actual rule data (not empty object).
+                    if (association.rule && Object.keys(association.rule).length > 0) {
+                        rules[association.operation] = association.rule;
+                    }
+                }
+            );
+
+            setOperationRules(rules);
+            setInitialOperationRules(rules);
         }
     }, [ workflowAssociationDetails ]);
 
@@ -395,7 +419,26 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                 }
             });
     };
+    /**
+     * Handles rule configuration updates for operations.
+     * @param operationValue - The operation identifier.
+     * @param rule - The configured rule.
+     */
+    const handleRuleUpdate = (operationValue: string, rule: RuleWithoutIdInterface | null) => {
+        setOperationRules((prevRules: Record<string, RuleWithoutIdInterface>) => {
+            const updatedRules: Record<string, RuleWithoutIdInterface> = { ...prevRules };
 
+            if (rule === null || (rule && Object.keys(rule).length === 0)) {
+                // Remove the rule if it's null or empty.
+                delete updatedRules[operationValue];
+            } else {
+                // Add or update the rule.
+                updatedRules[operationValue] = rule;
+            }
+
+            return updatedRules;
+        });
+    };
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert(alert));
     };
@@ -450,7 +493,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
 
     /**
      * Handles submission of the workflow operations details form.
-     * Detects added and removed operations and syncs associations.
+     * Detects added, removed, and updated operations and syncs associations.
      */
     const onWorkflowOperationsDetailsFormSubmit = (values: WorkflowOperationsDetailsFormValuesInterface) => {
         const currentOperations: any = values.matchedOperations.map((op: DropdownPropsInterface) => op.value);
@@ -460,22 +503,68 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
             (op: string) => !operationDetails.some((prev: WorkflowOperations) => prev.operation === op)
         );
 
-        // Find deleted operations WITH their associationId
+        // Find deleted operations WITH their associationId.
         const deletedOperations: any = operationDetails.filter(
             (prev: WorkflowOperations) => !currentOperations.includes(prev.operation)
         );
 
+        // Find existing operations with updated rules.
+        const updatedOperations: WorkflowOperations[] = operationDetails.filter(
+            (prev: WorkflowOperations) => {
+                // Check if operation still exists in current operations.
+                if (!currentOperations.includes(prev.operation)) {
+                    return false;
+                }
+
+                // Check if rule has changed.
+                const currentRule: RuleWithoutIdInterface = operationRules[prev.operation];
+                const initialRule: RuleWithoutIdInterface = initialOperationRules[prev.operation];
+
+                // Compare rules (deep equality, order-independent).
+                return !isEqual(currentRule ?? {}, initialRule ?? {});
+            }
+        );
+
+        // Handle added operations.
         for (const operation of addedOperations) {
             const associationName: string = `Association for ${operation ?? operation}`;
             const workflowAssociationPayload: WorkflowAssociationPayload = {
                 associationName,
                 operation: operation,
+                rule: operationRules[operation] || undefined,
                 workflowId: approvalWorkflowId
             };
 
             handleWorkflowAssociationsRegistration(workflowAssociationPayload);
         }
 
+        // Handle updated operations (rule changes).
+        for (const operation of updatedOperations) {
+            const associationName: string = `Association for ${operation.operation}`;
+
+            // Determine the rule value: if rule was deleted (undefined), send empty object {}
+            // to explicitly tell the backend to remove the rule.
+            const currentRule: RuleWithoutIdInterface = operationRules[operation.operation];
+            const rulePayload: RuleWithoutIdInterface = currentRule !== undefined
+                ? currentRule
+                : {} as RuleWithoutIdInterface;
+
+            const workflowAssociationPayload: WorkflowAssociationPayload = {
+                associationName,
+                operation: operation.operation,
+                rule: rulePayload,
+                workflowId: approvalWorkflowId
+            };
+
+            handleWorkflowAssociationUpdate(
+                operation.associationId,
+                workflowAssociationPayload,
+                operation.operation,
+                rulePayload
+            );
+        }
+
+        // Handle deleted operations.
         for (const operation of deletedOperations) {
             handleWorkflowAssociationDeletion(operation.associationId);
         }
@@ -498,6 +587,46 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                     level: AlertLevels.ERROR,
                     message: t(
                         "approvalWorkflows:notifications.addWorkflowAssociation.genericError.description"
+                    )
+                });
+            });
+    };
+
+    /**
+     * Sends request to update an existing workflow-operation association.
+     */
+    const handleWorkflowAssociationUpdate = (
+        associationId: string,
+        workflowAssociationPayload: WorkflowAssociationPayload,
+        operationName: string,
+        syncedRule: RuleWithoutIdInterface
+    ): void => {
+        updateWorkflowAssociationById(associationId, workflowAssociationPayload)
+            .then(() => {
+                // Update only this operation's entry in the baseline to avoid incorrectly
+                // marking other concurrent updates as synced.
+                setInitialOperationRules((prev: Record<string, RuleWithoutIdInterface>) => {
+                    const updated: Record<string, RuleWithoutIdInterface> = { ...prev };
+
+                    if (syncedRule && Object.keys(syncedRule).length > 0) {
+                        updated[operationName] = syncedRule;
+                    } else {
+                        delete updated[operationName];
+                    }
+
+                    return updated;
+                });
+                mutateWorkflowAssociationDetails();
+                // Refresh the workflow associations in the form to update validation.
+                workflowOperationsDetailsFormRef?.current?.refreshWorkflowAssociations();
+            })
+            .catch(() => {
+                handleAlerts({
+                    description: t(
+                        "approvalWorkflows:notifications.updateApprovalWorkflow.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "approvalWorkflows:notifications.updateApprovalWorkflow.genericError.message"
                     )
                 });
             });
@@ -613,6 +742,9 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                         </div>
 
                         <Divider className="divider-container" />
+                        <Grid className="common-section-heading">
+                            <Heading as="h4">{ t("approvalWorkflows:sections.operations.heading") }</Heading>
+                        </Grid>
                         <div className="workflow-association-operations">
                             <WorkflowOperationsDetailsForm
                                 ref={ workflowOperationsDetailsFormRef }
@@ -622,7 +754,9 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                                 onChange={ (selectedOperations: DropdownPropsInterface[]) => {
                                     setIsOperationDetailsNull(!selectedOperations || selectedOperations.length === 0);
                                 } }
-                                data-componentid={ `${componentId}-general-details-form` }
+                                operationRules={ operationRules }
+                                onRuleUpdate={ handleRuleUpdate }
+                                data-componentid={ `${componentId}-operations-details-form` }
                                 isEditPage={ true }
                                 workflowId={ approvalWorkflowId }
                             />
@@ -643,8 +777,8 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                         <Divider className="divider-container" />
 
                         <div className="workflow-model-configuration-settings">
-                            <Grid className="operations-autocomplete-header">
-                                <Heading as="h6">{ "Approval Steps" }</Heading>
+                            <Grid className="common-section-heading">
+                                <Heading as="h4">{ t("approvalWorkflows:sections.approvalSteps.heading") }</Heading>
                             </Grid>
                             <ConfigurationsForm
                                 ref={ configurationsFormRef }

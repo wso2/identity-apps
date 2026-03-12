@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,6 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 
 export interface WorkflowAssociationPayload {
     /**
@@ -32,6 +34,10 @@ export interface WorkflowAssociationPayload {
      */
     workflowId: string;
 
+    /**
+     * Rule configuration for the workflow association.
+     */
+    rule?: RuleWithoutIdInterface;
 }
 
 export interface WorkflowOperations {
@@ -92,4 +98,9 @@ export interface WorkflowAssociationListItemInterface {
      * Whether the association is enabled or not.
      */
     isEnabled: string;
+
+    /**
+     * Rule configuration for the association.
+     */
+    rule?: RuleWithoutIdInterface;
 }

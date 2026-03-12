@@ -34,6 +34,7 @@ export interface rulesNS {
             clearFilterActionText: string;
             moreItemsMessage: string;
             placeholderText: string;
+            selectPlaceholderText: string;
         };
     };
     texts: {

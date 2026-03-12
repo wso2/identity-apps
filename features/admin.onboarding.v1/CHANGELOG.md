@@ -1,5 +1,51 @@
 # @wso2is/admin.onboarding.v1
 
+## 1.0.31
+
+### Patch Changes
+
+- Updated dependencies [[`98be11798211c36636778c925819b578d4fbeabd`](https://github.com/wso2/identity-apps/commit/98be11798211c36636778c925819b578d4fbeabd), [`3ebcd80a19cabc51a4ee840bafb0da213e0c97e1`](https://github.com/wso2/identity-apps/commit/3ebcd80a19cabc51a4ee840bafb0da213e0c97e1), [`8f189290049855d403087514cbdc0b9ca2892ab8`](https://github.com/wso2/identity-apps/commit/8f189290049855d403087514cbdc0b9ca2892ab8)]:
+  - @wso2is/admin.server-configurations.v1@2.38.0
+  - @wso2is/admin.validation.v1@2.28.0
+  - @wso2is/admin.connections.v1@2.36.0
+  - @wso2is/admin.extensions.v1@2.40.28
+  - @wso2is/i18n@2.34.11
+  - @wso2is/admin.core.v1@2.54.17
+  - @wso2is/admin.users.v1@2.37.8
+  - @wso2is/admin.branding.v1@2.32.117
+
+## 1.0.30
+
+### Patch Changes
+
+- Updated dependencies [[`37f1eae32f0b30c5a060432e41fe5e13285aef01`](https://github.com/wso2/identity-apps/commit/37f1eae32f0b30c5a060432e41fe5e13285aef01)]:
+  - @wso2is/admin.applications.v1@2.41.18
+  - @wso2is/admin.core.v1@2.54.16
+  - @wso2is/i18n@2.34.10
+  - @wso2is/admin.branding.v1@2.32.116
+  - @wso2is/admin.server-configurations.v1@2.37.27
+  - @wso2is/admin.users.v1@2.37.7
+  - @wso2is/admin.connections.v1@2.35.20
+
+## 1.0.29
+
+### Patch Changes
+
+- Updated dependencies [[`9f537f26f51b488c26b3e920fe0579d38ef893f9`](https://github.com/wso2/identity-apps/commit/9f537f26f51b488c26b3e920fe0579d38ef893f9)]:
+  - @wso2is/admin.users.v1@2.37.6
+  - @wso2is/admin.core.v1@2.54.15
+  - @wso2is/admin.connections.v1@2.35.19
+  - @wso2is/admin.branding.v1@2.32.115
+  - @wso2is/admin.server-configurations.v1@2.37.26
+
+## 1.0.28
+
+### Patch Changes
+
+- Updated dependencies [[`4d6a03e28d19248a2a24ae1ddafbc41e41f6b917`](https://github.com/wso2/identity-apps/commit/4d6a03e28d19248a2a24ae1ddafbc41e41f6b917), [`22331b80b5ca8b15d5e3b52abd5a5bb46b069640`](https://github.com/wso2/identity-apps/commit/22331b80b5ca8b15d5e3b52abd5a5bb46b069640)]:
+  - @wso2is/admin.server-configurations.v1@2.37.25
+  - @wso2is/admin.claims.v1@2.30.3
+
 ## 1.0.27
 
 ### Patch Changes
