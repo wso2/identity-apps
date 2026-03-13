@@ -330,11 +330,16 @@ export const clearCopilotChatApi = async (): Promise<CopilotClearResponse> => {
  * @returns The paginated chat history.
  */
 export const getCopilotChatHistory = async (
-    limit: number = 10,
-    offset: number = 0
+    offset: number = 0,
+    limit?: number
 ): Promise<CopilotHistoryResponse> => {
     const requestId: string = crypto.randomUUID();
     const correlationId: string = `corr-${Date.now()}`;
+
+    const params: any = { offset };
+    if (limit !== undefined) {
+        params.limit = limit;
+    }
 
     const requestConfig: AxiosRequestConfig = {
         headers: {
@@ -344,7 +349,7 @@ export const getCopilotChatHistory = async (
             "x-request-id": requestId
         },
         method: HttpMethods.GET,
-        params: { limit, offset },
+        params,
         url: `${COPILOT_BASE_URL}/history`
     };
 
