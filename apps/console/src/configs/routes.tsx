@@ -1385,8 +1385,8 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             category: "extensions:manage.sidePanel.categories.workflows",
             component: lazy(() =>
-                import("@wso2is/admin.workflow-requests.v1").then((module: any) => ({
-                    default: module.WorkflowRequestsPage
+                import("@wso2is/admin.workflow-requests.v1/pages/workflow-requests").then((module: any) => ({
+                    default: module?.default ?? module.WorkflowRequestsPage
                 }))
             ),
             exact: true,
@@ -1404,8 +1404,8 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             category: "extensions:manage.sidePanel.categories.workflows",
             component: lazy(() =>
-                import("@wso2is/admin.workflow-requests.v1").then((module: any) => ({
-                    default: module.WorkflowRequestDetailsPage
+                import("@wso2is/admin.workflow-requests.v1/pages/workflow-request-details").then((module: any) => ({
+                    default: module?.default ?? module.WorkflowRequestDetailsPage
                 }))
             ),
             exact: true,
