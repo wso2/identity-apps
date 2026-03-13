@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.28.0
+
+### Minor Changes
+
+- [#9763](https://github.com/wso2/identity-apps/pull/9763) [`adf78d43ea9f836c456f5f7e326e93a58a93aa73`](https://github.com/wso2/identity-apps/commit/adf78d43ea9f836c456f5f7e326e93a58a93aa73) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Prepare for identity server 7.3.0
+
 ## 2.27.0
 
 ### Minor Changes
