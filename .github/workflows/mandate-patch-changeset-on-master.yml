@@ -43,7 +43,7 @@ jobs:
               run: |
                   # List files added in this PR relative to the merge base.
                   git fetch origin master --depth=1
-                  CHANGED_FILES=$(git diff --name-only --diff-filter=A origin/master...HEAD)
+                  CHANGED_FILES=$(git diff --name-only --diff-filter=AM origin/master...HEAD)
 
                   # Filter to only .changeset/*.md files (exclude README.md etc.)
                   CHANGESET_FILES=$(echo "$CHANGED_FILES" | grep -E '^\.changeset/[^/]+\.md$' || true)
