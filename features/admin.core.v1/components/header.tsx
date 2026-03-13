@@ -97,7 +97,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const { t } = useTranslation();
 
     const { showPreviewFeaturesModal, setShowPreviewFeaturesModal } = useFeatureGate();
-    const { hasPreviewFeatures } = usePreviewFeatures();
+    const { canUsePreviewFeatures } = usePreviewFeatures();
     const { config: runtimeConfig } = useRuntimeConfig();
 
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
@@ -684,22 +684,13 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                 </MenuItem>
                             </Show>
                         ),
-                        hasPreviewFeatures && (
-                            <Show key="feature.preview" featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
-                                <Show
-                                    when={ [
-                                        ...(cdsFeatureConfig?.scopes?.update ?? [])
-                                    ] }
-                                    featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
-                                >
-                                    <MenuItem onClick={ () => setShowPreviewFeaturesModal(true) }>
-                                        <ListItemIcon>
-                                            <PreviewFeaturesIcon />
-                                        </ListItemIcon>
-                                        <ListItemText>{ t("Feature Preview") }</ListItemText>
-                                    </MenuItem>
-                                </Show>
-                            </Show>
+                        canUsePreviewFeatures && (
+                            <MenuItem onClick={ () => setShowPreviewFeaturesModal(true) }>
+                                <ListItemIcon>
+                                    <PreviewFeaturesIcon />
+                                </ListItemIcon>
+                                <ListItemText>{ t("Feature Preview") }</ListItemText>
+                            </MenuItem>
                         ),
                         isShowAppSwitchButton() ? (
                             <MenuItem
@@ -729,7 +720,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 } }
                 { ...rest }
             />
-            { hasPreviewFeatures && (
+            { canUsePreviewFeatures && (
                 <FeaturePreviewModal
                     open={ showPreviewFeaturesModal }
                     onClose={ () => setShowPreviewFeaturesModal(false) }
