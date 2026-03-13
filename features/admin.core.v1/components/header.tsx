@@ -60,6 +60,7 @@ import dayjs from "dayjs";
 import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { usePreviewFeatures } from "../hooks/use-preview-features";
 import FeaturePreviewModal from "./modals/feature-preview-modal";
 import { ReactComponent as PreviewFeaturesIcon } from "../../themes/default/assets/images/icons/flask-icon.svg";
 import { ReactComponent as LogoutIcon } from "../../themes/default/assets/images/icons/logout-icon.svg";
@@ -96,6 +97,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const { t } = useTranslation();
 
     const { showPreviewFeaturesModal, setShowPreviewFeaturesModal } = useFeatureGate();
+    const { hasPreviewFeatures } = usePreviewFeatures();
     const { config: runtimeConfig } = useRuntimeConfig();
 
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
@@ -682,22 +684,23 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                 </MenuItem>
                             </Show>
                         ),
-                        <Show key="feature.preview" featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
-                            <Show
-                                when={ [
-                                    ...(loginAndRegistrationFeatureConfig?.scopes?.update ?? []),
-                                    ...(cdsFeatureConfig?.scopes?.update ?? [])
-                                ] }
-                                featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
-                            >
-                                <MenuItem onClick={ () => setShowPreviewFeaturesModal(true) }>
-                                    <ListItemIcon>
-                                        <PreviewFeaturesIcon />
-                                    </ListItemIcon>
-                                    <ListItemText>{ t("Feature Preview") }</ListItemText>
-                                </MenuItem>
+                        hasPreviewFeatures && (
+                            <Show key="feature.preview" featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+                                <Show
+                                    when={ [
+                                        ...(cdsFeatureConfig?.scopes?.update ?? [])
+                                    ] }
+                                    featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
+                                >
+                                    <MenuItem onClick={ () => setShowPreviewFeaturesModal(true) }>
+                                        <ListItemIcon>
+                                            <PreviewFeaturesIcon />
+                                        </ListItemIcon>
+                                        <ListItemText>{ t("Feature Preview") }</ListItemText>
+                                    </MenuItem>
+                                </Show>
                             </Show>
-                        </Show>,
+                        ),
                         isShowAppSwitchButton() ? (
                             <MenuItem
                                 color="inherit"
@@ -726,10 +729,12 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 } }
                 { ...rest }
             />
-            <FeaturePreviewModal
-                open={ showPreviewFeaturesModal }
-                onClose={ () => setShowPreviewFeaturesModal(false) }
-            />
+            { hasPreviewFeatures && (
+                <FeaturePreviewModal
+                    open={ showPreviewFeaturesModal }
+                    onClose={ () => setShowPreviewFeaturesModal(false) }
+                />
+            ) }
         </>
     );
 };

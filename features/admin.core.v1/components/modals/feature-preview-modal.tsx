@@ -34,82 +34,15 @@ import ListItemText from "@oxygen-ui/react/ListItemText";
 import Stack from "@oxygen-ui/react/Stack";
 import Switch from "@oxygen-ui/react/Switch";
 import Typography from "@oxygen-ui/react/Typography";
-import { useRequiredScopes } from "@wso2is/access-control";
-import { updateCDSConfig } from "@wso2is/admin.cds.v1/api/config";
-import useCDSConfig from "@wso2is/admin.cds.v1/hooks/use-config";
-import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
-import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import NewCDSFeatureImage from "../../assets/illustrations/preview-features/new-cds-feature.png";
-import { AppConstants } from "../../constants/app-constants";
-import { history } from "../../helpers/history";
-import { AppState } from "../../store";
-import "./feature-preview-modal.scss";
-
-/** Added or removed as a system application when CDS is toggled. */
-const CDS_CONSOLE_APP:string = "CONSOLE";
+import { usePreviewFeatures } from "../../hooks/use-preview-features";
+import type { PreviewFeaturesListInterface } from "../../hooks/use-preview-features";
 
 interface FeaturePreviewModalPropsInterface extends IdentifiableComponentInterface {
     open: boolean;
     onClose: () => void;
-}
-
-/**
- * Preview features list interface.
- */
-interface PreviewFeaturesListInterface {
-    /**
-     * Feature action.
-     */
-    action?: string;
-
-    /**
-     * Feature name.
-     */
-    name: string;
-
-    /**
-     * React component to be rendered
-     */
-    component?: ReactElement;
-
-    /**
-     * Feature description.
-     */
-    description: string;
-
-    /**
-     * Feature id.
-     */
-    id: string;
-
-    /**
-     * Feature image.
-     */
-    image?: string;
-
-    /**
-     * Whether the feature is enabled
-     */
-    enabled?: boolean;
-
-    /**
-     * Feature value.
-     */
-    value: string;
-
-    /**
-     * Required scopes to access the feature. If not provided, the feature will be accessible to all users.
-     */
-    requiredScopes?: string[];
-
-    message?: {
-        type: "info" | "warning" | "error";
-        content: string;
-    };
 }
 
 /**
@@ -123,127 +56,18 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
     onClose,
     open
 }: FeaturePreviewModalPropsInterface): ReactElement => {
-
     const { t } = useTranslation();
-    const dispatch: any = useDispatch();
-    const { selectedPreviewFeatureToShow } = useFeatureGate();
-
-    const cdsFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.customerDataService
-    );
-
     const {
-        data: cdsConfig,
-        mutate: mutateCDSConfig
-    } = useCDSConfig(open && (cdsFeatureConfig?.enabled ?? false));
+        accessibleFeatures,
+        handlePageRedirection,
+        handleToggleChange,
+        selected,
+        selectedFeatureIndex,
+        setSelectedFeatureIndex
+    } = usePreviewFeatures();
 
-    const hasCDSScopes: boolean = useRequiredScopes(
-        cdsFeatureConfig?.scopes?.update
-    );
-
-
-    const previewFeaturesList: PreviewFeaturesListInterface[] = useMemo(() => ([
-        {
-            action: t("customerDataService:common.featurePreview.action"),
-            description: t("customerDataService:common.featurePreview.description"),
-            enabled: cdsConfig?.cds_enabled,
-            id: "customer-data-service",
-            image: NewCDSFeatureImage,
-            message: {
-                content: t("customerDataService:common.featurePreview.message"),
-                type: "warning" as const
-            },
-            name: t("customerDataService:common.featurePreview.name"),
-            requiredScopes: cdsFeatureConfig?.scopes?.update,
-            value: "CDS.Enable"
-        }
-    ].filter(Boolean)), [ cdsConfig, cdsFeatureConfig, t ]);
-
-    const accessibleFeatures: PreviewFeaturesListInterface[] = useMemo(() => (
-        previewFeaturesList.filter((feature: PreviewFeaturesListInterface) => {
-            if (feature.id === "customer-data-service") {
-                return hasCDSScopes && !!cdsFeatureConfig?.enabled;
-            }
-
-            return true;
-        })
-    ), [ previewFeaturesList, hasCDSScopes, cdsFeatureConfig?.enabled ]);
-
-    const [ selectedFeatureIndex, setSelectedFeatureIndex ] = useState(0);
-
-    const selected: PreviewFeaturesListInterface = useMemo(
-        () => accessibleFeatures[selectedFeatureIndex],
-        [ selectedFeatureIndex, accessibleFeatures ]
-    );
-
-    useEffect(() => {
-        const activePreviewFeatureIndex: number = accessibleFeatures.findIndex(
-            (feature: PreviewFeaturesListInterface) => feature?.id === selectedPreviewFeatureToShow
-        );
-
-        setSelectedFeatureIndex(activePreviewFeatureIndex > 0 ? activePreviewFeatureIndex : 0);
-    }, [ selectedPreviewFeatureToShow ]);
-
-    const handleClose = () => {
+    const handleClose: () => void = (): void => {
         onClose();
-    };
-
-    const handlePageRedirection = (actionId: string) => {
-        switch (actionId) {
-            case "customer-data-service":
-                return history.push(AppConstants.getPaths().get("PROFILES"));
-            default:
-                return;
-        }
-    };
-
-    const handleToggleChange = async (e: ChangeEvent<HTMLInputElement>, actionId: string) => {
-        const isChecked: boolean = e.target.checked;
-
-        switch (actionId) {
-            case "customer-data-service":
-                await handleCDSToggle(isChecked);
-
-                break;
-
-            default:
-                break;
-        }
-    };
-
-    /**
-     * Handles CDS enable/disable via PATCH.
-     *
-     * Enabling  → set cds_enabled: true; if system_applications is empty, seed it with ["CONSOLE"].
-     * Disabling → set cds_enabled: false; remove "CONSOLE" from system_applications (leave others intact).
-     */
-    const handleCDSToggle = async (enable: boolean): Promise<void> => {
-        const currentApps: string[] = cdsConfig?.system_applications ?? [];
-
-        let nextApps: string[];
-
-        if (enable) {
-            nextApps = currentApps.length === 0
-                ? [ CDS_CONSOLE_APP ]
-                : currentApps;
-        } else {
-            nextApps = currentApps.filter((app: string) => app !== CDS_CONSOLE_APP);
-        }
-
-        try {
-            await updateCDSConfig({
-                cds_enabled: enable,
-                system_applications: nextApps
-            });
-
-            mutateCDSConfig();
-        } catch (error) {
-            dispatch(addAlert({
-                description: t("customerDataService:common.featurePreview.updateError"),
-                level: AlertLevels.ERROR,
-                message: t("common:error")
-            }));
-        }
     };
 
     return (
