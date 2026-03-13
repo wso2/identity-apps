@@ -194,10 +194,7 @@ export const prependCopilotMessages = (messages: CopilotMessage[]): PrependCopil
     type: CopilotActionTypes.PREPEND_COPILOT_MESSAGES
 });
 
-/**
- * Default number of history records to load per page.
- */
-const HISTORY_PAGE_SIZE: number = 2;
+
 
 /**
  * Redux thunk action to fetch the most-recent page of chat history.
@@ -222,7 +219,7 @@ export const fetchCopilotHistory = () => {
             dispatch(setCopilotPanelLoading(true));
 
             console.log("[fetchCopilotHistory] Calling API (offset=0)...");
-            const response = await getCopilotChatHistory(HISTORY_PAGE_SIZE, 0);
+            const response = await getCopilotChatHistory(0);
 
             console.log("[fetchCopilotHistory] Response received:", response);
 
@@ -258,7 +255,7 @@ export const fetchCopilotHistory = () => {
                     // Store pagination metadata so the UI can offer "load earlier"
                     dispatch(setHistoryPagination({
                         hasMoreHistory: response.has_more,
-                        nextOffset: HISTORY_PAGE_SIZE,
+                        nextOffset: response.limit,
                         total: response.total
                     }));
                 }
@@ -298,7 +295,7 @@ export const loadMoreCopilotHistory = () => {
             } as HistoryPaginationPayload });
 
             console.log(`[loadMoreCopilotHistory] Fetching older history (offset=${historyOffset})...`);
-            const response = await getCopilotChatHistory(HISTORY_PAGE_SIZE, historyOffset);
+            const response = await getCopilotChatHistory(historyOffset);
 
             if (response.history && Array.isArray(response.history) && response.history.length > 0) {
                 const olderMessages: CopilotMessage[] = [];
@@ -323,7 +320,7 @@ export const loadMoreCopilotHistory = () => {
                 dispatch(prependCopilotMessages(olderMessages));
                 dispatch(setHistoryPagination({
                     hasMoreHistory: response.has_more,
-                    nextOffset: historyOffset + HISTORY_PAGE_SIZE,
+                    nextOffset: historyOffset + response.limit,
                     total: response.total
                 }));
             } else {
