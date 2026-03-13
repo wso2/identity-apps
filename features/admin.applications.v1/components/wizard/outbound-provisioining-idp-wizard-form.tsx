@@ -47,6 +47,11 @@ interface OutboundProvisioningIdpWizardFormPropsInterface extends TestableCompon
      * Specifies if the form is being submitted.
      */
     isSubmitting?: boolean;
+    /**
+     * Callback fired when the connector list loading state changes.
+     * Used by the wizard parent to disable the Finish button while connectors are loading.
+     */
+    onConnectorLoadingChange?: (isLoading: boolean) => void;
 }
 
 interface DropdownOptionsInterface {
@@ -74,6 +79,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
         isEdit,
         readOnly,
         isSubmitting,
+        onConnectorLoadingChange,
         [ "data-testid" ]: testId= "application-outbound-provisioning-wizard-idp-form",
         [ "data-componentid" ]: componentId = "application-outbound-provisioning-wizard-idp-form"
     } = props;
@@ -82,6 +88,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
 
     const [ idpListOptions, setIdpListOptions ] = useState<DropdownOptionsInterface[]>([]);
     const [ connectorListOptions, setConnectorListOptions ] = useState<DropdownOptionsInterface[]>(undefined);
+    const [ isConnectorListLoading, setIsConnectorListLoading ] = useState<boolean>(false);
     const [ selectedIdp, setSelectedIdp ] = useState<string>();
     const [ isBlockingChecked, setIsBlockingChecked ] = useState<boolean>(initialValues?.blocking ?? false);
     const [ isJITChecked, setIsJITChecked ] = useState<boolean>(initialValues?.jit ?? false);
@@ -146,12 +153,15 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
             value: ""
         };
 
+        setIsConnectorListLoading(true);
+        onConnectorLoadingChange?.(true);
+
         getConnectionDetails(selectedIdp)
             .then((response: IdentityProviderInterface) => {
                 response.provisioning.outboundConnectors.connectors.map(
                     (connector: OutboundProvisioningConnectorInterface, index: number) => {
                     // Check enabled connectors
-                        if (connector.isEnabled) {
+                        if (connector?.isEnabled) {
                             connectorOption = {
                                 key: index,
                                 text: connector.name,
@@ -164,6 +174,10 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                 if (connectorOptions.length === 1) {
                     setConnector(connectorOptions[0].value);
                 }
+            })
+            .finally(() => {
+                setIsConnectorListLoading(false);
+                onConnectorLoadingChange?.(false);
             });
     }, [ selectedIdp ]);
 
@@ -377,8 +391,8 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                                     className="form-button"
                                     data-testid={ `${ testId }-submit-button` }
                                     data-componentid={ `${ componentId }-submit-button` }
-                                    loading={ isSubmitting }
-                                    disabled={ isSubmitting }
+                                    loading={ isSubmitting || isConnectorListLoading }
+                                    disabled={ isSubmitting || isConnectorListLoading }
                                 >
                                     { t("common:update") }
                                 </PrimaryButton>

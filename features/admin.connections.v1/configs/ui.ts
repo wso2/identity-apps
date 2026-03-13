@@ -49,6 +49,7 @@ import { ReactComponent as GearsIcon } from "../resources/assets/images/icons/ge
 import MagicLinkIcon from "../resources/assets/images/icons/magic-link-icon.svg";
 import OIDCConnectionIcon from "../resources/assets/images/icons/oidc-connection-icon.png";
 import OrganizationSSOIcon from "../resources/assets/images/icons/organization-sso-icon.svg";
+import OutboundProvisioningIcon from "../resources/assets/images/icons/outbound-provisioning.svg";
 import {
     ReactComponent as ProvisionIcon
 } from "../resources/assets/images/icons/provision.svg";
@@ -105,6 +106,7 @@ export const getConnectionIcons = (): any => {
         office365: Office365Logo,
         oidc: OIDCConnectionIcon,
         organizationSSO: OrganizationSSOIcon,
+        outboundProvisioning: OutboundProvisioningIcon,
         push: PushAuthenticationIcon,
         saml: SAMLConnectionIcon,
         smsOTP: SMSOTPIcon,
