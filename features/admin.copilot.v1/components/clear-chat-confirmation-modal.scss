@@ -91,9 +91,11 @@
         .clear-chat-confirm-button {
             background-color: $copilot-primary-color !important;
             color: $copilot-text-color-inverse !important;
+            background-image: none !important;
             
             &:hover {
                 background-color: $copilot-primary-color-hover !important;
+                background-image: none !important;
             }
         }
 
