@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 3.7.0
+
+### Minor Changes
+
+- [#9770](https://github.com/wso2/identity-apps/pull/9770) [`487fe9485a488b8272e10befdbe0a66028d388e2`](https://github.com/wso2/identity-apps/commit/487fe9485a488b8272e10befdbe0a66028d388e2) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Prepare identity apps for next iteration
+
+* [#9765](https://github.com/wso2/identity-apps/pull/9765) [`9c1103a0d63d76eb8ff318666421771baacc0954`](https://github.com/wso2/identity-apps/commit/9c1103a0d63d76eb8ff318666421771baacc0954) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add password expiry based reset page
+
 ## 3.6.0
 
 ### Minor Changes
