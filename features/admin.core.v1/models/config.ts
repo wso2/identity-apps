@@ -606,6 +606,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     showAppSwitchButton?: boolean;
     /**
+     * Show Feature Preview menu item in the header user dropdown.
+     */
+    showFeaturePreviewMenuItem?: boolean;
+    /**
      * Show Label for the features introduced with new authz runtime.
      */
     showStatusLabelForNewAuthzRuntimeFeatures?: boolean;

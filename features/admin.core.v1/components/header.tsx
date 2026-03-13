@@ -101,6 +101,9 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const showAppSwitchButton: boolean = useSelector((state: AppState) => state.config.ui.showAppSwitchButton);
+    const showFeaturePreviewMenuItem: boolean = useSelector(
+        (state: AppState) => state.config.ui.showFeaturePreviewMenuItem
+    );
     const accountAppURL: string = useSelector((state: AppState) => state.config.deployment.accountApp.path);
     const centralAppURL: string = useSelector(
         (state: AppState) => state.config.deployment.accountApp.centralAppPath
@@ -682,22 +685,24 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                 </MenuItem>
                             </Show>
                         ),
-                        <Show key="feature.preview" featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
-                            <Show
-                                when={ [
-                                    ...(loginAndRegistrationFeatureConfig?.scopes?.update ?? []),
-                                    ...(cdsFeatureConfig?.scopes?.update ?? [])
-                                ] }
-                                featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
-                            >
-                                <MenuItem onClick={ () => setShowPreviewFeaturesModal(true) }>
-                                    <ListItemIcon>
-                                        <PreviewFeaturesIcon />
-                                    </ListItemIcon>
-                                    <ListItemText>{ t("Feature Preview") }</ListItemText>
-                                </MenuItem>
+                        showFeaturePreviewMenuItem !== false && (
+                            <Show key="feature.preview" featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+                                <Show
+                                    when={ [
+                                        ...(loginAndRegistrationFeatureConfig?.scopes?.update ?? []),
+                                        ...(cdsFeatureConfig?.scopes?.update ?? [])
+                                    ] }
+                                    featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
+                                >
+                                    <MenuItem onClick={ () => setShowPreviewFeaturesModal(true) }>
+                                        <ListItemIcon>
+                                            <PreviewFeaturesIcon />
+                                        </ListItemIcon>
+                                        <ListItemText>{ t("Feature Preview") }</ListItemText>
+                                    </MenuItem>
+                                </Show>
                             </Show>
-                        </Show>,
+                        ),
                         isShowAppSwitchButton() ? (
                             <MenuItem
                                 color="inherit"
