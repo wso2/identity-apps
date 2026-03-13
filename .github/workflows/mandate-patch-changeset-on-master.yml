@@ -1,0 +1,90 @@
+# -------------------------------------------------------------------------------------
+#
+# Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+#
+# WSO2 LLC. licenses this file to you under the Apache License,
+# Version 2.0 (the "License"); you may not use this file except
+# in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
+# --------------------------------------------------------------------------------------
+
+# This workflow checks that no changeset file introduced in a PR targeting master
+# declares a minor or major version bump.  Only patch bumps are allowed.
+
+name: 🔖 Check Changeset Bump Type
+
+on:
+    pull_request:
+        types: [ opened, synchronize, reopened ]
+        branches: [ master ]
+
+jobs:
+    check-bump-type:
+        name: 🚫 Reject minor / major version bumps
+        runs-on: ubuntu-latest
+        steps:
+            - name: 📥 Checkout repository
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: 🔍 Detect new changeset files
+              id: new-changesets
+              run: |
+                  # List files added in this PR relative to the merge base.
+                  git fetch origin master --depth=1
+                  CHANGED_FILES=$(git diff --name-only --diff-filter=A origin/master...HEAD)
+
+                  # Filter to only .changeset/*.md files (exclude README.md etc.)
+                  CHANGESET_FILES=$(echo "$CHANGED_FILES" | grep -E '^\.changeset/[^/]+\.md$' || true)
+
+                  echo "New changeset files:"
+                  echo "$CHANGESET_FILES"
+
+                  echo "files<<EOF" >> "$GITHUB_OUTPUT"
+                  echo "$CHANGESET_FILES" >> "$GITHUB_OUTPUT"
+                  echo "EOF" >> "$GITHUB_OUTPUT"
+
+            - name: 🚨 Fail on minor or major bumps
+              run: |
+                  CHANGESET_FILES="${{ steps.new-changesets.outputs.files }}"
+
+                  if [ -z "$CHANGESET_FILES" ]; then
+                      echo "No new changeset files found. Skipping check."
+                      exit 0
+                  fi
+
+                  VIOLATION_FOUND=false
+
+                  while IFS= read -r FILE; do
+                      [ -z "$FILE" ] && continue
+
+                      # Extract bump-type values from lines like: "<package>": minor|major
+                      BUMPS=$(grep -E '^\s*"[^"]+"\s*:\s*(minor|major)\s*$' "$FILE" || true)
+
+                      if [ -n "$BUMPS" ]; then
+                          echo "::error file=$FILE::Disallowed version bump detected in '$FILE'."
+                          echo "$BUMPS" | while IFS= read -r LINE; do
+                              echo "  $LINE"
+                          done
+                          VIOLATION_FOUND=true
+                      fi
+                  done <<< "$CHANGESET_FILES"
+
+                  if [ "$VIOLATION_FOUND" = "true" ]; then
+                      echo "::error::No minor or major version updates to packages are currently allowed." \
+                           "Only patch bumps are permitted. Please update the changeset file(s) above to use 'patch'."
+                      exit 1
+                  fi
+
+                  echo "✅ All changeset bumps are patch-level. Check passed."
