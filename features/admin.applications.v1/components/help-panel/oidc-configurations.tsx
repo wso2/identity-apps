@@ -77,11 +77,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
 
     const [ endpoints, setEndpoints ] = useState<OIDCEndpointsInterface>(undefined);
 
-    const {
-        data: wellKnownResponse,
-        isLoading: isWellKnownResponseLoading,
-        error: wellKnownResponseFetchError
-    } = useGetOIDCDiscovery();
+    const { data: wellKnownResponse } = useGetOIDCDiscovery();
 
     useEffect(() => {
         if (endpoints !== undefined) {
