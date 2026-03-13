@@ -16,9 +16,10 @@
  * under the License.
  */
 
-import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { updateCDSConfig } from "@wso2is/admin.cds.v1/api/config";
 import useCDSConfig from "@wso2is/admin.cds.v1/hooks/use-config";
+import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import { AlertLevels, FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -57,10 +58,10 @@ export interface PreviewFeaturesListInterface {
  */
 export interface UsePreviewFeaturesReturnInterface {
     accessibleFeatures: PreviewFeaturesListInterface[];
+    canUsePreviewFeatures: boolean;
     handleCDSToggle: (enable: boolean) => Promise<void>;
     handlePageRedirection: (actionId: string) => void;
     handleToggleChange: (e: ChangeEvent<HTMLInputElement>, actionId: string) => Promise<void>;
-    hasPreviewFeatures: boolean;
     previewFeaturesList: PreviewFeaturesListInterface[];
     selected: PreviewFeaturesListInterface | undefined;
     selectedFeatureIndex: number;
@@ -80,6 +81,11 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
 
     const cdsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.customerDataService
+    );
+
+    const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
+    const previewFeaturesFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER
     );
 
     const hasCDSScopes: boolean = useRequiredScopes(cdsFeatureConfig?.scopes?.update);
@@ -194,14 +200,18 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
         [ handleCDSToggle ]
     );
 
-    const hasPreviewFeatures: boolean = accessibleFeatures.length > 0;
+    const hasAccessiblePreviewFeatures: boolean = accessibleFeatures.length > 0;
+    const canUsePreviewFeatures: boolean =
+        saasFeatureStatus === FeatureStatus.ENABLED &&
+        previewFeaturesFeatureStatus === FeatureStatus.ENABLED &&
+        hasAccessiblePreviewFeatures;
 
     return {
         accessibleFeatures,
+        canUsePreviewFeatures,
         handleCDSToggle,
         handlePageRedirection,
         handleToggleChange,
-        hasPreviewFeatures,
         previewFeaturesList,
         selected,
         selectedFeatureIndex,
