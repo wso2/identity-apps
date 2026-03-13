@@ -63,7 +63,7 @@
 
         .copilot-suggestions {
             padding: $copilot-spacing-xxl $copilot-spacing-xxl $copilot-spacing-xxl;
-            background-color: $copilot-background-color-muted;
+            background-color: transparent;
 
             .copilot-suggestions-title {
                 color: $copilot-text-color-secondary;
@@ -71,30 +71,35 @@
                 font-weight: $copilot-font-weight-semibold;
                 text-transform: uppercase;
                 letter-spacing: 0.5px;
-                margin-bottom: $copilot-spacing-lg;
+                margin-bottom: $copilot-spacing-sm;
                 display: block;
+                text-align: center;
             }
 
             .copilot-suggestions-list {
                 display: flex;
-                flex-direction: column;
-                gap: $copilot-spacing-sm;
+                flex-direction: row;
+                gap: $copilot-spacing-md;
+                flex-wrap: wrap;
+                justify-content: center;
 
                 .copilot-suggestion-button {
-                    justify-content: flex-start;
-                    text-align: left;
+                    justify-content: center;
+                    text-align: center;
                     text-transform: none;
-                    padding: 12px 16px;
-                    border-radius: 8px;
-                    background-color: $copilot-background-color;
-                    border: 1px solid $copilot-border-color;
+                    padding: 8px 16px;
+                    border-radius: 24px;
+                    background-color: $copilot-background-color-surface;
+                    border: none;
                     color: $copilot-text-color-primary;
-                    font-size: 14px;
-                    font-weight: 400;
+                    font-size: 13px;
+                    font-weight: 500;
+                    white-space: nowrap;
+                    min-width: auto;
 
                     &:hover {
                         background-color: $copilot-background-color-hover;
-                        border-color: $copilot-border-color-light;
+                        color: $copilot-primary-color;
                     }
                 }
             }
@@ -130,7 +135,7 @@
                     }
 
                     .MuiInputBase-input {
-                        padding: 12px 16px;
+                        padding: 8px 16px;
                         font-size: 14px;
                         line-height: 1.4;
 

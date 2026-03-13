@@ -29,6 +29,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Markdown } from "@wso2is/react-components";
 import React, { ReactElement, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useCopilotPanel } from "../hooks";
+import AISparkleIcon from "./ai-sparkle-icon";
 import "./copilot-chat.scss";
 import { CopilotMessage } from "../store/types";
 
@@ -258,11 +259,9 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
                     className="copilot-message bot-message"
                     data-componentid={ `${componentId}-message-${message.id}` }
                 >
-                    <Box className="copilot-message-content">
-                        <Box className="copilot-message-header">
-                            <Typography variant="caption" className="copilot-message-sender">
-                                Copilot
-                            </Typography>
+                    <Box className="copilot-message-content copilot-bot-message-with-icon">
+                        <Box className="copilot-bot-icon-container">
+                            <AISparkleIcon width={ 28 } height={ 28 } />
                         </Box>
                         <Paper
                             elevation={ 0 }
@@ -319,11 +318,6 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
                         data-componentid={ `${componentId}-loading` }
                     >
                         <Box className="copilot-message-content">
-                            <Box className="copilot-message-header">
-                                <Typography variant="caption" className="copilot-message-sender">
-                                    Copilot
-                                </Typography>
-                            </Box>
                             <Paper elevation={ 0 } className="copilot-message-bubble">
                                 <Box className="copilot-loading-content">
                                     <CircularProgress size={ 16 } className="copilot-loading-spinner" />

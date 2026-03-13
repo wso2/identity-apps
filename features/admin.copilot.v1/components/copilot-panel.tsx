@@ -19,7 +19,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
-import RefreshIcon from "@mui/icons-material/Refresh";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Box from "@oxygen-ui/react/Box";
 import Drawer from "@oxygen-ui/react/Drawer";
 import IconButton from "@oxygen-ui/react/IconButton";
@@ -208,9 +208,6 @@ const CopilotPanel: React.FunctionComponent<CopilotPanelProps> = (
                             <Typography variant="h6" className="copilot-title">
                                 Copilot
                             </Typography>
-                            <Typography variant="caption" className="copilot-preview-label">
-                                Preview
-                            </Typography>
                         </Box>
                     </Box>
 
@@ -224,7 +221,7 @@ const CopilotPanel: React.FunctionComponent<CopilotPanelProps> = (
                                     disabled={ isRefreshing }
                                     className={ `copilot-action-button ${isRefreshing ? "refreshing" : ""}` }
                                 >
-                                    <RefreshIcon fontSize="small" />
+                                    <DeleteIcon fontSize="small" />
                                 </IconButton>
                             </Tooltip>
                         ) }

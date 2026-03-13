@@ -70,31 +70,24 @@ const CopilotWelcome: React.FunctionComponent<CopilotWelcomeProps> = (
         text: string;
     }> = [
         {
-            action: "How can I create a new application in Asgardeo?",
-            id: "create-application",
-            text: t("console:copilot.welcome.actions.createApplication", {
+            action: "What are the different authentication methods available?",
+            id: "authentication-methods",
+            text: t("console:copilot.welcome.actions.authenticationMethods", {
+                defaultValue: "What are the different authentication methods available?"
+            })
+        },
+        {
+            action: "How can I create a new application?",
+            id: "configure-saml",
+            text: t("console:copilot.welcome.actions.configureSaml", {
                 defaultValue: "How can I create a new application?"
             })
         },
         {
-            action: "What are the different authentication methods available?",
-            id: "authentication-methods",
-            text: t("console:copilot.welcome.actions.authenticationMethods", {
-                defaultValue: "Authentication methods available"
-            })
-        },
-        {
-            action: "How do I configure SAML SSO for my application?",
-            id: "configure-saml",
-            text: t("console:copilot.welcome.actions.configureSaml", {
-                defaultValue: "Configure SAML SSO"
-            })
-        },
-        {
-            action: "How can I manage user roles and permissions?",
+            action: "How can I manage user roles?",
             id: "manage-roles",
             text: t("console:copilot.welcome.actions.manageRoles", {
-                defaultValue: "Manage user roles and permissions"
+                defaultValue: "How can I manage user roles?"
             })
         }
     ];
@@ -149,7 +142,7 @@ const CopilotWelcome: React.FunctionComponent<CopilotWelcomeProps> = (
                 { /* Main welcome content */ }
                 <Box className="copilot-welcome-main">
                     <Box className="copilot-avatar-container">
-                        <AiBotAvatar size={ 120 } />
+                        <AiBotAvatar size={ 200 } />
                     </Box>
 
                     <Typography variant="h6" className="copilot-welcome-title">
@@ -174,7 +167,6 @@ const CopilotWelcome: React.FunctionComponent<CopilotWelcomeProps> = (
                                 variant="outlined"
                                 onClick={ () => handleSuggestedAction(item.action) }
                                 data-componentid={ `${componentId}-action-${item.id}` }
-                                fullWidth
                                 className="copilot-suggestion-button"
                             >
                                 { item.text }

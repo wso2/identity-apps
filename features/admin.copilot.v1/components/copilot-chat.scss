@@ -106,8 +106,25 @@
                 margin-bottom: $copilot-spacing-lg;
                 
                 .copilot-message-content {
-                    max-width: 80%;
-                    
+                    width: 100% !important;
+                    max-width: 100% !important;
+                    align-items: stretch !important;
+
+                    // Copilot bot message with icon
+                    &.copilot-bot-message-with-icon {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        position: relative;
+
+                        .copilot-bot-icon-container {
+                            margin-left: 2px;
+                            display: flex;
+                            align-items: flex-start;
+                            z-index: 1;
+                        }
+                    }
+
                     .copilot-message-header {
                         display: flex;
                         align-items: center;
@@ -127,14 +144,14 @@
                     }
                     
                     .copilot-message-bubble {
-                        padding: $copilot-spacing-lg;
-                        background-color: $copilot-background-color-muted;
+                        padding: $copilot-spacing-md;
+                        background-color: transparent !important;
                         color: $copilot-text-color-primary;
-                        border-radius: $copilot-spacing-lg $copilot-spacing-lg $copilot-spacing-lg $copilot-spacing-xs;
+                        border-radius: 0 !important;
                         font-size: $copilot-font-size-md;
                         line-height: $copilot-line-height-normal;
                         word-wrap: break-word;
-                        border: $copilot-border-width solid $copilot-border-color;
+                        border: none !important;
                         // Optimize rendering performance during streaming
                         will-change: auto;
                         contain: layout style;
@@ -322,9 +339,9 @@
                     
                     .copilot-message-bubble {
                         padding: 16px;
-                        background-color: $copilot-background-color-hover;
-                        border-radius: 16px 16px 16px 4px;
-                        border: 1px solid $copilot-border-color;
+                        background-color: transparent !important;
+                        border-radius: 0 !important;
+                        border: none !important;
                         
                         .copilot-loading-content {
                             display: flex;
@@ -375,7 +392,7 @@
                     }
                     
                     .MuiInputBase-input {
-                        padding: 12px 16px;
+                        padding: 8px 16px;
                         font-size: 14px;
                         line-height: 1.4;
                         
@@ -430,9 +447,11 @@
     .copilot-message-content {
         margin-left: auto !important;
         margin-right: 0 !important;
+        max-width: 80%;
 
         .copilot-message-bubble {
-            background-color: $copilot-primary-color !important;
+            background-color: $copilot-background-color-surface !important;
+            color: $copilot-text-color-primary !important;
             margin-left: auto !important;
         }
     }
