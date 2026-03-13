@@ -1,5 +1,11 @@
 # @wso2is/admin.home.v1
 
+## 1.7.145
+
+### Patch Changes
+
+- [#9757](https://github.com/wso2/identity-apps/pull/9757) [`2592388d4464b1a7488aecf4ab20af5dbf82752c`](https://github.com/wso2/identity-apps/commit/2592388d4464b1a7488aecf4ab20af5dbf82752c) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Remove Self Registration Banner from Console Announcements.
+
 ## 1.7.144
 
 ### Patch Changes
