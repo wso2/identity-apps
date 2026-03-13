@@ -67,7 +67,7 @@
         authenticationFailed = "true";
 
         if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
-            errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
+            errorMessage = Encode.forHtmlAttribute(request.getParameter(Constants.AUTH_FAILURE_MSG));
 
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
                 errorMessage = "Authentication Failed! Please Retry";
@@ -193,7 +193,7 @@
                                         onclick="confirmPasswordShowToggle()"></i>
                             </div>
                         </div>
-                        <div id="password-validation-block">
+                        <div id="confirm-password-validation-block">
                             <div class="password-policy-description">
                                 <i id="password-validation-neutral-match" class="inverted grey circle icon"></i>
                                 <i id="password-validation-cross-match" style="display: none;" class="red times circle icon"></i>
