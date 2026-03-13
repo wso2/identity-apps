@@ -84,9 +84,9 @@ export const OPERATION_FIELD_MAPPING: Record<string, string[]> = {
         "role.id",
         "role.audience",
         "role.hasAssignedUsers",
-        "role.hasUnassignedUsers"
+        "role.hasUnassignedUsers",
         // Enable the following fields when they support the data providing in the backend for this operation.
-        // "user.domain",
+        "user.domain"
         // "user.groups",
         // "user.roles"
     ]

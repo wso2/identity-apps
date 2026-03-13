@@ -19,12 +19,12 @@ import Divider from "@oxygen-ui/react/Divider";
 import Grid from "@oxygen-ui/react/Grid";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import { useRequiredScopes } from "@wso2is/access-control";
-import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -49,7 +49,10 @@ import {
     deleteWorkflowAssociationById,
     updateWorkflowAssociationById
 } from "../../api/workflow-associations";
-import { FEATURE_FLAG_RULE_BASED_WORKFLOW_ENGAGEMENT, WORKFLOW_ENGINE } from "../../constants/approval-workflow-constants";
+import {
+    FEATURE_FLAG_RULE_BASED_WORKFLOW_ENGAGEMENT,
+    WORKFLOW_ENGINE
+} from "../../constants/approval-workflow-constants";
 import {
     ApprovalWorkflowPayload,
     OptionDetails,
