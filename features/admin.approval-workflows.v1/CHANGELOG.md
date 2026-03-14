@@ -1,5 +1,15 @@
 # @wso2is/admin.approval-workflows.v1
 
+## 1.2.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.22
+  - @wso2is/admin.roles.v2@2.27.336
+  - @wso2is/admin.rules.v1@0.7.5
+  - @wso2is/admin.users.v1@2.37.13
+
 ## 1.2.3
 
 ### Patch Changes
