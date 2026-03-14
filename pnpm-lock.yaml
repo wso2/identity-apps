@@ -8,6 +8,7 @@ overrides:
   '@mui/material': 5.13.0
   '@types/react': 18.0.18
   webpack: 5.84.1
+  axios: 1.7.9
 
 importers:
 
@@ -23,7 +24,7 @@ importers:
         specifier: ^0.1.3
         version: 0.1.3
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       babel-jest:
         specifier: ^26.3.0
@@ -699,7 +700,7 @@ importers:
         specifier: ^2.4.2
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -1018,7 +1019,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       dayjs:
         specifier: ^1.11.18
@@ -1274,7 +1275,7 @@ importers:
         specifier: ^2.4.1
         version: link:../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -1626,7 +1627,7 @@ importers:
         specifier: ^2.9.24
         version: link:../../modules/react-components
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       dayjs:
         specifier: ^1.11.18
@@ -1918,7 +1919,7 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       i18next:
         specifier: ^21.9.1
@@ -2129,7 +2130,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       classnames:
         specifier: ^2.2.6
@@ -2304,7 +2305,7 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       i18next:
         specifier: ^21.9.1
@@ -2437,7 +2438,7 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       i18next:
         specifier: ^21.9.1
@@ -2573,7 +2574,7 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       i18next:
         specifier: ^21.9.1
@@ -2691,7 +2692,7 @@ importers:
         specifier: ^2.9.12
         version: link:../../modules/react-components
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       i18next:
         specifier: ^21.9.1
@@ -2984,7 +2985,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       classnames:
         specifier: ^2.2.6
@@ -3386,7 +3387,7 @@ importers:
         specifier: ^2.26.1
         version: link:../../modules/i18n
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       lodash-es:
         specifier: ^4.17.21
@@ -3552,7 +3553,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -3952,7 +3953,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       classnames:
         specifier: ^2.2.6
@@ -4298,7 +4299,7 @@ importers:
         specifier: ^2.9.3
         version: link:../../modules/core
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       i18next:
         specifier: ^21.9.1
@@ -4455,7 +4456,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -4852,7 +4853,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -5270,7 +5271,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -5688,7 +5689,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -6217,7 +6218,7 @@ importers:
         specifier: ^2.9.25
         version: link:../../modules/react-components
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       classnames:
         specifier: ^2.2.6
@@ -6569,7 +6570,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -6960,7 +6961,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -7333,7 +7334,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -7709,7 +7710,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -8136,7 +8137,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -8476,7 +8477,7 @@ importers:
         specifier: ^2.9.3
         version: link:../../modules/core
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       i18next:
         specifier: ^21.9.1
@@ -8959,7 +8960,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -9332,7 +9333,7 @@ importers:
         specifier: ^2.9.25
         version: link:../../modules/react-components
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       classnames:
         specifier: ^2.2.6
@@ -9552,7 +9553,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -9937,7 +9938,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -10313,7 +10314,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       deep-equal:
         specifier: ^2.2.2
@@ -10638,7 +10639,7 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       react:
         specifier: ^18.2.0
@@ -10780,7 +10781,7 @@ importers:
         specifier: ^2.9.25
         version: link:../../modules/react-components
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       classnames:
         specifier: ^2.2.6
@@ -10973,7 +10974,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -11322,7 +11323,7 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       dayjs:
         specifier: ^1.11.18
@@ -11488,7 +11489,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -12045,7 +12046,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -12427,7 +12428,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -12833,7 +12834,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -13387,7 +13388,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -13766,7 +13767,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -14148,7 +14149,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -14748,7 +14749,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -15112,7 +15113,7 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       i18next:
         specifier: ^21.9.1
@@ -15290,7 +15291,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -15702,7 +15703,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -16193,7 +16194,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -16566,7 +16567,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -16972,7 +16973,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -17351,7 +17352,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -17730,7 +17731,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -18112,7 +18113,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -18452,7 +18453,7 @@ importers:
         specifier: ^2.7.0
         version: link:../../modules/core
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       classnames:
         specifier: ^2.2.6
@@ -18733,7 +18734,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -19082,7 +19083,7 @@ importers:
         specifier: ^2.9.16
         version: link:../../modules/react-components
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       i18next:
         specifier: ^21.9.1
@@ -19293,7 +19294,7 @@ importers:
         specifier: ^2.4.2
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -19675,7 +19676,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -20066,7 +20067,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -20409,7 +20410,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       classnames:
         specifier: ^2.2.6
@@ -20539,7 +20540,7 @@ importers:
         specifier: ^2.9.12
         version: link:../../modules/react-components
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       react:
         specifier: ^18.2.0
@@ -20828,7 +20829,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -21207,7 +21208,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -21583,7 +21584,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -22386,7 +22387,7 @@ importers:
         specifier: ^2.4.1
         version: link:../../modules/validation
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       codemirror:
         specifier: ^5.52.0
@@ -22800,7 +22801,7 @@ importers:
         specifier: ^29.5.12
         version: 29.5.14
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       country-language:
         specifier: ^0.1.7
@@ -23553,7 +23554,7 @@ importers:
   modules/validation:
     dependencies:
       axios:
-        specifier: ^1.7.9
+        specifier: 1.7.9
         version: 1.7.9
       fastestsmallesttextencoderdecoder:
         specifier: ^1.0.22
@@ -23655,7 +23656,7 @@ packages:
     dependencies:
       '@asgardeo/auth-js': 5.1.1
       await-semaphore: 0.1.3
-      axios: 0.26.1
+      axios: 1.7.9
       base64url: 3.0.1
       buffer: 6.0.3
       fast-sha256: 1.3.0
@@ -35692,13 +35693,6 @@ packages:
     resolution: {integrity: sha512-RE3mdQ7P3FRSe7eqCWoeQ/Z9QXrtniSjp1wUjt5nRC3WIpz5rSCve6o3fsZ2aCpJtrZjSZgjwXAoTO5k4tEI0w==}
     engines: {node: '>=4'}
     dev: true
-
-  /axios@0.26.1:
-    resolution: {integrity: sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==}
-    dependencies:
-      follow-redirects: 1.15.9(debug@4.4.0)
-    transitivePeerDependencies:
-      - debug
 
   /axios@1.7.9:
     resolution: {integrity: sha512-LhLcE7Hbiryz8oMDdDptSrWowmB4Bl6RCt6sIJKpRB4XtVf0iEgewX3au/pJqm+Py1kCASkb/FFKjxQaLtxJvw==}
