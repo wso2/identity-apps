@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.30.0
+
+### Minor Changes
+
+- [#9780](https://github.com/wso2/identity-apps/pull/9780) [`8c694c7fb19ff9b7db08cbe3462781a1310c9ee7`](https://github.com/wso2/identity-apps/commit/8c694c7fb19ff9b7db08cbe3462781a1310c9ee7) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Prepare identity-apps for the next branch releases
+
 ## 2.29.0
 
 ### Minor Changes
