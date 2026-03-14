@@ -23,7 +23,7 @@ import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/featur
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import { AlertLevels, FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import React, { ChangeEvent, Dispatch, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, Dispatch, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import NewCDSFeatureImage from "../assets/illustrations/preview-features/new-cds-feature.png";
@@ -89,16 +89,17 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
     );
 
     const hasCDSScopes: boolean = useRequiredScopes(cdsFeatureConfig?.scopes?.update);
-    
+
     const {
         data: cdsConfig,
         mutate: mutateCDSConfig
     } = useCDSConfig(cdsFeatureConfig?.enabled ?? false);
 
     const previewFeaturesList: PreviewFeaturesListInterface[] = useMemo(() => {
-        const items: (PreviewFeaturesListInterface | false)[] = [
-            cdsFeatureConfig?.enabled &&
-                hasCDSScopes && {
+        const items: PreviewFeaturesListInterface[] = [];
+
+        if (cdsFeatureConfig?.enabled && hasCDSScopes) {
+            items.push({
                 action: t("customerDataService:common.featurePreview.action"),
                 description: t("customerDataService:common.featurePreview.description"),
                 enabled: cdsConfig?.cds_enabled,
@@ -111,10 +112,10 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
                 name: t("customerDataService:common.featurePreview.name"),
                 requiredScopes: cdsFeatureConfig?.scopes?.update,
                 value: "CDS.Enable"
-            }
-        ];
+            });
+        }
 
-        return items.filter((item): item is PreviewFeaturesListInterface => Boolean(item));
+        return items;
     }, [ cdsConfig, cdsFeatureConfig, hasCDSScopes, t ]);
 
     const accessibleFeatures: PreviewFeaturesListInterface[] = useMemo(
@@ -148,6 +149,7 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
         switch (actionId) {
             case "customer-data-service":
                 history.push(AppConstants.getPaths().get("PROFILES"));
+
                 break;
             default:
                 break;
@@ -192,6 +194,7 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
             switch (actionId) {
                 case "customer-data-service":
                     await handleCDSToggle(isChecked);
+
                     break;
                 default:
                     break;
