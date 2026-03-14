@@ -35,6 +35,20 @@ reviews:
             - Only `.changeset/README.md` is modified
 
             If no changeset is found, the check should fail with a clear explanation that changesets are required for tracking changes.
+  path_instructions:
+    - path: ".changeset/**-**-**.md"
+      instructions: |
+        Check if this changeset file contains a `minor` or `major` version bump for any package.
+
+        Version bumps are declared in the frontmatter between `---` delimiters, in the format:
+        ```
+        "@package/name": minor
+        "@package/name": major
+        "@package/name": patch
+        ```
+
+        If any package in this changeset is declared with a `minor` or `major` bump, post a review comment with the following message:
+        "⚠️ **Version Bump Warning:** This changeset contains a `minor` or `major` version bump. Please downgrade it to a `patch` bump. We are currently in the **IS 7.3 release cycle** and the **alpha version has already been released**, so introducing `minor` or `major` version bumps at this stage would interrupt the release workflows and is not permitted until the release is complete."
 knowledge_base:
   code_guidelines:
     enabled: true
