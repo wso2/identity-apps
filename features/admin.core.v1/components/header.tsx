@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -71,6 +71,7 @@ import { AppConstants } from "../constants/app-constants";
 import { OrganizationType } from "../constants/organization-constants";
 import { history } from "../helpers/history";
 import useGlobalVariables from "../hooks/use-global-variables";
+import { usePreviewFeatures } from "../hooks/use-preview-features";
 import { ConfigReducerStateInterface } from "../models/reducer-state";
 import { AppState, store } from "../store";
 import { CommonUtils } from "../utils/common-utils";
@@ -96,6 +97,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const { t } = useTranslation();
 
     const { showPreviewFeaturesModal, setShowPreviewFeaturesModal } = useFeatureGate();
+    const { canUsePreviewFeatures } = usePreviewFeatures();
     const { config: runtimeConfig } = useRuntimeConfig();
 
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
@@ -123,12 +125,6 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
     );
-    const loginAndRegistrationFeatureConfig: FeatureAccessConfigInterface =
-        useSelector((state: AppState) => state?.config?.ui?.features?.loginAndRegistration);
-
-    const cdsFeatureConfig: FeatureAccessConfigInterface =
-        useSelector((state: AppState) => state?.config?.ui?.features?.customerDataService);
-
     const isCentralDeploymentEnabled: boolean = useSelector((state: AppState) => {
         return state?.config?.deployment?.centralDeploymentEnabled;
     });
@@ -682,22 +678,14 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                 </MenuItem>
                             </Show>
                         ),
-                        <Show key="feature.preview" featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
-                            <Show
-                                when={ [
-                                    ...(loginAndRegistrationFeatureConfig?.scopes?.update ?? []),
-                                    ...(cdsFeatureConfig?.scopes?.update ?? [])
-                                ] }
-                                featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
-                            >
-                                <MenuItem onClick={ () => setShowPreviewFeaturesModal(true) }>
-                                    <ListItemIcon>
-                                        <PreviewFeaturesIcon />
-                                    </ListItemIcon>
-                                    <ListItemText>{ t("Feature Preview") }</ListItemText>
-                                </MenuItem>
-                            </Show>
-                        </Show>,
+                        canUsePreviewFeatures && (
+                            <MenuItem onClick={ () => setShowPreviewFeaturesModal(true) }>
+                                <ListItemIcon>
+                                    <PreviewFeaturesIcon />
+                                </ListItemIcon>
+                                <ListItemText>{ t("Feature Preview") }</ListItemText>
+                            </MenuItem>
+                        ),
                         isShowAppSwitchButton() ? (
                             <MenuItem
                                 color="inherit"
@@ -726,10 +714,12 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 } }
                 { ...rest }
             />
-            <FeaturePreviewModal
-                open={ showPreviewFeaturesModal }
-                onClose={ () => setShowPreviewFeaturesModal(false) }
-            />
+            { canUsePreviewFeatures && (
+                <FeaturePreviewModal
+                    open={ showPreviewFeaturesModal }
+                    onClose={ () => setShowPreviewFeaturesModal(false) }
+                />
+            ) }
         </>
     );
 };
