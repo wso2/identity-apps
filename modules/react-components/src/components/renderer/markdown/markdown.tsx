@@ -20,6 +20,7 @@ import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import ReactMarkdown, { ExtraProps, Options } from "react-markdown";
+import remarkGfm from "remark-gfm";
 import rehypeAttrs from "rehype-attr";
 import * as CustomMarkdownComponents from "./components";
 import { GlobalMarkdownContextProps } from "../../../context/global-markdown-context";
@@ -87,6 +88,7 @@ export const Markdown: FunctionComponent<MarkdownPropsInterface> = ({
                 skipHtml={ true }
                 data-componentid={ componentId }
                 data-testid={ testId }
+                remarkPlugins={[remarkGfm]}
                 rehypePlugins={ [ rehypeAttrs ] }
                 allowedElements={ Object.keys(CustomMarkdownComponents) }
                 components={ CustomMarkdownComponents }

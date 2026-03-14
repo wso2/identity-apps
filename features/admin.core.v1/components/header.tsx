@@ -57,10 +57,12 @@ import { FeatureAccessConfigInterface } from "@wso2is/core/src/models";
 import { CookieStorageUtils, StringUtils, URLUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleConstants, LanguageChangeException, LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
 import dayjs from "dayjs";
+import moment from "moment";
 import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import FeaturePreviewModal from "./modals/feature-preview-modal";
+import { CopilotToggleButton } from "../../admin.copilot.v1/components";
 import { ReactComponent as PreviewFeaturesIcon } from "../../themes/default/assets/images/icons/flask-icon.svg";
 import { ReactComponent as LogoutIcon } from "../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../../themes/default/assets/images/icons/user-icon.svg";
@@ -278,6 +280,12 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     };
 
     const generateHeaderButtons = (): ReactElement[] => [
+        // Copilot toggle button
+        <CopilotToggleButton
+            key="copilot-toggle"
+            data-componentid="header-copilot-toggle"
+        />,
+
         showLanguageSwitcher && Object.entries(filteredSupportedI18nLanguages)?.length > 1 && (
             <>
                 <Button

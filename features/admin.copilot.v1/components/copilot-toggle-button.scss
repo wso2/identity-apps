@@ -1,0 +1,64 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+// Import theme variables
+@import "../styles/copilot-variables";
+
+.copilot-toggle-button {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    box-sizing: border-box !important;
+    outline: 0px !important;
+    border: 0px currentcolor !important;
+    margin: 0px !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    vertical-align: middle !important;
+    appearance: none !important;
+    text-decoration: none !important;
+    font-family: $copilot-font-family !important;
+    line-height: 1.75 !important;
+    text-transform: none !important;
+    min-width: 64px !important;
+    border-radius: 22px !important;
+    font-size: $copilot-font-size-md !important;
+    font-weight: $copilot-font-weight-normal !important;
+    padding: $copilot-spacing-xs * 2 $copilot-spacing-lg !important;
+    margin-right: $copilot-spacing-sm !important;
+
+    transition: background-color $copilot-transition-duration $copilot-transition-timing-function,
+                box-shadow $copilot-transition-duration $copilot-transition-timing-function,
+                border-color $copilot-transition-duration $copilot-transition-timing-function !important;
+
+    .ai-sparkle-icon {
+        display: inline-block !important;
+        vertical-align: middle !important;
+        margin-right: 0 !important;
+    }
+
+    .MuiButton-startIcon {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    &.MuiButton-root {
+        gap: $copilot-spacing-xs !important;
+    }
+}
