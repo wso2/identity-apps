@@ -1478,18 +1478,21 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                     </FormControl>
                 </Grid>
                 <Divider hidden />
-                <Grid xs={ 8 }>
-                    <Button
-                        className="mt-5"
-                        variant="contained"
-                        size="small"
-                        disabled={ readOnly }
-                        data-componentid={ `${ componentId }-update-button` }
-                        onClick={ isSharingInProgress ? handleInterruptOngoingShare : handleUserSharing }
-                    >
-                        { t("common:save") }
-                    </Button>
-                </Grid>
+                {
+                    !readOnly && (
+                        <Grid xs={ 8 }>
+                            <Button
+                                className="mt-5"
+                                variant="contained"
+                                size="small"
+                                data-componentid={ `${ componentId }-update-button` }
+                                onClick={ isSharingInProgress ? handleInterruptOngoingShare : handleUserSharing }
+                            >
+                                { t("common:save") }
+                            </Button>
+                        </Grid>
+                    )
+                }
             </Grid>
             { renderConfirmationModal() }
             { renderShareTypeSwitchModal() }
