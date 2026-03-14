@@ -60,7 +60,6 @@ import dayjs from "dayjs";
 import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { usePreviewFeatures } from "../hooks/use-preview-features";
 import FeaturePreviewModal from "./modals/feature-preview-modal";
 import { ReactComponent as PreviewFeaturesIcon } from "../../themes/default/assets/images/icons/flask-icon.svg";
 import { ReactComponent as LogoutIcon } from "../../themes/default/assets/images/icons/logout-icon.svg";
@@ -72,6 +71,7 @@ import { AppConstants } from "../constants/app-constants";
 import { OrganizationType } from "../constants/organization-constants";
 import { history } from "../helpers/history";
 import useGlobalVariables from "../hooks/use-global-variables";
+import { usePreviewFeatures } from "../hooks/use-preview-features";
 import { ConfigReducerStateInterface } from "../models/reducer-state";
 import { AppState, store } from "../store";
 import { CommonUtils } from "../utils/common-utils";
@@ -125,12 +125,6 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
     );
-    const loginAndRegistrationFeatureConfig: FeatureAccessConfigInterface =
-        useSelector((state: AppState) => state?.config?.ui?.features?.loginAndRegistration);
-
-    const cdsFeatureConfig: FeatureAccessConfigInterface =
-        useSelector((state: AppState) => state?.config?.ui?.features?.customerDataService);
-
     const isCentralDeploymentEnabled: boolean = useSelector((state: AppState) => {
         return state?.config?.deployment?.centralDeploymentEnabled;
     });

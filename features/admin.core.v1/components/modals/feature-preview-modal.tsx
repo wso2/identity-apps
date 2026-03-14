@@ -37,8 +37,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { usePreviewFeatures } from "../../hooks/use-preview-features";
-import type { PreviewFeaturesListInterface } from "../../hooks/use-preview-features";
+import { usePreviewFeatures, PreviewFeaturesListInterface } from "../../hooks/use-preview-features";
 
 interface FeaturePreviewModalPropsInterface extends IdentifiableComponentInterface {
     open: boolean;
@@ -62,7 +61,6 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
         handlePageRedirection,
         handleToggleChange,
         selected,
-        selectedFeatureIndex,
         setSelectedFeatureIndex
     } = usePreviewFeatures();
 
