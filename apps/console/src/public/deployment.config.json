@@ -1988,7 +1988,7 @@
             },
             "verifiableCredentials": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "featureFlags": [],
                 "scopes": {
                     "create": [

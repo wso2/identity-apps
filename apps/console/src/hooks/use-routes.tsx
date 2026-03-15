@@ -66,7 +66,7 @@ interface UseRoutesParams {
 const useRoutes = (params: UseRoutesParams): useRoutesInterface => {
     const dispatch: Dispatch = useDispatch();
     const { isOrganizationManagementEnabled } = useGlobalVariables();
-    const { isSuperOrganization } = useGetCurrentOrganizationType();
+    const { isSubOrganization, isSuperOrganization } = useGetCurrentOrganizationType();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const loggedUserName: string = useSelector((state: AppState) => state.profile.profileInfo.userName);
@@ -142,6 +142,10 @@ const useRoutes = (params: UseRoutesParams): useRoutesInterface => {
                 additionalRoutes.push(AppConstants.CDS_PROFILES_ROUTE_ID);
                 additionalRoutes.push(AppConstants.CDS_PROFILE_UNIFICATION_RULES_ROUTE_ID);
                 additionalRoutes.push(AppConstants.CDS_PROFILE_ATTRIBUTES_ROUTE_ID);
+            }
+
+            if (isSubOrganization()) {
+                additionalRoutes.push(AppConstants.VC_TEMPLATES_ROUTE);
             }
 
             // In on-premise Identity Server deployments, the Approvals tab is disabled in the Console.
