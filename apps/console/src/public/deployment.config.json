@@ -443,7 +443,7 @@
                         "internal_agent_mgt_delete"
                     ],
                     "feature": [
-                            "console:agents"
+                        "console:agents"
                     ],
                     "read": [
                         "internal_agent_mgt_list",
