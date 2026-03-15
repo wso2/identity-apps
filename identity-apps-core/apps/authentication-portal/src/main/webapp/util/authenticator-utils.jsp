@@ -21,6 +21,17 @@
 <%@ page import="java.util.List" %>
 
 <%!
+    // Key for the query parameter containing the list of authenticators in the multi-option URI.
+    private static final String AUTHENTICATORS_PARAM = "authenticators=";
+
+    // Percent-encoded semicolon ("%3B") used as the delimiter between authenticator entries.
+    private static final String ENCODED_AUTHENTICATOR_SEPARATOR = "%3B";
+    
+    // Percent-encoded colon ("%3A") used to separate an authenticator's name from its IDP.
+    private static final String ENCODED_AUTHENTICATOR_IDP_SEPARATOR = "%3A";
+
+    private static final String BACKUP_CODE_AUTHENTICATOR_ENTRY = "backup-code-authenticator%3ALOCAL";
+
     /**
      * Checks whether multiple authentication options are available for the current step.
      *
@@ -30,21 +41,22 @@
      */
     private boolean isMultiAuthAvailable(String multiOptionURI, String currentAuthenticator) {
 
-        if (StringUtils.isBlank(multiOptionURI) || "null".equals(multiOptionURI)) {
+        if (StringUtils.isBlank(multiOptionURI)
+                || StringUtils.equalsIgnoreCase("null", StringUtils.trim(multiOptionURI))) {
             return false;
         }
 
-        int startIndex = multiOptionURI.indexOf("authenticators=");
+        int startIndex = multiOptionURI.indexOf(AUTHENTICATORS_PARAM);
         if (startIndex == -1) {
             return false;
         }
 
-        String authSubstring = multiOptionURI.substring(startIndex + 15);
+        String authSubstring = multiOptionURI.substring(startIndex + AUTHENTICATORS_PARAM.length());
         int endIndex = authSubstring.indexOf("&");
 
         // Extract the authenticators list.
         String authenticators = (endIndex != -1) ? authSubstring.substring(0, endIndex) : authSubstring;
-        List<String> authList = Arrays.asList(authenticators.split("%3B"));
+        List<String> authList = Arrays.asList(authenticators.split(ENCODED_AUTHENTICATOR_SEPARATOR));
 
         // Multi-option is only available if there are at least two options.
         if (authList.size() < 2) {
@@ -52,7 +64,7 @@
         }
 
         // Backup codes are not considered a separate "option" for the UI toggle.
-        if (authList.size() == 2 && authList.contains("backup-code-authenticator%3ALOCAL")) {
+        if (authList.size() == 2 && authList.contains(BACKUP_CODE_AUTHENTICATOR_ENTRY)) {
             return false;
         }
 
@@ -61,7 +73,7 @@
         if (StringUtils.isNotBlank(currentAuthenticator)) {
             String currentAuthName = currentAuthenticator.split(":")[0];
             if (authList.stream()
-                    .map(auth -> auth.split("%3A")[0])
+                    .map(auth -> auth.split(ENCODED_AUTHENTICATOR_IDP_SEPARATOR)[0])
                     .noneMatch(currentAuthName::equals)) {
                 return false;
             }
