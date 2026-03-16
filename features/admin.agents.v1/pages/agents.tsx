@@ -25,13 +25,13 @@ import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-store
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DocumentationLink, EmphasizedSegment, EmptyPlaceholder,
     ListLayout, PageLayout, PrimaryButton, useDocumentation } from "@wso2is/react-components";
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Icon } from "semantic-ui-react";
 import AgentList from "../components/agent-list";
-import AddAgentWizard from "../components/wizards/add-agent-wizard";
+import AddAgentWizard, { AgentCreationResultInterface } from "../components/wizards/add-agent-wizard";
 import { useGetAgents } from "../hooks/use-get-agents";
 import "./agents.scss";
 
@@ -85,6 +85,19 @@ export default function Agents ({
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
     };
+
+    const handleAddAgentWizardClose: (result: AgentCreationResultInterface | null) => void = useCallback(
+        (result: AgentCreationResultInterface | null): void => {
+            // Close the wizard
+            setIsAddAgentWizardOpen(false);
+
+            // If agent was created successfully, refresh the list
+            if (result?.agentId) {
+                mutateAgentList();
+            }
+        },
+        [ mutateAgentList ]
+    );
 
     return (
         <PageLayout
@@ -240,15 +253,8 @@ export default function Agents ({
             {isAddAgentWizardOpen && (
                 <AddAgentWizard
                     isOpen={ isAddAgentWizardOpen }
-                    onClose={ (creationResult: any) => {
-                        // Close the wizard
-                        setIsAddAgentWizardOpen(false);
-
-                        // If agent was created successfully, refresh the list
-                        if (creationResult?.agentId) {
-                            mutateAgentList();
-                        }
-                    } }
+                    onClose={ handleAddAgentWizardClose }
+                    data-componentid={ `${componentId}-add-agent-wizard` }
                 />
             )}
 

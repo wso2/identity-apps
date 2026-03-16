@@ -151,7 +151,7 @@ export const agents: AgentsNS = {
                 placeholder: "Enter a description for the agent"
             },
             isUserServingAgent: {
-                label: "Allow users to login to this agent"
+                label: "Allow users to log in to this agent"
             },
             name: {
                 label: "Agent Name",
@@ -188,8 +188,8 @@ export const agents: AgentsNS = {
                 title: "Description"
             },
             isUserServingAgent: {
-                description: "Enable this option if your agent needs users to login to the agent to access user specific resources on behalf of the user. This will create an OAuth2/OIDC application for the agent.",
-                title: "Allow Users to Login"
+                description: "Enable this option if your agent needs users to log in to the agent to access user specific resources on behalf of the user. This will create an OAuth2/OIDC application for the agent.",
+                title: "Allow Users to Log In"
             },
             name: {
                 description: "The name used for your agent.",
@@ -206,7 +206,7 @@ export const agents: AgentsNS = {
                 },
                 description: "Make sure to copy and store these credentials in a secure location. The agent secret cannot be retrieved again after closing this dialog.",
                 oauthClientId: {
-                    description: "The OAuth 2.0 client identifier for your agent application. Use this for OAuth authentication flows. This is only available if you enabled \"Allow users to login to this agent\".",
+                    description: "The OAuth 2.0 client identifier for your agent application. Use this for OAuth authentication flows. This is only available if you enabled \"Allow users to log in to this agent\".",
                     title: "OAuth Client ID"
                 },
                 title: "Important: Save Your Credentials"

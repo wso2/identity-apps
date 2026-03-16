@@ -29,13 +29,14 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Field } from "react-final-form";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Divider, Form, Grid, Icon, Message, Radio } from "semantic-ui-react";
 import { addAgent, updateAgentApplicationConfiguration } from "../../api/agents";
 import { AgentScimSchema, AgentType } from "../../models/agents";
 
 interface AddAgentWizardPropsInterface extends IdentifiableComponentInterface {
     isOpen: boolean;
-    onClose: any;
+    onClose: (result: AgentCreationResultInterface | null) => void;
 }
 
 interface FormValuesInterface {
@@ -48,7 +49,7 @@ interface FormValuesInterface {
     notificationChannels?: string[];
 }
 
-interface AgentCreationResultInterface {
+export interface AgentCreationResultInterface {
     agentId?: string;
     agentSecret?: string;
     oauthClientId?: string;
@@ -64,7 +65,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
         [ "data-componentid" ]: componentId
     } = props;
 
-    const dispatch: any = useDispatch();
+    const dispatch: Dispatch = useDispatch();
     const authenticatedUserInfo: AuthenticatedUserInfo = useSelector((state: AppState) => state?.auth);
     const { t } = useTranslation();
 
@@ -117,7 +118,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                     });
 
                     // Step 4: Fetch the OAuth Client ID
-                    const oidcConfig: any = await getInboundProtocolConfig(applicationId, "oidc");
+                    const oidcConfig: { clientId?: string } = await getInboundProtocolConfig(applicationId, "oidc");
 
                     if (oidcConfig?.clientId) {
                         result.oauthClientId = oidcConfig.clientId;
