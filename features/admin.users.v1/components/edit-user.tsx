@@ -126,6 +126,9 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const hasSharedAccessReadPermission: boolean = useRequiredScopes(
         usersFeatureConfig?.subFeatures?.userSharingV2?.scopes?.read
     );
+    const hasSharedAccessUpdatePermission: boolean = useRequiredScopes(
+        usersFeatureConfig?.subFeatures?.userSharingV2?.scopes?.update
+    );
 
     useEffect(() => {
         if (!isSuperOrganization()) {
@@ -298,7 +301,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <ShareUserForm
                             user={ user }
-                            readOnly={ isReadOnly }
+                            readOnly={ isReadOnly || !hasSharedAccessUpdatePermission }
                             enableConsoleAdminRole={ enableConsoleAdminRole }
                         />
                     </ResourceTab.Pane>
@@ -312,6 +315,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         isUserGroupsEnabled,
         isSharedAccessEnabled,
         hasSharedAccessReadPermission,
+        hasSharedAccessUpdatePermission,
         connectorProperties,
         isSuperAdminIdentifierFetchRequestLoading,
         hideTermination,
