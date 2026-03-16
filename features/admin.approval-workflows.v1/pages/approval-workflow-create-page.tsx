@@ -24,8 +24,10 @@ import Typography from "@oxygen-ui/react/Typography";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
@@ -47,7 +49,7 @@ import NotificationDetailsForm, {
 import WorkflowOperationsDetailsForm, {
     WorkflowOperationsDetailsFormRef
 } from "../components/create/workflow-operations-details-form";
-import { WORKFLOW_ENGINE } from "../constants/approval-workflow-constants";
+import { FEATURE_FLAG_RULE_BASED_WORKFLOW_ENGAGEMENT, WORKFLOW_ENGINE } from "../constants/approval-workflow-constants";
 import { ApprovalWorkflowPayload, OptionDetails, WorkflowTemplate } from "../models/approval-workflows";
 import {
     ApprovalSteps,
@@ -94,6 +96,11 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
     //Set relevant scopes
     const approvalWorkflowFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.workflows
+    );
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const isRuleBasedWorkflowEngagementEnabled: boolean = isFeatureEnabled(
+        featureConfig?.approvalWorkflows,
+        FEATURE_FLAG_RULE_BASED_WORKFLOW_ENGAGEMENT
     );
     const hasApprovalWorkflowCreatePermission: boolean = useRequiredScopes(
         approvalWorkflowFeatureConfig?.scopes?.create
@@ -254,9 +261,11 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                         approvalWorkflowFormData.workflowOperationsDetails.matchedOperations.map(
                             (operation: DropdownPropsInterface) => {
                                 const rule: RuleWithoutIdInterface =
-                                    approvalWorkflowFormData.workflowOperationsDetails.operationRules?.[
-                                        operation.value
-                                    ];
+                                    isRuleBasedWorkflowEngagementEnabled
+                                        ? approvalWorkflowFormData.workflowOperationsDetails.operationRules?.[
+                                            operation.value
+                                        ]
+                                        : undefined;
 
                                 return {
                                     associationName: `Association for ${operation.value ?? operation.value}`,
@@ -398,6 +407,7 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                                     approvalWorkflowFormData?.workflowOperationsDetails?.operationRules ?? {}
                                 }
                                 onRuleUpdate={ handleRuleUpdate }
+                                isRuleBasedWorkflowEngagementEnabled={ isRuleBasedWorkflowEngagementEnabled }
                                 data-componentid={ `${componentId}-workflow-operations-details-form` }
                             />
                             <div

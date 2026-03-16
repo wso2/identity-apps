@@ -55,6 +55,11 @@ export const ENTITY_TYPES: any = {
 export type EntityType = (typeof ENTITY_TYPES)[keyof typeof ENTITY_TYPES];
 
 /**
+ * Feature flag key for rule-based workflow engagement.
+ */
+export const FEATURE_FLAG_RULE_BASED_WORKFLOW_ENGAGEMENT: string = "approvalWorkflows.rules";
+
+/**
  * Flow type
  */
 export const FLOW_TYPE: string = "approvalWorkflow";
@@ -79,9 +84,9 @@ export const OPERATION_FIELD_MAPPING: Record<string, string[]> = {
         "role.id",
         "role.audience",
         "role.hasAssignedUsers",
-        "role.hasUnassignedUsers"
+        "role.hasUnassignedUsers",
         // Enable the following fields when they support the data providing in the backend for this operation.
-        // "user.domain",
+        "user.domain"
         // "user.groups",
         // "user.roles"
     ]
