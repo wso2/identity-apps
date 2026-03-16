@@ -98,7 +98,7 @@ import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Form as SemanticForm } from "semantic-ui-react";
 import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
 import useGetClaimDialects from "../../../api/use-get-claim-dialects";
-import { ClaimManagementConstants } from "../../../constants";
+import { ClaimFeatureDictionaryKeys, ClaimManagementConstants } from "../../../constants";
 import "./edit-basic-details-local-claims.scss";
 
 /**
@@ -181,11 +181,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const hasAttributeUpdatePermissions: boolean = useRequiredScopes(featureConfig?.attributeDialects?.scopes?.update);
     const isUpdatingSharedProfilesEnabled: boolean = !featureConfig?.attributeDialects?.disabledFeatures?.includes(
         "attributeDialects.sharedProfileValueResolvingMethod"
-    );
-
-    const hideUserIdDisplayConfigurations: boolean = isFeatureEnabled(
-        featureConfig?.attributeDialects,
-        ClaimManagementConstants.FEATURE_DICTIONARY.get(ClaimFeatureDictionaryKeys.HideUserIdDisplayConfigurations)
     );
 
     const isSelectiveClaimStoreManagementEnabled: boolean = isFeatureEnabled(
@@ -1000,12 +995,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 `${ testId }-form-self-registration-supported-by-default-checkbox` }
                             readOnly={ isSupportedByDefaultCheckboxDisabled(false, true) }
                             {
-                                ...( isSelfRegistrationRequired || hideSpecialClaims
-                                // Immutable (special) claims should not be displayed in self-registration
-                                    ? { checked: !hideSpecialClaims }
-                                    : { defaultValue: claim?.profiles?.selfRegistration?.supportedByDefault ??
-                                        claim?.supportedByDefault }
-                                )
+                                ...( isSelfRegistrationRequired
+                                    ? { checked: true }
+                                    : hideSpecialClaims
+                                        ? { checked: false }
+                                     : { defaultValue: claim?.profiles?.selfRegistration?.supportedByDefault ??
+                                         claim?.supportedByDefault }
+                                 )
                             }
                         />
                     </TableCell>
