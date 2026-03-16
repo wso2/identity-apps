@@ -23,13 +23,16 @@ import Button from "@oxygen-ui/react/Button";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
+import Skeleton from "@oxygen-ui/react/Skeleton";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Markdown } from "@wso2is/react-components";
-import React, { ReactElement, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import { useCopilotPanel } from "../hooks";
+import React, {
+    Component, ReactElement, ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState
+} from "react";
 import AISparkleIcon from "./ai-sparkle-icon";
+import { useCopilotPanel } from "../hooks";
 import "./copilot-chat.scss";
 import { CopilotMessage } from "../store/types";
 
@@ -41,6 +44,36 @@ export interface CopilotChatProps extends IdentifiableComponentInterface {
      * Additional CSS classes.
      */
     className?: string;
+}
+
+/**
+ * Error boundary that catches rendering errors inside a single chat message.
+ * Prevents a malformed message from crashing the entire chat list.
+ */
+class MessageErrorBoundary extends Component<
+    { children: ReactNode },
+    { hasError: boolean }
+> {
+    constructor(props: { children: ReactNode }) {
+        super(props);
+        this.state = { hasError: false };
+    }
+
+    static getDerivedStateFromError(): { hasError: boolean } {
+        return { hasError: true };
+    }
+
+    render(): ReactNode {
+        if (this.state.hasError) {
+            return (
+                <Typography variant="body2" className="copilot-message-error">
+                    This message could not be displayed.
+                </Typography>
+            );
+        }
+
+        return this.props.children;
+    }
 }
 
 /**
@@ -182,6 +215,7 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
     useEffect(() => {
         if (suppressScrollRef.current) {
             suppressScrollRef.current = false;
+
             return;
         }
         throttledScrollToBottom();
@@ -253,22 +287,57 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
             );
         } else {
             // Copilot message - gray bubble on the left
+            const isLastMessage: boolean = messages[messages.length - 1]?.id === message.id;
+
             return (
                 <Box
                     key={ message.id }
                     className="copilot-message bot-message"
                     data-componentid={ `${componentId}-message-${message.id}` }
                 >
-                    <Box className="copilot-message-content copilot-bot-message-with-icon">
-                        <Box className="copilot-bot-icon-container">
-                            <AISparkleIcon width={ 28 } height={ 28 } />
-                        </Box>
+                    <Box className="copilot-message-content">
                         <Paper
                             elevation={ 0 }
                             className={ `copilot-message-bubble ${isError ? "error-message" : ""}` }
                         >
-                            <Markdown source={ renderedContent } />
+                            <MessageErrorBoundary>
+                                <Markdown source={ renderedContent } />
+                            </MessageErrorBoundary>
                         </Paper>
+
+                        { /* Render suggestions if they exist and this is the latest message */ }
+                        { !isError && isLastMessage && (
+                            <>
+                                { message.suggestionsLoading && !message.suggestions && (
+                                    <Box className="copilot-follow-up-suggestions-list">
+                                        { [ 0, 1 ].map((i: number) => (
+                                            <Skeleton
+                                                key={ `${message.id}-suggestion-skeleton-${i}` }
+                                                variant="rounded"
+                                                className="copilot-suggestion-skeleton"
+                                            />
+                                        )) }
+                                    </Box>
+                                ) }
+                                { message.suggestions && message.suggestions.length > 0 && (
+                                    <Box className="copilot-follow-up-suggestions-list">
+                                        { message.suggestions.map((suggestion: string, index: number) => (
+                                            <Button
+                                                key={ `${message.id}-suggestion-${index}` }
+                                                variant="outlined"
+                                                onClick={ () => sendMessage(suggestion) }
+                                                disabled={ isLoading }
+                                                className="copilot-suggestion-button"
+                                                data-componentid={ `${componentId}-suggestion-${index}` }
+                                                startIcon={ <AISparkleIcon width={ 16 } height={ 16 } /> }
+                                            >
+                                                { suggestion }
+                                            </Button>
+                                        )) }
+                                    </Box>
+                                ) }
+                            </>
+                        ) }
                     </Box>
                 </Box>
             );
@@ -322,7 +391,7 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
                                 <Box className="copilot-loading-content">
                                     <CircularProgress size={ 16 } className="copilot-loading-spinner" />
                                     <Typography variant="body2" className="copilot-loading-text">
-                                        {statusMessage || "Thinking..."}
+                                        { statusMessage || "Thinking..." }
                                     </Typography>
                                 </Box>
                             </Paper>

@@ -19,38 +19,51 @@
 // Import theme variables
 @import "../styles/copilot-variables";
 
+// --- Copilot toggle button variables (mirrors upgrade button pattern) ---
+$copilot-toggle-btn-background: linear-gradient(
+    93deg,
+    rgba($copilot-primary-color, 0.05) 50%,
+    rgba($copilot-primary-color-hover, 0.05) 88.67%,
+    rgba($copilot-primary-color-light, 0.05) 112.88%
+);
+$copilot-toggle-btn-font-weight: $copilot-font-weight-bold;
+$copilot-toggle-btn-line-height: 20px;
+$copilot-toggle-btn-border-color: $copilot-primary-color;
+$copilot-toggle-btn-border-color-hover: $copilot-primary-color-hover;
+$copilot-toggle-btn-border: 1.5px solid $copilot-toggle-btn-border-color;
+$copilot-toggle-btn-border-hover: 1.5px solid $copilot-toggle-btn-border-color-hover;
+$copilot-toggle-btn-transition: background-image $copilot-transition-duration ease-in-out;
+$copilot-toggle-btn-icon-size: 20px;
+$copilot-toggle-btn-icon-transition: all $copilot-transition-duration ease-in-out;
+$copilot-toggle-btn-text-gradient: linear-gradient(
+    93deg,
+    var(--oxygen-palette-gradients-primary-stop2, #{$copilot-primary-color}) 50%,
+    var(--oxygen-palette-gradients-primary-stop1, #{$copilot-primary-color-light}) 100%
+);
+$copilot-toggle-btn-text-fill-color: transparent;
+$copilot-toggle-btn-text-transition: background-position .2s, outline-width .2s;
+
 .copilot-toggle-button {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    position: relative !important;
-    box-sizing: border-box !important;
-    outline: 0px !important;
-    border: 0px currentcolor !important;
-    margin: 0px !important;
-    cursor: pointer !important;
-    user-select: none !important;
-    vertical-align: middle !important;
-    appearance: none !important;
-    text-decoration: none !important;
-    font-family: $copilot-font-family !important;
-    line-height: 1.75 !important;
-    text-transform: none !important;
-    min-width: 64px !important;
-    border-radius: 22px !important;
+    background-image: $copilot-toggle-btn-background !important;
+    font-weight: $copilot-toggle-btn-font-weight !important;
+    line-height: $copilot-toggle-btn-line-height !important;
+    border: $copilot-toggle-btn-border !important;
+    border-radius: $copilot-border-radius-xl !important;
     font-size: $copilot-font-size-md !important;
-    font-weight: $copilot-font-weight-normal !important;
+    font-family: $copilot-font-family !important;
+    text-transform: none !important;
     padding: $copilot-spacing-xs * 2 $copilot-spacing-lg !important;
     margin-right: $copilot-spacing-sm !important;
-
-    transition: background-color $copilot-transition-duration $copilot-transition-timing-function,
-                box-shadow $copilot-transition-duration $copilot-transition-timing-function,
-                border-color $copilot-transition-duration $copilot-transition-timing-function !important;
+    transition: $copilot-toggle-btn-transition !important;
 
     .ai-sparkle-icon {
-        display: inline-block !important;
-        vertical-align: middle !important;
-        margin-right: 0 !important;
+        height: $copilot-toggle-btn-icon-size !important;
+        width: $copilot-toggle-btn-icon-size !important;
+
+        path {
+            fill: $copilot-toggle-btn-border-color !important;
+            transition: $copilot-toggle-btn-icon-transition !important;
+        }
     }
 
     .MuiButton-startIcon {
@@ -60,5 +73,43 @@
 
     &.MuiButton-root {
         gap: $copilot-spacing-xs !important;
+    }
+
+    .copilot-toggle-btn-text {
+        background-clip: text !important;
+        -webkit-background-clip: text !important;
+        background-image: $copilot-toggle-btn-text-gradient !important;
+        color: $copilot-toggle-btn-text-fill-color !important;
+        transition: $copilot-toggle-btn-text-transition !important;
+    }
+}
+
+.copilot-toggle-button:hover:not(.active),
+.copilot-toggle-button.MuiButton-root:hover:not(.active) {
+    background-image: $copilot-toggle-btn-text-gradient !important;
+    border: $copilot-toggle-btn-border-hover !important;
+    box-shadow: $copilot-shadow-md !important;
+
+    .ai-sparkle-icon path {
+        fill: var(--oxygen-palette-primary-contrastText, #{$copilot-text-color-inverse}) !important;
+    }
+
+    .copilot-toggle-btn-text {
+        color: var(--oxygen-palette-primary-contrastText, #{$copilot-text-color-inverse}) !important;
+    }
+}
+
+// Active state — same appearance as default (outlined, gradient text)
+.copilot-toggle-button.active {
+    background-image: $copilot-toggle-btn-background !important;
+    border: $copilot-toggle-btn-border !important;
+
+    .ai-sparkle-icon path {
+        fill: $copilot-toggle-btn-border-color !important;
+    }
+
+    .copilot-toggle-btn-text {
+        background-image: $copilot-toggle-btn-text-gradient !important;
+        color: $copilot-toggle-btn-text-fill-color !important;
     }
 }

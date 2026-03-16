@@ -22,12 +22,12 @@
 .clear-chat-confirmation-modal {
     .MuiDialog-paper {
         border-radius: $copilot-border-radius-lg !important;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 4px 16px rgba(0, 0, 0, 0.08) !important;
-        max-width: 320px !important;
+        box-shadow: $copilot-shadow-xl !important;
+        max-width: $copilot-modal-max-width !important;
         width: auto !important;
         margin: $copilot-spacing-lg !important;
         background-color: $copilot-background-color !important;
-        border: 1px solid $copilot-border-color-light !important;
+        border: $copilot-modal-border !important;
     }
 
     .clear-chat-modal-title {
@@ -41,7 +41,7 @@
 
             .clear-chat-warning-icon {
                 color: $copilot-warning-color !important;
-                font-size: 24px !important;
+                font-size: $copilot-icon-size-lg !important;
             }
 
             .MuiTypography-h6 {

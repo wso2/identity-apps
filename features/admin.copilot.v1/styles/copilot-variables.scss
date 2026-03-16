@@ -16,6 +16,8 @@
  * under the License.
  */
 
+@use "sass:color";
+
 // ==============================================
 // COPILOT THEME VARIABLES
 // ==============================================
@@ -26,9 +28,9 @@
 
 // Colors - Primary
 $copilot-primary-color: #FF7300; // @primaryColor
-$copilot-primary-color-hover: lighten(#FF7300, 10%); // Lighter variant
-$copilot-primary-color-light: lighten(#FF7300, 20%); // Even lighter
-$copilot-primary-color-dark: darken(#FF7300, 10%); // Darker variant
+$copilot-primary-color-hover: color.adjust(#FF7300, $lightness: 10%); // Lighter variant
+$copilot-primary-color-light: color.adjust(#FF7300, $lightness: 20%); // Even lighter
+$copilot-primary-color-dark: color.adjust(#FF7300, $lightness: -10%); // Darker variant
 
 // Colors - Background
 $copilot-background-color: #ffffff; // @white
@@ -63,22 +65,38 @@ $copilot-warning-color: #EBA91C; // @warningColor
 $copilot-error-color: #E53535; // @negativeColor
 $copilot-info-color: #006faa; // @blue
 
+// Colors - Overlays & Dividers (rgba tokens)
+$copilot-overlay-subtle: rgba(0, 0, 0, 0.04);                       // Subtle hover background
+$copilot-overlay-light: rgba(0, 0, 0, 0.05);                        // Code block / table header background
+$copilot-overlay-code: rgba(0, 0, 0, 0.08);                         // Inline code background
+$copilot-divider-color: rgba(0, 0, 0, 0.1);                         // Borders, dividers, table cell borders
+$copilot-overlay-scrim: rgba(0, 0, 0, 0.7);                         // Dark overlay / scrim
+$copilot-overlay-primary: rgba($copilot-primary-color, 0.15);        // Primary color tint (e.g. copy button hover)
+
 // Spacing (based on 4px base unit)
+$copilot-spacing-xxs: 2px;
 $copilot-spacing-xs: 4px;
+$copilot-spacing-sm-compact: 6px;
 $copilot-spacing-sm: 8px;
+$copilot-spacing-md-compact: 10px;
 $copilot-spacing-md: 12px;
 $copilot-spacing-lg: 16px;
 $copilot-spacing-xl: 20px;
 $copilot-spacing-xxl: 24px;
+$copilot-spacing-3xl: 32px;
+$copilot-spacing-4xl: 48px;
 
 // Typography
-$copilot-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+$copilot-font-family: -apple-system, blinkmacsystemfont, "Segoe UI", "Helvetica Neue", arial, sans-serif;
 $copilot-font-size-xs: 10px;
 $copilot-font-size-sm: 12px;
 $copilot-font-size-md: 14px;
 $copilot-font-size-lg: 16px;
 $copilot-font-size-xl: 18px;
 $copilot-font-size-xxl: 20px;
+
+// Letter Spacing
+$copilot-letter-spacing-caps: 0.5px; // Uppercase label tracking
 
 // Font Weights
 $copilot-font-weight-normal: 400;
@@ -87,15 +105,20 @@ $copilot-font-weight-semibold: 600;
 $copilot-font-weight-bold: 700;
 
 // Line Heights
+$copilot-line-height-flat: 1;
+$copilot-line-height-dense: 1.2;
 $copilot-line-height-tight: 1.25;
+$copilot-line-height-compact: 1.4;
 $copilot-line-height-normal: 1.5;
 $copilot-line-height-relaxed: 1.75;
 
 // Border Radius
+$copilot-border-radius-xs: 3px;
 $copilot-border-radius-sm: 4px;
 $copilot-border-radius-md: 8px;
 $copilot-border-radius-lg: 12px;
 $copilot-border-radius-xl: 16px;
+$copilot-border-radius-xxl: 24px;
 
 // Border Width
 $copilot-border-width: 1px;
@@ -103,8 +126,10 @@ $copilot-border-width-thick: 2px;
 
 // Shadows
 $copilot-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+$copilot-shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08);
 $copilot-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
 $copilot-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+$copilot-shadow-xl: 0 8px 32px rgba(0, 0, 0, 0.12);
 
 // Z-Index
 $copilot-z-index-base: 1;
@@ -122,9 +147,8 @@ $copilot-transition-duration-fast: 0.15s;
 $copilot-transition-duration-slow: 0.6s;
 $copilot-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 
-// ==============================================
-// COPILOT SPECIFIC VARIABLES
-// ==============================================
+// Icon Sizes
+$copilot-icon-size-lg: 32px;
 
 // Panel Dimensions
 $copilot-panel-width: 600px;
@@ -151,22 +175,34 @@ $copilot-message-bubble-max-width: 80%;
 $copilot-input-height: 40px;
 $copilot-input-padding: $copilot-spacing-md;
 $copilot-input-border-radius: $copilot-border-radius-md;
+$copilot-input-padding-end: 48px; // Right padding to accommodate the send button
 
 // Suggested Actions
 $copilot-suggested-action-padding: $copilot-spacing-md $copilot-spacing-lg;
 $copilot-suggested-action-border-radius: $copilot-border-radius-md;
 $copilot-suggested-action-gap: $copilot-spacing-sm;
+$copilot-suggestion-chip-height: 36px;
+$copilot-suggestion-skeleton-width: 160px;
+
+// Code Editor
+$copilot-code-copy-offset: 40px; // Right padding to accommodate the copy button
 
 // Welcome Screen
 $copilot-welcome-avatar-size: $copilot-avatar-size-xl;
 $copilot-welcome-title-margin: $copilot-spacing-lg 0 $copilot-spacing-md;
 $copilot-welcome-description-margin: 0 0 $copilot-spacing-xxl;
+$copilot-welcome-description-max-width: 400px;
+
+// Modal
+$copilot-modal-max-width: 320px;
+$copilot-modal-border: $copilot-border-width solid $copilot-border-color-light;
 
 // Chat Area
 $copilot-chat-padding: $copilot-spacing-lg;
 $copilot-chat-message-gap: $copilot-spacing-md;
 
 // Responsive Breakpoints
+$copilot-breakpoint-sm: 480px;
 $copilot-breakpoint-mobile: 768px;
 $copilot-breakpoint-tablet: 1024px;
 $copilot-breakpoint-desktop: 1200px;

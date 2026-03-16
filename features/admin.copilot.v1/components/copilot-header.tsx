@@ -26,6 +26,7 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ReactElement, useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 import AISparkleIcon from "./ai-sparkle-icon";
 import ClearChatConfirmationModal from "./clear-chat-confirmation-modal";
 import { useCopilotPanel } from "../hooks";
@@ -66,8 +67,9 @@ const CopilotHeader: React.FunctionComponent<CopilotHeaderProps> = (
     } = props;
 
 
-    const [ isRefreshing, setIsRefreshing ] = useState(false);
-    const [ showClearChatModal, setShowClearChatModal ] = useState(false);
+    const { t } = useTranslation();
+    const [ isRefreshing, setIsRefreshing ] = useState<boolean>(false);
+    const [ showClearChatModal, setShowClearChatModal ] = useState<boolean>(false);
 
     const {
         clearChat,
@@ -84,16 +86,23 @@ const CopilotHeader: React.FunctionComponent<CopilotHeaderProps> = (
     /**
      * Handle clear chat confirmation.
      */
-    const handleClearChatConfirm: () => void = useCallback(() => {
+    const handleClearChatConfirm: () => Promise<void> = useCallback(async (): Promise<void> => {
         setIsRefreshing(true);
 
         try {
-            clearChat();
+            await clearChat();
         } finally {
             // Reset refresh state after animation
             setTimeout(() => setIsRefreshing(false), 1000);
         }
     }, [ clearChat ]);
+
+    /**
+     * Handle close of the clear chat confirmation modal.
+     */
+    const handleCloseClearChat: () => void = useCallback(() => {
+        setShowClearChatModal(false);
+    }, []);
 
     /**
      * Handle expand/collapse toggle.
@@ -113,14 +122,14 @@ const CopilotHeader: React.FunctionComponent<CopilotHeaderProps> = (
                         <AISparkleIcon width={ 24 } height={ 24 } />
                     </Box>
                     <Typography variant="h6" component="h2" className="copilot-header-title">
-                        Copilot
+                        { t("console:common.copilot.title") }
                     </Typography>
                 </Box>
 
                 { /* Right side - Action buttons */ }
                 <Box className="copilot-header-actions">
                     { messages.length > 0 && (
-                        <Tooltip title="Clear Chat">
+                        <Tooltip title={ t("console:common.copilot.clearChat.title") }>
                             <IconButton
                                 size="small"
                                 onClick={ handleClearChatClick }
@@ -133,7 +142,10 @@ const CopilotHeader: React.FunctionComponent<CopilotHeaderProps> = (
                         </Tooltip>
                     ) }
                     { onToggleExpand && (
-                        <Tooltip title={ isExpanded ? "Collapse" : "Expand" }>
+                        <Tooltip
+                            title={ isExpanded
+                                ? t("console:common.copilot.collapse")
+                                : t("console:common.copilot.expand") }>
                             <IconButton
                                 size="small"
                                 onClick={ handleToggleExpand }
@@ -146,7 +158,7 @@ const CopilotHeader: React.FunctionComponent<CopilotHeaderProps> = (
                             </IconButton>
                         </Tooltip>
                     ) }
-                    <Tooltip title="Close">
+                    <Tooltip title={ t("console:common.copilot.close") }>
                         <IconButton
                             size="small"
                             onClick={ onClose }
@@ -162,7 +174,7 @@ const CopilotHeader: React.FunctionComponent<CopilotHeaderProps> = (
             { /* Clear Chat Confirmation Modal */ }
             <ClearChatConfirmationModal
                 open={ showClearChatModal }
-                onClose={ () => setShowClearChatModal(false) }
+                onClose={ handleCloseClearChat }
                 onConfirm={ handleClearChatConfirm }
                 data-componentid={ `${componentId}-clear-chat-modal` }
             />

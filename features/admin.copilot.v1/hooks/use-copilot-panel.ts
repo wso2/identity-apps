@@ -16,9 +16,13 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
+import { AnyAction } from "redux";
+import { ThunkDispatch } from "redux-thunk";
+
+type AppDispatch = ThunkDispatch<AppState, unknown, AnyAction>;
 import {
     addCopilotMessage,
     clearCopilotChatWithApi,
@@ -87,7 +91,7 @@ export interface UseCopilotPanelInterface {
     /**
      * Function to clear the chat history.
      */
-    clearChat: () => void;
+    clearChat: () => Promise<void>;
     /**
      * Function to set the content type.
      */
@@ -117,9 +121,8 @@ export interface UseCopilotPanelInterface {
  * @returns The copilot panel state and actions.
  */
 const useCopilotPanel = (): UseCopilotPanelInterface => {
-    const dispatch: Dispatch = useDispatch();
-    // Use a generic selector that works with any app state structure
-    const copilotState: CopilotPanelState = useSelector((state: any) => state.copilot);
+    const dispatch: AppDispatch = useDispatch<AppDispatch>();
+    const copilotState: CopilotPanelState = useSelector((state: AppState) => state.copilot);
 
     const showPanel: () => void = useCallback(() => {
         dispatch(setCopilotPanelVisibility(true));
@@ -138,8 +141,8 @@ const useCopilotPanel = (): UseCopilotPanelInterface => {
      * Token handling is done automatically by AsgardeoSPAClient.
      */
     const sendMessage: (message: string) => void = useCallback((message: string) => {
-        dispatch(sendCopilotMessage(message) as any);
-    }, [dispatch]);
+        dispatch(sendCopilotMessage(message));
+    }, [ dispatch ]);
 
     const addMessage: (message: CopilotMessage) => void = useCallback((message: CopilotMessage) => {
         dispatch(addCopilotMessage(message));
@@ -149,9 +152,9 @@ const useCopilotPanel = (): UseCopilotPanelInterface => {
      * Clear the chat history.
      * Token handling is done automatically by AsgardeoSPAClient.
      */
-    const clearChat: () => void = useCallback(() => {
-        dispatch(clearCopilotChatWithApi() as any);
-    }, [dispatch]);
+    const clearChat: () => Promise<void> = useCallback(async () => {
+        await dispatch(clearCopilotChatWithApi());
+    }, [ dispatch ]);
 
     const setContentType: (contentType: CopilotContentType) => void = useCallback((contentType: CopilotContentType) => {
         dispatch(setCopilotContentType(contentType));
@@ -159,27 +162,27 @@ const useCopilotPanel = (): UseCopilotPanelInterface => {
 
     const setLoading: (isLoading: boolean) => void = useCallback((isLoading: boolean) => {
         dispatch(setCopilotPanelLoading(isLoading));
-    }, [dispatch]);
+    }, [ dispatch ]);
 
     const loadHistory: () => void = useCallback(() => {
-        dispatch(fetchCopilotHistory() as any);
-    }, [dispatch]);
+        dispatch(fetchCopilotHistory());
+    }, [ dispatch ]);
 
     const loadMoreHistory: () => void = useCallback(() => {
-        dispatch(loadMoreCopilotHistory() as any);
-    }, [dispatch]);
+        dispatch(loadMoreCopilotHistory());
+    }, [ dispatch ]);
 
     return {
         addMessage,
         clearChat,
-        loadHistory,
-        loadMoreHistory,
         contentType: copilotState?.contentType || CopilotContentType.CHAT,
         hasMoreHistory: copilotState?.hasMoreHistory || false,
         hidePanel,
         isLoading: copilotState?.isLoading || false,
         isLoadingMoreHistory: copilotState?.isLoadingMoreHistory || false,
         isVisible: copilotState?.isVisible || false,
+        loadHistory,
+        loadMoreHistory,
         messages: copilotState?.messages || [],
         sendMessage,
         setContentType,

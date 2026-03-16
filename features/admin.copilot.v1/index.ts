@@ -16,12 +16,4 @@
  * under the License.
  */
 
-// Components — only the entry-point components consumed by other packages
-export { default as CopilotPanel } from "./components/copilot-panel";
-export type { CopilotPanelProps } from "./components/copilot-panel";
-
-export { default as CopilotToggleButton } from "./components/copilot-toggle-button";
-export type { CopilotToggleButtonProps } from "./components/copilot-toggle-button";
-
-// Store — only the reducer wired into the root store by admin.core.v1
-export { copilotReducer } from "./store/reducers";
+export * from "./public-api";

@@ -58,12 +58,10 @@ import { FeatureAccessConfigInterface } from "@wso2is/core/src/models";
 import { CookieStorageUtils, StringUtils, URLUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleConstants, LanguageChangeException, LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
 import dayjs from "dayjs";
-import moment from "moment";
 import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import FeaturePreviewModal from "./modals/feature-preview-modal";
-import { CopilotToggleButton } from "../../admin.copilot.v1/components";
 import { ReactComponent as PreviewFeaturesIcon } from "../../themes/default/assets/images/icons/flask-icon.svg";
 import { ReactComponent as LogoutIcon } from "../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../../themes/default/assets/images/icons/user-icon.svg";
@@ -84,7 +82,14 @@ import "./header.scss";
 /**
  * Dashboard layout Prop types.
  */
-export type HeaderPropsInterface = HeaderProps & IdentifiableComponentInterface;
+export interface HeaderPropsInterface extends HeaderProps, IdentifiableComponentInterface {
+    /**
+     * Optional copilot toggle button to render in the header toolbar.
+     * Pass a rendered <CopilotToggleButton /> from the calling app to avoid
+     * a direct feature dependency on admin.copilot.v1 from admin.core.v1.
+     */
+    copilotToggle?: ReactNode;
+}
 
 /**
  * Implementation of the Reusable Header component.
@@ -94,6 +99,7 @@ export type HeaderPropsInterface = HeaderProps & IdentifiableComponentInterface;
  */
 const Header: FunctionComponent<HeaderPropsInterface> = ({
     "data-componentid": _componentId = "app-header",
+    copilotToggle,
     onCollapsibleHamburgerClick = () => null,
     ...rest
 }: HeaderPropsInterface): ReactElement => {
@@ -278,11 +284,8 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     };
 
     const generateHeaderButtons = (): ReactElement[] => [
-        // Copilot toggle button
-        <CopilotToggleButton
-            key="copilot-toggle"
-            data-componentid="header-copilot-toggle"
-        />,
+        // Copilot toggle button — injected by the caller to avoid circular feature dependency
+        ...(copilotToggle ? [ <React.Fragment key="copilot-toggle">{ copilotToggle }</React.Fragment> ] : []),
 
         showLanguageSwitcher && Object.entries(filteredSupportedI18nLanguages)?.length > 1 && (
             <>

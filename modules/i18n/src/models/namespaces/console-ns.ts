@@ -115,7 +115,17 @@ export interface ConsoleNS {
             show: string;
             hide: string;
             close: string;
-            clearChat: string;
+            collapse: string;
+            expand: string;
+            exitFullscreen: string;
+            expandToFullscreen: string;
+            clearChat: {
+                cancel: string;
+                confirm: string;
+                message: string;
+                submessage: string;
+                title: string;
+            };
             tabs: {
                 chat: string;
                 help: string;
@@ -131,6 +141,19 @@ export interface ConsoleNS {
             };
             documentation: {
                 content: string;
+            };
+            welcome: {
+                actions: {
+                    authenticationMethods: string;
+                    configureSaml: string;
+                    manageRoles: string;
+                };
+                description: string;
+                disclaimer: string;
+                placeholder: string;
+                send: string;
+                suggestionsTitle: string;
+                title: string;
             };
         };
         help: {

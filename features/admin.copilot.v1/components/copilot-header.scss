@@ -67,7 +67,7 @@
         .copilot-header-actions {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: $copilot-spacing-xs;
             
             .copilot-action-button {
                 color: $copilot-text-color-secondary;

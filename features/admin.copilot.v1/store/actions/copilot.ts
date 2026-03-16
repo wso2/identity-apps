@@ -16,12 +16,22 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { Dispatch } from "redux";
 import {
+    type CopilotHistoryResponse,
     clearCopilotChatApi,
     getCopilotChatHistory,
     sendCopilotChatMessage
 } from "../../api/copilot-api";
+
+/**
+ * Shape of a single history record returned by the chat history API.
+ */
+interface HistoryRecord {
+    answer: string;
+    question: string;
+}
 import {
     AddCopilotMessageActionInterface,
     ClearCopilotChatActionInterface,
@@ -92,7 +102,13 @@ export const addCopilotMessage = (message: CopilotMessage): AddCopilotMessageAct
  * @returns An action of type `UPDATE_COPILOT_MESSAGE`.
  */
 export const updateCopilotMessage = (
-    update: { id: string; content: string; type?: CopilotMessage["type"] }
+    update: {
+        id: string;
+        content: string;
+        type?: CopilotMessage["type"];
+        suggestions?: string[];
+        suggestionsLoading?: boolean;
+    }
 ): UpdateCopilotMessageActionInterface => ({
     payload: update,
     type: CopilotActionTypes.UPDATE_COPILOT_MESSAGE
@@ -143,10 +159,12 @@ export const clearCopilotChatWithApi = () => {
 
         try {
             await clearCopilotChatApi();
-        } catch (error: any) {
-            if (!error.message?.includes("Failed to fetch") && !error.message?.includes("Network error")) {
+        } catch (error: unknown) {
+            const errorMsg: string = error instanceof Error ? error.message : String(error);
+
+            if (!errorMsg.includes("Failed to fetch") && !errorMsg.includes("Network error")) {
                 const errorMessage: CopilotMessage = {
-                    content: `Note: Chat cleared locally, but server history may not be cleared: ${error.message}`,
+                    content: `Note: Chat cleared locally, but server history may not be cleared: ${errorMsg}`,
                     id: `warning-${Date.now()}`,
                     sender: "copilot",
                     timestamp: Date.now(),
@@ -203,30 +221,24 @@ export const prependCopilotMessages = (messages: CopilotMessage[]): PrependCopil
  * @returns A thunk function.
  */
 export const fetchCopilotHistory = () => {
-    return async (dispatch: Dispatch, getState: any) => {
+    return async (dispatch: Dispatch, getState: () => AppState) => {
         try {
-            console.log("[fetchCopilotHistory] Dispatching loading state...");
-
             // Check if there are already messages (don't overwrite existing conversation)
-            const currentState = getState();
-            const currentMessages = currentState?.copilot?.messages || [];
+            const currentState: AppState = getState();
+            const currentMessages: CopilotMessage[] = currentState?.copilot?.messages || [];
 
             if (currentMessages.length > 0) {
-                console.log("[fetchCopilotHistory] Messages already exist, skipping history load");
                 return;
             }
 
             dispatch(setCopilotPanelLoading(true));
 
-            console.log("[fetchCopilotHistory] Calling API (offset=0)...");
-            const response = await getCopilotChatHistory(0);
-
-            console.log("[fetchCopilotHistory] Response received:", response);
+            const response: CopilotHistoryResponse = await getCopilotChatHistory(0);
 
             if (response.history && Array.isArray(response.history)) {
                 const messages: CopilotMessage[] = [];
 
-                response.history.forEach((record: any, index: number) => {
+                response.history.forEach((record: HistoryRecord, index: number) => {
                     // Add user message
                     messages.push({
                         content: record.question,
@@ -247,8 +259,8 @@ export const fetchCopilotHistory = () => {
                 });
 
                 // Only set history if we still don't have messages (avoid race condition)
-                const finalState = getState();
-                const finalMessages = finalState?.copilot?.messages || [];
+                const finalState: AppState = getState();
+                const finalMessages: CopilotMessage[] = finalState?.copilot?.messages || [];
 
                 if (finalMessages.length === 0) {
                     dispatch(setCopilotChatHistory(messages));
@@ -260,8 +272,7 @@ export const fetchCopilotHistory = () => {
                     }));
                 }
             }
-        } catch (error: any) {
-            console.error("[fetchCopilotHistory] Error:", error);
+        } catch (_error: unknown) {
             // Silently fail for history fetch errors
         } finally {
             // Only set loading to false if there's no active request
@@ -279,8 +290,8 @@ export const fetchCopilotHistory = () => {
  * @returns A thunk function.
  */
 export const loadMoreCopilotHistory = () => {
-    return async (dispatch: Dispatch, getState: any) => {
-        const state = getState();
+    return async (dispatch: Dispatch, getState: () => AppState) => {
+        const state: AppState = getState();
         const { hasMoreHistory, historyOffset, isLoadingMoreHistory } = state?.copilot || {};
 
         if (!hasMoreHistory || isLoadingMoreHistory) {
@@ -288,19 +299,21 @@ export const loadMoreCopilotHistory = () => {
         }
 
         try {
-            dispatch({ type: CopilotActionTypes.SET_COPILOT_HISTORY_PAGINATION, payload: {
-                hasMoreHistory,
-                nextOffset: historyOffset,
-                total: state?.copilot?.historyTotal ?? 0
-            } as HistoryPaginationPayload });
+            dispatch({
+                payload: {
+                    hasMoreHistory,
+                    nextOffset: historyOffset,
+                    total: state?.copilot?.historyTotal ?? 0
+                } as HistoryPaginationPayload,
+                type: CopilotActionTypes.SET_COPILOT_HISTORY_PAGINATION
+            });
 
-            console.log(`[loadMoreCopilotHistory] Fetching older history (offset=${historyOffset})...`);
-            const response = await getCopilotChatHistory(historyOffset);
+            const response: CopilotHistoryResponse = await getCopilotChatHistory(historyOffset);
 
             if (response.history && Array.isArray(response.history) && response.history.length > 0) {
                 const olderMessages: CopilotMessage[] = [];
 
-                response.history.forEach((record: any, index: number) => {
+                response.history.forEach((record: HistoryRecord, index: number) => {
                     olderMessages.push({
                         content: record.question,
                         id: `hist-older-user-${historyOffset + index}-${Date.now()}`,
@@ -331,8 +344,13 @@ export const loadMoreCopilotHistory = () => {
                     total: state?.copilot?.historyTotal ?? 0
                 }));
             }
-        } catch (error: any) {
-            console.error("[loadMoreCopilotHistory] Error:", error);
+        } catch (_error: unknown) {
+            // Reset pagination so the "load more" button re-enables instead of staying stuck
+            dispatch(setHistoryPagination({
+                hasMoreHistory,
+                nextOffset: historyOffset,
+                total: state?.copilot?.historyTotal ?? 0
+            }));
         }
     };
 };
@@ -386,6 +404,7 @@ class StatusQueue {
     private processNext(): void {
         if (this.cancelled || this.queue.length === 0) {
             this.isProcessing = false;
+
             return;
         }
 
@@ -491,30 +510,62 @@ export const sendCopilotMessage = (userMessage: string) => {
 
         // We'll add the AI message once the first token arrives
         let aiMessageAdded: boolean = false;
-        let pendingTokens: string[] = [];
+        const pendingTokens: string[] = [];
         let drainingStatus: boolean = false;
+        let suggestionsTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
         try {
-            console.log("[sendCopilotMessage] Starting SSE stream");
-
             await sendCopilotChatMessage(
                 userMessage,
                 {
                     onComplete: () => {
-                        console.log("[sendCopilotMessage] Stream completed");
-
                         dispatch(updateCopilotMessage({
                             content: "",
                             id: aiMessageId,
                             type: "text"
                         }));
                     },
-                    onError: (error: string) => {
-                        console.error("[sendCopilotMessage] Stream error:", error);
-                    },
+                    onError: (_error: string) => { /* errors are surfaced via the error message dispatch */ },
                     onStatus: (step: string) => {
                         if (signal.aborted) return;
                         statusQueue.enqueue(step);
+                    },
+                    onSuggestions: (suggestions: string[]) => {
+                        if (signal.aborted) return;
+
+                        // Cancel the safety-net timeout — suggestions arrived in time.
+                        if (suggestionsTimeoutId !== null) {
+                            clearTimeout(suggestionsTimeoutId);
+                            suggestionsTimeoutId = null;
+                        }
+
+                        // Attach the generated suggestions to the AI message so they render as buttons.
+                        // The reducer clears suggestionsLoading when suggestions arrive.
+                        dispatch(updateCopilotMessage({
+                            content: "",
+                            id: aiMessageId,
+                            suggestions
+                        }));
+                    },
+                    onSuggestionsLoading: () => {
+                        if (signal.aborted) return;
+                        dispatch(updateCopilotMessage({
+                            content: "",
+                            id: aiMessageId,
+                            suggestionsLoading: true
+                        }));
+
+                        // Client-side safety net: if SUGGESTIONS never arrives within 10s
+                        // (backend timeout is 12s), clear the loading skeleton so the UI
+                        // doesn't hang indefinitely.
+                        suggestionsTimeoutId = setTimeout(() => {
+                            suggestionsTimeoutId = null;
+                            dispatch(updateCopilotMessage({
+                                content: "",
+                                id: aiMessageId,
+                                suggestionsLoading: false
+                            }));
+                        }, 10000);
                     },
                     onToken: (content: string) => {
                         if (signal.aborted) return;
@@ -565,28 +616,36 @@ export const sendCopilotMessage = (userMessage: string) => {
             dispatch(setCopilotStatusMessage(null));
             currentRequestController = null;
 
-        } catch (error: any) {
-            console.error("[sendCopilotMessage] Error details:", error);
+        } catch (error: unknown) {
             statusQueue.cancel();
 
+            // Clear suggestions timeout if the request errored/aborted mid-stream.
+            if (suggestionsTimeoutId !== null) {
+                clearTimeout(suggestionsTimeoutId);
+                suggestionsTimeoutId = null;
+            }
+
+            const errorName: string = error instanceof Error ? error.name : "";
+            const errorMsg: string = error instanceof Error ? error.message : String(error);
+
             // Don't show error if request was aborted intentionally
-            if (error.name === "AbortError" || signal.aborted) {
-                console.log("[sendCopilotMessage] Request was cancelled");
+            if (errorName === "AbortError" || signal.aborted) {
                 dispatch(setCopilotPanelLoading(false));
                 dispatch(setCopilotStatusMessage(null));
                 currentRequestController = null;
+
                 return;
             }
 
             let errorContent: string = "Sorry, I encountered an error while processing your request. Please try again.";
 
-            if (error.message?.includes("Authentication required")) {
+            if (errorMsg.includes("Authentication required")) {
                 errorContent = "Authentication required. Please log in to continue using the copilot.";
-            } else if (error.message?.includes("Request was cancelled")) {
+            } else if (errorMsg.includes("Request was cancelled")) {
                 errorContent = "Request was cancelled.";
-            } else if (error.message?.includes("Failed to fetch")) {
+            } else if (errorMsg.includes("Failed to fetch")) {
                 errorContent = "Connection failed. Please check if the server is running and try again.";
-            } else if (error.message?.includes("timed out")) {
+            } else if (errorMsg.includes("timed out")) {
                 errorContent = "The request took too long. Please try again with a simpler question.";
             }
 
