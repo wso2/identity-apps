@@ -995,13 +995,16 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 `${ testId }-form-self-registration-supported-by-default-checkbox` }
                             readOnly={ isSupportedByDefaultCheckboxDisabled(false, true) }
                             {
-                                ...( isSelfRegistrationRequired
-                                    ? { checked: true }
-                                    : hideSpecialClaims
-                                        ? { checked: false }
-                                     : { defaultValue: claim?.profiles?.selfRegistration?.supportedByDefault ??
-                                         claim?.supportedByDefault }
-                                 )
+                                ...(
+                                    isSelfRegistrationRequired
+                                        ? { checked: true }
+                                        : hideSpecialClaims
+                                            ? { checked: false }
+                                            : {
+                                                defaultValue: claim?.profiles?.selfRegistration?.supportedByDefault ??
+                                                    claim?.supportedByDefault
+                                            }
+                                )
                             }
                         />
                     </TableCell>
