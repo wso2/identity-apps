@@ -53,7 +53,7 @@
         "@wso2is/react-components": "^2.9.23",
         "@wso2is/theme": "^2.9.3",
         "@wso2is/validation": "^2.4.1",
-        "axios": "^0.19.2",
+        "axios": "^1.7.9",
         "dayjs": "^1.11.18",
         "history": "^4.9.0",
         "i18next": "^21.9.1",

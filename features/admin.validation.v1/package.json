@@ -36,7 +36,7 @@
         "@wso2is/validation": "^2.4.1",
         "@wso2is/admin.groups.v1": "^2.27.126",
         "@wso2is/admin.roles.v2": "^2.27.335",
-        "axios": "^0.19.2",
+        "axios": "^1.7.9",
         "codemirror": "^5.52.0",
         "country-language": "^0.1.7",
         "deep-equal": "^2.2.2",
