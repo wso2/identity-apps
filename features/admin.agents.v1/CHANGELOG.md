@@ -1,5 +1,17 @@
 # @wso2is/admin.agents.v1
 
+## 1.0.184
+
+### Patch Changes
+
+- Updated dependencies [[`228f81159c6998a719bab164f561181820ca2d22`](https://github.com/wso2/identity-apps/commit/228f81159c6998a719bab164f561181820ca2d22)]:
+  - @wso2is/admin.users.v1@2.37.16
+  - @wso2is/admin.core.v1@2.54.25
+  - @wso2is/admin.roles.v2@2.27.339
+  - @wso2is/admin.connections.v1@2.36.9
+  - @wso2is/admin.branding.v1@2.32.125
+  - @wso2is/admin.server-configurations.v1@2.38.8
+
 ## 1.0.183
 
 ### Patch Changes
