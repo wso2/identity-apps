@@ -82,6 +82,10 @@ export interface AgentsNS {
                 label: string;
                 placeholder: string;
                 helperText: string;
+                validations: {
+                    required: string;
+                    minimum: string;
+                };
             };
             notificationChannels: {
                 label: string;
@@ -89,6 +93,9 @@ export interface AgentsNS {
                 options: {
                     email: string;
                     sms: string;
+                };
+                validations: {
+                    required: string;
                 };
             };
         };

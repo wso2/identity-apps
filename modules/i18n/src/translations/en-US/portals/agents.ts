@@ -144,7 +144,11 @@ export const agents: AgentsNS = {
             cibaAuthReqExpiryTime: {
                 helperText: "Specify the expiry time for the CIBA authentication request",
                 label: "CIBA Authentication Request Expiry Time (seconds)",
-                placeholder: "300"
+                placeholder: "300",
+                validations: {
+                    required: "CIBA expiry time is required",
+                    minimum: "Expiry time must be at least 1 second"
+                }
             },
             description: {
                 label: "Description (optional)",
@@ -166,6 +170,9 @@ export const agents: AgentsNS = {
                 options: {
                     email: "Email",
                     sms: "SMS"
+                },
+                validations: {
+                    required: "Please select at least one notification method"
                 }
             }
         },

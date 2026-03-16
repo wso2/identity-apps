@@ -331,10 +331,10 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                                 const numValue: number = typeof value === "string" ? parseInt(value, 10) : value;
 
                                                                 if (!value || isNaN(numValue)) {
-                                                                    return t("agents:wizard.fields.cibaAuthReqExpiryTime.label") + " is required";
+                                                                    return t("agents:wizard.fields.cibaAuthReqExpiryTime.validations.required");
                                                                 }
                                                                 if (numValue < 1) {
-                                                                    return "Expiry time must be at least 1 second";
+                                                                    return t("agents:wizard.fields.cibaAuthReqExpiryTime.validations.minimum");
                                                                 }
                                                                 return undefined;
                                                             } }
@@ -352,7 +352,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                             required={ true }
                                                             validate={ (value: string[]) => {
                                                                 if (!value || value.length === 0) {
-                                                                    return "Please select at least one notification method";
+                                                                    return t("agents:wizard.fields.notificationChannels.validations.required");
                                                                 }
                                                                 return undefined;
                                                             } }
