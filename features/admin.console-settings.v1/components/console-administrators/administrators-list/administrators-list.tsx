@@ -45,7 +45,7 @@ import { deleteGuestUser } from "@wso2is/admin.users.v1/api";
 import { useInvitedUsersList } from "@wso2is/admin.users.v1/api/invite";
 import { UserInviteInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
 import { AdminAccountTypes, InvitationStatus, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
-import { resolveUserSearchAttributes } from "@wso2is/admin.users.v1/utils";
+import useUserFilterAttributeOptions from "@wso2is/admin.users.v1/hooks/use-user-filter-attribute-options";
 import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -267,12 +267,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
         ];
     }, [ userRolesV3FeatureEnabled, featureConfig ]);
 
-    /**
-     * Resolves the attributes by which the users can be searched.
-     */
-    const userSearchAttributes: DropdownChild[] = useMemo(() => {
-        return resolveUserSearchAttributes(profileSchemas);
-    }, [ profileSchemas ]);
+    const filterAttributeOptions: DropdownChild[] = useUserFilterAttributeOptions(profileSchemas);
 
     useEffect(() => {
         setIsEnterpriseLoginEnabled(OrganizationConfig?.isEnterpriseLoginEnabled);
@@ -375,18 +370,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
         setSearchQuery("");
     };
 
-    const resolveFilterAttributeOptions = (): DropdownChild[] => {
-        const filterAttributeOptions: DropdownChild[] = [
-            {
-                key: 0,
-                text: t("users:advancedSearch.form.dropdown." + "filterAttributeOptions.username"),
-                value: "userName"
-            },
-            ...userSearchAttributes
-        ];
 
-        return filterAttributeOptions;
-    };
 
     const renderAdministratorAddOptions = (): ReactElement => {
 
@@ -525,7 +509,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
             advancedSearch={ (
                 <AdvancedSearchWithBasicFilters
                     onFilter={ handleListFilter }
-                    filterAttributeOptions={ resolveFilterAttributeOptions() }
+                    filterAttributeOptions={ filterAttributeOptions }
                     filterAttributePlaceholder={ t(
                         "users:advancedSearch.form.inputs.filterAttribute. " + "placeholder"
                     ) }

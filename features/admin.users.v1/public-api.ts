@@ -18,3 +18,4 @@
 
 export { default as UsersPage } from "./pages/users";
 export { default as UserEditPage } from "./pages/user-edit";
+export { default as useUserFilterAttributeOptions } from "./hooks/use-user-filter-attribute-options";

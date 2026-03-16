@@ -106,7 +106,7 @@ import {
 } from "../constants";
 import { InvitationStatus, UserListInterface } from "../models/user";
 import "./users.scss";
-import { resolveUserSearchAttributes } from "../utils/user-management-utils";
+import useUserFilterAttributeOptions from "../hooks/use-user-filter-attribute-options";
 
 /**
  * Props for the Users page.
@@ -531,12 +531,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         return originalUserList?.totalResults || 0;
     }, [ originalUserList ]);
 
-    /**
-     * Resolves the attributes by which the users can be searched.
-     */
-    const userSearchAttributes: DropdownChild[] = useMemo(() => {
-        return resolveUserSearchAttributes(profileSchemas);
-    }, [ profileSchemas ]);
 
     /**
      * Handles the `onSearchQueryClear` callback action.
@@ -606,52 +600,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         mutateUserListFetchRequest();
     };
 
+    const allFilterAttributeOptions: DropdownChild[] = useUserFilterAttributeOptions(profileSchemas, true);
+    const baseFilterAttributeOptions: DropdownChild[] = useUserFilterAttributeOptions(profileSchemas, false);
+
     const resolveFilterAttributeOptions = (useConsoleAttributeList: boolean): DropdownChild[] => {
-        let filterAttributeOptions: DropdownChild[] = [
-            {
-                key: 0,
-                text: t("users:advancedSearch.form.dropdown.filterAttributeOptions.username"),
-                value: "userName"
-            }
-        ];
-
-        // Add created time and modified time
-        const createdTimeOption: DropdownChild = {
-            key: "meta.created",
-            text: t("users:advancedSearch.form.dropdown.filterAttributeOptions.createdTime"),
-            value: "urn:ietf:params:scim:schemas:core:2.0:meta.created"
-        };
-
-        const modifiedTimeOption: DropdownChild = {
-            key: "meta.lastModified",
-            text: t("users:advancedSearch.form.dropdown.filterAttributeOptions.modifiedTime"),
-            value: "urn:ietf:params:scim:schemas:core:2.0:meta.lastModified"
-        };
-
-        const userIdOption: DropdownChild = {
-            key: "id",
-            text: t("users:advancedSearch.form.dropdown.filterAttributeOptions.userId"),
-            value: "urn:ietf:params:scim:schemas:core:2.0:id"
-        };
-
-        if (useConsoleAttributeList) {
-            filterAttributeOptions.push(createdTimeOption, modifiedTimeOption, userIdOption);
-            // Filter out duplicates based on value
-            const existingValues: Set<string> = new Set(
-                filterAttributeOptions.map((option: DropdownChild) => option.value)
-            );
-
-            // Also exclude the SCIM format userName as it's already added
-            existingValues.add("urn:ietf:params:scim:schemas:core:2.0:User:userName");
-
-            const uniqueUserSearchAttributes: DropdownChild[] = userSearchAttributes.filter(
-                (option: DropdownChild) => !existingValues.has(option.value)
-            );
-
-            filterAttributeOptions = filterAttributeOptions.concat(uniqueUserSearchAttributes);
-        }
-
-        return filterAttributeOptions;
+        return useConsoleAttributeList ? allFilterAttributeOptions : baseFilterAttributeOptions;
     };
 
     /**
