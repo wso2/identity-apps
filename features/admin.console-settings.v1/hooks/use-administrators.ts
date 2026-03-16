@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { UserBasicInterface, UserListInterface } from "@wso2is/admin.core.v1/models/users";
+import { UserBasicInterface, UserListInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -26,12 +26,13 @@ import { useGetParentOrgUserInvites }
 import { InvitationsInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
 import { UserAccountTypes } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-management-utils";
-import { MultiValueAttributeInterface } from "@wso2is/core/models";
+import { MultiValueAttributeInterface, RolesInterface } from "@wso2is/core/models";
 import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
+import useConsoleRoles from "./use-console-roles";
 import useConsoleSettings from "./use-console-settings";
 
 /**
@@ -105,20 +106,24 @@ const useAdministrators = (
 
     const { consoleId } = useConsoleSettings();
 
-    // Build the filter to fetch only users with console roles
+    const { consoleRoles } = useConsoleRoles();
+
+    /**
+     * When an advanced filter is present, the role audience filter cannot be combined with it
+     * at the API level. In that case, pass the filter directly and apply client-side role
+     * filtering via `isAdminUser`. When no filter is provided, use the API-level role audience
+     * filter for efficiency.
+     */
     const adminUsersFilter: string = useMemo(() => {
         if (!consoleId) {
             return null;
         }
 
-        const roleFilter: string = `roles.audienceId eq ${consoleId}`;
-
-        // Combine with any additional filter if provided
         if (filter && filter !== "") {
-            return `${roleFilter} and ${filter}`;
+            return filter;
         }
 
-        return roleFilter;
+        return `roles.audienceId eq ${consoleId}`;
     }, [ consoleId, filter ]);
 
     const {
@@ -159,9 +164,25 @@ const useAdministrators = (
             return user[SCIMConfigs.scim.systemSchema]?.userAccountType === UserAccountTypes.OWNER;
         };
 
+        /**
+         * Checks whether administrator role is present in the user.
+         * Only used when an advanced filter is active, since the API-level role audience
+         * filter is skipped in that case.
+         */
+        const isAdminUser = (user: UserBasicInterface): boolean => {
+            return user?.roles?.some((userRole: UserRoleInterface) => {
+                return consoleRoles?.Resources?.some((consoleRole: RolesInterface) => {
+                    return consoleRole.id === userRole.value;
+                });
+            });
+        };
+
         clonedUserList.Resources = clonedUserList?.Resources?.map((resource: UserBasicInterface) => {
-            // Since we're already filtering by console roles at the API level,
-            // all returned users are administrators. We just need to sort them properly.
+            // When an advanced filter is active, the API does not filter by role audience,
+            // so we check client-side.
+            if (filter && filter !== "" && !isAdminUser(resource)) {
+                return null;
+            }
 
             if (isOwner(resource) && UserManagementUtils.isAuthenticatedUser(authenticatedUser, resource?.userName)) {
                 processedUserList[0] = resource;

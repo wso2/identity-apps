@@ -1192,11 +1192,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 setIsSelfRegistrationRequired(value);
                             } }
                             {
-                                ...( isSelfRegistrationRequired
-                                ? { checked: true }
-                                : (isSelfRegistrationReadOnly || hideSpecialClaims)
-                                        ? { value: false }
-                                        : { defaultValue: claim?.profiles?.selfRegistration?.required ?? claim?.required }
+                                ...(
+                                    isSelfRegistrationRequired
+                                        ? { checked: true }
+                                        : (isSelfRegistrationReadOnly || hideSpecialClaims)
+                                            ? { value: false }
+                                            : { defaultValue: claim?.profiles?.selfRegistration?.required
+                                                ?? claim?.required }
                                 )
                             }
                         />
@@ -1260,8 +1262,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     ariaLabel="Read-only in self-registration"
                                     name="selfRegistrationReadOnly"
                                     defaultValue={ hideSpecialClaims
-                                    ? false
-                                    : claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly }
+                                        ? false
+                                        : claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly }
                                     data-componentid={ `${ testId }-form-self-registration-readOnly-checkbox` }
                                     listen ={ (value: boolean) => {
                                         setIsSelfRegistrationReadOnly(value);
