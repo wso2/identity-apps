@@ -2108,7 +2108,7 @@
                 "enabled": true
             }
         },
-        "isClaimUniquenessValidationEnabled": false,
+        "isClaimUniquenessValidationEnabled": true,
         "isClientSecretHashEnabled": false,
         "isCookieConsentBannerEnabled": true,
         "isCustomClaimMappingEnabled": true,

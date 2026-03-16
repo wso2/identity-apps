@@ -456,7 +456,8 @@ export const applicationConfig: ApplicationConfig = {
                 ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
                 ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
                 ApplicationManagementConstants.PASSWORD,
-                ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
+                ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+                ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
             ] : [
                 ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
                 ApplicationManagementConstants.PASSWORD,

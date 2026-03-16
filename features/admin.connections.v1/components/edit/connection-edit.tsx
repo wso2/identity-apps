@@ -191,8 +191,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     };
 
     const idpImplicitAssociationConfig: ImplicitAssociaionConfigInterface = {
-        isEnabled: identityProvider?.implicitAssociation?.isEnabled,
-        lookupAttribute: identityProvider?.implicitAssociation?.lookupAttribute
+        isEnabled: identityProvider?.implicitAssociation?.isEnabled ?? false,
+        lookupAttribute: identityProvider?.implicitAssociation?.lookupAttribute ?? []
     };
 
     /**

@@ -22,8 +22,13 @@ import {
 import { getExternalClaims } from "@wso2is/admin.claims.v1/api";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Claim } from "@wso2is/core/src/models";
+import { 
+    AlertLevels,
+    Claim,
+    IdentifiableComponentInterface,
+    Property,
+    UniquenessScope
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { Hint, Message } from "@wso2is/react-components";
@@ -71,9 +76,9 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
     const [ primaryClaimList, setPrimaryClaimList ] = useState<DropdownOptionsInterface[]>([]);
     const [ secondaryClaimList, setSecondaryClaimList ] = useState<DropdownOptionsInterface[]>([]);
     const [ primaryLookupAttribute, setPrimaryLookupAttribute ] =
-        useState<string>(config.lookupAttribute.length > 0 ? config.lookupAttribute[0] : "");
+        useState<string>(config.lookupAttribute?.length > 0 ? config.lookupAttribute[0] : "");
     const [ secondaryLookupAttribute, setSecondaryLookupAttribute ] =
-        useState<string>(config.lookupAttribute.length > 1 ? config.lookupAttribute[1] : "");
+        useState<string>(config.lookupAttribute?.length > 1 ? config.lookupAttribute[1] : "");
 
     /**
      * This function process the form values and returns the request body of the API call to update the
@@ -122,7 +127,16 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
         getExternalClaims(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("LOCAL"))
             .then(( response: Claim[] ) => {
                 response.forEach((claim: Claim) => {
-                    if (ConnectionUIConstants.IMPLICIT_ACCOUNT_LINKING_ATTRIBUTES.includes(claim.claimURI)) {
+                    const isImplicitAccountLinkingAttribute: boolean =
+                        ConnectionUIConstants.IMPLICIT_ACCOUNT_LINKING_ATTRIBUTES.includes(claim.claimURI);
+                    // Adding the custom unique attributes which are marked as unique across userstores.
+                    const isCustomUniqueAttribute: boolean =
+                        claim.uniquenessScope === UniquenessScope.ACROSS_USERSTORES &&
+                        claim.properties?.some((property: Property) =>
+                            property.key === "USER_CUSTOM_ATTRIBUTE" && property.value === "TRUE"
+                        );
+
+                    if (isImplicitAccountLinkingAttribute || isCustomUniqueAttribute) {
                         filteredAttributes.push({
                             key: claim.id,
                             text: <SubjectAttributeListItem
@@ -138,6 +152,8 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
                 setFilteredClaimList(filteredAttributes);
             })
             .catch((error: IdentityAppsApiException) => {
+                // eslint-disable-next-line no-console
+                console.error("[TrustedTokenIssuer] getExternalClaims failed:", error);
                 dispatch(
                     addAlert({
                         description:
