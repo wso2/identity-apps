@@ -1,5 +1,16 @@
 # @wso2is/admin.password-recovery-flow-builder.v1
 
+## 1.1.168
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.24
+  - @wso2is/admin.flow-builder-core.v1@0.10.168
+  - @wso2is/admin.rules.v1@0.7.7
+  - @wso2is/admin.flows.v1@1.0.137
+  - @wso2is/admin.server-configurations.v1@2.38.7
+
 ## 1.1.167
 
 ### Patch Changes

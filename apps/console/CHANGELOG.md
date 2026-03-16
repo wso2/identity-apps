@@ -1,5 +1,28 @@
 # @wso2is/console
 
+## 2.106.1
+
+### Patch Changes
+
+- [#9789](https://github.com/wso2/identity-apps/pull/9789) [`220c2350fb7f564e578e6b07863db69971e690f4`](https://github.com/wso2/identity-apps/commit/220c2350fb7f564e578e6b07863db69971e690f4) Thanks [@github-actions](https://github.com/apps/github-actions)! - Hide save button in Shared Access tab when user lacks update permission
+
+- Updated dependencies [[`220c2350fb7f564e578e6b07863db69971e690f4`](https://github.com/wso2/identity-apps/commit/220c2350fb7f564e578e6b07863db69971e690f4)]:
+  - @wso2is/admin.users.v1@2.37.15
+  - @wso2is/admin.agents.v1@1.0.183
+  - @wso2is/admin.onboarding.v1@1.0.39
+  - @wso2is/admin.core.v1@2.54.24
+  - @wso2is/admin.roles.v2@2.27.338
+  - @wso2is/admin.connections.v1@2.36.8
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.168
+  - @wso2is/admin.branding.v1@2.32.124
+  - @wso2is/admin.email-management.v1@2.25.332
+  - @wso2is/admin.flows.v1@1.0.137
+  - @wso2is/admin.home.v1@1.7.148
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.168
+  - @wso2is/admin.server-configurations.v1@2.38.7
+  - @wso2is/admin.approval-workflows.v1@1.2.6
+  - @wso2is/admin.registration-flow-builder.v1@0.10.128
+
 ## 2.106.0
 
 ### Minor Changes
