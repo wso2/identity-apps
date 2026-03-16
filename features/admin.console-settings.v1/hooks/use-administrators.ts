@@ -106,8 +106,6 @@ const useAdministrators = (
 
     const { consoleId } = useConsoleSettings();
 
-    const { consoleRoles } = useConsoleRoles();
-
     /**
      * When an advanced filter is present, the role audience filter cannot be combined with it
      * at the API level. In that case, pass the filter directly and apply client-side role
@@ -146,6 +144,8 @@ const useAdministrators = (
         mutate: mutateInvitedAdministratorsListFetchRequest
     } = useGetParentOrgUserInvites(isSubOrganization());
 
+    const { consoleRoles } = useConsoleRoles(null, null);
+
     /**
      * Transform the original users list response from the API.
      *
@@ -160,14 +160,8 @@ const useAdministrators = (
         const clonedUserList: UserListInterface = cloneDeep(usersList);
         const processedUserList: UserBasicInterface[] = [];
 
-        const isOwner = (user: UserBasicInterface): boolean => {
-            return user[SCIMConfigs.scim.systemSchema]?.userAccountType === UserAccountTypes.OWNER;
-        };
-
         /**
          * Checks whether administrator role is present in the user.
-         * Only used when an advanced filter is active, since the API-level role audience
-         * filter is skipped in that case.
          */
         const isAdminUser = (user: UserBasicInterface): boolean => {
             return user?.roles?.some((userRole: UserRoleInterface) => {
@@ -175,6 +169,10 @@ const useAdministrators = (
                     return consoleRole.id === userRole.value;
                 });
             });
+        };
+
+        const isOwner = (user: UserBasicInterface): boolean => {
+            return user[SCIMConfigs.scim.systemSchema]?.userAccountType === UserAccountTypes.OWNER;
         };
 
         clonedUserList.Resources = clonedUserList?.Resources?.map((resource: UserBasicInterface) => {
