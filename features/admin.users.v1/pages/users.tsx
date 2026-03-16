@@ -104,9 +104,9 @@ import {
     UserAddOptionTypes,
     UserManagementConstants
 } from "../constants";
+import useUserFilterAttributeOptions from "../hooks/use-user-filter-attribute-options";
 import { InvitationStatus, UserListInterface } from "../models/user";
 import "./users.scss";
-import useUserFilterAttributeOptions from "../hooks/use-user-filter-attribute-options";
 
 /**
  * Props for the Users page.
