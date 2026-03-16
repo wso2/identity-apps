@@ -2120,6 +2120,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const isClientAuthenticationSectionEnabled: boolean = (
         ApplicationTemplateIdTypes.CUSTOM_APPLICATION === template?.templateId
         || ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION === template?.templateId
+        || ApplicationTemplateIdTypes.AGENT_APPLICATION === template?.templateId
     ) && !isSystemApplication
       && !isDefaultApplication
       && (isPublicClientFieldEnabled || isClientAuthenticationMethodFieldEnabled);
