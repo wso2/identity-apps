@@ -29,14 +29,6 @@ const httpClient: HttpClientInstance =
     AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Get a streaming request function with automatic token handling.
- * Used for streaming requests (chat).
- */
-const httpStreamClient = (AsgardeoSPAClient.getInstance() as any).httpStreamRequest.bind(
-    AsgardeoSPAClient.getInstance()
-);
-
-/**
  * Interface for chat message request.
  */
 export interface CopilotChatRequest {
@@ -55,14 +47,14 @@ export interface CopilotChatResponse {
 /**
  * SSE event types from the backend.
  */
-export type SSEEventType = "STATUS" | "STREAM" | "STREAM_END" | "ERROR";
+export type SSEEventType = "STATUS" | "STREAM" | "STREAM_END" | "ERROR" | "SUGGESTIONS_LOADING" | "SUGGESTIONS";
 
 /**
  * Interface for a parsed SSE event from the backend.
  */
 export interface SSEEvent {
     type: SSEEventType;
-    content?: string;
+    content?: string | string[]; // Can be string for token, or array of strings for suggestions
     message?: string;
 }
 
@@ -78,6 +70,10 @@ export interface StreamCallbacks {
     onComplete?: () => void;
     /** Called when an error occurs */
     onError?: (error: string) => void;
+    /** Called when the backend starts generating follow-up suggestions (show skeletons) */
+    onSuggestionsLoading?: () => void;
+    /** Called when follow-up suggestions are generated */
+    onSuggestions?: (suggestions: string[]) => void;
 }
 
 /**
@@ -115,34 +111,48 @@ export interface CopilotHistoryResponse {
     has_more: boolean;
 }
 
-// Local development URL (copilot runs on port 8443, separate from identity server on 9443)
-//const COPILOT_BASE_URL: string = "http://localhost:8443/t/carbon.super/api/server/v1/copilot";
+/**
+ * Get the Copilot base URL from Redux config.
+ * Dynamically resolves the endpoint on each request.
+ *
+ * @returns The Copilot API base URL.
+ */
+const getCopilotBaseUrl = (): string => {
+    // Local development URL (copilot runs on port 8443, separate from identity server on 9443)
+    //return "http://localhost:8443/t/carbon.super/api/server/v1/copilot";
 
-// Production URL
-const COPILOT_BASE_URL: string = `${store.getState().config.deployment.serverHost}/t/${
-     store.getState().config.deployment.tenant
-}/api/server/v1/copilot`;
+    // Production URL (uncomment for production, comment the line above)
+    const state = store.getState();
+    return `${state.config.deployment.serverHost}/api/server/v1/copilot`;
+};
 
 /**
  * Parse formal SSE chunks into events.
  * Handles partial events by accumulating a buffer across calls.
  */
 const parseSSEChunk = (chunk: string, buffer: string): { events: SSEEvent[]; remaining: string } => {
-    const combined: string = buffer + chunk;
+    // Normalize line endings: convert all \r\n to \n
+    const normalized: string = (buffer + chunk).replace(/\r\n/g, "\n");
     const events: SSEEvent[] = [];
 
-    // Events are separated by double newlines (\n\n)
-    const parts: string[] = combined.split("\n\n");
+    // Events are separated by double newlines (\n\n or \r\n\r\n after normalization)
+    const parts: string[] = normalized.split("\n\n");
 
     // Last part may be an incomplete event — keep as buffer
     const remaining: string = parts.pop() || "";
 
     for (const part of parts) {
-        // Collect all "data: ..." lines within this event block
+        // Collect all "data: ..." or "data:..." lines within this event block
         const dataLines: string[] = part
             .split("\n")
-            .filter((line: string) => line.startsWith("data: "))
-            .map((line: string) => line.slice(6)); // strip "data: " prefix
+            .map((line: string) => line.trim())
+            .filter((line: string) => line.startsWith("data:"))
+            .map((line: string) => {
+                // Strip "data:" prefix (with or without space)
+                const colonIndex: number = line.indexOf(":");
+
+                return line.slice(colonIndex + 1).trim();
+            });
 
         if (dataLines.length === 0) continue;
 
@@ -153,7 +163,7 @@ const parseSSEChunk = (chunk: string, buffer: string): { events: SSEEvent[]; rem
 
             events.push(parsed);
         } catch (e) {
-            console.warn("[CopilotAPI] Failed to parse SSE event:", jsonStr);
+            // Silently skip malformed SSE events
         }
     }
 
@@ -182,8 +192,6 @@ export const sendCopilotChatMessage = async (
     const correlationId: string = `corr-${Date.now()}`;
     const requestId: string = crypto.randomUUID();
 
-    console.log("[CopilotAPI] Starting SSE stream for chat via httpStreamRequest...");
-
     const stream: ReadableStream<Uint8Array> | undefined =
         await (AsgardeoSPAClient.getInstance() as any).httpStreamRequest({
             data: { question: question.trim() },
@@ -194,7 +202,7 @@ export const sendCopilotChatMessage = async (
                 "x-request-id": requestId
             },
             method: "POST",
-            url: `${COPILOT_BASE_URL}/chat`
+            url: `${getCopilotBaseUrl()}/chat`
         });
 
     if (!stream) {
@@ -209,17 +217,27 @@ export const sendCopilotChatMessage = async (
     const decoder: TextDecoder = new TextDecoder();
     let fullAnswer: string = "";
     let sseBuffer: string = "";
+    let aborted: boolean = false;
 
-    // Abort-signal wiring: cancel the reader if signal fires
-    const abortHandler = (): void => { reader.cancel(); };
+    // Abort-signal wiring: cancel the reader and set aborted flag if signal fires
+    const abortHandler = (): void => {
+        aborted = true;
+        reader.cancel();
+    };
 
     signal?.addEventListener("abort", abortHandler);
 
     try {
-        while (true) {
+        let streamDone: boolean = false;
+
+        while (!streamDone) {
             const { done, value }: ReadableStreamReadResult<Uint8Array> = await reader.read();
 
-            if (done) break;
+            if (done) {
+                streamDone = true;
+
+                continue;
+            }
 
             const chunk: string = decoder.decode(value, { stream: true });
             const { events, remaining } = parseSSEChunk(chunk, sseBuffer);
@@ -229,29 +247,44 @@ export const sendCopilotChatMessage = async (
             for (const event of events) {
                 switch (event.type) {
                     case "STATUS":
-                        if (callbacks?.onStatus && event.content) {
+                        if (callbacks?.onStatus && event.content && typeof event.content === "string") {
                             callbacks.onStatus(event.content);
                         }
+
                         break;
 
                     case "STREAM":
-                        if (event.content) {
+                        if (event.content && typeof event.content === "string") {
                             fullAnswer += event.content;
                             if (callbacks?.onToken) {
                                 callbacks.onToken(event.content);
                             }
                         }
+
                         break;
 
                     case "STREAM_END":
-                        console.log("[CopilotAPI] Stream completed, total answer:", fullAnswer.length, "chars");
                         if (callbacks?.onComplete) {
                             callbacks.onComplete();
                         }
+
+                        break;
+
+                    case "SUGGESTIONS_LOADING":
+                        if (callbacks?.onSuggestionsLoading) {
+                            callbacks.onSuggestionsLoading();
+                        }
+
+                        break;
+
+                    case "SUGGESTIONS":
+                        if (callbacks?.onSuggestions && event.content && Array.isArray(event.content)) {
+                            callbacks.onSuggestions(event.content);
+                        }
+
                         break;
 
                     case "ERROR":
-                        console.error("[CopilotAPI] Server error:", event.message);
                         if (callbacks?.onError) {
                             callbacks.onError(event.message || "Unknown server error");
                         }
@@ -259,13 +292,23 @@ export const sendCopilotChatMessage = async (
                         throw new Error(event.message || "Server error during chat processing");
 
                     default:
-                        console.warn("[CopilotAPI] Unknown event type:", event.type);
+                        break;
                 }
             }
         }
     } finally {
         signal?.removeEventListener("abort", abortHandler);
         reader.releaseLock();
+    }
+
+    // Check if the stream was aborted
+    if (aborted) {
+        const abortMessage: string = "Chat request was aborted";
+
+        if (callbacks?.onError) {
+            callbacks.onError(abortMessage);
+        }
+        throw new Error(abortMessage);
     }
 
     return { answer: fullAnswer };
@@ -289,10 +332,8 @@ export const clearCopilotChatApi = async (): Promise<CopilotClearResponse> => {
             "x-request-id": requestId
         },
         method: HttpMethods.POST,
-        url: `${COPILOT_BASE_URL}/clear`
+        url: `${getCopilotBaseUrl()}/clear`
     };
-
-    console.log("[CopilotAPI] Clearing chat...");
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
@@ -309,11 +350,10 @@ export const clearCopilotChatApi = async (): Promise<CopilotClearResponse> => {
             return result;
         })
         .catch((error: AxiosError) => {
-            console.error("[CopilotAPI] Error clearing chat:", error);
-            const errorData: any = error?.response?.data || {};
+            const errorData: Record<string, unknown> = (error?.response?.data as Record<string, unknown>) || {};
 
             throw new Error(
-                errorData.detail || errorData.message || error.message || "Failed to clear chat"
+                (errorData.detail as string) || (errorData.message as string) || error.message || "Failed to clear chat"
             );
         });
 };
@@ -322,8 +362,8 @@ export const clearCopilotChatApi = async (): Promise<CopilotClearResponse> => {
  * Get a page of the chat history for the user.
  * Uses AsgardeoSPAClient.httpRequest for automatic token handling.
  *
- * History uses reverse-offset pagination: ``offset=0`` returns the most-recent
- * ``limit`` records; incrementing ``offset`` by ``limit`` loads older pages.
+ * History uses reverse-offset pagination: `offset=0` returns the most-recent
+ * `limit` records; incrementing `offset` by `limit` loads older pages.
  *
  * @param limit  - Maximum records to return (1–50, default 10).
  * @param offset - Most-recent records to skip (default 0).
@@ -337,6 +377,7 @@ export const getCopilotChatHistory = async (
     const correlationId: string = `corr-${Date.now()}`;
 
     const params: any = { offset };
+
     if (limit !== undefined) {
         params.limit = limit;
     }
@@ -350,10 +391,8 @@ export const getCopilotChatHistory = async (
         },
         method: HttpMethods.GET,
         params,
-        url: `${COPILOT_BASE_URL}/history`
+        url: `${getCopilotBaseUrl()}/history`
     };
-
-    console.log(`[CopilotAPI] Fetching chat history (limit=${limit}, offset=${offset})...`);
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
@@ -364,11 +403,10 @@ export const getCopilotChatHistory = async (
             return response.data;
         })
         .catch((error: AxiosError) => {
-            console.error("[CopilotAPI] Error fetching history:", error);
-            const errorData: any = error?.response?.data || {};
+            const errorData: Record<string, unknown> = (error?.response?.data as Record<string, unknown>) || {};
 
             throw new Error(
-                errorData.detail || errorData.message || error.message || "Failed to fetch history"
+                (errorData.detail as string) || (errorData.message as string) || error.message || "Failed to fetch history"
             );
         });
 };

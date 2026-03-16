@@ -44,7 +44,7 @@ export interface ClearChatConfirmationModalProps extends IdentifiableComponentIn
     /**
      * Callback for when the clear chat action is confirmed.
      */
-    onConfirm: () => void;
+    onConfirm: () => Promise<void>;
 }
 
 /**
@@ -63,14 +63,16 @@ const ClearChatConfirmationModal: React.FunctionComponent<ClearChatConfirmationM
         ["data-componentid"]: componentId = "clear-chat-confirmation-modal"
     } = props;
 
-    const { t: _t } = useTranslation();
+    const { t } = useTranslation();
 
     /**
      * Handle confirm action.
      */
-    const handleConfirm = () => {
-        onConfirm();
+    const handleConfirm = (): void => {
+        // Close modal immediately so the panel's refresh indicator is visible during the async op.
+        // Errors are handled inside onConfirm via Redux state, so the Promise is intentionally not awaited.
         onClose();
+        void onConfirm();
     };
 
     return (
@@ -88,17 +90,17 @@ const ClearChatConfirmationModal: React.FunctionComponent<ClearChatConfirmationM
                 <Box className="clear-chat-modal-title-content">
                     <WarningIcon className="clear-chat-warning-icon" />
                     <Typography variant="h6" component="span">
-                        Clear Chat
+                        { t("console:common.copilot.clearChat.title") }
                     </Typography>
                 </Box>
             </DialogTitle>
 
             <DialogContent className="clear-chat-modal-content">
                 <Typography variant="body1" className="clear-chat-modal-message">
-                    Are you sure you want to clear the chat?
+                    { t("console:common.copilot.clearChat.message") }
                 </Typography>
                 <Typography variant="body2" className="clear-chat-modal-submessage">
-                    This action cannot be undone.
+                    { t("console:common.copilot.clearChat.submessage") }
                 </Typography>
             </DialogContent>
 
@@ -110,7 +112,7 @@ const ClearChatConfirmationModal: React.FunctionComponent<ClearChatConfirmationM
                     data-componentid={ `${componentId}-cancel-button` }
                     className="clear-chat-cancel-button"
                 >
-                    Cancel
+                    { t("console:common.copilot.clearChat.cancel") }
                 </Button>
                 <Button
                     variant="contained"
@@ -119,7 +121,7 @@ const ClearChatConfirmationModal: React.FunctionComponent<ClearChatConfirmationM
                     data-componentid={ `${componentId}-confirm-button` }
                     className="clear-chat-confirm-button"
                 >
-                    Clear Chat
+                    { t("console:common.copilot.clearChat.confirm") }
                 </Button>
             </DialogActions>
         </Dialog>

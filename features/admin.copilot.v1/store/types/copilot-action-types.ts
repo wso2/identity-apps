@@ -75,6 +75,9 @@ export interface CopilotMessage {
     sender: "user" | "copilot";
     timestamp: number;
     type?: "text" | "code" | "error" | "streaming";
+    suggestions?: string[];
+    /** True while the backend is generating suggestions — used to show skeleton placeholders. */
+    suggestionsLoading?: boolean;
 }
 
 /**
@@ -144,6 +147,8 @@ export interface UpdateCopilotMessageActionInterface {
         id: string;
         content: string;
         type?: CopilotMessage["type"];
+        suggestions?: string[];
+        suggestionsLoading?: boolean;
     };
     type: CopilotActionTypes.UPDATE_COPILOT_MESSAGE;
 }

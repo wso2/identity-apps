@@ -82,7 +82,15 @@ export const copilotReducer: Reducer<CopilotPanelState> = (
                         ? {
                             ...message,
                             content: message.content + action.payload.content,
-                            type: action.payload.type ?? message.type
+                            type: action.payload.type ?? message.type,
+                            ...(action.payload.suggestions !== undefined && {
+                                suggestions: action.payload.suggestions,
+                                suggestionsLoading: false
+                            }),
+                            ...(action.payload.suggestionsLoading !== undefined &&
+                                action.payload.suggestions === undefined && {
+                                suggestionsLoading: action.payload.suggestionsLoading
+                            })
                         }
                         : message
                 )

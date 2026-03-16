@@ -19,7 +19,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
-import DeleteIcon from "@mui/icons-material/Delete";
+import RefreshIcon from "@mui/icons-material/Refresh";
 import Box from "@oxygen-ui/react/Box";
 import Drawer from "@oxygen-ui/react/Drawer";
 import IconButton from "@oxygen-ui/react/IconButton";
@@ -27,7 +27,7 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { ReactElement, useCallback, useState, useEffect } from "react";
+import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AISparkleIcon from "./ai-sparkle-icon";
 import ClearChatConfirmationModal from "./clear-chat-confirmation-modal";
@@ -75,7 +75,7 @@ const CopilotPanel: React.FunctionComponent<CopilotPanelProps> = (
         isVisible,
         contentType,
         messages,
-        isLoading,
+        isLoading: _isLoading,
         hidePanel,
         clearChat,
         loadHistory
@@ -88,7 +88,7 @@ const CopilotPanel: React.FunctionComponent<CopilotPanelProps> = (
         if (isVisible) {
             loadHistory();
         }
-    }, [isVisible, loadHistory]);
+    }, [ isVisible, loadHistory ]);
 
     /**
      * Handle panel close.
@@ -114,13 +114,16 @@ const CopilotPanel: React.FunctionComponent<CopilotPanelProps> = (
     /**
      * Handle clear chat confirmation.
      */
-    const handleClearChatConfirm: () => void = useCallback(() => {
+    const handleClearChatConfirm: () => Promise<void> = useCallback(async () => {
         setIsRefreshing(true);
 
         try {
-            clearChat();
+            await clearChat();
+        } catch (_error: unknown) {
+            // clearCopilotChatWithApi handles errors internally via chat messages;
+            // this catch prevents an unhandled rejection if that contract ever changes.
         } finally {
-            // Reset refresh state after animation
+            // Reset refresh state after API completes
             setTimeout(() => setIsRefreshing(false), 1000);
         }
     }, [ clearChat ]);
@@ -141,7 +144,7 @@ const CopilotPanel: React.FunctionComponent<CopilotPanelProps> = (
                 return (
                     <Box p={ 2 }>
                         <Typography variant="body1">
-                            { t("console:copilot.help.content") }
+                            { t("console:common.copilot.help.content") }
                         </Typography>
                     </Box>
                 );
@@ -149,7 +152,7 @@ const CopilotPanel: React.FunctionComponent<CopilotPanelProps> = (
                 return (
                     <Box p={ 2 }>
                         <Typography variant="body1">
-                            { t("console:copilot.documentation.content") }
+                            { t("console:common.copilot.documentation.content") }
                         </Typography>
                     </Box>
                 );
@@ -219,16 +222,23 @@ const CopilotPanel: React.FunctionComponent<CopilotPanelProps> = (
                                     size="small"
                                     onClick={ handleClearChatClick }
                                     disabled={ isRefreshing }
+                                    aria-label={ t("console:common.copilot.clearChat.title") }
                                     className={ `copilot-action-button ${isRefreshing ? "refreshing" : ""}` }
                                 >
-                                    <DeleteIcon fontSize="small" />
+                                    <RefreshIcon fontSize="small" />
                                 </IconButton>
                             </Tooltip>
                         ) }
-                        <Tooltip title={ isExpanded ? "Exit Fullscreen" : "Expand to Fullscreen" }>
+                        <Tooltip
+                            title={ isExpanded
+                                ? t("console:common.copilot.exitFullscreen")
+                                : t("console:common.copilot.expandToFullscreen") }>
                             <IconButton
                                 onClick={ handleToggleExpand }
                                 size="small"
+                                aria-label={ isExpanded
+                                    ? t("console:common.copilot.exitFullscreen")
+                                    : t("console:common.copilot.expandToFullscreen") }
                                 className="copilot-action-button"
                             >
                                 { isExpanded
@@ -236,13 +246,16 @@ const CopilotPanel: React.FunctionComponent<CopilotPanelProps> = (
                                     : <FullscreenIcon fontSize="small" /> }
                             </IconButton>
                         </Tooltip>
-                        <IconButton
-                            onClick={ handleClose }
-                            size="small"
-                            className="copilot-action-button"
-                        >
-                            <CloseIcon fontSize="small" />
-                        </IconButton>
+                        <Tooltip title={ t("console:common.copilot.close") }>
+                            <IconButton
+                                onClick={ handleClose }
+                                size="small"
+                                aria-label={ t("console:common.copilot.close") }
+                                className="copilot-action-button"
+                            >
+                                <CloseIcon fontSize="small" />
+                            </IconButton>
+                        </Tooltip>
                     </Box>
                 </Box>
 

@@ -22,6 +22,7 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import { ArrowLeftIcon } from "@oxygen-ui/react-icons";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
+import { CopilotToggleButton } from "@wso2is/admin.copilot.v1/components";
 import Header from "@wso2is/admin.core.v1/components/header";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
@@ -187,6 +188,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
             <AppShell
                 header={
                     (<Header
+                        copilotToggle={ <CopilotToggleButton data-componentid="header-copilot-toggle" /> }
                         onCollapsibleHamburgerClick={ () => {
                             hasGettingStartedViewPermission && history.push(appHomePath);
                         } }

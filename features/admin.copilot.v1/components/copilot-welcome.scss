@@ -38,7 +38,7 @@
             flex-direction: column;
             justify-content: flex-start; 
             align-items: center;
-            padding: 24px 24px 0 24px;
+            padding: $copilot-spacing-xxl $copilot-spacing-xxl 0 $copilot-spacing-xxl;
             text-align: center;
 
             .copilot-avatar-container {
@@ -56,8 +56,8 @@
                 color: $copilot-text-color-secondary;
                 font-size: $copilot-font-size-md;
                 line-height: $copilot-line-height-normal;
-                margin-bottom: $copilot-spacing-xxl * 1.33;
-                max-width: 400px;
+                margin-bottom: $copilot-spacing-xxl;
+                max-width: $copilot-welcome-description-max-width;
             }
         }
 
@@ -67,10 +67,10 @@
 
             .copilot-suggestions-title {
                 color: $copilot-text-color-secondary;
-                font-size: $copilot-font-size-xs + 1px;
+                font-size: $copilot-font-size-sm;
                 font-weight: $copilot-font-weight-semibold;
                 text-transform: uppercase;
-                letter-spacing: 0.5px;
+                letter-spacing: $copilot-letter-spacing-caps;
                 margin-bottom: $copilot-spacing-sm;
                 display: block;
                 text-align: center;
@@ -87,13 +87,13 @@
                     justify-content: center;
                     text-align: center;
                     text-transform: none;
-                    padding: 8px 16px;
-                    border-radius: 24px;
+                    padding: $copilot-spacing-sm $copilot-spacing-lg;
+                    border-radius: $copilot-border-radius-xxl;
                     background-color: $copilot-background-color-surface;
                     border: none;
                     color: $copilot-text-color-primary;
-                    font-size: 13px;
-                    font-weight: 500;
+                    font-size: $copilot-font-size-sm;
+                    font-weight: $copilot-font-weight-medium;
                     white-space: nowrap;
                     min-width: auto;
 
@@ -107,8 +107,8 @@
     }
 
     .copilot-input-container {
-        border-top: 1px solid $copilot-border-color;
-        padding: 16px;
+        border-top: $copilot-border-width solid $copilot-border-color;
+        padding: $copilot-spacing-lg;
         background-color: $copilot-background-color;
 
         .copilot-input-wrapper {
@@ -116,10 +116,10 @@
 
             .copilot-input-field {
                 .MuiOutlinedInput-root {
-                    border-radius: 24px;
+                    border-radius: $copilot-border-radius-xxl;
                     background-color: $copilot-background-color-hover;
-                    border: 1px solid $copilot-border-color;
-                    padding-right: 48px;
+                    border: $copilot-border-width solid $copilot-border-color;
+                    padding-right: $copilot-input-padding-end;
 
                     &:hover {
                         border-color: $copilot-border-color-light;
@@ -135,9 +135,9 @@
                     }
 
                     .MuiInputBase-input {
-                        padding: 8px 16px;
-                        font-size: 14px;
-                        line-height: 1.4;
+                        padding: $copilot-spacing-sm $copilot-spacing-lg;
+                        font-size: $copilot-font-size-md;
+                        line-height: $copilot-line-height-compact;
 
                         &::placeholder {
                             color: $copilot-text-color-muted;
@@ -149,11 +149,11 @@
 
             .copilot-send-button {
                 position: absolute;
-                right: 8px;
+                right: $copilot-spacing-sm;
                 top: 50%;
                 transform: translateY(-50%);
-                width: 32px;
-                height: 32px;
+                width: $copilot-avatar-size-md;
+                height: $copilot-avatar-size-md;
                 background-color: $copilot-primary-color;
                 color: $copilot-text-color-inverse;
 
@@ -170,9 +170,9 @@
 
         .copilot-disclaimer {
             color: $copilot-text-color-secondary;
-            font-size: 12px;
+            font-size: $copilot-font-size-sm;
             text-align: center !important;
-            margin-top: 12px;
+            margin-top: $copilot-spacing-md;
             line-height: 1.4;
             display: block !important;
             width: 100% !important;

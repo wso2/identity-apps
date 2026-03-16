@@ -17,19 +17,6 @@
  */
 
 /**
- * Copilot panel constants.
- */
-export const COPILOT_PANEL_CONSTANTS: {
-    DEFAULT_WIDTH: number;
-    MOBILE_BREAKPOINT: number;
-    Z_INDEX: number;
-} = {
-    DEFAULT_WIDTH: 400,
-    MOBILE_BREAKPOINT: 768,
-    Z_INDEX: 1700 // Above header (1201), navbar, and all other elements
-};
-
-/**
  * Copilot feature flags.
  */
 export const COPILOT_FEATURE_FLAGS: {

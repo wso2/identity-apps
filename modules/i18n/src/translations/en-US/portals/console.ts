@@ -373,7 +373,17 @@ export const console: ConsoleNS = {
             show: "Show Copilot",
             hide: "Hide Copilot",
             close: "Close",
-            clearChat: "Clear Chat",
+            collapse: "Collapse",
+            expand: "Expand",
+            exitFullscreen: "Exit fullscreen",
+            expandToFullscreen: "Expand to fullscreen",
+            clearChat: {
+                cancel: "Cancel",
+                confirm: "Clear Chat",
+                message: "Are you sure you want to clear the chat and start over?",
+                submessage: "This action cannot be undone.",
+                title: "Clear Chat"
+            },
             tabs: {
                 chat: "Chat",
                 help: "Help"
@@ -389,6 +399,19 @@ export const console: ConsoleNS = {
             },
             documentation: {
                 content: "Access comprehensive documentation and guides for WSO2 Identity Server."
+            },
+            welcome: {
+                actions: {
+                    authenticationMethods: "What are the different authentication methods available?",
+                    configureSaml: "How can I create a new application?",
+                    manageRoles: "How can I manage user roles?"
+                },
+                description: "I can help you with identity management, application setup, user management, and more.",
+                disclaimer: "Use Copilot mindfully as AI can make mistakes.",
+                placeholder: "Enter your message here...",
+                send: "Send message",
+                suggestionsTitle: "TRY ASKING ABOUT",
+                title: "Hi, Welcome to Copilot! How can I assist you?"
             }
         },
         sidePanel: {

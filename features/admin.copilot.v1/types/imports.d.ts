@@ -49,4 +49,3 @@ declare module "*.gif" {
     export default content;
 }
 
-declare module "*.md";

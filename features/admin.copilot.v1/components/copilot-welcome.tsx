@@ -26,6 +26,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ReactElement, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AiBotAvatar from "./ai-bot-avatar";
+import AISparkleIcon from "./ai-sparkle-icon";
 import { useCopilotPanel } from "../hooks";
 import "./copilot-welcome.scss";
 
@@ -65,30 +66,20 @@ const CopilotWelcome: React.FunctionComponent<CopilotWelcomeProps> = (
     // Suggested actions
     // TODO: Make this dynamic based on user context
     const suggestedActions: Array<{
-        action: string;
         id: string;
         text: string;
     }> = [
         {
-            action: "What are the different authentication methods available?",
             id: "authentication-methods",
-            text: t("console:copilot.welcome.actions.authenticationMethods", {
-                defaultValue: "What are the different authentication methods available?"
-            })
+            text: t("console:common.copilot.welcome.actions.authenticationMethods")
         },
         {
-            action: "How can I create a new application?",
             id: "configure-saml",
-            text: t("console:copilot.welcome.actions.configureSaml", {
-                defaultValue: "How can I create a new application?"
-            })
+            text: t("console:common.copilot.welcome.actions.configureSaml")
         },
         {
-            action: "How can I manage user roles?",
             id: "manage-roles",
-            text: t("console:copilot.welcome.actions.manageRoles", {
-                defaultValue: "How can I manage user roles?"
-            })
+            text: t("console:common.copilot.welcome.actions.manageRoles")
         }
     ];
 
@@ -146,28 +137,29 @@ const CopilotWelcome: React.FunctionComponent<CopilotWelcomeProps> = (
                     </Box>
 
                     <Typography variant="h6" className="copilot-welcome-title">
-                        Hi, Welcome to Copilot! How can I assist you?
+                        { t("console:common.copilot.welcome.title") }
                     </Typography>
 
                     <Typography variant="body2" className="copilot-welcome-description">
-                        I can help you with identity management, application setup, user management, and more.
+                        { t("console:common.copilot.welcome.description") }
                     </Typography>
                 </Box>
 
                 { /* Suggested Actions */ }
                 <Box className="copilot-suggestions">
                     <Typography variant="overline" className="copilot-suggestions-title">
-                        TRY ASKING ABOUT
+                        { t("console:common.copilot.welcome.suggestionsTitle") }
                     </Typography>
 
                     <Box className="copilot-suggestions-list">
-                        { suggestedActions.map((item: { action: string; id: string; text: string }) => (
+                        { suggestedActions.map((item: { id: string; text: string }) => (
                             <Button
                                 key={ item.id }
                                 variant="outlined"
-                                onClick={ () => handleSuggestedAction(item.action) }
+                                onClick={ () => handleSuggestedAction(item.text) }
                                 data-componentid={ `${componentId}-action-${item.id}` }
                                 className="copilot-suggestion-button"
+                                startIcon={ <AISparkleIcon width={ 16 } height={ 16 } /> }
                             >
                                 { item.text }
                             </Button>
@@ -183,7 +175,7 @@ const CopilotWelcome: React.FunctionComponent<CopilotWelcomeProps> = (
                         fullWidth
                         multiline
                         maxRows={ 4 }
-                        placeholder="Enter your message here..."
+                        placeholder={ t("console:common.copilot.welcome.placeholder") }
                         value={ inputValue }
                         onChange={ handleInputChange }
                         onKeyDown={ handleKeyDown }
@@ -196,6 +188,7 @@ const CopilotWelcome: React.FunctionComponent<CopilotWelcomeProps> = (
                     <IconButton
                         onClick={ handleSendMessage }
                         disabled={ !inputValue.trim() || isLoading }
+                        aria-label={ t("console:common.copilot.welcome.send") }
                         data-componentid={ `${componentId}-send-button` }
                         className="copilot-send-button"
                     >
@@ -205,7 +198,7 @@ const CopilotWelcome: React.FunctionComponent<CopilotWelcomeProps> = (
 
                 { /* Footer */ }
                 <Typography variant="caption" className="copilot-disclaimer">
-                    Use Copilot mindfully as AI can make mistakes.
+                    { t("console:common.copilot.welcome.disclaimer") }
                 </Typography>
             </Box>
         </Box>
