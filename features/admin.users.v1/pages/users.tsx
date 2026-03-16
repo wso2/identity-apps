@@ -634,11 +634,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             value: "urn:ietf:params:scim:schemas:core:2.0:id"
         };
 
-        filterAttributeOptions.push(createdTimeOption);
-        filterAttributeOptions.push(modifiedTimeOption);
-        filterAttributeOptions.push(userIdOption);
-
         if (useConsoleAttributeList) {
+            filterAttributeOptions.push(createdTimeOption, modifiedTimeOption, userIdOption);
             // Filter out duplicates based on value
             const existingValues: Set<string> = new Set(
                 filterAttributeOptions.map((option: DropdownChild) => option.value)

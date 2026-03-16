@@ -1860,18 +1860,15 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                         </TableHead>
                                         <TableBody>
                                             {
-                                                // Hides on user_id, username claims
                                                 (!READONLY_CLAIM_CONFIGS.includes(claim?.claimURI))
                                                     && resolveAttributeSupportedByDefaultRow()
                                             }
                                             {
-                                                // Show for system claims (hideSpecialClaims=true)
                                                 (!READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
                                                     && attributeConfig.editAttributes.showRequiredCheckBox)
                                                     && resolveAttributeRequiredRow()
                                             }
                                             {
-                                                // Hides on user_id, username and email claims
                                                 (!READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
                                                     && claim.claimURI !== ClaimManagementConstants.EMAIL_CLAIM_URI)
                                                     && resolveAttributeReadOnlyRow()
