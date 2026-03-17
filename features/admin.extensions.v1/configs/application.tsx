@@ -398,7 +398,7 @@ export const applicationConfig: ApplicationConfig = {
                     });
             }
 
-             // Hide delete button for Enterprise IDP Login Applications and Agent Applications.
+            // Hide delete button for Enterprise IDP Login Applications and Agent Applications.
             return !(application.name.startsWith("WSO2_LOGIN_FOR_")
                 || isEnterpriseLoginMgt === "true"
                 || application?.templateId === ApplicationTemplateIdTypes.AGENT_APPLICATION);
@@ -431,6 +431,11 @@ export const applicationConfig: ApplicationConfig = {
         }
     },
     getAllowedGrantTypes: (orgType : OrganizationType) => ({
+        [ "agent-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.CIBA_GRANT
+        ],
         // single page app template
         [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
@@ -473,11 +478,6 @@ export const applicationConfig: ApplicationConfig = {
                 ApplicationManagementConstants.IWA_NTLM,
                 ApplicationManagementConstants.CIBA_GRANT
             ],
-        [ "agent-application" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.CIBA_GRANT
-        ],
         [ "digital-wallet-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT

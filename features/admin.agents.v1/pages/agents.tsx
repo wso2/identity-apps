@@ -27,8 +27,7 @@ import { DocumentationLink, EmphasizedSegment, EmptyPlaceholder,
     ListLayout, PageLayout, PrimaryButton, useDocumentation } from "@wso2is/react-components";
 import React, { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
+import { useSelector } from "react-redux";
 import { DropdownProps, Icon } from "semantic-ui-react";
 import AgentList from "../components/agent-list";
 import AddAgentWizard, { AgentCreationResultInterface } from "../components/wizards/add-agent-wizard";
@@ -40,8 +39,6 @@ type AgentPageProps = IdentifiableComponentInterface;
 export default function Agents ({
     "data-componentid": componentId
 }: AgentPageProps) {
-    const dispatch: Dispatch = useDispatch();
-
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     const [ isAddAgentWizardOpen,setIsAddAgentWizardOpen ] = useState(false);
@@ -250,13 +247,13 @@ export default function Agents ({
                 />
             </ListLayout>) }
 
-            {isAddAgentWizardOpen && (
+            { isAddAgentWizardOpen && (
                 <AddAgentWizard
                     isOpen={ isAddAgentWizardOpen }
                     onClose={ handleAddAgentWizardClose }
                     data-componentid={ `${componentId}-add-agent-wizard` }
                 />
-            )}
+            ) }
 
         </PageLayout>
     );

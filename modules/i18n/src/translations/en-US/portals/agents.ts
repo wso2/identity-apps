@@ -139,15 +139,18 @@ export const agents: AgentsNS = {
             callbackUrl: {
                 helperText: "The URL to which the authorization code will be sent after user authentication",
                 label: "Callback URL",
-                placeholder: "https://myapp.io/callback"
+                placeholder: "https://myapp.io/callback",
+                validations: {
+                    required: "Callback URL is required"
+                }
             },
             cibaAuthReqExpiryTime: {
                 helperText: "Specify the expiry time for the CIBA authentication request",
                 label: "CIBA Authentication Request Expiry Time (seconds)",
                 placeholder: "300",
                 validations: {
-                    required: "CIBA expiry time is required",
-                    minimum: "Expiry time must be at least 1 second"
+                    minimum: "Expiry time must be at least 1 second",
+                    required: "CIBA expiry time is required"
                 }
             },
             description: {
@@ -194,6 +197,10 @@ export const agents: AgentsNS = {
                 description: "A brief description of what your agent does.",
                 title: "Description"
             },
+            interactive: {
+                description: "An agent that works in real-time with continuous user presence, where users directly interact with the agent and receive immediate responses during active sessions.",
+                title: "Interactive Agent"
+            },
             isUserServingAgent: {
                 description: "Enable this option if your agent needs users to log in to the agent to access user specific resources on behalf of the user. This will create an OAuth2/OIDC application for the agent.",
                 title: "Allow Users to Log In"
@@ -217,10 +224,6 @@ export const agents: AgentsNS = {
                     title: "OAuth Client ID"
                 },
                 title: "Important: Save Your Credentials"
-            },
-            interactive: {
-                description: "An agent that works in real-time with continuous user presence, where users directly interact with the agent and receive immediate responses during active sessions.",
-                title: "Interactive Agent"
             }
         },
         subtitle: "Create a new AI agent with optional user authentication",

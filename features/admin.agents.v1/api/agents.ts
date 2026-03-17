@@ -200,7 +200,7 @@ export interface UpdateAgentApplicationConfigInterface {
 /**
  * Updates the OAuth/OIDC configuration for a user-serving agent's application.
  * This function updates the application's OIDC inbound protocol after the agent is created via SCIM.
- * 
+ *
  * @param applicationId - The application ID (same as agent ID for user-serving agents).
  * @param config - The OAuth configuration to update (grant types, callback URL, CIBA settings).
  *
@@ -240,7 +240,7 @@ export const updateAgentApplicationConfiguration = async (
             }
         } else if (config.agentType === AgentType.BACKGROUND) {
 
-            updatedOidcConfig.grantTypes = [ "urn:openid:params:grant-type:ciba"];
+            updatedOidcConfig.grantTypes = [ "urn:openid:params:grant-type:ciba" ];
 
             updatedOidcConfig.cibaAuthenticationRequest = {
                 ...existingOidcConfig.cibaAuthenticationRequest,

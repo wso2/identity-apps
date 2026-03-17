@@ -77,6 +77,9 @@ export interface AgentsNS {
                 label: string;
                 placeholder: string;
                 helperText: string;
+                validations: {
+                    required: string;
+                };
             };
             cibaAuthReqExpiryTime: {
                 label: string;

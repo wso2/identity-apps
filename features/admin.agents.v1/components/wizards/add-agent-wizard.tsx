@@ -23,10 +23,17 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
-import { CheckboxFieldAdapter, CheckboxGroupFieldAdapter, FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form/src";
+import {
+    CheckboxFieldAdapter,
+    CheckboxGroupFieldAdapter,
+    FinalForm,
+    FinalFormField,
+    FormRenderProps,
+    TextFieldAdapter
+} from "@wso2is/form/src";
 import { Button, CopyInputField, Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { Field } from "react-final-form";
+import { Field, FieldRenderProps } from "react-final-form";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -99,8 +106,8 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
             const result: AgentCreationResultInterface = {
                 agentId: response?.id,
                 agentSecret: response?.password,
-                oauthClientId: undefined,
-                isUserServingAgent: values?.isUserServingAgent || false
+                isUserServingAgent: values?.isUserServingAgent || false,
+                oauthClientId: undefined
             };
 
             // Step 3: If this is a user-serving agent, update application OAuth configuration
@@ -233,7 +240,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                             data-componentid={ `${componentId}-user-serving-checkbox` }
                                         />
 
-                                        {isUserServingAgent && (
+                                        { isUserServingAgent && (
                                             <>
                                                 <Divider hidden style={ { margin: "1.5rem 0" } } />
 
@@ -243,10 +250,11 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                         if (isUserServingAgent && !value) {
                                                             return t("agents:wizard.fields.agentType.validations.required");
                                                         }
+
                                                         return undefined;
                                                     } }
                                                 >
-                                                    {({ input, meta }) => (
+                                                    { ({ input, meta }: FieldRenderProps<string>) => (
                                                         <div style={ { marginBottom: "1rem" } }>
                                                             <label className="MuiFormLabel-root">
                                                                 { t("agents:wizard.fields.agentType.label") } <span style={ { color: "#f44336" } }>*</span>
@@ -264,8 +272,8 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                                 />
                                                             </Form.Field>
 
-                                                            {isInteractive && (
-                                                                <div style={ { marginLeft: "2rem", marginTop: "1rem", marginBottom: "1rem" } }>
+                                                            { isInteractive && (
+                                                                <div style={ { marginBottom: "1rem", marginLeft: "2rem", marginTop: "1rem" } }>
                                                                     <FinalFormField
                                                                         name="callbackUrl"
                                                                         label={ t("agents:wizard.fields.callbackUrl.label") }
@@ -276,20 +284,21 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                                         disabled={ isSubmitting }
                                                                         validate={ (value: string) => {
                                                                             if (!value) {
-                                                                                return t("agents:wizard.fields.callbackUrl.label") + " is required";
+                                                                                return t("agents:wizard.fields.callbackUrl.validations.required");
                                                                             }
                                                                             if (URLUtils.isURLValid(value)) {
                                                                                 if (URLUtils.isHttpUrl(value, false) || URLUtils.isHttpsUrl(value, false)) {
                                                                                     return undefined;
                                                                                 }
                                                                             }
+
                                                                             return t("applications:forms.inboundOIDC.fields.callBackUrls.validations.invalid");
                                                                         } }
                                                                         helperText={ t("agents:wizard.fields.callbackUrl.helperText") }
                                                                         data-componentid={ `${componentId}-callback-url` }
                                                                     />
                                                                 </div>
-                                                            )}
+                                                            ) }
 
                                                             <Form.Field>
                                                                 <Radio
@@ -303,20 +312,21 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                                 />
                                                             </Form.Field>
 
-                                                            {meta.touched && meta.error && (
-                                                                <div style={ {
-                                                                    color: "#f44336",
-                                                                    fontSize: "0.75rem",
-                                                                    marginTop: "0.5rem"
-                                                                } }>
+                                                            { meta.touched && meta.error && (
+                                                                <div
+                                                                    style={ {
+                                                                        color: "#f44336",
+                                                                        fontSize: "0.75rem",
+                                                                        marginTop: "0.5rem"
+                                                                    } }>
                                                                     { meta.error }
                                                                 </div>
-                                                            )}
+                                                            ) }
                                                         </div>
-                                                    )}
+                                                    ) }
                                                 </Field>
 
-                                                {isBackground && (
+                                                { isBackground && (
                                                     <div style={ { marginLeft: "2rem", marginTop: "1rem" } }>
                                                         <FinalFormField
                                                             name="cibaAuthReqExpiryTime"
@@ -336,6 +346,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                                 if (numValue < 1) {
                                                                     return t("agents:wizard.fields.cibaAuthReqExpiryTime.validations.minimum");
                                                                 }
+
                                                                 return undefined;
                                                             } }
                                                             helperText={ t("agents:wizard.fields.cibaAuthReqExpiryTime.helperText") }
@@ -354,6 +365,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                                 if (!value || value.length === 0) {
                                                                     return t("agents:wizard.fields.notificationChannels.validations.required");
                                                                 }
+
                                                                 return undefined;
                                                             } }
                                                             hint={ t("agents:wizard.fields.notificationChannels.hint") }
@@ -370,14 +382,14 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                             data-componentid={ `${componentId}-notification-channels` }
                                                         />
                                                     </div>
-                                                )}
+                                                ) }
                                             </>
-                                        )}
+                                        ) }
                                     </form>
                                 </ModalWithSidePanel.Content>
                                 <ModalWithSidePanel.Actions>
                                     <Grid>
-                                        <Grid.Row column={ 1 }>
+                                        <Grid.Row columns={ 1 }>
                                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                                 <Button
                                                     className="link-button"
@@ -430,7 +442,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                         { t("agents:wizard.help.isUserServingAgent.description") }
                                     </p>
 
-                                    {isUserServingAgent && (
+                                    { isUserServingAgent && (
                                         <>
                                             <Divider />
 
@@ -451,7 +463,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                 { t("agents:wizard.help.background.description") }
                                             </p>
 
-                                            {isInteractive && (
+                                            { isInteractive && (
                                                 <>
                                                     <Divider />
                                                     <Heading as="h6">{ t("agents:wizard.help.callbackUrl.title") }</Heading>
@@ -462,9 +474,9 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                         { t("agents:wizard.help.callbackUrl.hint") }
                                                     </Hint>
                                                 </>
-                                            )}
+                                            ) }
                                         </>
-                                    )}
+                                    ) }
                                 </ModalWithSidePanel.Content>
                             </ModalWithSidePanel.SidePanel>
                         </>
@@ -494,7 +506,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                         <Divider hidden />
 
                         <Message warning>
-                            <div style={ { display: "flex", alignItems: "center", gap: "0.5rem" } }>
+                            <div style={ { alignItems: "center", display: "flex", gap: "0.5rem" } }>
                                 <Icon name="warning sign" />
                                 <span>
                                     { t("agents:wizard.success.warning") }
@@ -509,25 +521,25 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                             data-componentid={ `${componentId}-agent-secret-copy` }
                         />
 
-                        {creationResult?.isUserServingAgent && (
+                        { creationResult?.isUserServingAgent && (
                             <>
                                 <Divider hidden />
 
                                 <Heading as="h6">{ t("agents:wizard.success.fields.oauthClientId.label") }</Heading>
-                                {creationResult?.oauthClientId ? (
+                                { creationResult?.oauthClientId ? (
                                     <CopyInputField
                                         value={ creationResult?.oauthClientId }
                                         data-componentid={ `${componentId}-client-id-copy` }
                                     />
                                 ) : (
                                     <Hint>{ t("agents:wizard.success.fields.oauthClientId.unavailable") }</Hint>
-                                )}
+                                ) }
                             </>
-                        )}
+                        ) }
                     </ModalWithSidePanel.Content>
                     <ModalWithSidePanel.Actions>
                         <Grid>
-                            <Grid.Row column={ 1 }>
+                            <Grid.Row columns={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <Button
                                         primary={ true }
@@ -561,7 +573,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                             { t("agents:wizard.help.success.agentSecret.description") }
                         </p>
 
-                        {creationResult?.isUserServingAgent && (
+                        { creationResult?.isUserServingAgent && (
                             <>
                                 <Divider />
 
@@ -570,7 +582,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                     { t("agents:wizard.help.success.oauthClientId.description") }
                                 </p>
                             </>
-                        )}
+                        ) }
                     </ModalWithSidePanel.Content>
                 </ModalWithSidePanel.SidePanel>
             </>
@@ -587,7 +599,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
             closeOnEscape
             data-componentid={ `${componentId}-modal` }
         >
-            {isShowingSuccessScreen ? renderSuccessScreen() : renderForm()}
+            { isShowingSuccessScreen ? renderSuccessScreen() : renderForm() }
         </ModalWithSidePanel>
     );
 };
