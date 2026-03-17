@@ -108,13 +108,14 @@ export const user: userNS = {
                 }
             },
             sharedAccess: {
-                allRolesAndOrgsSharingMessage: "All roles will be shared with all existing and future organizations.",
-                allUserRolesSharingMessage: "All roles of the user in the current organization will be shared and assigned.",
+                allRolesAndOrgsSharingMessage: "All roles will be assigned to all existing and future organizations.",
+                allUserRolesSharingMessage: "All roles of the user in the current organization will be assigned.",
+                assignedRolesLabel: "Assigned Roles",
                 commonRoleSharingHint: "Configure the set of roles that will be assigned to the shared user in all existing and future organizations.",
                 commonRoleSharingLabel: "Assigned roles",
                 doNotShareUser: "Do not share user with any organization",
-                individualRoleSharingHint: "Configure role sharing for specific organizations individually.",
-                individualRoleSharingLabel: "Individually shared roles",
+                individualRoleSharingHint: "Configure role assignment for specific organizations individually.",
+                individualRoleSharingLabel: "Individually assigned roles",
                 noRolesAndOrgsSharingMessage: "No roles will be assigned to the shared user in all existing and future organizations.",
                 nonResidentUserPlaceholder: {
                     description: "User sharing is only applicable to users managed by this organization. " +
@@ -163,7 +164,7 @@ export const user: userNS = {
                 searchAvailableRolesPlaceholder: "Search available roles",
                 shareAllRoles: "Assign all roles",
                 shareAllUser: "Share user with all organizations",
-                shareRoleSubsetWithAllOrgs: "Share and assign only a subset of roles to the user in all organizations",
+                shareRoleSubsetWithAllOrgs: "Assign only a subset of roles to the user in all organizations",
                 shareSelectedRoles: "Assign selected roles",
                 shareSelectedUser: "Share user with selected organizations",
                 shareTypeSwitchModal: {
@@ -176,6 +177,7 @@ export const user: userNS = {
                     resetToDefaultLabel2: "Unshare user from all organizations and start fresh with selective sharing."
                 },
                 shareUserWithFutureChildOrgs: "Share user and roles with future child organizations",
+                sharingSettingsLabel: "Role assignment settings for",
                 showShareAllWarningModal: {
                     assertionHint: "Please confirm your action.",
                     description: "This will share the user with selected roles across ALL existing and future organizations. This action will affect all current and future organizations in your system.",

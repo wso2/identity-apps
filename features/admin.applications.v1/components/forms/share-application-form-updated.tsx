@@ -1460,6 +1460,14 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                                     t("applications:edit.sections.sharedAccess." +
                                                                     "shareApplicationWithFutureChildOrgs")
                                                                 }
+                                                                sharingSettingsLabel={
+                                                                    t("applications:edit.sections.sharedAccess." +
+                                                                    "sharingSettings")
+                                                                }
+                                                                assignedRolesLabel={
+                                                                    t("applications:edit.sections.sharedAccess." +
+                                                                    "sharedRoles")
+                                                                }
                                                             />
                                                         </div>
                                                     )
@@ -1552,6 +1560,14 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                     shareWithFutureChildOrgsLabel={
                                                         t("applications:edit.sections.sharedAccess." +
                                                         "shareApplicationWithFutureChildOrgs")
+                                                    }
+                                                    sharingSettingsLabel={
+                                                        t("applications:edit.sections.sharedAccess." +
+                                                        "sharingSettings")
+                                                    }
+                                                    assignedRolesLabel={
+                                                        t("applications:edit.sections.sharedAccess." +
+                                                        "sharedRoles")
                                                     }
                                                 />
                                             </Grid>

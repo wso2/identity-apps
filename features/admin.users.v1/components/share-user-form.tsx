@@ -1489,6 +1489,14 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                                         t("user:editUser.sections.sharedAccess." +
                                                             "shareUserWithFutureChildOrgs")
                                                     }
+                                                    sharingSettingsLabel={
+                                                        t("user:editUser.sections.sharedAccess." +
+                                                            "sharingSettingsLabel")
+                                                    }
+                                                    assignedRolesLabel={
+                                                        t("user:editUser.sections.sharedAccess." +
+                                                            "assignedRolesLabel")
+                                                    }
                                                 />
                                             </Grid>
                                         </motion.div>

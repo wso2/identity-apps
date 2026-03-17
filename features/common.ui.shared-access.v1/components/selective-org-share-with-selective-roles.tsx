@@ -104,6 +104,8 @@ interface SelectiveOrgShareWithSelectiveRolesProps extends IdentifiableComponent
     userId?: string;
     allRolesSharingMessage: string;
     shareWithFutureChildOrgsLabel: string;
+    sharingSettingsLabel: string;
+    assignedRolesLabel: string;
 }
 
 interface TreeViewBaseItemWithRoles extends TreeViewBaseItem {
@@ -137,7 +139,9 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
         disableOrgSelection = false,
         enableAdminRole = false,
         allRolesSharingMessage,
-        shareWithFutureChildOrgsLabel
+        shareWithFutureChildOrgsLabel,
+        sharingSettingsLabel,
+        assignedRolesLabel
     } = props;
 
     const organizationId: string = useSelector((state: AppState) => state?.organization?.organization?.id);
@@ -969,12 +973,12 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
             <Box className="role-list-container">
                 <Typography variant="h5">
                     {
-                        `${ t("applications:edit.sections.sharedAccess.sharingSettings") }`
+                        `${ sharingSettingsLabel }`
                     }
                     <Code sx={ { marginLeft: "5px" } }>{ flatOrganizationMap[selectedOrgId]?.name }</Code>
                 </Typography>
                 <Typography variant="body1">
-                    { t("applications:edit.sections.sharedAccess.sharedRoles") }
+                    { assignedRolesLabel }
                 </Typography>
                 {
                     shareAllRoles ? (
