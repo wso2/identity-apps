@@ -25,7 +25,16 @@ reviews:
 
             For the updates to "features", "modules" directories, make sure to also include `@wso2is/console`, `@wso2is/myaccount` or `@wso2is/identity-apps-core` in 
             the changeset with a proper version update accordingly. If there are new packages in the pull request, those new packages should be mentioned as a major version update in the changeset.
-            
+
+            EXCEPTION: Changesets are NOT required if the pull request ONLY modifies files in the following locations:
+              - `README` files
+              - `docs/`
+              - `scripts/`
+              - `.github/`
+              - configuration files located in the project root
+
+            If ALL changed files fall exclusively into the above categories, the check should PASS even if no changeset file is present.
+
             **Pass Criteria:**
             - At least one NEW `.md` file exists in the `.changeset/` directory in the CHANGED FILE LIST of the pull request.
             - The file should NOT be `.changeset/README.md`
