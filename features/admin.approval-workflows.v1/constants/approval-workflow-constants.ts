@@ -16,6 +16,10 @@
  * under the License.
  */
 
+import {
+    USER_CLAIMS_FIELD
+} from "@wso2is/admin.rules.v1/utils/workflow-claim-utils";
+
 export class ApprovalWorkflowConstants {
 
     private constructor() {}
@@ -70,25 +74,58 @@ export const FLOW_TYPE: string = "approvalWorkflow";
 export const WORKFLOW_ENGINE: string = "WorkflowEngine";
 
 /**
+ * Supported approval workflow rule fields.
+ */
+export const APPROVAL_WORKFLOW_RULE_FIELDS: Record<string, string> = {
+    ROLE_AUDIENCE: "role.audience",
+    ROLE_HAS_ASSIGNED_USERS: "role.hasAssignedUsers",
+    ROLE_HAS_UNASSIGNED_USERS: "role.hasUnassignedUsers",
+    ROLE_ID: "role.id",
+    ROLE_PERMISSIONS: "role.permissions",
+    USER_DOMAIN: "user.domain",
+    USER_GROUPS: "user.groups",
+    USER_ROLES: "user.roles"
+};
+
+/**
  * Mapping of operation types to their allowed rule fields.
  * Used to filter available fields in the rule builder per operation type.
  */
 export const OPERATION_FIELD_MAPPING: Record<string, string[]> = {
-    // Enable initiator.(domain|groups|roles) when the backend supports,
+    // Enable initiator.(domain|groups|roles), when the backend supports
     // providing data for these fields for the respective operations.
-    ADD_ROLE: [ "role.audience", "role.permissions" ],
-    ADD_USER: [ "user.domain" ],
-    DELETE_USER: [ "user.domain", "user.groups", "user.roles" ],
-    SELF_REGISTER_USER: [ "user.domain" ],
+    ADD_ROLE: [
+        APPROVAL_WORKFLOW_RULE_FIELDS.ROLE_AUDIENCE,
+        // APPROVAL_WORKFLOW_RULE_FIELDS.ROLE_PERMISSIONS,
+        USER_CLAIMS_FIELD
+        // INITIATOR_CLAIMS_FIELD
+    ],
+    ADD_USER: [
+        APPROVAL_WORKFLOW_RULE_FIELDS.USER_DOMAIN,
+        USER_CLAIMS_FIELD
+        // INITIATOR_CLAIMS_FIELD
+    ],
+    DELETE_USER: [
+        APPROVAL_WORKFLOW_RULE_FIELDS.USER_DOMAIN,
+        APPROVAL_WORKFLOW_RULE_FIELDS.USER_GROUPS,
+        APPROVAL_WORKFLOW_RULE_FIELDS.USER_ROLES,
+        USER_CLAIMS_FIELD
+        // INITIATOR_CLAIMS_FIELD
+    ],
+    SELF_REGISTER_USER: [
+        USER_CLAIMS_FIELD
+    ],
     UPDATE_ROLES_OF_USERS: [
-        "role.id",
-        "role.audience",
-        "role.hasAssignedUsers",
-        "role.hasUnassignedUsers"
+        APPROVAL_WORKFLOW_RULE_FIELDS.ROLE_ID,
+        APPROVAL_WORKFLOW_RULE_FIELDS.ROLE_AUDIENCE,
+        APPROVAL_WORKFLOW_RULE_FIELDS.ROLE_HAS_ASSIGNED_USERS,
+        APPROVAL_WORKFLOW_RULE_FIELDS.ROLE_HAS_UNASSIGNED_USERS
         // Enable the following fields when they support the data providing in the backend for this operation.
-        // "user.domain",
-        // "user.groups",
-        // "user.roles"
+        // APPROVAL_WORKFLOW_RULE_FIELDS.USER_DOMAIN,
+        // APPROVAL_WORKFLOW_RULE_FIELDS.USER_GROUPS,
+        // APPROVAL_WORKFLOW_RULE_FIELDS.USER_ROLES,
+        // USER_CLAIMS_FIELD,
+        // INITIATOR_CLAIMS_FIELD
     ]
 };
 

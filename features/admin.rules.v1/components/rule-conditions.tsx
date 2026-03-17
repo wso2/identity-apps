@@ -63,6 +63,16 @@ import {
 } from "../models/rules";
 import { normalizeResourceResponse } from "../utils/resource-utils";
 import { normalizeUserstoreList } from "../utils/userstore-utils";
+import {
+    WorkflowClaimFieldGroupInterface,
+    WorkflowClaimGroupFieldType,
+    buildWorkflowClaimMetaGroups,
+    getClaimUriFromWorkflowClaimField,
+    getWorkflowClaimDisplayName,
+    getWorkflowClaimGroupFromField,
+    isWorkflowClaimGroupField,
+    isWorkflowClaimMeta
+} from "../utils/workflow-claim-utils";
 import "./rule-conditions.scss";
 
 /**
@@ -91,6 +101,35 @@ const processResourceItems = (
 interface ValueInputAutocompleteOptionsInterface {
     id: string;
     label: string;
+}
+
+/**
+ * Field select options interface.
+ */
+interface FieldSelectionOptionInterface {
+    displayName: string;
+    name: string;
+}
+
+/**
+ * Workflow claim selector option interface.
+ */
+interface WorkflowClaimOptionInterface extends ValueInputAutocompleteOptionsInterface {
+    claimUri: string;
+    fieldName: string;
+}
+
+/**
+ * Workflow claim selector props interface.
+ */
+interface WorkflowClaimSelectorPropsInterface {
+    claimOptions: WorkflowClaimOptionInterface[];
+    conditionId: string;
+    expressionField: string;
+    expressionId: string;
+    expressionOperator: string;
+    readonly?: boolean;
+    ruleId: string;
 }
 
 /**
@@ -165,6 +204,142 @@ export interface RulesComponentPropsInterface extends IdentifiableComponentInter
 }
 
 /**
+ * Workflow claim selector component.
+ *
+ * Renders the second dropdown used only for grouped workflow claim fields.
+ *
+ * @param props - Props injected to the component.
+ * @returns Workflow claim selector.
+ */
+const WorkflowClaimSelector: FunctionComponent<WorkflowClaimSelectorPropsInterface> = ({
+    claimOptions,
+    conditionId,
+    expressionField,
+    expressionId,
+    expressionOperator,
+    readonly: isReadonly = false,
+    ruleId
+}: WorkflowClaimSelectorPropsInterface): ReactElement => {
+    const { conditionExpressionsMeta, updateConditionExpression } = useRulesContext();
+    const { t } = useTranslation();
+
+    const selectedClaimOption: WorkflowClaimOptionInterface | null = claimOptions.find(
+        (claimOption: WorkflowClaimOptionInterface) => claimOption.fieldName === expressionField
+    ) ?? null;
+    const [ inputValue, setInputValue ] = useState<string>(selectedClaimOption?.label ?? "");
+
+    useEffect(() => {
+        setInputValue(selectedClaimOption?.label ?? "");
+    }, [ selectedClaimOption?.fieldName, selectedClaimOption?.label ]);
+
+    return (
+        <Autocomplete
+            fullWidth
+            disabled={ isReadonly }
+            aria-label="Workflow claim selection"
+            className="pt-2"
+            componentsProps={ {
+                paper: {
+                    elevation: 2
+                },
+                popper: {
+                    modifiers: [
+                        {
+                            enabled: false,
+                            name: "flip"
+                        },
+                        {
+                            enabled: false,
+                            name: "preventOverflow"
+                        }
+                    ]
+                }
+            } }
+            inputValue={ inputValue }
+            value={ selectedClaimOption }
+            onInputChange={ (event: ChangeEvent, value: string, reason: AutocompleteInputChangeReason) => {
+                if (reason === "reset") {
+                    setInputValue(selectedClaimOption?.label ?? "");
+
+                    return;
+                }
+
+                setInputValue(value);
+            } }
+            onChange={ (event: React.ChangeEvent, value: WorkflowClaimOptionInterface) => {
+                if (!value) {
+                    return;
+                }
+
+                const selectedClaimMeta: ConditionExpressionMetaInterface | undefined = conditionExpressionsMeta
+                    ?.find((meta: ConditionExpressionMetaInterface) => meta?.field?.name === value.fieldName);
+                const nextOperator: string = selectedClaimMeta?.operators?.some(
+                    (operator: ListDataInterface) => operator.name === expressionOperator
+                )
+                    ? expressionOperator
+                    : selectedClaimMeta?.operators?.[0]?.name || "";
+
+                updateConditionExpression(
+                    value.fieldName,
+                    ruleId,
+                    conditionId,
+                    expressionId,
+                    ExpressionFieldTypes.Field,
+                    true
+                );
+
+                if (nextOperator !== expressionOperator) {
+                    updateConditionExpression(
+                        nextOperator,
+                        ruleId,
+                        conditionId,
+                        expressionId,
+                        ExpressionFieldTypes.Operator,
+                        true
+                    );
+                }
+            } }
+            options={ claimOptions }
+            getOptionLabel={ (claim: WorkflowClaimOptionInterface) =>
+                claim?.label
+            }
+            isOptionEqualToValue={
+                (option: WorkflowClaimOptionInterface, value: WorkflowClaimOptionInterface) =>
+                    value?.fieldName && option.fieldName === value.fieldName
+            }
+            renderOption={ (
+                props: HTMLAttributes<HTMLLIElement>,
+                option: WorkflowClaimOptionInterface
+            ) => (
+                <li { ...props } key={ option.fieldName }>
+                    <div className="multiline">
+                        <div>{ option.label }</div>
+                        <div>
+                            <Code className="description" compact withBackground={ false }>
+                                { option.claimUri }
+                            </Code>
+                        </div>
+                    </div>
+                </li>
+            ) }
+            renderInput={ (params: AutocompleteRenderInputParams) => (
+                <TextField
+                    { ...params }
+                    variant="outlined"
+                    placeholder={ t("rules:fields.autocomplete.placeholderText") }
+                    value={ inputValue }
+                    InputProps={ {
+                        ...params.InputProps
+                    } }
+                />
+            ) }
+            key="workflowClaimSelector"
+            data-componentid={ "rules-condition-expression-input-workflow-claim-select" }
+        />
+    );
+};
+
+/**
  * Rules condition component to recursive render.
  *
  * @param props - Props injected to the component.
@@ -186,6 +361,35 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
     } = useRulesContext();
 
     const { t } = useTranslation();
+    const workflowClaimMetaGroups: WorkflowClaimFieldGroupInterface[] = useMemo(
+        () => buildWorkflowClaimMetaGroups(conditionExpressionsMeta),
+        [ conditionExpressionsMeta ]
+    );
+    const workflowClaimMetaGroupMap: Map<string, ConditionExpressionMetaInterface[]> = useMemo(
+        () =>
+            new Map<string, ConditionExpressionMetaInterface[]>(
+                workflowClaimMetaGroups.map(
+                    (group: WorkflowClaimFieldGroupInterface) => [ group.field.name, group.claims ]
+                )
+            ),
+        [ workflowClaimMetaGroups ]
+    );
+    const fieldSelectionOptions: FieldSelectionOptionInterface[] = useMemo(() => {
+        const baseFieldOptions: FieldSelectionOptionInterface[] = conditionExpressionsMeta
+            ?.filter((item: ConditionExpressionMetaInterface) => !isWorkflowClaimMeta(item))
+            ?.filter((item: ConditionExpressionMetaInterface) => !hidden?.conditions?.includes(item.field?.name))
+            ?.map((item: ConditionExpressionMetaInterface) => ({
+                displayName: item.field?.displayName,
+                name: item.field?.name
+            })) ?? [];
+        const workflowClaimFieldOptions: FieldSelectionOptionInterface[] = workflowClaimMetaGroups
+            .filter(
+                (group: WorkflowClaimFieldGroupInterface) => !hidden?.conditions?.includes(group.field?.name)
+            )
+            .map((group: WorkflowClaimFieldGroupInterface) => group.field);
+
+        return [ ...baseFieldOptions, ...workflowClaimFieldOptions ];
+    }, [ conditionExpressionsMeta, hidden?.conditions, workflowClaimMetaGroups ]);
 
     /**
      * Debounced function to handle the change of the condition expression.
@@ -1003,7 +1207,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         index,
         isConditionLast,
         isConditionExpressionRemovable,
-        hiddenConditions = [],
+        hiddenConditions: _hiddenConditions = [],
         hiddenResources = [],
         hiddenValues = []
     }: RuleExpressionComponentProps) => {
@@ -1012,6 +1216,20 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         const findMetaValuesAgainst: ConditionExpressionMetaInterface = conditionExpressionsMeta.find(
             (expressionMeta: ConditionExpressionMetaInterface) => expressionMeta?.field?.name === expression.field
         );
+        const selectedWorkflowClaimGroup: WorkflowClaimGroupFieldType | null = getWorkflowClaimGroupFromField(
+            expression.field
+        );
+        const workflowClaimOptions: WorkflowClaimOptionInterface[] = selectedWorkflowClaimGroup
+            ? (workflowClaimMetaGroupMap.get(selectedWorkflowClaimGroup) ?? []).map(
+                (claimMeta: ConditionExpressionMetaInterface) => ({
+                    claimUri: getClaimUriFromWorkflowClaimField(claimMeta?.field?.name),
+                    fieldName: claimMeta?.field?.name,
+                    id: claimMeta?.field?.name,
+                    label: getWorkflowClaimDisplayName(claimMeta?.field?.displayName)
+                })
+            )
+            : [];
+        const displayedFieldValue: string = selectedWorkflowClaimGroup ?? expression.field;
 
         return (
             <Box
@@ -1040,21 +1258,27 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 <FormControl fullWidth size="small">
                     <Select
                         disabled={ readonly }
-                        value={ expression.field }
+                        value={ displayedFieldValue }
                         data-componentid={ "rules-condition-expression-input-field-select" }
                         MenuProps={ {
                             disablePortal: false,
                             sx: { zIndex: 9999 }
                         } }
                         onChange={ (e: SelectChangeEvent) => {
-                            const newField: string = e.target.value;
-
+                            const selectedFieldValue: string = e.target.value;
+                            const newField: string | undefined = isWorkflowClaimGroupField(selectedFieldValue)
+                                ? workflowClaimMetaGroupMap.get(selectedFieldValue)?.[0]?.field?.name
+                                : selectedFieldValue;
                             const meta: ConditionExpressionMetaInterface | undefined = conditionExpressionsMeta.find(
                                 (expressionMeta: ConditionExpressionMetaInterface) =>
                                     expressionMeta?.field?.name === newField
                             );
 
                             const defaultOperator: string = meta?.operators?.[0]?.name || "";
+
+                            if (!newField) {
+                                return;
+                            }
 
                             updateConditionExpression(
                                 newField,
@@ -1084,17 +1308,26 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             );
                         } }
                     >
-                        { conditionExpressionsMeta
-                            ?.filter(
-                                (item: ConditionExpressionMetaInterface) => !hiddenConditions.includes(item.field?.name)
-                            )
-                            .map((item: ConditionExpressionMetaInterface, index: number) => (
-                                <MenuItem value={ item.field?.name } key={ `${expression.id}-${index}` }>
-                                    { item.field?.displayName }
-                                </MenuItem>
-                            )) }
+                        { fieldSelectionOptions.map((item: FieldSelectionOptionInterface, index: number) => (
+                            <MenuItem value={ item.name } key={ `${expression.id}-${index}` }>
+                                { item.displayName }
+                            </MenuItem>
+                        )) }
                     </Select>
                 </FormControl>
+                { selectedWorkflowClaimGroup && workflowClaimOptions.length > 0 && (
+                    <FormControl fullWidth size="small" sx={ { mt: 1 } }>
+                        <WorkflowClaimSelector
+                            claimOptions={ workflowClaimOptions }
+                            conditionId={ conditionId }
+                            expressionField={ expression.field }
+                            expressionId={ expression.id }
+                            expressionOperator={ expression.operator }
+                            readonly={ readonly }
+                            ruleId={ ruleId }
+                        />
+                    </FormControl>
+                ) }
                 <FormControl sx={ { mb: 1, minWidth: 120, mt: 1 } } size="small">
                     <Select
                         disabled={ readonly }

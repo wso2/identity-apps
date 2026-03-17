@@ -30,6 +30,12 @@ import { useRulesContext } from "@wso2is/admin.rules.v1/hooks/use-rules-context"
 import { ConditionExpressionMetaInterface } from "@wso2is/admin.rules.v1/models/meta";
 import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { RulesProvider } from "@wso2is/admin.rules.v1/providers/rules-provider";
+import {
+    INITIATOR_CLAIMS_FIELD,
+    USER_CLAIMS_FIELD,
+    getWorkflowClaimGroupFromField,
+    isWorkflowClaimMeta
+} from "@wso2is/admin.rules.v1/utils/workflow-claim-utils";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ConfirmationModal, ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
@@ -217,10 +223,37 @@ const RuleConfigurationModal: FunctionComponent<RuleConfigurationModalPropsInter
         }
 
         const allowedFields: string[] = OPERATION_FIELD_MAPPING[operation.value] || [];
+        const supportsUserClaims: boolean = allowedFields.includes(USER_CLAIMS_FIELD);
+        const supportsInitiatorClaims: boolean = allowedFields.includes(INITIATOR_CLAIMS_FIELD);
 
-        return rulesMetaData.filter((meta: ConditionExpressionMetaInterface) => {
-            return allowedFields.includes(meta.field.name);
-        });
+        return rulesMetaData
+            .filter((meta: ConditionExpressionMetaInterface) => {
+                if (allowedFields.includes(meta.field.name)) {
+                    return true;
+                }
+
+                const claimGroup: string | null = getWorkflowClaimGroupFromField(meta?.field?.name);
+
+                if (claimGroup === USER_CLAIMS_FIELD) {
+                    return supportsUserClaims;
+                }
+
+                if (claimGroup === INITIATOR_CLAIMS_FIELD) {
+                    return supportsInitiatorClaims;
+                }
+
+                return false;
+            })
+            .sort((first: ConditionExpressionMetaInterface, second: ConditionExpressionMetaInterface) => {
+                const firstIsWorkflowClaim: boolean = isWorkflowClaimMeta(first);
+                const secondIsWorkflowClaim: boolean = isWorkflowClaimMeta(second);
+
+                if (firstIsWorkflowClaim === secondIsWorkflowClaim) {
+                    return 0;
+                }
+
+                return firstIsWorkflowClaim ? 1 : -1;
+            });
     }, [ rulesMetaData, operation.value ]);
 
     return (
