@@ -122,6 +122,11 @@ export interface UserShareFormPropsInterface
      * Should only be true in the console settings administrator edit view.
      */
     enableConsoleAdminRole?: boolean;
+    /**
+     * Whether the user is managed by a parent organization (non-resident user).
+     * When true, user sharing is not applicable and an informational message is shown.
+     */
+    isUserManagedByParentOrg?: boolean;
 }
 
 export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
@@ -136,6 +141,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         isSharingInProgress,
         operationStatus,
         enableConsoleAdminRole = false,
+        isUserManagedByParentOrg = false,
         ["data-componentid"]: componentId = "user-share-form"
     } = props;
 
@@ -1330,6 +1336,21 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             <ContentLoader inline="centered" active/>
         );
     };
+
+    if (isUserManagedByParentOrg) {
+        return (
+            <Grid
+                container
+                data-componentid={ `${componentId}-non-resident-user-placeholder` }
+            >
+                <Grid xs={ 12 }>
+                    <Alert severity="info">
+                        { t("user:editUser.sections.sharedAccess.nonResidentUserPlaceholder.description") }
+                    </Alert>
+                </Grid>
+            </Grid>
+        );
+    }
 
     return (
         <>

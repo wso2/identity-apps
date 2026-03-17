@@ -116,6 +116,11 @@ export const user: userNS = {
                 individualRoleSharingHint: "Configure role sharing for specific organizations individually.",
                 individualRoleSharingLabel: "Individually shared roles",
                 noRolesAndOrgsSharingMessage: "No roles will be assigned to the shared user in all existing and future organizations.",
+                nonResidentUserPlaceholder: {
+                    description: "User sharing is only applicable to users managed by this organization. " +
+                        "This user is managed by a parent organization, so sharing configurations " +
+                        "are not applicable here."
+                },
                 notifications: {
                     fetchOrganizations: {
                         genericError: {

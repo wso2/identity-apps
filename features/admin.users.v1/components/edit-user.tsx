@@ -332,6 +332,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                             user={ user }
                             readOnly={ isReadOnly || !hasSharedAccessUpdatePermission }
                             enableConsoleAdminRole={ enableConsoleAdminRole }
+                            isUserManagedByParentOrg={ isUserManagedByParentOrg }
                         />
                     </ResourceTab.Pane>
                 )

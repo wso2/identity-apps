@@ -159,6 +159,9 @@ export interface userNS {
                     header: string;
                     message: string;
                 };
+                nonResidentUserPlaceholder: {
+                    description: string;
+                };
                 subTitle: string;
                 title: string;
             };
