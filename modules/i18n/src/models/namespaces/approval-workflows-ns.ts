@@ -193,6 +193,11 @@ export interface approvalWorkflowsNS {
                     content: string,
                     message: string,
                     title: string
+                },
+                fields: {
+                    initiatorClaim: string,
+                    userClaim: string,
+                    workflowClaimSelector: string
                 }
             }
         };

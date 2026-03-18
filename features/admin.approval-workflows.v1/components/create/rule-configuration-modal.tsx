@@ -25,23 +25,23 @@ import DialogTitle from "@oxygen-ui/react/DialogTitle";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
-import Rules from "@wso2is/admin.rules.v1/components/rules";
 import { useRulesContext } from "@wso2is/admin.rules.v1/hooks/use-rules-context";
 import { ConditionExpressionMetaInterface } from "@wso2is/admin.rules.v1/models/meta";
 import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { RulesProvider } from "@wso2is/admin.rules.v1/providers/rules-provider";
-import {
-    INITIATOR_CLAIMS_FIELD,
-    USER_CLAIMS_FIELD,
-    getWorkflowClaimGroupFromField,
-    isWorkflowClaimMeta
-} from "@wso2is/admin.rules.v1/utils/workflow-claim-utils";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ConfirmationModal, ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FLOW_TYPE, OPERATION_FIELD_MAPPING } from "../../constants/approval-workflow-constants";
 import { DropdownPropsInterface } from "../../models/ui";
+import {
+    INITIATOR_CLAIMS_FIELD,
+    USER_CLAIMS_FIELD,
+    getWorkflowClaimGroupFromField,
+    isWorkflowClaimMeta
+} from "../../utils/workflow-claim-utils";
+import ApprovalWorkflowRules from "../rules/approval-workflow-rules";
 import "./rule-configuration-modal.scss";
 
 /**
@@ -130,7 +130,7 @@ const RuleConfigurationModalContent: FunctionComponent<RuleConfigurationModalCon
                 className="rule-configuration-modal-content"
                 dividers
             >
-                <Rules
+                <ApprovalWorkflowRules
                     data-componentid={ `${componentId}-rules` }
                     disableLastRuleDelete={ false }
                     onRemoveRule={ handleRemoveRuleRequest }

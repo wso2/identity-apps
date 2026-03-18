@@ -17,8 +17,8 @@
  */
 
 import {
-    USER_CLAIMS_FIELD
-} from "@wso2is/admin.rules.v1/utils/workflow-claim-utils";
+    INITIATOR_CLAIMS_FIELD,USER_CLAIMS_FIELD
+} from "../utils/workflow-claim-utils";
 
 export class ApprovalWorkflowConstants {
 
@@ -96,21 +96,21 @@ export const OPERATION_FIELD_MAPPING: Record<string, string[]> = {
     // providing data for these fields for the respective operations.
     ADD_ROLE: [
         APPROVAL_WORKFLOW_RULE_FIELDS.ROLE_AUDIENCE,
-        // APPROVAL_WORKFLOW_RULE_FIELDS.ROLE_PERMISSIONS,
-        USER_CLAIMS_FIELD
-        // INITIATOR_CLAIMS_FIELD
+        APPROVAL_WORKFLOW_RULE_FIELDS.ROLE_PERMISSIONS,
+        USER_CLAIMS_FIELD,
+        INITIATOR_CLAIMS_FIELD
     ],
     ADD_USER: [
         APPROVAL_WORKFLOW_RULE_FIELDS.USER_DOMAIN,
-        USER_CLAIMS_FIELD
-        // INITIATOR_CLAIMS_FIELD
+        USER_CLAIMS_FIELD,
+        INITIATOR_CLAIMS_FIELD
     ],
     DELETE_USER: [
         APPROVAL_WORKFLOW_RULE_FIELDS.USER_DOMAIN,
         APPROVAL_WORKFLOW_RULE_FIELDS.USER_GROUPS,
         APPROVAL_WORKFLOW_RULE_FIELDS.USER_ROLES,
-        USER_CLAIMS_FIELD
-        // INITIATOR_CLAIMS_FIELD
+        USER_CLAIMS_FIELD,
+        INITIATOR_CLAIMS_FIELD
     ],
     SELF_REGISTER_USER: [
         USER_CLAIMS_FIELD

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ConditionExpressionMetaInterface, ListDataInterface } from "../models/meta";
+import { ConditionExpressionMetaInterface, ListDataInterface } from "@wso2is/admin.rules.v1/models/meta";
 
 export const USER_CLAIMS_FIELD: string = "user.claims";
 export const INITIATOR_CLAIMS_FIELD: string = "initiator.claims";
@@ -125,10 +125,12 @@ export const getWorkflowClaimDisplayName = (displayName: string): string => {
  * Groups workflow claim metadata into user claims and initiator claims.
  *
  * @param metaData - Condition expression metadata.
+ * @param labels - Optional translated display labels for the claim groups.
  * @returns Grouped workflow claim metadata.
  */
 export const buildWorkflowClaimMetaGroups = (
-    metaData: ConditionExpressionMetaInterface[] = []
+    metaData: ConditionExpressionMetaInterface[] = [],
+    labels?: { initiatorClaim?: string; userClaim?: string }
 ): WorkflowClaimFieldGroupInterface[] => {
     const userClaimMeta: ConditionExpressionMetaInterface[] = [];
     const initiatorClaimMeta: ConditionExpressionMetaInterface[] = [];
@@ -158,7 +160,7 @@ export const buildWorkflowClaimMetaGroups = (
             ? [ {
                 claims: sortClaims(userClaimMeta),
                 field: {
-                    displayName: "user claims",
+                    displayName: labels?.userClaim ?? "user claim",
                     name: USER_CLAIMS_FIELD
                 }
             } ]
@@ -167,11 +169,10 @@ export const buildWorkflowClaimMetaGroups = (
             ? [ {
                 claims: sortClaims(initiatorClaimMeta),
                 field: {
-                    displayName: "initiator claims",
+                    displayName: labels?.initiatorClaim ?? "initiator claim",
                     name: INITIATOR_CLAIMS_FIELD
                 }
             } ]
             : [])
     ];
 };
-

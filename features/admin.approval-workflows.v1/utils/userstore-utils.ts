@@ -17,7 +17,7 @@
  */
 
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
-import { ResourceInterface } from "../models/resource";
+import { ResourceInterface } from "@wso2is/admin.rules.v1/models/resource";
 
 /**
  * Normalizes the user store list by:

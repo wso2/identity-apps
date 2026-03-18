@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ResourceInterface } from "../models/resource";
+import { ResourceInterface } from "@wso2is/admin.rules.v1/models/resource";
 
 /**
  * Interface for normalized resource list response.

@@ -306,6 +306,11 @@ export const approvalWorkflows: approvalWorkflowsNS = {
                     column: "Engagement",
                     configured: "Conditional"
                 },
+                fields: {
+                    initiatorClaim: "initiator claim",
+                    userClaim: "user claim",
+                    workflowClaimSelector: "Select Claim"
+                },
                 modal: {
                     subtitle: "Define conditions to determine when the approval workflow should be engaged for this operation.",
                     title: "Engagement Rule for {{operation}}"

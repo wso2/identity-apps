@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import Checkbox from "@oxygen-ui/react/Checkbox";
 import Chip from "@oxygen-ui/react/Chip";
 import Grid from "@oxygen-ui/react/Grid";
 import ListItemText from "@oxygen-ui/react/ListItemText";
@@ -28,19 +27,11 @@ import React, {
     ReactElement
 } from "react";
 
-interface AutoCompleteRenderOption extends IdentifiableComponentInterface {
-    /**
-     * Is the option selected.
-     */
-    selected?: boolean;
+interface AutoCompleteRenderOptionPropsInterface extends IdentifiableComponentInterface {
     /**
      * The display name of the option.
      */
     displayName: string;
-    /**
-     * The subtitle of the option.
-     */
-    subTitle?: string;
     /**
      * The user store of the option.
      */
@@ -50,62 +41,29 @@ interface AutoCompleteRenderOption extends IdentifiableComponentInterface {
      */
     audienceDisplay?: string;
     /**
-     * The ternary title of the option. (This will display in the middle of the option)
-     */
-    ternaryTitle?: string;
-    /**
-     * The ternary subtitle of the option. (This will display in the middle of the option)
-     */
-    ternarySubTitle?: string;
-    /**
-     * Is the option disabled.
-     */
-    disabled?: boolean;
-    /**
      * The props passed to the option.
      */
-    renderOptionProps: HTMLAttributes<HTMLLIElement>
+    renderOptionProps: HTMLAttributes<HTMLLIElement>;
 }
 
-const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOption> = (
-    props: AutoCompleteRenderOption
+const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOptionPropsInterface> = (
+    props: AutoCompleteRenderOptionPropsInterface
 ): ReactElement => {
 
     const {
-        selected,
         displayName,
-        subTitle,
-        ternaryTitle,
-        ternarySubTitle,
         audience,
         audienceDisplay,
-        disabled,
         renderOptionProps
     } = props;
 
     return (
-        <li { ...renderOptionProps } style={ disabled ? { cursor: "not-allowed", opacity: 0.5 } : {} }>
-            <Grid container justifyContent="space-between" alignItems="center" xs={ 12 }  wrap="nowrap">
+        <li { ...renderOptionProps }>
+            <Grid container justifyContent="space-between" alignItems="center" xs={ 12 } wrap="nowrap">
                 <Grid container alignItems="center" xs={ 8 }>
-                    <Grid>
-                        {
-                            typeof selected === "boolean" && (
-                                <Checkbox checked={ selected } disabled={ disabled } />
-                            )
-                        }
-                    </Grid>
                     <Grid xs={ 5 }>
-                        <ListItemText primary={ displayName } secondary={ subTitle } />
+                        <ListItemText primary={ displayName } />
                     </Grid>
-                    {
-                        ( ternaryTitle && ternarySubTitle )
-                            ? (
-                                <Grid>
-                                    <ListItemText primary={ ternaryTitle } secondary={ ternarySubTitle } />
-                                </Grid>
-                            )
-                            : null
-                    }
                 </Grid>
                 <Grid justifyContent="flex-end">
                     {

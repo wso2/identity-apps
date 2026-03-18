@@ -34,6 +34,7 @@ export const rules: rulesNS = {
     fields: {
         autocomplete: {
             clearFilterActionText: "Clear search value to see more",
+            inputPlaceholderText: "Please type to enter a resource ...",
             moreItemsMessage: "Only the recent resources are listed. Type to search for others ...",
             placeholderText: "Please select a resource or type to search ...",
             selectPlaceholderText: "Please select a resource"
