@@ -431,17 +431,17 @@ export const applicationConfig: ApplicationConfig = {
         }
     },
     getAllowedGrantTypes: (orgType : OrganizationType) => ({
+        [ "agent-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.CIBA_GRANT
+        ],
         // single page app template
         [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.IMPLICIT_GRANT,
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
-        ],
-        [ "agent-application" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.CIBA_GRANT
         ],
         [ "angular-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
