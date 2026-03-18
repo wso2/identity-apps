@@ -210,7 +210,9 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                             autoComplete="new-password"
                                             component={ TextFieldAdapter }
                                             disabled={ isSubmitting }
-                                            validate={ (value: string) => !value ? t("agents:wizard.fields.name.validations.required") : undefined }
+                                            validate={ (value: string) => !value
+                                                ? t("agents:wizard.fields.name.validations.required")
+                                                : undefined }
                                             data-componentid={ `${componentId}-name` }
                                         />
                                         <FinalFormField
@@ -248,7 +250,9 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                     name="agentType"
                                                     validate={ (value: string) => {
                                                         if (isUserServingAgent && !value) {
-                                                            return t("agents:wizard.fields.agentType.validations.required");
+                                                            return t(
+                                                                "agents:wizard.fields.agentType.validations.required"
+                                                            );
                                                         }
 
                                                         return undefined;
@@ -257,58 +261,119 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                     { ({ input, meta }: FieldRenderProps<string>) => (
                                                         <div style={ { marginBottom: "1rem" } }>
                                                             <label className="MuiFormLabel-root">
-                                                                { t("agents:wizard.fields.agentType.label") } <span style={ { color: "#f44336" } }>*</span>
+                                                                { t("agents:wizard.fields.agentType.label") }
+                                                                { " " }
+                                                                <span style={ { color: "#f44336" } }>*</span>
                                                             </label>
 
                                                             <Form.Field>
                                                                 <Radio
-                                                                    label={ t("agents:wizard.fields.agentType.options.interactive.label") }
+                                                                    label={
+                                                                        t(
+                                                                            "agents:wizard.fields" +
+                                                                            ".agentType.options.interactive.label"
+                                                                        )
+                                                                    }
                                                                     name="agentType"
                                                                     value={ AgentType.INTERACTIVE }
                                                                     checked={ input.value === AgentType.INTERACTIVE }
-                                                                    onChange={ () => input.onChange(AgentType.INTERACTIVE) }
+                                                                    onChange={
+                                                                        () => input.onChange(AgentType.INTERACTIVE)
+                                                                    }
                                                                     disabled={ isSubmitting }
-                                                                    data-componentid={ `${componentId}-agent-type-interactive` }
+                                                                    data-componentid={
+                                                                        `${componentId}-agent-type-interactive`
+                                                                    }
                                                                 />
                                                             </Form.Field>
 
                                                             { isInteractive && (
-                                                                <div style={ { marginBottom: "1rem", marginLeft: "2rem", marginTop: "1rem" } }>
+                                                                <div
+                                                                    style={ {
+                                                                        marginBottom: "1rem",
+                                                                        marginLeft: "2rem",
+                                                                        marginTop: "1rem"
+                                                                    } }
+                                                                >
                                                                     <FinalFormField
                                                                         name="callbackUrl"
-                                                                        label={ t("agents:wizard.fields.callbackUrl.label") }
+                                                                        label={
+                                                                            t(
+                                                                                "agents:wizard.fields" +
+                                                                                ".callbackUrl.label"
+                                                                            )
+                                                                        }
                                                                         required={ true }
-                                                                        placeholder={ t("agents:wizard.fields.callbackUrl.placeholder") }
+                                                                        placeholder={
+                                                                            t(
+                                                                                "agents:wizard.fields" +
+                                                                                ".callbackUrl.placeholder"
+                                                                            )
+                                                                        }
                                                                         autoComplete="new-password"
                                                                         component={ TextFieldAdapter }
                                                                         disabled={ isSubmitting }
                                                                         validate={ (value: string) => {
                                                                             if (!value) {
-                                                                                return t("agents:wizard.fields.callbackUrl.validations.required");
+                                                                                return t(
+                                                                                    "agents:wizard.fields" +
+                                                                                    ".callbackUrl.validations.required"
+                                                                                );
                                                                             }
                                                                             if (URLUtils.isURLValid(value)) {
-                                                                                if (URLUtils.isHttpUrl(value, false) || URLUtils.isHttpsUrl(value, false)) {
+                                                                                if (
+                                                                                    URLUtils.isHttpUrl(
+                                                                                        value,
+                                                                                        false
+                                                                                    ) ||
+                                                                                    URLUtils.isHttpsUrl(
+                                                                                        value,
+                                                                                        false
+                                                                                    )
+                                                                                ) {
                                                                                     return undefined;
                                                                                 }
                                                                             }
 
-                                                                            return t("applications:forms.inboundOIDC.fields.callBackUrls.validations.invalid");
+                                                                            return t(
+                                                                                "applications:forms.inboundOIDC" +
+                                                                                ".fields.callBackUrls" +
+                                                                                ".validations.invalid"
+                                                                            );
                                                                         } }
-                                                                        helperText={ t("agents:wizard.fields.callbackUrl.helperText") }
-                                                                        data-componentid={ `${componentId}-callback-url` }
+                                                                        helperText={
+                                                                            t(
+                                                                                "agents:wizard.fields" +
+                                                                                ".callbackUrl.helperText"
+                                                                            )
+                                                                        }
+                                                                        data-componentid={
+                                                                            `${componentId}-callback-url`
+                                                                        }
                                                                     />
                                                                 </div>
                                                             ) }
 
                                                             <Form.Field>
                                                                 <Radio
-                                                                    label={ t("agents:wizard.fields.agentType.options.background.label") }
+                                                                    label={
+                                                                        t(
+                                                                            "agents:wizard.fields" +
+                                                                            ".agentType.options.background.label"
+                                                                        )
+                                                                    }
                                                                     name="agentType"
                                                                     value={ AgentType.BACKGROUND }
-                                                                    checked={ input.value === AgentType.BACKGROUND }
-                                                                    onChange={ () => input.onChange(AgentType.BACKGROUND) }
+                                                                    checked={
+                                                                        input.value === AgentType.BACKGROUND
+                                                                    }
+                                                                    onChange={
+                                                                        () => input.onChange(AgentType.BACKGROUND)
+                                                                    }
                                                                     disabled={ isSubmitting }
-                                                                    data-componentid={ `${componentId}-agent-type-background` }
+                                                                    data-componentid={
+                                                                        `${componentId}-agent-type-background`
+                                                                    }
                                                                 />
                                                             </Form.Field>
 
@@ -330,26 +395,52 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                     <div style={ { marginLeft: "2rem", marginTop: "1rem" } }>
                                                         <FinalFormField
                                                             name="cibaAuthReqExpiryTime"
-                                                            label={ t("agents:wizard.fields.cibaAuthReqExpiryTime.label") }
+                                                            label={
+                                                                t(
+                                                                    "agents:wizard.fields" +
+                                                                    ".cibaAuthReqExpiryTime.label"
+                                                                )
+                                                            }
                                                             required={ true }
                                                             type="number"
-                                                            placeholder={ t("agents:wizard.fields.cibaAuthReqExpiryTime.placeholder") }
+                                                            placeholder={
+                                                                t(
+                                                                    "agents:wizard.fields" +
+                                                                    ".cibaAuthReqExpiryTime.placeholder"
+                                                                )
+                                                            }
                                                             autoComplete="new-password"
                                                             component={ TextFieldAdapter }
                                                             disabled={ isSubmitting }
                                                             validate={ (value: string | number) => {
-                                                                const numValue: number = typeof value === "string" ? parseInt(value, 10) : value;
+                                                                const numValue: number =
+                                                                    typeof value === "string"
+                                                                        ? parseInt(value, 10)
+                                                                        : value;
 
                                                                 if (!value || isNaN(numValue)) {
-                                                                    return t("agents:wizard.fields.cibaAuthReqExpiryTime.validations.required");
+                                                                    return t(
+                                                                        "agents:wizard.fields" +
+                                                                        ".cibaAuthReqExpiryTime" +
+                                                                        ".validations.required"
+                                                                    );
                                                                 }
                                                                 if (numValue < 1) {
-                                                                    return t("agents:wizard.fields.cibaAuthReqExpiryTime.validations.minimum");
+                                                                    return t(
+                                                                        "agents:wizard.fields" +
+                                                                        ".cibaAuthReqExpiryTime" +
+                                                                        ".validations.minimum"
+                                                                    );
                                                                 }
 
                                                                 return undefined;
                                                             } }
-                                                            helperText={ t("agents:wizard.fields.cibaAuthReqExpiryTime.helperText") }
+                                                            helperText={
+                                                                t(
+                                                                    "agents:wizard.fields" +
+                                                                    ".cibaAuthReqExpiryTime.helperText"
+                                                                )
+                                                            }
                                                             data-componentid={ `${componentId}-ciba-expiry-time` }
                                                         />
 
@@ -357,25 +448,47 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
 
                                                         <FinalFormField
                                                             name="notificationChannels"
-                                                            label={ t("agents:wizard.fields.notificationChannels.label") }
+                                                            label={
+                                                                t(
+                                                                    "agents:wizard.fields" +
+                                                                    ".notificationChannels.label"
+                                                                )
+                                                            }
                                                             component={ CheckboxGroupFieldAdapter }
                                                             disabled={ isSubmitting }
                                                             required={ true }
                                                             validate={ (value: string[]) => {
                                                                 if (!value || value.length === 0) {
-                                                                    return t("agents:wizard.fields.notificationChannels.validations.required");
+                                                                    return t(
+                                                                        "agents:wizard.fields" +
+                                                                        ".notificationChannels" +
+                                                                        ".validations.required"
+                                                                    );
                                                                 }
 
                                                                 return undefined;
                                                             } }
-                                                            hint={ t("agents:wizard.fields.notificationChannels.hint") }
+                                                            hint={
+                                                                t(
+                                                                    "agents:wizard.fields" +
+                                                                    ".notificationChannels.hint"
+                                                                )
+                                                            }
                                                             options={ [
                                                                 {
-                                                                    label: t("agents:wizard.fields.notificationChannels.options.email"),
+                                                                    label: t(
+                                                                        "agents:wizard.fields" +
+                                                                        ".notificationChannels" +
+                                                                        ".options.email"
+                                                                    ),
                                                                     value: "email"
                                                                 },
                                                                 {
-                                                                    label: t("agents:wizard.fields.notificationChannels.options.sms"),
+                                                                    label: t(
+                                                                        "agents:wizard.fields" +
+                                                                        ".notificationChannels" +
+                                                                        ".options.sms"
+                                                                    ),
                                                                     value: "sms"
                                                                 }
                                                             ] }
@@ -409,7 +522,12 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                     onClick={ () => {
                                                         document
                                                             .getElementById("addAgentForm")
-                                                            .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+                                                            .dispatchEvent(
+                                                                new Event("submit", {
+                                                                    bubbles: true,
+                                                                    cancelable: true
+                                                                })
+                                                            );
                                                     } }
                                                     data-testid={ `${componentId}-create-button` }
                                                 >
@@ -466,7 +584,9 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                             { isInteractive && (
                                                 <>
                                                     <Divider />
-                                                    <Heading as="h6">{ t("agents:wizard.help.callbackUrl.title") }</Heading>
+                                                    <Heading as="h6">
+                                                        { t("agents:wizard.help.callbackUrl.title") }
+                                                    </Heading>
                                                     <p>
                                                         { t("agents:wizard.help.callbackUrl.description") }
                                                     </p>
