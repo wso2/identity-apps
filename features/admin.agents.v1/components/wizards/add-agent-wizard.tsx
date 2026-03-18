@@ -508,7 +508,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                     className="link-button"
                                                     basic
                                                     onClick={ handleClose }
-                                                    data-testid={ `${componentId}-cancel-button` }
+                                                    data-componentid={ `${componentId}-cancel-button` }
                                                 >
                                                     { t("agents:wizard.buttons.cancel") }
                                                 </Button>
@@ -529,7 +529,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                                 })
                                                             );
                                                     } }
-                                                    data-testid={ `${componentId}-create-button` }
+                                                    data-componentid={ `${componentId}-create-button` }
                                                 >
                                                     { t("agents:wizard.buttons.create") }
                                                 </Button>
@@ -665,7 +665,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                         primary={ true }
                                         floated="right"
                                         onClick={ handleClose }
-                                        data-testid={ `${componentId}-done-button` }
+                                        data-componentid={ `${componentId}-done-button` }
                                     >
                                         { t("agents:wizard.buttons.done") }
                                     </Button>
