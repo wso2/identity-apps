@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2021-2026, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -42,33 +42,7 @@
 <%@ page import="org.json.JSONObject" %>
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
-
-<%!
-    private boolean isMultiAuthAvailable(String multiOptionURI) {
-
-        boolean isMultiAuthAvailable = true;
-        if (multiOptionURI == null || multiOptionURI.equals("null")) {
-            isMultiAuthAvailable = false;
-        } else {
-            int authenticatorIndex = multiOptionURI.indexOf("authenticators=");
-            if (authenticatorIndex == -1) {
-                isMultiAuthAvailable = false;
-            } else {
-                String authenticators = multiOptionURI.substring(authenticatorIndex + 15);
-                int authLastIndex = authenticators.indexOf("&") != -1 ? authenticators.indexOf("&") : authenticators.length();
-                authenticators = authenticators.substring(0, authLastIndex);
-                List<String> authList = Arrays.asList(authenticators.split("%3B"));
-                if (authList.size() < 2) {
-                    isMultiAuthAvailable = false;
-                }
-                else if (authList.size() == 2 && authList.contains("backup-code-authenticator%3ALOCAL")) {
-                    isMultiAuthAvailable = false;
-                }
-            }
-        }
-        return isMultiAuthAvailable;
-    }
-%>
+<%@ include file="util/authenticator-utils.jsp" %>
 
 <%
     String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
@@ -168,6 +142,8 @@
 
     var insightsAppIdentifier = "<%=clientId%>";
     var insightsTenantIdentifier = "<%=userTenant%>";
+    // Client-side submission lock to prevent duplicate submits.
+    var isIdentifierSubmitting = false;
 
     if (insightsAppIdentifier == "MY_ACCOUNT") {
         insightsAppIdentifier = "my-account";
@@ -179,6 +155,7 @@
 
     $(document).ready(function(){
         var usernameInput = $("#usernameUserInput");
+        var identifierForm = $("#identifierForm");
 
         // Hides invalid form error message on user input.
         if (usernameInput) {
@@ -187,67 +164,88 @@
             });
         }
 
-        $.fn.preventDoubleSubmission = function () {
-            $(this).on("submit", function (e) {
-                var $form = $(this);
-                e.preventDefault();
-                var userName = document.getElementById("username");
-                var usernameUserInput = document.getElementById("usernameUserInput");
-
-                if (usernameUserInput) {
-                    var sanitizedUsername = usernameUserInput.value.trim();
-
-                    if (sanitizedUsername.length <= 0) {
-                        showUsernameInvalidMessage();
-                    }
-
-                    if (<%=preserveCaseSensitivityEnabled%>) {
-                        userName.value = sanitizedUsername;
-                    } else {
-                        userName.value = sanitizedUsername.toLowerCase();
-                    }
-                }
-
-                var genericReCaptchaEnabled = "<%=genericReCaptchaEnabled%>";
-                if (genericReCaptchaEnabled === "true") {
-                    if (!grecaptcha.getResponse()) {
-                        grecaptcha.execute();
-                        return;
-                    }
-                }
-
-                if (username.value) {
-                    trackEvent("authentication-portal-identifierauth-click-continue", {
-                        "app": insightsAppIdentifier,
-                        "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
-                    });
-                    var $form = $(this);
-
-                    // store the username in session storage
-                    sessionStorage.setItem("username", username.value);
-
-                    $.ajax({
-                        type: "GET",
-                        url: "<%= Encode.forJavaScriptBlock(loginContextRequestUrl) %>",
-                        xhrFields: { withCredentials: true },
-                        success: function (data) {
-                            if (data && data.status === "redirect" && data.redirectUrl && data.redirectUrl.length > 0) {
-                                window.location.href = data.redirectUrl;
-                            } else if ($form.data('submitted') !== true) {
-                                $form.data('submitted', true);
-                                document.getElementById("identifierForm").submit();
-                            } else {
-                                console.warn("Prevented a possible double submit event.");
-                            }
-                        },
-                        cache: false
-                    });
-                }
-            });
-            return this;
-        };
-        $('#identifierForm').preventDoubleSubmission();
+        if (identifierForm) {
+            identifierForm.on("submit", submitIdentifier);
+        }
     });
+
+    function submitIdentifier (e) {
+        e.preventDefault();
+        // Ignore repeated submit events while a previous request is in-flight.
+        if (isIdentifierSubmitting) {
+            return false;
+        }
+
+        var form = document.getElementById("identifierForm");
+        var submitButton = form ? form.querySelector("button[type='submit']") : null;
+        var userName = document.getElementById("username");
+        var usernameUserInput = document.getElementById("usernameUserInput");
+
+        if (usernameUserInput) {
+            var sanitizedUsername = usernameUserInput.value.trim();
+
+            if (sanitizedUsername.length <= 0) {
+                showUsernameInvalidMessage();
+                return false;
+            }
+
+            if (<%=preserveCaseSensitivityEnabled%>) {
+                userName.value = sanitizedUsername;
+            } else {
+                userName.value = sanitizedUsername.toLowerCase();
+            }
+        }
+
+        var genericReCaptchaEnabled = "<%=genericReCaptchaEnabled%>";
+        if (genericReCaptchaEnabled === "true") {
+            if (!grecaptcha.getResponse()) {
+                grecaptcha.execute();
+                return false;
+            }
+        }
+
+        if (username.value) {
+            // Lock and disable the button before starting async work.
+            isIdentifierSubmitting = true;
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.classList.add("loading");
+            }
+
+            trackEvent("authentication-portal-identifierauth-click-continue", {
+                "app": insightsAppIdentifier,
+                "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
+            });
+
+            // store the username in session storage
+            sessionStorage.setItem("username", username.value);
+
+            $.ajax({
+                type: "GET",
+                url: "<%= Encode.forJavaScriptBlock(loginContextRequestUrl) %>",
+                xhrFields: { withCredentials: true },
+                success: function (data) {
+                    if (data && data.status === "redirect" && data.redirectUrl && data.redirectUrl.length > 0) {
+                        window.location.href = data.redirectUrl;
+                    } else {
+                        // Submit natively after context validation succeeds.
+                        HTMLFormElement.prototype.submit.call(form);
+                    }
+                },
+                error: function () {
+                    // Unlock only on request failure so the user can retry.
+                    isIdentifierSubmitting = false;
+                    if (submitButton) {
+                        submitButton.disabled = false;
+                        submitButton.classList.remove("loading");
+                    }
+                },
+                cache: false
+            });
+        }
+
+        return false;
+    }
 
     trackEvent("page-visit-authentication-portal-identifierauth", {
         "app": insightsAppIdentifier,
@@ -291,7 +289,7 @@
     <div class="field">
      <% if (StringUtils.equals(tenantForTheming, IdentityManagementEndpointConstants.SUPER_TENANT) &&
         Boolean.parseBoolean(request.getParameter(IS_SAAS_APP))) { %>
-        
+
             <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "email")%></label>
             <div class="ui fluid left icon input">
                 <input
@@ -341,7 +339,7 @@
     <% } %>
     </div>
     <%
-    if (genericReCaptchaEnabled) { 
+    if (genericReCaptchaEnabled) {
         String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
     %>
         <div class="field">

@@ -24,7 +24,7 @@ import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import useEnableLegacyFlows from "@wso2is/admin.core.v1/hooks/use-enable-legacy-flows";
+import useEnableLegacyFlows, { LegacyFlowType } from "@wso2is/admin.core.v1/hooks/use-enable-legacy-flows";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -201,7 +201,9 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ invitedUserListOffset, setInvitedUserListOffset ] = useState<number>(1);
 
-    const isLegacyFlowsEnabled: boolean = useEnableLegacyFlows();
+    const isLegacyInvitedUserRegistrationFlowEnabled: boolean = useEnableLegacyFlows(
+        LegacyFlowType.INVITED_USER_REGISTRATION
+    );
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state?.profile?.profileSchemas);
     const systemReservedUserStores: string[] =
         useSelector((state: AppState) => state?.config?.ui?.systemReservedUserStores);
@@ -1097,7 +1099,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     { t("users:confirmations.addMultipleUser.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content>
-                    { isLegacyFlowsEnabled ? (
+                    { isLegacyInvitedUserRegistrationFlowEnabled ? (
                         <Trans i18nKey="users:confirmations.addMultipleUser.legacyContent">
                             Invite User to Set Password should be enabled to add multiple users.
                             Please enable email invitations for user password setup from

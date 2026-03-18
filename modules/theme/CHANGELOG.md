@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.9.4
+
+### Patch Changes
+
+- [#9716](https://github.com/wso2/identity-apps/pull/9716) [`d939b57796a1b27ca90b2011e71c9b7c167f08b3`](https://github.com/wso2/identity-apps/commit/d939b57796a1b27ca90b2011e71c9b7c167f08b3) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add org identifier handler related changes
+
 ## 2.9.3
 
 ### Patch Changes

@@ -1616,6 +1616,44 @@ export interface Extensions {
                     placeholder: string;
                     hint: string;
                 };
+                smtpProvider: {
+                    name: string;
+                    subHeading: string;
+                };
+                httpProvider: {
+                    name: string;
+                    subHeading: string;
+                    providerUrl: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    contentType: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    httpMethod: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    headers: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    body: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    authentication: {
+                        required: string;
+                        updateRequired: string;
+                    };
+                    mandatoryFieldsRequired: string;
+                };
                 validations: {
                     required: string;
                     portInvalid: string;

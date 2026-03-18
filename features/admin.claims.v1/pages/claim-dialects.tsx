@@ -202,9 +202,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
 
                 setOidcAttributeMappings(oidc);
                 setScimAttributeMappings(scim);
-                if (isVcFeatureEnabled) {
-                    setVcAttributeMappings(vc);
-                }
+                setVcAttributeMappings(isVcFeatureEnabled && !isSubOrganization() ? vc : []);
                 setAxschemaAttributeMappings(axschema);
                 // TODO: Remove eiDAS temporally. Need to update it to version 2 and re-enable it.
                 setEidasAttributeMappings(null);

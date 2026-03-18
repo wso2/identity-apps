@@ -41,6 +41,7 @@
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Base64" %>
@@ -96,7 +97,7 @@
     boolean allowchangeusername = Boolean.parseBoolean(request.getParameter("allowchangeusername"));
     String userLocaleForClaim = request.getHeader("Accept-Language");
     String username = Encode.forJava(request.getParameter("username"));
-    String password = request.getParameter("password");
+    char[] password = request.getParameter("password") != null ? request.getParameter("password").toCharArray() : null;
     String sessionDataKey = request.getParameter("sessionDataKey");
     String sp = Encode.forJava(request.getParameter("sp"));
     String spId = "";
@@ -307,7 +308,7 @@
         }
     }
 
-    if (StringUtils.isBlank(password)) {
+    if (isBlankPassword(password)) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                 "Password.cannot.be.empty"));
@@ -518,6 +519,27 @@
             }
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
+    } finally {
+        if (password != null) {
+            Arrays.fill(password, '\u0000');
+        }
+    }
+%>
+
+<%!
+    private boolean isBlankPassword(char[] password) {
+
+        if (password == null || password.length == 0) {
+            return true;
+        }
+
+        for (char c : password) {
+            if (!Character.isWhitespace(c)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 %>
 

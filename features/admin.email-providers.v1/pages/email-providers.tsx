@@ -34,7 +34,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form, FormPropsInterface } from "@wso2is/form";
+import { Field, FinalForm, Form, FormPropsInterface, FormRenderProps } from "@wso2is/form";
 import {
     Code,
     ConfirmationModal,
@@ -44,6 +44,7 @@ import {
     EmphasizedSegment,
     Heading,
     Hint,
+    InfoCard,
     PageLayout,
     PrimaryButton,
     SecondaryButton,
@@ -64,20 +65,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Placeholder, Ref } from "semantic-ui-react";
 import "@wso2is/admin.core.v1/styles/external-api-authentication.scss";
+import HttpBasedEmailProvider from "./http-based-email-provider";
 import { deleteEmailProviderConfigurations,
     updateEmailProviderConfigurations,
     useEmailProviderConfig } from "../api";
+import { ReactComponent as EmailProviderIcon } from "../assets/email-provider-icon.svg";
 import {
     AuthenticationType,
     DropdownChild,
     EmailProviderConstants
 } from "../constants";
 import {
+    AuthType,
+    EmailProviderCardInterface,
     EmailProviderConfigAPIResponseInterface,
     EmailProviderConfigFormErrorValidationsInterface,
     EmailProviderConfigFormValuesInterface,
     EmailProviderConfigPropertiesInterface,
-    EmailProvidersPageInterface
+    EmailProvidersPageInterface,
+    HTTPEmailProviderFormErrorValidationsInterface,
+    HTTPEmailProviderFormInterface
 } from "../models";
 
 const FORM_ID: string = "email-provider-config-form";
@@ -126,9 +133,39 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
         error: emailProviderConfigFetchRequestError
     } = useEmailProviderConfig();
 
+    const [ selectedProvider, setSelectedProvider ] =
+        useState<string>(EmailProviderConstants.SMTP_EMAIL_PROVIDER);
+    const [ httpEmailProviderConfig, setHttpEmailProviderConfig ] =
+        useState<HTTPEmailProviderFormInterface>(undefined);
+    const [ httpEndpointAuthType, setHttpEndpointAuthType ] = useState<AuthType | null>(null);
+    const [ isHttpAuthUpdateFormState, setIsHttpAuthUpdateFormState ] = useState<boolean>(false);
+    const httpFormStateRef: MutableRefObject<
+        FormApi<Record<string, unknown>, Partial<Record<string, unknown>>> | null
+    > = useRef<FormApi<Record<string, unknown>, Partial<Record<string, unknown>>> | null>(null);
+
     const [ endpointAuthType, setEndpointAuthType ] = useState<AuthenticationType>(null);
     const [ showPrimarySecret, setShowPrimarySecret ] = useState<boolean>(false);
     const [ showSecondarySecret, setShowSecondarySecret ] = useState<boolean>(false);
+
+    const hasExistingSmtpConfig: boolean = !!(
+        originalEmailProviderConfig?.[0] &&
+        originalEmailProviderConfig[0].provider !== EmailProviderConstants.PROVIDER_HTTP
+    );
+
+    const providerCards: EmailProviderCardInterface[] = [
+        {
+            icon: EmailProviderIcon,
+            id: 1,
+            key: EmailProviderConstants.SMTP_EMAIL_PROVIDER,
+            name: t("extensions:develop.emailProviders.form.smtpProvider.name")
+        },
+        {
+            icon: EmailProviderIcon,
+            id: 2,
+            key: EmailProviderConstants.HTTP_EMAIL_PROVIDER,
+            name: t("extensions:develop.emailProviders.form.httpProvider.name")
+        }
+    ];
 
     useEffect(() => {
 
@@ -146,30 +183,63 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
         if (originalEmailProviderConfig[0] &&
                 originalEmailProviderConfig[0].name === EmailProviderConstants.EMAIL_PROVIDER_CONFIG_NAME) {
 
-            const displayNameProperty: EmailProviderConfigPropertiesInterface =
-                originalEmailProviderConfig[0].properties.find((property: EmailProviderConfigPropertiesInterface) =>
-                    property.key === EmailProviderConstants.SIGNATURE_KEY
-                );
+            const config: EmailProviderConfigAPIResponseInterface = originalEmailProviderConfig[0];
 
-            const replyToProperty: EmailProviderConfigPropertiesInterface =
-                originalEmailProviderConfig[0].properties.find((property: EmailProviderConfigPropertiesInterface) =>
-                    property.key === EmailProviderConstants.REPLY_TO_ADDRESS_KEY
-                );
+            if (config.provider === EmailProviderConstants.PROVIDER_HTTP) {
+                setSelectedProvider(EmailProviderConstants.HTTP_EMAIL_PROVIDER);
 
-            setEmailProviderConfig({
-                authType: originalEmailProviderConfig[0].authType,
-                displayName: displayNameProperty?.value,
-                fromAddress: originalEmailProviderConfig[0].fromAddress,
-                password: enableOldUIForEmailProvider
-                    ? originalEmailProviderConfig[0].password
-                    : null,
-                replyToAddress: replyToProperty?.value,
-                smtpPort: originalEmailProviderConfig[0].smtpPort,
-                smtpServerHost: originalEmailProviderConfig[0].smtpServerHost,
-                userName: enableOldUIForEmailProvider
-                    ? originalEmailProviderConfig[0].userName
-                    : null
-            });
+                const findProperty = (key: string): string | undefined =>
+                    config.properties?.find(
+                        (p: EmailProviderConfigPropertiesInterface) => p.key === key
+                    )?.value;
+
+                const httpConfig: HTTPEmailProviderFormInterface = {
+                    accessToken: findProperty(EmailProviderConstants.ACCESS_TOKEN),
+                    apiKeyHeader: findProperty(EmailProviderConstants.API_KEY_HEADER),
+                    apiKeyValue: findProperty(EmailProviderConstants.API_KEY_VALUE),
+                    authType: config.authType as AuthType,
+                    body: findProperty(EmailProviderConstants.BODY),
+                    clientId: findProperty(EmailProviderConstants.CLIENT_ID),
+                    clientSecret: findProperty(EmailProviderConstants.CLIENT_SECRET),
+                    contentType: findProperty(EmailProviderConstants.CONTENT_TYPE),
+                    headers: findProperty(EmailProviderConstants.HTTP_HEADERS),
+                    httpMethod: findProperty(EmailProviderConstants.HTTP_CLIENT_METHOD),
+                    password: findProperty(EmailProviderConstants.PASSWORD),
+                    providerURL: config.providerURL,
+                    scopes: findProperty(EmailProviderConstants.SCOPES),
+                    tokenEndpoint: findProperty(EmailProviderConstants.TOKEN_ENDPOINT),
+                    userName: findProperty(EmailProviderConstants.USERNAME)
+                };
+
+                setHttpEmailProviderConfig(httpConfig);
+                setHttpEndpointAuthType(config.authType as AuthType);
+                setEmailProviderConfig(undefined);
+            } else {
+                setSelectedProvider(EmailProviderConstants.SMTP_EMAIL_PROVIDER);
+
+                const displayNameProperty: EmailProviderConfigPropertiesInterface =
+                    config.properties?.find((property: EmailProviderConfigPropertiesInterface) =>
+                        property.key === EmailProviderConstants.SIGNATURE_KEY
+                    );
+
+                const replyToProperty: EmailProviderConfigPropertiesInterface =
+                    config.properties?.find((property: EmailProviderConfigPropertiesInterface) =>
+                        property.key === EmailProviderConstants.REPLY_TO_ADDRESS_KEY
+                    );
+
+                setEmailProviderConfig({
+                    authType: config.authType,
+                    displayName: displayNameProperty?.value,
+                    fromAddress: config.fromAddress,
+                    password: enableOldUIForEmailProvider ? config.password : null,
+                    replyToAddress: replyToProperty?.value,
+                    smtpPort: config.smtpPort,
+                    smtpServerHost: config.smtpServerHost,
+                    userName: enableOldUIForEmailProvider ? config.userName : null
+                });
+                setHttpEmailProviderConfig(undefined);
+                setHttpEndpointAuthType(null);
+            }
         }
     }, [ originalEmailProviderConfig ]);
 
@@ -383,6 +453,7 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
             .then(() => {
                 !deleteBeforeUpdate && handleDeleteSuccess();
                 !deleteBeforeUpdate && setEmailProviderConfig(undefined);
+                !deleteBeforeUpdate && setHttpEmailProviderConfig(undefined);
                 !deleteBeforeUpdate && mutateEmailProviderConfig();
 
                 return true;
@@ -522,6 +593,205 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
     };
 
     /**
+     * Handles submitting the HTTP email provider configuration.
+     */
+    const handleHttpSubmit: (values: HTTPEmailProviderFormInterface) => void =
+        (values: HTTPEmailProviderFormInterface): void => {
+            setIsSubmitting(true);
+            const updateValues: EmailProviderConfigAPIResponseInterface = {
+                name: EmailProviderConstants.EMAIL_PROVIDER_CONFIG_NAME,
+                properties: [],
+                provider: EmailProviderConstants.PROVIDER_HTTP,
+                providerURL: values?.providerURL
+            };
+
+            if (values?.contentType) {
+                updateValues.properties.push({
+                    key: EmailProviderConstants.CONTENT_TYPE,
+                    value: values.contentType
+                });
+            }
+            if (values?.httpMethod) {
+                updateValues.properties.push({
+                    key: EmailProviderConstants.HTTP_CLIENT_METHOD,
+                    value: values.httpMethod
+                });
+            }
+            if (values?.headers) {
+                updateValues.properties.push({
+                    key: EmailProviderConstants.HTTP_HEADERS,
+                    value: values.headers
+                });
+            }
+            if (values?.body) {
+                updateValues.properties.push({
+                    key: EmailProviderConstants.BODY,
+                    value: values.body
+                });
+            }
+
+            if (values?.authType) {
+                updateValues.authType = values.authType;
+            }
+
+            if (values?.authType && values.authType !== AuthType.NONE) {
+                if (values.authType === AuthType.BASIC) {
+                    updateValues.properties.push({
+                        key: EmailProviderConstants.USERNAME,
+                        value: values.userName
+                    });
+                    updateValues.properties.push({
+                        key: EmailProviderConstants.PASSWORD,
+                        value: values.password
+                    });
+                }
+                if (values.authType === AuthType.CLIENT_CREDENTIAL) {
+                    updateValues.properties.push({
+                        key: EmailProviderConstants.CLIENT_ID,
+                        value: values.clientId
+                    });
+                    updateValues.properties.push({
+                        key: EmailProviderConstants.CLIENT_SECRET,
+                        value: values.clientSecret
+                    });
+                    updateValues.properties.push({
+                        key: EmailProviderConstants.TOKEN_ENDPOINT,
+                        value: values.tokenEndpoint
+                    });
+                    if (values.scopes) {
+                        updateValues.properties.push({
+                            key: EmailProviderConstants.SCOPES,
+                            value: values.scopes
+                        });
+                    }
+                }
+                if (values.authType === AuthType.BEARER) {
+                    updateValues.properties.push({
+                        key: EmailProviderConstants.ACCESS_TOKEN,
+                        value: values.accessToken
+                    });
+                }
+                if (values.authType === AuthType.API_KEY) {
+                    updateValues.properties.push({
+                        key: EmailProviderConstants.API_KEY_HEADER,
+                        value: values.apiKeyHeader
+                    });
+                    updateValues.properties.push({
+                        key: EmailProviderConstants.API_KEY_VALUE,
+                        value: values.apiKeyValue
+                    });
+                }
+            }
+
+            handleConfigurationDelete(true)
+                .then((isDeleted: boolean) => {
+                    if (isDeleted) {
+                        updateEmailProviderConfigurations(updateValues, enableOldUIForEmailProvider)
+                            .then(() => {
+                                handleUpdateSuccess();
+                                setIsHttpAuthUpdateFormState(false);
+                            })
+                            .catch(() => {
+                                handleUpdateError();
+                            })
+                            .finally(() => {
+                                setIsSubmitting(false);
+                                mutateEmailProviderConfig();
+                            });
+                    } else {
+                        handleDeleteError();
+                        setIsSubmitting(false);
+                    }
+                })
+                .catch(() => {
+                    handleDeleteError();
+                    setIsSubmitting(false);
+                });
+        };
+
+    /**
+     * Validates the HTTP email provider form.
+     */
+    const validateHttpForm: (
+        values: HTTPEmailProviderFormInterface
+    ) => HTTPEmailProviderFormErrorValidationsInterface =
+        (values: HTTPEmailProviderFormInterface): HTTPEmailProviderFormErrorValidationsInterface => {
+            const error: HTTPEmailProviderFormErrorValidationsInterface = {
+                accessToken: undefined,
+                apiKeyHeader: undefined,
+                apiKeyValue: undefined,
+                authType: undefined,
+                body: undefined,
+                clientId: undefined,
+                clientSecret: undefined,
+                contentType: undefined,
+                httpMethod: undefined,
+                password: undefined,
+                providerURL: undefined,
+                tokenEndpoint: undefined,
+                userName: undefined
+            };
+
+            if (!values?.providerURL) {
+                error.providerURL = t("extensions:develop.emailProviders.form.validations.required");
+            }
+            if (!values?.contentType) {
+                error.contentType = t("extensions:develop.emailProviders.form.validations.required");
+            }
+            if (!values?.httpMethod) {
+                error.httpMethod = t("extensions:develop.emailProviders.form.validations.required");
+            }
+            if (!values?.body) {
+                error.body = t("extensions:develop.emailProviders.form.validations.required");
+            }
+            if (!values?.authType) {
+                error.authType = t("extensions:develop.emailProviders.form.validations.required");
+            }
+            if (values?.authType === AuthType.BASIC) {
+                if (!values?.userName) {
+                    error.userName = t("extensions:develop.emailProviders.form.validations.required");
+                }
+                if (!values?.password) {
+                    error.password = t("extensions:develop.emailProviders.form.validations.required");
+                }
+            }
+            if (values?.authType === AuthType.CLIENT_CREDENTIAL) {
+                if (!values?.clientId) {
+                    error.clientId = t("extensions:develop.emailProviders.form.validations.required");
+                }
+                if (!values?.clientSecret) {
+                    error.clientSecret = t("extensions:develop.emailProviders.form.validations.required");
+                }
+                if (!values?.tokenEndpoint) {
+                    error.tokenEndpoint = t("extensions:develop.emailProviders.form.validations.required");
+                }
+            }
+            if (values?.authType === AuthType.BEARER) {
+                if (!values?.accessToken) {
+                    error.accessToken = t("extensions:develop.emailProviders.form.validations.required");
+                }
+            }
+            if (values?.authType === AuthType.API_KEY) {
+                if (!values?.apiKeyHeader) {
+                    error.apiKeyHeader = t("extensions:develop.emailProviders.form.validations.required");
+                }
+                if (!values?.apiKeyValue) {
+                    error.apiKeyValue = t("extensions:develop.emailProviders.form.validations.required");
+                }
+            }
+
+            return error;
+        };
+
+    /**
+     * Handles authentication change for the HTTP email provider.
+     */
+    const handleHttpAuthenticationChange: () => void = (): void => {
+        setIsHttpAuthUpdateFormState(true);
+        setHttpEndpointAuthType(httpEmailProviderConfig?.authType ?? null);
+    };
+
+    /**
      * Resolves the page description.
      */
     const resolvePageDescription = () : ReactElement => {
@@ -574,6 +844,422 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
         history.push(`${AppConstants.getPaths().get("EMAIL_MANAGEMENT")}`);
     };
 
+
+    const renderSmtpSection = (): ReactElement => (
+        <EmphasizedSegment
+            padded="very"
+            data-componentid={ `${componentId}-smtp-tab` }
+        >
+            <Grid style={ { marginBottom: "1em" } }>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column>
+                        <h2>
+                            { t("extensions:develop.emailProviders" +
+                        ".form.smtpProvider.subHeading") }
+                        </h2>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+            <Form
+                id={ FORM_ID }
+                uncontrolledForm={ true }
+                onSubmit={ handleSubmit }
+                initialValues={ emailProviderConfig }
+                enableReinitialize={ true }
+                ref={ formRef }
+                noValidate={ true }
+                validate={ validateForm }
+                autoComplete="new-password"
+                formState={ formState }
+            >
+                <Grid>
+                    { /* To be added with email template feature
+        <Grid.Row columns={ 1 }>
+            <Grid.Column>
+                <p>
+                    { t("extensions:develop.emailProviders
+                     .description") }
+                </p>
+                <Message
+                    info
+                    floating
+                    attached="top"
+                    content={ (
+                        <Trans
+                            i18nKey={
+                                "extensions:develop.emailProviders.info"
+                            }
+                        >
+                            You can customize the email content using
+                            <a
+                                className="link pointing"
+                                onClick={ navigateToEmailTemplate }
+                            >
+                                Email Templates
+                            </a>.
+                        </Trans>
+                    ) }
+                    data-componentid={ `${ componentId }-info-box` }
+                />
+            </Grid.Column>
+        </Grid.Row> */ }
+                    <Grid.Row columns={ 2 } key={ 1 }>
+                        <Grid.Column key="smtpServerHost">
+                            <Field.Input
+                                ariaLabel="SMTP Server Host Field"
+                                inputType="default"
+                                name="smtpServerHost"
+                                label={ t("extensions:develop.emailProviders.form" +
+                        ".smtpServerHost.label") }
+                                placeholder={
+                                    t("extensions:develop.emailProviders.form" +
+                        ".smtpServerHost.placeholder")
+                                }
+                                hint={ (
+                                    <Trans
+                                        i18nKey={
+                                            "extensions:develop.emailProviders" +
+                                ".form.smtpServerHost.hint"
+                                        }
+                                    >
+                            The Server Host usually begins with
+                                        <Code>smtp</Code>, followed by the domain
+                            name of the email service provider.
+                                    </Trans>
+                                ) }
+                                required={ true }
+                                value={ emailProviderConfig?.smtpServerHost }
+                                readOnly={ !hasEmailProviderUpdatePermissions }
+                                maxLength={ EmailProviderConstants
+                                    .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
+                                minLength={ EmailProviderConstants
+                                    .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
+                                width={ 16 }
+                                data-componentid={
+                                    `${componentId}-smtp-server-host`
+                                }
+                                autoComplete="new-password"
+                            />
+                        </Grid.Column>
+                        <Grid.Column key="smtpPort">
+                            <Field.Input
+                                ariaLabel="SMTP Server Port Field"
+                                inputType="number"
+                                name="smtpPort"
+                                label={ t("extensions:develop.emailProviders.form" +
+                        ".smtpPort.label") }
+                                placeholder={
+                                    t("extensions:develop.emailProviders.form" +
+                        ".smtpPort.placeholder")
+                                }
+                                hint={ (
+                                    <Trans
+                                        i18nKey={
+                                            "extensions:develop.emailProviders" +
+                                ".form.smtpPort.hint"
+                                        }
+                                    >
+                            For security reasons, we currently support
+                            port <Code>587</Code> only.
+                                    </Trans>
+                                ) }
+                                required={ true }
+                                value={ emailProviderConfig?.smtpPort }
+                                readOnly={ !hasEmailProviderUpdatePermissions }
+                                maxLength={ EmailProviderConstants
+                                    .EMAIL_PROVIDER_SERVER_PORT_MAX_LENGTH }
+                                minLength={ EmailProviderConstants
+                                    .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
+                                width={ 16 }
+                                data-componentid={
+                                    `${componentId}-smtp-server-port`
+                                }
+                                autoComplete="new-password"
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={ 2 } key={ 2 }>
+                        <Grid.Column key="fromAddress">
+                            <Field.Input
+                                ariaLabel="From Address Field"
+                                inputType="email"
+                                name="fromAddress"
+                                label={
+                                    t("extensions:develop.emailProviders.form." +
+                        "fromAddress.label") }
+                                placeholder={
+                                    t("extensions:develop.emailProviders.form" +
+                        ".fromAddress.placeholder")
+                                }
+                                hint={ t("extensions:develop.emailProviders.form" +
+                        ".fromAddress.hint") }
+                                required={ true }
+                                value={ emailProviderConfig?.fromAddress }
+                                readOnly={ !hasEmailProviderUpdatePermissions }
+                                maxLength={ EmailProviderConstants
+                                    .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
+                                minLength={ EmailProviderConstants
+                                    .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
+                                width={ 16 }
+                                data-componentid={
+                                    `${componentId}-smtp-from-address` }
+                                autoComplete="new-password"
+                            />
+                        </Grid.Column>
+                        <Grid.Column key="replyToAddress">
+                            <Field.Input
+                                ariaLabel="Reply-To Field"
+                                inputType="email"
+                                name="replyToAddress"
+                                label={ t("extensions:develop.emailProviders.form" +
+                        ".replyToAddress.label") }
+                                placeholder={
+                                    t("extensions:develop.emailProviders.form" +
+                        ".replyToAddress.placeholder")
+                                }
+                                hint={ t("extensions:develop.emailProviders.form" +
+                    ".replyToAddress.hint") }
+                                required={ true }
+                                value={ emailProviderConfig?.replyToAddress }
+                                readOnly={ !hasEmailProviderUpdatePermissions }
+                                maxLength={ EmailProviderConstants
+                                    .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
+                                minLength={ EmailProviderConstants
+                                    .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
+                                width={ 16 }
+                                data-componentid={
+                                    `${componentId}-smtp-reply-to-address`
+                                }
+                                autoComplete="new-password"
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                    { (enableOldUIForEmailProvider) && (
+                        <Grid.Row columns={ 2 } key={ 3 }>
+                            <Grid.Column key="userName">
+                                <Field.Input
+                                    ariaLabel="Username Field"
+                                    inputType="default"
+                                    name="userName"
+                                    label={
+                                        t("extensions:develop.emailProviders.form" +
+                            ".userName.label") }
+                                    placeholder={
+                                        t("extensions:develop.emailProviders.form" +
+                            ".userName.placeholder")
+                                    }
+                                    hint={
+                                        t("extensions:develop.emailProviders.form" +
+                            ".userName.hint") }
+                                    required={ true }
+                                    value={ emailProviderConfig?.userName }
+                                    readOnly={ !hasEmailProviderUpdatePermissions }
+                                    maxLength={ EmailProviderConstants
+                                        .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
+                                    minLength={ EmailProviderConstants
+                                        .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
+                                    width={ 16 }
+                                    data-componentid={
+                                        `${componentId}-smtp-username` }
+                                    autoComplete="new-password"
+                                />
+                            </Grid.Column>
+                            <Grid.Column key="password">
+                                <Field.Input
+                                    ariaLabel="Password Field"
+                                    inputType="password"
+                                    type="password"
+                                    name="password"
+                                    label={ t(
+                                        "extensions:develop.emailProviders.form" +
+                            ".password.label") }
+                                    placeholder={
+                                        t("extensions:develop.emailProviders.form" +
+                            ".password.placeholder")
+                                    }
+                                    hint={ t(
+                                        "extensions:develop.emailProviders.form" +
+                            ".password.hint") }
+                                    required={ true }
+                                    value={ emailProviderConfig?.password }
+                                    readOnly={ !hasEmailProviderUpdatePermissions }
+                                    maxLength={ EmailProviderConstants
+                                        .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
+                                    minLength={ EmailProviderConstants
+                                        .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
+                                    width={ 16 }
+                                    data-componentid={
+                                        `${componentId}-smtp-password`
+                                    }
+                                    autoComplete="new-password"
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) }
+                    <Grid.Row columns={ 2 } key={ 3 }>
+                        <Grid.Column key="displayName">
+                            <Field.Input
+                                ariaLabel="Display Name Field"
+                                inputType="default"
+                                name="displayName"
+                                label={ t("extensions:develop.emailProviders." +
+                        "form.displayName.label") }
+                                placeholder={
+                                    t("extensions:develop.emailProviders.form" +
+                        ".displayName.placeholder")
+                                }
+                                hint={ t("extensions:develop.emailProviders.form" +
+                    ".displayName.hint") }
+                                required={ true }
+                                value={ emailProviderConfig?.displayName }
+                                readOnly={ !hasEmailProviderUpdatePermissions }
+                                maxLength={ EmailProviderConstants
+                                    .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
+                                minLength={ EmailProviderConstants
+                                    .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
+                                width={ 16 }
+                                data-componentid={
+                                    `${componentId}-smtp-displayName` }
+                                autoComplete="new-password"
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+                { (!enableOldUIForEmailProvider) && (<div>
+                    <Divider className="divider-container" />
+                    <Heading className="heading-container" as="h5">
+                        {
+                            t("externalApiAuthentication:fields." +
+                "authenticationTypeDropdown.title")
+                        }
+                    </Heading>
+
+                    { (
+                        (!hasExistingSmtpConfig ||
+            isAuthenticationUpdateFormState)
+                    ) && (
+                        <Box className="box-container">
+                            <div className="box-field">
+                                <Field.Dropdown
+                                    ariaLabel="authType"
+                                    name="authType"
+                                    label={ t(
+                                        "externalApiAuthentication:fields." +
+                            "authenticationTypeDropdown.label"
+                                    ) }
+                                    placeholder={ t(
+                                        "externalApiAuthentication:fields." +
+                            "authenticationTypeDropdown.placeholder"
+                                    ) }
+                                    displayEmpty={ true }
+                                    required={ true }
+                                    value={ endpointAuthType }
+                                    options={ [
+                                        ...EmailProviderConstants.AUTH_TYPES.map(
+                                            (option: DropdownChild) => ({
+                                                text: t(option.text),
+                                                value: option.value.toString()
+                                            })
+                                        )
+                                    ] }
+                                    listen={ handleDropdownChange }
+                                    enableReinitialize={ true }
+                                    data-componentid={
+                                        `${ componentId }-authentication-dropdown`
+                                    }
+                                    width={ 16 }
+                                />
+                                {
+                                    showAuthSecretsHint(
+                                        hasExistingSmtpConfig,
+                                        t,
+                                        Hint
+                                    )
+                                }
+
+                                { renderEndpointAuthPropertyFields(
+                                    endpointAuthType,
+                                    showPrimarySecret,
+                                    showSecondarySecret,
+                                    setShowPrimarySecret,
+                                    setShowSecondarySecret,
+                                    componentId,
+                                    t,
+                                    Field,
+                                    AuthenticationType
+                                ) }
+
+                                { isAuthenticationUpdateFormState && (
+                                    <Button
+                                        onClick={ () =>
+                                            handleAuthenticationChangeCancel(
+                                                setIsAuthenticationUpdateFormState,
+                                                formState
+                                            )
+                                        }
+                                        variant="outlined"
+                                        size="small"
+                                        className="secondary-button"
+                                        data-componentid={ `${componentId}
+                            -cancel-edit-authentication-button` }
+                                    >
+                                        { t("actions:buttons.cancel") }
+                                    </Button>
+                                ) }
+                            </div>
+                        </Box>
+                    ) }
+
+                    {
+                        (hasExistingSmtpConfig &&
+            !isAuthenticationUpdateFormState) &&
+            renderAuthenticationSectionInfoBox(
+                originalEmailProviderConfig[0]?.authType,
+                componentId,
+                t,
+                handleAuthenticationChange,
+                Alert,
+                AlertTitle,
+                Trans,
+                Button
+            )
+                    }
+                </div>
+                ) }
+            </Form>
+            {
+                hasEmailProviderUpdatePermissions && (
+                    <>
+                        <Divider hidden />
+                        <Grid>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column
+                                    mobile={ 16 }
+                                    tablet={ 16 }
+                                    computer={ 16 }>
+                                    <PrimaryButton
+                                        size="small"
+                                        loading={ isSubmitting }
+                                        onClick={ () => {
+                                            formRef?.current?.triggerSubmit();
+                                        } }
+                                        ariaLabel="Email provider form update button"
+                                        data-componentid={
+                                            `${ componentId }-update-button`
+                                        }
+                                    >
+                                        { t("extensions:develop.emailProviders" +
+                                    ".updateButton") }
+                                    </PrimaryButton>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    </>
+                )
+            }
+        </EmphasizedSegment>
+    );
+
     return (
         <PageLayout
             title={ t("extensions:develop.emailProviders.heading") }
@@ -612,400 +1298,87 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                         ? renderLoadingPlaceholder()
                                         : (
                                             <>
-                                                <Form
-                                                    id={ FORM_ID }
-                                                    uncontrolledForm={ true }
-                                                    onSubmit={ handleSubmit }
-                                                    initialValues={ emailProviderConfig }
-                                                    enableReinitialize={ true }
-                                                    ref={ formRef }
-                                                    noValidate={ true }
-                                                    validate={ validateForm }
-                                                    autoComplete="new-password"
-                                                    formState={ formState }
-                                                >
+                                                <Box className="card-list" sx={ { mb: 3 } }>
                                                     <Grid>
-                                                        { /* To be added with email template feature
-                                                        <Grid.Row columns={ 1 }>
-                                                            <Grid.Column>
-                                                                <p>
-                                                                    { t("extensions:develop.emailProviders
-                                                                     .description") }
-                                                                </p>
-                                                                <Message
-                                                                    info
-                                                                    floating
-                                                                    attached="top"
-                                                                    content={ (
-                                                                        <Trans
-                                                                            i18nKey={
-                                                                                "extensions:develop.emailProviders.info"
+                                                        <Grid.Row columns={ 3 }>
+                                                            { providerCards.map(
+                                                                (provider: EmailProviderCardInterface) => (
+                                                                    <Grid.Column key={ provider.id }>
+                                                                        <InfoCard
+                                                                            fluid
+                                                                            data-componentid={
+                                                                                `${provider.key.toLowerCase()
+                                                                                }-email-provider-info-card`
                                                                             }
-                                                                        >
-                                                                            You can customize the email content using
-                                                                            <a
-                                                                                className="link pointing"
-                                                                                onClick={ navigateToEmailTemplate }
-                                                                            >
-                                                                                Email Templates
-                                                                            </a>.
-                                                                        </Trans>
-                                                                    ) }
-                                                                    data-componentid={ `${ componentId }-info-box` }
-                                                                />
-                                                            </Grid.Column>
-                                                        </Grid.Row> */ }
-                                                        <Grid.Row columns={ 2 } key={ 1 }>
-                                                            <Grid.Column key="smtpServerHost">
-                                                                <Field.Input
-                                                                    ariaLabel="SMTP Server Host Field"
-                                                                    inputType="default"
-                                                                    name="smtpServerHost"
-                                                                    label={ t("extensions:develop.emailProviders.form" +
-                                                                        ".smtpServerHost.label") }
-                                                                    placeholder={
-                                                                        t("extensions:develop.emailProviders.form" +
-                                                                        ".smtpServerHost.placeholder")
-                                                                    }
-                                                                    hint={ (
-                                                                        <Trans
-                                                                            i18nKey={
-                                                                                "extensions:develop.emailProviders" +
-                                                                                ".form.smtpServerHost.hint"
+                                                                            image={ provider.icon }
+                                                                            imageSize="x30"
+                                                                            header={ provider.name }
+                                                                            className={
+                                                                                selectedProvider === provider.key
+                                                                                    ? "sms-provider-info-card selected"
+                                                                                    : "sms-provider-info-card"
                                                                             }
-                                                                        >
-                                                                            The Server Host usually begins with
-                                                                            <Code>smtp</Code>, followed by the domain
-                                                                            name of the email service provider.
-                                                                        </Trans>
-                                                                    ) }
-                                                                    required={ true }
-                                                                    value={ emailProviderConfig?.smtpServerHost }
-                                                                    readOnly={ !hasEmailProviderUpdatePermissions }
-                                                                    maxLength={ EmailProviderConstants
-                                                                        .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
-                                                                    minLength={ EmailProviderConstants
-                                                                        .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
-                                                                    width={ 16 }
-                                                                    data-componentid={
-                                                                        `${componentId}-smtp-server-host`
-                                                                    }
-                                                                    autoComplete="new-password"
-                                                                />
-                                                            </Grid.Column>
-                                                            <Grid.Column key="smtpPort">
-                                                                <Field.Input
-                                                                    ariaLabel="SMTP Server Port Field"
-                                                                    inputType="number"
-                                                                    name="smtpPort"
-                                                                    label={ t("extensions:develop.emailProviders.form" +
-                                                                        ".smtpPort.label") }
-                                                                    placeholder={
-                                                                        t("extensions:develop.emailProviders.form" +
-                                                                        ".smtpPort.placeholder")
-                                                                    }
-                                                                    hint={ (
-                                                                        <Trans
-                                                                            i18nKey={
-                                                                                "extensions:develop.emailProviders" +
-                                                                                ".form.smtpPort.hint"
+                                                                            onClick={ () =>
+                                                                                setSelectedProvider(provider.key)
                                                                             }
-                                                                        >
-                                                                            For security reasons, we currently support
-                                                                            port <Code>587</Code> only.
-                                                                        </Trans>
-                                                                    ) }
-                                                                    required={ true }
-                                                                    value={ emailProviderConfig?.smtpPort }
-                                                                    readOnly={ !hasEmailProviderUpdatePermissions }
-                                                                    maxLength={ EmailProviderConstants
-                                                                        .EMAIL_PROVIDER_SERVER_PORT_MAX_LENGTH }
-                                                                    minLength={ EmailProviderConstants
-                                                                        .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
-                                                                    width={ 16 }
-                                                                    data-componentid={
-                                                                        `${componentId}-smtp-server-port`
-                                                                    }
-                                                                    autoComplete="new-password"
-                                                                />
-                                                            </Grid.Column>
-                                                        </Grid.Row>
-                                                        <Grid.Row columns={ 2 } key={ 2 }>
-                                                            <Grid.Column key="fromAddress">
-                                                                <Field.Input
-                                                                    ariaLabel="From Address Field"
-                                                                    inputType="email"
-                                                                    name="fromAddress"
-                                                                    label={
-                                                                        t("extensions:develop.emailProviders.form." +
-                                                                        "fromAddress.label") }
-                                                                    placeholder={
-                                                                        t("extensions:develop.emailProviders.form" +
-                                                                        ".fromAddress.placeholder")
-                                                                    }
-                                                                    hint={ t("extensions:develop.emailProviders.form" +
-                                                                        ".fromAddress.hint") }
-                                                                    required={ true }
-                                                                    value={ emailProviderConfig?.fromAddress }
-                                                                    readOnly={ !hasEmailProviderUpdatePermissions }
-                                                                    maxLength={ EmailProviderConstants
-                                                                        .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
-                                                                    minLength={ EmailProviderConstants
-                                                                        .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
-                                                                    width={ 16 }
-                                                                    data-componentid={
-                                                                        `${componentId}-smtp-from-address` }
-                                                                    autoComplete="new-password"
-                                                                />
-                                                            </Grid.Column>
-                                                            <Grid.Column key="replyToAddress">
-                                                                <Field.Input
-                                                                    ariaLabel="Reply-To Field"
-                                                                    inputType="email"
-                                                                    name="replyToAddress"
-                                                                    label={ t("extensions:develop.emailProviders.form" +
-                                                                        ".replyToAddress.label") }
-                                                                    placeholder={
-                                                                        t("extensions:develop.emailProviders.form" +
-                                                                        ".replyToAddress.placeholder")
-                                                                    }
-                                                                    hint={ t("extensions:develop.emailProviders.form" +
-                                                                    ".replyToAddress.hint") }
-                                                                    required={ true }
-                                                                    value={ emailProviderConfig?.replyToAddress }
-                                                                    readOnly={ !hasEmailProviderUpdatePermissions }
-                                                                    maxLength={ EmailProviderConstants
-                                                                        .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
-                                                                    minLength={ EmailProviderConstants
-                                                                        .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
-                                                                    width={ 16 }
-                                                                    data-componentid={
-                                                                        `${componentId}-smtp-reply-to-address`
-                                                                    }
-                                                                    autoComplete="new-password"
-                                                                />
-                                                            </Grid.Column>
-                                                        </Grid.Row>
-                                                        { (enableOldUIForEmailProvider) && (
-                                                            <Grid.Row columns={ 2 } key={ 3 }>
-                                                                <Grid.Column key="userName">
-                                                                    <Field.Input
-                                                                        ariaLabel="Username Field"
-                                                                        inputType="default"
-                                                                        name="userName"
-                                                                        label={
-                                                                            t("extensions:develop.emailProviders.form" +
-                                                                            ".userName.label") }
-                                                                        placeholder={
-                                                                            t("extensions:develop.emailProviders.form" +
-                                                                            ".userName.placeholder")
-                                                                        }
-                                                                        hint={
-                                                                            t("extensions:develop.emailProviders.form" +
-                                                                            ".userName.hint") }
-                                                                        required={ true }
-                                                                        value={ emailProviderConfig?.userName }
-                                                                        readOnly={ !hasEmailProviderUpdatePermissions }
-                                                                        maxLength={ EmailProviderConstants
-                                                                            .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
-                                                                        minLength={ EmailProviderConstants
-                                                                            .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
-                                                                        width={ 16 }
-                                                                        data-componentid={
-                                                                            `${componentId}-smtp-username` }
-                                                                        autoComplete="new-password"
-                                                                    />
-                                                                </Grid.Column>
-                                                                <Grid.Column key="password">
-                                                                    <Field.Input
-                                                                        ariaLabel="Password Field"
-                                                                        inputType="password"
-                                                                        type="password"
-                                                                        name="password"
-                                                                        label={ t(
-                                                                            "extensions:develop.emailProviders.form" +
-                                                                            ".password.label") }
-                                                                        placeholder={
-                                                                            t("extensions:develop.emailProviders.form" +
-                                                                            ".password.placeholder")
-                                                                        }
-                                                                        hint={ t(
-                                                                            "extensions:develop.emailProviders.form" +
-                                                                            ".password.hint") }
-                                                                        required={ true }
-                                                                        value={ emailProviderConfig?.password }
-                                                                        readOnly={ !hasEmailProviderUpdatePermissions }
-                                                                        maxLength={ EmailProviderConstants
-                                                                            .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
-                                                                        minLength={ EmailProviderConstants
-                                                                            .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
-                                                                        width={ 16 }
-                                                                        data-componentid={
-                                                                            `${componentId}-smtp-password`
-                                                                        }
-                                                                        autoComplete="new-password"
-                                                                    />
-                                                                </Grid.Column>
-                                                            </Grid.Row>
-                                                        ) }
-                                                        <Grid.Row columns={ 2 } key={ 3 }>
-                                                            <Grid.Column key="displayName">
-                                                                <Field.Input
-                                                                    ariaLabel="Display Name Field"
-                                                                    inputType="default"
-                                                                    name="displayName"
-                                                                    label={ t("extensions:develop.emailProviders." +
-                                                                        "form.displayName.label") }
-                                                                    placeholder={
-                                                                        t("extensions:develop.emailProviders.form" +
-                                                                        ".displayName.placeholder")
-                                                                    }
-                                                                    hint={ t("extensions:develop.emailProviders.form" +
-                                                                    ".displayName.hint") }
-                                                                    required={ true }
-                                                                    value={ emailProviderConfig?.displayName }
-                                                                    readOnly={ !hasEmailProviderUpdatePermissions }
-                                                                    maxLength={ EmailProviderConstants
-                                                                        .EMAIL_PROVIDER_CONFIG_FIELD_MAX_LENGTH }
-                                                                    minLength={ EmailProviderConstants
-                                                                        .EMAIL_PROVIDER_CONFIG_FIELD_MIN_LENGTH }
-                                                                    width={ 16 }
-                                                                    data-componentid={
-                                                                        `${componentId}-smtp-displayName` }
-                                                                    autoComplete="new-password"
-                                                                />
-                                                            </Grid.Column>
+                                                                            showSetupGuideButton={ false }
+                                                                            showCardAction={ false }
+                                                                        />
+                                                                    </Grid.Column>
+                                                                ))
+                                                            }
                                                         </Grid.Row>
                                                     </Grid>
-                                                    { (!enableOldUIForEmailProvider) && (<div>
-                                                        <Divider className="divider-container" />
-                                                        <Heading className="heading-container" as="h5">
-                                                            {
-                                                                t("externalApiAuthentication:fields." +
-                                                                "authenticationTypeDropdown.title")
-                                                            }
-                                                        </Heading>
+                                                </Box>
 
-                                                        { (
-                                                            (!originalEmailProviderConfig[0] ||
-                                                            isAuthenticationUpdateFormState)
-                                                        ) && (
-                                                            <Box className="box-container">
-                                                                <div className="box-field">
-                                                                    <Field.Dropdown
-                                                                        ariaLabel="authType"
-                                                                        name="authType"
-                                                                        label={ t(
-                                                                            "externalApiAuthentication:fields." +
-                                                                            "authenticationTypeDropdown.label"
-                                                                        ) }
-                                                                        placeholder={ t(
-                                                                            "externalApiAuthentication:fields." +
-                                                                            "authenticationTypeDropdown.placeholder"
-                                                                        ) }
-                                                                        displayEmpty={ true }
-                                                                        required={ true }
-                                                                        value={ endpointAuthType }
-                                                                        options={ [
-                                                                            ...EmailProviderConstants.AUTH_TYPES.map(
-                                                                                (option: DropdownChild) => ({
-                                                                                    text: t(option.text),
-                                                                                    value: option.value.toString()
-                                                                                })
-                                                                            )
-                                                                        ] }
-                                                                        listen={ handleDropdownChange }
-                                                                        enableReinitialize={ true }
-                                                                        data-componentid={
-                                                                            `${ componentId }-authentication-dropdown`
-                                                                        }
-                                                                        width={ 16 }
-                                                                    />
-                                                                    {
-                                                                        showAuthSecretsHint(
-                                                                            !!originalEmailProviderConfig[0],
-                                                                            t,
-                                                                            Hint
-                                                                        )
+                                                { selectedProvider ===
+                                                    EmailProviderConstants.HTTP_EMAIL_PROVIDER && (
+                                                    <FinalForm
+                                                        onSubmit={ handleHttpSubmit }
+                                                        initialValues={ httpEmailProviderConfig }
+                                                        validate={ validateHttpForm }
+                                                        render={ ({ form }: FormRenderProps) => {
+                                                            httpFormStateRef.current = form;
+
+                                                            return (
+                                                                <HttpBasedEmailProvider
+                                                                    isLoading={ isSubmitting }
+                                                                    isReadOnly={
+                                                                        !hasEmailProviderUpdatePermissions
                                                                     }
+                                                                    onSubmit={ handleHttpSubmit }
+                                                                    data-componentid={
+                                                                        "http-based-email-provider"
+                                                                    }
+                                                                    hasExistingConfig={
+                                                                        originalEmailProviderConfig?.[0]
+                                                                            ?.provider ===
+                                                                        EmailProviderConstants.PROVIDER_HTTP
+                                                                    }
+                                                                    currentAuthType={ httpEndpointAuthType }
+                                                                    endpointAuthType={ httpEndpointAuthType }
+                                                                    setEndpointAuthType={
+                                                                        setHttpEndpointAuthType
+                                                                    }
+                                                                    isAuthenticationUpdateFormState={
+                                                                        isHttpAuthUpdateFormState
+                                                                    }
+                                                                    setIsAuthenticationUpdateFormState={
+                                                                        setIsHttpAuthUpdateFormState
+                                                                    }
+                                                                    formState={ httpFormStateRef }
+                                                                    onAuthenticationChange={
+                                                                        handleHttpAuthenticationChange
+                                                                    }
+                                                                />
+                                                            );
+                                                        } }
+                                                    />
+                                                ) }
 
-                                                                    { renderEndpointAuthPropertyFields(
-                                                                        endpointAuthType,
-                                                                        showPrimarySecret,
-                                                                        showSecondarySecret,
-                                                                        setShowPrimarySecret,
-                                                                        setShowSecondarySecret,
-                                                                        componentId,
-                                                                        t,
-                                                                        Field,
-                                                                        AuthenticationType
-                                                                    ) }
-
-                                                                    { isAuthenticationUpdateFormState && (
-                                                                        <Button
-                                                                            onClick={ () =>
-                                                                                handleAuthenticationChangeCancel(
-                                                                                    setIsAuthenticationUpdateFormState,
-                                                                                    formState
-                                                                                )
-                                                                            }
-                                                                            variant="outlined"
-                                                                            size="small"
-                                                                            className="secondary-button"
-                                                                            data-componentid={ `${componentId}
-                                                                            -cancel-edit-authentication-button` }
-                                                                        >
-                                                                            { t("actions:buttons.cancel") }
-                                                                        </Button>
-                                                                    ) }
-                                                                </div>
-                                                            </Box>
-                                                        ) }
-
-                                                        {
-                                                            (originalEmailProviderConfig[0] &&
-                                                            !isAuthenticationUpdateFormState) &&
-                                                            renderAuthenticationSectionInfoBox(
-                                                                originalEmailProviderConfig[0]?.authType,
-                                                                componentId,
-                                                                t,
-                                                                handleAuthenticationChange,
-                                                                Alert,
-                                                                AlertTitle,
-                                                                Trans,
-                                                                Button
-                                                            )
-                                                        }
-                                                    </div>
-                                                    ) }
-                                                </Form>
-                                                {
-                                                    hasEmailProviderUpdatePermissions && (
-                                                        <>
-                                                            <Grid.Row columns={ 1 } className="mt-6">
-                                                                <Grid.Column
-                                                                    mobile={ 16 }
-                                                                    tablet={ 16 }
-                                                                    computer={ 16 }>
-                                                                    <PrimaryButton
-                                                                        size="small"
-                                                                        loading={ isSubmitting }
-                                                                        onClick={ () => {
-                                                                            formRef?.current?.triggerSubmit();
-                                                                        } }
-                                                                        ariaLabel="Email provider form update button"
-                                                                        data-componentid={
-                                                                            `${ componentId }-update-button`
-                                                                        }
-                                                                    >
-                                                                        { t("extensions:develop.emailProviders" +
-                                                                                ".updateButton") }
-                                                                    </PrimaryButton>
-                                                                </Grid.Column>
-                                                            </Grid.Row>
-                                                        </>
-                                                    )
-                                                }
+                                                { selectedProvider ===
+                                                    EmailProviderConstants.SMTP_EMAIL_PROVIDER &&
+                                                    renderSmtpSection() }
                                             </>
                                         )
                                     }

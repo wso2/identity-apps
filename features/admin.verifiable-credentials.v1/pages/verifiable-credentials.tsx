@@ -326,7 +326,6 @@ const VerifiableCredentials = ({
             { isAddTemplateWizardOpen && (
                 <AddVCTemplateWizard
                     closeWizard={ () => setIsAddTemplateWizardOpen(false) }
-                    onSuccess={ handleListRefresh }
                     data-componentid={ `${componentId}-add-wizard` }
                 />
             ) }

@@ -21,19 +21,14 @@ import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
 import { DocumentationLink, Hint, PageLayout, useDocumentation } from "@wso2is/react-components";
 import dayjs from "dayjs";
-import React, { FunctionComponent, useState } from "react";
+import React, { FunctionComponent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Tab, TabProps } from "semantic-ui-react";
 import { InsightsView } from "../components/insights-view";
 import { OrgInsightsConstants } from "../constants/org-insights";
 import { OrgInsightsContext } from "../contexts/org-insights";
 import { ActivityType, DurationDropdownOption } from "../models/insights";
-
-const tabIndexToActivityTypeMap: Record<number,ActivityType> = {
-    0: ActivityType.LOGIN,
-    1: ActivityType.REGISTRATION,
-    2: ActivityType.USER_RECOVERY
-};
+import { isM2MInsightsFeatureEnabled } from "../utils/insights";
 
 const OrgInsightsPage: FunctionComponent = () => {
     const [ duration, setDuration ] = useState<number>(OrgInsightsConstants.DURATION_OPTIONS[0].value);
@@ -48,24 +43,54 @@ const OrgInsightsPage: FunctionComponent = () => {
         setDuration(Number(event.target.value));
     };
 
-    const panes: any = [
-        {
-            menuItem: "Login",
-            render: () => (
-                <InsightsView
-                    selectedActivityType={ selectedActivityType }
-                />
-            )
-        },
-        {
-            menuItem: "Registration",
-            render: () => (
-                <InsightsView
-                    selectedActivityType={ selectedActivityType }
-                />
-            )
+    const m2mInsightsEnabled: boolean = isM2MInsightsFeatureEnabled();
+
+    const tabIndexToActivityTypeMap: Record<number, ActivityType> = useMemo(() => {
+        const map: Record<number, ActivityType> = {
+            0: ActivityType.LOGIN,
+            1: ActivityType.REGISTRATION
+        };
+
+        if (m2mInsightsEnabled) {
+            map[Object.keys(map).length] = ActivityType.M2M;
         }
-    ];
+
+        return map;
+    }, [ m2mInsightsEnabled ]);
+
+    const panes: any = useMemo(() => {
+        const basePanes: any[] = [
+            {
+                menuItem: "Login",
+                render: () => (
+                    <InsightsView
+                        selectedActivityType={ selectedActivityType }
+                    />
+                )
+            },
+            {
+                menuItem: "Registration",
+                render: () => (
+                    <InsightsView
+                        selectedActivityType={ selectedActivityType }
+                    />
+                )
+            }
+        ];
+
+        if (m2mInsightsEnabled) {
+            basePanes.push({
+                menuItem: "M2M",
+                render: () => (
+                    <InsightsView
+                        selectedActivityType={ selectedActivityType }
+                    />
+                )
+            });
+        }
+
+        return basePanes;
+    }, [ m2mInsightsEnabled, selectedActivityType ]);
 
     return (
         <PageLayout

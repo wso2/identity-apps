@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -70,7 +70,7 @@ export const createPushProvider = async (data: PushProviderAPIInterface):
         });
 };
 
-export const updatePushProvider = async (data: PushProviderAPIInterface):
+export const updatePushProvider = async (name: string, data: PushProviderAPIInterface):
     Promise<HttpResponse | undefined> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -80,7 +80,7 @@ export const updatePushProvider = async (data: PushProviderAPIInterface):
             "Content-Type": ContentTypeHeaderValues.APP_JSON
         },
         method: HttpMethods.PUT,
-        url: store.getState().config.endpoints.pushProviders + "/PushPublisher"
+        url: store.getState().config.endpoints.pushProviders + `/${name}`
     };
 
     return httpClient(requestConfig)
@@ -97,7 +97,7 @@ export const updatePushProvider = async (data: PushProviderAPIInterface):
         });
 };
 
-export const deletePushProvider = async (): Promise<AxiosResponse> => {
+export const deletePushProvider = async (name: string): Promise<AxiosResponse> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -105,11 +105,41 @@ export const deletePushProvider = async (): Promise<AxiosResponse> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: store.getState().config.endpoints.pushProviders + "/PushPublisher"
+        url: store.getState().config.endpoints.pushProviders + `/${name}`
     };
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) =>  response)
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                error.message,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config
+            );
+        });
+};
+
+export const updateDefaultPushProviderConfig = async (
+    pushProvider: string | null
+): Promise<HttpResponse | undefined> => {
+
+    const requestConfig: RequestConfigInterface = {
+        data: {
+            defaultPushProvider: pushProvider
+        },
+        headers: {
+            "Accept": AcceptHeaderValues.APP_JSON,
+            "Content-Type": ContentTypeHeaderValues.APP_JSON
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.pushNotificationConfigs
+    };
+
+    return httpClient(requestConfig)
+        .then((response: HttpResponse) => response)
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 error.message,

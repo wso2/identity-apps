@@ -1,5 +1,33 @@
 # @wso2is/admin.validation.v1
 
+## 2.28.1
+
+### Patch Changes
+
+- [#9755](https://github.com/wso2/identity-apps/pull/9755) [`c8422c3d21f61ab18de1240ec7bc3b3f6bfe5bfe`](https://github.com/wso2/identity-apps/commit/c8422c3d21f61ab18de1240ec7bc3b3f6bfe5bfe) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix password reset enforcement scope configuration issue
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.21
+  - @wso2is/admin.server-configurations.v1@2.38.4
+  - @wso2is/admin.users.v1@2.37.12
+  - @wso2is/admin.roles.v2@2.27.335
+
+## 2.28.0
+
+### Minor Changes
+
+- [#9707](https://github.com/wso2/identity-apps/pull/9707) [`98be11798211c36636778c925819b578d4fbeabd`](https://github.com/wso2/identity-apps/commit/98be11798211c36636778c925819b578d4fbeabd) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce password reset enforcement scope configuration
+
+### Patch Changes
+
+- Updated dependencies [[`98be11798211c36636778c925819b578d4fbeabd`](https://github.com/wso2/identity-apps/commit/98be11798211c36636778c925819b578d4fbeabd), [`3ebcd80a19cabc51a4ee840bafb0da213e0c97e1`](https://github.com/wso2/identity-apps/commit/3ebcd80a19cabc51a4ee840bafb0da213e0c97e1), [`8f189290049855d403087514cbdc0b9ca2892ab8`](https://github.com/wso2/identity-apps/commit/8f189290049855d403087514cbdc0b9ca2892ab8)]:
+  - @wso2is/admin.server-configurations.v1@2.38.0
+  - @wso2is/admin.extensions.v1@2.40.28
+  - @wso2is/i18n@2.34.11
+  - @wso2is/admin.core.v1@2.54.17
+  - @wso2is/admin.users.v1@2.37.8
+  - @wso2is/admin.roles.v2@2.27.331
+
 ## 2.27.149
 
 ### Patch Changes

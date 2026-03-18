@@ -83,6 +83,7 @@ export interface ApplicationInterface extends ApplicationBasicInterface {
     authenticationSequence?: AuthenticationSequenceInterface;
     provisioningConfigurations?: ProvisioningConfigurationInterface;
     appRoleConfigurations?: IdpRoleMappingInterface[];
+    enhancedOrgAuthenticationEnabled?: boolean;
 }
 
 /**

@@ -1,5 +1,84 @@
 # @wso2is/i18n
 
+## 2.37.1
+
+### Patch Changes
+
+- [#9797](https://github.com/wso2/identity-apps/pull/9797) [`25ca6cf9e8fc5f1219728aa73e1abe61c1044aca`](https://github.com/wso2/identity-apps/commit/25ca6cf9e8fc5f1219728aa73e1abe61c1044aca) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Add additional ciba configs
+
+## 2.37.0
+
+### Minor Changes
+
+- [#9751](https://github.com/wso2/identity-apps/pull/9751) [`bb844d3b938f1c1432af84086c3df3b29f03047c`](https://github.com/wso2/identity-apps/commit/bb844d3b938f1c1432af84086c3df3b29f03047c) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Introduce M2M Insights
+
+## 2.36.0
+
+### Minor Changes
+
+- [#9702](https://github.com/wso2/identity-apps/pull/9702) [`aa65d18c579561581a0a6b60003017d31d8f9c27`](https://github.com/wso2/identity-apps/commit/aa65d18c579561581a0a6b60003017d31d8f9c27) Thanks [@VihangaMunasinghe](https://github.com/VihangaMunasinghe)! - \* New Features
+
+  - Multi-provider support: The Push Providers page now loads all configured
+    providers (FCM, AmazonSNS) simultaneously. Users can switch between provider cards
+    without losing configurations.
+  - Default push provider toggle: Added a toggle to designate a default push
+    sender. It remains disabled until the push sender is configured.
+  - Default provider UI indicator: Provider cards now display a "Default"
+    chip label when marked as the default push sender.
+  - Reusable KeyValueMapField: Introduced a new component in @wso2is/form
+    for dynamic key-value pairs with dropdown support and read-only modes.
+
+  * API Updates:
+
+    - updatePushProvider and deletePushProvider now accept a providerName
+      parameter for specific endpoints.
+    - Added updateDefaultPushProviderConfig API function.
+    - Added useGetPushNotificationConfigs hook.
+
+  * UI Architecture
+
+    - Moved EmphasizedSegment out of the dynamic form to allow for custom
+      styling and layout flexibility.
+
+  * Localization (i18n)
+    - Added "Default" label translations across all 10 supported languages.
+
+## 2.35.0
+
+### Minor Changes
+
+- [#9734](https://github.com/wso2/identity-apps/pull/9734) [`c211c3b9390ab23e03937f4ad2ea7c6cbc849bf7`](https://github.com/wso2/identity-apps/commit/c211c3b9390ab23e03937f4ad2ea7c6cbc849bf7) Thanks [@nilasini](https://github.com/nilasini)! - Add notification configuration
+
+## 2.34.11
+
+### Patch Changes
+
+- [#9707](https://github.com/wso2/identity-apps/pull/9707) [`98be11798211c36636778c925819b578d4fbeabd`](https://github.com/wso2/identity-apps/commit/98be11798211c36636778c925819b578d4fbeabd) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce password reset enforcement scope configuration
+
+* [#9744](https://github.com/wso2/identity-apps/pull/9744) [`3ebcd80a19cabc51a4ee840bafb0da213e0c97e1`](https://github.com/wso2/identity-apps/commit/3ebcd80a19cabc51a4ee840bafb0da213e0c97e1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Automatic refresh for SAML IDP Certificates from Metadata URL
+
+- [#9683](https://github.com/wso2/identity-apps/pull/9683) [`8f189290049855d403087514cbdc0b9ca2892ab8`](https://github.com/wso2/identity-apps/commit/8f189290049855d403087514cbdc0b9ca2892ab8) Thanks [@nishagii](https://github.com/nishagii)! - Add rule based engaging support for approval workflows
+
+## 2.34.10
+
+### Patch Changes
+
+- [#9736](https://github.com/wso2/identity-apps/pull/9736) [`37f1eae32f0b30c5a060432e41fe5e13285aef01`](https://github.com/wso2/identity-apps/commit/37f1eae32f0b30c5a060432e41fe5e13285aef01) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add enable enhanced organization login toggle
+
+## 2.34.9
+
+### Patch Changes
+
+- [#9667](https://github.com/wso2/identity-apps/pull/9667) [`ad69b9379651fec0b7a42eaabe5b6921a830d423`](https://github.com/wso2/identity-apps/commit/ad69b9379651fec0b7a42eaabe5b6921a830d423) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add override all support for IDP group / role mapping
+
+## 2.34.8
+
+### Patch Changes
+
+- [#9706](https://github.com/wso2/identity-apps/pull/9706) [`d1e3d8f53406ef45be4483a3eb5a7663dfbdad68`](https://github.com/wso2/identity-apps/commit/d1e3d8f53406ef45be4483a3eb5a7663dfbdad68) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Improvements to the ciba protocol configuration
+
+* [#9709](https://github.com/wso2/identity-apps/pull/9709) [`b256fb1cf7c979c91f7bf9cb70932cd514d8434c`](https://github.com/wso2/identity-apps/commit/b256fb1cf7c979c91f7bf9cb70932cd514d8434c) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Improvements to the ciba protocol configuration
+
 ## 2.34.7
 
 ### Patch Changes

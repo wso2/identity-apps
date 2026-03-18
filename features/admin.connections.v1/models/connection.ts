@@ -149,6 +149,7 @@ export interface ConnectionRolesInterface {
 export interface CertificateConfigInterface {
     certificates?: string[];
     jwksUri?: string;
+    samlMetadataUri?: string;
 }
 
 export interface OutboundProvisioningConnectorMetaInterface extends CommonPluggableComponentMetaInterface {
@@ -239,6 +240,7 @@ export interface JITProvisioningResponseInterface {
     userstore?: string;
     associateLocalUser?: boolean;
     attributeSyncMethod?: string;
+    idpGroupSyncMethod?: string;
     /**
      * Account linking attribute mappings.
      */

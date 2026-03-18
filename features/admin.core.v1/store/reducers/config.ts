@@ -172,6 +172,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             schemas: "",
             selfSignUp: "",
             serverConfigurations: "",
+            serverHost: "",
             serverSupportedSchemas: "",
             smsTemplates: "",
             tenantAssociationApi: "",
@@ -260,7 +261,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 users: null
             },
             flowExecution: {
-                enableLegacyFlows: true
+                enableLegacyFlows: true,
+                enableLegacyInvitedUserRegistrationFlow: true,
+                enableLegacyPasswordRecoveryFlow: true,
+                enableLegacySelfRegistrationFlow: true
             },
             googleOneTapEnabledTenants: [],
             gravatarConfig: {

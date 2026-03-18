@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -33,6 +33,7 @@ import { TemplateDynamicForm } from "@wso2is/admin.template-core.v1/components/t
 import { DynamicFieldInterface } from "@wso2is/admin.template-core.v1/models/dynamic-fields";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEqual from "lodash-es/isEqual";
@@ -278,18 +279,23 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
     };
 
     return (
-        <TemplateDynamicForm
-            customValidations={ customValidations }
-            customInitializers={ customInitializers }
-            customSubmissionHandlers={ customSubmissionHandlers }
-            form={ tab?.form }
-            initialFormValues={ initialValues as unknown as Record<string, unknown> }
-            templatePayload={ templateData?.payload as unknown as Record<string, unknown> }
-            buttonText={ t("common:update") }
-            onFormSubmit={ handleFormSubmission }
-            isLoading={ isLoading || isTemplateDataFetchRequestLoading }
-            readOnly={ readOnly }
-            data-componentid={ componentId }
-        />
+        <EmphasizedSegment
+            data-componentid={ `${componentId}-form` }
+            padded="very"
+        >
+            <TemplateDynamicForm
+                customValidations={ customValidations }
+                customInitializers={ customInitializers }
+                customSubmissionHandlers={ customSubmissionHandlers }
+                form={ tab?.form }
+                initialFormValues={ initialValues as unknown as Record<string, unknown> }
+                templatePayload={ templateData?.payload as unknown as Record<string, unknown> }
+                buttonText={ t("common:update") }
+                onFormSubmit={ handleFormSubmission }
+                isLoading={ isLoading || isTemplateDataFetchRequestLoading }
+                readOnly={ readOnly }
+                data-componentid={ componentId }
+            />
+        </EmphasizedSegment>
     );
 };

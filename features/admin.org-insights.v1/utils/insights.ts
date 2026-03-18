@@ -81,6 +81,19 @@ export const isCompareToLastPeriodFeatureEnabled = (): boolean => {
     );
 };
 
+/**
+ * Checks if the M2M insights feature is enabled.
+ *
+ * @returns true if the feature is enabled, else false
+ */
+export const isM2MInsightsFeatureEnabled = (): boolean => {
+    const featureConfig: FeatureConfigInterface = store.getState().config?.ui?.features;
+
+    return !featureConfig?.insights?.disabledFeatures?.includes(
+        OrgInsightsFeature.M2M_INSIGHTS
+    );
+};
+
 export const getAllDisabledFeaturesForInsights = (): string[] => {
     const featureConfig: FeatureConfigInterface = store.getState().config?.ui?.features;
 

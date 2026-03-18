@@ -17,6 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FunctionComponent, SVGProps } from "react";
 
 /**
  * The interface of the email provider config properties attribute.
@@ -31,6 +32,8 @@ export interface EmailProviderConfigPropertiesInterface {
  */
 export interface EmailProviderConfigAPIResponseInterface {
     name?: string;
+    provider?: string;
+    providerURL?: string;
     smtpServerHost?: string;
     smtpPort?: number;
     fromAddress?: string;
@@ -56,6 +59,9 @@ export interface EmailProviderConfigFormValuesInterface {
     clientSecret?: string;
     tokenEndpoint?: string;
     scopes?: string;
+    header?: string;
+    value?: string;
+    accessToken?: string;
 }
 
 export interface EmailProviderConfigFormErrorValidationsInterface {
@@ -71,6 +77,77 @@ export interface EmailProviderConfigFormErrorValidationsInterface {
     clientSecret?: string;
     tokenEndpoint?: string;
     scopes?: string;
+    header?: string;
+    value?: string;
+    accessToken?: string;
+}
+
+/**
+ * Enum for HTTP email provider authentication types.
+ */
+export enum AuthType {
+    NONE = "NONE",
+    BASIC = "BASIC",
+    CLIENT_CREDENTIAL = "CLIENT_CREDENTIAL",
+    BEARER = "BEARER",
+    API_KEY = "API_KEY"
+}
+
+/**
+ * Interface for the HTTP email provider auth type dropdown options.
+ */
+export interface HTTPEmailAuthDropdownChild {
+    key: AuthType;
+    text: string;
+    value: AuthType;
+}
+
+/**
+ * The interface for the HTTP-based email provider form values.
+ */
+export interface HTTPEmailProviderFormInterface {
+    providerURL?: string;
+    contentType?: string;
+    httpMethod?: string;
+    headers?: string;
+    body?: string;
+    authType?: AuthType;
+    userName?: string;
+    password?: string;
+    clientId?: string;
+    clientSecret?: string;
+    tokenEndpoint?: string;
+    scopes?: string;
+    accessToken?: string;
+    apiKeyHeader?: string;
+    apiKeyValue?: string;
+}
+
+export interface HTTPEmailProviderFormErrorValidationsInterface {
+    providerURL?: string;
+    contentType?: string;
+    httpMethod?: string;
+    body?: string;
+    authType?: string;
+    userName?: string;
+    password?: string;
+    clientId?: string;
+    clientSecret?: string;
+    tokenEndpoint?: string;
+    scopes?: string;
+    accessToken?: string;
+    apiKeyHeader?: string;
+    apiKeyValue?: string;
+}
+
+/**
+ * Interface for email provider card (SMTP / HTTP).
+ */
+export interface EmailProviderCardInterface {
+    id: number;
+    icon: FunctionComponent<SVGProps<SVGSVGElement>>;
+    key: string;
+    name: string;
 }
 
 /**

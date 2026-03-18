@@ -19,7 +19,7 @@
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import useEnableLegacyFlows from "@wso2is/admin.core.v1/hooks/use-enable-legacy-flows";
+import useEnableLegacyFlows, { LegacyFlowType } from "@wso2is/admin.core.v1/hooks/use-enable-legacy-flows";
 import {
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
@@ -74,7 +74,9 @@ const AskPasswordOption: FunctionComponent<AskPasswordOptionPropsInterface> = ({
 }: AskPasswordOptionPropsInterface): ReactElement => {
     const { t } = useTranslation();
 
-    const isLegacyFlowsEnabled: boolean = useEnableLegacyFlows();
+    const isLegacyInvitedUserRegistrationFlowEnabled: boolean = useEnableLegacyFlows(
+        LegacyFlowType.INVITED_USER_REGISTRATION
+    );
 
     /**
      * Process connector properties to determine ask password verification option.
@@ -140,7 +142,7 @@ const AskPasswordOption: FunctionComponent<AskPasswordOptionPropsInterface> = ({
         if (!isInviteUserToSetPasswordEnabled) {
             return (
                 <>
-                    { isLegacyFlowsEnabled ? (
+                    { isLegacyInvitedUserRegistrationFlowEnabled ? (
                         <Trans
                             i18nKey="user:modals.addUserWizard.askPassword.emailVerificationDisabled"
                         >

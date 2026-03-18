@@ -30,6 +30,7 @@
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 <%@ include file="includes/localize.jsp" %>
 <jsp:directive.include file="includes/init-url.jsp"/>
+<%@ include file="util/authenticator-utils.jsp" %>
 
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
@@ -57,33 +58,6 @@
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, error);
             }
         }
-    }
-%>
-
-<%!
-    private boolean isMultiAuthAvailable(String multiOptionURI) {
-
-        boolean isMultiAuthAvailable = true;
-        if (multiOptionURI == null || multiOptionURI.equals("null")) {
-            isMultiAuthAvailable = false;
-        } else {
-            int authenticatorIndex = multiOptionURI.indexOf("authenticators=");
-            if (authenticatorIndex == -1) {
-                isMultiAuthAvailable = false;
-            } else {
-                String authenticators = multiOptionURI.substring(authenticatorIndex + 15);
-                int authLastIndex = authenticators.indexOf("&") != -1 ? authenticators.indexOf("&") : authenticators.length();
-                authenticators = authenticators.substring(0, authLastIndex);
-                List<String> authList = Arrays.asList(authenticators.split("%3B"));
-                if (authList.size() < 2) {
-                    isMultiAuthAvailable = false;
-                }
-                else if (authList.size() == 2 && authList.contains("backup-code-authenticator%3ALOCAL")) {
-                    isMultiAuthAvailable = false;
-                }
-            }
-        }
-        return isMultiAuthAvailable;
     }
 %>
 
@@ -222,7 +196,7 @@
                                     String multiOptionURI = request.getParameter("multiOptionURI");
                                     if (multiOptionURI != null &&
                                             AuthenticationEndpointUtil.isValidMultiOptionURI(multiOptionURI) &&
-                                            isMultiAuthAvailable(multiOptionURI)) {
+                                            isMultiAuthAvailable(multiOptionURI, request.getParameter("authenticators"))) {
                                 %>
                                     <a
                                         class="ui primary basic button link-button"

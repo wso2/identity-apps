@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,6 +17,7 @@
  */
 
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
+import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { RolesInterface } from "@wso2is/core/models";
 
 /**
@@ -67,6 +68,36 @@ export interface WorkflowOperationsDetailsFormValuesInterface {
      * Name of the workflow.
      */
     matchedOperations: DropdownPropsInterface[];
+
+    /**
+     * Rules configured for each operation.
+     */
+    operationRules?: Record<string, RuleWithoutIdInterface>;
+}
+
+/**
+ * Notification channel configuration.
+ */
+export interface NotificationConfig {
+    /**
+     * Notification channels.
+     */
+    channels: string[];
+}
+
+/**
+ * Form values interface for workflow notification configuration.
+ */
+export interface NotificationDetailsFormValuesInterface {
+    /**
+     * Notification configuration for the initiator.
+     */
+    notificationsForInitiator?: NotificationConfig;
+
+    /**
+     * Notification configuration for the approvers.
+     */
+    notificationsForApprovers?: NotificationConfig;
 }
 
 /**
@@ -103,10 +134,15 @@ export interface ApprovalWorkflowFormDataInterface {
      */
     generalDetails: Partial<GeneralDetailsFormValuesInterface>;
 
-     /**
+    /**
      * Workflow operations details.
      */
     workflowOperationsDetails: Partial<WorkflowOperationsDetailsFormValuesInterface>;
+
+    /**
+     * Notification details of the workflow.
+     */
+    notificationDetails?: Partial<NotificationDetailsFormValuesInterface>;
 
     /**
      * Configurations of the workflow, including approval steps.

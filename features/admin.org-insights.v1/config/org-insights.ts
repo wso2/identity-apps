@@ -23,21 +23,21 @@ import { ActivityType } from "../models/insights";
 
 /**
  * Function to get the resource endpoints for the Org Insights feature.
- * 
+ *
  * @param serverHost - Server Host.
- * 
+ *
  * @returns The resource endpoints for the Org Insights feature.
  */
 export const getInsightsResourceEndpoints = (serverHost: string): {
     getInsights: string;
 } => (
     {
-        getInsights: `${ serverHost }/api/asgardeo/insights/v1/user` 
+        getInsights: `${ serverHost }/api/asgardeo/insights/v1/user`
     }
 );
 
 export const getFilterAttributeListByActivityType = (activityType: ActivityType): Omit<DropdownChild,"key">[] => {
-    
+
     const commonFilterAttributes: Omit<DropdownChild,"key">[] = [
         {
             text: I18n.instance.t(
@@ -83,6 +83,20 @@ export const getFilterAttributeListByActivityType = (activityType: ActivityType)
                 value: "onboardingMethod"
             },
             ...commonFilterAttributes
+        ],
+        [ActivityType.M2M]: [
+            {
+                text: I18n.instance.t(
+                    "insights:activityType.m2m.filters.clientId"
+                ) as ReactNode,
+                value: "clientId"
+            },
+            {
+                text: I18n.instance.t(
+                    "insights:activityType.m2m.filters.tenantDomain"
+                ) as ReactNode,
+                value: "tenantDomain"
+            }
         ]
     };
 

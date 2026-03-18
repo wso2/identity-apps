@@ -436,10 +436,27 @@
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {
-                    "create": [],
-                    "delete": [],
-                    "read": [],
-                    "update": []
+                    "create": [
+                        "internal_agent_mgt_create"
+                    ],
+                    "delete": [
+                        "internal_agent_mgt_delete"
+                    ],
+                    "feature": [
+                        "console:agents"
+                    ],
+                    "read": [
+                        "internal_agent_mgt_list",
+                        "internal_agent_mgt_view",
+                        "internal_governance_view",
+                        "internal_group_mgt_view",
+                        "internal_login",
+                        "internal_role_mgt_view",
+                        "internal_userstore_view"
+                    ],
+                    "update": [
+                       "internal_agent_mgt_update"
+                    ]
                 }
             },
             "ai": {
@@ -1988,7 +2005,7 @@
             },
             "verifiableCredentials": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
@@ -2056,7 +2073,10 @@
             }
         },
         "flowExecution": {
-            "enableLegacyFlows": false
+            "enableLegacyFlows": false,
+            "enableLegacyInvitedUserRegistrationFlow": false,
+            "enableLegacyPasswordRecoveryFlow": false,
+            "enableLegacySelfRegistrationFlow": false
         },
         "governanceConnectors": {
             "loginAttempts": {
@@ -2099,6 +2119,7 @@
         "isDefaultDialectEditingEnabled": false,
         "isDialectAddingEnabled": false,
         "isEditingSystemRolesAllowed": true,
+        "isEnhancedOrganizationAuthenticationFeatureEnabled": true,
         "isFeatureGateEnabled": false,
         "isGOTEnabledForSuperTenantOnly": true,
         "isGroupAndRoleSeparationEnabled": true,
@@ -2107,6 +2128,7 @@
         "isMarketingConsentBannerEnabled": false,
         "isMultipleEmailsAndMobileNumbersEnabled": true,
         "isPasswordInputValidationEnabled": true,
+        "isPasswordResetEnforcementScopeEnabled": false,
         "isRequestPathAuthenticationEnabled": false,
         "isSAASDeployment": false,
         "isSignatureValidationCertificateAliasEnabled": false,

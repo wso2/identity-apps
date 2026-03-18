@@ -24,7 +24,7 @@ export enum OutboundProvisioningAuthenticationMode {
     BASIC = "basic",
     BEARER = "bearer",
     API_KEY = "apiKey",
-    CLIENT_CREDENTIAL = "clientCredential",
+    CLIENT_CREDENTIAL = "clientCredentials",
     NONE = "none"
 }
 
@@ -37,11 +37,11 @@ export const SCIM2_AUTH_PROPERTIES: Record<string, string> = {
     API_KEY_HEADER: "scim2-api-key-header",
     API_KEY_VALUE: "scim2-api-key-value",
     AUTHENTICATION_MODE: "scim2-authentication-mode",
-    CLIENT_ID: "scim2-client-id",
-    CLIENT_SECRET: "scim2-client-secret",
+    CLIENT_ID: "scim2-oauth-client-id",
+    CLIENT_SECRET: "scim2-oauth-client-secret",
     PASSWORD: "scim2-password",
-    SCOPES: "scim2-scopes",
-    TOKEN_ENDPOINT: "scim2-token-endpoint",
+    SCOPES: "scim2-oauth-scope",
+    TOKEN_ENDPOINT: "scim2-oauth-token-endpoint",
     USERNAME: "scim2-username"
 };
 

@@ -24,10 +24,19 @@ reviews:
             A changeset file is any file matching the pattern `.changeset/*.md` (excluding `.changeset/README.md`). It should contain all the changed packages in the pull request along with the version update type.
 
             For the updates to "features", "modules" directories, make sure to also include `@wso2is/console`, `@wso2is/myaccount` or `@wso2is/identity-apps-core` in 
-            the changeset with a patch version update accordingly. If there are new packages in the pull request, they should be mentioned as a major version update in the changeset.
-            
+            the changeset with a proper version update accordingly. If there are new packages in the pull request, those new packages should be mentioned as a major version update in the changeset.
+
+            EXCEPTION: Changesets are NOT required if the pull request ONLY modifies files in the following locations:
+              - `README` files
+              - `docs/`
+              - `scripts/`
+              - `.github/`
+              - configuration files located in the project root
+
+            If ALL changed files fall exclusively into the above categories, the check should PASS even if no changeset file is present.
+
             **Pass Criteria:**
-            - At least one new or modified `.md` file exists in the `.changeset/` directory in the CHANGED FILE LIST of the pull request.
+            - At least one NEW `.md` file exists in the `.changeset/` directory in the CHANGED FILE LIST of the pull request.
             - The file should NOT be `.changeset/README.md`
 
             **Fail Criteria:**
@@ -35,6 +44,20 @@ reviews:
             - Only `.changeset/README.md` is modified
 
             If no changeset is found, the check should fail with a clear explanation that changesets are required for tracking changes.
+  path_instructions:
+    - path: ".changeset/**-**-**.md"
+      instructions: |
+        Check if this changeset file contains a `minor` or `major` version bump for any package.
+
+        Version bumps are declared in the frontmatter between `---` delimiters, in the format:
+        ```
+        "@package/name": minor
+        "@package/name": major
+        "@package/name": patch
+        ```
+
+        If any package in this changeset is declared with a `minor` or `major` bump, post a review comment with the following message:
+        "⚠️ **Version Bump Warning:** This changeset contains a `minor` or `major` version bump. Please downgrade it to a `patch` bump. We are currently in the **IS 7.3 release cycle** and the **alpha version has already been released**, so introducing `minor` or `major` version bumps at this stage would interrupt the release workflows and is not permitted until the release is complete."
 knowledge_base:
   code_guidelines:
     enabled: true

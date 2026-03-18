@@ -197,8 +197,10 @@ interface SubjectConfigInterface {
  * CIBA authentication related properties.
  */
 export interface CIBAAuthenticationConfigurationInterface {
+    allowFederatedUsers?: boolean;
     authReqExpiryTime?: number;
     notificationChannels?: string[];
+    skipUserValidation?: boolean;
 }
 
 interface OIDCLogoutConfigurationInterface {

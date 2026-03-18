@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -53,6 +53,26 @@ export interface RulesPropsInterface extends IdentifiableComponentInterface {
      * Is readonly flag.
      */
     readonly?: boolean;
+
+    /**
+     * Optional callback to intercept rule removal.
+     * If provided, this callback is invoked instead of directly removing the rule.
+     * The consumer is responsible for calling removeRule when ready.
+     * @param ruleId - The ID of the rule to be removed.
+     */
+    onRemoveRule?: (ruleId: string) => void;
+
+    /**
+     * Optional custom text for the execute action (e.g., "Execute", "Engage").
+     * If not provided, uses the default translation.
+     */
+    executeText?: string;
+
+    /**
+     * Optional custom text for the if condition.
+     * If not provided, uses the default translation.
+     */
+    ifText?: string;
 }
 
 /**
@@ -65,7 +85,10 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
     ["data-componentid"]: componentId = "rules-render-component",
     disableLastRuleDelete = true,
     disableClearRule = false,
-    readonly = false
+    readonly = false,
+    onRemoveRule,
+    executeText,
+    ifText
 }: RulesPropsInterface): ReactElement => {
 
     const {
@@ -107,7 +130,9 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                     >
                         <Grid container alignItems="center" sx={ { mb: 2 } }>
                             <Grid>
-                                <Typography variant="body2">{ t("rules:texts.execute") }</Typography>
+                                <Typography variant="body2">
+                                    { executeText || t("rules:texts.execute") }
+                                </Typography>
                             </Grid>
                             { ruleExecutionsMeta?.executions ? (
                                 <Grid>
@@ -138,7 +163,9 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                                 </Grid>
                             ) }
                             <Grid>
-                                <Typography variant="body2">{ t("rules:texts.if") }</Typography>
+                                <Typography variant="body2">
+                                    { ifText || t("rules:texts.if") }
+                                </Typography>
                             </Grid>
                         </Grid>
                         <RuleConditions rule={ rule } readonly={ readonly } />
@@ -153,7 +180,10 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                                     right: 14,
                                     top: 14
                                 } }
-                                onClick={ () => removeRule(rule.id) }
+                                onClick={ () => onRemoveRule
+                                    ? onRemoveRule(rule.id)
+                                    : removeRule(rule.id)
+                                }
                                 data-componentid={ `${ componentId }-delete-rule-button` }
                             >
                                 <TrashIcon className="delete-button-icon" />

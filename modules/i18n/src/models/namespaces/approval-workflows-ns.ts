@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -165,6 +165,34 @@ export interface approvalWorkflowsNS {
                     title:  string,
                     description: string,
                     hint: string
+                },
+                step4: {
+                    title: string,
+                    description: string,
+                    hint: string
+                }
+            },
+            ruleConditions: {
+                addRule: string,
+                configured: string,
+                editRule: string,
+                table: {
+                    operation: string,
+                    rules: string
+                },
+                modal: {
+                    title: string,
+                    subtitle: string
+                },
+                engagement: {
+                    always: string,
+                    column: string,
+                    configured: string
+                },
+                confirmClear: {
+                    content: string,
+                    message: string,
+                    title: string
                 }
             }
         };
@@ -211,6 +239,20 @@ export interface approvalWorkflowsNS {
                     label: string
                 }
             }
+        };
+        notifications: {
+            initiator: {
+                label: string;
+                hint: string;
+            };
+            approver: {
+                label: string;
+                hint: string;
+            };
+            channels: {
+                email: string;
+                sms: string;
+            };
         };
         connection: {
             updatePassword: string;
@@ -302,6 +344,14 @@ export interface approvalWorkflowsNS {
         columns: {
             actions: string;
             name: string;
+        };
+    };
+    sections: {
+        operations: {
+            heading: string;
+        };
+        approvalSteps: {
+            heading: string;
         };
     };
 }

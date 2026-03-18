@@ -72,6 +72,11 @@ interface EditUserPropsInterface extends IdentifiableComponentInterface {
      * Whether the user store is read-only.
      */
     isReadOnlyUserStore?: boolean;
+    /**
+     * Whether to include the Console Administrator role in the role sharing dropdowns.
+     * Should only be true in the console settings administrator edit view.
+     */
+    enableConsoleAdminRole?: boolean;
 }
 
 /**
@@ -89,7 +94,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         connectorProperties,
         isLoading,
         isReadOnly = false,
-        isReadOnlyUserStore = false
+        isReadOnlyUserStore = false,
+        enableConsoleAdminRole = false
     } = props;
 
     const { t } = useTranslation();
@@ -119,6 +125,9 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const isSharedAccessEnabled: boolean = usersFeatureConfig?.subFeatures?.userSharingV2?.enabled ?? false;
     const hasSharedAccessReadPermission: boolean = useRequiredScopes(
         usersFeatureConfig?.subFeatures?.userSharingV2?.scopes?.read
+    );
+    const hasSharedAccessUpdatePermission: boolean = useRequiredScopes(
+        usersFeatureConfig?.subFeatures?.userSharingV2?.scopes?.update
     );
 
     useEffect(() => {
@@ -292,7 +301,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <ShareUserForm
                             user={ user }
-                            readOnly={ isReadOnly }
+                            readOnly={ isReadOnly || !hasSharedAccessUpdatePermission }
+                            enableConsoleAdminRole={ enableConsoleAdminRole }
                         />
                     </ResourceTab.Pane>
                 )
@@ -305,6 +315,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         isUserGroupsEnabled,
         isSharedAccessEnabled,
         hasSharedAccessReadPermission,
+        hasSharedAccessUpdatePermission,
         connectorProperties,
         isSuperAdminIdentifierFetchRequestLoading,
         hideTermination,
@@ -313,7 +324,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         isReadOnly,
         isUserStoresLoading,
         isReadOnlyUserStore,
-        isUserManagedByParentOrg
+        isUserManagedByParentOrg,
+        enableConsoleAdminRole
     ]);
 
     return (

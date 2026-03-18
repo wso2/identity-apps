@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,6 +24,7 @@ import { Trans } from "react-i18next";
 import { Tab } from "semantic-ui-react";
 import { InsightsFilter } from "./insights-filter";
 import { LoginInsights } from "./login-insights";
+import { M2MInsights } from "./m2m-insights";
 import { SignupInsights } from "./signup-insights";
 import { OrgInsightsContext } from "../contexts/org-insights";
 import { ActivityType, DurationOption } from "../models/insights";
@@ -34,7 +35,7 @@ interface InsightViewProps extends IdentifiableComponentInterface {
     isComingSoon?: boolean;
 }
 
-export const InsightsView: React.FunctionComponent<PropsWithChildren<InsightViewProps>> = 
+export const InsightsView: React.FunctionComponent<PropsWithChildren<InsightViewProps>> =
 (props: InsightViewProps): ReactElement => {
     const { isComingSoon, selectedActivityType } = props;
 
@@ -42,13 +43,14 @@ export const InsightsView: React.FunctionComponent<PropsWithChildren<InsightView
 
     const insightViews: any = {
         [ActivityType.LOGIN]: <LoginInsights />,
-        [ActivityType.REGISTRATION]: <SignupInsights />
+        [ActivityType.REGISTRATION]: <SignupInsights />,
+        [ActivityType.M2M]: <M2MInsights />
     };
 
     const { filterQuery, setFilterQuery, duration } = React.useContext(OrgInsightsContext);
-    
-    return isComingSoon ? 
-        <p>Coming soon</p> 
+
+    return isComingSoon ?
+        <p>Coming soon</p>
         :(
             <>
                 <div className="org-insights-duration-notice-container">
@@ -82,10 +84,10 @@ export const InsightsView: React.FunctionComponent<PropsWithChildren<InsightView
                             data-componentid="org-insights-filter-chip"
                             color="primary"
                             className="org-insights-filter-chip"
-                            label={ 
+                            label={
                                 (<p style={ { fontSize: "1rem" } }>
                                     { displayingFilterQuery }
-                                </p>) 
+                                </p>)
                             }
                             deleteIcon={ <CancelIcon /> }
                             onDelete={ () => {
@@ -107,9 +109,9 @@ export const InsightsView: React.FunctionComponent<PropsWithChildren<InsightView
 
                 <Tab.Pane
                     active
-                    attached={ false } 
+                    attached={ false }
                     className="org-insights-tab-view"
-                >  
+                >
                     { insightViews[selectedActivityType] }
                 </Tab.Pane>
             </>

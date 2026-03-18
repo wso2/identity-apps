@@ -176,22 +176,30 @@ export const OutboundProvisioningConnectorCreateWizard:
         }, [ outboundProvisioningConnectorsListError ]);
 
         /**
-     * At the initial load, select the first item from the connector list so that the
-     * metadata could be loaded.
-     */
-        useEffect(() => {
-            if (!(outboundProvisioningConnectorsList
-                && Array.isArray(outboundProvisioningConnectorsList)
-                && outboundProvisioningConnectorsList.length > 0)) {
+         * At the initial load, select the first item from the filtered connector list so that the
+         * metadata could be loaded.
+         */
+        useEffect((): void => {
+            const firstConnectorId: string | undefined =
+                outboundProvisioningConnectorsMetadataList?.[0]?.connectorId;
+
+            if (!firstConnectorId) {
                 return;
             }
 
-            setWizardState( {
-                [ WizardStepsFormTypes.CONNECTOR_SELECTION ]: {
-                    connectorId: outboundProvisioningConnectorsList[0].connectorId
+            setWizardState((previousState: WizardStateInterface): WizardStateInterface => {
+                if (previousState?.[ WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId) {
+                    return previousState;
                 }
+
+                return {
+                    ...previousState,
+                    [ WizardStepsFormTypes.CONNECTOR_SELECTION ]: {
+                        connectorId: firstConnectorId
+                    }
+                };
             });
-        }, [ outboundProvisioningConnectorsList ]);
+        }, [ outboundProvisioningConnectorsMetadataList ]);
 
         /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -508,7 +516,10 @@ export const OutboundProvisioningConnectorCreateWizard:
                                         floated="right"
                                         onClick={ navigateToNext }
                                         loading={ isConnectorMetadataRequestLoading }
-                                        disabled={ isConnectorMetadataRequestLoading }
+                                        disabled={
+                                            isConnectorMetadataRequestLoading
+                                            || !wizardState?.[ WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId
+                                        }
                                         data-testid={ `${ testId }-modal-next-button` }
                                         data-componentid={ `${ componentId }-modal-next-button` }
                                     >

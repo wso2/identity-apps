@@ -69,6 +69,9 @@ export interface IdentityProviderConfig {
         enableJitProvisioningField: {
             show: boolean;
         };
+        idpGroupSyncMethodField: {
+            show: boolean;
+        };
         menuItemName: string;
         provisioningSchemeField: {
             show: boolean;

@@ -206,6 +206,9 @@ export const identityProviderConfig: IdentityProviderConfig = {
         enableJitProvisioningField: {
             show: true
         },
+        idpGroupSyncMethodField: {
+            show: true
+        },
         menuItemName: "Just-in-Time Provisioning",
         provisioningSchemeField: {
             show: true

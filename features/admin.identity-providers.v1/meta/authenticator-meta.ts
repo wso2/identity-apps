@@ -153,6 +153,9 @@ export class AuthenticatorMeta {
                 .MAGIC_LINK_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.magicLink,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .BACKUP_CODE_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.backupCode,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .ORGANIZATION_IDENTIFIER_HANDLER_AUTHENTICATOR_ID ]:
+                getAuthenticatorIcons()?.OrganizationIdentifierHandler,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.push
         }, authenticatorId);
 

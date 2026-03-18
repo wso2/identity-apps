@@ -274,23 +274,23 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
     }, [ initWizard ]);
 
     /**
-     * At the initial load, select the first item from the connector list.
+     * At the initial load, select the first item from the filtered connector list.
      */
     useEffect(() => {
         if (
             !(
-                outboundProvisioningConnectorsList &&
-                Array.isArray(outboundProvisioningConnectorsList) &&
-                outboundProvisioningConnectorsList.length > 0
+                outboundProvisioningConnectorsMetadataList &&
+                Array.isArray(outboundProvisioningConnectorsMetadataList) &&
+                outboundProvisioningConnectorsMetadataList.length > 0
             )
         ) {
             return;
         }
 
-        if (outboundProvisioningConnectorsList[0]?.connectorId) {
-            setSelectedConnectorId(outboundProvisioningConnectorsList[0].connectorId);
+        if (outboundProvisioningConnectorsMetadataList[0]?.connectorId) {
+            setSelectedConnectorId(outboundProvisioningConnectorsMetadataList[0].connectorId);
         }
-    }, [ outboundProvisioningConnectorsList ]);
+    }, [ outboundProvisioningConnectorsMetadataList ]);
 
     /**
      * Check if the typed IDP name is already taken.
@@ -703,7 +703,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                 >
                     <div className="display-flex">
                         <GenericIcon
-                            icon={ getConnectionIcons().enterprise }
+                            icon={ getConnectionIcons().outboundProvisioning }
                             size="x30"
                             transparent
                             spaced="right"

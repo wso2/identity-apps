@@ -41,6 +41,7 @@
 <%@ page import="java.net.URISyntaxException" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
@@ -81,7 +82,7 @@
     String passwordPatternErrorCode = "20035";
     String confirmationKey =
             IdentityManagementEndpointUtil.getStringValue(request.getSession().getAttribute("confirmationKey"));
-    String newPassword = request.getParameter("reset-password");
+    char[] newPassword = request.getParameter("reset-password") != null ? request.getParameter("reset-password").toCharArray() : null;
     String callback = request.getParameter("callback");
     String spId = Encode.forJava(request.getParameter("spId"));
     if (StringUtils.isBlank(spId)) {
@@ -157,7 +158,8 @@
         }
     }
 
-    if (StringUtils.isNotBlank(newPassword) && useRecoveryV2API) {
+    boolean isValidPassword = isValidPassword(newPassword);
+    if (isValidPassword && useRecoveryV2API) {
 
         RecoveryApiV2 recoveryApiV2 = new RecoveryApiV2();
         String resetCode = request.getParameter("resetCode");
@@ -172,7 +174,7 @@
             // For local notification channels flowConfirmationCode is used as confirmation code
             resetRequest.setResetCode(resetCode);
             resetRequest.setFlowConfirmationCode(flowConfirmationCode);
-            resetRequest.setPassword(request.getParameter("reset-password"));
+            resetRequest.setPassword(newPassword);
             ResetResponse resetResponse = recoveryApiV2.resetUserPassword(resetRequest, tenantDomain, requestHeaders);
             if (StringUtils.isBlank(username)) {
                 username = Encode.forJava(request.getParameter("username"));
@@ -189,7 +191,7 @@
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
-    } else if (StringUtils.isNotBlank(newPassword)) {
+    } else if (isValidPassword) {
         NotificationApi notificationApi = new NotificationApi();
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest();
         List<Property> properties = new ArrayList<Property>();
@@ -257,7 +259,6 @@
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
-
     } else {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
@@ -267,6 +268,10 @@
         request.setAttribute(USERSTORE_DOMAIN, userStoreDomain);
         request.getRequestDispatcher("password-reset.jsp").forward(request, response);
         return;
+    }
+
+    if (newPassword != null) {
+        Arrays.fill(newPassword, '\u0000');
     }
 
     if ((StringUtils.isNotBlank(userStoreDomain) && StringUtils.isNotBlank(callback)
@@ -280,6 +285,23 @@
 	}
 
     session.invalidate();
+%>
+
+<%!
+    private boolean isValidPassword(char[] newPassword) {
+
+        if (newPassword == null) {
+            return false;
+        }
+
+        for (char c : newPassword) {
+            if (!Character.isWhitespace(c)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 %>
 
 <%!

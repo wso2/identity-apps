@@ -1,5 +1,16 @@
 # @wso2is/admin.email-providers.v1
 
+## 2.28.0
+
+### Minor Changes
+
+- [#9728](https://github.com/wso2/identity-apps/pull/9728) [`400e6bfa0511ca762a3dc15a6f868b5fa9edce87`](https://github.com/wso2/identity-apps/commit/400e6bfa0511ca762a3dc15a6f868b5fa9edce87) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Provide UI Support for configure HTTP-based Email Providers
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.19
+
 ## 2.27.5
 
 ### Patch Changes

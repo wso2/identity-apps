@@ -41,9 +41,12 @@ import {
 } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
 import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
+import { OrganizationManagementConstants } from "@wso2is/admin.organizations.v1/constants";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureFlagsInterface, IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
@@ -87,6 +90,8 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
 
     const loginAndRegistrationFeatureFlags: FeatureFlagsInterface[] = useSelector(
         (state: AppState) => state.config.ui.features?.loginAndRegistration?.featureFlags);
+    const organizationsFeatureConfig: FeatureConfigInterface["organizations"] = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.organizations);
 
     /**
      * Combine the connectors and dynamic connectors and group them by category.
@@ -239,6 +244,16 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                                 {
                                     category.connectors.map((connector: GovernanceConnectorInterface) => {
                                         if (!serverConfigurationConfig.connectorsToHide.includes(connector.id)) {
+                                            if (connector.id === ServerConfigurationsConstants.ISSUER_USAGE_SCOPE
+                                                && !isFeatureEnabled(
+                                                    organizationsFeatureConfig,
+                                                    OrganizationManagementConstants.FEATURE_DICTIONARY.get(
+                                                        "ORGANIZATION_APPLICATION_TOKEN_ISSUER_SELECTION"
+                                                    )
+                                                )) {
+                                                return null;
+                                            }
+
                                             return (
                                                 <Card
                                                     key={ connector.id }

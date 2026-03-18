@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -45,6 +45,7 @@ export class LocalAuthenticatorConstants {
         IDENTIFIER_FIRST_AUTHENTICATOR_ID: string;
         JWT_BASIC_AUTHENTICATOR_ID: string;
         MAGIC_LINK_AUTHENTICATOR_ID: string;
+        ORGANIZATION_IDENTIFIER_HANDLER_AUTHENTICATOR_ID: string;
         PASSIVE_STS_AUTHENTICATOR_ID: string;
         PUSH_AUTHENTICATOR_ID: string;
         SMS_OTP_AUTHENTICATOR_ID: string;
@@ -59,6 +60,7 @@ export class LocalAuthenticatorConstants {
             IDENTIFIER_FIRST_AUTHENTICATOR_ID: "SWRlbnRpZmllckV4ZWN1dG9y",
             JWT_BASIC_AUTHENTICATOR_ID: "SldUQmFzaWNBdXRoZW50aWNhdG9y",
             MAGIC_LINK_AUTHENTICATOR_ID: "TWFnaWNMaW5rQXV0aGVudGljYXRvcg",
+            ORGANIZATION_IDENTIFIER_HANDLER_AUTHENTICATOR_ID: "T3JnYW5pemF0aW9uSWRlbnRpZmllckhhbmRsZXI",
             PASSIVE_STS_AUTHENTICATOR_ID: "UGFzc2l2ZVNUU0F1dGhlbnRpY2F0b3I",
             PUSH_AUTHENTICATOR_ID: "cHVzaC1ub3RpZmljYXRpb24tYXV0aGVudGljYXRvcg",
             SMS_OTP_AUTHENTICATOR_ID: "c21zLW90cC1hdXRoZW50aWNhdG9y",
@@ -77,8 +79,10 @@ export class LocalAuthenticatorConstants {
         FIDO_AUTHENTICATOR_NAME: string;
         IDENTIFIER_FIRST_AUTHENTICATOR_NAME: string;
         MAGIC_LINK_AUTHENTICATOR_NAME: string;
+        ORGANIZATION_IDENTIFIER_HANDLER_AUTHENTICATOR_NAME: string;
         PASSIVE_STS_AUTHENTICATOR_NAME: string;
-        PUSH_AUTHENTICATOR_NAME: string,
+        PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME: string;
+        PUSH_AUTHENTICATOR_NAME: string;
         SMS_OTP_AUTHENTICATOR_NAME: string;
         TOTP_AUTHENTICATOR_NAME: string;
     } = {
@@ -89,7 +93,9 @@ export class LocalAuthenticatorConstants {
             FIDO_AUTHENTICATOR_NAME: "FIDOAuthenticator",
             IDENTIFIER_FIRST_AUTHENTICATOR_NAME: "IdentifierExecutor",
             MAGIC_LINK_AUTHENTICATOR_NAME: "MagicLinkAuthenticator",
+            ORGANIZATION_IDENTIFIER_HANDLER_AUTHENTICATOR_NAME: "OrganizationIdentifierHandler",
             PASSIVE_STS_AUTHENTICATOR_NAME: "PassiveSTSAuthenticator",
+            PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME: "password-reset-enforcer",
             PUSH_AUTHENTICATOR_NAME: "push-notification-authenticator",
             SMS_OTP_AUTHENTICATOR_NAME: "sms-otp-authenticator",
             TOTP_AUTHENTICATOR_NAME: "totp"

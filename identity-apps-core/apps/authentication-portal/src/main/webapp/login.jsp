@@ -96,6 +96,7 @@
     private static final String EMAIL_OTP_AUTHENTICATOR = "email-otp-authenticator";
     private static final String TOTP_AUTHENTICATOR = "totp";
     private static final String PUSH_NOTIFICATION_AUTHENTICATOR = "push-notification-authenticator";
+    private static final String ORG_IDENTIFIER_HANDLER = "OrganizationIdentifierHandler";
     private static final String ENTERPRISE_LOGIN_KEY = "isEnterpriseLoginEnabled";
     private static final String ENTERPRISE_API_RELATIVE_PATH = "/api/asgardeo-enterprise-login/v1/business-user-login/";
     private static final String CUSTOM_LOCAL_AUTHENTICATOR_PREFIX = "custom-";
@@ -191,7 +192,7 @@
         MAGIC_LINK_AUTHENTICATOR,SMS_OTP_AUTHENTICATOR,
         IDENTIFIER_EXECUTOR,JWT_BASIC_AUTHENTICATOR,BASIC_AUTHENTICATOR,
         IWA_AUTHENTICATOR,X509_CERTIFICATE_AUTHENTICATOR,FIDO_AUTHENTICATOR,
-        PUSH_NOTIFICATION_AUTHENTICATOR
+        PUSH_NOTIFICATION_AUTHENTICATOR, ORG_IDENTIFIER_HANDLER
    );
 
 
@@ -1061,6 +1062,34 @@
                                         <span>
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
                                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "push.notification")%>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                            <br>
+                            <%
+                                        }
+                                if (localAuthenticatorNames.contains("OrganizationIdentifierHandler")) {
+                            %>
+                                <div class="social-login blurring social-dimmer">
+                                <div class="field">
+                                        <button
+                                            type="button"
+                                            id="icon-<%=iconId%>"
+                                            class="ui button secondary"
+                                            data-testid="login-page-sign-in-with-organization-identifier-handler"
+                                            onclick="handleNoDomain(this,
+                                                    '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
+                                                    'OrganizationIdentifierHandler')"
+                                        >
+                                        <img
+                                            class="ui image"
+                                            src="libs/themes/default/assets/images/authenticators/organization-identifier-handler.svg"
+                                            alt="SSO Logo"
+                                            role="presentation">
+                                        <span>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "organization.identifier.handler")%>
                                         </span>
                                     </button>
                                 </div>

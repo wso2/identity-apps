@@ -1,5 +1,17 @@
 # @wso2is/admin.org-insights.v1
 
+## 2.26.0
+
+### Minor Changes
+
+- [#9751](https://github.com/wso2/identity-apps/pull/9751) [`bb844d3b938f1c1432af84086c3df3b29f03047c`](https://github.com/wso2/identity-apps/commit/bb844d3b938f1c1432af84086c3df3b29f03047c) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Introduce M2M Insights
+
+### Patch Changes
+
+- Updated dependencies [[`bb844d3b938f1c1432af84086c3df3b29f03047c`](https://github.com/wso2/identity-apps/commit/bb844d3b938f1c1432af84086c3df3b29f03047c)]:
+  - @wso2is/i18n@2.37.0
+  - @wso2is/admin.core.v1@2.54.20
+
 ## 2.25.206
 
 ### Patch Changes

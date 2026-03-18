@@ -2611,6 +2611,9 @@
             {% endfor %}
         },
         {% endif %}
+        {% if enhanced_organization_authentication_feature.enabled is defined %}
+        "isEnhancedOrganizationAuthenticationFeatureEnabled": {{ enhanced_organization_authentication_feature.enabled }},
+        {% endif %}
         {% if console.ui.is_feature_gate_enabled is defined %}
         "isFeatureGateEnabled": {{ console.ui.is_feature_gate_enabled }},
         {% endif %}
@@ -2691,6 +2694,11 @@
         "isPasswordInputValidationEnabled": {{ event.default_listener.validation.enable }},
         {% else %}
         "isPasswordInputValidationEnabled": true,
+        {% endif %}
+        {% if console.ui.is_password_reset_enforcement_scope_enabled is defined %}
+        "isPasswordResetEnforcementScopeEnabled": {{ console.ui.is_password_reset_enforcement_scope_enabled }},
+        {% else %}
+        "isPasswordResetEnforcementScopeEnabled": false,
         {% endif %}
         "passwordPolicyConfigs": {
             {% if identity_mgt.password_policy.max_password_allowed_length is defined %}

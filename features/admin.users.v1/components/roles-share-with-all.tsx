@@ -24,10 +24,11 @@ import Autocomplete, {
 import Chip from "@oxygen-ui/react/Chip";
 import TextField from "@oxygen-ui/react/TextField";
 import { useRequiredScopes } from "@wso2is/access-control";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import useGetApplicationRolesByAudience from "@wso2is/admin.roles.v2/api/use-get-application-roles-by-audience";
+import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
-import { RolesV2Interface } from "@wso2is/admin.roles.v2/models/roles";
+import { RolesV2Interface, RolesV2ResponseInterface } from "@wso2is/admin.roles.v2/models/roles";
 import {
     AlertLevels,
     FeatureAccessConfigInterface,
@@ -63,6 +64,11 @@ interface RolesShareWithAllPropsInterface extends IdentifiableComponentInterface
     selectedRoles: RolesInterface[];
     setSelectedRoles: (roles: RolesInterface[]) => void;
     onRoleChange: (role: RolesV2Interface, isSelected: boolean) => void;
+    /**
+     * Whether to include the Console Administrator role in the role list.
+     * Should only be true in the console settings administrator edit view.
+     */
+    enableConsoleAdminRole?: boolean;
 }
 
 /**
@@ -78,7 +84,8 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
         user,
         selectedRoles,
         setSelectedRoles,
-        onRoleChange
+        onRoleChange,
+        enableConsoleAdminRole = false
     } = props;
 
     const usersFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
@@ -93,28 +100,32 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
     const [ searchQuery, setSearchQuery ] = useState<string>();
     const [ isSearching, setIsSearching ] = useState<boolean>(false);
 
-    const userAudience: string = user?.associatedRoles?.allowedAudience ?? RoleAudienceTypes.ORGANIZATION;
-
     const {
         data: originalUserRoles,
         isLoading: isUserRolesFetchRequestLoading,
         error: userRolesFetchRequestError
-    } = useGetApplicationRolesByAudience(
-        userAudience,
-        user?.id,
+    } = useGetRolesList<RolesV2ResponseInterface>(
+        null,
+        null,
         searchQuery,
-        null,
-        null,
-        null,
         "users,groups,permissions,associatedApplications",
         !isEmpty(user?.id)
     );
 
+    // Roles available for sharing. The Console Administrator role is excluded unless
+    // enableConsoleAdminRole is true (e.g. in the console settings administrator edit view).
     const userRolesList: RolesV2Interface[] = useMemo(() => {
         if (originalUserRoles?.Resources?.length > 0) {
-            return originalUserRoles.Resources;
+            return originalUserRoles.Resources.filter((role: RolesV2Interface) =>
+                enableConsoleAdminRole
+                || !(role.displayName === UIConstants.ADMINISTRATOR_ROLE_DISPLAY_NAME
+                    && role.audience?.type?.toUpperCase() === RoleAudienceTypes.APPLICATION
+                    && role.audience?.display === UIConstants.CONSOLE_APP_AUDIENCE_DISPLAY)
+            );
         }
-    }, [ originalUserRoles ]);
+
+        return [];
+    }, [ originalUserRoles, enableConsoleAdminRole ]);
 
     useEffect(() => {
         if (userRolesFetchRequestError) {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,8 +18,10 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
-import Autocomplete, { AutocompleteInputChangeReason,
-    AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import Autocomplete, {
+    AutocompleteInputChangeReason,
+    AutocompleteRenderInputParams
+} from "@oxygen-ui/react/Autocomplete";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
@@ -32,13 +34,16 @@ import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
 import { MinusIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Code } from "@wso2is/react-components";
 import debounce from "lodash-es/debounce";
-import React, { ChangeEvent, Dispatch, Fragment, FunctionComponent, HTMLAttributes, ReactElement, useEffect,
-    useState } from "react";
+import React, { ChangeEvent, Dispatch, Fragment, FunctionComponent, HTMLAttributes, ReactElement, useCallback,
+    useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { DropdownProps } from "semantic-ui-react";
+import AutoCompleteRenderOption from "./auto-complete-render-option";
 import useGetResourceListOrResourceDetails from "../api/use-get-resource-list-or-resource-details";
 import { useRulesContext } from "../hooks/use-rules-context";
 import {
@@ -56,7 +61,29 @@ import {
     RuleConditionsInterface,
     RuleInterface
 } from "../models/rules";
+import { normalizeResourceResponse } from "../utils/resource-utils";
+import { normalizeUserstoreList } from "../utils/userstore-utils";
 import "./rule-conditions.scss";
+
+/**
+ * Normalizes resource items, applying userstore-specific normalization when applicable.
+ *
+ * @param items - Raw resource items.
+ * @param initialResourcesLoadUrl - The URL used to load resources.
+ * @param systemReservedUserStores - List of system-reserved userstore names to filter out.
+ * @returns Processed resource items.
+ */
+const processResourceItems = (
+    items: ResourceInterface[],
+    initialResourcesLoadUrl: string,
+    systemReservedUserStores: string[]
+): ResourceInterface[] => {
+    if (initialResourcesLoadUrl?.toLowerCase().includes("/userstores")) {
+        return normalizeUserstoreList(items, systemReservedUserStores);
+    }
+
+    return items;
+};
 
 /**
  * Value input autocomplete options interface.
@@ -107,11 +134,11 @@ interface ValueInputAutocompleteProps extends ComponentCommonPropsInterface {
     resourceDetails: ResourceInterface;
     valueReferenceAttribute: string;
     valueDisplayAttribute: string;
-    resourceType: string;
     initialResourcesLoadUrl: string;
     filterBaseResourcesUrl: string;
     shouldFetch: boolean;
     hiddenResources?: string[];
+    showClearFilter?: boolean;
 }
 
 /**
@@ -148,7 +175,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
     readonly,
     rule: ruleInstance
 }: RulesComponentPropsInterface): ReactElement => {
-
     const ruleConditions: RuleConditionsInterface = ruleInstance.rules;
 
     const {
@@ -203,26 +229,38 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         valueReferenceAttribute,
         valueDisplayAttribute,
         resourceDetails,
-        resourceType,
         initialResourcesLoadUrl,
         filterBaseResourcesUrl,
         ruleId,
         conditionId,
         expressionId,
         shouldFetch,
-        hiddenResources = []
+        hiddenResources = [],
+        showClearFilter = true
     }: ValueInputAutocompleteProps) => {
-
         const [ inputValue, setInputValue ] = useState<string>(null);
         const [ inputValueLabel, setInputValueLabel ] = useState<string>(null);
+        const [ debouncedSearchQuery, setDebouncedSearchQuery ] = useState<string>(null);
         const [ options, setOptions ] = useState<ValueInputAutocompleteOptionsInterface[]>([]);
         const [ open, setOpen ] = useState<boolean>(false);
 
         const MORE_ITEMS: string = "more-items";
         const CLEAR_OPTION: string = "clear-option";
+        const ROLES_ENDPOINT: string = "/Roles";
 
-        const filterUrl: string = inputValueLabel
-            ? filterBaseResourcesUrl?.replace("filter=", `filter=name+sw+${inputValueLabel}`)
+        const systemReservedUserStores: string[] = useSelector(
+            (state: AppState) => state?.config?.ui?.systemReservedUserStores
+        );
+
+        const isRolesResource: boolean = initialResourcesLoadUrl?.includes(ROLES_ENDPOINT);
+
+        const setDebouncedSearchQueryDebounced: (value: string) => void = useCallback(
+            debounce((value: string) => setDebouncedSearchQuery(value), 700),
+            []
+        );
+
+        const filterUrl: string = debouncedSearchQuery
+            ? filterBaseResourcesUrl?.replace("filter=", `filter=${valueDisplayAttribute}+sw+${debouncedSearchQuery}`)
             : initialResourcesLoadUrl;
 
         const { data: initialResources = [], isLoading: isInitialLoading } =
@@ -238,38 +276,76 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         }, [ resourceDetails ]);
 
         useEffect(() => {
-            if (inputValueLabel && filterUrl) {
-                if (filteredResources && Array.isArray(filteredResources[resourceType])) {
-                    const filteredOptions: ValueInputAutocompleteOptionsInterface[] =
-                        filteredResources[resourceType]
-                            .filter((resource: ResourceInterface) =>
-                                !hiddenResources.includes(resource[valueReferenceAttribute])
-                            )
-                            .map((resource: ResourceInterface) => ({
-                                id: resource[valueReferenceAttribute],
-                                label: resource[valueDisplayAttribute]
-                            }));
+            if (debouncedSearchQuery && filterUrl) {
+                const { items: filteredItems } = normalizeResourceResponse(filteredResources);
+                const processedFilteredItems: ResourceInterface[] = processResourceItems(
+                    filteredItems,
+                    initialResourcesLoadUrl,
+                    systemReservedUserStores
+                );
+                const filteredOptions: ValueInputAutocompleteOptionsInterface[] = processedFilteredItems
+                    .filter(
+                        (resource: ResourceInterface) => !hiddenResources.includes(resource[valueReferenceAttribute])
+                    )
+                    .map((resource: ResourceInterface) => ({
+                        audience: resource?.audience?.type,
+                        audienceDisplay: resource?.audience?.display,
+                        id: resource[valueReferenceAttribute],
+                        label: resource[valueDisplayAttribute]
+                    }));
 
-                    setOptions(filteredOptions);
-                }
+                setOptions(filteredOptions);
             } else {
-                if (initialResources && Array.isArray(initialResources[resourceType])) {
-                    const initialOptions: ValueInputAutocompleteOptionsInterface[] =
-                            initialResources[resourceType]
-                                .filter((resource: ResourceInterface) =>
-                                    !hiddenResources.includes(resource[valueReferenceAttribute])
-                                )
-                                .map((resource: ResourceInterface) => ({
-                                    id: resource[valueReferenceAttribute],
-                                    label: resource[valueDisplayAttribute]
-                                }));
+                const { items: initialItems } = normalizeResourceResponse(initialResources);
+                const processedInitialItems: ResourceInterface[] = processResourceItems(
+                    initialItems,
+                    initialResourcesLoadUrl,
+                    systemReservedUserStores
+                );
+                const initialOptions: ValueInputAutocompleteOptionsInterface[] = processedInitialItems
+                    .filter(
+                        (resource: ResourceInterface) => !hiddenResources.includes(resource[valueReferenceAttribute])
+                    )
+                    .map((resource: ResourceInterface) => ({
+                        audience: resource?.audience?.type,
+                        audienceDisplay: resource?.audience?.display,
+                        id: resource[valueReferenceAttribute],
+                        label: resource[valueDisplayAttribute]
+                    }));
 
-                    setOptions(initialOptions);
-                }
+                setOptions(initialOptions);
             }
-        }, [ inputValueLabel, initialResources, filteredResources, filterUrl ]);
+        }, [ debouncedSearchQuery, initialResources, filteredResources, filterUrl ]);
 
-        const hasMoreItems: boolean = filteredResources?.totalResults > filteredResources?.count;
+        const { totalResults: filteredTotalResults, count: filteredCount } = normalizeResourceResponse(
+            filteredResources
+        );
+        const hasMoreItems: boolean = filteredTotalResults > filteredCount;
+
+        const autocompleteComponentsProps: object = useMemo(() => ({
+            popper: {
+                modifiers: [
+                    {
+                        enabled: true,
+                        fn: ({ state }: { state: any }) => {
+                            state.styles.popper.width = `${state.rects.reference.width}px`;
+                        },
+                        name: "sameWidth",
+                        phase: "beforeWrite",
+                        requires: [ "computeStyles" ]
+                    },
+                    {
+                        enabled: false,
+                        name: "flip"
+                    },
+                    {
+                        enabled: false,
+                        name: "preventOverflow"
+                    }
+                ],
+                style: { zIndex: 9999 }
+            }
+        }), []);
 
         return (
             <Autocomplete
@@ -279,6 +355,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 open={ open }
                 onOpen={ () => setOpen(true) }
                 onClose={ () => setOpen(false) }
+                componentsProps={ autocompleteComponentsProps }
                 options={ [
                     ...options,
                     ...(hasMoreItems
@@ -288,7 +365,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             label: t("rules:fields.autocomplete.moreItemsMessage")
                         } ]
                         : []),
-                    ...(inputValueLabel
+                    ...(showClearFilter && inputValueLabel
                         ? [ {
                             id: CLEAR_OPTION,
                             isDisabled: false,
@@ -311,6 +388,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
                     if (value?.id === CLEAR_OPTION) {
                         setInputValueLabel("");
+                        setDebouncedSearchQuery("");
                         setTimeout(() => setOpen(true), 0);
 
                         return;
@@ -330,6 +408,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 inputValue={ inputValueLabel }
                 onInputChange={ (event: ChangeEvent, value: string) => {
                     setInputValueLabel(value);
+                    setDebouncedSearchQueryDebounced(value);
                 } }
                 renderInput={ (params: AutocompleteRenderInputParams) => (
                     <TextField
@@ -350,7 +429,12 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         } }
                     />
                 ) }
-                renderOption={ (props: ListItemProps, option: { label: string; id: string; isDisabled: boolean }) => {
+                renderOption={ (props: ListItemProps, option: {
+                    label: string;
+                    id: string;
+                    isDisabled: boolean;
+                    audience?: string;
+                    audienceDisplay?: string }) => {
                     if (option.id === MORE_ITEMS) {
                         return (
                             <li
@@ -373,6 +457,17 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                     <TrashIcon className="icon" /> <span className="text">{ option.label }</span>
                                 </Link>
                             </li>
+                        );
+                    }
+
+                    if (isRolesResource) {
+                        return (
+                            <AutoCompleteRenderOption
+                                renderOptionProps={ props }
+                                displayName={ option.label }
+                                audience={ option.audience }
+                                audienceDisplay={ option.audienceDisplay }
+                            />
                         );
                     }
 
@@ -405,7 +500,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         filterBaseResourcesUrl,
         hiddenResources = []
     }: ResourceListSelectProps) => {
-
         const [ resourceDetails, setResourceDetails ] = useState<ResourceInterface>(null);
         const [ inputValue, setInputValue ] = useState("");
         const [ claimList, setClaimList ] = useState<ValueInputAutocompleteOptionsInterface[]>([]);
@@ -413,16 +507,34 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         const valueReferenceAttribute: string = findMetaValuesAgainst?.value?.valueReferenceAttribute || "id";
         const valueDisplayAttribute: string = findMetaValuesAgainst?.value?.valueDisplayAttribute || "name";
 
+        const systemReservedUserStores: string[] = useSelector(
+            (state: AppState) => state?.config?.ui?.systemReservedUserStores
+        );
+
         let resourceType: string;
-        let shouldFetch: boolean = false;
+        let _shouldFetch: boolean = false;
 
         // TODO: Handle other resource types once the API is updated with the required data.
         if (expressionField === "application") {
             resourceType = "applications";
-            shouldFetch = true;
+            _shouldFetch = true;
         } else if (expressionField === "claim") {
-            shouldFetch = false;
+            _shouldFetch = false;
         }
+
+        // Generic detail fetch for non-claim, non-application fields.
+        const needsDetailFetch: boolean = valueReferenceAttribute !== valueDisplayAttribute;
+        const detailBaseUrl: string = initialResourcesLoadUrl?.split("?")[0];
+
+        // For application: use /resourceType/{id}; For generic: use detailBaseUrl/{id}; For claim: skip.
+        const shouldFetchDetails: boolean = (expressionField === "application")
+            ? !!expressionValue
+            : (expressionField !== "claim" && !!expressionValue && !!detailBaseUrl && needsDetailFetch);
+        const detailsUrl: string = shouldFetchDetails
+            ? ((expressionField === "application")
+                ? `/${resourceType}/${expressionValue}`
+                : `${detailBaseUrl}/${expressionValue}`)
+            : null;
 
         const {
             data: fetchedResourcesList,
@@ -433,7 +545,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             data: resourcesDetails,
             isLoading: isResourceDetailsLoading,
             error: resourceDetailsError
-        } = useGetResourceListOrResourceDetails(`/${resourceType}/${expressionValue}`, shouldFetch);
+        } = useGetResourceListOrResourceDetails(detailsUrl, shouldFetchDetails);
 
         useEffect(() => {
             if (!isResourceDetailsLoading) {
@@ -448,19 +560,21 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
         useEffect(() => {
             if (expressionField === "claim" && fetchedResourcesList) {
-                const initialOptions: ValueInputAutocompleteOptionsInterface[] =
-                            fetchedResourcesList?.filter((resource: ClaimResourceInterface) =>
-                                !hiddenResources.includes(resource[valueReferenceAttribute])
-                            ).map((resource: ClaimResourceInterface) => ({
-                                id: resource[valueReferenceAttribute],
-                                label: resource[valueDisplayAttribute]
-                            }));
+                const initialOptions: ValueInputAutocompleteOptionsInterface[] = fetchedResourcesList
+                    ?.filter(
+                        (resource: ClaimResourceInterface) =>
+                            !hiddenResources.includes(resource[valueReferenceAttribute])
+                    )
+                    .map((resource: ClaimResourceInterface) => ({
+                        id: resource[valueReferenceAttribute],
+                        label: resource[valueDisplayAttribute]
+                    }));
 
-                const sortedClaims: ValueInputAutocompleteOptionsInterface[] =
-                initialOptions?.sort((a: ValueInputAutocompleteOptionsInterface,
-                    b: ValueInputAutocompleteOptionsInterface) => {
-                    return a.label > b.label ? 1 : -1;
-                });
+                const sortedClaims: ValueInputAutocompleteOptionsInterface[] = initialOptions?.sort(
+                    (a: ValueInputAutocompleteOptionsInterface, b: ValueInputAutocompleteOptionsInterface) => {
+                        return a.label > b.label ? 1 : -1;
+                    }
+                );
 
                 /**
                  * Disables the role claim attribute.
@@ -472,7 +586,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                  */
                 const filterOutRoleClaimAttribute = (claimsList: ValueInputAutocompleteOptionsInterface[]):
                 ValueInputAutocompleteOptionsInterface[] => {
-
                     const excludedClaims: Set<string> = new Set([
                         "http://wso2.org/claims/roles",
                         "http://wso2.org/claims/applicationRoles"
@@ -482,8 +595,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         !excludedClaims.has(claim?.id));
                 };
 
-                const claimList: ValueInputAutocompleteOptionsInterface[] =
-                filterOutRoleClaimAttribute(sortedClaims);
+                const claimList: ValueInputAutocompleteOptionsInterface[] = filterOutRoleClaimAttribute(sortedClaims);
 
                 const matchedClaim: ValueInputAutocompleteOptionsInterface = claimList.find(
                     (claim: ValueInputAutocompleteOptionsInterface) => claim.id === expressionValue
@@ -492,16 +604,14 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 setClaimList(claimList);
                 setInputValue(matchedClaim ? matchedClaim.label : "");
                 setSelectedValue(matchedClaim ? matchedClaim.id : null);
-
             }
         }, [ fetchedResourcesList ]);
 
         if (isResourcesListLoading || !fetchedResourcesList) {
-            return;
+            return <CircularProgress size={ 20 } />;
         }
 
         if (expressionField == "claim") {
-
             return (
                 <Autocomplete
                     loading={ isResourcesListLoading }
@@ -528,7 +638,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     inputValue={ inputValue }
                     value={ selectedValue ? { id: selectedValue, label: inputValue } : null }
                     onInputChange={ (event: ChangeEvent, value: string, reason: AutocompleteInputChangeReason) => {
-
                         if (reason === "reset") {
                             setInputValue("");
 
@@ -538,7 +647,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         }
                     } }
                     onChange={ (e: React.ChangeEvent, value: ValueInputAutocompleteOptionsInterface) => {
-
                         if (value) {
                             setSelectedValue(value?.id);
                             setInputValue(value?.label);
@@ -589,9 +697,9 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     data-componentid={ `${componentId}-select-attributes` }
                 />
             );
-
-        } else if (resourceType == "applications") {
-            // Set first value of the list if option is empty
+        } else if (expressionField === "application") {
+            // Application-specific logic (preserving original actions feature behavior).
+            // Set first value of the list if option is empty.
             if (expressionValue === "") {
                 handleExpressionChangeDebounced(
                     fetchedResourcesList[resourceType][0]?.id,
@@ -611,12 +719,11 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         expressionId={ expressionId }
                         expressionValue={ expressionValue }
                         resourceDetails={ resourceDetails }
-                        resourceType={ resourceType }
                         valueReferenceAttribute={ valueReferenceAttribute }
                         valueDisplayAttribute={ valueDisplayAttribute }
                         initialResourcesLoadUrl={ initialResourcesLoadUrl }
                         filterBaseResourcesUrl={ filterBaseResourcesUrl }
-                        shouldFetch={ shouldFetch }
+                        shouldFetch={ true }
                         hiddenResources={ hiddenResources }
                     />
                 );
@@ -627,6 +734,10 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     disabled={ readonly }
                     value={ expressionValue }
                     data-componentid={ componentId }
+                    MenuProps={ {
+                        disablePortal: false,
+                        sx: { zIndex: 9999 }
+                    } }
                     onChange={ (e: SelectChangeEvent) => {
                         updateConditionExpression(
                             e.target.value,
@@ -638,13 +749,125 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         );
                     } }
                 >
-                    { fetchedResourcesList[resourceType]?.filter((resource: ResourceInterface) =>
-                        !hiddenResources.includes(resource[valueReferenceAttribute])
+                    { fetchedResourcesList[resourceType]?.filter(
+                        (resource: ResourceInterface) =>
+                            !hiddenResources.includes(resource[valueReferenceAttribute])
                     ).map((resource: ResourceInterface, index: number) => (
                         <MenuItem value={ resource[valueReferenceAttribute] } key={ `${expressionId}-${index}` }>
                             { resource[valueDisplayAttribute] }
                         </MenuItem>
                     )) }
+                </Select>
+            );
+        } else {
+            // Generic path for all approval workflow fields.
+            // If filtering is supported, use searchable autocomplete.
+            if (filterBaseResourcesUrl  && initialResourcesLoadUrl) {
+                return (
+                    <ValueInputAutocomplete
+                        conditionId={ conditionId }
+                        ruleId={ ruleId }
+                        expressionId={ expressionId }
+                        expressionValue={ expressionValue }
+                        resourceDetails={ resourceDetails }
+                        valueReferenceAttribute={ valueReferenceAttribute }
+                        valueDisplayAttribute={ valueDisplayAttribute }
+                        initialResourcesLoadUrl={ initialResourcesLoadUrl }
+                        filterBaseResourcesUrl={ filterBaseResourcesUrl }
+                        shouldFetch={ true }
+                        hiddenResources={ hiddenResources }
+                        showClearFilter={ false }
+                    />
+                );
+            }
+
+            // Otherwise fallback to a normal Select dropdown.
+            const { items: normalizedItems } = normalizeResourceResponse(fetchedResourcesList);
+            const ROLES_ENDPOINT: string = "/Roles";
+
+            // Special handling for userstores (user.domain / initiator.domain).
+            const processedItems: ResourceInterface[] = processResourceItems(
+                normalizedItems,
+                initialResourcesLoadUrl,
+                systemReservedUserStores
+            );
+
+            const items: ResourceInterface[] =
+                resourceDetails &&
+                expressionValue &&
+                !processedItems.some(
+                    (item: ResourceInterface) => item[valueReferenceAttribute] === expressionValue
+                )
+                    ? [ resourceDetails, ...processedItems ]
+                    : processedItems;
+
+            return (
+                <Select
+                    disabled={ readonly }
+                    value={ expressionValue || "" }
+                    displayEmpty
+                    data-componentid={ componentId }
+                    MenuProps={ {
+                        disablePortal: false,
+                        sx: { zIndex: 9999 }
+                    } }
+                    onChange={ (e: SelectChangeEvent) => {
+                        updateConditionExpression(
+                            e.target.value,
+                            ruleId,
+                            conditionId,
+                            expressionId,
+                            ExpressionFieldTypes.Value,
+                            true
+                        );
+                    } }
+                    renderValue={ (selected: string) => {
+                        if (!selected) {
+                            return (
+                                <Box component="span" sx={ { color: "text.disabled" } }>
+                                    { t("rules:fields.autocomplete.selectPlaceholderText") }
+                                </Box>
+                            );
+                        }
+
+                        return selected;
+                    } }
+                >
+                    { items
+                        ?.filter(
+                            (resource: ResourceInterface) =>
+                                !hiddenResources.includes(resource[valueReferenceAttribute])
+                        )
+                        .map((resource: ResourceInterface, index: number) => {
+
+                            const isRolesResource: boolean =
+                                initialResourcesLoadUrl?.includes(ROLES_ENDPOINT);
+
+                            if (isRolesResource) {
+                                return (
+                                    <MenuItem
+                                        value={ resource[valueReferenceAttribute] }
+                                        key={ `${expressionId}-${index}` }
+                                    >
+                                        <AutoCompleteRenderOption
+                                            displayName={ resource[valueDisplayAttribute] }
+                                            audience={ resource.audience?.type }
+                                            audienceDisplay={ resource.audience?.display }
+                                            renderOptionProps={ {} as any }
+                                        />
+                                    </MenuItem>
+                                );
+                            }
+
+                            return (
+                                <MenuItem
+                                    value={ resource[valueReferenceAttribute] }
+                                    key={ `${expressionId}-${index}` }
+                                >
+                                    { resource[valueDisplayAttribute] }
+                                </MenuItem>
+                            );
+                        }) }
                 </Select>
             );
         }
@@ -669,7 +892,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         hiddenResources = [],
         hiddenValues = []
     }: ConditionValueInputProps) => {
-
         if (metaValue?.inputType === "input" || null) {
             return (
                 <TextField
@@ -692,7 +914,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
 
         if (metaValue?.inputType === "options") {
             if (metaValue?.values?.length > 1) {
-
                 // Set first value of the list if option is empty
                 if (expressionValue === "") {
                     handleExpressionChangeDebounced(
@@ -710,6 +931,10 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         disabled={ readonly }
                         value={ expressionValue }
                         data-componentid={ componentId }
+                        MenuProps={ {
+                            disablePortal: false,
+                            sx: { zIndex: 9999 }
+                        } }
                         onChange={ (e: SelectChangeEvent) => {
                             updateConditionExpression(
                                 e.target.value,
@@ -738,9 +963,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 const filterBaseResourcesUrl: string = metaValue?.links.find(
                     (link: LinkInterface) => link.rel === "filter")?.href;
 
-                if ((expressionField === "application" && initialResourcesLoadUrl && filterBaseResourcesUrl) ||
-                    (expressionField === "claim" && initialResourcesLoadUrl)) {
-
+                if (initialResourcesLoadUrl) {
                     return (
                         <ResourceListSelect
                             ruleId={ ruleId }
@@ -784,7 +1007,6 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         hiddenResources = [],
         hiddenValues = []
     }: RuleExpressionComponentProps) => {
-
         const [ isResourceMissing, setIsResourceMissing ] = useState<boolean>(false);
 
         const findMetaValuesAgainst: ConditionExpressionMetaInterface = conditionExpressionsMeta.find(
@@ -805,16 +1027,12 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         sx={ { mb: 2 } }
                         data-componentid={ "rules-condition-expression-alert" }
                     >
-                        <AlertTitle
-                            className="alert-title"
-                        >
+                        <AlertTitle className="alert-title">
                             <Trans i18nKey={ t("actions:fields.rules.alerts.resourceNotFound.title") }>
                                 The resource linked to this rule is no longer available.
                             </Trans>
                         </AlertTitle>
-                        <Trans
-                            i18nKey={ t("actions:fields.rules.alerts.resourceNotFound.description") }
-                        >
+                        <Trans i18nKey={ t("actions:fields.rules.alerts.resourceNotFound.description") }>
                             Please update to a valid resource.
                         </Trans>
                     </Alert>
@@ -824,15 +1042,38 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         disabled={ readonly }
                         value={ expression.field }
                         data-componentid={ "rules-condition-expression-input-field-select" }
+                        MenuProps={ {
+                            disablePortal: false,
+                            sx: { zIndex: 9999 }
+                        } }
                         onChange={ (e: SelectChangeEvent) => {
+                            const newField: string = e.target.value;
+
+                            const meta: ConditionExpressionMetaInterface | undefined = conditionExpressionsMeta.find(
+                                (expressionMeta: ConditionExpressionMetaInterface) =>
+                                    expressionMeta?.field?.name === newField
+                            );
+
+                            const defaultOperator: string = meta?.operators?.[0]?.name || "";
+
                             updateConditionExpression(
-                                e.target.value,
+                                newField,
                                 ruleId,
                                 conditionId,
                                 expression.id,
                                 ExpressionFieldTypes.Field,
                                 true
                             );
+
+                            updateConditionExpression(
+                                defaultOperator,
+                                ruleId,
+                                conditionId,
+                                expression.id,
+                                ExpressionFieldTypes.Operator,
+                                true
+                            );
+
                             updateConditionExpression(
                                 "",
                                 ruleId,
@@ -843,13 +1084,15 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             );
                         } }
                     >
-                        { conditionExpressionsMeta?.filter((item: ConditionExpressionMetaInterface) =>
-                            !hiddenConditions.includes(item.field?.name)
-                        ).map((item: ConditionExpressionMetaInterface, index: number) => (
-                            <MenuItem value={ item.field?.name } key={ `${expression.id}-${index}` }>
-                                { item.field?.displayName }
-                            </MenuItem>
-                        )) }
+                        { conditionExpressionsMeta
+                            ?.filter(
+                                (item: ConditionExpressionMetaInterface) => !hiddenConditions.includes(item.field?.name)
+                            )
+                            .map((item: ConditionExpressionMetaInterface, index: number) => (
+                                <MenuItem value={ item.field?.name } key={ `${expression.id}-${index}` }>
+                                    { item.field?.displayName }
+                                </MenuItem>
+                            )) }
                     </Select>
                 </FormControl>
                 <FormControl sx={ { mb: 1, minWidth: 120, mt: 1 } } size="small">
@@ -857,6 +1100,10 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         disabled={ readonly }
                         value={ expression.operator }
                         data-componentid={ "rules-condition-expression-input-operator-select" }
+                        MenuProps={ {
+                            disablePortal: false,
+                            sx: { zIndex: 9999 }
+                        } }
                         onChange={ (e: SelectChangeEvent) => {
                             updateConditionExpression(
                                 e.target.value,

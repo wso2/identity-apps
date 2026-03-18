@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -360,6 +360,9 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
  */
 export interface FlowExecutionCompatibilityInterface {
     enableLegacyFlows?: string;
+    enableLegacySelfRegistrationFlow?: string;
+    enableLegacyInvitedUserRegistrationFlow?: string;
+    enableLegacyPasswordRecoveryFlow?: string;
 }
 
 /**
@@ -509,6 +512,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Flag to check if the `OAuth.EnableClientSecretHash` is enabled in the `identity.xml`.
      */
     isClientSecretHashEnabled?: boolean;
+    /**
+     * Flag to check if the enhanced organization authentication feature is enabled.
+     */
+    isEnhancedOrganizationAuthenticationFeatureEnabled?: boolean;
     /**
      * Flag to check if the feature gate should be enabled.
      */
@@ -704,6 +711,9 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     flowExecution: {
         enableLegacyFlows: boolean;
+        enableLegacySelfRegistrationFlow?: boolean;
+        enableLegacyInvitedUserRegistrationFlow?: boolean;
+        enableLegacyPasswordRecoveryFlow?: boolean;
     };
     /**
      * Enable legacy session bound token behaviour.
@@ -713,6 +723,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Disable email template feature for free tier tenants.
      */
     disableEmailTemplateForFreeTier: boolean;
+    /**
+     * Flag to check whether the password reset enforcer authenticator is enabled.
+     */
+    isPasswordResetEnforcerEnabled?: boolean;
 }
 
 /**
