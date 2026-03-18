@@ -51,7 +51,7 @@ export const insights: insightsNS = {
         m2m: {
             filters: {
                 clientId: "Client ID",
-                tenantDomain: "Organization Handle"
+                tenantDomain: "Organization"
             }
         },
         registration: {

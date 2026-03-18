@@ -4,4 +4,4 @@
 "@wso2is/i18n": patch
 ---
 
-Add m2m insights
+Add autocomplete input for org search in insights

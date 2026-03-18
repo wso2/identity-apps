@@ -17,11 +17,18 @@
  */
 
 import { HorizontalBarsFilterIcon } from "@oxygen-ui/react-icons";
+import { store } from "@wso2is/admin.core.v1/store";
+import useGetOrganizations
+    from "@wso2is/admin.organizations.v1/api/use-get-organizations";
+import {
+    OrganizationInterface,
+    OrganizationListInterface
+} from "@wso2is/admin.organizations.v1/models/organizations";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DropdownChild, Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
 import { LinkButton, Popup, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, ReactNode, useEffect, useState } from "react";
+import React, { ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { getFilterAttributeListByActivityType } from "../config/org-insights";
@@ -34,7 +41,7 @@ import {
 } from "../models/insights";
 import { getAllDisabledFeaturesForInsights } from "../utils/insights";
 
-const dropdownInputRequiredAttributesForFilterValue: string[] = [ "onboardingMethod", "authenticator" ];
+const dropdownInputRequiredAttributesForFilterValue: string[] = [ "onboardingMethod", "authenticator", "tenantDomain" ];
 
 const filterValueDropdownItems: Record<string,DropdownChild[]> = {
     "authenticator": [
@@ -219,6 +226,38 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
 
     const { t } = useTranslation();
 
+    const { data: organizationsData } = useGetOrganizations<OrganizationListInterface>(
+        selectedActivityType === ActivityType.M2M,
+        "status eq ACTIVE",
+        100,
+        null,
+        null,
+        true,
+        false
+    );
+
+    const effectiveFilterValueDropdownItems: Record<string, DropdownChild[]> = useMemo(
+        (): Record<string, DropdownChild[]> => {
+            const items: Record<string, DropdownChild[]> = { ...filterValueDropdownItems };
+            const mainOrgDomain: string = store.getState().auth.tenantDomain;
+            const orgItems: DropdownChild[] = [
+                { key: 0, text: mainOrgDomain, value: mainOrgDomain }
+            ];
+
+            if (organizationsData?.organizations) {
+                organizationsData.organizations.forEach(
+                    (org: OrganizationInterface, index: number) => {
+                        orgItems.push({ key: index + 1, text: org.name, value: org.id });
+                    }
+                );
+            }
+
+            items["tenantDomain"] = orgItems;
+
+            return items;
+        }, [ organizationsData ]
+    );
+
     const [ isFilteringModalOpen, setIsFilteringModalOpen ] = useState<boolean>(false);
     const [ isFiltersReset, setIsFiltersReset ] = useState<boolean>(false);
     const [ selectedFilterAttribute, setSelectedFilterAttribute ] = useState<string>(
@@ -237,9 +276,9 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
 
     useEffect(() => {
         if (dropdownInputRequiredAttributesForFilterValue.includes(selectedFilterAttribute)) {
-            setSelectedFilterValue(filterValueDropdownItems[selectedFilterAttribute]?.[0].value);
+            setSelectedFilterValue(effectiveFilterValueDropdownItems[selectedFilterAttribute]?.[0]?.value);
         }
-    },[ selectedFilterAttribute ]);
+    },[ selectedFilterAttribute, effectiveFilterValueDropdownItems ]);
 
     const handleFormSubmit = (values: Map<string, FormValue>) => {
         setSelectedFilterAttribute(values.get("filterAttribute").toString());
@@ -260,10 +299,11 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
                     dropdownItem.value === values.get("filterAttribute")
             );
 
-        const matchingValue: DropdownChild = filterValueDropdownItems[values.get("filterAttribute").toString()]?.
-            find((dropdownItem: DropdownChild) =>
-                dropdownItem.value === values.get("filterValue")
-            );
+        const matchingValue: DropdownChild = effectiveFilterValueDropdownItems[
+            values.get("filterAttribute").toString()
+        ]?.find((dropdownItem: DropdownChild) =>
+            dropdownItem.value === values.get("filterValue")
+        );
 
         if (matchingValue) {
             displayQueryParts[2] = "\"" + matchingValue?.text?.toString() + "\"";
@@ -349,7 +389,7 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
 
                                             (<Field
                                                 children={
-                                                    filterValueDropdownItems[selectedFilterAttribute].map(
+                                                    effectiveFilterValueDropdownItems[selectedFilterAttribute]?.map(
                                                         (attribute: DropdownChild, index: number) => {
                                                             return {
                                                                 key: index,
@@ -370,6 +410,7 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
                                                 }
                                                 value={ selectedFilterValue }
                                                 type="dropdown"
+                                                search={ selectedFilterAttribute === "tenantDomain" }
                                                 data-testid={ `${ componentId }-value-dropdown` }
                                             />) :
                                             (<Field
@@ -399,7 +440,6 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
                                                 data-componentid={ `${ componentId }-value-input` }
                                             />)
                                         }
-
                                     </Form.Group>
                                     <Divider hidden/>
                                     <Form.Group inline>
