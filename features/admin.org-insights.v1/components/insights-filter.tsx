@@ -18,8 +18,7 @@
 
 import { HorizontalBarsFilterIcon } from "@oxygen-ui/react-icons";
 import { store } from "@wso2is/admin.core.v1/store";
-import useGetOrganizations
-    from "@wso2is/admin.organizations.v1/api/use-get-organizations";
+import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
 import {
     OrganizationInterface,
     OrganizationListInterface
@@ -226,14 +225,16 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
 
     const { t } = useTranslation();
 
+    const SUB_ORG_FETCH_LIMIT: number = 100;
+
     const { data: organizationsData } = useGetOrganizations<OrganizationListInterface>(
-        selectedActivityType === ActivityType.M2M,
-        "status eq ACTIVE",
-        100,
-        null,
-        null,
-        true,
-        false
+        selectedActivityType === ActivityType.M2M, // shouldFetch
+        "status eq ACTIVE",                        // filter
+        SUB_ORG_FETCH_LIMIT,                       // limit
+        null,                                      // after (no cursor pagination)
+        null,                                      // before (no cursor pagination)
+        true,                                      // recursive
+        false                                      // isRoot
     );
 
     const effectiveFilterValueDropdownItems: Record<string, DropdownChild[]> = useMemo(
@@ -276,7 +277,15 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
 
     useEffect(() => {
         if (dropdownInputRequiredAttributesForFilterValue.includes(selectedFilterAttribute)) {
-            setSelectedFilterValue(effectiveFilterValueDropdownItems[selectedFilterAttribute]?.[0]?.value);
+            const currentItems: DropdownChild[] =
+                effectiveFilterValueDropdownItems[selectedFilterAttribute];
+            const currentSelectionStillValid: boolean = currentItems?.some(
+                (item: DropdownChild) => item.value === selectedFilterValue
+            );
+
+            if (!selectedFilterValue || !currentSelectionStillValid) {
+                setSelectedFilterValue(currentItems?.[0]?.value);
+            }
         }
     },[ selectedFilterAttribute, effectiveFilterValueDropdownItems ]);
 
