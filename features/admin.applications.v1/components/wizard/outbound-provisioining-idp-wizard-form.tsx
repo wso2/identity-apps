@@ -248,7 +248,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                 }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        { connectorListOptions?.length > 0 && (
+                        { connectorListOptions?.length > 1 && (
                             <Field
                                 type="dropdown"
                                 label={
