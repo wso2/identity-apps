@@ -29,6 +29,7 @@ import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables
 import { OperationStatus } from "@wso2is/admin.core.v1/models/common";
 import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
 import {
+    OrganizationInterface,
     SelectedOrganizationRoleInterface
 } from "@wso2is/admin.organizations.v1/models";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
@@ -1128,46 +1129,62 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             // so the user can review/adjust before saving. The actual API call is deferred
             // until the user clicks the Save button.
 
-            if (userShareData?.organizations && Array.isArray(userShareData.organizations)) {
-                // In SHARE_ALL mode, roles are stored globally in sharingMode.roleAssignment.roles.
-                const globalRoles: RoleSharingInterface[] =
-                    (userShareData.sharingMode?.roleAssignment?.roles as RoleSharingInterface[]) ?? [];
+            // In SHARE_ALL mode, roles are stored globally in sharingMode.roleAssignment.roles.
+            const globalRoles: RoleSharingInterface[] =
+                (userShareData.sharingMode?.roleAssignment?.roles as RoleSharingInterface[]) ?? [];
 
-                // Build role selection map from preserved global roles for UI display.
-                const globalRoleSelections: SelectedOrganizationRoleInterface[] = globalRoles.map(
-                    (role: RoleSharingInterface) => ({
-                        ...role,
-                        id: role.displayName,
-                        selected: true
-                    })
-                );
+            // Build a lookup set of globally assigned role names for quick access.
+            const globalRoleNameSet: Set<string> = new Set(
+                globalRoles.map((r: RoleSharingInterface) => r.displayName)
+            );
 
-                const orgIds: string[] = userShareData.organizations.map(
-                    (org: SharedOrganizationInterface) => org.orgId
-                );
-                const rolesMap: Record<string, SelectedOrganizationRoleInterface[]> = {};
-                // addedRolesMap is initialised to globalRoles for each org so that:
-                // - resolveRoleRemoval (in the UI widget) will trim roles from addedRoles
-                //   rather than pushing them into removedRoles, keeping removedRoles clean.
-                // - On Save, shareSelectedRolesWithSelectedOrgs POSTs addedOrgIds with the
-                //   complete (and user-adjusted) role set from addedRoles.
-                const addedRolesMap: Record<string, RoleSharingInterface[]> = {};
-                const futureChildOrgsMap: Record<string, boolean> = {};
+            // Build the full role selection list from all available roles, marking globally
+            // assigned roles as selected. The composite id format is required so that each
+            // role can be uniquely identified when the user modifies the selection.
+            const fullRoleSelections: SelectedOrganizationRoleInterface[] = userRolesList.map(
+                (role: RolesV2Interface) => ({
+                    audience: {
+                        display: role.audience?.display,
+                        type: role.audience?.type
+                    },
+                    displayName: role.displayName,
+                    id: `${role.displayName}:${role.audience?.type}:${role.audience?.display}`,
+                    selected: globalRoleNameSet.has(role.displayName)
+                })
+            );
 
-                userShareData.organizations.forEach((org: SharedOrganizationInterface) => {
-                    if (globalRoleSelections.length > 0) {
-                        rolesMap[org.orgId] = globalRoleSelections;
-                    }
-                    addedRolesMap[org.orgId] = [ ...globalRoles ];
-                    futureChildOrgsMap[org.orgId] = true;
-                });
+            // Determine org IDs to pre-select: prefer organizations from userShareData,
+            // but fall back to the top-level organizations since SHARE_ALL policy
+            // may return an empty organizations list from the API.
+            const sharedOrgIds: string[] =
+                userShareData?.organizations?.length > 0
+                    ? userShareData.organizations.map((org: SharedOrganizationInterface) => org.orgId)
+                    : (originalOrganizations?.organizations?.map(
+                        (org: OrganizationInterface) => org.id
+                    ) ?? []);
 
-                setSelectedOrgIds(orgIds);
-                setAddedOrgIds(orgIds);
-                setRoleSelections(rolesMap);
-                setAddedRoles(addedRolesMap);
-                setShouldShareWithFutureChildOrgsMap(futureChildOrgsMap);
-            }
+            const rolesMap: Record<string, SelectedOrganizationRoleInterface[]> = {};
+            // addedRolesMap is initialised to globalRoles for each org so that:
+            // - resolveRoleRemoval (in the UI widget) will trim roles from addedRoles
+            //   rather than pushing them into removedRoles, keeping removedRoles clean.
+            // - On Save, shareSelectedRolesWithSelectedOrgs POSTs addedOrgIds with the
+            //   complete (and user-adjusted) role set from addedRoles.
+            const addedRolesMap: Record<string, RoleSharingInterface[]> = {};
+            const futureChildOrgsMap: Record<string, boolean> = {};
+
+            sharedOrgIds.forEach((orgId: string) => {
+                if (fullRoleSelections.length > 0) {
+                    rolesMap[orgId] = fullRoleSelections;
+                }
+                addedRolesMap[orgId] = [ ...globalRoles ];
+                futureChildOrgsMap[orgId] = true;
+            });
+
+            setSelectedOrgIds(sharedOrgIds);
+            setAddedOrgIds(sharedOrgIds);
+            setRoleSelections(rolesMap);
+            setAddedRoles(addedRolesMap);
+            setShouldShareWithFutureChildOrgsMap(futureChildOrgsMap);
 
             setShareType(ShareType.SHARE_SELECTED);
             setRoleShareTypeSelected(RoleShareType.SHARE_SELECTED);

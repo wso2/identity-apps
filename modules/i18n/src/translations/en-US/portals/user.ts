@@ -176,7 +176,7 @@ export const user: userNS = {
                     resetToDefaultLabel1: "Reset to default",
                     resetToDefaultLabel2: "Unshare user from all organizations and start fresh with selective sharing."
                 },
-                shareUserWithFutureChildOrgs: "Share user and roles with future child organizations",
+                shareUserWithFutureChildOrgs: "Share user with the selected roles accross future child organizations",
                 sharingSettingsLabel: "Role assignment settings for",
                 showShareAllWarningModal: {
                     assertionHint: "Please confirm your action.",
