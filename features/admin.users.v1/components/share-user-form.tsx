@@ -178,7 +178,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
     } = useGetUserShare(
         user?.id,
         !isEmpty(user?.id) && isOrganizationManagementEnabled,
-        false,
+        true,
         null,
         "sharingMode",
         10
