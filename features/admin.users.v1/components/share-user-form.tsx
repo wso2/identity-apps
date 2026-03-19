@@ -149,6 +149,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
     const { t } = useTranslation();
 
     const [ shareType, setShareType ] = useState<ShareType>(ShareType.UNSHARE);
+    const [ savedShareType, setSavedShareType ] = useState<ShareType>(ShareType.UNSHARE);
     const [ roleShareTypeSelected, setRoleShareTypeSelected ] = useState<RoleShareType>(RoleShareType.SHARE_SELECTED);
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const [ showConfirmationModal, setShowConfirmationModal ] = useState<boolean>(false);
@@ -256,6 +257,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         // If there is no user share data, it means the user is not shared with any organization.
         if (isEmpty(userShareData)) {
             setShareType(ShareType.UNSHARE);
+            setSavedShareType(ShareType.UNSHARE);
 
             return;
         }
@@ -264,6 +266,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         // it means the user is not shared with any organization.
         if (isEmpty(userShareData.organizations) && !userShareData.sharingMode) {
             setShareType(ShareType.UNSHARE);
+            setSavedShareType(ShareType.UNSHARE);
 
             return;
         }
@@ -271,6 +274,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         // If there is no sharing mode, it selective organization sharing is done.
         if (!userShareData.sharingMode) {
             setShareType(ShareType.SHARE_SELECTED);
+            setSavedShareType(ShareType.SHARE_SELECTED);
 
             // Populate selected organizations and their role assignments for display
             if (userShareData.organizations && Array.isArray(userShareData.organizations)) {
@@ -314,6 +318,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         // If the user is shared with all existing and future organizations, set the share type to SHARE_ALL.
         if (orgSharingPolicy === UserSharingPolicy.ALL_EXISTING_AND_FUTURE_ORGS) {
             setShareType(ShareType.SHARE_ALL);
+            setSavedShareType(ShareType.SHARE_ALL);
 
             const roleSharingMode: string = userShareData?.sharingMode?.roleAssignment?.mode;
 
@@ -1372,9 +1377,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                 const selectedShareType: ShareType = event.target.value as ShareType;
 
                                 if (shareType === ShareType.SHARE_ALL &&
-                                    selectedShareType === ShareType.SHARE_SELECTED) {
-                                    // If the user is switching from SHARE_ALL to SHARE_SELECTED,
-                                    // we need to prompt the user to select the switching approach
+                                    selectedShareType === ShareType.SHARE_SELECTED &&
+                                    savedShareType === ShareType.SHARE_ALL) {
+                                    // If the user is switching from SHARE_ALL to SHARE_SELECTED
+                                    // and was actually saved as SHARE_ALL on the server,
+                                    // prompt the user to select the switching approach
                                     setShowShareTypeSwitchModal(true);
 
                                     return;
