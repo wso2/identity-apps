@@ -17,6 +17,7 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { OIDCDataInterface } from "@wso2is/admin.applications.v1/models/application-inbound";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
@@ -220,10 +221,10 @@ export const updateAgentApplicationConfiguration = async (
             url: `${store.getState().config.endpoints.applications}/${applicationId}/inbound-protocols/oidc`
         };
 
-        const existingOidcConfigResponse: any = await httpClient(getRequestConfig);
-        const existingOidcConfig: any = existingOidcConfigResponse.data;
+        const existingOidcConfigResponse = await httpClient(getRequestConfig);
+        const existingOidcConfig: OIDCDataInterface = existingOidcConfigResponse.data as OIDCDataInterface;
 
-        const updatedOidcConfig: any = {
+        const updatedOidcConfig: OIDCDataInterface = {
             ...existingOidcConfig
         };
 

@@ -31,15 +31,21 @@ import {
     FormRenderProps,
     TextFieldAdapter
 } from "@wso2is/form/src";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
+import FormHelperText from "@oxygen-ui/react/FormHelperText";
+import FormLabel from "@oxygen-ui/react/FormLabel";
+import Radio from "@oxygen-ui/react/Radio";
+import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import { Button, CopyInputField, Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { Field, FieldRenderProps } from "react-final-form";
+import { FieldRenderProps } from "react-final-form";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, Form, Grid, Icon, Message, Radio } from "semantic-ui-react";
+import { Divider, Grid, Icon, Message } from "semantic-ui-react";
 import { addAgent, updateAgentApplicationConfiguration } from "../../api/agents";
 import { AgentScimSchema, AgentType } from "../../models/agents";
+import "./add-agent-wizard.scss";
 
 interface AddAgentWizardPropsInterface extends IdentifiableComponentInterface {
     isOpen: boolean;
@@ -81,6 +87,13 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
     const [ isShowingSuccessScreen, setIsShowingSuccessScreen ] = useState<boolean>(false);
     const [ submittedValues, setSubmittedValues ] = useState<FormValuesInterface | null>(null);
 
+    /**
+     * Handles the form submission for creating a new agent.
+     * Creates the agent via SCIM API, and if it's a user-serving agent,
+     * updates the OAuth configuration and fetches the client ID.
+     *
+     * @param values - The form values containing agent details.
+     */
     const handleFormSubmit = async (values: FormValuesInterface): Promise<void> => {
         if (!values?.name) {
             return;
@@ -89,7 +102,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
         setIsSubmitting(true);
         setSubmittedValues(values);
 
-        // Step 1: Create SCIM payload with minimal data (only send isUserServingAgent flag)
+        // Step 1: Create SCIM payload with minimal data (only send isUserServingAgent flag).
         const addAgentPayload: AgentScimSchema = {
             "urn:scim:wso2:agent:schema": {
                 Description: values?.description,
@@ -100,7 +113,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
         };
 
         try {
-            // Step 2: Create the agent via SCIM
+            // Step 2: Create the agent via SCIM.
             const response: AgentScimSchema = await addAgent(addAgentPayload);
 
             const result: AgentCreationResultInterface = {
@@ -110,13 +123,13 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                 oauthClientId: undefined
             };
 
-            // Step 3: If this is a user-serving agent, update application OAuth configuration
+            // Step 3: If this is a user-serving agent, update application OAuth configuration.
             if (values?.isUserServingAgent && response?.id) {
                 try {
-                    // Extract the application ID from response (agentId == applicationId)
+                    // Extract the application ID from response (agentId == applicationId).
                     const applicationId: string = response.id;
 
-                    // Update application OAuth configuration via Application REST API
+                    // Update application OAuth configuration via Application REST API.
                     await updateAgentApplicationConfiguration(applicationId, {
                         agentType: values?.agentType,
                         callbackUrl: values?.callbackUrl,
@@ -124,14 +137,14 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                         notificationChannels: values?.notificationChannels
                     });
 
-                    // Step 4: Fetch the OAuth Client ID
+                    // Step 4: Fetch the OAuth Client ID.
                     const oidcConfig: { clientId?: string } = await getInboundProtocolConfig(applicationId, "oidc");
 
                     if (oidcConfig?.clientId) {
                         result.oauthClientId = oidcConfig.clientId;
                     }
                 } catch (error) {
-                    // If Application API update fails, show warning but continue
+                    // If Application API update fails, show warning but continue.
                     dispatch(
                         addAlert({
                             description: t("agents:wizard.alerts.configUpdateFailed.description"),
@@ -142,7 +155,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                 }
             }
 
-            // Step 5: Show success alert
+            // Step 5: Show success alert.
             dispatch(
                 addAlert({
                     description: t("agents:wizard.alerts.created.description"),
@@ -151,12 +164,12 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                 })
             );
 
-            // Step 6: Show success screen with all data ready
+            // Step 6: Show success screen with all data ready.
             setCreationResult(result);
             setIsShowingSuccessScreen(true);
             setIsSubmitting(false);
         } catch (_err: unknown) {
-            // On error, stay on form with the user's values
+            // On error, stay on form with the user's values.
             setIsShowingSuccessScreen(false);
             setCreationResult(null);
             setSubmittedValues(null);
@@ -171,6 +184,10 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
         }
     };
 
+    /**
+     * Handles the wizard close action.
+     * Resets the wizard state and calls the parent onClose callback with the creation result.
+     */
     const handleClose = (): void => {
         setIsShowingSuccessScreen(false);
         setCreationResult(null);
@@ -178,6 +195,11 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
         onClose(creationResult);
     };
 
+    /**
+     * Renders the agent creation form with all input fields.
+     *
+     * @returns The form component.
+     */
     const renderForm = (): ReactElement => {
         return (
             <FinalForm
@@ -229,7 +251,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                             data-componentid={ `${componentId}-description` }
                                         />
 
-                                        <Divider hidden style={ { margin: "1.5rem 0" } } />
+                                        <Divider hidden />
 
                                         <FinalFormField
                                             name="isUserServingAgent"
@@ -244,9 +266,9 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
 
                                         { isUserServingAgent && (
                                             <>
-                                                <Divider hidden style={ { margin: "1.5rem 0" } } />
+                                                <Divider hidden />
 
-                                                <Field
+                                                <FinalFormField
                                                     name="agentType"
                                                     validate={ (value: string) => {
                                                         if (isUserServingAgent && !value) {
@@ -258,141 +280,122 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                         return undefined;
                                                     } }
                                                 >
-                                                    { ({ input, meta }: FieldRenderProps<string>) => (
-                                                        <div style={ { marginBottom: "1rem" } }>
-                                                            <label className="MuiFormLabel-root">
-                                                                { t("agents:wizard.fields.agentType.label") }
-                                                                { " " }
-                                                                <span style={ { color: "#f44336" } }>*</span>
-                                                            </label>
+                                                    { ({ input, meta }: FieldRenderProps<string>) => {
+                                                        const isError: boolean = (meta.error || meta.submitError)
+                                                            && meta.touched;
 
-                                                            <Form.Field>
-                                                                <Radio
-                                                                    label={
-                                                                        t(
-                                                                            "agents:wizard.fields" +
-                                                                            ".agentType.options.interactive.label"
-                                                                        )
-                                                                    }
-                                                                    name="agentType"
-                                                                    value={ AgentType.INTERACTIVE }
-                                                                    checked={ input.value === AgentType.INTERACTIVE }
-                                                                    onChange={
-                                                                        () => input.onChange(AgentType.INTERACTIVE)
-                                                                    }
-                                                                    disabled={ isSubmitting }
-                                                                    data-componentid={
-                                                                        `${componentId}-agent-type-interactive`
-                                                                    }
-                                                                />
-                                                            </Form.Field>
-
-                                                            { isInteractive && (
-                                                                <div
-                                                                    style={ {
-                                                                        marginBottom: "1rem",
-                                                                        marginLeft: "2rem",
-                                                                        marginTop: "1rem"
-                                                                    } }
+                                                        return (
+                                                            <>
+                                                                <FormLabel
+                                                                    required={ true }
+                                                                    error={ isError }
+                                                                    id={ `${input.name}-radio-buttons-group-label` }
                                                                 >
-                                                                    <FinalFormField
-                                                                        name="callbackUrl"
-                                                                        label={
-                                                                            t(
-                                                                                "agents:wizard.fields" +
-                                                                                ".callbackUrl.label"
-                                                                            )
-                                                                        }
-                                                                        required={ true }
-                                                                        placeholder={
-                                                                            t(
-                                                                                "agents:wizard.fields" +
-                                                                                ".callbackUrl.placeholder"
-                                                                            )
-                                                                        }
-                                                                        autoComplete="new-password"
-                                                                        component={ TextFieldAdapter }
-                                                                        disabled={ isSubmitting }
-                                                                        validate={ (value: string) => {
-                                                                            if (!value) {
-                                                                                return t(
-                                                                                    "agents:wizard.fields" +
-                                                                                    ".callbackUrl.validations.required"
-                                                                                );
-                                                                            }
-                                                                            if (URLUtils.isURLValid(value)) {
-                                                                                if (
-                                                                                    URLUtils.isHttpUrl(
-                                                                                        value,
-                                                                                        false
-                                                                                    ) ||
-                                                                                    URLUtils.isHttpsUrl(
-                                                                                        value,
-                                                                                        false
-                                                                                    )
-                                                                                ) {
-                                                                                    return undefined;
-                                                                                }
-                                                                            }
-
-                                                                            return t(
-                                                                                "applications:forms.inboundOIDC" +
-                                                                                ".fields.callBackUrls" +
-                                                                                ".validations.invalid"
-                                                                            );
-                                                                        } }
-                                                                        helperText={
-                                                                            t(
-                                                                                "agents:wizard.fields" +
-                                                                                ".callbackUrl.helperText"
-                                                                            )
-                                                                        }
+                                                                    { t("agents:wizard.fields.agentType.label") }
+                                                                </FormLabel>
+                                                                <RadioGroup
+                                                                    aria-labelledby={
+                                                                        `${input.name}-radio-buttons-group-label`
+                                                                    }
+                                                                    { ...input }
+                                                                >
+                                                                    <FormControlLabel
+                                                                        value={ AgentType.INTERACTIVE }
+                                                                        label={ t(
+                                                                            "agents:wizard.fields.agentType" +
+                                                                            ".options.interactive.label"
+                                                                        ) }
+                                                                        control={ <Radio /> }
                                                                         data-componentid={
-                                                                            `${componentId}-callback-url`
+                                                                            `${componentId}-agent-type-interactive`
                                                                         }
                                                                     />
-                                                                </div>
-                                                            ) }
 
-                                                            <Form.Field>
-                                                                <Radio
-                                                                    label={
-                                                                        t(
-                                                                            "agents:wizard.fields" +
-                                                                            ".agentType.options.background.label"
+                                                                    { isInteractive && (
+                                                                        <div className="nested-field-container">
+                                                        <FinalFormField
+                                                            name="callbackUrl"
+                                                            label={
+                                                                t(
+                                                                    "agents:wizard.fields" +
+                                                                    ".callbackUrl.label"
+                                                                )
+                                                            }
+                                                            required={ true }
+                                                            placeholder={
+                                                                t(
+                                                                    "agents:wizard.fields" +
+                                                                    ".callbackUrl.placeholder"
+                                                                )
+                                                            }
+                                                            autoComplete="new-password"
+                                                            component={ TextFieldAdapter }
+                                                            disabled={ isSubmitting }
+                                                            validate={ (value: string) => {
+                                                                if (!value) {
+                                                                    return t(
+                                                                        "agents:wizard.fields" +
+                                                                        ".callbackUrl.validations.required"
+                                                                    );
+                                                                }
+                                                                if (URLUtils.isURLValid(value)) {
+                                                                    if (
+                                                                        URLUtils.isHttpUrl(
+                                                                            value,
+                                                                            false
+                                                                        ) ||
+                                                                        URLUtils.isHttpsUrl(
+                                                                            value,
+                                                                            false
                                                                         )
+                                                                    ) {
+                                                                        return undefined;
                                                                     }
-                                                                    name="agentType"
-                                                                    value={ AgentType.BACKGROUND }
-                                                                    checked={
-                                                                        input.value === AgentType.BACKGROUND
-                                                                    }
-                                                                    onChange={
-                                                                        () => input.onChange(AgentType.BACKGROUND)
-                                                                    }
-                                                                    disabled={ isSubmitting }
-                                                                    data-componentid={
-                                                                        `${componentId}-agent-type-background`
-                                                                    }
-                                                                />
-                                                            </Form.Field>
+                                                                }
 
-                                                            { meta.touched && meta.error && (
-                                                                <div
-                                                                    style={ {
-                                                                        color: "#f44336",
-                                                                        fontSize: "0.75rem",
-                                                                        marginTop: "0.5rem"
-                                                                    } }>
-                                                                    { meta.error }
-                                                                </div>
-                                                            ) }
-                                                        </div>
-                                                    ) }
-                                                </Field>
+                                                                return t(
+                                                                    "applications:forms.inboundOIDC" +
+                                                                    ".fields.callBackUrls" +
+                                                                    ".validations.invalid"
+                                                                );
+                                                            } }
+                                                            helperText={
+                                                                t(
+                                                                    "agents:wizard.fields" +
+                                                                    ".callbackUrl.helperText"
+                                                                )
+                                                            }
+                                                                                data-componentid={
+                                                                                    `${componentId}-callback-url`
+                                                                                }
+                                                                            />
+                                                                        </div>
+                                                                    ) }
+
+                                                                    <FormControlLabel
+                                                                        value={ AgentType.BACKGROUND }
+                                                                        label={ t(
+                                                                            "agents:wizard.fields.agentType" +
+                                                                            ".options.background.label"
+                                                                        ) }
+                                                                        control={ <Radio /> }
+                                                                        data-componentid={
+                                                                            `${componentId}-agent-type-background`
+                                                                        }
+                                                                    />
+                                                                </RadioGroup>
+                                                                { isError && (
+                                                                    <FormHelperText error>
+                                                                        { meta.error || meta.submitError }
+                                                                    </FormHelperText>
+                                                                ) }
+                                                            </>
+                                                        );
+                                                    } }
+                                                </FinalFormField>
 
                                                 { isBackground && (
-                                                    <div style={ { marginLeft: "2rem", marginTop: "1rem" } }>
+                                                    <div className="nested-field-container">
                                                         <FinalFormField
                                                             name="cibaAuthReqExpiryTime"
                                                             label={
@@ -444,7 +447,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                             data-componentid={ `${componentId}-ciba-expiry-time` }
                                                         />
 
-                                                        <Divider hidden style={ { margin: "1rem 0" } } />
+                                                        <Divider hidden />
 
                                                         <FinalFormField
                                                             name="notificationChannels"
@@ -503,7 +506,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                 <ModalWithSidePanel.Actions>
                                     <Grid>
                                         <Grid.Row columns={ 1 }>
-                                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                            <Grid.Column mobile={ 8 }>
                                                 <Button
                                                     className="link-button"
                                                     basic
@@ -513,7 +516,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                     { t("agents:wizard.buttons.cancel") }
                                                 </Button>
                                             </Grid.Column>
-                                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                            <Grid.Column mobile={ 8 }>
                                                 <Button
                                                     primary={ true }
                                                     disabled={ isSubmitting }
@@ -541,7 +544,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                             <ModalWithSidePanel.SidePanel>
                                 <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
                                     <div className="help-panel-header-text">
-                                        Help
+                                        { t("applications:wizards.minimalAppCreationWizard.help.heading") }
                                     </div>
                                 </ModalWithSidePanel.Header>
                                 <ModalWithSidePanel.Content>
@@ -606,6 +609,12 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
         );
     };
 
+    /**
+     * Renders the success screen after agent creation.
+     * Displays the agent ID, secret, and OAuth client ID (if applicable).
+     *
+     * @returns The success screen component.
+     */
     const renderSuccessScreen = (): ReactElement => {
         return (
             <>
@@ -626,7 +635,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                         <Divider hidden />
 
                         <Message warning>
-                            <div style={ { alignItems: "center", display: "flex", gap: "0.5rem" } }>
+                            <div className="warning-message-content">
                                 <Icon name="warning sign" />
                                 <span>
                                     { t("agents:wizard.success.warning") }
@@ -660,7 +669,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                     <ModalWithSidePanel.Actions>
                         <Grid>
                             <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Grid.Column mobile={ 16 }>
                                     <Button
                                         primary={ true }
                                         floated="right"
@@ -677,7 +686,7 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                 <ModalWithSidePanel.SidePanel>
                     <ModalWithSidePanel.Header className="wizard-header help-panel-header muted">
                         <div className="help-panel-header-text">
-                            Help
+                            { t("applications:wizards.minimalAppCreationWizard.help.heading") }
                         </div>
                     </ModalWithSidePanel.Header>
                     <ModalWithSidePanel.Content>
