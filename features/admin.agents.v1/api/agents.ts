@@ -221,8 +221,9 @@ export const updateAgentApplicationConfiguration = async (
             url: `${store.getState().config.endpoints.applications}/${applicationId}/inbound-protocols/oidc`
         };
 
-        const existingOidcConfigResponse = await httpClient(getRequestConfig);
-        const existingOidcConfig: OIDCDataInterface = existingOidcConfigResponse.data as OIDCDataInterface;
+        const existingOidcConfigResponse: AxiosResponse<OIDCDataInterface> =
+            (await httpClient(getRequestConfig)) as AxiosResponse<OIDCDataInterface>;
+        const existingOidcConfig: OIDCDataInterface = existingOidcConfigResponse.data;
 
         const updatedOidcConfig: OIDCDataInterface = {
             ...existingOidcConfig

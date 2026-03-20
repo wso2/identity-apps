@@ -17,6 +17,11 @@
  */
 
 import { AuthenticatedUserInfo } from "@asgardeo/auth-react";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
+import FormHelperText from "@oxygen-ui/react/FormHelperText";
+import FormLabel from "@oxygen-ui/react/FormLabel";
+import Radio from "@oxygen-ui/react/Radio";
+import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import { getInboundProtocolConfig } from "@wso2is/admin.applications.v1/api/application";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -31,11 +36,6 @@ import {
     FormRenderProps,
     TextFieldAdapter
 } from "@wso2is/form/src";
-import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
-import FormHelperText from "@oxygen-ui/react/FormHelperText";
-import FormLabel from "@oxygen-ui/react/FormLabel";
-import Radio from "@oxygen-ui/react/Radio";
-import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import { Button, CopyInputField, Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { FieldRenderProps } from "react-final-form";
@@ -313,58 +313,57 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
 
                                                                     { isInteractive && (
                                                                         <div className="nested-field-container">
-                                                        <FinalFormField
-                                                            name="callbackUrl"
-                                                            label={
-                                                                t(
-                                                                    "agents:wizard.fields" +
+                                                                            <FinalFormField
+                                                                                name="callbackUrl"
+                                                                                label={
+                                                                                    t(
+                                                                                        "agents:wizard.fields" +
                                                                     ".callbackUrl.label"
-                                                                )
-                                                            }
-                                                            required={ true }
-                                                            placeholder={
-                                                                t(
-                                                                    "agents:wizard.fields" +
+                                                                                    )
+                                                                                }
+                                                                                required={ true }
+                                                                                placeholder={
+                                                                                    t(
+                                                                                        "agents:wizard.fields" +
                                                                     ".callbackUrl.placeholder"
-                                                                )
-                                                            }
-                                                            autoComplete="new-password"
-                                                            component={ TextFieldAdapter }
-                                                            disabled={ isSubmitting }
-                                                            validate={ (value: string) => {
-                                                                if (!value) {
-                                                                    return t(
-                                                                        "agents:wizard.fields" +
+                                                                                    )
+                                                                                }
+                                                                                autoComplete="new-password"
+                                                                                component={ TextFieldAdapter }
+                                                                                disabled={ isSubmitting }
+                                                                                validate={ (value: string) => {
+                                                                                    if (!value) {
+                                                                                        return t(
+                                                                                            "agents:wizard.fields" +
                                                                         ".callbackUrl.validations.required"
-                                                                    );
-                                                                }
-                                                                if (URLUtils.isURLValid(value)) {
-                                                                    if (
-                                                                        URLUtils.isHttpUrl(
-                                                                            value,
-                                                                            false
-                                                                        ) ||
+                                                                                        );
+                                                                                    }
+                                                                                    if (URLUtils.isURLValid(value)) {
+                                                                                        if (
+                                                                                            URLUtils.isHttpUrl(
+                                                                                                value,
+                                                                                                false
+                                                                                            ) ||
                                                                         URLUtils.isHttpsUrl(
                                                                             value,
                                                                             false
                                                                         )
-                                                                    ) {
-                                                                        return undefined;
-                                                                    }
-                                                                }
+                                                                                        ) {
+                                                                                            return undefined;
+                                                                                        }
+                                                                                    }
 
-                                                                return t(
-                                                                    "applications:forms.inboundOIDC" +
-                                                                    ".fields.callBackUrls" +
-                                                                    ".validations.invalid"
-                                                                );
-                                                            } }
-                                                            helperText={
-                                                                t(
-                                                                    "agents:wizard.fields" +
+                                                                                    return t(
+                                                                                        "applications:forms.inboundOIDC.fields" +
+                                                                                        ".callBackUrls.validations.invalid"
+                                                                                    );
+                                                                                } }
+                                                                                helperText={
+                                                                                    t(
+                                                                                        "agents:wizard.fields" +
                                                                     ".callbackUrl.helperText"
-                                                                )
-                                                            }
+                                                                                    )
+                                                                                }
                                                                                 data-componentid={
                                                                                     `${componentId}-callback-url`
                                                                                 }
