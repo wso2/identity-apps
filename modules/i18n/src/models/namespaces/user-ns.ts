@@ -91,6 +91,8 @@ export interface userNS {
         sections: {
             sharedAccess: {
                 doNotShareUser: string;
+                assignedRolesLabel: string;
+                sharingSettingsLabel: string;
                 notifications: {
                     fetchOrganizations: {
                         genericError: {
@@ -158,6 +160,9 @@ export interface userNS {
                     description: string;
                     header: string;
                     message: string;
+                };
+                nonResidentUserPlaceholder: {
+                    description: string;
                 };
                 subTitle: string;
                 title: string;
