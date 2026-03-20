@@ -164,7 +164,7 @@ export const approvalWorkflows: approvalWorkflowsNS = {
                 sms: "SMS"
             },
             initiator: {
-                hint: "Send a notification to the user who initiated the request upon completion.",
+                hint: "Send notifications to the user who initiated the request upon completion.",
                 label: "Notify Initiator on Completion"
             }
         },
