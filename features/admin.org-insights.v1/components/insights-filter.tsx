@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import Autocomplete from "@oxygen-ui/react/Autocomplete";
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
 import { HorizontalBarsFilterIcon } from "@oxygen-ui/react-icons";
-import { store } from "@wso2is/admin.core.v1/store";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
 import {
     OrganizationInterface,
@@ -29,7 +29,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DropdownChild, Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
 import { LinkButton, Popup, PrimaryButton } from "@wso2is/react-components";
-import debounce from "lodash-es/debounce";
+import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import React, {
     ReactElement,
     ReactNode,
@@ -40,6 +40,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { getFilterAttributeListByActivityType } from "../config/org-insights";
 import { OrgInsightsConstants } from "../constants/org-insights";
@@ -50,7 +51,7 @@ import {
     OnboardingMethodFilterValue
 } from "../models/insights";
 import { getAllDisabledFeaturesForInsights } from "../utils/insights";
-import "./insights-org-autocomplete.scss";
+import "./insights-filter.scss";
 
 const dropdownInputRequiredAttributesForFilterValue: string[] = [ "onboardingMethod", "authenticator" ];
 
@@ -247,6 +248,8 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
 
     const { t } = useTranslation();
 
+    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
+
     const [ isFilteringModalOpen, setIsFilteringModalOpen ] = useState<boolean>(false);
     const [ isFiltersReset, setIsFiltersReset ] = useState<boolean>(false);
     const [ selectedFilterAttribute, setSelectedFilterAttribute ] = useState<string>(
@@ -267,18 +270,18 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
         isLoading: isOrganizationsLoading
     } = useGetOrganizations<OrganizationListInterface>(
         selectedActivityType === ActivityType.M2M
-            && selectedFilterAttribute === "tenantDomain", 
-        orgFilter,                                        
-        SUB_ORG_FETCH_LIMIT,                               
-        null,                                              
-        null,                                             
-        true,                                              
-        false                                             
+            && selectedFilterAttribute === "tenantDomain",
+        orgFilter,
+        SUB_ORG_FETCH_LIMIT,
+        null,
+        null,
+        true,
+        false
     );
 
     const organizationOptions: OrgOptionInterface[] = useMemo(
         (): OrgOptionInterface[] => {
-            const mainOrgDomain: string = store.getState().auth.tenantDomain;
+            const mainOrgDomain: string = tenantDomain;
             const options: OrgOptionInterface[] = [
                 { label: mainOrgDomain, value: mainOrgDomain }
             ];
@@ -293,7 +296,7 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
         }, [ organizationsData ]
     );
 
-    const debouncedOrgSearch: (value: string) => void = useCallback(
+    const debouncedOrgSearch: DebouncedFunc<(value: string) => void> = useCallback(
         debounce((searchTerm: string): void => {
             setOrgSearchQuery(searchTerm);
         }, 300),
@@ -305,6 +308,7 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
     }, [ selectedActivityType ]);
 
     useEffect(() => {
+        debouncedOrgSearch.cancel();
         setSelectedFilterValue("");
         setOrgSearchQuery("");
     }, [ selectedFilterAttribute ]);
@@ -324,7 +328,7 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
 
     useEffect(() => {
         if (selectedFilterAttribute === "tenantDomain" && !selectedFilterValue) {
-            setSelectedFilterValue(store.getState().auth.tenantDomain);
+            setSelectedFilterValue(tenantDomain);
         }
     }, [ selectedFilterAttribute ]);
 
@@ -332,7 +336,7 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
         const filterAttribute: string = values.get("filterAttribute").toString();
         const filterCondition: string = values.get("filterCondition").toString();
         const filterValue: string = filterAttribute === "tenantDomain"
-            ? selectedFilterValue
+            ? (selectedFilterValue || tenantDomain)
             : values.get("filterValue").toString();
 
         setSelectedFilterAttribute(filterAttribute);
@@ -358,7 +362,7 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
                 displayQueryParts[2] = "\"" + matchingOrg.label + "\"";
             }
         } else {
-            const matchingValue: DropdownChild = filterValueDropdownItems[filterAttribute]?.find(
+            const matchingValue: DropdownChild | undefined = filterValueDropdownItems[filterAttribute]?.find(
                 (dropdownItem: DropdownChild) =>
                     dropdownItem.value === filterValue
             );
@@ -379,6 +383,7 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
     };
 
     const handleResetFilter = (): void => {
+        debouncedOrgSearch.cancel();
         setSelectedFilterValue("");
         setOrgSearchQuery("");
         onFilteringQuerySubmitted("", "");
@@ -446,7 +451,7 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
                                                 }
                                                 type="dropdown"
                                                 value={ selectedFilterCondition }
-                                                data-testid={ `${ componentId }-condition-dropdown` }
+                                                data-componentid={ `${ componentId }-condition-dropdown` }
                                             />
                                             <div className="field insights-org-autocomplete">
                                                 <Autocomplete
@@ -483,11 +488,12 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
                                                             _event: SyntheticEvent,
                                                             inputValue: string
                                                         ): void => {
+                                                            setSelectedFilterValue("");
                                                             debouncedOrgSearch(inputValue);
                                                         }
                                                     }
                                                     loading={ isOrganizationsLoading }
-                                                    renderInput={ (params) => (
+                                                    renderInput={ (params: AutocompleteRenderInputParams) => (
                                                         <TextField
                                                             { ...params }
                                                             label={
@@ -510,33 +516,10 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
                                         </Form.Group>
                                     ) }
                                     { selectedFilterAttribute !== "tenantDomain" && (
-                                    <Form.Group widths="equal">
-                                        <Field
-                                            children={
-                                                filterConditions.map(
-                                                    (attribute: DropdownChild, index: number) => {
-                                                        return {
-                                                            key: index,
-                                                            text: attribute.text,
-                                                            value: attribute.value
-                                                        };
-                                                    })
-                                            }
-                                            label={
-                                                t("console:common.advancedSearch.form.inputs.filterCondition.label")
-                                            }
-                                            name={ "filterCondition" }
-                                            requiredErrorMessage={ t("console:common.advancedSearch.form.inputs" +
-                                        ".filterCondition.validations.empty") }
-                                            type="dropdown"
-                                            value={ selectedFilterCondition }
-                                            data-testid={ `${ componentId }-condition-dropdown` }
-                                        />
-                                        { dropdownInputRequiredAttributesForFilterValue.includes(
-                                            selectedFilterAttribute) ? (
+                                        <Form.Group widths="equal">
                                             <Field
                                                 children={
-                                                    filterValueDropdownItems[selectedFilterAttribute]?.map(
+                                                    filterConditions.map(
                                                         (attribute: DropdownChild, index: number) => {
                                                             return {
                                                                 key: index,
@@ -546,48 +529,77 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
                                                         })
                                                 }
                                                 label={
-                                                    t("console:common.advancedSearch.form.inputs.filterValue." +
-                                                         "label")
+                                                    t("console:common.advancedSearch.form.inputs" +
+                                                        ".filterCondition.label")
                                                 }
-                                                name={ "filterValue" }
-                                                required={ true }
+                                                name={ "filterCondition" }
                                                 requiredErrorMessage={
                                                     t("console:common.advancedSearch.form.inputs" +
                                                         ".filterCondition.validations.empty")
                                                 }
-                                                value={ selectedFilterValue }
                                                 type="dropdown"
-                                                data-testid={ `${ componentId }-value-dropdown` }
+                                                value={ selectedFilterCondition }
+                                                data-testid={ `${ componentId }-condition-dropdown` }
                                             />
-                                        ) : (
-                                            <Field
-                                                label={
-                                                    t("console:common.advancedSearch.form.inputs.filterValue." +
-                                                        "label")
-                                                }
-                                                name={ "filterValue" }
-                                                required
-                                                requiredErrorMessage={
-                                                    t("console:common.advancedSearch.form." +
-                                                        "inputs.filterValue.validations.empty")
-                                                }
-                                                type="text"
-                                                validation={ (value: string, _validation: Validation) => {
-                                                    if (
-                                                        value.length >
-                                                        OrgInsightsConstants.FILTER_VALUE_INPUT_MAX_LENGTH
-                                                    ) {
-                                                        _validation.isValid = false;
-                                                        _validation.errorMessages.push(t("common:maxValidation", {
-                                                            max: OrgInsightsConstants.FILTER_VALUE_INPUT_MAX_LENGTH
-                                                        }));
+                                            { dropdownInputRequiredAttributesForFilterValue.includes(
+                                                selectedFilterAttribute) ? (
+                                                <Field
+                                                    children={
+                                                        filterValueDropdownItems[selectedFilterAttribute]?.map(
+                                                            (attribute: DropdownChild, index: number) => {
+                                                                return {
+                                                                    key: index,
+                                                                    text: attribute.text,
+                                                                    value: attribute.value
+                                                                };
+                                                            })
                                                     }
-                                                } }
-                                                value={ selectedFilterValue }
-                                                data-componentid={ `${ componentId }-value-input` }
-                                            />
-                                        ) }
-                                    </Form.Group>
+                                                    label={
+                                                        t("console:common.advancedSearch.form.inputs" +
+                                                            ".filterValue.label")
+                                                    }
+                                                    name={ "filterValue" }
+                                                    required={ true }
+                                                    requiredErrorMessage={
+                                                        t("console:common.advancedSearch.form.inputs" +
+                                                            ".filterCondition.validations.empty")
+                                                    }
+                                                    value={ selectedFilterValue }
+                                                    type="dropdown"
+                                                    data-testid={ `${ componentId }-value-dropdown` }
+                                                />
+                                            ) : (
+                                                <Field
+                                                    label={
+                                                        t("console:common.advancedSearch.form.inputs" +
+                                                            ".filterValue.label")
+                                                    }
+                                                    name={ "filterValue" }
+                                                    required
+                                                    requiredErrorMessage={
+                                                        t("console:common.advancedSearch.form." +
+                                                            "inputs.filterValue.validations.empty")
+                                                    }
+                                                    type="text"
+                                                    validation={ (value: string, _validation: Validation) => {
+                                                        if (
+                                                            value.length >
+                                                            OrgInsightsConstants.FILTER_VALUE_INPUT_MAX_LENGTH
+                                                        ) {
+                                                            _validation.isValid = false;
+                                                            _validation.errorMessages.push(
+                                                                t("common:maxValidation", {
+                                                                    max: OrgInsightsConstants
+                                                                        .FILTER_VALUE_INPUT_MAX_LENGTH
+                                                                })
+                                                            );
+                                                        }
+                                                    } }
+                                                    value={ selectedFilterValue }
+                                                    data-componentid={ `${ componentId }-value-input` }
+                                                />
+                                            ) }
+                                        </Form.Group>
                                     ) }
                                     <Divider hidden/>
                                     <Form.Group inline>
