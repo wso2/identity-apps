@@ -93,10 +93,6 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
 
     /**
      * Trigger form submission when triggerSubmit prop changes.
-     * The dirty guard has intentionally been removed here — FinalForm's `dirty` flag can
-     * give false negatives when a field is cleared to an empty string that matches an
-     * initial value (e.g. "" === undefined treated as equal). The actual "nothing changed"
-     * guard lives inside handleSubmit where we compare built properties against initial values.
      * Uses isFirstTrigger to skip the effect on initial mount.
      */
     useEffect(() => {
@@ -249,18 +245,6 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
         metadata?.properties?.forEach((property: CommonPluggableComponentMetaPropertyInterface) => {
             processProperty(property, values, properties, currentAuthMode, formInitialValues);
         });
-
-        // Skip the PUT request if none of the built properties differ from their form initial values.
-        // This prevents unnecessary API calls when the user clicks Update without making changes.
-        const hasChanges: boolean = properties.some((prop: { key: string; value: string }) => {
-            const initialValue: string = String(formInitialValues[prop.key] ?? "");
-
-            return initialValue !== prop.value;
-        });
-
-        if (!hasChanges) {
-            return;
-        }
 
         onSubmit({
             ...initialValues,
