@@ -18,7 +18,9 @@
 
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { Message } from "@wso2is/react-components";
@@ -163,7 +165,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                         .replace(":templateTypeId", templateTypeId));
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 dispatch(addAlert<AlertInterface>({
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,

@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import IconButton from "@oxygen-ui/react/IconButton";
+import { ChevronRightIcon } from "@oxygen-ui/react-icons";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -24,7 +26,9 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    EmphasizedSegment,
     EmptyPlaceholder,
+    GenericIcon,
     LinkButton,
     ListLayout,
     PageLayout,
@@ -36,13 +40,19 @@ import React, {
     SyntheticEvent,
     useEffect,
     useMemo,
-    useRef,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import {
+    DropdownItemProps,
+    DropdownProps,
+    Icon,
+    List,
+    PaginationProps
+} from "semantic-ui-react";
+import { ReactComponent as CdsClaimsIcon } from "../assets/images/icons/cds-claims-icon.svg";
 import { ProfileSchemaListing } from "../components/profile-attributes";
 import { useFullProfileSchema } from "../hooks/use-profile-schema";
 import { useProfileSchemaByScope } from "../hooks/use-profile-schema-by-scope";
@@ -62,7 +72,6 @@ const SCOPE_ORDER: Record<string, number> = {
 };
 
 const SEARCHABLE_SCOPES: SchemaListingScope[] = [
-    "identity_attributes",
     "traits",
     "application_data"
 ];
@@ -256,11 +265,10 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
     const [ listItemLimit, setListItemLimit ] = useState<number>(
         UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT
     );
-    const [ sortBy, setSortBy ] = useState<DropdownItemProps>(SORT_BY[0]);
+    const [ sortBy, setSortBy ] = useState<DropdownItemProps>(SORT_BY[1]);
     const [ sortAscending, setSortAscending ] = useState<boolean>(true);
     const [ activeFilter, setActiveFilter ] = useState<string>("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
-    const isInitialRender: React.MutableRefObject<boolean> = useRef<boolean>(true);
 
     const {
         data: fullSchema,
@@ -285,14 +293,6 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
     const shouldFetchFilter: boolean = Boolean(parsedFilter);
 
     const scopeFilterResults: Array<ReturnType<typeof useProfileSchemaByScope>> = [
-        useProfileSchemaByScope<ProfileSchemaAttribute[]>(
-            "identity_attributes",
-            parsedFilter
-                ? `${parsedFilter.attribute} ${parsedFilter.operator} ` +
-                  `${withScopePrefix("identity_attributes", parsedFilter.value)}`
-                : undefined,
-            shouldFetchFilter
-        ),
         useProfileSchemaByScope<ProfileSchemaAttribute[]>(
             "traits",
             parsedFilter
@@ -321,7 +321,7 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
             (r: ReturnType<typeof useProfileSchemaByScope>): boolean => Boolean(r.error)
         );
 
-    // Assemble filter rows from all three scope results once loading is done.
+    // Assemble filter rows from traits and application_data scope results once loading is done.
     const assembledFilterRows: ProfileSchemaListingRow[] | null = useMemo(
         (): ProfileSchemaListingRow[] | null => {
             if (!shouldFetchFilter) return null;
@@ -358,29 +358,33 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
         );
     }, [ hasFilterError ]);
 
-    const unsortedRows: ProfileSchemaListingRow[] =
-        assembledFilterRows ?? baseRows;
-
-    const activeRows: ProfileSchemaListingRow[] = useMemo(
-        (): ProfileSchemaListingRow[] => {
-            if (isInitialRender.current) return unsortedRows;
-
-            return sortRows(unsortedRows, sortBy.value as string, sortAscending);
-        },
-        [ unsortedRows, sortBy, sortAscending ]
+    // Identity attributes always come from the full base schema, never from search results.
+    const identityRows: ProfileSchemaListingRow[] = useMemo(
+        (): ProfileSchemaListingRow[] =>
+            baseRows.filter((r: ProfileSchemaListingRow): boolean => r.scope === "identity_attributes"),
+        [ baseRows ]
     );
 
-    // Skip sort on first render to avoid reordering before user interaction.
-    useEffect((): void => {
-        if (isInitialRender.current) {
-            isInitialRender.current = false;
-        }
-    }, []);
+    // Strip identity_attributes from the raw (unsorted) dataset before sorting/paginating.
+    const unsortedMainRows: ProfileSchemaListingRow[] = useMemo(
+        (): ProfileSchemaListingRow[] =>
+            (assembledFilterRows ?? baseRows).filter(
+                (r: ProfileSchemaListingRow): boolean => r.scope !== "identity_attributes"
+            ),
+        [ assembledFilterRows, baseRows ]
+    );
+
+    // Apply sort to the main list only (traits + application_data).
+    const mainRows: ProfileSchemaListingRow[] = useMemo(
+        (): ProfileSchemaListingRow[] =>
+            sortRows(unsortedMainRows, sortBy.value as string, sortAscending),
+        [ unsortedMainRows, sortBy, sortAscending ]
+    );
 
     const paginatedRows: ProfileSchemaListingRow[] = useMemo(
         (): ProfileSchemaListingRow[] =>
-            activeRows.slice(offset, offset + listItemLimit),
-        [ activeRows, offset, listItemLimit ]
+            mainRows.slice(offset, offset + listItemLimit),
+        [ mainRows, offset, listItemLimit ]
     );
 
     const isLoading: boolean = isLoadingSchema || isFilterLoading;
@@ -420,13 +424,17 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
             (opt: DropdownItemProps): boolean => opt.value === data.value
         );
 
-        if (selected) setSortBy(selected);
+        if (selected) {
+            setSortBy(selected);
+            setOffset(0);
+        }
     };
 
     const handleSortOrderChange: (isAscending: boolean) => void = (
         isAscending: boolean
     ): void => {
         setSortAscending(isAscending);
+        setOffset(0);
     };
 
     const handleSchemaFilter = (query: string): void => {
@@ -470,15 +478,61 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
                 )
             }
         >
+            { !isLoading && identityRows.length > 0 && (
+                <EmphasizedSegment
+                    className="mt-0 mb-5"
+                    data-componentid={ `${componentId}-identity-attributes-card` }
+                >
+                    <List>
+                        <List.Item verticalAlign="middle">
+                            <List.Content floated="right" verticalAlign="middle">
+                                <IconButton
+                                    data-componentid={
+                                        `${componentId}-identity-attributes-manage-button`
+                                    }
+                                    onClick={ (): void =>
+                                        history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"))
+                                    }
+                                >
+                                    <ChevronRightIcon />
+                                </IconButton>
+                            </List.Content>
+                            <GenericIcon
+                                icon={ CdsClaimsIcon }
+                                floated="left"
+                                size="mini"
+                                spaced="right"
+                                verticalAlign="middle"
+                                inline
+                                transparent
+                            />
+                            <List.Content verticalAlign="middle">
+                                <List.Header
+                                    data-componentid={ `${componentId}-identity-attributes-title` }
+                                >
+                                    { t("customerDataService:profileAttributes.list" +
+                                        ".identityAttributes.title") }
+                                </List.Header>
+                                <List.Description
+                                    data-componentid={ `${componentId}-identity-attributes-description` }
+                                >
+                                    { t("customerDataService:profileAttributes.list" +
+                                        ".identityAttributes.description") }
+                                </List.Description>
+                            </List.Content>
+                        </List.Item>
+                    </List>
+                </EmphasizedSegment>
+            ) }
             <ListLayout
                 currentListSize={ paginatedRows.length }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
-                showPagination={ activeRows.length > 0 }
+                showPagination={ mainRows.length > 0 }
                 showTopActionPanel={ true }
-                totalPages={ Math.ceil(activeRows.length / listItemLimit) }
-                totalListSize={ activeRows.length }
+                totalPages={ Math.ceil(mainRows.length / listItemLimit) }
+                totalListSize={ mainRows.length }
                 sortOptions={ SORT_BY }
                 sortStrategy={ sortBy }
                 onSortStrategyChange={ handleSortStrategyChange }
@@ -501,7 +555,7 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
                 }
                 data-componentid={ `${componentId}-list-layout` }
             >
-                { !isLoading && activeRows.length === 0 && !activeFilter && (
+                { !isLoading && mainRows.length === 0 && !activeFilter && (
                     <EmptyPlaceholder
                         action={
                             (
@@ -520,7 +574,7 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
                         data-componentid={ `${componentId}-empty-placeholder` }
                     />
                 ) }
-                { !isLoading && activeRows.length === 0 && activeFilter && (
+                { !isLoading && mainRows.length === 0 && activeFilter && (
                     <EmptyPlaceholder
                         action={
                             (
@@ -538,7 +592,7 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
                         data-componentid={ `${componentId}-empty-search-placeholder` }
                     />
                 ) }
-                { activeRows.length > 0 && (
+                { mainRows.length > 0 && (
                     <ProfileSchemaListing
                         rows={ paginatedRows }
                         isLoading={ isLoading }
@@ -546,6 +600,7 @@ const ProfileSchemaPage: FunctionComponent<ProfileSchemaPagePropsInterface> = (
                         data-componentid={ `${componentId}-listing` }
                     />
                 ) }
+
             </ListLayout>
         </PageLayout>
     );

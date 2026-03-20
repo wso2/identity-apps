@@ -33,7 +33,9 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
-    RoleGroupsInterface } from "@wso2is/core/models";
+    RoleGroupsInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, Heading } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -279,7 +281,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                 );
                 onRoleUpdate(tabIndex);
             })
-            .catch( (error: AxiosError) => {
+            .catch( (error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data.detail) {
                     dispatch(
                         addAlert({

@@ -21,7 +21,9 @@ import Card from "@oxygen-ui/react/Card";
 import Grid from "@oxygen-ui/react/Grid";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import Stack from "@oxygen-ui/react/Stack";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CheckboxFieldAdapter, FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/form/src";
 import {
@@ -115,7 +117,7 @@ export const RemoteLoggingConfigForm = ({
                     })
                 );
             })
-            .catch((_err: AxiosError) => {
+            .catch((_err: AxiosError<HttpErrorResponseDataInterface>) => {
                 dispatch(
                     addAlert<AlertInterface>({
                         description: t(
@@ -151,7 +153,7 @@ export const RemoteLoggingConfigForm = ({
                     })
                 );
             })
-            .catch((_err: AxiosError) => {
+            .catch((_err: AxiosError<HttpErrorResponseDataInterface>) => {
                 dispatch(
                     addAlert<AlertInterface>({
                         description: t(

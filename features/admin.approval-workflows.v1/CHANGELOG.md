@@ -1,5 +1,84 @@
 # @wso2is/admin.approval-workflows.v1
 
+## 1.2.17
+
+### Patch Changes
+
+- [#9753](https://github.com/wso2/identity-apps/pull/9753) [`9660d11690e260e852c5a879ef60658b8d54b5ee`](https://github.com/wso2/identity-apps/commit/9660d11690e260e852c5a879ef60658b8d54b5ee) Thanks [@nishagii](https://github.com/nishagii)! - Add feature disabling option to approval workflow rules
+
+- Updated dependencies []:
+  - @wso2is/admin.users.v1@2.38.2
+  - @wso2is/admin.core.v1@2.55.2
+  - @wso2is/admin.roles.v2@2.27.349
+  - @wso2is/admin.rules.v1@0.7.18
+
+## 1.2.16
+
+### Patch Changes
+
+- [#9829](https://github.com/wso2/identity-apps/pull/9829) [`d756fc7fef819d8180418b6bebfcded76f6045d7`](https://github.com/wso2/identity-apps/commit/d756fc7fef819d8180418b6bebfcded76f6045d7) Thanks [@nilasini](https://github.com/nilasini)! - Improve notification configuration
+
+- Updated dependencies [[`410f5901427656fae17dd31db77efe138f111b9f`](https://github.com/wso2/identity-apps/commit/410f5901427656fae17dd31db77efe138f111b9f), [`8a1e91278bc6b376e8e82bddbf94f98ceb76f6fc`](https://github.com/wso2/identity-apps/commit/8a1e91278bc6b376e8e82bddbf94f98ceb76f6fc)]:
+  - @wso2is/admin.core.v1@2.55.1
+  - @wso2is/i18n@2.37.3
+  - @wso2is/admin.users.v1@2.38.1
+  - @wso2is/admin.roles.v2@2.27.348
+  - @wso2is/admin.rules.v1@0.7.17
+
+## 1.2.15
+
+### Patch Changes
+
+- Updated dependencies [[`889ba146a770d03968eed6bd8ecdf9b2f41df5e4`](https://github.com/wso2/identity-apps/commit/889ba146a770d03968eed6bd8ecdf9b2f41df5e4)]:
+  - @wso2is/admin.users.v1@2.38.0
+  - @wso2is/admin.core.v1@2.55.0
+  - @wso2is/admin.roles.v2@2.27.347
+  - @wso2is/admin.rules.v1@0.7.16
+
+## 1.2.14
+
+### Patch Changes
+
+- Updated dependencies [[`05441eece425cdba6eec9b03cebdfd30ba2a404e`](https://github.com/wso2/identity-apps/commit/05441eece425cdba6eec9b03cebdfd30ba2a404e)]:
+  - @wso2is/admin.users.v1@2.37.23
+  - @wso2is/admin.core.v1@2.54.32
+  - @wso2is/admin.roles.v2@2.27.346
+  - @wso2is/admin.rules.v1@0.7.15
+
+## 1.2.13
+
+### Patch Changes
+
+- Updated dependencies [[`2cad6ed902817e50e522628726732802503f5893`](https://github.com/wso2/identity-apps/commit/2cad6ed902817e50e522628726732802503f5893)]:
+  - @wso2is/admin.core.v1@2.54.31
+  - @wso2is/core@2.12.9
+  - @wso2is/admin.users.v1@2.37.22
+  - @wso2is/admin.roles.v2@2.27.345
+  - @wso2is/admin.rules.v1@0.7.14
+
+## 1.2.12
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.30
+  - @wso2is/admin.roles.v2@2.27.344
+  - @wso2is/admin.rules.v1@0.7.13
+  - @wso2is/admin.users.v1@2.37.21
+
+## 1.2.11
+
+### Patch Changes
+
+- [#9824](https://github.com/wso2/identity-apps/pull/9824) [`b38ab3b15ff9ab1ee0ec74a4d6dfeed0613c8014`](https://github.com/wso2/identity-apps/commit/b38ab3b15ff9ab1ee0ec74a4d6dfeed0613c8014) Thanks [@Malith-19](https://github.com/Malith-19)! - Update the workflow rule delete confirmation modal header.
+
+- Updated dependencies [[`b38ab3b15ff9ab1ee0ec74a4d6dfeed0613c8014`](https://github.com/wso2/identity-apps/commit/b38ab3b15ff9ab1ee0ec74a4d6dfeed0613c8014)]:
+  - @wso2is/i18n@2.37.2
+  - @wso2is/admin.users.v1@2.37.20
+  - @wso2is/admin.core.v1@2.54.29
+  - @wso2is/admin.roles.v2@2.27.343
+  - @wso2is/admin.rules.v1@0.7.12
+
 ## 1.2.10
 
 ### Patch Changes

@@ -28,7 +28,9 @@ import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import { RuleExecuteCollectionWithoutIdInterface, RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { RulesProvider } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import {
     FinalForm,
     FinalFormField,
@@ -116,7 +118,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
     const { t } = useTranslation();
 
     const handleSuccess: (operation: string) => void = useHandleSuccess();
-    const handleError: (error: AxiosError, operation: string) => void = useHandleError();
+    const handleError: (error: AxiosError<HttpErrorResponseDataInterface>, operation: string) => void = useHandleError();
 
     const {
         mutate: mutateActions
@@ -271,7 +273,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                     handleSuccess(ActionsConstants.CREATE);
                     mutateActions();
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     handleError(error, ActionsConstants.CREATE);
                 })
                 .finally(() => {
@@ -302,7 +304,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                     setIsAuthenticationUpdateFormState(false);
                     mutateAction();
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     handleError(error, ActionsConstants.UPDATE);
                 })
                 .finally(() => {

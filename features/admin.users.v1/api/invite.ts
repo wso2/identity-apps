@@ -21,7 +21,9 @@ import { Config } from "@wso2is/admin.core.v1/configs/app";
 import useRequest, { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { UserManagementConstants } from "../constants";
 import { UserInviteInterface } from "../models/user";
@@ -42,7 +44,7 @@ export const getInvitedUserList = (): Promise<any> => {
 
     return httpClient(requestConfig).then((response: AxiosResponse) => {
         return Promise.resolve(response);
-    }).catch((error: AxiosError) => {
+    }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
         return Promise.reject(error);
     });
 };
@@ -89,7 +91,7 @@ export const sendInvite = (userInvite: UserInviteInterface): Promise<any> => {
 
     return httpClient(requestConfig).then((response: AxiosResponse) => {
         return Promise.resolve(response);
-    }).catch((error: AxiosError) => {
+    }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
         return Promise.reject(error);
     });
 };
@@ -106,7 +108,7 @@ export const deleteInvite = (traceID: string): Promise<any> => {
 
     return httpClient(requestConfig).then((response: AxiosResponse) => {
         return Promise.resolve(response);
-    }).catch((error: AxiosError) => {
+    }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
         return Promise.reject(error);
     });
 };
@@ -125,7 +127,7 @@ export const updateInvite = (inviteID: string, inviteeData: Record<string, unkno
 
     return httpClient(requestConfig).then((response: AxiosResponse) => {
         return Promise.resolve(response);
-    }).catch((error: AxiosError) => {
+    }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
         return Promise.reject(error);
     });
 };
@@ -142,7 +144,7 @@ export const deleteGuestUser = (traceID: string): Promise<any> => {
 
     return httpClient(requestConfig).then((response: AxiosResponse) => {
         return Promise.resolve(response);
-    }).catch((error: AxiosError) => {
+    }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
         return Promise.reject(error);
     });
 };
@@ -159,7 +161,7 @@ export const resendInvite = (traceID: string): Promise<any> => {
 
     return httpClient(requestConfig).then((response: AxiosResponse) => {
         return Promise.resolve(response);
-    }).catch((error: AxiosError) => {
+    }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
         return Promise.reject(error);
     });
 };
@@ -198,7 +200,7 @@ export const generateInviteLink = (username: string, domain: string): Promise<an
             }
 
             return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 error.response?.data?.message ?? UserManagementConstants.RESOURCE_NOT_FOUND_ERROR_MESSAGE,
                 error.stack,

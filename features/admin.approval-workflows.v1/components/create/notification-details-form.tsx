@@ -19,7 +19,6 @@
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormGroup from "@oxygen-ui/react/FormGroup";
-import Grid from "@oxygen-ui/react/Grid";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Heading, Hint } from "@wso2is/react-components";
 import React, {
@@ -138,11 +137,6 @@ const NotificationDetailsForm: ForwardRefExoticComponent<RefAttributes<Notificat
                     className="notification-details-form"
                     data-componentid={ componentId }
                 >
-                    <Grid className="operations-autocomplete-header">
-                        <Heading as="h6">
-                            { t("approvalWorkflows:pageLayout.create.stepper.step3.title") }
-                        </Heading>
-                    </Grid>
                     <div className="notification-channels">
                         { /* Initiator Notifications */ }
                         <div className="notification-config">

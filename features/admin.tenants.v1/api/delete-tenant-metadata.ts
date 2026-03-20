@@ -20,7 +20,9 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1/store";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import TenantConstants from "../constants/tenant-constants";
 
@@ -64,7 +66,7 @@ const deleteTenantMetadata = (id: string): Promise<AxiosResponse> => {
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 TenantConstants.TENANT_METADATA_DELETE_ERROR,
                 error.stack,

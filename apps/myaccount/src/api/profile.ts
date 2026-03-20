@@ -23,7 +23,8 @@ import {
     ClaimDataType,
     PatchOperationRequest,
     ProfileInfoInterface,
-    ProfileSchemaInterface
+    ProfileSchemaInterface,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import axios, { AxiosError } from "axios";
@@ -95,7 +96,7 @@ export const getUserReadOnlyStatus = (): Promise<ReadOnlyUserStatus> => {
 
             return Promise.resolve(response?.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -166,7 +167,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
 
             return Promise.resolve(profileResponse);
         })
-        .catch((error: HttpError) => {
+        .catch((error: HttpError<HttpErrorResponseDataInterface>) => {
             // Check if the API responds with a `500` error, if it does,
             // navigate the user to the login error page.
             if (

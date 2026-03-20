@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { FinalForm, FinalFormField, FormRenderProps, FormValue, TextFieldAdapter } from "@wso2is/form";
 import { Button, GenericIcon, Hint, PrimaryButton, SecondaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -153,7 +155,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
                 dispatch(getProfileInformation());
                 dispatch(setActiveForm(null));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error?.response?.data?.detail) {
                     onAlertFired({
                         description: t(

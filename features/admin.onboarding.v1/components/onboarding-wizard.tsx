@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,7 +20,15 @@ import Button from "@oxygen-ui/react/Button";
 import useGetApplicationTemplate
     from "@wso2is/admin.application-templates.v1/api/use-get-application-template";
 import { ApplicationTemplateInterface } from "@wso2is/admin.application-templates.v1/models/templates";
+import {
+    ApplicationManagementConstants
+} from "@wso2is/admin.applications.v1/constants/application-management";
 import { ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
+import {
+    TierLimitReachErrorModal
+} from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetExtensionTemplates from "@wso2is/admin.template-core.v1/api/use-get-extension-templates";
 import { ExtensionTemplateListInterface, ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
@@ -71,8 +79,9 @@ import { generateRandomNames } from "../utils/random-name-generator";
 export interface OnboardingWizardPropsInterface extends IdentifiableComponentInterface {
     initialData?: OnboardingDataInterface;
     initialStep?: OnboardingStep;
-    onComplete: (data: OnboardingDataInterface) => void;
-    onSkip: () => void;
+    isReturningUser?: boolean;
+    onComplete: (data: OnboardingDataInterface) => Promise<void>;
+    onSkip: () => Promise<void>;
 }
 
 /**
@@ -231,6 +240,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
     const {
         initialData,
         initialStep,
+        isReturningUser = false,
         onComplete,
         onSkip,
         ["data-componentid"]: componentId = OnboardingComponentIds.WIZARD
@@ -263,6 +273,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         ...initialData
     });
     const [ isCreatingApp, setIsCreatingApp ] = useState<boolean>(false);
+    const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
     // Validate restored step on mount - ensure required data exists for the URL-restored step
     useEffect(() => {
@@ -381,9 +392,23 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
 
             setCurrentStep(OnboardingStep.SUCCESS);
         } catch (error: unknown) {
-            const errorMessage: string = (error as any)?.response?.data?.description ||
-                                        (error as any)?.message ||
-                                        "Failed to create application. Please try again.";
+            const axiosError: Record<string, unknown> = error as Record<string, unknown>;
+            const response: Record<string, unknown> =
+                (axiosError?.response as Record<string, unknown>) ?? {};
+            const responseData: Record<string, unknown> =
+                (response?.data as Record<string, unknown>) ?? {};
+
+            if (response?.status === 403 &&
+                responseData?.code ===
+                ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
+                setOpenLimitReachedModal(true);
+
+                return;
+            }
+
+            const errorMessage: string = (responseData?.description as string) ||
+                (axiosError?.message as string) ||
+                "Failed to create application. Please try again.";
 
             dispatch(addAlert({
                 description: errorMessage,
@@ -402,7 +427,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         const nextStep: OnboardingStep = getNextStep(currentStep, onboardingData);
 
         if (currentStep === OnboardingStep.SUCCESS) {
-            onComplete(onboardingData);
+            await onComplete(onboardingData);
         } else if (
             // Create app when clicking Finish from Design Login
             currentStep === OnboardingStep.DESIGN_LOGIN ||
@@ -425,8 +450,8 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         setCurrentStep(previousStep);
     }, [ currentStep, onboardingData ]);
 
-    const handleSkip: () => void = useCallback((): void => {
-        onSkip();
+    const handleSkip: () => Promise<void> = useCallback(async (): Promise<void> => {
+        await onSkip();
     }, [ onSkip ]);
 
     const isFirstStep: boolean = visibleStep === OnboardingStep.WELCOME;
@@ -441,111 +466,132 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
             : { opacity: 0, transform: `translateX(${transitionOffset === "-60px" ? "60px" : "-60px"})` };
 
     return (
-        <ContentCard data-componentid={ componentId }>
-            <StepTransitionWrapper sx={ transitionStyles }>
-                { visibleStep === OnboardingStep.WELCOME && (
-                    <WelcomeStep
-                        data-componentid={ `${componentId}-welcome` }
-                        greeting={ greeting }
-                        onChoiceSelect={ updateChoice }
-                        selectedChoice={ onboardingData.choice }
-                    />
-                ) }
-
-                { visibleStep === OnboardingStep.NAME_APPLICATION && (
-                    <NameApplicationStep
-                        applicationName={ onboardingData.applicationName || "" }
-                        data-componentid={ `${componentId}-name-application` }
-                        onApplicationNameChange={ updateApplicationName }
-                        randomNames={ randomNames }
-                    />
-                ) }
-
-                { visibleStep === OnboardingStep.SELECT_APPLICATION_TEMPLATE && (
-                    <SelectApplicationTemplateStep
-                        data-componentid={ `${componentId}-select-application-template` }
-                        onTemplateSelect={ updateTemplateSelection }
-                        selectedFramework={ onboardingData.framework }
-                        selectedTemplateId={ onboardingData.templateId }
-                    />
-                ) }
-
-                { visibleStep === OnboardingStep.CONFIGURE_REDIRECT_URL && (
-                    <ConfigureRedirectUrlStep
-                        data-componentid={ `${componentId}-configure-redirect-url` }
-                        framework={ onboardingData.framework }
-                        onRedirectUrlsChange={ updateRedirectUrls }
-                        redirectUrls={ onboardingData.redirectUrls || [] }
-                        templateId={ onboardingData.templateId }
-                    />
-                ) }
-
-                { visibleStep === OnboardingStep.SIGN_IN_OPTIONS && (
-                    <SignInOptionsStep
-                        brandingConfig={ onboardingData.brandingConfig }
-                        data-componentid={ `${componentId}-sign-in-options` }
-                        onSignInOptionsChange={ updateSignInOptions }
-                        signInOptions={ onboardingData.signInOptions }
-                    />
-                ) }
-
-                { visibleStep === OnboardingStep.DESIGN_LOGIN && (
-                    <DesignLoginStep
-                        brandingConfig={ onboardingData.brandingConfig }
-                        data-componentid={ `${componentId}-design-login` }
-                        onBrandingConfigChange={ updateBrandingConfig }
-                        signInOptions={ onboardingData.signInOptions }
-                    />
-                ) }
-
-                { visibleStep === OnboardingStep.SUCCESS && (
-                    <SuccessStep
-                        brandingConfig={ onboardingData.brandingConfig }
-                        createdApplication={ onboardingData.createdApplication }
-                        data-componentid={ `${componentId}-success` }
-                        framework={ onboardingData.framework }
-                        isM2M={ isM2M }
-                        isTourFlow={ isTourFlow }
-                        redirectUrls={ onboardingData.redirectUrls }
-                        signInOptions={ onboardingData.signInOptions }
-                        templateId={ onboardingData.templateId }
-                    />
-                ) }
-            </StepTransitionWrapper>
-
-            <Footer>
-                { !isSuccessStep && (
-                    <Button
-                        data-componentid={ `${componentId}-skip-button` }
-                        onClick={ handleSkip }
-                        variant="text"
-                    >
-                        Skip and go to Console
-                    </Button>
-                ) }
-                <ActionButtons sx={ isSuccessStep ? { ml: "auto" } : undefined }>
-                    { !isFirstStep && !isSuccessStep && (
-                        <SecondaryButton
-                            data-componentid={ `${componentId}-back-button` }
-                            disabled={ isAnimating }
-                            onClick={ handleBack }
-                            variant="outlined"
-                        >
-                            Back
-                        </SecondaryButton>
+        <>
+            <ContentCard data-componentid={ componentId }>
+                <StepTransitionWrapper sx={ transitionStyles }>
+                    { visibleStep === OnboardingStep.WELCOME && (
+                        <WelcomeStep
+                            data-componentid={ `${componentId}-welcome` }
+                            greeting={ greeting }
+                            isReturningUser={ isReturningUser }
+                            onChoiceSelect={ updateChoice }
+                            selectedChoice={ onboardingData.choice }
+                        />
                     ) }
-                    <PrimaryButton
-                        color="primary"
-                        data-componentid={ `${componentId}-next-button` }
-                        disabled={ isNextDisabled || isCreatingApp || isAnimating }
-                        onClick={ handleNext }
-                        variant="contained"
-                    >
-                        { isCreatingApp ? "Creating..." : nextButtonText }
-                    </PrimaryButton>
-                </ActionButtons>
-            </Footer>
-        </ContentCard>
+
+                    { visibleStep === OnboardingStep.NAME_APPLICATION && (
+                        <NameApplicationStep
+                            applicationName={ onboardingData.applicationName || "" }
+                            data-componentid={ `${componentId}-name-application` }
+                            onApplicationNameChange={ updateApplicationName }
+                            randomNames={ randomNames }
+                        />
+                    ) }
+
+                    { visibleStep === OnboardingStep.SELECT_APPLICATION_TEMPLATE && (
+                        <SelectApplicationTemplateStep
+                            data-componentid={ `${componentId}-select-application-template` }
+                            onTemplateSelect={ updateTemplateSelection }
+                            selectedFramework={ onboardingData.framework }
+                            selectedTemplateId={ onboardingData.templateId }
+                        />
+                    ) }
+
+                    { visibleStep === OnboardingStep.CONFIGURE_REDIRECT_URL && (
+                        <ConfigureRedirectUrlStep
+                            data-componentid={ `${componentId}-configure-redirect-url` }
+                            framework={ onboardingData.framework }
+                            onRedirectUrlsChange={ updateRedirectUrls }
+                            redirectUrls={ onboardingData.redirectUrls || [] }
+                            templateId={ onboardingData.templateId }
+                        />
+                    ) }
+
+                    { visibleStep === OnboardingStep.SIGN_IN_OPTIONS && (
+                        <SignInOptionsStep
+                            brandingConfig={ onboardingData.brandingConfig }
+                            data-componentid={ `${componentId}-sign-in-options` }
+                            onSignInOptionsChange={ updateSignInOptions }
+                            signInOptions={ onboardingData.signInOptions }
+                        />
+                    ) }
+
+                    { visibleStep === OnboardingStep.DESIGN_LOGIN && (
+                        <DesignLoginStep
+                            brandingConfig={ onboardingData.brandingConfig }
+                            data-componentid={ `${componentId}-design-login` }
+                            onBrandingConfigChange={ updateBrandingConfig }
+                            signInOptions={ onboardingData.signInOptions }
+                        />
+                    ) }
+
+                    { visibleStep === OnboardingStep.SUCCESS && (
+                        <SuccessStep
+                            brandingConfig={ onboardingData.brandingConfig }
+                            createdApplication={ onboardingData.createdApplication }
+                            data-componentid={ `${componentId}-success` }
+                            framework={ onboardingData.framework }
+                            isM2M={ isM2M }
+                            isTourFlow={ isTourFlow }
+                            redirectUrls={ onboardingData.redirectUrls }
+                            signInOptions={ onboardingData.signInOptions }
+                            templateId={ onboardingData.templateId }
+                        />
+                    ) }
+                </StepTransitionWrapper>
+
+                <Footer>
+                    { !isSuccessStep && (
+                        <Button
+                            data-componentid={ `${componentId}-skip-button` }
+                            onClick={ handleSkip }
+                            variant="text"
+                        >
+                            { isReturningUser
+                                ? "Back to Console"
+                                : "Skip and go to Console" }
+                        </Button>
+                    ) }
+                    <ActionButtons sx={ isSuccessStep ? { ml: "auto" } : undefined }>
+                        { !isFirstStep && !isSuccessStep && (
+                            <SecondaryButton
+                                data-componentid={ `${componentId}-back-button` }
+                                disabled={ isAnimating }
+                                onClick={ handleBack }
+                                variant="outlined"
+                            >
+                                Back
+                            </SecondaryButton>
+                        ) }
+                        <PrimaryButton
+                            color="primary"
+                            data-componentid={ `${componentId}-next-button` }
+                            disabled={ isNextDisabled || isCreatingApp || isAnimating }
+                            onClick={ handleNext }
+                            variant="contained"
+                        >
+                            { isCreatingApp ? "Creating..." : nextButtonText }
+                        </PrimaryButton>
+                    </ActionButtons>
+                </Footer>
+            </ContentCard>
+            { openLimitReachedModal && (
+                <TierLimitReachErrorModal
+                    actionLabel="View Plans"
+                    description={
+                        "You have reached the maximum number of applications " +
+                        "allowed for your subscription tier."
+                    }
+                    handleModalClose={ (): void => {
+                        setOpenLimitReachedModal(false);
+                        history.push(AppConstants.getAppHomePath());
+                    } }
+                    header="Application Limit Reached"
+                    message="Upgrade your plan to create more applications."
+                    openModal={ openLimitReachedModal }
+                />
+            ) }
+        </>
     );
 };
 

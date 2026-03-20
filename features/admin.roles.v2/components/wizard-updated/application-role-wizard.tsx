@@ -26,7 +26,9 @@ import { AuthorizedAPIListItemInterface } from "@wso2is/admin.applications.v1/mo
 import { ApplicationInterface, ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
 import { Code, ContentLoader, EmphasizedSegment, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
@@ -270,7 +272,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                     }));
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (!error.response || error.response.status === 401) {
                     dispatch(addAlert({
                         description: t("roles:notifications.createRole.error" +

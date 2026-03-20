@@ -23,7 +23,9 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, ReferableComponentInterface, TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CommonUtils } from "@wso2is/core/utils";
 import { EmphasizedSegment, PageLayout, useUIElementSizes } from "@wso2is/react-components";
@@ -106,7 +108,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                 setConnectors(response?.connectors as GovernanceConnectorWithRef[]);
                 !selectedConnector && setSelectorConnector(response.connectors[ 0 ] as GovernanceConnectorWithRef);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     dispatch(
                         addAlert({

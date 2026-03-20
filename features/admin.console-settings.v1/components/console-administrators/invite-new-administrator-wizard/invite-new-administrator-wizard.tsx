@@ -27,7 +27,9 @@ import {
     ParentOrgUserInviteResultStatus
 } from "@wso2is/admin.users.v1/components/guests/models/invite";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
-import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, RolesInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AutocompleteFieldAdapter, FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
 import { Heading, Hint, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
@@ -141,7 +143,7 @@ const InviteNewAdministratorWizard: FunctionComponent<InviteNewAdministratorWiza
 
                 onClose(null, null);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 /**
                  * Axios throws a generic `Network Error` for 401 status.
                  * As a temporary solution, a check to see if a response

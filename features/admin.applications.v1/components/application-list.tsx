@@ -39,7 +39,8 @@ import {
     IdentifiableComponentInterface,
     LoadableComponentInterface,
     SBACInterface,
-    TestableComponentInterface
+    TestableComponentInterface,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -281,7 +282,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 setShowDeleteConfirmationModal(false);
                 onApplicationDelete();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(setAlert({
                         description: error.response.data.description,

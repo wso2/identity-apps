@@ -313,6 +313,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isLeftNavigationCategorized: undefined,
             isMarketingConsentBannerEnabled: undefined,
             isPasswordInputValidationEnabled: undefined,
+            isPasswordResetEnforcementScopeEnabled: undefined,
             isRequestPathAuthenticationEnabled: undefined,
             isSAASDeployment: undefined,
             isSignatureValidationCertificateAliasEnabled: undefined,

@@ -78,8 +78,7 @@ module.exports = {
         } ]
     },
     transformIgnorePatterns: [
-        "/node_modules/?(?!@wso2is)",
-        "/node_modules/(?!@oxygen-ui/react/)"
+        "/node_modules/(?!(\\.pnpm|@wso2is|@oxygen-ui\\/react|axios)\\/)"
     ],
     verbose: true
 };

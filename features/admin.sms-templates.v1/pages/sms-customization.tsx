@@ -28,7 +28,8 @@ import {
     AlertInterface,
     AlertLevels,
     FeatureAccessConfigInterface,
-    IdentifiableComponentInterface
+    IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DangerZone, DangerZoneGroup, DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
@@ -73,7 +74,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
     const [ selectedSmsTemplateId, setSelectedSmsTemplateId ] = useState<string>();
     const [ selectedSmsTemplateDescription, setSelectedSmsTemplateDescription ] = useState<string>();
     const [ selectedSmsTemplate, setSelectedSmsTemplate ] = useState<SMSTemplate>();
-    const [ error, setError ] = useState<AxiosError>();
+    const [ error, setError ] = useState<AxiosError<HttpErrorResponseDataInterface>>();
 
     const smsTemplates: Record<string, string>[] = useSelector(
         (state: AppState) => state.config.deployment.extensions.smsTemplates

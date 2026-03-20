@@ -21,7 +21,9 @@ import Skeleton from "@oxygen-ui/react/Skeleton";
 import Typography from "@oxygen-ui/react/Typography";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { RadioChild } from "@wso2is/forms";
@@ -110,7 +112,7 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInte
     /**
      * Handles the error scenario of the update.
      */
-    const handleUpdateError = (error: AxiosError) => {
+    const handleUpdateError = (error: AxiosError<HttpErrorResponseDataInterface>) => {
         if (error?.response?.data?.detail) {
             dispatch(
                 addAlert({
@@ -156,7 +158,7 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInte
             .then(() => {
                 handleUpdateSuccess();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 handleUpdateError(error);
             })
             .finally(() => {

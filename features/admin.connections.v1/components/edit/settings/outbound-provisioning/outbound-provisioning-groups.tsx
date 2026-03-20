@@ -32,7 +32,9 @@ import {
 } from "@wso2is/admin.roles.v2/components/edit-role/edit-role-common/auto-complete-render-option";
 import { RenderChip } from "@wso2is/admin.roles.v2/components/edit-role/edit-role-common/render-chip";
 import { RoleManagementUtils } from "@wso2is/admin.roles.v2/utils/role-management-utils";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, Hint } from "@wso2is/react-components/src/components/typography";
 import { AxiosError } from "axios";
@@ -195,7 +197,7 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
                 message: t("authenticationProvider:notifications.updateIDPRoleMappings.success.message")
             }));
             onUpdate(idpId);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             handleUpdateIDPRoleMappingsError(error);
         }).finally(() => {
             setIsSubmitting(false);

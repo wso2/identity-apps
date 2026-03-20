@@ -55,6 +55,11 @@ export const ENTITY_TYPES: any = {
 export type EntityType = (typeof ENTITY_TYPES)[keyof typeof ENTITY_TYPES];
 
 /**
+ * Feature flag key for rule-based workflow engagement.
+ */
+export const FEATURE_FLAG_RULE_BASED_WORKFLOW_ENGAGEMENT: string = "approvalWorkflows.rules";
+
+/**
  * Flow type
  */
 export const FLOW_TYPE: string = "approvalWorkflow";

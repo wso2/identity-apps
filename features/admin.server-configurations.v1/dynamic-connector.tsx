@@ -21,7 +21,9 @@ import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface
 } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AxiosError } from "axios";
 import React, {
@@ -131,7 +133,7 @@ export const ExtendedDynamicConnector: FunctionComponent<DynamicConnectorPropsIn
                     })
                 );
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     dispatch(
                         addAlert({

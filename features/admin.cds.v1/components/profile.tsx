@@ -290,8 +290,6 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                                         t("customerDataService:profiles.details.form.updatedDate.label"),
                                         profile.meta?.updated_at ? profile.meta.updated_at.split("T")[0] : null
                                     ) }
-                                    { renderField(t("customerDataService:profiles.details.form.location.label"),
-                                        profile.meta?.location ?? null) }
 
                                     <Divider />
 

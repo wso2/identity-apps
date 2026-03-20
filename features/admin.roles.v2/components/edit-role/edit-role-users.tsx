@@ -36,7 +36,8 @@ import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers
 import {
     AlertLevels,
     IdentifiableComponentInterface,
-    RolesMemberInterface
+    RolesMemberInterface,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
@@ -348,7 +349,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 }
                 onRoleUpdate(tabIndex);
             })
-            .catch( (error: AxiosError) => {
+            .catch( (error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error?.response?.data?.detail) {
                     dispatch(
                         addAlert({
@@ -418,7 +419,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 }
                 onRoleUpdate(tabIndex);
             })
-            .catch( (error: AxiosError) => {
+            .catch( (error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error?.response?.data?.detail) {
                     dispatch(
                         addAlert({

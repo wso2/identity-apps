@@ -30,6 +30,7 @@ import NewCDSFeatureImage from "../assets/illustrations/preview-features/new-cds
 import { AppConstants } from "../constants/app-constants";
 import { history } from "../helpers/history";
 import { AppState } from "../store";
+import { addForceExpandedParent } from "../utils/route-utils";
 
 /** Added or removed as a system application when CDS is toggled. */
 const CDS_CONSOLE_APP: string = "CONSOLE";
@@ -107,7 +108,7 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
                 image: NewCDSFeatureImage,
                 message: {
                     content: t("customerDataService:common.featurePreview.message"),
-                    type: "warning" as const
+                    type: "info" as const
                 },
                 name: t("customerDataService:common.featurePreview.name"),
                 requiredScopes: cdsFeatureConfig?.scopes?.update,
@@ -148,7 +149,7 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
     const handlePageRedirection: (actionId: string) => void = useCallback((actionId: string) => {
         switch (actionId) {
             case "customer-data-service":
-                history.push(AppConstants.getPaths().get("PROFILES"));
+                history.push(AppConstants.getPaths().get("PROFILE_ATTRIBUTES"));
 
                 break;
             default:
@@ -171,6 +172,10 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
                     system_applications: nextApps
                 });
                 mutateCDSConfig();
+
+                if (enable) {
+                    addForceExpandedParent("customerDataService");
+                }
             } catch {
                 dispatch(
                     addAlert({
@@ -205,8 +210,11 @@ export const usePreviewFeatures = (): UsePreviewFeaturesReturnInterface => {
 
     const hasAccessiblePreviewFeatures: boolean = accessibleFeatures.length > 0;
     const canUsePreviewFeatures: boolean =
-        saasFeatureStatus === FeatureStatus.ENABLED &&
-        previewFeaturesFeatureStatus === FeatureStatus.ENABLED &&
+        (
+            saasFeatureStatus === FeatureStatus.ENABLED &&
+            previewFeaturesFeatureStatus === FeatureStatus.ENABLED
+        ) ||
+        cdsFeatureConfig?.enabled === true &&
         hasAccessiblePreviewFeatures;
 
     return {

@@ -21,6 +21,7 @@ import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
 import { hideAJAXTopLoadingBar, showAJAXTopLoadingBar } from "@wso2is/core/store";
 import { AuthenticateUtils } from "@wso2is/core/utils";
 import { AxiosError } from "axios";
+import { HttpErrorResponseDataInterface } from "@wso2is/core/models";
 import { EventPublisher } from "./event-publisher";
 import { AppConstants } from "../constants/app-constants";
 import { history } from "../helpers/history";
@@ -76,7 +77,7 @@ export class HttpUtils {
      *
      * @param error - Http error.
      */
-    public static onHttpRequestError(error: AxiosError | any): void {
+    public static onHttpRequestError(error: AxiosError<HttpErrorResponseDataInterface> | any): void {
         /**
          * Publish an event on the http request error.
         */

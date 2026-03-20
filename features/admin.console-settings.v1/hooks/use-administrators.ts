@@ -26,7 +26,9 @@ import { useGetParentOrgUserInvites }
 import { InvitationsInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
 import { UserAccountTypes } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-management-utils";
-import { MultiValueAttributeInterface, RolesInterface } from "@wso2is/core/models";
+import { MultiValueAttributeInterface, RolesInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
@@ -42,7 +44,7 @@ export interface UseAdministratorsInterface {
     /**
      * Error occurred while fetching admin users list.
      */
-    adminUserListFetchError: AxiosError;
+    adminUserListFetchError: AxiosError<HttpErrorResponseDataInterface>;
     /**
      * Administrators list.
      */

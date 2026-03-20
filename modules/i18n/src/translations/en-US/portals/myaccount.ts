@@ -354,9 +354,8 @@ export const myAccount: MyAccountNS = {
             modals: {
                 confirmationModal: {
                     heading: "Confirmation",
-                    message:
-                        "Changing the password will result in the termination of the current session. You will " +
-                        "have to login with the newly changed password. Do you wish to continue?"
+                    message: "Updating your password might sign you out of all applications. If you are signed out, " +
+                        "please log in again using your new password. Do you wish to continue?"
                 }
             }
         },

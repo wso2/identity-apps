@@ -24,7 +24,9 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -392,7 +394,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                     })
                 );
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error?.response?.data?.detail) {
                     dispatch(
                         addAlert({
@@ -764,6 +766,11 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
 
                         <Divider className="divider-container" />
 
+                        <Grid className="common-section-heading">
+                            <Heading as="h4">
+                                { t("approvalWorkflows:pageLayout.create.stepper.step3.title") }
+                            </Heading>
+                        </Grid>
                         <div className="workflow-notification-settings">
                             <NotificationDetailsForm
                                 ref={ notificationDetailsFormRef }

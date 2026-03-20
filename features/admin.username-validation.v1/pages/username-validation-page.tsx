@@ -30,7 +30,9 @@ import {
     ValidationFormInterface,
     ValidationPropertyInterface
 } from "@wso2is/admin.validation.v1/models";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { ContentLoader,
@@ -328,7 +330,7 @@ const UsernameValidationPage: FunctionComponent<UsernameValidationPageInterface>
                     message: t("validation:notifications.success.message")
                 }));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail

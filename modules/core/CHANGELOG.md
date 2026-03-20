@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.12.9
+
+### Patch Changes
+
+- [#9842](https://github.com/wso2/identity-apps/pull/9842) [`2cad6ed902817e50e522628726732802503f5893`](https://github.com/wso2/identity-apps/commit/2cad6ed902817e50e522628726732802503f5893) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix password reset scope configuration issue
+
 ## 2.12.8
 
 ### Patch Changes

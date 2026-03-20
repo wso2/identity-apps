@@ -19,6 +19,7 @@
 import Button from "@oxygen-ui/react/Button";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
+import { ProfileListItem, useCDSConfig, useCDSProfiles } from "@wso2is/admin.cds.v1";
 import { getEmptyPlaceholderIllustrations, getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -125,6 +126,22 @@ const UserEditPage = (): ReactElement => {
 
     const user: ProfileInfoInterface = useMemo(() =>
         originalUserDetails || emptyProfileInfo(), [ originalUserDetails ]);
+
+    const isCDSFeatureEnabled: boolean = featureConfig?.customerDataService?.enabled ?? false;
+
+    const { data: cdsConfig } = useCDSConfig(isCDSFeatureEnabled);
+
+    const isCDSEnabledForOrg: boolean = isCDSFeatureEnabled && (cdsConfig?.cds_enabled ?? false);
+
+    const { data: cdsProfilesData } = useCDSProfiles(
+        isCDSEnabledForOrg && user?.id
+            ? { filter: `user_id eq ${user.id}`, page_size: 1 }
+            : null,
+        { shouldRetryOnError: false }
+    );
+
+    const linkedCDSProfile: ProfileListItem | undefined =
+        cdsProfilesData?.profiles?.length === 1 ? cdsProfilesData.profiles[0] : undefined;
 
     const isNameAvailable: boolean = user?.name?.familyName === undefined &&
         user?.name?.givenName === undefined;
@@ -517,6 +534,7 @@ const UserEditPage = (): ReactElement => {
                     isLoading={ isUserDetailsFetchRequestLoading || isUserDetailsFetchRequestValidating }
                     isReadOnly={ isReadOnly }
                     isReadOnlyUserStore={ isReadOnlyUserStore }
+                    linkedCDSProfile={ linkedCDSProfile }
                 />
                 {
                     showEditAvatarModal && (

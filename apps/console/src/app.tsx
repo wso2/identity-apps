@@ -456,6 +456,10 @@ export const App = ({
         return <PreLoader/>;
     }
 
+    if (isOnboardingStatusLoading) {
+        return <PreLoader/>;
+    }
+
     return (
         <Router history={ history }>
             <DecoratedApp>

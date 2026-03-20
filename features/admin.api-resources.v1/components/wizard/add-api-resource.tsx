@@ -17,7 +17,9 @@
  */
 
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
@@ -163,7 +165,7 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
                 // Open the created API resource.
                 history.push(APIResourcesConstants.getPaths().get("API_RESOURCE_EDIT").replace(":id", apiResource.id));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 switch (error?.code) {
                     case APIResourcesConstants.UNAUTHORIZED_ACCESS:
                         dispatch(addAlert<AlertInterface>({

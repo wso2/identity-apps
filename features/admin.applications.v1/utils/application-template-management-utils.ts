@@ -18,7 +18,9 @@
 
 import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
 import { store } from "@wso2is/admin.core.v1/store";
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { TemplateCardTagInterface } from "@wso2is/react-components";
@@ -162,7 +164,7 @@ export class ApplicationTemplateManagementUtils {
 
                 return Promise.resolve();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     store.dispatch(addAlert({
                         description: error.response.data.description,

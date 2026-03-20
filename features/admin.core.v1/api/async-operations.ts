@@ -17,7 +17,9 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../store";
 
@@ -61,7 +63,7 @@ export const getAsyncOperationStatus = (
             }
 
             return Promise.resolve(response);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };

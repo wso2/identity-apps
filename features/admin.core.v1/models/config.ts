@@ -310,6 +310,10 @@ export interface FeatureConfigInterface {
      * Customer Data feature.
      */
     customerData?: FeatureAccessConfigInterface;
+    /**
+     * Customer Data Service feature.
+     */
+    customerDataService?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -727,6 +731,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Flag to check whether the password reset enforcer authenticator is enabled.
      */
     isPasswordResetEnforcerEnabled?: boolean;
+    /**
+     * Flag to check whether the password reset enforcement scope configuration is enabled.
+     */
+    isPasswordResetEnforcementScopeEnabled?: boolean;
 }
 
 /**

@@ -30,7 +30,8 @@ import {
     HttpMethods,
     ProfileInfoInterface,
     ProfileSchemaInterface,
-    SchemaResponseInterface
+    SchemaResponseInterface,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { AttributeDataType } from "../constants";
@@ -120,7 +121,7 @@ export const getProfileInfo = (endpoint: string,
 
             return Promise.resolve(profileResponse);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             // Check if the API responds with a `500` error, if it does,
             // navigate the user to the login error page.
             if (error.response
@@ -176,7 +177,7 @@ export const updateProfileInfo = (info: Record<string, unknown>): Promise<Profil
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 ProfileConstants.PROFILE_INFO_UPDATE_REQUEST_ERROR,
                 error.stack,
@@ -277,7 +278,7 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
 
             return Promise.resolve(schemaAttributes as ProfileSchemaInterface[]);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 ProfileConstants.SCHEMA_FETCH_REQUEST_ERROR,
                 error.stack,

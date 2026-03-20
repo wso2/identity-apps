@@ -58,6 +58,101 @@ export interface ConsoleSettingsNS {
             view: string;
         };
     };
+    enterpriseLogin: {
+        banner: {
+            action: string;
+            description: string;
+            title: string;
+        };
+        configured: {
+            connectionLabel: string;
+            description: string;
+            heading: string;
+            mappingsHeading: string;
+            noMappings: string;
+        };
+        confirmations: {
+            removeConfiguration: {
+                assertionHint: string;
+                content: string;
+                header: string;
+                message: string;
+                primaryAction: string;
+                secondaryAction: string;
+            };
+            removeMapping: {
+                content: string;
+                header: string;
+                primaryAction: string;
+                secondaryAction: string;
+            };
+        };
+        form: {
+            addMapping: string;
+            connectionLabel: string;
+            createGroup: string;
+            connectionPlaceholder: string;
+            idpGroupLabel: string;
+            idpGroupPlaceholder: string;
+            mappingDescription: string;
+            roleLabel: string;
+            rolePlaceholder: string;
+            sectionHeading: string;
+            sectionDescription: string;
+        };
+        learnMore: string;
+        notifications: {
+            createGroup: {
+                error: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+            deleteConfiguration: {
+                error: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+            fetchConfiguration: {
+                error: {
+                    description: string;
+                    message: string;
+                };
+            };
+            updateConfiguration: {
+                error: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        actions: {
+            configure: string;
+            remove: string;
+            save: string;
+            update: string;
+        };
+        tabLabel: string;
+        validations: {
+            atLeastOneMapping: string;
+            connectionRequired: string;
+            duplicateMapping: string;
+            incompleteMapping: string;
+        };
+    };
     sharedAccess: {
         description: string;
         selectRolesForOrganization: string;

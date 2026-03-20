@@ -25,7 +25,9 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { EmailManagementConstants } from "../constants/email-management-constants";
 import { EmailTemplate, EmailTemplateType } from "../models/email-templates";
@@ -119,7 +121,7 @@ export const useEmailTemplate = <Data = EmailTemplate, Error = RequestErrorInter
         mutate
     } = useRequest<Data, Error>(shouldFetch ? requestConfig : null,
         {
-            onErrorRetry: (error: AxiosError) => {
+            onErrorRetry: (error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response.status === 404) {
                     return;
                 }
@@ -181,7 +183,7 @@ export const updateEmailTemplate = (
             }
 
             return Promise.resolve(response.data as EmailTemplate);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 "Error occurred while updating the email template.",
                 error.stack,
@@ -235,7 +237,7 @@ export const createNewEmailTemplate = (
             }
 
             return Promise.resolve(response.data as EmailTemplate);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 "Error occurred while creating the email template.",
                 error.stack,
@@ -284,7 +286,7 @@ export const deleteEmailTemplate = (
             }
 
             return response;
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 "Error occurred while deleting the email template.",
                 error.stack,

@@ -28,7 +28,9 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { DocumentationLink, ListLayout, PageLayout, PrimaryButton, useDocumentation } from "@wso2is/react-components";
@@ -280,10 +282,12 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
             return;
         }
 
-        handleGetAuthoriziedListCallError(authorizedListFetchRequestError);
+        handleGetAuthoriziedListCallError(
+            authorizedListFetchRequestError as unknown as AxiosError<HttpErrorResponseDataInterface>
+        );
     }, [ authorizedListFetchRequestError ]);
 
-    const handleGetAuthoriziedListCallError = (error: AxiosError) => {
+    const handleGetAuthoriziedListCallError = (error: AxiosError<HttpErrorResponseDataInterface>) => {
         if (error?.response?.data?.description) {
             dispatch(
                 addAlert({

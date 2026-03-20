@@ -24,7 +24,9 @@ import useRequest, {
     SWRConfig
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { OrganizationInterface } from "../models/organization";
 
@@ -92,7 +94,7 @@ export const updateOrganizationConfig = (isEnterpriseLoginEnabled: OrganizationI
 
     return httpClient(requestConfig).then((response: AxiosResponse) => {
         return Promise.resolve(response.data);
-    }).catch((error: AxiosError) => {
+    }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
         return Promise.reject(error);
     });
 };

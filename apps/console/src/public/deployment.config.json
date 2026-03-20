@@ -1376,14 +1376,12 @@
                 "scopes": {
                     "create": [
                         "internal_application_mgt_create",
-                        "internal_branding_preference_update",
-                        "internal_governance_update"
+                        "internal_branding_preference_update"
                     ],
                     "delete": [],
                     "feature": [
                         "console:applications",
-                        "console:branding",
-                        "console:loginAndRegistration"
+                        "console:branding"
                     ],
                     "read": [],
                     "update": []

@@ -22,7 +22,9 @@ import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
-import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, SBACInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue } from "@wso2is/forms";
 import {
@@ -278,7 +280,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
 
                 onUpdate(appId);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description,
@@ -311,7 +313,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
             .then(() => {
                 onUpdate(appId);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description,
@@ -356,7 +358,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 }));
                 onAllowedOriginsUpdate();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 updateError= true;
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
@@ -409,7 +411,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
 
                 mutateApplicationGetRequest();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -449,7 +451,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 onApplicationSecretRegenerate(response.data);
                 onUpdate(appId);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -484,7 +486,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 }));
                 onUpdate(appId);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -1325,7 +1327,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     .then((response: OIDCMetadataInterface) => {
                         dispatch(setAuthProtocolMeta(selectedProtocol, response));
                     })
-                    .catch((error: AxiosError) => {
+                    .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                         if (error.response && error.response.data && error.response.data.description) {
                             dispatch(addAlert({
                                 description: error.response.data.description,

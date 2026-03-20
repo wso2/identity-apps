@@ -353,6 +353,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                         return {
                             "data-componentid": `side-panel-items-${ kebabCase(route.id) }`,
                             "data-testid":  `side-panel-items-${ kebabCase(route.id) }`,
+                            expanded: route.expanded,
                             icon: <GenericIcon
                                 transparent
                                 className="route-icon"

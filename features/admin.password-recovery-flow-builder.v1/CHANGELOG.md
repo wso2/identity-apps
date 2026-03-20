@@ -1,5 +1,83 @@
 # @wso2is/admin.password-recovery-flow-builder.v1
 
+## 1.1.179
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.2
+  - @wso2is/admin.flow-builder-core.v1@0.10.179
+  - @wso2is/admin.rules.v1@0.7.18
+  - @wso2is/admin.flows.v1@1.0.148
+  - @wso2is/admin.server-configurations.v1@2.38.18
+
+## 1.1.178
+
+### Patch Changes
+
+- Updated dependencies [[`410f5901427656fae17dd31db77efe138f111b9f`](https://github.com/wso2/identity-apps/commit/410f5901427656fae17dd31db77efe138f111b9f)]:
+  - @wso2is/admin.core.v1@2.55.1
+  - @wso2is/admin.flow-builder-core.v1@0.10.178
+  - @wso2is/admin.flows.v1@1.0.147
+  - @wso2is/admin.server-configurations.v1@2.38.17
+  - @wso2is/admin.rules.v1@0.7.17
+
+## 1.1.177
+
+### Patch Changes
+
+- Updated dependencies [[`889ba146a770d03968eed6bd8ecdf9b2f41df5e4`](https://github.com/wso2/identity-apps/commit/889ba146a770d03968eed6bd8ecdf9b2f41df5e4)]:
+  - @wso2is/admin.core.v1@2.55.0
+  - @wso2is/admin.flow-builder-core.v1@0.10.177
+  - @wso2is/admin.flows.v1@1.0.146
+  - @wso2is/admin.server-configurations.v1@2.38.16
+  - @wso2is/admin.rules.v1@0.7.16
+
+## 1.1.176
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.32
+  - @wso2is/admin.flow-builder-core.v1@0.10.176
+  - @wso2is/admin.rules.v1@0.7.15
+  - @wso2is/admin.flows.v1@1.0.145
+  - @wso2is/admin.server-configurations.v1@2.38.15
+
+## 1.1.175
+
+### Patch Changes
+
+- Updated dependencies [[`2cad6ed902817e50e522628726732802503f5893`](https://github.com/wso2/identity-apps/commit/2cad6ed902817e50e522628726732802503f5893)]:
+  - @wso2is/admin.core.v1@2.54.31
+  - @wso2is/core@2.12.9
+  - @wso2is/admin.flow-builder-core.v1@0.10.175
+  - @wso2is/admin.flows.v1@1.0.144
+  - @wso2is/admin.server-configurations.v1@2.38.14
+  - @wso2is/admin.rules.v1@0.7.14
+
+## 1.1.174
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.30
+  - @wso2is/admin.flow-builder-core.v1@0.10.174
+  - @wso2is/admin.rules.v1@0.7.13
+  - @wso2is/admin.flows.v1@1.0.143
+  - @wso2is/admin.server-configurations.v1@2.38.13
+
+## 1.1.173
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.29
+  - @wso2is/admin.flow-builder-core.v1@0.10.173
+  - @wso2is/admin.rules.v1@0.7.12
+  - @wso2is/admin.flows.v1@1.0.142
+  - @wso2is/admin.server-configurations.v1@2.38.12
+
 ## 1.1.172
 
 ### Patch Changes

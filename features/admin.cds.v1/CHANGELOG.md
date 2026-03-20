@@ -1,5 +1,17 @@
 # @wso2is/admin.cds.v1
 
+## 1.6.0
+
+### Minor Changes
+
+- [#9851](https://github.com/wso2/identity-apps/pull/9851) [`889ba146a770d03968eed6bd8ecdf9b2f41df5e4`](https://github.com/wso2/identity-apps/commit/889ba146a770d03968eed6bd8ecdf9b2f41df5e4) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - improve cds ux
+
+### Patch Changes
+
+- Updated dependencies [[`06f2828341ff02da1d328e9cb9c03a2c0038c324`](https://github.com/wso2/identity-apps/commit/06f2828341ff02da1d328e9cb9c03a2c0038c324), [`889ba146a770d03968eed6bd8ecdf9b2f41df5e4`](https://github.com/wso2/identity-apps/commit/889ba146a770d03968eed6bd8ecdf9b2f41df5e4)]:
+  - @wso2is/admin.applications.v1@2.41.25
+  - @wso2is/admin.core.v1@2.55.0
+
 ## 1.5.0
 
 ### Minor Changes

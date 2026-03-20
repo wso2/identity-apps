@@ -14,7 +14,7 @@
         "@wso2is/admin.userstores.v1": "^2.27.29",
         "@wso2is/core": "^2.7.1",
         "@wso2is/i18n": "^2.26.1",
-        "axios": "^0.19.2",
+        "axios": "^1.7.9",
         "lodash-es": "^4.17.21",
         "react-redux": "^7.2.9",
         "redux": "^4.0.4",

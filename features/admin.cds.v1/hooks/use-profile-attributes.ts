@@ -20,7 +20,9 @@ import useRequest, {
     RequestConfigInterface, RequestErrorInterface, RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError } from "axios";
 import { useMemo } from "react";
 import useSWR, { SWRConfiguration, SWRResponse } from "swr";
@@ -46,12 +48,12 @@ import { toAttributeDropdownOptions } from "../utils/profile-attribute-utils";
 export const useProfileSchemaByScope = (
     scope: ProfileSchemaScope | null,
     filter?: string,
-    config?: SWRConfiguration<ProfileSchemaScopeResponse, AxiosError>
-): SWRResponse<ProfileSchemaScopeResponse, AxiosError> => {
+    config?: SWRConfiguration<ProfileSchemaScopeResponse, AxiosError<HttpErrorResponseDataInterface>>
+): SWRResponse<ProfileSchemaScopeResponse, AxiosError<HttpErrorResponseDataInterface>> => {
     const key: ["profile-schema-scope", ProfileSchemaScope, string | undefined] | null =
         scope ? [ "profile-schema-scope", scope, filter ] : null;
 
-    return useSWR<ProfileSchemaScopeResponse, AxiosError>(
+    return useSWR<ProfileSchemaScopeResponse, AxiosError<HttpErrorResponseDataInterface>>(
         key,
         scope ? () => fetchProfileSchemaByScope(scope, filter) : null,
         config
@@ -110,11 +112,11 @@ export const useSchemaAttributeById = <Data = ProfileSchemaAttribute, Error = Re
 export const useProfileSchemaDropdownOptions = (
     scope: ProfileSchemaScope | null,
     filter?: string,
-    config?: SWRConfiguration<ProfileSchemaScopeResponse, AxiosError>
-): SWRResponse<ProfileSchemaScopeResponse, AxiosError> & {
+    config?: SWRConfiguration<ProfileSchemaScopeResponse, AxiosError<HttpErrorResponseDataInterface>>
+): SWRResponse<ProfileSchemaScopeResponse, AxiosError<HttpErrorResponseDataInterface>> & {
     dropdownOptions: FilterAttributeOption[]
 } => {
-    const swrResponse: SWRResponse<ProfileSchemaScopeResponse, AxiosError> =
+    const swrResponse: SWRResponse<ProfileSchemaScopeResponse, AxiosError<HttpErrorResponseDataInterface>> =
         useProfileSchemaByScope(scope, filter, config);
 
     const dropdownOptions: FilterAttributeOption[] = useMemo(() => {

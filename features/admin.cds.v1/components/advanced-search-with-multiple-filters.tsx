@@ -23,7 +23,9 @@ import Fab from "@oxygen-ui/react/Fab";
 import Typography from "@oxygen-ui/react/Typography";
 import { MinusIcon, PlusIcon } from "@oxygen-ui/react-icons";
 import { getAdvancedSearchIcons } from "@wso2is/admin.core.v1/configs/ui";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { SearchUtils } from "@wso2is/core/utils";
 import { DropdownChild, Field, FormValue, Forms } from "@wso2is/forms";
 import {
@@ -54,7 +56,7 @@ import { AND_OPERATOR, APPLICATION_DATA, IDENTITY_ATTRIBUTES, TRAITS } from "../
 import { FilterAttributeOption, ProfileSchemaScopeResponse } from "../models/profile-attributes";
 import type { FilterGroup } from "../models/profiles";
 
-type ProfileSchemaDropdownResult = SWRResponse<ProfileSchemaScopeResponse, AxiosError> & {
+type ProfileSchemaDropdownResult = SWRResponse<ProfileSchemaScopeResponse, AxiosError<HttpErrorResponseDataInterface>> & {
     dropdownOptions: FilterAttributeOption[];
 };
 

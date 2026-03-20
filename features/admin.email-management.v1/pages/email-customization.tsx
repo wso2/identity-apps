@@ -29,7 +29,8 @@ import {
     AlertInterface,
     AlertLevels,
     FeatureAccessConfigInterface,
-    IdentifiableComponentInterface
+    IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -84,7 +85,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     const [ isTemplateNotAvailable, setIsTemplateNotAvailable ] = useState(false);
     const [ isSystemTemplate, setIsSystemTemplate ] = useState(false);
     const [ isInheritedTemplate, setIsInheritedTemplate ] = useState(false);
-    const [ error, setError ] = useState<AxiosError>();
+    const [ error, setError ] = useState<AxiosError<HttpErrorResponseDataInterface>>();
 
     const emailTemplates: Record<string, string>[] = useSelector(
         (state: AppState) => state.config.deployment.extensions.emailTemplates) as Record<string, string>[];

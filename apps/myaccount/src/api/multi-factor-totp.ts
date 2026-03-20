@@ -17,7 +17,9 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance, HttpRequestConfig } from "@asgardeo/auth-react";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { SCIMConfigs } from "../extensions/configs/scim";
 import { store } from "../store";
@@ -59,7 +61,7 @@ export const getTotpQrCode = (): Promise<any> => {
 
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -90,7 +92,7 @@ export const validateTOTPCode = (code: string): Promise<any> => {
 
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -119,7 +121,7 @@ export const refreshTOTPCode = (): Promise<any> => {
                 return Promise.resolve(response);
             }
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -148,7 +150,7 @@ export const initTOTPCode = (): Promise<any> => {
 
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -177,7 +179,7 @@ export const viewTOTPCode = (): Promise<any> => {
 
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -203,7 +205,7 @@ export const deleteTOTP = (): Promise<any> => {
 
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -229,7 +231,7 @@ export const getTOTPSecret = (): Promise<any> => {
 
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -260,7 +262,7 @@ export const checkIfTOTPEnabled = (): Promise<any> => {
                 return false;
             }
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };

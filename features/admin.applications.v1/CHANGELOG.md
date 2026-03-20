@@ -1,5 +1,65 @@
 # @wso2is/admin.applications.v1
 
+## 2.41.27
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.users.v1@2.38.2
+  - @wso2is/admin.onboarding.v1@1.0.50
+  - @wso2is/admin.core.v1@2.55.2
+  - @wso2is/admin.roles.v2@2.27.349
+  - @wso2is/admin.connections.v1@2.36.19
+  - @wso2is/admin.branding.v1@2.32.135
+  - @wso2is/admin.server-configurations.v1@2.38.18
+  - @wso2is/admin.console-settings.v1@2.26.13
+
+## 2.41.26
+
+### Patch Changes
+
+- [#9833](https://github.com/wso2/identity-apps/pull/9833) [`410f5901427656fae17dd31db77efe138f111b9f`](https://github.com/wso2/identity-apps/commit/410f5901427656fae17dd31db77efe138f111b9f) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Display correct application info URLs when tenant-qualified URLs are disabled
+
+- Updated dependencies [[`410f5901427656fae17dd31db77efe138f111b9f`](https://github.com/wso2/identity-apps/commit/410f5901427656fae17dd31db77efe138f111b9f), [`8a1e91278bc6b376e8e82bddbf94f98ceb76f6fc`](https://github.com/wso2/identity-apps/commit/8a1e91278bc6b376e8e82bddbf94f98ceb76f6fc)]:
+  - @wso2is/admin.core.v1@2.55.1
+  - @wso2is/admin.console-settings.v1@2.26.12
+  - @wso2is/i18n@2.37.3
+  - @wso2is/admin.users.v1@2.38.1
+  - @wso2is/admin.branding.v1@2.32.134
+  - @wso2is/admin.onboarding.v1@1.0.49
+  - @wso2is/admin.roles.v2@2.27.348
+  - @wso2is/admin.server-configurations.v1@2.38.17
+  - @wso2is/admin.connections.v1@2.36.18
+
+## 2.41.25
+
+### Patch Changes
+
+- [#9669](https://github.com/wso2/identity-apps/pull/9669) [`06f2828341ff02da1d328e9cb9c03a2c0038c324`](https://github.com/wso2/identity-apps/commit/06f2828341ff02da1d328e9cb9c03a2c0038c324) Thanks [@savindi7](https://github.com/savindi7)! - Show user onboarding wizard based on claim, and give option to re-access it.
+
+- Updated dependencies [[`06f2828341ff02da1d328e9cb9c03a2c0038c324`](https://github.com/wso2/identity-apps/commit/06f2828341ff02da1d328e9cb9c03a2c0038c324), [`889ba146a770d03968eed6bd8ecdf9b2f41df5e4`](https://github.com/wso2/identity-apps/commit/889ba146a770d03968eed6bd8ecdf9b2f41df5e4)]:
+  - @wso2is/admin.onboarding.v1@1.0.48
+  - @wso2is/admin.users.v1@2.38.0
+  - @wso2is/admin.core.v1@2.55.0
+  - @wso2is/admin.branding.v1@2.32.133
+  - @wso2is/admin.roles.v2@2.27.347
+  - @wso2is/admin.server-configurations.v1@2.38.16
+  - @wso2is/admin.connections.v1@2.36.17
+
+## 2.41.24
+
+### Patch Changes
+
+- [#9834](https://github.com/wso2/identity-apps/pull/9834) [`b808ec34dc0dbd9bc74a256d10be6bc24c80e1e6`](https://github.com/wso2/identity-apps/commit/b808ec34dc0dbd9bc74a256d10be6bc24c80e1e6) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Remove CIBA selection when public client is enabled
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.32.130
+  - @wso2is/admin.core.v1@2.54.30
+  - @wso2is/admin.roles.v2@2.27.344
+  - @wso2is/admin.connections.v1@2.36.14
+  - @wso2is/admin.server-configurations.v1@2.38.13
+  - @wso2is/admin.users.v1@2.37.21
+
 ## 2.41.23
 
 ### Patch Changes

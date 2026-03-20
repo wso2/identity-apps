@@ -1961,6 +1961,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const handleClientAuthenticationChange = (publicClient: boolean):void => {
         if (publicClient) {
             setSelectedAuthMethod("");
+            setSelectedGrantTypes((prev: string[]) =>
+                prev?.filter((grant: string) => grant !== ApplicationManagementConstants.CIBA_GRANT)
+            );
         }
     };
 

@@ -21,7 +21,9 @@ import useRequest, { RequestErrorInterface, RequestResultInterface } from "@wso2
 import { store } from "@wso2is/admin.core.v1/store";
 import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { OIDCScopesManagementConstants } from "../constants";
 import { OIDCScopesListInterface } from "../models";
@@ -62,7 +64,7 @@ export const getOIDCScopesList = <T = {}>(): Promise<T> => {
             }
 
             return Promise.resolve(response.data as T);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 OIDCScopesManagementConstants.OIDC_SCOPES_FETCH_ERROR,
                 error.stack,
@@ -141,7 +143,7 @@ export const getOIDCScopeDetails = <T>(scope: string): Promise<T> => {
             }
 
             return Promise.resolve(response.data as T);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 OIDCScopesManagementConstants.OIDC_SCOPE_DETAILS_FETCH_ERROR,
                 error.stack,
@@ -185,7 +187,7 @@ export const createOIDCScope = <T>(data: OIDCScopesListInterface): Promise<T> =>
             }
 
             return Promise.resolve(response.data as T);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 OIDCScopesManagementConstants.OIDC_SCOPE_CREATE_ERROR,
                 error.stack,
@@ -230,7 +232,7 @@ export const updateOIDCScopeDetails = <T>(scopeName: string, data: OIDCScopesLis
             }
 
             return Promise.resolve(response.data as T);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 OIDCScopesManagementConstants.OIDC_SCOPE_UPDATE_ERROR,
                 error.stack,
@@ -273,7 +275,7 @@ export const deleteOIDCScope = <T>(scope: string): Promise<T> => {
             }
 
             return Promise.resolve(response.data as T);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 OIDCScopesManagementConstants.OIDC_SCOPE_DELETE_ERROR,
                 error.stack,

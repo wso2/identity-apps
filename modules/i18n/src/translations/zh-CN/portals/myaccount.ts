@@ -352,7 +352,7 @@ export const myAccount: MyAccountNS = {
             "modals": {
                 "confirmationModal": {
                     "heading": "确认",
-                    "message": "更改密码将导致当前会话的终止。您将必须使用新更改的密码登录。你想继续吗？"
+                    "message": "更新密码可能会使您从所有应用程序中退出登录。如果您已退出登录，请使用新密码重新登录。是否继续？"
                 }
             }
         },

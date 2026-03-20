@@ -63,7 +63,8 @@ import {
     ProfileSchemaInterface,
     SharedProfileValueResolvingMethod,
     TestableComponentInterface,
-    UniquenessScope
+    UniquenessScope,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { Property } from "@wso2is/core/src/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
@@ -488,7 +489,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             .then((response: GovernanceConnectorInterface) => {
                 setConnector(response);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error?.response?.data?.detail) {
                     dispatch(
                         addAlert({

@@ -22,7 +22,9 @@ import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertLevels, Claim, IdentifiableComponentInterface, Property } from "@wso2is/core/models";
+import { AlertLevels, Claim, IdentifiableComponentInterface, Property,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
 import {
@@ -111,7 +113,7 @@ export default function AgentOverview({
             .then((agentClaims: Claim[]) => {
                 setAgentSchemaAttributes(agentClaims);
             })
-            .catch((_error: AxiosError) => {
+            .catch((_error: AxiosError<HttpErrorResponseDataInterface>) => {
 
             });
     }, []);
@@ -292,7 +294,7 @@ export default function AgentOverview({
                                                 (toggleData.target.checked ? "deactivated" : "active")
                                         }));
                                     })
-                                    .catch((_error: AxiosError) => {
+                                    .catch((_error: AxiosError<HttpErrorResponseDataInterface>) => {
                                         dispatch(addAlert({
                                             description:
                                                 "An error occurred when " +

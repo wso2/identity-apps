@@ -20,6 +20,7 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
+import { AxiosResponse } from "axios";
 import type { SchemaListingScope } from "../models/profile-attribute-listing";
 import type {
     ApplicationDataSchemaMapResponse,
@@ -55,7 +56,7 @@ export const createSchemaAttributes = async (
         url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}`
     };
 
-    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
+    const response: AxiosResponse<any> = await httpClient(requestConfig);
 
     return Array.isArray(response.data) ? (response.data as ProfileSchemaAttribute[]) : [];
 };
@@ -77,7 +78,7 @@ export const fetchProfileSchemaByScope = async (
         url:  `${store.getState().config.endpoints.cdsProfileSchema}/${scope}`
     };
 
-    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
+    const response: AxiosResponse<any> = await httpClient(requestConfig);
     const data: unknown = response.data;
 
     if (Array.isArray(data)) {

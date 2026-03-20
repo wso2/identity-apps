@@ -31,7 +31,8 @@ import {
     AlertLevels,
     FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
-    RolesInterface
+    RolesInterface,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, ListLayout, PageLayout, PrimaryButton, useDocumentation } from "@wso2is/react-components";
@@ -186,7 +187,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                     message: t("roles:notifications.deleteRole.success.message")
                 });
                 mutateRolesList();
-            }).catch((error: AxiosError) => {
+            }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     handleAlerts({
                         description: error.response.data.detail,

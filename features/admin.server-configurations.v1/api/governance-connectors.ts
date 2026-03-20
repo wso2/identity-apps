@@ -25,7 +25,9 @@ import useRequest, {
 import { store } from "@wso2is/admin.core.v1/store";
 import { LocalAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
@@ -169,7 +171,7 @@ export const getData = (url: string): Promise<any> => {
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 ServerConfigurationsConstants.CONFIGS_FETCH_REQUEST_ERROR,
                 error.stack,
@@ -205,7 +207,7 @@ export const updateConfigurations = (data: UpdateGovernanceConnectorConfigInterf
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 ServerConfigurationsConstants.CONFIGS_UPDATE_REQUEST_ERROR,
                 error.stack,
@@ -293,7 +295,7 @@ export const revertGovernanceConnectorProperties = (
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 ServerConfigurationsConstants.CONFIGS_REVERT_REQUEST_ERROR,
                 error.stack,

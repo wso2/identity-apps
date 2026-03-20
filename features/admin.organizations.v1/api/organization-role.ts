@@ -25,7 +25,9 @@ import {
 } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1/store";
 import { CreateRoleInterface } from "@wso2is/admin.roles.v2/models/roles";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { OrganizationRoleListResponseInterface, PatchOrganizationRoleDataInterface } from "../models";
 
@@ -129,7 +131,7 @@ export const createOrganizationRole = (organizationId: string, data: CreateRoleI
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -158,7 +160,7 @@ export const updateRole = (
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -187,7 +189,7 @@ export const patchOrganizationRoleDetails = (
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -210,7 +212,7 @@ export const getOrganizationRoleById = (organizationId: string, roleId: string):
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };

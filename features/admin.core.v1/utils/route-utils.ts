@@ -37,6 +37,17 @@ import { history } from "../helpers/history";
 /**
  * Utility class for application routes related operations.
  */
+
+/**
+ * Parent nav group IDs that should be force-expanded on their next mount.
+ * Populated when a feature section is newly enabled mid-session.
+ */
+const forceExpandedParentIds: Set<string> = new Set<string>();
+
+export const addForceExpandedParent = (id: string): void => {
+    forceExpandedParentIds.add(id);
+};
+
 export class RouteUtils {
 
     /**
@@ -318,6 +329,11 @@ export class RouteUtils {
             order: 2
         };
 
+        const customerDataCategory: NavCategory = {
+            id: "customerData",
+            order: 3
+        };
+
         const organizations: NavCategory = {
             id: "organizations",
             order: 4
@@ -521,19 +537,22 @@ export class RouteUtils {
                 selected: loginAndRegPathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
             },
             {
-                category: manage,
+                category: customerDataCategory,
                 id: "customerDataProfiles",
-                parent: customerData
+                parent: customerData,
+                selected: history.location.pathname.startsWith(AppConstants.getPaths().get("PROFILES"))
             },
             {
-                category: manage,
+                category: customerDataCategory,
                 id: "customerDataProfileAttributes",
-                parent: customerData
+                parent: customerData,
+                selected: history.location.pathname.startsWith(AppConstants.getPaths().get("PROFILE_ATTRIBUTES"))
             },
             {
-                category: manage,
+                category: customerDataCategory,
                 id: "customerDataUnificationRules",
-                parent: customerData
+                parent: customerData,
+                selected: history.location.pathname.startsWith(AppConstants.getPaths().get("UNIFICATION_RULES"))
             },
             {
                 category: preferences,
@@ -613,6 +632,8 @@ export class RouteUtils {
 
         const updatedGroupedItems: NavRouteInterface[] = Object.values(groupedByParent).map(
             (group: NavRouteInterface[]) => ({
+                expanded: group.some((item: NavRouteInterface) => item.selected)
+                    || forceExpandedParentIds.has(group[0]?.parent?.id),
                 icon: { icon: group[0]?.parent?.icon },
                 id: group[0]?.parent?.id,
                 items: sortBy(group, (item: NavRouteInterface) => item.order),

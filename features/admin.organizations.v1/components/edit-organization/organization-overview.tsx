@@ -24,7 +24,8 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     SBACInterface,
-    TestableComponentInterface
+    TestableComponentInterface,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -210,7 +211,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                     setShowOrgDeleteConfirmationModal(false);
                     onOrganizationDelete(organizationId);
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     if (
                         error.response &&
                         error.response.data &&

@@ -20,7 +20,9 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1/store";
 import { RoleConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods, RoleListInterface } from "@wso2is/core/models";
+import { HttpMethods, RoleListInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { CreateRoleInterface, PatchRoleDataInterface, SearchRoleInterface } from "../models/roles";
 
@@ -49,7 +51,7 @@ export const getRoleById = (roleId: string): Promise<any> => {
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -74,7 +76,7 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -98,7 +100,7 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -122,7 +124,7 @@ export const deleteRoleById = (roleId: string): Promise<any> => {
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -146,7 +148,7 @@ export const createRole = (data: CreateRoleInterface): Promise<any> => {
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -171,7 +173,7 @@ export const updateRolePermissions = (roleId: string, data: unknown): Promise<an
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -194,7 +196,7 @@ export const getPermissionList = (): Promise<any> => {
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -217,7 +219,7 @@ export const getPermissionsForRole = (roleId: string): Promise<any> => {
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -242,7 +244,7 @@ export const updateRole = (roleId: string, roleData: PatchRoleDataInterface): Pr
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -282,7 +284,7 @@ export const getRolesList = (domain: string): Promise<RoleListInterface | any> =
 
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 RoleConstants.ROLES_FETCH_REQUEST_ERROR,
                 error.stack,

@@ -19,7 +19,9 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { LogType } from "../models/remote-log-publishing";
 
@@ -46,7 +48,7 @@ const restoreRemoteLogPublishingConfiguration = (logType: LogType): Promise<Axio
         .then((response: AxiosResponse) => {
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw error;
         });
 };

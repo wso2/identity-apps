@@ -19,7 +19,9 @@
 import { generatePassword, getConfiguration } from "@wso2is/admin.users.v1/utils/generate-password.utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api/validation-config";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models/validation-config";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CopyInputField, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -105,7 +107,7 @@ export function AgentSecretShowModal({
             newPassword
         ).then(() => {
             setShouldShowSecretRegeneration(true);
-        }).catch((_error: AxiosError) => {
+        }).catch((_error: AxiosError<HttpErrorResponseDataInterface>) => {
             dispatch(addAlert({
                 description: t("agents:edit.credentials.regenerate.alerts.error.description"),
                 level: AlertLevels.ERROR,

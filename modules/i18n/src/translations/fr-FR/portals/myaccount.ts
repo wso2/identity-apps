@@ -356,8 +356,9 @@ export const myAccount: MyAccountNS = {
                 confirmationModal: {
                     heading: "Confirmation",
                     message:
-                        "La modification du mot de passe entraînera la fin de la session en cours. Vous devrez " +
-                        "vous reconnecter avec votre nouveau mot de passe. Voulez-vous continuer ?"
+                        "La mise à jour de votre mot de passe peut vous déconnecter de toutes les applications. " +
+                        "Si vous êtes déconnecté, reconnectez-vous avec votre nouveau mot de passe. " +
+                        "Voulez-vous continuer ?"
                 }
             }
         },

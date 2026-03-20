@@ -20,7 +20,9 @@ import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Au
 import Button from "@oxygen-ui/react/Button";
 import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FormRenderProps } from "@wso2is/form";
@@ -47,6 +49,7 @@ import { SemanticICONS } from "semantic-ui-react";
 import AutoCompleteRenderOption from "./auto-complete-render-option";
 import RuleConfigurationModal from "./rule-configuration-modal";
 import { useGetWorkflowAssociations } from "../../api/use-get-workflow-associations";
+import { FEATURE_FLAG_RULE_BASED_WORKFLOW_ENGAGEMENT } from "../../constants/approval-workflow-constants";
 import { DropdownPropsInterface, WorkflowOperationsDetailsFormValuesInterface } from "../../models/ui";
 import "./general-approval-workflow-details-form.scss";
 import "./workflow-operations-details-form.scss";
@@ -142,6 +145,12 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
         ): ReactElement => {
             const { t } = useTranslation();
             const dispatch: Dispatch = useDispatch();
+            const { UIConfig } = useUIConfig();
+
+            const isRuleBasedWorkflowEngagementEnabled: boolean = isFeatureEnabled(
+                UIConfig?.features?.approvalWorkflows,
+                FEATURE_FLAG_RULE_BASED_WORKFLOW_ENGAGEMENT
+            );
 
             const triggerFormSubmit: MutableRefObject<() => void> = useRef<(() => void) | null>(null);
 
@@ -294,63 +303,71 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
             /**
          * Resolves data table columns for the operations table.
          */
-            const resolveTableColumns = (): TableColumnInterface[] => [
-                {
-                    allowToggleVisibility: false,
-                    dataIndex: "text",
-                    id: "operation",
-                    key: "operation",
-                    render: (operation: DropdownPropsInterface): ReactNode => (
-                        <div
-                            className="operation-name"
-                            data-componentid={ `${componentId}-operation-${operation.value}` }
-                        >
-                            { operation.text }
-                        </div>
-                    ),
-                    title: "",
-                    width: 8
-                },
-                {
-                    allowToggleVisibility: false,
-                    dataIndex: "rules",
-                    id: "rules",
-                    key: "rules",
-                    render: (operation: DropdownPropsInterface): ReactNode => {
-                        const configured: boolean = isRuleConfigured(operation.value);
-
-                        return (
+            const resolveTableColumns = (): TableColumnInterface[] => {
+                const columns: TableColumnInterface[] = [
+                    {
+                        allowToggleVisibility: false,
+                        dataIndex: "text",
+                        id: "operation",
+                        key: "operation",
+                        render: (operation: DropdownPropsInterface): ReactNode => (
                             <div
-                                className="operation-rules-actions"
-                                data-componentid={ `${componentId}-rules-${operation.value}` }
+                                className="operation-name"
+                                data-componentid={ `${componentId}-operation-${operation.value}` }
                             >
-                                <Button
-                                    variant="outlined"
-                                    size="small"
-                                    disabled={ isReadOnly }
-                                    onClick={ () => handleOpenRuleModal(operation) }
-                                    data-componentid={ `${componentId}-rule-button-${operation.value}` }
-                                >
-                                    { configured
-                                        ? t("approvalWorkflows:pageLayout.create.ruleConditions.editRule")
-                                        : t("approvalWorkflows:pageLayout.create.ruleConditions.addRule") }
-                                </Button>
+                                { operation.text }
                             </div>
-                        );
-                    },
-                    textAlign: "right",
-                    title: "",
-                    width: 8
-                },
-                {
+                        ),
+                        title: "",
+                        width: 8
+                    }
+                ];
+
+                if (isRuleBasedWorkflowEngagementEnabled) {
+                    columns.push({
+                        allowToggleVisibility: false,
+                        dataIndex: "rules",
+                        id: "rules",
+                        key: "rules",
+                        render: (operation: DropdownPropsInterface): ReactNode => {
+                            const configured: boolean = isRuleConfigured(operation.value);
+
+                            return (
+                                <div
+                                    className="operation-rules-actions"
+                                    data-componentid={ `${componentId}-rules-${operation.value}` }
+                                >
+                                    <Button
+                                        variant="outlined"
+                                        size="small"
+                                        disabled={ isReadOnly }
+                                        onClick={ () => handleOpenRuleModal(operation) }
+                                        data-componentid={ `${componentId}-rule-button-${operation.value}` }
+                                    >
+                                        { configured
+                                            ? t("approvalWorkflows:pageLayout.create.ruleConditions.editRule")
+                                            : t("approvalWorkflows:pageLayout.create.ruleConditions.addRule") }
+                                    </Button>
+                                </div>
+                            );
+                        },
+                        textAlign: "right",
+                        title: "",
+                        width: 8
+                    });
+                }
+
+                columns.push({
                     allowToggleVisibility: false,
                     dataIndex: "action",
                     id: "actions",
                     key: "actions",
                     textAlign: "right",
                     title: ""
-                }
-            ];
+                });
+
+                return columns;
+            };
 
             return (
                 <FinalForm
@@ -480,7 +497,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                     </Hint>
                                 ) }
 
-                                { isModalOpen && editingOperation && (
+                                { isRuleBasedWorkflowEngagementEnabled && isModalOpen && editingOperation && (
                                     <RuleConfigurationModal
                                         operation={ editingOperation }
                                         initialRule={ operationRules?.[editingOperation.value] }

@@ -22,7 +22,9 @@ import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-app-configs";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, LoadableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { DynamicWizard, DynamicWizardPage, renderFormFields } from "@wso2is/dynamic-forms";
@@ -189,7 +191,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                 // Since the location header is not present, trigger callback without the id.
                 onIDPCreate();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
 
                 const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
 

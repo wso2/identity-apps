@@ -372,6 +372,11 @@ export const customerDataService: CustomerDataServiceNS = {
                     message: "This action is irreversible!"
                 }
             },
+            identityAttributes: {
+                description: "Edit or update Identity Attributes.",
+                manage: "Manage Identity Attributes",
+                title: "Identity Attributes"
+            },
             notifications: {
                 deleteAttribute: {
                     error: {
@@ -517,15 +522,20 @@ export const customerDataService: CustomerDataServiceNS = {
                 title: "Unified Profiles"
             }
         },
+        linkedUser: {
+            action: "View Customer Profile",
+            info: "This user has an associated Customer data profile."
+        },
         list: {
             chips: {
-                anonymous: "Anonymous",
+                anonymous: "Temporary",
+                registered: "Permanent",
                 unified: "Unified"
             },
             columns: {
                 profile: "Profile",
                 unifiedProfiles: "Unified Profiles",
-                user: "User"
+                user: "Profile Type"
             },
             confirmations: {
                 delete: {

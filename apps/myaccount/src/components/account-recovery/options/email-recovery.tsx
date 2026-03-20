@@ -17,7 +17,9 @@
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { GenericIcon, Hint, Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -156,7 +158,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
                 dispatch(getProfileInformation());
                 dispatch(setActiveForm(null));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     onAlertFired({
                         description: t(

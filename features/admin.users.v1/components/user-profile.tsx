@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -657,16 +657,28 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
      */
     const handleUserDelete = (deletingUser: ProfileInfoInterface): void => {
         userConfig.deleteUser(deletingUser)
-            .then(() => {
-                onAlertFired({
-                    description: t(
-                        "users:notifications.deleteUser.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "users:notifications.deleteUser.success.message"
-                    )
-                });
+            .then((response: AxiosResponse) => {
+                if (response.status === 204) {
+                    onAlertFired({
+                        description: t(
+                            "users:notifications.deleteUser.success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "users:notifications.deleteUser.success.message"
+                        )
+                    });
+                } else if (response.status === 202) {
+                    onAlertFired({
+                        description: t(
+                            "users:notifications.deleteUserPendingApproval.success.description"
+                        ),
+                        level: AlertLevels.WARNING,
+                        message: t(
+                            "users:notifications.deleteUserPendingApproval.success.message"
+                        )
+                    });
+                }
 
                 if (adminUserType === AdminAccountTypes.EXTERNAL) {
                     history.push(AppConstants.getPaths().get("ADMINISTRATORS"));
@@ -675,9 +687,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 }
             })
             .catch((error: IdentityAppsApiException) => {
-                if (error.response && error.response.data && error.response.data.description) {
+                if (error.response && error.response.data) {
+                    let errorDescription: string = t("users:notifications.deleteUser.genericError.description");
+
+                    if (error.response.data.description) {
+                        errorDescription = error.response.data.description;
+                    } else if (error.response.data.detail) {
+                        errorDescription = error.response.data.detail;
+                    }
                     setAlert({
-                        description: error.response.data.description,
+                        description: errorDescription,
                         level: AlertLevels.ERROR,
                         message: t("users:notifications.deleteUser.error.message")
                     });

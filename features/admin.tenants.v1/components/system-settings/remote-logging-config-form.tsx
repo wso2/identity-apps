@@ -33,7 +33,8 @@ import {
     AlertInterface,
     AlertLevels,
     FeatureAccessConfigInterface,
-    IdentifiableComponentInterface
+    IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
@@ -605,7 +606,7 @@ export const RemoteLoggingConfigForm = ({
                     })
                 );
             })
-            .catch((_err: AxiosError) => {
+            .catch((_err: AxiosError<HttpErrorResponseDataInterface>) => {
                 dispatch(
                     addAlert<AlertInterface>({
                         description: t(
@@ -644,7 +645,7 @@ export const RemoteLoggingConfigForm = ({
                     })
                 );
             })
-            .catch((_err: AxiosError) => {
+            .catch((_err: AxiosError<HttpErrorResponseDataInterface>) => {
                 dispatch(
                     addAlert<AlertInterface>({
                         description: t(

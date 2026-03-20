@@ -2417,6 +2417,7 @@ export interface ApplicationsNS {
                     oidcConfigurations: {
                         labels: {
                             authorize: string;
+                            backchannelAuthentication: string;
                             dynamicClientRegistration: string;
                             endSession: string;
                             introspection: string;

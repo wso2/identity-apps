@@ -2801,6 +2801,7 @@ export const applications: ApplicationsNS = {
                     oidcConfigurations: {
                         labels: {
                             authorize: "Authorize",
+                            backchannelAuthentication: "Backchannel Authentication",
                             dynamicClientRegistration: "Dynamic Client Registration",
                             endSession: "Logout",
                             introspection: "Introspection",

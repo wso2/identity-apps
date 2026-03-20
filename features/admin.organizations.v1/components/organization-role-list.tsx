@@ -28,7 +28,8 @@ import {
     AlertLevels,
     LoadableComponentInterface,
     SBACInterface,
-    TestableComponentInterface
+    TestableComponentInterface,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -190,7 +191,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                 setShowDeleteConfirmationModal(false);
                 onOrganizationRoleDelete();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(
                         setAlert({

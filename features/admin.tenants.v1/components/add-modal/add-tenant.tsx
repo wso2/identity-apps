@@ -18,7 +18,9 @@
 
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
-import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { ContentLoader, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
@@ -108,7 +110,7 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
                     });
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response.status == 404) {
                     // Proceed to tenant creation if tenant does not exist.
                     addTenant(
@@ -188,7 +190,7 @@ export const AddTenantWizard: FunctionComponent<AddTenantWizardPropsInterface> =
                     }, 5000);
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 setIsNewTenantLoading(false);
                 // This section gives error context on a former error scenario where the tenant creation would fail
                 // if the first name, last name or primary email of the user is absent in their personal info

@@ -21,11 +21,14 @@ import TabPanel from "@oxygen-ui/react/TabPanel";
 import Tabs from "@oxygen-ui/react/Tabs";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
+import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import ConsoleAdministrators from "./console-administrators/console-administrators";
+import ConsoleEnterpriseLogin from "./console-enterprise-login/console-enterprise-login";
 import ConsoleLoginFlow from "./console-login-flow/console-login-flow";
 import ConsoleProtocol from "./console-protocol/console-protocol";
 import ConsoleRolesList from "./console-roles/console-roles-list";
@@ -82,6 +85,8 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
     const { t } = useTranslation();
 
     const { isFirstLevelOrganization, isSubOrganization, isSuperOrganization } = useGetCurrentOrganizationType();
+
+    const { tierName }: UseSubscriptionInterface = useSubscription();
 
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consoleSettings);
@@ -157,6 +162,16 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     label: t("consoleSettings:sharedAccess.tabLabel"),
                     pane: <ConsoleSharedAccess />,
                     value: ConsoleSettingsTabIDs.SHARED_ACCESS
+                },
+                !(isSubOrganization() || tierName === TenantTier.FREE) && {
+                    className: "console-enterprise-login",
+                    "data-componentid": `${componentId}-tab-enterprise-login`,
+                    "data-tabid": ConsoleSettingsModes.ENTERPRISE_LOGIN,
+                    hidden: false,
+                    id: ConsoleSettingsModes.ENTERPRISE_LOGIN,
+                    label: t("consoleSettings:enterpriseLogin.tabLabel"),
+                    pane: <ConsoleEnterpriseLogin />,
+                    value: ConsoleSettingsTabIDs.ENTERPRISE_LOGIN
                 }
             ]
                 .filter((tab: ConsoleSettingsTabInterface) => tab && !tab?.hidden)

@@ -79,7 +79,7 @@ module.exports = {
         } ]
     },
     transformIgnorePatterns: [
-        "/node_modules/?(?!@wso2is)"
+        "/node_modules/(?!(\\.pnpm|@wso2is|axios)\\/)"
     ],
     verbose: true
 };

@@ -19,7 +19,9 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { GenerateLoginFlowAPIResponseInterface } from "../models/ai-login-flow";
 import AuthenticatorsRecord from "../models/authenticators-record";
@@ -75,7 +77,7 @@ const generateLoginFlow = (
             }
 
             return response.data;
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             const errorMessage: string = error.response?.data?.message || "Unknown error occurred";
 
             throw new IdentityAppsApiException(

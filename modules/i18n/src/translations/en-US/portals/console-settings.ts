@@ -66,6 +66,102 @@ export const consoleSettings: ConsoleSettingsNS = {
             view: "View"
         }
     },
+    enterpriseLogin: {
+        banner: {
+            action: "Contact Us",
+            description: "Reach out to us to configure enterprise login for your console setup.",
+            title: "Configure Enterprise Login"
+        },
+        configured: {
+            connectionLabel: "Enterprise Connection",
+            description: "Enterprise login has been configured for the console. Users can sign in using the configured enterprise connection.",
+            heading: "Enterprise Login Configuration",
+            mappingsHeading: "Group-Role Mappings",
+            noMappings: "No group-role mappings configured."
+        },
+        confirmations: {
+            removeConfiguration: {
+                assertionHint: "Please confirm your action.",
+                content: "This will remove the enterprise connection from the console login flow and delete all associated group-role mappings. Users who rely on this login method will no longer be able to sign in to the console.",
+                header: "Are you sure?",
+                message: "This action is irreversible and will remove the enterprise login configuration.",
+                primaryAction: "Confirm",
+                secondaryAction: "Cancel"
+            },
+            removeMapping: {
+                content: "This group-role mapping will be removed. The connection group will no longer grant the associated console role.",
+                header: "Remove Group-Role Mapping?",
+                primaryAction: "Remove",
+                secondaryAction: "Cancel"
+            }
+        },
+        form: {
+            addMapping: "Add Mapping",
+            connectionLabel: "Enterprise Connection",
+            createGroup: "Create \"{{name}}\" as a new group'",
+
+            connectionPlaceholder: "Select an enterprise connection",
+            idpGroupLabel: "Connection Group",
+            idpGroupPlaceholder: "Select or type a connection group name",
+            mappingDescription: "Map connection groups to console roles to grant users the appropriate access level.",
+            roleLabel: "Console Role",
+            rolePlaceholder: "Select a console role",
+            sectionHeading: "Configure Enterprise Login",
+            sectionDescription: "Select an enterprise connection and map its groups to console roles. At least one mapping is required."
+        },
+        learnMore: "Learn More",
+        notifications: {
+            createGroup: {
+                error: {
+                    description: "An error occurred while creating the connection group.",
+                    message: "Error Creating Group"
+                },
+                success: {
+                    description: "Connection group has been created successfully.",
+                    message: "Group Created"
+                }
+            },
+            deleteConfiguration: {
+                error: {
+                    description: "An error occurred while removing the enterprise login configuration.",
+                    message: "Error Removing Configuration"
+                },
+                success: {
+                    description: "Enterprise login configuration has been removed successfully.",
+                    message: "Configuration Removed"
+                }
+            },
+            fetchConfiguration: {
+                error: {
+                    description: "An error occurred while loading the enterprise login configuration.",
+                    message: "Error Loading Configuration"
+                }
+            },
+            updateConfiguration: {
+                error: {
+                    description: "An error occurred while saving the enterprise login configuration.",
+                    message: "Error Saving Configuration"
+                },
+                success: {
+                    description: "Enterprise login configuration has been saved successfully.",
+                    message: "Configuration Saved"
+                }
+            }
+        },
+        actions: {
+            configure: "Configure",
+            remove: "Remove Enterprise Login",
+            save: "Save",
+            update: "Update"
+        },
+        tabLabel: "Enterprise Login",
+        validations: {
+            atLeastOneMapping: "At least one group-role mapping is required.",
+            connectionRequired: "Please select an enterprise connection.",
+            duplicateMapping: "This group-role mapping already exists.",
+            incompleteMapping: "Please complete all group-role mappings before saving."
+        }
+    },
     sharedAccess: {
         description: "Select the following options to share the application roles with the organizations.",
         sharingRolesTakeTimeMessage: "Sharing roles may take sometime to reflect across the organization.",

@@ -19,7 +19,9 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1/store";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { DeploymentUnit, TenantRequestResponse } from "../models";
 
@@ -65,7 +67,7 @@ export const addNewTenant = (tenantName: string, deploymentUnit?: DeploymentUnit
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -88,7 +90,7 @@ export const makeTenantDefault = (tenantName: string): Promise<AxiosResponse> =>
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -111,7 +113,7 @@ export const checkDuplicateTenants = (tenantName: string): Promise<AxiosResponse
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -157,7 +159,7 @@ export const getAssociatedTenants = (
         .then((response: AxiosResponse) => {
             return Promise.resolve(response?.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error?.response?.data);
         });
 };

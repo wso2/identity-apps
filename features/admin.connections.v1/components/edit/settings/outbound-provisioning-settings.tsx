@@ -20,7 +20,9 @@ import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components/authenticator-accordion";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -172,11 +174,11 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                 meta: meta
                             });
                         })
-                        .catch((error: AxiosError) => {
+                        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                             handleGetOutboundProvisioningConnectorMetadataError(error);
                         });
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     if (error.response && error.response.data && error.response.data.description) {
                         dispatch(addAlert({
                             description: t("authenticationProvider:notifications." +
@@ -237,7 +239,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
 
                 onUpdate(identityProvider.id);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 handleUpdateOutboundProvisioningConnectorError(error);
             });
     };
@@ -278,7 +280,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
 
                 onUpdate(identityProvider.id);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,

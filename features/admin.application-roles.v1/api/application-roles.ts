@@ -23,7 +23,9 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import {
     ApplicationRoleGroupsAPIResponseInterface,
@@ -79,7 +81,7 @@ export const getApplicationRolesList = (
         .then((response: AxiosResponse) => {
             return Promise.resolve(response.data as ApplicationRolesResponseInterface);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -101,7 +103,7 @@ export const getAuthorizedAPIList = (appId: string):Promise<AuthorizedAPIListIte
         .then((response: AxiosResponse) => {
             return Promise.resolve(response.data as AuthorizedAPIListItemInterface[]);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -125,7 +127,7 @@ export const createRole = (appId: string, payload: CreateRolePayloadInterface):P
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -154,7 +156,7 @@ export const updateRolePermissions = (
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -177,7 +179,7 @@ export const deleteRole = (appId: string, roleName: string):Promise<any> => {
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -244,7 +246,7 @@ export const createRoleInSharedApplications = (
         .then((response: AxiosResponse) => {
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -343,7 +345,7 @@ export const updateApplicationRoleMappedGroups = (
         .then((response: AxiosResponse) => {
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -413,7 +415,7 @@ export const updateIdentityProviderAssignedGroups = (
         .then((response: AxiosResponse) => {
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -460,7 +462,7 @@ export const getAllApplicationRolesList = ():Promise<ApplicationRoleInterface[]>
         .then((response: AxiosResponse) => {
             return Promise.resolve(response.data.app_roles as ApplicationRoleInterface[]);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };

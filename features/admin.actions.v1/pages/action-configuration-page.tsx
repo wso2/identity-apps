@@ -21,7 +21,9 @@ import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/a
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -91,7 +93,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     const { getLink } = useDocumentation();
 
     const handleSuccess: (operation: string) => void = useHandleSuccess();
-    const handleError: (error: AxiosError, operation: string) => void = useHandleError();
+    const handleError: (error: AxiosError<HttpErrorResponseDataInterface>, operation: string) => void = useHandleError();
 
     const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
     const hasActionCreatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.create);
@@ -384,7 +386,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 .then(() => {
                     handleSuccess(toggleOperation);
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     handleError(error, toggleOperation);
                 })
                 .finally(() => {
@@ -419,7 +421,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 mutateActions();
                 history.push(AppConstants.getPaths().get("ACTIONS"));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 handleError(error, ActionsConstants.DELETE);
             })
             .finally(() => {

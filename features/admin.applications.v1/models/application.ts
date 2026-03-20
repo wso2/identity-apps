@@ -704,6 +704,7 @@ export interface OIDCApplicationConfigurationInterface {
     dynamicClientRegistrationEndpoint?: string;
     mtlsTokenEndpoint?: string;
     mtlsPushedAuthorizationRequestEndpoint?: string;
+    cibaEndpoint?: string;
 }
 
 /**

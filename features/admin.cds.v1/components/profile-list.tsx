@@ -102,7 +102,6 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
             render: (profile: ProfileModel): ReactNode => {
                 const userId:string = profile.user_id;
 
-                // Anonymous
                 if (!userId) {
                     return (
                         <Chip
@@ -115,7 +114,15 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                     );
                 }
 
-                return null;
+                return (
+                    <Chip
+                        size="small"
+                        color="success"
+                        variant="outlined"
+                        label={ t("customerDataService:profiles.list.chips.registered") }
+                        data-testid="registered-username-chip"
+                    />
+                );
             },
             textAlign: "center",
             title: t("customerDataService:profiles.list.columns.user")

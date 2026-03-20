@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { GenericIcon } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -256,7 +258,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                             "success.message")
                     });
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     fireNotificationOnError(error);
                 });
         } else {
@@ -283,7 +285,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                     });
 
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     fireNotificationOnError(error);
                 });
         }

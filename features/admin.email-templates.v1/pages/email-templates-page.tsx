@@ -19,7 +19,9 @@
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
@@ -113,7 +115,7 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
                         ".genericError.message")
                 }));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -220,7 +222,7 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
                         ".genericError.message")
                 }));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert<AlertInterface>({
                         description: error.response.data.description,

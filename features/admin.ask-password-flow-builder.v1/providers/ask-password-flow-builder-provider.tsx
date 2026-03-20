@@ -36,7 +36,9 @@ import {
     UpdateGovernanceConnectorConfigInterface
 } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { GovernanceConnectorUtils } from "@wso2is/admin.server-configurations.v1/utils/governance-connector-utils";
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";
 import { AxiosError } from "axios";
@@ -130,7 +132,7 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
     *
     * @param error - Axios error object.
     */
-    const handleUpdateError = (error: AxiosError) => {
+    const handleUpdateError = (error: AxiosError<HttpErrorResponseDataInterface>) => {
         if (error.response && error.response.data && error.response.data.detail) {
             dispatch(
                 addAlert({
@@ -235,7 +237,7 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
             .then(() => {
                 handleUpdateSuccess();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 handleUpdateError(error);
             }).finally(() => {
                 // Reset the updated state.

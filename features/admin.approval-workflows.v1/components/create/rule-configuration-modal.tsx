@@ -165,21 +165,21 @@ const RuleConfigurationModalContent: FunctionComponent<RuleConfigurationModalCon
                 <ConfirmationModal.Header
                     data-componentid={ `${componentId}-delete-rule-confirmation-header` }
                 >
-                    { t("approvalWorkflows:pageLayout.create.ruleConditions.confirmClear.title") }
+                    { t("approvalWorkflows:pageLayout.create.ruleConditions.confirmDelete.title") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Message
                     attached
                     negative
                     data-componentid={ `${componentId}-delete-rule-confirmation-message` }
                 >
-                    { t("approvalWorkflows:pageLayout.create.ruleConditions.confirmClear.message", {
+                    { t("approvalWorkflows:pageLayout.create.ruleConditions.confirmDelete.message", {
                         operation: operationName
                     }) }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content
                     data-componentid={ `${componentId}-delete-rule-confirmation-content` }
                 >
-                    { t("approvalWorkflows:pageLayout.create.ruleConditions.confirmClear.content") }
+                    { t("approvalWorkflows:pageLayout.create.ruleConditions.confirmDelete.content") }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         </>

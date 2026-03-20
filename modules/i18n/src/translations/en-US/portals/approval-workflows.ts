@@ -294,11 +294,11 @@ export const approvalWorkflows: approvalWorkflowsNS = {
             ruleConditions: {
                 addRule: "Add Rule",
                 configured: "Configured",
-                confirmClear: {
+                confirmDelete: {
                     content: "This action is irreversible and will permanently delete the rule.",
                     message: "If you delete this rule, approval workflow will be always engaged when " +
                         "{{operation}} is triggered. Please proceed with caution.",
-                    title: "Confirm Clear Rule"
+                    title: "Confirm Delete Rule"
                 },
                 editRule: "Edit Rule",
                 engagement: {

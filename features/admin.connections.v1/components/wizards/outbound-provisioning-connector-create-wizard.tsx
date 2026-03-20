@@ -17,7 +17,9 @@
  */
 
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FormApi, FormRenderProps, FormValue } from "@wso2is/form";
 import { useTrigger } from "@wso2is/forms";
@@ -245,7 +247,7 @@ export const OutboundProvisioningConnectorCreateWizard:
 
                     onUpdate(identityProvider.id);
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     handleUpdateOutboundProvisioningConnectorError(error);
                 });
         }, [ newConnector ]);
@@ -264,7 +266,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                 .then((response: OutboundProvisioningConnectorMetaInterface) => {
                     setConnectorMetaData(response);
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     handleGetOutboundProvisioningConnectorMetadataError(error);
                 })
                 .finally(() => {

@@ -42,7 +42,9 @@ import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-store
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, FeatureAccessConfigInterface,
-    IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+    IdentifiableComponentInterface, TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import {
@@ -526,7 +528,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     setApplicationId(createdAppID);
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
 
                 if (error?.response?.status === 403 &&
                 error?.response?.data?.code ===

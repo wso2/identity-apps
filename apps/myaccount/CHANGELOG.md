@@ -1,5 +1,23 @@
 # @wso2is/myaccount
 
+## 3.0.2
+
+### Patch Changes
+
+- [#9849](https://github.com/wso2/identity-apps/pull/9849) [`8773dc284b272d8668f9051c52257549d6db97d5`](https://github.com/wso2/identity-apps/commit/8773dc284b272d8668f9051c52257549d6db97d5) Thanks [@Malith-19](https://github.com/Malith-19)! - Update the password reset confirmation message.
+
+- Updated dependencies [[`8773dc284b272d8668f9051c52257549d6db97d5`](https://github.com/wso2/identity-apps/commit/8773dc284b272d8668f9051c52257549d6db97d5)]:
+  - @wso2is/i18n@2.37.4
+
+## 3.0.1
+
+### Patch Changes
+
+- [#9859](https://github.com/wso2/identity-apps/pull/9859) [`440143c068fbf44bf75a7860f1c754d4aff56a63`](https://github.com/wso2/identity-apps/commit/440143c068fbf44bf75a7860f1c754d4aff56a63) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - Axios and SDK version bump
+
+- Updated dependencies [[`8a1e91278bc6b376e8e82bddbf94f98ceb76f6fc`](https://github.com/wso2/identity-apps/commit/8a1e91278bc6b376e8e82bddbf94f98ceb76f6fc)]:
+  - @wso2is/i18n@2.37.3
+
 ## 3.0.0
 
 ### Major Changes

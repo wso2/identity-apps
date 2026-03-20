@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -29,6 +29,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import { OnboardingFab } from "@wso2is/admin.onboarding.v1/public-api";
 import { OrganizationFeatureDictionaryKeys, OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationManagementConstants } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -792,6 +793,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         data-componentid="application"
                     />
                 </ListLayout>
+                <OnboardingFab />
             </PageLayout>
         </ExtensionTemplatesProvider>
     );

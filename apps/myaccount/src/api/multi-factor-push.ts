@@ -18,6 +18,7 @@
 
 import { AsgardeoSPAClient, HttpClientInstance, HttpRequestConfig } from "@asgardeo/auth-react";
 import { AxiosError, AxiosResponse } from "axios";
+import { HttpErrorResponseDataInterface } from "@wso2is/core/models";
 import { HttpMethods } from "../models";
 import { store } from "../store";
 
@@ -47,7 +48,7 @@ export const initPushAuthenticatorQRCode = (): Promise<any> => {
 
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -69,7 +70,7 @@ export const getPushEnabledDevices = () => {
 
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -94,7 +95,7 @@ export const deletePushAuthRegisteredDevice = (deviceId: string) => {
 
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };

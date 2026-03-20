@@ -18,6 +18,7 @@
 
 import { I18n } from "@wso2is/i18n";
 import { AxiosError } from "axios";
+import { HttpErrorResponseDataInterface } from "@wso2is/core/models";
 import { addAlert } from "./global";
 import { ProfileActionTypes, ProfileBaseActionWithCommonPayload, ToggleSCIMEnabledAction } from "./types/profile";
 import { getAssociations } from "../../api";
@@ -58,7 +59,7 @@ export const getProfileLinkedAccounts = () => (dispatch: any): void => {
         .then((linkedAccountsResponse: LinkedAccountInterface[]) => {
             dispatch(setProfileLinkedAccounts(linkedAccountsResponse));
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             if (error.response && error.response.data && error.response.data.detail) {
                 dispatch(
                     addAlert({

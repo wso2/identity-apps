@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, useEffect } from "react";
@@ -132,7 +134,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                 // Re-fetch the linked accounts list.
                 dispatch(getProfileLinkedAccounts());
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 onAlertFired({
                     description: error?.response?.data?.description ?? t(
                         "myAccount:components.linkedAccounts.notifications.addAssociation.genericError.description"
@@ -204,7 +206,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                 // Re-fetch the linked accounts list.
                 dispatch(getProfileLinkedAccounts());
             })
-            .catch((error: AxiosError & { response: { detail: string } }) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface> & { response: { detail: string } }) => {
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(

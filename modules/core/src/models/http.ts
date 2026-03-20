@@ -148,3 +148,17 @@ export enum HttpCodes {
     OK = 200,
     NO_CONTENT = 204,
 }
+
+/**
+ * Schema of the error response body returned by Identity Server REST APIs.
+ * Used as the generic type parameter for AxiosError<HttpErrorResponseDataInterface>.
+ */
+export interface HttpErrorResponseDataInterface {
+    code?: string;
+    description?: string;
+    detail?: string;
+    message?: string;
+    scimType?: string;
+    status?: string;
+    traceId?: string;
+}

@@ -42,7 +42,8 @@ import {
     IdentifiableComponentInterface,
     MultiValueAttributeInterface,
     RolesInterface,
-    TestableComponentInterface
+    TestableComponentInterface,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -461,7 +462,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
             for (const groupId of groupIds) {
                 updateGroupDetails(groupId, groupData)
-                    .catch((error: AxiosError) => {
+                    .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                         if (!error.response || error.response.status === 401) {
                             setAlert({
                                 description: t(
@@ -634,7 +635,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     setCurrentWizardStep(currentWizardStep + 1);
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 // Axios throws a generic `Network Error` for 401 status.
                 // As a temporary solution, a check to see if a response
                 // is available has be used.

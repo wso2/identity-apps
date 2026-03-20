@@ -52,7 +52,8 @@ import {
     Claim,
     ClaimsGetParams,
     IdentifiableComponentInterface,
-    UniquenessScope
+    UniquenessScope,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -136,7 +137,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
             .then((response: GovernanceConnectorInterface) => {
                 setConnector(response);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     dispatch(
                         addAlert({
@@ -296,7 +297,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
         );
     };
 
-    const handleUpdateError = (error: AxiosError) => {
+    const handleUpdateError = (error: AxiosError<HttpErrorResponseDataInterface>) => {
         if (error.response && error.response.data && error.response.data.detail) {
             dispatch(
                 addAlert({
@@ -393,7 +394,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
                 handleUpdateSuccess();
                 loadConnectorDetails();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 handleUpdateError(error);
             })
             .finally(() => {

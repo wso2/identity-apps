@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import reverse from "lodash-es/reverse";
@@ -91,7 +93,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
 
                 setUserSessions(response);
             })
-            .catch((error: AxiosError & { response: { detail: string } }) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface> & { response: { detail: string } }) => {
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
@@ -166,7 +168,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                     )
                 });
             })
-            .catch((error: AxiosError & { response: { detail: string; } }) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface> & { response: { detail: string; } }) => {
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
@@ -214,7 +216,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                     )
                 });
             })
-            .catch((error: AxiosError & { response: { detail: string; } }) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface> & { response: { detail: string; } }) => {
                 getUserSessions();
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({

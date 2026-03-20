@@ -33,7 +33,9 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { ResourceCreateWizard } from "@wso2is/admin.template-core.v1/components/resource-create-wizard";
 import { DynamicFieldInterface, DynamicFormInterface } from "@wso2is/admin.template-core.v1/models/dynamic-fields";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -227,7 +229,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     handleAppCreationComplete(createdAppID);
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error?.response?.status === 403
                     && error?.response?.data?.code === ApplicationManagementConstants
                         .ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {

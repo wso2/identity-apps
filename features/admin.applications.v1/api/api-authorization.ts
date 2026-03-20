@@ -19,7 +19,9 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
 /**
@@ -67,7 +69,7 @@ export const authorizeAPI = (appId: string, apiId: string, scopes: string[], pol
             }
 
             return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 error.message,
                 error.stack,
@@ -110,7 +112,7 @@ export const removeAuthorizedAPI = (appId: string, apiId: string): Promise<null 
             }
 
             return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 error.message,
                 error.stack,
@@ -158,7 +160,7 @@ export const patchScopesOfAuthorizedAPI = (appId: string, apiId: string, addedSc
             }
 
             return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 error.message,
                 error.stack,

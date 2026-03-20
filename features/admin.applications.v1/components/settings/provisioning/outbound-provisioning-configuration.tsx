@@ -24,7 +24,9 @@ import {
     IdentityProviderInterface,
     IdentityProviderListResponseInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
-import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -149,7 +151,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
 
                 onUpdate(application.id);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -250,7 +252,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                 onUpdate(application.id);
                 setShowDeleteConfirmationModal(false);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
 
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(setAlert({

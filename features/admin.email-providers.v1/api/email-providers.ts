@@ -24,7 +24,9 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { useSelector } from "react-redux";
 import { EmailProviderConstants } from "../constants";
@@ -131,7 +133,7 @@ export const updateEmailProviderConfigurations = (data: EmailProviderConfigAPIRe
             }
 
             return Promise.resolve(response.data as EmailProviderConfigAPIResponseInterface);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             const errorMessage: string = EmailProviderConstants.ErrorMessages.EMAIL_PROVIDER_CONFIG_UPDATE_ERROR_CODE
                 .getErrorMessage();
 
@@ -173,7 +175,7 @@ export const deleteEmailProviderConfigurations = (enableOldUIForEmailProvider: b
             }
 
             return Promise.resolve(response.data as EmailProviderConfigAPIResponseInterface);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             if (error.response?.data?.code === EmailProviderConstants.EMAIL_PROVIDER_CONFIG_NOT_FOUND_ERROR_CODE) {
                 // Error due to the email provider configurations not existing. This is expected and should throw error.
                 return Promise.resolve(null);

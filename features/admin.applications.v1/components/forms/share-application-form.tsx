@@ -38,7 +38,8 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     FeatureAccessConfigInterface,
-    IdentifiableComponentInterface
+    IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -472,7 +473,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         );
                     }
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     if (error.response.data.message) {
                         dispatch(
                             addAlert({
@@ -530,7 +531,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                             })
                         );
                     })
-                    .catch((error: AxiosError) => {
+                    .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                         if (error.response.data.message) {
                             dispatch(
                                 addAlert({
@@ -580,7 +581,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         })
                     );
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     if (error?.response?.data?.message) {
                         dispatch(
                             addAlert({

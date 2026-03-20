@@ -16,4 +16,9 @@
  * under the License.
  */
 
+export { default as useCDSConfig } from "./hooks/use-config";
+export * from "./hooks/use-config";
+export * from "./hooks/use-profiles";
+export * from "./models/config";
+export * from "./models/profiles";
 export * from "./pages/profiles";

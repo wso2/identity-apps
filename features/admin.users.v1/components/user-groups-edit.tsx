@@ -26,7 +26,8 @@ import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-st
 import {
     AlertInterface,
     AlertLevels,
-    ProfileInfoInterface
+    ProfileInfoInterface,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
@@ -290,7 +291,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                 handleCloseAddNewGroupModal();
                 handleUserUpdate(user.id);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error?.response?.status === 404) {
                     return;
                 }

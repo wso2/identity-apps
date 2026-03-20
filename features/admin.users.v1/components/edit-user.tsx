@@ -16,7 +16,11 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import { ProfileListItem } from "@wso2is/admin.cds.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -29,7 +33,8 @@ import {
     AlertInterface,
     AlertLevels,
     IdentifiableComponentInterface,
-    ProfileInfoInterface
+    ProfileInfoInterface,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Message, ResourceTab } from "@wso2is/react-components";
@@ -77,6 +82,10 @@ interface EditUserPropsInterface extends IdentifiableComponentInterface {
      * Should only be true in the console settings administrator edit view.
      */
     enableConsoleAdminRole?: boolean;
+    /**
+     * Linked CDS profile for this user, if any.
+     */
+    linkedCDSProfile?: ProfileListItem;
 }
 
 /**
@@ -95,7 +104,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         isLoading,
         isReadOnly = false,
         isReadOnlyUserStore = false,
-        enableConsoleAdminRole = false
+        enableConsoleAdminRole = false,
+        linkedCDSProfile
     } = props;
 
     const { t } = useTranslation();
@@ -168,7 +178,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                     setIsSelectedSuperAdmin(true);
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
 
                 setHideTermination(true);
 
@@ -219,6 +229,26 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             menuItem: t("users:editUser.tab.menuItems.0"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
+                    { linkedCDSProfile && (
+                        <Alert
+                            severity="info"
+                            sx={ { mb: 2 } }
+                            data-componentid="cds-linked-profile-banner"
+                        >
+                            { t("customerDataService:profiles.linkedUser.info") }
+                            { " " }
+                            <a
+                                role="button"
+                                style={ { cursor: "pointer", textDecoration: "underline" } }
+                                onClick={ (): void => history.push(
+                                    AppConstants.getPaths().get("PROFILE")?.replace(
+                                        ":id", linkedCDSProfile.profile_id)
+                                ) }
+                            >
+                                { t("customerDataService:profiles.linkedUser.action") }
+                            </a>
+                        </Alert>
+                    ) }
                     <UserProfile
                         adminUsername={ adminUsername }
                         onAlertFired={ handleAlerts }
@@ -325,7 +355,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         isUserStoresLoading,
         isReadOnlyUserStore,
         isUserManagedByParentOrg,
-        enableConsoleAdminRole
+        enableConsoleAdminRole,
+        linkedCDSProfile
     ]);
 
     return (
