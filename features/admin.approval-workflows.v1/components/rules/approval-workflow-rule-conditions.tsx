@@ -16,178 +16,27 @@
  * under the License.
  */
 
-import Alert from "@oxygen-ui/react/Alert";
-import AlertTitle from "@oxygen-ui/react/AlertTitle";
-import Autocomplete, {
-    AutocompleteRenderInputParams
-} from "@oxygen-ui/react/Autocomplete";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
-import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Divider from "@oxygen-ui/react/Divider";
-import Fab from "@oxygen-ui/react/Fab";
-import FormControl from "@oxygen-ui/react/FormControl";
-import Link from "@oxygen-ui/react/Link";
-import { ListItemProps } from "@oxygen-ui/react/ListItem";
-import MenuItem from "@oxygen-ui/react/MenuItem";
-import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
-import TextField from "@oxygen-ui/react/TextField";
-import { MinusIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
-import { AppState } from "@wso2is/admin.core.v1/store";
+import { PlusIcon } from "@oxygen-ui/react-icons";
 import { useRulesContext } from "@wso2is/admin.rules.v1/hooks/use-rules-context";
-import {
-    ConditionExpressionMetaInterface,
-    ExpressionValueInterface,
-    LinkInterface,
-    ListDataInterface
-} from "@wso2is/admin.rules.v1/models/meta";
-import { ResourceInterface } from "@wso2is/admin.rules.v1/models/resource";
 import {
     AdjoiningOperatorTypes,
     ConditionExpressionInterface,
-    ExpressionFieldTypes,
     RuleConditionInterface,
     RuleConditionsInterface,
     RuleInterface
 } from "@wso2is/admin.rules.v1/models/rules";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import debounce from "lodash-es/debounce";
 import React, {
-    ChangeEvent,
-    Dispatch,
     Fragment,
     FunctionComponent,
-    HTMLAttributes,
-    ReactElement,
-    useCallback,
-    useEffect,
-    useMemo,
-    useState
+    ReactElement
 } from "react";
-import { Trans, useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import AutoCompleteRenderOption from "./auto-complete-render-option";
-import RoleAudienceValueSelector from "./role-audience-value-selector";
-import WorkflowClaimSelector, { WorkflowClaimOptionInterface } from "./workflow-claim-selector";
-import { APPROVAL_WORKFLOW_RULE_FIELDS } from "../../constants/approval-workflow-constants";
-import useGetWorkflowResources from "../../hooks/use-get-workflow-resources";
-import { normalizeResourceResponse } from "../../utils/resource-utils";
-import { normalizeUserstoreList } from "../../utils/userstore-utils";
-import {
-    WorkflowClaimFieldGroupInterface,
-    WorkflowClaimGroupFieldType,
-    buildWorkflowClaimMetaGroups,
-    getClaimUriFromWorkflowClaimField,
-    getWorkflowClaimDisplayName,
-    getWorkflowClaimGroupFromField,
-    isWorkflowClaimGroupField,
-    isWorkflowClaimMeta
-} from "../../utils/workflow-claim-utils";
+import { useTranslation } from "react-i18next";
+import ApprovalWorkflowRuleExpression from "./approval-workflow-rule-expression";
 import "./approval-workflow-rule-conditions.scss";
-
-/**
- * Normalizes resource items, applying userstore-specific normalization when applicable.
- *
- * @param items - Raw resource items.
- * @param initialResourcesLoadUrl - The URL used to load resources.
- * @param systemReservedUserStores - List of system-reserved userstore names to filter out.
- * @returns Processed resource items.
- */
-const processResourceItems = (
-    items: ResourceInterface[],
-    initialResourcesLoadUrl: string,
-    systemReservedUserStores: string[]
-): ResourceInterface[] => {
-    if (initialResourcesLoadUrl?.toLowerCase().includes("/userstores")) {
-        return normalizeUserstoreList(items, systemReservedUserStores);
-    }
-
-    return items;
-};
-
-/**
- * Value input autocomplete options interface.
- */
-interface ValueInputAutocompleteOptionsInterface {
-    id: string;
-    label: string;
-    audience?: string;
-    audienceDisplay?: string;
-    isDisabled?: boolean;
-}
-
-/**
- * Field select options interface.
- */
-interface FieldSelectionOptionInterface {
-    displayName: string;
-    name: string;
-}
-
-/**
- * Component common props interface.
- */
-interface ComponentCommonPropsInterface extends IdentifiableComponentInterface {
-    conditionId: string;
-    expressionId: string;
-    expressionValue: string;
-    ruleId: string;
-}
-
-/**
- * Condition value input props interface.
- */
-interface ConditionValueInputProps extends ComponentCommonPropsInterface {
-    metaValue: ExpressionValueInterface;
-    findMetaValuesAgainst: ConditionExpressionMetaInterface;
-    setIsResourceMissing: Dispatch<React.SetStateAction<boolean>>;
-    hiddenResources?: string[];
-    hiddenValues?: string[];
-    readonly?: boolean;
-}
-
-/**
- * Resource list select props interface.
- */
-interface ResourceListSelectProps extends ComponentCommonPropsInterface {
-    filterBaseResourcesUrl: string;
-    findMetaValuesAgainst: ConditionExpressionMetaInterface;
-    initialResourcesLoadUrl: string;
-    setIsResourceMissing: Dispatch<React.SetStateAction<boolean>>;
-    hiddenResources?: string[];
-    readonly?: boolean;
-}
-
-/**
- * Value input autocomplete props interface.
- */
-interface ValueInputAutocompleteProps extends ComponentCommonPropsInterface {
-    resourceDetails: ResourceInterface;
-    valueReferenceAttribute: string;
-    valueDisplayAttribute: string;
-    initialResourcesLoadUrl: string;
-    filterBaseResourcesUrl: string;
-    shouldFetch: boolean;
-    hiddenResources?: string[];
-    showClearFilter?: boolean;
-    readonly?: boolean;
-}
-
-/**
- * Rule expression component props interface.
- */
-interface RuleExpressionComponentProps extends IdentifiableComponentInterface {
-    expression: ConditionExpressionInterface;
-    ruleId: string;
-    conditionId: string;
-    index: number;
-    isConditionLast: boolean;
-    isConditionExpressionRemovable: boolean;
-    hiddenConditions?: string[];
-    hiddenResources?: string[];
-    hiddenValues?: string[];
-    readonly?: boolean;
-}
 
 /**
  * Props interface of {@link ApprovalWorkflowRuleConditions}
@@ -195,6 +44,7 @@ interface RuleExpressionComponentProps extends IdentifiableComponentInterface {
 export interface ApprovalWorkflowRuleConditionsPropsInterface extends IdentifiableComponentInterface {
     readonly?: boolean;
     rule: RuleInterface;
+    submissionAttempted?: boolean;
 }
 
 /**
@@ -209,17 +59,12 @@ export interface ApprovalWorkflowRuleConditionsPropsInterface extends Identifiab
 const ApprovalWorkflowRuleConditions: FunctionComponent<ApprovalWorkflowRuleConditionsPropsInterface> = ({
     ["data-componentid"]: componentId = "approval-workflow-rules-condition",
     readonly,
-    rule: ruleInstance
+    rule: ruleInstance,
+    submissionAttempted
 }: ApprovalWorkflowRuleConditionsPropsInterface): ReactElement => {
     const ruleConditions: RuleConditionsInterface = ruleInstance.rules;
 
-    const {
-        addNewRuleConditionExpression,
-        conditionExpressionsMeta,
-        updateConditionExpression,
-        removeRuleConditionExpression,
-        hidden
-    } = useRulesContext();
+    const { addNewRuleConditionExpression } = useRulesContext();
 
     const { t } = useTranslation();
 
@@ -1149,10 +994,8 @@ const ApprovalWorkflowRuleConditions: FunctionComponent<ApprovalWorkflowRuleCond
                                                         condition.expressions.length > 1 ||
                                                         ruleInstance.rules.length > 1
                                                     }
-                                                    hiddenConditions={ hidden?.conditions }
-                                                    hiddenResources={ hidden?.resources }
-                                                    hiddenValues={ hidden?.values }
                                                     readonly={ readonly }
+                                                    submissionAttempted={ submissionAttempted }
                                                 />
                                             </Box>
                                         )

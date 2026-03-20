@@ -36,7 +36,16 @@ import {
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEqual from "lodash-es/isEqual";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
+import React, {
+    FunctionComponent,
+    MutableRefObject,
+    ReactElement,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import "../../pages/approval-workflow-edit-page.scss";
@@ -439,6 +448,61 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
             return updatedRules;
         });
     };
+
+    /**
+     * Builds a mapping from operation value to its persisted association ID.
+     */
+    const operationAssociationMap: Record<string, string> = useMemo(() => {
+        const map: Record<string, string> = {};
+
+        operationDetails?.forEach((op: WorkflowOperations) => {
+            map[op.operation] = op.associationId;
+        });
+
+        return map;
+    }, [ operationDetails ]);
+
+    /**
+     * Callback invoked after the rule modal successfully creates or updates an association.
+     * Updates local state without triggering a full data refresh to preserve unsaved selections.
+     */
+    const handleAssociationSaved: (
+        operationValue: string,
+        savedAssociationId: string,
+        rule: RuleWithoutIdInterface | null
+    ) => void = useCallback(
+        (operationValue: string, savedAssociationId: string, rule: RuleWithoutIdInterface | null): void => {
+            // Add to operationDetails if it's a newly created association.
+            setOperationDetails((prev: WorkflowOperations[]) => {
+                if (!prev) return [ { associationId: savedAssociationId, operation: operationValue } ];
+
+                const exists: boolean = prev.some(
+                    (op: WorkflowOperations) => op.operation === operationValue
+                );
+
+                if (exists) return prev;
+
+                return [ ...prev, { associationId: savedAssociationId, operation: operationValue } ];
+            });
+
+            // Update the baseline so the bottom "Update" button doesn't re-save this rule.
+            setInitialOperationRules((prev: Record<string, RuleWithoutIdInterface>) => {
+                const updated: Record<string, RuleWithoutIdInterface> = { ...prev };
+
+                if (rule && Object.keys(rule).length > 0) {
+                    updated[operationValue] = rule;
+                } else {
+                    delete updated[operationValue];
+                }
+
+                return updated;
+            });
+
+            // Refresh the form's workflow associations for validation purposes.
+            workflowOperationsDetailsFormRef?.current?.refreshWorkflowAssociations();
+        },
+        []
+    );
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert(alert));
     };
@@ -756,6 +820,8 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                                 } }
                                 operationRules={ operationRules }
                                 onRuleUpdate={ handleRuleUpdate }
+                                operationAssociationMap={ operationAssociationMap }
+                                onAssociationSaved={ handleAssociationSaved }
                                 data-componentid={ `${componentId}-operations-details-form` }
                                 isEditPage={ true }
                                 workflowId={ approvalWorkflowId }

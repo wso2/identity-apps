@@ -197,6 +197,7 @@ export interface approvalWorkflowsNS {
                 fields: {
                     initiatorClaim: string,
                     userClaim: string,
+                    valueRequired: string,
                     workflowClaimSelector: string
                 }
             }

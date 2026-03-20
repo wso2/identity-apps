@@ -68,6 +68,11 @@ export interface ApprovalWorkflowRulesPropsInterface extends IdentifiableCompone
      * Optional custom text for the if condition.
      */
     ifText?: string;
+
+    /**
+     * Whether a save has been attempted, used to trigger validation errors.
+     */
+    submissionAttempted?: boolean;
 }
 
 /**
@@ -81,7 +86,8 @@ const ApprovalWorkflowRules: FunctionComponent<ApprovalWorkflowRulesPropsInterfa
     readonly = false,
     onRemoveRule,
     executeText,
-    ifText
+    ifText,
+    submissionAttempted
 }: ApprovalWorkflowRulesPropsInterface): ReactElement => {
 
     const {
@@ -162,7 +168,11 @@ const ApprovalWorkflowRules: FunctionComponent<ApprovalWorkflowRulesPropsInterfa
                                 </Typography>
                             </Grid>
                         </Grid>
-                        <ApprovalWorkflowRuleConditions rule={ rule } readonly={ readonly } />
+                        <ApprovalWorkflowRuleConditions
+                            rule={ rule }
+                            readonly={ readonly }
+                            submissionAttempted={ submissionAttempted }
+                        />
                         { ruleExecuteCollection?.rules?.length > 1 || !disableLastRuleDelete && !readonly && (
                             <Fab
                                 color="error"

@@ -17,6 +17,7 @@
  */
 
 import { ResourceInterface } from "@wso2is/admin.rules.v1/models/resource";
+import { normalizeUserstoreList } from "./userstore-utils";
 
 /**
  * Interface for normalized resource list response.
@@ -26,6 +27,26 @@ export interface NormalizedResourceList {
     items: ResourceInterface[];
     totalResults: number;
 }
+
+/**
+ * Normalizes resource items, applying userstore-specific normalization when applicable.
+ *
+ * @param items - Raw resource items.
+ * @param initialResourcesLoadUrl - The URL used to load resources.
+ * @param systemReservedUserStores - List of system-reserved userstore names to filter out.
+ * @returns Processed resource items.
+ */
+export const processResourceItems = (
+    items: ResourceInterface[],
+    initialResourcesLoadUrl: string,
+    systemReservedUserStores: string[]
+): ResourceInterface[] => {
+    if (initialResourcesLoadUrl?.toLowerCase().includes("/userstores")) {
+        return normalizeUserstoreList(items, systemReservedUserStores);
+    }
+
+    return items;
+};
 
 /**
  * Normalizes different API response shapes into a standard format.

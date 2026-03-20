@@ -71,6 +71,7 @@ interface RoleAudienceValueSelectorPropsInterface extends IdentifiableComponentI
     ruleId: string;
     setIsResourceMissing: Dispatch<React.SetStateAction<boolean>>;
     readonly?: boolean;
+    showValidationError?: boolean;
 }
 
 /**
@@ -115,7 +116,8 @@ const RoleAudienceValueSelector: FunctionComponent<RoleAudienceValueSelectorProp
     initialResourcesLoadUrl,
     ruleId,
     setIsResourceMissing,
-    readonly: isReadonly
+    readonly: isReadonly,
+    showValidationError = false
 }: RoleAudienceValueSelectorPropsInterface): ReactElement => {
     const { t } = useTranslation();
     const { updateConditionExpression } = useRulesContext();
@@ -131,6 +133,12 @@ const RoleAudienceValueSelector: FunctionComponent<RoleAudienceValueSelectorProp
     const [ inputValueLabel, setInputValueLabel ] = useState<string | null>(null);
     const [ debouncedSearchQuery, setDebouncedSearchQuery ] = useState<string>(null);
     const [ isAutocompleteOpen, setIsAutocompleteOpen ] = useState<boolean>(false);
+
+    useEffect(() => {
+        setAudienceType(deriveInitialAudienceType(expressionValue, organizationId));
+        setInputValue(null);
+        setInputValueLabel(null);
+    }, [ expressionValue, organizationId ]);
 
     const MORE_ITEMS: string = "more-items";
 
@@ -306,6 +314,7 @@ const RoleAudienceValueSelector: FunctionComponent<RoleAudienceValueSelectorProp
                     disabled={ isReadonly }
                     value={ audienceType ?? "" }
                     displayEmpty
+                    error={ showValidationError }
                     data-componentid={ `${componentId}-audience-type-select` }
                     MenuProps={ {
                         disablePortal: false,
@@ -391,6 +400,14 @@ const RoleAudienceValueSelector: FunctionComponent<RoleAudienceValueSelectorProp
                                 setInputValue(null);
                                 setInputValueLabel("");
                                 setDebouncedSearchQuery(null);
+                                updateConditionExpression(
+                                    RoleAudienceTypes.APPLICATION,
+                                    ruleId,
+                                    conditionId,
+                                    expressionId,
+                                    ExpressionFieldTypes.Value,
+                                    true
+                                );
                             }
                         } }
                         inputValue={ inputValueLabel ?? "" }

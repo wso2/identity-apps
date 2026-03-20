@@ -27,14 +27,26 @@ import Typography from "@oxygen-ui/react/Typography";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import { useRulesContext } from "@wso2is/admin.rules.v1/hooks/use-rules-context";
 import { ConditionExpressionMetaInterface } from "@wso2is/admin.rules.v1/models/meta";
-import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
+import {
+    ConditionExpressionWithoutIdInterface,
+    RuleConditionWithoutIdInterface,
+    RuleWithoutIdInterface
+} from "@wso2is/admin.rules.v1/models/rules";
 import { RulesProvider } from "@wso2is/admin.rules.v1/providers/rules-provider";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import {
+    addWorkflowAssociation,
+    updateWorkflowAssociationById
+} from "../../api/workflow-associations";
 import { FLOW_TYPE, OPERATION_FIELD_MAPPING } from "../../constants/approval-workflow-constants";
 import { DropdownPropsInterface } from "../../models/ui";
+import { WorkflowAssociationPayload } from "../../models/workflow-associations";
 import {
     INITIATOR_CLAIMS_FIELD,
     USER_CLAIMS_FIELD,
@@ -64,6 +76,25 @@ interface RuleConfigurationModalPropsInterface extends IdentifiableComponentInte
      * Callback when modal is closed.
      */
     onClose: () => void;
+    /**
+     * Whether the modal is in edit mode (edit page context).
+     */
+    isEditMode?: boolean;
+    /**
+     * Association ID if the operation already has a persisted association.
+     */
+    associationId?: string;
+    /**
+     * Workflow ID for creating/updating associations.
+     */
+    workflowId?: string;
+    /**
+     * Callback after a successful backend save (create or update).
+     * @param operationValue - The operation value.
+     * @param associationId - The association ID (new or existing).
+     * @param rule - The saved rule.
+     */
+    onAssociationSaved?: (operationValue: string, associationId: string, rule: RuleWithoutIdInterface | null) => void;
 }
 
 /**
@@ -73,6 +104,26 @@ interface RuleConfigurationModalContentPropsInterface extends IdentifiableCompon
     onSave: (rule: RuleWithoutIdInterface | null) => void;
     onClose: () => void;
     operationName: string;
+    /**
+     * Whether the modal is in edit mode (edit page context).
+     */
+    isEditMode?: boolean;
+    /**
+     * The operation value (e.g., "ADD_USER").
+     */
+    operationValue: string;
+    /**
+     * Association ID if the operation already has a persisted association.
+     */
+    associationId?: string;
+    /**
+     * Workflow ID for creating/updating associations.
+     */
+    workflowId?: string;
+    /**
+     * Callback after a successful backend save.
+     */
+    onAssociationSaved?: (operationValue: string, associationId: string, rule: RuleWithoutIdInterface | null) => void;
 }
 
 /**
@@ -87,22 +138,85 @@ const RuleConfigurationModalContent: FunctionComponent<RuleConfigurationModalCon
         onSave,
         onClose,
         operationName,
+        isEditMode,
+        operationValue,
+        associationId,
+        workflowId,
+        onAssociationSaved,
         ["data-componentid"]: componentId = "rule-configuration-modal-content"
     } = props;
 
     const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
     const { ruleInstance, removeRule } = useRulesContext();
     const [ pendingDeleteRuleId, setPendingDeleteRuleId ] = useState<string | null>(null);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ submissionAttempted, setSubmissionAttempted ] = useState<boolean>(false);
 
     /**
      * Handles saving the configured rule.
+     * In create mode: saves locally. In edit mode: persists to backend.
      */
     const handleSave = (): void => {
-        if (ruleInstance) {
-            onSave(ruleInstance as RuleWithoutIdInterface);
-        } else {
-            onSave(null);
+        const rule: RuleWithoutIdInterface | null = ruleInstance
+            ? (ruleInstance as RuleWithoutIdInterface)
+            : null;
+
+        const hasEmptyExpressionValues: boolean = !!(rule?.rules?.some(
+            (condition: RuleConditionWithoutIdInterface) =>
+                condition.expressions?.some(
+                    (expr: ConditionExpressionWithoutIdInterface) => !expr.value?.trim()
+                )
+        ));
+
+        if (hasEmptyExpressionValues) {
+            setSubmissionAttempted(true);
+
+            return;
         }
+
+        if (!isEditMode) {
+            onSave(rule);
+
+            return;
+        }
+
+        setIsSubmitting(true);
+
+        const payload: WorkflowAssociationPayload = {
+            associationName: `Association for ${operationValue}`,
+            operation: operationValue,
+            workflowId: workflowId,
+            ...(rule && rule.rules && rule.rules.length > 0 ? { rule } : {})
+        };
+
+        const apiCall: Promise<any> = associationId
+            ? updateWorkflowAssociationById(associationId, payload)
+            : addWorkflowAssociation(payload);
+
+        apiCall
+            .then((response: any) => {
+                const savedAssociationId: string = associationId || response?.id;
+
+                onSave(rule);
+                onAssociationSaved?.(operationValue, savedAssociationId, rule);
+            })
+            .catch(() => {
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "approvalWorkflows:notifications.updateApprovalWorkflow.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "approvalWorkflows:notifications.updateApprovalWorkflow.genericError.message"
+                        )
+                    })
+                );
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
     };
 
     /**
@@ -114,14 +228,53 @@ const RuleConfigurationModalContent: FunctionComponent<RuleConfigurationModalCon
 
     /**
      * Confirms removal of the rule after user accepts the confirmation.
-     * After removing the rule, save the empty state and close the modal.
+     * In edit mode with an existing association, updates the backend to remove the rule.
      */
     const handleConfirmRemoveRule = (): void => {
-        if (pendingDeleteRuleId) {
-            removeRule(pendingDeleteRuleId);
-            onSave(null);
+        if (!pendingDeleteRuleId) {
+            return;
         }
-        setPendingDeleteRuleId(null);
+
+        removeRule(pendingDeleteRuleId);
+
+        if (!isEditMode || !associationId) {
+            onSave(null);
+            setPendingDeleteRuleId(null);
+
+            return;
+        }
+
+        setIsSubmitting(true);
+
+        const payload: WorkflowAssociationPayload = {
+            associationName: `Association for ${operationValue}`,
+            operation: operationValue,
+            rule: {} as RuleWithoutIdInterface,
+            workflowId: workflowId
+        };
+
+        updateWorkflowAssociationById(associationId, payload)
+            .then(() => {
+                onSave(null);
+                onAssociationSaved?.(operationValue, associationId, null);
+            })
+            .catch(() => {
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "approvalWorkflows:notifications.updateApprovalWorkflow.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "approvalWorkflows:notifications.updateApprovalWorkflow.genericError.message"
+                        )
+                    })
+                );
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+                setPendingDeleteRuleId(null);
+            });
     };
 
     return (
@@ -135,6 +288,7 @@ const RuleConfigurationModalContent: FunctionComponent<RuleConfigurationModalCon
                     disableLastRuleDelete={ false }
                     onRemoveRule={ handleRemoveRuleRequest }
                     executeText="Engage"
+                    submissionAttempted={ submissionAttempted }
                 />
             </DialogContent>
             <DialogActions>
@@ -150,9 +304,11 @@ const RuleConfigurationModalContent: FunctionComponent<RuleConfigurationModalCon
                         <Button
                             variant="contained"
                             onClick={ handleSave }
+                            disabled={ isSubmitting }
+                            loading={ isSubmitting }
                             data-componentid={ `${componentId}-finish-button` }
                         >
-                            { t("common:finish") }
+                            { isEditMode ? t("common:update") : t("common:finish") }
                         </Button>
                     </Stack>
                 </Box>
@@ -203,6 +359,10 @@ const RuleConfigurationModal: FunctionComponent<RuleConfigurationModalPropsInter
         initialRule,
         onSave,
         onClose,
+        isEditMode,
+        associationId,
+        workflowId,
+        onAssociationSaved,
         ["data-componentid"]: componentId = "rule-configuration-modal"
     } = props;
 
@@ -291,6 +451,11 @@ const RuleConfigurationModal: FunctionComponent<RuleConfigurationModalPropsInter
                         onSave={ onSave }
                         onClose={ onClose }
                         operationName={ operation.text }
+                        operationValue={ operation.value }
+                        isEditMode={ isEditMode }
+                        associationId={ associationId }
+                        workflowId={ workflowId }
+                        onAssociationSaved={ onAssociationSaved }
                         data-componentid={ componentId }
                     />
                 </RulesProvider>

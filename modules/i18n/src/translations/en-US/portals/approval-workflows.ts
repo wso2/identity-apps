@@ -309,6 +309,7 @@ export const approvalWorkflows: approvalWorkflowsNS = {
                 fields: {
                     initiatorClaim: "initiator claim",
                     userClaim: "user claim",
+                    valueRequired: "A value is required.",
                     workflowClaimSelector: "Select Claim"
                 },
                 modal: {

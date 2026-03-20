@@ -98,6 +98,15 @@ interface WorkflowOperationsDetailsPropsInterface extends IdentifiableComponentI
      * Callback to update rule for a specific operation.
      */
     onRuleUpdate?: (operationValue: string, rule: RuleWithoutIdInterface | null) => void;
+    /**
+     * Mapping of operation value to its persisted association ID.
+     * Used to determine if an operation has an existing association in edit mode.
+     */
+    operationAssociationMap?: Record<string, string>;
+    /**
+     * Callback after a successful backend save from the rule modal.
+     */
+    onAssociationSaved?: (operationValue: string, associationId: string, rule: RuleWithoutIdInterface | null) => void;
 }
 
 /**
@@ -137,8 +146,11 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 initialValues,
                 isEditPage,
                 onChange,
+                workflowId,
                 operationRules = {},
                 onRuleUpdate,
+                operationAssociationMap,
+                onAssociationSaved,
                 ["data-componentid"]: componentId = "workflow-operations"
             }: WorkflowOperationsDetailsPropsInterface,
             ref: ForwardedRef<WorkflowOperationsDetailsFormRef>
@@ -503,6 +515,10 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                         initialRule={ operationRules?.[editingOperation.value] }
                                         onSave={ handleSaveRule }
                                         onClose={ handleCloseModal }
+                                        isEditMode={ isEditPage }
+                                        associationId={ operationAssociationMap?.[editingOperation.value] }
+                                        workflowId={ workflowId }
+                                        onAssociationSaved={ onAssociationSaved }
                                         data-componentid={ `${componentId}-rule-config-modal` }
                                     />
                                 ) }

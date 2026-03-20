@@ -26,10 +26,10 @@ import { ConditionExpressionMetaInterface, ListDataInterface } from "@wso2is/adm
 import { ExpressionFieldTypes } from "@wso2is/admin.rules.v1/models/rules";
 import { Code } from "@wso2is/react-components";
 import React, {
-    ChangeEvent,
     FunctionComponent,
     HTMLAttributes,
     ReactElement,
+    SyntheticEvent,
     useEffect,
     useState
 } from "react";
@@ -110,7 +110,11 @@ const WorkflowClaimSelector: FunctionComponent<WorkflowClaimSelectorPropsInterfa
             } }
             inputValue={ inputValue }
             value={ selectedClaimOption }
-            onInputChange={ (event: ChangeEvent, value: string, reason: AutocompleteInputChangeReason) => {
+            onInputChange={ (
+                _event: SyntheticEvent<Element, Event>,
+                value: string,
+                reason: AutocompleteInputChangeReason
+            ): void => {
                 if (reason === "reset") {
                     setInputValue(selectedClaimOption?.label ?? "");
 
@@ -119,7 +123,10 @@ const WorkflowClaimSelector: FunctionComponent<WorkflowClaimSelectorPropsInterfa
 
                 setInputValue(value);
             } }
-            onChange={ (event: React.ChangeEvent, value: WorkflowClaimOptionInterface) => {
+            onChange={ (
+                _event: SyntheticEvent<Element, Event>,
+                value: WorkflowClaimOptionInterface | null
+            ): void => {
                 if (!value) {
                     return;
                 }
