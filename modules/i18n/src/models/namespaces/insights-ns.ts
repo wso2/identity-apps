@@ -79,6 +79,7 @@ export interface insightsNS {
             filters: {
                 clientId: string;
                 tenantDomain: string;
+                tenantDomainPlaceholder: string;
             };
         };
     };

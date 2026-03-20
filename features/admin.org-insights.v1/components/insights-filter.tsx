@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import Autocomplete from "@oxygen-ui/react/Autocomplete";
+import TextField from "@oxygen-ui/react/TextField";
 import { HorizontalBarsFilterIcon } from "@oxygen-ui/react-icons";
 import { store } from "@wso2is/admin.core.v1/store";
 import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
@@ -27,7 +29,16 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DropdownChild, Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
 import { LinkButton, Popup, PrimaryButton } from "@wso2is/react-components";
-import React, { ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
+import debounce from "lodash-es/debounce";
+import React, {
+    ReactElement,
+    ReactNode,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { getFilterAttributeListByActivityType } from "../config/org-insights";
@@ -39,8 +50,19 @@ import {
     OnboardingMethodFilterValue
 } from "../models/insights";
 import { getAllDisabledFeaturesForInsights } from "../utils/insights";
+import "./insights-org-autocomplete.scss";
 
-const dropdownInputRequiredAttributesForFilterValue: string[] = [ "onboardingMethod", "authenticator", "tenantDomain" ];
+const dropdownInputRequiredAttributesForFilterValue: string[] = [ "onboardingMethod", "authenticator" ];
+
+const SUB_ORG_FETCH_LIMIT: number = 100;
+
+/**
+ * Interface for organization options used in the Autocomplete component.
+ */
+interface OrgOptionInterface {
+    label: string;
+    value: string;
+}
 
 const filterValueDropdownItems: Record<string,DropdownChild[]> = {
     "authenticator": [
@@ -225,47 +247,58 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
 
     const { t } = useTranslation();
 
-    const SUB_ORG_FETCH_LIMIT: number = 100;
-
-    const { data: organizationsData } = useGetOrganizations<OrganizationListInterface>(
-        selectedActivityType === ActivityType.M2M, // shouldFetch
-        "status eq ACTIVE",                        // filter
-        SUB_ORG_FETCH_LIMIT,                       // limit
-        null,                                      // after (no cursor pagination)
-        null,                                      // before (no cursor pagination)
-        true,                                      // recursive
-        false                                      // isRoot
-    );
-
-    const effectiveFilterValueDropdownItems: Record<string, DropdownChild[]> = useMemo(
-        (): Record<string, DropdownChild[]> => {
-            const items: Record<string, DropdownChild[]> = { ...filterValueDropdownItems };
-            const mainOrgDomain: string = store.getState().auth.tenantDomain;
-            const orgItems: DropdownChild[] = [
-                { key: 0, text: mainOrgDomain, value: mainOrgDomain }
-            ];
-
-            if (organizationsData?.organizations) {
-                organizationsData.organizations.forEach(
-                    (org: OrganizationInterface, index: number) => {
-                        orgItems.push({ key: index + 1, text: org.name, value: org.id });
-                    }
-                );
-            }
-
-            items["tenantDomain"] = orgItems;
-
-            return items;
-        }, [ organizationsData ]
-    );
-
     const [ isFilteringModalOpen, setIsFilteringModalOpen ] = useState<boolean>(false);
     const [ isFiltersReset, setIsFiltersReset ] = useState<boolean>(false);
     const [ selectedFilterAttribute, setSelectedFilterAttribute ] = useState<string>(
         getFilterAttributeListByActivityType(selectedActivityType)?.[0].value
     );
-    const [ selectedFilterCondition,setSelectedFilterCondition ] = useState<string>(filterConditions[0].value);
+    const [ selectedFilterCondition, setSelectedFilterCondition ] = useState<string>(
+        filterConditions[0].value
+    );
     const [ selectedFilterValue, setSelectedFilterValue ] = useState<string>("");
+    const [ orgSearchQuery, setOrgSearchQuery ] = useState<string>("");
+
+    const orgFilter: string = orgSearchQuery
+        ? `name co ${orgSearchQuery}`
+        : "status eq ACTIVE";
+
+    const {
+        data: organizationsData,
+        isLoading: isOrganizationsLoading
+    } = useGetOrganizations<OrganizationListInterface>(
+        selectedActivityType === ActivityType.M2M
+            && selectedFilterAttribute === "tenantDomain", 
+        orgFilter,                                        
+        SUB_ORG_FETCH_LIMIT,                               
+        null,                                              
+        null,                                             
+        true,                                              
+        false                                             
+    );
+
+    const organizationOptions: OrgOptionInterface[] = useMemo(
+        (): OrgOptionInterface[] => {
+            const mainOrgDomain: string = store.getState().auth.tenantDomain;
+            const options: OrgOptionInterface[] = [
+                { label: mainOrgDomain, value: mainOrgDomain }
+            ];
+
+            if (organizationsData?.organizations) {
+                organizationsData.organizations.forEach((org: OrganizationInterface) => {
+                    options.push({ label: org.name, value: org.id });
+                });
+            }
+
+            return options;
+        }, [ organizationsData ]
+    );
+
+    const debouncedOrgSearch: (value: string) => void = useCallback(
+        debounce((searchTerm: string): void => {
+            setOrgSearchQuery(searchTerm);
+        }, 300),
+        []
+    );
 
     useEffect(() => {
         setSelectedFilterAttribute(getFilterAttributeListByActivityType(selectedActivityType)?.[0].value);
@@ -273,12 +306,12 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
 
     useEffect(() => {
         setSelectedFilterValue("");
-    },[ selectedFilterAttribute ]);
+        setOrgSearchQuery("");
+    }, [ selectedFilterAttribute ]);
 
     useEffect(() => {
         if (dropdownInputRequiredAttributesForFilterValue.includes(selectedFilterAttribute)) {
-            const currentItems: DropdownChild[] =
-                effectiveFilterValueDropdownItems[selectedFilterAttribute];
+            const currentItems: DropdownChild[] = filterValueDropdownItems[selectedFilterAttribute];
             const currentSelectionStillValid: boolean = currentItems?.some(
                 (item: DropdownChild) => item.value === selectedFilterValue
             );
@@ -287,35 +320,52 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
                 setSelectedFilterValue(currentItems?.[0]?.value);
             }
         }
-    },[ selectedFilterAttribute, effectiveFilterValueDropdownItems ]);
+    }, [ selectedFilterAttribute ]);
+
+    useEffect(() => {
+        if (selectedFilterAttribute === "tenantDomain" && !selectedFilterValue) {
+            setSelectedFilterValue(store.getState().auth.tenantDomain);
+        }
+    }, [ selectedFilterAttribute ]);
 
     const handleFormSubmit = (values: Map<string, FormValue>) => {
-        setSelectedFilterAttribute(values.get("filterAttribute").toString());
-        setSelectedFilterCondition(values.get("filterCondition").toString());
-        setSelectedFilterValue(values.get("filterValue").toString());
+        const filterAttribute: string = values.get("filterAttribute").toString();
+        const filterCondition: string = values.get("filterCondition").toString();
+        const filterValue: string = filterAttribute === "tenantDomain"
+            ? selectedFilterValue
+            : values.get("filterValue").toString();
 
-        const query: string = values.get("filterAttribute")
-            + "+"
-            + values.get("filterCondition")
-            + "+"
-            + values.get("filterValue");
+        setSelectedFilterAttribute(filterAttribute);
+        setSelectedFilterCondition(filterCondition);
+        setSelectedFilterValue(filterValue);
+
+        const query: string = filterAttribute + "+" + filterCondition + "+" + filterValue;
 
         const displayQueryParts: string[] = query.split("+");
 
         const matchingAttribute: Omit<DropdownChild,"key"> =
             getFilterAttributeListByActivityType(selectedActivityType)?.find(
                 (dropdownItem: DropdownChild) =>
-                    dropdownItem.value === values.get("filterAttribute")
+                    dropdownItem.value === filterAttribute
             );
 
-        const matchingValue: DropdownChild = effectiveFilterValueDropdownItems[
-            values.get("filterAttribute").toString()
-        ]?.find((dropdownItem: DropdownChild) =>
-            dropdownItem.value === values.get("filterValue")
-        );
+        if (filterAttribute === "tenantDomain") {
+            const matchingOrg: OrgOptionInterface | undefined = organizationOptions.find(
+                (opt: OrgOptionInterface) => opt.value === filterValue
+            );
 
-        if (matchingValue) {
-            displayQueryParts[2] = "\"" + matchingValue?.text?.toString() + "\"";
+            if (matchingOrg) {
+                displayQueryParts[2] = "\"" + matchingOrg.label + "\"";
+            }
+        } else {
+            const matchingValue: DropdownChild = filterValueDropdownItems[filterAttribute]?.find(
+                (dropdownItem: DropdownChild) =>
+                    dropdownItem.value === filterValue
+            );
+
+            if (matchingValue) {
+                displayQueryParts[2] = "\"" + matchingValue?.text?.toString() + "\"";
+            }
         }
 
         if (matchingAttribute) {
@@ -330,6 +380,7 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
 
     const handleResetFilter = (): void => {
         setSelectedFilterValue("");
+        setOrgSearchQuery("");
         onFilteringQuerySubmitted("", "");
         setIsFiltersReset(true);
     };
@@ -371,6 +422,94 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
                                         value={ selectedFilterAttribute }
                                         data-componentid={ `${ componentId }-attribute-dropdown` }
                                     />
+                                    { selectedFilterAttribute === "tenantDomain" && (
+                                        <Form.Group widths="equal">
+                                            <Field
+                                                children={
+                                                    filterConditions.map(
+                                                        (attribute: DropdownChild, index: number) => {
+                                                            return {
+                                                                key: index,
+                                                                text: attribute.text,
+                                                                value: attribute.value
+                                                            };
+                                                        })
+                                                }
+                                                label={
+                                                    t("console:common.advancedSearch.form.inputs" +
+                                                        ".filterCondition.label")
+                                                }
+                                                name={ "filterCondition" }
+                                                requiredErrorMessage={
+                                                    t("console:common.advancedSearch.form.inputs" +
+                                                        ".filterCondition.validations.empty")
+                                                }
+                                                type="dropdown"
+                                                value={ selectedFilterCondition }
+                                                data-testid={ `${ componentId }-condition-dropdown` }
+                                            />
+                                            <div className="field insights-org-autocomplete">
+                                                <Autocomplete
+                                                    disablePortal
+                                                    fullWidth
+                                                    options={ organizationOptions }
+                                                    getOptionLabel={
+                                                        (option: OrgOptionInterface) => option.label
+                                                    }
+                                                    isOptionEqualToValue={
+                                                        (
+                                                            option: OrgOptionInterface,
+                                                            val: OrgOptionInterface
+                                                        ) => option.value === val.value
+                                                    }
+                                                    value={
+                                                        organizationOptions.find(
+                                                            (opt: OrgOptionInterface) =>
+                                                                opt.value === selectedFilterValue
+                                                        ) || null
+                                                    }
+                                                    onChange={
+                                                        (
+                                                            _event: SyntheticEvent,
+                                                            newValue: OrgOptionInterface | null
+                                                        ): void => {
+                                                            setSelectedFilterValue(
+                                                                newValue?.value ?? ""
+                                                            );
+                                                        }
+                                                    }
+                                                    onInputChange={
+                                                        (
+                                                            _event: SyntheticEvent,
+                                                            inputValue: string
+                                                        ): void => {
+                                                            debouncedOrgSearch(inputValue);
+                                                        }
+                                                    }
+                                                    loading={ isOrganizationsLoading }
+                                                    renderInput={ (params) => (
+                                                        <TextField
+                                                            { ...params }
+                                                            label={
+                                                                t("console:common.advancedSearch" +
+                                                                    ".form.inputs.filterValue.label")
+                                                            }
+                                                            placeholder={
+                                                                t("insights:activityType.m2m" +
+                                                                    ".filters" +
+                                                                    ".tenantDomainPlaceholder")
+                                                            }
+                                                            size="small"
+                                                        />
+                                                    ) }
+                                                    data-componentid={
+                                                        `${ componentId }-org-autocomplete`
+                                                    }
+                                                />
+                                            </div>
+                                        </Form.Group>
+                                    ) }
+                                    { selectedFilterAttribute !== "tenantDomain" && (
                                     <Form.Group widths="equal">
                                         <Field
                                             children={
@@ -394,11 +533,10 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
                                             data-testid={ `${ componentId }-condition-dropdown` }
                                         />
                                         { dropdownInputRequiredAttributesForFilterValue.includes(
-                                            selectedFilterAttribute) ?
-
-                                            (<Field
+                                            selectedFilterAttribute) ? (
+                                            <Field
                                                 children={
-                                                    effectiveFilterValueDropdownItems[selectedFilterAttribute]?.map(
+                                                    filterValueDropdownItems[selectedFilterAttribute]?.map(
                                                         (attribute: DropdownChild, index: number) => {
                                                             return {
                                                                 key: index,
@@ -419,10 +557,10 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
                                                 }
                                                 value={ selectedFilterValue }
                                                 type="dropdown"
-                                                search={ selectedFilterAttribute === "tenantDomain" }
                                                 data-testid={ `${ componentId }-value-dropdown` }
-                                            />) :
-                                            (<Field
+                                            />
+                                        ) : (
+                                            <Field
                                                 label={
                                                     t("console:common.advancedSearch.form.inputs.filterValue." +
                                                         "label")
@@ -447,9 +585,10 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
                                                 } }
                                                 value={ selectedFilterValue }
                                                 data-componentid={ `${ componentId }-value-input` }
-                                            />)
-                                        }
+                                            />
+                                        ) }
                                     </Form.Group>
+                                    ) }
                                     <Divider hidden/>
                                     <Form.Group inline>
                                         <PrimaryButton
@@ -482,7 +621,7 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
             }
             on="click"
             position="bottom right"
-            size="small"
+            className="advanced-search"
             trigger={
                 (
                     <div
