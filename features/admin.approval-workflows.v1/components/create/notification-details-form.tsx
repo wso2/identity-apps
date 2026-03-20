@@ -138,33 +138,6 @@ const NotificationDetailsForm: ForwardRefExoticComponent<RefAttributes<Notificat
                     data-componentid={ componentId }
                 >
                     <div className="notification-channels">
-                        { /* Initiator Notifications */ }
-                        <div className="notification-config">
-                            <Heading as="h6" className="sub-heading">
-                                { t("approvalWorkflows:forms.notifications.initiator.label") }
-                            </Heading>
-                            <FormGroup className="fields">
-                                { NOTIFICATION_CHANNELS.map((channel: string) => (
-                                    <FormControlLabel
-                                        key={ channel }
-                                        control={ (
-                                            <Checkbox
-                                                checked={ notificationsForInitiator.includes(channel) }
-                                                onChange={ () => handleInitiatorChannelChange(channel) }
-                                                disabled={ isReadOnly }
-                                                data-componentid={ `${componentId}-initiator-channel-${channel}` }
-                                            />
-                                        ) }
-                                        label={ t(
-                                            `approvalWorkflows:forms.notifications.channels.${channel}`
-                                        ) }
-                                    />
-                                )) }
-                            </FormGroup>
-                            <Hint compact>
-                                { t("approvalWorkflows:forms.notifications.initiator.hint") }
-                            </Hint>
-                        </div>
                         { /* Approver Notifications */ }
                         <div className="notification-config">
                             <Heading as="h6" className="sub-heading">
@@ -190,6 +163,33 @@ const NotificationDetailsForm: ForwardRefExoticComponent<RefAttributes<Notificat
                             </FormGroup>
                             <Hint compact>
                                 { t("approvalWorkflows:forms.notifications.approver.hint") }
+                            </Hint>
+                        </div>
+                        { /* Initiator Notifications */ }
+                        <div className="notification-config">
+                            <Heading as="h6" className="sub-heading">
+                                { t("approvalWorkflows:forms.notifications.initiator.label") }
+                            </Heading>
+                            <FormGroup className="fields">
+                                { NOTIFICATION_CHANNELS.map((channel: string) => (
+                                    <FormControlLabel
+                                        key={ channel }
+                                        control={ (
+                                            <Checkbox
+                                                checked={ notificationsForInitiator.includes(channel) }
+                                                onChange={ () => handleInitiatorChannelChange(channel) }
+                                                disabled={ isReadOnly }
+                                                data-componentid={ `${componentId}-initiator-channel-${channel}` }
+                                            />
+                                        ) }
+                                        label={ t(
+                                            `approvalWorkflows:forms.notifications.channels.${channel}`
+                                        ) }
+                                    />
+                                )) }
+                            </FormGroup>
+                            <Hint compact>
+                                { t("approvalWorkflows:forms.notifications.initiator.hint") }
                             </Hint>
                         </div>
                     </div>

@@ -764,23 +764,6 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
 
                         <Divider className="divider-container" />
 
-                        <Grid className="common-section-heading">
-                            <Heading as="h4">
-                                { t("approvalWorkflows:pageLayout.create.stepper.step3.title") }
-                            </Heading>
-                        </Grid>
-                        <div className="workflow-notification-settings">
-                            <NotificationDetailsForm
-                                ref={ notificationDetailsFormRef }
-                                isReadOnly={ isPageReadOnly || !hasApprovalWorkflowUpdatePermissions }
-                                initialValues={ notificationValues }
-                                onSubmit={ onNotificationDetailsFormSubmit }
-                                data-componentid={ `${componentId}-notification-details-form` }
-                            />
-                        </div>
-
-                        <Divider className="divider-container" />
-
                         <div className="workflow-model-configuration-settings">
                             <Grid className="common-section-heading">
                                 <Heading as="h4">{ t("approvalWorkflows:sections.approvalSteps.heading") }</Heading>
@@ -793,6 +776,23 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                                 hasErrors={ hasErrors }
                                 isEditPage={ true }
                                 data-componentid={ `${componentId}-configurations-form` }
+                            />
+                        </div>
+
+                        <Divider className="divider-container" />
+
+                        <Grid className="common-section-heading">
+                            <Heading as="h4">
+                                { t("approvalWorkflows:pageLayout.create.stepper.step4.title") }
+                            </Heading>
+                        </Grid>
+                        <div className="workflow-notification-settings">
+                            <NotificationDetailsForm
+                                ref={ notificationDetailsFormRef }
+                                isReadOnly={ isPageReadOnly || !hasApprovalWorkflowUpdatePermissions }
+                                initialValues={ notificationValues }
+                                onSubmit={ onNotificationDetailsFormSubmit }
+                                data-componentid={ `${componentId}-notification-details-form` }
                             />
                         </div>
 
