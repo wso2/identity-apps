@@ -1126,24 +1126,33 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             const globalRoles: RoleSharingInterface[] =
                 (userShareData.sharingMode?.roleAssignment?.roles as RoleSharingInterface[]) ?? [];
 
-            // Build a lookup set of globally assigned role names for quick access.
-            const globalRoleNameSet: Set<string> = new Set(
-                globalRoles.map((r: RoleSharingInterface) => r.displayName)
+            // Build a lookup set of globally assigned role composite ids for accurate matching.
+            // Using the composite id (displayName:type:display) prevents false positives when
+            // two roles share the same displayName but belong to different audiences.
+            const globalRoleIdSet: Set<string> = new Set(
+                globalRoles.map((r: RoleSharingInterface) =>
+                    `${r.displayName}:${r.audience?.type}:${r.audience?.display}`
+                )
             );
 
             // Build the full role selection list from all available roles, marking globally
             // assigned roles as selected. The composite id format is required so that each
             // role can be uniquely identified when the user modifies the selection.
             const fullRoleSelections: SelectedOrganizationRoleInterface[] = userRolesList.map(
-                (role: RolesV2Interface) => ({
-                    audience: {
-                        display: role.audience?.display,
-                        type: role.audience?.type
-                    },
-                    displayName: role.displayName,
-                    id: `${role.displayName}:${role.audience?.type}:${role.audience?.display}`,
-                    selected: globalRoleNameSet.has(role.displayName)
-                })
+                (role: RolesV2Interface) => {
+                    const id: string =
+                        `${role.displayName}:${role.audience?.type}:${role.audience?.display}`;
+
+                    return {
+                        audience: {
+                            display: role.audience?.display,
+                            type: role.audience?.type
+                        },
+                        displayName: role.displayName,
+                        id,
+                        selected: globalRoleIdSet.has(id)
+                    };
+                }
             );
 
             // Determine org IDs to pre-select: prefer organizations from userShareData,
@@ -1173,6 +1182,8 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                 futureChildOrgsMap[orgId] = true;
             });
 
+            setRemovedOrgIds([]);
+            setRemovedRoles({});
             setSelectedOrgIds(sharedOrgIds);
             setAddedOrgIds(sharedOrgIds);
             setRoleSelections(rolesMap);
@@ -1371,12 +1382,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                             onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                                 const selectedShareType: ShareType = event.target.value as ShareType;
 
-                                if (shareType === ShareType.SHARE_ALL &&
-                                    selectedShareType === ShareType.SHARE_SELECTED &&
-                                    savedShareType === ShareType.SHARE_ALL) {
-                                    // If the user is switching from SHARE_ALL to SHARE_SELECTED
-                                    // and was actually saved as SHARE_ALL on the server,
-                                    // prompt the user to select the switching approach
+                                if (savedShareType === ShareType.SHARE_ALL &&
+                                    selectedShareType === ShareType.SHARE_SELECTED) {
+                                    // If the server has SHARE_ALL saved and the user selects
+                                    // SHARE_SELECTED (regardless of any intermediate local value),
+                                    // prompt the user to select the switching approach.
                                     setShowShareTypeSwitchModal(true);
 
                                     return;
