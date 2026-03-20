@@ -282,11 +282,11 @@ export const applications: ApplicationsNS = {
             assertionHint: "Please confirm your action."
         },
         deleteOutboundProvisioningIDP: {
-            assertionHint: "Please type <1>{{ name }}</1> to confirm.",
-            content: "If you delete this outbound provisioning IDP, you will not be able to get it back. " +
-                "Please proceed with caution.",
+            assertionHint: "Please confirm your action.",
+            content: "If you remove this outbound provisioning connection, outbound provisioning will not be " +
+                "triggered from this application. Please proceed with caution.",
             header: "Are you sure?",
-            message: "This action is irreversible and will remove the IDP."
+            message: "This action is irreversible and will remove the provisioning connection."
         },
         deleteProtocol: {
             assertionHint: "Please type <1>{{ name }}</1> to confirm.",
