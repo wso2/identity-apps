@@ -159,9 +159,6 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
 
         const fieldValue: unknown = values[property.key];
         const isConfidential: boolean = property.isConfidential ?? false;
-        // FinalForm's defaultParse converts "" to undefined, and setIn removes the key when given
-        // undefined. So a cleared text field will be absent from `values` even though it's in the
-        // form — we must also treat fields that were present in formInitialValues as "in form".
         const isFieldInForm: boolean =
             Object.hasOwn(values, property.key)
             || (formInitialValues !== undefined && Object.hasOwn(formInitialValues, property.key));

@@ -38,7 +38,9 @@ import { Heading, Hint } from "@wso2is/react-components/src/components/typograph
 import { AxiosError } from "axios";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, HTMLAttributes, SyntheticEvent, useCallback, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, HTMLAttributes, SyntheticEvent,
+    useCallback, useEffect, useRef, useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
