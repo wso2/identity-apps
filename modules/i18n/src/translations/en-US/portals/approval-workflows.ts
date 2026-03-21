@@ -156,7 +156,7 @@ export const approvalWorkflows: approvalWorkflowsNS = {
         },
         notifications: {
             approver: {
-                hint: "Send notifications to approvers assigned to approve the request.",
+                hint: "Send notifications to approvers assigned to review the request.",
                 label: "Approver Notifications"
             },
             channels: {
