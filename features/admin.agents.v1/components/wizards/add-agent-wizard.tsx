@@ -354,9 +354,9 @@ const AddAgentWizard: FunctionComponent<AddAgentWizardPropsInterface> = (
                                                                                     }
 
                                                                                     return t(
-                                                                                        "applications:forms.inboundOIDC" +
-                                                                                        ".fields.callBackUrls" +
-                                                                                        ".validations.invalid"
+                                                                                        "applications:forms.inboundOIDC"
+                                                                                        + ".fields.callBackUrls"
+                                                                                        + ".validations.invalid"
                                                                                     );
                                                                                 } }
                                                                                 helperText={
