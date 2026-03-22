@@ -32,6 +32,7 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
+    HttpErrorResponseDataInterface,
     IdentifiableComponentInterface,
     ProfileInfoInterface
 } from "@wso2is/core/models";
@@ -323,7 +324,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             }
         );
 
-        if (isSharedAccessEnabled && hasSharedAccessReadPermission) {
+        if (isSharedAccessEnabled && hasSharedAccessReadPermission && !isUserManagedByParentOrg) {
             _panes.push({
                 menuItem: t("users:editUser.tab.menuItems.4"),
                 render: () => (
