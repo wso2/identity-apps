@@ -112,14 +112,13 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
         !isEmpty(user?.id)
     );
 
-    // Roles available for sharing. The Console Administrator role is excluded unless
+    // Roles available for sharing. Console application roles are excluded unless
     // enableConsoleAdminRole is true (e.g. in the console settings administrator edit view).
     const userRolesList: RolesV2Interface[] = useMemo(() => {
         if (originalUserRoles?.Resources?.length > 0) {
             return originalUserRoles.Resources.filter((role: RolesV2Interface) =>
                 enableConsoleAdminRole
-                || !(role.displayName === UIConstants.ADMINISTRATOR_ROLE_DISPLAY_NAME
-                    && role.audience?.type?.toUpperCase() === RoleAudienceTypes.APPLICATION
+                || !(role.audience?.type?.toUpperCase() === RoleAudienceTypes.APPLICATION
                     && role.audience?.display === UIConstants.CONSOLE_APP_AUDIENCE_DISPLAY)
             );
         }
