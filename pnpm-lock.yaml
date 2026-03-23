@@ -12026,6 +12026,9 @@ importers:
       '@wso2is/admin.core.v1':
         specifier: ^2.54.20
         version: link:../admin.core.v1
+      '@wso2is/admin.organizations.v1':
+        specifier: workspace:^
+        version: link:../admin.organizations.v1
       '@wso2is/core':
         specifier: ^2.12.6
         version: link:../../modules/core
