@@ -430,13 +430,22 @@ const MultiEmailFieldForm: FunctionComponent<MultiEmailFieldFormPropsInterface> 
             .filter((emailAddress: SortedEmailAddress) => emailAddress.value !== selectedEmailAddress.value)
             .map((emailAddress: SortedEmailAddress) => emailAddress.value);
 
+        const deleteSchemaValue: Record<string, unknown> = {
+            [schema.name]: updatedEmailAddressesList
+        };
+
+        // pendingEmails must be submitted as [{ type: "value", value: "" }] to clear it
+        // when the deleted address is the pending one.
+        if (!isEmpty(pendingEmailAddress) && selectedEmailAddress.value === pendingEmailAddress) {
+            deleteSchemaValue[ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_EMAILS")] =
+                [ { type: "value", value: "" } ];
+        }
+
         data.Operations.push({
             op: "replace",
             value: {
-                [schema.schemaId] : {
-                    [schema.name] : updatedEmailAddressesList
-                }
-            }
+                [schema.schemaId]: deleteSchemaValue
+            } as unknown as ProfilePatchOperationValue
         });
 
         if (selectedEmailAddress.isPrimary) {
