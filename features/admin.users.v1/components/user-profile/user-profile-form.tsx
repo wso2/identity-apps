@@ -755,6 +755,24 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
 
                 // For each path, build and push a patch op:
                 attributePaths.forEach((path: string) => {
+                    // pendingEmails must be submitted as [{ type: "value", value: <pendingEmail> }].
+                    // The form stores it as a string[], so extract the first value.
+                    if (path === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_EMAILS")) {
+                        const pendingEmailValue: string =
+                            (get(values, `${fieldName}.${path}`, []) as string[])?.[0] ?? "";
+
+                        data.Operations.push({
+                            op: "replace",
+                            value: {
+                                [decodedFieldName]: {
+                                    [path]: [ { type: "value", value: pendingEmailValue } ]
+                                }
+                            } as unknown as PatchUserOperationValue
+                        });
+
+                        return;
+                    }
+
                     // Build the fullPath ex: "urn:scim:wso2:schema.country".
                     const fullPath: string = `${fieldName}.${path}`;
                     // Grab the value at that path from the form values.
