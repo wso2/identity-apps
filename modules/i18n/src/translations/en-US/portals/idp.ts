@@ -1081,7 +1081,7 @@ export const idp: IdpNS = {
             header: "Fill the basic information about the provisioning connector.",
             steps: {
                 connectorConfiguration: {
-                    title: "Connector Details"
+                    title: "Configuration"
                 },
                 connectorSelection: {
                     defaultSetup: {
