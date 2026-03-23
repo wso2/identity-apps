@@ -38,8 +38,7 @@ import {
     assignGroupstoRoles,
     getRoleById,
     getRoleByIdV3,
-    updateRoleDetails,
-    updateRoleDetailsUsingV3Api
+    updateRoleDetails
 } from "@wso2is/admin.roles.v2/api/roles";
 import { Schemas } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
