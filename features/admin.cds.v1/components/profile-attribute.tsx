@@ -395,7 +395,8 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
                                         ariaLabel="Display name"
                                         inputType="default"
                                         name="display_name"
-                                        label={ t("customerDataService:profileAttributes.edit.fields.displayName.label") }
+                                        label={ t("customerDataService:profileAttributes.edit.fields." +
+                                            "displayName.label") }
                                         placeholder={ t("customerDataService:profileAttributes.edit." +
                                             "fields.displayName.placeholder") }
                                         readOnly={ isIdentityScope }
