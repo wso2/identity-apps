@@ -35,6 +35,7 @@ import {
 } from "@wso2is/admin.connections.v1/models/connection";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import {
+    assignGroupstoRoles,
     getRoleById,
     getRoleByIdV3,
     updateRoleDetails,
@@ -395,20 +396,38 @@ const useEnterpriseLoginConfig = (): UseEnterpriseLoginConfigInterface => {
 
             const operations: { op: string; value?: unknown; path?: string }[] = [];
 
-            if (toAdd.length > 0) {
-                operations.push({
-                    op: "add",
-                    value: {
-                        groups: toAdd.map((id: string) => ({ value: id }))
-                    }
-                });
-            }
+            if (userRolesV3FeatureEnabled) {
+                // V3 API: add value is a direct array, remove path has no "groups[...]" wrapper.
+                if (toAdd.length > 0) {
+                    operations.push({
+                        op: "add",
+                        value: toAdd.map((id: string) => ({ value: id }))
+                    });
+                }
 
-            for (const groupId of toRemove) {
-                operations.push({
-                    op: "remove",
-                    path: `groups[value eq ${groupId}]`
-                });
+                for (const groupId of toRemove) {
+                    operations.push({
+                        op: "remove",
+                        path: `value eq ${groupId}`
+                    });
+                }
+            } else {
+                // Legacy API: add value is wrapped in {groups:[...]}, remove path uses groups[...].
+                if (toAdd.length > 0) {
+                    operations.push({
+                        op: "add",
+                        value: {
+                            groups: toAdd.map((id: string) => ({ value: id }))
+                        }
+                    });
+                }
+
+                for (const groupId of toRemove) {
+                    operations.push({
+                        op: "remove",
+                        path: `groups[value eq ${groupId}]`
+                    });
+                }
             }
 
             const patchData: PatchRoleDataInterface = {
@@ -419,7 +438,7 @@ const useEnterpriseLoginConfig = (): UseEnterpriseLoginConfigInterface => {
             const updateRoleFunction: (
                 roleId: string, roleData: PatchRoleDataInterface
             ) => Promise<unknown> = userRolesV3FeatureEnabled
-                ? updateRoleDetailsUsingV3Api
+                ? assignGroupstoRoles
                 : updateRoleDetails;
 
             patchPromises.push(
@@ -520,7 +539,7 @@ const useEnterpriseLoginConfig = (): UseEnterpriseLoginConfigInterface => {
         const updateRoleFunction: (
             roleId: string, roleData: PatchRoleDataInterface
         ) => Promise<unknown> = userRolesV3FeatureEnabled
-            ? updateRoleDetailsUsingV3Api
+            ? assignGroupstoRoles
             : updateRoleDetails;
 
         for (const role of (consoleRoles ?? [])) {
@@ -544,7 +563,9 @@ const useEnterpriseLoginConfig = (): UseEnterpriseLoginConfigInterface => {
                 const operations: { op: string; path: string }[] = groupIdsToRemove.map(
                     (groupId: string) => ({
                         op: "remove",
-                        path: `groups[value eq ${groupId}]`
+                        path: userRolesV3FeatureEnabled
+                            ? `value eq ${groupId}`
+                            : `groups[value eq ${groupId}]`
                     })
                 );
 
@@ -591,7 +612,7 @@ const useEnterpriseLoginConfig = (): UseEnterpriseLoginConfigInterface => {
 
         removedRef.current = true;
 
-        // Reload everything
+        // Reload everything.
         mutateConsoleConfigurations();
         mutateConsoleRolesFetchRequest();
         setExistingConfig(null);
