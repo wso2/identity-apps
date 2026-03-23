@@ -51,6 +51,11 @@ interface OutboundProvisioningConnectorSetupFormPropsInterface extends Identifia
      * Specifies if the form is being submitted.
      */
     isSubmitting?: boolean;
+    /**
+     * Callback fired when the connector list loading state changes.
+     * Used by the wizard parent to disable the Finish button while connectors are loading.
+     */
+    onConnectorLoadingChange?: (isLoading: boolean) => void;
 }
 
 interface DropdownOptionsInterface {
@@ -79,6 +84,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
         isEdit,
         isReadOnly,
         isSubmitting,
+        onConnectorLoadingChange,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -123,14 +129,16 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
             value: ""
         };
 
-        idpList.map((idp: IdentityProviderInterface, index: number) => {
-            idpOption = {
-                key: index,
-                text: idp.name,
-                value: idp.id
-            };
-            idpOptions.push(idpOption);
-        });
+        idpList
+            .filter((idp: IdentityProviderInterface) => idp.isEnabled !== false)
+            .map((idp: IdentityProviderInterface, index: number) => {
+                idpOption = {
+                    key: index,
+                    text: idp.name,
+                    value: idp.id
+                };
+                idpOptions.push(idpOption);
+            });
         setIdpListOptions(idpOptions);
     }, [ idpList ]);
 
@@ -148,6 +156,8 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
             text: "",
             value: ""
         };
+
+        onConnectorLoadingChange?.(true);
 
         getConnectionDetails(selectedIdp)
             .then((response: ConnectionInterface) => {
@@ -167,6 +177,9 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                 if (connectorOptions.length === 1) {
                     setConnector(connectorOptions[0].value);
                 }
+            })
+            .finally(() => {
+                onConnectorLoadingChange?.(false);
             });
     }, [ selectedIdp ]);
 

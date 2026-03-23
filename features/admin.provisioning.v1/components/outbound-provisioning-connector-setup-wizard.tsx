@@ -23,7 +23,7 @@ import { IdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/m
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";
 import { OutboundProvisioningConnectorSetupForm } from "./outbound-provisioning-connector-setup-form";
@@ -71,6 +71,8 @@ export const OutboundProvisioningConnectorSetupWizard: FunctionComponent<
     const { t } = useTranslation();
 
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
+    const [ isConnectorListLoading, setIsConnectorListLoading ] = useState<boolean>(false);
+    const [ isIdpSelected, setIsIdpSelected ] = useState<boolean>(false);
 
     /**
      * Handles the final wizard submission.
@@ -120,6 +122,12 @@ export const OutboundProvisioningConnectorSetupWizard: FunctionComponent<
                     idpList={ availableIdpList }
                     data-componentid={ `${ componentId }-form` }
                     isSubmitting={ isSubmitting }
+                    onConnectorLoadingChange={ (isLoading: boolean) => {
+                        setIsConnectorListLoading(isLoading);
+                        if (isLoading) {
+                            setIsIdpSelected(true);
+                        }
+                    } }
                 />
             </Modal.Content>
             <Modal.Actions>
@@ -144,8 +152,8 @@ export const OutboundProvisioningConnectorSetupWizard: FunctionComponent<
                             floated="right"
                             onClick={ () => setFinishSubmit() }
                             data-componentid={ `${ componentId }-finish-button` }
-                            loading={ isSubmitting }
-                            disabled={ isSubmitting }
+                            loading={ isSubmitting || isConnectorListLoading }
+                            disabled={ isSubmitting || isConnectorListLoading || !isIdpSelected }
                         >
                             { t("common:finish") }
                         </PrimaryButton>

@@ -127,14 +127,16 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
             value: ""
         };
 
-        idpList.map((idp: IdentityProviderInterface, index: number) => {
-            idpOption = {
-                key: index,
-                text: idp.name,
-                value: idp.id
-            };
-            idpOptions.push(idpOption);
-        });
+        idpList
+            .filter((idp: IdentityProviderInterface) => idp.isEnabled !== false)
+            .map((idp: IdentityProviderInterface, index: number) => {
+                idpOption = {
+                    key: index,
+                    text: idp.name,
+                    value: idp.id
+                };
+                idpOptions.push(idpOption);
+            });
         setIdpListOptions(idpOptions);
     }, [ idpList ]);
 

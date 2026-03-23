@@ -20,7 +20,7 @@ import { OutboundProvisioningConfigurationInterface } from "@wso2is/admin.applic
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ConfirmationModal } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 
 /**
  * Interface for the outbound provisioning IDP delete confirmation modal props.
@@ -57,21 +57,9 @@ export const OutboundProvisioningConnectorDeleteWizard: FunctionComponent<
             onClose={ onClose }
             type="negative"
             open={ isOpen }
-            assertion={ deletingIdp?.idp }
-            assertionHint={ (
-                <p>
-                    <Trans
-                        i18nKey={
-                            "applications:confirmations" +
-                            ".deleteOutboundProvisioningIDP.assertionHint"
-                        }
-                        tOptions={ { name: deletingIdp?.idp } }
-                    >
-                        Please type <strong>{ deletingIdp?.idp }</strong> to confirm.
-                    </Trans>
-                </p>
-            ) }
-            assertionType="input"
+            assertionHint={ t("applications:confirmations" +
+                ".deleteOutboundProvisioningIDP.assertionHint") }
+            assertionType="checkbox"
             primaryAction={ t("common:confirm") }
             secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ onClose }
