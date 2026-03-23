@@ -543,62 +543,62 @@ export const InsightsFilter = (props: InsightsFilterProps): ReactElement => {
                                             />
                                             { dropdownInputRequiredAttributesForFilterValue.includes(
                                                 selectedFilterAttribute) ? (
-                                                <Field
-                                                    children={
-                                                        filterValueDropdownItems[selectedFilterAttribute]?.map(
-                                                            (attribute: DropdownChild, index: number) => {
-                                                                return {
-                                                                    key: index,
-                                                                    text: attribute.text,
-                                                                    value: attribute.value
-                                                                };
-                                                            })
-                                                    }
-                                                    label={
-                                                        t("console:common.advancedSearch.form.inputs" +
-                                                            ".filterValue.label")
-                                                    }
-                                                    name={ "filterValue" }
-                                                    required={ true }
-                                                    requiredErrorMessage={
-                                                        t("console:common.advancedSearch.form.inputs" +
-                                                            ".filterCondition.validations.empty")
-                                                    }
-                                                    value={ selectedFilterValue }
-                                                    type="dropdown"
-                                                    data-testid={ `${ componentId }-value-dropdown` }
-                                                />
-                                            ) : (
-                                                <Field
-                                                    label={
-                                                        t("console:common.advancedSearch.form.inputs" +
-                                                            ".filterValue.label")
-                                                    }
-                                                    name={ "filterValue" }
-                                                    required
-                                                    requiredErrorMessage={
-                                                        t("console:common.advancedSearch.form." +
-                                                            "inputs.filterValue.validations.empty")
-                                                    }
-                                                    type="text"
-                                                    validation={ (value: string, _validation: Validation) => {
-                                                        if (
-                                                            value.length >
-                                                            OrgInsightsConstants.FILTER_VALUE_INPUT_MAX_LENGTH
-                                                        ) {
-                                                            _validation.isValid = false;
-                                                            _validation.errorMessages.push(
-                                                                t("common:maxValidation", {
-                                                                    max: OrgInsightsConstants
-                                                                        .FILTER_VALUE_INPUT_MAX_LENGTH
+                                                    <Field
+                                                        children={
+                                                            filterValueDropdownItems[selectedFilterAttribute]?.map(
+                                                                (attribute: DropdownChild, index: number) => {
+                                                                    return {
+                                                                        key: index,
+                                                                        text: attribute.text,
+                                                                        value: attribute.value
+                                                                    };
                                                                 })
-                                                            );
                                                         }
-                                                    } }
-                                                    value={ selectedFilterValue }
-                                                    data-componentid={ `${ componentId }-value-input` }
-                                                />
-                                            ) }
+                                                        label={
+                                                            t("console:common.advancedSearch.form.inputs" +
+                                                                ".filterValue.label")
+                                                        }
+                                                        name={ "filterValue" }
+                                                        required={ true }
+                                                        requiredErrorMessage={
+                                                            t("console:common.advancedSearch.form.inputs" +
+                                                                ".filterCondition.validations.empty")
+                                                        }
+                                                        value={ selectedFilterValue }
+                                                        type="dropdown"
+                                                        data-testid={ `${ componentId }-value-dropdown` }
+                                                    />
+                                                ) : (
+                                                    <Field
+                                                        label={
+                                                            t("console:common.advancedSearch.form.inputs" +
+                                                                ".filterValue.label")
+                                                        }
+                                                        name={ "filterValue" }
+                                                        required
+                                                        requiredErrorMessage={
+                                                            t("console:common.advancedSearch.form." +
+                                                                "inputs.filterValue.validations.empty")
+                                                        }
+                                                        type="text"
+                                                        validation={ (value: string, _validation: Validation) => {
+                                                            if (
+                                                                value.length >
+                                                                OrgInsightsConstants.FILTER_VALUE_INPUT_MAX_LENGTH
+                                                            ) {
+                                                                _validation.isValid = false;
+                                                                _validation.errorMessages.push(
+                                                                    t("common:maxValidation", {
+                                                                        max: OrgInsightsConstants
+                                                                            .FILTER_VALUE_INPUT_MAX_LENGTH
+                                                                    })
+                                                                );
+                                                            }
+                                                        } }
+                                                        value={ selectedFilterValue }
+                                                        data-componentid={ `${ componentId }-value-input` }
+                                                    />
+                                                ) }
                                         </Form.Group>
                                     ) }
                                     <Divider hidden/>
