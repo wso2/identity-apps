@@ -399,6 +399,10 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                     ) => connector.id !==
                                                         CommonAuthenticatorConstants
                                                             .DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID)
+                                                    // Filter inactive connectors.
+                                                    .filter((
+                                                        connector: OutboundProvisioningConnectorWithMetaInterface
+                                                    ) => connector.data?.isEnabled)
                                                     .map((
                                                         connector: OutboundProvisioningConnectorWithMetaInterface,
                                                         index: number
