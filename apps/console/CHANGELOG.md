@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 4.1.0
+
+### Minor Changes
+
+- [#9914](https://github.com/wso2/identity-apps/pull/9914) [`310d975320b7a4796cb91e56189d18fb4a7f7c82`](https://github.com/wso2/identity-apps/commit/310d975320b7a4796cb91e56189d18fb4a7f7c82) Thanks [@github-actions](https://github.com/apps/github-actions)! - Bundle monaco editor as an npm dependency
+
 ## 4.0.0
 
 ### Major Changes
