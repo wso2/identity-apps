@@ -477,6 +477,43 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
     }, [ shareType ]);
 
     /**
+     * When there is exactly one sub-organization with no children, the tree-view panel is
+     * hidden in SelectiveOrgShareWithSelectiveRoles. The user therefore has no checkbox to
+     * click in order to select that organization. Auto-select it here so that:
+     *   1. The "No organizations selected" validation in handleUserSharing is bypassed.
+     *   2. The save logic (addedOrgIds) contains the org and can send the share API call.
+     *
+     * Guard: only run when shareType is SHARE_SELECTED and selectedOrgIds is still empty
+     * (i.e. the org has not already been populated from existing share data via userShareData).
+     *
+     * Note: `selectedOrgIds` is intentionally omitted from the dependency array. Including it
+     * would cause this effect to re-trigger after `resetStates()` (which briefly clears
+     * `selectedOrgIds` before `userShareData` reloads), incorrectly marking the org as newly
+     * added and re-sending a POST that could clear existing role assignments.
+     * The effect only needs to run when the user switches to SHARE_SELECTED mode or when the
+     * organization list first loads — both captured by the existing dependencies.
+     */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(() => {
+        if (
+            shareType !== ShareType.SHARE_SELECTED ||
+            originalOrganizations?.organizations?.length !== 1 ||
+            originalOrganizations.organizations[0].hasChildren ||
+            selectedOrgIds.length !== 0
+        ) {
+            return;
+        }
+
+        const singleOrgId: string = originalOrganizations.organizations[0].id;
+
+        setSelectedOrgIds([ singleOrgId ]);
+        setAddedOrgIds((prev: string[]) =>
+            prev.includes(singleOrgId) ? prev : [ ...prev, singleOrgId ]
+        );
+        setRemovedOrgIds((prev: string[]) => prev.filter((id: string) => id !== singleOrgId));
+    }, [ shareType, originalOrganizations ]);
+
+    /**
      * Triggers the display of a confirmation modal when the user attempts to start a new share
      * while one is ongoing, asking for confirmation to interrupt the current share.
      */
