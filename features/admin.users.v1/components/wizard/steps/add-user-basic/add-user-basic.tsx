@@ -592,23 +592,18 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
         // Email as username enabled.
         if (UIConfig?.enableEmailDomain) {
             const validate = async (value: string): Promise<string> => {
-                setBasicDetailsLoading(true);
-
                 if (isEmpty(value)) {
-                    setBasicDetailsLoading(false);
-
                     return t("user:forms.addUserForm.inputs.email.validations.empty");
                 }
 
                 // Check username validity against userstore regex.
                 if (!SharedUserStoreUtils.validateInputAgainstRegEx(value, userStoreUsernameRegEx) ||
                         !SharedUserStoreUtils.validateInputAgainstRegEx(value, emailClaimRegex)) {
-                    setBasicDetailsLoading(false);
-
                     return USERNAME_REGEX_VIOLATION_ERROR_MESSAGE;
                 }
 
                 try {
+                    setBasicDetailsLoading(true);
                     // Check for the existence of users in the userstore by the username.
                     // Some characters disallowed by username
                     // -regex cause failure in below request.
@@ -635,6 +630,8 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
 
                         return USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE;
                     }
+
+                    setBasicDetailsLoading(false);
                 }
 
                 return undefined;
@@ -663,23 +660,18 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
         if (!hiddenFields.includes(HiddenFieldNames.USERNAME)
             && !isAlphanumericUsernameEnabled()) {
             const validate = async (value: string): Promise<string> => {
-                setBasicDetailsLoading(true);
-
                 if (isEmpty(value)) {
-                    setBasicDetailsLoading(false);
-
                     return t("user:forms.addUserForm.inputs.email.validations.empty");
                 }
 
                 // Check username validity against userstore regex.
                 if (!SharedUserStoreUtils.validateInputAgainstRegEx(value, userStoreUsernameRegEx) ||
                         !SharedUserStoreUtils.validateInputAgainstRegEx(value, emailClaimRegex)) {
-                    setBasicDetailsLoading(false);
-
                     return USERNAME_REGEX_VIOLATION_ERROR_MESSAGE;
                 }
 
                 try {
+                    setBasicDetailsLoading(true);
                     // Check for the existence of users in the userstore by the username.
                     // Some characters disallowed by username
                     // -regex cause failure in below request.
