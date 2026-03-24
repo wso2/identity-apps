@@ -89,12 +89,19 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
 
     const isFieldReadOnly: boolean = mode === AuthenticatorSettingsFormModes.CREATE ? false : readOnly;
     const isEditMode: boolean = mode !== AuthenticatorSettingsFormModes.CREATE;
+    const isFirstTrigger: React.MutableRefObject<boolean> = useRef<boolean>(true);
 
     /**
      * Trigger form submission when triggerSubmit prop changes.
+     * Uses isFirstTrigger to skip the effect on initial mount.
      */
     useEffect(() => {
-        if (triggerSubmit && formRef.current) {
+        if (isFirstTrigger.current) {
+            isFirstTrigger.current = false;
+
+            return;
+        }
+        if (formRef.current) {
             formRef.current.submit();
         }
     }, [ triggerSubmit ]);
@@ -133,12 +140,14 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
      * @param values - The form values.
      * @param properties - The properties array to populate.
      * @param currentAuthMode - The current authentication mode (for SCIM2 visibility checks).
+     * @param formInitialValues - FinalForm's actual initial values (includes defaultValue overrides).
      */
     const processProperty = (
         property: CommonPluggableComponentMetaPropertyInterface,
         values: Record<string, unknown>,
         properties: { key: string; value: string }[],
-        currentAuthMode?: string
+        currentAuthMode?: string,
+        formInitialValues?: Record<string, unknown>
     ): void => {
         if (!property.key) {
             return;
@@ -146,7 +155,9 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
 
         const fieldValue: unknown = values[property.key];
         const isConfidential: boolean = property.isConfidential ?? false;
-        const isFieldInForm: boolean = Object.hasOwn(values, property.key);
+        const isFieldInForm: boolean =
+            Object.hasOwn(values, property.key)
+            || (formInitialValues !== undefined && Object.hasOwn(formInitialValues, property.key));
 
         const isFieldVisible: boolean = isFieldVisibleForAuthMode(
             property.key,
@@ -178,7 +189,15 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
             }
 
             // Skip empty, unconfigured, non-mandatory fields.
-            if (!fieldValue && !getInitialPropertyValue(property.key) && !property.isMandatory) {
+            // Use FinalForm's actual initial value (which includes defaultValue overrides from Field
+            // component props) so that a field displaying a defaultValue is not incorrectly treated
+            // as "unconfigured" when the user explicitly clears it.
+            const formInitialValue: unknown = formInitialValues?.[property.key];
+            const hasAnyInitialValue: boolean =
+                (formInitialValue !== undefined && formInitialValue !== "" && formInitialValue !== null)
+                || !!getInitialPropertyValue(property.key);
+
+            if (!fieldValue && !hasAnyInitialValue && !property.isMandatory) {
                 return;
             }
 
@@ -206,7 +225,7 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
 
         if (property.subProperties && property.subProperties.length > 0) {
             property.subProperties.forEach((subProperty: CommonPluggableComponentMetaPropertyInterface) => {
-                processProperty(subProperty, values, properties, currentAuthMode);
+                processProperty(subProperty, values, properties, currentAuthMode, formInitialValues);
             });
         }
     };
@@ -214,12 +233,17 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
     const handleSubmit = (values: Record<string, unknown>): void => {
         const properties: { key: string; value: string }[] = [];
 
-        // Get current auth mode from form values for SCIM2 visibility checks
+        // Get FinalForm's actual initial values — these include defaultValue overrides set via
+        // the Field component's initialValue prop, which may differ from the server's initialValues.
+        const formInitialValues: Record<string, unknown> =
+            formRef.current?.getState()?.initialValues ?? {};
+
+        // Get current auth mode from form values for SCIM2 visibility checks.
         const currentAuthMode: string | undefined =
             values[SCIM2_AUTH_PROPERTIES.AUTHENTICATION_MODE] as string | undefined;
 
         metadata?.properties?.forEach((property: CommonPluggableComponentMetaPropertyInterface) => {
-            processProperty(property, values, properties, currentAuthMode);
+            processProperty(property, values, properties, currentAuthMode, formInitialValues);
         });
 
         onSubmit({

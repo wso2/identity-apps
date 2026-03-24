@@ -38,7 +38,9 @@ import { Heading, Hint } from "@wso2is/react-components/src/components/typograph
 import { AxiosError } from "axios";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, HTMLAttributes, SyntheticEvent, useCallback, useEffect, useState } from "react";
+import React, { FunctionComponent, HTMLAttributes, SyntheticEvent,
+    useCallback, useEffect, useRef, useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -57,6 +59,15 @@ interface OutboundProvisioningGroupsPropsInterface extends IdentifiableComponent
     idpRoles: ConnectionRolesInterface;
     isReadOnly?: boolean;
     onUpdate: (id: string) => void;
+    /**
+     * When true, hides the internal Update button.
+     */
+    hideUpdateButton?: boolean;
+    /**
+     * Toggling this boolean triggers a save of the groups.
+     * Useful when the parent controls a shared Update button.
+     */
+    triggerSave?: boolean;
 }
 
 export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningGroupsPropsInterface> = (
@@ -67,6 +78,8 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
         idpRoles,
         isReadOnly,
         onUpdate,
+        hideUpdateButton = false,
+        triggerSave,
         [ "data-componentid" ]: componentId = "outbound-provisioning-settings-groups"
     } = props;
 
@@ -91,6 +104,29 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
     const [ groupSearchValue, setGroupSearchValue ] = useState<string>(undefined);
     const [ isGroupSearchLoading, setGroupSearchLoading ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const isFirstRender: React.MutableRefObject<boolean> = useRef<boolean>(true);
+
+    /**
+     * When triggerSave changes (and it's not the initial mount), save groups only if the selection changed.
+     */
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+
+            return;
+        }
+
+        const initialNames: string[] = (idpRoles?.outboundProvisioningRoles ?? []).slice().sort();
+        const currentNames: string[] = selectedGroupsOptions.map(
+            (g: GroupInterface) => g.name).slice().sort();
+        const hasChanged: boolean =
+            initialNames.length !== currentNames.length
+            || initialNames.some((name: string, i: number) => name !== currentNames[i]);
+
+        if (hasChanged) {
+            handleOutboundProvisioningGroupMapping();
+        }
+    }, [ triggerSave ]);
 
     const {
         data: originalGroupList,
@@ -344,7 +380,7 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
                 <Grid.Column mobile={ 16 } computer={ 12 }>
                     <>
                         {
-                            !isReadOnly
+                            !isReadOnly && !hideUpdateButton
                                 ? (
                                     <Show when={ featureConfig?.identityProviders?.scopes?.update }>
                                         <Button

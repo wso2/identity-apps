@@ -127,14 +127,16 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
             value: ""
         };
 
-        idpList.map((idp: IdentityProviderInterface, index: number) => {
-            idpOption = {
-                key: index,
-                text: idp.name,
-                value: idp.id
-            };
-            idpOptions.push(idpOption);
-        });
+        idpList
+            .filter((idp: IdentityProviderInterface) => idp.isEnabled !== false)
+            .map((idp: IdentityProviderInterface, index: number) => {
+                idpOption = {
+                    key: index,
+                    text: idp.name,
+                    value: idp.id
+                };
+                idpOptions.push(idpOption);
+            });
         setIdpListOptions(idpOptions);
     }, [ idpList ]);
 
@@ -248,7 +250,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                 }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        { connectorListOptions?.length > 0 && (
+                        { connectorListOptions?.length > 1 && (
                             <Field
                                 type="dropdown"
                                 label={
