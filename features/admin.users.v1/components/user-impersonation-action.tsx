@@ -17,6 +17,7 @@
  */
 
 import { HttpResponse, useAuthContext } from "@asgardeo/auth-react";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -373,6 +374,10 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
 
+    const hasImpersonationScope: boolean = useRequiredScopes(
+        userFeatureConfig?.subFeatures?.userImpersonation?.scopes?.feature
+    );
+
     /**
      * This function checks whether the authenticated user's (impersonator) tenant is the logged tenant.
      */
@@ -495,7 +500,8 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
             !isUserCurrentLoggedInUser && !isUserManagedByParentOrg &&
             (orgType === OrganizationType.SUBORGANIZATION ? !isSwitchedFromRootOrg : true) &&
             isAuthenticatedUserInAnAllowedUserstore() &&
-            isFeatureEnabled(userFeatureConfig, UserManagementConstants.FEATURE_DICTIONARY.get("USER_IMPERSONATION")) ?
+            isFeatureEnabled(userFeatureConfig, UserManagementConstants.FEATURE_DICTIONARY.get("USER_IMPERSONATION")) &&
+            hasImpersonationScope ?
                 (
                     <React.Fragment>
                         <DangerZoneGroup

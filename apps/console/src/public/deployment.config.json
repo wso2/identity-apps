@@ -1977,6 +1977,14 @@
                     ]
                 },
                 "subFeatures": {
+                    "userImpersonation": {
+                        "enabled": true,
+                        "scopes": {
+                            "feature": [
+                                "console:userImpersonation"
+                            ]
+                        }
+                    },
                     "userSharingV2": {
                         "disabledFeatures": [
                         ],
