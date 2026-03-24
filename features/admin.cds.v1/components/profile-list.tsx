@@ -128,31 +128,6 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
             title: t("customerDataService:profiles.list.columns.user")
         },
         {
-            allowToggleVisibility: true,
-            dataIndex: "unified_profiles",
-            id: "unified_profiles",
-            key: "unified_profiles",
-            render: (profile: ProfileModel): ReactNode => {
-                const merged:Array<{ profile_id: string; reason: string }> = profile.merged_from;
-                const hasMerged:boolean = Array.isArray(merged) && merged.length > 0;
-
-                if (!hasMerged) {
-                    return null;
-                }
-
-                return (
-                    <Chip
-                        size="small"
-                        variant="outlined"
-                        label={ t("customerDataService:profiles.list.chips.unified") }
-                        data-testid="unified-profile-chip"
-                    />
-                );
-            },
-            textAlign: "center",
-            title: t("customerDataService:profiles.list.columns.unifiedProfiles")
-        },
-        {
             allowToggleVisibility: false,
             dataIndex: "action",
             id: "action",

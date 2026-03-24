@@ -114,7 +114,7 @@ export const customerDataService: CustomerDataServiceNS = {
                             placeholder: "Enter a description"
                         },
                         displayName: {
-                            hint: "A human-readable name shown in the UI.",
+                            hint: "A human-readable name.",
                             label: "Display Name",
                             placeholder: "Enter a display name"
                         },
@@ -264,6 +264,11 @@ export const customerDataService: CustomerDataServiceNS = {
                 attribute: {
                     hint: "The name of this attribute.",
                     label: "Attribute"
+                },
+                displayName: {
+                    hint: "A human-readable name.",
+                    label: "Display Name",
+                    placeholder: "Enter a display name"
                 },
                 mergeStrategy: {
                     hint: "Determines how value of the attribute from multiple profiles are merged when profile unification occurs. " +

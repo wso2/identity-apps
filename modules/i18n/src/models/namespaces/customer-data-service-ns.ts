@@ -213,6 +213,11 @@ export interface CustomerDataServiceNS {
                     hint: string;
                     label: string;
                 };
+                displayName: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                };
                 mergeStrategy: {
                     hint: string;
                     label: string;

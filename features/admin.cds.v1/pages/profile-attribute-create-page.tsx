@@ -110,6 +110,7 @@ interface AttributeGeneralFormValuesInterface {
     scope: ScopeValue;
     applicationIdentifier: string;
     name: string;
+    displayName: string;
 }
 
 interface TypeAndAdvancedFormValuesInterface {
@@ -151,6 +152,7 @@ const AttributeGeneralForm: React.ForwardRefExoticComponent<
             initialValues?.applicationIdentifier ?? ""
         );
         const [ name, setName ] = useState<string>(initialValues?.name ?? "");
+        const [ displayName, setDisplayName ] = useState<string>(initialValues?.displayName ?? "");
         const [ nameError, setNameError ] = useState<string>("");
         const [ appIdError, setAppIdError ] = useState<string>("");
         const [ isCheckingName, setIsCheckingName ] = useState<boolean>(false);
@@ -308,6 +310,7 @@ const AttributeGeneralForm: React.ForwardRefExoticComponent<
             setAppIdError("");
             onSubmit({
                 applicationIdentifier: applicationIdentifier.trim(),
+                displayName: displayName.trim(),
                 name: name.trim(),
                 scope
             });
@@ -426,6 +429,25 @@ const AttributeGeneralForm: React.ForwardRefExoticComponent<
                             />
                         </Box>
                     </Box>
+                </Grid>
+
+                <Grid xs={ 12 }>
+                    <TextField
+                        label={ t("customerDataService:profileAttributes.create." +
+                            "forms.attributeGeneral.fields.displayName.label") }
+                        value={ displayName }
+                        onChange={ (e: React.ChangeEvent<HTMLInputElement>): void =>
+                            setDisplayName(e.target.value)
+                        }
+                        placeholder={ t("customerDataService:profileAttributes.create." +
+                            "forms.attributeGeneral.fields.displayName.placeholder") }
+                        fullWidth
+                        data-componentid={ `${componentId}-display-name-field` }
+                    />
+                    <Hint>
+                        { t("customerDataService:profileAttributes.create." +
+                            "forms.attributeGeneral.fields.displayName.hint") }
+                    </Hint>
                 </Grid>
             </Grid>
         );
@@ -942,7 +964,7 @@ const ProfileAttributeCreatePage: FunctionComponent<ProfileAttributeCreatePagePr
     };
 
     const onTypeAndAdvancedFormSubmit = (values: TypeAndAdvancedFormValuesInterface): void => {
-        const { scope, applicationIdentifier, name } = formData.attributeGeneral;
+        const { scope, applicationIdentifier, name, displayName } = formData.attributeGeneral;
 
         const attributeName: string = `${scope}.${name}`;
 
@@ -950,6 +972,7 @@ const ProfileAttributeCreatePage: FunctionComponent<ProfileAttributeCreatePagePr
             {
                 attribute_name: attributeName,
                 canonical_values: values.canonicalValues ?? [],
+                ...(displayName ? { display_name: displayName } : {}),
                 merge_strategy: values.mergeStrategy,
                 multi_valued: values.multiValued,
                 mutability: values.mutability,

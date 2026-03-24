@@ -1777,7 +1777,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 import("@wso2is/admin.cds.v1/pages/unification-rules")
             ),
             exact: true,
-            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_PROFILE_UNIFICATION_RULES,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_PROFILES_UNIFICATION_RULES,
             icon: {
                 icon: <UnificationRuleIcon className="icon" fill="black" />
             },
