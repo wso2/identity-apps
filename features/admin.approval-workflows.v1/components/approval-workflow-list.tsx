@@ -161,6 +161,7 @@ const ApprovalWorkflowList: React.FunctionComponent<ApprovalWorkflowListProps> =
                         action={ (
                             <Show when={ featureConfig?.approvalWorkflows?.scopes?.create }>
                                 <PrimaryButton
+                                    data-componentid={ `${componentId}-add-button` }
                                     onClick={ () =>
                                         history.push(AppConstants.getPaths().get("APPROVAL_WORKFLOW_CREATE")) }
                                 >
