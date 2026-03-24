@@ -1,5 +1,11 @@
 # @wso2is/common.users.v1
 
+## 1.0.7
+
+### Patch Changes
+
+- [#9900](https://github.com/wso2/identity-apps/pull/9900) [`81157c8038ef7bdd2a592448dcf389df094fe95b`](https://github.com/wso2/identity-apps/commit/81157c8038ef7bdd2a592448dcf389df094fe95b) Thanks [@github-actions](https://github.com/apps/github-actions)! - Modify pendingEmails call to honour to complex attribute type
+
 ## 1.0.6
 
 ### Patch Changes

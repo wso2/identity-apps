@@ -1,5 +1,19 @@
 # @wso2is/i18n
 
+## 2.37.4
+
+### Patch Changes
+
+- [#9872](https://github.com/wso2/identity-apps/pull/9872) [`a2805eb4a9ff1ef23b3680d68a56f0ebfcbed6f2`](https://github.com/wso2/identity-apps/commit/a2805eb4a9ff1ef23b3680d68a56f0ebfcbed6f2) Thanks [@github-actions](https://github.com/apps/github-actions)! - UI bug fixes related to B2B user sharing
+
+* [#9884](https://github.com/wso2/identity-apps/pull/9884) [`b35db2688b1cca0c7bf295bcfce1add0f47b49eb`](https://github.com/wso2/identity-apps/commit/b35db2688b1cca0c7bf295bcfce1add0f47b49eb) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Add m2m insights
+
+- [#9903](https://github.com/wso2/identity-apps/pull/9903) [`78823cfe85c7fc488f7b6877027626fbd42eec10`](https://github.com/wso2/identity-apps/commit/78823cfe85c7fc488f7b6877027626fbd42eec10) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Improve outbound provisioning connection remove ux
+
+* [#9881](https://github.com/wso2/identity-apps/pull/9881) [`165e4ad9befffe4b1f9e21f405a569fc39997220`](https://github.com/wso2/identity-apps/commit/165e4ad9befffe4b1f9e21f405a569fc39997220) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Improve approval notification ux
+
+- [#9884](https://github.com/wso2/identity-apps/pull/9884) [`2e59caf30754fae221c817339635d48150f0ebfd`](https://github.com/wso2/identity-apps/commit/2e59caf30754fae221c817339635d48150f0ebfd) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Add autocomplete input for org search in insights
+
 ## 2.37.3
 
 ### Patch Changes

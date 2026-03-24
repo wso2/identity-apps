@@ -1,5 +1,24 @@
 # @wso2is/admin.users.v1
 
+## 2.37.18
+
+### Patch Changes
+
+- [#9872](https://github.com/wso2/identity-apps/pull/9872) [`a2805eb4a9ff1ef23b3680d68a56f0ebfcbed6f2`](https://github.com/wso2/identity-apps/commit/a2805eb4a9ff1ef23b3680d68a56f0ebfcbed6f2) Thanks [@github-actions](https://github.com/apps/github-actions)! - UI bug fixes related to B2B user sharing
+
+- Updated dependencies [[`a2805eb4a9ff1ef23b3680d68a56f0ebfcbed6f2`](https://github.com/wso2/identity-apps/commit/a2805eb4a9ff1ef23b3680d68a56f0ebfcbed6f2), [`81157c8038ef7bdd2a592448dcf389df094fe95b`](https://github.com/wso2/identity-apps/commit/81157c8038ef7bdd2a592448dcf389df094fe95b), [`b35db2688b1cca0c7bf295bcfce1add0f47b49eb`](https://github.com/wso2/identity-apps/commit/b35db2688b1cca0c7bf295bcfce1add0f47b49eb), [`3d7ce3855e7701d61b8ea47588881144637cd5c0`](https://github.com/wso2/identity-apps/commit/3d7ce3855e7701d61b8ea47588881144637cd5c0), [`78823cfe85c7fc488f7b6877027626fbd42eec10`](https://github.com/wso2/identity-apps/commit/78823cfe85c7fc488f7b6877027626fbd42eec10), [`165e4ad9befffe4b1f9e21f405a569fc39997220`](https://github.com/wso2/identity-apps/commit/165e4ad9befffe4b1f9e21f405a569fc39997220), [`2e59caf30754fae221c817339635d48150f0ebfd`](https://github.com/wso2/identity-apps/commit/2e59caf30754fae221c817339635d48150f0ebfd)]:
+  - @wso2is/common.ui.shared-access.v1@0.1.5
+  - @wso2is/admin.users.v1@2.37.18
+  - @wso2is/i18n@2.37.4
+  - @wso2is/common.users.v1@1.0.7
+  - @wso2is/admin.cds.v1@1.5.1
+  - @wso2is/admin.approval-workflows.v1@1.2.9
+  - @wso2is/admin.core.v1@2.54.27
+  - @wso2is/admin.roles.v2@2.27.341
+  - @wso2is/admin.flow-builder-core.v1@0.10.171
+  - @wso2is/admin.flows.v1@1.0.140
+  - @wso2is/admin.server-configurations.v1@2.38.10
+
 ## 2.37.17
 
 ### Patch Changes

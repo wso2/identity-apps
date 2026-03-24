@@ -1,5 +1,19 @@
 # @wso2is/admin.connections.v1
 
+## 2.36.11
+
+### Patch Changes
+
+- [#9903](https://github.com/wso2/identity-apps/pull/9903) [`2d616c80de82fdac7c8274bc0049fb02d759de1b`](https://github.com/wso2/identity-apps/commit/2d616c80de82fdac7c8274bc0049fb02d759de1b) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Outbound provisioning UI improvement
+
+- Updated dependencies [[`a2805eb4a9ff1ef23b3680d68a56f0ebfcbed6f2`](https://github.com/wso2/identity-apps/commit/a2805eb4a9ff1ef23b3680d68a56f0ebfcbed6f2), [`890724291d8b558d0e9432cc9ff4632d1a24bf87`](https://github.com/wso2/identity-apps/commit/890724291d8b558d0e9432cc9ff4632d1a24bf87), [`2d616c80de82fdac7c8274bc0049fb02d759de1b`](https://github.com/wso2/identity-apps/commit/2d616c80de82fdac7c8274bc0049fb02d759de1b), [`b35db2688b1cca0c7bf295bcfce1add0f47b49eb`](https://github.com/wso2/identity-apps/commit/b35db2688b1cca0c7bf295bcfce1add0f47b49eb), [`78823cfe85c7fc488f7b6877027626fbd42eec10`](https://github.com/wso2/identity-apps/commit/78823cfe85c7fc488f7b6877027626fbd42eec10), [`165e4ad9befffe4b1f9e21f405a569fc39997220`](https://github.com/wso2/identity-apps/commit/165e4ad9befffe4b1f9e21f405a569fc39997220), [`2e59caf30754fae221c817339635d48150f0ebfd`](https://github.com/wso2/identity-apps/commit/2e59caf30754fae221c817339635d48150f0ebfd)]:
+  - @wso2is/admin.console-settings.v1@2.26.13
+  - @wso2is/admin.applications.v1@2.41.25
+  - @wso2is/i18n@2.37.4
+  - @wso2is/admin.connections.v1@2.36.11
+  - @wso2is/admin.core.v1@2.54.27
+  - @wso2is/admin.roles.v2@2.27.341
+
 ## 2.36.10
 
 ### Patch Changes

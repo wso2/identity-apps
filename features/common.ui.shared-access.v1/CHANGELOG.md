@@ -1,5 +1,17 @@
 # @wso2is/common.ui.shared-access.v1
 
+## 0.1.5
+
+### Patch Changes
+
+- [#9872](https://github.com/wso2/identity-apps/pull/9872) [`a2805eb4a9ff1ef23b3680d68a56f0ebfcbed6f2`](https://github.com/wso2/identity-apps/commit/a2805eb4a9ff1ef23b3680d68a56f0ebfcbed6f2) Thanks [@github-actions](https://github.com/apps/github-actions)! - UI bug fixes related to B2B user sharing
+
+- Updated dependencies [[`a2805eb4a9ff1ef23b3680d68a56f0ebfcbed6f2`](https://github.com/wso2/identity-apps/commit/a2805eb4a9ff1ef23b3680d68a56f0ebfcbed6f2), [`890724291d8b558d0e9432cc9ff4632d1a24bf87`](https://github.com/wso2/identity-apps/commit/890724291d8b558d0e9432cc9ff4632d1a24bf87), [`2d616c80de82fdac7c8274bc0049fb02d759de1b`](https://github.com/wso2/identity-apps/commit/2d616c80de82fdac7c8274bc0049fb02d759de1b), [`165e4ad9befffe4b1f9e21f405a569fc39997220`](https://github.com/wso2/identity-apps/commit/165e4ad9befffe4b1f9e21f405a569fc39997220)]:
+  - @wso2is/admin.console-settings.v1@2.26.13
+  - @wso2is/admin.applications.v1@2.41.25
+  - @wso2is/admin.core.v1@2.54.27
+  - @wso2is/admin.roles.v2@2.27.341
+
 ## 0.1.4
 
 ### Patch Changes

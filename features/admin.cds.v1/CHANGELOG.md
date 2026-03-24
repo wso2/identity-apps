@@ -1,5 +1,15 @@
 # @wso2is/admin.cds.v1
 
+## 1.5.1
+
+### Patch Changes
+
+- [#9896](https://github.com/wso2/identity-apps/pull/9896) [`3d7ce3855e7701d61b8ea47588881144637cd5c0`](https://github.com/wso2/identity-apps/commit/3d7ce3855e7701d61b8ea47588881144637cd5c0) Thanks [@github-actions](https://github.com/apps/github-actions)! - Remove unified profiles and introduce display name
+
+- Updated dependencies [[`a2805eb4a9ff1ef23b3680d68a56f0ebfcbed6f2`](https://github.com/wso2/identity-apps/commit/a2805eb4a9ff1ef23b3680d68a56f0ebfcbed6f2), [`2d616c80de82fdac7c8274bc0049fb02d759de1b`](https://github.com/wso2/identity-apps/commit/2d616c80de82fdac7c8274bc0049fb02d759de1b)]:
+  - @wso2is/admin.applications.v1@2.41.25
+  - @wso2is/admin.core.v1@2.54.27
+
 ## 1.5.0
 
 ### Minor Changes
