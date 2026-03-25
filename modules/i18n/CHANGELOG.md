@@ -1,5 +1,15 @@
 # @wso2is/i18n
 
+## 2.38.0
+
+### Minor Changes
+
+- [#9888](https://github.com/wso2/identity-apps/pull/9888) [`fe26e130e7b52a2075c1cd31ee881497a947b4f5`](https://github.com/wso2/identity-apps/commit/fe26e130e7b52a2075c1cd31ee881497a947b4f5) Thanks [@ranuka-laksika](https://github.com/ranuka-laksika)! - Add user-serving agent support with OAuth configuration to agent creation wizard
+
+### Patch Changes
+
+- [#9741](https://github.com/wso2/identity-apps/pull/9741) [`5a1254e3c6604f51b6c92567bcb18d5f67267fbf`](https://github.com/wso2/identity-apps/commit/5a1254e3c6604f51b6c92567bcb18d5f67267fbf) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Enable trusted token issuer advanced setting page with unique lookup attributes
+
 ## 2.37.11
 
 ### Patch Changes

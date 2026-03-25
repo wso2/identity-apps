@@ -1,5 +1,40 @@
 # @wso2is/console
 
+## 4.0.0
+
+### Major Changes
+
+- [#9929](https://github.com/wso2/identity-apps/pull/9929) [`ae85222781d97adfab2e01f783e20f7f1ed386af`](https://github.com/wso2/identity-apps/commit/ae85222781d97adfab2e01f783e20f7f1ed386af) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Prepare for next iteration
+
+### Minor Changes
+
+- [#9888](https://github.com/wso2/identity-apps/pull/9888) [`fe26e130e7b52a2075c1cd31ee881497a947b4f5`](https://github.com/wso2/identity-apps/commit/fe26e130e7b52a2075c1cd31ee881497a947b4f5) Thanks [@ranuka-laksika](https://github.com/ranuka-laksika)! - Add user-serving agent support with OAuth configuration to agent creation wizard
+
+### Patch Changes
+
+- [#9741](https://github.com/wso2/identity-apps/pull/9741) [`5a1254e3c6604f51b6c92567bcb18d5f67267fbf`](https://github.com/wso2/identity-apps/commit/5a1254e3c6604f51b6c92567bcb18d5f67267fbf) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Enable trusted token issuer advanced setting page with unique lookup attributes
+
+- Updated dependencies [[`5a1254e3c6604f51b6c92567bcb18d5f67267fbf`](https://github.com/wso2/identity-apps/commit/5a1254e3c6604f51b6c92567bcb18d5f67267fbf), [`fe26e130e7b52a2075c1cd31ee881497a947b4f5`](https://github.com/wso2/identity-apps/commit/fe26e130e7b52a2075c1cd31ee881497a947b4f5)]:
+  - @wso2is/admin.connections.v1@2.36.28
+  - @wso2is/admin.extensions.v1@2.41.0
+  - @wso2is/i18n@2.38.0
+  - @wso2is/admin.applications.v1@2.42.0
+  - @wso2is/admin.agents.v1@1.1.0
+  - @wso2is/admin.console-settings.v1@2.26.22
+  - @wso2is/admin.onboarding.v1@1.0.59
+  - @wso2is/admin.approval-workflows.v1@1.3.6
+  - @wso2is/admin.branding.v1@2.32.144
+  - @wso2is/admin.core.v1@2.55.11
+  - @wso2is/admin.roles.v2@2.27.358
+  - @wso2is/admin.home.v1@1.7.168
+  - @wso2is/admin.users.v1@2.38.11
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.188
+  - @wso2is/admin.email-management.v1@2.25.352
+  - @wso2is/admin.flows.v1@1.0.157
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.188
+  - @wso2is/admin.server-configurations.v1@2.38.27
+  - @wso2is/admin.registration-flow-builder.v1@0.10.148
+
 ## 3.2.0
 
 ### Minor Changes
