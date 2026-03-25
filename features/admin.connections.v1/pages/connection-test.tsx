@@ -389,7 +389,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                 }
             },
             {
-                menuItem: "Claims Mappings",
+                menuItem: "Claim Mappings",
                 render: () => {
                     const claimsArray = Array.isArray(result?.metadata?.mappedClaims) ? result?.metadata?.mappedClaims : [];
                     const sortedClaims = claimsArray.sort((a, b) => {
@@ -440,33 +440,27 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                 }
             },
             {
-                menuItem: "Logs",
+                menuItem: "Diagnostics",
                 render: () => {
                     const formatLogs = () => {
                         // Handle nested metadata structure
-                        const metadataObj = result?.metadata?.metadata || result?.metadata || {};
-                        const steps = metadataObj?.steps || {
-                            connectionStatus: metadataObj?.connectionStatus,
-                            authenticationStatus: metadataObj?.authenticationStatus,
-                            claimMappingStatus: metadataObj?.claimMappingStatus,
-                            claimExtractionStatus: metadataObj?.claimExtractionStatus
+                        const metadataObj = result?.metadata || {};
+                        
+                        // Get steps from stepStatus or individual status fields
+                        const stepStatus = metadataObj?.stepStatus || {};
+                        const steps = {
+                            connectionStatus: stepStatus?.connectionStatus || metadataObj?.connectionStatus,
+                            authenticationStatus: stepStatus?.authenticationStatus || metadataObj?.authenticationStatus,
+                            claimMappingStatus: stepStatus?.claimMappingStatus || metadataObj?.claimMappingStatus,
+                            claimExtractionStatus: stepStatus?.claimExtractionStatus || metadataObj?.claimExtractionStatus
                         };
-                        const errorDetails = metadataObj?.error_details || result?.metadata?.error_details || null;
-                        const errorDescription = metadataObj?.error_description || result?.metadata?.error_description || null;
-                        const errorCode = metadataObj?.error_code || result?.metadata?.error_code || null;
+                        const errorDescription = metadataObj?.error_description || null;
+                        const errorCode = metadataObj?.error_code || null;
                         const topLevelStatus = result?.status;
                         
                         return (
                             <div>
-                                {topLevelStatus === "FAILURE" && (
-                                    <div style={{ marginBottom: 16 }}>
-                                        <div style={{ background: '#fff5f5', borderRadius: 6, borderLeft: '4px solid #db2828', padding: 12, marginBottom: 12 }}>
-                                            <span style={{ fontWeight: 600, color: '#db2828', fontSize: 14 }}>Test Status: FAILURE</span>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {(errorDetails || errorDescription || errorCode) && (
+                                {(errorDescription || errorCode) && (
                                     <div style={{ marginBottom: 16 }}>
                                         <Header as="h5" style={{ marginBottom: 12, color: '#db2828' }}>Error Information</Header>
                                         <div style={{ background: '#fff5f5', borderRadius: 6, borderLeft: '4px solid #db2828', padding: 12, marginBottom: 12 }}>
@@ -479,18 +473,10 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                                 </div>
                                             )}
                                             {errorDescription && (
-                                                <div style={{ marginBottom: 8 }}>
+                                                <div>
                                                     <span style={{ fontWeight: 600, color: '#db2828' }}>Description:</span>
                                                     <p style={{ fontFamily: 'monospace', fontSize: 13, color: '#db2828', margin: '4px 0 0 0', wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
                                                         {errorDescription}
-                                                    </p>
-                                                </div>
-                                            )}
-                                            {errorDetails && (
-                                                <div>
-                                                    <span style={{ fontWeight: 600, color: '#db2828' }}>Details:</span>
-                                                    <p style={{ fontFamily: 'monospace', fontSize: 13, color: '#db2828', margin: '4px 0 0 0', wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
-                                                        {errorDetails}
                                                     </p>
                                                 </div>
                                             )}
@@ -500,13 +486,14 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
 
                                 {Object.keys(steps).length > 0 && (
                                     <div>
+                                        <Header as="h5" style={{ marginBottom: 12 }}>Step Status</Header>
                                         <div style={{ background: '#f9fafb', borderRadius: 6, padding: 12, marginBottom: 16, border: '1px solid #e0e0e0' }}>
                                             {[
                                                 { key: 'connectionStatus', label: 'Connection Creation' },
                                                 { key: 'authenticationStatus', label: 'Authentication' },
-                                                { key: 'claimMappingStatus', label: 'Claims Mapping' }
+                                                { key: 'claimMappingStatus', label: 'Claims Mapping' },
                                             ].map(({ key, label }) => (
-                                                key in steps ? (
+                                                steps[key] ? (
                                                     <div key={key} style={{ marginBottom: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                         <span style={{ fontFamily: 'monospace', color: '#666', fontSize: 13 }}>{label}:</span>
                                                         <span style={{
@@ -516,7 +503,8 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                                             borderRadius: 4,
                                                             background: steps[key] === 'success' ? '#e6ffe6' : steps[key] === 'failed' || steps[key] === 'error' ? '#ffe6e6' : '#f0f0f0',
                                                             color: steps[key] === 'success' ? '#21ba45' : steps[key] === 'failed' || steps[key] === 'error' ? '#db2828' : '#666',
-                                                            fontWeight: 500
+                                                            fontWeight: 500,
+                                                            textTransform: 'capitalize'
                                                         }}>
                                                             {String(steps[key])}
                                                         </span>
@@ -527,7 +515,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                     </div>
                                 )}
 
-                                {!errorDetails && !errorDescription && !errorCode && Object.keys(steps).length === 0 && topLevelStatus !== "FAILURE" && (
+                                {!errorDescription && !errorCode && Object.keys(steps).length === 0 && topLevelStatus !== "FAILURE" && (
                                     <div style={{ color: '#888', textAlign: 'center', padding: '24px' }}>
                                         <em>No log information available.</em>
                                     </div>

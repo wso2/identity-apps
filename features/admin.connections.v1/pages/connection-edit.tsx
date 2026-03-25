@@ -775,13 +775,11 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                 action={ ConnectionsManagementUtils.isConnectorIdentityProvider(connector) ? (
                     <SecondaryButton
                         data-testid="idp-test-connection-button"
-                        data-componentid="primary-button"
-                        className="ui primary button"
                         onClick={ handleTestConnection }
                         loading={ isTestingConnection }
                         disabled={ isTestingConnection }
                     >
-                        <Icon name="flask" />
+                        <Icon name="flask"/>
                         Test Connection
                     </SecondaryButton>
                 ) : null }
