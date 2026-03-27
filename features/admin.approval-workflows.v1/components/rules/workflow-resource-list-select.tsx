@@ -99,16 +99,14 @@ const WorkflowResourceListSelect: FunctionComponent<WorkflowResourceListSelectPr
         ? `${detailBaseUrl}/${_expressionValue}`
         : null;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const resourcesListResponse: any = useGetWorkflowResources(initialResourcesLoadUrl, true);
-    const fetchedResourcesList: any = resourcesListResponse.data;
-    const isResourcesListLoading: boolean = resourcesListResponse.isLoading;
+    const { data: fetchedResourcesList, isLoading: isResourcesListLoading } =
+        useGetWorkflowResources(initialResourcesLoadUrl, true);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const resourceDetailsResponse: any = useGetWorkflowResources(detailsUrl, shouldFetchDetails);
-    const resourcesDetails: any = resourceDetailsResponse.data;
-    const isResourceDetailsLoading: boolean = resourceDetailsResponse.isLoading;
-    const resourceDetailsError: any = resourceDetailsResponse.error;
+    const {
+        data: resourcesDetails,
+        isLoading: isResourceDetailsLoading,
+        error: resourceDetailsError
+    } = useGetWorkflowResources<ResourceInterface>(detailsUrl, shouldFetchDetails);
 
     useEffect(() => {
         if (!shouldFetchDetails) {
