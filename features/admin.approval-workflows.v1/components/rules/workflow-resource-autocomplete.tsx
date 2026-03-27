@@ -129,11 +129,9 @@ const WorkflowResourceAutocomplete: FunctionComponent<WorkflowResourceAutocomple
         )
         : initialResourcesLoadUrl;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: initialResources = [], isLoading: isInitialLoading }: any =
+    const { data: initialResources, isLoading: isInitialLoading } =
         useGetWorkflowResources(initialResourcesLoadUrl, shouldFetch);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: filteredResources = [], isLoading: isFiltering }: any =
+    const { data: filteredResources, isLoading: isFiltering } =
         useGetWorkflowResources(filterUrl, shouldFetch);
 
     useEffect(() => {

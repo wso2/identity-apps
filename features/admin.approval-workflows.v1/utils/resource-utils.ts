@@ -18,6 +18,7 @@
 
 import { ResourceInterface } from "@wso2is/admin.rules.v1/models/resource";
 import { normalizeUserstoreList } from "./userstore-utils";
+import { WorkflowResourceListResponse } from "../models/workflow-resources";
 
 /**
  * Interface for normalized resource list response.
@@ -55,7 +56,9 @@ export const processResourceItems = (
  * @param response - The raw API response.
  * @returns The normalized resource list.
  */
-export const normalizeResourceResponse = (response: any): NormalizedResourceList => {
+export const normalizeResourceResponse = (
+    response: WorkflowResourceListResponse | undefined
+): NormalizedResourceList => {
     if (!response) {
         return { count: 0, items: [], totalResults: 0 };
     }
@@ -64,23 +67,25 @@ export const normalizeResourceResponse = (response: any): NormalizedResourceList
     if (Array.isArray(response)) {
         return {
             count: response.length,
-            items: response,
+            items: response as ResourceInterface[],
             totalResults: response.length
         };
     }
 
-    if (Array.isArray(response.Resources)) {
+    // SCIM list response (roles, groups).
+    if ("Resources" in response && Array.isArray(response.Resources)) {
         return {
             count: response.itemsPerPage ?? response.Resources.length,
-            items: response.Resources,
+            items: response.Resources as unknown as ResourceInterface[],
             totalResults: response.totalResults ?? response.Resources.length
         };
     }
 
-    if (Array.isArray(response.applications)) {
+    // Applications list response.
+    if ("applications" in response && Array.isArray(response.applications)) {
         return {
             count: response.count ?? response.applications.length,
-            items: response.applications,
+            items: response.applications as ResourceInterface[],
             totalResults: response.totalResults ?? response.applications.length
         };
     }
