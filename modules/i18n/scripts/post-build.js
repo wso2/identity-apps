@@ -16,10 +16,9 @@
  * under the License.
  */
 
-const { execSync } = require("child_process");
 const crypto = require("crypto");
 const path = require("path");
-const fs = require("fs-extra");
+const fs = require("fs");
 
 
 // eslint-disable-next-line no-console
@@ -27,146 +26,128 @@ const log = console.log;
 
 const OUTPUT_DIR_NAME = "bundle";
 const META_FILE_NAME = "meta.{hash}.json";
-const TRANSLATIONS_FOLDER_NAME = "translations";
+const PORTALS_FOLDER_NAME = "portals";
 const EXTENSIONS_FILENAME = "extensions.{hash}.json";
+
+// Path for the source translations directory (JSON files).
+const translationsSrcPath = path.join(__dirname, "..", "src", "translations");
 
 // Path for the distribution directory.
 const dist = path.join(__dirname, "..", "dist");
 
-// Path for the translations after the build.
-const translationsPath = path.join(dist, "src", TRANSLATIONS_FOLDER_NAME);
-
-// Path for the directory to store final transpiled JSON files.
+// Path for the directory to store final hashed JSON bundle files.
 const outputPath = path.join(dist, OUTPUT_DIR_NAME);
 
 log("Running @wso2is/i18n module's post build script.");
 
-// Check if the `dist` and the `translations` folder exists and if not terminate the script.
-// If the folders doesn't exist that means the build hasn't been performed.
-if (!fs.existsSync(dist) || !fs.existsSync(translationsPath)) {
-
-    log("\nERROR in @wso2is/i18 module");
-
-    log("\nCould not locate the i18 translation build artifacts." +
-        "Please execute the build command before running this script.");
-
-    // Terminate the script.
-    process.exit();
+// Verify the JSON source translations directory exists.
+if (!fs.existsSync(translationsSrcPath)) {
+    log("\nERROR in @wso2is/i18n module");
+    log("\nCould not locate the JSON translation source files at: " + translationsSrcPath);
+    process.exit(1);
 }
 
 // If the bundle folder exists, clean it first.
 if (fs.existsSync(outputPath)) {
-    log("\nBundle already exists. Cleaning it first......");
-    execSync("pnpm clean:bundle");
+    log("\nBundle already exists. Cleaning it first...");
+    fs.rmSync(outputPath, { recursive: true, force: true });
 }
 
-// Create the output directory if it doesn't exist.
-createDirectory(outputPath, true);
+// Create the output directory.
+fs.mkdirSync(outputPath, { recursive: true });
 
-// Load the translations.
-const translations = require(translationsPath);
+// Discover locale directories: any sub-directory that contains a meta.json file.
+const localeCodes = fs.readdirSync(translationsSrcPath).filter((entry) => {
+    const entryPath = path.join(translationsSrcPath, entry);
+    return (
+        fs.statSync(entryPath).isDirectory() &&
+        fs.existsSync(path.join(entryPath, "meta.json"))
+    );
+});
+
+if (localeCodes.length === 0) {
+    log("\nERROR: No locale directories with meta.json found in " + translationsSrcPath);
+    process.exit(1);
+}
+
+log("\nFound locales: " + localeCodes.join(", ") + "\n");
 
 // Object to store the meta info of all the languages.
 let metaFileContent = {};
 
-// Create directories to store the locales for the corresponding language.
-for (const value of Object.values(translations)) {
+// Process each locale.
+for (const localeCode of localeCodes) {
+    const localeDir   = path.join(translationsSrcPath, localeCode);
+    const metaFile    = path.join(localeDir, "meta.json");
+    const portalsDir  = path.join(localeDir, PORTALS_FOLDER_NAME);
+    const langDirPath = path.join(outputPath, localeCode);
 
-    const langDirPath = path.join(outputPath, value.meta.code);
+    // Read locale metadata.
+    const localeMeta = JSON.parse(fs.readFileSync(metaFile, "utf8"));
+
+    if (!localeMeta.code) {
+        log("\nWARNING - meta.json for " + localeCode + " is missing a 'code' field – skipping.");
+        continue;
+    }
+
+    // Create the output locale directory.
+    fs.mkdirSync(langDirPath, { recursive: true });
+    log("\nCreating a directory for the language - " + localeMeta.name + "\n");
 
     let resourcePaths = {};
 
-    if (!value || !value.meta || !value.meta.code || !value.resources) {
+    if (fs.existsSync(portalsDir)) {
+        const subFolderPath = path.join(langDirPath, PORTALS_FOLDER_NAME);
+        fs.mkdirSync(subFolderPath, { recursive: true });
+        log("Creating " + PORTALS_FOLDER_NAME + " sub folder to store relevant namespace resources.");
 
-        log("\nWARNING - Could not find the relevant locale meta or resources for the language");
+        // Read each namespace JSON file (skip non-.json files).
+        const nsFiles = fs.readdirSync(portalsDir).filter((f) => f.endsWith(".json"));
 
-        break;
-    }
+        for (const nsFile of nsFiles) {
+            const nsKey     = path.basename(nsFile, ".json"); // e.g. "applications"
+            const nsContent = JSON.parse(fs.readFileSync(path.join(portalsDir, nsFile), "utf8"));
 
-    // Create the language directories
-    createDirectory(langDirPath, true);
-
-    log("\nCreating a directory for the language - " + value.meta.name + "\n");
-
-    // Iterate through the resources object to extract the sub folders.
-    for (const [ objKey, objValue ] of Object.entries(value.resources)) {
-        const subFolderPath = path.join(langDirPath, objKey);
-
-        createDirectory(subFolderPath, true);
-
-        log("Creating " + objKey + " sub folder to store relevant namespace resources.");
-
-        // Extract and create the JSON files from the namespaces.
-        for (const [ nsObjKey, nsObjValue ] of Object.entries(objValue)) {
-            const hash = crypto.createHash("sha1").update(JSON.stringify(nsObjValue)).digest("hex");
-            const fileName = `${ nsObjKey }.${ hash.substr(0, 8) }.json`;
+            const hash     = crypto.createHash("sha1").update(JSON.stringify(nsContent)).digest("hex");
+            const fileName = `${ nsKey }.${ hash.substr(0, 8) }.json`;
             const filePath = path.join(subFolderPath, fileName);
 
-            createFile(filePath, JSON.stringify(nsObjValue, undefined, 4), null, true);
+            if (!fs.existsSync(filePath)) {
+                fs.writeFileSync(filePath, JSON.stringify(nsContent, undefined, 4));
+            }
 
             log("Generating the JSON - " + fileName);
 
             resourcePaths = {
                 ...resourcePaths,
-                [ nsObjKey ]: path.join(value.meta.code, objKey, fileName).split(path.sep).join(path.posix.sep)
+                [ nsKey ]: path.join(localeCode, PORTALS_FOLDER_NAME, fileName)
+                    .split(path.sep).join(path.posix.sep)
             };
         }
 
-        // Add extensions.json file to the path
+        // Add the extensions placeholder path (filled in by the app's pre-build script).
         resourcePaths = {
             ...resourcePaths,
-            extensions: path.join(value.meta.code, objKey, EXTENSIONS_FILENAME).split(path.sep).join(path.posix.sep)
+            extensions: path.join(localeCode, PORTALS_FOLDER_NAME, EXTENSIONS_FILENAME)
+                .split(path.sep).join(path.posix.sep)
         };
     }
 
     metaFileContent = {
         ...metaFileContent,
-        [ value.meta.code ] : {
-            ...value.meta,
+        [ localeMeta.code ]: {
+            ...localeMeta,
             paths: resourcePaths
         }
     };
 }
 
 const hash = crypto.createHash("sha1").update(JSON.stringify(metaFileContent)).digest("hex");
+const metaOutputPath = path.join(outputPath, META_FILE_NAME.replace("{hash}", hash.substr(0, 8)));
 
-createFile(path.join(outputPath, META_FILE_NAME.replace("{hash}", hash.substr(0, 8))),
-    JSON.stringify(metaFileContent, undefined, 4), null, true);
+if (!fs.existsSync(metaOutputPath)) {
+    fs.writeFileSync(metaOutputPath, JSON.stringify(metaFileContent, undefined, 4));
+}
 
 log("\nCreated the locale meta file.");
-
 log("\nSuccessfully generated the locale bundle.");
-
-log("\nRunning cleanup task......");
-
-execSync("pnpm clean:translations");
-
-log("\nClean up task finished successfully......");
-
-// Function to create directories.
-function createDirectory(dirPath, checkIfExists) {
-
-    if (!checkIfExists) {
-        fs.mkdirSync(dirPath);
-
-        return;
-    }
-
-    if (!fs.existsSync(dirPath)) {
-        fs.mkdirSync(dirPath);
-    }
-}
-
-// Function to create files.
-function createFile(filePath, data, options, checkIfExists) {
-
-    if (!checkIfExists) {
-        fs.writeFileSync(filePath, data, options);
-
-        return;
-    }
-
-    if (!fs.existsSync(filePath)) {
-        fs.writeFileSync(filePath, data, options);
-    }
-}

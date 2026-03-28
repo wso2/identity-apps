@@ -1,0 +1,11 @@
+{
+    "code": "pt-BR",
+    "direction": "ltr",
+    "flag": "br",
+    "name": "Português (Brazil)",
+    "namespaces": [
+        "common",
+        "commonUsers",
+        "myAccount"
+    ]
+}

@@ -1,0 +1,112 @@
+{
+    "create": {
+        "notifications": {
+            "create": {
+                "genericError": {
+                    "description": "An error occurred while creating the identity verification provider.",
+                    "message": "Creation error"
+                },
+                "success": {
+                    "description": "Successfully created the identity verification provider.",
+                    "message": "Creation successful"
+                }
+            }
+        }
+    },
+    "delete": {
+        "confirmation": {
+            "assertionHint": "Please confirm your action.",
+            "content": "If you delete this identity verification provider, you will not be able to recover it. Please proceed with caution.",
+            "header": "Are you sure?",
+            "message": "This action is irreversible and will permanently delete the identity verification provider."
+        },
+        "notifications": {
+            "delete": {
+                "genericError": {
+                    "description": "An error occurred while deleting the identity verification provider.",
+                    "message": "Delete Error"
+                },
+                "success": {
+                    "description": "Successfully deleted the identity verification provider.",
+                    "message": "Delete Successful"
+                }
+            }
+        }
+    },
+    "edit": {
+        "attributeSettings": {
+            "addButton": "Add Attribute Mapping",
+            "heading": "Identity Verification Provider Attribute Mappings",
+            "hint": "Add and map the supported attributes from external Identity Verification Provider.",
+            "modal": {
+                "addButton": "Add Attribute Mapping",
+                "emptyPlaceholder": {
+                    "description": "Map attributes and click <1>Add Attribute Mapping</1> to get started.",
+                    "title": "You haven't mapped any attributes"
+                },
+                "header": "Add Attribute Mappings",
+                "labels": {
+                    "localClaim": "Maps to",
+                    "mappedValue": "External IDVP Attribute"
+                },
+                "placeholders": {
+                    "localClaim": "Select mapping attribute",
+                    "mappedValue": "Enter external IDVP attribute"
+                },
+                "validation": {
+                    "duplicate": "There's already an attribute mapped with this name.",
+                    "invalid": "Please enter a valid input.",
+                    "required": "This field cannot be empty."
+                }
+            }
+        },
+        "backButton": "Go back to Connections",
+        "dangerZone": {
+            "delete": {
+                "description": "This is an irreversible action, proceed with caution.",
+                "header": "Delete identity verification provider"
+            },
+            "disable": {
+                "disabledDescription": "Enable the identity verification provider to use it with your applications.",
+                "enabledDescription": "Once you disable an identity verification provider, it can no longer be used until re-enabled.",
+                "header": "{{ state }} identity verification provider"
+            }
+        },
+        "notifications": {
+            "update": {
+                "genericError": {
+                    "description": "An error occurred while updating the identity verification provider.",
+                    "message": "Update Error"
+                },
+                "success": {
+                    "description": "Successfully updated the identity verification provider.",
+                    "message": "Update successful"
+                }
+            }
+        },
+        "status": {
+            "disabled": "Disabled",
+            "enabled": "Enabled",
+            "notConfigured": {
+                "description": "Webhook Token is not configured properly. Navigate to the Setup Guide tab for more information.",
+                "heading": "Not Configured"
+            }
+        }
+    },
+    "fetch": {
+        "notifications": {
+            "idVP": {
+                "genericError": {
+                    "description": "An error occurred while retrieving identity verification provider details.",
+                    "message": "Retrieval Error"
+                }
+            },
+            "metadata": {
+                "genericError": {
+                    "description": "An error occurred while retrieving metadata for identity verification provider.",
+                    "message": "Retrieval Error"
+                }
+            }
+        }
+    }
+}

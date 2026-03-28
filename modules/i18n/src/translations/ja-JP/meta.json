@@ -1,0 +1,11 @@
+{
+    "code": "ja-JP",
+    "direction": "ltr",
+    "flag": "jp",
+    "name": "日本語 (日本)",
+    "namespaces": [
+        "common",
+        "commonUsers",
+        "myAccount"
+    ]
+}

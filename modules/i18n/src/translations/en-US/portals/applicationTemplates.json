@@ -1,0 +1,46 @@
+{
+    "categories": {
+        "default": {
+            "description": "Choose the relevant application architecture for easy configuration.",
+            "displayName": "Select Application Type"
+        },
+        "ssoIntegration": {
+            "description": "Configure Single-Sign-On for your SaaS services.",
+            "displayName": "Select SSO Integration"
+        },
+        "technology": {
+            "description": "Choose the relevant application technology for easy configuration."
+        }
+    },
+    "notifications": {
+        "fetchTemplate": {
+            "error": {
+                "description": "{{description}}",
+                "message": "Retrieval error"
+            },
+            "genericError": {
+                "description": "An error occurred while retrieving application template data.",
+                "message": "Something went wrong"
+            }
+        },
+        "fetchTemplateMetadata": {
+            "error": {
+                "description": "{{description}}",
+                "message": "Retrieval error"
+            },
+            "genericError": {
+                "description": "An error occurred while retrieving application template meta data.",
+                "message": "Something went wrong"
+            }
+        }
+    },
+    "placeholders": {
+        "emptyApplicationTypeList": {
+            "subtitles": {
+                "0": "There are currently no application types available.",
+                "1": "for configuration."
+            },
+            "title": "No application types found"
+        }
+    }
+}

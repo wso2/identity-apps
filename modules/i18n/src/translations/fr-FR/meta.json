@@ -1,0 +1,11 @@
+{
+    "code": "fr-FR",
+    "direction": "ltr",
+    "flag": "fr",
+    "name": "Français (France)",
+    "namespaces": [
+        "common",
+        "commonUsers",
+        "myAccount"
+    ]
+}

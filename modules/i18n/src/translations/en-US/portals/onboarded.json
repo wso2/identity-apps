@@ -1,0 +1,26 @@
+{
+    "confirmationModal": {
+        "removeUser": {
+            "assertionHint": "Please confirm your action.",
+            "content": "If you remove this user, the user will not be able to access the console within your organization. Please proceed with caution.",
+            "header": "Are you sure?",
+            "message": "This action is irreversible and will remove the user from your organization."
+        }
+    },
+    "notifications": {
+        "removeUser": {
+            "error": {
+                "description": "{{description}}",
+                "message": "Error while removing the user"
+            },
+            "genericError": {
+                "description": "Couldn't remove the user from the {{tenant}} organization",
+                "message": "Something went wrong"
+            },
+            "success": {
+                "description": "Successfully removed the user from the {{tenant}} organization",
+                "message": "User removed successfully"
+            }
+        }
+    }
+}

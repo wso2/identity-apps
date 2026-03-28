@@ -1,0 +1,42 @@
+{
+    "description": "Configure impersonation settings for organization.",
+    "form": {
+        "enableEmailNotification": {
+            "hint": "If enabled, the impersonated user will receive an email notification after impersonation starts.",
+            "label": "Enable Email Notification"
+        }
+    },
+    "notifications": {
+        "getConfiguration": {
+            "error": {
+                "description": "Error occurred while fetching impersonation configurations.",
+                "message": "Error occurred"
+            },
+            "success": {
+                "description": "Successfully retrieved the impersonation configurations.",
+                "message": "Retrieved successful"
+            }
+        },
+        "revertConfiguration": {
+            "error": {
+                "description": "Error occurred while reverting impersonation configurations.",
+                "message": "Error occurred"
+            },
+            "success": {
+                "description": "Successfully reverted the impersonation configurations.",
+                "message": "Revert successful"
+            }
+        },
+        "updateConfiguration": {
+            "error": {
+                "description": "Error occurred while updating impersonation configurations.",
+                "message": "Error occurred"
+            },
+            "success": {
+                "description": "Successfully updated the impersonation configurations.",
+                "message": "Update successful"
+            }
+        }
+    },
+    "title": "Impersonation"
+}

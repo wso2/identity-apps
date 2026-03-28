@@ -26,6 +26,7 @@
         "clean:bundle": "rimraf ./dist/bundle",
         "clean:translations": "rimraf ./dist/src/translations && rimraf ./dist/types/translations",
         "compile": "pnpm tsc -p tsconfig.json --incremental",
+        "convert-ts-to-json": "node scripts/convert-ts-to-json.js",
         "lint": "pnpm lint:all",
         "lint:all": "pnpm lint:targeted -- .",
         "lint:autofix": "pnpm lint:all -- --fix",

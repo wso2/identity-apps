@@ -1,0 +1,38 @@
+{
+    "buttons": {
+        "addLocaleTemplate": "Add Locale Template",
+        "saveChanges": "Save Changes"
+    },
+    "forms": {
+        "addLocale": {
+            "fields": {
+                "bodyEditor": {
+                    "label": "Body",
+                    "validations": {
+                        "empty": "The email body cannot be empty."
+                    }
+                },
+                "locale": {
+                    "label": "Locale",
+                    "placeholder": "Select Locale",
+                    "validations": {
+                        "empty": "Select locale"
+                    }
+                },
+                "signatureEditor": {
+                    "label": "Mail signature",
+                    "validations": {
+                        "empty": "The email signature cannot be empty."
+                    }
+                },
+                "subject": {
+                    "label": "Subject",
+                    "placeholder": "Enter your email subject",
+                    "validations": {
+                        "empty": "Email Subject is required"
+                    }
+                }
+            }
+        }
+    }
+}

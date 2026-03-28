@@ -1,0 +1,10 @@
+{
+    "code": "es-ES",
+    "flag": "es",
+    "name": "Español (España)",
+    "namespaces": [
+        "common",
+        "commonUsers",
+        "myAccount"
+    ]
+}

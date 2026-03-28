@@ -1,0 +1,59 @@
+{
+    "alerts": {
+        "create": {
+            "error": {
+                "description": "Error occurred while updating push provider configurations.",
+                "message": "Something went wrong"
+            },
+            "success": {
+                "description": "Push provider configurations updated successfully.",
+                "message": "Updated successfully."
+            }
+        },
+        "delete": {
+            "error": {
+                "description": "Error occurred while deleting push provider configurations",
+                "message": "Something went wrong"
+            },
+            "success": {
+                "description": "Push provider configurations deleted succesfully",
+                "message": "Deleted successfully"
+            }
+        },
+        "updateDefault": {
+            "error": {
+                "description": "Error occurred while updating default push sender configuration.",
+                "message": "Something went wrong"
+            },
+            "success": {
+                "description": "Default push sender configuration updated successfully.",
+                "message": "Updated successfully."
+            }
+        }
+    },
+    "dangerZoneGroup": {
+        "header": "Danger Zone",
+        "revertConfig": {
+            "actionTitle": "Delete",
+            "heading": "Delete Configurations",
+            "subHeading": "This action will delete push provider configurations. Once deleted, users will not receive any push notifications."
+        }
+    },
+    "description": "Configure the push notification provider credentials to enable sending push notifications.",
+    "goBack": "Go back to Notification Providers",
+    "heading": "Push Provider",
+    "modals": {
+        "deleteConfirmation": {
+            "assertionHint": "Please confirm your action",
+            "content": "If you delete the push provider, users will no longer receive push notifications from applications set up with push authentication. Proceed with caution.",
+            "heading": "Are you sure?",
+            "message": "This action is irreversible and will permanently delete the current push provider configuration."
+        }
+    },
+    "pushProviderSettings": {
+        "defaultSender": "Set as Default Push Sender",
+        "defaultSenderDescription": "Select this provider as the default push notification sender."
+    },
+    "subHeading": "Configure a push provider to send push notifications to your users.",
+    "updateButton": "Update"
+}

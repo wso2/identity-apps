@@ -1,0 +1,11 @@
+{
+    "code": "ta-IN",
+    "direction": "ltr",
+    "flag": "in",
+    "name": "தமிழ் (India)",
+    "namespaces": [
+        "common",
+        "myAccount",
+        "commonUsers"
+    ]
+}

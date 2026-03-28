@@ -1,0 +1,11 @@
+{
+    "code": "zh-CN",
+    "direction": "ltr",
+    "flag": "cn",
+    "name": "中文 (中国)",
+    "namespaces": [
+        "common",
+        "commonUsers",
+        "myAccount"
+    ]
+}

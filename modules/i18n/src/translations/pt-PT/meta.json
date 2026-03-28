@@ -1,0 +1,11 @@
+{
+    "code": "pt-PT",
+    "direction": "ltr",
+    "flag": "pt",
+    "name": "Português (Portugal)",
+    "namespaces": [
+        "common",
+        "commonUsers",
+        "myAccount"
+    ]
+}

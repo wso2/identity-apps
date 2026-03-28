@@ -1,0 +1,11 @@
+{
+    "code": "si-LK",
+    "direction": "ltr",
+    "flag": "lk",
+    "name": "සිංහල (Sri Lanka)",
+    "namespaces": [
+        "common",
+        "commonUsers",
+        "myAccount"
+    ]
+}

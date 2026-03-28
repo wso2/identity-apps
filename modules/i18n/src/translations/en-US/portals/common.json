@@ -1,0 +1,300 @@
+{
+    "access": "Access",
+    "actions": "Actions",
+    "activate": "Activate",
+    "active": "Active",
+    "add": "Add",
+    "addKey": "Add secret",
+    "addURL": "Add URL",
+    "all": "All",
+    "applicationName": "Application name",
+    "applications": "Applications",
+    "approvalStatus": "Approval Status",
+    "approvals": "Approvals",
+    "approvalsPage": {
+        "list": {
+            "columns": {
+                "actions": "Actions",
+                "name": "Name"
+            }
+        },
+        "modals": {
+            "description": "You can approve or reject the task from here.",
+            "header": "Approval Task",
+            "subHeader": "Review the details of the approval task."
+        },
+        "notifications": {
+            "fetchApprovalDetails": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "Error fetching approval details"
+                },
+                "genericError": {
+                    "description": "Couldn't retrieve the approval details.",
+                    "message": "Something went wrong"
+                }
+            },
+            "fetchPendingApprovals": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "Error fetching pending approvals"
+                },
+                "genericError": {
+                    "description": "Couldn't retrieve the pending approvals.",
+                    "message": "Something went wrong"
+                }
+            },
+            "statusUpdate": {
+                "approved": {
+                    "description": "The approval request has been approved.",
+                    "message": "Approval request approved"
+                },
+                "claimed": {
+                    "description": "The approval request has been claimed.",
+                    "message": "Approval request claimed"
+                },
+                "rejected": {
+                    "description": "The approval request has been rejected.",
+                    "message": "Approval request rejected"
+                },
+                "released": {
+                    "description": "The approval request has been released.",
+                    "message": "Approval request released"
+                }
+            },
+            "updatePendingApprovals": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "Error updating the approval"
+                },
+                "genericError": {
+                    "description": "Couldn't update the pending approval.",
+                    "message": "Something went wrong"
+                },
+                "success": {
+                    "description": "Successfully updated the approval.",
+                    "message": "Update successful"
+                }
+            }
+        },
+        "operationTypes": {
+            "addRole": "Add Role",
+            "addUser": "Add User",
+            "all": "All Operations",
+            "deleteRole": "Delete Role",
+            "deleteUser": "Delete User",
+            "selfRegisterUser": "Self Register User",
+            "updateRolesOfUser": "Update Role Users"
+        },
+        "placeholders": {
+            "emptyApprovalFilter": {
+                "action": "View all",
+                "subtitle": "There are currently no approvals in {{status}} state.",
+                "title": "No results found"
+            },
+            "emptyApprovalList": {
+                "action": "",
+                "subtitle": "There are currently no approvals to review.",
+                "title": "No Approvals"
+            },
+            "emptySearchResults": {
+                "action": "View all",
+                "subtitles": {
+                    "0": "We couldn't find the workflow you searched for.",
+                    "1": "Please check if you have a workflow with that name in",
+                    "2": "the system."
+                },
+                "title": "No Approvals"
+            },
+            "searchApprovals": "Search by workflow name"
+        },
+        "propertyMessages": {
+            "assignedUsersDeleted": "The assigned user(s) have been deleted.",
+            "roleDeleted": "The role has been deleted.",
+            "selfRegistration": "Self Registration",
+            "unassignedUsersDeleted": "The unassigned user(s) have been deleted."
+        },
+        "subTitle": "Review operational tasks that requires your approval",
+        "title": "Approvals"
+    },
+    "approve": "Approve",
+    "approved": "Approved",
+    "apps": "Apps",
+    "assignYourself": "Assign yourself",
+    "assignee": "Assignee",
+    "assignees": "Assignees",
+    "asyncOperationErrorMessage": {
+        "description": "Something went wrong",
+        "message": "An unexpected error occured. Please check back later."
+    },
+    "authentication": "Authentication",
+    "authenticator": "Authenticator",
+    "authenticator_plural": "Authenticators",
+    "back": "Back",
+    "beta": "Beta",
+    "browser": "Browser",
+    "cancel": "Cancel",
+    "challengeQuestionNumber": "Challenge Question {{number}}",
+    "change": "Change",
+    "chunkLoadErrorMessage": {
+        "description": "An error occurred when serving the requested application. Please try reloading the app.",
+        "heading": "Something went wrong",
+        "primaryActionText": "Reload the App"
+    },
+    "clear": "Clear",
+    "clientId": "Client ID",
+    "close": "Close",
+    "comingSoon": "Coming soon",
+    "completed": "Completed",
+    "configure": "Configure",
+    "confirm": "Confirm",
+    "contains": "Contains",
+    "continue": "Continue",
+    "copied": "Copied!",
+    "copyToClipboard": "Copy to clipboard",
+    "create": "Create",
+    "createdOn": "Created on",
+    "dangerZone": "Danger Zone",
+    "darkMode": "Dark mode",
+    "default": "Default",
+    "delete": "Delete",
+    "deprecated": "This configuration is deprecated and will be removed in a future release.",
+    "description": "Description",
+    "deviceModel": "Device model",
+    "disable": "Disable",
+    "disabled": "Disabled",
+    "docs": "Docs",
+    "documentation": "Documentation",
+    "done": "Done",
+    "download": "Download",
+    "drag": "Drag",
+    "duplicateURLError": "This value is already added",
+    "edit": "Edit",
+    "enable": "Enable",
+    "enabled": "Enabled",
+    "endsWith": "Ends with",
+    "equals": "Equals",
+    "exitFullScreen": "Exit full-screen",
+    "experimental": "Experimental",
+    "explore": "Explore",
+    "export": "Export",
+    "featureAvailable": "This feature will be available soon!",
+    "filter": "Filter",
+    "finish": "Finish",
+    "generatePassword": "Generate password",
+    "goBackHome": "Go back home",
+    "goFullScreen": "Go full-screen",
+    "good": "Good",
+    "greaterThanOrEqual": "Greater than or equal",
+    "help": "Help",
+    "hide": "Hide",
+    "hidePassword": "Hide password",
+    "identityProviders": "Identity Providers",
+    "import": "Import",
+    "initiator": "Initiator",
+    "ipAddress": "IP address",
+    "issuer": "Issuer",
+    "lastAccessed": "Last accessed",
+    "lastModified": "Last modified",
+    "lastSeen": "Last seen",
+    "lastUpdatedOn": "Last updated on",
+    "learnMore": "Learn More",
+    "lessThanOrEqual": "Less than or equal",
+    "lightMode": "Light mode",
+    "loading": "Loading",
+    "loginTime": "Login time",
+    "logout": "Logout",
+    "makePrimary": "Make primary",
+    "maxValidation": "This value should be less than or equal to {{max}}.",
+    "maximize": "Maximize",
+    "metaAttributes": "Meta Attributes",
+    "minValidation": "This value should be greater than or equal to {{min}}.",
+    "minimize": "Minimize",
+    "minutes": "mins",
+    "more": "More",
+    "myAccount": "My Account",
+    "name": "Name",
+    "networkErrorMessage": {
+        "description": "Please try signing in again.",
+        "heading": "Your session has expired",
+        "primaryActionText": "Sign In"
+    },
+    "new": "New",
+    "next": "Next",
+    "noResultsFound": "No results found",
+    "none": "None",
+    "okay": "Okay",
+    "operatingSystem": "Operating system",
+    "operationType": "Operation Type",
+    "operations": "Operations",
+    "organizationName": "{{orgName}} organization",
+    "overview": "Overview",
+    "parameter": "Parameter",
+    "pending": "Pending",
+    "personalInfo": "Personal Info",
+    "pin": "Pin",
+    "pinned": "Pinned",
+    "premium": "Premium",
+    "pressEnterPrompt": "Press <1>Enter</1> to select",
+    "preview": "Preview",
+    "previous": "Previous",
+    "primary": "Primary",
+    "priority": "Priority",
+    "privacy": "Privacy",
+    "properties": "Properties",
+    "publish": "Publish",
+    "ready": "Ready",
+    "regenerate": "Regenerate",
+    "register": "Register",
+    "reject": "Reject",
+    "rejected": "Rejected",
+    "remove": "Remove",
+    "removeAll": "Remove all",
+    "required": "This is required.",
+    "reserved": "Reserved",
+    "resetFilters": "Reset filters",
+    "retry": "Retry",
+    "revert": "Revert",
+    "revoke": "Revoke",
+    "revokeAll": "Revoke all",
+    "samples": "Samples",
+    "save": "Save",
+    "saveDraft": "Save draft",
+    "sdks": "SDKs",
+    "search": "Search",
+    "searching": "Searching",
+    "security": "Security",
+    "selectAll": "Select all",
+    "selectNone": "Select none",
+    "services": "Services",
+    "settings": "Settings",
+    "setup": "Set up",
+    "show": "Show",
+    "showAll": "Show all",
+    "showLess": "Show less",
+    "showMore": "Show more",
+    "showPassword": "Show password",
+    "skip": "Skip",
+    "startsWith": "Starts with",
+    "step": "Step",
+    "strong": "Strong",
+    "submit": "Submit",
+    "switch": "Switch",
+    "technologies": "Technologies",
+    "terminate": "Terminate",
+    "terminateAll": "Terminate all",
+    "terminateSession": "Terminate session",
+    "tooShort": "Too short",
+    "type": "Type",
+    "unassign": "Unassign",
+    "unpin": "Unpin",
+    "unpinned": "Unpinned",
+    "update": "Update",
+    "user": "User",
+    "verified": "Verified",
+    "verify": "Verify",
+    "view": "View",
+    "viewDetails": "View details",
+    "weak": "Weak",
+    "weakPassword": "The password strength should at least be good."
+}

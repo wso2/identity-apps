@@ -1,0 +1,10 @@
+{
+    "code": "de-DE",
+    "flag": "de",
+    "name": "Deutsch (Deutschland)",
+    "namespaces": [
+        "common",
+        "commonUsers",
+        "myAccount"
+    ]
+}
