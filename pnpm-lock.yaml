@@ -486,190 +486,190 @@ importers:
         specifier: ^3.5.3
         version: link:../../modules/access-control
       '@wso2is/admin.actions.v1':
-        specifier: ^1.15.4
+        specifier: workspace:^
         version: link:../../features/admin.actions.v1
       '@wso2is/admin.administrators.v1':
-        specifier: ^2.29.208
+        specifier: workspace:^
         version: link:../../features/admin.administrators.v1
       '@wso2is/admin.agents.v1':
         specifier: workspace:^
         version: link:../../features/admin.agents.v1
       '@wso2is/admin.alternative-login-identifier.v1':
-        specifier: ^1.5.207
+        specifier: workspace:^
         version: link:../../features/admin.alternative-login-identifier.v1
       '@wso2is/admin.analytics.v1':
         specifier: workspace:^
         version: link:../../features/admin.analytics.v1
       '@wso2is/admin.api-resources.v1':
-        specifier: ^2.25.204
+        specifier: workspace:^
         version: link:../../features/admin.api-resources.v1
       '@wso2is/admin.api-resources.v2':
-        specifier: ^2.26.8
+        specifier: workspace:^
         version: link:../../features/admin.api-resources.v2
-      '@wso2is/admin.application-templates.v1':
-        specifier: ^1.6.1
+      '@wso2is/asdmin.application-templates.v1':
+        specifier: workspace:^
         version: link:../../features/admin.application-templates.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.42.8
+        specifier: workspace:^
         version: link:../../features/admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
-        specifier: ^1.3.14
+        specifier: workspace:^
         version: link:../../features/admin.approval-workflows.v1
       '@wso2is/admin.ask-password-flow-builder.v1':
         specifier: workspace:^
         version: link:../../features/admin.ask-password-flow-builder.v1
       '@wso2is/admin.authentication.v1':
-        specifier: ^2.25.208
+        specifier: workspace:^
         version: link:../../features/admin.authentication.v1
       '@wso2is/admin.branding.v1':
-        specifier: ^2.32.152
+        specifier: workspace:^
         version: link:../../features/admin.branding.v1
       '@wso2is/admin.cds.v1':
-        specifier: ^1.6.2
+        specifier: workspace:^
         version: link:../../features/admin.cds.v1
       '@wso2is/admin.certificates.v1':
-        specifier: ^2.25.205
+        specifier: workspace:^
         version: link:../../features/admin.certificates.v1
       '@wso2is/admin.claims.v1':
-        specifier: ^2.30.6
+        specifier: workspace:^
         version: link:../../features/admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.36.36
+        specifier: workspace:^
         version: link:../../features/admin.connections.v1
       '@wso2is/admin.console-settings.v1':
-        specifier: ^2.26.30
+        specifier: workspace:^
         version: link:../../features/admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.55.19
+        specifier: workspace:^
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
-        specifier: ^2.25.207
+        specifier: workspace:^
         version: link:../../features/admin.email-and-sms.v1
       '@wso2is/admin.email-management.v1':
-        specifier: ^2.25.360
+        specifier: workspace:^
         version: link:../../features/admin.email-management.v1
       '@wso2is/admin.email-providers.v1':
-        specifier: ^2.28.2
+        specifier: workspace:^
         version: link:../../features/admin.email-providers.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.41.0
+        specifier: workspace:^
         version: link:../../features/admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
-        specifier: ^1.9.2
+        specifier: workspace:^
         version: link:../../features/admin.feature-gate.v1
       '@wso2is/admin.flows.v1':
-        specifier: ^1.0.165
+        specifier: workspace:^
         version: link:../../features/admin.flows.v1
       '@wso2is/admin.groups.v1':
-        specifier: ^2.27.127
+        specifier: workspace:^
         version: link:../../features/admin.groups.v1
       '@wso2is/admin.home.v1':
-        specifier: ^1.7.176
+        specifier: workspace:^
         version: link:../../features/admin.home.v1
       '@wso2is/admin.identity-verification-providers.v1':
-        specifier: ^2.28.1
+        specifier: workspace:^
         version: link:../../features/admin.identity-verification-providers.v1
       '@wso2is/admin.impersonation.v1':
-        specifier: ^1.6.206
+        specifier: workspace:^
         version: link:../../features/admin.impersonation.v1
       '@wso2is/admin.issuer-usage-scope.v1':
         specifier: workspace:^
         version: link:../../features/admin.issuer-usage-scope.v1
       '@wso2is/admin.logs.v1':
-        specifier: ^1.6.6
+        specifier: workspace:^
         version: link:../../features/admin.logs.v1
       '@wso2is/admin.oidc-scopes.v1':
-        specifier: ^2.26.2
+        specifier: workspace:^
         version: link:../../features/admin.oidc-scopes.v1
       '@wso2is/admin.onboarding.v1':
         specifier: workspace:^
         version: link:../../features/admin.onboarding.v1
       '@wso2is/admin.org-insights.v1':
-        specifier: ^2.26.2
+        specifier: workspace:^
         version: link:../../features/admin.org-insights.v1
       '@wso2is/admin.organization-discovery.v1':
-        specifier: ^2.25.208
+        specifier: workspace:^
         version: link:../../features/admin.organization-discovery.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.28.2
+        specifier: workspace:^
         version: link:../../features/admin.organizations.v1
       '@wso2is/admin.password-recovery-flow-builder.v1':
         specifier: workspace:^
         version: link:../../features/admin.password-recovery-flow-builder.v1
       '@wso2is/admin.policy-administration.v1':
-        specifier: ^1.0.123
+        specifier: workspace:^
         version: link:../../features/admin.policy-administration.v1
       '@wso2is/admin.private-key-jwt.v1':
-        specifier: ^2.25.205
+        specifier: workspace:^
         version: link:../../features/admin.private-key-jwt.v1
       '@wso2is/admin.push-providers.v1':
-        specifier: ^1.1.1
+        specifier: workspace:^
         version: link:../../features/admin.push-providers.v1
       '@wso2is/admin.registration-flow-builder.v1':
         specifier: workspace:^
         version: link:../../features/admin.registration-flow-builder.v1
       '@wso2is/admin.remote-repository-configuration.v1':
-        specifier: ^2.25.205
+        specifier: workspace:^
         version: link:../../features/admin.remote-repository-configuration.v1
       '@wso2is/admin.remote-userstores.v1':
-        specifier: ^1.7.163
+        specifier: workspace:^
         version: link:../../features/admin.remote-userstores.v1
       '@wso2is/admin.roles.v1':
-        specifier: ^2.25.206
+        specifier: workspace:^
         version: link:../../features/admin.roles.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.366
+        specifier: workspace:^
         version: link:../../features/admin.roles.v2
       '@wso2is/admin.saml2-configuration.v1':
-        specifier: ^2.25.207
+        specifier: workspace:^
         version: link:../../features/admin.saml2-configuration.v1
       '@wso2is/admin.secrets.v1':
-        specifier: ^2.25.205
+        specifier: workspace:^
         version: link:../../features/admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.38.35
+        specifier: workspace:^
         version: link:../../features/admin.server-configurations.v1
       '@wso2is/admin.session-management.v1':
-        specifier: ^2.26.4
+        specifier: workspace:^
         version: link:../../features/admin.session-management.v1
       '@wso2is/admin.sms-providers.v1':
-        specifier: ^2.25.210
+        specifier: workspace:^
         version: link:../../features/admin.sms-providers.v1
       '@wso2is/admin.sms-templates.v1':
-        specifier: ^1.0.208
+        specifier: workspace:^
         version: link:../../features/admin.sms-templates.v1
       '@wso2is/admin.subscription.v1':
-        specifier: ^1.5.208
+        specifier: workspace:^
         version: link:../../features/admin.subscription.v1
       '@wso2is/admin.template-core.v1':
-        specifier: ^1.6.1
+        specifier: workspace:^
         version: link:../../features/admin.template-core.v1
       '@wso2is/admin.tenants.v1':
-        specifier: ^2.29.27
+        specifier: workspace:^
         version: link:../../features/admin.tenants.v1
       '@wso2is/admin.username-validation.v1':
-        specifier: ^1.5.205
+        specifier: workspace:^
         version: link:../../features/admin.username-validation.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.38.19
+        specifier: workspace:^
         version: link:../../features/admin.users.v1
       '@wso2is/admin.userstores.v1':
-        specifier: ^2.27.42
+        specifier: workspace:^
         version: link:../../features/admin.userstores.v1
       '@wso2is/admin.validation.v1':
-        specifier: ^2.28.3
+        specifier: workspace:^
         version: link:../../features/admin.validation.v1
       '@wso2is/admin.verifiable-credentials.v1':
         specifier: workspace:^
         version: link:../../features/admin.verifiable-credentials.v1
       '@wso2is/admin.webhooks.v1':
-        specifier: ^1.1.2
+        specifier: workspace:^
         version: link:../../features/admin.webhooks.v1
       '@wso2is/admin.workflow-requests.v1':
         specifier: workspace:^
         version: link:../../features/admin.workflow-requests.v1
       '@wso2is/admin.wsfed-configuration.v1':
-        specifier: ^2.25.206
+        specifier: workspace:^
         version: link:../../features/admin.wsfed-configuration.v1
       '@wso2is/common.ui.v1':
         specifier: ^0.2.0
@@ -873,9 +873,6 @@ importers:
       '@types/react-router-dom':
         specifier: ^5.1.3
         version: 5.3.3
-      '@types/reactour':
-        specifier: ^1.18.1
-        version: 1.18.5
       '@types/redux-mock-store':
         specifier: ^1.0.2
         version: 1.5.0
@@ -930,6 +927,9 @@ importers:
       fork-ts-checker-webpack-plugin:
         specifier: ^6.1.0
         version: 6.5.3(eslint@8.46.0)(typescript@4.9.5)(webpack@5.84.1)
+      i18next-hmr:
+        specifier: ^3.1.5
+        version: 3.1.5
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@13.13.52)(ts-node@8.10.2)
@@ -1180,6 +1180,9 @@ importers:
       eslint-webpack-plugin:
         specifier: ^3.1.1
         version: 3.2.0(eslint@8.46.0)(webpack@5.84.1)
+      i18next-hmr:
+        specifier: ^3.1.5
+        version: 3.1.5
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@13.13.52)(ts-node@8.10.2)
@@ -35005,6 +35008,7 @@ packages:
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack-bundle-analyzer@4.10.2)(webpack-dev-server@3.11.3)(webpack@5.84.1)
+    dev: true
 
   /@webpack-cli/info@1.5.0(webpack-cli@4.10.0):
     resolution: {integrity: sha512-e8tSXZpw2hPl2uMJY6fsMswaok5FdlGNRTktvFk2sD8RjH0hE2+XistawJx1vmKteh4NmGmNUrp+Tb2w+udPcQ==}
@@ -35023,6 +35027,7 @@ packages:
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack-bundle-analyzer@4.10.2)(webpack-dev-server@3.11.3)(webpack@5.84.1)
+    dev: true
 
   /@webpack-cli/serve@1.7.0(webpack-cli@4.10.0)(webpack-dev-server@3.11.3):
     resolution: {integrity: sha512-oxnCNGj88fL+xzV+dacXs44HcDwf1ovs3AuEzvP7mqXw7fQntqIhQ1BRmynh4qEKQSSSRSWVyXRjmTbZIX9V2Q==}
@@ -35050,6 +35055,7 @@ packages:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack-bundle-analyzer@4.10.2)(webpack-dev-server@3.11.3)(webpack@5.84.1)
       webpack-dev-server: 3.11.3(webpack-cli@4.10.0)(webpack@5.84.1)
+    dev: true
 
   /@webpack-contrib/schema-utils@1.0.0-beta.0(webpack@5.84.1):
     resolution: {integrity: sha512-LonryJP+FxQQHsjGBi6W786TQB1Oym+agTpY0c+Kj8alnIw+DLUJb6SI8Y1GHGhLCH1yPRrucjObUmxNICQ1pg==}
@@ -41901,6 +41907,10 @@ packages:
       '@babel/runtime': 7.26.7
     dev: false
 
+  /i18next-hmr@3.1.5:
+    resolution: {integrity: sha512-zqK0DUbp88ErUdwO68byIpDmzYeNhuEPqPVpRvSs1RUWmlbunNgRDbvZrnq/eRqGTI0HNRAc1YAmYnImEuOJcQ==}
+    dev: true
+
   /i18next-xhr-backend@3.2.2:
     resolution: {integrity: sha512-OtRf2Vo3IqAxsttQbpjYnmMML12IMB5e0fc5B7qKJFLScitYaXa1OhMX0n0X/3vrfFlpHL9Ro/H+ps4Ej2j7QQ==}
     deprecated: replaced by i18next-http-backend
@@ -42164,6 +42174,7 @@ packages:
   /interpret@3.1.1:
     resolution: {integrity: sha512-6xwYfHbajpoF0xLW+iwLkhwgvLoZDfjYfoFNu8ftMoXINzwuymNLd9u/KmwtdT2GbR+/Cz66otEGEVVUHX9QLQ==}
     engines: {node: '>=10.13.0'}
+    dev: true
 
   /invariant@2.2.4:
     resolution: {integrity: sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==}
@@ -49384,6 +49395,7 @@ packages:
     engines: {node: '>= 10.13.0'}
     dependencies:
       resolve: 1.22.10
+    dev: true
 
   /redent@1.0.0:
     resolution: {integrity: sha512-qtW5hKzGQZqKoh6JNSD+4lfitfPKGz42e6QwiRmPM5mmKtR0N41AbJRYu0xJi7nhOJ4WDgRkKvAk6tw4WIwR4g==}
@@ -51780,7 +51792,7 @@ packages:
       schema-utils: 4.3.0
       serialize-javascript: 6.0.2
       terser: 5.38.0
-      webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@5.1.4)
+      webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@4.10.0)
 
   /terser@4.8.1:
     resolution: {integrity: sha512-4GnLC0x667eJG0ewJTa6z/yXrbLGv80D9Ru6HIpCQmO+Q4PfEtBFi0ObSckqwL6VyQv/7ENJieXHo2ANmdQwgw==}
@@ -53173,6 +53185,7 @@ packages:
       webpack-bundle-analyzer: 4.10.2
       webpack-dev-server: 3.11.3(webpack-cli@4.10.0)(webpack@5.84.1)
       webpack-merge: 5.10.0
+    dev: true
 
   /webpack-dev-middleware@3.7.3(webpack@5.84.1):
     resolution: {integrity: sha512-djelc/zGiz9nZj/U7PTBi2ViorGJXEWo/3ltkPbDyxCXhhEXkW0ce99falaok4TPj+AsxLiXJR0EBOb0zh9fKQ==}
@@ -53501,6 +53514,7 @@ packages:
       - '@swc/core'
       - esbuild
       - uglify-js
+    dev: true
 
   /websocket-driver@0.7.4:
     resolution: {integrity: sha512-b17KeDIQVjvb0ssuSDF2cYXSg2iztliJ4B9WdsuB6J952qCPKmnVq4DyW5motImXHDC1cBT/1UezrJVsKw5zjg==}
