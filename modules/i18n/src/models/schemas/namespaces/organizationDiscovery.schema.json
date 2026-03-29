@@ -1,0 +1,795 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/organizationDiscovery.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "advancedSearch": {
+            "additionalProperties": false,
+            "properties": {
+                "form": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "dropdown": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "filterAttributeOptions": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "organizationName": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "organizationName"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "filterAttributeOptions"
+                            ],
+                            "type": "object"
+                        },
+                        "inputs": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "filterAttribute": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "placeholder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                },
+                                "filterCondition": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "placeholder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                },
+                                "filterValue": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "placeholder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "filterAttribute",
+                                "filterCondition",
+                                "filterValue"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "dropdown",
+                        "inputs"
+                    ],
+                    "type": "object"
+                },
+                "placeholder": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "form",
+                "placeholder"
+            ],
+            "type": "object"
+        },
+        "assign": {
+            "additionalProperties": false,
+            "properties": {
+                "buttons": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "assign": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "assign"
+                    ],
+                    "type": "object"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "form": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "fields": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "emailDomains": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        },
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "invalid": {
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "0": {
+                                                            "type": "string"
+                                                        },
+                                                        "1": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "0",
+                                                        "1"
+                                                    ],
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "required": [
+                                                "invalid"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint",
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "organizationName": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "emptyPlaceholder": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "0": {
+                                                    "type": "string"
+                                                },
+                                                "1": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "0",
+                                                "1"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "hint": {
+                                            "type": "string"
+                                        },
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "emptyPlaceholder",
+                                        "hint",
+                                        "label",
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "emailDomains",
+                                "organizationName"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "fields"
+                    ],
+                    "type": "object"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "buttons",
+                "description",
+                "form",
+                "title"
+            ],
+            "type": "object"
+        },
+        "edit": {
+            "additionalProperties": false,
+            "properties": {
+                "back": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "form": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "fields": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "emailDomains": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        },
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "invalid": {
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "0": {
+                                                            "type": "string"
+                                                        },
+                                                        "1": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "0",
+                                                        "1"
+                                                    ],
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "required": [
+                                                "invalid"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint",
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "organizationName": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        },
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint",
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "emailDomains",
+                                "organizationName"
+                            ],
+                            "type": "object"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "fields",
+                        "message"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "back",
+                "description",
+                "form"
+            ],
+            "type": "object"
+        },
+        "emailDomains": {
+            "additionalProperties": false,
+            "properties": {
+                "actions": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "assign": {
+                            "type": "string"
+                        },
+                        "enable": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "assign",
+                        "enable"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "actions"
+            ],
+            "type": "object"
+        },
+        "message": {
+            "type": "string"
+        },
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "addEmailDomains": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "checkEmailDomain": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error"
+                    ],
+                    "type": "object"
+                },
+                "disableEmailDomainBasedSelfRegistration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "disableEmailDomainDiscovery": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "enableEmailDomainBasedSelfRegistration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "enableEmailDomainDiscovery": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "fetchOrganizationDiscoveryAttributes": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error"
+                    ],
+                    "type": "object"
+                },
+                "getEmailDomainDiscovery": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error"
+                    ],
+                    "type": "object"
+                },
+                "getOrganizationListWithDiscovery": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error"
+                    ],
+                    "type": "object"
+                },
+                "updateOrganizationDiscoveryAttributes": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "addEmailDomains",
+                "checkEmailDomain",
+                "disableEmailDomainBasedSelfRegistration",
+                "disableEmailDomainDiscovery",
+                "enableEmailDomainBasedSelfRegistration",
+                "enableEmailDomainDiscovery",
+                "fetchOrganizationDiscoveryAttributes",
+                "getEmailDomainDiscovery",
+                "getOrganizationListWithDiscovery",
+                "updateOrganizationDiscoveryAttributes"
+            ],
+            "type": "object"
+        },
+        "placeholders": {
+            "additionalProperties": false,
+            "properties": {
+                "emptyList": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "action": {
+                            "type": "string"
+                        },
+                        "subtitles": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "action",
+                        "subtitles",
+                        "title"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "emptyList"
+            ],
+            "type": "object"
+        },
+        "selfRegistration": {
+            "additionalProperties": false,
+            "properties": {
+                "label": {
+                    "type": "string"
+                },
+                "labelHint": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "label",
+                "labelHint",
+                "message"
+            ],
+            "type": "object"
+        },
+        "title": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "advancedSearch",
+        "assign",
+        "edit",
+        "emailDomains",
+        "message",
+        "notifications",
+        "placeholders",
+        "selfRegistration",
+        "title"
+    ],
+    "type": "object",
+    "title": "organizationDiscovery namespace translation schema"
+}

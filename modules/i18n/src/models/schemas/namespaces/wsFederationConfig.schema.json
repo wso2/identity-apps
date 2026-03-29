@@ -1,0 +1,162 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/wsFederationConfig.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "title": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "form": {
+            "additionalProperties": false,
+            "properties": {
+                "enableRequestSigning": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "label": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "label"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "enableRequestSigning"
+            ],
+            "type": "object"
+        },
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "getConfiguration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error"
+                    ],
+                    "type": "object"
+                },
+                "revertConfiguration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateConfiguration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "getConfiguration",
+                "revertConfiguration",
+                "updateConfiguration"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "title",
+        "description",
+        "form",
+        "notifications"
+    ],
+    "type": "object",
+    "title": "wsFederationConfig namespace translation schema"
+}

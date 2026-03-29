@@ -1,0 +1,192 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/parentOrgInvitations.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "addUserWizard": {
+            "additionalProperties": false,
+            "properties": {
+                "heading": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "hint": {
+                    "type": "string"
+                },
+                "username": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "label": {
+                            "type": "string"
+                        },
+                        "placeholder": {
+                            "type": "string"
+                        },
+                        "hint": {
+                            "type": "string"
+                        },
+                        "validations": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "required": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "required"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "label",
+                        "placeholder",
+                        "hint",
+                        "validations"
+                    ],
+                    "type": "object"
+                },
+                "groups": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "label": {
+                            "type": "string"
+                        },
+                        "placeholder": {
+                            "type": "string"
+                        },
+                        "hint": {
+                            "type": "string"
+                        },
+                        "validations": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "required": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "required"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "label",
+                        "placeholder",
+                        "hint",
+                        "validations"
+                    ],
+                    "type": "object"
+                },
+                "inviteButton": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "heading",
+                "description",
+                "hint",
+                "username",
+                "groups",
+                "inviteButton"
+            ],
+            "type": "object"
+        },
+        "tab": {
+            "additionalProperties": false,
+            "properties": {
+                "usersTab": {
+                    "type": "string"
+                },
+                "invitationsTab": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "usersTab",
+                "invitationsTab"
+            ],
+            "type": "object"
+        },
+        "searchPlaceholder": {
+            "type": "string"
+        },
+        "searchdropdown": {
+            "additionalProperties": false,
+            "properties": {
+                "pendingLabel": {
+                    "type": "string"
+                },
+                "expiredLabel": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "pendingLabel",
+                "expiredLabel"
+            ],
+            "type": "object"
+        },
+        "createDropdown": {
+            "additionalProperties": false,
+            "properties": {
+                "createLabel": {
+                    "type": "string"
+                },
+                "inviteLabel": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "createLabel",
+                "inviteLabel"
+            ],
+            "type": "object"
+        },
+        "filterLabel": {
+            "type": "string"
+        },
+        "emptyPlaceholder": {
+            "additionalProperties": false,
+            "properties": {
+                "noPendingInvitations": {
+                    "type": "string"
+                },
+                "noExpiredInvitations": {
+                    "type": "string"
+                },
+                "noInvitations": {
+                    "type": "string"
+                },
+                "noCollaboratorUserInvitations": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "noPendingInvitations",
+                "noExpiredInvitations",
+                "noInvitations",
+                "noCollaboratorUserInvitations"
+            ],
+            "type": "object"
+        },
+        "invitedUserLabel": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "addUserWizard",
+        "tab",
+        "searchPlaceholder",
+        "searchdropdown",
+        "createDropdown",
+        "filterLabel",
+        "emptyPlaceholder",
+        "invitedUserLabel"
+    ],
+    "type": "object",
+    "title": "parentOrgInvitations namespace translation schema"
+}

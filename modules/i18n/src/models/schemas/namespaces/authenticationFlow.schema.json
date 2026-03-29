@@ -1,0 +1,1333 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/authenticationFlow.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "adaptiveLoginFlowSelectConfirmationModal": {
+            "additionalProperties": false,
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "heading": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "content",
+                "heading",
+                "message"
+            ],
+            "type": "object"
+        },
+        "basicLoginFlowSelectConfirmationModal": {
+            "additionalProperties": false,
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "heading": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "content",
+                "heading",
+                "message"
+            ],
+            "type": "object"
+        },
+        "options": {
+            "additionalProperties": false,
+            "properties": {
+                "apiAuthenticatorNotSupported": {
+                    "type": "string"
+                },
+                "controls": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "remove": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "remove"
+                    ],
+                    "type": "object"
+                },
+                "displayName": {
+                    "type": "string"
+                },
+                "divider": {
+                    "type": "string"
+                },
+                "warningTitle": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "apiAuthenticatorNotSupported",
+                "controls",
+                "displayName",
+                "divider",
+                "warningTitle"
+            ],
+            "type": "object"
+        },
+        "modes": {
+            "additionalProperties": false,
+            "properties": {
+                "legacy": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "label": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "label"
+                    ],
+                    "type": "object"
+                },
+                "visual": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "label": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "label"
+                    ],
+                    "type": "object"
+                },
+                "switchConfirmationModal": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "assertionHint": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "string"
+                        },
+                        "primaryActionButtonText": {
+                            "type": "string"
+                        },
+                        "secondaryActionButtonText": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        },
+                        "warningMessage": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "assertionHint",
+                        "content",
+                        "primaryActionButtonText",
+                        "secondaryActionButtonText",
+                        "title",
+                        "warningMessage"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "legacy",
+                "visual",
+                "switchConfirmationModal"
+            ],
+            "type": "object"
+        },
+        "nodes": {
+            "additionalProperties": false,
+            "properties": {
+                "controls": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "attributeSelector": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "enableBackupCodes": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "userAttributeSelector": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "attributeSelector",
+                        "enableBackupCodes",
+                        "userAttributeSelector"
+                    ],
+                    "type": "object"
+                },
+                "emailOTP": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "controls": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "optionRemoveTooltipContent": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "optionRemoveTooltipContent"
+                            ],
+                            "type": "object"
+                        },
+                        "form": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "actions": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "primary": {
+                                            "type": "string"
+                                        },
+                                        "secondary": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "primary",
+                                        "secondary"
+                                    ],
+                                    "type": "object"
+                                },
+                                "fields": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "code": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                },
+                                                "placeholder": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label",
+                                                "placeholder"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "code"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "actions",
+                                "fields"
+                            ],
+                            "type": "object"
+                        },
+                        "header": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "controls",
+                        "form",
+                        "header"
+                    ],
+                    "type": "object"
+                },
+                "identifierFirst": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "controls": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "optionRemoveTooltipContent": {
+                                    "type": "string"
+                                },
+                                "optionSwitchTooltipContent": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "optionRemoveTooltipContent",
+                                "optionSwitchTooltipContent"
+                            ],
+                            "type": "object"
+                        },
+                        "form": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "actions": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "primary": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "primary"
+                                    ],
+                                    "type": "object"
+                                },
+                                "fields": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "rememberMe": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "username": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                },
+                                                "placeholder": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label",
+                                                "placeholder"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "rememberMe",
+                                        "username"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "actions",
+                                "fields"
+                            ],
+                            "type": "object"
+                        },
+                        "header": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "controls",
+                        "form",
+                        "header"
+                    ],
+                    "type": "object"
+                },
+                "push": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "controls": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "optionRemoveTooltipContent": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "optionRemoveTooltipContent"
+                            ],
+                            "type": "object"
+                        },
+                        "form": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "actions": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "primary": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "primary"
+                                    ],
+                                    "type": "object"
+                                },
+                                "fields": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "code": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                },
+                                                "placeholder": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label",
+                                                "placeholder"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "code"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "actions",
+                                "fields"
+                            ],
+                            "type": "object"
+                        },
+                        "header": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "controls",
+                        "form",
+                        "header"
+                    ],
+                    "type": "object"
+                },
+                "signIn": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "controls": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "optionRemoveTooltipContent": {
+                                    "type": "string"
+                                },
+                                "optionSwitchTooltipContent": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "optionRemoveTooltipContent",
+                                "optionSwitchTooltipContent"
+                            ],
+                            "type": "object"
+                        },
+                        "form": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "actions": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "primary": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "primary"
+                                    ],
+                                    "type": "object"
+                                },
+                                "fields": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "password": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                },
+                                                "placeholder": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label",
+                                                "placeholder"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "rememberMe": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "username": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                },
+                                                "placeholder": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label",
+                                                "placeholder"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "password",
+                                        "rememberMe",
+                                        "username"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "actions",
+                                "fields"
+                            ],
+                            "type": "object"
+                        },
+                        "header": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "controls",
+                        "form",
+                        "header"
+                    ],
+                    "type": "object"
+                },
+                "smsOTP": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "controls": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "optionRemoveTooltipContent": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "optionRemoveTooltipContent"
+                            ],
+                            "type": "object"
+                        },
+                        "form": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "actions": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "primary": {
+                                            "type": "string"
+                                        },
+                                        "secondary": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "primary",
+                                        "secondary"
+                                    ],
+                                    "type": "object"
+                                },
+                                "fields": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "code": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                },
+                                                "placeholder": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label",
+                                                "placeholder"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "code"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "actions",
+                                "fields"
+                            ],
+                            "type": "object"
+                        },
+                        "header": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "controls",
+                        "form",
+                        "header"
+                    ],
+                    "type": "object"
+                },
+                "totp": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "controls": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "optionRemoveTooltipContent": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "optionRemoveTooltipContent"
+                            ],
+                            "type": "object"
+                        },
+                        "form": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "actions": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "primary": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "primary"
+                                    ],
+                                    "type": "object"
+                                },
+                                "fields": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "code": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                },
+                                                "placeholder": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label",
+                                                "placeholder"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "code"
+                                    ],
+                                    "type": "object"
+                                },
+                                "help": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "actions",
+                                "fields",
+                                "help"
+                            ],
+                            "type": "object"
+                        },
+                        "header": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "controls",
+                        "form",
+                        "header"
+                    ],
+                    "type": "object"
+                },
+                "activeSessionsLimit": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "controls": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "optionRemoveTooltipContent": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "optionRemoveTooltipContent"
+                            ],
+                            "type": "object"
+                        },
+                        "form": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "sessions": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "browserLabel": {
+                                            "type": "string"
+                                        },
+                                        "lastAccessedLabel": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "browserLabel",
+                                        "lastAccessedLabel"
+                                    ],
+                                    "type": "object"
+                                },
+                                "help": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "sessions",
+                                "help"
+                            ],
+                            "type": "object"
+                        },
+                        "header": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "controls",
+                        "form",
+                        "header"
+                    ],
+                    "type": "object"
+                },
+                "passwordResetEnforcer": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "form": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "actionButton": {
+                                    "type": "string"
+                                },
+                                "fields": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "currentPassword": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                },
+                                                "placeholder": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label",
+                                                "placeholder"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "newPassword": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                },
+                                                "placeholder": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label",
+                                                "placeholder"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "repeatPassword": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                },
+                                                "placeholder": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label",
+                                                "placeholder"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "currentPassword",
+                                        "newPassword",
+                                        "repeatPassword"
+                                    ],
+                                    "type": "object"
+                                },
+                                "matchHint": {
+                                    "type": "string"
+                                },
+                                "validationHints": {
+                                    "items": {
+                                        "type": "string"
+                                    },
+                                    "type": "array"
+                                }
+                            },
+                            "required": [
+                                "actionButton",
+                                "fields",
+                                "matchHint",
+                                "validationHints"
+                            ],
+                            "type": "object"
+                        },
+                        "header": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "form",
+                        "header"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "controls",
+                "emailOTP",
+                "identifierFirst",
+                "push",
+                "signIn",
+                "smsOTP",
+                "totp",
+                "activeSessionsLimit",
+                "passwordResetEnforcer"
+            ],
+            "type": "object"
+        },
+        "revertConfirmationModal": {
+            "additionalProperties": false,
+            "properties": {
+                "assertionHint": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "primaryActionButtonText": {
+                    "type": "string"
+                },
+                "secondaryActionButtonText": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "warningMessage": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "assertionHint",
+                "content",
+                "primaryActionButtonText",
+                "secondaryActionButtonText",
+                "title",
+                "warningMessage"
+            ],
+            "type": "object"
+        },
+        "updateConfirmationModal": {
+            "additionalProperties": false,
+            "properties": {
+                "errorMessage": {
+                    "type": "string"
+                },
+                "errorTitle": {
+                    "type": "string"
+                },
+                "primaryActionButtonText": {
+                    "type": "string"
+                },
+                "secondaryActionButtonText": {
+                    "type": "string"
+                },
+                "warningMessage": {
+                    "type": "string"
+                },
+                "warningTitle": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "errorMessage",
+                "errorTitle",
+                "primaryActionButtonText",
+                "secondaryActionButtonText",
+                "warningMessage",
+                "warningTitle"
+            ],
+            "type": "object"
+        },
+        "steps": {
+            "additionalProperties": false,
+            "properties": {
+                "controls": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "addOption": {
+                            "type": "string"
+                        },
+                        "remove": {
+                            "type": "string"
+                        },
+                        "signUp": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "addOption",
+                        "remove",
+                        "signUp"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "controls"
+            ],
+            "type": "object"
+        },
+        "predefinedFlows": {
+            "additionalProperties": false,
+            "properties": {
+                "adaptive": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "actions": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "add": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "add"
+                            ],
+                            "type": "object"
+                        },
+                        "header": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "actions",
+                        "header"
+                    ],
+                    "type": "object"
+                },
+                "authenticators": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "apple": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "displayName": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "displayName"
+                            ],
+                            "type": "object"
+                        },
+                        "facebook": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "displayName": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "displayName"
+                            ],
+                            "type": "object"
+                        },
+                        "github": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "displayName": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "displayName"
+                            ],
+                            "type": "object"
+                        },
+                        "google": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "displayName": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "displayName"
+                            ],
+                            "type": "object"
+                        },
+                        "microsoft": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "displayName": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "displayName"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "apple",
+                        "facebook",
+                        "github",
+                        "google",
+                        "microsoft"
+                    ],
+                    "type": "object"
+                },
+                "basic": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "header": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "header"
+                    ],
+                    "type": "object"
+                },
+                "categories": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "basic": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "mfa": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "passwordless": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "social": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "basic",
+                        "mfa",
+                        "passwordless",
+                        "social"
+                    ],
+                    "type": "object"
+                },
+                "header": {
+                    "type": "string"
+                },
+                "panelHeader": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "adaptive",
+                "authenticators",
+                "basic",
+                "categories",
+                "header",
+                "panelHeader"
+            ],
+            "type": "object"
+        },
+        "scriptEditor": {
+            "additionalProperties": false,
+            "properties": {
+                "panelHeader": {
+                    "type": "string"
+                },
+                "secretSelector": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "actions": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "create": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "create"
+                            ],
+                            "type": "object"
+                        },
+                        "emptyPlaceholder": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "header": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "header",
+                                "description"
+                            ],
+                            "type": "object"
+                        },
+                        "label": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "actions",
+                        "emptyPlaceholder",
+                        "label"
+                    ],
+                    "type": "object"
+                },
+                "themes": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "dark": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "highContrast": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "light": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "dark",
+                        "highContrast",
+                        "light"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "panelHeader",
+                "secretSelector",
+                "themes"
+            ],
+            "type": "object"
+        },
+        "visualEditor": {
+            "additionalProperties": false,
+            "properties": {
+                "actions": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "revert": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "update": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "revert",
+                        "update"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "actions"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "adaptiveLoginFlowSelectConfirmationModal",
+        "basicLoginFlowSelectConfirmationModal",
+        "options",
+        "modes",
+        "nodes",
+        "revertConfirmationModal",
+        "updateConfirmationModal",
+        "steps",
+        "predefinedFlows",
+        "scriptEditor",
+        "visualEditor"
+    ],
+    "type": "object",
+    "title": "authenticationFlow namespace translation schema"
+}

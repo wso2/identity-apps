@@ -1,0 +1,117 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/rules.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "alerts": {
+            "additionalProperties": false,
+            "properties": {
+                "resourceNotFound": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "title"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "resourceNotFound"
+            ],
+            "type": "object"
+        },
+        "buttons": {
+            "additionalProperties": false,
+            "properties": {
+                "and": {
+                    "type": "string"
+                },
+                "clearRule": {
+                    "type": "string"
+                },
+                "newRule": {
+                    "type": "string"
+                },
+                "or": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "and",
+                "clearRule",
+                "newRule",
+                "or"
+            ],
+            "type": "object"
+        },
+        "fields": {
+            "additionalProperties": false,
+            "properties": {
+                "autocomplete": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "clearFilterActionText": {
+                            "type": "string"
+                        },
+                        "inputPlaceholderText": {
+                            "type": "string"
+                        },
+                        "moreItemsMessage": {
+                            "type": "string"
+                        },
+                        "placeholderText": {
+                            "type": "string"
+                        },
+                        "selectPlaceholderText": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "clearFilterActionText",
+                        "inputPlaceholderText",
+                        "moreItemsMessage",
+                        "placeholderText",
+                        "selectPlaceholderText"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "autocomplete"
+            ],
+            "type": "object"
+        },
+        "texts": {
+            "additionalProperties": false,
+            "properties": {
+                "execute": {
+                    "type": "string"
+                },
+                "if": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "execute",
+                "if"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "alerts",
+        "buttons",
+        "fields",
+        "texts"
+    ],
+    "type": "object",
+    "title": "rules namespace translation schema"
+}

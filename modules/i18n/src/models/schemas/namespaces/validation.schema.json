@@ -1,0 +1,363 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/validation.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "description": {
+            "type": "string"
+        },
+        "fetchValidationConfigData": {
+            "additionalProperties": false,
+            "properties": {
+                "error": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "genericError": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "error",
+                "genericError"
+            ],
+            "type": "object"
+        },
+        "goBackToApplication": {
+            "type": "string"
+        },
+        "goBackToValidationConfig": {
+            "type": "string"
+        },
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "error": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "genericError": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "success": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "error",
+                "genericError",
+                "success"
+            ],
+            "type": "object"
+        },
+        "pageTitle": {
+            "type": "string"
+        },
+        "passwordExpiry": {
+            "additionalProperties": false,
+            "properties": {
+                "enforcementScope": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "appWithEnforcer": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "heading": {
+                            "type": "string"
+                        },
+                        "orgWide": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "appWithEnforcer",
+                        "heading",
+                        "orgWide"
+                    ],
+                    "type": "object"
+                },
+                "heading": {
+                    "type": "string"
+                },
+                "rules": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "actions": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "apply": {
+                                    "type": "string"
+                                },
+                                "skip": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "apply",
+                                "skip"
+                            ],
+                            "type": "object"
+                        },
+                        "attributes": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "groups": {
+                                    "type": "string"
+                                },
+                                "roles": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "groups",
+                                "roles"
+                            ],
+                            "type": "object"
+                        },
+                        "buttons": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "addRule": {
+                                    "type": "string"
+                                },
+                                "deleteRule": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "addRule",
+                                "deleteRule"
+                            ],
+                            "type": "object"
+                        },
+                        "messages": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "applyMessage": {
+                                    "type": "string"
+                                },
+                                "defaultRuleApplyMessage": {
+                                    "type": "string"
+                                },
+                                "defaultRuleSkipMessage": {
+                                    "type": "string"
+                                },
+                                "ifUserHas": {
+                                    "type": "string"
+                                },
+                                "info": {
+                                    "type": "string"
+                                },
+                                "skipMessage": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "applyMessage",
+                                "defaultRuleApplyMessage",
+                                "defaultRuleSkipMessage",
+                                "ifUserHas",
+                                "info",
+                                "skipMessage"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "actions",
+                        "attributes",
+                        "buttons",
+                        "messages"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "enforcementScope",
+                "heading",
+                "rules"
+            ],
+            "type": "object"
+        },
+        "revertValidationConfigData": {
+            "additionalProperties": false,
+            "properties": {
+                "error": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "success": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "error",
+                "success"
+            ],
+            "type": "object"
+        },
+        "validationError": {
+            "additionalProperties": false,
+            "properties": {
+                "consecutiveChrMismatch": {
+                    "type": "string"
+                },
+                "invalidConfig": {
+                    "type": "string"
+                },
+                "maxLimitError": {
+                    "type": "string"
+                },
+                "minLimitError": {
+                    "type": "string"
+                },
+                "minMaxMismatch": {
+                    "type": "string"
+                },
+                "uniqueChrMismatch": {
+                    "type": "string"
+                },
+                "wrongCombination": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "consecutiveChrMismatch",
+                "invalidConfig",
+                "maxLimitError",
+                "minLimitError",
+                "minMaxMismatch",
+                "uniqueChrMismatch",
+                "wrongCombination"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "description",
+        "fetchValidationConfigData",
+        "goBackToApplication",
+        "goBackToValidationConfig",
+        "notifications",
+        "pageTitle",
+        "passwordExpiry",
+        "revertValidationConfigData",
+        "validationError"
+    ],
+    "type": "object",
+    "title": "validation namespace translation schema"
+}

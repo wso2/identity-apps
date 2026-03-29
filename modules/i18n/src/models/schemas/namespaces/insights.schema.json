@@ -1,0 +1,422 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/insights.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "activityType": {
+            "additionalProperties": false,
+            "properties": {
+                "login": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "filters": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "authenticator": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "attributeName": {
+                                            "type": "string"
+                                        },
+                                        "values": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "apple": {
+                                                    "type": "string"
+                                                },
+                                                "backupCodes": {
+                                                    "type": "string"
+                                                },
+                                                "basic": {
+                                                    "type": "string"
+                                                },
+                                                "emailOtp": {
+                                                    "type": "string"
+                                                },
+                                                "facebook": {
+                                                    "type": "string"
+                                                },
+                                                "fido2": {
+                                                    "type": "string"
+                                                },
+                                                "github": {
+                                                    "type": "string"
+                                                },
+                                                "google": {
+                                                    "type": "string"
+                                                },
+                                                "hypr": {
+                                                    "type": "string"
+                                                },
+                                                "identifierFirst": {
+                                                    "type": "string"
+                                                },
+                                                "iproov": {
+                                                    "type": "string"
+                                                },
+                                                "magicLink": {
+                                                    "type": "string"
+                                                },
+                                                "oidc": {
+                                                    "type": "string"
+                                                },
+                                                "organizationLogin": {
+                                                    "type": "string"
+                                                },
+                                                "saml": {
+                                                    "type": "string"
+                                                },
+                                                "smsOtp": {
+                                                    "type": "string"
+                                                },
+                                                "totp": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "apple",
+                                                "backupCodes",
+                                                "basic",
+                                                "emailOtp",
+                                                "facebook",
+                                                "fido2",
+                                                "github",
+                                                "google",
+                                                "hypr",
+                                                "identifierFirst",
+                                                "iproov",
+                                                "magicLink",
+                                                "oidc",
+                                                "organizationLogin",
+                                                "saml",
+                                                "smsOtp",
+                                                "totp"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "attributeName",
+                                        "values"
+                                    ],
+                                    "type": "object"
+                                },
+                                "identityProvider": {
+                                    "type": "string"
+                                },
+                                "serviceProvider": {
+                                    "type": "string"
+                                },
+                                "userStore": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "authenticator",
+                                "identityProvider",
+                                "serviceProvider",
+                                "userStore"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "filters"
+                    ],
+                    "type": "object"
+                },
+                "m2m": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "filters": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "clientId": {
+                                    "type": "string"
+                                },
+                                "tenantDomain": {
+                                    "type": "string"
+                                },
+                                "tenantDomainPlaceholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "clientId",
+                                "tenantDomain",
+                                "tenantDomainPlaceholder"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "filters"
+                    ],
+                    "type": "object"
+                },
+                "registration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "filters": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "onboardingMethod": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "attributeName": {
+                                            "type": "string"
+                                        },
+                                        "values": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "adminInitiated": {
+                                                    "type": "string"
+                                                },
+                                                "selfSignUp": {
+                                                    "type": "string"
+                                                },
+                                                "userInvited": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "adminInitiated",
+                                                "selfSignUp",
+                                                "userInvited"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "attributeName",
+                                        "values"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "onboardingMethod"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "filters"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "login",
+                "m2m",
+                "registration"
+            ],
+            "type": "object"
+        },
+        "advancedFilter": {
+            "additionalProperties": false,
+            "properties": {
+                "filterAttribute": {
+                    "type": "string"
+                },
+                "filterCondition": {
+                    "type": "string"
+                },
+                "filterValue": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "filterAttribute",
+                "filterCondition",
+                "filterValue"
+            ],
+            "type": "object"
+        },
+        "commonFilters": {
+            "additionalProperties": false,
+            "properties": {
+                "userId": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "userId"
+            ],
+            "type": "object"
+        },
+        "compareToLastPeriodMessage": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "durationMessage": {
+            "type": "string"
+        },
+        "durationOption": {
+            "type": "string"
+        },
+        "graphs": {
+            "additionalProperties": false,
+            "properties": {
+                "activeUsers": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "title": {
+                            "type": "string"
+                        },
+                        "titleHint": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "title",
+                        "titleHint"
+                    ],
+                    "type": "object"
+                },
+                "failedLogins": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "m2mAuthentications": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "title": {
+                            "type": "string"
+                        },
+                        "titleHint": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "title",
+                        "titleHint"
+                    ],
+                    "type": "object"
+                },
+                "signups": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "title": {
+                            "type": "string"
+                        },
+                        "titleHint": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "title",
+                        "titleHint"
+                    ],
+                    "type": "object"
+                },
+                "successLogins": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "title": {
+                            "type": "string"
+                        },
+                        "titleHint": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "title",
+                        "titleHint"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "activeUsers",
+                "failedLogins",
+                "m2mAuthentications",
+                "signups",
+                "successLogins"
+            ],
+            "type": "object"
+        },
+        "lastFetchedMessage": {
+            "additionalProperties": false,
+            "properties": {
+                "label": {
+                    "type": "string"
+                },
+                "tooltipText": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "label",
+                "tooltipText"
+            ],
+            "type": "object"
+        },
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "fetchInsights": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "genericError"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "fetchInsights"
+            ],
+            "type": "object"
+        },
+        "pageTitle": {
+            "type": "string"
+        },
+        "title": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "activityType",
+        "advancedFilter",
+        "commonFilters",
+        "compareToLastPeriodMessage",
+        "description",
+        "durationMessage",
+        "durationOption",
+        "graphs",
+        "lastFetchedMessage",
+        "notifications",
+        "pageTitle",
+        "title"
+    ],
+    "type": "object",
+    "title": "insights namespace translation schema"
+}

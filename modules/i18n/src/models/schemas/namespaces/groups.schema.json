@@ -1,0 +1,624 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/groups.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "advancedSearch": {
+            "additionalProperties": false,
+            "properties": {
+                "form": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "inputs": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "filterAttribute": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "placeholder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                },
+                                "filterCondition": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "placeholder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                },
+                                "filterValue": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "placeholder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "filterAttribute",
+                                "filterCondition",
+                                "filterValue"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "inputs"
+                    ],
+                    "type": "object"
+                },
+                "placeholder": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "form",
+                "placeholder"
+            ],
+            "type": "object"
+        },
+        "edit": {
+            "additionalProperties": false,
+            "properties": {
+                "basics": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "fields": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "groupName": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "required": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "placeholder",
+                                        "required"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "groupName"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "fields"
+                    ],
+                    "type": "object"
+                },
+                "roles": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "addRolesModal": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "heading": {
+                                    "type": "string"
+                                },
+                                "subHeading": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "heading",
+                                "subHeading"
+                            ],
+                            "type": "object"
+                        },
+                        "heading": {
+                            "type": "string"
+                        },
+                        "placeHolders": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "emptyListPlaceholder": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "subtitles": {
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "subtitles",
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "emptyListPlaceholder"
+                            ],
+                            "type": "object"
+                        },
+                        "subHeading": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "addRolesModal",
+                        "heading",
+                        "placeHolders",
+                        "subHeading"
+                    ],
+                    "type": "object"
+                },
+                "users": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "addUsersModal": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "heading": {
+                                    "type": "string"
+                                },
+                                "subHeading": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "heading",
+                                "subHeading"
+                            ],
+                            "type": "object"
+                        },
+                        "heading": {
+                            "type": "string"
+                        },
+                        "placeHolders": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "emptyListPlaceholder": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "subtitles": {
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "subtitles",
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "emptyListPlaceholder"
+                            ],
+                            "type": "object"
+                        },
+                        "searchUsers": {
+                            "type": "string"
+                        },
+                        "selectAllUsers": {
+                            "type": "string"
+                        },
+                        "subHeading": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "addUsersModal",
+                        "heading",
+                        "placeHolders",
+                        "searchUsers",
+                        "selectAllUsers",
+                        "subHeading"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "basics",
+                "roles",
+                "users"
+            ],
+            "type": "object"
+        },
+        "groupCreateWizard": {
+            "additionalProperties": false,
+            "properties": {
+                "groupNameRegexAlternativeHint": {
+                    "type": "string"
+                },
+                "groupNameRegexCustomHint": {
+                    "type": "string"
+                },
+                "groupNameRegexHint": {
+                    "type": "string"
+                },
+                "subHeading": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "groupNameRegexAlternativeHint",
+                "groupNameRegexCustomHint",
+                "groupNameRegexHint",
+                "subHeading"
+            ],
+            "type": "object"
+        },
+        "list": {
+            "additionalProperties": false,
+            "properties": {
+                "columns": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "actions": {
+                            "type": "string"
+                        },
+                        "lastModified": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "source": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "actions",
+                        "lastModified",
+                        "name",
+                        "source"
+                    ],
+                    "type": "object"
+                },
+                "storeOptions": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "columns",
+                "storeOptions"
+            ],
+            "type": "object"
+        },
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "createGroup": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "createPermission": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "deleteGroup": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "fetchGroups": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "genericError"
+                    ],
+                    "type": "object"
+                },
+                "updateGroup": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "createGroup",
+                "createPermission",
+                "deleteGroup",
+                "fetchGroups",
+                "updateGroup"
+            ],
+            "type": "object"
+        },
+        "placeholders": {
+            "additionalProperties": false,
+            "properties": {
+                "groupsError": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "subtitles": {
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subtitles",
+                        "title"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "groupsError"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "advancedSearch",
+        "edit",
+        "groupCreateWizard",
+        "list",
+        "notifications",
+        "placeholders"
+    ],
+    "type": "object",
+    "title": "groups namespace translation schema"
+}

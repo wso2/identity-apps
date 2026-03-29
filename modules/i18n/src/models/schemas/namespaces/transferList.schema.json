@@ -1,0 +1,130 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/transferList.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "list": {
+            "additionalProperties": false,
+            "properties": {
+                "emptyPlaceholders": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "default": {
+                            "type": "string"
+                        },
+                        "groups": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "common": {
+                                    "type": "string"
+                                },
+                                "selected": {
+                                    "type": "string"
+                                },
+                                "unselected": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "common",
+                                "selected",
+                                "unselected"
+                            ],
+                            "type": "object"
+                        },
+                        "roles": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "common": {
+                                    "type": "string"
+                                },
+                                "selected": {
+                                    "type": "string"
+                                },
+                                "unselected": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "common",
+                                "selected",
+                                "unselected"
+                            ],
+                            "type": "object"
+                        },
+                        "users": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "roles": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "searchForResults": {
+                                            "type": "string"
+                                        },
+                                        "selected": {
+                                            "type": "string"
+                                        },
+                                        "unselected": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "searchForResults",
+                                        "selected",
+                                        "unselected"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "roles"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "default",
+                        "groups",
+                        "roles",
+                        "users"
+                    ],
+                    "type": "object"
+                },
+                "headers": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "0": {
+                            "type": "string"
+                        },
+                        "1": {
+                            "type": "string"
+                        },
+                        "2": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "0",
+                        "1",
+                        "2"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "emptyPlaceholders",
+                "headers"
+            ],
+            "type": "object"
+        },
+        "searchPlaceholder": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "list",
+        "searchPlaceholder"
+    ],
+    "type": "object",
+    "title": "transferList namespace translation schema"
+}

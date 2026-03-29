@@ -1,0 +1,183 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/impersonation.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "description": {
+            "type": "string"
+        },
+        "form": {
+            "additionalProperties": false,
+            "properties": {
+                "enableEmailNotification": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "hint": {
+                            "type": "string"
+                        },
+                        "label": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "hint",
+                        "label"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "enableEmailNotification"
+            ],
+            "type": "object"
+        },
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "getConfiguration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "revertConfiguration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateConfiguration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "getConfiguration",
+                "revertConfiguration",
+                "updateConfiguration"
+            ],
+            "type": "object"
+        },
+        "title": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "description",
+        "form",
+        "notifications",
+        "title"
+    ],
+    "type": "object",
+    "title": "impersonation namespace translation schema"
+}

@@ -1,0 +1,105 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/suborganizations.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "duplicateOrgError": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "subOrgLevelsLimitReachedError": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "emptyPlaceholder": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "action": {
+                                    "type": "string"
+                                },
+                                "subtitles": {
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "action",
+                                "subtitles",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "heading": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "emptyPlaceholder",
+                        "heading"
+                    ],
+                    "type": "object"
+                },
+                "tierLimitReachedError": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "emptyPlaceholder": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "action": {
+                                    "type": "string"
+                                },
+                                "subtitles": {
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "action",
+                                "subtitles",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "heading": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "emptyPlaceholder",
+                        "heading"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "duplicateOrgError",
+                "subOrgLevelsLimitReachedError",
+                "tierLimitReachedError"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "notifications"
+    ],
+    "type": "object",
+    "title": "suborganizations namespace translation schema"
+}

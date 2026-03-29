@@ -1,0 +1,642 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/smsProviders.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "confirmationModal": {
+            "additionalProperties": false,
+            "properties": {
+                "assertionHint": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "header": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "assertionHint",
+                "content",
+                "header",
+                "message"
+            ],
+            "type": "object"
+        },
+        "dangerZoneGroup": {
+            "additionalProperties": false,
+            "properties": {
+                "header": {
+                    "type": "string"
+                },
+                "revertConfig": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "actionTitle": {
+                            "type": "string"
+                        },
+                        "heading": {
+                            "type": "string"
+                        },
+                        "subHeading": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "actionTitle",
+                        "heading",
+                        "subHeading"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "header",
+                "revertConfig"
+            ],
+            "type": "object"
+        },
+        "description": {
+            "type": "string"
+        },
+        "form": {
+            "additionalProperties": false,
+            "properties": {
+                "custom": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "authentication": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "updateRequired": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "updateRequired"
+                            ],
+                            "type": "object"
+                        },
+                        "contentType": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "headers": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "httpMethod": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "key": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "payload": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "providerName": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "providerUrl": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "secret": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "sender": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "subHeading": {
+                            "type": "string"
+                        },
+                        "validations": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "contentTypeInvalid": {
+                                    "type": "string"
+                                },
+                                "methodInvalid": {
+                                    "type": "string"
+                                },
+                                "required": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "contentTypeInvalid",
+                                "methodInvalid",
+                                "required"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "authentication",
+                        "contentType",
+                        "headers",
+                        "httpMethod",
+                        "key",
+                        "payload",
+                        "providerName",
+                        "providerUrl",
+                        "secret",
+                        "sender",
+                        "subHeading",
+                        "validations"
+                    ],
+                    "type": "object"
+                },
+                "twilio": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "accountSID": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "authToken": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "sender": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "subHeading": {
+                            "type": "string"
+                        },
+                        "validations": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "required": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "required"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "accountSID",
+                        "authToken",
+                        "sender",
+                        "subHeading",
+                        "validations"
+                    ],
+                    "type": "object"
+                },
+                "vonage": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "accountSID": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "authToken": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "sender": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "subHeading": {
+                            "type": "string"
+                        },
+                        "validations": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "required": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "required"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "accountSID",
+                        "authToken",
+                        "sender",
+                        "subHeading",
+                        "validations"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "custom",
+                "twilio",
+                "vonage"
+            ],
+            "type": "object"
+        },
+        "goBack": {
+            "type": "string"
+        },
+        "heading": {
+            "type": "string"
+        },
+        "info": {
+            "type": "string"
+        },
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "deleteConfiguration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "getConfiguration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error"
+                    ],
+                    "type": "object"
+                },
+                "updateConfiguration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "deleteConfiguration",
+                "getConfiguration",
+                "updateConfiguration"
+            ],
+            "type": "object"
+        },
+        "sendTestSMSButton": {
+            "type": "string"
+        },
+        "subHeading": {
+            "type": "string"
+        },
+        "updateButton": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "confirmationModal",
+        "dangerZoneGroup",
+        "description",
+        "form",
+        "goBack",
+        "heading",
+        "info",
+        "notifications",
+        "sendTestSMSButton",
+        "subHeading",
+        "updateButton"
+    ],
+    "type": "object",
+    "title": "smsProviders namespace translation schema"
+}

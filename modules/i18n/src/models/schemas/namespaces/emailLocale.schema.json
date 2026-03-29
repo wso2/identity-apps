@@ -1,0 +1,167 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/emailLocale.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "buttons": {
+            "additionalProperties": false,
+            "properties": {
+                "addLocaleTemplate": {
+                    "type": "string"
+                },
+                "saveChanges": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "addLocaleTemplate",
+                "saveChanges"
+            ],
+            "type": "object"
+        },
+        "forms": {
+            "additionalProperties": false,
+            "properties": {
+                "addLocale": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "fields": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "bodyEditor": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "empty": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "empty"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "locale": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "empty": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "empty"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "signatureEditor": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "empty": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "empty"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "subject": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "empty": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "empty"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "bodyEditor",
+                                "locale",
+                                "signatureEditor",
+                                "subject"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "fields"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "addLocale"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "buttons",
+        "forms"
+    ],
+    "type": "object",
+    "title": "emailLocale namespace translation schema"
+}

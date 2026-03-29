@@ -1,0 +1,833 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/externalApiAuthentication.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "fields": {
+            "additionalProperties": false,
+            "properties": {
+                "authentication": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "info": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "message",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "label": {
+                            "type": "string"
+                        },
+                        "types": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "apiKey": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "properties": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "header": {
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "label": {
+                                                            "type": "string"
+                                                        },
+                                                        "placeholder": {
+                                                            "type": "string"
+                                                        },
+                                                        "validations": {
+                                                            "additionalProperties": false,
+                                                            "properties": {
+                                                                "empty": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "empty"
+                                                            ],
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "label",
+                                                        "placeholder",
+                                                        "validations"
+                                                    ],
+                                                    "type": "object"
+                                                },
+                                                "value": {
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "label": {
+                                                            "type": "string"
+                                                        },
+                                                        "placeholder": {
+                                                            "type": "string"
+                                                        },
+                                                        "validations": {
+                                                            "additionalProperties": false,
+                                                            "properties": {
+                                                                "empty": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "empty"
+                                                            ],
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "label",
+                                                        "placeholder",
+                                                        "validations"
+                                                    ],
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "required": [
+                                                "header",
+                                                "value"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "properties"
+                                    ],
+                                    "type": "object"
+                                },
+                                "basic": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "properties": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "password": {
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "label": {
+                                                            "type": "string"
+                                                        },
+                                                        "placeholder": {
+                                                            "type": "string"
+                                                        },
+                                                        "validations": {
+                                                            "additionalProperties": false,
+                                                            "properties": {
+                                                                "empty": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "empty"
+                                                            ],
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "label",
+                                                        "placeholder",
+                                                        "validations"
+                                                    ],
+                                                    "type": "object"
+                                                },
+                                                "username": {
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "label": {
+                                                            "type": "string"
+                                                        },
+                                                        "placeholder": {
+                                                            "type": "string"
+                                                        },
+                                                        "validations": {
+                                                            "additionalProperties": false,
+                                                            "properties": {
+                                                                "empty": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "empty"
+                                                            ],
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "label",
+                                                        "placeholder",
+                                                        "validations"
+                                                    ],
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "required": [
+                                                "password",
+                                                "username"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "properties"
+                                    ],
+                                    "type": "object"
+                                },
+                                "bearer": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "properties": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "accessToken": {
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "label": {
+                                                            "type": "string"
+                                                        },
+                                                        "placeholder": {
+                                                            "type": "string"
+                                                        },
+                                                        "validations": {
+                                                            "additionalProperties": false,
+                                                            "properties": {
+                                                                "empty": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "empty"
+                                                            ],
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "label",
+                                                        "placeholder",
+                                                        "validations"
+                                                    ],
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "required": [
+                                                "accessToken"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "properties"
+                                    ],
+                                    "type": "object"
+                                },
+                                "clientCredential": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "properties": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "clientID": {
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "label": {
+                                                            "type": "string"
+                                                        },
+                                                        "placeholder": {
+                                                            "type": "string"
+                                                        },
+                                                        "validations": {
+                                                            "additionalProperties": false,
+                                                            "properties": {
+                                                                "empty": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "empty"
+                                                            ],
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "label",
+                                                        "placeholder",
+                                                        "validations"
+                                                    ],
+                                                    "type": "object"
+                                                },
+                                                "clientSecret": {
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "label": {
+                                                            "type": "string"
+                                                        },
+                                                        "placeholder": {
+                                                            "type": "string"
+                                                        },
+                                                        "validations": {
+                                                            "additionalProperties": false,
+                                                            "properties": {
+                                                                "empty": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "empty"
+                                                            ],
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "label",
+                                                        "placeholder",
+                                                        "validations"
+                                                    ],
+                                                    "type": "object"
+                                                },
+                                                "scopes": {
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "label": {
+                                                            "type": "string"
+                                                        },
+                                                        "placeholder": {
+                                                            "type": "string"
+                                                        },
+                                                        "validations": {
+                                                            "additionalProperties": false,
+                                                            "properties": {
+                                                                "empty": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "empty"
+                                                            ],
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "label",
+                                                        "placeholder",
+                                                        "validations"
+                                                    ],
+                                                    "type": "object"
+                                                },
+                                                "tokenEndpoint": {
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "label": {
+                                                            "type": "string"
+                                                        },
+                                                        "placeholder": {
+                                                            "type": "string"
+                                                        },
+                                                        "validations": {
+                                                            "additionalProperties": false,
+                                                            "properties": {
+                                                                "empty": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "empty"
+                                                            ],
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "label",
+                                                        "placeholder",
+                                                        "validations"
+                                                    ],
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "required": [
+                                                "clientID",
+                                                "clientSecret",
+                                                "scopes",
+                                                "tokenEndpoint"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "name",
+                                        "properties"
+                                    ],
+                                    "type": "object"
+                                },
+                                "none": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "name"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "apiKey",
+                                "basic",
+                                "bearer",
+                                "clientCredential",
+                                "none"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "info",
+                        "label",
+                        "types"
+                    ],
+                    "type": "object"
+                },
+                "authenticationType": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "hint": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "create": {
+                                    "type": "string"
+                                },
+                                "update": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "create",
+                                "update"
+                            ],
+                            "type": "object"
+                        },
+                        "label": {
+                            "type": "string"
+                        },
+                        "placeholder": {
+                            "type": "string"
+                        },
+                        "validations": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "empty": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "empty"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "hint",
+                        "label",
+                        "placeholder",
+                        "validations"
+                    ],
+                    "type": "object"
+                },
+                "authenticationTypeDropdown": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "authProperties": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "accessToken": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "required": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "required"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "clientID": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "required": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "required"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "clientSecret": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "required": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "required"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "header": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "required": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "required"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "password": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "required": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "required"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "scopes": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "required": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "required"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "tokenEndpoint": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "required": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "required"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "username": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "required": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "required"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "value": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "required": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "required"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "accessToken",
+                                "clientID",
+                                "clientSecret",
+                                "header",
+                                "password",
+                                "scopes",
+                                "tokenEndpoint",
+                                "username",
+                                "value"
+                            ],
+                            "type": "object"
+                        },
+                        "hint": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "create": {
+                                    "type": "string"
+                                },
+                                "update": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "create",
+                                "update"
+                            ],
+                            "type": "object"
+                        },
+                        "label": {
+                            "type": "string"
+                        },
+                        "placeholder": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        },
+                        "validations": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "required": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "required"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "authProperties",
+                        "hint",
+                        "label",
+                        "placeholder",
+                        "title",
+                        "validations"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "authentication",
+                "authenticationType",
+                "authenticationTypeDropdown"
+            ],
+            "type": "object"
+        },
+        "showPassword": {
+            "additionalProperties": false,
+            "properties": {
+                "alert": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "content": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "content",
+                        "title"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "alert"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "fields",
+        "showPassword"
+    ],
+    "type": "object",
+    "title": "externalApiAuthentication namespace translation schema"
+}

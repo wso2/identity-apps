@@ -1,0 +1,213 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/saml2Config.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "title": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "form": {
+            "additionalProperties": false,
+            "properties": {
+                "metadataValidityPeriod": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "hint": {
+                            "type": "string"
+                        },
+                        "label": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "hint",
+                        "label"
+                    ],
+                    "type": "object"
+                },
+                "destinationUrl": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "hint": {
+                            "type": "string"
+                        },
+                        "label": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "hint",
+                        "label"
+                    ],
+                    "type": "object"
+                },
+                "enableMetadataSigning": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "label": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "label"
+                    ],
+                    "type": "object"
+                },
+                "validation": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "metadataValidityPeriod": {
+                            "type": "string"
+                        },
+                        "destinationURLs": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "metadataValidityPeriod",
+                        "destinationURLs"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "metadataValidityPeriod",
+                "destinationUrl",
+                "enableMetadataSigning",
+                "validation"
+            ],
+            "type": "object"
+        },
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "getConfiguration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error"
+                    ],
+                    "type": "object"
+                },
+                "revertConfiguration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "message",
+                                "description"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "message",
+                                "description"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateConfiguration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "getConfiguration",
+                "revertConfiguration",
+                "updateConfiguration"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "title",
+        "description",
+        "form",
+        "notifications"
+    ],
+    "type": "object",
+    "title": "saml2Config namespace translation schema"
+}

@@ -1,0 +1,605 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/apiResources.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "confirmations": {
+            "additionalProperties": false,
+            "properties": {
+                "deleteAPIResource": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "assertionHint": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "string"
+                        },
+                        "header": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "assertionHint",
+                        "content",
+                        "header",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "deleteAPIResourcePermission": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "assertionHint": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "string"
+                        },
+                        "header": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "assertionHint",
+                        "content",
+                        "header",
+                        "message"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "deleteAPIResource",
+                "deleteAPIResourcePermission"
+            ],
+            "type": "object"
+        },
+        "tabs": {
+            "additionalProperties": false,
+            "properties": {
+                "scopes": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "button": {
+                            "type": "string"
+                        },
+                        "copiedPopupText": {
+                            "type": "string"
+                        },
+                        "copyPopupText": {
+                            "type": "string"
+                        },
+                        "empty": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "subTitle": {
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "subTitle",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "emptySearch": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "subTitle": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "0": {
+                                            "type": "string"
+                                        },
+                                        "1": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "0",
+                                        "1"
+                                    ],
+                                    "type": "object"
+                                },
+                                "title": {
+                                    "type": "string"
+                                },
+                                "viewAll": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "subTitle",
+                                "title",
+                                "viewAll"
+                            ],
+                            "type": "object"
+                        },
+                        "form": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "button": {
+                                    "type": "string"
+                                },
+                                "cancelButton": {
+                                    "type": "string"
+                                },
+                                "fields": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                },
+                                                "placeholder": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label",
+                                                "placeholder"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "displayName": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "emptyValidate": {
+                                                    "type": "string"
+                                                },
+                                                "label": {
+                                                    "type": "string"
+                                                },
+                                                "placeholder": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "emptyValidate",
+                                                "label",
+                                                "placeholder"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "scope": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "emptyValidate": {
+                                                    "type": "string"
+                                                },
+                                                "label": {
+                                                    "type": "string"
+                                                },
+                                                "placeholder": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "emptyValidate",
+                                                "label",
+                                                "placeholder"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "displayName",
+                                        "scope"
+                                    ],
+                                    "type": "object"
+                                },
+                                "subTitle": {
+                                    "type": "string"
+                                },
+                                "submitButton": {
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "button",
+                                "cancelButton",
+                                "fields",
+                                "subTitle",
+                                "submitButton",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "label": {
+                            "type": "string"
+                        },
+                        "learnMore": {
+                            "type": "string"
+                        },
+                        "removeScopePopupText": {
+                            "type": "string"
+                        },
+                        "search": {
+                            "type": "string"
+                        },
+                        "subTitle": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "button",
+                        "copiedPopupText",
+                        "copyPopupText",
+                        "empty",
+                        "emptySearch",
+                        "form",
+                        "label",
+                        "learnMore",
+                        "removeScopePopupText",
+                        "search",
+                        "subTitle",
+                        "title"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "scopes"
+            ],
+            "type": "object"
+        },
+        "wizard": {
+            "additionalProperties": false,
+            "properties": {
+                "addApiResource": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "steps": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "scopes": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "empty": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "subTitle": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "subTitle",
+                                                "title"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "form": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "button": {
+                                                    "type": "string"
+                                                },
+                                                "fields": {
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "description": {
+                                                            "additionalProperties": false,
+                                                            "properties": {
+                                                                "hint": {
+                                                                    "type": "string"
+                                                                },
+                                                                "label": {
+                                                                    "type": "string"
+                                                                },
+                                                                "placeholder": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "hint",
+                                                                "label",
+                                                                "placeholder"
+                                                            ],
+                                                            "type": "object"
+                                                        },
+                                                        "displayName": {
+                                                            "additionalProperties": false,
+                                                            "properties": {
+                                                                "emptyValidate": {
+                                                                    "type": "string"
+                                                                },
+                                                                "hint": {
+                                                                    "type": "string"
+                                                                },
+                                                                "label": {
+                                                                    "type": "string"
+                                                                },
+                                                                "placeholder": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "emptyValidate",
+                                                                "hint",
+                                                                "label",
+                                                                "placeholder"
+                                                            ],
+                                                            "type": "object"
+                                                        },
+                                                        "permission": {
+                                                            "additionalProperties": false,
+                                                            "properties": {
+                                                                "emptyValidate": {
+                                                                    "type": "string"
+                                                                },
+                                                                "hint": {
+                                                                    "type": "string"
+                                                                },
+                                                                "invalid": {
+                                                                    "type": "string"
+                                                                },
+                                                                "label": {
+                                                                    "type": "string"
+                                                                },
+                                                                "placeholder": {
+                                                                    "type": "string"
+                                                                },
+                                                                "uniqueValidate": {
+                                                                    "type": "string"
+                                                                },
+                                                                "errorOccurred": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "emptyValidate",
+                                                                "hint",
+                                                                "invalid",
+                                                                "label",
+                                                                "placeholder",
+                                                                "uniqueValidate",
+                                                                "errorOccurred"
+                                                            ],
+                                                            "type": "object"
+                                                        },
+                                                        "permissionList": {
+                                                            "additionalProperties": false,
+                                                            "properties": {
+                                                                "label": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "label"
+                                                            ],
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "description",
+                                                        "displayName",
+                                                        "permission",
+                                                        "permissionList"
+                                                    ],
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "required": [
+                                                "button",
+                                                "fields"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "removeScopePopupText": {
+                                            "type": "string"
+                                        },
+                                        "stepTitle": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "empty",
+                                        "form",
+                                        "removeScopePopupText",
+                                        "stepTitle"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "scopes"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "steps"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "addApiResource"
+            ],
+            "type": "object"
+        },
+        "mcpServers": {
+            "additionalProperties": false,
+            "properties": {
+                "newMcpServer": {
+                    "type": "string"
+                },
+                "wizards": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "addMcpServer": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "title": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "steps": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "general": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "fields": {
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "displayName": {
+                                                            "additionalProperties": false,
+                                                            "properties": {
+                                                                "hint": {
+                                                                    "type": "string"
+                                                                },
+                                                                "placeholder": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "hint",
+                                                                "placeholder"
+                                                            ],
+                                                            "type": "object"
+                                                        },
+                                                        "identifier": {
+                                                            "additionalProperties": false,
+                                                            "properties": {
+                                                                "placeholder": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "placeholder"
+                                                            ],
+                                                            "type": "object"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "displayName",
+                                                        "identifier"
+                                                    ],
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "required": [
+                                                "fields"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "general"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "title",
+                                "description",
+                                "steps"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "addMcpServer"
+                    ],
+                    "type": "object"
+                },
+                "deleteMcpServer": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "actionText": {
+                            "type": "string"
+                        },
+                        "heading": {
+                            "type": "string"
+                        },
+                        "subheading": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "actionText",
+                        "heading",
+                        "subheading"
+                    ],
+                    "type": "object"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "searchBarPlaceholder": {
+                    "type": "string"
+                },
+                "backButtonText": {
+                    "type": "string"
+                },
+                "scopes": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "subHeading": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subHeading"
+                    ],
+                    "type": "object"
+                },
+                "editPageTitle": {
+                    "type": "string"
+                },
+                "emptyListPlaceholderText": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "newMcpServer",
+                "wizards",
+                "deleteMcpServer",
+                "title",
+                "description",
+                "searchBarPlaceholder",
+                "backButtonText",
+                "scopes",
+                "editPageTitle",
+                "emptyListPlaceholderText"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "confirmations",
+        "tabs",
+        "wizard",
+        "mcpServers"
+    ],
+    "type": "object",
+    "title": "apiResources namespace translation schema"
+}

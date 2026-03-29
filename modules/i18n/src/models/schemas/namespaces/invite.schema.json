@@ -1,0 +1,564 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/invite.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "advancedSearch": {
+            "additionalProperties": false,
+            "properties": {
+                "form": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "dropdown": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "filterAttributeOptions": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "username": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "email",
+                                        "username"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "filterAttributeOptions"
+                            ],
+                            "type": "object"
+                        },
+                        "inputs": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "filterAttribute": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "placeholder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                },
+                                "filterCondition": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "placeholder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                },
+                                "filterValue": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "placeholder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "filterAttribute",
+                                "filterCondition",
+                                "filterValue"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "dropdown",
+                        "inputs"
+                    ],
+                    "type": "object"
+                },
+                "placeholder": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "form",
+                "placeholder"
+            ],
+            "type": "object"
+        },
+        "confirmationModal": {
+            "additionalProperties": false,
+            "properties": {
+                "deleteInvite": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "assertionHint": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "string"
+                        },
+                        "header": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "assertionHint",
+                        "content",
+                        "header",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "resendInvite": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "assertionHint": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "string"
+                        },
+                        "header": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "assertionHint",
+                        "content",
+                        "header",
+                        "message"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "deleteInvite",
+                "resendInvite"
+            ],
+            "type": "object"
+        },
+        "form": {
+            "additionalProperties": false,
+            "properties": {
+                "sendmail": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "subTitle": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subTitle",
+                        "title"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "sendmail"
+            ],
+            "type": "object"
+        },
+        "inviteButton": {
+            "type": "string"
+        },
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "deleteInvite": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "resendInvite": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "sendInvite": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateInvite": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "deleteInvite",
+                "resendInvite",
+                "sendInvite",
+                "updateInvite"
+            ],
+            "type": "object"
+        },
+        "placeholder": {
+            "additionalProperties": false,
+            "properties": {
+                "emptyResultPlaceholder": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "addButton": {
+                            "type": "string"
+                        },
+                        "subTitle": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "type": "string"
+                                },
+                                "2": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0",
+                                "1",
+                                "2"
+                            ],
+                            "type": "object"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "addButton",
+                        "subTitle",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "emptySearchResultPlaceholder": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "clearButton": {
+                            "type": "string"
+                        },
+                        "subTitle": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0",
+                                "1"
+                            ],
+                            "type": "object"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "clearButton",
+                        "subTitle",
+                        "title"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "emptyResultPlaceholder",
+                "emptySearchResultPlaceholder"
+            ],
+            "type": "object"
+        },
+        "rolesUpdateModal": {
+            "additionalProperties": false,
+            "properties": {
+                "header": {
+                    "type": "string"
+                },
+                "searchPlaceholder": {
+                    "type": "string"
+                },
+                "subHeader": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "header",
+                "searchPlaceholder",
+                "subHeader"
+            ],
+            "type": "object"
+        },
+        "subSelection": {
+            "additionalProperties": false,
+            "properties": {
+                "invitees": {
+                    "type": "string"
+                },
+                "onBoard": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "invitees",
+                "onBoard"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "advancedSearch",
+        "confirmationModal",
+        "form",
+        "inviteButton",
+        "notifications",
+        "placeholder",
+        "rolesUpdateModal",
+        "subSelection"
+    ],
+    "type": "object",
+    "title": "invite namespace translation schema"
+}

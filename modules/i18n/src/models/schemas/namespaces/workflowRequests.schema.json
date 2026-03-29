@@ -1,0 +1,634 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/workflowRequests.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "activeFiltersBar": {
+            "additionalProperties": false,
+            "properties": {
+                "clearAll": {
+                    "type": "string"
+                },
+                "noActiveFilters": {
+                    "type": "string"
+                },
+                "removeFilter": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "clearAll",
+                "noActiveFilters",
+                "removeFilter"
+            ],
+            "type": "object"
+        },
+        "details": {
+            "additionalProperties": false,
+            "properties": {
+                "backButton": {
+                    "type": "string"
+                },
+                "dangerZone": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "abort": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "action": {
+                                    "type": "string"
+                                },
+                                "actionTitle": {
+                                    "type": "string"
+                                },
+                                "confirm": {
+                                    "type": "string"
+                                },
+                                "header": {
+                                    "type": "string"
+                                },
+                                "subheader": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "action",
+                                "actionTitle",
+                                "confirm",
+                                "header",
+                                "subheader"
+                            ],
+                            "type": "object"
+                        },
+                        "header": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "abort",
+                        "header"
+                    ],
+                    "type": "object"
+                },
+                "error": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "content": {
+                            "type": "string"
+                        },
+                        "header": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "content",
+                        "header"
+                    ],
+                    "type": "object"
+                },
+                "fields": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "createdAt": {
+                            "type": "string"
+                        },
+                        "eventType": {
+                            "type": "string"
+                        },
+                        "id": {
+                            "type": "string"
+                        },
+                        "requestInitiator": {
+                            "type": "string"
+                        },
+                        "requestParams": {
+                            "type": "string"
+                        },
+                        "status": {
+                            "type": "string"
+                        },
+                        "updatedAt": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "createdAt",
+                        "eventType",
+                        "id",
+                        "requestInitiator",
+                        "requestParams",
+                        "status",
+                        "updatedAt"
+                    ],
+                    "type": "object"
+                },
+                "header": {
+                    "type": "string"
+                },
+                "loading": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "backButton",
+                "dangerZone",
+                "error",
+                "fields",
+                "header",
+                "loading"
+            ],
+            "type": "object"
+        },
+        "eventType": {
+            "additionalProperties": false,
+            "properties": {
+                "all": {
+                    "type": "string"
+                },
+                "myTasks": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "all",
+                "myTasks"
+            ],
+            "type": "object"
+        },
+        "filters": {
+            "additionalProperties": false,
+            "properties": {
+                "createdTimeRange": {
+                    "type": "string"
+                },
+                "disabledTimeRange": {
+                    "type": "string"
+                },
+                "operationType": {
+                    "type": "string"
+                },
+                "requestType": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "updatedTimeRange": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "createdTimeRange",
+                "disabledTimeRange",
+                "operationType",
+                "requestType",
+                "status",
+                "updatedTimeRange"
+            ],
+            "type": "object"
+        },
+        "list": {
+            "additionalProperties": false,
+            "properties": {
+                "columns": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "actions": {
+                            "type": "string"
+                        },
+                        "createdAt": {
+                            "type": "string"
+                        },
+                        "requestInitiator": {
+                            "type": "string"
+                        },
+                        "status": {
+                            "type": "string"
+                        },
+                        "updatedAt": {
+                            "type": "string"
+                        },
+                        "workflowInstanceId": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "actions",
+                        "createdAt",
+                        "requestInitiator",
+                        "status",
+                        "updatedAt",
+                        "workflowInstanceId"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "columns"
+            ],
+            "type": "object"
+        },
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "abortWorkflowRequest": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "fetchWorkflowRequestDetails": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "fetchWorkflowRequests": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "genericError"
+                    ],
+                    "type": "object"
+                },
+                "searchWorkflowRequests": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "genericError"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "abortWorkflowRequest",
+                "fetchWorkflowRequestDetails",
+                "fetchWorkflowRequests",
+                "searchWorkflowRequests"
+            ],
+            "type": "object"
+        },
+        "operationType": {
+            "additionalProperties": false,
+            "properties": {
+                "all": {
+                    "type": "string"
+                },
+                "createRole": {
+                    "type": "string"
+                },
+                "createUser": {
+                    "type": "string"
+                },
+                "deleteRole": {
+                    "type": "string"
+                },
+                "deleteUser": {
+                    "type": "string"
+                },
+                "deleteUserClaims": {
+                    "type": "string"
+                },
+                "selfRegisterUser": {
+                    "type": "string"
+                },
+                "updateRoleName": {
+                    "type": "string"
+                },
+                "updateRoleUsers": {
+                    "type": "string"
+                },
+                "updateUserClaims": {
+                    "type": "string"
+                },
+                "updateUserRoles": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "all",
+                "createRole",
+                "createUser",
+                "deleteRole",
+                "deleteUser",
+                "deleteUserClaims",
+                "selfRegisterUser",
+                "updateRoleName",
+                "updateRoleUsers",
+                "updateUserClaims",
+                "updateUserRoles"
+            ],
+            "type": "object"
+        },
+        "placeholders": {
+            "additionalProperties": false,
+            "properties": {
+                "emptyListReadOnly": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "subtitles": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0"
+                            ],
+                            "type": "object"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subtitles",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "emptySearch": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "action": {
+                            "type": "string"
+                        },
+                        "subtitles": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0"
+                            ],
+                            "type": "object"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "action",
+                        "subtitles",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "workflowRequestError": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "subtitles": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0",
+                                "1"
+                            ],
+                            "type": "object"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subtitles",
+                        "title"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "emptyListReadOnly",
+                "emptySearch",
+                "workflowRequestError"
+            ],
+            "type": "object"
+        },
+        "status": {
+            "additionalProperties": false,
+            "properties": {
+                "aborted": {
+                    "type": "string"
+                },
+                "all": {
+                    "type": "string"
+                },
+                "approved": {
+                    "type": "string"
+                },
+                "failed": {
+                    "type": "string"
+                },
+                "pending": {
+                    "type": "string"
+                },
+                "rejected": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "aborted",
+                "all",
+                "approved",
+                "failed",
+                "pending",
+                "rejected"
+            ],
+            "type": "object"
+        },
+        "timeRanges": {
+            "additionalProperties": false,
+            "properties": {
+                "all": {
+                    "type": "string"
+                },
+                "customRange": {
+                    "type": "string"
+                },
+                "customRangeTitle": {
+                    "type": "string"
+                },
+                "last12Hours": {
+                    "type": "string"
+                },
+                "last14Days": {
+                    "type": "string"
+                },
+                "last15Minutes": {
+                    "type": "string"
+                },
+                "last1Hour": {
+                    "type": "string"
+                },
+                "last24Hours": {
+                    "type": "string"
+                },
+                "last2Days": {
+                    "type": "string"
+                },
+                "last30Days": {
+                    "type": "string"
+                },
+                "last30Minutes": {
+                    "type": "string"
+                },
+                "last6Hours": {
+                    "type": "string"
+                },
+                "last7Days": {
+                    "type": "string"
+                },
+                "range": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "all",
+                "customRange",
+                "customRangeTitle",
+                "last12Hours",
+                "last14Days",
+                "last15Minutes",
+                "last1Hour",
+                "last24Hours",
+                "last2Days",
+                "last30Days",
+                "last30Minutes",
+                "last6Hours",
+                "last7Days",
+                "range"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "activeFiltersBar",
+        "details",
+        "eventType",
+        "filters",
+        "list",
+        "notifications",
+        "operationType",
+        "placeholders",
+        "status",
+        "timeRanges"
+    ],
+    "type": "object",
+    "title": "workflowRequests namespace translation schema"
+}

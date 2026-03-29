@@ -1,0 +1,1097 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/oidcScopes.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "addAttributes": {
+            "additionalProperties": false,
+            "properties": {
+                "description": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "description"
+            ],
+            "type": "object"
+        },
+        "back": {
+            "type": "string"
+        },
+        "buttons": {
+            "additionalProperties": false,
+            "properties": {
+                "addScope": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "addScope"
+            ],
+            "type": "object"
+        },
+        "confirmationModals": {
+            "additionalProperties": false,
+            "properties": {
+                "deleteClaim": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "assertionHint": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "string"
+                        },
+                        "header": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "assertionHint",
+                        "content",
+                        "header",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "deleteScope": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "assertionHint": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "string"
+                        },
+                        "header": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "assertionHint",
+                        "content",
+                        "header",
+                        "message"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "deleteClaim",
+                "deleteScope"
+            ],
+            "type": "object"
+        },
+        "editScope": {
+            "additionalProperties": false,
+            "properties": {
+                "claimList": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "addClaim": {
+                            "type": "string"
+                        },
+                        "emptyPlaceholder": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "action": {
+                                    "type": "string"
+                                },
+                                "subtitles": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "0": {
+                                            "type": "string"
+                                        },
+                                        "1": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "0",
+                                        "1"
+                                    ],
+                                    "type": "object"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "action",
+                                "subtitles",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "emptySearch": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "action": {
+                                    "type": "string"
+                                },
+                                "subtitles": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "0": {
+                                            "type": "string"
+                                        },
+                                        "1": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "0",
+                                        "1"
+                                    ],
+                                    "type": "object"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "action",
+                                "subtitles",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "popupDelete": {
+                            "type": "string"
+                        },
+                        "searchClaims": {
+                            "type": "string"
+                        },
+                        "subTitle": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "addClaim",
+                        "emptyPlaceholder",
+                        "emptySearch",
+                        "popupDelete",
+                        "searchClaims",
+                        "subTitle",
+                        "title"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "claimList"
+            ],
+            "type": "object"
+        },
+        "forms": {
+            "additionalProperties": false,
+            "properties": {
+                "addScopeForm": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "inputs": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                },
+                                "displayName": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "empty": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "empty"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "scopeName": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "duplicate": {
+                                                    "type": "string"
+                                                },
+                                                "empty": {
+                                                    "type": "string"
+                                                },
+                                                "invalid": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "duplicate",
+                                                "empty",
+                                                "invalid"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "displayName",
+                                "scopeName"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "inputs"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "addScopeForm"
+            ],
+            "type": "object"
+        },
+        "list": {
+            "additionalProperties": false,
+            "properties": {
+                "columns": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "actions": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "actions",
+                        "name"
+                    ],
+                    "type": "object"
+                },
+                "empty": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "action": {
+                            "type": "string"
+                        },
+                        "subtitles": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0",
+                                "1"
+                            ],
+                            "type": "object"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "action",
+                        "subtitles",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "searchPlaceholder": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "columns",
+                "empty",
+                "searchPlaceholder"
+            ],
+            "type": "object"
+        },
+        "manageAttributes": {
+            "type": "string"
+        },
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "addOIDCClaim": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "addOIDCScope": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "claimsMandatory": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error"
+                    ],
+                    "type": "object"
+                },
+                "deleteOIDCScope": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "deleteOIDClaim": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "fetchOIDCScope": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "fetchOIDCScopes": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "fetchOIDClaims": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateOIDCScope": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "addOIDCClaim",
+                "addOIDCScope",
+                "claimsMandatory",
+                "deleteOIDCScope",
+                "deleteOIDClaim",
+                "fetchOIDCScope",
+                "fetchOIDCScopes",
+                "fetchOIDClaims",
+                "updateOIDCScope"
+            ],
+            "type": "object"
+        },
+        "placeholders": {
+            "additionalProperties": false,
+            "properties": {
+                "emptyList": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "action": {
+                            "type": "string"
+                        },
+                        "subtitles": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "type": "string"
+                                },
+                                "2": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0",
+                                "1",
+                                "2"
+                            ],
+                            "type": "object"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "action",
+                        "subtitles",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "emptySearch": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "action": {
+                            "type": "string"
+                        },
+                        "subtitles": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0",
+                                "1"
+                            ],
+                            "type": "object"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "action",
+                        "subtitles",
+                        "title"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "emptyList",
+                "emptySearch"
+            ],
+            "type": "object"
+        },
+        "updateScope": {
+            "type": "string"
+        },
+        "viewAttributes": {
+            "type": "string"
+        },
+        "viewScope": {
+            "type": "string"
+        },
+        "wizards": {
+            "additionalProperties": false,
+            "properties": {
+                "addScopeWizard": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "buttons": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "next": {
+                                    "type": "string"
+                                },
+                                "previous": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "next",
+                                "previous"
+                            ],
+                            "type": "object"
+                        },
+                        "claimList": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "searchPlaceholder": {
+                                    "type": "string"
+                                },
+                                "table": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "emptyPlaceholders": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "assigned": {
+                                                    "type": "string"
+                                                },
+                                                "unAssigned": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "assigned",
+                                                "unAssigned"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "header": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "emptyPlaceholders",
+                                        "header"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "searchPlaceholder",
+                                "table"
+                            ],
+                            "type": "object"
+                        },
+                        "steps": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "basicDetails": {
+                                    "type": "string"
+                                },
+                                "claims": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "basicDetails",
+                                "claims"
+                            ],
+                            "type": "object"
+                        },
+                        "subTitle": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "buttons",
+                        "claimList",
+                        "steps",
+                        "subTitle",
+                        "title"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "addScopeWizard"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "addAttributes",
+        "back",
+        "buttons",
+        "confirmationModals",
+        "editScope",
+        "forms",
+        "list",
+        "manageAttributes",
+        "notifications",
+        "placeholders",
+        "updateScope",
+        "viewAttributes",
+        "viewScope",
+        "wizards"
+    ],
+    "type": "object",
+    "title": "oidcScopes namespace translation schema"
+}

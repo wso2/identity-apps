@@ -1,0 +1,254 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/pushProviders.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "alerts": {
+            "additionalProperties": false,
+            "properties": {
+                "create": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "delete": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateDefault": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "create",
+                "delete",
+                "updateDefault"
+            ],
+            "type": "object"
+        },
+        "dangerZoneGroup": {
+            "additionalProperties": false,
+            "properties": {
+                "header": {
+                    "type": "string"
+                },
+                "revertConfig": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "actionTitle": {
+                            "type": "string"
+                        },
+                        "heading": {
+                            "type": "string"
+                        },
+                        "subHeading": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "actionTitle",
+                        "heading",
+                        "subHeading"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "header",
+                "revertConfig"
+            ],
+            "type": "object"
+        },
+        "description": {
+            "type": "string"
+        },
+        "goBack": {
+            "type": "string"
+        },
+        "heading": {
+            "type": "string"
+        },
+        "modals": {
+            "additionalProperties": false,
+            "properties": {
+                "deleteConfirmation": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "assertionHint": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "string"
+                        },
+                        "heading": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "assertionHint",
+                        "content",
+                        "heading",
+                        "message"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "deleteConfirmation"
+            ],
+            "type": "object"
+        },
+        "pushProviderSettings": {
+            "additionalProperties": false,
+            "properties": {
+                "defaultSender": {
+                    "type": "string"
+                },
+                "defaultSenderDescription": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "defaultSender",
+                "defaultSenderDescription"
+            ],
+            "type": "object"
+        },
+        "subHeading": {
+            "type": "string"
+        },
+        "updateButton": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "alerts",
+        "dangerZoneGroup",
+        "description",
+        "goBack",
+        "heading",
+        "modals",
+        "pushProviderSettings",
+        "subHeading",
+        "updateButton"
+    ],
+    "type": "object",
+    "title": "pushProviders namespace translation schema"
+}

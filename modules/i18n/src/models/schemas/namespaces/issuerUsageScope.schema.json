@@ -1,0 +1,213 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/issuerUsageScope.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "description": {
+            "type": "string"
+        },
+        "form": {
+            "additionalProperties": false,
+            "properties": {
+                "issuer": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "label": {
+                            "type": "string"
+                        },
+                        "placeholder": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "label",
+                        "placeholder"
+                    ],
+                    "type": "object"
+                },
+                "options": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "allExistingAndFutureOrgs": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "none": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "allExistingAndFutureOrgs",
+                        "none"
+                    ],
+                    "type": "object"
+                },
+                "updateButton": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "ariaLabel": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "ariaLabel"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "issuer",
+                "options",
+                "updateButton"
+            ],
+            "type": "object"
+        },
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "getConfiguration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateConfiguration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "defaultError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "issuerUsedInOrgsError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "defaultError",
+                        "issuerUsedInOrgsError",
+                        "success"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "getConfiguration",
+                "updateConfiguration"
+            ],
+            "type": "object"
+        },
+        "title": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "description",
+        "form",
+        "notifications",
+        "title"
+    ],
+    "type": "object",
+    "title": "issuerUsageScope namespace translation schema"
+}

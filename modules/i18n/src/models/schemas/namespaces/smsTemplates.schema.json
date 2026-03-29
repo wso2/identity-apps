@@ -1,0 +1,342 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/smsTemplates.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "dangerZone": {
+            "additionalProperties": false,
+            "properties": {
+                "remove": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "action": {
+                            "type": "string"
+                        },
+                        "heading": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "action",
+                        "heading",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "revert": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "action": {
+                            "type": "string"
+                        },
+                        "heading": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "action",
+                        "heading",
+                        "message"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "remove",
+                "revert"
+            ],
+            "type": "object"
+        },
+        "form": {
+            "additionalProperties": false,
+            "properties": {
+                "inputs": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "body": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "charLengthWarning": {
+                                    "type": "string"
+                                },
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "charLengthWarning",
+                                "hint",
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "locale": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "template": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "body",
+                        "locale",
+                        "template"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "inputs"
+            ],
+            "type": "object"
+        },
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "deleteSmsTemplate": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "getSmsTemplate": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error"
+                    ],
+                    "type": "object"
+                },
+                "getSmsTemplateList": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error"
+                    ],
+                    "type": "object"
+                },
+                "updateSmsTemplate": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "deleteSmsTemplate",
+                "getSmsTemplate",
+                "getSmsTemplateList",
+                "updateSmsTemplate"
+            ],
+            "type": "object"
+        },
+        "page": {
+            "additionalProperties": false,
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "header": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "description",
+                "header"
+            ],
+            "type": "object"
+        },
+        "tabs": {
+            "additionalProperties": false,
+            "properties": {
+                "content": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "label": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "label"
+                    ],
+                    "type": "object"
+                },
+                "preview": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "label": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "label"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "content",
+                "preview"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "dangerZone",
+        "form",
+        "notifications",
+        "page",
+        "tabs"
+    ],
+    "type": "object",
+    "title": "smsTemplates namespace translation schema"
+}

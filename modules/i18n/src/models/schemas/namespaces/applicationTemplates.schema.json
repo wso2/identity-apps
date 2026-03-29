@@ -1,0 +1,201 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/applicationTemplates.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "categories": {
+            "additionalProperties": false,
+            "properties": {
+                "default": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "displayName": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "displayName"
+                    ],
+                    "type": "object"
+                },
+                "ssoIntegration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "displayName": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "displayName"
+                    ],
+                    "type": "object"
+                },
+                "technology": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "default",
+                "ssoIntegration",
+                "technology"
+            ],
+            "type": "object"
+        },
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "fetchTemplate": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError"
+                    ],
+                    "type": "object"
+                },
+                "fetchTemplateMetadata": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "fetchTemplate",
+                "fetchTemplateMetadata"
+            ],
+            "type": "object"
+        },
+        "placeholders": {
+            "additionalProperties": false,
+            "properties": {
+                "emptyApplicationTypeList": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "subtitles": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0",
+                                "1"
+                            ],
+                            "type": "object"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subtitles",
+                        "title"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "emptyApplicationTypeList"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "categories",
+        "notifications",
+        "placeholders"
+    ],
+    "type": "object",
+    "title": "applicationTemplates namespace translation schema"
+}

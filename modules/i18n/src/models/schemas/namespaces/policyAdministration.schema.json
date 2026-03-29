@@ -1,0 +1,511 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/policyAdministration.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "activePoliciesPlaceholder": {
+            "additionalProperties": false,
+            "properties": {
+                "subtitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "subtitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "advancedSearch": {
+            "additionalProperties": false,
+            "properties": {
+                "placeholder": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "placeholder"
+            ],
+            "type": "object"
+        },
+        "alerts": {
+            "additionalProperties": false,
+            "properties": {
+                "activateFailure": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "activateSuccess": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "createFailure": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "createSuccess": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "deactivateFailure": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "deactivateSuccess": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "deleteFailure": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "deleteSuccess": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "updateAlgorithmFailure": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "updateAlgorithmSuccess": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "updateFailure": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "updateSuccess": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "activateFailure",
+                "activateSuccess",
+                "createFailure",
+                "createSuccess",
+                "deactivateFailure",
+                "deactivateSuccess",
+                "deleteFailure",
+                "deleteSuccess",
+                "updateAlgorithmFailure",
+                "updateAlgorithmSuccess",
+                "updateFailure",
+                "updateSuccess"
+            ],
+            "type": "object"
+        },
+        "buttons": {
+            "additionalProperties": false,
+            "properties": {
+                "newPolicy": {
+                    "type": "string"
+                },
+                "policyAlgorithm": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "newPolicy",
+                "policyAlgorithm"
+            ],
+            "type": "object"
+        },
+        "createPolicy": {
+            "additionalProperties": false,
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "description",
+                "title"
+            ],
+            "type": "object"
+        },
+        "editPolicy": {
+            "additionalProperties": false,
+            "properties": {
+                "backBtn": {
+                    "type": "string"
+                },
+                "disabledBtnTooltip": {
+                    "type": "string"
+                },
+                "fields": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "policyOrder": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "policyOrder"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "backBtn",
+                "disabledBtnTooltip",
+                "fields"
+            ],
+            "type": "object"
+        },
+        "inactivePoliciesPlaceholder": {
+            "additionalProperties": false,
+            "properties": {
+                "subtitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "subtitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "policyAlgorithm": {
+            "additionalProperties": false,
+            "properties": {
+                "actionText": {
+                    "type": "string"
+                },
+                "algorithmOptions": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "denyOverrides": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description"
+                            ],
+                            "type": "object"
+                        },
+                        "denyUnlessPermit": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description"
+                            ],
+                            "type": "object"
+                        },
+                        "firstApplicable": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description"
+                            ],
+                            "type": "object"
+                        },
+                        "onlyOneApplicable": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description"
+                            ],
+                            "type": "object"
+                        },
+                        "orderedDenyOverrides": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description"
+                            ],
+                            "type": "object"
+                        },
+                        "orderedPermitOverrides": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description"
+                            ],
+                            "type": "object"
+                        },
+                        "permitOverrides": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description"
+                            ],
+                            "type": "object"
+                        },
+                        "permitUnlessDeny": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "denyOverrides",
+                        "denyUnlessPermit",
+                        "firstApplicable",
+                        "onlyOneApplicable",
+                        "orderedDenyOverrides",
+                        "orderedPermitOverrides",
+                        "permitOverrides",
+                        "permitUnlessDeny"
+                    ],
+                    "type": "object"
+                },
+                "primaryBtn": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "actionText",
+                "algorithmOptions",
+                "primaryBtn",
+                "title"
+            ],
+            "type": "object"
+        },
+        "popup": {
+            "additionalProperties": false,
+            "properties": {
+                "activate": {
+                    "type": "string"
+                },
+                "deactivate": {
+                    "type": "string"
+                },
+                "policyOrder": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "activate",
+                "deactivate",
+                "policyOrder"
+            ],
+            "type": "object"
+        },
+        "subtitle": {
+            "type": "string"
+        },
+        "title": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "activePoliciesPlaceholder",
+        "advancedSearch",
+        "alerts",
+        "buttons",
+        "createPolicy",
+        "editPolicy",
+        "inactivePoliciesPlaceholder",
+        "policyAlgorithm",
+        "popup",
+        "subtitle",
+        "title"
+    ],
+    "type": "object",
+    "title": "policyAdministration namespace translation schema"
+}

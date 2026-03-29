@@ -1,0 +1,1699 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/tenants.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "actions": {
+            "additionalProperties": false,
+            "properties": {
+                "newTenant": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "systemSettings": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "tooltip": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "tooltip"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "newTenant",
+                "systemSettings"
+            ],
+            "type": "object"
+        },
+        "addTenant": {
+            "additionalProperties": false,
+            "properties": {
+                "actions": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "cancel": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "save": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "cancel",
+                        "save"
+                    ],
+                    "type": "object"
+                },
+                "form": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "adminDetails": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "title"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "adminDetails"
+                    ],
+                    "type": "object"
+                },
+                "notifications": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "addTenant": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "error": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "success": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "error",
+                                "success"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "addTenant"
+                    ],
+                    "type": "object"
+                },
+                "subtitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "actions",
+                "form",
+                "notifications",
+                "subtitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "common": {
+            "additionalProperties": false,
+            "properties": {
+                "form": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "fields": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "alphanumericUsername": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "usernameHint": {
+                                                    "type": "string"
+                                                },
+                                                "usernameSpecialCharHint": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "usernameHint",
+                                                "usernameSpecialCharHint"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "domain": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "helperText": {
+                                            "type": "string"
+                                        },
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "domainInvalidCharPattern": {
+                                                    "type": "string"
+                                                },
+                                                "domainInvalidPattern": {
+                                                    "type": "string"
+                                                },
+                                                "domainMandatoryExtension": {
+                                                    "type": "string"
+                                                },
+                                                "domainStartingWithDot": {
+                                                    "type": "string"
+                                                },
+                                                "domainUnavailable": {
+                                                    "type": "string"
+                                                },
+                                                "required": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "domainInvalidCharPattern",
+                                                "domainInvalidPattern",
+                                                "domainMandatoryExtension",
+                                                "domainStartingWithDot",
+                                                "domainUnavailable",
+                                                "required"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "helperText",
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "email": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "invalid": {
+                                                    "type": "string"
+                                                },
+                                                "required": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "invalid",
+                                                "required"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "emailUsername": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "helperTextAlt": {
+                                            "type": "string"
+                                        },
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "helperTextAlt",
+                                        "label",
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                },
+                                "firstname": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "required": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "required"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "id": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "helperText": {
+                                            "type": "string"
+                                        },
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "helperText",
+                                        "label",
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                },
+                                "lastname": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "required": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "required"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "organizationName": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "helperText": {
+                                            "type": "string"
+                                        },
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "invalidCharPattern": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "invalidCharPattern"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "helperText",
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "password": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "actions": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "generate": {
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "label": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "label"
+                                                    ],
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "required": [
+                                                "generate"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "criteria": {
+                                                    "additionalProperties": false,
+                                                    "properties": {
+                                                        "consecutiveCharacters": {
+                                                            "type": "string"
+                                                        },
+                                                        "lowerCase": {
+                                                            "type": "string"
+                                                        },
+                                                        "passwordCase": {
+                                                            "type": "string"
+                                                        },
+                                                        "passwordLength": {
+                                                            "type": "string"
+                                                        },
+                                                        "passwordNumeric": {
+                                                            "type": "string"
+                                                        },
+                                                        "specialCharacter": {
+                                                            "type": "string"
+                                                        },
+                                                        "uniqueCharacters": {
+                                                            "type": "string"
+                                                        },
+                                                        "upperCase": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "consecutiveCharacters",
+                                                        "lowerCase",
+                                                        "passwordCase",
+                                                        "passwordLength",
+                                                        "passwordNumeric",
+                                                        "specialCharacter",
+                                                        "uniqueCharacters",
+                                                        "upperCase"
+                                                    ],
+                                                    "type": "object"
+                                                },
+                                                "required": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "criteria",
+                                                "required"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "actions",
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "username": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "helperText": {
+                                            "type": "string"
+                                        },
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "regExViolation": {
+                                                    "type": "string"
+                                                },
+                                                "required": {
+                                                    "type": "string"
+                                                },
+                                                "usernameLength": {
+                                                    "type": "string"
+                                                },
+                                                "usernameSpecialCharSymbols": {
+                                                    "type": "string"
+                                                },
+                                                "usernameSymbols": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "regExViolation",
+                                                "required",
+                                                "usernameLength",
+                                                "usernameSpecialCharSymbols",
+                                                "usernameSymbols"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "helperText",
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "alphanumericUsername",
+                                "domain",
+                                "email",
+                                "emailUsername",
+                                "firstname",
+                                "id",
+                                "lastname",
+                                "organizationName",
+                                "password",
+                                "username"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "fields"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "form"
+            ],
+            "type": "object"
+        },
+        "confirmationModals": {
+            "additionalProperties": false,
+            "properties": {
+                "deleteTenant": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "assertionHint": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "string"
+                        },
+                        "header": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        },
+                        "primaryAction": {
+                            "type": "string"
+                        },
+                        "secondaryAction": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "assertionHint",
+                        "content",
+                        "header",
+                        "message",
+                        "primaryAction",
+                        "secondaryAction"
+                    ],
+                    "type": "object"
+                },
+                "disableTenant": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "assertionHint": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "string"
+                        },
+                        "header": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        },
+                        "primaryAction": {
+                            "type": "string"
+                        },
+                        "secondaryAction": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "assertionHint",
+                        "content",
+                        "header",
+                        "message",
+                        "primaryAction",
+                        "secondaryAction"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "deleteTenant",
+                "disableTenant"
+            ],
+            "type": "object"
+        },
+        "deploymentUnits": {
+            "additionalProperties": false,
+            "properties": {
+                "label": {
+                    "type": "string"
+                },
+                "placeholder": {
+                    "type": "string"
+                },
+                "validations": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "empty": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "empty"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "label",
+                "placeholder",
+                "validations"
+            ],
+            "type": "object"
+        },
+        "edit": {
+            "additionalProperties": false,
+            "properties": {
+                "backButton": {
+                    "type": "string"
+                },
+                "consoleURL": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "hint": {
+                            "type": "string"
+                        },
+                        "label": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "hint",
+                        "label"
+                    ],
+                    "type": "object"
+                },
+                "subtitle": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "backButton",
+                "consoleURL",
+                "subtitle"
+            ],
+            "type": "object"
+        },
+        "editSelfOrganization": {
+            "additionalProperties": false,
+            "properties": {
+                "actions": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "save": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "save"
+                    ],
+                    "type": "object"
+                },
+                "form": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "fields": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "created": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                },
+                                "lastModified": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                },
+                                "organizationHandle": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        },
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint",
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                },
+                                "organizationId": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        },
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint",
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                },
+                                "organizationName": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "required": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "required"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "created",
+                                "lastModified",
+                                "organizationHandle",
+                                "organizationId",
+                                "organizationName"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "fields"
+                    ],
+                    "type": "object"
+                },
+                "notifications": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "updateOrganization": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "error": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "success": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "error",
+                                "success"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "updateOrganization"
+                    ],
+                    "type": "object"
+                },
+                "readOnly": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "subtitle": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subtitle",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "subtitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "actions",
+                "form",
+                "notifications",
+                "readOnly",
+                "subtitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "editTenant": {
+            "additionalProperties": false,
+            "properties": {
+                "actions": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "save": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "save"
+                    ],
+                    "type": "object"
+                },
+                "dangerZoneGroup": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "delete": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "actionTitle": {
+                                    "type": "string"
+                                },
+                                "header": {
+                                    "type": "string"
+                                },
+                                "subheader": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "actionTitle",
+                                "header",
+                                "subheader"
+                            ],
+                            "type": "object"
+                        },
+                        "disable": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "actionTitle": {
+                                    "type": "string"
+                                },
+                                "header": {
+                                    "type": "string"
+                                },
+                                "subheader": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "actionTitle",
+                                "header",
+                                "subheader"
+                            ],
+                            "type": "object"
+                        },
+                        "header": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "delete",
+                        "disable",
+                        "header"
+                    ],
+                    "type": "object"
+                },
+                "disabledDisclaimer": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "actions": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "enable": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "enable"
+                            ],
+                            "type": "object"
+                        },
+                        "content": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "actions",
+                        "content",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "notifications": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "deleteTenantMeta": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "error": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "success": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "error",
+                                "success"
+                            ],
+                            "type": "object"
+                        },
+                        "updateTenant": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "error": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "success": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "error",
+                                "success"
+                            ],
+                            "type": "object"
+                        },
+                        "updateTenantStatus": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "error": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "success": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "error",
+                                "success"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "deleteTenantMeta",
+                        "updateTenant",
+                        "updateTenantStatus"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "actions",
+                "dangerZoneGroup",
+                "disabledDisclaimer",
+                "notifications"
+            ],
+            "type": "object"
+        },
+        "listDeploymentUnits": {
+            "additionalProperties": false,
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "description",
+                "message"
+            ],
+            "type": "object"
+        },
+        "listing": {
+            "additionalProperties": false,
+            "properties": {
+                "advancedSearch": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "form": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "dropdown": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "filterAttributeOptions": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "domain": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "domain"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "filterAttributeOptions"
+                                    ],
+                                    "type": "object"
+                                },
+                                "inputs": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "filterAttribute": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "placeholder": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "placeholder"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "filterCondition": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "placeholder": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "placeholder"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "filterValue": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "placeholder": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "placeholder"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "filterAttribute",
+                                        "filterCondition",
+                                        "filterValue"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "dropdown",
+                                "inputs"
+                            ],
+                            "type": "object"
+                        },
+                        "placeholder": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "form",
+                        "placeholder"
+                    ],
+                    "type": "object"
+                },
+                "count": {
+                    "type": "string"
+                },
+                "emptyPlaceholder": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "actions": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "configure": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                },
+                                "divider": {
+                                    "type": "string"
+                                },
+                                "new": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "configure",
+                                "divider",
+                                "new"
+                            ],
+                            "type": "object"
+                        },
+                        "subtitles": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0",
+                                "1"
+                            ],
+                            "type": "object"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "actions",
+                        "subtitles",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "emptySearchResult": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "actions": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "clearSearchQuery": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "clearSearchQuery"
+                            ],
+                            "type": "object"
+                        },
+                        "subtitles": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0",
+                                "1"
+                            ],
+                            "type": "object"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "actions",
+                        "subtitles",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "item": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "actions": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "delete": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                },
+                                "edit": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                },
+                                "more": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "delete",
+                                "edit",
+                                "more"
+                            ],
+                            "type": "object"
+                        },
+                        "meta": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "createdOn": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                },
+                                "owner": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "createdOn",
+                                "owner"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "actions",
+                        "meta"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "advancedSearch",
+                "count",
+                "emptyPlaceholder",
+                "emptySearchResult",
+                "item"
+            ],
+            "type": "object"
+        },
+        "status": {
+            "additionalProperties": false,
+            "properties": {
+                "activate": {
+                    "type": "string"
+                },
+                "activated": {
+                    "type": "string"
+                },
+                "deActivate": {
+                    "type": "string"
+                },
+                "deActivated": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "activate",
+                "activated",
+                "deActivate",
+                "deActivated"
+            ],
+            "type": "object"
+        },
+        "subtitle": {
+            "type": "string"
+        },
+        "systemSettings": {
+            "additionalProperties": false,
+            "properties": {
+                "actions": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "newTenant": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "systemSettings": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "tooltip": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "tooltip"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "newTenant",
+                        "systemSettings"
+                    ],
+                    "type": "object"
+                },
+                "backButton": {
+                    "type": "string"
+                },
+                "subtitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "actions",
+                "backButton",
+                "subtitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "tenantDropdown": {
+            "additionalProperties": false,
+            "properties": {
+                "options": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "edit": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "manage": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "view": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "edit",
+                        "manage",
+                        "view"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "options"
+            ],
+            "type": "object"
+        },
+        "title": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "actions",
+        "addTenant",
+        "common",
+        "confirmationModals",
+        "deploymentUnits",
+        "edit",
+        "editSelfOrganization",
+        "editTenant",
+        "listDeploymentUnits",
+        "listing",
+        "status",
+        "subtitle",
+        "systemSettings",
+        "tenantDropdown",
+        "title"
+    ],
+    "type": "object",
+    "title": "tenants namespace translation schema"
+}

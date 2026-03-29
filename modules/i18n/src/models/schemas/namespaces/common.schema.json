@@ -1,0 +1,1233 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/common.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "access": {
+            "type": "string"
+        },
+        "actions": {
+            "type": "string"
+        },
+        "activate": {
+            "type": "string"
+        },
+        "active": {
+            "type": "string"
+        },
+        "add": {
+            "type": "string"
+        },
+        "addKey": {
+            "type": "string"
+        },
+        "addURL": {
+            "type": "string"
+        },
+        "all": {
+            "type": "string"
+        },
+        "applicationName": {
+            "type": "string"
+        },
+        "applications": {
+            "type": "string"
+        },
+        "approvalStatus": {
+            "type": "string"
+        },
+        "approvals": {
+            "type": "string"
+        },
+        "approvalsPage": {
+            "additionalProperties": false,
+            "properties": {
+                "list": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "columns": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "actions": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "actions",
+                                "name"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "columns"
+                    ],
+                    "type": "object"
+                },
+                "modals": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "header": {
+                            "type": "string"
+                        },
+                        "subHeader": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "header",
+                        "subHeader"
+                    ],
+                    "type": "object"
+                },
+                "notifications": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "fetchApprovalDetails": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "error": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "genericError": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "error",
+                                "genericError"
+                            ],
+                            "type": "object"
+                        },
+                        "fetchPendingApprovals": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "error": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "genericError": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "error",
+                                "genericError"
+                            ],
+                            "type": "object"
+                        },
+                        "statusUpdate": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "approved": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "claimed": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "rejected": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "released": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "approved",
+                                "claimed",
+                                "rejected",
+                                "released"
+                            ],
+                            "type": "object"
+                        },
+                        "updatePendingApprovals": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "error": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "genericError": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "success": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "error",
+                                "genericError",
+                                "success"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "fetchApprovalDetails",
+                        "fetchPendingApprovals",
+                        "statusUpdate",
+                        "updatePendingApprovals"
+                    ],
+                    "type": "object"
+                },
+                "operationTypes": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "addRole": {
+                            "type": "string"
+                        },
+                        "addUser": {
+                            "type": "string"
+                        },
+                        "all": {
+                            "type": "string"
+                        },
+                        "deleteRole": {
+                            "type": "string"
+                        },
+                        "deleteUser": {
+                            "type": "string"
+                        },
+                        "selfRegisterUser": {
+                            "type": "string"
+                        },
+                        "updateRolesOfUser": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "addRole",
+                        "addUser",
+                        "all",
+                        "deleteRole",
+                        "deleteUser",
+                        "selfRegisterUser",
+                        "updateRolesOfUser"
+                    ],
+                    "type": "object"
+                },
+                "placeholders": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "emptyApprovalFilter": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "action": {
+                                    "type": "string"
+                                },
+                                "subtitle": {
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "action",
+                                "subtitle",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "emptyApprovalList": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "action": {
+                                    "type": "string"
+                                },
+                                "subtitle": {
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "action",
+                                "subtitle",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "emptySearchResults": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "action": {
+                                    "type": "string"
+                                },
+                                "subtitles": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "0": {
+                                            "type": "string"
+                                        },
+                                        "1": {
+                                            "type": "string"
+                                        },
+                                        "2": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "0",
+                                        "1",
+                                        "2"
+                                    ],
+                                    "type": "object"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "action",
+                                "subtitles",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "searchApprovals": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "emptyApprovalFilter",
+                        "emptyApprovalList",
+                        "emptySearchResults",
+                        "searchApprovals"
+                    ],
+                    "type": "object"
+                },
+                "propertyMessages": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "assignedUsersDeleted": {
+                            "type": "string"
+                        },
+                        "roleDeleted": {
+                            "type": "string"
+                        },
+                        "selfRegistration": {
+                            "type": "string"
+                        },
+                        "unassignedUsersDeleted": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "assignedUsersDeleted",
+                        "roleDeleted",
+                        "selfRegistration",
+                        "unassignedUsersDeleted"
+                    ],
+                    "type": "object"
+                },
+                "subTitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "list",
+                "modals",
+                "notifications",
+                "operationTypes",
+                "placeholders",
+                "propertyMessages",
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "approve": {
+            "type": "string"
+        },
+        "approved": {
+            "type": "string"
+        },
+        "apps": {
+            "type": "string"
+        },
+        "assignYourself": {
+            "type": "string"
+        },
+        "assignee": {
+            "type": "string"
+        },
+        "assignees": {
+            "type": "string"
+        },
+        "asyncOperationErrorMessage": {
+            "additionalProperties": false,
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "description",
+                "message"
+            ],
+            "type": "object"
+        },
+        "authentication": {
+            "type": "string"
+        },
+        "authenticator": {
+            "type": "string"
+        },
+        "authenticator_plural": {
+            "type": "string"
+        },
+        "back": {
+            "type": "string"
+        },
+        "beta": {
+            "type": "string"
+        },
+        "browser": {
+            "type": "string"
+        },
+        "cancel": {
+            "type": "string"
+        },
+        "challengeQuestionNumber": {
+            "type": "string"
+        },
+        "change": {
+            "type": "string"
+        },
+        "chunkLoadErrorMessage": {
+            "additionalProperties": false,
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "heading": {
+                    "type": "string"
+                },
+                "primaryActionText": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "description",
+                "heading",
+                "primaryActionText"
+            ],
+            "type": "object"
+        },
+        "clear": {
+            "type": "string"
+        },
+        "clientId": {
+            "type": "string"
+        },
+        "close": {
+            "type": "string"
+        },
+        "comingSoon": {
+            "type": "string"
+        },
+        "completed": {
+            "type": "string"
+        },
+        "configure": {
+            "type": "string"
+        },
+        "confirm": {
+            "type": "string"
+        },
+        "contains": {
+            "type": "string"
+        },
+        "continue": {
+            "type": "string"
+        },
+        "copied": {
+            "type": "string"
+        },
+        "copyToClipboard": {
+            "type": "string"
+        },
+        "create": {
+            "type": "string"
+        },
+        "createdOn": {
+            "type": "string"
+        },
+        "dangerZone": {
+            "type": "string"
+        },
+        "darkMode": {
+            "type": "string"
+        },
+        "default": {
+            "type": "string"
+        },
+        "delete": {
+            "type": "string"
+        },
+        "deprecated": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "deviceModel": {
+            "type": "string"
+        },
+        "disable": {
+            "type": "string"
+        },
+        "disabled": {
+            "type": "string"
+        },
+        "docs": {
+            "type": "string"
+        },
+        "documentation": {
+            "type": "string"
+        },
+        "done": {
+            "type": "string"
+        },
+        "download": {
+            "type": "string"
+        },
+        "drag": {
+            "type": "string"
+        },
+        "duplicateURLError": {
+            "type": "string"
+        },
+        "edit": {
+            "type": "string"
+        },
+        "enable": {
+            "type": "string"
+        },
+        "enabled": {
+            "type": "string"
+        },
+        "endsWith": {
+            "type": "string"
+        },
+        "equals": {
+            "type": "string"
+        },
+        "exitFullScreen": {
+            "type": "string"
+        },
+        "experimental": {
+            "type": "string"
+        },
+        "explore": {
+            "type": "string"
+        },
+        "export": {
+            "type": "string"
+        },
+        "featureAvailable": {
+            "type": "string"
+        },
+        "filter": {
+            "type": "string"
+        },
+        "finish": {
+            "type": "string"
+        },
+        "generatePassword": {
+            "type": "string"
+        },
+        "goBackHome": {
+            "type": "string"
+        },
+        "goFullScreen": {
+            "type": "string"
+        },
+        "good": {
+            "type": "string"
+        },
+        "greaterThanOrEqual": {
+            "type": "string"
+        },
+        "help": {
+            "type": "string"
+        },
+        "hide": {
+            "type": "string"
+        },
+        "hidePassword": {
+            "type": "string"
+        },
+        "identityProviders": {
+            "type": "string"
+        },
+        "import": {
+            "type": "string"
+        },
+        "initiator": {
+            "type": "string"
+        },
+        "ipAddress": {
+            "type": "string"
+        },
+        "issuer": {
+            "type": "string"
+        },
+        "lastAccessed": {
+            "type": "string"
+        },
+        "lastModified": {
+            "type": "string"
+        },
+        "lastSeen": {
+            "type": "string"
+        },
+        "lastUpdatedOn": {
+            "type": "string"
+        },
+        "learnMore": {
+            "type": "string"
+        },
+        "lessThanOrEqual": {
+            "type": "string"
+        },
+        "lightMode": {
+            "type": "string"
+        },
+        "loading": {
+            "type": "string"
+        },
+        "loginTime": {
+            "type": "string"
+        },
+        "logout": {
+            "type": "string"
+        },
+        "makePrimary": {
+            "type": "string"
+        },
+        "maxValidation": {
+            "type": "string"
+        },
+        "maximize": {
+            "type": "string"
+        },
+        "metaAttributes": {
+            "type": "string"
+        },
+        "minValidation": {
+            "type": "string"
+        },
+        "minimize": {
+            "type": "string"
+        },
+        "minutes": {
+            "type": "string"
+        },
+        "more": {
+            "type": "string"
+        },
+        "myAccount": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "networkErrorMessage": {
+            "additionalProperties": false,
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "heading": {
+                    "type": "string"
+                },
+                "primaryActionText": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "description",
+                "heading",
+                "primaryActionText"
+            ],
+            "type": "object"
+        },
+        "new": {
+            "type": "string"
+        },
+        "next": {
+            "type": "string"
+        },
+        "noResultsFound": {
+            "type": "string"
+        },
+        "none": {
+            "type": "string"
+        },
+        "okay": {
+            "type": "string"
+        },
+        "operatingSystem": {
+            "type": "string"
+        },
+        "operationType": {
+            "type": "string"
+        },
+        "operations": {
+            "type": "string"
+        },
+        "organizationName": {
+            "type": "string"
+        },
+        "overview": {
+            "type": "string"
+        },
+        "parameter": {
+            "type": "string"
+        },
+        "pending": {
+            "type": "string"
+        },
+        "personalInfo": {
+            "type": "string"
+        },
+        "pin": {
+            "type": "string"
+        },
+        "pinned": {
+            "type": "string"
+        },
+        "premium": {
+            "type": "string"
+        },
+        "pressEnterPrompt": {
+            "type": "string"
+        },
+        "preview": {
+            "type": "string"
+        },
+        "previous": {
+            "type": "string"
+        },
+        "primary": {
+            "type": "string"
+        },
+        "priority": {
+            "type": "string"
+        },
+        "privacy": {
+            "type": "string"
+        },
+        "properties": {
+            "type": "string"
+        },
+        "publish": {
+            "type": "string"
+        },
+        "ready": {
+            "type": "string"
+        },
+        "regenerate": {
+            "type": "string"
+        },
+        "register": {
+            "type": "string"
+        },
+        "reject": {
+            "type": "string"
+        },
+        "rejected": {
+            "type": "string"
+        },
+        "remove": {
+            "type": "string"
+        },
+        "removeAll": {
+            "type": "string"
+        },
+        "required": {
+            "type": "string"
+        },
+        "reserved": {
+            "type": "string"
+        },
+        "resetFilters": {
+            "type": "string"
+        },
+        "retry": {
+            "type": "string"
+        },
+        "revert": {
+            "type": "string"
+        },
+        "revoke": {
+            "type": "string"
+        },
+        "revokeAll": {
+            "type": "string"
+        },
+        "samples": {
+            "type": "string"
+        },
+        "save": {
+            "type": "string"
+        },
+        "saveDraft": {
+            "type": "string"
+        },
+        "sdks": {
+            "type": "string"
+        },
+        "search": {
+            "type": "string"
+        },
+        "searching": {
+            "type": "string"
+        },
+        "security": {
+            "type": "string"
+        },
+        "selectAll": {
+            "type": "string"
+        },
+        "selectNone": {
+            "type": "string"
+        },
+        "services": {
+            "type": "string"
+        },
+        "settings": {
+            "type": "string"
+        },
+        "setup": {
+            "type": "string"
+        },
+        "show": {
+            "type": "string"
+        },
+        "showAll": {
+            "type": "string"
+        },
+        "showLess": {
+            "type": "string"
+        },
+        "showMore": {
+            "type": "string"
+        },
+        "showPassword": {
+            "type": "string"
+        },
+        "skip": {
+            "type": "string"
+        },
+        "startsWith": {
+            "type": "string"
+        },
+        "step": {
+            "type": "string"
+        },
+        "strong": {
+            "type": "string"
+        },
+        "submit": {
+            "type": "string"
+        },
+        "switch": {
+            "type": "string"
+        },
+        "technologies": {
+            "type": "string"
+        },
+        "terminate": {
+            "type": "string"
+        },
+        "terminateAll": {
+            "type": "string"
+        },
+        "terminateSession": {
+            "type": "string"
+        },
+        "tooShort": {
+            "type": "string"
+        },
+        "type": {
+            "type": "string"
+        },
+        "unassign": {
+            "type": "string"
+        },
+        "unpin": {
+            "type": "string"
+        },
+        "unpinned": {
+            "type": "string"
+        },
+        "update": {
+            "type": "string"
+        },
+        "user": {
+            "type": "string"
+        },
+        "verified": {
+            "type": "string"
+        },
+        "verify": {
+            "type": "string"
+        },
+        "view": {
+            "type": "string"
+        },
+        "viewDetails": {
+            "type": "string"
+        },
+        "weak": {
+            "type": "string"
+        },
+        "weakPassword": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "access",
+        "actions",
+        "activate",
+        "active",
+        "add",
+        "addKey",
+        "addURL",
+        "all",
+        "applicationName",
+        "applications",
+        "approvalStatus",
+        "approvals",
+        "approvalsPage",
+        "approve",
+        "approved",
+        "apps",
+        "assignYourself",
+        "assignee",
+        "assignees",
+        "asyncOperationErrorMessage",
+        "authentication",
+        "authenticator",
+        "authenticator_plural",
+        "back",
+        "beta",
+        "browser",
+        "cancel",
+        "challengeQuestionNumber",
+        "change",
+        "chunkLoadErrorMessage",
+        "clear",
+        "clientId",
+        "close",
+        "comingSoon",
+        "completed",
+        "configure",
+        "confirm",
+        "contains",
+        "continue",
+        "copied",
+        "copyToClipboard",
+        "create",
+        "createdOn",
+        "dangerZone",
+        "darkMode",
+        "default",
+        "delete",
+        "deprecated",
+        "description",
+        "deviceModel",
+        "disable",
+        "disabled",
+        "docs",
+        "documentation",
+        "done",
+        "download",
+        "drag",
+        "duplicateURLError",
+        "edit",
+        "enable",
+        "enabled",
+        "endsWith",
+        "equals",
+        "exitFullScreen",
+        "experimental",
+        "explore",
+        "export",
+        "featureAvailable",
+        "filter",
+        "finish",
+        "generatePassword",
+        "goBackHome",
+        "goFullScreen",
+        "good",
+        "greaterThanOrEqual",
+        "help",
+        "hide",
+        "hidePassword",
+        "identityProviders",
+        "import",
+        "initiator",
+        "ipAddress",
+        "issuer",
+        "lastAccessed",
+        "lastModified",
+        "lastSeen",
+        "lastUpdatedOn",
+        "learnMore",
+        "lessThanOrEqual",
+        "lightMode",
+        "loading",
+        "loginTime",
+        "logout",
+        "makePrimary",
+        "maxValidation",
+        "maximize",
+        "metaAttributes",
+        "minValidation",
+        "minimize",
+        "minutes",
+        "more",
+        "myAccount",
+        "name",
+        "networkErrorMessage",
+        "new",
+        "next",
+        "noResultsFound",
+        "none",
+        "okay",
+        "operatingSystem",
+        "operationType",
+        "operations",
+        "organizationName",
+        "overview",
+        "parameter",
+        "pending",
+        "personalInfo",
+        "pin",
+        "pinned",
+        "premium",
+        "pressEnterPrompt",
+        "preview",
+        "previous",
+        "primary",
+        "priority",
+        "privacy",
+        "properties",
+        "publish",
+        "ready",
+        "regenerate",
+        "register",
+        "reject",
+        "rejected",
+        "remove",
+        "removeAll",
+        "required",
+        "reserved",
+        "resetFilters",
+        "retry",
+        "revert",
+        "revoke",
+        "revokeAll",
+        "samples",
+        "save",
+        "saveDraft",
+        "sdks",
+        "search",
+        "searching",
+        "security",
+        "selectAll",
+        "selectNone",
+        "services",
+        "settings",
+        "setup",
+        "show",
+        "showAll",
+        "showLess",
+        "showMore",
+        "showPassword",
+        "skip",
+        "startsWith",
+        "step",
+        "strong",
+        "submit",
+        "switch",
+        "technologies",
+        "terminate",
+        "terminateAll",
+        "terminateSession",
+        "tooShort",
+        "type",
+        "unassign",
+        "unpin",
+        "unpinned",
+        "update",
+        "user",
+        "verified",
+        "verify",
+        "view",
+        "viewDetails",
+        "weak",
+        "weakPassword"
+    ],
+    "type": "object",
+    "title": "common namespace translation schema"
+}

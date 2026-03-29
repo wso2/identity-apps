@@ -1,0 +1,1192 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/branding.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "brandingCustomText": {
+            "additionalProperties": false,
+            "properties": {
+                "revertScreenConfirmationModal": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "content": {
+                            "type": "string"
+                        },
+                        "heading": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "content",
+                        "heading",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "revertUnsavedConfirmationModal": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "content": {
+                            "type": "string"
+                        },
+                        "heading": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "content",
+                        "heading",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "form": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "genericFieldResetTooltip": {
+                            "type": "string"
+                        },
+                        "genericFieldPlaceholder": {
+                            "type": "string"
+                        },
+                        "fields": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "copyright": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint"
+                                    ],
+                                    "type": "object"
+                                },
+                                "email.link.expiry.message": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint"
+                                    ],
+                                    "type": "object"
+                                },
+                                "privacy.policy": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint"
+                                    ],
+                                    "type": "object"
+                                },
+                                "site.title": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint"
+                                    ],
+                                    "type": "object"
+                                },
+                                "terms.of.service": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint"
+                                    ],
+                                    "type": "object"
+                                },
+                                "login.button": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint"
+                                    ],
+                                    "type": "object"
+                                },
+                                "login.heading": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint"
+                                    ],
+                                    "type": "object"
+                                },
+                                "login.identifier.input.label": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        },
+                                        "warning": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint",
+                                        "warning"
+                                    ],
+                                    "type": "object"
+                                },
+                                "sms.otp.heading": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint"
+                                    ],
+                                    "type": "object"
+                                },
+                                "email.otp.heading": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint"
+                                    ],
+                                    "type": "object"
+                                },
+                                "totp.heading": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint"
+                                    ],
+                                    "type": "object"
+                                },
+                                "sign.up.button": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint"
+                                    ],
+                                    "type": "object"
+                                },
+                                "sign.up.heading": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint"
+                                    ],
+                                    "type": "object"
+                                },
+                                "password.recovery.body": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint"
+                                    ],
+                                    "type": "object"
+                                },
+                                "password.recovery.identifier.input.placeholder": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        },
+                                        "warning": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint",
+                                        "warning"
+                                    ],
+                                    "type": "object"
+                                },
+                                "password.recovery.button.email.link": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint"
+                                    ],
+                                    "type": "object"
+                                },
+                                "password.recovery.heading": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint"
+                                    ],
+                                    "type": "object"
+                                },
+                                "password.reset.button": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint"
+                                    ],
+                                    "type": "object"
+                                },
+                                "password.reset.heading": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint"
+                                    ],
+                                    "type": "object"
+                                },
+                                "password.reset.success.action": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint"
+                                    ],
+                                    "type": "object"
+                                },
+                                "password.reset.success.body": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint"
+                                    ],
+                                    "type": "object"
+                                },
+                                "password.reset.success.heading": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "copyright",
+                                "email.link.expiry.message",
+                                "privacy.policy",
+                                "site.title",
+                                "terms.of.service",
+                                "login.button",
+                                "login.heading",
+                                "login.identifier.input.label",
+                                "sms.otp.heading",
+                                "email.otp.heading",
+                                "totp.heading",
+                                "sign.up.button",
+                                "sign.up.heading",
+                                "password.recovery.body",
+                                "password.recovery.identifier.input.placeholder",
+                                "password.recovery.button.email.link",
+                                "password.recovery.heading",
+                                "password.reset.button",
+                                "password.reset.heading",
+                                "password.reset.success.action",
+                                "password.reset.success.body",
+                                "password.reset.success.heading"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "genericFieldResetTooltip",
+                        "genericFieldPlaceholder",
+                        "fields"
+                    ],
+                    "type": "object"
+                },
+                "localeSelectDropdown": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "label": {
+                            "type": "string"
+                        },
+                        "placeholder": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "label",
+                        "placeholder"
+                    ],
+                    "type": "object"
+                },
+                "modes": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "text": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "json": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "text",
+                        "json"
+                    ],
+                    "type": "object"
+                },
+                "notifications": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "getPreferenceError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "revertError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "resetSuccess": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "updateError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "updateSuccess": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "getPreferenceError",
+                        "revertError",
+                        "resetSuccess",
+                        "updateError",
+                        "updateSuccess"
+                    ],
+                    "type": "object"
+                },
+                "screenSelectDropdown": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "label": {
+                            "type": "string"
+                        },
+                        "placeholder": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "label",
+                        "placeholder"
+                    ],
+                    "type": "object"
+                },
+                "screenSelectVariationDropdown": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "label": {
+                            "type": "string"
+                        },
+                        "placeholder": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "label",
+                        "placeholder"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "revertScreenConfirmationModal",
+                "revertUnsavedConfirmationModal",
+                "form",
+                "localeSelectDropdown",
+                "modes",
+                "notifications",
+                "screenSelectDropdown",
+                "screenSelectVariationDropdown"
+            ],
+            "type": "object"
+        },
+        "connectors": {
+            "additionalProperties": false,
+            "properties": {
+                "multiAttributeLogin": {
+                    "type": "string"
+                },
+                "alternativeLoginIdentifier": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "multiAttributeLogin",
+                "alternativeLoginIdentifier"
+            ],
+            "type": "object"
+        },
+        "form": {
+            "additionalProperties": false,
+            "properties": {
+                "actions": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "resetAll": {
+                            "type": "string"
+                        },
+                        "save": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "resetAll",
+                        "save"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "actions"
+            ],
+            "type": "object"
+        },
+        "screens": {
+            "additionalProperties": false,
+            "properties": {
+                "common": {
+                    "type": "string"
+                },
+                "email-link-expiry": {
+                    "type": "string"
+                },
+                "email-otp": {
+                    "type": "string"
+                },
+                "email-template": {
+                    "type": "string"
+                },
+                "login": {
+                    "type": "string"
+                },
+                "myaccount": {
+                    "type": "string"
+                },
+                "password-recovery": {
+                    "type": "string"
+                },
+                "password-reset": {
+                    "type": "string"
+                },
+                "password-reset-success": {
+                    "type": "string"
+                },
+                "push-auth": {
+                    "type": "string"
+                },
+                "sign-up": {
+                    "type": "string"
+                },
+                "sms-otp": {
+                    "type": "string"
+                },
+                "totp": {
+                    "type": "string"
+                },
+                "username-recovery-claim": {
+                    "type": "string"
+                },
+                "username-recovery-channel-selection": {
+                    "type": "string"
+                },
+                "username-recovery-success": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "common",
+                "email-link-expiry",
+                "email-otp",
+                "email-template",
+                "login",
+                "myaccount",
+                "password-recovery",
+                "password-reset",
+                "password-reset-success",
+                "push-auth",
+                "sign-up",
+                "sms-otp",
+                "totp",
+                "username-recovery-claim",
+                "username-recovery-channel-selection",
+                "username-recovery-success"
+            ],
+            "type": "object"
+        },
+        "variations": {
+            "additionalProperties": false,
+            "properties": {
+                "sms-otp": {
+                    "type": "string"
+                },
+                "email-otp": {
+                    "type": "string"
+                },
+                "email-link": {
+                    "type": "string"
+                },
+                "base": {
+                    "type": "string"
+                },
+                "multi": {
+                    "type": "string"
+                },
+                "sms": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "sms-otp",
+                "email-otp",
+                "email-link",
+                "base",
+                "multi",
+                "sms",
+                "email"
+            ],
+            "type": "object"
+        },
+        "ai": {
+            "additionalProperties": false,
+            "properties": {
+                "banner": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "full": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "heading": {
+                                    "type": "string"
+                                },
+                                "subHeading": {
+                                    "type": "string"
+                                },
+                                "button": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "heading",
+                                "subHeading",
+                                "button"
+                            ],
+                            "type": "object"
+                        },
+                        "input": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "heading": {
+                                    "type": "string"
+                                },
+                                "subHeading": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                },
+                                "button": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "heading",
+                                "subHeading",
+                                "placeholder",
+                                "button"
+                            ],
+                            "type": "object"
+                        },
+                        "collapsed": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "heading": {
+                                    "type": "string"
+                                },
+                                "subHeading": {
+                                    "type": "string"
+                                },
+                                "button": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "heading",
+                                "subHeading",
+                                "button"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "full",
+                        "input",
+                        "collapsed"
+                    ],
+                    "type": "object"
+                },
+                "disclaimer": {
+                    "type": "string"
+                },
+                "notifications": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "generateError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "generateLimitError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "regenerateError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "resetSuccess": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "renderingError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "generateError",
+                        "generateLimitError",
+                        "regenerateError",
+                        "resetSuccess",
+                        "renderingError"
+                    ],
+                    "type": "object"
+                },
+                "screens": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "loading": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "heading": {
+                                    "type": "string"
+                                },
+                                "didYouKnow": {
+                                    "type": "string"
+                                },
+                                "facts": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "0": {
+                                            "type": "string"
+                                        },
+                                        "1": {
+                                            "type": "string"
+                                        },
+                                        "2": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "0",
+                                        "1",
+                                        "2"
+                                    ],
+                                    "type": "object"
+                                },
+                                "states": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "0": {
+                                            "type": "string"
+                                        },
+                                        "1": {
+                                            "type": "string"
+                                        },
+                                        "2": {
+                                            "type": "string"
+                                        },
+                                        "3": {
+                                            "type": "string"
+                                        },
+                                        "4": {
+                                            "type": "string"
+                                        },
+                                        "5": {
+                                            "type": "string"
+                                        },
+                                        "6": {
+                                            "type": "string"
+                                        },
+                                        "7": {
+                                            "type": "string"
+                                        },
+                                        "8": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "0",
+                                        "1",
+                                        "2",
+                                        "3",
+                                        "4",
+                                        "5",
+                                        "6",
+                                        "7",
+                                        "8"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "heading",
+                                "didYouKnow",
+                                "facts",
+                                "states"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "loading"
+                    ],
+                    "type": "object"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "termsAndConditions": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "banner",
+                "disclaimer",
+                "notifications",
+                "screens",
+                "title",
+                "termsAndConditions"
+            ],
+            "type": "object"
+        },
+        "tabs": {
+            "additionalProperties": false,
+            "properties": {
+                "preview": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "label": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "label"
+                    ],
+                    "type": "object"
+                },
+                "text": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "label": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "label"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "preview",
+                "text"
+            ],
+            "type": "object"
+        },
+        "customLayout": {
+            "additionalProperties": false,
+            "properties": {
+                "dangerModal": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "assertionHint": {
+                            "type": "string"
+                        },
+                        "heading": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "assertionHint",
+                        "heading",
+                        "message",
+                        "content"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "dangerModal"
+            ],
+            "type": "object"
+        },
+        "customPageEditor": {
+            "additionalProperties": false,
+            "properties": {
+                "backButton": {
+                    "type": "string"
+                },
+                "brandingNotConfiguredTooltip": {
+                    "type": "string"
+                },
+                "tabs": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "html": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "css": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "js": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "html",
+                        "css",
+                        "js"
+                    ],
+                    "type": "object"
+                },
+                "notifications": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "successContentUpdate": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "errorContentUpdate": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "errorContentSizeLimit": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "successContentUpdate",
+                        "errorContentUpdate",
+                        "errorContentSizeLimit"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "backButton",
+                "brandingNotConfiguredTooltip",
+                "tabs",
+                "notifications"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "brandingCustomText",
+        "connectors",
+        "form",
+        "screens",
+        "variations",
+        "ai",
+        "tabs",
+        "customLayout",
+        "customPageEditor"
+    ],
+    "type": "object",
+    "title": "branding namespace translation schema"
+}

@@ -1,0 +1,63 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/commonUsers.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "forms": {
+            "additionalProperties": false,
+            "properties": {
+                "profile": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "generic": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "placeholder": {
+                                    "type": "string"
+                                },
+                                "validation": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "duplicate": {
+                                            "type": "string"
+                                        },
+                                        "invalidFormat": {
+                                            "type": "string"
+                                        },
+                                        "required": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "duplicate",
+                                        "invalidFormat",
+                                        "required"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "placeholder",
+                                "validation"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "generic"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "profile"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "forms"
+    ],
+    "type": "object",
+    "title": "commonUsers namespace translation schema"
+}

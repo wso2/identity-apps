@@ -1,0 +1,583 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/pages.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "actions": {
+            "additionalProperties": false,
+            "properties": {
+                "subTitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "addEmailTemplate": {
+            "additionalProperties": false,
+            "properties": {
+                "backButton": {
+                    "type": "string"
+                },
+                "subTitle": {
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "backButton",
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "agents": {
+            "additionalProperties": false,
+            "properties": {
+                "subTitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "approvalWorkflows": {
+            "additionalProperties": false,
+            "properties": {
+                "subTitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "approvalsPage": {
+            "additionalProperties": false,
+            "properties": {
+                "subTitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "editTemplate": {
+            "additionalProperties": false,
+            "properties": {
+                "backButton": {
+                    "type": "string"
+                },
+                "subTitle": {
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "backButton",
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "emailDomainDiscovery": {
+            "additionalProperties": false,
+            "properties": {
+                "subTitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "emailLocaleAdd": {
+            "additionalProperties": false,
+            "properties": {
+                "backButton": {
+                    "type": "string"
+                },
+                "subTitle": {
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "backButton",
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "emailLocaleAddWithDisplayName": {
+            "additionalProperties": false,
+            "properties": {
+                "backButton": {
+                    "type": "string"
+                },
+                "subTitle": {
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "backButton",
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "emailTemplateTypes": {
+            "additionalProperties": false,
+            "properties": {
+                "subTitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "emailTemplates": {
+            "additionalProperties": false,
+            "properties": {
+                "backButton": {
+                    "type": "string"
+                },
+                "subTitle": {
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "backButton",
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "emailTemplatesWithDisplayName": {
+            "additionalProperties": false,
+            "properties": {
+                "backButton": {
+                    "type": "string"
+                },
+                "subTitle": {
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "backButton",
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "groups": {
+            "additionalProperties": false,
+            "properties": {
+                "subTitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "groupsEdit": {
+            "additionalProperties": false,
+            "properties": {
+                "backButton": {
+                    "type": "string"
+                },
+                "subTitle": {
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "backButton",
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "impersonation": {
+            "additionalProperties": false,
+            "properties": {
+                "subTitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "invite": {
+            "additionalProperties": false,
+            "properties": {
+                "subTitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "issuerUsageScope": {
+            "additionalProperties": false,
+            "properties": {
+                "subTitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "oidcScopes": {
+            "additionalProperties": false,
+            "properties": {
+                "subTitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "oidcScopesEdit": {
+            "additionalProperties": false,
+            "properties": {
+                "backButton": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "backButton",
+                "title"
+            ],
+            "type": "object"
+        },
+        "organizations": {
+            "additionalProperties": false,
+            "properties": {
+                "subTitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "overview": {
+            "additionalProperties": false,
+            "properties": {
+                "subTitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "roles": {
+            "additionalProperties": false,
+            "properties": {
+                "alternateSubTitle": {
+                    "type": "string"
+                },
+                "subTitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "alternateSubTitle",
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "rolesEdit": {
+            "additionalProperties": false,
+            "properties": {
+                "backButton": {
+                    "type": "string"
+                },
+                "subTitle": {
+                    "anyOf": [
+                        {
+                            "type": "null"
+                        },
+                        {
+                            "type": "string"
+                        }
+                    ]
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "backButton",
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "serverConfigurations": {
+            "additionalProperties": false,
+            "properties": {
+                "subTitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "users": {
+            "additionalProperties": false,
+            "properties": {
+                "subTitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "usersEdit": {
+            "additionalProperties": false,
+            "properties": {
+                "backButton": {
+                    "type": "string"
+                },
+                "subTitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "backButton",
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "webhooks": {
+            "additionalProperties": false,
+            "properties": {
+                "subTitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        },
+        "workflowRequestsPage": {
+            "additionalProperties": false,
+            "properties": {
+                "subTitle": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "subTitle",
+                "title"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "actions",
+        "addEmailTemplate",
+        "agents",
+        "approvalWorkflows",
+        "approvalsPage",
+        "editTemplate",
+        "emailDomainDiscovery",
+        "emailLocaleAdd",
+        "emailLocaleAddWithDisplayName",
+        "emailTemplateTypes",
+        "emailTemplates",
+        "emailTemplatesWithDisplayName",
+        "groups",
+        "groupsEdit",
+        "impersonation",
+        "invite",
+        "issuerUsageScope",
+        "oidcScopes",
+        "oidcScopesEdit",
+        "organizations",
+        "overview",
+        "roles",
+        "rolesEdit",
+        "serverConfigurations",
+        "users",
+        "usersEdit",
+        "webhooks",
+        "workflowRequestsPage"
+    ],
+    "type": "object",
+    "title": "pages namespace translation schema"
+}

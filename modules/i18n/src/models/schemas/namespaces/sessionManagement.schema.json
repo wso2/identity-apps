@@ -1,0 +1,267 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/sessionManagement.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "description": {
+            "type": "string"
+        },
+        "title": {
+            "type": "string"
+        },
+        "form": {
+            "additionalProperties": false,
+            "properties": {
+                "idleSessionTimeout": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "hint": {
+                            "type": "string"
+                        },
+                        "label": {
+                            "type": "string"
+                        },
+                        "placeholder": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "hint",
+                        "label",
+                        "placeholder"
+                    ],
+                    "type": "object"
+                },
+                "rememberMePeriod": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "hint": {
+                            "type": "string"
+                        },
+                        "label": {
+                            "type": "string"
+                        },
+                        "placeholder": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "hint",
+                        "label",
+                        "placeholder"
+                    ],
+                    "type": "object"
+                },
+                "enableMaximumSessionTimeout": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "hint": {
+                            "type": "string"
+                        },
+                        "label": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "hint",
+                        "label"
+                    ],
+                    "type": "object"
+                },
+                "maximumSessionTimeout": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "hint": {
+                            "type": "string"
+                        },
+                        "label": {
+                            "type": "string"
+                        },
+                        "placeholder": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "hint",
+                        "label",
+                        "placeholder"
+                    ],
+                    "type": "object"
+                },
+                "preserveCurrentSessionAtPasswordUpdate": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "hint": {
+                            "type": "string"
+                        },
+                        "label": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "hint",
+                        "label"
+                    ],
+                    "type": "object"
+                },
+                "validation": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "idleSessionTimeout": {
+                            "type": "string"
+                        },
+                        "rememberMePeriod": {
+                            "type": "string"
+                        },
+                        "maximumSessionTimeout": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "idleSessionTimeout",
+                        "rememberMePeriod",
+                        "maximumSessionTimeout"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "idleSessionTimeout",
+                "rememberMePeriod",
+                "enableMaximumSessionTimeout",
+                "maximumSessionTimeout",
+                "preserveCurrentSessionAtPasswordUpdate",
+                "validation"
+            ],
+            "type": "object"
+        },
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "getConfiguration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error"
+                    ],
+                    "type": "object"
+                },
+                "revertConfiguration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "message",
+                                "description"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "message": {
+                                    "type": "string"
+                                },
+                                "description": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "message",
+                                "description"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateConfiguration": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "getConfiguration",
+                "revertConfiguration",
+                "updateConfiguration"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "description",
+        "title",
+        "form",
+        "notifications"
+    ],
+    "type": "object",
+    "title": "sessionManagement namespace translation schema"
+}

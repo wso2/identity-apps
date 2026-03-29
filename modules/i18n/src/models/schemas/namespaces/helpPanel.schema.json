@@ -1,0 +1,71 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/helpPanel.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "actions": {
+            "additionalProperties": false,
+            "properties": {
+                "close": {
+                    "type": "string"
+                },
+                "open": {
+                    "type": "string"
+                },
+                "pin": {
+                    "type": "string"
+                },
+                "unPin": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "close",
+                "open",
+                "pin",
+                "unPin"
+            ],
+            "type": "object"
+        },
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "pin": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "success"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "pin"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "actions",
+        "notifications"
+    ],
+    "type": "object",
+    "title": "helpPanel namespace translation schema"
+}

@@ -1,0 +1,1476 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/approvalWorkflows.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "advancedSearch": {
+            "additionalProperties": false,
+            "properties": {
+                "placeholder": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "placeholder"
+            ],
+            "type": "object"
+        },
+        "confirmation": {
+            "additionalProperties": false,
+            "properties": {
+                "confirm": {
+                    "type": "string"
+                },
+                "content": {
+                    "type": "string"
+                },
+                "header": {
+                    "type": "string"
+                },
+                "hint": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "confirm",
+                "content",
+                "header",
+                "hint",
+                "message"
+            ],
+            "type": "object"
+        },
+        "form": {
+            "additionalProperties": false,
+            "properties": {
+                "dangerZone": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "delete": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "actionTitle": {
+                                    "type": "string"
+                                },
+                                "header": {
+                                    "type": "string"
+                                },
+                                "subheader": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "actionTitle",
+                                "header",
+                                "subheader"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "delete"
+                    ],
+                    "type": "object"
+                },
+                "fields": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "engine": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                },
+                                "validation": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "required": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "required"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "label",
+                                "placeholder",
+                                "validation"
+                            ],
+                            "type": "object"
+                        },
+                        "name": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                },
+                                "validation": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "required": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "required"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "label",
+                                "placeholder",
+                                "validation"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "engine",
+                        "name"
+                    ],
+                    "type": "object"
+                },
+                "placeholders": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "ApprovalWorkflowError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "subtitles": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "0": {
+                                            "type": "string"
+                                        },
+                                        "1": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "0",
+                                        "1"
+                                    ],
+                                    "type": "object"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "subtitles",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "emptyList": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "action": {
+                                    "type": "string"
+                                },
+                                "subtitles": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "0": {
+                                            "type": "string"
+                                        },
+                                        "1": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "0",
+                                        "1"
+                                    ],
+                                    "type": "object"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "action",
+                                "subtitles",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "emptyListReadOnly": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "subtitles": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "0": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "0"
+                                    ],
+                                    "type": "object"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "subtitles",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "emptySearch": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "action": {
+                                    "type": "string"
+                                },
+                                "subtitles": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "0": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "0"
+                                    ],
+                                    "type": "object"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "action",
+                                "subtitles",
+                                "title"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "ApprovalWorkflowError",
+                        "emptyList",
+                        "emptyListReadOnly",
+                        "emptySearch"
+                    ],
+                    "type": "object"
+                },
+                "sqlEditor": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "create": {
+                            "type": "string"
+                        },
+                        "darkMode": {
+                            "type": "string"
+                        },
+                        "delete": {
+                            "type": "string"
+                        },
+                        "read": {
+                            "type": "string"
+                        },
+                        "reset": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        },
+                        "update": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "create",
+                        "darkMode",
+                        "delete",
+                        "read",
+                        "reset",
+                        "title",
+                        "update"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "dangerZone",
+                "fields",
+                "placeholders",
+                "sqlEditor"
+            ],
+            "type": "object"
+        },
+        "forms": {
+            "additionalProperties": false,
+            "properties": {
+                "configurations": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "template": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "condition": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                },
+                                "roles": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                },
+                                "users": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "condition",
+                                "label",
+                                "placeholder",
+                                "roles",
+                                "users"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "template"
+                    ],
+                    "type": "object"
+                },
+                "connection": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "connectionErrorMessage": {
+                            "type": "string"
+                        },
+                        "testButton": {
+                            "type": "string"
+                        },
+                        "updatePassword": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "connectionErrorMessage",
+                        "testButton",
+                        "updatePassword"
+                    ],
+                    "type": "object"
+                },
+                "custom": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "placeholder": {
+                            "type": "string"
+                        },
+                        "requiredErrorMessage": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "placeholder",
+                        "requiredErrorMessage"
+                    ],
+                    "type": "object"
+                },
+                "general": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                },
+                                "validationErrorMessages": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "allSymbolsErrorMessage": {
+                                            "type": "string"
+                                        },
+                                        "invalidInputErrorMessage": {
+                                            "type": "string"
+                                        },
+                                        "invalidSymbolsErrorMessage": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "allSymbolsErrorMessage",
+                                        "invalidInputErrorMessage",
+                                        "invalidSymbolsErrorMessage"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "label",
+                                "placeholder",
+                                "validationErrorMessages"
+                            ],
+                            "type": "object"
+                        },
+                        "engine": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                },
+                                "requiredErrorMessage": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label",
+                                "placeholder",
+                                "requiredErrorMessage"
+                            ],
+                            "type": "object"
+                        },
+                        "name": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                },
+                                "requiredErrorMessage": {
+                                    "type": "string"
+                                },
+                                "validationErrorMessages": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "allSymbolsErrorMessage": {
+                                            "type": "string"
+                                        },
+                                        "alreadyExistsErrorMessage": {
+                                            "type": "string"
+                                        },
+                                        "invalidInputErrorMessage": {
+                                            "type": "string"
+                                        },
+                                        "invalidSymbolsErrorMessage": {
+                                            "type": "string"
+                                        },
+                                        "maxCharLimitErrorMessage": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "allSymbolsErrorMessage",
+                                        "alreadyExistsErrorMessage",
+                                        "invalidInputErrorMessage",
+                                        "invalidSymbolsErrorMessage",
+                                        "maxCharLimitErrorMessage"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "label",
+                                "placeholder",
+                                "requiredErrorMessage",
+                                "validationErrorMessages"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "engine",
+                        "name"
+                    ],
+                    "type": "object"
+                },
+                "notifications": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "approver": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "channels": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "email": {
+                                    "type": "string"
+                                },
+                                "sms": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "email",
+                                "sms"
+                            ],
+                            "type": "object"
+                        },
+                        "initiator": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "approver",
+                        "channels",
+                        "initiator"
+                    ],
+                    "type": "object"
+                },
+                "operations": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "dropDown": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "disabledHint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "nullValidationErrorMessage": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "disabledHint",
+                                "label",
+                                "nullValidationErrorMessage",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "dropDown"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "configurations",
+                "connection",
+                "custom",
+                "general",
+                "notifications",
+                "operations"
+            ],
+            "type": "object"
+        },
+        "list": {
+            "additionalProperties": false,
+            "properties": {
+                "columns": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "actions": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "actions",
+                        "name"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "columns"
+            ],
+            "type": "object"
+        },
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "addApprovalWorkflow": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "addWorkflowAssociation": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "apiLimitReachedError": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error"
+                    ],
+                    "type": "object"
+                },
+                "delay": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "deleteApprovalWorkflow": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "deleteWorkflowAssociation": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "noAssociationsSelectedError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "genericError",
+                        "noAssociationsSelectedError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "fetchApprovalWorkflowTemplates": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "genericError"
+                    ],
+                    "type": "object"
+                },
+                "fetchApprovalWorkflows": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "genericError"
+                    ],
+                    "type": "object"
+                },
+                "fetchWorkflowAssociations": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "genericError"
+                    ],
+                    "type": "object"
+                },
+                "testConnection": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateApprovalWorkflow": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateDelay": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "addApprovalWorkflow",
+                "addWorkflowAssociation",
+                "apiLimitReachedError",
+                "delay",
+                "deleteApprovalWorkflow",
+                "deleteWorkflowAssociation",
+                "fetchApprovalWorkflowTemplates",
+                "fetchApprovalWorkflows",
+                "fetchWorkflowAssociations",
+                "testConnection",
+                "updateApprovalWorkflow",
+                "updateDelay"
+            ],
+            "type": "object"
+        },
+        "pageLayout": {
+            "additionalProperties": false,
+            "properties": {
+                "create": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "back": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "ruleConditions": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "addRule": {
+                                    "type": "string"
+                                },
+                                "configured": {
+                                    "type": "string"
+                                },
+                                "confirmDelete": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "content": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "content",
+                                        "message",
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                },
+                                "editRule": {
+                                    "type": "string"
+                                },
+                                "engagement": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "always": {
+                                            "type": "string"
+                                        },
+                                        "column": {
+                                            "type": "string"
+                                        },
+                                        "configured": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "always",
+                                        "column",
+                                        "configured"
+                                    ],
+                                    "type": "object"
+                                },
+                                "fields": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "initiatorClaim": {
+                                            "type": "string"
+                                        },
+                                        "userClaim": {
+                                            "type": "string"
+                                        },
+                                        "valueRequired": {
+                                            "type": "string"
+                                        },
+                                        "workflowClaimSelector": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "initiatorClaim",
+                                        "userClaim",
+                                        "valueRequired",
+                                        "workflowClaimSelector"
+                                    ],
+                                    "type": "object"
+                                },
+                                "modal": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "subtitle": {
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "subtitle",
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                },
+                                "table": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "operation": {
+                                            "type": "string"
+                                        },
+                                        "rules": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "operation",
+                                        "rules"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "addRule",
+                                "configured",
+                                "confirmDelete",
+                                "editRule",
+                                "engagement",
+                                "fields",
+                                "modal",
+                                "table"
+                            ],
+                            "type": "object"
+                        },
+                        "stepper": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "step1": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                },
+                                "step2": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "hint": {
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "hint",
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                },
+                                "step3": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "hint": {
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "hint",
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                },
+                                "step4": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "hint": {
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "hint",
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "step1",
+                                "step2",
+                                "step3",
+                                "step4"
+                            ],
+                            "type": "object"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "back",
+                        "description",
+                        "ruleConditions",
+                        "stepper",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "edit": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "back": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "back",
+                        "description",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "list": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "newApprovalWorkflowDropdown": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "connectDirectly": {
+                                    "type": "string"
+                                },
+                                "connectRemotely": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "connectDirectly",
+                                "connectRemotely"
+                            ],
+                            "type": "object"
+                        },
+                        "popups": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "delete": {
+                                    "type": "string"
+                                },
+                                "edit": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "delete",
+                                "edit"
+                            ],
+                            "type": "object"
+                        },
+                        "primaryAction": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "newApprovalWorkflowDropdown",
+                        "popups",
+                        "primaryAction",
+                        "title"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "create",
+                "edit",
+                "list"
+            ],
+            "type": "object"
+        },
+        "sections": {
+            "additionalProperties": false,
+            "properties": {
+                "approvalSteps": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "heading": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "heading"
+                    ],
+                    "type": "object"
+                },
+                "operations": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "heading": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "heading"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "approvalSteps",
+                "operations"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "advancedSearch",
+        "confirmation",
+        "form",
+        "forms",
+        "list",
+        "notifications",
+        "pageLayout",
+        "sections"
+    ],
+    "type": "object",
+    "title": "approvalWorkflows namespace translation schema"
+}

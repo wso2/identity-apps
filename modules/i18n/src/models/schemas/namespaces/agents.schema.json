@@ -1,0 +1,980 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/agents.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "description": {
+            "type": "string"
+        },
+        "edit": {
+            "additionalProperties": false,
+            "properties": {
+                "credentials": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "regenerate": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "alerts": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "error": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "description",
+                                                "message"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "error"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "alerts"
+                            ],
+                            "type": "object"
+                        },
+                        "subtitle": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "regenerate",
+                        "subtitle",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "general": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "fields": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                },
+                                "languageModal": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                },
+                                "name": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "languageModal",
+                                "name"
+                            ],
+                            "type": "object"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "fields",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "roles": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "subtitle": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subtitle",
+                        "title"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "credentials",
+                "general",
+                "roles"
+            ],
+            "type": "object"
+        },
+        "list": {
+            "additionalProperties": false,
+            "properties": {
+                "confirmations": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "deleteItem": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "assertionHint": {
+                                    "type": "string"
+                                },
+                                "content": {
+                                    "type": "string"
+                                },
+                                "header": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "assertionHint",
+                                "content",
+                                "header",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "deleteItem"
+                    ],
+                    "type": "object"
+                },
+                "featureUnavailable": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "subtitle": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "onprem": {
+                                            "type": "string"
+                                        },
+                                        "saas": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "onprem",
+                                        "saas"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "0",
+                                "1"
+                            ],
+                            "type": "object"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subtitle",
+                        "title"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "confirmations",
+                "featureUnavailable"
+            ],
+            "type": "object"
+        },
+        "new": {
+            "additionalProperties": false,
+            "properties": {
+                "action": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "alerts": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "fields": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "name": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "name"
+                    ],
+                    "type": "object"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "action",
+                "alerts",
+                "fields",
+                "title"
+            ],
+            "type": "object"
+        },
+        "pageTitle": {
+            "type": "string"
+        },
+        "title": {
+            "type": "string"
+        },
+        "wizard": {
+            "additionalProperties": false,
+            "properties": {
+                "alerts": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "clientIdFetchFailed": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "configUpdateFailed": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "created": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "clientIdFetchFailed",
+                        "configUpdateFailed",
+                        "created",
+                        "error"
+                    ],
+                    "type": "object"
+                },
+                "buttons": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "cancel": {
+                            "type": "string"
+                        },
+                        "create": {
+                            "type": "string"
+                        },
+                        "done": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "cancel",
+                        "create",
+                        "done"
+                    ],
+                    "type": "object"
+                },
+                "fields": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "agentType": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                },
+                                "options": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "background": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "interactive": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "background",
+                                        "interactive"
+                                    ],
+                                    "type": "object"
+                                },
+                                "validations": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "required": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "required"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "label",
+                                "options",
+                                "validations"
+                            ],
+                            "type": "object"
+                        },
+                        "callbackUrl": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "helperText": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                },
+                                "validations": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "required": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "required"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "helperText",
+                                "label",
+                                "placeholder",
+                                "validations"
+                            ],
+                            "type": "object"
+                        },
+                        "cibaAuthReqExpiryTime": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "helperText": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                },
+                                "validations": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "minimum": {
+                                            "type": "string"
+                                        },
+                                        "required": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "minimum",
+                                        "required"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "helperText",
+                                "label",
+                                "placeholder",
+                                "validations"
+                            ],
+                            "type": "object"
+                        },
+                        "description": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "isUserServingAgent": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "name": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                },
+                                "validations": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "required": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "required"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "label",
+                                "placeholder",
+                                "validations"
+                            ],
+                            "type": "object"
+                        },
+                        "notificationChannels": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "options": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "email": {
+                                            "type": "string"
+                                        },
+                                        "sms": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "email",
+                                        "sms"
+                                    ],
+                                    "type": "object"
+                                },
+                                "validations": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "required": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "required"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "options",
+                                "validations"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "agentType",
+                        "callbackUrl",
+                        "cibaAuthReqExpiryTime",
+                        "description",
+                        "isUserServingAgent",
+                        "name",
+                        "notificationChannels"
+                    ],
+                    "type": "object"
+                },
+                "help": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "agentType": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "background": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "callbackUrl": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "hint",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "description": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "interactive": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "isUserServingAgent": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "name": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "agentId": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                },
+                                "agentSecret": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                },
+                                "description": {
+                                    "type": "string"
+                                },
+                                "oauthClientId": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "agentId",
+                                "agentSecret",
+                                "description",
+                                "oauthClientId",
+                                "title"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "agentType",
+                        "background",
+                        "callbackUrl",
+                        "description",
+                        "interactive",
+                        "isUserServingAgent",
+                        "name",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "subtitle": {
+                    "type": "string"
+                },
+                "success": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "fields": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "agentId": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                },
+                                "agentSecret": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                },
+                                "oauthClientId": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "unavailable": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "unavailable"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "agentId",
+                                "agentSecret",
+                                "oauthClientId"
+                            ],
+                            "type": "object"
+                        },
+                        "subtitle": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        },
+                        "warning": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "fields",
+                        "subtitle",
+                        "title",
+                        "warning"
+                    ],
+                    "type": "object"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "alerts",
+                "buttons",
+                "fields",
+                "help",
+                "subtitle",
+                "success",
+                "title"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "description",
+        "edit",
+        "list",
+        "new",
+        "pageTitle",
+        "title",
+        "wizard"
+    ],
+    "type": "object",
+    "title": "agents namespace translation schema"
+}

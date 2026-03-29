@@ -1,0 +1,1013 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/serverConfigs.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "adminAdvisory": {
+            "additionalProperties": false,
+            "properties": {
+                "configurationEditSection": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "backButtonLabel": {
+                            "type": "string"
+                        },
+                        "pageHeading": {
+                            "type": "string"
+                        },
+                        "pageSubheading": {
+                            "type": "string"
+                        },
+                        "form": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "bannerContent": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "hint": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "hint",
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "bannerContent"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "backButtonLabel",
+                        "pageHeading",
+                        "pageSubheading",
+                        "form"
+                    ],
+                    "type": "object"
+                },
+                "configurationSection": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "disabled": {
+                            "type": "string"
+                        },
+                        "description": {
+                            "type": "string"
+                        },
+                        "enabled": {
+                            "type": "string"
+                        },
+                        "heading": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "disabled",
+                        "description",
+                        "enabled",
+                        "heading"
+                    ],
+                    "type": "object"
+                },
+                "notifications": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "disbleAdminAdvisoryBanner": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "error": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "genericError": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "success": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "error",
+                                "genericError",
+                                "success"
+                            ],
+                            "type": "object"
+                        },
+                        "enableAdminAdvisoryBanner": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "error": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "genericError": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "success": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "error",
+                                "genericError",
+                                "success"
+                            ],
+                            "type": "object"
+                        },
+                        "getConfigurations": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "error": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "genericError": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "success": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "error",
+                                "genericError",
+                                "success"
+                            ],
+                            "type": "object"
+                        },
+                        "updateConfigurations": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "error": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "genericError": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "success": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "error",
+                                "genericError",
+                                "success"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "disbleAdminAdvisoryBanner",
+                        "enableAdminAdvisoryBanner",
+                        "getConfigurations",
+                        "updateConfigurations"
+                    ],
+                    "type": "object"
+                },
+                "pageHeading": {
+                    "type": "string"
+                },
+                "pageSubheading": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "configurationEditSection",
+                "configurationSection",
+                "notifications",
+                "pageHeading",
+                "pageSubheading",
+                "title"
+            ],
+            "type": "object"
+        },
+        "remoteLogPublishing": {
+            "additionalProperties": false,
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "pageTitle": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "fields": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "logTypes": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                },
+                                "values": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "carbonLogs": {
+                                            "type": "string"
+                                        },
+                                        "auditLogs": {
+                                            "type": "string"
+                                        },
+                                        "allLogs": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "carbonLogs",
+                                        "auditLogs",
+                                        "allLogs"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "label",
+                                "values"
+                            ],
+                            "type": "object"
+                        },
+                        "remoteURL": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "advanced": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "title": {
+                                    "type": "string"
+                                },
+                                "connectionTimeout": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                },
+                                "verifyHostname": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                },
+                                "basicAuthConfig": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "title": {
+                                            "type": "string"
+                                        },
+                                        "serverUsername": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "serverPassword": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "title",
+                                        "serverUsername",
+                                        "serverPassword"
+                                    ],
+                                    "type": "object"
+                                },
+                                "sslConfig": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "title": {
+                                            "type": "string"
+                                        },
+                                        "keystorePath": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "keystorePassword": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "truststorePath": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "truststorePassword": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "label": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "label"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "title",
+                                        "keystorePath",
+                                        "keystorePassword",
+                                        "truststorePath",
+                                        "truststorePassword"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "title",
+                                "connectionTimeout",
+                                "verifyHostname",
+                                "basicAuthConfig",
+                                "sslConfig"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "logTypes",
+                        "remoteURL",
+                        "advanced"
+                    ],
+                    "type": "object"
+                },
+                "dangerZone": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "button": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        },
+                        "header": {
+                            "type": "string"
+                        },
+                        "subheader": {
+                            "type": "string"
+                        },
+                        "confirmation": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "header": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                },
+                                "content": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "header",
+                                "message",
+                                "content"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "button",
+                        "title",
+                        "header",
+                        "subheader",
+                        "confirmation"
+                    ],
+                    "type": "object"
+                },
+                "notification": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "updateError": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "fetchError": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "updateError",
+                                "fetchError"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "success",
+                        "error"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "title",
+                "pageTitle",
+                "description",
+                "fields",
+                "dangerZone",
+                "notification"
+            ],
+            "type": "object"
+        },
+        "realmConfiguration": {
+            "additionalProperties": false,
+            "properties": {
+                "actionTitles": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "config": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "config"
+                    ],
+                    "type": "object"
+                },
+                "confirmation": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "heading": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "heading",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "form": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "homeRealmIdentifiers": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "idleSessionTimeoutPeriod": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "rememberMePeriod": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "homeRealmIdentifiers",
+                        "idleSessionTimeoutPeriod",
+                        "rememberMePeriod"
+                    ],
+                    "type": "object"
+                },
+                "heading": {
+                    "type": "string"
+                },
+                "notifications": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "emptyHomeRealmIdentifiers": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "error": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "genericError": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "success": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "error",
+                                "genericError",
+                                "success"
+                            ],
+                            "type": "object"
+                        },
+                        "getConfigurations": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "error": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "genericError": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "success": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "error",
+                                "genericError",
+                                "success"
+                            ],
+                            "type": "object"
+                        },
+                        "updateConfigurations": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "error": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "genericError": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "success": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "description": {
+                                            "type": "string"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "description",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "error",
+                                "genericError",
+                                "success"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "emptyHomeRealmIdentifiers",
+                        "getConfigurations",
+                        "updateConfigurations"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "actionTitles",
+                "confirmation",
+                "description",
+                "form",
+                "heading",
+                "notifications"
+            ],
+            "type": "object"
+        },
+        "server": {
+            "additionalProperties": false,
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "title",
+                "description"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "adminAdvisory",
+        "remoteLogPublishing",
+        "realmConfiguration",
+        "server"
+    ],
+    "type": "object",
+    "title": "serverConfigs namespace translation schema"
+}

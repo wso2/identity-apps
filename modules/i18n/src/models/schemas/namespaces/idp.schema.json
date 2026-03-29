@@ -1,0 +1,4556 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/idp.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "advancedSearch": {
+            "additionalProperties": false,
+            "properties": {
+                "form": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "inputs": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "filterAttribute": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "placeholder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                },
+                                "filterCondition": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "placeholder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                },
+                                "filterValue": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "placeholder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "filterAttribute",
+                                "filterCondition",
+                                "filterValue"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "inputs"
+                    ],
+                    "type": "object"
+                },
+                "placeholder": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "form",
+                "placeholder"
+            ],
+            "type": "object"
+        },
+        "buttons": {
+            "additionalProperties": false,
+            "properties": {
+                "addAttribute": {
+                    "type": "string"
+                },
+                "addAuthenticator": {
+                    "type": "string"
+                },
+                "addCertificate": {
+                    "type": "string"
+                },
+                "addConnector": {
+                    "type": "string"
+                },
+                "addIDP": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "addAttribute",
+                "addAuthenticator",
+                "addCertificate",
+                "addConnector",
+                "addIDP"
+            ],
+            "type": "object"
+        },
+        "confirmations": {
+            "additionalProperties": false,
+            "properties": {
+                "deleteAuthenticator": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "assertionHint": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "string"
+                        },
+                        "header": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "assertionHint",
+                        "content",
+                        "header",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "deleteConnector": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "assertionHint": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "string"
+                        },
+                        "header": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "assertionHint",
+                        "content",
+                        "header",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "deleteIDP": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "assertionHint": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "string"
+                        },
+                        "header": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "assertionHint",
+                        "content",
+                        "header",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "deleteIDPWithConnectedApps": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "assertionHint": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "string"
+                        },
+                        "header": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "assertionHint",
+                        "content",
+                        "header",
+                        "message"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "deleteAuthenticator",
+                "deleteConnector",
+                "deleteIDP",
+                "deleteIDPWithConnectedApps"
+            ],
+            "type": "object"
+        },
+        "connectedApps": {
+            "additionalProperties": false,
+            "properties": {
+                "action": {
+                    "type": "string"
+                },
+                "applicationEdit": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "back": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "back"
+                    ],
+                    "type": "object"
+                },
+                "genericError": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "message"
+                    ],
+                    "type": "object"
+                },
+                "header": {
+                    "type": "string"
+                },
+                "placeholders": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "emptyList": {
+                            "type": "string"
+                        },
+                        "search": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "emptyList",
+                        "search"
+                    ],
+                    "type": "object"
+                },
+                "subHeader": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "action",
+                "applicationEdit",
+                "genericError",
+                "header",
+                "placeholders",
+                "subHeader"
+            ],
+            "type": "object"
+        },
+        "dangerZoneGroup": {
+            "additionalProperties": false,
+            "properties": {
+                "deleteIDP": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "actionTitle": {
+                            "type": "string"
+                        },
+                        "header": {
+                            "type": "string"
+                        },
+                        "subheader": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "actionTitle",
+                        "header",
+                        "subheader"
+                    ],
+                    "type": "object"
+                },
+                "disableIDP": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "actionTitle": {
+                            "type": "string"
+                        },
+                        "header": {
+                            "type": "string"
+                        },
+                        "subheader": {
+                            "type": "string"
+                        },
+                        "subheader2": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "actionTitle",
+                        "header",
+                        "subheader",
+                        "subheader2"
+                    ],
+                    "type": "object"
+                },
+                "header": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "deleteIDP",
+                "disableIDP",
+                "header"
+            ],
+            "type": "object"
+        },
+        "forms": {
+            "additionalProperties": false,
+            "properties": {
+                "advancedConfigs": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "alias": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "certificateType": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "certificateJWKS": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "empty": {
+                                                    "type": "string"
+                                                },
+                                                "invalid": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "empty",
+                                                "invalid"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "certificatePEM": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        },
+                                        "validations": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "empty": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "empty"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "placeholder",
+                                        "validations"
+                                    ],
+                                    "type": "object"
+                                },
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "certificateJWKS",
+                                "certificatePEM",
+                                "hint",
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "federationHub": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "homeRealmIdentifier": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "implicitAssociation": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "enable": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        },
+                                        "label": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint",
+                                        "label"
+                                    ],
+                                    "type": "object"
+                                },
+                                "primaryAttribute": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        },
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint",
+                                        "label",
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                },
+                                "secondaryAttribute": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "hint": {
+                                            "type": "string"
+                                        },
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "hint",
+                                        "label",
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                },
+                                "nonUniqueClaimWarning": {
+                                    "type": "string"
+                                },
+                                "warning": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "enable",
+                                "primaryAttribute",
+                                "secondaryAttribute",
+                                "nonUniqueClaimWarning",
+                                "warning"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "alias",
+                        "certificateType",
+                        "federationHub",
+                        "homeRealmIdentifier",
+                        "implicitAssociation"
+                    ],
+                    "type": "object"
+                },
+                "attributeSettings": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "attributeListItem": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "validation": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "empty": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "empty"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "validation"
+                            ],
+                            "type": "object"
+                        },
+                        "attributeMapping": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "addAttributeButtonLabel": {
+                                    "type": "string"
+                                },
+                                "attributeColumnHeader": {
+                                    "type": "string"
+                                },
+                                "attributeDropdown": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "noResultsMessage": {
+                                            "type": "string"
+                                        },
+                                        "placeHolder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "label",
+                                        "noResultsMessage",
+                                        "placeHolder"
+                                    ],
+                                    "type": "object"
+                                },
+                                "attributeMapColumnHeader": {
+                                    "type": "string"
+                                },
+                                "attributeMapInputPlaceholderPrefix": {
+                                    "type": "string"
+                                },
+                                "attributeMapTable": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "externalAttributeColumnHeader": {
+                                            "type": "string"
+                                        },
+                                        "mappedAttributeColumnHeader": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "externalAttributeColumnHeader",
+                                        "mappedAttributeColumnHeader"
+                                    ],
+                                    "type": "object"
+                                },
+                                "componentHeading": {
+                                    "type": "string"
+                                },
+                                "externalAttributeInput": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "existingErrorMessage": {
+                                            "type": "string"
+                                        },
+                                        "label": {
+                                            "type": "string"
+                                        },
+                                        "placeHolder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "existingErrorMessage",
+                                        "label",
+                                        "placeHolder"
+                                    ],
+                                    "type": "object"
+                                },
+                                "heading": {
+                                    "type": "string"
+                                },
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "modal": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "header": {
+                                            "type": "string"
+                                        },
+                                        "placeholder": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "subtitle": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "subtitle",
+                                                "title"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "header",
+                                        "placeholder"
+                                    ],
+                                    "type": "object"
+                                },
+                                "placeHolder": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "action": {
+                                            "type": "string"
+                                        },
+                                        "subtitle": {
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "action",
+                                        "subtitle",
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                },
+                                "search": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "placeHolder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "placeHolder"
+                                    ],
+                                    "type": "object"
+                                },
+                                "subheading": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "addAttributeButtonLabel",
+                                "attributeColumnHeader",
+                                "attributeDropdown",
+                                "attributeMapColumnHeader",
+                                "attributeMapInputPlaceholderPrefix",
+                                "attributeMapTable",
+                                "componentHeading",
+                                "externalAttributeInput",
+                                "heading",
+                                "hint",
+                                "modal",
+                                "placeHolder",
+                                "search",
+                                "subheading"
+                            ],
+                            "type": "object"
+                        },
+                        "attributeProvisioning": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "attributeColumnHeader": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "0": {
+                                            "type": "string"
+                                        },
+                                        "1": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "0",
+                                        "1"
+                                    ],
+                                    "type": "object"
+                                },
+                                "attributeMapColumnHeader": {
+                                    "type": "string"
+                                },
+                                "attributeMapInputPlaceholderPrefix": {
+                                    "type": "string"
+                                },
+                                "componentHeading": {
+                                    "type": "string"
+                                },
+                                "hint": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "attributeColumnHeader",
+                                "attributeMapColumnHeader",
+                                "attributeMapInputPlaceholderPrefix",
+                                "componentHeading",
+                                "hint"
+                            ],
+                            "type": "object"
+                        },
+                        "attributeSelection": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "searchAttributes": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "placeHolder": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "placeHolder"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "searchAttributes"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "attributeListItem",
+                        "attributeMapping",
+                        "attributeProvisioning",
+                        "attributeSelection"
+                    ],
+                    "type": "object"
+                },
+                "authenticatorAccordion": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "default": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0",
+                                "1"
+                            ],
+                            "type": "object"
+                        },
+                        "enable": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0",
+                                "1"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "default",
+                        "enable"
+                    ],
+                    "type": "object"
+                },
+                "common": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "customProperties": {
+                            "type": "string"
+                        },
+                        "internetResolvableErrorMessage": {
+                            "type": "string"
+                        },
+                        "invalidQueryParamErrorMessage": {
+                            "type": "string"
+                        },
+                        "invalidURLErrorMessage": {
+                            "type": "string"
+                        },
+                        "requiredErrorMessage": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "customProperties",
+                        "internetResolvableErrorMessage",
+                        "invalidQueryParamErrorMessage",
+                        "invalidURLErrorMessage",
+                        "requiredErrorMessage"
+                    ],
+                    "type": "object"
+                },
+                "generalDetails": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "image": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "name": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                },
+                                "validations": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "duplicate": {
+                                            "type": "string"
+                                        },
+                                        "empty": {
+                                            "type": "string"
+                                        },
+                                        "maxLengthReached": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "duplicate",
+                                        "empty",
+                                        "maxLengthReached"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder",
+                                "validations"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "image",
+                        "name"
+                    ],
+                    "type": "object"
+                },
+                "jitProvisioning": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "enableJITProvisioning": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "disabledMessageContent": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "1": {
+                                            "type": "string"
+                                        },
+                                        "2": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "1",
+                                        "2"
+                                    ],
+                                    "type": "object"
+                                },
+                                "disabledMessageHeader": {
+                                    "type": "string"
+                                },
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "disabledMessageContent",
+                                "disabledMessageHeader",
+                                "hint",
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "provisioningScheme": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "children": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "0": {
+                                            "type": "string"
+                                        },
+                                        "1": {
+                                            "type": "string"
+                                        },
+                                        "2": {
+                                            "type": "string"
+                                        },
+                                        "3": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "0",
+                                        "1",
+                                        "2",
+                                        "3"
+                                    ],
+                                    "type": "object"
+                                },
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "children",
+                                "hint",
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "provisioningUserStoreDomain": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "enableJITProvisioning",
+                        "provisioningScheme",
+                        "provisioningUserStoreDomain"
+                    ],
+                    "type": "object"
+                },
+                "outboundConnectorAccordion": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "default": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0",
+                                "1"
+                            ],
+                            "type": "object"
+                        },
+                        "enable": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0",
+                                "1"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "default",
+                        "enable"
+                    ],
+                    "type": "object"
+                },
+                "outboundProvisioningConnector": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "authentication": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                },
+                                "modes": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "none": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "name",
+                                                "description"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "basic": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "name",
+                                                "description"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "bearer": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "name",
+                                                "description"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "apiKey": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "name",
+                                                "description"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "clientCredential": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "description": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "name",
+                                                "description"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "none",
+                                        "basic",
+                                        "bearer",
+                                        "apiKey",
+                                        "clientCredential"
+                                    ],
+                                    "type": "object"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                },
+                                "info": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "title": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "noneAuthType": {
+                                                    "type": "string"
+                                                },
+                                                "otherAuthType": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "noneAuthType",
+                                                "otherAuthType"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "title",
+                                        "message"
+                                    ],
+                                    "type": "object"
+                                },
+                                "buttons": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "changeAuthentication": {
+                                            "type": "string"
+                                        },
+                                        "cancel": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "changeAuthentication",
+                                        "cancel"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "label",
+                                "modes",
+                                "placeholder",
+                                "info",
+                                "buttons"
+                            ],
+                            "type": "object"
+                        },
+                        "fields": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "confidential": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "helperText": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "helperText"
+                                    ],
+                                    "type": "object"
+                                },
+                                "placeholder": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "default": {
+                                            "type": "string"
+                                        },
+                                        "enter": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "default",
+                                        "enter"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "confidential",
+                                "placeholder"
+                            ],
+                            "type": "object"
+                        },
+                        "validations": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "invalidURL": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "invalidURL"
+                            ],
+                            "type": "object"
+                        },
+                        "warnings": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "insecureURL": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "insecureURL"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "authentication",
+                        "fields",
+                        "validations",
+                        "warnings"
+                    ],
+                    "type": "object"
+                },
+                "outboundProvisioningRoles": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "heading": {
+                            "type": "string"
+                        },
+                        "hint": {
+                            "type": "string"
+                        },
+                        "label": {
+                            "type": "string"
+                        },
+                        "placeHolder": {
+                            "type": "string"
+                        },
+                        "popup": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "content": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "content"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "heading",
+                        "hint",
+                        "label",
+                        "placeHolder",
+                        "popup"
+                    ],
+                    "type": "object"
+                },
+                "outboundProvisioningTitle": {
+                    "type": "string"
+                },
+                "roleMapping": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "heading": {
+                            "type": "string"
+                        },
+                        "hint": {
+                            "type": "string"
+                        },
+                        "keyName": {
+                            "type": "string"
+                        },
+                        "validation": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "duplicateKeyErrorMsg": {
+                                    "type": "string"
+                                },
+                                "keyRequiredMessage": {
+                                    "type": "string"
+                                },
+                                "valueRequiredErrorMessage": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "duplicateKeyErrorMsg",
+                                "keyRequiredMessage",
+                                "valueRequiredErrorMessage"
+                            ],
+                            "type": "object"
+                        },
+                        "valueName": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "heading",
+                        "hint",
+                        "keyName",
+                        "validation",
+                        "valueName"
+                    ],
+                    "type": "object"
+                },
+                "uriAttributeSettings": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "role": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "heading": {
+                                    "type": "string"
+                                },
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeHolder": {
+                                    "type": "string"
+                                },
+                                "validation": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "empty": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "empty"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "heading",
+                                "hint",
+                                "label",
+                                "placeHolder",
+                                "validation"
+                            ],
+                            "type": "object"
+                        },
+                        "subject": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "heading": {
+                                    "type": "string"
+                                },
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeHolder": {
+                                    "type": "string"
+                                },
+                                "validation": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "empty": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "empty"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "heading",
+                                "hint",
+                                "label",
+                                "placeHolder",
+                                "validation"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "role",
+                        "subject"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "advancedConfigs",
+                "attributeSettings",
+                "authenticatorAccordion",
+                "common",
+                "generalDetails",
+                "jitProvisioning",
+                "outboundConnectorAccordion",
+                "outboundProvisioningConnector",
+                "outboundProvisioningRoles",
+                "outboundProvisioningTitle",
+                "roleMapping",
+                "uriAttributeSettings"
+            ],
+            "type": "object"
+        },
+        "identityProviderGroups": {
+            "additionalProperties": false,
+            "properties": {
+                "claimConfigs": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "groupAttributeLabel": {
+                            "type": "string"
+                        },
+                        "groupAttributeHint": {
+                            "type": "string"
+                        },
+                        "groupAttributePlaceholder": {
+                            "type": "string"
+                        },
+                        "groupAttributeMessage1": {
+                            "type": "string"
+                        },
+                        "groupAttributeMessage2": {
+                            "type": "string"
+                        },
+                        "groupAttributeMessageOIDC": {
+                            "type": "string"
+                        },
+                        "groupAttributeMessageSAML": {
+                            "type": "string"
+                        },
+                        "notifications": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "fetchConfigs": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "error": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "description",
+                                                "message"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "genericError": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "description",
+                                                "message"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "error",
+                                        "genericError"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "fetchConfigs"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "groupAttributeLabel",
+                        "groupAttributeHint",
+                        "groupAttributePlaceholder",
+                        "groupAttributeMessage1",
+                        "groupAttributeMessage2",
+                        "groupAttributeMessageOIDC",
+                        "groupAttributeMessageSAML",
+                        "notifications"
+                    ],
+                    "type": "object"
+                },
+                "createGroupWizard": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "groupNameLabel": {
+                            "type": "string"
+                        },
+                        "groupNamePlaceHolder": {
+                            "type": "string"
+                        },
+                        "groupNameHint": {
+                            "type": "string"
+                        },
+                        "subHeading": {
+                            "type": "string"
+                        },
+                        "notifications": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "createIdentityProviderGroup": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "error": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "description",
+                                                "message"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "genericError": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "description",
+                                                "message"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "success": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "description",
+                                                "message"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "error",
+                                        "genericError",
+                                        "success"
+                                    ],
+                                    "type": "object"
+                                },
+                                "duplicateGroupError": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "error": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "description",
+                                                "message"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "error"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "createIdentityProviderGroup",
+                                "duplicateGroupError"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "groupNameLabel",
+                        "groupNamePlaceHolder",
+                        "groupNameHint",
+                        "subHeading",
+                        "notifications"
+                    ],
+                    "type": "object"
+                },
+                "groupsList": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "confirmation": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "deleteGroup": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "content": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "message",
+                                        "content"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "deleteGroup"
+                            ],
+                            "type": "object"
+                        },
+                        "newGroup": {
+                            "type": "string"
+                        },
+                        "noGroupsAvailable": {
+                            "type": "string"
+                        },
+                        "notifications": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "fetchGroups": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "error": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "description",
+                                                "message"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "genericError": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "description",
+                                                "message"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "error",
+                                        "genericError"
+                                    ],
+                                    "type": "object"
+                                },
+                                "deleteGroup": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "error": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "description",
+                                                "message"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "genericError": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "description",
+                                                "message"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "success": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "description": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "description",
+                                                "message"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "error",
+                                        "genericError",
+                                        "success"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "fetchGroups",
+                                "deleteGroup"
+                            ],
+                            "type": "object"
+                        },
+                        "searchByName": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "confirmation",
+                        "newGroup",
+                        "noGroupsAvailable",
+                        "notifications",
+                        "searchByName"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "claimConfigs",
+                "createGroupWizard",
+                "groupsList"
+            ],
+            "type": "object"
+        },
+        "helpPanel": {
+            "additionalProperties": false,
+            "properties": {
+                "tabs": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "samples": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "content": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "docs": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "goBack": {
+                                                    "type": "string"
+                                                },
+                                                "hint": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "goBack",
+                                                "hint",
+                                                "title"
+                                            ],
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": [
+                                        "docs"
+                                    ],
+                                    "type": "object"
+                                },
+                                "heading": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "content",
+                                "heading"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "samples"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "tabs"
+            ],
+            "type": "object"
+        },
+        "list": {
+            "additionalProperties": false,
+            "properties": {
+                "actions": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "actions",
+                "name"
+            ],
+            "type": "object"
+        },
+        "modals": {
+            "additionalProperties": false,
+            "properties": {
+                "addAuthenticator": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "subTitle": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subTitle",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "addCertificate": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "subTitle": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subTitle",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "addProvisioningConnector": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "subTitle": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subTitle",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "attributeSelection": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "content": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "searchPlaceholder": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "searchPlaceholder"
+                            ],
+                            "type": "object"
+                        },
+                        "subTitle": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "content",
+                        "subTitle",
+                        "title"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "addAuthenticator",
+                "addCertificate",
+                "addProvisioningConnector",
+                "attributeSelection"
+            ],
+            "type": "object"
+        },
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "addFederatedAuthenticator": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "addIDP": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "apiLimitReachedError": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error"
+                    ],
+                    "type": "object"
+                },
+                "changeCertType": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "jwks": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "pem": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "jwks",
+                        "pem"
+                    ],
+                    "type": "object"
+                },
+                "deleteCertificate": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "deleteDefaultAuthenticator": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "anyOf": [
+                                {
+                                    "type": "null"
+                                },
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "success": {
+                            "anyOf": [
+                                {
+                                    "type": "null"
+                                },
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "deleteDefaultConnector": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "anyOf": [
+                                {
+                                    "type": "null"
+                                },
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        },
+                        "success": {
+                            "anyOf": [
+                                {
+                                    "type": "null"
+                                },
+                                {
+                                    "type": "string"
+                                }
+                            ]
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "deleteIDP": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "disableAuthenticator": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "disableOutboundProvisioningConnector": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "duplicateCertificateUpload": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "getAllLocalClaims": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "getFederatedAuthenticator": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "getFederatedAuthenticatorMetadata": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "getFederatedAuthenticatorsList": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "getIDP": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "getIDPList": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "getIDPTemplate": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "getIDPTemplateList": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "getOutboundProvisioningConnector": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "getOutboundProvisioningConnectorMetadata": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "getOutboundProvisioningConnectorsList": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "getRolesList": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "submitAttributeSettings": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "tierLimitReachedError": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "emptyPlaceholder": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "action": {
+                                    "type": "string"
+                                },
+                                "subtitles": {
+                                    "type": "string"
+                                },
+                                "title": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "action",
+                                "subtitles",
+                                "title"
+                            ],
+                            "type": "object"
+                        },
+                        "heading": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "emptyPlaceholder",
+                        "heading"
+                    ],
+                    "type": "object"
+                },
+                "updateClaimsConfigs": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateFederatedAuthenticator": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateFederatedAuthenticators": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateIDP": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateIDPCertificate": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateIDPRoleMappings": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateJITProvisioning": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateOutboundProvisioningConnector": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateOutboundProvisioningConnectors": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "addFederatedAuthenticator",
+                "addIDP",
+                "apiLimitReachedError",
+                "changeCertType",
+                "deleteCertificate",
+                "deleteDefaultAuthenticator",
+                "deleteDefaultConnector",
+                "deleteIDP",
+                "disableAuthenticator",
+                "disableOutboundProvisioningConnector",
+                "duplicateCertificateUpload",
+                "getAllLocalClaims",
+                "getFederatedAuthenticator",
+                "getFederatedAuthenticatorMetadata",
+                "getFederatedAuthenticatorsList",
+                "getIDP",
+                "getIDPList",
+                "getIDPTemplate",
+                "getIDPTemplateList",
+                "getOutboundProvisioningConnector",
+                "getOutboundProvisioningConnectorMetadata",
+                "getOutboundProvisioningConnectorsList",
+                "getRolesList",
+                "submitAttributeSettings",
+                "tierLimitReachedError",
+                "updateClaimsConfigs",
+                "updateFederatedAuthenticator",
+                "updateFederatedAuthenticators",
+                "updateIDP",
+                "updateIDPCertificate",
+                "updateIDPRoleMappings",
+                "updateJITProvisioning",
+                "updateOutboundProvisioningConnector",
+                "updateOutboundProvisioningConnectors"
+            ],
+            "type": "object"
+        },
+        "placeHolders": {
+            "additionalProperties": false,
+            "properties": {
+                "emptyAuthenticatorList": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "subtitles": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "type": "string"
+                                },
+                                "2": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0",
+                                "1",
+                                "2"
+                            ],
+                            "type": "object"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subtitles",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "emptyCertificateList": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "subtitles": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0",
+                                "1"
+                            ],
+                            "type": "object"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subtitles",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "emptyConnectorList": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "subtitles": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0",
+                                "1"
+                            ],
+                            "type": "object"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subtitles",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "emptyIDPList": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "subtitles": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "type": "string"
+                                },
+                                "2": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0",
+                                "1",
+                                "2"
+                            ],
+                            "type": "object"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subtitles",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "emptyIDPSearchResults": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "subtitles": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                },
+                                "1": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0",
+                                "1"
+                            ],
+                            "type": "object"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subtitles",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "noAttributes": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "subtitles": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "0": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "0"
+                            ],
+                            "type": "object"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "subtitles",
+                        "title"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "emptyAuthenticatorList",
+                "emptyCertificateList",
+                "emptyConnectorList",
+                "emptyIDPList",
+                "emptyIDPSearchResults",
+                "noAttributes"
+            ],
+            "type": "object"
+        },
+        "templates": {
+            "additionalProperties": false,
+            "properties": {
+                "manualSetup": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "heading": {
+                            "type": "string"
+                        },
+                        "subHeading": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "heading",
+                        "subHeading"
+                    ],
+                    "type": "object"
+                },
+                "quickSetup": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "heading": {
+                            "type": "string"
+                        },
+                        "subHeading": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "heading",
+                        "subHeading"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "manualSetup",
+                "quickSetup"
+            ],
+            "type": "object"
+        },
+        "wizards": {
+            "additionalProperties": false,
+            "properties": {
+                "addAuthenticator": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "header": {
+                            "type": "string"
+                        },
+                        "steps": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "authenticatorConfiguration": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                },
+                                "authenticatorSelection": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "manualSetup": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "subTitle": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "subTitle",
+                                                "title"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "quickSetup": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "subTitle": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "subTitle",
+                                                "title"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "manualSetup",
+                                        "quickSetup",
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                },
+                                "summary": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "authenticatorConfiguration",
+                                "authenticatorSelection",
+                                "summary"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "header",
+                        "steps"
+                    ],
+                    "type": "object"
+                },
+                "addIDP": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "header": {
+                            "type": "string"
+                        },
+                        "steps": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "authenticatorConfiguration": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                },
+                                "generalSettings": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                },
+                                "provisioningConfiguration": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                },
+                                "summary": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "authenticatorConfiguration",
+                                "generalSettings",
+                                "provisioningConfiguration",
+                                "summary"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "header",
+                        "steps"
+                    ],
+                    "type": "object"
+                },
+                "addProvisioningConnector": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "header": {
+                            "type": "string"
+                        },
+                        "steps": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "connectorConfiguration": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                },
+                                "connectorSelection": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "defaultSetup": {
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "subTitle": {
+                                                    "type": "string"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "subTitle",
+                                                "title"
+                                            ],
+                                            "type": "object"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "defaultSetup",
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                },
+                                "summary": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "connectorConfiguration",
+                                "connectorSelection",
+                                "summary"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "header",
+                        "steps"
+                    ],
+                    "type": "object"
+                },
+                "buttons": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "finish": {
+                            "type": "string"
+                        },
+                        "next": {
+                            "type": "string"
+                        },
+                        "previous": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "finish",
+                        "next",
+                        "previous"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "addAuthenticator",
+                "addIDP",
+                "addProvisioningConnector",
+                "buttons"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "advancedSearch",
+        "buttons",
+        "confirmations",
+        "connectedApps",
+        "dangerZoneGroup",
+        "forms",
+        "identityProviderGroups",
+        "helpPanel",
+        "list",
+        "modals",
+        "notifications",
+        "placeHolders",
+        "templates",
+        "wizards"
+    ],
+    "type": "object",
+    "title": "idp namespace translation schema"
+}

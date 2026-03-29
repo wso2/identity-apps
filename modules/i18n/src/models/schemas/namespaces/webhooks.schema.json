@@ -1,0 +1,1058 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/webhooks.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "advancedSearch": {
+            "additionalProperties": false,
+            "properties": {
+                "filterAttribute": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "placeholder": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "placeholder"
+                    ],
+                    "type": "object"
+                },
+                "filterAttributeOptions": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "endpoint": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        },
+                        "name": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "label": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "label"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "endpoint",
+                        "name"
+                    ],
+                    "type": "object"
+                },
+                "filterCondition": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "placeholder": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "placeholder"
+                    ],
+                    "type": "object"
+                },
+                "filterValue": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "placeholder": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "placeholder"
+                    ],
+                    "type": "object"
+                },
+                "placeholder": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "filterAttribute",
+                "filterAttributeOptions",
+                "filterCondition",
+                "filterValue",
+                "placeholder"
+            ],
+            "type": "object"
+        },
+        "common": {
+            "additionalProperties": false,
+            "properties": {
+                "status": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "active": {
+                            "type": "string"
+                        },
+                        "inactive": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "active",
+                        "inactive"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "status"
+            ],
+            "type": "object"
+        },
+        "configForm": {
+            "additionalProperties": false,
+            "properties": {
+                "buttons": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "cancel": {
+                            "type": "string"
+                        },
+                        "changeSecret": {
+                            "type": "string"
+                        },
+                        "create": {
+                            "type": "string"
+                        },
+                        "update": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "cancel",
+                        "changeSecret",
+                        "create",
+                        "update"
+                    ],
+                    "type": "object"
+                },
+                "channels": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "heading": {
+                            "type": "string"
+                        },
+                        "status": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "subscriptionAccepted": {
+                                    "type": "string"
+                                },
+                                "subscriptionError": {
+                                    "type": "string"
+                                },
+                                "unsubscriptionAccepted": {
+                                    "type": "string"
+                                },
+                                "unsubscriptionError": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "subscriptionAccepted",
+                                "subscriptionError",
+                                "unsubscriptionAccepted",
+                                "unsubscriptionError"
+                            ],
+                            "type": "object"
+                        },
+                        "subHeading": {
+                            "type": "string"
+                        },
+                        "validations": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "empty": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "empty"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "heading",
+                        "status",
+                        "subHeading",
+                        "validations"
+                    ],
+                    "type": "object"
+                },
+                "fields": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "endpoint": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                },
+                                "validations": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "empty": {
+                                            "type": "string"
+                                        },
+                                        "invalid": {
+                                            "type": "string"
+                                        },
+                                        "notHttps": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "empty",
+                                        "invalid",
+                                        "notHttps"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder",
+                                "validations"
+                            ],
+                            "type": "object"
+                        },
+                        "name": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "type": "string"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                },
+                                "validations": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "empty": {
+                                            "type": "string"
+                                        },
+                                        "invalid": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "empty",
+                                        "invalid"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "label",
+                                "placeholder",
+                                "validations"
+                            ],
+                            "type": "object"
+                        },
+                        "secret": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "hint": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "common": {
+                                            "type": "string"
+                                        },
+                                        "create": {
+                                            "type": "string"
+                                        },
+                                        "createWebSubHubMode": {
+                                            "type": "string"
+                                        },
+                                        "update": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "common",
+                                        "create",
+                                        "createWebSubHubMode",
+                                        "update"
+                                    ],
+                                    "type": "object"
+                                },
+                                "info": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "messageWebSubHubMode": {
+                                            "type": "string"
+                                        },
+                                        "title": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "message",
+                                        "messageWebSubHubMode",
+                                        "title"
+                                    ],
+                                    "type": "object"
+                                },
+                                "label": {
+                                    "type": "string"
+                                },
+                                "placeholder": {
+                                    "type": "string"
+                                },
+                                "validations": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "empty": {
+                                            "type": "string"
+                                        },
+                                        "invalid": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "empty",
+                                        "invalid"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "hint",
+                                "info",
+                                "label",
+                                "placeholder",
+                                "validations"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "endpoint",
+                        "name",
+                        "secret"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "buttons",
+                "channels",
+                "fields"
+            ],
+            "type": "object"
+        },
+        "confirmations": {
+            "additionalProperties": false,
+            "properties": {
+                "delete": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "assertionHint": {
+                            "type": "string"
+                        },
+                        "content": {
+                            "type": "string"
+                        },
+                        "heading": {
+                            "type": "string"
+                        },
+                        "message": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "assertionHint",
+                        "content",
+                        "heading",
+                        "message"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "delete"
+            ],
+            "type": "object"
+        },
+        "dangerZone": {
+            "additionalProperties": false,
+            "properties": {
+                "delete": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "actionTitle": {
+                            "type": "string"
+                        },
+                        "heading": {
+                            "type": "string"
+                        },
+                        "subHeading": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "actionTitle",
+                        "heading",
+                        "subHeading"
+                    ],
+                    "type": "object"
+                },
+                "heading": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "delete",
+                "heading"
+            ],
+            "type": "object"
+        },
+        "goBackToWebhooks": {
+            "type": "string"
+        },
+        "heading": {
+            "type": "string"
+        },
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "createWebhook": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "deleteWebhook": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "fetchEventProfile": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "genericDescription": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "genericDescription",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error"
+                    ],
+                    "type": "object"
+                },
+                "fetchWebhook": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "genericDescription": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "genericDescription",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error"
+                    ],
+                    "type": "object"
+                },
+                "fetchWebhooks": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "genericDescription": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "genericDescription",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error"
+                    ],
+                    "type": "object"
+                },
+                "retryWebhookState": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateWebhook": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateWebhookSettings": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "genericDescription": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "genericDescription",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                },
+                "updateWebhookStatus": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "success"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "createWebhook",
+                "deleteWebhook",
+                "fetchEventProfile",
+                "fetchWebhook",
+                "fetchWebhooks",
+                "retryWebhookState",
+                "updateWebhook",
+                "updateWebhookSettings",
+                "updateWebhookStatus"
+            ],
+            "type": "object"
+        },
+        "pages": {
+            "additionalProperties": false,
+            "properties": {
+                "create": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "heading": {
+                            "type": "string"
+                        },
+                        "subHeading": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "heading",
+                        "subHeading"
+                    ],
+                    "type": "object"
+                },
+                "edit": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "heading": {
+                            "type": "string"
+                        },
+                        "headingWebSubHubMode": {
+                            "type": "string"
+                        },
+                        "subHeading": {
+                            "type": "string"
+                        },
+                        "subHeadingWebSubHubMode": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "heading",
+                        "headingWebSubHubMode",
+                        "subHeading",
+                        "subHeadingWebSubHubMode"
+                    ],
+                    "type": "object"
+                },
+                "list": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "buttons": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "add": {
+                                    "type": "string"
+                                },
+                                "settings": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "add",
+                                "settings"
+                            ],
+                            "type": "object"
+                        },
+                        "columns": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "status": {
+                                    "type": "string"
+                                },
+                                "webhook": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "status",
+                                "webhook"
+                            ],
+                            "type": "object"
+                        },
+                        "emptyList": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "subHeading": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "subHeading"
+                            ],
+                            "type": "object"
+                        },
+                        "heading": {
+                            "type": "string"
+                        },
+                        "subHeading": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "buttons",
+                        "columns",
+                        "emptyList",
+                        "heading",
+                        "subHeading"
+                    ],
+                    "type": "object"
+                },
+                "settings": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "backButton": {
+                            "type": "string"
+                        },
+                        "heading": {
+                            "type": "string"
+                        },
+                        "organizationPolicy": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "heading": {
+                                    "type": "string"
+                                },
+                                "radioOptions": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "currentOrgAndImmediateChild": {
+                                            "type": "string"
+                                        },
+                                        "currentOrgOnly": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "currentOrgAndImmediateChild",
+                                        "currentOrgOnly"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "heading",
+                                "radioOptions"
+                            ],
+                            "type": "object"
+                        },
+                        "subHeading": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "backButton",
+                        "heading",
+                        "organizationPolicy",
+                        "subHeading"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "create",
+                "edit",
+                "list",
+                "settings"
+            ],
+            "type": "object"
+        },
+        "sidePanel": {
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name"
+            ],
+            "type": "object"
+        },
+        "statusBanner": {
+            "additionalProperties": false,
+            "properties": {
+                "buttons": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "retry": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "retry"
+                    ],
+                    "type": "object"
+                },
+                "pendingActivation": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "message": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "message",
+                        "title"
+                    ],
+                    "type": "object"
+                },
+                "pendingDeactivation": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "message": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "message",
+                        "title"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "buttons",
+                "pendingActivation",
+                "pendingDeactivation"
+            ],
+            "type": "object"
+        },
+        "subHeading": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "advancedSearch",
+        "common",
+        "configForm",
+        "confirmations",
+        "dangerZone",
+        "goBackToWebhooks",
+        "heading",
+        "notifications",
+        "pages",
+        "sidePanel",
+        "statusBanner",
+        "subHeading"
+    ],
+    "type": "object",
+    "title": "webhooks namespace translation schema"
+}

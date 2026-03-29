@@ -1,0 +1,168 @@
+{
+    "$id": "https://wso2is.dev/i18n/schemas/namespaces/templateCore.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "additionalProperties": false,
+    "properties": {
+        "categories": {
+            "additionalProperties": false,
+            "properties": {
+                "other": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "description": {
+                            "type": "string"
+                        },
+                        "displayName": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "description",
+                        "displayName"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "other"
+            ],
+            "type": "object"
+        },
+        "forms": {
+            "additionalProperties": false,
+            "properties": {
+                "resourceCreateWizard": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "common": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "validations": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "required": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "required"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "validations"
+                            ],
+                            "type": "object"
+                        },
+                        "url": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "validations": {
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "invalid": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": [
+                                        "invalid"
+                                    ],
+                                    "type": "object"
+                                }
+                            },
+                            "required": [
+                                "validations"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "common",
+                        "url"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "resourceCreateWizard"
+            ],
+            "type": "object"
+        },
+        "notifications": {
+            "additionalProperties": false,
+            "properties": {
+                "fetchTemplates": {
+                    "additionalProperties": false,
+                    "properties": {
+                        "error": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "genericError": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        },
+                        "success": {
+                            "additionalProperties": false,
+                            "properties": {
+                                "description": {
+                                    "type": "string"
+                                },
+                                "message": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "description",
+                                "message"
+                            ],
+                            "type": "object"
+                        }
+                    },
+                    "required": [
+                        "error",
+                        "genericError",
+                        "success"
+                    ],
+                    "type": "object"
+                }
+            },
+            "required": [
+                "fetchTemplates"
+            ],
+            "type": "object"
+        }
+    },
+    "required": [
+        "categories",
+        "forms",
+        "notifications"
+    ],
+    "type": "object",
+    "title": "templateCore namespace translation schema"
+}
