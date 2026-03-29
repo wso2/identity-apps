@@ -1,5 +1,21 @@
 # @wso2is/admin.onboarding.v1
 
+## 1.0.67
+
+### Patch Changes
+
+- [#9980](https://github.com/wso2/identity-apps/pull/9980) [`64e9db79d1a75865477e498d2d68f1c16d00240b`](https://github.com/wso2/identity-apps/commit/64e9db79d1a75865477e498d2d68f1c16d00240b) Thanks [@savindi7](https://github.com/savindi7)! - Send SCIM UUID as the user_id for analytics
+
+- Updated dependencies [[`64e9db79d1a75865477e498d2d68f1c16d00240b`](https://github.com/wso2/identity-apps/commit/64e9db79d1a75865477e498d2d68f1c16d00240b)]:
+  - @wso2is/admin.analytics.v1@0.0.4
+  - @wso2is/admin.applications.v1@2.42.8
+  - @wso2is/admin.branding.v1@2.32.152
+  - @wso2is/admin.core.v1@2.55.19
+  - @wso2is/admin.roles.v2@2.27.366
+  - @wso2is/admin.users.v1@2.38.19
+  - @wso2is/admin.connections.v1@2.36.36
+  - @wso2is/admin.server-configurations.v1@2.38.35
+
 ## 1.0.66
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @wso2is/admin.analytics.v1
 
+## 0.0.4
+
+### Patch Changes
+
+- [#9980](https://github.com/wso2/identity-apps/pull/9980) [`64e9db79d1a75865477e498d2d68f1c16d00240b`](https://github.com/wso2/identity-apps/commit/64e9db79d1a75865477e498d2d68f1c16d00240b) Thanks [@savindi7](https://github.com/savindi7)! - Send SCIM UUID as the user_id for analytics
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.19
+
 ## 0.0.3
 
 ### Patch Changes

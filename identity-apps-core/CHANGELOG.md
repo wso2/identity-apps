@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 4.0.5
+
+### Patch Changes
+
+- [#9976](https://github.com/wso2/identity-apps/pull/9976) [`31ac345af1a1fe32272db7d0443a2fc14c5f9830`](https://github.com/wso2/identity-apps/commit/31ac345af1a1fe32272db7d0443a2fc14c5f9830) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Fix JSP compilation errors in user-not-found.jsp causing 404 on new user Google sign-in
+
+* [#9985](https://github.com/wso2/identity-apps/pull/9985) [`41963ef8b50dbd6f6404c7995e7dac56c22ac473`](https://github.com/wso2/identity-apps/commit/41963ef8b50dbd6f6404c7995e7dac56c22ac473) Thanks [@HimashaHerath](https://github.com/HimashaHerath)! - Fix double HTML encoding of error messages in x509 certificate error page
+
 ## 4.0.4
 
 ### Patch Changes

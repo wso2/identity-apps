@@ -1,5 +1,19 @@
 # @wso2is/admin.agents.v1
 
+## 1.1.8
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.42.8
+  - @wso2is/admin.branding.v1@2.32.152
+  - @wso2is/admin.core.v1@2.55.19
+  - @wso2is/admin.roles.v2@2.27.366
+  - @wso2is/admin.users.v1@2.38.19
+  - @wso2is/admin.connections.v1@2.36.36
+  - @wso2is/admin.server-configurations.v1@2.38.35
+  - @wso2is/admin.console-settings.v1@2.26.30
+
 ## 1.1.7
 
 ### Patch Changes

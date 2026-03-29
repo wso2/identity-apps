@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.subscription.v1",
-    "version": "1.5.207",
+    "version": "1.5.208",
     "description": "Manage the tier & subscription information of the tenant",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -32,7 +32,7 @@
         "@mui/utils": "^5.12.3",
         "@oxygen-ui/react": "^2.4.6",
         "@wso2is/access-control": "^3.3.20",
-        "@wso2is/admin.core.v1": "^2.55.18",
+        "@wso2is/admin.core.v1": "^2.55.19",
         "@wso2is/admin.organizations.v1": "^2.27.11",
         "@wso2is/admin.users.v1": "workspace:^",
         "@wso2is/core": "^2.7.0",
