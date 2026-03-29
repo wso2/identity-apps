@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,8 +17,8 @@
  */
 
 const crypto = require("crypto");
-const path = require("path");
 const fs = require("fs");
+const path = require("path");
 
 
 // eslint-disable-next-line no-console
@@ -50,7 +50,7 @@ if (!fs.existsSync(translationsSrcPath)) {
 // If the bundle folder exists, clean it first.
 if (fs.existsSync(outputPath)) {
     log("\nBundle already exists. Cleaning it first...");
-    fs.rmSync(outputPath, { recursive: true, force: true });
+    fs.rmSync(outputPath, { force: true, recursive: true });
 }
 
 // Create the output directory.
@@ -59,6 +59,7 @@ fs.mkdirSync(outputPath, { recursive: true });
 // Discover locale directories: any sub-directory that contains a meta.json file.
 const localeCodes = fs.readdirSync(translationsSrcPath).filter((entry) => {
     const entryPath = path.join(translationsSrcPath, entry);
+
     return (
         fs.statSync(entryPath).isDirectory() &&
         fs.existsSync(path.join(entryPath, "meta.json"))
@@ -87,6 +88,7 @@ for (const localeCode of localeCodes) {
 
     if (!localeMeta.code) {
         log("\nWARNING - meta.json for " + localeCode + " is missing a 'code' field – skipping.");
+
         continue;
     }
 
@@ -98,6 +100,7 @@ for (const localeCode of localeCodes) {
 
     if (fs.existsSync(portalsDir)) {
         const subFolderPath = path.join(langDirPath, PORTALS_FOLDER_NAME);
+
         fs.mkdirSync(subFolderPath, { recursive: true });
         log("Creating " + PORTALS_FOLDER_NAME + " sub folder to store relevant namespace resources.");
 
