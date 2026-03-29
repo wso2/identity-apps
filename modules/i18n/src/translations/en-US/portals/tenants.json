@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/tenants.schema.json",
     "actions": {
         "newTenant": {
             "title": "New Root Organization"

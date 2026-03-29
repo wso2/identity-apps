@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/common.schema.json",
     "access": "ප්‍රවේශය",
     "actions": "ක්‍රියා",
     "activate": "සක්‍රිය කරන්න",

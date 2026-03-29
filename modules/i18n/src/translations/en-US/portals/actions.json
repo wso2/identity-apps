@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/actions.schema.json",
     "buttons": {
         "addCertificate": "Add Certificate",
         "cancel": "Cancel",

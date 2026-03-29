@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/consoleSettings.schema.json",
     "administrators": {
         "add": {
             "action": "Add Administrator",

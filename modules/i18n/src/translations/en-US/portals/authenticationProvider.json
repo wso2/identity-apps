@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/authenticationProvider.schema.json",
     "advancedSearch": {
         "form": {
             "inputs": {

@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/branding.schema.json",
     "brandingCustomText": {
         "revertScreenConfirmationModal": {
             "content": "Once you confirm, your users will start to see the {{productName}} defaults and it will not be reversible. Please proceed with caution.",

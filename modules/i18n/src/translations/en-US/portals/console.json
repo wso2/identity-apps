@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/console.schema.json",
     "common": {
         "advancedSearch": {
             "form": {

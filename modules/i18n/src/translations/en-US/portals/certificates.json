@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/certificates.schema.json",
     "keystore": {
         "advancedSearch": {
             "error": "Filter query format incorrect",

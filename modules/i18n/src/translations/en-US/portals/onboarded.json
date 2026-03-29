@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/onboarded.schema.json",
     "confirmationModal": {
         "removeUser": {
             "assertionHint": "Please confirm your action.",

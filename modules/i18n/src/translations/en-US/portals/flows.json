@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/flows.schema.json",
     "askPassword": {
         "banner": {
             "description": "Provide a seamless invited user onboarding experience to your users by customizing the registration flow to suit your organization's needs.",

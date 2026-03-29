@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/smsProviders.schema.json",
     "confirmationModal": {
         "assertionHint": "Please confirm your action.",
         "content": "Deleting this SMS provider configuration may disrupt SMS OTP authentication for applications currently using it. You may no longer receive SMS-based OTPs, which could affect user logins. Please proceed with caution.",

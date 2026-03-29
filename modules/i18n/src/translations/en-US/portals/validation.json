@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/validation.schema.json",
     "description": "Customize password validation rules for your users.",
     "fetchValidationConfigData": {
         "error": {

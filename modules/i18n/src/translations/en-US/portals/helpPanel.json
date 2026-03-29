@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/helpPanel.schema.json",
     "actions": {
         "close": "Close",
         "open": "Open help panel",

@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/transferList.schema.json",
     "list": {
         "emptyPlaceholders": {
             "default": "There are no items in this list at the moment.",

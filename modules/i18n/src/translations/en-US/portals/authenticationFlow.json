@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/authenticationFlow.schema.json",
     "adaptiveLoginFlowSelectConfirmationModal": {
         "content": "The selected template will replace the existing script in the editor as well as the login steps you configured. Click <1>Confirm</1> to proceed.",
         "heading": "Are you sure?",

@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/workflowRequests.schema.json",
     "activeFiltersBar": {
         "clearAll": "Clear all",
         "noActiveFilters": "No active filters",

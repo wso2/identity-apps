@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/pushProviders.schema.json",
     "alerts": {
         "create": {
             "error": {

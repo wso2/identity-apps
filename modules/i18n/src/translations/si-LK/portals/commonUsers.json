@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/commonUsers.schema.json",
     "forms": {
         "profile": {
             "generic": {

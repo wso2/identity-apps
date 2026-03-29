@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/remoteFetch.schema.json",
     "components": {
         "status": {
             "details": "Details",

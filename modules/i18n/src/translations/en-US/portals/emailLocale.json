@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/emailLocale.schema.json",
     "buttons": {
         "addLocaleTemplate": "Add Locale Template",
         "saveChanges": "Save Changes"

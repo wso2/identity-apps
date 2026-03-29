@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/sessionManagement.schema.json",
     "description": "Manage settings related to the session of your users.",
     "title": "Session Management",
     "form": {

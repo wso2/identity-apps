@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/applicationTemplates.schema.json",
     "categories": {
         "default": {
             "description": "Choose the relevant application architecture for easy configuration.",

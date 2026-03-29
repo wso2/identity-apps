@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/common.schema.json",
     "access": "アクセス",
     "actions": "行動",
     "activate": "活性化",

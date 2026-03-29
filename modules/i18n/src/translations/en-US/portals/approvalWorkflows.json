@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/approvalWorkflows.schema.json",
     "advancedSearch": {
         "placeholder": "Search by approval workflow name"
     },

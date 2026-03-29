@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/serverConfigs.schema.json",
     "adminAdvisory": {
         "configurationEditSection": {
             "backButtonLabel": "Go back to Admin Advisory Banner",

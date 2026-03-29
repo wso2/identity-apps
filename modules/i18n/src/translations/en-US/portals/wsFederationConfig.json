@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/wsFederationConfig.schema.json",
     "title": "WS-Federation Configuration",
     "description": "Configure WS-Federation protocol for your applications.",
     "form": {

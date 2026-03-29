@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/idp.schema.json",
     "advancedSearch": {
         "form": {
             "inputs": {

@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/oidcScopes.schema.json",
     "addAttributes": {
         "description": "Select which user attributes you want to associate with the scope {{name}}."
     },

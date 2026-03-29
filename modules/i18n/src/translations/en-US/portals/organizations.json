@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/organizations.schema.json",
     "advancedSearch": {
         "form": {
             "inputs": {

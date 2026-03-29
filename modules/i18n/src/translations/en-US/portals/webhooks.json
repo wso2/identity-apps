@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/webhooks.schema.json",
     "advancedSearch": {
         "filterAttribute": {
             "placeholder": "E.g. Name, Endpoint"

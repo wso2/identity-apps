@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/suborganizations.schema.json",
     "notifications": {
         "duplicateOrgError": {
             "description": "The organization you are trying to create already exists.",

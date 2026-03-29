@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/emailTemplates.schema.json",
     "advancedSearch": {
         "error": "Filter query format incorrect",
         "form": {

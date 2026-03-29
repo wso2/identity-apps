@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/templateCore.schema.json",
     "categories": {
         "other": {
             "description": "Other types of un-categorized integrations.",

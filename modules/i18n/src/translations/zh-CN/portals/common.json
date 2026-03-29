@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/common.schema.json",
     "access": "使用权",
     "actions": "动作",
     "activate": "启用",

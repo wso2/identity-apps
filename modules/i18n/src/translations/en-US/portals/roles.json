@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/roles.schema.json",
     "addRoleWizard": {
         "agents": {
             "assignAgentModal": {

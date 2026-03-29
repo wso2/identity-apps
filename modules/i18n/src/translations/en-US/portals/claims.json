@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/claims.schema.json",
     "attributeMappings": {
         "agent": {
             "description": "The SCIM protocol representation for AI agent attributes used in agent identity management APIs.",

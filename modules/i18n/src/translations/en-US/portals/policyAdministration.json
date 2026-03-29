@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/policyAdministration.schema.json",
     "activePoliciesPlaceholder": {
         "subtitle": "There are currently no active policies to display.",
         "title": "No active policies found"

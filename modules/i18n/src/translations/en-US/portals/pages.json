@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/pages.schema.json",
     "actions": {
         "subTitle": "Create actions to extend login & registration flows.",
         "title": "Actions"

@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/externalApiAuthentication.schema.json",
     "fields": {
         "authentication": {
             "info": {

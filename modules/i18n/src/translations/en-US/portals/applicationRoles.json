@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/applicationRoles.schema.json",
     "assign": "Assign",
     "assignGroupWizard": {
         "heading": "Assign Groups",

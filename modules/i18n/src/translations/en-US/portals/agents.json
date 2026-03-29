@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/agents.schema.json",
     "description": "Manage AI agent identities, permissions, and access controls for your organization's automated systems.",
     "edit": {
         "credentials": {

@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/governanceConnectors.schema.json",
     "goBackLoginAndRegistration": "Go back to login & registration",
     "categories": "Categories",
     "connectorSubHeading": "Configure {{ name }} settings.",

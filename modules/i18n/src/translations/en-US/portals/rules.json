@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/rules.schema.json",
     "alerts": {
         "resourceNotFound": {
             "description": "Please update to a valid resource.",

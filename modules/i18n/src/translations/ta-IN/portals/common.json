@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/common.schema.json",
     "access": "அணுகல்",
     "actions": "செயல்கள்",
     "activate": "செயல்படுத்த",

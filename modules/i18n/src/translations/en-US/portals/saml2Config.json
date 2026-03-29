@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/saml2Config.schema.json",
     "title": "SAML2 Web SSO Configuration",
     "description": "Configure SAML2 Web SSO for your applications.",
     "form": {

@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/impersonation.schema.json",
     "description": "Configure impersonation settings for organization.",
     "form": {
         "enableEmailNotification": {

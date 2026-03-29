@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/issuerUsageScope.schema.json",
     "description": "Control whether the root organization issuer is available for use by the child organizations.",
     "form": {
         "issuer": {

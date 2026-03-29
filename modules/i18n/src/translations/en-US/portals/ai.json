@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../models/schemas/namespaces/ai.schema.json",
     "aiFlow": {
         "disclaimer": "Flow AI can make errors. Verify the generated flow for accuracy and avoid entering sensitive personal data.",
         "notifications": {
