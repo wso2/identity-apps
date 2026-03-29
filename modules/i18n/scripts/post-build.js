@@ -29,6 +29,16 @@ const META_FILE_NAME = "meta.{hash}.json";
 const PORTALS_FOLDER_NAME = "portals";
 const EXTENSIONS_FILENAME = "extensions.{hash}.json";
 
+const stripSchemaHint = (value) => {
+    if (!value || typeof value !== "object" || Array.isArray(value)) {
+        return value;
+    }
+
+    const { ...withoutSchemaHint } = value;
+
+    return withoutSchemaHint;
+};
+
 // Path for the source translations directory (JSON files).
 const translationsSrcPath = path.join(__dirname, "..", "src", "translations");
 
@@ -110,13 +120,14 @@ for (const localeCode of localeCodes) {
         for (const nsFile of nsFiles) {
             const nsKey     = path.basename(nsFile, ".json"); // e.g. "applications"
             const nsContent = JSON.parse(fs.readFileSync(path.join(portalsDir, nsFile), "utf8"));
+            const nsContentWithoutSchemaHint = stripSchemaHint(nsContent);
 
-            const hash     = crypto.createHash("sha1").update(JSON.stringify(nsContent)).digest("hex");
+            const hash     = crypto.createHash("sha1").update(JSON.stringify(nsContentWithoutSchemaHint)).digest("hex");
             const fileName = `${ nsKey }.${ hash.substr(0, 8) }.json`;
             const filePath = path.join(subFolderPath, fileName);
 
             if (!fs.existsSync(filePath)) {
-                fs.writeFileSync(filePath, JSON.stringify(nsContent, undefined, 4));
+                fs.writeFileSync(filePath, JSON.stringify(nsContentWithoutSchemaHint, undefined, 4));
             }
 
             log("Generating the JSON - " + fileName);

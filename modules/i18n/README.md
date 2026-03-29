@@ -135,6 +135,35 @@ export const EN_GB: LocaleBundle = {
 }
 ```
 
+## Translation Schema Validation
+
+Namespace translation schemas are generated from the source of truth locale (`en-US`) and validated against all locale resources.
+
+- Source translations: `src/translations/en-US/portals/*.json`
+- Generated schemas: `src/models/schemas/namespaces/*.schema.json`
+- Validation script: `scripts/validate-namespace-schemas.js`
+
+Each translation namespace JSON file also includes a `$schema` property (for example,
+`"$schema": "../../../models/schemas/namespaces/common.schema.json"`).
+This enables real-time, IDE-agnostic JSON schema diagnostics in editors that support standard JSON Schema hints.
+
+### Commands
+
+```bash
+# Regenerate namespace schemas from en-US.
+pnpm generate:translation-schemas
+
+# Sync $schema hints in locale translation files.
+pnpm sync:translation-schema-hints
+
+# Regenerate schemas and validate all locale namespace JSON files.
+pnpm validate:translations
+```
+
+`pnpm build` now runs `pnpm validate:translations` first and fails fast when a locale namespace deviates from the schema.
+
+During build packaging, the `$schema` metadata key is stripped from output translation bundles.
+
 ## License
 
 Licenses this source under the Apache License, Version 2.0 ([LICENSE](../../LICENSE)), You may not use this file except in compliance with the License.
