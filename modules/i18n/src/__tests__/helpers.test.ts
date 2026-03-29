@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -148,10 +148,10 @@ describe("If supported language checker helper function", () => {
     });
 
     test("Should return true for supported language when a valid meta file is passed in", () => {
-        expect(isLanguageSupported("en-US", null, VALID_META)).toBe(true);
+        expect(isLanguageSupported("en-US", undefined, VALID_META)).toBe(true);
     });
 
-    test("Should return true for supported language when an invalid meta file is passed in", () => {
-        expect(isLanguageSupported("en-US", null, INVALID_META as any)).toBe(false);
+    test("Should return false for supported language when an invalid meta file is passed in", () => {
+        expect(isLanguageSupported("en-US", undefined, INVALID_META as any)).toBe(false);
     });
 });
