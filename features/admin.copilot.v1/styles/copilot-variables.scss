@@ -31,6 +31,7 @@ $copilot-primary-color: #FF7300; // @primaryColor
 $copilot-primary-color-hover: color.adjust(#FF7300, $lightness: 10%); // Lighter variant
 $copilot-primary-color-light: color.adjust(#FF7300, $lightness: 20%); // Even lighter
 $copilot-primary-color-dark: color.adjust(#FF7300, $lightness: -10%); // Darker variant
+$copilot-secondary-color: #8b5cf6; // Accent purple for gradients
 
 // Colors - Background
 $copilot-background-color: #ffffff; // @white
@@ -182,6 +183,10 @@ $copilot-suggested-action-padding: $copilot-spacing-md $copilot-spacing-lg;
 $copilot-suggested-action-border-radius: $copilot-border-radius-md;
 $copilot-suggested-action-gap: $copilot-spacing-sm;
 $copilot-suggestion-chip-height: 36px;
+// Max width = panel width minus horizontal padding on both sides (chat padding = $copilot-spacing-lg)
+$copilot-suggestion-chip-max-width: $copilot-panel-width - ($copilot-spacing-lg * 2);
+// Welcome page uses larger padding ($copilot-spacing-xxl) so max width is slightly narrower
+$copilot-welcome-suggestion-chip-max-width: $copilot-panel-width - ($copilot-spacing-xxl * 2);
 $copilot-suggestion-skeleton-width: 160px;
 
 // Code Editor

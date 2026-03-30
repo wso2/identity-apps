@@ -16,22 +16,15 @@
  * under the License.
  */
 
-import CloseIcon from "@mui/icons-material/Close";
-import FullscreenIcon from "@mui/icons-material/Fullscreen";
-import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
-import RefreshIcon from "@mui/icons-material/Refresh";
 import Box from "@oxygen-ui/react/Box";
 import Drawer from "@oxygen-ui/react/Drawer";
-import IconButton from "@oxygen-ui/react/IconButton";
-import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import AISparkleIcon from "./ai-sparkle-icon";
-import ClearChatConfirmationModal from "./clear-chat-confirmation-modal";
 import CopilotChat from "./copilot-chat";
+import CopilotHeader from "./copilot-header";
 import CopilotWelcome from "./copilot-welcome";
 import { useCopilotPanel } from "../hooks";
 import { CopilotContentType } from "../store/types";
@@ -67,17 +60,14 @@ const CopilotPanel: React.FunctionComponent<CopilotPanelProps> = (
     } = props;
 
     const { t } = useTranslation();
-    const [ isExpanded, setIsExpanded ] = useState(false);
-    const [ showClearChatModal, setShowClearChatModal ] = useState(false);
-    const [ isRefreshing, setIsRefreshing ] = useState(false);
+    const [ isExpanded, setIsExpanded ] = useState<boolean>(false);
 
     const {
         isVisible,
         contentType,
         messages,
-        isLoading: _isLoading,
+        isLoading,
         hidePanel,
-        clearChat,
         loadHistory
     } = useCopilotPanel();
 
@@ -101,32 +91,8 @@ const CopilotPanel: React.FunctionComponent<CopilotPanelProps> = (
      * Handle panel expand/collapse.
      */
     const handleToggleExpand: () => void = useCallback(() => {
-        setIsExpanded(!isExpanded);
-    }, [ isExpanded ]);
-
-    /**
-     * Handle clear chat button click - show confirmation modal.
-     */
-    const handleClearChatClick: () => void = useCallback(() => {
-        setShowClearChatModal(true);
+        setIsExpanded((prev: boolean) => !prev);
     }, []);
-
-    /**
-     * Handle clear chat confirmation.
-     */
-    const handleClearChatConfirm: () => Promise<void> = useCallback(async () => {
-        setIsRefreshing(true);
-
-        try {
-            await clearChat();
-        } catch (_error: unknown) {
-            // clearCopilotChatWithApi handles errors internally via chat messages;
-            // this catch prevents an unhandled rejection if that contract ever changes.
-        } finally {
-            // Reset refresh state after API completes
-            setTimeout(() => setIsRefreshing(false), 1000);
-        }
-    }, [ clearChat ]);
 
     /**
      * Render the panel content based on content type.
@@ -134,7 +100,12 @@ const CopilotPanel: React.FunctionComponent<CopilotPanelProps> = (
     const renderContent = (): ReactElement => {
         switch (contentType) {
             case CopilotContentType.CHAT:
-                // Show welcome screen if no messages, otherwise show chat
+                // While the initial history fetch is in progress, render nothing so
+                // the welcome screen doesn't flash before chat history appears.
+                if (isLoading && messages.length === 0) {
+                    return <Box className="copilot-panel-content-placeholder" />;
+                }
+
                 return messages.length === 0 ? (
                     <CopilotWelcome data-componentid={ `${componentId}-welcome` } />
                 ) : (
@@ -157,7 +128,10 @@ const CopilotPanel: React.FunctionComponent<CopilotPanelProps> = (
                     </Box>
                 );
             default:
-                // Show welcome screen if no messages, otherwise show chat
+                if (isLoading && messages.length === 0) {
+                    return <Box className="copilot-panel-content-placeholder" />;
+                }
+
                 return messages.length === 0 ? (
                     <CopilotWelcome data-componentid={ `${componentId}-welcome` } />
                 ) : (
@@ -190,89 +164,20 @@ const CopilotPanel: React.FunctionComponent<CopilotPanelProps> = (
                     padding: 0,
                     width: isExpanded ? "100%" : width
                 }
-
             } }
             data-componentid={ componentId }
-
         >
-            <Box
-                className="copilot-panel-container"
-            >
-                { /* Header - Always visible at top */ }
-                <Box
-                    className="copilot-panel-header"
-                >
-                    { /* Left side - Logo and Title */ }
-                    <Box className="copilot-header-left">
-                        <Box className="copilot-avatar-container">
-                            <AISparkleIcon width={ 24 } height={ 24 } />
-                        </Box>
-                        <Box className="copilot-title-container">
-                            <Typography variant="h6" className="copilot-title">
-                                Copilot
-                            </Typography>
-                        </Box>
-                    </Box>
+            <Box className="copilot-panel-container">
+                <CopilotHeader
+                    onClose={ handleClose }
+                    onToggleExpand={ handleToggleExpand }
+                    isExpanded={ isExpanded }
+                    data-componentid={ `${componentId}-header` }
+                />
 
-                    { /* Right side - Action buttons */ }
-                    <Box className="copilot-header-actions">
-                        { messages.length > 0 && (
-                            <Tooltip title="Clear Chat">
-                                <IconButton
-                                    size="small"
-                                    onClick={ handleClearChatClick }
-                                    disabled={ isRefreshing }
-                                    aria-label={ t("console:common.copilot.clearChat.title") }
-                                    className={ `copilot-action-button ${isRefreshing ? "refreshing" : ""}` }
-                                >
-                                    <RefreshIcon fontSize="small" />
-                                </IconButton>
-                            </Tooltip>
-                        ) }
-                        <Tooltip
-                            title={ isExpanded
-                                ? t("console:common.copilot.exitFullscreen")
-                                : t("console:common.copilot.expandToFullscreen") }>
-                            <IconButton
-                                onClick={ handleToggleExpand }
-                                size="small"
-                                aria-label={ isExpanded
-                                    ? t("console:common.copilot.exitFullscreen")
-                                    : t("console:common.copilot.expandToFullscreen") }
-                                className="copilot-action-button"
-                            >
-                                { isExpanded
-                                    ? <FullscreenExitIcon fontSize="small" />
-                                    : <FullscreenIcon fontSize="small" /> }
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title={ t("console:common.copilot.close") }>
-                            <IconButton
-                                onClick={ handleClose }
-                                size="small"
-                                aria-label={ t("console:common.copilot.close") }
-                                className="copilot-action-button"
-                            >
-                                <CloseIcon fontSize="small" />
-                            </IconButton>
-                        </Tooltip>
-                    </Box>
-                </Box>
-
-                { /* Content Area - Below header with top margin for absolute header */ }
-                <Box
-                    className="copilot-panel-content"
-                >
+                <Box className="copilot-panel-content">
                     { renderContent() }
                 </Box>
-
-                { /* Clear Chat Confirmation Modal */ }
-                <ClearChatConfirmationModal
-                    open={ showClearChatModal }
-                    onClose={ () => setShowClearChatModal(false) }
-                    onConfirm={ handleClearChatConfirm }
-                    data-componentid="copilot-panel-clear-chat-modal"
-                />
             </Box>
         </Drawer>
     );

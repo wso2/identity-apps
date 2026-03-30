@@ -64,7 +64,6 @@ const CopilotWelcome: React.FunctionComponent<CopilotWelcomeProps> = (
     const [ inputValue, setInputValue ] = useState<string>("");
 
     // Suggested actions
-    // TODO: Make this dynamic based on user context
     const suggestedActions: Array<{
         id: string;
         text: string;

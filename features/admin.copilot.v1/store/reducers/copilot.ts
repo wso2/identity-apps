@@ -33,7 +33,7 @@ const initialState: CopilotPanelState = {
     hasMoreHistory: false,
     historyOffset: 0,
     historyTotal: 0,
-    isLoading: false,
+    isLoading: true,
     isLoadingMoreHistory: false,
     isVisible: false,
     messages: [],

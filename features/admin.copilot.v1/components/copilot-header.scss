@@ -22,28 +22,27 @@
 .copilot-header {
     border-bottom: $copilot-border-width solid $copilot-border-color;
     background-color: $copilot-background-color !important;
-    padding: $copilot-spacing-sm $copilot-spacing-lg;
-    min-height: $copilot-header-height !important;
-    height: $copilot-header-height;
     flex-shrink: 0;
     z-index: $copilot-z-index-dropdown;
     position: relative;
     display: flex !important;
+    align-items: center;
     visibility: visible !important;
     width: 100%;
     box-sizing: border-box;
-    
+    min-height: $copilot-header-height;
+
     .copilot-header-content {
         display: flex;
         align-items: center;
         justify-content: space-between;
         width: 100%;
-        height: 100%;
-        
+        padding: 0 $copilot-spacing-lg;
+
         .copilot-header-left {
             display: flex;
             align-items: center;
-            
+
             .copilot-avatar-container {
                 margin-right: $copilot-spacing-sm;
                 display: flex;
@@ -59,16 +58,19 @@
             .copilot-header-title {
                 font-size: $copilot-font-size-lg;
                 font-weight: $copilot-font-weight-semibold;
-                color: $copilot-text-color-primary;
                 line-height: 1;
+                background: linear-gradient(135deg, $copilot-primary-color, $copilot-secondary-color);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
             }
         }
-        
+
         .copilot-header-actions {
             display: flex;
             align-items: center;
             gap: $copilot-spacing-xs;
-            
+
             .copilot-action-button {
                 color: $copilot-text-color-secondary;
 
@@ -76,7 +78,7 @@
                     background-color: $copilot-background-color-hover;
                     color: $copilot-primary-color;
                 }
-                
+
                 &.refreshing {
                     animation: spin 1s linear infinite;
                 }

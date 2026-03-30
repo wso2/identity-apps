@@ -369,9 +369,10 @@ export const console: ConsoleNS = {
             }
         },
         copilot: {
-            title: "Copilot",
-            show: "Show Copilot",
-            hide: "Hide Copilot",
+            // TODO: Switch back to "Copilot" once phase 2 is deployed
+            title: "Ask AI",
+            show: "Show Ask AI",
+            hide: "Hide Ask AI",
             close: "Close",
             collapse: "Collapse",
             expand: "Expand",
@@ -388,17 +389,17 @@ export const console: ConsoleNS = {
                 chat: "Chat",
                 help: "Help"
             },
-            chat: {
-                empty: "Hi, Welcome to Copilot! How can I assist you?",
-                placeholder: "Enter your message here...",
-                thinking: "Thinking...",
-                error: "Sorry, I encountered an error. Please try again."
-            },
             help: {
                 content: "I can help you with various tasks in WSO2 Identity Server. Try asking me about:\n\n• User management\n• Application configuration\n• Identity providers\n• Authentication flows\n• Troubleshooting\n\nJust type your question in the chat!"
             },
             documentation: {
                 content: "Access comprehensive documentation and guides for WSO2 Identity Server."
+            },
+            chat: {
+                emptyChat: "Start a conversation...",
+                loadEarlier: "Load earlier messages",
+                loadingHistory: "Loading...",
+                thinking: "Thinking..."
             },
             welcome: {
                 actions: {
@@ -407,11 +408,13 @@ export const console: ConsoleNS = {
                     manageRoles: "How can I manage user roles?"
                 },
                 description: "I can help you with identity management, application setup, user management, and more.",
-                disclaimer: "Use Copilot mindfully as AI can make mistakes.",
+                // TODO: Switch back to "Copilot" once phase 2 is deployed
+                disclaimer: "Use Ask AI mindfully as AI can make mistakes.",
                 placeholder: "Enter your message here...",
                 send: "Send message",
                 suggestionsTitle: "TRY ASKING ABOUT",
-                title: "Hi, Welcome to Copilot! How can I assist you?"
+                // TODO: Switch back to "Copilot" once phase 2 is deployed
+                title: "Hi, Welcome to Ask AI! How can I assist you?"
             }
         },
         sidePanel: {

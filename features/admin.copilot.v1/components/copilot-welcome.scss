@@ -73,7 +73,7 @@
                 letter-spacing: $copilot-letter-spacing-caps;
                 margin-bottom: $copilot-spacing-sm;
                 display: block;
-                text-align: center;
+                text-align: left;
             }
 
             .copilot-suggestions-list {
@@ -81,18 +81,18 @@
                 flex-direction: row;
                 gap: $copilot-spacing-md;
                 flex-wrap: wrap;
-                justify-content: center;
+                justify-content: flex-start;
 
                 .copilot-suggestion-button {
-                    justify-content: center;
-                    text-align: center;
+                    justify-content: flex-start;
+                    text-align: left;
                     text-transform: none;
                     padding: $copilot-spacing-sm $copilot-spacing-lg;
                     border-radius: $copilot-border-radius-xxl;
                     background-color: $copilot-background-color-surface;
                     border: none;
                     color: $copilot-text-color-primary;
-                    font-size: $copilot-font-size-sm;
+                    font-size: $copilot-font-size-md;
                     font-weight: $copilot-font-weight-medium;
                     white-space: nowrap;
                     min-width: auto;

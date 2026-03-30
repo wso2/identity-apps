@@ -31,6 +31,7 @@ import { Markdown } from "@wso2is/react-components";
 import React, {
     Component, ReactElement, ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState
 } from "react";
+import { useTranslation } from "react-i18next";
 import AISparkleIcon from "./ai-sparkle-icon";
 import { useCopilotPanel } from "../hooks";
 import "./copilot-chat.scss";
@@ -123,6 +124,109 @@ const normalizeStreamingMarkdown = (content: string): string => {
 };
 
 /**
+ * Props for the memoized single-message renderer.
+ */
+interface ChatMessageProps {
+    message: CopilotMessage;
+    isLastMessage: boolean;
+    isLoading: boolean;
+    componentId: string;
+    onSendMessage: (msg: string) => void;
+}
+
+/**
+ * Renders a single chat message. Wrapped in React.memo so that messages that
+ * have not changed (all history messages) do NOT re-render on every token
+ * update during streaming — preventing the Markdown parser from blocking the
+ * main thread on every incoming token.
+ */
+const ChatMessage: React.FunctionComponent<ChatMessageProps> = React.memo(
+    ({
+        message,
+        isLastMessage,
+        isLoading: loading,
+        componentId,
+        onSendMessage
+    }: ChatMessageProps): ReactElement => {
+        const isUser: boolean = message.sender === "user";
+        const isError: boolean = message.type === "error";
+        const renderedContent: string = message.type === "streaming"
+            ? normalizeStreamingMarkdown(message.content)
+            : message.content;
+
+        if (isUser) {
+            return (
+                <Box
+                    key={ message.id }
+                    className="copilot-message user-message"
+                    data-componentid={ `${componentId}-message-${message.id}` }
+                >
+                    <Box className="copilot-message-content">
+                        <Paper elevation={ 0 } className="copilot-message-bubble">
+                            { message.content }
+                        </Paper>
+                    </Box>
+                </Box>
+            );
+        }
+
+        return (
+            <Box
+                key={ message.id }
+                className="copilot-message bot-message"
+                data-componentid={ `${componentId}-message-${message.id}` }
+            >
+                <Box className="copilot-message-content">
+                    <Paper
+                        elevation={ 0 }
+                        className={ `copilot-message-bubble ${isError ? "error-message" : ""}` }
+                    >
+                        <MessageErrorBoundary>
+                            <Markdown source={ renderedContent } />
+                        </MessageErrorBoundary>
+                    </Paper>
+
+                    { !isError && isLastMessage && (
+                        <>
+                            { message.suggestionsLoading && !message.suggestions && (
+                                <Box className="copilot-follow-up-suggestions-list">
+                                    { [ 0, 1 ].map((i: number) => (
+                                        <Skeleton
+                                            key={ `${message.id}-suggestion-skeleton-${i}` }
+                                            variant="rounded"
+                                            className="copilot-suggestion-skeleton"
+                                        />
+                                    )) }
+                                </Box>
+                            ) }
+                            { message.suggestions && message.suggestions.length > 0 && (
+                                <Box className="copilot-follow-up-suggestions-list">
+                                    { message.suggestions.map((suggestion: string, index: number) => (
+                                        <Button
+                                            key={ `${message.id}-suggestion-${index}` }
+                                            variant="outlined"
+                                            onClick={ () => onSendMessage(suggestion) }
+                                            disabled={ loading }
+                                            className="copilot-suggestion-button"
+                                            data-componentid={ `${componentId}-suggestion-${index}` }
+                                            startIcon={ <AISparkleIcon width={ 16 } height={ 16 } /> }
+                                        >
+                                            { suggestion }
+                                        </Button>
+                                    )) }
+                                </Box>
+                            ) }
+                        </>
+                    ) }
+                </Box>
+            </Box>
+        );
+    }
+);
+
+ChatMessage.displayName = "ChatMessage";
+
+/**
  * Chat component for the copilot panel.
  *
  * @param props - Props injected to the component.
@@ -135,6 +239,8 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
         className,
         ["data-componentid"]: componentId = "copilot-chat"
     } = props;
+
+    const { t } = useTranslation();
 
     const {
         messages,
@@ -260,90 +366,6 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
         };
     }, []);
 
-    /**
-     * Render a single message.
-     */
-    const renderMessage = (message: CopilotMessage): ReactElement => {
-        const isUser: boolean = message.sender === "user";
-        const isError: boolean = message.type === "error";
-        const renderedContent: string = message.type === "streaming"
-            ? normalizeStreamingMarkdown(message.content)
-            : message.content;
-
-        if (isUser) {
-            // User message - orange bubble on the right
-            return (
-                <Box
-                    key={ message.id }
-                    className="copilot-message user-message"
-                    data-componentid={ `${componentId}-message-${message.id}` }
-                >
-                    <Box className="copilot-message-content">
-                        <Paper elevation={ 0 } className="copilot-message-bubble">
-                            { message.content }
-                        </Paper>
-                    </Box>
-                </Box>
-            );
-        } else {
-            // Copilot message - gray bubble on the left
-            const isLastMessage: boolean = messages[messages.length - 1]?.id === message.id;
-
-            return (
-                <Box
-                    key={ message.id }
-                    className="copilot-message bot-message"
-                    data-componentid={ `${componentId}-message-${message.id}` }
-                >
-                    <Box className="copilot-message-content">
-                        <Paper
-                            elevation={ 0 }
-                            className={ `copilot-message-bubble ${isError ? "error-message" : ""}` }
-                        >
-                            <MessageErrorBoundary>
-                                <Markdown source={ renderedContent } />
-                            </MessageErrorBoundary>
-                        </Paper>
-
-                        { /* Render suggestions if they exist and this is the latest message */ }
-                        { !isError && isLastMessage && (
-                            <>
-                                { message.suggestionsLoading && !message.suggestions && (
-                                    <Box className="copilot-follow-up-suggestions-list">
-                                        { [ 0, 1 ].map((i: number) => (
-                                            <Skeleton
-                                                key={ `${message.id}-suggestion-skeleton-${i}` }
-                                                variant="rounded"
-                                                className="copilot-suggestion-skeleton"
-                                            />
-                                        )) }
-                                    </Box>
-                                ) }
-                                { message.suggestions && message.suggestions.length > 0 && (
-                                    <Box className="copilot-follow-up-suggestions-list">
-                                        { message.suggestions.map((suggestion: string, index: number) => (
-                                            <Button
-                                                key={ `${message.id}-suggestion-${index}` }
-                                                variant="outlined"
-                                                onClick={ () => sendMessage(suggestion) }
-                                                disabled={ isLoading }
-                                                className="copilot-suggestion-button"
-                                                data-componentid={ `${componentId}-suggestion-${index}` }
-                                                startIcon={ <AISparkleIcon width={ 16 } height={ 16 } /> }
-                                            >
-                                                { suggestion }
-                                            </Button>
-                                        )) }
-                                    </Box>
-                                ) }
-                            </>
-                        ) }
-                    </Box>
-                </Box>
-            );
-        }
-    };
-
     return (
         <Box
             className={ `copilot-chat ${className || ""}` }
@@ -366,18 +388,29 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
                             data-componentid={ `${componentId}-load-earlier-btn` }
                             className="copilot-load-earlier-btn"
                         >
-                            { isLoadingMoreHistory ? "Loading..." : "Load earlier messages" }
+                            { isLoadingMoreHistory
+                                ? t("console:common.copilot.chat.loadingHistory")
+                                : t("console:common.copilot.chat.loadEarlier") }
                         </Button>
                     </Box>
                 ) }
                 { messages.length === 0 ? (
                     <Box className="copilot-empty-state">
                         <Typography variant="body2" className="copilot-empty-text">
-                            Start a conversation...
+                            { t("console:common.copilot.chat.emptyChat") }
                         </Typography>
                     </Box>
                 ) : (
-                    messages.map(renderMessage)
+                    messages.map((message: CopilotMessage) => (
+                        <ChatMessage
+                            key={ message.id }
+                            message={ message }
+                            isLastMessage={ message.id === messages[messages.length - 1]?.id }
+                            isLoading={ isLoading }
+                            componentId={ componentId }
+                            onSendMessage={ sendMessage }
+                        />
+                    ))
                 ) }
 
                 { /* Loading indicator */ }
@@ -391,7 +424,7 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
                                 <Box className="copilot-loading-content">
                                     <CircularProgress size={ 16 } className="copilot-loading-spinner" />
                                     <Typography variant="body2" className="copilot-loading-text">
-                                        { statusMessage || "Thinking..." }
+                                        { statusMessage || t("console:common.copilot.chat.thinking") }
                                     </Typography>
                                 </Box>
                             </Paper>
@@ -407,7 +440,7 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
                         fullWidth
                         multiline
                         maxRows={ 4 }
-                        placeholder="Enter your message here..."
+                        placeholder={ t("console:common.copilot.welcome.placeholder") }
                         value={ inputValue }
                         onChange={ handleInputChange }
                         onKeyDown={ handleKeyDown }
@@ -429,7 +462,8 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
 
                 { /* Footer */ }
                 <Typography variant="caption" className="copilot-disclaimer">
-                    Use Copilot mindfully as AI can make mistakes.
+                    { /* TODO: Switch back to "Copilot" once branding is finalized */ }
+                    { t("console:common.copilot.welcome.disclaimer") }
                 </Typography>
             </Box>
         </Box>

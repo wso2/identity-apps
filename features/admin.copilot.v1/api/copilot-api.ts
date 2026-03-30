@@ -17,7 +17,7 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { store } from "@wso2is/admin.core.v1/store";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
@@ -122,7 +122,8 @@ const getCopilotBaseUrl = (): string => {
     //return "http://localhost:8443/t/carbon.super/api/server/v1/copilot";
 
     // Production URL (uncomment for production, comment the line above)
-    const state = store.getState();
+    const state: AppState = store.getState();
+
     return `${state.config.deployment.serverHost}/api/server/v1/copilot`;
 };
 
@@ -192,8 +193,14 @@ export const sendCopilotChatMessage = async (
     const correlationId: string = `corr-${Date.now()}`;
     const requestId: string = crypto.randomUUID();
 
+    const spaClient: AsgardeoSPAClient | undefined = AsgardeoSPAClient.getInstance();
+
+    if (!spaClient) {
+        throw new Error("AsgardeoSPAClient is not initialized.");
+    }
+
     const stream: ReadableStream<Uint8Array> | undefined =
-        await (AsgardeoSPAClient.getInstance() as any).httpStreamRequest({
+        await spaClient.httpStreamRequest({
             data: { question: question.trim() },
             headers: {
                 "Accept": "text/event-stream",
@@ -279,7 +286,9 @@ export const sendCopilotChatMessage = async (
 
                     case "SUGGESTIONS":
                         if (callbacks?.onSuggestions && event.content && Array.isArray(event.content)) {
-                            callbacks.onSuggestions(event.content);
+                            callbacks.onSuggestions(
+                                event.content.map((s: string) => s.replace(/^["']|["']$/g, ""))
+                            );
                         }
 
                         break;
@@ -376,7 +385,7 @@ export const getCopilotChatHistory = async (
     const requestId: string = crypto.randomUUID();
     const correlationId: string = `corr-${Date.now()}`;
 
-    const params: any = { offset };
+    const params: { limit?: number; offset: number } = { offset };
 
     if (limit !== undefined) {
         params.limit = limit;
@@ -406,7 +415,10 @@ export const getCopilotChatHistory = async (
             const errorData: Record<string, unknown> = (error?.response?.data as Record<string, unknown>) || {};
 
             throw new Error(
-                (errorData.detail as string) || (errorData.message as string) || error.message || "Failed to fetch history"
+                (errorData.detail as string) ||
+                    (errorData.message as string) ||
+                    error.message ||
+                    "Failed to fetch history"
             );
         });
 };
