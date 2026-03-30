@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Theme, styled, useTheme } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
@@ -31,6 +32,7 @@ import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import Typography from "@oxygen-ui/react/Typography";
+
 import {
     ChevronDownIcon,
     DiamondIcon,
@@ -82,14 +84,40 @@ import "./header.scss";
 /**
  * Dashboard layout Prop types.
  */
+export interface CopilotToggleProps {
+    /**
+     * Whether the copilot panel is currently active/visible.
+     */
+    isActive: boolean;
+    /**
+     * Callback to toggle the copilot panel.
+     */
+    onClick: () => void;
+    /**
+     * Optional icon to render in the menu item.
+     */
+    icon?: ReactNode;
+}
+
 export interface HeaderPropsInterface extends HeaderProps, IdentifiableComponentInterface {
     /**
-     * Optional copilot toggle button to render in the header toolbar.
-     * Pass a rendered <CopilotToggleButton /> from the calling app to avoid
+     * Optional copilot toggle config to render as a menu item in the help dropdown.
+     * Pass \{ isActive, onClick, icon \} from the calling app to avoid
      * a direct feature dependency on admin.copilot.v1 from admin.core.v1.
      */
-    copilotToggle?: ReactNode;
+    copilotToggle?: CopilotToggleProps;
 }
+
+/**
+ * Gradient text span for the Copilot menu item label.
+ */
+const CopilotMenuItemText: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    background: `linear-gradient(135deg, ${theme.palette.primary.main}, #8b5cf6)`,
+    backgroundClip: "text",
+    fontWeight: 600
+}));
 
 /**
  * Implementation of the Reusable Header component.
@@ -104,6 +132,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     ...rest
 }: HeaderPropsInterface): ReactElement => {
     const { t } = useTranslation();
+    const _theme: Theme = useTheme();
 
     const { showPreviewFeaturesModal, setShowPreviewFeaturesModal } = useFeatureGate();
     const { canUsePreviewFeatures } = usePreviewFeatures();
@@ -284,9 +313,6 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     };
 
     const generateHeaderButtons = (): ReactElement[] => [
-        // Copilot toggle button — injected by the caller to avoid circular feature dependency
-        ...(copilotToggle ? [ <React.Fragment key="copilot-toggle">{ copilotToggle }</React.Fragment> ] : []),
-
         showLanguageSwitcher && Object.entries(filteredSupportedI18nLanguages)?.length > 1 && (
             <>
                 <Button
@@ -369,6 +395,35 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                     transformOrigin={ { horizontal: "right", vertical: "top" } }
                     onClose={ onCloseHelpMenu }
                 >
+                    { copilotToggle && (
+                        <MenuItem
+                            className="get-help-dropdown-item"
+                            onClick={ () => {
+                                copilotToggle.onClick();
+                                onCloseHelpMenu();
+                            } }
+                        >
+                            <>
+                                { copilotToggle.icon && (
+                                    <ListItemIcon className="get-help-icon">
+                                        { copilotToggle.icon }
+                                    </ListItemIcon>
+                                ) }
+                                <ListItemText
+                                    primary={
+                                        (
+                                            <CopilotMenuItemText
+                                                component="span"
+                                            >
+                                                { t("console:common.copilot.title") }
+                                            </CopilotMenuItemText>
+                                        )
+                                    }
+                                />
+                            </>
+                        </MenuItem>
+                    ) }
+                    { copilotToggle && <Divider className="get-help-dropdown-divider" /> }
                     { window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL && (
                         <MenuItem
                             className="get-help-dropdown-item contact-support-dropdown-item"

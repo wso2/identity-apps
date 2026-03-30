@@ -130,17 +130,17 @@ export interface ConsoleNS {
                 chat: string;
                 help: string;
             };
-            chat: {
-                empty: string;
-                placeholder: string;
-                thinking: string;
-                error: string;
-            };
             help: {
                 content: string;
             };
             documentation: {
                 content: string;
+            };
+            chat: {
+                emptyChat: string;
+                loadEarlier: string;
+                loadingHistory: string;
+                thinking: string;
             };
             welcome: {
                 actions: {

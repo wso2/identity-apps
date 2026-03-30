@@ -6117,6 +6117,9 @@ importers:
 
   features/admin.copilot.v1:
     dependencies:
+      '@asgardeo/auth-react':
+        specifier: ^5.6.0
+        version: 5.6.0(@babel/runtime-corejs3@7.26.7)(react-dom@18.3.1)(react@18.3.1)
       '@emotion/react':
         specifier: ^11.11.0
         version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
@@ -6136,7 +6139,7 @@ importers:
         specifier: ^2.4.5
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.3
+        specifier: workspace:^
         version: link:../admin.core.v1
       '@wso2is/core':
         specifier: ^2.8.1
@@ -6148,8 +6151,8 @@ importers:
         specifier: ^2.9.18
         version: link:../../modules/react-components
       axios:
-        specifier: 1.7.9
-        version: 1.7.9
+        specifier: 1.7.0
+        version: 1.7.0
       classnames:
         specifier: ^2.2.6
         version: 2.5.1

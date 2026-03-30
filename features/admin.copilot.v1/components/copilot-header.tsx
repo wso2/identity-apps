@@ -130,15 +130,17 @@ const CopilotHeader: React.FunctionComponent<CopilotHeaderProps> = (
                 <Box className="copilot-header-actions">
                     { messages.length > 0 && (
                         <Tooltip title={ t("console:common.copilot.clearChat.title") }>
-                            <IconButton
-                                size="small"
-                                onClick={ handleClearChatClick }
-                                disabled={ isRefreshing }
-                                data-componentid={ `${componentId}-refresh-button` }
-                                className={ `copilot-action-button ${isRefreshing ? "refreshing" : ""}` }
-                            >
-                                <RefreshIcon fontSize="small" />
-                            </IconButton>
+                            <span>
+                                <IconButton
+                                    size="small"
+                                    onClick={ handleClearChatClick }
+                                    disabled={ isRefreshing }
+                                    data-componentid={ `${componentId}-refresh-button` }
+                                    className={ `copilot-action-button ${isRefreshing ? "refreshing" : ""}` }
+                                >
+                                    <RefreshIcon fontSize="small" />
+                                </IconButton>
+                            </span>
                         </Tooltip>
                     ) }
                     { onToggleExpand && (

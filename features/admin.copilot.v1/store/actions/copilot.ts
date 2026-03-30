@@ -228,6 +228,8 @@ export const fetchCopilotHistory = () => {
             const currentMessages: CopilotMessage[] = currentState?.copilot?.messages || [];
 
             if (currentMessages.length > 0) {
+                dispatch(setCopilotPanelLoading(false));
+
                 return;
             }
 
@@ -369,7 +371,7 @@ export const setCopilotContentType = (contentType: CopilotContentType): SetCopil
 /**
  * Minimum time (ms) to display each status message before allowing the next.
  */
-const STATUS_MIN_DISPLAY_MS: number = 800;
+const STATUS_MIN_DISPLAY_MS: number = 200;
 
 /**
  * Status message queue that guarantees each message displays for a minimum duration.
@@ -514,11 +516,31 @@ export const sendCopilotMessage = (userMessage: string) => {
         let drainingStatus: boolean = false;
         let suggestionsTimeoutId: ReturnType<typeof setTimeout> | null = null;
 
+        // Token batching: collect tokens within a 16ms window (one animation frame)
+        // and dispatch them as a single concatenated string. This reduces Redux
+        // dispatch frequency from potentially hundreds/sec to max ~60/sec, which
+        // directly reduces how often the Markdown parser runs during streaming.
+        const tokenBatch: string[] = [];
+        let tokenFlushTimer: ReturnType<typeof setTimeout> | null = null;
+
+        const flushTokenBatch = (): void => {
+            tokenFlushTimer = null;
+            if (tokenBatch.length === 0) return;
+            const joined: string = tokenBatch.splice(0).join("");
+
+            dispatch(updateCopilotMessage({ content: joined, id: aiMessageId }));
+        };
+
         try {
             await sendCopilotChatMessage(
                 userMessage,
                 {
                     onComplete: () => {
+                        // Flush any tokens still waiting in the 16ms batch before finalizing.
+                        if (tokenFlushTimer !== null) {
+                            clearTimeout(tokenFlushTimer);
+                            flushTokenBatch();
+                        }
                         dispatch(updateCopilotMessage({
                             content: "",
                             id: aiMessageId,
@@ -574,32 +596,26 @@ export const sendCopilotMessage = (userMessage: string) => {
                             // Buffer this token
                             pendingTokens.push(content);
 
-                            // On the very first token, kick off the status drain in the background.
-                            // Once it finishes, flush all buffered tokens one-by-one then go live.
+                            // On the very first token, immediately transition to the answer.
                             if (!drainingStatus) {
                                 drainingStatus = true;
-                                statusQueue.drain().then(() => {
-                                    if (signal.aborted) return;
-                                    aiMessageAdded = true;
-                                    dispatch(setCopilotStatusMessage(null));
-                                    dispatch(addCopilotMessage(aiPlaceholder));
-                                    dispatch(setCopilotPanelLoading(false));
+                                statusQueue.cancel();
+                                aiMessageAdded = true;
+                                dispatch(setCopilotStatusMessage(null));
+                                dispatch(addCopilotMessage(aiPlaceholder));
+                                dispatch(setCopilotPanelLoading(false));
 
-                                    // Flush every buffered token individually so the reducer
-                                    // appends one at a time → typing effect for the buffered part
-                                    const toFlush: string[] = pendingTokens.splice(0);
+                                // Flush all buffered pre-first-token content as one dispatch.
+                                const initialContent: string = pendingTokens.splice(0).join("");
 
-                                    for (const t of toFlush) {
-                                        dispatch(updateCopilotMessage({ content: t, id: aiMessageId }));
-                                    }
-                                });
+                                dispatch(updateCopilotMessage({ content: initialContent, id: aiMessageId }));
                             }
                         } else {
-                            // Already live — dispatch token directly for real-time typing effect
-                            dispatch(updateCopilotMessage({
-                                content,
-                                id: aiMessageId
-                            }));
+                            // Batch tokens within a 16ms window to reduce Markdown re-renders.
+                            tokenBatch.push(content);
+                            if (tokenFlushTimer === null) {
+                                tokenFlushTimer = setTimeout(flushTokenBatch, 16);
+                            }
                         }
                     }
                 },

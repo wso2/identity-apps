@@ -23,7 +23,8 @@ import Skeleton from "@oxygen-ui/react/Skeleton";
 import Snackbar from "@oxygen-ui/react/Snackbar";
 import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
-import { CopilotPanel, CopilotToggleButton } from "@wso2is/admin.copilot.v1/components";
+import { AISparkleIcon, CopilotPanel } from "@wso2is/admin.copilot.v1/components";
+import { useCopilotPanel } from "@wso2is/admin.copilot.v1/hooks";
 import Header from "@wso2is/admin.core.v1/components/header";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
@@ -162,6 +163,8 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const { isOrganizationSwitchRequestLoading } = useOrganizations();
+
+    const { isVisible: isCopilotVisible, togglePanel: toggleCopilotPanel } = useCopilotPanel();
 
     useEffect(() => {
         if (!location?.pathname) {
@@ -426,7 +429,15 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                 className="dashboard-layout"
                 header={
                     (<Header
-                        copilotToggle={ <CopilotToggleButton data-componentid="header-copilot-toggle" /> }
+                        copilotToggle={ featureConfig?.copilot?.enabled ? {
+                            icon: <AISparkleIcon
+                                width={ 20 }
+                                height={ 20 }
+                                data-componentid="header-copilot-menu-icon"
+                            />,
+                            isActive: isCopilotVisible,
+                            onClick: toggleCopilotPanel
+                        } : undefined }
                         onCollapsibleHamburgerClick={ handleSidePanelToggleClick }
                     />)
                 }
@@ -511,15 +522,17 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                         <Switch>{ resolveRoutes() as ReactNode[] }</Switch>
                     </Suspense>
                 </ErrorBoundary>
-                <ErrorBoundary
-                    onChunkLoadError={ AppUtils.onChunkLoadError }
-                    handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {
-                        sessionStorage.setItem("auth_callback_url_console", config.deployment.appHomePath);
-                    } }
-                    fallback={ null }
-                >
-                    <CopilotPanel data-componentid="dashboard-copilot-panel" />
-                </ErrorBoundary>
+                { featureConfig?.copilot?.enabled && (
+                    <ErrorBoundary
+                        onChunkLoadError={ AppUtils.onChunkLoadError }
+                        handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {
+                            sessionStorage.setItem("auth_callback_url_console", config.deployment.appHomePath);
+                        } }
+                        fallback={ null }
+                    >
+                        <CopilotPanel data-componentid="dashboard-copilot-panel" />
+                    </ErrorBoundary>
+                ) }
             </AppShell>
         </>
     );

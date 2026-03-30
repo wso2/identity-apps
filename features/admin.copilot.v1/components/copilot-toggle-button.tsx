@@ -20,6 +20,7 @@ import Badge from "@oxygen-ui/react/Badge";
 import Button from "@oxygen-ui/react/Button";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ReactElement, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import AISparkleIcon from "./ai-sparkle-icon";
 import { useCopilotPanel } from "../hooks";
 import "./copilot-toggle-button.scss";
@@ -58,6 +59,8 @@ const CopilotToggleButton: React.FunctionComponent<CopilotToggleButtonProps> = (
         ["data-componentid"]: componentId = "copilot-toggle-button"
     } = props;
 
+    const { t } = useTranslation();
+
     const {
         isVisible,
         togglePanel
@@ -78,7 +81,8 @@ const CopilotToggleButton: React.FunctionComponent<CopilotToggleButtonProps> = (
             data-componentid={ componentId }
             startIcon={ <AISparkleIcon width={ 20 } height={ 20 } /> }
         >
-            <span className="copilot-toggle-btn-text">Copilot</span>
+            { /* TODO: Switch back to "Copilot" once branding is finalized */ }
+            <span className="copilot-toggle-btn-text">{ t("console:common.copilot.title") }</span>
         </Button>
     );
 

@@ -22,7 +22,8 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import { ArrowLeftIcon } from "@oxygen-ui/react-icons";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
-import { CopilotToggleButton } from "@wso2is/admin.copilot.v1/components";
+import { AISparkleIcon } from "@wso2is/admin.copilot.v1/components";
+import { useCopilotPanel } from "@wso2is/admin.copilot.v1/hooks";
 import Header from "@wso2is/admin.core.v1/components/header";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
@@ -86,6 +87,8 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
     );
 
     const hasGettingStartedViewPermission: boolean = useRequiredScopes(gettingStartedFeatureConfig?.scopes?.feature);
+
+    const { isVisible: isCopilotVisible, togglePanel: toggleCopilotPanel } = useCopilotPanel();
 
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getDefaultLayoutRoutes());
 
@@ -188,7 +191,15 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
             <AppShell
                 header={
                     (<Header
-                        copilotToggle={ <CopilotToggleButton data-componentid="header-copilot-toggle" /> }
+                        copilotToggle={ featureConfig?.copilot?.enabled ? {
+                            icon: <AISparkleIcon
+                                width={ 20 }
+                                height={ 20 }
+                                data-componentid="header-copilot-menu-icon"
+                            />,
+                            isActive: isCopilotVisible,
+                            onClick: toggleCopilotPanel
+                        } : undefined }
                         onCollapsibleHamburgerClick={ () => {
                             hasGettingStartedViewPermission && history.push(appHomePath);
                         } }

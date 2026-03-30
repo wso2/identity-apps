@@ -332,8 +332,8 @@
                         opacity: 0;
 
                         .copilot-suggestion-button {
-                            justify-content: center;
-                            text-align: center;
+                            justify-content: flex-start;
+                            text-align: left;
                             text-transform: none;
                             padding: $copilot-spacing-sm $copilot-spacing-lg;
                             border-radius: $copilot-border-radius-xxl;
@@ -342,8 +342,11 @@
                             color: $copilot-text-color-primary;
                             font-size: $copilot-font-size-md;
                             font-weight: $copilot-font-weight-medium;
-                            white-space: nowrap;
+                            white-space: normal;
                             min-width: auto;
+                            max-width: $copilot-suggestion-chip-max-width;
+                            line-height: $copilot-line-height-normal;
+                            height: auto;
 
                             &:hover {
                                 background-color: $copilot-background-color-hover;

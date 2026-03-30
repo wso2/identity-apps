@@ -865,6 +865,18 @@
                     ]
                 }
             },
+            "copilot": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [],
+                    "update": []
+                }
+            },
             "customerDataProfileAttributes": {
                 "disabledFeatures": [],
                 "enabled": false,

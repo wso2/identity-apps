@@ -138,6 +138,10 @@ export interface FeatureConfigInterface {
      */
     certificates?: FeatureAccessConfigInterface;
     /**
+     * Copilot AI assistant feature.
+     */
+    copilot?: FeatureAccessConfigInterface;
+    /**
      * Email providers feature.
      */
     emailProviders?: FeatureAccessConfigInterface;
