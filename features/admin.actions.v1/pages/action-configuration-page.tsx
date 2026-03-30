@@ -62,10 +62,15 @@ import PreUpdateProfileActionConfigForm from "../components/pre-update-profile-a
 import { ActionsConstants } from "../constants/actions-constants";
 import { ActionVersionInfo, useActionVersioning } from "../hooks/use-action-versioning";
 import {
-    ActionConfigFormPropertyInterface, PreUpdatePasswordActionConfigFormPropertyInterface,
+    ActionConfigFormPropertyInterface, 
+    PreUpdatePasswordActionConfigFormPropertyInterface,
     PreUpdatePasswordActionResponseInterface,
     PreUpdateProfileActionConfigFormPropertyInterface,
-    PreUpdateProfileActionResponseInterface
+    PreUpdateProfileActionResponseInterface,
+    PreIssueAccessTokenActionConfigFormPropertyInterface,
+    PreIssueAccessTokenActionResponseInterface,
+    PreIssueIdTokenActionConfigFormPropertyInterface,
+    PreIssueIdTokenActionResponseInterface
 } from "../models/actions";
 import { useHandleError, useHandleSuccess } from "../util/alert-util";
 import "./action-configuration-page.scss";
@@ -193,6 +198,30 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 return {
                     ...actionCommonInitialValues,
                     attributes: (action as PreUpdateProfileActionResponseInterface)?.attributes
+                };
+            } else {
+                return null;
+            }
+        }, [ action ]);
+
+    const preIssueAccessTokenActionInitialValues: PreIssueAccessTokenActionConfigFormPropertyInterface =
+        useMemo(() => {
+            if (action && actionTypeApiPath === ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH ) {
+                return {
+                    ...actionCommonInitialValues,
+                    attributes: (action as PreIssueAccessTokenActionResponseInterface)?.attributes
+                };
+            } else {
+                return null;
+            }
+        }, [ action ]);
+
+    const preIssueIdTokenActionInitialValues: PreIssueIdTokenActionConfigFormPropertyInterface =
+        useMemo(() => {
+            if (action && actionTypeApiPath === ActionsConstants.PRE_ISSUE_ID_TOKEN_API_PATH ) {
+                return {
+                    ...actionCommonInitialValues,
+                    attributes: (action as PreIssueIdTokenActionResponseInterface)?.attributes
                 };
             } else {
                 return null;
@@ -504,7 +533,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                         <Grid.Column width={ 16 }>
                             { actionTypeApiPath === ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH && (
                                 <PreIssueAccessTokenActionConfigForm
-                                    initialValues={ actionCommonInitialValues }
+                                    initialValues={ preIssueAccessTokenActionInitialValues }
                                     isLoading={ isLoading }
                                     isReadOnly={ isReadOnly() }
                                     actionTypeApiPath={ actionTypeApiPath }
@@ -514,7 +543,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                             ) }
                             { actionTypeApiPath === ActionsConstants.PRE_ISSUE_ID_TOKEN_API_PATH && (
                                 <PreIssueIdTokenActionConfigForm
-                                    initialValues={ actionCommonInitialValues }
+                                    initialValues={ preIssueIdTokenActionInitialValues }
                                     isLoading={ isLoading }
                                     isReadOnly={ isReadOnly() }
                                     actionTypeApiPath={ actionTypeApiPath }
