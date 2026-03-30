@@ -202,7 +202,7 @@
                                         </a>
                                     <% } else {
                                         String multiOptionURI = request.getParameter("multiOptionURI");
-                                        if (multiOptionURI != null && AuthenticationEndpointUtil.isValidURL(multiOptionURI)) {
+                                        if (multiOptionURI != null && AuthenticationEndpointUtil.isValidMultiOptionURI(multiOptionURI)) {
                                     %>
                                         <a class="ui button secondary" id="goBackLink"
                                             href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
@@ -219,7 +219,7 @@
                         <div class="ui divider hidden"></div>
                         <%
                             String multiOptionURI = request.getParameter("multiOptionURI");
-                            if (multiOptionURI != null && isSendVerificationCodeByEmailEnabled && AuthenticationEndpointUtil.isValidURL(multiOptionURI)) {
+                            if (multiOptionURI != null && isSendVerificationCodeByEmailEnabled && AuthenticationEndpointUtil.isValidMultiOptionURI(multiOptionURI)) {
                         %>
                             <a class="ui button secondary" id="goBackLink"
                             href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
