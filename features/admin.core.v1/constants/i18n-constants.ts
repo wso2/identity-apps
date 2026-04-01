@@ -354,6 +354,12 @@ export class I18nConstants {
     public static readonly CONSENTS_NAMESPACE: string = I18nModuleConstants.CONSENTS_NAMESPACE;
 
     /**
+     * In-Flow Extension namespace.
+     */
+    public static readonly IN_FLOW_EXTENSION_NAMESPACE: string =
+        I18nModuleConstants.IN_FLOW_EXTENSION_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      */
 
@@ -420,10 +426,15 @@ export class I18nConstants {
         [ I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE, "portals" ],
         [ I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE, "portals" ],
 <<<<<<< HEAD
+<<<<<<< HEAD
         [ I18nConstants.FLOW_EXTENSION_NAMESPACE, "portals" ]
 =======
         [ I18nConstants.CONSENTS_NAMESPACE, "portals" ]
 >>>>>>> ae1042b0dc (Merge pull request #10286 from hwupathum/consent-policy)
+=======
+        [ I18nConstants.CONSENTS_NAMESPACE, "portals" ],
+        [ I18nConstants.IN_FLOW_EXTENSION_NAMESPACE, "portals" ]
+>>>>>>> 156fe917b5 (Add Flow Context Tree component and related models for the In-Flow Extesnsion connection creation and setup.)
     ]);
 
     /**

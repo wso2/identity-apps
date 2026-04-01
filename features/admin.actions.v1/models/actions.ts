@@ -40,7 +40,8 @@ export enum ActionType {
     PRE_UPDATE_PASSWORD = "PRE_UPDATE_PASSWORD",
     PRE_UPDATE_PROFILE = "PRE_UPDATE_PROFILE",
     PRE_REGISTRATION = "PRE_REGISTRATION",
-    PRE_ISSUE_ID_TOKEN = "PRE_ISSUE_ID_TOKEN"
+    PRE_ISSUE_ID_TOKEN = "PRE_ISSUE_ID_TOKEN",
+    IN_FLOW_EXTENSION = "IN_FLOW_EXTENSION"
 }
 
 /**
@@ -643,4 +644,28 @@ export interface AccessConfigInterface {
  */
 export interface EncryptionInterface {
     certificate?: string;
+}
+
+/**
+ * In-Flow Extension Action configuration (create request body).
+ */
+export interface InFlowExtensionActionInterface extends ActionInterface {
+    accessConfig?: AccessConfigInterface;
+    encryption?: EncryptionInterface;
+}
+
+/**
+ * In-Flow Extension Action response.
+ */
+export interface InFlowExtensionActionResponseInterface extends ActionResponseInterface {
+    accessConfig?: AccessConfigInterface;
+    encryption?: EncryptionInterface;
+}
+
+/**
+ * In-Flow Extension Action update configuration.
+ */
+export interface InFlowExtensionActionUpdateInterface extends ActionUpdateInterface {
+    accessConfig?: AccessConfigInterface;
+    encryption?: EncryptionInterface;
 }

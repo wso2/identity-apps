@@ -968,12 +968,8 @@ export enum EndpointAuthenticationType {
     BASIC = "BASIC",
     API_KEY = "API_KEY",
     BEARER = "BEARER",
-<<<<<<< HEAD
-    CLIENT_CREDENTIAL = "CLIENT_CREDENTIAL"
-=======
     CLIENT_CREDENTIAL = "CLIENT_CREDENTIAL",
-    PASSWORD_CREDENTIAL = "PASSWORD_CREDENTIAL",
->>>>>>> fb4e481319 (Provide Console UI support to configure OAuth Client Credentials and Password Credentials Based Authentication for Custom Authenticators)
+    PASSWORD_CREDENTIAL = "PASSWORD_CREDENTIAL"
 }
 
 interface CustomAuthenticatorCreateWizardProps extends GenericConnectionCreateWizardPropsInterface,
