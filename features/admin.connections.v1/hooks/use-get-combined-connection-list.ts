@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import useGetActionsByType from "@wso2is/admin.actions.v1/api/use-get-actions-by-type";
 import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { AuthenticatorExtensionsConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import {
@@ -105,9 +106,18 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
         shouldFetchIdVPs && shouldFilterIdVPs()
     );
 
+    const {
+        data: fetchedInFlowExtensions,
+        isLoading: isInFlowExtensionsFetchRequestLoading,
+        isValidating: isInFlowExtensionsFetchRequestValidating,
+        error: inFlowExtensionsFetchRequestError,
+        mutate: mutateInFlowExtensionsFetchRequest
+    } = useGetActionsByType("inFlowExtension", shouldFetchAuthenticators && offset === 0);
+
     const combinedData: ConnectionInterface[] = [];
 
-    if (!isAuthenticatorsFetchRequestLoading && !isIdVPListFetchRequestLoading) {
+    if (!isAuthenticatorsFetchRequestLoading && !isIdVPListFetchRequestLoading
+        && !isInFlowExtensionsFetchRequestLoading) {
 
         // Add Local Authenticators to the beginning of the list.
         for (const authenticator of fetchedAuthenticatorsList) {
@@ -167,19 +177,37 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
                 } as ConnectionInterface);
             }
         }
+
+        // Add In-Flow Extensions to the list.
+        if (fetchedInFlowExtensions?.length) {
+            for (const extension of fetchedInFlowExtensions) {
+                combinedData.push({
+                    description: extension.description,
+                    id: extension.id,
+                    image: AuthenticatorMeta.getInFlowExtensionIcon(),
+                    name: extension.name,
+                    tags: [ "APIAuth" ],
+                    type: "IN_FLOW_EXTENSION" as ConnectionTypes
+                } as ConnectionInterface);
+            }
+        }
     }
 
     return {
         data: combinedData as Data,
         error: authenticatorsFetchRequestError as AxiosError<Error>
-            || idVPListFetchRequestError as AxiosError<Error>,
+            || idVPListFetchRequestError as AxiosError<Error>
+            || inFlowExtensionsFetchRequestError as AxiosError<Error>,
         isLoading: isAuthenticatorsFetchRequestLoading
-            || isIdVPListFetchRequestLoading,
+            || isIdVPListFetchRequestLoading
+            || isInFlowExtensionsFetchRequestLoading,
         isValidating: isAuthenticatorsFetchRequestValidating
-            || isIdVPListFetchRequestValidating,
+            || isIdVPListFetchRequestValidating
+            || isInFlowExtensionsFetchRequestValidating,
         mutate: () => {
             mutateAuthenticatorsFetchRequest();
             mutateIdVPListFetchRequest();
+            mutateInFlowExtensionsFetchRequest();
         }
     };
 };

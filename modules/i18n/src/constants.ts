@@ -416,6 +416,11 @@ export class I18nModuleConstants {
     public static readonly FLOWS_NAMESPACE: string = "flows";
 
     /**
+     * In-Flow Extension namespace.
+     */
+    public static readonly IN_FLOW_EXTENSION_NAMESPACE: string = "inFlowExtension";
+
+    /**
      * Constant representing the text direction handling attribute.
      */
     public static readonly TEXT_DIRECTION_ATTRIBUTE: string = "dir";

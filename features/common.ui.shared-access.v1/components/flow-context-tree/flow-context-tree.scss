@@ -1,0 +1,226 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+// ── Color tokens for the FlowContextTree component ──
+// These map to the Oxygen UI theme where possible.
+// Custom domain colors (expose orange, modify blue) are defined here
+// so they can be updated centrally during a rebrand.
+
+$expose-color: #ff7300;
+$expose-faint: #FFF4EC;
+$modify-color: #1565C0;
+$modify-faint: #E3F2FD;
+$encrypt-green: #2E7D32;
+$encrypt-green-faint: #E8F5E9;
+$danger-color: #C0392B;
+
+$gray-05: #F5F5F5;
+$gray-10: #EBEBEB;
+$gray-20: #D0D0D0;
+$gray-35: #A0A0A0;
+$gray-50: #787878;
+$gray-70: #4A4A4A;
+$gray-90: #2C2C2C;
+
+$type-tag-font: 'JetBrains Mono', monospace;
+$indent: 18px;
+$row-min-height: 28px;
+$chip-height: 15px;
+
+// ── Encryption mini-switch ──
+// Small toggle that sits inline next to EXPOSE / MODIFY chips.
+
+// ── Global: prevent Semantic UI blurring dimmer from blurring MUI Dialogs ──
+// MUI Dialog portals to <body>. Semantic UI's dimmer="blurring" applies
+// blur(5px) to ALL body children except .dimmer. This rule opts Dialog out
+// and lifts it above the Semantic UI modal (z-index 1001) + dimmer (z-index 1000).
+.blurring.dimmed.dimmable > :not(.dimmer).MuiDialog-root {
+    filter: none !important;
+    z-index: 2000 !important;
+}
+
+.flow-context-tree {
+    // CSS custom properties for domain colors — usable in TSX via var()
+    --tree-expose: #{$expose-color};
+    --tree-expose-faint: #{$expose-faint};
+    --tree-modify: #{$modify-color};
+    --tree-modify-faint: #{$modify-faint};
+    --tree-green: #{$encrypt-green};
+    --tree-gray-20: #{$gray-20};
+
+    .tree-node-row {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: 4px;
+        min-height: $row-min-height;
+        // Use individual properties so dynamic pl from sx prop is not overridden
+        padding-top: 4px;
+        padding-right: 10px;
+        padding-bottom: 4px;
+        border: 1px solid transparent;
+        border-radius: 6px;
+        position: relative;
+        transition: background 0.1s, border-color 0.1s;
+        cursor: default;
+
+        &.expandable {
+            cursor: pointer;
+        }
+
+        &:hover {
+            background-color: $expose-faint;
+        }
+    }
+
+    .encrypt-mini-switch {
+        display: inline-flex;
+        align-items: center;
+        gap: 2px;
+        flex-shrink: 0;
+
+        .MuiSwitch-root {
+            width: 22px !important;
+            height: 12px !important;
+            padding: 0 !important;
+        }
+
+        .MuiSwitch-switchBase {
+            padding: 1px !important;
+            color: $gray-20 !important;
+
+            &.Mui-checked {
+                transform: translateX(10px) !important;
+            }
+        }
+
+        .MuiSwitch-thumb {
+            width: 10px !important;
+            height: 10px !important;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .MuiSwitch-track {
+            border-radius: 6px;
+            opacity: 1 !important;
+            background-color: #fff !important;
+            border: 1px solid $gray-20;
+        }
+
+        &.expose-encrypt {
+            .MuiSwitch-switchBase.Mui-checked {
+                color: $expose-color !important;
+            }
+        }
+
+        &.modify-encrypt {
+            .MuiSwitch-switchBase.Mui-checked {
+                color: $modify-color !important;
+            }
+        }
+    }
+
+    .add-entry-chip {
+        margin-left: 6px;
+    }
+
+    // ── Operation chip styles ──
+    .expose-chip,
+    .modify-chip {
+        flex-shrink: 0;
+        font-size: 8px;
+        font-weight: 600;
+        height: $chip-height;
+        letter-spacing: 0.05em;
+        border-radius: 20px;
+        transition: all 0.12s ease;
+    }
+
+    .expose-chip-active {
+        background-color: $expose-faint;
+        border: 1px solid $expose-color;
+        color: $expose-color;
+        font-weight: 700;
+    }
+
+    .expose-chip:not(.expose-chip-active) {
+        background-color: transparent;
+        border: 1px solid $gray-10;
+        color: $gray-50;
+
+        &:hover {
+            background-color: $expose-faint;
+            border-color: $expose-color;
+            color: $expose-color;
+        }
+    }
+
+    .modify-chip-active {
+        background-color: $modify-faint;
+        border: 1px solid $modify-color;
+        color: $modify-color;
+        font-weight: 700;
+    }
+
+    .modify-chip:not(.modify-chip-active) {
+        background-color: transparent;
+        border: 1px solid $gray-10;
+        color: $gray-50;
+
+        &:hover {
+            background-color: $modify-faint;
+            border-color: $modify-color;
+            color: $modify-color;
+        }
+    }
+
+    // Lock icon used in collapsed (non-hovered) state.
+    .lock-icon {
+        display: inline-flex;
+        align-items: center;
+        flex-shrink: 0;
+
+        &.lock-expose-only svg {
+            stroke: $expose-color;
+        }
+        &.lock-modify-only svg {
+            stroke: $modify-color;
+        }
+        &.lock-both svg {
+            stroke: $encrypt-green;
+        }
+    }
+
+    // ── Tree connector lines ──
+    .tree-connector-vertical {
+        position: absolute;
+        width: 1px;
+        top: 0;
+        bottom: 0;
+        background-color: $gray-10;
+        pointer-events: none;
+    }
+    .tree-connector-horizontal {
+        position: absolute;
+        height: 1px;
+        top: 50%;
+        width: 9px;
+        background-color: $gray-10;
+        pointer-events: none;
+    }
+}

@@ -38,7 +38,8 @@ export enum ActionType {
     PRE_UPDATE_PASSWORD = "PRE_UPDATE_PASSWORD",
     PRE_UPDATE_PROFILE = "PRE_UPDATE_PROFILE",
     PRE_REGISTRATION = "PRE_REGISTRATION",
-    PRE_ISSUE_ID_TOKEN = "PRE_ISSUE_ID_TOKEN"
+    PRE_ISSUE_ID_TOKEN = "PRE_ISSUE_ID_TOKEN",
+    IN_FLOW_EXTENSION = "IN_FLOW_EXTENSION"
 }
 
 /**
@@ -549,4 +550,52 @@ export interface ActionTypeCardInterface {
      * Disabled status of the Action type.
      */
     disabled?: boolean
+}
+
+/**
+ * Expose entry in access config.
+ * Also used for modify entries (same structure: path + optional encryption flag).
+ */
+export interface ContextPathInterface {
+    path: string;
+    encrypted: boolean;
+}
+
+/**
+ * Access config for In-Flow Extension actions.
+ */
+export interface AccessConfigInterface {
+    expose: ContextPathInterface[];
+    modify: ContextPathInterface[];
+}
+
+/**
+ * Encryption config for In-Flow Extension actions.
+ */
+export interface EncryptionInterface {
+    certificate?: string;
+}
+
+/**
+ * In-Flow Extension Action configuration (create request body).
+ */
+export interface InFlowExtensionActionInterface extends ActionInterface {
+    accessConfig?: AccessConfigInterface;
+    encryption?: EncryptionInterface;
+}
+
+/**
+ * In-Flow Extension Action response.
+ */
+export interface InFlowExtensionActionResponseInterface extends ActionResponseInterface {
+    accessConfig?: AccessConfigInterface;
+    encryption?: EncryptionInterface;
+}
+
+/**
+ * In-Flow Extension Action update configuration.
+ */
+export interface InFlowExtensionActionUpdateInterface extends ActionUpdateInterface {
+    accessConfig?: AccessConfigInterface;
+    encryption?: EncryptionInterface;
 }
