@@ -383,9 +383,11 @@ export class ConnectionUIConstants {
     public static readonly CONNECTION_TEMPLATE_GROUPS: {
         CUSTOM_AUTHENTICATOR: string;
         ENTERPRISE_PROTOCOLS: string;
+        IN_FLOW_EXTENSION: string;
     } = {
             CUSTOM_AUTHENTICATOR: "custom-authenticator",
-            ENTERPRISE_PROTOCOLS: "enterprise-protocols"
+            ENTERPRISE_PROTOCOLS: "enterprise-protocols",
+            IN_FLOW_EXTENSION: "in-flow-extension"
         };
 
     public static readonly IMPLICIT_ACCOUNT_LINKING_ATTRIBUTES: string[] = [

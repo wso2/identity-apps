@@ -682,6 +682,20 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         },
         {
+            category: "console:develop.features.sidePanel.categories.application",
+            component: lazy(() => import(
+                "@wso2is/admin.connections.v1/pages/in-flow-extension-edit-page")
+            ),
+            exact: true,
+            icon: { icon: getSidePanelIcons().connections },
+            id: "inFlowExtensionEdit",
+            name: "In-Flow Extension Edit",
+            order: 4,
+            path: AppConstants.getPaths().get("IN_FLOW_EXTENSION_EDIT"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
             category: "extensions:manage.sidePanel.categories.attributeManagement",
             children: [
                 {

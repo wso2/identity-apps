@@ -1,0 +1,137 @@
+{
+    "contextTree": [
+        {
+            "key": "user",
+            "title": "user",
+            "path": "/user/",
+            "dataType": "FlowUser",
+            "nodeType": "OBJECT",
+            "allowedOperations": ["EXPOSE"],
+            "children": [
+                {
+                    "key": "userId",
+                    "title": "userId",
+                    "path": "/user/userId",
+                    "dataType": "String",
+                    "nodeType": "LEAF",
+                    "allowedOperations": ["EXPOSE"],
+                    "replaceable": false
+                },
+                {
+                    "key": "userStoreDomain",
+                    "title": "userStoreDomain",
+                    "path": "/user/userStoreDomain",
+                    "dataType": "String",
+                    "nodeType": "LEAF",
+                    "allowedOperations": ["EXPOSE"],
+                    "replaceable": false
+                },
+                {
+                    "key": "claims",
+                    "title": "claims",
+                    "path": "/user/claims/",
+                    "dataType": "Map<String, String>",
+                    "nodeType": "MAP",
+                    "allowedOperations": ["EXPOSE"],
+                    "dynamicEntryAllowed": true,
+                    "dynamicEntryType": "String",
+                    "children": []
+                },
+                {
+                    "key": "credentials",
+                    "title": "credentials",
+                    "path": "/user/credentials/",
+                    "dataType": "Map<String, char[]>",
+                    "nodeType": "MAP",
+                    "readOnly": true,
+                    "allowedOperations": ["EXPOSE"],
+                    "dynamicEntryAllowed": true,
+                    "dynamicEntryType": "char[]",
+                    "children": []
+                },
+                {
+                    "key": "federatedAssociations",
+                    "title": "federatedAssociations",
+                    "path": "/user/federatedAssociations/",
+                    "dataType": "Map<String, String>",
+                    "nodeType": "MAP",
+                    "allowedOperations": ["EXPOSE"],
+                    "dynamicEntryAllowed": true,
+                    "dynamicEntryType": "String",
+                    "children": []
+                }
+            ]
+        },
+        {
+            "key": "flow",
+            "title": "flow",
+            "path": "/flow/",
+            "dataType": "FlowMetadata",
+            "nodeType": "OBJECT",
+            "allowedOperations": ["EXPOSE"],
+            "readOnly": true,
+            "children": [
+                {
+                    "key": "tenantDomain",
+                    "title": "tenantDomain",
+                    "path": "/flow/tenantDomain",
+                    "dataType": "String",
+                    "nodeType": "LEAF",
+                    "allowedOperations": ["EXPOSE"],
+                    "readOnly": true
+                },
+                {
+                    "key": "applicationId",
+                    "title": "applicationId",
+                    "path": "/flow/applicationId",
+                    "dataType": "String",
+                    "nodeType": "LEAF",
+                    "allowedOperations": ["EXPOSE"],
+                    "readOnly": true
+                },
+                {
+                    "key": "flowType",
+                    "title": "flowType",
+                    "path": "/flow/flowType",
+                    "dataType": "String",
+                    "nodeType": "LEAF",
+                    "allowedOperations": ["EXPOSE"],
+                    "readOnly": true
+                },
+                {
+                    "key": "contextIdentifier",
+                    "title": "contextIdentifier",
+                    "path": "/flow/contextIdentifier",
+                    "dataType": "String",
+                    "nodeType": "LEAF",
+                    "allowedOperations": ["EXPOSE"],
+                    "readOnly": true
+                }
+            ]
+        },
+        {
+            "key": "input",
+            "title": "input",
+            "path": "/input/",
+            "dataType": "Map<String, String>",
+            "nodeType": "MAP",
+            "allowedOperations": ["EXPOSE"],
+            "dynamicEntryAllowed": true,
+            "dynamicEntryType": "String",
+            "children": []
+        },
+        {
+            "key": "properties",
+            "title": "properties",
+            "path": "/properties/",
+            "dataType": "Map<String, Object>",
+            "nodeType": "COMPLEX_MAP",
+            "allowedOperations": ["EXPOSE"],
+            "dynamicEntryAllowed": true,
+            "dynamicEntryType": "Object",
+            "children": []
+        }
+    ],
+    "flowType": null,
+    "claimDialect": "http://wso2.org/claims"
+}
