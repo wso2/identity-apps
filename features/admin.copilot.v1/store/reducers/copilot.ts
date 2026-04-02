@@ -101,7 +101,10 @@ export const copilotReducer: Reducer<CopilotPanelState> = (
                 hasMoreHistory: false,
                 historyOffset: 0,
                 historyTotal: 0,
-                messages: []
+                isLoading: false,
+                isLoadingMoreHistory: false,
+                messages: [],
+                statusMessage: null
             };
         case CopilotActionTypes.SET_COPILOT_CONTENT_TYPE:
             return {
@@ -130,6 +133,11 @@ export const copilotReducer: Reducer<CopilotPanelState> = (
             return {
                 ...state,
                 messages: [ ...action.payload, ...state.messages ]
+            };
+        case CopilotActionTypes.SET_IS_LOADING_MORE_HISTORY:
+            return {
+                ...state,
+                isLoadingMoreHistory: action.payload
             };
         default:
             return state;

@@ -55,7 +55,7 @@ import {
     RouteInterface
 } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
-import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
+import { RouteUtils as CommonRouteUtils, CommonUtils, SessionStorageUtils } from "@wso2is/core/utils";
 import {
     Alert,
     ContentLoader,
@@ -144,6 +144,8 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
         (state: AppState) => state?.organization?.getOrganizationLoading
     );
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const isCopilotFeatureEnabled: boolean = featureConfig?.copilot?.enabled ?? false;
 
     const initLoad: MutableRefObject<boolean> = useRef(true);
 
@@ -429,7 +431,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                 className="dashboard-layout"
                 header={
                     (<Header
-                        copilotToggle={ featureConfig?.copilot?.enabled ? {
+                        copilotToggle={ isCopilotFeatureEnabled ? {
                             icon: <AISparkleIcon
                                 width={ 20 }
                                 height={ 20 }
@@ -522,11 +524,14 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                         <Switch>{ resolveRoutes() as ReactNode[] }</Switch>
                     </Suspense>
                 </ErrorBoundary>
-                { featureConfig?.copilot?.enabled && (
+                { isCopilotFeatureEnabled && (
                     <ErrorBoundary
                         onChunkLoadError={ AppUtils.onChunkLoadError }
                         handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {
-                            sessionStorage.setItem("auth_callback_url_console", config.deployment.appHomePath);
+                            SessionStorageUtils.setItemToSessionStorage(
+                                "auth_callback_url_console",
+                                config.deployment.appHomePath
+                            );
                         } }
                         fallback={ null }
                     >

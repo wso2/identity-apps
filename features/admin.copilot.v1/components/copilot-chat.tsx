@@ -48,14 +48,29 @@ export interface CopilotChatProps extends IdentifiableComponentInterface {
 }
 
 /**
+ * Props for MessageErrorBoundary.
+ */
+interface MessageErrorBoundaryProps {
+    children?: ReactNode;
+    /**
+     * When this key changes the boundary resets, allowing the message to
+     * re-render after a transient stream error.
+     */
+    resetKey: string;
+    /** i18n translation function, threaded in from the nearest functional parent. */
+    errorText: string;
+}
+
+/**
  * Error boundary that catches rendering errors inside a single chat message.
  * Prevents a malformed message from crashing the entire chat list.
+ * Resets automatically when resetKey changes (e.g. when the message content updates).
  */
 class MessageErrorBoundary extends Component<
-    { children: ReactNode },
+    MessageErrorBoundaryProps,
     { hasError: boolean }
 > {
-    constructor(props: { children: ReactNode }) {
+    constructor(props: MessageErrorBoundaryProps) {
         super(props);
         this.state = { hasError: false };
     }
@@ -64,11 +79,17 @@ class MessageErrorBoundary extends Component<
         return { hasError: true };
     }
 
+    componentDidUpdate(prevProps: MessageErrorBoundaryProps): void {
+        if (this.state.hasError && prevProps.resetKey !== this.props.resetKey) {
+            this.setState({ hasError: false });
+        }
+    }
+
     render(): ReactNode {
         if (this.state.hasError) {
             return (
                 <Typography variant="body2" className="copilot-message-error">
-                    This message could not be displayed.
+                    { this.props.errorText }
                 </Typography>
             );
         }
@@ -148,6 +169,7 @@ const ChatMessage: React.FunctionComponent<ChatMessageProps> = React.memo(
         componentId,
         onSendMessage
     }: ChatMessageProps): ReactElement => {
+        const { t } = useTranslation();
         const isUser: boolean = message.sender === "user";
         const isError: boolean = message.type === "error";
         const renderedContent: string = message.type === "streaming"
@@ -170,6 +192,12 @@ const ChatMessage: React.FunctionComponent<ChatMessageProps> = React.memo(
             );
         }
 
+        // Don't render the bot placeholder while it has no content yet —
+        // it would create an invisible gap above the loading indicator.
+        if (message.content === "" && message.type === "streaming") {
+            return null;
+        }
+
         return (
             <Box
                 key={ message.id }
@@ -181,7 +209,10 @@ const ChatMessage: React.FunctionComponent<ChatMessageProps> = React.memo(
                         elevation={ 0 }
                         className={ `copilot-message-bubble ${isError ? "error-message" : ""}` }
                     >
-                        <MessageErrorBoundary>
+                        <MessageErrorBoundary
+                            resetKey={ renderedContent }
+                            errorText={ t("console:common.copilot.chat.messageError") }
+                        >
                             <Markdown source={ renderedContent } />
                         </MessageErrorBoundary>
                     </Paper>
@@ -440,6 +471,7 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
                         fullWidth
                         multiline
                         maxRows={ 4 }
+                        aria-label={ t("console:common.copilot.chat.inputLabel") }
                         placeholder={ t("console:common.copilot.welcome.placeholder") }
                         value={ inputValue }
                         onChange={ handleInputChange }
@@ -453,6 +485,7 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
                     <IconButton
                         onClick={ handleSendMessage }
                         disabled={ !inputValue.trim() || isLoading }
+                        aria-label={ t("console:common.copilot.chat.sendMessage") }
                         data-componentid={ `${componentId}-send-button` }
                         className="copilot-send-button"
                     >

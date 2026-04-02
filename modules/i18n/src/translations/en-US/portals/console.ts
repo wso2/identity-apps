@@ -397,9 +397,23 @@ export const console: ConsoleNS = {
             },
             chat: {
                 emptyChat: "Start a conversation...",
+                inputLabel: "Message (optional)",
                 loadEarlier: "Load earlier messages",
                 loadingHistory: "Loading...",
+                messageError: "This message could not be displayed.",
+                sendMessage: "Send message",
                 thinking: "Thinking..."
+            },
+            errors: {
+                authRequired: "Authentication required. Please log in to continue using the copilot.",
+                clearHistoryFailed: "Chat cleared locally, but the server history could not be cleared. It will be removed on next session.",
+                connectionFailed: "Connection failed. Please check if the server is running and try again.",
+                default: "Sorry, I encountered an error while processing your request. Please try again.",
+                requestCancelled: "Request was cancelled.",
+                timeout: "The request took too long. Please try again with a simpler question."
+            },
+            status: {
+                submitting: "Submitting your question..."
             },
             welcome: {
                 actions: {
@@ -414,7 +428,7 @@ export const console: ConsoleNS = {
                 send: "Send message",
                 suggestionsTitle: "TRY ASKING ABOUT",
                 // TODO: Switch back to "Copilot" once phase 2 is deployed
-                title: "Hi, Welcome to Ask AI! How can I assist you?"
+                title: "Hi, welcome to Ask AI! How can I assist you?"
             }
         },
         sidePanel: {

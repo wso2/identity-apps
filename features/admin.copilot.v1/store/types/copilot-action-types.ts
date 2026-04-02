@@ -63,7 +63,11 @@ export enum CopilotActionTypes {
     /**
      * Action type to prepend older messages to the chat (load-earlier).
      */
-    PREPEND_COPILOT_MESSAGES = "PREPEND_COPILOT_MESSAGES"
+    PREPEND_COPILOT_MESSAGES = "PREPEND_COPILOT_MESSAGES",
+    /**
+     * Action type to set the isLoadingMoreHistory flag independently of pagination metadata.
+     */
+    SET_IS_LOADING_MORE_HISTORY = "SET_IS_LOADING_MORE_HISTORY"
 }
 
 /**
@@ -211,6 +215,14 @@ export interface PrependCopilotMessagesActionInterface {
 }
 
 /**
+ * Set isLoadingMoreHistory flag action interface.
+ */
+export interface SetIsLoadingMoreHistoryActionInterface {
+    payload: boolean;
+    type: CopilotActionTypes.SET_IS_LOADING_MORE_HISTORY;
+}
+
+/**
  * Export action interfaces.
  */
 export type CopilotActions = SetCopilotPanelVisibilityActionInterface
@@ -223,4 +235,5 @@ export type CopilotActions = SetCopilotPanelVisibilityActionInterface
     | SetCopilotChatHistoryActionInterface
     | SetCopilotStatusMessageActionInterface
     | SetCopilotHistoryPaginationActionInterface
-    | PrependCopilotMessagesActionInterface;
+    | PrependCopilotMessagesActionInterface
+    | SetIsLoadingMoreHistoryActionInterface;

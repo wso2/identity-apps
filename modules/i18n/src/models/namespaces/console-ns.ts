@@ -138,9 +138,23 @@ export interface ConsoleNS {
             };
             chat: {
                 emptyChat: string;
+                inputLabel: string;
                 loadEarlier: string;
                 loadingHistory: string;
+                messageError: string;
+                sendMessage: string;
                 thinking: string;
+            };
+            errors: {
+                authRequired: string;
+                clearHistoryFailed: string;
+                connectionFailed: string;
+                default: string;
+                requestCancelled: string;
+                timeout: string;
+            };
+            status: {
+                submitting: string;
             };
             welcome: {
                 actions: {

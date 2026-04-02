@@ -75,6 +75,7 @@ $copilot-overlay-scrim: rgba(0, 0, 0, 0.7);                         // Dark over
 $copilot-overlay-primary: rgba($copilot-primary-color, 0.15);        // Primary color tint (e.g. copy button hover)
 
 // Spacing (based on 4px base unit)
+$copilot-spacing-px: 1px;
 $copilot-spacing-xxs: 2px;
 $copilot-spacing-xs: 4px;
 $copilot-spacing-sm-compact: 6px;
@@ -183,8 +184,10 @@ $copilot-suggested-action-padding: $copilot-spacing-md $copilot-spacing-lg;
 $copilot-suggested-action-border-radius: $copilot-border-radius-md;
 $copilot-suggested-action-gap: $copilot-spacing-sm;
 $copilot-suggestion-chip-height: 36px;
+
 // Max width = panel width minus horizontal padding on both sides (chat padding = $copilot-spacing-lg)
 $copilot-suggestion-chip-max-width: $copilot-panel-width - ($copilot-spacing-lg * 2);
+
 // Welcome page uses larger padding ($copilot-spacing-xxl) so max width is slightly narrower
 $copilot-welcome-suggestion-chip-max-width: $copilot-panel-width - ($copilot-spacing-xxl * 2);
 $copilot-suggestion-skeleton-width: 160px;

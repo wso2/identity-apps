@@ -175,20 +175,20 @@ const useCopilotPanel = (): UseCopilotPanelInterface => {
     return {
         addMessage,
         clearChat,
-        contentType: copilotState?.contentType || CopilotContentType.CHAT,
-        hasMoreHistory: copilotState?.hasMoreHistory || false,
+        contentType: copilotState?.contentType ?? CopilotContentType.CHAT,
+        hasMoreHistory: copilotState?.hasMoreHistory ?? false,
         hidePanel,
-        isLoading: copilotState?.isLoading || false,
-        isLoadingMoreHistory: copilotState?.isLoadingMoreHistory || false,
-        isVisible: copilotState?.isVisible || false,
+        isLoading: copilotState?.isLoading ?? false,
+        isLoadingMoreHistory: copilotState?.isLoadingMoreHistory ?? false,
+        isVisible: copilotState?.isVisible ?? false,
         loadHistory,
         loadMoreHistory,
-        messages: copilotState?.messages || [],
+        messages: copilotState?.messages ?? [],
         sendMessage,
         setContentType,
         setLoading,
         showPanel,
-        statusMessage: copilotState?.statusMessage || null,
+        statusMessage: copilotState?.statusMessage ?? null,
         togglePanel
     };
 };

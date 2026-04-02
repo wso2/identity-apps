@@ -118,10 +118,6 @@ export interface CopilotHistoryResponse {
  * @returns The Copilot API base URL.
  */
 const getCopilotBaseUrl = (): string => {
-    // Local development URL (copilot runs on port 8443, separate from identity server on 9443)
-    //return "http://localhost:8443/t/carbon.super/api/server/v1/copilot";
-
-    // Production URL (uncomment for production, comment the line above)
     const state: AppState = store.getState();
 
     return `${state.config.deployment.serverHost}/api/server/v1/copilot`;
@@ -193,11 +189,7 @@ export const sendCopilotChatMessage = async (
     const correlationId: string = `corr-${Date.now()}`;
     const requestId: string = crypto.randomUUID();
 
-    const spaClient: AsgardeoSPAClient | undefined = AsgardeoSPAClient.getInstance();
-
-    if (!spaClient) {
-        throw new Error("AsgardeoSPAClient is not initialized.");
-    }
+    const spaClient: AsgardeoSPAClient = AsgardeoSPAClient.getInstance();
 
     const stream: ReadableStream<Uint8Array> | undefined =
         await spaClient.httpStreamRequest({
@@ -380,7 +372,8 @@ export const clearCopilotChatApi = async (): Promise<CopilotClearResponse> => {
  */
 export const getCopilotChatHistory = async (
     offset: number = 0,
-    limit?: number
+    limit?: number,
+    signal?: AbortSignal
 ): Promise<CopilotHistoryResponse> => {
     const requestId: string = crypto.randomUUID();
     const correlationId: string = `corr-${Date.now()}`;
@@ -400,6 +393,7 @@ export const getCopilotChatHistory = async (
         },
         method: HttpMethods.GET,
         params,
+        signal,
         url: `${getCopilotBaseUrl()}/history`
     };
 

@@ -136,12 +136,10 @@
     }
 }
 
-// Dark theme support
-@media (prefers-color-scheme: dark) {
-    .copilot-panel {
-        .copilot-panel-paper {
-            background-color: $copilot-background-color-dark;
-            border-left-color: $copilot-border-color-dark;
-        }
+// Dark theme support — follows the app's user-selected theme via Oxygen UI CSS variables
+.copilot-panel {
+    .copilot-panel-paper {
+        background-color: var(--oxygen-palette-background-paper, $copilot-background-color);
+        border-left-color: var(--oxygen-palette-divider, $copilot-border-color);
     }
 }

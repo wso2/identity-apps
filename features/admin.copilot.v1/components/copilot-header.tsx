@@ -25,7 +25,7 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { ReactElement, useCallback, useState } from "react";
+import React, { ReactElement, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AISparkleIcon from "./ai-sparkle-icon";
 import ClearChatConfirmationModal from "./clear-chat-confirmation-modal";
@@ -70,6 +70,16 @@ const CopilotHeader: React.FunctionComponent<CopilotHeaderProps> = (
     const { t } = useTranslation();
     const [ isRefreshing, setIsRefreshing ] = useState<boolean>(false);
     const [ showClearChatModal, setShowClearChatModal ] = useState<boolean>(false);
+    const refreshTimeoutRef: React.MutableRefObject<ReturnType<typeof setTimeout> | null> =
+        useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    useEffect(() => {
+        return () => {
+            if (refreshTimeoutRef.current !== null) {
+                clearTimeout(refreshTimeoutRef.current);
+            }
+        };
+    }, []);
 
     const {
         clearChat,
@@ -92,8 +102,14 @@ const CopilotHeader: React.FunctionComponent<CopilotHeaderProps> = (
         try {
             await clearChat();
         } finally {
-            // Reset refresh state after animation
-            setTimeout(() => setIsRefreshing(false), 1000);
+            // Reset refresh state after animation; clear any prior timeout to avoid double-fire.
+            if (refreshTimeoutRef.current !== null) {
+                clearTimeout(refreshTimeoutRef.current);
+            }
+            refreshTimeoutRef.current = setTimeout(() => {
+                refreshTimeoutRef.current = null;
+                setIsRefreshing(false);
+            }, 1000);
         }
     }, [ clearChat ]);
 

@@ -872,7 +872,9 @@
                 "scopes": {
                     "create": [],
                     "delete": [],
-                    "feature": [],
+                    "feature": [
+                        "console:copilot"
+                    ],
                     "read": [],
                     "update": []
                 }

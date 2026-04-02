@@ -17,6 +17,7 @@
  */
 
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { I18n } from "@wso2is/i18n";
 import { Dispatch } from "redux";
 import {
     type CopilotHistoryResponse,
@@ -46,12 +47,48 @@ import {
     SetCopilotPanelLoadingActionInterface,
     SetCopilotPanelVisibilityActionInterface,
     SetCopilotStatusMessageActionInterface,
+    SetIsLoadingMoreHistoryActionInterface,
     ToggleCopilotPanelActionInterface,
     UpdateCopilotMessageActionInterface
 } from "../types/copilot-action-types";
 
-// AbortController to cancel ongoing requests
-let currentRequestController: AbortController | null = null;
+/**
+ * Manages per-request AbortControllers so that only the targeted request
+ * is cancelled — not a module-level singleton that could cancel unrelated traffic.
+ */
+class RequestManager {
+    private controllers: Map<string, AbortController> = new Map();
+
+    startRequest(requestId: string): AbortController {
+        this.abortRequest(requestId);
+        const controller: AbortController = new AbortController();
+
+        this.controllers.set(requestId, controller);
+
+        return controller;
+    }
+
+    abortRequest(requestId: string): void {
+        const controller: AbortController | undefined = this.controllers.get(requestId);
+
+        if (controller) {
+            controller.abort();
+            this.controllers.delete(requestId);
+        }
+    }
+
+    completeRequest(requestId: string, controller: AbortController): void {
+        if (this.controllers.get(requestId) === controller) {
+            this.controllers.delete(requestId);
+        }
+    }
+
+    hasActiveRequest(requestId: string): boolean {
+        return this.controllers.has(requestId);
+    }
+}
+
+const requestManager: RequestManager = new RequestManager();
 
 /**
  * Redux action to set the copilot panel visibility.
@@ -144,11 +181,9 @@ export const setCopilotStatusMessage = (
  */
 export const clearCopilotChatWithApi = () => {
     return async (dispatch: Dispatch) => {
-        // Cancel any ongoing request
-        if (currentRequestController) {
-            currentRequestController.abort();
-            currentRequestController = null;
-        }
+        // Cancel any ongoing chat or history requests
+        requestManager.abortRequest("chat");
+        requestManager.abortRequest("chatHistory");
 
         // Reset loading and status states
         dispatch(setCopilotPanelLoading(false));
@@ -164,7 +199,7 @@ export const clearCopilotChatWithApi = () => {
 
             if (!errorMsg.includes("Failed to fetch") && !errorMsg.includes("Network error")) {
                 const errorMessage: CopilotMessage = {
-                    content: `Note: Chat cleared locally, but server history may not be cleared: ${errorMsg}`,
+                    content: I18n.instance.t("console:common.copilot.errors.clearHistoryFailed"),
                     id: `warning-${Date.now()}`,
                     sender: "copilot",
                     timestamp: Date.now(),
@@ -212,6 +247,17 @@ export const prependCopilotMessages = (messages: CopilotMessage[]): PrependCopil
     type: CopilotActionTypes.PREPEND_COPILOT_MESSAGES
 });
 
+/**
+ * Redux action to set the isLoadingMoreHistory flag.
+ *
+ * @param isLoading - Whether a "load earlier" request is in progress.
+ * @returns An action of type `SET_IS_LOADING_MORE_HISTORY`.
+ */
+export const setIsLoadingMoreHistory = (isLoading: boolean): SetIsLoadingMoreHistoryActionInterface => ({
+    payload: isLoading,
+    type: CopilotActionTypes.SET_IS_LOADING_MORE_HISTORY
+});
+
 
 
 /**
@@ -222,20 +268,25 @@ export const prependCopilotMessages = (messages: CopilotMessage[]): PrependCopil
  */
 export const fetchCopilotHistory = () => {
     return async (dispatch: Dispatch, getState: () => AppState) => {
+        const historyController: AbortController = requestManager.startRequest("chatHistory");
+
         try {
             // Check if there are already messages (don't overwrite existing conversation)
             const currentState: AppState = getState();
             const currentMessages: CopilotMessage[] = currentState?.copilot?.messages || [];
 
             if (currentMessages.length > 0) {
-                dispatch(setCopilotPanelLoading(false));
-
                 return;
             }
 
             dispatch(setCopilotPanelLoading(true));
 
-            const response: CopilotHistoryResponse = await getCopilotChatHistory(0);
+            const response: CopilotHistoryResponse = await getCopilotChatHistory(
+                0, undefined, historyController.signal
+            );
+
+            // Discard results if a clear was issued while this request was in-flight.
+            if (historyController.signal.aborted) return;
 
             if (response.history && Array.isArray(response.history)) {
                 const messages: CopilotMessage[] = [];
@@ -277,8 +328,9 @@ export const fetchCopilotHistory = () => {
         } catch (_error: unknown) {
             // Silently fail for history fetch errors
         } finally {
+            requestManager.completeRequest("chatHistory", historyController);
             // Only set loading to false if there's no active request
-            if (!currentRequestController) {
+            if (!requestManager.hasActiveRequest("chat")) {
                 dispatch(setCopilotPanelLoading(false));
             }
         }
@@ -300,17 +352,18 @@ export const loadMoreCopilotHistory = () => {
             return;
         }
 
-        try {
-            dispatch({
-                payload: {
-                    hasMoreHistory,
-                    nextOffset: historyOffset,
-                    total: state?.copilot?.historyTotal ?? 0
-                } as HistoryPaginationPayload,
-                type: CopilotActionTypes.SET_COPILOT_HISTORY_PAGINATION
-            });
+        // Set the guard before the async boundary so rapid clicks are blocked.
+        dispatch(setIsLoadingMoreHistory(true));
 
-            const response: CopilotHistoryResponse = await getCopilotChatHistory(historyOffset);
+        const historyController: AbortController = requestManager.startRequest("chatHistory");
+
+        try {
+            const response: CopilotHistoryResponse = await getCopilotChatHistory(
+                historyOffset, undefined, historyController.signal
+            );
+
+            // Discard results if a clear was issued while this request was in-flight.
+            if (historyController.signal.aborted) return;
 
             if (response.history && Array.isArray(response.history) && response.history.length > 0) {
                 const olderMessages: CopilotMessage[] = [];
@@ -347,12 +400,18 @@ export const loadMoreCopilotHistory = () => {
                 }));
             }
         } catch (_error: unknown) {
+            // Don't touch pagination state when the request was intentionally aborted
+            if (historyController.signal.aborted) return;
+
             // Reset pagination so the "load more" button re-enables instead of staying stuck
             dispatch(setHistoryPagination({
                 hasMoreHistory,
                 nextOffset: historyOffset,
                 total: state?.copilot?.historyTotal ?? 0
             }));
+        } finally {
+            requestManager.completeRequest("chatHistory", historyController);
+            dispatch(setIsLoadingMoreHistory(false));
         }
     };
 };
@@ -383,6 +442,8 @@ class StatusQueue {
     private lastDisplayTime: number = 0;
     private dispatch: Dispatch;
     private cancelled: boolean = false;
+    private pendingTimer: ReturnType<typeof setTimeout> | null = null;
+    private pendingTimerResolve: (() => void) | null = null;
 
     constructor(dispatch: Dispatch) {
         this.dispatch = dispatch;
@@ -402,6 +463,8 @@ class StatusQueue {
 
     /**
      * Process the next message in the queue.
+     * Peeks at queue[0] without shifting so drain() cannot consume the same item.
+     * The shift happens inside the timer callback once the item is actually displayed.
      */
     private processNext(): void {
         if (this.cancelled || this.queue.length === 0) {
@@ -411,24 +474,44 @@ class StatusQueue {
         }
 
         this.isProcessing = true;
-        const message: string = this.queue.shift()!;
+        const message: string = this.queue[0];
         const now: number = Date.now();
         const elapsed: number = now - this.lastDisplayTime;
         const delay: number = Math.max(0, STATUS_MIN_DISPLAY_MS - elapsed);
 
-        setTimeout(() => {
-            if (this.cancelled) return;
+        this.pendingTimer = setTimeout(() => {
+            const resolve: (() => void) | null = this.pendingTimerResolve;
+
+            this.pendingTimer = null;
+            this.pendingTimerResolve = null;
+
+            if (this.cancelled) {
+                resolve?.();
+
+                return;
+            }
+
+            this.queue.shift();
             this.dispatch(setCopilotStatusMessage(message));
             this.lastDisplayTime = Date.now();
+            resolve?.();
             this.processNext();
         }, delay);
     }
 
     /**
      * Drain any remaining messages in the queue, showing each for the minimum time.
+     * Waits for any in-flight processNext timer before consuming from the queue.
      * Returns a promise that resolves when the queue is empty.
      */
     async drain(): Promise<void> {
+        // Wait for processNext's pending timer so drain doesn't race with it.
+        if (this.pendingTimer !== null) {
+            await new Promise<void>((resolve: () => void) => {
+                this.pendingTimerResolve = resolve;
+            });
+        }
+
         while (this.queue.length > 0 && !this.cancelled) {
             const message: string = this.queue.shift()!;
             const now: number = Date.now();
@@ -475,14 +558,9 @@ class StatusQueue {
  */
 export const sendCopilotMessage = (userMessage: string) => {
     return async (dispatch: Dispatch) => {
-        // Cancel any existing request before starting a new one
-        if (currentRequestController) {
-            currentRequestController.abort();
-        }
-
-        // Create new AbortController for this request
-        currentRequestController = new AbortController();
-        const signal: AbortSignal = currentRequestController.signal;
+        // Cancel any existing request before starting a new one, then register this one
+        const controller: AbortController = requestManager.startRequest("chat");
+        const signal: AbortSignal = controller.signal;
 
         // Add user message
         const userMsg: CopilotMessage = {
@@ -495,12 +573,14 @@ export const sendCopilotMessage = (userMessage: string) => {
 
         dispatch(addCopilotMessage(userMsg));
         dispatch(setCopilotPanelLoading(true));
-        dispatch(setCopilotStatusMessage("Submitting your question..."));
+        dispatch(setCopilotStatusMessage(I18n.instance.t("console:common.copilot.status.submitting")));
 
         // Create status queue for smooth step-by-step progression
         const statusQueue: StatusQueue = new StatusQueue(dispatch);
 
-        // Create a placeholder AI message that will be updated as tokens arrive
+        // Create a placeholder AI message and add it to the store immediately so that
+        // onComplete, onSuggestionsLoading, and onSuggestions can update it even if
+        // they fire before the first token.
         const aiMessageId: string = `ai-${Date.now()}`;
         const aiPlaceholder: CopilotMessage = {
             content: "",
@@ -510,7 +590,9 @@ export const sendCopilotMessage = (userMessage: string) => {
             type: "streaming"
         };
 
-        // We'll add the AI message once the first token arrives
+        dispatch(addCopilotMessage(aiPlaceholder));
+
+        // Tracks whether the status queue has been cancelled and the message made visible.
         let aiMessageAdded: boolean = false;
         const pendingTokens: string[] = [];
         let drainingStatus: boolean = false;
@@ -525,7 +607,7 @@ export const sendCopilotMessage = (userMessage: string) => {
 
         const flushTokenBatch = (): void => {
             tokenFlushTimer = null;
-            if (tokenBatch.length === 0) return;
+            if (signal.aborted || tokenBatch.length === 0) return;
             const joined: string = tokenBatch.splice(0).join("");
 
             dispatch(updateCopilotMessage({ content: joined, id: aiMessageId }));
@@ -602,7 +684,6 @@ export const sendCopilotMessage = (userMessage: string) => {
                                 statusQueue.cancel();
                                 aiMessageAdded = true;
                                 dispatch(setCopilotStatusMessage(null));
-                                dispatch(addCopilotMessage(aiPlaceholder));
                                 dispatch(setCopilotPanelLoading(false));
 
                                 // Flush all buffered pre-first-token content as one dispatch.
@@ -630,7 +711,6 @@ export const sendCopilotMessage = (userMessage: string) => {
 
             dispatch(setCopilotPanelLoading(false));
             dispatch(setCopilotStatusMessage(null));
-            currentRequestController = null;
 
         } catch (error: unknown) {
             statusQueue.cancel();
@@ -648,34 +728,49 @@ export const sendCopilotMessage = (userMessage: string) => {
             if (errorName === "AbortError" || signal.aborted) {
                 dispatch(setCopilotPanelLoading(false));
                 dispatch(setCopilotStatusMessage(null));
-                currentRequestController = null;
 
                 return;
             }
 
-            let errorContent: string = "Sorry, I encountered an error while processing your request. Please try again.";
+            let errorContent: string = I18n.instance.t("console:common.copilot.errors.default");
 
             if (errorMsg.includes("Authentication required")) {
-                errorContent = "Authentication required. Please log in to continue using the copilot.";
+                errorContent = I18n.instance.t("console:common.copilot.errors.authRequired");
             } else if (errorMsg.includes("Request was cancelled")) {
-                errorContent = "Request was cancelled.";
+                errorContent = I18n.instance.t("console:common.copilot.errors.requestCancelled");
             } else if (errorMsg.includes("Failed to fetch")) {
-                errorContent = "Connection failed. Please check if the server is running and try again.";
+                errorContent = I18n.instance.t("console:common.copilot.errors.connectionFailed");
             } else if (errorMsg.includes("timed out")) {
-                errorContent = "The request took too long. Please try again with a simpler question.";
+                errorContent = I18n.instance.t("console:common.copilot.errors.timeout");
             }
 
-            const errorMessage: CopilotMessage = {
-                content: errorContent,
-                id: `error-${Date.now()}`,
-                sender: "copilot",
-                timestamp: Date.now(),
-                type: "error"
-            };
+            if (!aiMessageAdded) {
+                // No tokens were streamed yet — reuse the placeholder so we don't leave
+                // an orphaned empty bubble in the message list.
+                dispatch(updateCopilotMessage({
+                    content: errorContent,
+                    id: aiMessageId,
+                    suggestionsLoading: false,
+                    type: "error"
+                }));
+            } else {
+                // Partial content was already visible; append a separate error bubble.
+                const errorMessage: CopilotMessage = {
+                    content: errorContent,
+                    id: `error-${Date.now()}`,
+                    sender: "copilot",
+                    timestamp: Date.now(),
+                    type: "error"
+                };
 
-            dispatch(addCopilotMessage(errorMessage));
-            currentRequestController = null;
+                dispatch(addCopilotMessage(errorMessage));
+            }
         } finally {
+            if (tokenFlushTimer !== null) {
+                clearTimeout(tokenFlushTimer);
+                tokenFlushTimer = null;
+            }
+            requestManager.completeRequest("chat", controller);
             dispatch(setCopilotPanelLoading(false));
             dispatch(setCopilotStatusMessage(null));
         }

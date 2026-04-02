@@ -36,7 +36,7 @@
 
     // Default fill color - use gradient color for general contexts
     fill: var(--oxygen-palette-gradients-primary-stop2, $copilot-primary-color);
-    margin-left: 1px;
+    margin-left: $copilot-spacing-px;
 
     // When inside primary button, use white color for contrast
     .copilot-toggle-button & {
