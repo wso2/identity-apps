@@ -100,13 +100,13 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const { getLink } = useDocumentation();
 
     const isDigitalWallet: boolean = originalTemplateId === "digital-wallet-application";
+    // MCP Clients don't support authorization policies (similar to M2M applications)
     const isMCPClient: boolean = originalTemplateId === "mcp-client-application";
 
-    const resourceText: string = isMCPClient
-        ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.genericResource")
-        : isDigitalWallet
-            ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.vcResource")
-            : t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.apiResource");
+    // Use "resource" for all apps that can access MCP Servers, "verifiable credential" for Digital Wallet
+    const resourceText: string = isDigitalWallet
+        ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.vcResource")
+        : t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.genericResource");
 
     const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui?.features?.applications);
@@ -115,6 +115,11 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get(
             ApplicationFeatureDictionaryKeys.ApplicationEditEnforceAuthorizedAPIUpdatePermission)
+    );
+
+    const isUnifiedMcpCapabilitiesEnabled: boolean = isFeatureEnabled(
+        applicationFeatureConfig,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_UNIFIED_MCP_CAPABILITIES")
     );
 
     const hasInternalAPIResourceAuthorizationPermission: boolean = useRequiredScopes(
@@ -532,18 +537,20 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                             if (isDigitalWallet) {
                                                 return item?.type === APIResourceCategories.VC;
                                             }
-                                            // For MCP client apps, show MCP type resources along with others
-                                            if (isMCPClient) {
+
+                                            // When unified MCP capabilities is enabled: all apps can access MCP servers
+                                            // When disabled: only MCP client apps can access MCP servers
+                                            if (isUnifiedMcpCapabilitiesEnabled || isMCPClient) {
                                                 return item?.type === APIResourceCategories.MCP ||
                                                     item?.type === APIResourceCategories.TENANT ||
                                                     item?.type === APIResourceCategories.ORGANIZATION ||
                                                     item?.type === APIResourceCategories.BUSINESS;
+                                            } else {
+                                                // For other apps when flag is disabled: show only standard API resources
+                                                return item?.type === APIResourceCategories.TENANT ||
+                                                    item?.type === APIResourceCategories.ORGANIZATION ||
+                                                    item?.type === APIResourceCategories.BUSINESS;
                                             }
-
-                                            // For other apps, show standard types
-                                            return item?.type === APIResourceCategories.TENANT ||
-                                                            item?.type === APIResourceCategories.ORGANIZATION ||
-                                                            item?.type === APIResourceCategories.BUSINESS;
                                         }).sort((a: DropdownItemProps, b: DropdownItemProps) =>
                                             APIResourceUtils.sortApiResourceTypes(a, b)
                                         )
