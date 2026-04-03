@@ -474,6 +474,7 @@ export class ServerConfigurationsConstants {
     public static readonly EMAIL_DOMAIN_DISCOVERY: string = "ZW1haWwtZG9tYWluLWRpc2NvdmVyeQ==";
     public static readonly IMPERSONATION: string = "impersonation";
     public static readonly ISSUER_USAGE_SCOPE: string = "issuer-usage-scope";
+    public static readonly FAPI_SECURITY_POLICY: string = "fapi-security-policy";
 
     /**
      * Login Security Category Constants.

@@ -440,6 +440,8 @@ export class AppConstants {
             [ "IMPERSONATION", `${AppConstants.getAdminViewBasePath()}/login-and-registration/impersonation` ],
             [ "ISSUER_USAGE_SCOPE",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/issuer-usage-scope` ],
+            [ "FAPI_SECURITY_POLICY",
+                `${AppConstants.getAdminViewBasePath()}/login-and-registration/fapi-security-policy` ],
             [ "ACTIONS",
                 `${AppConstants.getAdminViewBasePath()}/actions` ],
             [ "WEBHOOKS",
