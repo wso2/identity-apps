@@ -544,8 +544,7 @@
                 "disabledFeatures": [
                     "applications.loginFlow.legacyEditor",
                     "applications.sharedAccess.status",
-                    "applications.sharedApp.adaptiveAuth",
-                    "applications.unifiedMcpCapabilities"
+                    "applications.sharedApp.adaptiveAuth"
                 ],
                 "enabled": true,
                 "featureFlags": [
