@@ -16,6 +16,7 @@
   ~ under the License.
 --%>
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.util.Locale" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.TreeMap" %>
@@ -45,10 +46,15 @@
     }
 %>
 
+<%
+    String encodedClaim = Encode.forHtmlAttribute(request.getParameter("claim"));
+    String encodedRequired = Encode.forHtmlAttribute(request.getParameter("required"));
+%>
+
 <div class="ui fluid search selection dropdown"  id="country-dropdown">
-    <input type="hidden" required="${ param.required }"
-    data-testid="request-claims-page-form-field-claim-${param.claim}-input"
-    name="claim_mand_${param.claim}" id="claim_mand_${param.claim}">
+    <input type="hidden" required="<%= encodedRequired %>"
+    data-testid="request-claims-page-form-field-claim-<%= encodedClaim %>-input"
+    name="claim_mand_<%= encodedClaim %>" id="claim_mand_<%= encodedClaim %>">
     <i class="dropdown icon"></i>
     <div class="default text">Select Country</div>
     <div class="menu">
