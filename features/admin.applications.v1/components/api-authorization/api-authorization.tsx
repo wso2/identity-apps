@@ -21,8 +21,8 @@ import { useAPIResources } from "@wso2is/admin.api-resources.v2/api";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -107,9 +107,7 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
     const isMCPClient: boolean = originalTemplateId === "mcp-client-application";
 
     // Determine resource text based on feature flag and application type
-    // Digital Wallet: always "verifiable credential"
-    // When unified flag enabled OR MCP client: "resource"
-    // Otherwise: "API resource"
+
     const resourceText: string = isDigitalWallet
         ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.vcResource")
         : (isUnifiedMcpCapabilitiesEnabled || isMCPClient)

@@ -24,8 +24,8 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { RequestErrorInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import {
@@ -44,14 +44,13 @@ import {
 import { AxiosError } from "axios";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Form, Grid, Header, Icon, Input } from "semantic-ui-react";
-import { useSelector } from "react-redux";
 import { ScopeForm } from "./scope-form";
 import useScopesOfAPIResources from "../../api/use-scopes-of-api-resources";
-import { ApplicationManagementConstants } from "../../constants/application-management";
 import { Policy } from "../../constants/api-authorization";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import {
     AuthorizedAPIListItemInterface,
     AuthorizedPermissionListItemInterface
@@ -165,9 +164,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
     const isMCPClient: boolean = originalTemplateId === "mcp-client-application";
 
     // Determine resource text based on feature flag and application type
-    // Digital Wallet: always "verifiable credential"
-    // When unified flag enabled OR MCP client: "resource"
-    // Otherwise: "API resource"
+
     const resourceText: string = isDigitalWallet
         ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.vcResource")
         : (isUnifiedMcpCapabilitiesEnabled || isMCPClient)

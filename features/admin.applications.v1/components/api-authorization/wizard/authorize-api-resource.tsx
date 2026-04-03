@@ -546,7 +546,8 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                     item?.type === APIResourceCategories.ORGANIZATION ||
                                                     item?.type === APIResourceCategories.BUSINESS;
                                             } else {
-                                                // For other apps when flag is disabled: show only standard API resources
+                                                // For other apps when flag is disabled: show only standard
+                                                // API resources
                                                 return item?.type === APIResourceCategories.TENANT ||
                                                     item?.type === APIResourceCategories.ORGANIZATION ||
                                                     item?.type === APIResourceCategories.BUSINESS;
