@@ -26,6 +26,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs, commonConfig, userConfig } from "@wso2is/admin.extensions.v1";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { searchRoleList, updateRoleDetails, updateUsersForRole } from "@wso2is/admin.roles.v2/api/roles";
 import {
     PatchRoleDataInterface,
@@ -84,7 +85,8 @@ import {
     RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP,
     RecoveryScenario,
     UserFeatureDictionaryKeys,
-    UserManagementConstants
+    UserManagementConstants,
+    UserSharedType
 } from "../constants";
 import {
     AccountConfigSettingsInterface,
@@ -199,6 +201,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     const roleAssignmentsConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.roleAssignments);
     const hasRoleV3UpdatePermissions: boolean = useRequiredScopes(roleAssignmentsConfig?.scopes?.update);
+    const { isSubOrganization }: { isSubOrganization: () => boolean } = useGetCurrentOrganizationType();
     const updateUserRoleAssignmentsFunction: (roleId: string, data: PatchRoleDataInterface) => Promise<AxiosResponse> =
         hasRoleV3UpdatePermissions ? updateUsersForRole : updateRoleDetails;
 
@@ -996,6 +999,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             return null;
         }
 
+        const isSharedUserFromParentOrg: boolean = isSubOrganization()
+            && user[ SCIMConfigs.scim.systemSchema ]?.sharedType
+            && user[ SCIMConfigs.scim.systemSchema ]?.sharedType !== UserSharedType.INVITED;
+
         const resolvedUsername: string = resolveUsernameOrDefaultEmail(user, false);
         const isUserCurrentLoggedInUser: boolean = authenticatedUser?.includes(resolvedUsername);
 
@@ -1031,6 +1038,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             !isReadOnly &&
                                             !isReadOnlyUserStore &&
                                             !isUserManagedByParentOrg &&
+                                            !isSharedUserFromParentOrg &&
                                             user.userName !== adminUsername
                                         ) ? (
                                                 <Show when={ featureConfig?.users?.scopes?.update }>
@@ -1072,7 +1080,9 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             ) : null
                                     }
                                     {
-                                        !allowDeleteOnly && configSettings?.accountDisable === "true" && (
+                                        !allowDeleteOnly && !isUserManagedByParentOrg
+                                        && !isSharedUserFromParentOrg
+                                        && configSettings?.accountDisable === "true" && (
                                             <DangerZone
                                                 data-testid={ `${ testId }-account-disable-button` }
                                                 actionTitle={ t("user:editUser." +
@@ -1091,7 +1101,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         )
                                     }
                                     {
-                                        !allowDeleteOnly && !isUserManagedByParentOrg  && (
+                                        !allowDeleteOnly && !isUserManagedByParentOrg
+                                        && !isSharedUserFromParentOrg && (
                                             <DangerZone
                                                 data-testid={ `${ testId }-danger-zone-toggle` }
                                                 actionTitle={ t("user:editUser." +
@@ -1118,6 +1129,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     }
                                     {
                                         userConfig?.enableAdminPrivilegeRevokeOption && !isPrivilegedUser &&
+                                    !isSharedUserFromParentOrg &&
                                     adminUserType === AdminAccountTypes.INTERNAL &&
                                     associationType !== UserManagementConstants.GUEST_ADMIN_ASSOCIATION_TYPE &&
                                     (
@@ -1136,27 +1148,29 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         />
                                     )
                                     }
-                                    <DangerZone
-                                        data-testid={ `${ testId }-danger-zone` }
-                                        actionTitle={ t("user:editUser.dangerZoneGroup." +
-                                        "deleteUserZone.actionTitle") }
-                                        header={ t("user:editUser.dangerZoneGroup." +
-                                        "deleteUserZone.header") }
-                                        subheader={ commonConfig.userEditSection.isGuestUser
-                                            ? t("extensions:manage.guest.editUser.dangerZoneGroup.deleteUserZone." +
-                                                "subheader")
-                                            : t("user:editUser.dangerZoneGroup." +
-                                                "deleteUserZone.subheader")
-                                        }
-                                        onActionClick={ (): void => {
-                                            setShowDeleteConfirmationModal(true);
-                                            setDeletingUser(user);
-                                        } }
-                                        isButtonDisabled={
-                                            adminUserType === AdminAccountTypes.INTERNAL && isReadOnlyUserStore }
-                                        buttonDisableHint={ t("user:editUser.dangerZoneGroup." +
-                                        "deleteUserZone.buttonDisableHint") }
-                                    />
+                                    { !isUserManagedByParentOrg && !isSharedUserFromParentOrg && (
+                                        <DangerZone
+                                            data-testid={ `${ testId }-danger-zone` }
+                                            actionTitle={ t("user:editUser.dangerZoneGroup." +
+                                            "deleteUserZone.actionTitle") }
+                                            header={ t("user:editUser.dangerZoneGroup." +
+                                            "deleteUserZone.header") }
+                                            subheader={ commonConfig.userEditSection.isGuestUser
+                                                ? t("extensions:manage.guest.editUser.dangerZoneGroup.deleteUserZone." +
+                                                    "subheader")
+                                                : t("user:editUser.dangerZoneGroup." +
+                                                    "deleteUserZone.subheader")
+                                            }
+                                            onActionClick={ (): void => {
+                                                setShowDeleteConfirmationModal(true);
+                                                setDeletingUser(user);
+                                            } }
+                                            isButtonDisabled={
+                                                adminUserType === AdminAccountTypes.INTERNAL && isReadOnlyUserStore }
+                                            buttonDisableHint={ t("user:editUser.dangerZoneGroup." +
+                                            "deleteUserZone.buttonDisableHint") }
+                                        />
+                                    ) }
                                 </DangerZoneGroup>
                             </Show>
                         ) : null }
