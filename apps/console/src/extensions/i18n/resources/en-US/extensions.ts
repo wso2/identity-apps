@@ -330,7 +330,7 @@ export const extensions: Extensions = {
                                         alreadyExistsError: "Identifier already exists in the organization. Please choose a different one.",
                                         errorOccurred: "An error occurred while validating the identifier.",
                                         invalid: "Identifier cannot contain spaces",
-                                        hint: "We recommend using a URI as the identifier, but it does not need to be publicly accessible since {{productName}} will only use it as the audience (aud) claim in the issued JWT tokens and will not attempt to access your API. <1>This field should be unique. Once created, it is not editable.</1>",
+                                        hint: "We recommend using a URI as the identifier, but it does not need to be a publicly accessible URI. <1>This field should be unique. Once created, it is not editable.</1>",
                                         label: "Identifier",
                                         placeholder: "https://api.bookmyhotel.com"
                                     },

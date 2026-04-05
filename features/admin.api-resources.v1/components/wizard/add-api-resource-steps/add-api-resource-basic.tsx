@@ -160,10 +160,8 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
                                 i18nKey= { "extensions:develop.apiResource.wizard.addApiResource.steps.basic." +
                                     "form.fields.identifier.hint" }
                                 tOptions={ { productName } }>
-                                We recommend using a URI as the identifier, but you do not need to make the URI
-                                publicly available since Asgardeo will not access your API.
-                                Asgardeo will use this identifier value as the audience(aud) claim in the
-                                issued JWT tokens. <b>This field should be unique; once created, it is not editable.</b>
+                                We recommend using a URI as the identifier, but it does not need to be a
+                                publicly accessible URI. <b>This field should be unique; once created, it is not editable.</b>
                             </Trans>
                         </Hint>
                     </Grid.Column>
