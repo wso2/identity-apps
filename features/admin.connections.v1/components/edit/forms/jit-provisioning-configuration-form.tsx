@@ -128,6 +128,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName ?? userstoresConfig.primaryUserstoreName);
+    const systemReservedUserStores: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.systemReservedUserStores);
 
     const [ isJITProvisioningEnabled, setIsJITProvisioningEnabled ] = useState<boolean>(false);
     const [ isAssociateLocalUserEnabled, setIsAssociateLocalUserEnabled ] = useState<boolean>(false);
@@ -153,7 +155,10 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                 const isReadOnly: boolean = isUserStoreReadOnly(store.name);
                 const isEnabled: boolean = store.enabled;
 
-                if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && !isReadOnly && isEnabled) {
+                if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName &&
+                    !isReadOnly &&
+                    isEnabled &&
+                    !systemReservedUserStores?.includes(store.name.toUpperCase())) {
                     const storeOption: DropdownItemProps = {
                         key: index,
                         text: store.name,
@@ -166,7 +171,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         }
 
         return storeOptions;
-    }, [ isUserStoreListFetchRequestLoading, userStoresList ]);
+    }, [ isUserStoreListFetchRequestLoading, userStoresList, systemReservedUserStores ]);
 
     /**
      * Build the dropdown options for account linking attribute mappings.

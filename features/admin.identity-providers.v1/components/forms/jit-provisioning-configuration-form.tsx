@@ -79,6 +79,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const systemReservedUserStores: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.systemReservedUserStores);
 
     const [ isJITProvisioningEnabled, setIsJITProvisioningEnabled ] = useState<boolean>(false);
 
@@ -112,11 +114,13 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
 
         if (useStoreList) {
             useStoreList?.map((userStore: SimpleUserStoreListItemInterface) => {
-                allowedOptions.push({
-                    key: useStoreList.indexOf(userStore),
-                    text: userStore?.name,
-                    value: userStore?.name
-                });
+                if (!systemReservedUserStores?.includes(userStore?.name?.toUpperCase())) {
+                    allowedOptions.push({
+                        key: useStoreList.indexOf(userStore),
+                        text: userStore?.name,
+                        value: userStore?.name
+                    });
+                }
             });
         }
 
