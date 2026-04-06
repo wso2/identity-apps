@@ -32,7 +32,6 @@ import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import Typography from "@oxygen-ui/react/Typography";
-
 import {
     ChevronDownIcon,
     DiamondIcon,
@@ -67,7 +66,7 @@ import FeaturePreviewModal from "./modals/feature-preview-modal";
 import { ReactComponent as PreviewFeaturesIcon } from "../../themes/default/assets/images/icons/flask-icon.svg";
 import { ReactComponent as LogoutIcon } from "../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../../themes/default/assets/images/icons/user-icon.svg";
-import { ReactComponent as AskHelpIcon } from "../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
+import { ReactComponent as AskHelpAIIcon } from "../../themes/wso2is/assets/images/icons/ask-help-ai-icon.svg";
 import { ReactComponent as DocsIcon } from "../../themes/wso2is/assets/images/icons/docs-icon.svg";
 import { ReactComponent as BillingPortalIcon } from "../../themes/wso2is/assets/images/icons/dollar-icon.svg";
 import { AppConstants } from "../constants/app-constants";
@@ -363,23 +362,12 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 </Menu>
             </>
         ),
-        window["AppUtils"].getConfig().docSiteUrl && (
-            <Button
-                color="inherit"
-                onClick={ () => {
-                    window.open(window["AppUtils"].getConfig().docSiteUrl, "_blank", "noopener");
-                } }
-                startIcon={ <DocsIcon /> }
-                data-testid="dev-doc-site-link"
-            >
-                { I18n.instance.t("console:common.help.docSiteLink") as ReactNode }
-            </Button>
-        ),
         (window["AppUtils"].getConfig().extensions.getHelp) && (
             <>
                 <Button
                     color="inherit"
-                    startIcon={ <AskHelpIcon /> }
+                    startIcon={ <AskHelpAIIcon /> }
+                    endIcon={ <ChevronDownIcon /> }
                     data-testid="get-help-dropdown-link"
                     className="oxygen-user-dropdown-button"
                     onClick={ handleHelpMenuClick }
@@ -424,6 +412,29 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                         </MenuItem>
                     ) }
                     { copilotToggle && <Divider className="get-help-dropdown-divider" /> }
+                    { window["AppUtils"].getConfig().docSiteUrl && (
+                        <MenuItem
+                            className="get-help-dropdown-item"
+                            onClick={ () => {
+                                window.open(
+                                    window["AppUtils"].getConfig().docSiteUrl,
+                                    "_blank",
+                                    "noopener"
+                                );
+                                onCloseHelpMenu();
+                            } }
+                        >
+                            <ListItemIcon className="get-help-icon">
+                                <DocsIcon />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary={ t("console:common.help.docSiteLink") }
+                            />
+                        </MenuItem>
+                    ) }
+                    { window["AppUtils"].getConfig().docSiteUrl &&
+                        <Divider className="get-help-dropdown-divider" />
+                    }
                     { window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL && (
                         <MenuItem
                             className="get-help-dropdown-item contact-support-dropdown-item"

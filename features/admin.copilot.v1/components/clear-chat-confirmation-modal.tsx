@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,18 +16,10 @@
  * under the License.
  */
 
-import WarningIcon from "@mui/icons-material/Warning";
-import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
-import Dialog from "@oxygen-ui/react/Dialog";
-import DialogActions from "@oxygen-ui/react/DialogActions";
-import DialogContent from "@oxygen-ui/react/DialogContent";
-import DialogTitle from "@oxygen-ui/react/DialogTitle";
-import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { ConfirmationModal } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import "./clear-chat-confirmation-modal.scss";
 
 /**
  * Props interface for the Clear Chat Confirmation Modal component.
@@ -68,63 +60,32 @@ const ClearChatConfirmationModal: React.FunctionComponent<ClearChatConfirmationM
     /**
      * Handle confirm action.
      */
-    const handleConfirm = (): void => {
+    const handleConfirm: () => void = (): void => {
         // Close modal immediately so the panel's refresh indicator is visible during the async op.
         // Errors are handled inside onConfirm via Redux state, so the Promise is intentionally not awaited.
         onClose();
-        void onConfirm();
+        onConfirm();
     };
 
     return (
-        <Dialog
-            className="clear-chat-confirmation-modal"
-            data-componentid={ componentId }
-            disablePortal={ true }
-            fullWidth
-            hideBackdrop={ true }
-            maxWidth="sm"
-            onClose={ onClose }
+        <ConfirmationModal
             open={ open }
+            onClose={ onClose }
+            type="warning"
+            primaryAction={ t("console:common.copilot.clearChat.confirm") }
+            secondaryAction={ t("console:common.copilot.clearChat.cancel") }
+            onPrimaryActionClick={ handleConfirm }
+            onSecondaryActionClick={ onClose }
+            closeOnDimmerClick={ false }
+            data-componentid={ componentId }
         >
-            <DialogTitle className="clear-chat-modal-title">
-                <Box className="clear-chat-modal-title-content">
-                    <WarningIcon className="clear-chat-warning-icon" />
-                    <Typography variant="h6" component="span">
-                        { t("console:common.copilot.clearChat.title") }
-                    </Typography>
-                </Box>
-            </DialogTitle>
-
-            <DialogContent className="clear-chat-modal-content">
-                <Typography variant="body1" className="clear-chat-modal-message">
-                    { t("console:common.copilot.clearChat.message") }
-                </Typography>
-                <Typography variant="body2" className="clear-chat-modal-submessage">
-                    { t("console:common.copilot.clearChat.submessage") }
-                </Typography>
-            </DialogContent>
-
-            <DialogActions className="clear-chat-modal-actions">
-                <Button
-                    variant="outlined"
-                    color="inherit"
-                    onClick={ onClose }
-                    data-componentid={ `${componentId}-cancel-button` }
-                    className="clear-chat-cancel-button"
-                >
-                    { t("console:common.copilot.clearChat.cancel") }
-                </Button>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={ handleConfirm }
-                    data-componentid={ `${componentId}-confirm-button` }
-                    className="clear-chat-confirm-button"
-                >
-                    { t("console:common.copilot.clearChat.confirm") }
-                </Button>
-            </DialogActions>
-        </Dialog>
+            <ConfirmationModal.Header data-componentid={ `${componentId}-header` }>
+                { t("console:common.copilot.clearChat.title") }
+            </ConfirmationModal.Header>
+            <ConfirmationModal.Content data-componentid={ `${componentId}-content` }>
+                { t("console:common.copilot.clearChat.message") }
+            </ConfirmationModal.Content>
+        </ConfirmationModal>
     );
 };
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -73,7 +73,7 @@ export enum CopilotActionTypes {
 /**
  * Copilot message interface.
  */
-export interface CopilotMessage {
+export interface CopilotMessageInterface {
     id: string;
     content: string;
     sender: "user" | "copilot";
@@ -96,10 +96,10 @@ export enum CopilotContentType {
 /**
  * Copilot panel state interface.
  */
-export interface CopilotPanelState {
+export interface CopilotPanelStateInterface {
     isVisible: boolean;
     isLoading: boolean;
-    messages: CopilotMessage[];
+    messages: CopilotMessageInterface[];
     contentType: CopilotContentType;
     statusMessage: string | null;
     /** Whether there are older history records available to load. */
@@ -139,7 +139,7 @@ export interface SetCopilotPanelLoadingActionInterface {
  * Add copilot message action interface.
  */
 export interface AddCopilotMessageActionInterface {
-    payload: CopilotMessage;
+    payload: CopilotMessageInterface;
     type: CopilotActionTypes.ADD_COPILOT_MESSAGE;
 }
 
@@ -150,7 +150,7 @@ export interface UpdateCopilotMessageActionInterface {
     payload: {
         id: string;
         content: string;
-        type?: CopilotMessage["type"];
+        type?: CopilotMessageInterface["type"];
         suggestions?: string[];
         suggestionsLoading?: boolean;
     };
@@ -176,7 +176,7 @@ export interface SetCopilotContentTypeActionInterface {
  * Set copilot chat history action interface.
  */
 export interface SetCopilotChatHistoryActionInterface {
-    payload: CopilotMessage[];
+    payload: CopilotMessageInterface[];
     type: CopilotActionTypes.SET_COPILOT_CHAT_HISTORY;
 }
 
@@ -191,7 +191,7 @@ export interface SetCopilotStatusMessageActionInterface {
 /**
  * History pagination metadata payload.
  */
-export interface HistoryPaginationPayload {
+export interface HistoryPaginationPayloadInterface {
     hasMoreHistory: boolean;
     /** Next offset to use for loading earlier messages. */
     nextOffset: number;
@@ -202,7 +202,7 @@ export interface HistoryPaginationPayload {
  * Set history pagination state action interface.
  */
 export interface SetCopilotHistoryPaginationActionInterface {
-    payload: HistoryPaginationPayload;
+    payload: HistoryPaginationPayloadInterface;
     type: CopilotActionTypes.SET_COPILOT_HISTORY_PAGINATION;
 }
 
@@ -210,7 +210,7 @@ export interface SetCopilotHistoryPaginationActionInterface {
  * Prepend older messages action interface (used when loading earlier history).
  */
 export interface PrependCopilotMessagesActionInterface {
-    payload: CopilotMessage[];
+    payload: CopilotMessageInterface[];
     type: CopilotActionTypes.PREPEND_COPILOT_MESSAGES;
 }
 

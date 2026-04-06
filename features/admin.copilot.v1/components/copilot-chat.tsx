@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,24 +18,151 @@
 
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import HistoryIcon from "@mui/icons-material/History";
+import { Theme, alpha, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
 import Skeleton from "@oxygen-ui/react/Skeleton";
-import TextField from "@oxygen-ui/react/TextField";
+import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Markdown } from "@wso2is/react-components";
+import { DocumentationLink, Markdown, useDocumentation } from "@wso2is/react-components";
 import React, {
     Component, ReactElement, ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import AISparkleIcon from "./ai-sparkle-icon";
-import { useCopilotPanel } from "../hooks";
-import "./copilot-chat.scss";
-import { CopilotMessage } from "../store/types";
+import {
+    StyledCopilotInput,
+    StyledFollowUpSuggestionsList,
+    StyledLoadMoreButton,
+    StyledSuggestionButton
+} from "./copilot-styles";
+import useCopilotPanel from "../hooks/use-copilot-panel";
+import { CopilotMessageInterface } from "../store/types/copilot-action-types";
+
+const StyledBotMessageBubble: typeof Paper = styled(Paper)(({ theme }: { theme: Theme }) => ({
+    "& .markdown": {
+        "& .code-editor": {
+            "& .CodeMirror": {
+                "& .CodeMirror-gutters": { display: "none" },
+                "& .CodeMirror-scroll": { overflowX: "auto" },
+                "& span[class^=\"cm-\"], & span[class*=\" cm-\"]": {
+                    color: `${theme.palette.text.primary} !important`
+                },
+                backgroundColor: alpha(theme.palette.common.black, 0.05),
+                borderRadius: 4,
+                color: theme.palette.text.primary,
+                fontFamily: "Monaco, Menlo, \"Ubuntu Mono\", monospace",
+                fontSize: 12,
+                lineHeight: 1.25,
+                padding: theme.spacing(1.5),
+                paddingRight: 40
+            },
+            "& .editor-actions .editor-action": {
+                "& .theme-icon path": { fill: `${theme.palette.primary.main} !important` },
+                "&:hover": { backgroundColor: alpha(theme.palette.primary.main, 0.15) },
+                borderRadius: 4,
+                transition: "background-color 0.15s ease"
+            },
+            margin: 0
+        },
+        "& .code-segment": {
+            border: `1px solid ${theme.palette.divider}`,
+            borderRadius: 4,
+            margin: `${theme.spacing(1.5)} 0`,
+            overflow: "hidden"
+        },
+        "& .markdown-blockquote-alert": {
+            backgroundColor: `${theme.palette.grey[100]} !important`,
+            border: "none !important",
+            boxShadow: "none !important",
+            color: `${theme.palette.text.primary} !important`,
+            fontStyle: "normal",
+            padding: `${theme.spacing(0.5)} ${theme.spacing(1.5)} !important`
+        },
+        "& > *:first-of-type": { marginTop: 0 },
+        "& > *:last-child": { marginBottom: 0 },
+        "& a": {
+            "&:hover": { textDecoration: "underline" },
+            color: theme.palette.primary.main,
+            textDecoration: "none"
+        },
+        "& code": {
+            backgroundColor: alpha(theme.palette.common.black, 0.08),
+            borderRadius: 3,
+            fontFamily: "Monaco, Menlo, \"Ubuntu Mono\", monospace",
+            fontSize: "0.9em",
+            padding: `2px ${theme.spacing(0.5)}`
+        },
+        "& h1": {
+            color: "inherit",
+            fontSize: 18,
+            lineHeight: 1.25,
+            margin: `${theme.spacing(1.5)} 0 ${theme.spacing(1)} 0`
+        },
+        "& h2": {
+            color: "inherit",
+            fontSize: 16,
+            lineHeight: 1.25,
+            margin: `${theme.spacing(1.5)} 0 ${theme.spacing(1)} 0`
+        },
+        "& h3": {
+            color: "inherit",
+            fontSize: 14,
+            fontWeight: 600,
+            lineHeight: 1.25,
+            margin: `${theme.spacing(1.5)} 0 ${theme.spacing(1)} 0`
+        },
+        "& h4, & h5, & h6": {
+            color: "inherit",
+            fontSize: 14,
+            fontWeight: 500,
+            lineHeight: 1.25,
+            margin: `${theme.spacing(1.5)} 0 ${theme.spacing(1)} 0`
+        },
+        "& hr": {
+            border: "none",
+            borderTop: `1px solid ${theme.palette.divider}`,
+            margin: `${theme.spacing(2)} 0`
+        },
+        "& li": { margin: `${theme.spacing(0.5)} 0` },
+        "& p": { lineHeight: 1.5, margin: `${theme.spacing(1)} 0` },
+        "& table": {
+            borderCollapse: "collapse",
+            margin: `${theme.spacing(1.5)} 0`,
+            width: "100%"
+        },
+        "& th": {
+            backgroundColor: alpha(theme.palette.common.black, 0.05),
+            fontWeight: 600
+        },
+        "& th, & td": {
+            border: `1px solid ${theme.palette.divider}`,
+            padding: theme.spacing(1),
+            textAlign: "left"
+        },
+        "& ul, & ol": { margin: `${theme.spacing(1)} 0`, paddingLeft: theme.spacing(2.5) },
+        contain: "layout style"
+    },
+    "&.error-message": {
+        backgroundColor: alpha(theme.palette.error.main, 0.08),
+        border: `1px solid ${alpha(theme.palette.error.main, 0.4)}`,
+        borderRadius: 4,
+        color: theme.palette.error.main
+    },
+    background: "transparent",
+    border: "none",
+    borderRadius: 0,
+    color: theme.palette.text.primary,
+    contain: "layout style",
+    fontSize: 14,
+    lineHeight: 1.5,
+    overflowWrap: "break-word",
+    padding: theme.spacing(1.5),
+    willChange: "auto"
+}));
 
 /**
  * Props interface for the CopilotChat component.
@@ -119,25 +246,26 @@ const normalizeStreamingMarkdown = (content: string): string => {
     }
 
     const contentWithoutFencedBlocks: string = normalizedContent.replace(/```[\s\S]*?```/g, "");
-    const inlineCodeCount: number = contentWithoutFencedBlocks.match(/`/g)?.length ?? 0;
+    const contentWithoutCode: string = contentWithoutFencedBlocks.replace(/`[^`]*`/g, "");
+    const inlineCodeCount: number = contentWithoutCode.match(/`/g)?.length ?? 0;
 
     if (inlineCodeCount % 2 === 1) {
         normalizedContent = `${normalizedContent}\``;
     }
 
-    const boldAsteriskCount: number = normalizedContent.match(/\*\*/g)?.length ?? 0;
+    const boldAsteriskCount: number = contentWithoutCode.match(/\*\*/g)?.length ?? 0;
 
     if (boldAsteriskCount % 2 === 1) {
         normalizedContent = `${normalizedContent}**`;
     }
 
-    const boldUnderscoreCount: number = normalizedContent.match(/__/g)?.length ?? 0;
+    const boldUnderscoreCount: number = contentWithoutCode.match(/__/g)?.length ?? 0;
 
     if (boldUnderscoreCount % 2 === 1) {
         normalizedContent = `${normalizedContent}__`;
     }
 
-    if (/\[[^\]]*\]\([^)]*$/.test(normalizedContent)) {
+    if (/\[[^\]]*\]\([^)]*$/.test(contentWithoutCode)) {
         normalizedContent = `${normalizedContent})`;
     }
 
@@ -148,7 +276,7 @@ const normalizeStreamingMarkdown = (content: string): string => {
  * Props for the memoized single-message renderer.
  */
 interface ChatMessageProps {
-    message: CopilotMessage;
+    message: CopilotMessageInterface;
     isLastMessage: boolean;
     isLoading: boolean;
     componentId: string;
@@ -180,11 +308,21 @@ const ChatMessage: React.FunctionComponent<ChatMessageProps> = React.memo(
             return (
                 <Box
                     key={ message.id }
-                    className="copilot-message user-message"
                     data-componentid={ `${componentId}-message-${message.id}` }
+                    sx={ { mb: 2, pr: 2, textAlign: "right" } }
                 >
-                    <Box className="copilot-message-content">
-                        <Paper elevation={ 0 } className="copilot-message-bubble">
+                    <Box sx={ { marginLeft: "auto", maxWidth: "80%" } }>
+                        <Paper
+                            elevation={ 0 }
+                            sx={ {
+                                backgroundColor: (theme: Theme) => alpha(theme.palette.primary.main, 0.06),
+                                borderRadius: "16px 16px 4px 16px",
+                                display: "inline-block",
+                                overflowWrap: "break-word",
+                                p: 2,
+                                textAlign: "left"
+                            } }
+                        >
                             { message.content }
                         </Paper>
                     </Box>
@@ -199,15 +337,17 @@ const ChatMessage: React.FunctionComponent<ChatMessageProps> = React.memo(
         }
 
         return (
-            <Box
+            <Stack
                 key={ message.id }
-                className="copilot-message bot-message"
+                direction="row"
+                alignItems="flex-start"
                 data-componentid={ `${componentId}-message-${message.id}` }
+                sx={ { mb: 2, px: 2 } }
             >
-                <Box className="copilot-message-content">
-                    <Paper
+                <Box sx={ { maxWidth: "100%", width: "100%" } }>
+                    <StyledBotMessageBubble
                         elevation={ 0 }
-                        className={ `copilot-message-bubble ${isError ? "error-message" : ""}` }
+                        className={ isError ? "error-message" : "" }
                     >
                         <MessageErrorBoundary
                             resetKey={ renderedContent }
@@ -215,42 +355,46 @@ const ChatMessage: React.FunctionComponent<ChatMessageProps> = React.memo(
                         >
                             <Markdown source={ renderedContent } />
                         </MessageErrorBoundary>
-                    </Paper>
+                    </StyledBotMessageBubble>
 
                     { !isError && isLastMessage && (
                         <>
                             { message.suggestionsLoading && !message.suggestions && (
-                                <Box className="copilot-follow-up-suggestions-list">
+                                <StyledFollowUpSuggestionsList>
                                     { [ 0, 1 ].map((i: number) => (
                                         <Skeleton
                                             key={ `${message.id}-suggestion-skeleton-${i}` }
                                             variant="rounded"
-                                            className="copilot-suggestion-skeleton"
+                                            sx={ (theme: Theme) => ({
+                                                backgroundColor: alpha(theme.palette.primary.main, 0.06),
+                                                borderRadius: "24px",
+                                                height: 36,
+                                                width: 160
+                                            }) }
                                         />
                                     )) }
-                                </Box>
+                                </StyledFollowUpSuggestionsList>
                             ) }
                             { message.suggestions && message.suggestions.length > 0 && (
-                                <Box className="copilot-follow-up-suggestions-list">
+                                <StyledFollowUpSuggestionsList>
                                     { message.suggestions.map((suggestion: string, index: number) => (
-                                        <Button
+                                        <StyledSuggestionButton
                                             key={ `${message.id}-suggestion-${index}` }
-                                            variant="outlined"
+                                            variant="text"
                                             onClick={ () => onSendMessage(suggestion) }
                                             disabled={ loading }
-                                            className="copilot-suggestion-button"
                                             data-componentid={ `${componentId}-suggestion-${index}` }
                                             startIcon={ <AISparkleIcon width={ 16 } height={ 16 } /> }
                                         >
                                             { suggestion }
-                                        </Button>
+                                        </StyledSuggestionButton>
                                     )) }
-                                </Box>
+                                </StyledFollowUpSuggestionsList>
                             ) }
                         </>
                     ) }
                 </Box>
-            </Box>
+            </Stack>
         );
     }
 );
@@ -272,6 +416,7 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
 
     const {
         messages,
@@ -289,8 +434,6 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
     const scrollTimeoutRef: React.MutableRefObject<NodeJS.Timeout | null> = useRef<NodeJS.Timeout | null>(null);
     /** Stores the scrollHeight snapshot taken just before a prepend so we can restore position. */
     const prevScrollHeightRef: React.MutableRefObject<number | null> = useRef<number | null>(null);
-    /** When true the next messages-change effect skips the scroll-to-bottom. */
-    const suppressScrollRef: React.MutableRefObject<boolean> = useRef<boolean>(false);
 
     /**
      * Scroll to bottom of messages.
@@ -328,6 +471,10 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
      * Handle key down in input.
      */
     const handleKeyDown: (event: React.KeyboardEvent) => void = useCallback((event: React.KeyboardEvent) => {
+        if (event.nativeEvent.isComposing) {
+            return;
+        }
+
         if (event.key === "Enter" && !event.shiftKey) {
             event.preventDefault();
             handleSendMessage();
@@ -347,16 +494,27 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
     }, [ scrollToBottom ]);
 
     /**
-     * Scroll to bottom when messages change - suppressed when loading earlier messages.
+     * Returns true when the user is within `threshold` pixels of the bottom
+     * of the messages container. Used to decide whether to auto-scroll.
+     */
+    const isUserNearBottom: (threshold?: number) => boolean = useCallback((threshold: number = 100) => {
+        if (!messagesContainerRef.current) {
+            return true;
+        }
+        const { scrollHeight, scrollTop, clientHeight } = messagesContainerRef.current;
+
+        return scrollHeight - scrollTop - clientHeight < threshold;
+    }, []);
+
+    /**
+     * Scroll to bottom when messages change - only when the user is already
+     * near the bottom so loading earlier history never yanks the viewport.
      */
     useEffect(() => {
-        if (suppressScrollRef.current) {
-            suppressScrollRef.current = false;
-
-            return;
+        if (isUserNearBottom()) {
+            throttledScrollToBottom();
         }
-        throttledScrollToBottom();
-    }, [ messages, throttledScrollToBottom ]);
+    }, [ messages, isUserNearBottom, throttledScrollToBottom ]);
 
     /**
      * Restore the scroll anchor after older messages are prepended.
@@ -381,7 +539,6 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
     const handleLoadMore: () => void = useCallback(() => {
         if (messagesContainerRef.current) {
             prevScrollHeightRef.current = messagesContainerRef.current.scrollHeight;
-            suppressScrollRef.current = true;
         }
         loadMoreHistory();
     }, [ loadMoreHistory ]);
@@ -398,17 +555,25 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
     }, []);
 
     return (
-        <Box
-            className={ `copilot-chat ${className || ""}` }
+        <Stack
+            direction="column"
+            className={ className }
             data-componentid={ componentId }
-
+            sx={ { height: "100%" } }
         >
             { /* Messages Area */ }
-            <Box className="copilot-chat-messages" ref={ messagesContainerRef }>
+            <Box
+                ref={ messagesContainerRef }
+                sx={ {
+                    flex: 1,
+                    overflowY: "auto",
+                    py: 2
+                } }
+            >
                 { /* Load Earlier Messages button */ }
                 { hasMoreHistory && (
-                    <Box className="copilot-load-earlier-container">
-                        <Button
+                    <Stack direction="row" justifyContent="center" sx={ { pb: 1, pt: 0.5, px: 2 } }>
+                        <StyledLoadMoreButton
                             variant="text"
                             size="small"
                             startIcon={ isLoadingMoreHistory
@@ -417,22 +582,21 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
                             onClick={ handleLoadMore }
                             disabled={ isLoadingMoreHistory }
                             data-componentid={ `${componentId}-load-earlier-btn` }
-                            className="copilot-load-earlier-btn"
                         >
                             { isLoadingMoreHistory
                                 ? t("console:common.copilot.chat.loadingHistory")
                                 : t("console:common.copilot.chat.loadEarlier") }
-                        </Button>
-                    </Box>
+                        </StyledLoadMoreButton>
+                    </Stack>
                 ) }
                 { messages.length === 0 ? (
-                    <Box className="copilot-empty-state">
-                        <Typography variant="body2" className="copilot-empty-text">
+                    <Box sx={ { p: 3, textAlign: "center" } }>
+                        <Typography variant="body2" color="text.secondary">
                             { t("console:common.copilot.chat.emptyChat") }
                         </Typography>
                     </Box>
                 ) : (
-                    messages.map((message: CopilotMessage) => (
+                    messages.map((message: CopilotMessageInterface) => (
                         <ChatMessage
                             key={ message.id }
                             message={ message }
@@ -444,32 +608,28 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
                     ))
                 ) }
 
-                { /* Loading indicator */ }
-                { isLoading && (
-                    <Box
-                        className="copilot-message loading-message"
+                { /* Agent status indicator */ }
+                { isLoading && statusMessage && (
+                    <Stack
+                        direction="row"
+                        alignItems="center"
+                        spacing={ 1 }
                         data-componentid={ `${componentId}-loading` }
+                        sx={ { mb: 2, px: 4 } }
                     >
-                        <Box className="copilot-message-content">
-                            <Paper elevation={ 0 } className="copilot-message-bubble">
-                                <Box className="copilot-loading-content">
-                                    <CircularProgress size={ 16 } className="copilot-loading-spinner" />
-                                    <Typography variant="body2" className="copilot-loading-text">
-                                        { statusMessage || t("console:common.copilot.chat.thinking") }
-                                    </Typography>
-                                </Box>
-                            </Paper>
-                        </Box>
-                    </Box>
+                        <CircularProgress size={ 16 } color="primary" />
+                        <Typography variant="body2">{ statusMessage }</Typography>
+                    </Stack>
                 ) }
                 <div ref={ messagesEndRef } />
             </Box>
             { /* Input Area */ }
-            <Box className="copilot-input-container">
-                <Box className="copilot-input-wrapper">
-                    <TextField
+            <Box sx={ { bgcolor: "background.paper", p: 2 } }>
+                <Box sx={ { position: "relative" } }>
+                    <StyledCopilotInput
                         fullWidth
                         multiline
+                        minRows={ 1 }
                         maxRows={ 4 }
                         aria-label={ t("console:common.copilot.chat.inputLabel") }
                         placeholder={ t("console:common.copilot.welcome.placeholder") }
@@ -478,28 +638,44 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
                         onKeyDown={ handleKeyDown }
                         disabled={ isLoading }
                         data-componentid={ `${componentId}-input` }
-                        className="copilot-input-field"
                     />
 
                     { /* Send Button */ }
                     <IconButton
+                        color="primary"
                         onClick={ handleSendMessage }
                         disabled={ !inputValue.trim() || isLoading }
                         aria-label={ t("console:common.copilot.chat.sendMessage") }
                         data-componentid={ `${componentId}-send-button` }
-                        className="copilot-send-button"
+                        sx={ (theme: Theme) => ({
+                            height: 32,
+                            position: "absolute",
+                            right: theme.spacing(1),
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            width: 32
+                        }) }
                     >
                         <ArrowUpwardIcon fontSize="small" />
                     </IconButton>
                 </Box>
 
                 { /* Footer */ }
-                <Typography variant="caption" className="copilot-disclaimer">
+                <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    display="block"
+                    sx={ { mt: 1.5, textAlign: "center" } }
+                >
                     { /* TODO: Switch back to "Copilot" once branding is finalized */ }
                     { t("console:common.copilot.welcome.disclaimer") }
+                    { " " }
+                    <DocumentationLink link={ getLink("common.aiTermsOfService") }>
+                        { t("console:common.copilot.welcome.termsAndConditions") }
+                    </DocumentationLink>
                 </Typography>
             </Box>
-        </Box>
+        </Stack>
     );
 };
 

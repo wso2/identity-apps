@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,17 +18,20 @@
 
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
 import IconButton from "@oxygen-ui/react/IconButton";
-import TextField from "@oxygen-ui/react/TextField";
+import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
 import React, { ReactElement, useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import AiBotAvatar from "./ai-bot-avatar";
 import AISparkleIcon from "./ai-sparkle-icon";
-import { useCopilotPanel } from "../hooks";
-import "./copilot-welcome.scss";
+import {
+    StyledCopilotInput,
+    StyledSuggestionButton
+} from "./copilot-styles";
+import useCopilotPanel from "../hooks/use-copilot-panel";
 
 /**
  * Props interface for the CopilotWelcome component.
@@ -60,6 +63,7 @@ const CopilotWelcome: React.FunctionComponent<CopilotWelcomeProps> = (
     } = props;
 
     const { t } = useTranslation();
+    const { getLink } = useDocumentation();
     const { sendMessage, isLoading } = useCopilotPanel();
     const [ inputValue, setInputValue ] = useState<string>("");
 
@@ -122,57 +126,78 @@ const CopilotWelcome: React.FunctionComponent<CopilotWelcomeProps> = (
     }, [ handleSendMessage ]);
 
     return (
-        <Box
-            className={ `copilot-welcome ${className || ""}` }
+        <Stack
+            direction="column"
+            className={ className }
             data-componentid={ componentId }
-
+            sx={ { height: "100%" } }
         >
             { /* Welcome Section */ }
-            <Box className="copilot-welcome-content">
+            <Stack
+                direction="column"
+                sx={ { flex: 1, minHeight: 0, overflowX: "hidden", overflowY: "auto" } }
+            >
                 { /* Main welcome content */ }
-                <Box className="copilot-welcome-main">
-                    <Box className="copilot-avatar-container">
+                <Stack
+                    direction="column"
+                    alignItems="center"
+                    sx={ { flex: 1, pt: 3, px: 3, textAlign: "center" } }
+                >
+                    <Box sx={ { mb: 1.5 } }>
                         <AiBotAvatar size={ 200 } />
                     </Box>
 
-                    <Typography variant="h6" className="copilot-welcome-title">
+                    <Typography
+                        variant="h6"
+                        sx={ { fontSize: 18, fontWeight: 600, mb: 2 } }
+                    >
                         { t("console:common.copilot.welcome.title") }
                     </Typography>
 
-                    <Typography variant="body2" className="copilot-welcome-description">
+                    <Typography
+                        variant="body2"
+                        color="text.secondary"
+                        sx={ { lineHeight: 1.5, maxWidth: 400, mb: 3 } }
+                    >
                         { t("console:common.copilot.welcome.description") }
                     </Typography>
-                </Box>
+                </Stack>
 
                 { /* Suggested Actions */ }
-                <Box className="copilot-suggestions">
-                    <Typography variant="overline" className="copilot-suggestions-title">
+                <Box sx={ { p: 3 } }>
+                    <Typography
+                        variant="overline"
+                        color="text.secondary"
+                        display="block"
+                        sx={ { fontWeight: 600, mb: 1, textAlign: "left" } }
+                    >
                         { t("console:common.copilot.welcome.suggestionsTitle") }
                     </Typography>
 
-                    <Box className="copilot-suggestions-list">
+                    <Stack direction="row" sx={ { flexWrap: "wrap", gap: 1.5 } }>
                         { suggestedActions.map((item: { id: string; text: string }) => (
-                            <Button
+                            <StyledSuggestionButton
                                 key={ item.id }
-                                variant="outlined"
+                                variant="text"
                                 onClick={ () => handleSuggestedAction(item.text) }
                                 data-componentid={ `${componentId}-action-${item.id}` }
-                                className="copilot-suggestion-button"
                                 startIcon={ <AISparkleIcon width={ 16 } height={ 16 } /> }
+                                sx={ { whiteSpace: "nowrap" } }
                             >
                                 { item.text }
-                            </Button>
+                            </StyledSuggestionButton>
                         )) }
-                    </Box>
+                    </Stack>
                 </Box>
-            </Box>
+            </Stack>
 
             { /* Input Area - Always visible at bottom */ }
-            <Box className="copilot-input-container">
-                <Box className="copilot-input-wrapper">
-                    <TextField
+            <Box sx={ { bgcolor: "background.paper", p: 2 } }>
+                <Box sx={ { position: "relative" } }>
+                    <StyledCopilotInput
                         fullWidth
                         multiline
+                        minRows={ 1 }
                         maxRows={ 4 }
                         placeholder={ t("console:common.copilot.welcome.placeholder") }
                         value={ inputValue }
@@ -180,27 +205,43 @@ const CopilotWelcome: React.FunctionComponent<CopilotWelcomeProps> = (
                         onKeyDown={ handleKeyDown }
                         disabled={ isLoading }
                         data-componentid={ `${componentId}-input` }
-                        className="copilot-input-field"
                     />
 
                     { /* Send Button */ }
                     <IconButton
+                        color="primary"
                         onClick={ handleSendMessage }
                         disabled={ !inputValue.trim() || isLoading }
                         aria-label={ t("console:common.copilot.welcome.send") }
                         data-componentid={ `${componentId}-send-button` }
-                        className="copilot-send-button"
+                        sx={ (theme: import("@mui/material/styles").Theme) => ({
+                            height: 32,
+                            position: "absolute",
+                            right: theme.spacing(1),
+                            top: "50%",
+                            transform: "translateY(-50%)",
+                            width: 32
+                        }) }
                     >
                         <ArrowUpwardIcon fontSize="small" />
                     </IconButton>
                 </Box>
 
                 { /* Footer */ }
-                <Typography variant="caption" className="copilot-disclaimer">
+                <Typography
+                    variant="caption"
+                    color="text.secondary"
+                    display="block"
+                    sx={ { fontSize: 11, lineHeight: 1.4, mt: 1.5, textAlign: "center" } }
+                >
                     { t("console:common.copilot.welcome.disclaimer") }
+                    { " " }
+                    <DocumentationLink link={ getLink("common.aiTermsOfService") }>
+                        { t("console:common.copilot.welcome.termsAndConditions") }
+                    </DocumentationLink>
                 </Typography>
             </Box>
-        </Box>
+        </Stack>
     );
 };
 

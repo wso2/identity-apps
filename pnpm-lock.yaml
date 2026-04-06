@@ -542,7 +542,7 @@ importers:
         specifier: ^2.26.43
         version: link:../../features/admin.console-settings.v1
       '@wso2is/admin.copilot.v1':
-        specifier: ^1.0.0
+        specifier: workspace:^
         version: link:../../features/admin.copilot.v1
       '@wso2is/admin.core.v1':
         specifier: ^2.55.32

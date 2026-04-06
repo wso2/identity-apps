@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,8 +20,10 @@ import CloseIcon from "@mui/icons-material/Close";
 import FullscreenIcon from "@mui/icons-material/Fullscreen";
 import FullscreenExitIcon from "@mui/icons-material/FullscreenExit";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import { Theme } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import IconButton from "@oxygen-ui/react/IconButton";
+import Stack from "@oxygen-ui/react/Stack";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -29,8 +31,10 @@ import React, { ReactElement, useCallback, useEffect, useRef, useState } from "r
 import { useTranslation } from "react-i18next";
 import AISparkleIcon from "./ai-sparkle-icon";
 import ClearChatConfirmationModal from "./clear-chat-confirmation-modal";
-import { useCopilotPanel } from "../hooks";
-import "./copilot-header.scss";
+import useCopilotPanel from "../hooks/use-copilot-panel";
+
+// Brand accent used in gradients (no theme token for this purple)
+const COPILOT_SECONDARY: string = "#8b5cf6";
 
 /**
  * Props interface for the CopilotHeader component.
@@ -130,29 +134,65 @@ const CopilotHeader: React.FunctionComponent<CopilotHeaderProps> = (
     }, [ onToggleExpand ]);
 
     return (
-        <Box className="copilot-header" data-componentid={ componentId }>
-            <Box className="copilot-header-content">
+        <Box
+            data-componentid={ componentId }
+            sx={ (theme: Theme) => ({
+                bgcolor: "background.paper",
+                borderBottom: 1,
+                borderColor: "divider",
+                flexShrink: 0,
+                minHeight: 64,
+                position: "relative",
+                zIndex: theme.zIndex.appBar
+            }) }
+        >
+            <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                sx={ { height: 64, px: 2 } }
+            >
                 { /* Left side - Logo and Title */ }
-                <Box className="copilot-header-left">
-                    <Box className="copilot-avatar-container">
-                        <AISparkleIcon width={ 24 } height={ 24 } />
-                    </Box>
-                    <Typography variant="h6" component="h2" className="copilot-header-title">
+                <Stack direction="row" alignItems="center" spacing={ 1 }>
+                    <AISparkleIcon width={ 24 } height={ 24 } />
+                    <Typography
+                        variant="h6"
+                        component="h2"
+                        sx={ (theme: Theme) => ({
+                            WebkitBackgroundClip: "text",
+                            WebkitTextFillColor: "transparent",
+                            background: `linear-gradient(135deg, ${theme.palette.primary.main}, ${COPILOT_SECONDARY})`,
+                            backgroundClip: "text",
+                            fontSize: 16,
+                            fontWeight: 600,
+                            lineHeight: 1
+                        }) }
+                    >
                         { t("console:common.copilot.title") }
                     </Typography>
-                </Box>
+                </Stack>
 
                 { /* Right side - Action buttons */ }
-                <Box className="copilot-header-actions">
+                <Stack direction="row" alignItems="center" spacing={ 0.5 }>
                     { messages.length > 0 && (
                         <Tooltip title={ t("console:common.copilot.clearChat.title") }>
                             <span>
                                 <IconButton
                                     size="small"
+                                    aria-label={ t("console:common.copilot.clearChat.title") }
                                     onClick={ handleClearChatClick }
                                     disabled={ isRefreshing }
                                     data-componentid={ `${componentId}-refresh-button` }
-                                    className={ `copilot-action-button ${isRefreshing ? "refreshing" : ""}` }
+                                    sx={ {
+                                        "@keyframes spin": {
+                                            "0%": { transform: "rotate(0deg)" },
+                                            "100%": { transform: "rotate(360deg)" }
+                                        },
+                                        animation: isRefreshing
+                                            ? "spin 1s linear infinite"
+                                            : "none",
+                                        color: "text.secondary"
+                                    } }
                                 >
                                     <RefreshIcon fontSize="small" />
                                 </IconButton>
@@ -166,9 +206,12 @@ const CopilotHeader: React.FunctionComponent<CopilotHeaderProps> = (
                                 : t("console:common.copilot.expand") }>
                             <IconButton
                                 size="small"
+                                aria-label={ isExpanded
+                                    ? t("console:common.copilot.collapse")
+                                    : t("console:common.copilot.expand") }
                                 onClick={ handleToggleExpand }
                                 data-componentid={ `${componentId}-expand-button` }
-                                className="copilot-action-button"
+                                sx={ { color: "text.secondary" } }
                             >
                                 { isExpanded
                                     ? <FullscreenExitIcon fontSize="small" />
@@ -179,15 +222,16 @@ const CopilotHeader: React.FunctionComponent<CopilotHeaderProps> = (
                     <Tooltip title={ t("console:common.copilot.close") }>
                         <IconButton
                             size="small"
+                            aria-label={ t("console:common.copilot.close") }
                             onClick={ onClose }
                             data-componentid={ `${componentId}-close-button` }
-                            className="copilot-action-button"
+                            sx={ { color: "text.secondary" } }
                         >
                             <CloseIcon fontSize="small" />
                         </IconButton>
                     </Tooltip>
-                </Box>
-            </Box>
+                </Stack>
+            </Stack>
 
             { /* Clear Chat Confirmation Modal */ }
             <ClearChatConfirmationModal

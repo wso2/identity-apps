@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,11 +16,34 @@
  * under the License.
  */
 
+import { styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ReactElement } from "react";
 import AiBotIllustration from "../assets/ai-bot.svg";
-import "./ai-bot-avatar.scss";
+
+const StyledAiBotAvatarRoot: typeof Box = styled(Box)(() => ({
+    "&.circular": {
+        "& img": {
+            display: "block",
+            height: "auto",
+            objectFit: "contain",
+            width: "60%"
+        },
+        borderRadius: "50%"
+    },
+    "&.standard": {
+        "& img": {
+            display: "block",
+            height: "100%",
+            objectFit: "contain",
+            width: "100%"
+        }
+    },
+    alignItems: "center",
+    display: "flex",
+    justifyContent: "center"
+}));
 
 /**
  * Props interface for the AiBotAvatar component.
@@ -64,7 +87,7 @@ const AiBotAvatar: React.FunctionComponent<AiBotAvatarProps> = (
 
     if (circular) {
         return (
-            <Box
+            <StyledAiBotAvatarRoot
                 className={ `ai-bot-avatar circular ${className || ""}` }
                 data-componentid={ componentId }
                 style={ {
@@ -77,28 +100,20 @@ const AiBotAvatar: React.FunctionComponent<AiBotAvatarProps> = (
                 <img
                     alt="AI Bot"
                     src={ AiBotIllustration }
-                    style={ {
-                        width: `${size * 0.6}px`
-                    } }
+                    style={ { width: `${size * 0.6}px` } }
                 />
-            </Box>
+            </StyledAiBotAvatarRoot>
         );
     }
 
     return (
-        <Box
+        <StyledAiBotAvatarRoot
             className={ `ai-bot-avatar standard ${className || ""}` }
             data-componentid={ componentId }
-            style={ {
-                height: size,
-                width: size
-            } }
+            style={ { height: size, width: size } }
         >
-            <img
-                alt="AI Bot"
-                src={ AiBotIllustration }
-            />
-        </Box>
+            <img alt="AI Bot" src={ AiBotIllustration } />
+        </StyledAiBotAvatarRoot>
     );
 };
 

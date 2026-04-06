@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,12 +16,27 @@
  * under the License.
  */
 
+import { Theme, styled } from "@mui/material/styles";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { ReactElement } from "react";
 import { ReactComponent as AIIcon } from
     "../../../modules/theme/src/themes/wso2is/assets/images/icons/solid-icons/ai-icon.svg";
-import "./ai-sparkle-icon.scss";
+
+const StyledAIIcon: typeof AIIcon = styled(AIIcon)(({ theme }: { theme: Theme }) => ({
+    ".copilot-header-left &, .copilot-avatar-container &": {
+        fill: `var(--oxygen-palette-gradients-primary-stop2, ${theme.palette.primary.main})`
+    },
+    ".copilot-toggle-button &": {
+        fill: "currentcolor"
+    },
+    display: "inline-block",
+    fill: `var(--oxygen-palette-gradients-primary-stop2, ${theme.palette.primary.main})`,
+    marginLeft: "1px",
+    transform: "scale(-1, 1)",
+    transition: "fill 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+    verticalAlign: "middle"
+})) as typeof AIIcon;
 
 /**
  * Props interface for the AI Sparkle Icon component.
@@ -58,7 +73,7 @@ const AISparkleIcon: React.FunctionComponent<AISparkleIconProps> = (
     } = props;
 
     return (
-        <AIIcon
+        <StyledAIIcon
             className={ classNames("ai-sparkle-icon", className) }
             data-componentid={ componentId }
             height={ height }

@@ -167,6 +167,7 @@ export interface ConsoleNS {
                 placeholder: string;
                 send: string;
                 suggestionsTitle: string;
+                termsAndConditions: string;
                 title: string;
             };
         };

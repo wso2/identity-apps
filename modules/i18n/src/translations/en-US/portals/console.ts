@@ -423,7 +423,8 @@ export const console: ConsoleNS = {
                 },
                 description: "I can help you with identity management, application setup, user management, and more.",
                 // TODO: Switch back to "Copilot" once phase 2 is deployed
-                disclaimer: "Use Ask AI mindfully as AI can make mistakes.",
+                disclaimer: "Ask AI can make mistakes; use mindfully. Avoid sharing personal or sensitive info.",
+                termsAndConditions: "Terms and Conditions",
                 placeholder: "Enter your message here...",
                 send: "Send message",
                 suggestionsTitle: "TRY ASKING ABOUT",

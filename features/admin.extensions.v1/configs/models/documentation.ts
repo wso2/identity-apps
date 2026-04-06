@@ -332,6 +332,7 @@ interface BrandingDocumentationLinksInterface {
  * Interface for the common documentation structure.
  */
 interface CommonDocumentationLinksInterface {
+    aiTermsOfService: string;
     cookiePolicy: string;
     docsHomePage: string;
     privacyPolicy: string;

@@ -44,7 +44,7 @@ import { commonRequestLoadersInitialState } from "./reducers/loaders";
 import { organizationReducer } from "./reducers/organization";
 import { commonProfileReducerInitialState } from "./reducers/profile";
 import { routeReducer } from "./reducers/routes";
-import { copilotReducer } from "../../admin.copilot.v1/store/reducers";
+import { copilotReducer } from "../../admin.copilot.v1/store/reducers/copilot";
 import {
     DeploymentConfigInterface,
     FeatureConfigInterface,

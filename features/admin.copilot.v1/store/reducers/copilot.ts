@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,14 +21,14 @@ import {
     CopilotActionTypes,
     CopilotActions,
     CopilotContentType,
-    CopilotMessage,
-    CopilotPanelState
+    CopilotMessageInterface,
+    CopilotPanelStateInterface
 } from "../types/copilot-action-types";
 
 /**
  * Initial state for the copilot reducer.
  */
-const initialState: CopilotPanelState = {
+const initialState: CopilotPanelStateInterface = {
     contentType: CopilotContentType.CHAT,
     hasMoreHistory: false,
     historyOffset: 0,
@@ -47,10 +47,10 @@ const initialState: CopilotPanelState = {
  * @param action - Action type.
  * @returns The new state.
  */
-export const copilotReducer: Reducer<CopilotPanelState> = (
-    state: CopilotPanelState = initialState,
+export const copilotReducer: Reducer<CopilotPanelStateInterface> = (
+    state: CopilotPanelStateInterface = initialState,
     action: CopilotActions
-): CopilotPanelState => {
+): CopilotPanelStateInterface => {
     switch (action.type) {
         case CopilotActionTypes.SET_COPILOT_PANEL_VISIBILITY:
             return {
@@ -77,11 +77,13 @@ export const copilotReducer: Reducer<CopilotPanelState> = (
         case CopilotActionTypes.UPDATE_COPILOT_MESSAGE:
             return {
                 ...state,
-                messages: state.messages.map((message: CopilotMessage) =>
+                messages: state.messages.map((message: CopilotMessageInterface) =>
                     message.id === action.payload.id
                         ? {
                             ...message,
-                            content: message.content + action.payload.content,
+                            content: typeof action.payload.content === "string"
+                                ? message.content + action.payload.content
+                                : message.content,
                             type: action.payload.type ?? message.type,
                             ...(action.payload.suggestions !== undefined && {
                                 suggestions: action.payload.suggestions,

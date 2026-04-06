@@ -24,6 +24,7 @@ export const getDocumentationLinksExtension = (): DocumentationLinksExtensionInt
 
     return {
         common: {
+            aiTermsOfService: "https://wso2.com/licenses/wso2-ai-services-terms-of-use/",
             cookiePolicy: "https://wso2.com/cookie-policy",
             docsHomePage: documentationBaseUrl,
             privacyPolicy: "https://wso2.com/privacy-policy",
