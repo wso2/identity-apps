@@ -8,4 +8,4 @@
 "@wso2is/core": patch
 ---
 
-Change set
+Incoporate legacy SCIM enterprise user attributes.
