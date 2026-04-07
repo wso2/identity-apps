@@ -123,6 +123,10 @@ export interface CommonDeploymentConfigInterface<T = Record<string, unknown>, S 
      */
     organizationPrefix: string;
     /**
+     * Organization-level configurations.
+     */
+    organizations?: OrganizationsConfigInterface;
+    /**
      * Host of the Identity Sever.
      * ex: https://localhost:9443
      */
@@ -160,6 +164,15 @@ export interface CommonDeploymentConfigInterface<T = Record<string, unknown>, S 
      * ex: `t`
      */
     tenantPrefix: string;
+}
+
+/**
+ * Organizations configuration interface.
+ */
+export interface OrganizationsConfigInterface {
+    connections?: {
+        useTenantQualifiedOrgPatternCommonauth?: boolean;
+    };
 }
 
 /**

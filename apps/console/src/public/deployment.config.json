@@ -265,6 +265,11 @@
     },
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
+    "organizations": {
+        "connections": {
+            "useTenantQualifiedOrgPatternCommonauth": false
+        }
+    },
     "proxyContextPath": "",
     "routePaths": {
         "home": "/getting-started",
