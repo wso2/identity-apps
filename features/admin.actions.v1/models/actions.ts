@@ -238,6 +238,10 @@ export interface ActionBasicResponseInterface extends ActionBaseResponseInterfac
      * Links of the Action.
      */
     links: LinkInterface[];
+    /**
+     * Optional icon URL for the Action (e.g., In-Flow Extension).
+     */
+    iconUrl?: string;
 }
 
 /**
@@ -590,6 +594,7 @@ export interface InFlowExtensionActionInterface extends ActionInterface {
 export interface InFlowExtensionActionResponseInterface extends ActionResponseInterface {
     accessConfig?: AccessConfigInterface;
     encryption?: EncryptionInterface;
+    iconUrl?: string;
 }
 
 /**
@@ -598,4 +603,5 @@ export interface InFlowExtensionActionResponseInterface extends ActionResponseIn
 export interface InFlowExtensionActionUpdateInterface extends ActionUpdateInterface {
     accessConfig?: AccessConfigInterface;
     encryption?: EncryptionInterface;
+    iconUrl?: string;
 }

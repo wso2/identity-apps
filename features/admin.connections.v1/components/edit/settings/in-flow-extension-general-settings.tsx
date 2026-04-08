@@ -24,7 +24,7 @@ import {
     InFlowExtensionActionResponseInterface,
     InFlowExtensionActionUpdateInterface
 } from "@wso2is/admin.actions.v1/models/actions";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import {
@@ -52,6 +52,7 @@ const ACTION_NAME_REGEX: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9 _-]{0,254}$/;
 const FORM_ID: string = "in-flow-extension-general-settings-form";
 
 export interface InFlowExtensionGeneralSettingsPropsInterface extends IdentifiableComponentInterface {
+    "data-componentid"?: string;
     action: InFlowExtensionActionResponseInterface;
     isLoading: boolean;
     isReadOnly: boolean;
@@ -97,7 +98,7 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
             return;
         }
         nameCheckTimer.current = setTimeout(() => {
-            checkActionName(ACTION_TYPE, name)
+            checkActionName(ACTION_TYPE, name, action?.id)
                 .then((response: { available: boolean }) => {
                     setIsNameTaken(!response.available);
                 })
@@ -105,7 +106,7 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
                     setIsNameTaken(false);
                 });
         }, 500);
-    }, [ action?.name ]);
+    }, [ action?.name, action?.id ]);
 
     const validateForm = (
         values: { name: string; description?: string }
@@ -134,6 +135,7 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
 
         const updateBody: InFlowExtensionActionUpdateInterface = {
             description: values.description?.toString() ?? "",
+            iconUrl: values.image?.toString() ?? "",
             name: values.name?.toString()
         };
 
@@ -146,7 +148,7 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
                 }));
                 onUpdate();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 dispatch(addAlert({
                     description: error?.response?.data?.description
                         ?? t("authenticationProvider:notifications.updateIDP.genericError.description"),
@@ -172,7 +174,7 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
                 setShowDeleteConfirmation(false);
                 onDelete();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 dispatch(addAlert({
                     description: error?.response?.data?.description
                         ?? t("authenticationProvider:notifications.deleteIDP.genericError.description"),
@@ -195,11 +197,12 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
                 <Form
                     id={ FORM_ID }
                     uncontrolledForm={ false }
+                    enableReinitialize
                     onSubmit={ handleFormSubmit }
                     validate={ validateForm }
                     initialValues={ {
                         description: action.description ?? "",
-                        image: "",
+                        image: action.iconUrl ?? "",
                         name: action.name ?? ""
                     } }
                     data-componentid={ componentId }
@@ -209,7 +212,9 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
                         inputType="text"
                         name="name"
                         label={ t("inFlowExtension:createWizard.steps.generalSettings.name.label") }
-                        placeholder={ t("inFlowExtension:createWizard.steps.generalSettings.name.placeholder") }
+                        placeholder={
+                            t("inFlowExtension:createWizard.steps.generalSettings.name.placeholder")
+                        }
                         required={ true }
                         maxLength={ 255 }
                         minLength={ 1 }

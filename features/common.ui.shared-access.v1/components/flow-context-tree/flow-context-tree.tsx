@@ -18,8 +18,9 @@
 
 import Box from "@oxygen-ui/react/Box";
 import Typography from "@oxygen-ui/react/Typography";
-import { Claim } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useCallback, useEffect, useState } from "react";
+import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
+import { Claim, ClaimsGetParams } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import AddClaimModal from "./add-claim-modal";
 import AddEntryModal from "./add-entry-modal";
 import FlowContextTreeNode from "./flow-context-tree-node";
@@ -56,6 +57,21 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
     "data-componentid": componentId = "flow-context-tree"
 }: FlowContextTreeProps): ReactElement => {
 
+    const [allClaims, setAllClaims] = useState<Claim[]>([]);
+
+    // Build a map of claim URI → displayName for resolving titles of synthesised claim nodes.
+    const claimDisplayNames: Map<string, string> = useMemo(() => {
+        const map: Map<string, string> = new Map();
+
+        allClaims.forEach((c: Claim) => {
+            if (c.claimURI && c.displayName) {
+                map.set(c.claimURI, c.displayName);
+            }
+        });
+
+        return map;
+    }, [allClaims]);
+
     const [tree, setTree] = useState<TreeNodeState[]>(() =>
         stabilize(
             initialAccessConfig
@@ -81,14 +97,38 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
         onChange(accessConfig, encryption);
     }, [tree]);
 
-    // Re-initialize if the metadata input changes.
+    // Fetch all local claims once on mount.
+    useEffect(() => {
+        const params: ClaimsGetParams = {
+            "exclude-hidden-claims": true,
+            "exclude-identity-claims": true,
+            filter: null,
+            limit: null,
+            offset: null,
+            sort: null
+        };
+
+        getAllLocalClaims(params)
+            .then((response: Claim[]) => {
+                setAllClaims(
+                    (response || []).sort((a: Claim, b: Claim) =>
+                        (a.displayName || "").localeCompare(b.displayName || "")
+                    )
+                );
+            })
+            .catch(() => {
+                // Silently fail — claims are optional for display name resolution.
+            });
+    }, []);
+
+    // Re-initialize tree once claims are loaded (to resolve display names) or if input changes.
     useEffect(() => {
         setTree(stabilize(
             initialAccessConfig
-                ? mapMetadataToStateWithAccessConfig(contextTree, initialAccessConfig)
+                ? mapMetadataToStateWithAccessConfig(contextTree, initialAccessConfig, claimDisplayNames)
                 : mapMetadataToState(contextTree)
         ));
-    }, [contextTree, initialAccessConfig]);
+    }, [contextTree, initialAccessConfig, claimDisplayNames]);
 
     const handleToggleExpose = useCallback((key: string): void => {
         setTree((prev: TreeNodeState[]) => {
@@ -369,9 +409,10 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
                 parentNode={claimModal.parentNode}
                 existingClaimURIs={
                     claimModal.parentNode?.children?.map(
-                        (c: TreeNodeState) => c.path
+                        (c: TreeNodeState) => c.path.replace(/^\/user\/claims\//, "")
                     ) || []
                 }
+                externalClaims={allClaims}
                 onClose={handleClaimModalClose}
                 onSubmit={handleClaimModalSubmit}
                 data-componentid={`${componentId}-add-claim-modal`}

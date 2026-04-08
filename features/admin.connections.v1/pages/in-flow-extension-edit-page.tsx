@@ -113,7 +113,7 @@ const InFlowExtensionEditPage: FunctionComponent<InFlowExtensionEditPagePropsInt
                 <AppAvatar
                     hoverable={ false }
                     name={ action.name }
-                    image={ AuthenticatorMeta.getInFlowExtensionIcon() }
+                    image={ action.iconUrl || AuthenticatorMeta.getInFlowExtensionIcon() }
                     size="tiny"
                 />
             );
@@ -208,7 +208,7 @@ const InFlowExtensionEditPage: FunctionComponent<InFlowExtensionEditPagePropsInt
             backButton={ {
                 "data-componentid": `${componentId}-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("authenticationProvider:edit.backButton")
+                text: t("console:develop.pages.authenticationProviderTemplate.backButton")
             } }
             titleTextAlign="left"
             bottomMargin={ false }

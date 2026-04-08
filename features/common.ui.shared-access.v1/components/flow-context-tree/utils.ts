@@ -256,10 +256,14 @@ const normalisePath = (p: string): string => p.replace(/\/+$/, "");
  *
  * Dynamic entries (e.g. claim keys under /user/claims/) that exist in the
  * access config but NOT in the metadata are synthesised as children.
+ *
+ * @param claimDisplayNames - Optional map of claim URI → display name for rendering
+ *                            human-readable titles on synthesised claim entries.
  */
 export const mapMetadataToStateWithAccessConfig = (
     nodes: ContextTreeNodeMetadata[],
-    accessConfig: InitialAccessConfig
+    accessConfig: InitialAccessConfig,
+    claimDisplayNames?: Map<string, string>
 ): TreeNodeState[] => {
     const exposePaths: Map<string, boolean> = new Map();
     const modifyPaths: Map<string, boolean> = new Map();
@@ -334,71 +338,77 @@ export const mapMetadataToStateWithAccessConfig = (
 
                 const containerPrefix: string = normalisePath(node.path) + "/";
 
-                // Check expose entries
+                // Collect unique dynamic keys from both expose and modify entries.
+                // Use the full remaining path after the container prefix (not split("/")[0])
+                // because claim URIs contain slashes (e.g. http://wso2.org/claims/displayName).
+                const dynamicKeys: Set<string> = new Set<string>();
+
                 exposePaths.forEach((_enc: boolean, ePath: string) => {
-                    if (ePath.startsWith(containerPrefix) && !existingChildPaths.has(ePath)) {
-                        const key: string = ePath.slice(containerPrefix.length).split("/")[0];
+                    if (ePath.startsWith(containerPrefix)) {
+                        const key: string = ePath.slice(containerPrefix.length);
 
                         if (key) {
-                            const synthPath: string = containerPrefix + key;
-                            const synthExEnc: boolean = exposePaths.get(synthPath) ?? false;
-                            const synthModEnc: boolean = modifyPaths.get(synthPath) ?? false;
-
-                            children = children || [];
-                            children.push({
-                                allowedOperations: node.allowedOperations || [],
-                                canDelete: true,
-                                children: undefined,
-                                dataType: node.dynamicEntryType ?? "String",
-                                dynamicEntryAllowed: false,
-                                dynamicEntryType: "",
-                                exposeEncrypted: synthExEnc,
-                                exposed: true,
-                                key,
-                                modify: modifyPaths.has(synthPath),
-                                modifyEncrypted: synthModEnc,
-                                nodeType: NodeType.LEAF,
-                                path: synthPath,
-                                readOnly: node.readOnly ?? false,
-                                replaceable: false,
-                                title: key
-                            });
-                            existingChildPaths.add(synthPath);
+                            dynamicKeys.add(key);
                         }
                     }
                 });
 
-                // Check modify entries
                 modifyPaths.forEach((_enc: boolean, mPath: string) => {
-                    if (mPath.startsWith(containerPrefix) && !existingChildPaths.has(mPath)) {
-                        const key: string = mPath.slice(containerPrefix.length).split("/")[0];
+                    if (mPath.startsWith(containerPrefix)) {
+                        const key: string = mPath.slice(containerPrefix.length);
 
                         if (key) {
-                            const synthPath: string = containerPrefix + key;
-                            const synthModEnc: boolean = modifyPaths.get(synthPath) ?? false;
-
-                            children = children || [];
-                            children.push({
-                                allowedOperations: node.allowedOperations || [],
-                                canDelete: true,
-                                children: undefined,
-                                dataType: node.dynamicEntryType ?? "String",
-                                dynamicEntryAllowed: false,
-                                dynamicEntryType: "",
-                                exposeEncrypted: false,
-                                exposed: false,
-                                key,
-                                modify: true,
-                                modifyEncrypted: synthModEnc,
-                                nodeType: NodeType.LEAF,
-                                path: synthPath,
-                                readOnly: node.readOnly ?? false,
-                                replaceable: false,
-                                title: key
-                            });
-                            existingChildPaths.add(synthPath);
+                            dynamicKeys.add(key);
                         }
                     }
+                });
+
+                // Create or update children for each unique dynamic key.
+                dynamicKeys.forEach((key: string) => {
+                    const synthPath: string = containerPrefix + key;
+
+                    if (existingChildPaths.has(synthPath)) {
+                        // Already exists from metadata children — update its modify flags.
+                        const existingChild: TreeNodeState | undefined = (children || []).find(
+                            (c: TreeNodeState) => normalisePath(c.path) === synthPath
+                        );
+
+                        if (existingChild && modifyPaths.has(synthPath)) {
+                            existingChild.modify = true;
+                            existingChild.modifyEncrypted = modifyPaths.get(synthPath) ?? false;
+                        }
+
+                        return;
+                    }
+
+                    const isExposed: boolean = exposePaths.has(synthPath);
+                    const synthExEnc: boolean = exposePaths.get(synthPath) ?? false;
+                    const isModify: boolean = modifyPaths.has(synthPath);
+                    const synthModEnc: boolean = modifyPaths.get(synthPath) ?? false;
+                    const displayName: string = claimDisplayNames?.get(key) ?? key;
+
+                    children = children || [];
+                    children.push({
+                        allowedOperations: (node.readOnly ?? false)
+                            ? [ "EXPOSE" ]
+                            : [ "EXPOSE", "MODIFY" ],
+                        canDelete: true,
+                        children: undefined,
+                        dataType: node.dynamicEntryType ?? "String",
+                        dynamicEntryAllowed: false,
+                        dynamicEntryType: "",
+                        exposeEncrypted: synthExEnc,
+                        exposed: isExposed,
+                        key: `synth-${Date.now()}-${children.length}`,
+                        modify: isModify,
+                        modifyEncrypted: synthModEnc,
+                        nodeType: NodeType.LEAF,
+                        path: synthPath,
+                        readOnly: node.readOnly ?? false,
+                        replaceable: false,
+                        title: displayName
+                    });
+                    existingChildPaths.add(synthPath);
                 });
             }
 
