@@ -38,9 +38,9 @@ $gray-70: #4A4A4A;
 $gray-90: #2C2C2C;
 
 $type-tag-font: 'JetBrains Mono', monospace;
-$indent: 18px;
-$row-min-height: 28px;
-$chip-height: 15px;
+$indent: 22px;
+$row-min-height: 34px;
+$chip-height: 19px;
 
 // ── Encryption mini-switch ──
 // Small toggle that sits inline next to EXPOSE / MODIFY chips.
@@ -143,7 +143,7 @@ $chip-height: 15px;
     .expose-chip,
     .modify-chip {
         flex-shrink: 0;
-        font-size: 8px;
+        font-size: 9.5px;
         font-weight: 600;
         height: $chip-height;
         letter-spacing: 0.05em;
@@ -209,7 +209,7 @@ $chip-height: 15px;
     // ── Tree connector lines ──
     .tree-connector-vertical {
         position: absolute;
-        width: 1px;
+        width: 1.5px;
         top: 0;
         bottom: 0;
         background-color: $gray-10;
@@ -217,9 +217,9 @@ $chip-height: 15px;
     }
     .tree-connector-horizontal {
         position: absolute;
-        height: 1px;
+        height: 1.5px;
         top: 50%;
-        width: 9px;
+        width: 11px;
         background-color: $gray-10;
         pointer-events: none;
     }

@@ -39,7 +39,7 @@ import {
     ContextTreeNodeMetadata
 } from "@wso2is/common.ui.shared-access.v1/components/flow-context-tree";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Field, Wizard2, WizardPage } from "@wso2is/form";
@@ -87,6 +87,7 @@ import {
 export interface InFlowExtensionCreateWizardPropsInterface
     extends GenericConnectionCreateWizardPropsInterface,
     IdentifiableComponentInterface {
+    "data-componentid"?: string;
     template: ConnectionTemplateInterface;
     title: string;
     subTitle: string;
@@ -444,7 +445,7 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
         return errors;
     };
 
-    const handleCreateErrors = (error: AxiosError): void => {
+    const handleCreateErrors = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
         const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
 
         if (error?.response?.status === 403 && error?.response?.data?.code === identityAppsError.getErrorCode()) {
@@ -515,7 +516,7 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
                 );
                 onIDPCreate();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 handleCreateErrors(error);
             })
             .finally(() => {

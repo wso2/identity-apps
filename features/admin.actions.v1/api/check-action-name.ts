@@ -37,12 +37,17 @@ export interface ActionNameCheckResponse {
  *
  * @param actionType - Action Type path param (e.g., "inFlowExtension").
  * @param name - The action name to check.
+ * @param excludeId - Optional action ID to exclude from the uniqueness check (used during update).
  * @returns Promise resolving to the availability check response.
  */
-const checkActionName = (actionType: string, name: string): Promise<ActionNameCheckResponse> => {
+const checkActionName = (
+    actionType: string,
+    name: string,
+    excludeId?: string
+): Promise<ActionNameCheckResponse> => {
 
     const requestConfig: RequestConfigInterface = {
-        data: { name },
+        data: { name, ...(excludeId && { excludeId }) },
         method: HttpMethods.POST,
         url: `${ store.getState().config.endpoints.actions }/${ actionType }/check-name`
     };

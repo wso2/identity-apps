@@ -31,7 +31,7 @@ import {
 } from "@wso2is/admin.actions.v1/models/actions";
 import { validateActionEndpointFields } from "@wso2is/admin.actions.v1/util/form-field-util";
 import { AddCertificateFormComponent } from "@wso2is/admin.core.v1/components/add-certificate-form";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { FinalForm, FormRenderProps } from "@wso2is/form";
@@ -49,6 +49,7 @@ import {
 const ACTION_TYPE: string = "inFlowExtension";
 
 export interface InFlowExtensionEndpointSettingsPropsInterface extends IdentifiableComponentInterface {
+    "data-componentid"?: string;
     action: InFlowExtensionActionResponseInterface;
     isLoading: boolean;
     isReadOnly: boolean;
@@ -75,6 +76,7 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
     // Certificate state
     const [ certificatePEM, setCertificatePEM ] = useState<string>("");
     const [ hasCertificate, setHasCertificate ] = useState<boolean>(false);
+    const [ isCertificateModified, setIsCertificateModified ] = useState<boolean>(false);
     const [ triggerCertUpload, setTriggerCertUpload ] = useTrigger();
     const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
 
@@ -99,42 +101,52 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
     };
 
     const handleSubmit = (values: EndpointConfigFormPropertyInterface): void => {
-        const authProperties: Partial<AuthenticationPropertiesInterface> = {};
+        const updateBody: InFlowExtensionActionUpdateInterface = {};
 
-        switch (values.authenticationType) {
-            case AuthenticationType.BASIC:
-                authProperties.username = values.usernameAuthProperty;
-                authProperties.password = values.passwordAuthProperty;
+        const isUriChanged: boolean = values.endpointUri !== action.endpoint?.uri;
 
-                break;
-            case AuthenticationType.BEARER:
-                authProperties.accessToken = values.accessTokenAuthProperty;
+        // Only include endpoint in update when URI changed or auth was explicitly updated.
+        if (isUriChanged || isEndpointAuthenticationUpdated) {
+            const authProperties: Partial<AuthenticationPropertiesInterface> = {};
 
-                break;
-            case AuthenticationType.API_KEY:
-                authProperties.header = values.headerAuthProperty;
-                authProperties.value = values.valueAuthProperty;
+            switch (values.authenticationType) {
+                case AuthenticationType.BASIC:
+                    authProperties.username = values.usernameAuthProperty;
+                    authProperties.password = values.passwordAuthProperty;
 
-                break;
-            case AuthenticationType.NONE:
-                break;
-            default:
-                break;
-        }
+                    break;
+                case AuthenticationType.BEARER:
+                    authProperties.accessToken = values.accessTokenAuthProperty;
 
-        const updateBody: InFlowExtensionActionUpdateInterface = {
-            endpoint: {
+                    break;
+                case AuthenticationType.API_KEY:
+                    authProperties.header = values.headerAuthProperty;
+                    authProperties.value = values.valueAuthProperty;
+
+                    break;
+                case AuthenticationType.NONE:
+                    break;
+                default:
+                    break;
+            }
+
+            updateBody.endpoint = {
                 authentication: {
                     properties: authProperties,
                     type: values.authenticationType as unknown as AuthenticationType
                 },
                 uri: values.endpointUri
-            }
-        };
+            };
+        }
 
-        // Include encryption update if certificate was changed
-        if (certificatePEM) {
+        // Include encryption update only if certificate was explicitly changed
+        if (isCertificateModified && certificatePEM) {
             updateBody.encryption = { certificate: certificatePEM };
+        }
+
+        // Nothing changed – skip the API call.
+        if (!updateBody.endpoint && !updateBody.encryption) {
+            return;
         }
 
         updateAction<InFlowExtensionActionUpdateInterface>(ACTION_TYPE, action.id, updateBody)
@@ -146,7 +158,7 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
                 }));
                 onUpdate();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 dispatch(addAlert({
                     description: error?.response?.data?.description
                         ?? t("authenticationProvider:notifications.updateIDP.genericError.description"),
@@ -159,6 +171,7 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
     const handleCertificateSubmit = (value: string): void => {
         setCertificatePEM(value);
         setHasCertificate(!!value);
+        setIsCertificateModified(true);
     };
 
     if (isLoading || !action) {
@@ -200,12 +213,13 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
                             { (hasCertificate || certificatePEM) && (
                                 <Alert
                                     severity="success"
-                                    sx={ { mb: 2 } }
+                                    sx={ { alignItems: "center", mb: 2 } }
                                     action={
                                         <LinkButton
                                             onClick={ () => {
                                                 setCertificatePEM("");
                                                 setHasCertificate(false);
+                                                setIsCertificateModified(true);
                                             } }
                                             data-componentid={ `${componentId}-clear-certificate` }
                                         >
@@ -233,10 +247,12 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
                                     size="medium"
                                     variant="contained"
                                     onClick={ () => {
-                                        setTriggerCertUpload();
+                                        if (isCertificateModified) {
+                                            setTriggerCertUpload();
+                                        }
                                         formHandleSubmit();
                                     } }
-                                    sx={ { mt: 2 } }
+                                    sx={ { mt: 4 } }
                                     data-componentid={ `${componentId}-update-button` }
                                 >
                                     { t("actions:buttons.update") }

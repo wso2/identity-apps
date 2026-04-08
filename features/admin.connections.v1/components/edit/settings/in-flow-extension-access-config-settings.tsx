@@ -28,7 +28,7 @@ import {
     InFlowExtensionActionResponseInterface,
     InFlowExtensionActionUpdateInterface
 } from "@wso2is/admin.actions.v1/models/actions";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     AccessConfigOutput,
@@ -38,6 +38,7 @@ import {
     InitialAccessConfig
 } from "@wso2is/common.ui.shared-access.v1/components/flow-context-tree";
 import { ContentLoader, EmphasizedSegment, Heading } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -47,6 +48,7 @@ import defaultContextTreeData from "../../../meta/default-flow-context-tree.json
 const ACTION_TYPE: string = "inFlowExtension";
 
 export interface InFlowExtensionAccessConfigSettingsPropsInterface extends IdentifiableComponentInterface {
+    "data-componentid"?: string;
     action: InFlowExtensionActionResponseInterface;
     isLoading: boolean;
     isReadOnly: boolean;
@@ -113,7 +115,7 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
                 }));
                 onUpdate();
             })
-            .catch((error) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 dispatch(addAlert({
                     description: error?.response?.data?.description
                         ?? t("authenticationProvider:notifications.updateIDP.genericError.description"),
@@ -146,47 +148,71 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
                         sent unencrypted. You can upload a certificate in the Settings tab.
                     </Alert>
                 ) }
-                <Heading as="h5">
-                    { t("inFlowExtension:createWizard.helpPanel.whatIsContext.heading") }
-                </Heading>
-                <Typography variant="body2" color="text.secondary" sx={ { mb: 1 } }>
-                    { t("inFlowExtension:createWizard.helpPanel.whatIsContext.description") }
-                </Typography>
-                <Divider sx={ { mb: 2, mt: 2 } } />
-                <Heading as="h6">
-                    { t("inFlowExtension:createWizard.helpPanel.howToUse.heading") }
-                </Heading>
-                <Typography variant="body2" color="text.secondary" component="div" sx={ { mb: 2 } }>
-                    <ul style={ { lineHeight: 1.8, paddingLeft: "18px" } }>
-                        <li>{ t("inFlowExtension:createWizard.helpPanel.howToUse.step1") }</li>
-                        <li>{ t("inFlowExtension:createWizard.helpPanel.howToUse.step2") }</li>
-                        <li>{ t("inFlowExtension:createWizard.helpPanel.howToUse.step3") }</li>
-                        <li>{ t("inFlowExtension:createWizard.helpPanel.howToUse.step4") }</li>
-                        <li>{ t("inFlowExtension:createWizard.helpPanel.howToUse.step5") }</li>
-                        <li>{ t("inFlowExtension:createWizard.helpPanel.howToUse.step6") }</li>
-                    </ul>
-                </Typography>
-                <Divider sx={ { mb: 2 } } />
-                <FlowContextTree
-                    contextTree={ contextTreeMetadata }
-                    onChange={ handleAccessConfigChange }
-                    initialAccessConfig={ initialAccessConfig }
-                    hasCertificate={ hasCertificate }
-                    readOnly={ isReadOnly }
-                    data-componentid={ `${componentId}-tree` }
-                />
-                { !isReadOnly && (
-                    <Button
-                        size="medium"
-                        variant="contained"
-                        onClick={ handleUpdate }
-                        loading={ isSubmitting }
-                        sx={ { mt: 3 } }
-                        data-componentid={ `${componentId}-update-button` }
-                    >
-                        { t("actions:buttons.update") }
-                    </Button>
-                ) }
+                <Box sx={ { display: "flex", gap: 3 } }>
+                    { /* ── Left column: Tree + Update button ── */ }
+                    <Box sx={ { flex: "1 1 65%", minWidth: 0 } }>
+                        <FlowContextTree
+                            contextTree={ contextTreeMetadata }
+                            onChange={ handleAccessConfigChange }
+                            initialAccessConfig={ initialAccessConfig }
+                            hasCertificate={ hasCertificate }
+                            readOnly={ isReadOnly }
+                            data-componentid={ `${componentId}-tree` }
+                        />
+                        { !isReadOnly && (
+                            <Button
+                                size="medium"
+                                variant="contained"
+                                onClick={ handleUpdate }
+                                loading={ isSubmitting }
+                                sx={ { mt: 3 } }
+                                data-componentid={ `${componentId}-update-button` }
+                            >
+                                { t("actions:buttons.update") }
+                            </Button>
+                        ) }
+                    </Box>
+                    { /* ── Right column: Instructions ── */ }
+                    <Box sx={ { flex: "0 0 35%", maxWidth: "35%" } }>
+                        <Heading as="h5">
+                            { t("inFlowExtension:createWizard.helpPanel.whatIsContext.heading") }
+                        </Heading>
+                        <Typography variant="body2" color="text.secondary" sx={ { mb: 1 } }>
+                            { t("inFlowExtension:createWizard.helpPanel.whatIsContext.description") }
+                        </Typography>
+                        <Divider sx={ { mb: 2, mt: 2 } } />
+                        <Heading as="h6">
+                            { t("inFlowExtension:createWizard.helpPanel.howToUse.heading") }
+                        </Heading>
+                        <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            component="div"
+                            sx={ { mb: 2 } }
+                        >
+                            <ul style={ { lineHeight: 1.8, paddingLeft: "18px" } }>
+                                <li>
+                                    { t("inFlowExtension:createWizard.helpPanel.howToUse.step1") }
+                                </li>
+                                <li>
+                                    { t("inFlowExtension:createWizard.helpPanel.howToUse.step2") }
+                                </li>
+                                <li>
+                                    { t("inFlowExtension:createWizard.helpPanel.howToUse.step3") }
+                                </li>
+                                <li>
+                                    { t("inFlowExtension:createWizard.helpPanel.howToUse.step4") }
+                                </li>
+                                <li>
+                                    { t("inFlowExtension:createWizard.helpPanel.howToUse.step5") }
+                                </li>
+                                <li>
+                                    { t("inFlowExtension:createWizard.helpPanel.howToUse.step6") }
+                                </li>
+                            </ul>
+                        </Typography>
+                    </Box>
+                </Box>
             </EmphasizedSegment>
         </Box>
     );

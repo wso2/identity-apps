@@ -184,9 +184,9 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
                 combinedData.push({
                     description: extension.description,
                     id: extension.id,
-                    image: AuthenticatorMeta.getInFlowExtensionIcon(),
+                    image: extension.iconUrl || AuthenticatorMeta.getInFlowExtensionIcon(),
                     name: extension.name,
-                    tags: [ "APIAuth" ],
+                    tags: [ "Custom" ],
                     type: "IN_FLOW_EXTENSION" as ConnectionTypes
                 } as ConnectionInterface);
             }

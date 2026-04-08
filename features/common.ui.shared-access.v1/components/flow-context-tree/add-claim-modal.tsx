@@ -75,6 +75,7 @@ export interface AddClaimModalProps {
     open: boolean;
     parentNode: TreeNodeState | null;
     existingClaimURIs: string[];
+    externalClaims?: Claim[];
     onClose: () => void;
     onSubmit: (claims: Claim[]) => void;
     "data-componentid"?: string;
@@ -88,6 +89,7 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
     open,
     parentNode,
     existingClaimURIs,
+    externalClaims,
     onClose,
     onSubmit,
     "data-componentid": componentId = "add-claim-modal"
@@ -100,9 +102,15 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
 
     const dispatch: Dispatch = useDispatch();
 
-    // Fetch all local claims when modal opens.
+    // Fetch all local claims when modal opens (skip if external claims are provided).
     useEffect(() => {
         if (!open) return;
+
+        if (externalClaims && externalClaims.length > 0) {
+            setAllClaims(externalClaims);
+
+            return;
+        }
 
         const params: ClaimsGetParams = {
             "exclude-hidden-claims": true,

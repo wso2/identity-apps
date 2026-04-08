@@ -10,6 +10,6 @@
     "services": [],
     "disabled": false,
     "type": "DEFAULT",
-    "tags": [ "APIAuth" ],
+    "tags": [ "Custom" ],
     "templateId": "in-flow-extension"
 }
