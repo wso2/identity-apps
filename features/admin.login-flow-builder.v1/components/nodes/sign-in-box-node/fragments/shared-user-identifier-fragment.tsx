@@ -72,7 +72,7 @@ const SharedUserIdentifierFragment = (props: SharedUserIdentifierFragmentPropsIn
     const { t } = useTranslation();
 
     return (
-        <div className="identifier-first-fragment" data-componentid={ componentId }>
+        <div className="shared-user-identifier-fragment" data-componentid={ componentId }>
             <Typography align="center" className="oxygen-sign-in-header" variant="h4">
                 { t("authenticationFlow:nodes.sharedUserIdentifier.header") }
             </Typography>

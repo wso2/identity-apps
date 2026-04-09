@@ -704,9 +704,6 @@ export interface ApplicationsNS {
                                 idf: {
                                     tooltipText: string;
                                 };
-                                sharedUserIdentifier: {
-                                    tooltipText: string;
-                                };
                                 totp: {
                                     description: string;
                                     heading: string;

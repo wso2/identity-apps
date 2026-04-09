@@ -40,8 +40,8 @@ import useFeatureGate, { UseFeatureGateInterface } from "@wso2is/admin.feature-g
 import useAILoginFlow from "@wso2is/admin.login-flow.ai.v1/hooks/use-ai-login-flow";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface,
-    HttpErrorResponseDataInterface
+import { AlertLevels, HttpErrorResponseDataInterface,
+    IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
