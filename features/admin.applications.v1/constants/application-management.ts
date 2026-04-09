@@ -352,6 +352,9 @@ export class ApplicationManagementConstants {
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR_ID: string =
         LocalAuthenticatorConstants.LOCAL_IDP_IDENTIFIER + "-" + "SWRlbnRpZmllckV4ZWN1dG9y";
 
+    public static readonly SHARED_USER_IDENTIFIER_AUTHENTICATOR_ID: string =
+        LocalAuthenticatorConstants.LOCAL_IDP_IDENTIFIER + "-" + "U2hhcmVkVXNlcklkZW50aWZpZXJFeGVjdXRvcg";
+
     public static readonly MYACCOUNT_STATUS_UPDATE_ERROR: string = "An error occurred while updating " +
         "status of the My Account Portal.";
 
@@ -373,6 +376,7 @@ export class ApplicationManagementConstants {
     // Authenticators that are only handlers.
     public static readonly HANDLER_AUTHENTICATORS: string[] = [
         ApplicationManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
+        ApplicationManagementConstants.SHARED_USER_IDENTIFIER_AUTHENTICATOR_ID,
         LocalAuthenticatorConstants.AUTHENTICATOR_IDS.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
     ];
 
@@ -383,6 +387,7 @@ export class ApplicationManagementConstants {
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID,
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.SHARED_USER_IDENTIFIER_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.SMS_OTP_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID
     ];

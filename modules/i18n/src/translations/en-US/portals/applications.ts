@@ -979,6 +979,8 @@ export const applications: ApplicationsNS = {
                                     "providing client id & secret, to use with your applications.",
                                 firstFactorDisabled: "Identifier First authenticator and Username & " +
                                     "Password authenticator cannot be added to the same step.",
+                                sharedUserIdentifierFirstFactorDisabled: "Shared User Identifier authenticator and " +
+                                    "Username & Password authenticator cannot be added to the same step.",
                                 forms: {
                                     fields: {
                                         attributesFrom: {
@@ -1129,6 +1131,11 @@ export const applications: ApplicationsNS = {
                                         totpWithIdentifierFirstEnabled: "TOTP authenticator with Identifier First handler is configured.",
                                         totpWithIdentifierFirstEnabledMessage: "Configuring TOTP authenticator " +
                                         "with Identifier First handler is not recommended as <2>TOTP progressive enrollment</2> is " +
+                                        "enabled by default. You can disable TOTP progressive enrollment through " +
+                                        " <4> Conditional Authentication</4> script.",
+                                        totpWithSharedUserIdentifierEnabled: "TOTP authenticator with Shared User Identifier handler is configured.",
+                                        totpWithSharedUserIdentifierEnabledMessage: "Configuring TOTP authenticator " +
+                                        "with Shared User Identifier handler is not recommended as <2>TOTP progressive enrollment</2> is " +
                                         "enabled by default. You can disable TOTP progressive enrollment through " +
                                         " <4> Conditional Authentication</4> script."
                                     }
@@ -3408,6 +3415,15 @@ export const applications: ApplicationsNS = {
         },
         updateIdentifierFirstInFirstStepError: {
             description: "The Identifier First authenticator requires multiple authentication steps in the sign-in flow.",
+            message: "Update error"
+        },
+        updateOnlySharedUserIdentifierError: {
+            description: "Shared User Identifier authenticator cannot be the only authenticator. "
+                + "It needs an additional step.",
+            message: "Update error"
+        },
+        updateSharedUserIdentifierInFirstStepError: {
+            description: "The Shared User Identifier authenticator requires multiple authentication steps in the sign-in flow.",
             message: "Update error"
         },
         updateOutboundProvisioning: {

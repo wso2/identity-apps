@@ -637,7 +637,8 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
                 noOfSecondFactorsOnRight === noOfSecondFactorsOnRightRequiringHandlers;
             const isDeletingOptionFirstFactor: boolean = [
                 ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
-                LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME
+                LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME,
+                LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.SHARED_USER_IDENTIFIER_AUTHENTICATOR_NAME
             ].includes(deletingOption.authenticator);
             const isDeletingOptionSecondFactorHandler: boolean = [
                 ...ApplicationManagementConstants.TOTP_HANDLERS,

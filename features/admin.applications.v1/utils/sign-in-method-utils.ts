@@ -228,6 +228,8 @@ export class SignInMethodUtils {
             (authenticator: AuthenticatorInterface) =>
                 authenticator.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
                     .IDENTIFIER_FIRST_AUTHENTICATOR_NAME ||
+                authenticator.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .SHARED_USER_IDENTIFIER_AUTHENTICATOR_NAME ||
                 authenticator.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME
         );
 
