@@ -21,6 +21,7 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
+import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
@@ -70,6 +71,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
     const [ error, setError ] = useState<string | null>(null);
     const [ loading, setLoading ] = useState(false);
     const [ hasError, setHasError ] = useState(false);
+    const [ hasPartial, setHasPartial ] = useState(false);
     const [ activeTab, setActiveTab ] = useState(0);
     const [ autoRunTriggered, setAutoRunTriggered ] = useState(false);
 
@@ -157,14 +159,12 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
 
             setResult(response.data);
 
-            // eslint-disable-next-line no-console
-            console.log("[ConnectionTest] Successfully fetched results:", response.data);
         } catch (err: any) {
             // eslint-disable-next-line no-console
             console.error("[ConnectionTest] Fetch error:", err?.response?.status, err?.message);
 
             if (err?.response?.status === 404) {
-                setError("Something went wrong.");
+                setError("Unable to retrieve test results. Please try running the test again.");
             } else {
                 setError(err?.response?.data?.message || err?.message || "Failed to fetch debug results.");
             }
@@ -181,9 +181,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
         setError(null);
         setResult(null);
         setHasError(false);
-
-        // eslint-disable-next-line no-console
-        console.log("[ConnectionTest] Starting rerun test for connectorId:", connectorId);
+        setHasPartial(false);
 
         if (!connectorId) {
             setError("Connection ID is missing. Cannot run test.");
@@ -197,9 +195,6 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                 connectionId: connectorId
             };
 
-            // eslint-disable-next-line no-console
-            console.log("[ConnectionTest] Posting debug request with payload:", payload);
-
             const response = await axios.post(
                 `${resourceEndpoints.debug}/idp`,
                 payload,
@@ -208,9 +203,6 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
 
             const newDebugId = response.data.debugId;
             const authorizationUrl = response.data.metadata.authorizationUrl;
-
-            // eslint-disable-next-line no-console
-            console.log("[ConnectionTest] Debug session created:", { newDebugId, authorizationUrl });
 
             setDebugId(newDebugId);
 
@@ -260,11 +252,16 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
         if (result) {
             // Handle nested metadata structure
             const metadataObj = result?.metadata?.metadata || result?.metadata || {};
-            const steps = metadataObj?.steps || {
-                connectionStatus: metadataObj?.connectionStatus,
-                authenticationStatus: metadataObj?.authenticationStatus,
-                claimMappingStatus: metadataObj?.claimMappingStatus,
-                claimExtractionStatus: metadataObj?.claimExtractionStatus
+            
+            // Try to get steps from stepStatus directly
+            const stepStatus = metadataObj?.stepStatus || metadataObj?.steps || {};
+            
+            const steps: Record<string, string | undefined> = {
+                connectionStatus: stepStatus?.connectionStatus || metadataObj?.connectionStatus,
+                authenticationStatus: stepStatus?.authenticationStatus || metadataObj?.authenticationStatus,
+                claimMappingStatus: stepStatus?.claimMappingStatus || metadataObj?.claimMappingStatus,
+                claimExtractionStatus: stepStatus?.claimExtractionStatus || metadataObj?.claimExtractionStatus,
+                accountLinkingStatus: stepStatus?.accountLinkingStatus || metadataObj?.accountLinkingStatus
             };
 
             // Check for top-level FAILURE status first
@@ -274,18 +271,28 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
             const hasStepError = (
                 (steps.connectionStatus && steps.connectionStatus !== "success" && steps.connectionStatus !== "pending") ||
                 (steps.authenticationStatus && steps.authenticationStatus !== "success" && steps.authenticationStatus !== "pending") ||
-                (steps.claimMappingStatus && steps.claimMappingStatus !== "success" && steps.claimMappingStatus !== "pending") ||
+                (steps.claimMappingStatus && steps.claimMappingStatus !== "success" && steps.claimMappingStatus !== "pending" && steps.claimMappingStatus !== "partial") ||
+                steps.accountLinkingStatus && steps.accountLinkingStatus !== "success" && steps.accountLinkingStatus !== "pending" ||
                 result?.error
             );
+
+            // Check if claim mapping is partial
+            const hasPartialStatus = steps.claimMappingStatus === "partial";
 
             // Check for error fields in metadata
             const hasErrorFields = metadataObj?.error_details || metadataObj?.error_description || metadataObj?.error_code;
 
             if (topLevelFailure || hasStepError || hasErrorFields) {
                 setHasError(true);
+                setHasPartial(false);
                 setActiveTab(2); // Switch to Logs tab (index 2)
+            } else if (hasPartialStatus) {
+                setHasError(false);
+                setHasPartial(true);
+                setActiveTab(2); // Switch to Logs tab (index 2) for partial status
             } else {
                 setHasError(false);
+                setHasPartial(false);
             }
         }
     }, [ result ]);
@@ -383,17 +390,17 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                             <Stack spacing={ 3 }>
                                 { decoded ? (
                                     <Card variant="outlined" sx={ { backgroundColor: "#FCFDFD", borderRadius: 2, p: 3 } }>
-                                        <Typography variant="h6" sx={ { color: "#0F6CBD", mb: 1 } }>
+                                        <Typography variant="h6" sx={ { mb: 1 } }>
                                             Header
                                         </Typography>
                                         { renderCodeBlock(decoded.header, { marginBottom: 2 }) }
 
-                                        <Typography variant="h6" sx={ { color: "#15803D", mb: 1 } }>
+                                        <Typography variant="h6" sx={ { mb: 1 } }>
                                             Payload
                                         </Typography>
                                         { renderCodeBlock(decoded.payload, { marginBottom: 2 }) }
 
-                                        <Typography variant="h6" sx={ { color: "#B42318", mb: 1 } }>
+                                        <Typography variant="h6" sx={ { mb: 1 } }>
                                             Signature
                                         </Typography>
                                         { renderCodeBlock(decoded.signature, { wordBreak: "break-all" }) }
@@ -403,13 +410,6 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                         Unable to decode token or not a valid JWT.
                                     </Alert>
                                 ) }
-
-                                <Box>
-                                    <Typography variant="h6" sx={ { mb: 1 } }>
-                                        External Redirect URL
-                                    </Typography>
-                                    { renderCodeBlock(result?.metadata?.externalRedirectUrl) }
-                                </Box>
                             </Stack>
                         </Box>
                     );
@@ -461,24 +461,21 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                             sx={ { backgroundColor: "#F8FAFC", borderBottom: "1px solid #E5E7EB" } }
                                         >
                                             <Box component="th" sx={ { borderRight: "1px solid #E5E7EB", fontSize: 15, fontWeight: 600, p: "10px 8px", textAlign: "left" } }>
-                                                IDP Claim
-                                            </Box>
-                                            <Box component="th" sx={ { borderRight: "1px solid #E5E7EB", fontSize: 15, fontWeight: 600, p: "10px 8px", textAlign: "left" } }>
                                                 IS Claim (URI)
                                             </Box>
                                             <Box component="th" sx={ { borderRight: "1px solid #E5E7EB", fontSize: 15, fontWeight: 600, p: "10px 8px", textAlign: "left" } }>
-                                                Value
+                                                IDP Claim
                                             </Box>
-                                            <Box component="th" sx={ { fontSize: 15, fontWeight: 600, p: "10px 8px", textAlign: "left" } }>
-                                                Mapping Status
+                                            <Box component="th" sx={ { borderRight: "1px solid #E5E7EB", fontSize: 15, fontWeight: 600, p: "10px 8px", textAlign: "left" } }>
+                                                Value
                                             </Box>
                                         </Box>
                                     </thead>
                                     <tbody>
                                         { sortedClaims.length === 0 && (
                                             <Box component="tr">
-                                                <Box component="td" colSpan={ 4 } sx={ { color: "text.secondary", p: 2, textAlign: "center" } }>
-                                                    No claims found.
+                                                <Box component="td" colSpan={ 3 } sx={ { color: "text.secondary", p: 2, textAlign: "center" } }>
+                                                    No claim mappings configured.
                                                 </Box>
                                             </Box>
                                         ) }
@@ -487,7 +484,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                                 component="tr"
                                                 key={ idx }
                                                 sx={ {
-                                                    backgroundColor: claim.status === "Successful" ? "#F0FDF4" : "#FFFFFF",
+                                                    backgroundColor: "#FFFFFF",
                                                     borderBottom: "1px solid #E5E7EB"
                                                 } }
                                             >
@@ -502,9 +499,9 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                                         p: 1,
                                                         textOverflow: "ellipsis"
                                                     } }
-                                                    title={ claim.idpClaim }
+                                                    title={ claim.isClaim || "-" }
                                                 >
-                                                    { claim.idpClaim }
+                                                    { claim.isClaim || "-" }
                                                 </Box>
                                                 <Box
                                                     component="td"
@@ -517,9 +514,9 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                                         p: 1,
                                                         textOverflow: "ellipsis"
                                                     } }
-                                                    title={ claim.isClaim || "-" }
+                                                    title={ claim.idpClaim }
                                                 >
-                                                    { claim.isClaim || "-" }
+                                                    { claim.idpClaim }
                                                 </Box>
                                                 <Box
                                                     component="td"
@@ -540,12 +537,11 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                                 <Box
                                                     component="td"
                                                     sx={ {
-                                                        color: claim.status === "Successful" ? "#15803D" : "#B42318",
-                                                        fontWeight: 500,
+                                                        display: "flex",
+                                                        justifyContent: "flex-end",
                                                         p: 1
                                                     } }
                                                 >
-                                                    { claim.status }
                                                 </Box>
                                             </Box>
                                         )) }
@@ -557,7 +553,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                 }
             },
             {
-                menuItem: "Diagnostics",
+                menuItem: "Step Status",
                 render: () => {
                     const formatLogs = () => {
                         const metadataObj = result?.metadata || {};
@@ -566,28 +562,20 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                             authenticationStatus: stepStatus?.authenticationStatus || metadataObj?.authenticationStatus,
                             claimExtractionStatus: stepStatus?.claimExtractionStatus || metadataObj?.claimExtractionStatus,
                             claimMappingStatus: stepStatus?.claimMappingStatus || metadataObj?.claimMappingStatus,
-                            connectionStatus: stepStatus?.connectionStatus || metadataObj?.connectionStatus
+                            connectionStatus: stepStatus?.connectionStatus || metadataObj?.connectionStatus,
+                            accountLinkingStatus: stepStatus?.accountLinkingStatus || metadataObj?.accountLinkingStatus
                         };
                         const errorDescription = metadataObj?.error_description || null;
                         const errorCode = metadataObj?.error_code || null;
+                        const accountLinkingMessage = metadataObj?.accountLinkingMessage || null;
                         const topLevelStatus = result?.status;
+                        const accountLinkingFailed = steps.accountLinkingStatus === "failed";
 
                         return (
                             <Stack spacing={ 2 }>
-                                { (errorDescription || errorCode) && (
-                                    <Card
-                                        variant="outlined"
-                                        sx={ {
-                                            backgroundColor: "#FEF3F2",
-                                            borderColor: "#FECACA",
-                                            borderLeft: "4px solid #B42318",
-                                            borderRadius: 2,
-                                            p: 2
-                                        } }
-                                    >
-                                        <Typography variant="h6" sx={ { color: "#B42318", mb: 1.5 } }>
-                                            Error Information
-                                        </Typography>
+                                { (errorDescription || errorCode || (accountLinkingFailed && accountLinkingMessage)) && (
+                                    <Alert severity="error">
+                                        <AlertTitle>Error Information</AlertTitle>
                                         { errorCode && (
                                             <Box sx={ { mb: errorDescription ? 1.5 : 0 } }>
                                                 <Typography sx={ { color: "#B42318", fontWeight: 600 } }>
@@ -626,19 +614,36 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                                 </Typography>
                                             </Box>
                                         ) }
-                                    </Card>
+                                        { accountLinkingFailed && accountLinkingMessage && (
+                                            <Box>
+                                                <Typography sx={ { color: "#B42318", fontWeight: 600 } }>
+                                                    Account Linking Error
+                                                </Typography>
+                                                <Typography
+                                                    sx={ {
+                                                        color: "#B42318",
+                                                        fontFamily: "monospace",
+                                                        fontSize: 13,
+                                                        mt: 0.5,
+                                                        whiteSpace: "pre-wrap",
+                                                        wordBreak: "break-word"
+                                                    } }
+                                                >
+                                                    { accountLinkingMessage }
+                                                </Typography>
+                                            </Box>
+                                        ) }
+                                    </Alert>
                                 ) }
 
                                 { Object.keys(steps).length > 0 && (
                                     <Card variant="outlined" sx={ { backgroundColor: "#FCFDFD", borderRadius: 2, p: 2 } }>
-                                        <Typography variant="h6" sx={ { mb: 1.5 } }>
-                                            Step Status
-                                        </Typography>
                                         <Stack spacing={ 1 }>
                                             { [
                                                 { key: "connectionStatus", label: "Connection Creation" },
                                                 { key: "authenticationStatus", label: "Authentication" },
-                                                { key: "claimMappingStatus", label: "Claims Mapping" }
+                                                { key: "claimMappingStatus", label: "Claim Mappings" },
+                                                { key: "accountLinkingStatus", label: "Account Linking" },
                                             ].map(({ key, label }) => (
                                                 steps[key] ? (
                                                     <Box
@@ -663,20 +668,28 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                                             sx={ {
                                                                 backgroundColor: steps[key] === "success"
                                                                     ? "#E8F5E9"
-                                                                    : steps[key] === "failed" || steps[key] === "error"
-                                                                        ? "#FEE4E2"
-                                                                        : "#F3F4F6",
+                                                                    : steps[key] === "partial"
+                                                                        ? "#FFFBEB"
+                                                                        : steps[key] === "failed" || steps[key] === "error"
+                                                                            ? "#FEE4E2"
+                                                                            : "#F3F4F6",
                                                                 borderRadius: 1,
                                                                 color: steps[key] === "success"
                                                                     ? "#15803D"
-                                                                    : steps[key] === "failed" || steps[key] === "error"
-                                                                        ? "#B42318"
-                                                                        : "text.secondary",
+                                                                    : steps[key] === "partial"
+                                                                        ? "#B45309"
+                                                                        : steps[key] === "failed" || steps[key] === "error"
+                                                                            ? "#B42318"
+                                                                            : "text.secondary",
+                                                                display: "inline-block",
                                                                 fontFamily: "monospace",
                                                                 fontSize: 13,
                                                                 fontWeight: 500,
+                                                                lineHeight: 1,
+                                                                minWidth: 60,
                                                                 px: 1,
                                                                 py: 0.5,
+                                                                textAlign: "center",
                                                                 textTransform: "capitalize"
                                                             } }
                                                         >
@@ -753,48 +766,17 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
         >
             { /* Test Status Banner */ }
             { result && !error && (
-                <Box
-                    sx={ {
-                        backgroundColor: hasError ? "#FEF3F2" : "#F0FDF4",
-                        border: "1px solid",
-                        borderColor: hasError ? "#FECACA" : "#BBF7D0",
-                        borderLeft: `4px solid ${hasError ? "#B42318" : "#15803D"}`,
-                        borderRadius: 2,
-                        mt: 4,
-                        p: "16px 20px"
-                    } }
-                    data-testid="test-status-banner"
-                >
-                    <Stack direction="row" spacing={ 1.5 } alignItems="flex-start">
-                        <Box
-                            sx={ {
-                                alignItems: "center",
-                                backgroundColor: hasError ? "#FEE4E2" : "#DCFCE7",
-                                borderRadius: "50%",
-                                color: hasError ? "#B42318" : "#15803D",
-                                display: "flex",
-                                flexShrink: 0,
-                                fontSize: 18,
-                                fontWeight: 700,
-                                height: 28,
-                                justifyContent: "center",
-                                mt: 0.25,
-                                width: 28
-                            } }
-                        >
-                            { hasError ? "!" : "OK" }
-                        </Box>
-                        <Box>
-                            <Typography variant="h6" sx={ { color: hasError ? "#B42318" : "#15803D", mb: 0.25 } }>
-                                { hasError ? "Test Failed" : "Test Passed" }
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                { hasError
-                                    ? "Some steps failed during the connection test. Check the Logs tab for details."
-                                    : "All connection test steps completed successfully." }
-                            </Typography>
-                        </Box>
-                    </Stack>
+                <Box sx={ { mt: 4 } } data-testid="test-status-banner">
+                    <Alert severity={ hasError ? "error" : hasPartial ? "warning" : "success" }>
+                        <AlertTitle>
+                            { hasError ? "Test Failed" : hasPartial ? "Test Passed with Warnings" : "Test Passed" }
+                        </AlertTitle>
+                        { hasError
+                            ? "Some steps failed during the connection test. Check the Diagnostic Logs tab for details."
+                            : hasPartial
+                                ? "Test passed but some claims were not successfully mapped. Check the Claim Mappings tab for details."
+                                : "All connection test steps completed successfully." }
+                    </Alert>
                 </Box>
             ) }
 
@@ -806,6 +788,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                     data-testid="idp-test-result-error"
                 >
                     <Alert severity="error" sx={ { mb: 2 } }>
+                        <AlertTitle>Error</AlertTitle>
                         { error }
                     </Alert>
                     <Box sx={ { mt: 1.5 } }>
