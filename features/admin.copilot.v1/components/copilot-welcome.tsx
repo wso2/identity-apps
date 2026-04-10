@@ -118,12 +118,17 @@ const CopilotWelcome: React.FunctionComponent<CopilotWelcomeProps> = (
     /**
      * Handle key down for Enter key.
      */
-    const handleKeyDown: (event: React.KeyboardEvent) => void = useCallback((event: React.KeyboardEvent) => {
-        if (event.key === "Enter" && !event.shiftKey) {
-            event.preventDefault();
-            handleSendMessage();
-        }
-    }, [ handleSendMessage ]);
+    const handleKeyDown: (event: React.KeyboardEvent<HTMLElement>) => void =
+        useCallback((event: React.KeyboardEvent<HTMLElement>) => {
+            if (event.nativeEvent.isComposing) {
+                return;
+            }
+
+            if (event.key === "Enter" && !event.shiftKey) {
+                event.preventDefault();
+                handleSendMessage();
+            }
+        }, [ handleSendMessage ]);
 
     return (
         <Stack
@@ -199,6 +204,7 @@ const CopilotWelcome: React.FunctionComponent<CopilotWelcomeProps> = (
                         multiline
                         minRows={ 1 }
                         maxRows={ 4 }
+                        aria-label={ t("console:common.copilot.chat.inputLabel") }
                         placeholder={ t("console:common.copilot.welcome.placeholder") }
                         value={ inputValue }
                         onChange={ handleInputChange }

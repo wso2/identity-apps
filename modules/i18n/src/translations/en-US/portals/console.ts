@@ -390,10 +390,10 @@ export const console: ConsoleNS = {
                 help: "Help"
             },
             help: {
-                content: "I can help you with various tasks in WSO2 Identity Server. Try asking me about:\n\n• User management\n• Application configuration\n• Identity providers\n• Authentication flows\n• Troubleshooting\n\nJust type your question in the chat!"
+                content: "I can help you with various tasks in {{productName}}. Try asking me about:\n\n• User management\n• Application configuration\n• Identity providers\n• Authentication flows\n• Troubleshooting\n\nJust type your question in the chat!"
             },
             documentation: {
-                content: "Access comprehensive documentation and guides for WSO2 Identity Server."
+                content: "Access comprehensive documentation and guides for {{productName}}."
             },
             chat: {
                 emptyChat: "Start a conversation...",
@@ -406,11 +406,11 @@ export const console: ConsoleNS = {
             },
             errors: {
                 authRequired: "Authentication required. Please log in to continue using the copilot.",
-                clearHistoryFailed: "Chat cleared locally, but the server history could not be cleared. It will be removed on next session.",
-                connectionFailed: "Connection failed. Please check if the server is running and try again.",
+                clearHistoryFailed: "Something went wrong. Please try again.",
+                connectionFailed: "Something went wrong. Please try again.",
                 default: "Sorry, I encountered an error while processing your request. Please try again.",
                 requestCancelled: "Request was cancelled.",
-                timeout: "The request took too long. Please try again with a simpler question."
+                timeout: "The request is taking longer than expected. Please try again."
             },
             status: {
                 submitting: "Submitting your question..."
@@ -418,7 +418,7 @@ export const console: ConsoleNS = {
             welcome: {
                 actions: {
                     authenticationMethods: "What are the different authentication methods available?",
-                    configureSaml: "How can I create a new application?",
+                    configureSaml: "How can I configure SAML SSO for an application?",
                     manageRoles: "How can I manage user roles?"
                 },
                 description: "I can help you with identity management, application setup, user management, and more.",

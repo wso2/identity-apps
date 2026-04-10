@@ -535,12 +535,23 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
      * Handle "Load earlier messages" click.
      * Captures the current scrollHeight so that useLayoutEffect can restore the
      * visual position once the prepended messages inflate the container.
+     * If loadMoreHistory resolves without prepending (abort, empty response, error),
+     * the saved anchor is cleared so useLayoutEffect never applies a stale delta.
      */
-    const handleLoadMore: () => void = useCallback(() => {
+    const handleLoadMore: () => Promise<void> = useCallback(async (): Promise<void> => {
         if (messagesContainerRef.current) {
             prevScrollHeightRef.current = messagesContainerRef.current.scrollHeight;
         }
-        loadMoreHistory();
+
+        try {
+            const prepended: boolean = await loadMoreHistory();
+
+            if (!prepended) {
+                prevScrollHeightRef.current = null;
+            }
+        } catch (_error: unknown) {
+            prevScrollHeightRef.current = null;
+        }
     }, [ loadMoreHistory ]);
 
     /**

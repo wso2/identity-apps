@@ -21,8 +21,6 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
-
-type AppDispatch = ThunkDispatch<AppState, unknown, AnyAction>;
 import {
     addCopilotMessage,
     clearCopilotChatWithApi,
@@ -39,6 +37,8 @@ import {
     CopilotMessageInterface,
     CopilotPanelStateInterface
 } from "../store/types/copilot-action-types";
+
+type AppDispatch = ThunkDispatch<AppState, unknown, AnyAction>;
 
 /**
  * Interface for the copilot panel hook return value.
@@ -106,8 +106,9 @@ export interface UseCopilotPanelInterface {
     loadHistory: () => void;
     /**
      * Function to load the next (older) page of history and prepend it.
+     * Resolves to true if messages were actually prepended, false otherwise.
      */
-    loadMoreHistory: () => void;
+    loadMoreHistory: () => Promise<boolean>;
     /**
      * The current status message (agent step progress), or null.
      */
@@ -168,8 +169,8 @@ const useCopilotPanel = (): UseCopilotPanelInterface => {
         dispatch(fetchCopilotHistory());
     }, [ dispatch ]);
 
-    const loadMoreHistory: () => void = useCallback(() => {
-        dispatch(loadMoreCopilotHistory());
+    const loadMoreHistory: () => Promise<boolean> = useCallback((): Promise<boolean> => {
+        return dispatch(loadMoreCopilotHistory());
     }, [ dispatch ]);
 
     return {

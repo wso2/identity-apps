@@ -194,6 +194,8 @@ export const clearCopilotChatWithApi = () => {
             // Only clear local messages after a successful API response
             dispatch(clearCopilotChat());
         } catch (error: unknown) {
+            dispatch(clearCopilotChat());
+
             const errorMsg: string = error instanceof Error ? error.message : String(error);
 
             if (!errorMsg.includes("Failed to fetch") && !errorMsg.includes("Network error")) {
@@ -343,12 +345,12 @@ export const fetchCopilotHistory = () => {
  * @returns A thunk function.
  */
 export const loadMoreCopilotHistory = () => {
-    return async (dispatch: Dispatch, getState: () => AppState) => {
+    return async (dispatch: Dispatch, getState: () => AppState): Promise<boolean> => {
         const state: AppState = getState();
         const { hasMoreHistory, historyOffset, isLoadingMoreHistory } = state?.copilot || {};
 
         if (!hasMoreHistory || isLoadingMoreHistory) {
-            return;
+            return false;
         }
 
         // Set the guard before the async boundary so rapid clicks are blocked.
@@ -356,13 +358,15 @@ export const loadMoreCopilotHistory = () => {
 
         const historyController: AbortController = requestManager.startRequest("chatHistory");
 
+        let prepended: boolean = false;
+
         try {
             const response: CopilotHistoryResponse = await getCopilotChatHistory(
                 historyOffset, undefined, historyController.signal
             );
 
             // Discard results if a clear was issued while this request was in-flight.
-            if (historyController.signal.aborted) return;
+            if (historyController.signal.aborted) return false;
 
             if (response.history && Array.isArray(response.history) && response.history.length > 0) {
                 const olderMessages: CopilotMessageInterface[] = [];
@@ -390,6 +394,7 @@ export const loadMoreCopilotHistory = () => {
                     nextOffset: historyOffset + response.limit,
                     total: response.total
                 }));
+                prepended = true;
             } else {
                 // No more records
                 dispatch(setHistoryPagination({
@@ -400,7 +405,7 @@ export const loadMoreCopilotHistory = () => {
             }
         } catch (_error: unknown) {
             // Don't touch pagination state when the request was intentionally aborted
-            if (historyController.signal.aborted) return;
+            if (historyController.signal.aborted) return false;
 
             // Reset pagination so the "load more" button re-enables instead of staying stuck
             dispatch(setHistoryPagination({
@@ -412,6 +417,8 @@ export const loadMoreCopilotHistory = () => {
             requestManager.completeRequest("chatHistory", historyController);
             dispatch(setIsLoadingMoreHistory(false));
         }
+
+        return prepended;
     };
 };
 
@@ -557,13 +564,19 @@ class StatusQueue {
  */
 export const sendCopilotMessage = (userMessage: string) => {
     return async (dispatch: Dispatch) => {
+        const trimmedUserMessage: string = userMessage.trim();
+
+        if (!trimmedUserMessage) {
+            return;
+        }
+
         // Cancel any existing request before starting a new one, then register this one
         const controller: AbortController = requestManager.startRequest("chat");
         const signal: AbortSignal = controller.signal;
 
         // Add user message
         const userMsg: CopilotMessageInterface = {
-            content: userMessage,
+            content: trimmedUserMessage,
             id: `user-${Date.now()}`,
             sender: "user",
             timestamp: Date.now(),
@@ -614,7 +627,7 @@ export const sendCopilotMessage = (userMessage: string) => {
 
         try {
             await sendCopilotChatMessage(
-                userMessage,
+                trimmedUserMessage,
                 {
                     onComplete: () => {
                         // Flush any tokens still waiting in the 16ms batch before finalizing.

@@ -238,7 +238,7 @@ export const sendCopilotChatMessage = async (
                 const finalChunk: string = decoder.decode();
 
                 if (finalChunk || sseBuffer) {
-                    const { events: finalEvents } = parseSSEChunk(finalChunk, sseBuffer);
+                    const { events: finalEvents } = parseSSEChunk(`${finalChunk}\n\n`, sseBuffer);
 
                     sseBuffer = "";
 
