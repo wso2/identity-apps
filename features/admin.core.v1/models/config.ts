@@ -341,13 +341,13 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      */
     extensions: Record<string, unknown>;
     /**
+     * Documentation links configured through the deployment config.
+     */
+    documentation?: DocumentationConfigInterface;
+    /**
      * URL of the help center.
      */
     helpCenterURL?: string;
-    /**
-     * URL of the doc site.
-     */
-    docSiteURL?: string;
     /**
      * Configs of multiple application protocol.
      */
@@ -357,6 +357,38 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * This is used to enable/disable the region selection in the organization creation page.
      */
     regionSelectionEnabled?: boolean;
+}
+
+/**
+ * Interface representing common documentation links configured via deployment config.
+ */
+export interface CommonDocumentationConfigInterface {
+    /**
+     * Cookie policy link.
+     */
+    cookiePolicy?: string;
+    /**
+     * Documentation home page link.
+     */
+    docsHomePage?: string;
+    /**
+     * Privacy policy link.
+     */
+    privacyPolicy?: string;
+    /**
+     * Terms of service link.
+     */
+    termsOfService?: string;
+}
+
+/**
+ * Interface representing documentation related deployment config.
+ */
+export interface DocumentationConfigInterface {
+    /**
+     * Common documentation links.
+     */
+    common?: CommonDocumentationConfigInterface;
 }
 
 /**

@@ -39,7 +39,7 @@ import AIBanner from "@wso2is/common.ai.v1/components/ai-banner";
 import AIBannerTall from "@wso2is/common.ai.v1/components/ai-banner-tall";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, DocumentationLink, useDocumentation } from "@wso2is/react-components";
+import { ConfirmationModal, DocumentationLink } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -61,6 +61,9 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const termsOfServiceLink: string = useSelector((state: AppState) =>
+        state.config?.deployment?.documentation?.common?.termsOfService || ""
+    );
 
     const applicationsFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state.config.ui.features.applications);
@@ -80,8 +83,6 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
         setBannerState,
         setUserPrompt
     } = useAILoginFlow();
-
-    const { getLink } = useDocumentation();
 
     const { filteredAuthenticators, loading: isAuthenticatorsLoading } = useAvailableAuthenticators();
 
@@ -272,7 +273,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                         <Typography variant="caption">
                             { t("ai:aiLoginFlow.disclaimer") }
                             <DocumentationLink
-                                link={ getLink("common.termsOfService") }
+                                link={ termsOfServiceLink }
                             >
                                 { t("ai:aiLoginFlow.termsAndConditions") }
                             </DocumentationLink>
