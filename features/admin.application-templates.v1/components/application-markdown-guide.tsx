@@ -195,7 +195,7 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
         markdownDataObject.serverOrigin = serverOrigin;
         markdownDataObject.productName = productName;
         markdownDataObject.accountAppURL = accountAppURL;
-        markdownDataObject.docSiteURL = deploymentConfig?.docSiteURL;
+        markdownDataObject.docSiteURL = deploymentConfig?.documentation?.common?.docsHomePage;
         markdownDataObject.moderatedData = getModeratedData();
 
         return markdownDataObject;

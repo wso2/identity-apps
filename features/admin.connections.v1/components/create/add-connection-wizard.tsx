@@ -22,7 +22,9 @@ import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-app-configs";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface,
+    LoadableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { DynamicWizard, DynamicWizardPage, renderFormFields } from "@wso2is/dynamic-forms";
@@ -148,7 +150,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
         let documentationLink: string = undefined;
 
         if (metadataLink) {
-            documentationLink = deploymentConfig?.docSiteURL + metadataLink;
+            documentationLink = deploymentConfig?.documentation?.common?.docsHomePage + metadataLink;
         }
 
         return documentationLink;

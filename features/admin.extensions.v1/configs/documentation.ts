@@ -16,19 +16,10 @@
  * under the License.
  */
 
-import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { DocumentationLinksExtensionInterface } from "./models/documentation";
 
 export const getDocumentationLinksExtension = (): DocumentationLinksExtensionInterface => {
-    const documentationBaseUrl: string = Config?.getDeploymentConfig()?.docSiteURL;
-
     return {
-        common: {
-            cookiePolicy: "https://wso2.com/cookie-policy",
-            docsHomePage: documentationBaseUrl,
-            privacyPolicy: "https://wso2.com/privacy-policy",
-            termsOfService: "https://wso2.com/terms-of-use"
-        },
         develop: {
             actions: {
                 learnMore: undefined,

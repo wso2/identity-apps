@@ -329,16 +329,6 @@ interface BrandingDocumentationLinksInterface {
 }
 
 /**
- * Interface for the common documentation structure.
- */
-interface CommonDocumentationLinksInterface {
-    cookiePolicy: string;
-    docsHomePage: string;
-    privacyPolicy: string;
-    termsOfService: string;
-}
-
-/**
  * Interface for the connections section documentation structure.
  */
 interface ConnectionsDocumentationLinksInterface {
@@ -598,10 +588,6 @@ interface WebhooksDocumentationLinksInterface {
  * Interface for the console documentation structure.
  */
 export interface DocumentationLinksExtensionInterface {
-    /**
-     * Documentation links for common elements.
-     */
-    common: CommonDocumentationLinksInterface;
     /**
      * Documentation links for develop section elements.
      */

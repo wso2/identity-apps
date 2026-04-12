@@ -27,10 +27,12 @@ import {
 } from "@mui/material";
 import Button from "@oxygen-ui/react/Button";
 import Stack from "@oxygen-ui/react/Stack";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
+import { DocumentationLink } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import AIPromptHistory from "./ai-prompt-history";
 import useAIPromptHistory from "../hooks/use-ai-prompt-history";
 import "./ai-prompt.scss";
@@ -55,8 +57,10 @@ const AIPrompt = ({
 }: AIPromptProps): ReactElement => {
 
     const { t } = useTranslation();
-    const { getLink } = useDocumentation();
     const { addPrompt, prompts } = useAIPromptHistory(promptHistoryPreferenceKey);
+    const termsOfServiceLink: string = useSelector((state: AppState) =>
+        state.config?.deployment?.documentation?.common?.termsOfService || ""
+    );
 
     const [ showPromptHistory, setShowPromptHistory ] = useState<boolean>(false);
 
@@ -137,7 +141,7 @@ const AIPrompt = ({
             >
                 { t("ai:aiFlow.disclaimer") }
                 <DocumentationLink
-                    link={ getLink("common.termsOfService") }
+                    link={ termsOfServiceLink }
                 >
                     { t("ai:aiLoginFlow.termsAndConditions") }
                 </DocumentationLink>
