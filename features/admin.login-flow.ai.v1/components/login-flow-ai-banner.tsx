@@ -39,7 +39,7 @@ import AIBanner from "@wso2is/common.ai.v1/components/ai-banner";
 import AIBannerTall from "@wso2is/common.ai.v1/components/ai-banner-tall";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, DocumentationLink } from "@wso2is/react-components";
+import { ConfirmationModal, DocumentationLink, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -59,6 +59,8 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
     const {
         ["data-componentid"]: componentId
     } = props;
+
+    const { getLink } = useDocumentation();
 
     const { t } = useTranslation();
     const termsOfServiceLink: string = useSelector((state: AppState) =>
