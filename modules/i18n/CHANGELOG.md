@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.37.11
+
+### Patch Changes
+
+- [#9924](https://github.com/wso2/identity-apps/pull/9924) [`cb2c85f94d7386f073e2bec84983ce4bda891a02`](https://github.com/wso2/identity-apps/commit/cb2c85f94d7386f073e2bec84983ce4bda891a02) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve the UX when enabling the custom layout feature through the console
+
+* [#9927](https://github.com/wso2/identity-apps/pull/9927) [`9bcec65e59f18eab653c3762ac41d4e61c45e4e9`](https://github.com/wso2/identity-apps/commit/9bcec65e59f18eab653c3762ac41d4e61c45e4e9) Thanks [@github-actions](https://github.com/apps/github-actions)! - Enable trusted token issuer advanced setting page with unique lookup attributes
+
 ## 2.37.10
 
 ### Patch Changes

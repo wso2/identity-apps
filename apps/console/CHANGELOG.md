@@ -1,5 +1,42 @@
 # @wso2is/console
 
+## 4.0.0
+
+### Major Changes
+
+- [#9924](https://github.com/wso2/identity-apps/pull/9924) [`cb2c85f94d7386f073e2bec84983ce4bda891a02`](https://github.com/wso2/identity-apps/commit/cb2c85f94d7386f073e2bec84983ce4bda891a02) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Prepare for next iteration
+
+### Minor Changes
+
+- [#9914](https://github.com/wso2/identity-apps/pull/9914) [`310d975320b7a4796cb91e56189d18fb4a7f7c82`](https://github.com/wso2/identity-apps/commit/310d975320b7a4796cb91e56189d18fb4a7f7c82) Thanks [@github-actions](https://github.com/apps/github-actions)! - Bundle monaco editor as an npm dependency
+
+### Patch Changes
+
+- [#9924](https://github.com/wso2/identity-apps/pull/9924) [`cb2c85f94d7386f073e2bec84983ce4bda891a02`](https://github.com/wso2/identity-apps/commit/cb2c85f94d7386f073e2bec84983ce4bda891a02) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve the UX when enabling the custom layout feature through the console
+
+* [#9927](https://github.com/wso2/identity-apps/pull/9927) [`9bcec65e59f18eab653c3762ac41d4e61c45e4e9`](https://github.com/wso2/identity-apps/commit/9bcec65e59f18eab653c3762ac41d4e61c45e4e9) Thanks [@github-actions](https://github.com/apps/github-actions)! - Enable trusted token issuer advanced setting page with unique lookup attributes
+
+* Updated dependencies [[`cb2c85f94d7386f073e2bec84983ce4bda891a02`](https://github.com/wso2/identity-apps/commit/cb2c85f94d7386f073e2bec84983ce4bda891a02), [`9bcec65e59f18eab653c3762ac41d4e61c45e4e9`](https://github.com/wso2/identity-apps/commit/9bcec65e59f18eab653c3762ac41d4e61c45e4e9)]:
+  - @wso2is/admin.extensions.v1@2.40.31
+  - @wso2is/admin.branding.v1@2.32.143
+  - @wso2is/i18n@2.37.11
+  - @wso2is/admin.connections.v1@2.36.27
+  - @wso2is/admin.approval-workflows.v1@1.3.5
+  - @wso2is/admin.onboarding.v1@1.0.58
+  - @wso2is/admin.console-settings.v1@2.26.21
+  - @wso2is/admin.users.v1@2.38.10
+  - @wso2is/admin.applications.v1@2.41.35
+  - @wso2is/admin.home.v1@1.7.167
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.187
+  - @wso2is/admin.core.v1@2.55.10
+  - @wso2is/admin.email-management.v1@2.25.351
+  - @wso2is/admin.flows.v1@1.0.156
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.187
+  - @wso2is/admin.server-configurations.v1@2.38.26
+  - @wso2is/admin.agents.v1@1.0.202
+  - @wso2is/admin.registration-flow-builder.v1@0.10.147
+  - @wso2is/admin.roles.v2@2.27.357
+
 ## 3.1.10
 
 ### Patch Changes
