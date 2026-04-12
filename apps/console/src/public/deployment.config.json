@@ -27,7 +27,14 @@
         "displayName": "Develop",
         "path": "/applications"
     },
-    "docSiteUrl": "https://is.docs.wso2.com/en/latest",
+    "documentation": {
+        "common": {
+            "cookiePolicy": "https://wso2.com/cookie-policy",
+            "docsHomePage": "https://is.docs.wso2.com/en/latest",
+            "privacyPolicy": "https://wso2.com/privacy-policy",
+            "termsOfService": "https://wso2.com/terms-of-use"
+        }
+    },
     "extensions": {
         "analytics": {
             "moesif": {

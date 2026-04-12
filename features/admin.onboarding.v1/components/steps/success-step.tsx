@@ -208,8 +208,8 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
     const accountAppURL: string = useSelector((state: AppState) =>
         state.config?.deployment?.accountApp?.tenantQualifiedPath || ""
     );
-    const docSiteURL: string = useSelector((state: AppState) =>
-        state.config?.deployment?.docSiteURL || ""
+    const docsHomePage: string = useSelector((state: AppState) =>
+        state.config?.deployment?.documentation?.common?.docsHomePage || ""
     );
 
     // Excluded templates don't have API-served metadata; passing shouldFetch: true
@@ -244,7 +244,7 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
         clientOrigin,
         createdApplication,
         customServerHost,
-        docSiteURL,
+        docSiteURL: docsHomePage,
         inboundProtocolConfig: inboundOidcConfig,
         oidcConfigurations,
         productName,
@@ -252,7 +252,7 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
         serverOrigin,
         tenantDomain
     }), [
-        accountAppURL, clientOrigin, createdApplication, customServerHost, docSiteURL,
+        accountAppURL, clientOrigin, createdApplication, customServerHost, docsHomePage,
         inboundOidcConfig, oidcConfigurations, productName, redirectUrls, serverOrigin,
         tenantDomain
     ]);
@@ -276,7 +276,7 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
         templateId
     }), [ createdApplication, customServerHost, inboundOidcConfig, redirectUrls, templateId ]);
 
-    const docsUrl: string | undefined = getTemplateDocsUrl(templateId, docSiteURL);
+    const docsUrl: string | undefined = getTemplateDocsUrl(templateId, docsHomePage);
 
     const getSuccessTitle: () => string = (): string => {
         if (isTourFlow) {

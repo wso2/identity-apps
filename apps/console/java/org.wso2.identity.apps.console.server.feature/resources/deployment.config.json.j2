@@ -57,9 +57,14 @@
     {% if console.super_tenant_proxy_name is defined %}
         "superTenantProxy" : "{{ console.super_tenant_proxy_name }}",
     {% endif %}
-    {% if console.doc_site_path is defined %}
-    "docSiteUrl": "{{ console.doc_site_path }}",
-    {% endif %}
+    "documentation": {
+        "common": {
+            "cookiePolicy": "https://wso2.com/cookie-policy",
+            "docsHomePage": "https://is.docs.wso2.com/en/latest",
+            "privacyPolicy": "https://wso2.com/privacy-policy",
+            "termsOfService": "https://wso2.com/terms-of-use"
+        }
+    },
     {% if console.idp_configs is defined %}
     "idpConfigs": {
         {% if console.idp_configs.items() is defined %}

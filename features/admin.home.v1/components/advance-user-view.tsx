@@ -680,7 +680,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                         <Trans i18nKey={ "console:common.quickStart.sections.adminNotice.moreDetails" } >
                             See
                             <Link
-                                href={ Config?.getDeploymentConfig()?.docSiteURL
+                                href={ Config?.getDeploymentConfig()?.documentation?.common?.docsHomePage
                                     + "/guides/organization-management/inheritance-in-organizations" }
                                 target="_blank"
                                 rel="noreferrer"
