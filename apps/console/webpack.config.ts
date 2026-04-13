@@ -19,7 +19,7 @@
 import fs from "fs";
 import path from "path";
 import { ParsedUrlQuery } from "querystring";
-import url, { UrlWithParsedQuery } from "url";
+import url, { UrlWithParsedQuery, fileURLToPath } from "url";
 import zlib, { BrotliOptions } from "zlib";
 import nxReactWebpackConfig from "@nx/react/plugins/webpack.js";
 import CompressionPlugin from "compression-webpack-plugin";
@@ -815,6 +815,17 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 : true
         };
     }
+
+    const __filename: string = fileURLToPath(import.meta.url);
+
+    config.cache = {
+        buildDependencies: {
+            // This makes all dependencies of this file - build dependencies
+            config: [ __filename ]
+            // By default webpack and loaders are build dependencies
+        },
+        type: "filesystem"
+    };
 
     return config;
 };
