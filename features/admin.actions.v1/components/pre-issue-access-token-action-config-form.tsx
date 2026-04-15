@@ -47,8 +47,6 @@ import { ActionsConstants } from "../constants/actions-constants";
 import { ActionVersionInfo } from "../hooks/use-action-versioning";
 import {
     ActionConfigFormPropertyInterface,
-    ActionInterface,
-    ActionUpdateInterface,
     AuthenticationPropertiesInterface,
     AuthenticationType,
     PreIssueAccessTokenActionConfigFormPropertyInterface,
