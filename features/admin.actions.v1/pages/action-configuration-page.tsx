@@ -67,8 +67,6 @@ import {
     PreUpdatePasswordActionResponseInterface,
     PreUpdateProfileActionConfigFormPropertyInterface,
     PreUpdateProfileActionResponseInterface,
-    PreIssueAccessTokenActionConfigFormPropertyInterface,
-    PreIssueAccessTokenActionResponseInterface,
     PreIssueIdTokenActionConfigFormPropertyInterface,
     PreIssueIdTokenActionResponseInterface
 } from "../models/actions";
@@ -198,18 +196,6 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 return {
                     ...actionCommonInitialValues,
                     attributes: (action as PreUpdateProfileActionResponseInterface)?.attributes
-                };
-            } else {
-                return null;
-            }
-        }, [ action ]);
-
-    const preIssueAccessTokenActionInitialValues: PreIssueAccessTokenActionConfigFormPropertyInterface =
-        useMemo(() => {
-            if (action && actionTypeApiPath === ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH ) {
-                return {
-                    ...actionCommonInitialValues,
-                    attributes: (action as PreIssueAccessTokenActionResponseInterface)?.attributes
                 };
             } else {
                 return null;
@@ -533,7 +519,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                         <Grid.Column width={ 16 }>
                             { actionTypeApiPath === ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH && (
                                 <PreIssueAccessTokenActionConfigForm
-                                    initialValues={ preIssueAccessTokenActionInitialValues }
+                                    initialValues={ actionCommonInitialValues }
                                     isLoading={ isLoading }
                                     isReadOnly={ isReadOnly() }
                                     actionTypeApiPath={ actionTypeApiPath }

@@ -18,9 +18,7 @@
 
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
-import Divider from "@oxygen-ui/react/Divider";
 import Skeleton from "@oxygen-ui/react/Skeleton";
-import Typography from "@oxygen-ui/react/Typography";
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
@@ -38,7 +36,6 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import CommonActionConfigForm from "./common-action-config-form";
 import RuleConfigForm from "./rule-config-form";
-import UserAttributeList from "./user-attributes/user-attribute-list";
 import createAction from "../api/create-action";
 import updateAction from "../api/update-action";
 import useGetActionById from "../api/use-get-action-by-id";
@@ -47,11 +44,10 @@ import { ActionsConstants } from "../constants/actions-constants";
 import { ActionVersionInfo } from "../hooks/use-action-versioning";
 import {
     ActionConfigFormPropertyInterface,
+    ActionInterface,
+    ActionUpdateInterface,
     AuthenticationPropertiesInterface,
-    AuthenticationType,
-    PreIssueAccessTokenActionConfigFormPropertyInterface,
-    PreIssueAccessTokenActionInterface,
-    PreIssueAccessTokenActionUpdateInterface
+    AuthenticationType
 } from "../models/actions";
 import { useHandleError, useHandleSuccess } from "../util/alert-util";
 import { validateActionCommonFields } from "../util/form-field-util";
@@ -64,7 +60,7 @@ interface PreIssueAccessTokenActionConfigFormInterface extends IdentifiableCompo
     /**
      * Action's initial values.
      */
-    initialValues: PreIssueAccessTokenActionConfigFormPropertyInterface;
+    initialValues: ActionConfigFormPropertyInterface;
     /**
      * Flag for loading state.
      */
@@ -99,8 +95,6 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
     const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features.actions);
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
-    const [ isUserAttributesChanged, setIsUserAttributesChanged ] = useState<boolean>(false);
-    const [ userAttributeList, setUserAttributeList ] = useState<string[]>([]);
     const [ authenticationType, setAuthenticationType ] = useState<AuthenticationType>(null);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isHasRule, setIsHasRule ] = useState<boolean>(false);
@@ -160,25 +154,6 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
         </Box>
     );
 
-    /**
-     * Callback to be triggered when the user attribute list is updated.
-     *
-     * The final user attribute list is updated only if the user has made changes to the initial list.
-     * @param hasChanged - Flag to indicate whether the user has made changes to the initial list.
-     * @param changedAttributes - Updated attribute list.
-     */
-    const handleUserAttributeChange = (hasChanged: boolean, changedAttributes: string[]) => {
-
-        if (!hasChanged) {
-            setIsUserAttributesChanged(false);
-
-            return;
-        }
-
-        setIsUserAttributesChanged(true);
-        setUserAttributeList([ ...changedAttributes ]);
-    };
-
     const validateForm = (values: ActionConfigFormPropertyInterface):
         Partial<ActionConfigFormPropertyInterface> => {
 
@@ -191,8 +166,8 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
     };
 
     const handleSubmit = (
-        values: PreIssueAccessTokenActionConfigFormPropertyInterface,
-        changedFields: PreIssueAccessTokenActionConfigFormPropertyInterface) =>
+        values: ActionConfigFormPropertyInterface,
+        changedFields: ActionConfigFormPropertyInterface) =>
     {
         let payloadRule: RuleWithoutIdInterface | RuleExecuteCollectionWithoutIdInterface | Record<string, never>;
 
@@ -230,8 +205,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
         }
 
         if (isCreateFormState) {
-            const actionValues: PreIssueAccessTokenActionInterface = {
-                attributes: userAttributeList,
+            const actionValues: ActionInterface = {
                 endpoint: {
                     allowedHeaders: values?.allowedHeaders,
                     allowedParameters: values?.allowedParameters,
@@ -259,8 +233,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                 });
         } else {
             // Updating the action
-            const updatingValues: PreIssueAccessTokenActionUpdateInterface = {
-                attributes: isUserAttributesChanged ? userAttributeList : undefined,
+            const updatingValues: ActionUpdateInterface = {
                 endpoint: isAuthenticationUpdateFormState ||
                 changedFields?.endpointUri ||
                 changedFields?.allowedHeaders ||
@@ -312,16 +285,6 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                     } }
                     showHeadersAndParams={ showHeadersAndParams }
                 />
-                <Divider className="divider-container" />
-                <Typography variant="h6" className="heading-container" >
-                    { t("actions:fields.userAttributes.heading") }
-                </Typography>
-                <UserAttributeList
-                    initialValues={ initialValues?.attributes }
-                    onAttributesChange={ handleUserAttributeChange }
-                    isReadOnly={ isReadOnly }
-                    data-componentid={ `${ _componentId }-user-attributes` }
-                />
                 { (RuleExpressionsMetaData && showRuleComponent) && (
                     <RuleConfigForm
                         readonly={ isReadOnly }
@@ -345,7 +308,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                     initialData={ actionData?.rule }
                 >
                     <FinalForm
-                        onSubmit={ (values: PreIssueAccessTokenActionConfigFormPropertyInterface, form: any) => {
+                        onSubmit={ (values: ActionConfigFormPropertyInterface, form: any) => {
                             handleSubmit(values, form.getState().dirtyFields); }
                         }
                         validate={ validateForm }

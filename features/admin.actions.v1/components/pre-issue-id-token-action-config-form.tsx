@@ -27,9 +27,7 @@ import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import { RuleExecuteCollectionWithoutIdInterface, RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { RulesProvider } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { IdentifiableComponentInterface,
-    HttpErrorResponseDataInterface
-} from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalForm, FormRenderProps } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -109,7 +107,7 @@ const PreIssueIdTokenActionConfigForm: FunctionComponent<PreIssueIdTokenActionCo
     const { t } = useTranslation();
 
     const handleSuccess: (operation: string) => void = useHandleSuccess();
-    const handleError: (error: AxiosError<HttpErrorResponseDataInterface>, operation: string) => void = useHandleError();
+    const handleError: (error: AxiosError, operation: string) => void = useHandleError();
 
     const {
         mutate: mutateActions
@@ -251,7 +249,7 @@ const PreIssueIdTokenActionConfigForm: FunctionComponent<PreIssueIdTokenActionCo
                     handleSuccess(ActionsConstants.CREATE);
                     mutateActions();
                 })
-                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+                .catch((error: AxiosError) => {
                     handleError(error, ActionsConstants.CREATE);
                 })
                 .finally(() => {
@@ -285,7 +283,7 @@ const PreIssueIdTokenActionConfigForm: FunctionComponent<PreIssueIdTokenActionCo
                     setIsAuthenticationUpdateFormState(false);
                     mutateAction();
                 })
-                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+                .catch((error: AxiosError) => {
                     handleError(error, ActionsConstants.UPDATE);
                 })
                 .finally(() => {
