@@ -63,7 +63,9 @@ import {
     ActionConfigFormPropertyInterface, PreUpdatePasswordActionConfigFormPropertyInterface,
     PreUpdatePasswordActionResponseInterface,
     PreUpdateProfileActionConfigFormPropertyInterface,
-    PreUpdateProfileActionResponseInterface
+    PreUpdateProfileActionResponseInterface,
+    PreIssueAccessTokenActionConfigFormPropertyInterface,
+    PreIssueAccessTokenActionResponseInterface
 } from "../models/actions";
 import { useHandleError, useHandleSuccess } from "../util/alert-util";
 import "./action-configuration-page.scss";
@@ -164,6 +166,18 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                     rule: action?.rule
                 };
 
+            } else {
+                return null;
+            }
+        }, [ action ]);
+
+    const preIssueAccessTokenActionInitialValues: PreIssueAccessTokenActionConfigFormPropertyInterface =
+        useMemo(() => {
+            if (action && actionTypeApiPath === ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH ) {
+                return {
+                    ...actionCommonInitialValues,
+                    attributes: (action as PreIssueAccessTokenActionResponseInterface)?.attributes
+                };
             } else {
                 return null;
             }
@@ -502,7 +516,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                         <Grid.Column width={ 16 }>
                             { actionTypeApiPath === ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH && (
                                 <PreIssueAccessTokenActionConfigForm
-                                    initialValues={ actionCommonInitialValues }
+                                    initialValues={ preIssueAccessTokenActionInitialValues }
                                     isLoading={ isLoading }
                                     isReadOnly={ isReadOnly() }
                                     actionTypeApiPath={ actionTypeApiPath }
