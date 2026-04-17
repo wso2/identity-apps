@@ -215,6 +215,7 @@ const InFlowExtensionEditPage: FunctionComponent<InFlowExtensionEditPagePropsInt
             data-componentid={ `${componentId}-layout` }
         >
             <ResourceTab
+                controlTabRedirectionInternally
                 isLoading={ isActionLoading }
                 data-componentid={ `${componentId}-resource-tabs` }
                 panes={ getPanes() }

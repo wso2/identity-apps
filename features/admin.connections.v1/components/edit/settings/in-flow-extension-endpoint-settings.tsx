@@ -37,7 +37,7 @@ import { useTrigger } from "@wso2is/forms";
 import { FinalForm, FormRenderProps } from "@wso2is/form";
 import { EmphasizedSegment, Heading, LinkButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -77,6 +77,14 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
     const [ hasCertificate, setHasCertificate ] = useState<boolean>(false);
     const [ triggerCertUpload, setTriggerCertUpload ] = useTrigger();
     const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
+
+    // Deferred submit — waits for cert extraction before submitting.
+    const pendingSubmit: MutableRefObject<boolean> = useRef<boolean>(false);
+    const formHandleSubmitRef: MutableRefObject<(() => void) | null> = useRef<(() => void) | null>(null);
+
+    // Refs that mirror cert state so handleSubmit never reads a stale closure.
+    const isCertificateModifiedRef: MutableRefObject<boolean> = useRef<boolean>(false);
+    const certificatePEMRef: MutableRefObject<string> = useRef<string>("");
 
     useEffect(() => {
         if (action) {
@@ -171,7 +179,11 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
                 onSubmit={ handleSubmit }
                 initialValues={ initialValues }
                 validate={ validateForm }
-                render={ ({ handleSubmit: formHandleSubmit }: FormRenderProps) => (
+                render={ ({ handleSubmit: formHandleSubmit }: FormRenderProps) => {
+                    // Store reference for deferred cert-upload submissions.
+                    formHandleSubmitRef.current = formHandleSubmit;
+
+                    return (
                     <EmphasizedSegment
                         className="endpoint-settings-container"
                         padded="very"
@@ -244,7 +256,8 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
                             ) }
                         </div>
                     </EmphasizedSegment>
-                ) }
+                    );
+                } }
             />
         </Box>
     );

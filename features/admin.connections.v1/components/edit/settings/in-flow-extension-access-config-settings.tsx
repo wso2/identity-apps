@@ -76,6 +76,8 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
         modify: []
     });
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ showResetConfirmation, setShowResetConfirmation ] = useState<boolean>(false);
+    const [ resetKey, setResetKey ] = useState<number>(0);
 
     const initialAccessConfig: InitialAccessConfig | undefined = useMemo(() => {
         if (action?.accessConfig) {
@@ -126,6 +128,37 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
             });
     };
 
+    const handleReset = (): void => {
+        setIsSubmitting(true);
+
+        const updateBody: InFlowExtensionActionUpdateInterface = {
+            accessConfig: { expose: [], modify: [] }
+        };
+
+        updateAction<InFlowExtensionActionUpdateInterface>(ACTION_TYPE, action.id, updateBody)
+            .then(() => {
+                dispatch(addAlert({
+                    description: "Access configuration has been reset successfully.",
+                    level: AlertLevels.SUCCESS,
+                    message: t("authenticationProvider:notifications.updateIDP.success.message")
+                }));
+                setResetKey((prev: number) => prev + 1);
+                onUpdate();
+            })
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+                dispatch(addAlert({
+                    description: error?.response?.data?.description
+                        ?? t("authenticationProvider:notifications.updateIDP.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("authenticationProvider:notifications.updateIDP.genericError.message")
+                }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+                setShowResetConfirmation(false);
+            });
+    };
+
     if (isLoading || !action) {
         return <Loader />;
     }
@@ -142,8 +175,18 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
                         sx={ { mb: 2 } }
                         data-componentid={ `${componentId}-cert-warning` }
                     >
-                        No encryption certificate provided. Fields marked for encryption will be
-                        sent unencrypted. You can upload a certificate in the Settings tab.
+                        No encryption certificate provided. You cannot mark fields to be sent
+                        encrypted. You can upload a certificate in the Settings tab.
+                    </Alert>
+                ) }
+                { !initialAccessConfig && (
+                    <Alert
+                        severity="info"
+                        sx={ { mb: 2 } }
+                        data-componentid={ `${componentId}-empty-access-config-info` }
+                    >
+                        No access configuration has been set. The extension will not send any data
+                        and will not allow any modifications until you configure access here.
                     </Alert>
                 ) }
                 <Heading as="h5">
@@ -188,6 +231,42 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
                     </Button>
                 ) }
             </EmphasizedSegment>
+            { showResetConfirmation && (
+                <ConfirmationModal
+                    primaryActionLoading={ isSubmitting }
+                    onClose={ (): void => setShowResetConfirmation(false) }
+                    type="negative"
+                    open={ showResetConfirmation }
+                    assertionType="checkbox"
+                    assertionHint="Please confirm your understanding that this action is irreversible."
+                    primaryAction={ t("common:confirm") }
+                    secondaryAction={ t("common:cancel") }
+                    onSecondaryActionClick={ (): void => setShowResetConfirmation(false) }
+                    onPrimaryActionClick={ handleReset }
+                    data-componentid={ `${componentId}-reset-confirmation` }
+                    closeOnDimmerClick={ false }
+                >
+                    <ConfirmationModal.Header
+                        data-componentid={ `${componentId}-reset-confirmation-header` }
+                    >
+                        Reset Access Configuration
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message
+                        attached
+                        negative
+                        data-componentid={ `${componentId}-reset-confirmation-message` }
+                    >
+                        This will clear all expose and modify annotations.
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content
+                        data-componentid={ `${componentId}-reset-confirmation-content` }
+                    >
+                        The extension will no longer send any data and will not allow any
+                        modifications until you reconfigure access here. This action cannot
+                        be undone.
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            ) }
         </Box>
     );
 };

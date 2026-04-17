@@ -2159,9 +2159,6 @@
             "enableLegacyPasswordRecoveryFlow": false,
             "enableLegacySelfRegistrationFlow": false
         },
-        "inFlowExtension": {
-            "enabled": true
-        },
         "governanceConnectors": {
             "loginAttempts": {
                 "disabledFeatures": []
