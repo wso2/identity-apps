@@ -24,20 +24,15 @@ import Typography from "@oxygen-ui/react/Typography";
 import checkActionName from "@wso2is/admin.actions.v1/api/check-action-name";
 import createAction from "@wso2is/admin.actions.v1/api/create-action";
 import {
-    AccessConfigInterface,
+    ActionResponseInterface,
     AuthenticationType,
-    EncryptionInterface,
     InFlowExtensionActionInterface
 } from "@wso2is/admin.actions.v1/models/actions";
 import { EndpointConfigFormPropertyInterface } from "@wso2is/admin.actions.v1/models/actions";
 import { AddCertificateFormComponent } from "@wso2is/admin.core.v1/components/add-certificate-form";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
-import {
-    FlowContextTree,
-    AccessConfigOutput,
-    EncryptionOutput,
-    ContextTreeNodeMetadata
-} from "@wso2is/common.ui.shared-access.v1/components/flow-context-tree";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -45,7 +40,6 @@ import { useTrigger } from "@wso2is/forms";
 import { Field, Wizard2, WizardPage } from "@wso2is/form";
 import { FormSpy } from "@wso2is/form/src";
 import {
-    ContentLoader,
     GenericIcon,
     Heading,
     Hint,
@@ -60,7 +54,6 @@ import React, {
     FunctionComponent,
     MutableRefObject,
     ReactElement,
-    Suspense,
     useCallback,
     useEffect,
     useRef,
@@ -74,7 +67,6 @@ import { getConnectionWizardStepIcons } from "../../configs/ui";
 import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
 import { AuthenticatorMeta } from "../../meta/authenticator-meta";
-import defaultContextTreeData from "../../meta/default-flow-context-tree.json";
 import {
     AuthenticationTypeDropdownOption,
     ConnectionTemplateInterface,
@@ -103,7 +95,6 @@ const ACTION_NAME_REGEX: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9 _-]{0,254}$/;
 const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizardPropsInterface> = ({
     title,
     subTitle,
-    onIDPCreate,
     onWizardClose,
     "data-componentid": componentId = "in-flow-extension"
 }: InFlowExtensionCreateWizardPropsInterface): ReactElement => {
@@ -131,20 +122,10 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
     const [triggerCertUpload, setTriggerCertUpload] = useTrigger();
     const [triggerCertSubmit, setTriggerCertSubmit] = useTrigger();
 
-    // Ref for deferred navigation — waits for cert extraction before moving to next step.
-    const pendingCertNav: MutableRefObject<boolean> = useRef<boolean>(false);
-    const certNavTimeout: MutableRefObject<ReturnType<typeof setTimeout> | null> =
+    // Ref for deferred submission — waits for cert extraction before submitting.
+    const pendingSubmit: MutableRefObject<boolean> = useRef<boolean>(false);
+    const submitTimeout: MutableRefObject<ReturnType<typeof setTimeout> | null> =
         useRef<ReturnType<typeof setTimeout> | null>(null);
-
-    // Access config state populated by the FlowContextTree component.
-    const [accessConfig, setAccessConfig] = useState<AccessConfigInterface>({
-        expose: [],
-        modify: []
-    });
-    const [encryption, setEncryption] = useState<EncryptionInterface>({});
-
-    const contextTreeMetadata: ContextTreeNodeMetadata[] =
-        defaultContextTreeData.contextTree as ContextTreeNodeMetadata[];
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -201,12 +182,6 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
                 name: WizardStepsInFlowExtension.ENDPOINT_CONFIG,
                 submitCallback: null,
                 title: t("inFlowExtension:createWizard.steps.endpointConfig.title")
-            },
-            {
-                icon: getConnectionWizardStepIcons().outboundProvisioningSettings,
-                name: WizardStepsInFlowExtension.ACCESS_CONFIG,
-                submitCallback: null,
-                title: t("inFlowExtension:createWizard.steps.accessConfig.title")
             }
         ] as WizardStepInterface[];
     };
@@ -487,11 +462,10 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
         authProperties["value"] = values?.valueAuthProperty;
 
         // Build encryption object from the certificate in step 2
-        const resolvedEncryption: EncryptionInterface | undefined =
+        const resolvedEncryption: { certificate: string } | undefined =
             certificatePEM ? { certificate: certificatePEM } : undefined;
 
         const actionBody: InFlowExtensionActionInterface = {
-            accessConfig: accessConfig,
             description: values?.description?.toString() || "",
             encryption: resolvedEncryption,
             endpoint: {
@@ -506,7 +480,7 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
 
         setIsSubmitting(true);
         createAction<InFlowExtensionActionInterface>(ACTION_TYPE_PATH, actionBody)
-            .then(() => {
+            .then((response: ActionResponseInterface) => {
                 dispatch(
                     addAlert({
                         description: t("inFlowExtension:notifications.createSuccess.description"),
@@ -514,7 +488,13 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
                         message: t("inFlowExtension:notifications.createSuccess.message")
                     })
                 );
-                onIDPCreate();
+
+                // Navigate to the edit page so the user can configure access config.
+                const editPath: string = AppConstants.getPaths()
+                    .get("IN_FLOW_EXTENSION_EDIT")
+                    .replace(":id", response.id);
+
+                history.push(editPath + "#tab=access-configuration");
             })
             .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 handleCreateErrors(error);
@@ -524,26 +504,14 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
             });
     };
 
-    const handleAccessConfigChange = (
-        newAccessConfig: AccessConfigOutput,
-        _newEncryption: EncryptionOutput
-    ): void => {
-        setAccessConfig(newAccessConfig as AccessConfigInterface);
-    };
-
-    /**
-     * Handle certificate submission from the AddCertificateFormComponent.
-     * The value is a Base64-encoded PEM string.
-     * If a deferred navigation is pending, proceed to the next wizard step.
-     */
     const handleCertificateSubmit = (value: string): void => {
         setCertificatePEM(value);
 
-        if (pendingCertNav.current) {
-            pendingCertNav.current = false;
-            if (certNavTimeout.current) {
-                clearTimeout(certNavTimeout.current);
-                certNavTimeout.current = null;
+        if (pendingSubmit.current) {
+            pendingSubmit.current = false;
+            if (submitTimeout.current) {
+                clearTimeout(submitTimeout.current);
+                submitTimeout.current = null;
             }
             wizardRef.current?.gotoNextPage();
         }
@@ -676,99 +644,8 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
         </WizardPage>
     );
 
-    const accessConfigPage = (): ReactElement => (
-        <WizardPage validate={() => {
-            setNextShouldBeDisabled(false);
-
-            return {};
-        }}>
-            { !certificatePEM && (
-                <Alert
-                    severity="warning"
-                    sx={{ mb: 2 }}
-                    data-componentid={`${componentId}-cert-warning`}
-                >
-                    No encryption certificate provided. Fields marked for encryption will be
-                    sent unencrypted. You can upload a certificate in the previous step.
-                </Alert>
-            ) }
-            <FlowContextTree
-                contextTree={contextTreeMetadata}
-                onChange={handleAccessConfigChange}
-                hasCertificate={!!certificatePEM}
-                data-componentid={`${componentId}-access-config-tree`}
-            />
-        </WizardPage>
-    );
-
     const resolveWizardPages = (): ReactElement[] => {
-        return [generalSettingsPage(), endpointConfigPage(), accessConfigPage()];
-    };
-
-    const WizardHelpPanel = (): ReactElement => {
-        return (
-            <div>
-                <Heading as="h5">
-                    {t("inFlowExtension:createWizard.helpPanel.whatIsContext.heading")}
-                </Heading>
-                <p>
-                    {t("inFlowExtension:createWizard.helpPanel.whatIsContext.description")}
-                </p>
-                <Divider />
-                <Heading as="h5">
-                    {t("inFlowExtension:createWizard.helpPanel.howToUse.heading")}
-                </Heading>
-                <ul style={{ lineHeight: 1.8, paddingLeft: "18px" }}>
-                    <li>{t("inFlowExtension:createWizard.helpPanel.howToUse.step1")}</li>
-                    <li>{t("inFlowExtension:createWizard.helpPanel.howToUse.step2")}</li>
-                    <li>{t("inFlowExtension:createWizard.helpPanel.howToUse.step3")}</li>
-                    <li>{t("inFlowExtension:createWizard.helpPanel.howToUse.step4")}</li>
-                    <li>{t("inFlowExtension:createWizard.helpPanel.howToUse.step5")}</li>
-                    <li>{t("inFlowExtension:createWizard.helpPanel.howToUse.step6")}</li>
-                </ul>
-                <Divider />
-                <Heading as="h5">
-                    {t("inFlowExtension:createWizard.helpPanel.expose.heading")}
-                </Heading>
-                <p>
-                    {t("inFlowExtension:createWizard.helpPanel.expose.description")}
-                </p>
-                <Divider />
-                <Heading as="h5">
-                    {t("inFlowExtension:createWizard.helpPanel.operations.heading")}
-                </Heading>
-                <p>
-                    {t("inFlowExtension:createWizard.helpPanel.operations.description")}
-                </p>
-                <Divider />
-                <Heading as="h5">
-                    {t("inFlowExtension:createWizard.helpPanel.encryption.heading")}
-                </Heading>
-                <p>
-                    {t("inFlowExtension:createWizard.helpPanel.encryption.description")}
-                </p>
-            </div>
-        );
-    };
-
-    const resolveWizardHelpPanel = (): ReactElement | null => {
-        const ACCESS_CONFIG_STEP: number = 2;
-
-        if (currentWizardStep !== ACCESS_CONFIG_STEP) return null;
-
-        return (
-            <ModalWithSidePanel.SidePanel>
-                <ModalWithSidePanel.Header
-                    data-componentid={`${componentId}-modal-side-panel-header`}
-                    className="wizard-header help-panel-header muted"
-                ></ModalWithSidePanel.Header>
-                <ModalWithSidePanel.Content>
-                    <Suspense fallback={<ContentLoader />}>
-                        <WizardHelpPanel />
-                    </Suspense>
-                </ModalWithSidePanel.Content>
-            </ModalWithSidePanel.SidePanel>
-        );
+        return [generalSettingsPage(), endpointConfigPage()];
     };
 
     return (
@@ -848,22 +725,6 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
                                         disabled={nextShouldBeDisabled}
                                         floated="right"
                                         onClick={() => {
-                                            // When leaving endpoint config (step 1), trigger cert
-                                            // extraction before navigating so the component is still
-                                            // mounted when the trigger fires.
-                                            if (currentWizardStep === 1) {
-                                                setTriggerCertUpload();
-                                                pendingCertNav.current = true;
-                                                // Fallback: navigate after 300ms even if no cert came.
-                                                certNavTimeout.current = setTimeout(() => {
-                                                    if (pendingCertNav.current) {
-                                                        pendingCertNav.current = false;
-                                                        wizardRef.current?.gotoNextPage();
-                                                    }
-                                                }, 300);
-
-                                                return;
-                                            }
                                             wizardRef.current.gotoNextPage();
                                         }}
                                         data-componentid={`${componentId}-next-button`}
@@ -878,7 +739,21 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
                                         type="submit"
                                         floated="right"
                                         onClick={() => {
-                                            wizardRef.current.gotoNextPage();
+                                            if (!certificatePEM) {
+                                                // No certificate staged — submit directly.
+                                                wizardRef.current?.gotoNextPage();
+
+                                                return;
+                                            }
+                                            // Trigger cert extraction before submitting.
+                                            setTriggerCertUpload();
+                                            pendingSubmit.current = true;
+                                            submitTimeout.current = setTimeout(() => {
+                                                if (pendingSubmit.current) {
+                                                    pendingSubmit.current = false;
+                                                    wizardRef.current?.gotoNextPage();
+                                                }
+                                            }, 300);
                                         }}
                                         data-componentid={`${componentId}-submit-button`}
                                         loading={isSubmitting}
@@ -902,7 +777,6 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
                     </SemanticGrid>
                 </ModalWithSidePanel.Actions>
             </ModalWithSidePanel.MainPanel>
-            {resolveWizardHelpPanel()}
         </ModalWithSidePanel>
     );
 };

@@ -34,127 +34,17 @@ const isContainer = (node: TreeNodeState): boolean =>
     node.nodeType === NodeType.MAP ||
     node.nodeType === NodeType.COMPLEX_MAP;
 
-/**
- * Get countable children — containers with no children don't block
- * parent auto-expose propagation.
- */
-const countableChildren = (children: TreeNodeState[]): TreeNodeState[] =>
-    children.filter((c: TreeNodeState) =>
-        !Array.isArray(c.children) || c.children.length > 0
-    );
-
 // ── Propagation Engine ────────────────────────────────────────────────────────
-// expose: two-way propagation
-//   bottom-up: all countable children exposed → parent auto-exposed
-//   top-down:  parent exposed → children inherit expose
+// expose: LEAF-ONLY, no propagation.
+//   Non-leaf (container) nodes never hold an expose flag. Only leaf nodes can be
+//   marked as exposed. This prevents parent-level paths like /user/claims/ from
+//   appearing in the access config, which would cause the backend to expose ALL
+//   runtime entries in the map rather than only the ones the user configured.
 //
 // modify: LEAF-ONLY, no propagation.
 //
-// exposeEncrypted: same propagation as expose (two-way, cascades).
+// exposeEncrypted: LEAF-ONLY, no propagation.
 // modifyEncrypted: LEAF-ONLY, no propagation.
-
-/**
- * Bottom-up pass: children → parent for EXPOSE and exposeEncrypted.
- */
-const bottomUp = (nodes: TreeNodeState[]): TreeNodeState[] =>
-    nodes.map((node: TreeNodeState) => {
-        if (!Array.isArray(node.children)) return node;
-
-        const children: TreeNodeState[] = bottomUp(node.children);
-
-        if (!isContainer({ ...node, children }) || children.length === 0) {
-            return { ...node, children };
-        }
-
-        const countable: TreeNodeState[] = countableChildren(children);
-
-        if (countable.length === 0) return { ...node, children };
-
-        const allExposed: boolean = countable.every((c: TreeNodeState) => c.exposed);
-        const exposedChildren: TreeNodeState[] = children.filter((c: TreeNodeState) => c.exposed);
-        const allExposeEncrypted: boolean =
-            exposedChildren.length > 0 &&
-            exposedChildren.every((c: TreeNodeState) => c.exposeEncrypted);
-
-        return {
-            ...node,
-            children,
-            exposeEncrypted: allExposeEncrypted,
-            exposed: allExposed
-        };
-    });
-
-/**
- * Top-down pass: no-op.
- * All expose cascade is handled explicitly by toggle handlers
- * (cascadeExposeOn / cascadeExposeOff / cascadeExposeEncrypted).
- */
-const topDown = (nodes: TreeNodeState[]): TreeNodeState[] => nodes;
-
-/**
- * Stabilize: alternate bottom-up and top-down until tree is stable (≤6 passes).
- */
-export const stabilize = (tree: TreeNodeState[]): TreeNodeState[] => {
-    let t: TreeNodeState[] = tree;
-
-    for (let i: number = 0; i < 6; i++) {
-        const snap: string = JSON.stringify(t);
-
-        t = bottomUp(t);
-        t = topDown(t);
-        if (JSON.stringify(t) === snap) break;
-    }
-
-    return t;
-};
-
-// ── Encryption Cascade ────────────────────────────────────────────────────────
-
-/**
- * Cascade exposeEncrypted state top-down (user-initiated toggle).
- */
-export const cascadeExposeEncrypted = (
-    children: TreeNodeState[] | undefined,
-    val: boolean
-): TreeNodeState[] | undefined =>
-    children
-        ? children.map((n: TreeNodeState) => ({
-            ...n,
-            children: cascadeExposeEncrypted(n.children, val),
-            exposeEncrypted: val
-        }))
-        : undefined;
-
-/**
- * Cascade expose=true to all descendants.
- * Used when a user explicitly exposes a container.
- */
-export const cascadeExposeOn = (
-    children: TreeNodeState[] | undefined
-): TreeNodeState[] | undefined =>
-    children
-        ? children.map((n: TreeNodeState) => ({
-            ...n,
-            children: cascadeExposeOn(n.children),
-            exposed: true
-        }))
-        : undefined;
-
-/**
- * Cascade expose=false and exposeEncrypted=false to all descendants.
- * Used when a user explicitly un-exposes a container.
- */
-export const cascadeExposeOff = (
-    children: TreeNodeState[] | undefined
-): TreeNodeState[] | undefined =>
-    children
-        ? children.map((n: TreeNodeState) => ({
-            ...n,
-            children: cascadeExposeOff(n.children),
-            exposeEncrypted: false,
-            exposed: false
-        }))
-        : undefined;
 
 // ── Tree Mutation Helpers ─────────────────────────────────────────────────────
 
@@ -305,20 +195,27 @@ export const mapMetadataToStateWithAccessConfig = (
 
         for (const node of metaNodes) {
             const np: string = normalisePath(node.path);
+            const nodeIsContainer: boolean = isContainer({
+                nodeType: node.nodeType
+            } as TreeNodeState);
 
-            // Direct match in expose
+            // Direct match in expose (only meaningful for leaf nodes)
             const directExpose: boolean = exposePaths.has(np);
             const directExposeEnc: boolean = directExpose ? exposePaths.get(np) : false;
 
-            // Covered by ancestor
+            // For leaf nodes: exposed if directly in expose paths or covered by ancestor
+            // For container nodes: never exposed (expose is leaf-only)
             const ancestor: { covered: boolean; encrypted: boolean } = isCoveredByAncestor(np);
-
-            const exposed: boolean = directExpose || ancestor.covered || parentExposed;
-            const exposeEncrypted: boolean = directExpose
-                ? directExposeEnc
-                : ancestor.covered
-                    ? ancestor.encrypted
-                    : parentEncrypted;
+            const exposed: boolean = nodeIsContainer
+                ? false
+                : (directExpose || ancestor.covered || parentExposed);
+            const exposeEncrypted: boolean = nodeIsContainer
+                ? false
+                : (directExpose
+                    ? directExposeEnc
+                    : ancestor.covered
+                        ? ancestor.encrypted
+                        : parentEncrypted);
 
             // Modify (leaf-only in practice)
             const directModify: boolean = modifyPaths.has(np);
@@ -327,7 +224,15 @@ export const mapMetadataToStateWithAccessConfig = (
             let children: TreeNodeState[] | undefined;
 
             if (node.children) {
-                children = convert(node.children, exposed, exposeEncrypted);
+                // Pass parent exposed state down so child leaves inherit coverage
+                const childExposed: boolean = directExpose || ancestor.covered || parentExposed;
+                const childEncrypted: boolean = directExpose
+                    ? directExposeEnc
+                    : ancestor.covered
+                        ? ancestor.encrypted
+                        : parentEncrypted;
+
+                children = convert(node.children, childExposed, childEncrypted);
             }
 
             // Synthesise dynamic entries that exist in accessConfig but not in metadata
@@ -440,15 +345,16 @@ export const mapMetadataToStateWithAccessConfig = (
 
 // ── Access Config Builder ────────────────────────────────────────────────────
 //
-// expose[]:  topmost EXPOSE nodes — exposed descendants under an already-exposed
-//            ancestor are omitted.
-//            If exposeEncrypted → { path, encrypted: true }, else plain string.
+// expose[]:  LEAF nodes with exposed=true.
+//            Container nodes are never exposed; only individual leaf paths appear.
+//            If exposeEncrypted → { path, encrypted: true }, else { path, encrypted: false }.
 //
-// modify[]:  leaf nodes with modify=true.
-//            If modifyEncrypted → { path, encrypted: true }, else plain string.
+// modify[]:  LEAF nodes with modify=true.
+//            If modifyEncrypted → { path, encrypted: true }, else { path, encrypted: false }.
 
 /**
  * Build the access config output from the current tree state.
+ * Only leaf nodes contribute to the output — containers are never exposed.
  */
 export const buildAccessConfig = (
     nodes: TreeNodeState[]
@@ -457,110 +363,36 @@ export const buildAccessConfig = (
     const expose: ContextPathOutput[] = [];
     const modify: ContextPathOutput[] = [];
 
-    /**
-     * Check if all exposed children of a container share the same encryption flag.
-     * Returns { uniform: true, encrypted } if yes, { uniform: false } otherwise.
-     */
-    const childrenEncryptionUniform = (
-        children: TreeNodeState[]
-    ): { uniform: boolean; encrypted?: boolean } => {
-        const exposedKids: TreeNodeState[] = children.filter(
-            (c: TreeNodeState) => c.exposed
-        );
-
-        if (exposedKids.length === 0) return { uniform: true, encrypted: false };
-
-        const firstEnc: boolean = !!exposedKids[0].exposeEncrypted;
-        const allSame: boolean = exposedKids.every(
-            (c: TreeNodeState) => !!c.exposeEncrypted === firstEnc
-        );
-
-        return allSame
-            ? { encrypted: firstEnc, uniform: true }
-            : { uniform: false };
-    };
-
-    const walk = (ns: TreeNodeState[], ancestorExposed: boolean): void => {
+    const walk = (ns: TreeNodeState[]): void => {
         ns.forEach((node: TreeNodeState) => {
             const isLeaf: boolean = node.nodeType === NodeType.LEAF;
 
-            // Modify: leaf-only, independent of expose logic
-            if (node.modify && isLeaf) {
-                const modifyPath: string = node.canDelete &&
-                    node.dataType &&
-                    node.dataType !== "String"
-                    ? `${node.path}{${node.dataType}}`
-                    : node.path;
-
-                modify.push({ encrypted: !!node.modifyEncrypted, path: modifyPath });
-            }
-
-            // Expose logic
-            if (node.exposed && !ancestorExposed) {
-                if (isLeaf) {
-                    // Leaf → always add with its encryption flag
+            if (isLeaf) {
+                // Expose: leaf-only
+                if (node.exposed) {
                     expose.push({ encrypted: !!node.exposeEncrypted, path: node.path });
-
-                    return;
                 }
 
-                // Container: check if ALL children are exposed with uniform encryption
-                if (node.children && node.children.length > 0) {
-                    const allChildrenExposed: boolean = node.children.every(
-                        (c: TreeNodeState) => c.exposed
-                    );
+                // Modify: leaf-only
+                if (node.modify) {
+                    const modifyPath: string = node.canDelete &&
+                        node.dataType &&
+                        node.dataType !== "String"
+                        ? `${node.path}{${node.dataType}}`
+                        : node.path;
 
-                    if (allChildrenExposed) {
-                        const encInfo: { uniform: boolean; encrypted?: boolean } =
-                            childrenEncryptionUniform(node.children);
-
-                        if (encInfo.uniform) {
-                            // All children exposed with same enc flag → emit parent
-                            expose.push({ encrypted: !!encInfo.encrypted, path: node.path });
-                            // Still collect modify from descendants
-                            collectModify(node.children);
-
-                            return;
-                        }
-                    }
-
-                    // Not all children exposed or mixed encryption → descend
-                    walk(node.children, false);
-
-                    return;
+                    modify.push({ encrypted: !!node.modifyEncrypted, path: modifyPath });
                 }
-
-                // Empty container that is exposed → add it
-                expose.push({ encrypted: !!node.exposeEncrypted, path: node.path });
-
-                return;
             }
 
-            // Not exposed at this level, or already covered by ancestor → descend
+            // Descend into children
             if (node.children) {
-                walk(node.children, ancestorExposed || node.exposed);
+                walk(node.children);
             }
         });
     };
 
-    const collectModify = (ns: TreeNodeState[]): void => {
-        ns.forEach((node: TreeNodeState) => {
-            if (node.modify && node.nodeType === NodeType.LEAF) {
-                const modifyPath: string = node.canDelete &&
-                    node.dataType &&
-                    node.dataType !== "String"
-                    ? `${node.path}{${node.dataType}}`
-                    : node.path;
-
-                modify.push({ encrypted: !!node.modifyEncrypted, path: modifyPath });
-            }
-            if (node.children) {
-                collectModify(node.children);
-            }
-        });
-    };
-
-    walk(nodes, false);
+    walk(nodes);
 
     return {
         accessConfig: { expose, modify },

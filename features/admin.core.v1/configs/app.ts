@@ -472,9 +472,6 @@ export class Config {
                     ?? window[ "AppUtils" ]?.getConfig()?.ui?.flowExecution?.enableLegacyFlows
                     ?? true
             },
-            inFlowExtension: {
-                enabled: window[ "AppUtils" ]?.getConfig()?.ui?.inFlowExtension?.enabled ?? false
-            },
             googleOneTapEnabledTenants: window["AppUtils"]?.getConfig()?.ui?.googleOneTapEnabledTenants,
             governanceConnectors: window["AppUtils"]?.getConfig()?.ui?.governanceConnectors,
             gravatarConfig: window[ "AppUtils" ]?.getConfig()?.ui?.gravatarConfig,

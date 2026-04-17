@@ -266,9 +266,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 enableLegacyPasswordRecoveryFlow: true,
                 enableLegacySelfRegistrationFlow: true
             },
-            inFlowExtension: {
-                enabled: false
-            },
             googleOneTapEnabledTenants: [],
             gravatarConfig: {
                 defaultImage: "",

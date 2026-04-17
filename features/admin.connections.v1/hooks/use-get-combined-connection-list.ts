@@ -18,6 +18,10 @@
 
 import useGetActionsByType from "@wso2is/admin.actions.v1/api/use-get-actions-by-type";
 import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { AuthenticatorExtensionsConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import {
     useGetIdentityVerificationProviderList
@@ -27,6 +31,7 @@ import {
 } from "@wso2is/admin.identity-verification-providers.v1/models/identity-verification-providers";
 import { AxiosError } from "axios";
 import get from "lodash-es/get";
+import { useSelector } from "react-redux";
 import { useGetAuthenticators } from "../api/authenticators";
 import { LocalAuthenticatorConstants } from "../constants/local-authenticator-constants";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
@@ -73,6 +78,14 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
     shouldHideLocalSMSOTPAuthenticator: boolean = false
 ): Omit<RequestResultInterface<Data, Error>, "mutate"> & { mutate: () => void } => {
 
+    const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.actions);
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+    const inFlowExtensionFeatureKey: string = isSubOrganization()
+        ? "actions.types.org.list.inFlowExtension"
+        : "actions.types.list.inFlowExtension";
+    const isInFlowExtensionEnabled: boolean = isFeatureEnabled(actionsFeatureConfig, inFlowExtensionFeatureKey);
+
     const {
         data: fetchedAuthenticatorsList,
         isLoading: isAuthenticatorsFetchRequestLoading,
@@ -112,7 +125,7 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
         isValidating: isInFlowExtensionsFetchRequestValidating,
         error: inFlowExtensionsFetchRequestError,
         mutate: mutateInFlowExtensionsFetchRequest
-    } = useGetActionsByType("inFlowExtension", shouldFetchAuthenticators && offset === 0);
+    } = useGetActionsByType("inFlowExtension", isInFlowExtensionEnabled && shouldFetchAuthenticators && offset === 0);
 
     const combinedData: ConnectionInterface[] = [];
 

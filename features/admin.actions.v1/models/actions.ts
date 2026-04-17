@@ -595,6 +595,7 @@ export interface InFlowExtensionActionResponseInterface extends ActionResponseIn
     accessConfig?: AccessConfigInterface;
     encryption?: EncryptionInterface;
     iconUrl?: string;
+    flowTypeOverrides?: Record<string, AccessConfigInterface>;
 }
 
 /**
@@ -604,4 +605,5 @@ export interface InFlowExtensionActionUpdateInterface extends ActionUpdateInterf
     accessConfig?: AccessConfigInterface;
     encryption?: EncryptionInterface;
     iconUrl?: string;
+    flowTypeOverrides?: Record<string, AccessConfigInterface>;
 }

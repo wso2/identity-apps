@@ -34,13 +34,9 @@ import {
 import {
     addChild,
     buildAccessConfig,
-    cascadeExposeEncrypted,
-    cascadeExposeOff,
-    cascadeExposeOn,
     deleteNode,
     mapMetadataToState,
     mapMetadataToStateWithAccessConfig,
-    stabilize,
     updateNode
 } from "./utils";
 
@@ -73,11 +69,9 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
     }, [allClaims]);
 
     const [tree, setTree] = useState<TreeNodeState[]>(() =>
-        stabilize(
-            initialAccessConfig
-                ? mapMetadataToStateWithAccessConfig(contextTree, initialAccessConfig)
-                : mapMetadataToState(contextTree)
-        )
+        initialAccessConfig
+            ? mapMetadataToStateWithAccessConfig(contextTree, initialAccessConfig)
+            : mapMetadataToState(contextTree)
     );
 
     const [modal, setModal] = useState<AddEntryModalState>({
@@ -123,42 +117,22 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
 
     // Re-initialize tree once claims are loaded (to resolve display names) or if input changes.
     useEffect(() => {
-        setTree(stabilize(
+        setTree(
             initialAccessConfig
                 ? mapMetadataToStateWithAccessConfig(contextTree, initialAccessConfig, claimDisplayNames)
                 : mapMetadataToState(contextTree)
-        ));
+        );
     }, [contextTree, initialAccessConfig, claimDisplayNames]);
 
     const handleToggleExpose = useCallback((key: string): void => {
-        setTree((prev: TreeNodeState[]) => {
-            const updated: TreeNodeState[] = updateNode(prev, key, (n: TreeNodeState) => {
-                const newExposed: boolean = !n.exposed;
-
-                // When turning off a container, cascade off to all descendants
-                if (!newExposed && n.children) {
-                    return {
-                        ...n,
-                        children: cascadeExposeOff(n.children),
-                        exposeEncrypted: false,
-                        exposed: false
-                    };
-                }
-
-                // When turning on a container, cascade on to all descendants
-                if (newExposed && n.children) {
-                    return {
-                        ...n,
-                        children: cascadeExposeOn(n.children),
-                        exposed: true
-                    };
-                }
-
-                return { ...n, exposed: newExposed };
-            });
-
-            return stabilize(updated);
-        });
+        setTree((prev: TreeNodeState[]) =>
+            updateNode(prev, key, (n: TreeNodeState) => ({
+                ...n,
+                exposed: !n.exposed,
+                // Clear encryption when un-exposing
+                exposeEncrypted: !n.exposed ? n.exposeEncrypted : false
+            }))
+        );
     }, []);
 
     const handleToggleModify = useCallback((key: string): void => {
@@ -172,23 +146,12 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
     }, []);
 
     const handleToggleExposeEncrypt = useCallback((key: string): void => {
-        setTree((prev: TreeNodeState[]) => {
-            const updated: TreeNodeState[] = updateNode(prev, key, (n: TreeNodeState) => {
-                const newVal: boolean = !n.exposeEncrypted;
-                const isNodeContainer: boolean =
-                    n.nodeType === NodeType.OBJECT ||
-                    n.nodeType === NodeType.MAP ||
-                    n.nodeType === NodeType.COMPLEX_MAP;
-
-                return {
-                    ...n,
-                    children: isNodeContainer ? cascadeExposeEncrypted(n.children, newVal) : n.children,
-                    exposeEncrypted: newVal
-                };
-            });
-
-            return stabilize(updated);
-        });
+        setTree((prev: TreeNodeState[]) =>
+            updateNode(prev, key, (n: TreeNodeState) => ({
+                ...n,
+                exposeEncrypted: !n.exposeEncrypted
+            }))
+        );
     }, []);
 
     const handleToggleModifyEncrypt = useCallback((key: string): void => {
@@ -201,7 +164,7 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
     }, []);
 
     const handleDelete = useCallback((key: string): void => {
-        setTree((prev: TreeNodeState[]) => stabilize(deleteNode(prev, key)));
+        setTree((prev: TreeNodeState[]) => deleteNode(prev, key));
     }, []);
 
     const handleRename = useCallback((key: string, newTitle: string): void => {
@@ -236,7 +199,7 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
             dataType: objectStructure || "String",
             dynamicEntryAllowed: false,
             dynamicEntryType: "",
-            exposeEncrypted: parentNode.exposeEncrypted,
+            exposeEncrypted: false,
             exposed: false,
             key: `e-${Date.now()}`,
             modify: false,
@@ -249,7 +212,7 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
         };
 
         setTree((prev: TreeNodeState[]) =>
-            stabilize(addChild(prev, parentNode.key, newEntry))
+            addChild(prev, parentNode.key, newEntry)
         );
         setModal({ open: false, parentNode: null });
     }, [modal]);
@@ -293,7 +256,7 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
                 updated = addChild(updated, parentNode.key, newEntry);
             });
 
-            return stabilize(updated);
+            return updated;
         });
         setClaimModal({ open: false, parentNode: null });
     }, [claimModal]);
@@ -345,7 +308,7 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                         </svg>
-                        <Typography sx={{ color: "text.disabled", fontSize: 9 }}>expose enc</Typography>
+                        <Typography sx={{ color: "text.disabled", fontSize: 9 }}>Exposing Encrypted</Typography>
                     </Box>
                     <Box sx={{ alignItems: "center", display: "inline-flex", gap: "4px" }}>
                         <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
@@ -355,7 +318,7 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                         </svg>
-                        <Typography sx={{ color: "text.disabled", fontSize: 9 }}>modify enc</Typography>
+                        <Typography sx={{ color: "text.disabled", fontSize: 9 }}>Modifying Encrypted</Typography>
                     </Box>
                     <Box sx={{ alignItems: "center", display: "inline-flex", gap: "4px" }}>
                         <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
@@ -365,10 +328,10 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                         </svg>
-                        <Typography sx={{ color: "text.disabled", fontSize: 9 }}>both enc</Typography>
+                        <Typography sx={{ color: "text.disabled", fontSize: 9 }}>Both Encrypted</Typography>
                     </Box>
                     <Typography sx={{ color: "text.disabled", fontSize: 9 }}>
-                        Hover row to expand ops · parent ↕ children sync
+                        Hover over a row to expand available operations
                     </Typography>
                 </Box>
             </Box>
