@@ -82,8 +82,6 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_ROLE_SHARING"));
     const asyncOperationStatusPollingInterval: number = useSelector((state: AppState) =>
         state?.config?.ui?.asyncOperationStatusPollingInterval);
-    const isEnhancedOrganizationAuthenticationFeatureEnabled: boolean = useSelector((state: AppState) =>
-        state?.config?.ui?.isEnhancedOrganizationAuthenticationFeatureEnabled);
 
     const isMyAccount: boolean =
         ApplicationManagementConstants.MY_ACCOUNT_CLIENT_ID === application?.clientId ||
@@ -159,7 +157,7 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
                         )
                 }
             </EmphasizedSegment>
-            { isEnhancedOrganizationAuthenticationFeatureEnabled && !isMyAccount && (
+            { !isMyAccount && (
                 <EnhancedOrganizationLoginToggle
                     appId={ application.id }
                     isEnabled={ application.enhancedOrgAuthenticationEnabled ?? false }

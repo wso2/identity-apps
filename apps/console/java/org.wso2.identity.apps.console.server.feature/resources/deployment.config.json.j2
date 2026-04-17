@@ -2615,9 +2615,6 @@
             {% endfor %}
         },
         {% endif %}
-        {% if enhanced_organization_authentication_feature.enabled is defined %}
-        "isEnhancedOrganizationAuthenticationFeatureEnabled": {{ enhanced_organization_authentication_feature.enabled }},
-        {% endif %}
         {% if console.ui.is_feature_gate_enabled is defined %}
         "isFeatureGateEnabled": {{ console.ui.is_feature_gate_enabled }},
         {% endif %}
