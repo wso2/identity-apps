@@ -39,6 +39,10 @@
 
     .alert-nutral {
         background-color: var(--oxygen-palette-grey-100);
+
+        .secondary-button {
+            margin-top: 10px;
+        }
     }
 
     .endpoint-uri-alert {
@@ -56,8 +60,16 @@
 
     .heading-container {
         margin-top: 20px;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
         font-weight: normal;
+    }
+
+    .box-container {
+        .box-field {
+            .secondary-button {
+                margin-top: 14px;
+            }
+        }
     }
 
     .row.urlComponentTagRow {
@@ -77,6 +89,10 @@
 
 .alert-nutral {
     background-color: var(--oxygen-palette-grey-100);
+
+    .secondary-button {
+        margin-top: 10px;
+    }
 }
 
 .endpoint-uri-alert {

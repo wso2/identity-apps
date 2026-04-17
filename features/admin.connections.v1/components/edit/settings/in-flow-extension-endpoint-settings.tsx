@@ -37,7 +37,7 @@ import { useTrigger } from "@wso2is/forms";
 import { FinalForm, FormRenderProps } from "@wso2is/form";
 import { EmphasizedSegment, Heading, LinkButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -79,6 +79,14 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
     const [ isCertificateModified, setIsCertificateModified ] = useState<boolean>(false);
     const [ triggerCertUpload, setTriggerCertUpload ] = useTrigger();
     const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
+
+    // Deferred submit — waits for cert extraction before submitting.
+    const pendingSubmit: MutableRefObject<boolean> = useRef<boolean>(false);
+    const formHandleSubmitRef: MutableRefObject<(() => void) | null> = useRef<(() => void) | null>(null);
+
+    // Refs that mirror cert state so handleSubmit never reads a stale closure.
+    const isCertificateModifiedRef: MutableRefObject<boolean> = useRef<boolean>(false);
+    const certificatePEMRef: MutableRefObject<string> = useRef<string>("");
 
     useEffect(() => {
         if (action) {
@@ -139,9 +147,10 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
             };
         }
 
-        // Include encryption update only if certificate was explicitly changed
-        if (isCertificateModified && certificatePEM) {
-            updateBody.encryption = { certificate: certificatePEM };
+        // Include encryption update if certificate was explicitly changed (including clearing).
+        // Read from refs to avoid stale closure when called from deferred setTimeout.
+        if (isCertificateModifiedRef.current) {
+            updateBody.encryption = { certificate: certificatePEMRef.current || "" };
         }
 
         // Nothing changed – skip the API call.
@@ -172,6 +181,16 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
         setCertificatePEM(value);
         setHasCertificate(!!value);
         setIsCertificateModified(true);
+        // Keep refs in sync so handleSubmit never reads a stale closure value.
+        certificatePEMRef.current = value;
+        isCertificateModifiedRef.current = true;
+
+        // If a form submission was deferred waiting for cert extraction, trigger it now.
+        if (pendingSubmit.current) {
+            pendingSubmit.current = false;
+            // Refs are already updated above, so formHandleSubmit will see the new values.
+            setTimeout(() => formHandleSubmitRef.current?.(), 0);
+        }
     };
 
     if (isLoading || !action) {
@@ -184,7 +203,11 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
                 onSubmit={ handleSubmit }
                 initialValues={ initialValues }
                 validate={ validateForm }
-                render={ ({ handleSubmit: formHandleSubmit }: FormRenderProps) => (
+                render={ ({ handleSubmit: formHandleSubmit }: FormRenderProps) => {
+                    // Store reference for deferred cert-upload submissions.
+                    formHandleSubmitRef.current = formHandleSubmit;
+
+                    return (
                     <EmphasizedSegment
                         className="endpoint-settings-container"
                         padded="very"
@@ -220,6 +243,8 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
                                                 setCertificatePEM("");
                                                 setHasCertificate(false);
                                                 setIsCertificateModified(true);
+                                                certificatePEMRef.current = "";
+                                                isCertificateModifiedRef.current = true;
                                             } }
                                             data-componentid={ `${componentId}-clear-certificate` }
                                         >
@@ -248,9 +273,21 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
                                     variant="contained"
                                     onClick={ () => {
                                         if (isCertificateModified) {
+                                            // Certificate was already extracted; submit directly.
+                                            formHandleSubmit();
+                                        } else {
+                                            // Trigger cert extraction; defer form submission
+                                            // until handleCertificateSubmit fires.
                                             setTriggerCertUpload();
+                                            pendingSubmit.current = true;
+                                            // Fallback timeout in case no cert is staged.
+                                            setTimeout(() => {
+                                                if (pendingSubmit.current) {
+                                                    pendingSubmit.current = false;
+                                                    formHandleSubmit();
+                                                }
+                                            }, 300);
                                         }
-                                        formHandleSubmit();
                                     } }
                                     sx={ { mt: 4 } }
                                     data-componentid={ `${componentId}-update-button` }
@@ -260,7 +297,8 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
                             ) }
                         </div>
                     </EmphasizedSegment>
-                ) }
+                    );
+                } }
             />
         </Box>
     );

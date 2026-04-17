@@ -36,6 +36,9 @@ import ResourcePropertyFactory from "./resource-property-factory";
 import FlowCompletionProperties from "./steps/end/flow-completion-properties";
 import ConfirmationCodeProperties from "./steps/execution/confirmation-code-properties";
 import FederationProperties from "./steps/execution/federation-properties";
+import InFlowExtensionProperties
+    from "@wso2is/admin.flow-builder-core.v1/components/in-flow-extension-properties/in-flow-extension-properties";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import AskPasswordFlowBuilderConstants from "../../constants/ask-password-flow-builder-constants";
 
 /**
@@ -188,6 +191,19 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                         <ConfirmationCodeProperties
                             resource={ resource }
                             data-componentid="confirmation-code-properties"
+                            onChange={ onChange }
+                        />
+                        { renderElementPropertyFactory() }
+                    </>
+                );
+            } else if (resource?.data?.action?.executor?.name === ExecutionTypes.InFlowExtension) {
+                return (
+                    <>
+                        { renderElementId() }
+                        <InFlowExtensionProperties
+                            resource={ resource }
+                            flowType={ FlowTypes.INVITED_USER_REGISTRATION }
+                            data-componentid="in-flow-extension-properties"
                             onChange={ onChange }
                         />
                         { renderElementPropertyFactory() }

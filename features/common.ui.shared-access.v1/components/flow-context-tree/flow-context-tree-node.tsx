@@ -154,7 +154,7 @@ const OpChips = ({
 }): ReactElement | null => {
 
     const isLeaf: boolean = node.nodeType === NodeType.LEAF;
-    const canExpose: boolean = node.allowedOperations.includes("EXPOSE");
+    const canExpose: boolean = node.allowedOperations.includes("EXPOSE") && isLeaf;
     const canModify: boolean = node.allowedOperations.includes("MODIFY") && isLeaf && !node.readOnly;
 
     if (!canExpose && !canModify) return null;
@@ -432,8 +432,8 @@ const FlowContextTreeNode: FunctionComponent<FlowContextTreeNodeProps> = ({
                                 ? "'JetBrains Mono', monospace"
                                 : "'Inter', sans-serif",
                             fontSize: node.nodeType === NodeType.OBJECT
-                                ? 13
-                                : isNodeContainer ? 12.5 : 12,
+                                  ? 14
+                                  : isNodeContainer ? 13.5 : 13,
                             fontWeight: node.nodeType === NodeType.OBJECT
                                 ? 700
                                 : isNodeContainer ? 600 : 500,

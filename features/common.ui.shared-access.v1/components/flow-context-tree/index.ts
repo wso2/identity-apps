@@ -35,11 +35,8 @@ export { NodeType } from "./models";
 export {
     addChild,
     buildAccessConfig,
-    cascadeExposeEncrypted,
-    cascadeExposeOff,
     deleteNode,
     mapMetadataToState,
     mapMetadataToStateWithAccessConfig,
-    stabilize,
     updateNode
 } from "./utils";
