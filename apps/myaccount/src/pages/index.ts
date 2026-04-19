@@ -18,7 +18,6 @@
 
 export * from "./account-security";
 export * from "./applications";
-export * from "./consent-management";
 export * from "./errors";
 export * from "./overview";
 export * from "./personal-info";
