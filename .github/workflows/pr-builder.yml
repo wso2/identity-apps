@@ -67,11 +67,18 @@ jobs:
 
       - name: 🔪 Run Knip
         id: run-knip
-        # Runs in report-only mode (continue-on-error: true) so it surfaces dead
-        # code as PR annotations without blocking the build.
-        # Remove `continue-on-error: true` once the team is ready to enforce it.
-        continue-on-error: true
-        run: pnpm knip:ci
+        # Keep dead-code findings report-only, but fail if Knip cannot run.
+        run: |
+          set +e
+          pnpm knip:ci
+          status=$?
+          set -e
+
+          if [ "$status" -eq 1 ]; then
+            exit 0
+          fi
+
+          exit "$status"
 
   lint:
     name: ⬣ ESLint (STATIC ANALYSIS)
