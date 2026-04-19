@@ -1,0 +1,217 @@
+{
+    "$schema": "https://unpkg.com/knip@latest/schema.json",
+    "ignore": [
+        "**/dist/**",
+        "**/build/**",
+        "**/node_modules/**",
+        "**/__mocks__/**",
+        "**/coverage/**",
+        "**/*.config.{js,cjs,mjs,ts}",
+        "**/scripts/**",
+        "identity-apps-core/**"
+    ],
+    "ignoreDependencies": [
+        "babel-polyfill",
+        "react-app-polyfill",
+        "tslib",
+        "@swc/helpers"
+    ],
+    "workspaces": {
+        ".": {
+            "entry": [
+                "scripts/*.{js,ts}",
+                "babel.config.json"
+            ],
+            "project": [
+                "scripts/**/*.{js,ts}"
+            ]
+        },
+        "apps/console": {
+            "entry": [
+                "src/index.tsx",
+                "src/init/*.ts",
+                "src/workers/*.ts"
+            ],
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ],
+            "ignore": [
+                "webpack.config.ts"
+            ],
+            "webpack": {
+                "config": []
+            },
+            "ignoreDependencies": [
+                "monaco-editor-webpack-plugin",
+                "compression-webpack-plugin",
+                "copy-webpack-plugin",
+                "css-loader",
+                "eslint-webpack-plugin",
+                "fork-ts-checker-webpack-plugin",
+                "html-webpack-plugin",
+                "json-minimizer-webpack-plugin",
+                "style-loader",
+                "thread-loader",
+                "@pmmmwh/react-refresh-webpack-plugin",
+                "@svgr/webpack",
+                "react-refresh",
+                "eslint-plugin-import",
+                "eslint-plugin-jest-dom",
+                "eslint-plugin-jsonc",
+                "eslint-plugin-react",
+                "eslint-plugin-react-hooks",
+                "eslint-plugin-testing-library",
+                "@typescript-eslint/eslint-plugin",
+                "@typescript-eslint/parser"
+            ]
+        },
+        "apps/myaccount": {
+            "entry": [
+                "src/index.tsx",
+                "src/init/*.ts",
+                "src/workers/*.ts"
+            ],
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ],
+            "ignore": [
+                "webpack.config.ts"
+            ],
+            "webpack": {
+                "config": []
+            },
+            "ignoreDependencies": [
+                "compression-webpack-plugin",
+                "copy-webpack-plugin",
+                "css-loader",
+                "eslint-webpack-plugin",
+                "fork-ts-checker-webpack-plugin",
+                "html-webpack-plugin",
+                "json-minimizer-webpack-plugin",
+                "style-loader",
+                "thread-loader",
+                "@pmmmwh/react-refresh-webpack-plugin",
+                "@svgr/webpack",
+                "react-refresh",
+                "eslint-plugin-import",
+                "eslint-plugin-jest-dom",
+                "eslint-plugin-jsonc",
+                "eslint-plugin-react",
+                "eslint-plugin-react-hooks",
+                "eslint-plugin-testing-library",
+                "@typescript-eslint/eslint-plugin",
+                "@typescript-eslint/parser"
+            ]
+        },
+        "features": {
+            "entry": [
+                "index.ts"
+            ],
+            "project": [
+                "**/*.{ts,tsx}",
+                "!admin.*/**"
+            ]
+        },
+        "features/admin.*": {
+            "entry": [
+                "public-api.ts"
+            ],
+            "project": [
+                "**/*.{ts,tsx}"
+            ],
+            "ignore": [
+                "**/__tests__/**",
+                "**/*.test.{ts,tsx}",
+                "**/*.spec.{ts,tsx}"
+            ]
+        },
+        "modules/access-control": {
+            "entry": [
+                "src/index.ts"
+            ],
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ]
+        },
+        "modules/common": {
+            "entry": [
+                "src/index.ts"
+            ],
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ]
+        },
+        "modules/core": {
+            "entry": [
+                "src/index.ts"
+            ],
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ]
+        },
+        "modules/dynamic-forms": {
+            "entry": [
+                "src/index.ts"
+            ],
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ]
+        },
+        "modules/form": {
+            "entry": [
+                "src/index.ts"
+            ],
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ]
+        },
+        "modules/forms": {
+            "entry": [
+                "src/index.ts"
+            ],
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ]
+        },
+        "modules/i18n": {
+            "entry": [
+                "src/index.ts"
+            ],
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ]
+        },
+        "modules/react-components": {
+            "entry": [
+                "src/index.ts"
+            ],
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ]
+        },
+        "modules/theme": {
+            "entry": [
+                "src/index.ts"
+            ],
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ]
+        },
+        "modules/unit-testing": {
+            "entry": [
+                "src/index.ts"
+            ],
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ]
+        },
+        "modules/validation": {
+            "entry": [
+                "src/index.ts"
+            ],
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ]
+        }
+    }
+}

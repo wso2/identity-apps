@@ -21,6 +21,58 @@ env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
+  knip:
+    name: 🔪 Knip (DEAD CODE)
+    if: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ lts/* ]
+        pnpm-version: [ latest ]
+    steps:
+      - name: ⬇️ Checkout
+        id: checkout
+        uses: actions/checkout@v2.3.3
+
+      - name: 🟢 Setup node
+        id: setup-node
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: 🥡 Setup pnpm
+        id: setup-pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ matrix.pnpm-version }}
+          run_install: false
+
+      - name: 🎈 Get pnpm store directory
+        id: get-pnpm-cache-dir
+        run: |
+          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+
+      - name: 🔆 Cache pnpm modules
+        uses: actions/cache@v3
+        id: pnpm-cache
+        with:
+          path: ${{ steps.get-pnpm-cache-dir.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: 🧩 Install Dependencies
+        id: install-dependencies
+        run: pnpm install
+
+      - name: 🔪 Run Knip
+        id: run-knip
+        # Runs in report-only mode (continue-on-error: true) so it surfaces dead
+        # code as PR annotations without blocking the build.
+        # Remove `continue-on-error: true` once the team is ready to enforce it.
+        continue-on-error: true
+        run: pnpm knip:ci
+
   lint:
     name: ⬣ ESLint (STATIC ANALYSIS)
     if: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' || github.event_name == 'workflow_dispatch' }}
