@@ -45,7 +45,6 @@ export * from "./admin.organizations.v1/public-api";
 export * from "./admin.policy-administration.v1/public-api";
 export * from "./admin.private-key-jwt.v1/public-api";
 export * from "./admin.provisioning.v1/public-api";
-export * from "./admin.remote-repository-configuration.v1/public-api";
 export * from "./admin.remote-userstores.v1/public-api";
 export * from "./admin.roles.v2/public-api";
 export * from "./admin.saml2-configuration.v1/public-api";

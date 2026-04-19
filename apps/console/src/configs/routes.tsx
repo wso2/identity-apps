@@ -1789,22 +1789,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
-            category: "console:manage.features.sidePanel.categories.configurations",
-            component: lazy(() =>
-                import("@wso2is/admin.remote-repository-configuration.v1/pages/remote-repository-config")
-            ),
-            exact: true,
-            icon: {
-                icon: getSidePanelIcons().remoteFetch
-            },
-            id: "remoteFetchConfig",
-            name: "console:manage.features.sidePanel.remoteFetchConfig",
-            order: 999,
-            path: AppConstants.getPaths().get("REMOTE_REPO_CONFIG"),
-            protected: true,
-            showOnSidePanel: false
-        },
-        {
             component: lazy(() => import("@wso2is/admin.server-configurations.v1/pages/" +
                 "governance-connectors")),
             exact: true,
