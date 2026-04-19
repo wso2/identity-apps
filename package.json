@@ -39,7 +39,7 @@
         "lint:autofix": "pnpm nx run-many --target=lint:autofix --all --parallel",
         "typecheck": "pnpm nx run-many --target=typecheck --all --parallel",
         "knip": "knip --reporter compact",
-        "knip:ci": "knip --reporter github-actions --no-exit-code"
+        "knip:ci": "knip --reporter github-actions"
     },
     "dependencies": {
         "@svgr/webpack": "^6.1.2",
