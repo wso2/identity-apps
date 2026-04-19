@@ -25,7 +25,6 @@
     "@wso2is/admin.core.v1": "^2.49.74",
     "msw": "^0.36.8",
     "react": "^18.2.0",
-    "@wso2is/access-control": "^3.3.20",
     "redux-mock-store": "^1.5.4",
     "redux": "^4.0.4"
   },

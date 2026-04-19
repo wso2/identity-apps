@@ -14,9 +14,6 @@
         "@wso2is/admin.roles.v2": "^2.27.380",
         "@wso2is/admin.rules.v1": "workspace:^",
         "@wso2is/admin.users.v1": "^2.38.33",
-        "@wso2is/admin.userstores.v1": "^2.27.42",
-        "@wso2is/i18n": "^2.39.0",
-        "i18next": "^21.9.1",
         "react-redux": "^7.2.9",
         "redux": "^4.0.4"
     },
@@ -30,10 +27,8 @@
         "@svgr/rollup": "^6.2.1",
         "rollup": "^4.17.2",
         "rollup-plugin-dts": "^6.1.1",
-        "rollup-plugin-generate-package-json": "^3.2.0",
         "rollup-plugin-polyfill-node": "^0.13.0",
         "rollup-plugin-scss": "^4.0.0",
-        "rollup-plugin-styles": "^4.0.0",
         "rollup-plugin-svg": "^2.0.0",
         "typescript": "^5.1.6"
     },

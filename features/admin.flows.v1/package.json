@@ -12,14 +12,11 @@
         "@wso2is/admin.core.v1": "^2.57.1",
         "@wso2is/admin.feature-gate.v1": "workspace:^",
         "@wso2is/admin.flow-builder-core.v1": "workspace:^",
-        "@wso2is/admin.registration-flow-builder.v1": "^0.10.170",
-        "@wso2is/admin.server-configurations.v1": "^2.38.49",
         "@wso2is/react-components": "^2.10.0",
         "classnames": "^2.2.6",
         "i18next": "^21.9.1",
         "react-i18next": "^11.18.5",
-        "react-redux": "^7.2.9",
-        "redux": "^4.0.4"
+        "react-redux": "^7.2.9"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^25.0.7",
@@ -33,10 +30,8 @@
         "@types/react-redux": "^7.1.25",
         "rollup": "^4.17.2",
         "rollup-plugin-dts": "^6.1.1",
-        "rollup-plugin-generate-package-json": "^3.2.0",
         "rollup-plugin-polyfill-node": "^0.13.0",
         "rollup-plugin-scss": "^4.0.0",
-        "rollup-plugin-styles": "^4.0.0",
         "rollup-plugin-svg": "^2.0.0",
         "typescript": "^5.1.6"
     },
