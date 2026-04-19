@@ -8,7 +8,8 @@
         "**/coverage/**",
         "**/*.config.{js,cjs,mjs,ts}",
         "identity-apps-core/**",
-        "apps/console/src/extensions/i18n/**"
+        "apps/console/src/extensions/i18n/**",
+        "modules/i18n/src/translations/**"
     ],
     "ignoreDependencies": [
         "babel-polyfill",
