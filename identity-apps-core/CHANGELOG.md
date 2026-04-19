@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 4.0.15
+
+### Patch Changes
+
+- [#10145](https://github.com/wso2/identity-apps/pull/10145) [`a9dcadc9a41c17aabd688cda233a45b12539f70c`](https://github.com/wso2/identity-apps/commit/a9dcadc9a41c17aabd688cda233a45b12539f70c) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a dynamic self-registration portal enabled configuration check for displaying the registration button when the login flow does not include IDF or BasicAuth.
+
 ## 4.0.14
 
 ### Patch Changes
