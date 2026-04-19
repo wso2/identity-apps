@@ -7,8 +7,8 @@
         "**/__mocks__/**",
         "**/coverage/**",
         "**/*.config.{js,cjs,mjs,ts}",
-        "**/scripts/**",
-        "identity-apps-core/**"
+        "identity-apps-core/**",
+        "apps/console/src/extensions/i18n/**"
     ],
     "ignoreDependencies": [
         "babel-polyfill",
