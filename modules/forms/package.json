@@ -31,6 +31,7 @@
     },
     "dependencies": {
         "@wso2is/core": "^2.7.0",
+        "@wso2is/react-components": "workspace:^",
         "classnames": "^2.2.6",
         "lodash-es": "^4.17.21",
         "semantic-ui-react": "^2.1.3"
