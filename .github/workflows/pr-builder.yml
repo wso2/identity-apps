@@ -74,10 +74,6 @@ jobs:
           status=$?
           set -e
 
-          if [ "$status" -eq 1 ]; then
-            exit 0
-          fi
-
           exit "$status"
 
   lint:
