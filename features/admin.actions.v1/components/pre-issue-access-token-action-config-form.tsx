@@ -27,8 +27,8 @@ import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import { RuleExecuteCollectionWithoutIdInterface, RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { RulesProvider } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { IdentifiableComponentInterface,
-    HttpErrorResponseDataInterface
+import { HttpErrorResponseDataInterface,
+    IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { FinalForm, FormRenderProps } from "@wso2is/form";
 import { EmphasizedSegment } from "@wso2is/react-components";
@@ -110,7 +110,10 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
     const { t } = useTranslation();
 
     const handleSuccess: (operation: string) => void = useHandleSuccess();
-    const handleError: (error: AxiosError<HttpErrorResponseDataInterface>, operation: string) => void = useHandleError();
+    const handleError: (
+        error: AxiosError<HttpErrorResponseDataInterface>,
+        operation: string
+    ) => void = useHandleError();
 
     const {
         mutate: mutateActions
