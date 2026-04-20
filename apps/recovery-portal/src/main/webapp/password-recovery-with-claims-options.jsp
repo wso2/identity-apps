@@ -256,6 +256,7 @@
                                 value="<%=Encode.forHtmlAttribute(tenantDomain) %>"/>
                             <input type="hidden" name="recoveryCode" value="<%=recoveryCode %>"/>
                             <input type="hidden" name="isPasswordRecoveryWithClaimsNotify" value="true">
+                            <input type="hidden" name="sp" value="<%=Encode.forHtmlAttribute(request.getParameter("sp"))%>"/>
                         </div>
                         <div class="ui divider hidden"></div>
                         <div class="align-right buttons">

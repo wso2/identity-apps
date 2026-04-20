@@ -127,12 +127,21 @@
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "provide.mandatory.details")%>
                 </h3>
 
-                <% if (request.getParameter("errorMessage") != null) { %>
+                <% 
+                    String errorMessageParam = request.getParameter("errorMessage");
+                    if (errorMessageParam != null) { 
+                        String localizedErrorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, errorMessageParam);
+                        // Only display if the key was found in the resource bundle
+                        if (!errorMessageParam.equalsIgnoreCase(localizedErrorMessage)) {
+                %>
                     <div class="ui visible negative message" id="error-msg"
-                         data-testid="request-claims-page-error-message">
-                        <%= AuthenticationEndpointUtil.i18n(resourceBundle, request.getParameter("errorMessage")) %>
+                        data-testid="request-claims-page-error-message">
+                        <%=Encode.forHtmlContent(localizedErrorMessage)%>
                     </div>
-                <% }%>
+                <%
+                        }
+                    } 
+                %>
 
                 <form class="ui large form" action="<%=commonauthURL%>" method="post" id="claimForm">
                     <div class="ui divider hidden"></div>

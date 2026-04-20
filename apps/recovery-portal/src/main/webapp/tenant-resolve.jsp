@@ -22,6 +22,9 @@
 
 <%
     String tenantDomain;
+    String spAppName = request.getParameter("sp");
+    String spAppId = request.getParameter("spId");
+
     if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
         tenantDomain = IdentityTenantUtil.getTenantDomainFromContext();
     } else {
@@ -36,4 +39,10 @@
             tenantDomain = tenantDomainInURL;
         }
     }
+
+    // Ensure we always have a fallback for backend validation
+    if (StringUtils.isBlank(tenantDomain)) {
+        tenantDomain = "carbon.super";
+    }
+
 %>
