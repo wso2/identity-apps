@@ -34,6 +34,7 @@ import {
     AlertLevels,
     HttpErrorResponseDataInterface,
     LoadableComponentInterface,
+    ProfileInfoInterface,
     SBACInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
@@ -174,7 +175,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
     const [ loading, setLoading ] = useState(false);
 
-    const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
+    const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const isUpdatingSharedProfilesEnabled: boolean = !featureConfig?.users?.disabledFeatures?.includes(
         UserManagementConstants.FEATURE_DICTIONARY.get("USER_SHARED_PROFILES")
     );
@@ -538,7 +539,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
                     || !hasUsersDeletePermissions
                     || readOnlyUserStores?.includes(userStore.toString())
-                    || UserManagementUtils.isAuthenticatedUser(authenticatedUser, user?.userName);
+                    || UserManagementUtils.isAuthenticatedUser(profileInfo.userName, user?.userName);
             },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, user: UserBasicInterface): void => {

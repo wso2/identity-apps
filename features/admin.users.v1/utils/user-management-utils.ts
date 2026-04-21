@@ -59,9 +59,9 @@ export class UserManagementUtils {
     public static isAuthenticatedUser = (authenticatedUser: string, username: string): boolean => {
         let authenticatedUsername: string = authenticatedUser;
 
-        if (authenticatedUsername.split("@").length > 2) {
+        if (authenticatedUsername?.split("@").length > 2) {
             // If the username contains 2 @ symbols, it contains the tenant domain as well.
-            authenticatedUsername = authenticatedUser.split("@").slice(0,2).join("@");
+            authenticatedUsername = authenticatedUser?.split("@").slice(0,2).join("@");
         }
 
         return getUserNameWithoutDomain(username) === authenticatedUsername;
