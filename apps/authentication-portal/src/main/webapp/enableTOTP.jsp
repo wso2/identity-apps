@@ -46,7 +46,7 @@
         if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
             String error = Encode.forHtmlAttribute(request.getParameter(Constants.AUTH_FAILURE_MSG));
 
-            if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
+            if (error.equalsIgnoreCase("authentication.fail.message")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
             } else if (!error.equalsIgnoreCase(AuthenticationEndpointUtil.i18n(resourceBundle, error))) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, error);

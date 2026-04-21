@@ -17,6 +17,7 @@
   --%>
 
 <%@ page import="java.io.File" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
@@ -73,11 +74,11 @@
                 </h3>
 
                 <div class="segment-form">
-                    <% if (errorCode != "") { %>
-                    <div class="ui visible negative message" lockedReasonid="error-msg" data-testid="login-page-error-message">
-                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, errorCode)%>
-                    </div>
-                <% } %>
+                    <% if (!StringUtils.isEmpty(errorCode)) { %>
+                        <div class="ui visible negative message" lockedReasonid="error-msg" data-testid="login-page-error-message">
+                            <%=Encode.forHtmlContent(errorCode)%>
+                        </div>
+                    <% } %>
                     <form class="ui large form" action="../oauth2/device" method="post" id="loginForm">
                         <div class="field">
                             <div class="ui fluid left icon input">
