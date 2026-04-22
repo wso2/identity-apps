@@ -314,8 +314,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 },
                 {
-                    component: lazy(() => import(
-                        "@wso2is/admin.issuer-usage-scope.v1/pages/issuer-usage-scope-configuration")),
+                    component: lazy(() => import("@wso2is/admin.issuer-usage-scope.v1/pages/issuer-usage-scope-configuration")),
                     exact: true,
                     id: "issuerUsageScopeConfiguration",
                     name: "pages:issuerUsageScope.title",
@@ -324,12 +323,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 },
                 {
-                    component: lazy(() =>
-                        import(
-                            "@wso2is/admin.server-configurations.v1/" +
-                            "pages/connector-edit-page"
-                        )
-                    ),
+                    component: lazy(() => import("@wso2is/admin.server-configurations.v1/pages/connector-edit-page")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
@@ -346,12 +340,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 },
                 {
-                    component: lazy(() =>
-                        import(
-                            "@wso2is/admin.server-configurations.v1/" +
-                            "pages/connector-edit-page"
-                        )
-                    ),
+                    component: lazy(() => import("@wso2is/admin.server-configurations.v1/pages/connector-edit-page")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
@@ -695,8 +684,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 },
                 {
-                    component: lazy(() => import("@wso2is/admin.claims.v1/pages/" +
-                        "attribute-verification-settings")),
+                    component: lazy(() => import("@wso2is/admin.claims.v1/pages/attribute-verification-settings")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
@@ -796,10 +784,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 },
                 {
-                    component: lazy(() => {
-                        // eslint-disable-next-line max-len
-                        return import("@wso2is/admin.organization-discovery.v1/pages/edit-organization-discovery-domains-page");
-                    }),
+                    component: lazy(() => import("@wso2is/admin.organization-discovery.v1/pages/edit-organization-discovery-domains-page")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().organization
@@ -811,10 +796,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 }
             ],
-            component: lazy(() => {
-                return import("@wso2is/admin.organization-discovery.v1/pages/" +
-                    "organization-discovery-domains-page");
-            }),
+            component: lazy(() => import("@wso2is/admin.organization-discovery.v1/pages/organization-discovery-domains-page")),
             exact: true,
             icon: {
                 icon: <EnvelopeMagnifyingGlassIcon />
@@ -843,9 +825,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:develop.sidePanel.categories.branding",
-            component: lazy(() =>
-                import("@wso2is/admin.email-management.v1/" + "pages/email-customization")
-            ),
+            component: lazy(() => import("@wso2is/admin.email-management.v1/pages/email-customization")),
             exact: true,
             icon: { icon: <EnvelopeIcon fill="black" className="icon" /> },
             id: "emailTemplates",
@@ -874,9 +854,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:develop.sidePanel.categories.branding",
-            component: lazy(() =>
-                import("@wso2is/admin.email-and-sms.v1/" + "pages/email-and-sms")
-            ),
+            component: lazy(() => import("@wso2is/admin.email-and-sms.v1/pages/email-and-sms")),
             exact: true,
             icon: { icon: <EnvelopeGearIcon fill="black" className="icon" /> },
             id: "notificationChannels",
@@ -890,9 +868,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:develop.sidePanel.categories.branding",
-            component: lazy(() =>
-                import("@wso2is/admin.email-providers.v1" + "/pages/email-providers")
-            ),
+            component: lazy(() => import("@wso2is/admin.email-providers.v1/pages/email-providers")),
             exact: true,
             icon: {
                 icon: <EnvelopeGearIcon fill="black" className="icon" />
@@ -906,9 +882,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:develop.sidePanel.categories.smsProvider",
-            component: lazy(() =>
-                import("@wso2is/admin.sms-providers.v1" + "/pages/sms-providers")
-            ),
+            component: lazy(() => import("@wso2is/admin.sms-providers.v1/pages/sms-providers")),
             exact: true,
             icon: {
                 icon: getSidePanelIcons().sms
@@ -940,12 +914,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             category: "extensions:manage.sidePanel.categories.AccountManagement",
             children: [
                 {
-                    component: lazy(() =>
-                        import(
-                            "@wso2is/admin.server-configurations.v1/" +
-                            "pages/connector-edit-page"
-                        )
-                    ),
+                    component: lazy(() => import("@wso2is/admin.server-configurations.v1/pages/connector-edit-page")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
@@ -960,12 +929,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 },
                 {
-                    component: lazy(() =>
-                        import(
-                            "@wso2is/admin.server-configurations.v1/" +
-                            "pages/connector-edit-page"
-                        )
-                    ),
+                    component: lazy(() => import("@wso2is/admin.server-configurations.v1/pages/connector-edit-page")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
@@ -981,12 +945,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 },
                 {
-                    component: lazy(() =>
-                        import(
-                            "@wso2is/admin.server-configurations.v1/" +
-                            "pages/connector-edit-page"
-                        )
-                    ),
+                    component: lazy(() => import("@wso2is/admin.server-configurations.v1/pages/connector-edit-page")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
@@ -1002,9 +961,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 },
                 {
-                    component: lazy(() =>
-                        import("@wso2is/admin.registration-flow-builder.v1/pages/registration-flow-builder-page")
-                    ),
+                    component: lazy(() => import("@wso2is/admin.registration-flow-builder.v1/pages/registration-flow-builder-page")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
@@ -1015,11 +972,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 }
             ],
-            component: lazy(() =>
-                import(
-                    "@wso2is/admin.server-configurations.v1/pages/connector-listing-page"
-                )
-            ),
+            component: lazy(() => import("@wso2is/admin.server-configurations.v1/pages/connector-listing-page")),
             exact: true,
             icon: {
                 icon: getSidePanelIcons().connectors[
@@ -1117,12 +1070,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             category: "extensions:manage.sidePanel.categories.AccountManagement",
             children: [
                 {
-                    component: lazy(() =>
-                        import(
-                            "@wso2is/admin.server-configurations.v1/" +
-                            "pages/connector-edit-page"
-                        )
-                    ),
+                    component: lazy(() => import("@wso2is/admin.server-configurations.v1/pages/connector-edit-page")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
@@ -1353,10 +1301,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 },
                 {
                     component: lazy(() =>
-                        import(
-                            "@wso2is/admin.approval-workflows.v1/pages/" +
-                            "approval-workflow-create-page"
-                        )
+                        import("@wso2is/admin.approval-workflows.v1/pages/approval-workflow-create-page")
                     ),
                     exact: true,
                     icon: {
@@ -1455,8 +1400,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             children: [
                 {
-                    component: lazy(() => import("@wso2is/admin.console-settings.v1/pages/" +
-                        "console-roles-edit-page")),
+                    component: lazy(() => import("@wso2is/admin.console-settings.v1/pages/console-roles-edit-page")),
                     exact: false,
                     icon: { icon: getSidePanelIcons().childIcon },
                     id: "consoleRolesEdit",
@@ -1466,10 +1410,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 },
                 {
-                    component: lazy(() => {
-                        return import("@wso2is/admin.console-settings.v1/pages/" +
-                            "console-administrator-edit-page");
-                    }),
+                    component: lazy(() => import("@wso2is/admin.console-settings.v1/pages/console-administrator-edit-page")),
                     exact: false,
                     icon: { icon: getSidePanelIcons().childIcon },
                     id: "consoleAdministratorsEdit",
@@ -1789,8 +1730,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
-            component: lazy(() => import("@wso2is/admin.server-configurations.v1/pages/" +
-                "governance-connectors")),
+            component: lazy(() => import("@wso2is/admin.server-configurations.v1/pages/governance-connectors")),
             exact: true,
             icon: null,
             id: "governanceConnectors",
@@ -1801,8 +1741,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         },
         {
-            component: lazy(() => import("@wso2is/admin.server-configurations.v1/pages/" +
-                "multi-attribute-login-edit")),
+            component: lazy(() => import("@wso2is/admin.server-configurations.v1/pages/multi-attribute-login-edit")),
             exact: true,
             icon: null,
             id: "multiAttributeLogin",
