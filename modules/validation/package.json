@@ -41,5 +41,16 @@
         "axios": "^1.7.0",
         "fastestsmallesttextencoderdecoder": "^1.0.22",
         "joi": "^17.2.0"
+    },
+    "nx": {
+        "name": "validation",
+        "targets": {
+            "build": {
+                "outputs": ["{workspaceRoot}/modules/validation/dist"]
+            },
+            "test-coverage": {
+                "command": "pnpm test -- --coverage --collect-coverage"
+            }
+        }
     }
 }

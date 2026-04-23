@@ -117,5 +117,16 @@
         "eslint": "9.38.0",
         "rimraf": "^3.0.2",
         "typescript": "^5.1.6"
+    },
+    "nx": {
+        "name": "core",
+        "targets": {
+            "build": {
+                "outputs": ["{workspaceRoot}/modules/core/dist"]
+            },
+            "test-coverage": {
+                "command": "pnpm test:coverage"
+            }
+        }
     }
 }

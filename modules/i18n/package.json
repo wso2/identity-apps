@@ -53,5 +53,17 @@
         "rimraf": "^3.0.2",
         "ts-jest": "^29.1.2",
         "typescript": "^5.1.6"
+    },
+    "nx": {
+        "name": "i18n",
+        "implicitDependencies": ["core"],
+        "targets": {
+            "build": {
+                "outputs": ["{workspaceRoot}/modules/i18n/dist"]
+            },
+            "test-coverage": {
+                "command": "pnpm test:coverage"
+            }
+        }
     }
 }
