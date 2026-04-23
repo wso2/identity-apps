@@ -446,6 +446,55 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        policyConsentManagement: {
+            dangerZones: {
+                revoke: {
+                    actionTitle: "Revoke",
+                    header: "Revoke Policy Consent",
+                    subheader: "This action will revoke your consent for this policy. You may be asked to re-consent " +
+                        "the next time you access the service."
+                }
+            },
+            modals: {
+                revokeModal: {
+                    heading: "Revoke consent for {{policyName}}",
+                    message: "This will revoke your consent for this policy. You may be asked to re-consent the " +
+                        "next time you access the service. Are you sure you want to continue?"
+                }
+            },
+            notifications: {
+                fetch: {
+                    error: {
+                        description: "An error occurred while retrieving your policy consents.",
+                        message: "Retrieval Failed"
+                    },
+                    genericError: {
+                        description: "An error occurred while retrieving your policy consents.",
+                        message: "Retrieval Failed"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
+                revoke: {
+                    error: {
+                        description: "An error occurred while revoking the policy consent.",
+                        message: "Revoke Failed"
+                    },
+                    genericError: {
+                        description: "An error occurred while revoking the policy consent.",
+                        message: "Revoke Failed"
+                    },
+                    success: {
+                        description: "The policy consent has been revoked successfully.",
+                        message: "Consent Revoked"
+                    }
+                }
+            },
+            policyUrlLabel: "View Policy",
+            versionLabel: "Version {{version}}"
+        },
         cookieConsent: {
             confirmButton: "Got It",
             content: "We use cookies to ensure that you get the best overall experience. These cookies are used to " +
@@ -1802,6 +1851,15 @@ export const myAccount: MyAccountNS = {
             placeholders: {
                 emptyConsentList: {
                     heading: "You have not granted consent to any application"
+                }
+            }
+        },
+        policyConsentManagement: {
+            description: "Review the policies you have accepted.",
+            heading: "Policy Consents",
+            placeholders: {
+                emptyConsentList: {
+                    heading: "You have not accepted any policy consents"
                 }
             }
         },

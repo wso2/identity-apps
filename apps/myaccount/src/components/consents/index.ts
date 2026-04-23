@@ -17,3 +17,4 @@
  */
 
 export * from "./consents";
+export * from "./policy-consents";

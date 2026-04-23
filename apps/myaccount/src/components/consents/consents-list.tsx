@@ -80,127 +80,125 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
 
     return (
         <>
-            <List divided verticalAlign="middle" className="main-content-inner" data-testid={ testId }>
-                {
-                    (consentedApps && consentedApps.length && consentedApps.length > 0)
-                        ? consentedApps.map((consent: ConsentInterface, index: number) => {
-                            return (
-                                <List.Item className="inner-list-item" key={ consent.consentReceiptID }>
-                                    <Grid padded>
-                                        <Grid.Row columns={ 2 }>
-                                            <Grid.Column width={ 11 } className="first-column">
-                                                <List.Content verticalAlign="middle">
-                                                    <GenericIcon
-                                                        icon={ ConsentedAppIcon }
-                                                        size="micro"
-                                                        bordered
-                                                        defaultIcon
-                                                        relaxed
-                                                        rounded
-                                                        spaced="right"
-                                                        square
-                                                        floated="left"
-                                                    />
-                                                    <List.Header>{ consent.spDisplayName }</List.Header>
-                                                    <List.Description>
-                                                        <p className="small-text">
-                                                            <span
-                                                                className={ `active-label ${ resolveStateClassname(
-                                                                    consent.state) }` }
-                                                            />
-                                                            { toSentenceCase(consent.state) }
-                                                        </p>
-                                                    </List.Description>
-                                                </List.Content>
-                                            </Grid.Column>
-                                            {
-                                                consentListActiveIndexes
-                                                    ? (
-                                                        <Grid.Column width={ 5 } className="last-column">
-                                                            <List.Content floated="right">
-                                                                <Media lessThan="computer">
-                                                                    <Button
-                                                                        className="borderless-button"
-                                                                        basic={ true }
-                                                                        onClick={
-                                                                            () => onConsentDetailClick(
-                                                                                index, consent.consentReceiptID
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        <Icon
-                                                                            name={
-                                                                                consentListActiveIndexes.includes(index)
-                                                                                    ? "angle up"
-                                                                                    : "angle down"
-                                                                            }
-                                                                        />
-                                                                    </Button>
-                                                                </Media>
-                                                                <Media greaterThanOrEqual="computer">
-                                                                    <Button
-                                                                        icon
-                                                                        basic
-                                                                        labelPosition="right"
-                                                                        className="show-more-button"
-                                                                        size="mini"
-                                                                        data-testid={
-                                                                            `${ testId }-` +
-                                                                            `${ consent.spDisplayName }` +
-                                                                            "-app-consent-detail-button"
-                                                                        }
-                                                                        onClick={
-                                                                            () => onConsentDetailClick(
-                                                                                index, consent.consentReceiptID
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        {
-                                                                            consentListActiveIndexes.includes(index)
-                                                                                ? (
-                                                                                    <>
-                                                                                        { t("common:showLess") }
-                                                                                        <Icon
-                                                                                            name="arrow down"
-                                                                                            flipped="vertically"
-                                                                                        />
-                                                                                    </>
-                                                                                )
-                                                                                : (
-                                                                                    <>
-                                                                                        { t("common:showMore") }
-                                                                                        <Icon name="arrow down"/>
-                                                                                    </>
-                                                                                )
-                                                                        }
-                                                                    </Button>
-                                                                </Media>
-                                                            </List.Content>
-                                                        </Grid.Column>
-                                                    ) : null
-                                            }
-                                        </Grid.Row>
+            {
+                (consentedApps && consentedApps.length && consentedApps.length > 0)
+                    ? consentedApps.map((consent: ConsentInterface, index: number) => {
+                        return (
+                            <List.Item className="inner-list-item" key={ consent.consentReceiptID }>
+                                <Grid padded>
+                                    <Grid.Row columns={ 2 }>
+                                        <Grid.Column width={ 11 } className="first-column">
+                                            <List.Content verticalAlign="middle">
+                                                <GenericIcon
+                                                    icon={ ConsentedAppIcon }
+                                                    size="micro"
+                                                    bordered
+                                                    defaultIcon
+                                                    relaxed
+                                                    rounded
+                                                    spaced="right"
+                                                    square
+                                                    floated="left"
+                                                />
+                                                <List.Header>{ consent.spDisplayName }</List.Header>
+                                                <List.Description>
+                                                    <p className="small-text">
+                                                        <span
+                                                            className={ `active-label ${ resolveStateClassname(
+                                                                consent.state) }` }
+                                                        />
+                                                        { toSentenceCase(consent.state) }
+                                                    </p>
+                                                </List.Description>
+                                            </List.Content>
+                                        </Grid.Column>
                                         {
-                                            consentListActiveIndexes && consentListActiveIndexes.includes(index)
+                                            consentListActiveIndexes
                                                 ? (
-                                                    <AppConsentEdit
-                                                        data-testid={ `${testId}-app-consent-edit` }
-                                                        editingConsent={ consent }
-                                                        onAppConsentRevoke={ onAppConsentRevoke }
-                                                        onClaimUpdate={ onClaimUpdate }
-                                                        onPIIClaimToggle={ onPIIClaimToggle }
-                                                        acceptedPIIClaimList={ acceptedPIIClaimList }
-                                                        deniedPIIClaimList={ deniedPIIClaimList }
-                                                    />
+                                                    <Grid.Column width={ 5 } className="last-column">
+                                                        <List.Content floated="right">
+                                                            <Media lessThan="computer">
+                                                                <Button
+                                                                    className="borderless-button"
+                                                                    basic={ true }
+                                                                    onClick={
+                                                                        () => onConsentDetailClick(
+                                                                            index, consent.consentReceiptID
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <Icon
+                                                                        name={
+                                                                            consentListActiveIndexes.includes(index)
+                                                                                ? "angle up"
+                                                                                : "angle down"
+                                                                        }
+                                                                    />
+                                                                </Button>
+                                                            </Media>
+                                                            <Media greaterThanOrEqual="computer">
+                                                                <Button
+                                                                    icon
+                                                                    basic
+                                                                    labelPosition="right"
+                                                                    className="show-more-button"
+                                                                    size="mini"
+                                                                    data-testid={
+                                                                        `${ testId }-` +
+                                                                        `${ consent.spDisplayName }` +
+                                                                        "-app-consent-detail-button"
+                                                                    }
+                                                                    onClick={
+                                                                        () => onConsentDetailClick(
+                                                                            index, consent.consentReceiptID
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    {
+                                                                        consentListActiveIndexes.includes(index)
+                                                                            ? (
+                                                                                <>
+                                                                                    { t("common:showLess") }
+                                                                                    <Icon
+                                                                                        name="arrow down"
+                                                                                        flipped="vertically"
+                                                                                    />
+                                                                                </>
+                                                                            )
+                                                                            : (
+                                                                                <>
+                                                                                    { t("common:showMore") }
+                                                                                    <Icon name="arrow down"/>
+                                                                                </>
+                                                                            )
+                                                                    }
+                                                                </Button>
+                                                            </Media>
+                                                        </List.Content>
+                                                    </Grid.Column>
                                                 ) : null
                                         }
-                                    </Grid>
-                                </List.Item>
-                            );
-                        })
-                        : null
-                }
-            </List>
+                                    </Grid.Row>
+                                    {
+                                        consentListActiveIndexes && consentListActiveIndexes.includes(index)
+                                            ? (
+                                                <AppConsentEdit
+                                                    data-testid={ `${testId}-app-consent-edit` }
+                                                    editingConsent={ consent }
+                                                    onAppConsentRevoke={ onAppConsentRevoke }
+                                                    onClaimUpdate={ onClaimUpdate }
+                                                    onPIIClaimToggle={ onPIIClaimToggle }
+                                                    acceptedPIIClaimList={ acceptedPIIClaimList }
+                                                    deniedPIIClaimList={ deniedPIIClaimList }
+                                                />
+                                            ) : null
+                                    }
+                                </Grid>
+                            </List.Item>
+                        );
+                    })
+                    : null
+            }
         </>
     );
 };

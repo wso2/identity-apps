@@ -510,5 +510,21 @@
                 }
             }
         ]
+    },
+    {
+        "resourceType": "ELEMENT",
+        "category": "FIELD",
+        "type": "POLICY",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Policy Consent",
+            "image": "assets/images/icons/password-policies.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "description": "By continuing, you agree to the following policies.",
+            "policies": []
+        }
     }
 ]

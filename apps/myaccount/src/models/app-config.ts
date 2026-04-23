@@ -124,6 +124,14 @@ export interface ServiceResourceEndpointsInterface {
      * from server configurations.
      * @see fetchHomeRealmIdentifiers to see the usages.
      */
+    /**
+     * Endpoints for the Consent Management v2.0 API.
+     */
+    consentMgtV2: {
+        consents: string;
+        purposes: string;
+    };
+
     homeRealmIdentifiers: string;
 }
 

@@ -71,6 +71,7 @@ import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-st
 import { getValidationServiceEndpoints } from "@wso2is/admin.validation.v1/configs";
 import { getVCTemplateEndpoints } from "@wso2is/admin.verifiable-credentials.v1/configs/endpoints";
 import { getWebhooksResourceEndpoints } from "@wso2is/admin.webhooks.v1/configs/endpoints";
+import { getConsentMgtResourceEndpoints } from "@wso2is/common.consents.v1/configs/endpoints";
 import { getApprovalsResourceEndpoints } from "@wso2is/common.workflow-approvals.v1";
 import {
     I18nModuleConstants,
@@ -305,7 +306,8 @@ export class Config {
                 I18nConstants.FLOWS_NAMESPACE,
                 I18nConstants.COMMON_USERS_NAMESPACE,
                 I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE,
-                I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE
+                I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE,
+                I18nConstants.CONSENTS_NAMESPACE
             ],
             preload: []
         };
@@ -342,6 +344,7 @@ export class Config {
             ...getApplicationsResourceEndpoints(this.resolveServerHost()),
             ...getApprovalsResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getBrandingResourceEndpoints(this.resolveServerHost()),
+            ...getConsentMgtResourceEndpoints(this.resolveServerHost()),
             ...getClaimResourceEndpoints(this.resolveServerHostFromConfig(), this.resolveServerHost()),
             ...getCertificatesResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getIDVPResourceEndpoints(this.resolveServerHost()),

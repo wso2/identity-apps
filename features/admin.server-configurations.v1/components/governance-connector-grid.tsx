@@ -222,6 +222,10 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                 return (
                     <ProgressFlowIcon className="icon" />
                 );
+            case "policyConsents":
+                return (
+                    <UserDocumentIcon className="icon" />
+                );
             default:
                 return <GearIcon className="icon" />;
         }

@@ -379,6 +379,27 @@ export interface MyAccountNS {
                 updateConsentedClaims: Notification;
             };
         };
+        policyConsentManagement: {
+            dangerZones: {
+                revoke: {
+                    actionTitle: string;
+                    header: string;
+                    subheader: string;
+                };
+            };
+            modals: {
+                revokeModal: {
+                    heading: string;
+                    message: string;
+                };
+            };
+            notifications: {
+                fetch: Notification;
+                revoke: Notification;
+            };
+            policyUrlLabel: string;
+            versionLabel: string;
+        };
         footer: {
             copyright: string;
         };
@@ -1096,6 +1117,15 @@ export interface MyAccountNS {
             actionTitles: {
                 empty: string;
             };
+            description: string;
+            heading: string;
+            placeholders: {
+                emptyConsentList: {
+                    heading: string;
+                };
+            };
+        };
+        policyConsentManagement: {
             description: string;
             heading: string;
             placeholders: {

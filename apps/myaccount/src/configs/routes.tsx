@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { DocumentCheckIcon, HomeIcon, ShieldCheckIcon, TilesIcon, UserDocumentIcon } from "@oxygen-ui/react-icons";
+import { CheckIcon, DocumentCheckIcon, HomeIcon, ShieldCheckIcon, TilesIcon, UserDocumentIcon } from "@oxygen-ui/react-icons";
 import { RouteInterface } from "@wso2is/core/models";
 import React,{ FunctionComponent, lazy } from "react";
 import { AppConstants } from "../constants";
@@ -156,6 +156,16 @@ export const getDashboardLayoutRoutes = (): RouteInterface[] => {
             id: "security",
             name: "common:security",
             path: AppConstants.getPaths().get("SECURITY"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            component: lazy(() => import("../pages/consents")),
+            exact: true,
+            icon: <CheckIcon fill="black" />,
+            id: "consents",
+            name: "common:consents",
+            path: AppConstants.getPaths().get("CONSENTS"),
             protected: true,
             showOnSidePanel: true
         },

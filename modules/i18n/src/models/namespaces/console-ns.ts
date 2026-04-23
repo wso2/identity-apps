@@ -2535,6 +2535,10 @@ export interface ConsoleNS {
                 subTitle: string;
                 alternateSubTitle: string;
             };
+            consents: {
+                title: string;
+                description: string;
+            };
             applicationsEdit: {
                 backButton: string;
                 title: string;

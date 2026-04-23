@@ -437,6 +437,56 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        "policyConsentManagement": {
+            "dangerZones": {
+                "revoke": {
+                    "actionTitle": "Revoke",
+                    "header": "Revoke Policy Consent",
+                    "subheader": "This action will revoke your consent for this policy. You may be asked to re-consent " +
+                        "the next time you access the service."
+                }
+            },
+            "modals": {
+                "revokeModal": {
+                    "heading": "Revoke consent for {{policyName}}",
+                    "message": "This will revoke your consent for this policy. You may be asked to re-consent the " +
+                        "next time you access the service. Are you sure you want to continue?"
+                }
+            },
+            "notifications": {
+                "fetch": {
+                    "error": {
+                        "description": "An error occurred while retrieving your policy consents.",
+                        "message": "Retrieval Failed"
+                    },
+                    "genericError": {
+                        "description": "An error occurred while retrieving your policy consents.",
+                        "message": "Retrieval Failed"
+                    },
+                    "success": {
+                        "description": "",
+                        "message": ""
+                    }
+                },
+                "revoke": {
+                    "error": {
+                        "description": "An error occurred while revoking the policy consent.",
+                        "message": "Revoke Failed"
+                    },
+                    "genericError": {
+                        "description": "An error occurred while revoking the policy consent.",
+                        "message": "Revoke Failed"
+                    },
+                    "success": {
+                        "description": "The policy consent has been revoked successfully.",
+                        "message": "Consent Revoked"
+                    }
+                }
+            },
+            "policyUrlLabel": "View Policy",
+            "versionLabel": "Version {{version}}"
+        },
+        
         "cookieConsent": {
             "confirmButton": "わかった",
             "content": "Cookieを使用して、最高の全体的な体験を確実に得ることができます。これらのCookieは、スムーズでパーソナライズされたサービスを提供しながら、途切れない連続セッションを維持するために使用されます。Cookieの使用方法の詳細については、<1> Cookieポリシーを参照してください。"
@@ -1746,6 +1796,15 @@ export const myAccount: MyAccountNS = {
             "placeholders": {
                 "emptyConsentList": {
                     "heading": "お客様は、アプリケーションに同意を与えていません"
+                }
+            }
+        },
+        "policyConsentManagement": {
+            "description": "Review the policies you have accepted.",
+            "heading": "Policy Consents",
+            "placeholders": {
+                "emptyConsentList": {
+                    "heading": "You have not accepted any policy consents"
                 }
             }
         },

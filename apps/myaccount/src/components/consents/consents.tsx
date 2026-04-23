@@ -22,8 +22,9 @@ import flatten from "lodash-es/flatten";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Message, Modal } from "semantic-ui-react";
+import { Grid, List, Message, Modal } from "semantic-ui-react";
 import { AppConsentList } from "./consents-list";
+import { PolicyConsent } from "../policy-consent";
 import {
     fetchAllPurposes,
     fetchConsentReceipt,
@@ -76,6 +77,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     const [ consentListActiveIndexes, setConsentListActiveIndexes ] = useState([]);
     const [ deniedPIIClaimList, setDeniedPIIClaimList ] = useState<Set<PIICategoryClaimToggleItem>>(new Set());
     const [ acceptedPIIClaimList, setAcceptedPIIClaimList ] = useState<Set<PIICategoryClaimToggleItem>>(new Set());
+
     const userName: string = useSelector((state: AppState) => state?.authenticationInformation?.profileInfo.userName);
     const { t } = useTranslation();
     const endUserSession: () => Promise<boolean> = useEndUserSession();
@@ -99,7 +101,8 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
             const consentedApps: ConsentInterface[] = apps.filter(({ spDisplayName }: {
                 spDisplayName: string
             }) =>
-                spDisplayName !== ConsentConstants.SERVICE_DISPLAY_NAME);
+                spDisplayName !== ConsentConstants.SERVICE_DISPLAY_NAME
+                && spDisplayName !== ConsentConstants.DEFAULT_APP_NAME_V2);
 
             setConsentedApps(consentedApps);
         } catch (error) {
@@ -168,6 +171,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
             await getAllPurposesDetails();
         }() );
     }, [ userName ]);
+
 
     /**
      * Populates the PII claim list to state hooks.
@@ -779,6 +783,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         );
     };
 
+
     return (
         <>
             <SettingsSection
@@ -792,18 +797,29 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 }
                 showActionBar={ !(consentedApps && consentedApps.length && consentedApps.length > 0) }
             >
-                <AppConsentList
-                    data-testid={ `${testId}-list` }
-                    consentedApps={ consentedApps }
-                    onClaimUpdate={ handleClaimUpdate }
-                    onAppConsentRevoke={ handleAppConsentRevoke }
-                    consentListActiveIndexes={ consentListActiveIndexes }
-                    onConsentDetailClick={ handleConsentDetailClick }
-                    onPIIClaimToggle={ piiClaimToggleHandler }
-                    deniedPIIClaimList={ deniedPIIClaimList }
-                    acceptedPIIClaimList={ acceptedPIIClaimList }
-                />
-                { revokingConsent && consentRevokeModal() }
+                <List
+                    divided
+                    verticalAlign="middle"
+                    className="main-content-inner"
+                    data-testid={ testId }
+                >
+                    <AppConsentList
+                        data-testid={ `${testId}-list` }
+                        consentedApps={ consentedApps }
+                        onClaimUpdate={ handleClaimUpdate }
+                        onAppConsentRevoke={ handleAppConsentRevoke }
+                        consentListActiveIndexes={ consentListActiveIndexes }
+                        onConsentDetailClick={ handleConsentDetailClick }
+                        onPIIClaimToggle={ piiClaimToggleHandler }
+                        deniedPIIClaimList={ deniedPIIClaimList }
+                        acceptedPIIClaimList={ acceptedPIIClaimList }
+                    />
+                    { revokingConsent && consentRevokeModal() }
+                    <PolicyConsent
+                        data-testid={ `${testId}-policy-consent` }
+                        onAlertFired={ onAlertFired }
+                    />
+                </List>
             </SettingsSection>
         </>
     );
