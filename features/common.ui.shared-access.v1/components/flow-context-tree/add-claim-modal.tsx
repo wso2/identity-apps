@@ -216,7 +216,6 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
                 Add Claims
                 <Typography sx={ { color: "text.disabled", fontSize: 11, fontWeight: 400, mt: 0.3 } }>
                     Search and select claims to add to the claims map.
-                    Read-only claims will only support expose.
                 </Typography>
             </DialogTitle>
             <DialogContent sx={ { pt: "12px !important" } }>
@@ -307,16 +306,16 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
                                         </Typography>
                                         { claim.readOnly && (
                                             <Typography sx={ {
-                                                bgcolor: "grey.100",
+                                                bgcolor: "rgba(255,115,0,0.08)",
                                                 borderRadius: "3px",
-                                                color: "text.disabled",
+                                                color: "var(--tree-expose, #ff7300)",
                                                 fontSize: 8,
                                                 fontWeight: 600,
                                                 lineHeight: 1,
                                                 px: "4px",
                                                 py: "2px"
                                             } }>
-                                                READ-ONLY
+                                                Modifying allowed in Registration flows only
                                             </Typography>
                                         ) }
                                     </Box>

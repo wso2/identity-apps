@@ -126,6 +126,9 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
     const pendingSubmit: MutableRefObject<boolean> = useRef<boolean>(false);
     const submitTimeout: MutableRefObject<ReturnType<typeof setTimeout> | null> =
         useRef<ReturnType<typeof setTimeout> | null>(null);
+    // Ref mirrors certificatePEM state so handleFormSubmit always reads the
+    // up-to-date value even when called synchronously from within the cert callback.
+    const certPEMRef: MutableRefObject<string> = useRef<string>("");
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -461,9 +464,11 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
         authProperties["header"] = values?.headerAuthProperty;
         authProperties["value"] = values?.valueAuthProperty;
 
-        // Build encryption object from the certificate in step 2
+        // Build encryption object from the certificate in step 2.
+        // Read from the ref (not state) so we always get the value that was
+        // captured synchronously by handleCertificateSubmit before gotoNextPage().
         const resolvedEncryption: { certificate: string } | undefined =
-            certificatePEM ? { certificate: certificatePEM } : undefined;
+            certPEMRef.current ? { certificate: certPEMRef.current } : undefined;
 
         const actionBody: InFlowExtensionActionInterface = {
             description: values?.description?.toString() || "",
@@ -505,7 +510,9 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
     };
 
     const handleCertificateSubmit = (value: string): void => {
+        // Sync both state (for UI) and ref (for handleFormSubmit closure).
         setCertificatePEM(value);
+        certPEMRef.current = value;
 
         if (pendingSubmit.current) {
             pendingSubmit.current = false;
@@ -583,7 +590,7 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
                     </Trans>
                 </Alert>
             )}
-            <Divider className="divider-container" />
+            <Divider className="divider-container" sx={{ mb: "20px", mt: "20px" }} />
             <Heading className="heading-container" as="h5">
                 {t("inFlowExtension:createWizard.steps.endpointConfig.authenticationType.title")}
             </Heading>
@@ -609,7 +616,7 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
                 />
                 <div className="box-field">{renderEndpointAuthPropertyFields()}</div>
             </Box>
-            <Divider className="divider-container" />
+            <Divider className="divider-container" sx={{ mb: "20px", mt: "20px" }} />
             <Heading className="heading-container" as="h5">
                 {t("inFlowExtension:createWizard.steps.endpointConfig.certificate.title")}
             </Heading>
@@ -622,7 +629,7 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
                     sx={{ mb: 2 }}
                     action={
                         <LinkButton
-                            onClick={ () => setCertificatePEM("") }
+                            onClick={ () => { setCertificatePEM(""); certPEMRef.current = ""; } }
                             data-componentid={ `${componentId}-clear-certificate` }
                         >
                             Clear
@@ -739,13 +746,13 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
                                         type="submit"
                                         floated="right"
                                         onClick={() => {
-                                            if (!certificatePEM) {
-                                                // No certificate staged — submit directly.
-                                                wizardRef.current?.gotoNextPage();
-
-                                                return;
-                                            }
-                                            // Trigger cert extraction before submitting.
+                                            // Trigger cert extraction: AddCertificateFormComponent
+                                            // passes triggerCertificateUpload to UploadCertificate
+                                            // as its triggerSubmit — firing setTriggerCertUpload()
+                                            // causes UploadCertificate to flush its value via onSubmit,
+                                            // which eventually calls our handleCertificateSubmit.
+                                            // The 300ms timeout is a fallback for the no-cert case
+                                            // (UploadCertificate returns early without calling back).
                                             setTriggerCertUpload();
                                             pendingSubmit.current = true;
                                             submitTimeout.current = setTimeout(() => {

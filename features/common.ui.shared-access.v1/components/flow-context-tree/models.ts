@@ -72,6 +72,7 @@ export interface TreeNodeState {
     modify: boolean;
     exposeEncrypted: boolean;
     modifyEncrypted: boolean;
+    isClaim?: boolean;
     children?: TreeNodeState[];
 }
 

@@ -1,0 +1,66 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.dynamic-error-segment {
+    background: var(--asg-colors-background-surface-main, #ffffff);
+    border: 1px solid rgba(34, 36, 38, 0.15);
+    border-top: 3px solid var(--asg-colors-primary-main, #FF7300);
+    border-radius: 4px;
+    padding: 1.2em 1.5em 1em;
+    margin: 1em 0;
+    width: 100%;
+}
+
+.dynamic-error-header {
+    font-family: var(--asg-primary-font-family, "Gilmer", Roboto, Verdana, Helvetica, sans-serif);
+    font-size: 1.1em;
+    font-weight: 600;
+    text-align: center;
+    color: var(--asg-colors-text-primary, #333333);
+    margin: 0.5em 0 0.8em;
+    line-height: 1.4;
+}
+
+.dynamic-error-button-container {
+    display: flex;
+    justify-content: center;
+    margin: 0.8em 0 0.4em;
+}
+
+.dynamic-error-retry-button {
+    font-family: var(--asg-primary-font-family, "Gilmer", Roboto, Verdana, Helvetica, sans-serif);
+    font-size: 0.95em;
+    font-weight: 500;
+    color: var(--asg-colors-primary-main, #FF7300);
+    background: transparent;
+    border: 1px solid var(--asg-colors-primary-main, #FF7300);
+    border-radius: 4px;
+    padding: 0.65em 1.5em;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.dynamic-error-retry-button:hover {
+    background: var(--asg-colors-primary-main, #FF7300);
+    color: #ffffff;
+}
+
+.dynamic-error-retry-button:focus-visible {
+    outline: 2px solid var(--asg-colors-primary-main, #FF7300);
+    outline-offset: 2px;
+}

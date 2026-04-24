@@ -23,7 +23,8 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
@@ -42,6 +43,8 @@ import { Dispatch } from "redux";
 import { TabProps } from "semantic-ui-react";
 import { InFlowExtensionAccessConfigSettings } from
     "../components/edit/settings/in-flow-extension-access-config-settings";
+import { InFlowExtensionCustomErrors } from
+    "../components/edit/settings/in-flow-extension-custom-errors";
 import { InFlowExtensionEndpointSettings } from "../components/edit/settings/in-flow-extension-endpoint-settings";
 import { InFlowExtensionGeneralSettings } from "../components/edit/settings/in-flow-extension-general-settings";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
@@ -59,7 +62,11 @@ const InFlowExtensionEditPage: FunctionComponent<InFlowExtensionEditPagePropsInt
     const dispatch: Dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.actions);
     const isReadOnly: boolean = !useRequiredScopes(featureConfig?.identityProviders?.scopes?.update);
+    const isCustomErrorsEnabled: boolean = isFeatureEnabled(
+        actionsFeatureConfig, "actions.types.list.inFlowExtension.customErrors");
 
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(0);
 
@@ -169,6 +176,18 @@ const InFlowExtensionEditPage: FunctionComponent<InFlowExtensionEditPagePropsInt
         </ResourceTab.Pane>
     );
 
+    const CustomErrorsTabPane = (): ReactElement => (
+        <ResourceTab.Pane controlledSegmentation>
+            <InFlowExtensionCustomErrors
+                action={ action }
+                isLoading={ isActionLoading }
+                isReadOnly={ isReadOnly }
+                loader={ Loader }
+                data-componentid={ `${componentId}-custom-errors` }
+            />
+        </ResourceTab.Pane>
+    );
+
     const getPanes = (): ResourceTabPaneInterface[] => {
         const panes: ResourceTabPaneInterface[] = [];
 
@@ -189,6 +208,14 @@ const InFlowExtensionEditPage: FunctionComponent<InFlowExtensionEditPagePropsInt
             menuItem: "Access Configuration",
             render: AccessConfigTabPane
         });
+
+        if (isCustomErrorsEnabled) {
+            panes.push({
+                "data-tabid": "custom-errors",
+                menuItem: "Custom Errors",
+                render: CustomErrorsTabPane
+            });
+        }
 
         return panes;
     };

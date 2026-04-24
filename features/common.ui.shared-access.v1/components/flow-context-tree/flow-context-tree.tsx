@@ -192,8 +192,11 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
 
         if (!parentNode) return;
 
+        // If the parent is read-only, dynamic entries must also be read-only (expose-only).
+        const isParentReadOnly: boolean = !!parentNode.readOnly;
+
         const newEntry: TreeNodeState = {
-            allowedOperations: [ "EXPOSE", "MODIFY" ],
+            allowedOperations: isParentReadOnly ? [ "EXPOSE" ] : [ "EXPOSE", "MODIFY" ],
             canDelete: true,
             children: undefined,
             dataType: objectStructure || "String",
@@ -206,7 +209,7 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
             modifyEncrypted: false,
             nodeType: NodeType.LEAF,
             path: `${parentNode.path}${keyName}`,
-            readOnly: false,
+            readOnly: isParentReadOnly,
             replaceable: false,
             title: keyName
         };
@@ -230,12 +233,8 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
             let updated: TreeNodeState[] = prev;
 
             claims.forEach((claim: Claim, idx: number) => {
-                const isReadOnly: boolean = !!claim.readOnly;
-
                 const newEntry: TreeNodeState = {
-                    allowedOperations: isReadOnly
-                        ? [ "EXPOSE" ]
-                        : [ "EXPOSE", "MODIFY" ],
+                    allowedOperations: [ "EXPOSE", "MODIFY" ],
                     canDelete: true,
                     children: undefined,
                     dataType: "String",
@@ -243,12 +242,13 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
                     dynamicEntryType: "",
                     exposeEncrypted: false,
                     exposed: false,
+                    isClaim: true,
                     key: `claim-${Date.now()}-${idx}`,
                     modify: false,
                     modifyEncrypted: false,
                     nodeType: NodeType.LEAF,
                     path: `${parentNode.path}${claim.claimURI}`,
-                    readOnly: isReadOnly,
+                    readOnly: false,
                     replaceable: false,
                     title: claim.displayName
                 };
@@ -283,11 +283,9 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
             >
                 <Typography
                     sx={{
-                        color: "text.secondary",
-                        fontSize: 10,
-                        fontWeight: 600,
-                        letterSpacing: "0.07em",
-                        textTransform: "uppercase"
+                        fontSize: 16,
+                        fontWeight: 300,
+                        letterSpacing: "0.07em"
                     }}
                 >
                     Context Fields
@@ -308,7 +306,7 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                         </svg>
-                        <Typography sx={{ color: "text.disabled", fontSize: 9 }}>Exposing Encrypted</Typography>
+                        <Typography sx={{ color: "text.disabled", fontSize: 10 }}>Exposing the value Encrypted</Typography>
                     </Box>
                     <Box sx={{ alignItems: "center", display: "inline-flex", gap: "4px" }}>
                         <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
@@ -318,7 +316,7 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                         </svg>
-                        <Typography sx={{ color: "text.disabled", fontSize: 9 }}>Modifying Encrypted</Typography>
+                        <Typography sx={{ color: "text.disabled", fontSize: 10 }}>Receiving Modifying value Encrypted</Typography>
                     </Box>
                     <Box sx={{ alignItems: "center", display: "inline-flex", gap: "4px" }}>
                         <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
@@ -328,11 +326,8 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
                             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
                         </svg>
-                        <Typography sx={{ color: "text.disabled", fontSize: 9 }}>Both Encrypted</Typography>
+                        <Typography sx={{ color: "text.disabled", fontSize: 10 }}>Both Encrypted</Typography>
                     </Box>
-                    <Typography sx={{ color: "text.disabled", fontSize: 9 }}>
-                        Hover over a row to expand available operations
-                    </Typography>
                 </Box>
             </Box>
 
