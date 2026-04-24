@@ -37,6 +37,7 @@
     screenNames.add ("password-recovery");
     screenNames.add("password-reset");
     screenNames.add("password-reset-success");
+    screenNames.add("inflow-extension");
 %>
 
 <%-- Branding Preferences --%>
@@ -178,7 +179,7 @@
             }
 
             const { createElement, useEffect, useState } = React;
-            const { DynamicContent, GlobalContextProvider, I18nProvider, executeFido2FLow, PasskeyEnrollment } = ReactUICore;
+            const { DynamicContent, DynamicError, GlobalContextProvider, I18nProvider, executeFido2FLow, PasskeyEnrollment } = ReactUICore;
 
             const Content = () => {
                 const baseUrl = "<%= identityServerEndpointContextParam %>";
@@ -202,6 +203,11 @@
                 const [userAssertion, setUserAssertion] = useState(null);
                 const [flowType, setFlowType] = useState("<%= Encode.forJavaScript(flowType) != null ? Encode.forJavaScript(flowType) : null %>");
                 const [ countDownRedirection, setCountDownRedirection ] = useState(null);
+
+                const extensionError = flowData && flowData.data && flowData.data.additionalData &&
+                    flowData.data.additionalData.errorType === "EXTENSION_ERROR"
+                    ? flowData.data.additionalData.error
+                    : null;
 
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
@@ -322,12 +328,13 @@
                         window.location.href = errorPageURL;
                     }
 
-                    if (flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error) {
+                    if (flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error &&
+                            flowData.data.additionalData.errorType !== "EXTENSION_ERROR") {
                         setFlowError(flowData.data.additionalData.error);
                         return;
                     }
                     setFlowError(undefined);
-                }, [ error, flowType, flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error ]);
+                }, [ error, flowType, flowData ]);
 
                 const handleInternalPrompt = (flowData) => {
                     let providedInputs = {};
@@ -471,6 +478,24 @@
                     return createElement(
                         AutoLoginForm,
                         { userAssertion: userAssertion }
+                    );
+                }
+
+                if (extensionError) {
+                    return createElement(
+                        "div",
+                        { className: "registration-content-container loaded" },
+                        createElement(
+                            DynamicError, {
+                                error: extensionError,
+                                onRetry: () => {
+                                    localStorage.removeItem("flowId");
+                                    setFlowData(null);
+                                    setComponents([]);
+                                    setPostBody({ applicationId: spId, flowType: flowType });
+                                }
+                            }
+                        )
                     );
                 }
 
