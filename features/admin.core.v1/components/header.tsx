@@ -498,7 +498,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         return accountAppURL;
     };
 
-    const LOGO_IMAGE = () => {
+    const LOGO_IMAGE = React.memo(() => {
         return (
             <Image
                 src={ resolveAppLogoFilePath(
@@ -515,7 +515,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 alt="logo"
             />
         );
-    };
+    });
 
     const resolveEmail = (): string => {
 
