@@ -125,7 +125,12 @@
                 "outputs": ["{workspaceRoot}/modules/core/dist"]
             },
             "test-coverage": {
-                "command": "pnpm test:coverage"
+                "executor": "nx:run-commands",
+                "options": {
+                    "command": "pnpm test:coverage",
+                    "cwd": "{projectRoot}",
+                    "parallel": false
+                }
             }
         }
     }
