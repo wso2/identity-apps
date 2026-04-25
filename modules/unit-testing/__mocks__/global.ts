@@ -27,21 +27,20 @@ import { TextDecoder, TextEncoder } from "util";
 
 // jsdom Doesn't seem to have TextEncoder defined in global for the DOM.
 // Hence adding the node.js one. See https://github.com/jsdom/jsdom/issues/2524.
-global.TextEncoder = TextEncoder;
-global.TextDecoder = TextDecoder;
+// Object.assign is used to avoid TypeScript type-mismatch errors between
+// util.TextEncoder/TextDecoder and the DOM TextEncoder/TextDecoder types (TS 5.x+).
+Object.assign(global, { TextDecoder, TextEncoder });
 
 global.ResizeObserver = class {
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     observe() {
 
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     unobserve() {
 
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+     
     disconnect() {
 
     }

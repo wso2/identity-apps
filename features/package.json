@@ -72,9 +72,9 @@
         "@types/uuid": "^9.0.1",
         "@types/webpack-env": "^1.16.0",
         "@wso2is/unit-testing": "^0.7.0",
-        "jest": "^26.4.2",
-        "jest-environment-jsdom": "^26.3.0",
-        "jest-environment-jsdom-global": "^2.0.4",
+        "jest": "^29.7.0",
+        "jest-environment-jsdom": "^29.7.0",
+        "jest-environment-jsdom-global": "^4.0.0",
         "rimraf": "^3.0.2",
         "rollup": "^4.17.2",
         "rollup-plugin-dts": "^6.1.1",
@@ -83,7 +83,7 @@
         "rollup-plugin-scss": "^4.0.0",
         "rollup-plugin-styles": "^4.0.0",
         "rollup-plugin-svg": "^2.0.0",
-        "ts-jest": "^26.4.0",
+        "ts-jest": "^29.1.2",
         "typescript": "^5.1.6"
     },
     "browserslist": [
