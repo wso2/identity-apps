@@ -143,6 +143,23 @@ const LogoImage: FunctionComponent<LogoImagePropsInterface> = React.memo(
 
 LogoImage.displayName = "LogoImage";
 
+const LogoImage: React.FC<{ themeName: string }> = React.memo(({ themeName }) => (
+    <Image
+        src={ resolveAppLogoFilePath(
+            window["AppUtils"].getConfig().ui.appLogo?.defaultLogoPath ??
+                window["AppUtils"].getConfig().ui.appLogoPath,
+            `${window["AppUtils"].getConfig().clientOrigin}/` +
+                `${
+                    StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBase) !== ""
+                        ? StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBase) + "/"
+                        : ""
+                }libs/themes/` +
+                themeName
+        ) }
+        alt="logo"
+    />
+));
+
 /**
  * Implementation of the Reusable Header component.
  *
