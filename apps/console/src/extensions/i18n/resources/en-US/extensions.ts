@@ -2543,7 +2543,11 @@ export const extensions: Extensions = {
         emailTemplates: {
             page: {
                 header: "Email Templates",
-                description: "Customize email templates used in your organization."
+                description: "Customize email templates used in your organization.",
+                appSpecificHeader: "Email Templates - {{ appName }}",
+                appSpecificDescription: "Customize email templates specific to <bold>{{ appName }}</bold> application.",
+                applicationEmailTemplatesTitle: "Email Templates",
+                backButtonText: "Go back to Application Settings"
             },
             tabs: {
                 content: {

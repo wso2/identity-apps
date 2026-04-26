@@ -2390,6 +2390,10 @@ export interface Extensions {
             page: {
                 header: string;
                 description: string;
+                appSpecificHeader: string;
+                appSpecificDescription: string;
+                applicationEmailTemplatesTitle: string;
+                backButtonText: string;
             },
             tabs: {
                 content: {

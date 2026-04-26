@@ -25,7 +25,7 @@ import Link from "@oxygen-ui/react/Link";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
-import { PaletteIcon } from "@oxygen-ui/react-icons";
+import { EnvelopeIcon, PaletteIcon } from "@oxygen-ui/react-icons";
 import { ApplicationTabComponentsFilter } from
     "@wso2is/admin.application-templates.v1/components/application-tab-components-filter";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -952,6 +952,28 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                             { t("applications:forms.generalDetails.brandingLink.label") }
                                         </Link>
                                         <Hint>{ t("applications:forms.generalDetails.brandingLink.hint") }</Hint>
+                                    </>
+                                )
+                            }
+                            {
+                                (!isBrandingSectionHidden && !isM2MApplication) && (
+                                    <>
+                                        <Divider hidden />
+                                        <EnvelopeIcon fill="#ff7300" /> &nbsp;
+                                        <Link
+                                            className="application-email-templates-link"
+                                            color="primary"
+                                            data-componentid={ `${testId}-application-email-templates-link` }
+                                            onClick={ () => {
+                                                history.push({
+                                                    pathname: AppConstants.getPaths().get("EMAIL_MANAGEMENT"),
+                                                    search: `?appId=${encodeURIComponent(appId ?? "")}`
+                                                });
+                                            } }
+                                        >
+                                            { t("applications:forms.generalDetails.emailTemplatesLink.label") }
+                                        </Link>
+                                        <Hint>{ t("applications:forms.generalDetails.emailTemplatesLink.hint") }</Hint>
                                     </>
                                 )
                             }

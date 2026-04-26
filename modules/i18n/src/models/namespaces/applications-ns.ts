@@ -1369,6 +1369,10 @@ export interface ApplicationsNS {
                 hint: string;
                 label: string;
             };
+            emailTemplatesLink: {
+                hint: string;
+                label: string;
+            };
             fields: {
                 name: {
                     label: string;

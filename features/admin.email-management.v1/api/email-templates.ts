@@ -296,3 +296,221 @@ export const deleteEmailTemplate = (
                 error.config);
         });
 };
+
+/**
+ * Hook to get the app-specific email template for a given template type and application.
+ *
+ * @param templateType - Template type.
+ * @param appId - Application ID.
+ * @param locale - Locale of the template.
+ * @param shouldFetch - Should fetch the data.
+ *
+ * @returns App-specific email template.
+ */
+export const useAppEmailTemplate = <Data = EmailTemplate, Error = RequestErrorInterface>(
+    templateType: string,
+    appId: string,
+    locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE,
+    shouldFetch: boolean = true
+): RequestResultInterface<Data, Error> => {
+    const emailLocale: string = locale.replace("-", "_");
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.emailManagement
+            + `/template-types/${ templateType }/app-templates/${ appId }/${ emailLocale }`
+    };
+
+    const {
+        data,
+        error,
+        isLoading,
+        isValidating,
+        mutate
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null,
+        {
+            onErrorRetry: (error: AxiosError<HttpErrorResponseDataInterface>) => {
+                if (error?.response?.status === 404) {
+                    return;
+                }
+            }
+        });
+
+    return {
+        data,
+        error,
+        isLoading,
+        isValidating,
+        mutate
+    };
+};
+
+/**
+ * Update the app-specific email template.
+ *
+ * @param templateType - Template type/id to update.
+ * @param appId - Application ID.
+ * @param emailTemplate - Updated email template.
+ * @param locale - Locale of the template.
+ *
+ * @returns Updated app-specific email template.
+ */
+export const updateAppEmailTemplate = (
+    templateType: string,
+    appId: string,
+    emailTemplate: Partial<EmailTemplate>,
+    locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
+): Promise<EmailTemplate> => {
+
+    const emailLocale: string = locale.replace("-", "_");
+
+    const requestConfig: AxiosRequestConfig = {
+        data: {
+            body: emailTemplate.body,
+            contentType: emailTemplate.contentType,
+            footer: emailTemplate.footer,
+            subject: emailTemplate.subject
+        },
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.emailManagement +
+            `/template-types/${ templateType }/app-templates/${ appId }/${ emailLocale }`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200 && response.status !== 201) {
+                throw new IdentityAppsApiException(
+                    "Error occurred while updating the app-specific email template.",
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data as EmailTemplate);
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            throw new IdentityAppsApiException(
+                "Error occurred while updating the app-specific email template.",
+                error.stack,
+                error.response?.data?.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Create new app-specific email template.
+ *
+ * @param templateType - Template type/id to create.
+ * @param appId - Application ID.
+ * @param emailTemplate - New email template.
+ *
+ * @returns Created app-specific email template.
+ */
+export const createNewAppEmailTemplate = (
+    templateType: string,
+    appId: string,
+    emailTemplate: EmailTemplate
+): Promise<EmailTemplate> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        data: {
+            body: emailTemplate.body,
+            contentType: emailTemplate.contentType,
+            footer: emailTemplate.footer,
+            locale: emailTemplate.id,
+            subject: emailTemplate.subject
+        },
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.emailManagement +
+            `/template-types/${ templateType }/app-templates/${ appId }`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200 && response.status !== 201) {
+                throw new IdentityAppsApiException(
+                    "Error occurred while creating the app-specific email template.",
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data as EmailTemplate);
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            throw new IdentityAppsApiException(
+                "Error occurred while creating the app-specific email template.",
+                error.stack,
+                error.response?.data?.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Delete the app-specific email template.
+ *
+ * @param templateType - Template type/id to delete.
+ * @param appId - Application ID.
+ * @param locale - Locale of the template.
+ *
+ * @returns Delete response.
+ */
+export const deleteAppEmailTemplate = (
+    templateType: string,
+    appId: string,
+    locale: string
+): Promise<AxiosResponse> => {
+
+    const emailLocale: string = locale.replace("-", "_");
+
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: store.getState().config.endpoints.emailManagement +
+            `/template-types/${ templateType }/app-templates/${ appId }/${ emailLocale }`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 204) {
+                throw new IdentityAppsApiException(
+                    "Error occurred while deleting the app-specific email template.",
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return response;
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            throw new IdentityAppsApiException(
+                "Error occurred while deleting the app-specific email template.",
+                error.stack,
+                error.response?.data?.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
