@@ -136,6 +136,12 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         (state: AppState) => state?.config?.ui?.features?.emailTemplates);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const disabledFeatures: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.applications?.disabledFeatures);
+
+    const isAppSpecificEmailTemplateBrandingEnabled: boolean = !disabledFeatures?.includes(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_EDIT_EMAIL_TEMPLATES_LINK
+    );
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -216,7 +222,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         isLoading: isApplicationListFetchRequestLoading
     } = useApplicationList(
         "templateId",
-        30,
+        100,
         0,
         undefined,
         emailTemplatesMode === EmailTemplatesMode.APPLICATION
@@ -373,6 +379,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                         !(isFromAppRedirect && hasLoadedOnceRef.current === false)
                     ) {
                         setShowReplicatePreviousTemplateModal(true);
+
                         return;
                     }
                 } else {
@@ -490,6 +497,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         if (!mode) return;
 
         setEmailTemplatesMode(mode);
+        setSelectedEmailTemplate(null);
 
         if (mode === EmailTemplatesMode.ORGANIZATION) {
             setSelectedAppId(null);
@@ -629,6 +637,10 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                 }));
             }).finally(() => {
                 setSelectedLocale(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
+                setSelectedEmailTemplate(null);
+                setCurrentEmailTemplate(undefined);
+                setIsNewAppTemplate(false);
+                setIsSystemTemplate(false);
                 if (isAppSpecific) {
                     appEmailTemplateMutate();
                 }
@@ -712,7 +724,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                                     { appName: selectedApplicationData.name })
                                 : t("extensions:develop.emailTemplates.page.header") }
                         </h1>
-                        { !appIdFromQueryParam && (
+                        { !appIdFromQueryParam && isAppSpecificEmailTemplateBrandingEnabled && (
                             <div style={ { alignItems: "center", display: "flex", flexDirection: "row",
                                 gap: "10px" } }>
                                 <Paper
@@ -766,6 +778,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                                             app: ApplicationListItemInterface | null
                                         ) => {
                                             setSelectedAppId(app?.id ?? null);
+                                            setSelectedEmailTemplate(null);
                                             setCurrentEmailTemplate(undefined);
                                             setIsNewAppTemplate(false);
                                         } }
@@ -903,7 +916,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                         { t("extensions:develop.emailTemplates.modal.updateFromRootOrg.message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content
-                        data-testid={ `${ componentId }-update-template-from-root-org-modal-content` }
+                        data-componentid={ `${ componentId }-update-template-from-root-org-modal-content` }
                     >
                         { t("extensions:develop.emailTemplates.modal.updateFromRootOrg.content") }
                     </ConfirmationModal.Content>

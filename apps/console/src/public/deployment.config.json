@@ -563,6 +563,10 @@
                     {
                         "feature": "applications.create.ws-fed.protocol.template",
                         "flag": ""
+                    },
+                    {
+                        "feature": "applications.edit.general.emailTemplates",
+                        "flag": ""
                     }
                 ],
                 "scopes": {

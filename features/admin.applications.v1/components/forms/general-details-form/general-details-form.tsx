@@ -241,7 +241,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const { getLink } = useDocumentation();
 
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
-    const brandingFeatureFlagsConfig: FeatureFlagsInterface[] = UIConfig?.features?.applications?.featureFlags;
+    const applicationsFeatureFlagsConfig: FeatureFlagsInterface[] = UIConfig?.features?.applications?.featureFlags;
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const [ isDiscoverable, setDiscoverability ] = useState<boolean>(discoverability);
@@ -272,6 +272,13 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             setIsMcpClientApplication(true);
         }
     }, [ template ]);
+
+    const disabledFeatures: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.applications?.disabledFeatures);
+
+    const isAppSpecificEmailTemplateBrandingEnabled: boolean = !disabledFeatures?.includes(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_EDIT_EMAIL_TEMPLATES_LINK
+    );
 
     const {
         data: myAccountStatus,
@@ -928,14 +935,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     <>
                                         <Heading as="h4">
                                             { t("applications:forms.generalDetails.sections.branding.title") }
-                                            <FeatureFlagLabel
-                                                featureFlags={ brandingFeatureFlagsConfig }
-                                                featureKey={
-                                                    FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
-                                                        .APPLICATION_EDIT_BRANDING_LINK
-                                                }
-                                                type="chip"
-                                            />
                                         </Heading>
                                         <PaletteIcon fill="#ff7300" /> &nbsp;
                                         <Link
@@ -951,12 +950,21 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                         >
                                             { t("applications:forms.generalDetails.brandingLink.label") }
                                         </Link>
+                                        <FeatureFlagLabel
+                                            featureFlags={ applicationsFeatureFlagsConfig }
+                                            featureKey={
+                                                FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                                                    .APPLICATION_EDIT_BRANDING_LINK
+                                            }
+                                            type="chip"
+                                        />
                                         <Hint>{ t("applications:forms.generalDetails.brandingLink.hint") }</Hint>
                                     </>
                                 )
                             }
                             {
-                                (!isBrandingSectionHidden && !isM2MApplication) && (
+                                (!isBrandingSectionHidden && !isM2MApplication &&
+                                    isAppSpecificEmailTemplateBrandingEnabled) && (
                                     <>
                                         <Divider hidden />
                                         <EnvelopeIcon fill="#ff7300" /> &nbsp;
@@ -973,6 +981,14 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                         >
                                             { t("applications:forms.generalDetails.emailTemplatesLink.label") }
                                         </Link>
+                                        <FeatureFlagLabel
+                                            featureFlags={ applicationsFeatureFlagsConfig }
+                                            featureKey={
+                                                FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                                                    .APPLICATION_EDIT_EMAIL_TEMPLATES_LINK
+                                            }
+                                            type="chip"
+                                        />
                                         <Hint>{ t("applications:forms.generalDetails.emailTemplatesLink.hint") }</Hint>
                                     </>
                                 )
