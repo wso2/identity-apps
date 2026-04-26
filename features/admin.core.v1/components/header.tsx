@@ -118,6 +118,31 @@ const CopilotMenuItemText: typeof Box = styled(Box)(({ theme }: { theme: Theme }
     fontWeight: 600
 }));
 
+interface LogoImagePropsInterface extends IdentifiableComponentInterface {
+    themeName: string;
+}
+
+const LogoImage: FunctionComponent<LogoImagePropsInterface> = React.memo(
+    ({ themeName }: LogoImagePropsInterface): ReactElement => (
+        <Image
+            src={ resolveAppLogoFilePath(
+                window["AppUtils"].getConfig().ui.appLogo?.defaultLogoPath ??
+                    window["AppUtils"].getConfig().ui.appLogoPath,
+                `${window["AppUtils"].getConfig().clientOrigin}/` +
+                    `${
+                        StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBaseWithProxy) !== ""
+                            ? StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBaseWithProxy) + "/"
+                            : ""
+                    }libs/themes/` +
+                    themeName
+            ) }
+            alt="logo"
+        />
+    )
+);
+
+LogoImage.displayName = "LogoImage";
+
 /**
  * Implementation of the Reusable Header component.
  *
@@ -532,24 +557,6 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         return accountAppURL;
     };
 
-    const LogoImage = React.memo(() => {
-        return (
-            <Image
-                src={ resolveAppLogoFilePath(
-                    window["AppUtils"].getConfig().ui.appLogo?.defaultLogoPath ??
-                        window["AppUtils"].getConfig().ui.appLogoPath,
-                    `${window["AppUtils"].getConfig().clientOrigin}/` +
-                        `${
-                            StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBaseWithProxy) !== ""
-                                ? StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBaseWithProxy) + "/"
-                                : ""
-                        }libs/themes/` +
-                        config.ui.theme.name
-                ) }
-                alt="logo"
-            />
-        );
-    });
 
     const resolveEmail = (): string => {
 
@@ -614,8 +621,8 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 className={ isSAASDeployment ? "is-header saas-header" : "is-header" }
                 brand={ {
                     logo: {
-                        desktop: <LogoImage />,
-                        mobile: <LogoImage />
+                        desktop: <LogoImage themeName={ config.ui.theme.name } />,
+                        mobile: <LogoImage themeName={ config.ui.theme.name } />
                     },
                     onClick: () =>
                         hasGettingStartedViewPermission &&
