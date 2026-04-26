@@ -123,6 +123,11 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     const [ isFromAppRedirect, setIsFromAppRedirect ] = useState<boolean>(false);
     const [ isNewAppTemplate, setIsNewAppTemplate ] = useState<boolean>(false);
 
+    // When the user switches modes (not a locale change), the replicate modal should not appear.
+    const skipNextReplicateModalRef: React.MutableRefObject<boolean> = React.useRef<boolean>(false);
+    // Only skip the replicate modal on the very first load from app edit view.
+    const hasLoadedOnceRef: React.MutableRefObject<boolean> = React.useRef<boolean>(false);
+
     const emailTemplates: Record<string, string>[] = useSelector(
         (state: AppState) => state.config.deployment.extensions.emailTemplates) as Record<string, string>[];
     const enableCustomEmailTemplates: boolean = useSelector(
@@ -289,18 +294,23 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                 setCurrentEmailTemplate({ ...appEmailTemplate });
                 setIsTemplateNotAvailable(false);
                 setIsNewAppTemplate(false);
+                // Mark as loaded after any successful fetch in app mode (including locale change)
+                hasLoadedOnceRef.current = true;
             } else if (emailTemplate && Object.keys(emailTemplate).length > 0) {
                 // App template not available — fall back to org template for display
                 setSelectedEmailTemplate({ ...emailTemplate });
                 setCurrentEmailTemplate({ ...emailTemplate });
                 setIsTemplateNotAvailable(false);
+                // Mark as loaded after any successful fetch in app mode (including locale change)
+                hasLoadedOnceRef.current = true;
             }
         } else {
-            setSelectedEmailTemplate({ ...emailTemplate });
             setIsTemplateNotAvailable(false);
 
             if (emailTemplate && Object.keys(emailTemplate).length > 0) {
+                setSelectedEmailTemplate({ ...emailTemplate });
                 setCurrentEmailTemplate({ ...emailTemplate });
+                skipNextReplicateModalRef.current = false;
             }
         }
     }, [ emailTemplate, appEmailTemplate ]);
@@ -350,6 +360,21 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                     // 404 is expected when no app-specific template exists yet
                     setIsTemplateNotAvailable(true);
                     setIsNewAppTemplate(true);
+
+                    // If the user previously had content for another locale, offer to replicate it.
+                    // currentEmailTemplate is set by handleLocaleChange before the locale switch.
+                    // Only skip the modal on the very first load from app edit view.
+                    if (
+                        currentEmailTemplate &&
+                        Object.keys(currentEmailTemplate).length > 0 &&
+                        hasEmailTemplateCreatePermissions &&
+                        !skipNextReplicateModalRef.current &&
+                        // Only skip the modal on the very first load from app redirect view
+                        !(isFromAppRedirect && hasLoadedOnceRef.current === false)
+                    ) {
+                        setShowReplicatePreviousTemplateModal(true);
+                        return;
+                    }
                 } else {
                     if (appEmailTemplateError.response?.data?.description) {
                         dispatch(addAlert({
@@ -410,7 +435,12 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
 
                 return;
             } else if (hasEmailTemplateCreatePermissions) {
-                setShowReplicatePreviousTemplateModal(true);
+                if (skipNextReplicateModalRef.current) {
+                    skipNextReplicateModalRef.current = false;
+                    setCurrentEmailTemplate(undefined);
+                } else {
+                    setShowReplicatePreviousTemplateModal(true);
+                }
 
                 return;
             } else {
@@ -437,7 +467,8 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
             level: AlertLevels.ERROR,
             message: t("extensions:develop.emailTemplates.notifications.getEmailTemplate.error.message")
         }));
-    }, [ emailTemplateError, appEmailTemplateError, isSystemTemplate, isInheritedTemplate, isNewAppTemplate ]);
+    }, [ emailTemplateError, appEmailTemplateError, isSystemTemplate, isInheritedTemplate, isNewAppTemplate,
+        currentEmailTemplate ]);
 
     // This is used to check whether the URL contains a template ID, and if so, set it as the selected template.
     useEffect(() => {
@@ -464,7 +495,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
             setSelectedAppId(null);
         }
 
-        setCurrentEmailTemplate(undefined);
+        skipNextReplicateModalRef.current = true;
         setIsTemplateNotAvailable(false);
         setIsSystemTemplate(false);
         setIsInheritedTemplate(false);
