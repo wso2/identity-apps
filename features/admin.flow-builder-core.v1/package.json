@@ -29,6 +29,8 @@
         "@wso2is/access-control": "^3.5.6",
         "@wso2is/admin.branding.v1": "workspace:^",
         "@wso2is/admin.claims.v1": "^2.31.2",
+        "@wso2is/admin.actions.v1": "workspace:^",
+        "@wso2is/admin.connections.v1": "workspace:^",
         "@wso2is/admin.core.v1": "workspace:^",
         "@wso2is/admin.flows.v1": "workspace:^",
         "@wso2is/admin.organizations.v1": "workspace:^",
