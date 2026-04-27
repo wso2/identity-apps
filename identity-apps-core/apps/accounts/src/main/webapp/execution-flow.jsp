@@ -112,6 +112,11 @@
         window.onSubmit = function(token) {
             console.log("Received the recaptcha token.");
         };
+        window.__BRANDING__ = {
+            supportEmail: "<%= Encode.forJavaScript(supportEmail != null ? supportEmail : "") %>",
+            supportText: "<%= Encode.forJavaScript(AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")) %>",
+            retryText: "<%= Encode.forJavaScript(i18n(resourceBundle, customText, "sign.up.try.again.button")) %>"
+        };
     </script>
 
 </head>
@@ -206,7 +211,10 @@
 
                 const extensionError = flowData && flowData.data && flowData.data.additionalData &&
                     flowData.data.additionalData.errorType === "EXTENSION_ERROR"
-                    ? flowData.data.additionalData.error
+                    ? {
+                        message: flowData.data.additionalData.errorMessage,
+                        description: flowData.data.additionalData.errorDescription
+                    }
                     : null;
 
                 useEffect(() => {
@@ -309,7 +317,7 @@
 
                 useEffect(() => {
                     if (error && error.code) {
-                        const errorDetails = getI18nKeyForError(error.code, flowType, error.description);
+                        const errorDetails = getI18nKeyForError(error.code, flowType, error.message, error.description);
                         let portal_url = accountsPortalUrl + "/register";
                         if (flowType === "PASSWORD_RECOVERY") {
                             portal_url = accountsPortalUrl + "/recovery";
@@ -487,7 +495,11 @@
                         { className: "registration-content-container loaded" },
                         createElement(
                             DynamicError, {
-                                error: extensionError,
+                                message: extensionError.message,
+                                description: extensionError.description,
+                                supportEmail: (typeof window !== "undefined" && window.__BRANDING__) ? window.__BRANDING__.supportEmail : undefined,
+                                supportText: (typeof window !== "undefined" && window.__BRANDING__) ? window.__BRANDING__.supportText : undefined,
+                                retryText: (typeof window !== "undefined" && window.__BRANDING__) ? window.__BRANDING__.retryText : undefined,
                                 onRetry: () => {
                                     localStorage.removeItem("flowId");
                                     setFlowData(null);
