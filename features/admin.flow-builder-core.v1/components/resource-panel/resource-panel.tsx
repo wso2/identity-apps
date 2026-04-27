@@ -26,6 +26,8 @@ import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronDownIcon } from "@oxygen-ui/react-icons";
 import AICard from "@wso2is/common.ai.v1/components/ai-card";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import kebabCase from "lodash-es/kebabCase";
@@ -35,7 +37,7 @@ import ResourcePanelDraggable from "./resource-panel-draggable";
 import ResourcePanelStatic from "./resource-panel-static";
 import { Element, ElementTypes } from "../../models/elements";
 import { Resource, Resources } from "../../models/resources";
-import { Step } from "../../models/steps";
+import { ExecutionTypes, Step } from "../../models/steps";
 import { Template } from "../../models/templates";
 import { Widget } from "../../models/widget";
 import "./resource-panel.scss";
@@ -150,6 +152,10 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
     } = resources;
 
     const aiFeature: FeatureAccessConfigInterface = useSelector((state: any) => state?.config?.ui?.features?.ai);
+    const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.actions);
+    const isInFlowExtensionEnabled: boolean = isFeatureEnabled(
+        actionsFeatureConfig, "actions.types.list.inFlowExtension");
 
     const elements: Element[] = unfilteredElements.filter(
         (element: Element) => element.display?.showOnResourcePanel !== false
@@ -157,7 +163,19 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
     const widgets: Widget[] = unfilteredWidgets.filter(
         (widget: Widget) => widget.display?.showOnResourcePanel !== false
     );
-    const steps: Step[] = unfilteredSteps.filter((step: Step) => step.display?.showOnResourcePanel !== false);
+    const steps: Step[] = unfilteredSteps.filter((step: Step) => {
+        if (step.display?.showOnResourcePanel === false) {
+            return false;
+        }
+
+        // Hide InFlowExtension step when the feature is disabled.
+        if (!isInFlowExtensionEnabled
+            && (step.data as any)?.action?.executor?.name === ExecutionTypes.InFlowExtension) {
+            return false;
+        }
+
+        return true;
+    });
     const templates: Template[] = unfilteredTemplates.filter(
         (template: Template) => template.display?.showOnResourcePanel !== false
     );

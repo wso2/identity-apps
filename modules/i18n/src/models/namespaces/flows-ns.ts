@@ -114,6 +114,7 @@ export interface flowsNS {
                 facebook: string;
                 github: string;
                 google: string;
+                inFlowExtension: string;
                 microsoft: string;
                 passkeyEnrollment: string;
                 magicLink: string;

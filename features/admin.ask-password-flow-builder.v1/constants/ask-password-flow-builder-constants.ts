@@ -46,7 +46,8 @@ class AskPasswordFlowBuilderConstants {
     public static readonly FEDERATION_CONFIG_SKIPPED_EXECUTORS: ExecutionTypes[] = [
         ExecutionTypes.PasskeyEnrollment,
         ExecutionTypes.ConfirmationCode,
-        ExecutionTypes.MagicLinkExecutor
+        ExecutionTypes.MagicLinkExecutor,
+        ExecutionTypes.InFlowExtension
     ];
 }
 
