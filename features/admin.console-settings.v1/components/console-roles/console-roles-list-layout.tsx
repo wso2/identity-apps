@@ -24,8 +24,8 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { deleteRoleById } from "@wso2is/admin.roles.v2/api/roles";
-import { AlertLevels, IdentifiableComponentInterface, RoleListInterface, RolesInterface,
-    HttpErrorResponseDataInterface
+import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface, RoleListInterface,
+    RolesInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PrimaryButton } from "@wso2is/react-components";
@@ -54,6 +54,10 @@ export interface ConsoleRolesListLayoutPropsInterface extends IdentifiableCompon
     onSearchQueryChange: (query: string) => void;
     onRoleCreate: () => void;
     listItemLimit: number;
+    /**
+     * Whether the console settings feature is locked.
+     */
+    isFeatureLocked?: boolean;
 }
 
 /**
@@ -77,6 +81,7 @@ const ConsoleRolesListLayout: FunctionComponent<ConsoleRolesListLayoutPropsInter
         onListItemLimitChange,
         onSearchQueryChange,
         onRoleCreate,
+        isFeatureLocked,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -224,6 +229,7 @@ const ConsoleRolesListLayout: FunctionComponent<ConsoleRolesListLayoutPropsInter
                         <PrimaryButton
                             data-componentid={ `${componentId}-add-button` }
                             onClick={ () => onRoleCreate() }
+                            disabled={ isFeatureLocked }
                         >
                             <Icon
                                 data-componentid={ `${componentId}-add-button-icon` }

@@ -1034,6 +1034,11 @@ export interface AuthenticationProviderNS {
                     overrideAll: string;
                 };
             };
+            homeRealmIdentifier: {
+                hint: string;
+                label: string;
+                placeholder: string;
+            };
         };
         roleMapping: {
             heading: string;
@@ -2010,6 +2015,16 @@ export interface AuthenticationProviderNS {
                 message: string;
                 description: string;
             };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        updateHomeRealmIdentifier: {
             genericError: {
                 message: string;
                 description: string;

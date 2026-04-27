@@ -68,6 +68,14 @@ interface JITProvisioningConfigurationFormPropsInterface extends TestableCompone
      * Specifies if the form is submitting.
      */
     isSubmitting?: boolean;
+    /**
+     * Home realm identifier value for direct login routing.
+     */
+    homeRealmIdentifier?: string;
+    /**
+     * Template ID of the connection.
+     */
+    templateId?: string;
 }
 
 enum JITProvisioningConstants {
@@ -99,12 +107,19 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         onSubmit,
         isReadOnly,
         isSubmitting,
+        homeRealmIdentifier,
+        templateId,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const dispatch: Dispatch = useDispatch();
+
+    const showHomeRealmIdentifierField: boolean =
+        identityProviderConfig?.jitProvisioningSettings?.homeRealmIdentifierField?.show &&
+        !identityProviderConfig?.jitProvisioningSettings?.homeRealmIdentifierField?.excludedTemplateIds
+            ?.includes(templateId ?? "");
     const enableIdentityClaims: boolean = useSelector((state: AppState) => state?.config?.ui?.enableIdentityClaims);
     const {
         isLoading: isUserStoreListFetchRequestLoading,
@@ -302,6 +317,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
             attributeSyncMethod: values?.get(
                 JITProvisioningConstants.ATTRIBUTE_SYNC_METHOD
             ) ?? initialValues?.attributeSyncMethod,
+            homeRealmIdentifier: values.get("homeRealmIdentifier") ?? homeRealmIdentifier,
             idpGroupSyncMethod: values.get(JITProvisioningConstants.IDP_GROUP_SYNC_METHOD) !== undefined
                 ? (values.get(JITProvisioningConstants.IDP_GROUP_SYNC_METHOD)
                     ?.includes(JITProvisioningConstants.IDP_GROUP_SYNC_METHOD)
@@ -320,7 +336,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
             userstore: values.get(
                 JITProvisioningConstants.PROVISIONING_USER_STORE_DOMAIN_KEY
             ) ?? initialValues.userstore
-        } as JITProvisioningResponseInterface;
+        };
     };
 
     const supportedProvisioningSchemes: {
@@ -966,6 +982,45 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                         </>
                     )
                 }
+                { showHomeRealmIdentifierField && (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Divider fitted />
+                        </Grid.Column>
+                    </Grid.Row>
+                ) }
+                { showHomeRealmIdentifierField && (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Field
+                                name="homeRealmIdentifier"
+                                label={ t("authenticationProvider:forms.jitProvisioning." +
+                                    "homeRealmIdentifier.label") }
+                                required={ false }
+                                placeholder={ t("authenticationProvider:forms.jitProvisioning." +
+                                    "homeRealmIdentifier.placeholder") }
+                                type="text"
+                                value={ homeRealmIdentifier }
+                                data-componentid={ `${ testId }-home-realm-identifier` }
+                                readOnly={ isReadOnly }
+                            />
+                            <Hint>
+                                <Trans
+                                    i18nKey={
+                                        "authenticationProvider:forms.jitProvisioning." +
+                                        "homeRealmIdentifier.hint"
+                                    }
+                                >
+                                    Specify an identifier for this connection. Applications can pass this
+                                    value as the <Code>fidp</Code> query parameter
+                                    (e.g., <Code>?fidp=external-idp-identifier</Code>)
+                                    in the authorization request URL to redirect users directly to this
+                                    connection, bypassing the multi-option login page.
+                                </Trans>
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                ) }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
                         <Show when={ featureConfig?.identityProviders?.scopes?.update }>

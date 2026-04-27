@@ -656,6 +656,15 @@ export const AppUtils: any = (function() {
                             .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
                                 ? this.getTenantName()
                                 : ""),
+                wellKnownEndpoint: _config.idpConfigs
+                        && _config.idpConfigs.wellKnownEndpoint
+                        && _config.idpConfigs.wellKnownEndpoint
+                            .replace(SERVER_ORIGIN_IDP_URL_PLACEHOLDER, getReplaceServerOrigin())
+                            .replace(TENANT_PREFIX_IDP_URL_PLACEHOLDER, this.getTenantPrefix())
+                            .replace(SUPER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getSuperTenantProxy())
+                            .replace(USER_TENANT_DOMAIN_IDP_URL_PLACEHOLDER, this.getTenantName()
+                                ? this.getTenantName()
+                                : ""),
                 wellKnownEndpointURL: _config.idpConfigs
                         && _config.idpConfigs.wellKnownEndpointURL
                         && _config.idpConfigs.wellKnownEndpointURL

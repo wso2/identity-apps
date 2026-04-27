@@ -12,6 +12,9 @@ reviews:
   poem: false
   auto_review:
     ignore_usernames: ["wso2-jenkins-bot"]
+    base_branches:
+      - "next"
+      - "master"
   pre_merge_checks:
       custom_checks:
         - name: "Changeset Required"

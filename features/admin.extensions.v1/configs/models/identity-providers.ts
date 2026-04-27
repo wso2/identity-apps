@@ -82,6 +82,10 @@ export interface IdentityProviderConfig {
         userstoreDomainField: {
             show: boolean;
         };
+        homeRealmIdentifierField: {
+            show: boolean;
+            excludedTemplateIds?: string[];
+        };
     };
     utils: {
         hideIdentityClaimAttributes?: (authenticatorId: string) => boolean;

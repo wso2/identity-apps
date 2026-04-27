@@ -111,6 +111,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             certificates: "",
             claims: "",
             clientCertificates: "",
+            copilot: "",
             createSecret: "",
             createSecretType: "",
             customAuthenticators: "",

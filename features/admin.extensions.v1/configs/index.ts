@@ -18,7 +18,6 @@
 
 export * from "./attribute";
 export * from "./application";
-export * from "./documentation";
 export * from "./identity-provider";
 export * from "./server-configuration";
 export * from "./common";

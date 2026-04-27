@@ -56,6 +56,10 @@ export interface FormDynamicFieldPropsInterface extends IdentifiableComponentInt
      * Whether the form field is read only or not.
      */
     readOnly?: boolean;
+    /**
+     * Whether the form field is disabled or not.
+     */
+    disabled?: boolean;
 }
 
 /**
@@ -98,6 +102,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
     field,
     form: _form,
     readOnly,
+    disabled = false,
     ["data-componentid"]: componentId = "form-dynamic-field",
     ...rest
 }: PropsWithChildren<FormDynamicFieldPropsInterface>): ReactElement => {
@@ -117,7 +122,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         label={ field?.label }
                         placeholder={ field?.placeholder }
                         component={ CheckboxFieldAdapter }
-                        disabled={ readOnly || field?.readOnly }
+                        disabled={ disabled || readOnly || field?.readOnly }
                         required={ field?.required }
                         hint={
                             field?.helperText ? (
@@ -142,6 +147,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         label={ field?.label }
                         placeholder={ field?.placeholder }
                         component={ TextFieldAdapter }
+                        disabled={ disabled }
                         readOnly={ readOnly || field?.readOnly }
                         required={ field?.required }
                         helperText={
@@ -167,6 +173,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         label={ field?.label }
                         placeholder={ field?.placeholder }
                         component={ TextFieldAdapter }
+                        disabled={ disabled }
                         readOnly={ readOnly || field?.readOnly }
                         rows={ 3 }
                         multiline={ true }
@@ -199,6 +206,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                             label={ field?.label }
                             placeholder={ field?.placeholder }
                             component={ __DEPRECATED__SelectFieldAdapter }
+                            disabled={ disabled }
                             readOnly={ readOnly || field?.readOnly }
                             required={ field?.required }
                             options={ (field as DynamicDropdownFieldInterface)?.options }
@@ -234,6 +242,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         placeholderIcon={ getCertificateIllustrations().uploadPlaceholder }
                         selectedIcon={ <Icon name="file alternate" size="huge"/> }
                         component={ FilePickerAdapter }
+                        disabled={ disabled }
                         required={ field?.required }
                         helperText={
                             field?.helperText ? (
@@ -258,6 +267,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         label={ field?.label }
                         placeholder={ field?.placeholder }
                         component={ KeyValueMapAdapter }
+                        disabled={ disabled }
                         readOnly={ readOnly || field?.readOnly }
                         required={ field?.required }
                         valuetype={ (field as DynamicKeyValueMapFieldInterface)?.valueType }
@@ -287,6 +297,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         label={ field?.label }
                         placeholder={ field?.placeholder }
                         component={ TextFieldAdapter }
+                        disabled={ disabled }
                         readOnly={ readOnly || field?.readOnly }
                         required={ field?.required }
                         helperText={

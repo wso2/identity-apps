@@ -60,7 +60,12 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
         ["data-componentid"]: componentId
     } = props;
 
+    const { getLink } = useDocumentation();
+
     const { t } = useTranslation();
+    const termsOfServiceLink: string = useSelector((state: AppState) =>
+        state.config?.ui?.termsOfUseUrl || ""
+    );
 
     const applicationsFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state.config.ui.features.applications);
@@ -80,8 +85,6 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
         setBannerState,
         setUserPrompt
     } = useAILoginFlow();
-
-    const { getLink } = useDocumentation();
 
     const { filteredAuthenticators, loading: isAuthenticatorsLoading } = useAvailableAuthenticators();
 
@@ -272,7 +275,7 @@ const LoginFlowAIBanner: FunctionComponent<IdentifiableComponentInterface> = (
                         <Typography variant="caption">
                             { t("ai:aiLoginFlow.disclaimer") }
                             <DocumentationLink
-                                link={ getLink("common.termsOfService") }
+                                link={ termsOfServiceLink }
                             >
                                 { t("ai:aiLoginFlow.termsAndConditions") }
                             </DocumentationLink>

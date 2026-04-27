@@ -21,14 +21,17 @@ import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Divider from "@oxygen-ui/react/Divider";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
+import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { EndpointConfigFormPropertyInterface } from "@wso2is/admin.actions.v1/models/actions";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import FeatureLockedBanner from "@wso2is/admin.feature-gate.v1/components/feature-locked-banner";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, IdentifiableComponentInterface,
-    HttpErrorResponseDataInterface
+import { AlertLevels, HttpErrorResponseDataInterface,
+    IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Wizard2, WizardPage } from "@wso2is/form";
@@ -143,6 +146,12 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
     const { t } = useTranslation();
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
+    const customAuthFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CONNECTIONS_CUSTOM_AUTHENTICATOR
+    );
+    const isFeatureLocked: boolean = customAuthFeatureStatus !== undefined
+        && customAuthFeatureStatus !== FeatureStatus.ENABLED;
+
     const { data: connectionTemplate, isLoading: isConnectionTemplateFetchRequestLoading } = useGetConnectionTemplate(
         selectedTemplateId,
         selectedTemplateId !== null
@@ -234,7 +243,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
     );
 
     const renderDimmerOverlay = (): ReactNode => {
-        return <Backdrop open={ true }>{ t("common:featureAvailable") }</Backdrop>;
+        return <Backdrop open={ true }>{ !isFeatureLocked && t("common:featureAvailable") }</Backdrop>;
     };
 
     /**
@@ -794,6 +803,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                         onClick={ () => setSelectedAuthenticator(CustomAuthConstants.EXTERNAL_AUTHENTICATOR) }
                         imageSize="x60"
                         showTooltips={ true }
+                        disabled={ isFeatureLocked }
                         overlay={ renderDimmerOverlay() }
                         overlayOpacity={ 0.6 }
                         data-componentid={ `${componentId}-create-wizard-external-custom-authenticator-selection-card` }
@@ -834,6 +844,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                         imageSize="x60"
                         showTooltips={ true }
                         contentTopBorder={ false }
+                        disabled={ isFeatureLocked }
                         overlay={ renderDimmerOverlay() }
                         overlayOpacity={ 0.6 }
                         data-componentid={ `${componentId}-create-wizard-internal-user-custom-authenticator-` +
@@ -874,6 +885,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                         onClick={ () => setSelectedAuthenticator(CustomAuthConstants.TWO_FACTOR_AUTHENTICATOR) }
                         imageSize="x60"
                         showTooltips={ true }
+                        disabled={ isFeatureLocked }
                         overlay={ renderDimmerOverlay() }
                         overlayOpacity={ 0.6 }
                         contentTopBorder={ false }
@@ -1120,6 +1132,12 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                         data-componentid={ `${componentId}-modal-content` }
                     >
                         { alert && alertComponent }
+                        { isFeatureLocked && (
+                            <FeatureLockedBanner
+                                data-componentid={ `${componentId}-feature-locked-banner` }
+                                sx={ { marginBottom: 2 } }
+                            />
+                        ) }
                         <div className="custom-authenticator-create-wizard">
                             <Wizard2
                                 ref={ wizardRef }
@@ -1149,7 +1167,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                             <SemanticGrid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                 { currentWizardStep < wizardSteps.length - 1 && (
                                     <PrimaryButton
-                                        disabled={ nextShouldBeDisabled }
+                                        disabled={ nextShouldBeDisabled || isFeatureLocked }
                                         floated="right"
                                         onClick={ () => {
                                             wizardRef.current.gotoNextPage();
@@ -1162,7 +1180,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                                 ) }
                                 { currentWizardStep === wizardSteps.length - 1 && (
                                     <PrimaryButton
-                                        disabled={ nextShouldBeDisabled || isSubmitting }
+                                        disabled={ nextShouldBeDisabled || isSubmitting || isFeatureLocked }
                                         type="submit"
                                         floated="right"
                                         onClick={ () => {

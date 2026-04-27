@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface,
-    HttpErrorResponseDataInterface
+import { HttpErrorResponseDataInterface, IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { FinalForm, FinalFormField, FormRenderProps, FormValue, TextFieldAdapter } from "@wso2is/form";
 import { Button, GenericIcon, Hint, PrimaryButton, SecondaryButton } from "@wso2is/react-components";
@@ -272,7 +271,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
                                 <List.Description >
                                     {
                                         mobile ?
-                                            t("myAccount:components.accountRecovery.SMSRecovery.descriptions.update",
+                                            t("myAccount:components.accountRecovery.SMSRecovery.descriptions.view",
                                                 { mobile: mobile ? maskMobile(mobile) : "" })
                                             : (
                                                 <Hint>

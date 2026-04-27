@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,7 +26,10 @@ dotenv.config();
 let appFolder = "";
 
 if (process.env.PRE_AUTH_CHECK === "true") {
-    appFolder = DeploymentConfig.appBaseName;
+    const trimmedAppBasePath = (process.env.APP_BASE_PATH || "").trim();
+    const selectedAppBasePath = trimmedAppBasePath || DeploymentConfig.appBaseName || "";
+
+    appFolder = selectedAppBasePath.replace(/^\/+|\/+$/g, "");
 }
 
 // eslint-disable-next-line no-console
@@ -38,6 +41,13 @@ const i18nDir = path.join(__dirname, "..", "build", "console", appFolder, "resou
 if (fs.existsSync(tmpDir)) {
     const metaFiles = fs.readdirSync(tmpDir);
     const metaFileName = metaFiles ? metaFiles.filter(file => file.startsWith("meta"))[ 0 ] : null;
+
+    if (!fs.existsSync(i18nDir)) {
+        log(`Skipped post build i18n cleanup. Directory does not exist: ${i18nDir}`);
+        fs.removeSync(tmpDir);
+
+        process.exit(0);
+    }
 
     const i18nFiles = fs.readdirSync(i18nDir);
 

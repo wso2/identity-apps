@@ -31,7 +31,12 @@ import useConsoleRoles from "../../hooks/use-console-roles";
 /**
  * Props interface of {@link ConsoleRolesList}
  */
-type ConsoleRolesListInterface = IdentifiableComponentInterface;
+interface ConsoleRolesListInterface extends IdentifiableComponentInterface {
+    /**
+     * Whether the console settings feature is locked.
+     */
+    isFeatureLocked?: boolean;
+}
 
 /**
  * Component to render the roles list.
@@ -42,7 +47,7 @@ type ConsoleRolesListInterface = IdentifiableComponentInterface;
 const ConsoleRolesList: FunctionComponent<ConsoleRolesListInterface> = (
     props: ConsoleRolesListInterface
 ): ReactElement => {
-    const { ["data-componentid"]: componentId } = props;
+    const { ["data-componentid"]: componentId, isFeatureLocked } = props;
 
     const dispatch: Dispatch = useDispatch();
 
@@ -95,6 +100,7 @@ const ConsoleRolesList: FunctionComponent<ConsoleRolesListInterface> = (
                 onListItemLimitChange={ setListItemLimit }
                 onSearchQueryChange={ setSearchQuery }
                 onRoleCreate={ handleCreateRole }
+                isFeatureLocked={ isFeatureLocked }
             />
             { showCreateConsoleRoleWizard && (
                 <CreateConsoleRoleWizard

@@ -24,13 +24,18 @@ import StepContent from "@oxygen-ui/react/StepContent";
 import StepLabel from "@oxygen-ui/react/StepLabel";
 import Stepper from "@oxygen-ui/react/Stepper";
 import Typography from "@oxygen-ui/react/Typography";
-import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import {
+    FeatureAccessConfigInterface,
+    FeatureStatus,
+    useCheckFeatureStatus,
+    useRequiredScopes
+} from "@wso2is/access-control";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
-
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import useGetUserStoreTypes from "@wso2is/admin.userstores.v1/api/use-get-user-store-types";
 import { addUserStore } from "@wso2is/admin.userstores.v1/api/user-stores";
 import {
@@ -44,8 +49,8 @@ import {
     UserStoreType
 } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface,
-    HttpErrorResponseDataInterface
+import { AlertLevels, HttpErrorResponseDataInterface,
+    IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, EmphasizedSegment, Message, PageLayout, useDocumentation } from "@wso2is/react-components";
@@ -131,6 +136,10 @@ const RemoteUserStoreCreatePage: FunctionComponent<RemoteCustomerUserStoreCreate
     );
     const hasUserStoreCreatePermissions: boolean = useRequiredScopes(userStoreFeatureConfig?.scopes?.update);
 
+    const remoteUserStoreFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["USER_STORES_REMOTE_USER_STORES"]
+    );
+
     const [ userStoreImplType, setUserStoreImplType ] = useState<RemoteUserStoreImplType>(undefined);
     const [ activeStep, setActiveStep ] = useState<number>(0);
     const [ userStoreFormData, setUserStoreFormData ] = useState<UserStoreFormDataInterface>(initialUserStoreFormData);
@@ -190,6 +199,15 @@ const RemoteUserStoreCreatePage: FunctionComponent<RemoteCustomerUserStoreCreate
         setActiveStep(0);
         setUserStoreFormData(initialUserStoreFormData);
     }, [ userStoreImplTypeQueryParam ]);
+
+    /**
+     * Redirects to the user stores list page if the remote user store feature is not enabled.
+     */
+    useEffect(() => {
+        if (remoteUserStoreFeatureStatus && remoteUserStoreFeatureStatus !== FeatureStatus.ENABLED) {
+            history.push(AppConstants.getPaths().get("USERSTORES"));
+        }
+    }, [ remoteUserStoreFeatureStatus ]);
 
     /**
      * Handles the user store type request error.

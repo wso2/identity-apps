@@ -18,9 +18,13 @@
 
 .email-template-premium-banner {
     margin-top: 2px;
-    font-weight: 100;
 
-    .email-template-premium-banner-link {
-        cursor: pointer;
+    .MuiAlert-message {
+        font-size: 14px;
+        font-weight: 100;
+    }
+
+    a {
+        font-weight: bold;
     }
 }

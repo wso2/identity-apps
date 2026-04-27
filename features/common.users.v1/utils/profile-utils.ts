@@ -419,8 +419,22 @@ export const getFlattenedInitialValues = (
                     }
                 } else {
                     if (!schema.extended) {
-                        _flattenedInitialValues[schema.name] = preparedInitialValues[
-                            schemaNameParts[0]]?.[schemaNameParts[1]];
+                        const parentValues: unknown = preparedInitialValues[schemaNameParts[0]];
+
+                        if (Array.isArray(parentValues)) {
+                            // Complex multi-valued attribute: find the element whose `type` key
+                            // matches the sub-attribute name and return its `value`.
+                            _flattenedInitialValues[schema.name] = (
+                                parentValues as Array<{ type: string; value: unknown }>
+                            ).find(
+                                (item: { type: string; value: unknown }) =>
+                                    item.type === schemaNameParts[1]
+                            )?.value;
+                        } else {
+                            _flattenedInitialValues[schema.name] = (
+                                parentValues as Record<string, unknown>
+                            )?.[schemaNameParts[1]];
+                        }
                     } else {
                         if (schema.schemaId === ProfileConstants.SCIM2_CORE_SCHEMA) {
                             /**

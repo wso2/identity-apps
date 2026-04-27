@@ -4,3 +4,17 @@ packages:
   - "identity-apps-core"
   - "features"
   - "features/*"
+
+catalog:
+  "@mui/icons-material": "^5.11.16"
+  "@mui/lab": "5.0.0-alpha.129"
+  "@mui/material": "^5.13.0"
+  "@mui/system": "^5.12.3"
+  "@oxygen-ui/react": "^2.4.6"
+
+overrides:
+  "@asgardeo/auth-react": "^5.6.0"
+  "@mui/material": "catalog:"
+  "@types/react": "18.0.18"
+  "webpack": "5.101.3"
+  "axios": "1.7.0"

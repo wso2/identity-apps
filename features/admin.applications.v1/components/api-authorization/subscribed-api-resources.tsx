@@ -16,12 +16,15 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
 import { APIResourceInterface } from "@wso2is/admin.api-resources.v2/models";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { RequestErrorInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -41,12 +44,13 @@ import {
 import { AxiosError } from "axios";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Form, Grid, Header, Icon, Input } from "semantic-ui-react";
 import { ScopeForm } from "./scope-form";
 import useScopesOfAPIResources from "../../api/use-scopes-of-api-resources";
 import { Policy } from "../../constants/api-authorization";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import {
     AuthorizedAPIListItemInterface,
     AuthorizedPermissionListItemInterface
@@ -150,10 +154,21 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
 
     const isDigitalWallet: boolean = originalTemplateId === "digital-wallet-application";
     const isMCPClient: boolean = originalTemplateId === "mcp-client-application";
-    const resourceText: string = isMCPClient
-        ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.genericResource")
-        : isDigitalWallet
-            ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.vcResource")
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const applicationFeatureConfig: FeatureAccessConfigInterface = featureConfig?.applications;
+
+    const isUnifiedMcpCapabilitiesEnabled: boolean = isFeatureEnabled(
+        applicationFeatureConfig,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_UNIFIED_MCP_CAPABILITIES")
+    );
+
+    // Determine resource text based on feature flag and application type
+
+    const resourceText: string = isDigitalWallet
+        ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.vcResource")
+        : (isUnifiedMcpCapabilitiesEnabled || isMCPClient)
+            ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.genericResource")
             : t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.apiResource");
 
     const [ activeSubscribedAPIResource, setActiveSubscribedAPIResource ] = useState<string>(null);
@@ -498,14 +513,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                                             onChange={ searchSubscribedAPIResources }
                                             placeholder={ t("extensions:develop.applications.edit.sections." +
                                                 "apiAuthorization.sections.apiSubscriptions.search", {
-                                                resourceText:  isMCPClient
-                                                    ? t("extensions:develop.applications.edit.sections.apiAuthorization"
-                                                        + ".resourceText.genericResource")
-                                                    : isDigitalWallet
-                                                        ? t("extensions:develop.applications.edit.sections" +
-                                                            ".apiAuthorization.resourceText.vcResource")
-                                                        : t("extensions:develop.applications.edit.sections" +
-                                                            ".apiAuthorization.resourceText.apiResource")
+                                                resourceText: resourceText
                                             }) }
                                             floated="right"
                                             size="small"

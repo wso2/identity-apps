@@ -31,79 +31,23 @@
             }
         },
         "build-base": {
-            "executor": "@nx/webpack:webpack",
+            "executor": "nx:run-commands",
             "outputs": [
-                "{options.outputPath}"
+                "{workspaceRoot}/apps/console/build/console"
             ],
-            "defaultConfiguration": "production",
             "options": {
-                "compiler": "babel",
-                "outputPath": "apps/console/build/console",
-                "index": "index.html",
-                "baseHref": "/console/",
-                "main": "apps/console/src/index.tsx",
-                "polyfills": "",
-                "tsConfig": "apps/console/tsconfig.json",
-                "assets": [
+                "commands": [
                     {
-                        "glob": "**/*",
-                        "input": "modules/theme/dist/lib",
-                        "output": "libs",
-                        "ignore": [
-                            "**/**.js",
-                            "**/**.less",
-                            "**/assets/images/!(branding|identity-providers|flags.png)/**"
-                        ]
+                        "command": "pnpm vite build --config vite.config.ts --mode production",
+                        "description": "Build the Console app using Vite."
                     },
                     {
-                        "glob": "**/*",
-                        "input": "apps/console/src/public",
-                        "output": "."
-                    },
-                    {
-                        "glob": "**/*",
-                        "input": "modules/i18n/dist/bundle",
-                        "output": "resources/i18n"
-                    },
-                    {
-                        "glob": "meta.*.json",
-                        "input": "apps/console/src/extensions/i18n/tmp",
-                        "output": "resources/i18n"
-                    },
-                    {
-                        "glob": "**/auth.jsp",
-                        "input": "apps/console/src",
-                        "output": "."
+                        "command": "node scripts/build/assemble-vite-build.js",
+                        "description": "Assemble Console deployable artifacts around Vite output."
                     }
                 ],
-                "styles": [],
-                "scripts": [],
-                "generateIndexHtml": false,
-                "postcssConfig": "apps/console/postcss.config.js",
-                "webpackConfig": "apps/console/webpack.config.ts"
-            },
-            "configurations": {
-                "development": {
-                    "index": "index.html",
-                    "staticIndex": "index.html",
-                    "extractLicenses": false,
-                    "optimization": false,
-                    "sourceMap": true,
-                    "vendorChunk": true,
-                    "verbose": true,
-                    "extractCss": false
-                },
-                "production": {
-                    "index": "index.jsp",
-                    "staticIndex": "index.html",
-                    "fileReplacements": [],
-                    "optimization": true,
-                    "outputHashing": "all",
-                    "sourceMap": false,
-                    "extractLicenses": false,
-                    "verbose": true,
-                    "extractCss": false
-                }
+                "cwd": "apps/console",
+                "parallel": false
             }
         },
         "build-windup": {
@@ -121,6 +65,7 @@
         },
         "build": {
             "executor": "nx:run-commands",
+            "outputs": ["{workspaceRoot}/apps/console/build/console"],
             "options": {
                 "commands": [
                     "pnpm nx run console:build-prepare",
@@ -158,24 +103,16 @@
             }
         },
         "serve-base": {
-            "executor": "@nx/webpack:dev-server",
-            "defaultConfiguration": "development",
+            "executor": "nx:run-commands",
             "options": {
-                "buildTarget": "console:build-base",
-                "port": 9001,
-                "baseHref": "/console/",
-                "open": true,
-                "hmr": true,
-                "ssl": true
-            },
-            "configurations": {
-                "development": {
-                    "buildTarget": "console:build-base:development"
-                },
-                "production": {
-                    "buildTarget": "console:build-base:production",
-                    "hmr": false
-                }
+                "commands": [
+                    {
+                        "command": "pnpm vite --config vite.config.ts --mode development",
+                        "description": "Serve the Console app using Vite dev server."
+                    }
+                ],
+                "cwd": "apps/console",
+                "parallel": false
             }
         },
         "serve": {

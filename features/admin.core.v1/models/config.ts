@@ -138,6 +138,10 @@ export interface FeatureConfigInterface {
      */
     certificates?: FeatureAccessConfigInterface;
     /**
+     * Copilot AI assistant feature.
+     */
+    copilot?: FeatureAccessConfigInterface;
+    /**
      * Email providers feature.
      */
     emailProviders?: FeatureAccessConfigInterface;
@@ -639,6 +643,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     showAppSwitchButton?: boolean;
     /**
+     * Show documentation links throughout the console.
+     */
+    showDocLinks?: boolean;
+    /**
      * Show Label for the features introduced with new authz runtime.
      */
     showStatusLabelForNewAuthzRuntimeFeatures?: boolean;
@@ -849,6 +857,7 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     FlowBuilderCoreResourceEndpointsInterface {
 
     CORSOrigins: string;
+    copilot: string;
     // TODO: Remove this endpoint and use ID token to get the details
     me: string;
     saml2Meta: string;

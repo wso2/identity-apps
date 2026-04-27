@@ -94,6 +94,8 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
     /**
      * Trigger form submission when triggerSubmit prop changes.
      * Uses isFirstTrigger to skip the effect on initial mount.
+     * Only submits if the form has unsaved changes (dirty) to avoid
+     * a redundant API call when only outbound provisioning groups were updated.
      */
     useEffect(() => {
         if (isFirstTrigger.current) {
@@ -101,7 +103,7 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
 
             return;
         }
-        if (formRef.current) {
+        if (triggerSubmit && formRef.current && formRef.current.getState().dirty) {
             formRef.current.submit();
         }
     }, [ triggerSubmit ]);

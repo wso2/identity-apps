@@ -46,7 +46,12 @@ import InvitedAdministratorsList from "./invited-administrators/invited-administ
 /**
  * Props interface of {@link ConsoleAdministrators}
  */
-type ConsoleAdministratorsInterface = IdentifiableComponentInterface;
+interface ConsoleAdministratorsInterface extends IdentifiableComponentInterface {
+    /**
+     * Whether the console settings feature is locked.
+     */
+    isFeatureLocked?: boolean;
+}
 
 /**
  * Component to render the login and security settings.
@@ -57,7 +62,7 @@ type ConsoleAdministratorsInterface = IdentifiableComponentInterface;
 const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> = (
     props: ConsoleAdministratorsInterface
 ): ReactElement => {
-    const { [ "data-componentid" ]: componentId } = props;
+    const { [ "data-componentid" ]: componentId, isFeatureLocked } = props;
 
     const { isFirstLevelOrganization, isSubOrganization } = useGetCurrentOrganizationType();
     const { t } = useTranslation();
@@ -152,6 +157,7 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
                     <AdministratorsList
                         selectedAdministratorGroup={ activeAdministratorGroup }
                         availableUserStores={ availableUserStores }
+                        isFeatureLocked={ isFeatureLocked }
                     />
                 );
             case "administrators":
@@ -159,6 +165,7 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
                     <AdministratorsList
                         selectedAdministratorGroup={ activeAdministratorGroup }
                         availableUserStores={ availableUserStores }
+                        isFeatureLocked={ isFeatureLocked }
                     />
                 );
             case "privilegedUsers":
@@ -166,12 +173,14 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
                     <AdministratorsList
                         selectedAdministratorGroup={ activeAdministratorGroup }
                         availableUserStores={ availableUserStores }
+                        isFeatureLocked={ isFeatureLocked }
                     />
                 );
             case "pendingInvitations":
                 return (
                     <InvitedAdministratorsList
                         availableUserStores={ availableUserStores }
+                        isFeatureLocked={ isFeatureLocked }
                     />
                 );
             default:

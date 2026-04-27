@@ -110,6 +110,7 @@ export const Message: FunctionComponent<MessagePropsInterface> = (props: Message
                     ? (
                         <Header as="h5" className={ !props?.icon ? "mb-3" : null }>
                             <Header.Content>
+                                {/* @ts-expect-error TODO: */}
                                 <>
                                     {
                                         !props?.icon

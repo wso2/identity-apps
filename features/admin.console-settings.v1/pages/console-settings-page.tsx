@@ -20,7 +20,10 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import TextField from "@oxygen-ui/react/TextField";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import { CopyIcon } from "@oxygen-ui/react-icons";
+import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureLockedBanner from "@wso2is/admin.feature-gate.v1/components/feature-locked-banner";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
@@ -54,6 +57,11 @@ const ConsoleSettingsPage: FunctionComponent<ConsoleSettingsPageInterface> = (
     const [ isConsoleUrlCopied, setIsConsoleUrlCopied ] = useState<boolean>(false);
 
     const consoleUrl: string = useSelector((state: AppState) => state?.config?.deployment?.clientHost);
+
+    const consoleSettingsFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["CONSOLE_SETTINGS"]
+    );
+    const isConsoleSettingsFeatureEnabled: boolean = consoleSettingsFeatureStatus === FeatureStatus.ENABLED;
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
@@ -109,7 +117,13 @@ const ConsoleSettingsPage: FunctionComponent<ConsoleSettingsPageInterface> = (
                     />
                 ) }
             >
-                <ConsoleSettingsTabs />
+                { !isConsoleSettingsFeatureEnabled && (
+                    <FeatureLockedBanner
+                        data-componentid={ `${ componentId }-feature-locked-banner` }
+                        sx={ { marginBottom: "10px", marginTop: "-30px" } }
+                    />
+                ) }
+                <ConsoleSettingsTabs isFeatureLocked={ !isConsoleSettingsFeatureEnabled } />
             </PageLayout>
         </ConsoleSettingsProvider>
     );

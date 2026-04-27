@@ -23,12 +23,12 @@ import { useGetCurrentOrganizationType } from
     "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     UsernameRecoveryFormConstants
-} from "@wso2is/admin.server-configurations.v1/constants/username-recovery-constants";
+} from "../constants/username-recovery-constants";
 import {
     UsernamePasswordRecoveryFormUpdatableConfigsInterface,
     UsernameRecoveryConfigurationFormPropsInterface,
     UsernameRecoveryFormValuesInterface
-} from "@wso2is/admin.server-configurations.v1/models/username-recovery";
+} from "../models/username-recovery";
 import { CommonUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { Heading, Link } from "@wso2is/react-components";

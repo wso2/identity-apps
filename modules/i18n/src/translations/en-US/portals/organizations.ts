@@ -144,9 +144,9 @@ export const organizations: organizationsNS = {
                 validation: {
                     duplicate: "The entered organization handle already exists.",
                     empty: "The organization handle is required.",
-                    invalidFirstCharacter: "The organization handle must begin with an alphabet character.",
+                    invalidFirstCharacter: "The organization handle must begin with an alphanumeric character.",
                     invalidLength: "The organization handle must be more than 4 characters, less than 30 characters.",
-                    invalidPattern: "The entered organization handle contains invalid characters. Valid characters include letters (a-z, A-Z), numbers, spaces, periods (.), hyphens (-), and underscores (_).",
+                    invalidPattern: "The entered organization handle contains invalid characters. Valid characters include lowercase letters (a-z), numbers (0-9), periods (.), hyphens (-), and underscores (_).",
                     mandatoryExtension: "The organization handle should include a domain extension, such as .com (E.g,: abc.com)."
                 }
             },

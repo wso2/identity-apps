@@ -19,17 +19,19 @@
 import Card from "@oxygen-ui/react/Card";
 import Grid from "@oxygen-ui/react/Grid";
 import Typography from "@oxygen-ui/react/Typography";
-import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/branding-preference-provider";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureLockedBanner from "@wso2is/admin.feature-gate.v1/components/feature-locked-banner";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     AlertInterface,
     AlertLevels,
     FeatureAccessConfigInterface,
-    IdentifiableComponentInterface,
-    HttpErrorResponseDataInterface
+    HttpErrorResponseDataInterface,
+    IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DangerZone, DangerZoneGroup, DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
@@ -93,7 +95,12 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
     const hasUpdatePermission: boolean = useRequiredScopes(smsFeatureConfig?.scopes?.update);
     const hasCreatePermission: boolean = useRequiredScopes(smsFeatureConfig?.scopes?.create);
 
-    const isReadOnly: boolean = !smsFeatureConfig.enabled || !hasUpdatePermission;
+    const smsTemplateFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["SMS_TEMPLATES_CUSTOMIZATION"]
+    );
+    const isSmsFeatureEnabled: boolean = smsTemplateFeatureStatus === FeatureStatus.ENABLED;
+
+    const isReadOnly: boolean = !smsFeatureConfig.enabled || !hasUpdatePermission || !isSmsFeatureEnabled;
     const hasSmsTemplateCreatePermissions: boolean = smsFeatureConfig.enabled && hasCreatePermission;
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
@@ -376,6 +383,13 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                 bottomMargin={ false }
                 data-componentid={ componentId }
             >
+
+                { !isSmsFeatureEnabled && (
+                    <FeatureLockedBanner
+                        data-componentid={ `${componentId}-feature-locked-banner` }
+                    />
+                ) }
+
                 <SMSCustomizationHeader
                     selectedSMSTemplateId={ selectedSmsTemplateId }
                     selectedSMSTemplateDescription={ selectedSmsTemplateDescription }
@@ -418,6 +432,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                             <Show when={ featureConfig?.smsTemplates?.scopes?.update }>
                                 { (!isTemplateNotAvailable || hasSmsTemplateCreatePermissions) && (
                                     <SMSCustomizationFooter
+                                        isSaveButtonDisabled={ !isSmsFeatureEnabled }
                                         isSaveButtonLoading={ isSmsTemplatesListLoading || isSmsTemplateLoading }
                                         onSaveButtonClick={ handleSubmit }
                                     />
@@ -427,7 +442,9 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                     </Grid>
                 </Card>
 
-                <Show when={ featureConfig?.smsTemplates?.scopes?.delete }>{ renderDangerZone() }</Show>
+                <Show when={ featureConfig?.smsTemplates?.scopes?.delete }>
+                    { isSmsFeatureEnabled && renderDangerZone() }
+                </Show>
             </PageLayout>
         </BrandingPreferenceProvider>
     );

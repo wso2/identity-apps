@@ -113,7 +113,8 @@ export class ApplicationManagementConstants {
         .set(ApplicationFeatureDictionaryKeys.ApplicationOutboundProvisioning,
             "applications.outboundProvisioning")
         .set(ApplicationFeatureDictionaryKeys.SubOrgApplicationOutboundProvisioning,
-            "applications.outboundProvisioning.subOrg");
+            "applications.outboundProvisioning.subOrg")
+        .set("APPLICATION_UNIFIED_MCP_CAPABILITIES", "applications.unifiedMcpCapabilities");
 
     /**
      * Key for the URL search param for application state.

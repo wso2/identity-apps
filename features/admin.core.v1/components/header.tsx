@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Theme, styled, useTheme } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
@@ -65,7 +66,7 @@ import FeaturePreviewModal from "./modals/feature-preview-modal";
 import { ReactComponent as PreviewFeaturesIcon } from "../../themes/default/assets/images/icons/flask-icon.svg";
 import { ReactComponent as LogoutIcon } from "../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../../themes/default/assets/images/icons/user-icon.svg";
-import { ReactComponent as AskHelpIcon } from "../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
+import { ReactComponent as AskHelpAIIcon } from "../../themes/wso2is/assets/images/icons/ask-help-ai-icon.svg";
 import { ReactComponent as DocsIcon } from "../../themes/wso2is/assets/images/icons/docs-icon.svg";
 import { ReactComponent as BillingPortalIcon } from "../../themes/wso2is/assets/images/icons/dollar-icon.svg";
 import { AppConstants } from "../constants/app-constants";
@@ -82,7 +83,40 @@ import "./header.scss";
 /**
  * Dashboard layout Prop types.
  */
-export type HeaderPropsInterface = HeaderProps & IdentifiableComponentInterface;
+export interface CopilotToggleProps {
+    /**
+     * Whether the copilot panel is currently active/visible.
+     */
+    isActive: boolean;
+    /**
+     * Callback to toggle the copilot panel.
+     */
+    onClick: () => void;
+    /**
+     * Optional icon to render in the menu item.
+     */
+    icon?: ReactNode;
+}
+
+export interface HeaderPropsInterface extends HeaderProps, IdentifiableComponentInterface {
+    /**
+     * Optional copilot toggle config to render as a menu item in the help dropdown.
+     * Pass \{ isActive, onClick, icon \} from the calling app to avoid
+     * a direct feature dependency on admin.copilot.v1 from admin.core.v1.
+     */
+    copilotToggle?: CopilotToggleProps;
+}
+
+/**
+ * Gradient text span for the Copilot menu item label.
+ */
+const CopilotMenuItemText: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    background: `linear-gradient(135deg, ${theme.palette.primary.main}, #8b5cf6)`,
+    backgroundClip: "text",
+    fontWeight: 600
+}));
 
 /**
  * Implementation of the Reusable Header component.
@@ -92,10 +126,12 @@ export type HeaderPropsInterface = HeaderProps & IdentifiableComponentInterface;
  */
 const Header: FunctionComponent<HeaderPropsInterface> = ({
     "data-componentid": _componentId = "app-header",
+    copilotToggle,
     onCollapsibleHamburgerClick = () => null,
     ...rest
 }: HeaderPropsInterface): ReactElement => {
     const { t } = useTranslation();
+    const _theme: Theme = useTheme();
 
     const { showPreviewFeaturesModal, setShowPreviewFeaturesModal } = useFeatureGate();
     const { canUsePreviewFeatures } = usePreviewFeatures();
@@ -342,7 +378,8 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
             <>
                 <Button
                     color="inherit"
-                    startIcon={ <AskHelpIcon /> }
+                    startIcon={ <AskHelpAIIcon /> }
+                    endIcon={ <ChevronDownIcon /> }
                     data-testid="get-help-dropdown-link"
                     className="oxygen-user-dropdown-button"
                     onClick={ handleHelpMenuClick }
@@ -358,6 +395,58 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                     transformOrigin={ { horizontal: "right", vertical: "top" } }
                     onClose={ onCloseHelpMenu }
                 >
+                    { copilotToggle && (
+                        <MenuItem
+                            className="get-help-dropdown-item"
+                            onClick={ () => {
+                                copilotToggle.onClick();
+                                onCloseHelpMenu();
+                            } }
+                        >
+                            <>
+                                { copilotToggle.icon && (
+                                    <ListItemIcon className="get-help-icon">
+                                        { copilotToggle.icon }
+                                    </ListItemIcon>
+                                ) }
+                                <ListItemText
+                                    primary={
+                                        (
+                                            <CopilotMenuItemText
+                                                component="span"
+                                            >
+                                                { t("console:common.copilot.title") }
+                                            </CopilotMenuItemText>
+                                        )
+                                    }
+                                />
+                            </>
+                        </MenuItem>
+                    ) }
+                    { copilotToggle && <Divider className="get-help-dropdown-divider" /> }
+                    { window["AppUtils"].getConfig().docSiteUrl && (
+                        <MenuItem
+                            className="get-help-dropdown-item"
+                            onClick={ () => {
+                                window.open(
+                                    window["AppUtils"].getConfig().docSiteUrl,
+                                    "_blank",
+                                    "noopener"
+                                );
+                                onCloseHelpMenu();
+                            } }
+                        >
+                            <ListItemIcon className="get-help-icon">
+                                <DocsIcon />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary={ t("console:common.help.docSiteLink") }
+                            />
+                        </MenuItem>
+                    ) }
+                    { window["AppUtils"].getConfig().docSiteUrl &&
+                        <Divider className="get-help-dropdown-divider" />
+                    }
                     { window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL && (
                         <MenuItem
                             className="get-help-dropdown-item contact-support-dropdown-item"

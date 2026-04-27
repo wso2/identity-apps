@@ -381,7 +381,8 @@
 <%
 if (!StringUtils.equals("CONSOLE",clientId)
         && !StringUtils.equals("MY_ACCOUNT",clientId) && !isMagicLink &&
-        isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences) {
+        ((isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences)
+            || dynamicPortalSREnabled)) {
         String urlParameters = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
 %>
     <div class="mt-4 mb-4">

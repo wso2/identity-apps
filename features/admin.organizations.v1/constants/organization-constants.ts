@@ -97,12 +97,12 @@ export class OrganizationManagementConstants {
      *  Organization handle field constraints.
      */
     public static readonly ORG_HANDLE_FIELD_CONSTRAINTS: Record<string, any> = {
-        ORG_HANDLE_ALPHANUMERIC: new RegExp("^[a-z0-9]+$"),
-        ORG_HANDLE_ALPHANUMERIC_WITH_DOMAIN: new RegExp("^(?=[a-z0-9.]*\\.[a-z0-9.]*$)[a-z0-9.]+$"),
-        ORG_HANDLE_FIRST_ALPHABET: new RegExp("^[a-zA-Z]"),
+        ORG_HANDLE_ALPHANUMERIC: new RegExp("^[a-z0-9._-]+$"),
+        ORG_HANDLE_ALPHANUMERIC_WITH_DOMAIN: new RegExp("^(?=[a-z0-9._-]*\\.[a-z0-9._-]*$)[a-z0-9._-]+$"),
+        ORG_HANDLE_FIRST_ALPHABET: new RegExp("^[a-zA-Z0-9]"),
         ORG_HANDLE_MAX_LENGTH: 30,
         ORG_HANDLE_MIN_LENGTH: 4,
-        ORG_HANDLE_PATTERN: new RegExp("^[a-z][a-z0-9]{3,29}$")
+        ORG_HANDLE_PATTERN: new RegExp("^[a-z0-9][a-z0-9._-]{3,29}$")
     };
 }
 

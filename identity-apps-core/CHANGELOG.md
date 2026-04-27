@@ -1,5 +1,71 @@
 # @wso2is/identity-apps-core
 
+## 5.0.16
+
+### Patch Changes
+
+- [#10195](https://github.com/wso2/identity-apps/pull/10195) [`d523920c1cc4f169e1c4afab767a67925e0811e3`](https://github.com/wso2/identity-apps/commit/d523920c1cc4f169e1c4afab767a67925e0811e3) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Move dependencies to pnpm catalog
+
+## 5.0.15
+
+### Patch Changes
+
+- [#10191](https://github.com/wso2/identity-apps/pull/10191) [`b9e6800caaa5314f028ac61b00e2906bde20b359`](https://github.com/wso2/identity-apps/commit/b9e6800caaa5314f028ac61b00e2906bde20b359) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused files in `identity-apps` project
+
+## 5.0.14
+
+### Patch Changes
+
+- [#10162](https://github.com/wso2/identity-apps/pull/10162) [`45c11e9873079a1ac46fa01ace9e32225180185a`](https://github.com/wso2/identity-apps/commit/45c11e9873079a1ac46fa01ace9e32225180185a) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add a dynamic self-registration portal enabled configuration check for displaying the registration button when the login flow does not include IDF or BasicAuth.
+
+## 5.0.13
+
+### Patch Changes
+
+- [#10158](https://github.com/wso2/identity-apps/pull/10158) [`1defa5e08666c1223fe3f39e18e6c06fedb3974a`](https://github.com/wso2/identity-apps/commit/1defa5e08666c1223fe3f39e18e6c06fedb3974a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Upgrade pnpm to v10 (latest)
+
+## 5.0.12
+
+### Patch Changes
+
+- [#10090](https://github.com/wso2/identity-apps/pull/10090) [`737246c00a28b8582a5100e854550de03c18b0a3`](https://github.com/wso2/identity-apps/commit/737246c00a28b8582a5100e854550de03c18b0a3) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix IDP logo icon inconsistency
+
+- Updated dependencies [[`737246c00a28b8582a5100e854550de03c18b0a3`](https://github.com/wso2/identity-apps/commit/737246c00a28b8582a5100e854550de03c18b0a3)]:
+  - @wso2is/theme@2.10.1
+
+## 5.0.11
+
+### Patch Changes
+
+- [#10116](https://github.com/wso2/identity-apps/pull/10116) [`cae26253852a89ba886a3fb1fe258875340054e1`](https://github.com/wso2/identity-apps/commit/cae26253852a89ba886a3fb1fe258875340054e1) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add logic to check whether the new registration feature is enabled for IDF configuration.
+
+## 5.0.10
+
+### Patch Changes
+
+- [#10098](https://github.com/wso2/identity-apps/pull/10098) [`77852b794dd5b1c85fd82357e5157ad69d0be7fa`](https://github.com/wso2/identity-apps/commit/77852b794dd5b1c85fd82357e5157ad69d0be7fa) Thanks [@github-actions](https://github.com/apps/github-actions)! - Update logos in identity server portal UIs
+
+- Updated dependencies [[`77852b794dd5b1c85fd82357e5157ad69d0be7fa`](https://github.com/wso2/identity-apps/commit/77852b794dd5b1c85fd82357e5157ad69d0be7fa)]:
+  - @wso2is/theme@2.9.6
+
+## 5.0.9
+
+### Patch Changes
+
+- [#10087](https://github.com/wso2/identity-apps/pull/10087) [`bc51e7a078b7b429d99584f53adf51cc14039b86`](https://github.com/wso2/identity-apps/commit/bc51e7a078b7b429d99584f53adf51cc14039b86) Thanks [@github-actions](https://github.com/apps/github-actions)! - Enabling browser auto detect custom language
+
+## 5.0.8
+
+### Patch Changes
+
+- [#10035](https://github.com/wso2/identity-apps/pull/10035) [`0d10e3fc10f05bbe37e7ef464bfab96d322324bb`](https://github.com/wso2/identity-apps/commit/0d10e3fc10f05bbe37e7ef464bfab96d322324bb) Thanks [@github-actions](https://github.com/apps/github-actions)! - Update passkey instruction messages to be device-agnostic for better UX on mobile devices
+
+## 5.0.7
+
+### Patch Changes
+
+- [#10026](https://github.com/wso2/identity-apps/pull/10026) [`1eae77207f272111878e2d3d54b8bbc6fa70ff88`](https://github.com/wso2/identity-apps/commit/1eae77207f272111878e2d3d54b8bbc6fa70ff88) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix the issue with the X.509 authenticator error page.
+
 ## 5.0.6
 
 ### Patch Changes

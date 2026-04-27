@@ -318,6 +318,8 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
         <ResourceTab.Pane controlledSegmentation>
             <JITProvisioningSettings
                 idpId={ identityProvider.id }
+                homeRealmIdentifier={ identityProvider?.homeRealmIdentifier }
+                templateId={ identityProvider?.templateId }
                 jitProvisioningConfigurations={ identityProvider?.provisioning?.jit }
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }

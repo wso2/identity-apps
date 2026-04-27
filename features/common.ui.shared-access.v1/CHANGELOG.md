@@ -1,5 +1,17 @@
 # @wso2is/common.ui.shared-access.v1
 
+## 0.1.8
+
+### Patch Changes
+
+- [#10082](https://github.com/wso2/identity-apps/pull/10082) [`56fa246c730d17f1f727d3286bc25ca34b05f3d9`](https://github.com/wso2/identity-apps/commit/56fa246c730d17f1f727d3286bc25ca34b05f3d9) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add autocomplete input to show currently assigned roles to a shared user in a specific suborg
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.42.16
+  - @wso2is/admin.console-settings.v1@2.26.38
+  - @wso2is/admin.core.v1@2.55.27
+  - @wso2is/admin.roles.v2@2.27.374
+
 ## 0.1.7
 
 ### Patch Changes

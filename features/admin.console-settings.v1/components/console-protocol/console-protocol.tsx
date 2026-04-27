@@ -29,7 +29,12 @@ import useConsoleSettings from "../../hooks/use-console-settings";
 /**
  * Props interface of {@link ConsoleProtocol}
  */
-type ConsoleProtocolInterface = IdentifiableComponentInterface;
+interface ConsoleProtocolInterface extends IdentifiableComponentInterface {
+    /**
+     * Whether the console settings feature is locked.
+     */
+    isFeatureLocked?: boolean;
+}
 
 /**
  * Component to render the login and security settings.
@@ -40,7 +45,7 @@ type ConsoleProtocolInterface = IdentifiableComponentInterface;
 const ConsoleProtocol: FunctionComponent<ConsoleProtocolInterface> = (
     props: ConsoleProtocolInterface
 ): ReactElement => {
-    const { ["data-componentid"]: componentId } = props;
+    const { ["data-componentid"]: componentId, isFeatureLocked } = props;
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
@@ -55,8 +60,8 @@ const ConsoleProtocol: FunctionComponent<ConsoleProtocolInterface> = (
     } = useConsoleSettings();
 
     const isReadOnly: boolean = useMemo(() => {
-        return !hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes);
-    }, [ featureConfig ]);
+        return !hasRequiredScopes(featureConfig, featureConfig?.scopes?.update, allowedScopes) || isFeatureLocked;
+    }, [ featureConfig, isFeatureLocked ]);
 
     return (
         <div className="console-login-flow" data-componentid={ componentId }>

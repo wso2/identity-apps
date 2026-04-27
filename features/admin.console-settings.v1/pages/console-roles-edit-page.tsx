@@ -18,9 +18,12 @@
 
 import Button from "@oxygen-ui/react/Button";
 import Grid from "@oxygen-ui/react/Grid";
+import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import FeatureLockedBanner from "@wso2is/admin.feature-gate.v1/components/feature-locked-banner";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { useGetRoleById } from "@wso2is/admin.roles.v2/api/roles";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -55,6 +58,11 @@ const ConsoleRolesEditPage: FunctionComponent<ConsoleRolesEditPageInterface> = (
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
+
+    const consoleSettingsFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["CONSOLE_SETTINGS"]
+    );
+    const isConsoleSettingsFeatureEnabled: boolean = consoleSettingsFeatureStatus === FeatureStatus.ENABLED;
 
     const [ roleId, setRoleId ] = useState<string>(undefined);
     const [ currentActiveTabIndex, setCurrentActiveTabIndex ] = useState<number>(0);
@@ -172,11 +180,18 @@ const ConsoleRolesEditPage: FunctionComponent<ConsoleRolesEditPageInterface> = (
             titleTextAlign="left"
             bottomMargin={ false }
         >
+            { !isConsoleSettingsFeatureEnabled && (
+                <FeatureLockedBanner
+                    data-componentid={ `${ componentId }-feature-locked-banner` }
+                    sx={ { marginBottom: "10px", marginTop: "-20px" } }
+                />
+            ) }
             <ConsoleRolesEdit
                 isLoading={ isRoleDetailsRequestLoading }
                 roleObject={ roleObject }
                 onRoleUpdate={ onRoleUpdate }
                 defaultActiveIndex={ currentActiveTabIndex }
+                isReadOnly={ !isConsoleSettingsFeatureEnabled }
             />
         </TabPageLayout>
     );

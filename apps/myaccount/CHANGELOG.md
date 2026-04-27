@@ -1,5 +1,117 @@
 # @wso2is/myaccount
 
+## 4.1.17
+
+### Patch Changes
+
+- [#10199](https://github.com/wso2/identity-apps/pull/10199) [`8b5c2d0feea5f6335ab9b27e7d661e0a2a813452`](https://github.com/wso2/identity-apps/commit/8b5c2d0feea5f6335ab9b27e7d661e0a2a813452) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Fix build errors
+
+## 4.1.16
+
+### Patch Changes
+
+- [#10197](https://github.com/wso2/identity-apps/pull/10197) [`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dependencies
+
+- Updated dependencies [[`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423)]:
+  - @wso2is/admin.organizations.v1@2.28.4
+
+## 4.1.15
+
+### Patch Changes
+
+- [#10195](https://github.com/wso2/identity-apps/pull/10195) [`d523920c1cc4f169e1c4afab767a67925e0811e3`](https://github.com/wso2/identity-apps/commit/d523920c1cc4f169e1c4afab767a67925e0811e3) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Move dependencies to pnpm catalog
+
+## 4.1.14
+
+### Patch Changes
+
+- [#10191](https://github.com/wso2/identity-apps/pull/10191) [`b9e6800caaa5314f028ac61b00e2906bde20b359`](https://github.com/wso2/identity-apps/commit/b9e6800caaa5314f028ac61b00e2906bde20b359) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused files in `identity-apps` project
+
+## 4.1.13
+
+### Patch Changes
+
+- [#10179](https://github.com/wso2/identity-apps/pull/10179) [`7a45b8862c5ec081691f5b9269a85f48bf662caa`](https://github.com/wso2/identity-apps/commit/7a45b8862c5ec081691f5b9269a85f48bf662caa) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove deprecated feature modules and unused code
+
+## 4.1.12
+
+### Patch Changes
+
+- [#10158](https://github.com/wso2/identity-apps/pull/10158) [`1defa5e08666c1223fe3f39e18e6c06fedb3974a`](https://github.com/wso2/identity-apps/commit/1defa5e08666c1223fe3f39e18e6c06fedb3974a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Upgrade pnpm to v10 (latest)
+
+## 4.1.11
+
+### Patch Changes
+
+- [#10142](https://github.com/wso2/identity-apps/pull/10142) [`14de41b658ba6b91ef6ac0b8ee5f947a046da967`](https://github.com/wso2/identity-apps/commit/14de41b658ba6b91ef6ac0b8ee5f947a046da967) Thanks [@github-actions](https://github.com/apps/github-actions)! - Show new password API error response when password update fails
+
+## 4.1.10
+
+### Patch Changes
+
+- [#10090](https://github.com/wso2/identity-apps/pull/10090) [`737246c00a28b8582a5100e854550de03c18b0a3`](https://github.com/wso2/identity-apps/commit/737246c00a28b8582a5100e854550de03c18b0a3) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix IDP logo icon inconsistency
+
+* [#10130](https://github.com/wso2/identity-apps/pull/10130) [`8ffe97ffe949b7846fb511dea88ff4672faf7001`](https://github.com/wso2/identity-apps/commit/8ffe97ffe949b7846fb511dea88ff4672faf7001) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Migrate `identity-apps` to nx 21
+
+* Updated dependencies [[`737246c00a28b8582a5100e854550de03c18b0a3`](https://github.com/wso2/identity-apps/commit/737246c00a28b8582a5100e854550de03c18b0a3), [`8ffe97ffe949b7846fb511dea88ff4672faf7001`](https://github.com/wso2/identity-apps/commit/8ffe97ffe949b7846fb511dea88ff4672faf7001)]:
+  - @wso2is/theme@2.10.1
+  - @wso2is/react-components@2.10.1
+  - @wso2is/access-control@3.5.7
+  - @wso2is/validation@2.4.4
+  - @wso2is/core@2.13.1
+
+## 4.1.9
+
+### Patch Changes
+
+- [#10110](https://github.com/wso2/identity-apps/pull/10110) [`40ad448baf71d68d4a854a771215e246b47164d0`](https://github.com/wso2/identity-apps/commit/40ad448baf71d68d4a854a771215e246b47164d0) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix primary mobile number delete icon enabled when mobile number is marked as required in MyAccount
+
+- Updated dependencies [[`dd01f38682fd189b94802e06b3473a312c1bf7b1`](https://github.com/wso2/identity-apps/commit/dd01f38682fd189b94802e06b3473a312c1bf7b1)]:
+  - @wso2is/access-control@3.5.6
+
+## 4.1.8
+
+### Patch Changes
+
+- [#10098](https://github.com/wso2/identity-apps/pull/10098) [`77852b794dd5b1c85fd82357e5157ad69d0be7fa`](https://github.com/wso2/identity-apps/commit/77852b794dd5b1c85fd82357e5157ad69d0be7fa) Thanks [@github-actions](https://github.com/apps/github-actions)! - Update logos in identity server portal UIs
+
+- Updated dependencies [[`77852b794dd5b1c85fd82357e5157ad69d0be7fa`](https://github.com/wso2/identity-apps/commit/77852b794dd5b1c85fd82357e5157ad69d0be7fa)]:
+  - @wso2is/theme@2.9.6
+
+## 4.1.7
+
+### Patch Changes
+
+- [#10095](https://github.com/wso2/identity-apps/pull/10095) [`8552889ba63327114d7ca213f8ed78fcdbf5e5b1`](https://github.com/wso2/identity-apps/commit/8552889ba63327114d7ca213f8ed78fcdbf5e5b1) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add tenanted wellknown endpoint support.
+
+- Updated dependencies [[`56fa246c730d17f1f727d3286bc25ca34b05f3d9`](https://github.com/wso2/identity-apps/commit/56fa246c730d17f1f727d3286bc25ca34b05f3d9), [`a27ac0c8a6d65ac6995b5a70db973a14b32fdcfe`](https://github.com/wso2/identity-apps/commit/a27ac0c8a6d65ac6995b5a70db973a14b32fdcfe), [`c308be01f69c5ffd4d0b057a59a3a6e42292759e`](https://github.com/wso2/identity-apps/commit/c308be01f69c5ffd4d0b057a59a3a6e42292759e)]:
+  - @wso2is/i18n@2.38.7
+  - @wso2is/access-control@3.5.5
+
+## 4.1.6
+
+### Patch Changes
+
+- [#10057](https://github.com/wso2/identity-apps/pull/10057) [`3f656293f585acc7d34a3288477e5ef4c43dcbf4`](https://github.com/wso2/identity-apps/commit/3f656293f585acc7d34a3288477e5ef4c43dcbf4) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix email verification issue
+
+- Updated dependencies [[`3f656293f585acc7d34a3288477e5ef4c43dcbf4`](https://github.com/wso2/identity-apps/commit/3f656293f585acc7d34a3288477e5ef4c43dcbf4)]:
+  - @wso2is/common.users.v1@1.1.2
+
+## 4.1.5
+
+### Patch Changes
+
+- [#10046](https://github.com/wso2/identity-apps/pull/10046) [`ed27582ef2e9568fe568eb9a0db66924bb6d8a3a`](https://github.com/wso2/identity-apps/commit/ed27582ef2e9568fe568eb9a0db66924bb6d8a3a) Thanks [@github-actions](https://github.com/apps/github-actions)! - User management team UI fixes
+
+- Updated dependencies [[`ed27582ef2e9568fe568eb9a0db66924bb6d8a3a`](https://github.com/wso2/identity-apps/commit/ed27582ef2e9568fe568eb9a0db66924bb6d8a3a)]:
+  - @wso2is/common.users.v1@1.1.1
+
+## 4.1.4
+
+### Patch Changes
+
+- [#10032](https://github.com/wso2/identity-apps/pull/10032) [`0bba04263ff9c829de64ad871282454572ff00fa`](https://github.com/wso2/identity-apps/commit/0bba04263ff9c829de64ad871282454572ff00fa) Thanks [@github-actions](https://github.com/apps/github-actions)! - Multiple email & mobile number display improvement
+
 ## 4.1.3
 
 ### Patch Changes

@@ -158,12 +158,12 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
                         <Field.Dropdown
                             ariaLabel="SMS Template Dropdown"
                             name="selectedSMSTemplate"
-                            label={ t("extensions:develop.smsTemplates.form.inputs.template.label") }
+                            label={ t("smsTemplates:form.inputs.template.label") }
                             options={ smsTemplateListOptions }
                             required={ true }
                             data-componentid={ `${ componentId }-sms-template-list` }
                             hint={ selectedSMSTemplateDescription ?? null }
-                            placeholder={ t("extensions:develop.smsTemplates.form.inputs.template.placeholder") }
+                            placeholder={ t("smsTemplates:form.inputs.template.placeholder") }
                             value={ selectedSMSTemplateId }
                             listen={ onTemplateSelected }
                         />

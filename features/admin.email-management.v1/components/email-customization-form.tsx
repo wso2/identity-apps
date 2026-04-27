@@ -72,6 +72,10 @@ interface EmailCustomizationFormPropsInterface extends IdentifiableComponentInte
      * Is readonly.
      */
     readOnly?: boolean;
+    /**
+     * Is the feature enabled.
+     */
+    isFeatureEnabled?: boolean;
 }
 
 interface EmailCustomizationFormValuesInterface {
@@ -100,6 +104,7 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
         onSubmit,
         onDeleteRequested,
         readOnly,
+        isFeatureEnabled = true,
         ["data-componentid"]: componentId = "email-customization-form"
     } = props;
 
@@ -243,7 +248,7 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                     );
                 } }
             />
-            <Show
+            { isFeatureEnabled && (<Show
                 when={ featureConfig?.emailTemplates?.scopes?.delete }
             >
                 <DangerZone
@@ -255,7 +260,7 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                     buttonDisableHint={ t("extensions:develop.emailTemplates.dangerZone.actionDisabledHint") }
                     onActionClick={ onDeleteRequested }
                 />
-            </Show>
+            </Show>) }
         </>
     );
 };

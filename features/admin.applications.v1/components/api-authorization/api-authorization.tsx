@@ -16,11 +16,12 @@
  * under the License.
  */
 
-import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { useAPIResources } from "@wso2is/admin.api-resources.v2/api";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -49,6 +50,7 @@ import {
     removeAuthorizedAPI
 } from "../../api/api-authorization";
 import useSubscribedAPIResources from "../../api/use-subscribed-api-resources";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import {
     AuthorizedAPIListItemInterface,
     AuthorizedPermissionListItemInterface
@@ -95,10 +97,20 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
 
     const isDigitalWallet: boolean = originalTemplateId === "digital-wallet-application";
     const isMCPClient: boolean = originalTemplateId === "mcp-client-application";
-    const resourceText: string = isMCPClient
-        ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.genericResource")
-        : isDigitalWallet
-            ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.vcResource")
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const applicationFeatureConfig: FeatureAccessConfigInterface = featureConfig?.applications;
+
+    const isUnifiedMcpCapabilitiesEnabled: boolean = isFeatureEnabled(
+        applicationFeatureConfig,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_UNIFIED_MCP_CAPABILITIES")
+    );
+
+    // Determine resource text based on feature flag and application type
+    const resourceText: string = isDigitalWallet
+        ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.vcResource")
+        : (isUnifiedMcpCapabilitiesEnabled || isMCPClient)
+            ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.genericResource")
             : t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.apiResource");
 
     const [ isSubAPIResourcesSectionLoading, setSubAPIResourcesSectionLoading ] = useState<boolean>(false);
@@ -110,8 +122,6 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
     const [ isUpdateData, setIsUpdateData ] = useState<boolean>(false);
     const [ allAuthorizedScopes, setAllAuthorizedScopes ] = useState<AuthorizedPermissionListItemInterface[]>([]);
     const [ hideAuthorizeAPIResourceButton, setHideAuthorizeAPIResourceButton ] = useState<boolean>(true);
-
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const path: string[] = history.location.pathname.split("/");
     const appId: string = path[path.length - 1].split("#")[0];

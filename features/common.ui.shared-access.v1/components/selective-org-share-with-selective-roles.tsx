@@ -107,6 +107,22 @@ interface SelectiveOrgShareWithSelectiveRolesProps extends IdentifiableComponent
     shareWithFutureChildOrgsLabel: string;
     sharingSettingsLabel: string;
     assignedRolesLabel: string;
+    /**
+     * Map of organization ID to the roles actually assigned to the user in that organization.
+     * When provided (user sharing context), a read-only "Currently Assigned Roles" section is
+     * rendered below the editable policy roles selector.
+     */
+    actualAssignedRolesMap?: Record<string, RoleSharingInterface[]>;
+    /**
+     * Label for the currently assigned roles section (read-only).
+     * Only rendered when `actualAssignedRolesMap` is provided and non-empty for the selected org.
+     */
+    currentlyAssignedRolesLabel?: string;
+    /**
+     * Optional setter to update currently assigned roles.
+     * When provided, the currently assigned roles input becomes editable.
+     */
+    setActualAssignedRolesMap?: ReactDispatch<SetStateAction<Record<string, RoleSharingInterface[]>>>;
 }
 
 interface TreeViewBaseItemWithRoles extends TreeViewBaseItem {
@@ -151,7 +167,10 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
         allRolesSharingMessage,
         shareWithFutureChildOrgsLabel,
         sharingSettingsLabel,
-        assignedRolesLabel
+        assignedRolesLabel,
+        actualAssignedRolesMap = {},
+        currentlyAssignedRolesLabel,
+        setActualAssignedRolesMap = () => undefined
     } = props;
 
     const organizationId: string = useSelector((state: AppState) => state?.organization?.organization?.id);
@@ -231,7 +250,7 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
         1,
         null,
         null,
-        "sharingMode"
+        "sharingMode,roles"
     );
 
     const isLoading: boolean = isTotalApplicationOrganizationsFetchRequestLoading;
@@ -240,6 +259,112 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
         return roleA?.displayName === roleB?.displayName
             && roleA?.audience?.type === roleB?.audience?.type
             && roleA?.audience?.display === roleB?.audience?.display;
+    };
+
+    const transformToRoleSharing = (role: RoleIdentityInterface): RoleSharingInterface => {
+        return {
+            audience: {
+                display: role?.audience?.display ?? "",
+                type: role?.audience?.type ?? ""
+            },
+            displayName: role?.displayName ?? ""
+        };
+    };
+
+    const getAssignedRolesOptions = (orgId: string): SelectedOrganizationRoleInterface[] => {
+        const baseOptions: SelectedOrganizationRoleInterface[] = roleSelections[orgId] ?? [];
+
+        if (baseOptions.length > 0) {
+            const missingAssignedRoles: SelectedOrganizationRoleInterface[] =
+                (actualAssignedRolesMap[orgId] ?? [])
+                    .filter((assignedRole: RoleSharingInterface) =>
+                        !baseOptions.some((role: SelectedOrganizationRoleInterface) =>
+                            isSameRole(role, assignedRole)
+                        )
+                    )
+                    .map((assignedRole: RoleSharingInterface) => ({
+                        audience: {
+                            display: assignedRole.audience?.display,
+                            type: assignedRole.audience?.type
+                        },
+                        displayName: assignedRole.displayName,
+                        id: `${assignedRole.displayName}:${assignedRole.audience?.type}:` +
+                            `${assignedRole.audience?.display}`,
+                        selected: false
+                    }));
+
+            return [
+                ...baseOptions,
+                ...missingAssignedRoles
+            ];
+        }
+
+        return (actualAssignedRolesMap[orgId] ?? []).map((assignedRole: RoleSharingInterface) => ({
+            audience: {
+                display: assignedRole.audience?.display,
+                type: assignedRole.audience?.type
+            },
+            displayName: assignedRole.displayName,
+            id: `${assignedRole.displayName}:${assignedRole.audience?.type}:` +
+                `${assignedRole.audience?.display}`,
+            selected: false
+        }));
+    };
+
+    const handleAssignedRolesOnChange = (
+        _value: SelectedOrganizationRoleInterface[],
+        reason: AutocompleteChangeReason,
+        details: AutocompleteChangeDetails<SelectedOrganizationRoleInterface>
+    ): void => {
+        if (isEmpty(selectedOrgId)) {
+            return;
+        }
+
+        if (reason === "selectOption") {
+            const selectedRole: SelectedOrganizationRoleInterface = details?.option;
+
+            if (isEmpty(selectedRole)) {
+                return;
+            }
+
+            setActualAssignedRolesMap((prev: Record<string, RoleSharingInterface[]>) => {
+                const orgRoles: RoleSharingInterface[] = prev[selectedOrgId] ?? [];
+
+                if (orgRoles.some((role: RoleSharingInterface) => isSameRole(role, selectedRole))) {
+                    return prev;
+                }
+
+                return {
+                    ...prev,
+                    [selectedOrgId]: [ ...orgRoles, transformToRoleSharing(selectedRole) ]
+                };
+            });
+
+            resolveRoleAddition(selectedOrgId, transformToRoleSharing(selectedRole));
+
+            return;
+        }
+
+        if (reason === "removeOption") {
+            const removedRole: SelectedOrganizationRoleInterface = details?.option;
+
+            if (isEmpty(removedRole)) {
+                return;
+            }
+
+            if (enableAdminRole && removedRole.displayName === ConsoleRolesOnboardingConstants.ADMINISTRATOR) {
+                return;
+            }
+
+            setActualAssignedRolesMap((prev: Record<string, RoleSharingInterface[]>) => ({
+                ...prev,
+                [selectedOrgId]: (prev[selectedOrgId] ?? []).filter(
+                    (role: RoleSharingInterface) => !isSameRole(role, removedRole)
+                )
+            }));
+
+            resolveRoleRemoval(selectedOrgId, transformToRoleSharing(removedRole));
+        }
     };
 
     // Used to tick shared orgs from the total organization tree
@@ -440,6 +565,21 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
             const selectedOrgSharingPolicy: ApplicationSharingPolicy = selectedOrg?.sharingMode?.policy;
 
             selectedOrgRoles = selectedOrg?.roles || [];
+
+            const currentlyAssignedRolesFromAPI: RoleSharingInterface[] = selectedOrgRoles.map(
+                (role: OrganizationRoleInterface) => ({
+                    audience: {
+                        display: role?.audience?.display,
+                        type: role?.audience?.type
+                    },
+                    displayName: role?.displayName
+                })
+            );
+
+            setActualAssignedRolesMap((prev: Record<string, RoleSharingInterface[]>) => ({
+                ...prev,
+                [selectedOrgId]: currentlyAssignedRolesFromAPI
+            }));
 
             // If the selected organization does not have a sharing policy,
             // default it to SELECTED_ORG_ONLY.
@@ -1050,10 +1190,15 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
             selectedOrgParentId !== organizationId;
 
         if (isNonImmediateOrgInUserSharing) {
-            const currentlyAssignedRoles: SelectedOrganizationRoleInterface[] =
+            const policyRoles: SelectedOrganizationRoleInterface[] =
                 roleSelections[selectedOrgId]?.filter(
                     (role: SelectedOrganizationRoleInterface) => role.selected
                 ) ?? [];
+
+            const currentlyAssignedRoles: RoleSharingInterface[] =
+                actualAssignedRolesMap[selectedOrgId] ?? [];
+            const assignedRolesOptions: SelectedOrganizationRoleInterface[] =
+                getAssignedRolesOptions(selectedOrgId);
 
             return (
                 <Box className="role-list-container">
@@ -1065,7 +1210,7 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                         { assignedRolesLabel }
                     </Typography>
                     {
-                        currentlyAssignedRoles.length === 0 ? (
+                        policyRoles.length === 0 ? (
                             <Alert
                                 severity="info"
                                 data-componentid={ `${ componentId }-no-roles-alert` }
@@ -1075,7 +1220,7 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                             </Alert>
                         ) : (
                             <Box sx={ { display: "flex", flexWrap: "wrap", gap: 1, mt: 1 } }>
-                                { currentlyAssignedRoles.map((
+                                { policyRoles.map((
                                     role: SelectedOrganizationRoleInterface,
                                     index: number
                                 ) => (
@@ -1083,15 +1228,103 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                                         key={ index }
                                         label={ role.displayName }
                                         data-componentid={
-                                            `${ componentId }-assigned-role-chip-${ index }` }
+                                            `${ componentId }-policy-role-chip-${ index }` }
                                     />
                                 )) }
                             </Box>
                         )
                     }
+                    {
+                        currentlyAssignedRolesLabel && (
+                            <>
+                                <Typography variant="body1" sx={ { mt: 2 } }>
+                                    { currentlyAssignedRolesLabel }
+                                </Typography>
+                                <Autocomplete
+                                    fullWidth
+                                    multiple
+                                    disableClearable
+                                    disabled
+                                    data-componentid={ `${componentId}-currently-assigned-autocomplete` }
+                                    size="small"
+                                    placeholder={
+                                        t(
+                                            "applications:edit.sections.sharedAccess" +
+                                            ".searchAvailableRolesPlaceholder"
+                                        ) }
+                                    options={ assignedRolesOptions }
+                                    value={ assignedRolesOptions.filter(
+                                        (role: SelectedOrganizationRoleInterface) =>
+                                            currentlyAssignedRoles.some((assignedRole: RoleSharingInterface) =>
+                                                isSameRole(role, assignedRole)
+                                            )
+                                    ) }
+                                    noOptionsText={ t("common:noResultsFound") }
+                                    getOptionLabel={ (dropdownOption: DropdownProps) =>
+                                        dropdownOption?.displayName }
+                                    renderOption={ (
+                                        props: React.HTMLAttributes<HTMLLIElement>,
+                                        option: RolesV2Interface
+                                    ) => (
+                                        <li
+                                            { ...props }
+                                            style={ {
+                                                alignItems: "flex-start",
+                                                display: "flex",
+                                                flexDirection: "column"
+                                            } }
+                                        >
+                                            <Typography variant="body2" sx={ { fontSize: "0.95rem" } }>
+                                                { option?.displayName }
+                                            </Typography>
+                                            <Typography variant="caption" color="text.secondary">
+                                                { getRoleAudienceLabel(option) }
+                                            </Typography>
+                                        </li>
+                                    ) }
+                                    isOptionEqualToValue={ (
+                                        option: RolesV2Interface,
+                                        value: RolesV2Interface) =>
+                                        isSameRole(option, value)
+                                    }
+                                    renderInput={ (params: AutocompleteRenderInputParams) => (
+                                        <TextField
+                                            { ...params }
+                                            size="small"
+                                            className="role-select-autocomplete"
+                                            placeholder={
+                                                t(
+                                                    "applications:edit.sections.sharedAccess" +
+                                                    ".searchAvailableRolesPlaceholder"
+                                                ) }
+                                            data-componentid={ `${componentId}-assigned-role-search-input` }
+                                        />
+                                    ) }
+                                    renderTags={ (
+                                        value: RolesV2Interface[],
+                                        getTagProps: AutocompleteRenderGetTagProps
+                                    ) => value.map((option: RolesV2Interface, index: number) => {
+                                        return (
+                                            <Chip
+                                                { ...getTagProps({ index }) }
+                                                key={ index }
+                                                label={ option.displayName }
+                                            />
+                                        );
+                                    }
+                                    ) }
+                                />
+                            </>
+                        )
+                    }
                 </Box>
             );
         }
+
+        const currentlyAssignedRoles: RoleSharingInterface[] =
+            actualAssignedRolesMap[selectedOrgId] ?? [];
+        const assignedRolesOptions: SelectedOrganizationRoleInterface[] =
+            getAssignedRolesOptions(selectedOrgId);
 
         return (
             <Box className="role-list-container">
@@ -1208,13 +1441,108 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                             data-componentid={ `${ componentId }-share-with-future-child-checkbox` }
                             checked={ shouldShareWithFutureChildOrgsMap[selectedOrgId] ??
                                 selectedOrganizationSharingPolicy ===
-                                ApplicationSharingPolicy.SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN ??
-                                false
+                                ApplicationSharingPolicy.SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN
                             }
                             onChange={ (_event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
                                 updateChildSharingPolicy(checked);
                             } }
                         />
+                    )
+                }
+                {
+                    currentlyAssignedRolesLabel && (
+                        <>
+                            <Typography variant="body1" sx={ { mt: 2 } }>
+                                { currentlyAssignedRolesLabel }
+                            </Typography>
+                            <Autocomplete
+                                fullWidth
+                                multiple
+                                disableClearable
+                                data-componentid={ `${componentId}-currently-assigned-autocomplete` }
+                                size="small"
+                                placeholder={
+                                    t(
+                                        "applications:edit.sections.sharedAccess" +
+                                        ".searchAvailableRolesPlaceholder"
+                                    ) }
+                                options={ assignedRolesOptions }
+                                value={ assignedRolesOptions.filter(
+                                    (role: SelectedOrganizationRoleInterface) =>
+                                        currentlyAssignedRoles.some((assignedRole: RoleSharingInterface) =>
+                                            isSameRole(role, assignedRole)
+                                        )
+                                ) }
+                                onChange={ (
+                                    _event: SyntheticEvent,
+                                    value: SelectedOrganizationRoleInterface[],
+                                    reason: AutocompleteChangeReason,
+                                    details: AutocompleteChangeDetails<SelectedOrganizationRoleInterface>
+                                ) => {
+                                    handleAssignedRolesOnChange(value, reason, details);
+                                } }
+                                noOptionsText={ t("common:noResultsFound") }
+                                getOptionLabel={ (dropdownOption: DropdownProps) =>
+                                    dropdownOption?.displayName }
+                                renderOption={ (
+                                    props: React.HTMLAttributes<HTMLLIElement>,
+                                    option: RolesV2Interface
+                                ) => (
+                                    <li
+                                        { ...props }
+                                        style={ {
+                                            alignItems: "flex-start",
+                                            display: "flex",
+                                            flexDirection: "column"
+                                        } }
+                                    >
+                                        <Typography variant="body2" sx={ { fontSize: "0.95rem" } }>
+                                            { option?.displayName }
+                                        </Typography>
+                                        <Typography variant="caption" color="text.secondary">
+                                            { getRoleAudienceLabel(option) }
+                                        </Typography>
+                                    </li>
+                                ) }
+                                isOptionEqualToValue={ (
+                                    option: RolesV2Interface,
+                                    value: RolesV2Interface) =>
+                                    isSameRole(option, value)
+                                }
+                                getOptionDisabled={ (option: RolesInterface) => {
+                                    return enableAdminRole &&
+                                        option.displayName === ConsoleRolesOnboardingConstants.ADMINISTRATOR;
+                                } }
+                                renderInput={ (params: AutocompleteRenderInputParams) => (
+                                    <TextField
+                                        { ...params }
+                                        size="small"
+                                        className="role-select-autocomplete"
+                                        placeholder={
+                                            t(
+                                                "applications:edit.sections.sharedAccess" +
+                                                ".searchAvailableRolesPlaceholder"
+                                            ) }
+                                        data-componentid={ `${componentId}-assigned-role-search-input` }
+                                    />
+                                ) }
+                                renderTags={ (
+                                    value: RolesV2Interface[],
+                                    getTagProps: AutocompleteRenderGetTagProps
+                                ) => value.map((option: RolesV2Interface, index: number) => {
+                                    return (
+                                        <Chip
+                                            { ...getTagProps({ index }) }
+                                            key={ index }
+                                            label={ option.displayName }
+                                            disabled={ enableAdminRole && option.displayName ===
+                                                ConsoleRolesOnboardingConstants.ADMINISTRATOR }
+                                        />
+                                    );
+                                }
+                                ) }
+                            />
+                        </>
                     )
                 }
             </Box>

@@ -17,7 +17,7 @@
  */
 
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
-import { getAllExternalClaims, getDialects } from "@wso2is/admin.claims.v1/api";
+import { getAllExternalClaims, getDialects } from "../api";
 import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";

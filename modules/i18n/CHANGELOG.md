@@ -1,5 +1,35 @@
 # @wso2is/i18n
 
+## 2.39.0
+
+### Minor Changes
+
+- [#10112](https://github.com/wso2/identity-apps/pull/10112) [`793c5bde494bdde069a0fbc0b5311d279938ceb9`](https://github.com/wso2/identity-apps/commit/793c5bde494bdde069a0fbc0b5311d279938ceb9) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - feat: add AI Copilot ("Ask AI") assistant to the Admin Console
+
+### Patch Changes
+
+- [#10039](https://github.com/wso2/identity-apps/pull/10039) [`3ab81080396569cab60e5e4b52d8715b54d9ef67`](https://github.com/wso2/identity-apps/commit/3ab81080396569cab60e5e4b52d8715b54d9ef67) Thanks [@github-actions](https://github.com/apps/github-actions)! - fix incorrect UI input validation for orgHandle in sub-organization creation form
+
+## 2.38.7
+
+### Patch Changes
+
+- [#10082](https://github.com/wso2/identity-apps/pull/10082) [`56fa246c730d17f1f727d3286bc25ca34b05f3d9`](https://github.com/wso2/identity-apps/commit/56fa246c730d17f1f727d3286bc25ca34b05f3d9) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add autocomplete input to show currently assigned roles to a shared user in a specific suborg
+
+* [#10071](https://github.com/wso2/identity-apps/pull/10071) [`c308be01f69c5ffd4d0b057a59a3a6e42292759e`](https://github.com/wso2/identity-apps/commit/c308be01f69c5ffd4d0b057a59a3a6e42292759e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Home realm support based on an extension configuration
+
+## 2.38.6
+
+### Patch Changes
+
+- [#10077](https://github.com/wso2/identity-apps/pull/10077) [`95c89b5e1111586c0cecd491f109d8aab83ad3ee`](https://github.com/wso2/identity-apps/commit/95c89b5e1111586c0cecd491f109d8aab83ad3ee) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add support to feature gate remote userstore and sms templates
+
+## 2.38.5
+
+### Patch Changes
+
+- [#10080](https://github.com/wso2/identity-apps/pull/10080) [`58e307a97ad591cc7c6a34e076b42fe6dea3fbae`](https://github.com/wso2/identity-apps/commit/58e307a97ad591cc7c6a34e076b42fe6dea3fbae) Thanks [@github-actions](https://github.com/apps/github-actions)! - update outbound provisioning groups i18s
+
 ## 2.38.4
 
 ### Patch Changes

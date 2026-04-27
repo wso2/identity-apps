@@ -26,7 +26,7 @@ import TableHead from "@oxygen-ui/react/TableHead";
 import TableRow from "@oxygen-ui/react/TableRow";
 import { TrashIcon } from "@oxygen-ui/react-icons";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
+import useGetAllLocalClaims from "../../../api/use-get-all-local-claims";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useEnableLegacyFlows, { LegacyFlowType } from "@wso2is/admin.core.v1/hooks/use-enable-legacy-flows";

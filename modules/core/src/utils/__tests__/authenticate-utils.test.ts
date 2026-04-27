@@ -22,12 +22,16 @@ describe("AuthenticateUtils", (): void => {
 
     beforeAll((): void => {
         // Mock TextEncoder
-        if (typeof global.TextEncoder === "undefined") {
-            global.TextEncoder = TextEncoder;
+        if (typeof globalThis.TextEncoder === "undefined") {
+            Object.defineProperty(globalThis, "TextEncoder", {
+                configurable: true,
+                value: TextEncoder,
+                writable: true
+            });
         }
 
         // Mock window.crypto with all required properties.
-        Object.defineProperty(global, "crypto", {
+        Object.defineProperty(globalThis, "crypto", {
             value: {
                 getRandomValues: (array: Uint8Array) => {
                     // Mock getRandomValues to fill the array with random values.

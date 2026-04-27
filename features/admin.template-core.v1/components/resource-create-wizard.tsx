@@ -35,7 +35,15 @@ import get from "lodash-es/get";
 import has from "lodash-es/has";
 import pick from "lodash-es/pick";
 import set from "lodash-es/set";
-import React, { ChangeEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import React, {
+    ChangeEvent,
+    FunctionComponent,
+    MouseEvent,
+    ReactElement,
+    ReactNode,
+    useEffect,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, ModalProps } from "semantic-ui-react";
 import { FormDynamicField } from "./form-dynamic-field";
@@ -98,9 +106,17 @@ export interface ResourceCreateWizardPropsInterface extends ModalProps, Identifi
      */
     templatePayload: Record<string, unknown>;
     /**
+     * Optional banner to display at the top of the wizard content.
+     */
+    banner?: ReactNode;
+    /**
      * i18n key of the form main button text.
      */
     buttonText: string;
+    /**
+     * Whether the form fields should be disabled.
+     */
+    isDisabled?: boolean;
     /**
      * Function to handle form submission.
      */
@@ -121,8 +137,10 @@ export interface ResourceCreateWizardPropsInterface extends ModalProps, Identifi
  */
 export const ResourceCreateWizard: FunctionComponent<ResourceCreateWizardPropsInterface> = ({
     ["data-componentid"]: componentId = "resource-create-wizard",
+    banner,
     form,
     initialFormValues,
+    isDisabled = false,
     showWizard,
     templateId,
     templateName,
@@ -251,6 +269,7 @@ export const ResourceCreateWizard: FunctionComponent<ResourceCreateWizardPropsIn
                     <Heading as="h6">{ templateDescription }</Heading>
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
+                    { banner }
                     {
                         !formInitialValues || isLoading
                             ? <ContentLoader />
@@ -305,6 +324,7 @@ export const ResourceCreateWizard: FunctionComponent<ResourceCreateWizardPropsIn
                                                                             <FormDynamicField
                                                                                 field={ field }
                                                                                 form={ formState }
+                                                                                disabled={ isDisabled }
                                                                             />
                                                                         </Grid.Column>
                                                                     </Grid.Row>
@@ -334,7 +354,7 @@ export const ResourceCreateWizard: FunctionComponent<ResourceCreateWizardPropsIn
                                     floated="right"
                                     data-componentid={ `${componentId}-create-button` }
                                     loading={ isSubmitting }
-                                    disabled={ isSubmitting }
+                                    disabled={ isSubmitting || isDisabled }
                                 >
                                     { buttonText }
                                 </PrimaryButton>

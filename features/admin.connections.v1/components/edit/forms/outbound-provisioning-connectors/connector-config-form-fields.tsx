@@ -651,6 +651,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                             component={ TextFieldAdapter }
                             initialValue={ existingValue }
                             readOnly={ true }
+                            disabled={ forceDisabled }
                             required={ isRequired }
                             sx={ !isReadOnly ? {
                                 "& .MuiInputBase-root": {
@@ -735,9 +736,10 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                         component={ TextFieldAdapter }
                         initialValue={ isBeingEdited ? "" : (existingValue ?? propertyMetadata.defaultValue) }
                         readOnly={ isReadOnly }
+                        disabled={ forceDisabled }
                         required={ isRequired }
                         maxLength={ propertyMetadata.maxLength ?? 1000 }
-                        validation={ (value: string) => validateField(value, propertyMetadata) }
+                        validate={ (value: string) => validateField(value, propertyMetadata) }
                         endAdornment={ editingAdornment }
                         helperText={
                             helperTextContent ? (
@@ -773,9 +775,10 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                     component={ TextFieldAdapter }
                     initialValue={ existingValue ?? propertyMetadata.defaultValue }
                     readOnly={ isReadOnly }
+                    disabled={ forceDisabled }
                     required={ isRequired }
                     maxLength={ propertyMetadata.maxLength ?? 1000 }
-                    validation={ (value: string) => validateField(value, propertyMetadata) }
+                    validate={ (value: string) => validateField(value, propertyMetadata) }
                     helperText={
                         propertyMetadata.description ? (
                             <Hint compact>

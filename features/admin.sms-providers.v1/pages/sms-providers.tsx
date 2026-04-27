@@ -21,7 +21,6 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import smsProviderConfig from "@wso2is/admin.extensions.v1/configs/sms-provider";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -226,10 +225,6 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         setIsLoading(false);
 
     }, [ originalSMSProviderConfig ]);
-
-    const mutateGetSMSProviderConfig = (): void => {
-        mutateSMSProviderConfig();
-    };
 
     /**
      * Displays the error banner when unable to fetch sms provider configuration.
@@ -742,38 +737,32 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
 
                                             { smsProviderSettings?.selectedProvider ===
                                                             SMSProviderConstants.CUSTOM_SMS_PROVIDER && (
-                                                <>
-                                                    <CustomSMSProvider
-                                                        isLoading={ isSubmitting }
-                                                        isReadOnly={ !hasSMSProvidersUpdatePermission }
-                                                        onSubmit={ handleSubmit }
-                                                        data-componentid={ "custom-sms-provider" }
-                                                        hasExistingConfig={
-                                                            existingSMSProviders.includes("CustomSMSProvider")
-                                                        }
-                                                        currentAuthType={
-                                                            smsProviderSettings?.providerParams[
-                                                                SMSProviderConstants.CUSTOM_SMS_PROVIDER
-                                                            ]?.authType
-                                                        }
-                                                        endpointAuthType={ endpointAuthType }
-                                                        setEndpointAuthType={ setEndpointAuthType }
-                                                        isAuthenticationUpdateFormState={
-                                                            isAuthenticationUpdateFormState
-                                                        }
-                                                        setIsAuthenticationUpdateFormState={
-                                                            setIsAuthenticationUpdateFormState
-                                                        }
-                                                        formState={ formStateRef }
-                                                        onAuthenticationChange={ handleAuthenticationChange }
-                                                    />
-                                                    { smsProviderConfig.renderAlternativeSmsProviderOptions({
-                                                        existingSMSProviders,
-                                                        mutateGetSMSProviderConfig,
-                                                        originalSMSProviderConfig,
-                                                        smsProviderConfigFetchRequestError
-                                                    }) }
-                                                </>
+
+                                                <CustomSMSProvider
+                                                    isLoading={ isSubmitting }
+                                                    isReadOnly={ !hasSMSProvidersUpdatePermission }
+                                                    onSubmit={ handleSubmit }
+                                                    data-componentid={ "custom-sms-provider" }
+                                                    hasExistingConfig={
+                                                        existingSMSProviders.includes("CustomSMSProvider")
+                                                    }
+                                                    currentAuthType={
+                                                        smsProviderSettings?.providerParams[
+                                                            SMSProviderConstants.CUSTOM_SMS_PROVIDER
+                                                        ]?.authType
+                                                    }
+                                                    endpointAuthType={ endpointAuthType }
+                                                    setEndpointAuthType={ setEndpointAuthType }
+                                                    isAuthenticationUpdateFormState={
+                                                        isAuthenticationUpdateFormState
+                                                    }
+                                                    setIsAuthenticationUpdateFormState={
+                                                        setIsAuthenticationUpdateFormState
+                                                    }
+                                                    formState={ formStateRef }
+                                                    onAuthenticationChange={ handleAuthenticationChange }
+                                                />
+
                                             ) }
                                             { smsProviderSettings?.selectedProvider ===
                                                             SMSProviderConstants.TWILIO_SMS_PROVIDER && (

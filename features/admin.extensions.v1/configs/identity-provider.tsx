@@ -205,6 +205,10 @@ export const identityProviderConfig: IdentityProviderConfig = {
         enableJitProvisioningField: {
             show: true
         },
+        homeRealmIdentifierField: {
+            excludedTemplateIds: [ CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXTERNAL_CUSTOM_AUTHENTICATOR ],
+            show: false
+        },
         idpGroupSyncMethodField: {
             show: true
         },

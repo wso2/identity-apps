@@ -1089,6 +1089,14 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 checkboxLabel: "Override existing roles with external IDP group roles",
                 hint: "When enabled, existing roles will be replaced with new external IDP group roles during each login.",
                 label: "IDP group role synchronization method"
+            },
+            homeRealmIdentifier: {
+                hint: "Specify an identifier for this connection. Applications can pass this value " +
+                    "as the <1>fidp</1> query parameter (e.g., <3>?fidp=external-idp-identifier</3>) in the " +
+                    "authorization request URL to redirect users directly to this connection, " +
+                    "bypassing the multi-option login page.",
+                label: "Home Realm Identifier",
+                placeholder: "e.g. external-idp-identifier"
             }
         },
         outboundConnectorAccordion: {
@@ -1717,11 +1725,11 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 message: "Update Error"
             },
             genericError: {
-                description: "An error occurred while updating outbound provisioning role configurations.",
+                description: "An error occurred while updating outbound provisioning group configurations.",
                 message: "Update Error"
             },
             success: {
-                description: "Successfully updated outbound provisioning role configurations.",
+                description: "Successfully updated outbound provisioning group configurations.",
                 message: "Update successful"
             }
         },
@@ -1736,6 +1744,16 @@ export const authenticationProvider:AuthenticationProviderNS = {
             },
             success: {
                 description: "Successfully updated the JIT provisioning configurations.",
+                message: "Update successful"
+            }
+        },
+        updateHomeRealmIdentifier: {
+            genericError: {
+                description: "An error occurred while updating the home realm identifier.",
+                message: "Update Error"
+            },
+            success: {
+                description: "Successfully updated the home realm identifier.",
                 message: "Update successful"
             }
         },

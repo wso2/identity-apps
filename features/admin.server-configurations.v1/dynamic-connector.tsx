@@ -20,7 +20,7 @@ import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/s
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface
-} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
+} from "./models/governance-connectors";
 import { AlertLevels, TestableComponentInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";

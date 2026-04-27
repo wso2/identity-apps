@@ -96,7 +96,7 @@ export const StickyBar: FunctionComponent<PropsWithChildren<
         isFormStale && (
             <Segment
                 className="sticky-bar"
-                style={ { marginLeft: `-${ padding }px`, width: `calc(${ stickyBarWidth - 2 ?? 0 }px` } }
+                style={ { marginLeft: `-${ padding }px`, width: `calc(${ stickyBarWidth - 2 }px)` } }
             >
                 { props.children }
             </Segment>

@@ -201,7 +201,21 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                 }
             })
             .catch((error: any) => {
-                if (error.response && error.response.status === 400) {
+                if (error.response && error.response.status === 400
+                    && error.response.data && error.response.data.description) {
+                    onAlertFired({
+                        description: t(
+                            "myAccount:components.changePassword.forms.passwordResetForm.validations." +
+                            "submitError.description",
+                            { description: error.response.data.description }
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "myAccount:components.changePassword.forms.passwordResetForm.validations." +
+                            "submitError.message"
+                        )
+                    });
+                } else if (error.response && error.response.status === 400) {
                     // Set an error in the current password field.
                     setErrors({
                         ...errors,

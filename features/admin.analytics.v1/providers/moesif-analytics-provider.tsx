@@ -19,6 +19,7 @@
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { getAssociatedTenants } from "@wso2is/admin.tenants.v1/api/tenants";
 import { TenantInfo, TenantRequestResponse } from "@wso2is/admin.tenants.v1/models/tenant";
+import { MultiValueAttributeInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import moesif from "moesif-browser-js";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useCallback, useEffect, useMemo, useRef }
     from "react";
@@ -52,6 +53,9 @@ const MoesifAnalyticsProvider: FunctionComponent<PropsWithChildren> = (
     const tenantDomain: string = useSelector((state: AppState) =>
         state?.auth?.tenantDomain || ""
     );
+    const profileInfo: ProfileInfoInterface = useSelector((state: AppState) =>
+        state.profile.profileInfo
+    );
 
     const isInitializedRef: React.MutableRefObject<boolean> = useRef<boolean>(false);
     const isIdentifiedRef: React.MutableRefObject<boolean> = useRef<boolean>(false);
@@ -76,6 +80,38 @@ const MoesifAnalyticsProvider: FunctionComponent<PropsWithChildren> = (
     }, []);
 
     /**
+     * Resolves the primary email from the user's SCIM2 profile.
+     */
+    const resolveUserEmail: () => string = useCallback((): string => {
+        if (!profileInfo?.emails?.length) {
+            return "";
+        }
+
+        const emails: (string | (MultiValueAttributeInterface & { primary?: boolean }))[] =
+            profileInfo.emails as (string | (MultiValueAttributeInterface & { primary?: boolean }))[];
+
+        for (const email of emails) {
+            if (typeof email === "object" && email?.primary && email?.value) {
+                return email.value;
+            }
+        }
+
+        for (const email of emails) {
+            if (typeof email === "string" && email) {
+                return email;
+            }
+        }
+
+        for (const email of emails) {
+            if (typeof email === "object" && email?.value) {
+                return email.value;
+            }
+        }
+
+        return "";
+    }, [ profileInfo?.emails ]);
+
+    /**
      * Lazily identifies the current user and company with Moesif.
      * Called on the first `track()` invocation to avoid API calls when no events are fired.
      */
@@ -86,11 +122,12 @@ const MoesifAnalyticsProvider: FunctionComponent<PropsWithChildren> = (
 
         isIdentifyingRef.current = true;
 
-        // Identify user via SCIM2 /Me endpoint.
+        const email: string = resolveUserEmail();
+
         getScimUserId()
             .then((scimUserId: string): void => {
                 if (scimUserId) {
-                    moesif.identifyUser(scimUserId);
+                    moesif.identifyUser(scimUserId, email ? { email } : undefined);
                 }
             })
             .catch((): void => {
@@ -112,7 +149,7 @@ const MoesifAnalyticsProvider: FunctionComponent<PropsWithChildren> = (
             });
 
         isIdentifiedRef.current = true;
-    }, [ tenantDomain ]);
+    }, [ tenantDomain, resolveUserEmail ]);
 
     /**
      * Fires a Moesif action event with optional metadata.
@@ -124,7 +161,6 @@ const MoesifAnalyticsProvider: FunctionComponent<PropsWithChildren> = (
                 return;
             }
 
-            // Lazily identify user/company on first track call.
             if (!isIdentifiedRef.current) {
                 identifyUserAndCompany();
             }

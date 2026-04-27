@@ -40,9 +40,7 @@ import useFeatureGate, { UseFeatureGateInterface } from "@wso2is/admin.feature-g
 import useAILoginFlow from "@wso2is/admin.login-flow.ai.v1/hooks/use-ai-login-flow";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface,
-    HttpErrorResponseDataInterface
-} from "@wso2is/core/models";
+import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -375,17 +373,14 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             updateAdaptiveScript(applicationMetaData?.id, adaptiveScriptToUpdate, !isScriptUpdateReadOnly
                 && !conditionalAuthPremiumFeature)
                 .then(() => {
-                    updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload)
-                        .then(() => {
-                            dispatch(addAlert({
-                                description: t("applications:notifications.updateAuthenticationFlow" +
-                                    ".success.description"),
-                                level: AlertLevels.SUCCESS,
-                                message: t("applications:notifications.updateAuthenticationFlow.success.message")
-                            }));
-                        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
-                            handleUpdateAuthenticationFlowError(error);
-                        });
+                    return updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload);
+                }).then(() => {
+                    dispatch(addAlert({
+                        description: t("applications:notifications.updateAuthenticationFlow" +
+                            ".success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("applications:notifications.updateAuthenticationFlow.success.message")
+                    }));
                 }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     handleUpdateAuthenticationFlowError(error);
                 }).finally(() => {
@@ -398,18 +393,15 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
 
         updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload)
             .then(() => {
-                updateAdaptiveScript(applicationMetaData?.id, adaptiveScriptToUpdate, !isScriptUpdateReadOnly
-                    && !conditionalAuthPremiumFeature)
-                    .then(() => {
-                        dispatch(addAlert({
-                            description: t("applications:notifications.updateAuthenticationFlow" +
-                                    ".success.description"),
-                            level: AlertLevels.SUCCESS,
-                            message: t("applications:notifications.updateAuthenticationFlow.success.message")
-                        }));
-                    }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
-                        handleUpdateAuthenticationFlowError(error);
-                    });
+                return updateAdaptiveScript(applicationMetaData?.id, adaptiveScriptToUpdate,
+                    !isScriptUpdateReadOnly && !conditionalAuthPremiumFeature);
+            }).then(() => {
+                dispatch(addAlert({
+                    description: t("applications:notifications.updateAuthenticationFlow" +
+                            ".success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("applications:notifications.updateAuthenticationFlow.success.message")
+                }));
             }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 handleUpdateAuthenticationFlowError(error);
             }).finally(() => {

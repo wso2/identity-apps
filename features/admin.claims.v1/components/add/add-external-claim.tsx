@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
+import { getAllLocalClaims } from "../../api";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";

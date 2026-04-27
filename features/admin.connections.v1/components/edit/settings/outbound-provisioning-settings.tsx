@@ -20,8 +20,8 @@ import { Show } from "@wso2is/access-control";
 import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components/authenticator-accordion";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface,
-    HttpErrorResponseDataInterface
+import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface,
+    TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -128,6 +128,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>([]);
     const [ triggerConnectorFormSubmit, setTriggerConnectorFormSubmit ] = useState<boolean>(false);
     const [ triggerGroupsSave, setTriggerGroupsSave ] = useState<boolean>(false);
+    const [ isFetchingConnectors, setIsFetchingConnectors ] = useState<boolean>(false);
 
     /**
      * Handles the single Update button click — triggers both connector form submit and groups save.
@@ -140,17 +141,39 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     /**
      * Fetch available connectors for the identity provider.
      */
-    useEffect(() => {
+    useEffect((): (() => void) => {
+        let isCurrentRequest: boolean = true;
+
         setAvailableConnectors([]);
+        setIsFetchingConnectors(true);
+
         fetchConnectors()
-            .then((response: OutboundProvisioningConnectorWithMetaInterface[]) => {
+            .then((response: OutboundProvisioningConnectorWithMetaInterface[]): void => {
+                if (!isCurrentRequest) {
+                    return;
+                }
                 setAvailableConnectors(response);
                 // Auto-open accordion if only one connector exists.
                 if (response?.length === 1) {
                     setAccordionActiveIndexes([ 0 ]);
                 }
+            })
+            .catch((): void => {
+                if (!isCurrentRequest) {
+                    return;
+                }
+                setAvailableConnectors([]);
+            })
+            .finally((): void => {
+                if (isCurrentRequest) {
+                    setIsFetchingConnectors(false);
+                }
             });
-    }, [ identityProvider ]);
+
+        return (): void => {
+            isCurrentRequest = false;
+        };
+    }, [ identityProvider?.id ]);
 
     /**
      * Fetch data and metadata of a given connector id and return a promise.
@@ -286,7 +309,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
 
             {
                 outboundConnectors.connectors.length > 0 ? (
-                    (!isLoading)
+                    (!isLoading && !isFetchingConnectors)
                         ? (
                             <div className="default-provisioning-connector-section" style={ { marginTop: "1rem" } }>
                                 <Grid>
@@ -420,7 +443,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                 )
             }
             {
-                (!isLoading)
+                (!isLoading && !isFetchingConnectors)
                     ? (
                         <OutboundProvisioningGroups
                             idpRoles={ identityProvider?.roles }

@@ -1,5 +1,410 @@
 # @wso2is/admin.core.v1
 
+## 2.57.3
+
+### Patch Changes
+
+- [#10197](https://github.com/wso2/identity-apps/pull/10197) [`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dependencies
+
+- Updated dependencies [[`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423)]:
+  - @wso2is/admin.identity-verification-providers.v1@2.28.3
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.211
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.211
+  - @wso2is/admin.policy-administration.v1@1.0.124
+  - @wso2is/admin.approval-workflows.v1@1.3.29
+  - @wso2is/admin.identity-providers.v1@2.27.4
+  - @wso2is/admin.flow-builder-core.v1@0.10.211
+  - @wso2is/admin.email-templates.v1@2.25.207
+  - @wso2is/admin.administrators.v1@2.29.209
+  - @wso2is/admin.authentication.v1@2.25.210
+  - @wso2is/admin.api-resources.v2@2.26.9
+  - @wso2is/admin.organizations.v1@2.28.4
+  - @wso2is/admin.applications.v1@2.42.23
+  - @wso2is/admin.certificates.v1@2.25.206
+  - @wso2is/admin.feature-gate.v1@1.9.6
+  - @wso2is/admin.org-insights.v1@2.26.4
+  - @wso2is/admin.connections.v1@2.37.2
+  - @wso2is/admin.oidc-scopes.v1@2.26.3
+  - @wso2is/admin.extensions.v1@2.43.3
+  - @wso2is/admin.branding.v1@2.32.167
+  - @wso2is/admin.actions.v1@1.15.6
+  - @wso2is/admin.agents.v1@1.1.23
+  - @wso2is/admin.claims.v1@2.31.1
+  - @wso2is/admin.groups.v1@2.27.128
+  - @wso2is/admin.flows.v1@1.0.180
+  - @wso2is/admin.logs.v1@1.6.7
+  - @wso2is/admin.cds.v1@1.6.3
+  - @wso2is/admin.users.v1@2.38.35
+
+## 2.57.2
+
+### Patch Changes
+
+- [#10179](https://github.com/wso2/identity-apps/pull/10179) [`7a45b8862c5ec081691f5b9269a85f48bf662caa`](https://github.com/wso2/identity-apps/commit/7a45b8862c5ec081691f5b9269a85f48bf662caa) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove deprecated feature modules and unused code
+
+- Updated dependencies [[`7a45b8862c5ec081691f5b9269a85f48bf662caa`](https://github.com/wso2/identity-apps/commit/7a45b8862c5ec081691f5b9269a85f48bf662caa)]:
+  - @wso2is/admin.extensions.v1@2.43.2
+
+## 2.57.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.42.22
+  - @wso2is/admin.agents.v1@1.1.22
+  - @wso2is/admin.approval-workflows.v1@1.3.28
+  - @wso2is/admin.branding.v1@2.32.166
+  - @wso2is/admin.roles.v2@2.27.380
+  - @wso2is/admin.users.v1@2.38.33
+  - @wso2is/admin.flow-builder-core.v1@0.10.210
+  - @wso2is/admin.connections.v1@2.37.1
+  - @wso2is/admin.rules.v1@0.7.49
+  - @wso2is/admin.subscription.v1@1.5.225
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.210
+  - @wso2is/admin.email-management.v1@2.25.374
+  - @wso2is/admin.flows.v1@1.0.179
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.210
+  - @wso2is/admin.server-configurations.v1@2.38.49
+  - @wso2is/admin.console-settings.v1@2.26.44
+  - @wso2is/admin.registration-flow-builder.v1@0.10.170
+
+## 2.57.0
+
+### Minor Changes
+
+- [#10123](https://github.com/wso2/identity-apps/pull/10123) [`13a622370c3a3aaa07dadd0bec22ceb9ff486fea`](https://github.com/wso2/identity-apps/commit/13a622370c3a3aaa07dadd0bec22ceb9ff486fea) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Unify documentation extensions
+
+### Patch Changes
+
+- Updated dependencies [[`13a622370c3a3aaa07dadd0bec22ceb9ff486fea`](https://github.com/wso2/identity-apps/commit/13a622370c3a3aaa07dadd0bec22ceb9ff486fea)]:
+  - @wso2is/admin.connections.v1@2.37.0
+  - @wso2is/admin.extensions.v1@2.43.0
+  - @wso2is/react-components@2.10.0
+  - @wso2is/core@2.13.0
+  - @wso2is/admin.console-settings.v1@2.26.43
+  - @wso2is/admin.approval-workflows.v1@1.3.27
+  - @wso2is/admin.rules.v1@0.7.48
+  - @wso2is/admin.flow-builder-core.v1@0.10.209
+  - @wso2is/admin.applications.v1@2.42.21
+  - @wso2is/admin.users.v1@2.38.32
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.209
+  - @wso2is/admin.branding.v1@2.32.165
+  - @wso2is/admin.email-management.v1@2.25.373
+  - @wso2is/admin.flows.v1@1.0.178
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.209
+  - @wso2is/admin.server-configurations.v1@2.38.48
+  - @wso2is/admin.agents.v1@1.1.21
+  - @wso2is/admin.subscription.v1@1.5.224
+  - @wso2is/admin.registration-flow-builder.v1@0.10.169
+  - @wso2is/admin.roles.v2@2.27.379
+
+## 2.56.1
+
+### Patch Changes
+
+- Updated dependencies [[`e12a7d52749596d3728c79b33ae7763e81b90e13`](https://github.com/wso2/identity-apps/commit/e12a7d52749596d3728c79b33ae7763e81b90e13)]:
+  - @wso2is/admin.sms-providers.v1@2.25.211
+  - @wso2is/admin.extensions.v1@2.42.1
+  - @wso2is/admin.approval-workflows.v1@1.3.26
+  - @wso2is/admin.rules.v1@0.7.47
+  - @wso2is/admin.users.v1@2.38.31
+  - @wso2is/admin.applications.v1@2.42.20
+  - @wso2is/admin.agents.v1@1.1.20
+  - @wso2is/admin.subscription.v1@1.5.223
+  - @wso2is/admin.branding.v1@2.32.164
+  - @wso2is/admin.roles.v2@2.27.378
+  - @wso2is/admin.console-settings.v1@2.26.42
+  - @wso2is/admin.email-management.v1@2.25.372
+  - @wso2is/admin.flow-builder-core.v1@0.10.208
+  - @wso2is/admin.connections.v1@2.36.48
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.208
+  - @wso2is/admin.flows.v1@1.0.177
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.208
+  - @wso2is/admin.server-configurations.v1@2.38.47
+  - @wso2is/admin.registration-flow-builder.v1@0.10.168
+
+## 2.56.0
+
+### Minor Changes
+
+- [#10112](https://github.com/wso2/identity-apps/pull/10112) [`793c5bde494bdde069a0fbc0b5311d279938ceb9`](https://github.com/wso2/identity-apps/commit/793c5bde494bdde069a0fbc0b5311d279938ceb9) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - feat: add AI Copilot ("Ask AI") assistant to the Admin Console
+
+### Patch Changes
+
+- Updated dependencies [[`793c5bde494bdde069a0fbc0b5311d279938ceb9`](https://github.com/wso2/identity-apps/commit/793c5bde494bdde069a0fbc0b5311d279938ceb9), [`3ab81080396569cab60e5e4b52d8715b54d9ef67`](https://github.com/wso2/identity-apps/commit/3ab81080396569cab60e5e4b52d8715b54d9ef67), [`2854c792d92d6157c3f8d32921ea410c5c451edd`](https://github.com/wso2/identity-apps/commit/2854c792d92d6157c3f8d32921ea410c5c451edd)]:
+  - @wso2is/admin.extensions.v1@2.42.0
+  - @wso2is/i18n@2.39.0
+  - @wso2is/admin.organizations.v1@2.28.3
+  - @wso2is/admin.users.v1@2.38.30
+  - @wso2is/admin.approval-workflows.v1@1.3.25
+  - @wso2is/admin.rules.v1@0.7.46
+  - @wso2is/admin.flow-builder-core.v1@0.10.207
+  - @wso2is/admin.actions.v1@1.15.5
+  - @wso2is/admin.org-insights.v1@2.26.3
+  - @wso2is/admin.session-management.v1@2.26.5
+  - @wso2is/admin.agents.v1@1.1.19
+  - @wso2is/admin.subscription.v1@1.5.222
+  - @wso2is/admin.applications.v1@2.42.19
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.207
+  - @wso2is/admin.branding.v1@2.32.163
+  - @wso2is/admin.email-management.v1@2.25.371
+  - @wso2is/admin.flows.v1@1.0.176
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.207
+  - @wso2is/admin.server-configurations.v1@2.38.46
+  - @wso2is/admin.roles.v2@2.27.377
+  - @wso2is/admin.console-settings.v1@2.26.41
+  - @wso2is/admin.registration-flow-builder.v1@0.10.167
+  - @wso2is/admin.connections.v1@2.36.47
+
+## 2.55.29
+
+### Patch Changes
+
+- Updated dependencies [[`dd01f38682fd189b94802e06b3473a312c1bf7b1`](https://github.com/wso2/identity-apps/commit/dd01f38682fd189b94802e06b3473a312c1bf7b1)]:
+  - @wso2is/admin.identity-verification-providers.v1@2.28.2
+  - @wso2is/admin.console-settings.v1@2.26.40
+  - @wso2is/admin.template-core.v1@1.6.2
+  - @wso2is/admin.feature-gate.v1@1.9.5
+  - @wso2is/admin.connections.v1@2.36.46
+  - @wso2is/admin.extensions.v1@2.41.4
+  - @wso2is/access-control@3.5.6
+  - @wso2is/admin.email-management.v1@2.25.370
+  - @wso2is/admin.flows.v1@1.0.175
+  - @wso2is/admin.sms-templates.v1@1.0.212
+  - @wso2is/admin.subscription.v1@1.5.221
+  - @wso2is/admin.approval-workflows.v1@1.3.24
+  - @wso2is/admin.rules.v1@0.7.45
+  - @wso2is/admin.applications.v1@2.42.18
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.206
+  - @wso2is/admin.branding.v1@2.32.162
+  - @wso2is/admin.flow-builder-core.v1@0.10.206
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.206
+  - @wso2is/admin.registration-flow-builder.v1@0.10.166
+  - @wso2is/admin.server-configurations.v1@2.38.45
+  - @wso2is/admin.users.v1@2.38.29
+  - @wso2is/admin.agents.v1@1.1.18
+  - @wso2is/admin.roles.v2@2.27.376
+
+## 2.55.28
+
+### Patch Changes
+
+- Updated dependencies [[`c1f7908a368bd6c7b762f3451b50511ab63bc8ff`](https://github.com/wso2/identity-apps/commit/c1f7908a368bd6c7b762f3451b50511ab63bc8ff), [`8439c95207ab1890498315ea5ae5a996534898fd`](https://github.com/wso2/identity-apps/commit/8439c95207ab1890498315ea5ae5a996534898fd)]:
+  - @wso2is/admin.approval-workflows.v1@1.3.23
+  - @wso2is/admin.sms-templates.v1@1.0.211
+  - @wso2is/admin.users.v1@2.38.28
+  - @wso2is/admin.agents.v1@1.1.17
+  - @wso2is/admin.subscription.v1@1.5.220
+  - @wso2is/admin.roles.v2@2.27.375
+  - @wso2is/admin.applications.v1@2.42.17
+  - @wso2is/admin.console-settings.v1@2.26.39
+  - @wso2is/admin.email-management.v1@2.25.369
+  - @wso2is/admin.flow-builder-core.v1@0.10.205
+  - @wso2is/admin.connections.v1@2.36.45
+  - @wso2is/admin.rules.v1@0.7.44
+  - @wso2is/admin.branding.v1@2.32.161
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.205
+  - @wso2is/admin.flows.v1@1.0.174
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.205
+  - @wso2is/admin.server-configurations.v1@2.38.44
+  - @wso2is/admin.registration-flow-builder.v1@0.10.165
+
+## 2.55.27
+
+### Patch Changes
+
+- Updated dependencies [[`56fa246c730d17f1f727d3286bc25ca34b05f3d9`](https://github.com/wso2/identity-apps/commit/56fa246c730d17f1f727d3286bc25ca34b05f3d9), [`a27ac0c8a6d65ac6995b5a70db973a14b32fdcfe`](https://github.com/wso2/identity-apps/commit/a27ac0c8a6d65ac6995b5a70db973a14b32fdcfe), [`c308be01f69c5ffd4d0b057a59a3a6e42292759e`](https://github.com/wso2/identity-apps/commit/c308be01f69c5ffd4d0b057a59a3a6e42292759e)]:
+  - @wso2is/admin.users.v1@2.38.27
+  - @wso2is/i18n@2.38.7
+  - @wso2is/admin.email-management.v1@2.25.368
+  - @wso2is/admin.feature-gate.v1@1.9.4
+  - @wso2is/admin.extensions.v1@2.41.3
+  - @wso2is/access-control@3.5.5
+  - @wso2is/admin.connections.v1@2.36.44
+  - @wso2is/admin.applications.v1@2.42.16
+  - @wso2is/admin.console-settings.v1@2.26.38
+  - @wso2is/admin.agents.v1@1.1.16
+  - @wso2is/admin.subscription.v1@1.5.219
+  - @wso2is/admin.flows.v1@1.0.173
+  - @wso2is/admin.sms-templates.v1@1.0.210
+  - @wso2is/admin.approval-workflows.v1@1.3.22
+  - @wso2is/admin.rules.v1@0.7.43
+  - @wso2is/admin.branding.v1@2.32.160
+  - @wso2is/admin.roles.v2@2.27.374
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.204
+  - @wso2is/admin.flow-builder-core.v1@0.10.204
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.204
+  - @wso2is/admin.registration-flow-builder.v1@0.10.164
+  - @wso2is/admin.server-configurations.v1@2.38.43
+
+## 2.55.26
+
+### Patch Changes
+
+- Updated dependencies [[`95c89b5e1111586c0cecd491f109d8aab83ad3ee`](https://github.com/wso2/identity-apps/commit/95c89b5e1111586c0cecd491f109d8aab83ad3ee)]:
+  - @wso2is/admin.sms-templates.v1@1.0.209
+  - @wso2is/admin.feature-gate.v1@1.9.3
+  - @wso2is/admin.extensions.v1@2.41.2
+  - @wso2is/access-control@3.5.4
+  - @wso2is/i18n@2.38.6
+  - @wso2is/admin.flows.v1@1.0.172
+  - @wso2is/admin.subscription.v1@1.5.218
+  - @wso2is/admin.approval-workflows.v1@1.3.21
+  - @wso2is/admin.rules.v1@0.7.42
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.203
+  - @wso2is/admin.branding.v1@2.32.159
+  - @wso2is/admin.email-management.v1@2.25.367
+  - @wso2is/admin.flow-builder-core.v1@0.10.203
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.203
+  - @wso2is/admin.registration-flow-builder.v1@0.10.163
+  - @wso2is/admin.server-configurations.v1@2.38.42
+  - @wso2is/admin.users.v1@2.38.26
+  - @wso2is/admin.applications.v1@2.42.15
+  - @wso2is/admin.console-settings.v1@2.26.37
+  - @wso2is/admin.agents.v1@1.1.15
+  - @wso2is/admin.roles.v2@2.27.373
+  - @wso2is/admin.connections.v1@2.36.43
+
+## 2.55.25
+
+### Patch Changes
+
+- Updated dependencies [[`b5b317593ddc2fd764f15a96555eb6b84d903d8e`](https://github.com/wso2/identity-apps/commit/b5b317593ddc2fd764f15a96555eb6b84d903d8e), [`d22020e38f021e2f07c28ff141f47708ae3b37f9`](https://github.com/wso2/identity-apps/commit/d22020e38f021e2f07c28ff141f47708ae3b37f9), [`58e307a97ad591cc7c6a34e076b42fe6dea3fbae`](https://github.com/wso2/identity-apps/commit/58e307a97ad591cc7c6a34e076b42fe6dea3fbae)]:
+  - @wso2is/admin.applications.v1@2.42.14
+  - @wso2is/admin.connections.v1@2.36.42
+  - @wso2is/i18n@2.38.5
+  - @wso2is/admin.agents.v1@1.1.14
+  - @wso2is/admin.approval-workflows.v1@1.3.20
+  - @wso2is/admin.branding.v1@2.32.158
+  - @wso2is/admin.console-settings.v1@2.26.36
+  - @wso2is/admin.roles.v2@2.27.372
+  - @wso2is/admin.users.v1@2.38.25
+  - @wso2is/admin.flow-builder-core.v1@0.10.202
+  - @wso2is/admin.rules.v1@0.7.41
+  - @wso2is/admin.subscription.v1@1.5.217
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.202
+  - @wso2is/admin.email-management.v1@2.25.366
+  - @wso2is/admin.flows.v1@1.0.171
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.202
+  - @wso2is/admin.server-configurations.v1@2.38.41
+  - @wso2is/admin.registration-flow-builder.v1@0.10.162
+
+## 2.55.24
+
+### Patch Changes
+
+- Updated dependencies [[`6329078211fe3b24fef775b888f4d54a56eca0b2`](https://github.com/wso2/identity-apps/commit/6329078211fe3b24fef775b888f4d54a56eca0b2)]:
+  - @wso2is/admin.applications.v1@2.42.13
+  - @wso2is/admin.extensions.v1@2.41.1
+  - @wso2is/admin.agents.v1@1.1.13
+  - @wso2is/admin.approval-workflows.v1@1.3.19
+  - @wso2is/admin.branding.v1@2.32.157
+  - @wso2is/admin.rules.v1@0.7.40
+  - @wso2is/admin.roles.v2@2.27.371
+  - @wso2is/admin.users.v1@2.38.24
+  - @wso2is/admin.flow-builder-core.v1@0.10.201
+  - @wso2is/admin.connections.v1@2.36.41
+  - @wso2is/admin.subscription.v1@1.5.216
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.201
+  - @wso2is/admin.email-management.v1@2.25.365
+  - @wso2is/admin.flows.v1@1.0.170
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.201
+  - @wso2is/admin.server-configurations.v1@2.38.40
+  - @wso2is/admin.console-settings.v1@2.26.35
+  - @wso2is/admin.registration-flow-builder.v1@0.10.161
+
+## 2.55.23
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.users.v1@2.38.23
+  - @wso2is/admin.agents.v1@1.1.12
+  - @wso2is/admin.subscription.v1@1.5.215
+  - @wso2is/admin.roles.v2@2.27.370
+  - @wso2is/admin.applications.v1@2.42.12
+  - @wso2is/admin.console-settings.v1@2.26.34
+  - @wso2is/admin.email-management.v1@2.25.364
+  - @wso2is/admin.flow-builder-core.v1@0.10.200
+  - @wso2is/admin.connections.v1@2.36.40
+  - @wso2is/admin.rules.v1@0.7.39
+  - @wso2is/admin.approval-workflows.v1@1.3.18
+  - @wso2is/admin.branding.v1@2.32.156
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.200
+  - @wso2is/admin.flows.v1@1.0.169
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.200
+  - @wso2is/admin.server-configurations.v1@2.38.39
+  - @wso2is/admin.registration-flow-builder.v1@0.10.160
+
+## 2.55.22
+
+### Patch Changes
+
+- Updated dependencies [[`d9ae2631dc457fed3deeedebe05e866e2d3080d2`](https://github.com/wso2/identity-apps/commit/d9ae2631dc457fed3deeedebe05e866e2d3080d2), [`ed27582ef2e9568fe568eb9a0db66924bb6d8a3a`](https://github.com/wso2/identity-apps/commit/ed27582ef2e9568fe568eb9a0db66924bb6d8a3a)]:
+  - @wso2is/admin.connections.v1@2.36.39
+  - @wso2is/admin.users.v1@2.38.22
+  - @wso2is/admin.console-settings.v1@2.26.33
+  - @wso2is/admin.agents.v1@1.1.11
+  - @wso2is/admin.subscription.v1@1.5.214
+  - @wso2is/admin.applications.v1@2.42.11
+  - @wso2is/admin.roles.v2@2.27.369
+  - @wso2is/admin.email-management.v1@2.25.363
+  - @wso2is/admin.approval-workflows.v1@1.3.17
+  - @wso2is/admin.branding.v1@2.32.155
+  - @wso2is/admin.flow-builder-core.v1@0.10.199
+  - @wso2is/admin.rules.v1@0.7.38
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.199
+  - @wso2is/admin.flows.v1@1.0.168
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.199
+  - @wso2is/admin.server-configurations.v1@2.38.38
+  - @wso2is/admin.registration-flow-builder.v1@0.10.159
+
+## 2.55.21
+
+### Patch Changes
+
+- Updated dependencies [[`d6bcf6191bd4a0a4af5e0c74d28c7ab80a667d11`](https://github.com/wso2/identity-apps/commit/d6bcf6191bd4a0a4af5e0c74d28c7ab80a667d11)]:
+  - @wso2is/admin.users.v1@2.38.21
+  - @wso2is/admin.agents.v1@1.1.10
+  - @wso2is/admin.subscription.v1@1.5.213
+  - @wso2is/admin.roles.v2@2.27.368
+  - @wso2is/admin.applications.v1@2.42.10
+  - @wso2is/admin.console-settings.v1@2.26.32
+  - @wso2is/admin.email-management.v1@2.25.362
+  - @wso2is/admin.flow-builder-core.v1@0.10.198
+  - @wso2is/admin.connections.v1@2.36.38
+  - @wso2is/admin.rules.v1@0.7.37
+  - @wso2is/admin.approval-workflows.v1@1.3.16
+  - @wso2is/admin.branding.v1@2.32.154
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.198
+  - @wso2is/admin.flows.v1@1.0.167
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.198
+  - @wso2is/admin.server-configurations.v1@2.38.37
+  - @wso2is/admin.registration-flow-builder.v1@0.10.158
+
+## 2.55.20
+
+### Patch Changes
+
+- Updated dependencies [[`1e2cff05a3ba2cfa6f661bdb4f9e3f80a190f2b5`](https://github.com/wso2/identity-apps/commit/1e2cff05a3ba2cfa6f661bdb4f9e3f80a190f2b5)]:
+  - @wso2is/admin.applications.v1@2.42.9
+  - @wso2is/admin.agents.v1@1.1.9
+  - @wso2is/admin.approval-workflows.v1@1.3.15
+  - @wso2is/admin.branding.v1@2.32.153
+  - @wso2is/admin.roles.v2@2.27.367
+  - @wso2is/admin.users.v1@2.38.20
+  - @wso2is/admin.flow-builder-core.v1@0.10.197
+  - @wso2is/admin.connections.v1@2.36.37
+  - @wso2is/admin.rules.v1@0.7.36
+  - @wso2is/admin.subscription.v1@1.5.212
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.197
+  - @wso2is/admin.email-management.v1@2.25.361
+  - @wso2is/admin.flows.v1@1.0.166
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.197
+  - @wso2is/admin.server-configurations.v1@2.38.36
+  - @wso2is/admin.console-settings.v1@2.26.31
+  - @wso2is/admin.registration-flow-builder.v1@0.10.157
+
 ## 2.55.19
 
 ### Patch Changes

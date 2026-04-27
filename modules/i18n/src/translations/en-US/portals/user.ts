@@ -110,9 +110,10 @@ export const user: userNS = {
             sharedAccess: {
                 allRolesAndOrgsSharingMessage: "All roles will be assigned to all existing and future organizations.",
                 allUserRolesSharingMessage: "All roles of the user in the current organization will be assigned.",
-                assignedRolesLabel: "Assigned Roles",
+                assignedRolesLabel: "Policy Roles",
                 commonRoleSharingHint: "Configure the set of roles that will be assigned to the shared user in all existing and future organizations.",
                 commonRoleSharingLabel: "Assigned roles",
+                currentlyAssignedRolesLabel: "Currently Assigned Roles",
                 doNotShareUser: "Do not share user with any organization",
                 individualRoleSharingHint: "Configure role assignment for specific organizations individually.",
                 individualRoleSharingLabel: "Individually assigned roles",

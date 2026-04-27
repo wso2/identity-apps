@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
+import { getAllLocalClaims } from "../../../api";
 import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";

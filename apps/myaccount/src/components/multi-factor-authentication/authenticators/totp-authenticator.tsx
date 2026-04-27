@@ -61,7 +61,7 @@ import "./totp-authenticator.scss";
  * Also see {@link TOTPAuthenticator.defaultProps}
  */
 interface TOTPProps extends TestableComponentInterface {
-    onAlertFired: (alert: AlertInterface) => void;
+    onAlertFired: (_alert: AlertInterface) => void;
     isSuperTenantLogin: boolean;
     enabledAuthenticators: Array<string>;
     onEnabledAuthenticatorsUpdated: (updatedAuthenticators: Array<string>) => void;

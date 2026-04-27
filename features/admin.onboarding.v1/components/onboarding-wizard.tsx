@@ -716,6 +716,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
                             data-componentid={ `${componentId}-skip-button` }
                             onClick={ handleSkip }
                             variant="text"
+                            sx={ { fontWeight: 500 } }
                         >
                             { isReturningUser
                                 ? "Back to Console"

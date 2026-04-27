@@ -19,9 +19,8 @@
 import { useMoesifAnalytics } from "@wso2is/admin.analytics.v1/hooks/use-moesif-analytics";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { UserAccountTypes } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { ProfileInfoInterface } from "@wso2is/core/models";
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import { useSelector } from "react-redux";
 import { OnboardingAnalyticsEvents } from "../constants";
 import { OnboardingChoice, OnboardingDataInterface, OnboardingStep } from "../models/onboarding";
@@ -80,11 +79,6 @@ export const useOnboardingAnalytics = (params: UseOnboardingAnalyticsParams): Us
     const visitedStepsRef: React.MutableRefObject<Set<number>> = useRef<Set<number>>(new Set<number>());
     const startTimeRef: React.MutableRefObject<number> = useRef<number>(Date.now());
 
-    // Track visited steps for is_revisit computation.
-    useEffect(() => {
-        visitedStepsRef.current.add(currentStep);
-    }, [ currentStep ]);
-
     /**
      * Compute whether the current user is "new" based on SCIM2 meta.created date.
      */
@@ -98,12 +92,6 @@ export const useOnboardingAnalytics = (params: UseOnboardingAnalyticsParams): Us
         return new Date(createdDate) >= new Date(featureDeployedDate);
     }, [ profileInfo?.meta?.created, featureDeployedDate ]);
 
-    /**
-     * Compute whether the current user is the organization owner.
-     */
-    const getIsOwner: () => boolean = useCallback((): boolean => {
-        return userAccountType === UserAccountTypes.OWNER;
-    }, [ userAccountType ]);
 
     /**
      * Derive the wizard path string from the current onboarding choice.
@@ -125,22 +113,25 @@ export const useOnboardingAnalytics = (params: UseOnboardingAnalyticsParams): Us
     ) => Record<string, unknown> = useCallback(
         (stepNumber: OnboardingStep, stepName: string): Record<string, unknown> => {
             const wizardPath: string = getWizardPath();
+            const isRevisit: boolean = visitedStepsRef.current.has(stepNumber);
+
+            visitedStepsRef.current.add(stepNumber);
 
             return {
                 asset_type: "console",
                 context: "onboarding",
                 domain: window.location.hostname,
                 is_new_user: getIsNewUser(),
-                is_owner: getIsOwner(),
-                is_revisit: visitedStepsRef.current.has(stepNumber),
+                is_revisit: isRevisit,
                 product: "identity",
                 step_name: stepName,
                 step_number: stepNumber,
                 total_steps: wizardPath === "full_setup" ? TOTAL_STEPS_FULL_SETUP : TOTAL_STEPS_PREVIEW,
+                user_type: userAccountType ?? null,
                 wizard_path: wizardPath
             };
         },
-        [ getIsNewUser, getIsOwner, getWizardPath ]
+        [ getIsNewUser, getWizardPath, userAccountType ]
     );
 
     /**

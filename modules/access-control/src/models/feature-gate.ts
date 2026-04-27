@@ -80,6 +80,25 @@ export interface FeatureGateInterface {
                 }
             }
         },
+        connections: {
+            templates: {
+                customAuthenticator: {
+                    status: FeatureStatus
+                },
+                enterprise: {
+                    status: FeatureStatus
+                },
+                idvp: {
+                    status: FeatureStatus
+                }
+            }
+        },
+        consoleSettings: {
+            status: FeatureStatus
+        },
+        emailTemplates: {
+            status: FeatureStatus
+        },
         loginAndRegistration: {
             sessionManagement: {
                 status: FeatureStatus
@@ -91,6 +110,14 @@ export interface FeatureGateInterface {
         saasFeatures: {
             status: FeatureStatus
         },
-        status: FeatureStatus
+        smsTemplates: {
+            status: FeatureStatus
+        },
+        status: FeatureStatus,
+        userStores: {
+            remoteUserStores: {
+                status: FeatureStatus
+            }
+        }
     }
 }

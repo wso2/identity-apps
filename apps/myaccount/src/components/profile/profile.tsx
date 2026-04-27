@@ -19,7 +19,7 @@
 import { extractAttributeValue, getFlattenedInitialValues } from "@wso2is/common.users.v1/utils/profile-utils";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled, resolveUserstore } from "@wso2is/core/helpers";
+import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     ClaimDataType,
@@ -128,7 +128,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
     const uiConfig: UIConfigInterface = useSelector((state: AppState) => state.config?.ui);
     const isMultipleEmailsAndMobileConfigEnabled: boolean = uiConfig?.isMultipleEmailsAndMobileNumbersEnabled;
-    const primaryUserStoreDomainName: string = uiConfig?.primaryUserStoreDomainName;
     const isProfileUsernameReadonly: boolean = uiConfig?.isProfileUsernameReadonly;
 
     const [ isProfileUpdating, setIsProfileUpdating ] = useState<boolean>(false);
@@ -334,22 +333,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         }
 
         const multipleEmailsAndMobileFeatureRelatedAttributes: string[] = [
-            MOBILE_ATTRIBUTE,
-            EMAIL_ATTRIBUTE,
             EMAIL_ADDRESSES_ATTRIBUTE,
             MOBILE_NUMBERS_ATTRIBUTE,
             VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
             VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
         ];
 
-        const username: string = profileDetails?.profileInfo["userName"];
-
-        if (!username) {
-            return false;
-        }
-
-        const userStoreDomain: string = resolveUserstore(username, primaryUserStoreDomainName)?.toUpperCase();
-        // Check each required attribute exists and domain is not excluded in the excluded user store list.
+        // Check each required attribute exists and its supportedByDefault is enabled.
         const attributeCheck: boolean = multipleEmailsAndMobileFeatureRelatedAttributes.every((attribute: string) => {
             const schema: ProfileSchema = flattenedProfileSchema.find(
                 (schema: ProfileSchema) => schema?.name === attribute
@@ -359,17 +349,19 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 return false;
             }
 
-            // The global supportedByDefault value is a string. Hence, it needs to be converted to a boolean.
-            const resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
+            // Resolve supportedByDefault: profile-level (endUser) takes precedence over global.
+            let resolveSupportedByDefaultValue: boolean =
+                schema?.supportedByDefault?.toLowerCase() === "true";
+
+            if (schema?.profiles?.endUser?.supportedByDefault !== undefined) {
+                resolveSupportedByDefaultValue = schema.profiles.endUser.supportedByDefault;
+            }
 
             if (!resolveSupportedByDefaultValue) {
                 return false;
             }
 
-            const excludedUserStores: string[] =
-                schema?.excludedUserStores?.split(",")?.map((store: string) => store?.trim().toUpperCase()) || [];
-
-            return !excludedUserStores.includes(userStoreDomain);
+            return true;
         });
 
         return attributeCheck;
@@ -543,6 +535,41 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     };
 
     /**
+     * Resolves the effective supportedByDefault value for a schema,
+     * giving precedence to the endUser profile-level override.
+     */
+    const resolveEndUserSupportedByDefault = (targetSchema: ProfileSchemaInterface): boolean => {
+        let value: boolean = targetSchema?.supportedByDefault?.toLowerCase() === "true";
+
+        if (targetSchema?.profiles?.endUser?.supportedByDefault !== undefined) {
+            value = targetSchema.profiles.endUser.supportedByDefault;
+        }
+
+        return value;
+    };
+
+    /**
+     * Checks whether a multi-valued attribute (emailAddresses or mobileNumbers) is
+     * supported in the endUser profile, to decide whether to show it instead of the
+     * corresponding primary attribute (emails or mobile).
+     */
+    const isMultiValuedAttributeSupportedInEndUser = (schemaName: string): boolean => {
+        if (!isMultipleEmailsAndMobileConfigEnabled) {
+            return false;
+        }
+
+        const targetSchema: ProfileSchemaInterface = flattenedProfileSchema.find(
+            (s: ProfileSchemaInterface) => s.name === schemaName
+        );
+
+        if (!targetSchema) {
+            return false;
+        }
+
+        return resolveEndUserSupportedByDefault(targetSchema);
+    };
+
+    /**
      * Check whether the field is displayable or not.
      * @param schema - Field schema.
      * @returns boolean - Whether the field is displayable or not.
@@ -568,14 +595,38 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             return false;
         }
 
-        if (isMultipleEmailsAndMobileNumbersEnabled) {
-            if (schema.name === EMAIL_ATTRIBUTE || schema.name === MOBILE_ATTRIBUTE) {
-                return false;
-            }
-        } else {
-            if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE || schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-                return false;
-            }
+        if (
+            schema.name === EMAIL_ADDRESSES_ATTRIBUTE &&
+            !isMultipleEmailsAndMobileConfigEnabled
+        ) {
+            return false;
+        }
+
+        if (
+            schema.name === MOBILE_NUMBERS_ATTRIBUTE &&
+            !isMultipleEmailsAndMobileConfigEnabled
+        ) {
+            return false;
+        }
+
+        // Hide primary emails if emailAddresses is supported in the endUser profile.
+        if (
+            schema.name === EMAIL_ATTRIBUTE &&
+            isMultiValuedAttributeSupportedInEndUser(
+                ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")
+            )
+        ) {
+            return false;
+        }
+
+        // Hide primary mobile if mobileNumbers is supported in the endUser profile.
+        if (
+            schema.name === MOBILE_ATTRIBUTE &&
+            isMultiValuedAttributeSupportedInEndUser(
+                ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")
+            )
+        ) {
+            return false;
         }
 
         if (

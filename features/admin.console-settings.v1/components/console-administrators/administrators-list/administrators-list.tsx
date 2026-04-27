@@ -102,6 +102,10 @@ interface AdministratorsListProps extends IdentifiableComponentInterface {
      * Selected administrator user group.
      */
     selectedAdministratorGroup: string;
+    /**
+     * Whether the console settings feature is locked.
+     */
+    isFeatureLocked?: boolean;
 }
 
 /**
@@ -139,6 +143,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
         showListItemActions,
         selectedAdministratorGroup,
         availableUserStores,
+        isFeatureLocked,
         ["data-componentid"]: componentId
     } = props;
 
@@ -432,6 +437,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                         <PrimaryButton
                             data-componentid={ `${componentId}-add-button` }
                             className="add-administrator-dropdown-trigger"
+                            disabled={ isFeatureLocked }
                         >
                             <Icon data-componentid={ `${componentId}-add-button-icon` } name="add" />
                             { t("consoleSettings:administrators.add.action") }
@@ -463,6 +469,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                 <PrimaryButton
                     data-componentid={ `${componentId}-add-button` }
                     onClick={ () => setShowAddExternalAdminWizard(true) }
+                    disabled={ isFeatureLocked }
                 >
                     <Icon data-componentid={ `${componentId}-add-button-icon` } name="add" />
                     { t("consoleSettings:administrators.add.action") }
@@ -473,6 +480,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                 <PrimaryButton
                     data-componentid={ `${componentId}-add-button` }
                     onClick={ () => setShowAddExistingUserWizard(true) }
+                    disabled={ isFeatureLocked }
                 >
                     <Icon data-componentid={ `${componentId}-add-button-icon` } name="add" />
                     { t("consoleSettings:administrators.add.action") }
@@ -567,6 +575,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                             data-componentid={ `${componentId}-admin-settings-button` }
                             icon={ GearIcon }
                             onClick={ handleSettingsButton }
+                            disabled={ isFeatureLocked }
                         >
                         </Button>
                     ) }
@@ -598,7 +607,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                     onEmptyListPlaceholderActionClick={ () => null }
                     onIsLoading={ setLoading }
                     selection={ selection }
-                    showListItemActions={ showListItemActions }
+                    showListItemActions={ showListItemActions && !isFeatureLocked }
                     showMetaContent={ showMetaContent }
                     data-componentid={ `${componentId}-table` }
                 />

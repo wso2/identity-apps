@@ -94,6 +94,11 @@ const isFrontChannelLogoutEnabled: boolean = isFeatureEnabled(
     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_FRONT_CHANNEL_LOGOUT")
 );
 
+const isUnifiedMcpCapabilitiesEnabled: boolean = isFeatureEnabled(
+    featureConfig?.applications,
+    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_UNIFIED_MCP_CAPABILITIES")
+);
+
 /**
  * Check whether claims is  identity claims or not.
  *
@@ -219,19 +224,39 @@ export const applicationConfig: ApplicationConfig = {
 
             const onApplicationUpdate: () => void = props?.onApplicationUpdate as () => void;
 
+            const isMCPClientApp: boolean = application?.originalTemplateId ===
+                ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION;
+            const isDigitalWalletApp: boolean = application?.originalTemplateId ===
+                ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION;
+
             const tabExtensions: ResourceTabPaneInterface[] = [];
 
             // Enable the API authorization tab for supported templates when the api resources config is enabled.
+            // When unified MCP capabilities is enabled, all apps show "Authorization" tab
+            // When disabled, only MCP client and Digital Wallet show "Authorization", others show "API Authorization"
             if (
                 apiResourceFeatureEnabled && !application?.advancedConfigurations?.fragment &&
                 (
-                    application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-                    || application?.templateId === MobileAppTemplate?.id
-                    || application?.templateId === OIDCWebAppTemplate?.id
-                    || application?.templateId === SinglePageAppTemplate?.id
-                    || application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
-                    || application?.templateId === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION
-                    || application?.templateId === ApplicationTemplateIdTypes.AGENT_APPLICATION
+                    (isUnifiedMcpCapabilitiesEnabled && (
+                        isMCPClientApp ||
+                        application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+                        || application?.templateId === MobileAppTemplate?.id
+                        || application?.templateId === OIDCWebAppTemplate?.id
+                        || application?.templateId === SinglePageAppTemplate?.id
+                        || application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
+                        || application?.templateId === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION
+                        || application?.templateId === ApplicationTemplateIdTypes.AGENT_APPLICATION
+                    )) ||
+                    (!isUnifiedMcpCapabilitiesEnabled && (
+                        isMCPClientApp ||
+                        application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+                        || application?.templateId === MobileAppTemplate?.id
+                        || application?.templateId === OIDCWebAppTemplate?.id
+                        || application?.templateId === SinglePageAppTemplate?.id
+                        || application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
+                        || application?.templateId === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION
+                        || application?.templateId === ApplicationTemplateIdTypes.AGENT_APPLICATION
+                    ))
                 )
                 && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
             ) {
@@ -242,18 +267,13 @@ export const applicationConfig: ApplicationConfig = {
                         index: application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
                             ? M2M_API_AUTHORIZATION_INDEX + tabExtensions.length
                             : API_AUTHORIZATION_INDEX + tabExtensions.length,
-                        menuItem: application?.originalTemplateId === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
+                        menuItem: (isUnifiedMcpCapabilitiesEnabled || isMCPClientApp || isDigitalWalletApp)
                             ? I18n.instance.t(
                                 "extensions:develop.applications.edit.sections.resourceAuthorization.title"
                             )
-                            : (application?.originalTemplateId
-                                === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION)
-                                ? I18n.instance.t(
-                                    "extensions:develop.applications.edit.sections.resourceAuthorization.title"
-                                )
-                                : I18n.instance.t(
-                                    "extensions:develop.applications.edit.sections.apiAuthorization.title"
-                                ),
+                            : I18n.instance.t(
+                                "extensions:develop.applications.edit.sections.apiAuthorization.title"
+                            ),
                         render: () => (
                             <ResourceTab.Pane controlledSegmentation>
                                 <APIAuthorization

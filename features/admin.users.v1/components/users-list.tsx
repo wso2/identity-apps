@@ -32,10 +32,11 @@ import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
+    HttpErrorResponseDataInterface,
     LoadableComponentInterface,
+    ProfileInfoInterface,
     SBACInterface,
-    TestableComponentInterface,
-    HttpErrorResponseDataInterface
+    TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CommonUtils } from "@wso2is/core/utils";
@@ -174,8 +175,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
     const [ loading, setLoading ] = useState(false);
 
-    const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
-    const isAuthUserPrivileged: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+    const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const isUpdatingSharedProfilesEnabled: boolean = !featureConfig?.users?.disabledFeatures?.includes(
         UserManagementConstants.FEATURE_DICTIONARY.get("USER_SHARED_PROFILES")
     );
@@ -539,7 +539,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
                     || !hasUsersDeletePermissions
                     || readOnlyUserStores?.includes(userStore.toString())
-                    || authenticatedUser === getUserNameWithoutDomain(user?.userName) && isAuthUserPrivileged;
+                    || UserManagementUtils.isAuthenticatedUser(profileInfo.userName, user?.userName);
             },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, user: UserBasicInterface): void => {

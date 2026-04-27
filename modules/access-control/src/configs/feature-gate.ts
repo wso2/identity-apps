@@ -39,6 +39,25 @@ export const featureGateConfig: FeatureGateInterface  = {
                 }
             }
         },
+        connections: {
+            templates: {
+                customAuthenticator: {
+                    status: FeatureStatus.DEFAULT
+                },
+                enterprise: {
+                    status: FeatureStatus.DEFAULT
+                },
+                idvp: {
+                    status: FeatureStatus.DEFAULT
+                }
+            }
+        },
+        consoleSettings: {
+            status: FeatureStatus.DEFAULT
+        },
+        emailTemplates: {
+            status: FeatureStatus.DEFAULT
+        },
         loginAndRegistration: {
             sessionManagement: {
                 status: FeatureStatus.DEFAULT
@@ -50,6 +69,14 @@ export const featureGateConfig: FeatureGateInterface  = {
         saasFeatures: {
             status: FeatureStatus.DEFAULT
         },
-        status: FeatureStatus.DEFAULT
+        smsTemplates: {
+            status: FeatureStatus.DEFAULT
+        },
+        status: FeatureStatus.DEFAULT,
+        userStores: {
+            remoteUserStores: {
+                status: FeatureStatus.DEFAULT
+            }
+        }
     }
 };

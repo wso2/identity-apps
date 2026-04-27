@@ -102,6 +102,9 @@ const MultiMobileFieldForm: FunctionComponent<MultiMobileFieldFormPropsInterface
         [ flattenedProfileSchema ]
     );
 
+    const resolvedPrimaryMobileSchemaRequiredValue: boolean =
+        primaryMobileSchema?.profiles?.endUser?.required ?? primaryMobileSchema?.required;
+
     // There can be situations where the primary mobile number is verified
     // but not added to the verified list.
     // In that scenario, the "urn:scim:wso2:schema:phoneVerified" needs to be checked.
@@ -614,7 +617,7 @@ const MultiMobileFieldForm: FunctionComponent<MultiMobileFieldFormPropsInterface
                                                 } }
                                                 disabled={ isLoading ||
                                                     (mobileNumber.isPrimary &&
-                                                        primaryMobileSchema?.required) ||
+                                                        resolvedPrimaryMobileSchemaRequiredValue) ||
                                                     (isRequired &&
                                                         sortedMobileNumbersList.length === 1) }
                                                 data-componentid={

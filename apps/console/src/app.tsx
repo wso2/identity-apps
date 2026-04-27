@@ -506,7 +506,10 @@ export const App = ({
         <Router history={ history }>
             <DecoratedApp>
                 <div className="container-fluid">
-                    <DocumentationProvider<DocumentationLinksInterface> links={ DocumentationLinks }>
+                    <DocumentationProvider<DocumentationLinksInterface>
+                        links={ DocumentationLinks }
+                        showDocLinks={ Config.getUIConfig()?.showDocLinks ?? false }
+                    >
                         <Suspense fallback={ <PreLoader /> }>
                             <MediaContextProvider>
                                 <AccessControlProvider

@@ -24,16 +24,16 @@
         "lint": "pnpm lint:all",
         "lint:all": "pnpm lint:targeted -- .",
         "lint:autofix": "pnpm lint:all -- --fix",
-        "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to .",
+        "lint:targeted": "eslint --ext .js,.jsx,.ts,.tsx ",
         "test": "jest --passWithNoTests",
         "test:coverage": "jest --passWithNoTests --coverage --collect-coverage",
         "test:watch": "pnpm test -- --watch",
         "typecheck": "pnpm compile"
     },
     "dependencies": {
-        "@mui/material": "5.13.0",
+        "@mui/material": "catalog:",
         "@mui/x-date-pickers": "6.18.0",
-        "@oxygen-ui/react": "^2.4.6",
+        "@oxygen-ui/react": "catalog:",
         "@oxygen-ui/react-icons": "^2.4.6",
         "@wso2is/core": "^2.12.11",
         "@wso2is/react-components": "^2.9.24",
@@ -53,15 +53,15 @@
         "@types/jest": "^29.5.12",
         "@types/lodash-es": "^4.17.4",
         "@types/react": "^18.0.18",
-        "@typescript-eslint/eslint-plugin": "^6.5.0",
-        "@typescript-eslint/parser": "^6.5.0",
-        "eslint": "8.46.0",
-        "eslint-plugin-import": "^2.20.2",
-        "eslint-plugin-react": "^7.30.0",
-        "eslint-plugin-react-hooks": "^4.0.0",
+        "@typescript-eslint/eslint-plugin": "^8.58.2",
+        "@typescript-eslint/parser": "^8.58.2",
+        "eslint": "9.38.0",
+        "eslint-plugin-import": "^2.32.0",
+        "eslint-plugin-react": "^7.37.5",
+        "eslint-plugin-react-hooks": "^7.0.1",
         "jest": "^29.7.0",
         "rimraf": "^3.0.2",
         "ts-jest": "^29.1.2",
-        "typescript": "^4.6.4"
+        "typescript": "^5.1.6"
     }
 }

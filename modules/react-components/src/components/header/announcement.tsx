@@ -80,21 +80,22 @@ export const Announcement: FunctionComponent<AnnouncementPropsInterface> = (
     const {
         children,
         isFeatureAnnouncement,
-        color,
+        color = "primary",
         className,
+        fluid = false,
         message,
         onDismiss,
-        showCloseIcon,
-        visible,
-        [ "data-componentid" ]: componentId,
-        [ "data-testid" ]: testId,
+        showCloseIcon = true,
+        visible = true,
+        [ "data-componentid" ]: componentId = "announcement",
+        [ "data-testid" ]: testId = "announcement",
         ...rest
     } = props;
 
     const classes = classNames(
         "announcement",
         {
-            [ color ]: !isFeatureAnnouncement ?? color
+            [ color ]: !isFeatureAnnouncement
         }
         , className
     );
@@ -106,6 +107,7 @@ export const Announcement: FunctionComponent<AnnouncementPropsInterface> = (
                     className={ !isFeatureAnnouncement ? classes : `${ classes } feature-announcement` }
                     data-testid={ testId }
                     data-componentid={ componentId }
+                    fluid={ fluid }
                     { ...rest }
                 >
                     <>
@@ -131,7 +133,7 @@ export const Announcement: FunctionComponent<AnnouncementPropsInterface> = (
                                     size="nano"
                                     floated="right"
                                     onClick={ (e: React.MouseEvent<HTMLDivElement>) => onDismiss(e) }
-                                    fill={ !isFeatureAnnouncement ?? "white" }
+                                    fill={ isFeatureAnnouncement ? "white" : undefined }
                                     inline
                                     link
                                     transparent
@@ -143,16 +145,4 @@ export const Announcement: FunctionComponent<AnnouncementPropsInterface> = (
             )
             : null
     );
-};
-
-/**
- * Default prop types for the component.
- */
-Announcement.defaultProps = {
-    color: "primary",
-    "data-componentid": "announcement",
-    "data-testid": "announcement",
-    fluid: false,
-    showCloseIcon: true,
-    visible: true
 };

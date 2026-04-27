@@ -38,8 +38,8 @@
 
     .roles-selective-share-right-panel {
         height: 300px;
-        overflow-x: auto;
-        overflow-y: hidden;
+        overflow-x: hidden;
+        overflow-y: auto;
         border-radius: 0 var(--oxygen-shape-borderRadius) var(--oxygen-shape-borderRadius) 0;
     }
 
@@ -51,10 +51,15 @@
     .role-list-container {
         display: flex;
         flex-direction: column;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         gap: 12px;
-        height: 280px;
+        min-height: 280px;
+        width: 100%;
         align-content: flex-start;
+
+        .MuiAutocomplete-root {
+            width: 100%;
+        }
 
         &.center {
             justify-content: center;

@@ -386,6 +386,7 @@ export class Config {
             ...getCompatibilitySettingsResourceEndpoints(this.resolveServerHost(true)),
             CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,
             asyncStatus: `${ this.resolveServerHost(false, true) }/api/server/v1/async-operations`,
+            copilot: `${ this.resolveServerHost() }/api/server/v1/copilot`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,
             saml2Meta: `${ this.resolveServerHost(false, true) }/identity/metadata/saml2`,
@@ -529,6 +530,7 @@ export class Config {
             },
             selfAppIdentifier: window[ "AppUtils" ]?.getConfig()?.ui?.selfAppIdentifier,
             showAppSwitchButton: window[ "AppUtils" ]?.getConfig()?.ui?.showAppSwitchButton,
+            showDocLinks: window[ "AppUtils" ]?.getConfig()?.ui?.showDocLinks ?? false,
             showStatusLabelForNewAuthzRuntimeFeatures:
                 window[ "AppUtils" ]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures,
             systemAppsIdentifiers: window[ "AppUtils" ]?.getConfig()?.ui?.systemAppsIdentifiers,

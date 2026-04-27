@@ -24,15 +24,18 @@ import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
 import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
+import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
 import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
+import FeatureLockedBanner from "@wso2is/admin.feature-gate.v1/components/feature-locked-banner";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, IdentifiableComponentInterface,
-    HttpErrorResponseDataInterface
+import { AlertLevels, HttpErrorResponseDataInterface,
+    IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
@@ -155,6 +158,12 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
     const [ selectedSamlConfigMode, setSelectedSamlConfigMode ] = useState<SamlConfigurationMode>("file");
     const [ pastedPEMContent, setPastedPEMContent ] = useState<string>(null);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
+    const enterpriseConnectionFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CONNECTIONS_ENTERPRISE
+    );
+    const isFeatureLocked: boolean = enterpriseConnectionFeatureStatus !== undefined
+        && enterpriseConnectionFeatureStatus !== FeatureStatus.ENABLED;
 
     // Dynamic UI state
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
@@ -470,6 +479,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 minLength={ IDP_NAME_LENGTH.min }
                 required={ true }
                 width={ 15 }
+                disabled={ isFeatureLocked }
                 format = { (values: any) => {
                     return values.toString().trimStart();
                 } }
@@ -519,7 +529,9 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                                 width: "auto"
                             } }
                             contentTopBorder={ false }
+                            renderDisabledItemsAsGrayscale={ false }
                             showTooltips={ true }
+                            disabled={ isFeatureLocked }
                             data-componentid={ `${ componentId }-form-wizard-oidc-selection-card` }
                         />
                         <SelectionCard
@@ -538,8 +550,8 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                                 width: "auto"
                             } }
                             showTooltips={ true }
-                            disabled={ false }
-                            overlay={ renderDimmerOverlay() }
+                            disabled={ isFeatureLocked }
+                            overlay={ !isFeatureLocked && renderDimmerOverlay() }
                             contentTopBorder={ false }
                             renderDisabledItemsAsGrayscale={ false }
                             overlayOpacity={ 0.6 }
@@ -1051,6 +1063,12 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                         className="content-container"
                         data-componentid={ `${ componentId }-modal-content-2` }>
                         { alert && alertComponent }
+                        { isFeatureLocked && (
+                            <FeatureLockedBanner
+                                data-componentid={ `${componentId}-feature-locked-banner` }
+                                sx={ { marginBottom: 2 } }
+                            />
+                        ) }
                         <Wizard2
                             ref={ wizardRef }
                             initialValues={ initialValues }
@@ -1082,7 +1100,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                                 { /*Check whether we have more steps*/ }
                                 { currentWizardStep < wizardSteps.length - 1 && (
                                     <PrimaryButton
-                                        disabled={ nextShouldBeDisabled }
+                                        disabled={ nextShouldBeDisabled || isFeatureLocked }
                                         floated="right"
                                         onClick={ () => {
                                             wizardRef.current.gotoNextPage();
@@ -1099,7 +1117,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                                     // element. This is because we pass a callback to
                                     // onSubmit which triggers a dedicated handler.
                                     <PrimaryButton
-                                        disabled={ nextShouldBeDisabled || isSubmitting }
+                                        disabled={ nextShouldBeDisabled || isSubmitting || isFeatureLocked }
                                         type="submit"
                                         floated="right"
                                         onClick={ () => {

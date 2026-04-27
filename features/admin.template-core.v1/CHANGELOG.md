@@ -1,5 +1,14 @@
 # @wso2is/admin.template-core.v1
 
+## 1.6.2
+
+### Patch Changes
+
+- [#10113](https://github.com/wso2/identity-apps/pull/10113) [`dd01f38682fd189b94802e06b3473a312c1bf7b1`](https://github.com/wso2/identity-apps/commit/dd01f38682fd189b94802e06b3473a312c1bf7b1) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Feature gate console settings and connections
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.29
+
 ## 1.6.1
 
 ### Patch Changes

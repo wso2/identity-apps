@@ -20,7 +20,7 @@ import { ProfileConstants } from "@wso2is/core/constants";
 import { ClaimInputFormat, PatchOperationRequest } from "@wso2is/core/models";
 import { FormValue } from "@wso2is/forms";
 import React, { Dispatch, FunctionComponent, ReactElement } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CheckboxFieldForm from "./checkbox-field-form";
 import CheckboxGroupFieldForm from "./checkbox-group-field-form";
 import CountryFieldForm from "./country-field-form";
@@ -37,8 +37,10 @@ import SingleMobileFieldForm from "./single-mobile-field-form";
 import SwitchFieldForm from "./switch-field-form";
 import TextFieldForm from "./text-field-form";
 import { SCIMConfigs as SCIMExtensionConfigs } from "../../../extensions/configs/scim";
+import { ProfileSchema } from "../../../models";
 import { ProfilePatchOperationValue } from "../../../models/profile";
 import { ProfileFieldFormRendererPropsInterface } from "../../../models/profile-ui";
+import { AppState } from "../../../store";
 import { setActiveForm } from "../../../store/actions";
 
 const ProfileFieldFormRenderer: FunctionComponent<
@@ -68,6 +70,26 @@ const ProfileFieldFormRenderer: FunctionComponent<
     const { multiValued: isMultiValuedSchema, extended: isExtendedSchema } = fieldSchema;
 
     const dispatch: Dispatch<any> = useDispatch();
+    const profileSchemas: ProfileSchema[] = useSelector(
+        (state: AppState) => state.authenticationInformation.profileSchemas
+    );
+
+    /**
+     * Returns true if the given top-level attribute name corresponds to a complex,
+     * multi-valued schema.
+     *
+     * @param parentName - Top-level attribute name to test.
+     * @returns Whether the attribute is a complex multi-valued schema.
+     */
+    const isComplexMultiValuedAttribute = (parentName: string): boolean => {
+        return profileSchemas.some(
+            (schema: ProfileSchema) =>
+                schema.name === parentName &&
+                schema.multiValued === true &&
+                Array.isArray(schema.subAttributes) &&
+                schema.subAttributes.length > 0
+        );
+    };
 
     const onEditClicked = (): void => {
         dispatch(setActiveForm(formId));
@@ -104,6 +126,44 @@ const ProfileFieldFormRenderer: FunctionComponent<
                 // {addresses: [ {type: "home", streetAddress: "123 Main St"} ] }
                 tempPatchValue = {
                     [schemaNamesCanonicalTypes[0]]: [ { ...tempPatchValue, type: schemaNamesCanonicalTypes[1] } ]
+                };
+            } else if (schemaName === parentAttributeName && !isCanonical
+                && attributeNames.length > 1
+                && isComplexMultiValuedAttribute(parentAttributeName)) {
+                // Builds payload for updating multi-valued complex attributes.
+                // Ensure all relevant sub-attributes are included in the request,
+                // Format: { photos: [ { type: "thumbnail", value: <new> }, { type: "photo", value: <current> } ] }
+                const subAttributeName: string = Object.keys(tempPatchValue)[0];
+                const subAttributeValue: unknown = tempPatchValue[subAttributeName];
+
+                // Find the parent schema to enumerate all sub-attributes.
+                const parentSchema: ProfileSchema | undefined = profileSchemas.find(
+                    (schema: ProfileSchema) => schema.name === parentAttributeName
+                );
+
+                const patchArray: Array<{ type: string; value: unknown }> = [];
+
+                if (parentSchema?.subAttributes?.length > 0) {
+                    for (const subAttr of parentSchema.subAttributes) {
+                        if (subAttr.name === subAttributeName) {
+                            // Use the newly submitted value for the updated sub-attribute.
+                            patchArray.push({ type: subAttr.name, value: subAttributeValue });
+                        } else {
+                            // Include the current value from flattened profile data for unedited sub-attributes.
+                            const existingValue: unknown =
+                                flattenedProfileData[`${parentAttributeName}.${subAttr.name}`];
+
+                            if (existingValue !== undefined && existingValue !== null && existingValue !== "") {
+                                patchArray.push({ type: subAttr.name, value: existingValue });
+                            }
+                        }
+                    }
+                } else {
+                    patchArray.push({ type: subAttributeName, value: subAttributeValue });
+                }
+
+                tempPatchValue = {
+                    [parentAttributeName]: patchArray
                 };
             } else {
                 tempPatchValue = { [schemaName]: tempPatchValue ?? value ?? "" };

@@ -92,6 +92,7 @@ export interface userNS {
             sharedAccess: {
                 doNotShareUser: string;
                 assignedRolesLabel: string;
+                currentlyAssignedRolesLabel: string;
                 sharingSettingsLabel: string;
                 notifications: {
                     fetchOrganizations: {

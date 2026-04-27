@@ -17,8 +17,8 @@
  */
 
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { TestableComponentInterface,
-    HttpErrorResponseDataInterface
+import { HttpErrorResponseDataInterface,
+    TestableComponentInterface
 } from "@wso2is/core/models";
 import { DropdownChild, Field, Form } from "@wso2is/form";
 import { Hint, Message } from "@wso2is/react-components";
@@ -307,19 +307,17 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                                                 <li>
                                                     <>
                                                     contain more than{ " " }
-                                                        { {
-                                                            minLength:
+                                                        {
                                                             TenantManagementConstants
                                                                 .FORM_FIELD_CONSTRAINTS
                                                                 .TENANT_NAME_MIN_LENGTH
-                                                        } }
+                                                        }
                                                     and less than{ " " }
-                                                        { {
-                                                            maxLength:
+                                                        {
                                                             TenantManagementConstants
                                                                 .FORM_FIELD_CONSTRAINTS
                                                                 .TENANT_NAME_MAX_LENGTH
-                                                        } }
+                                                        }
                                                     characters
                                                     </>
                                                 </li>
@@ -361,19 +359,17 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                                                 <li>
                                                     <>
                                                     contain more than{ " " }
-                                                        { {
-                                                            minLength:
+                                                        {
                                                             TenantManagementConstants
                                                                 .FORM_FIELD_CONSTRAINTS
                                                                 .TENANT_NAME_MIN_LENGTH
-                                                        } }
+                                                        }
                                                     and less than{ " " }
-                                                        { {
-                                                            maxLength:
+                                                        {
                                                             TenantManagementConstants
                                                                 .FORM_FIELD_CONSTRAINTS
                                                                 .TENANT_NAME_MAX_LENGTH
-                                                        } }
+                                                        }
                                                     characters
                                                     </>
                                                 </li>
