@@ -92,7 +92,10 @@ export const i18nLink = (locale, link) => {
 };
 
 /**
- * Resolves the text of an element.
+ * Resolves the text of an element. Accepts either a wrapped i18n key
+ * ({@code "{{some.key}}"}) or a bare dot-separated short key ({@code "some.key"}).
+ * If the key cannot be resolved from the translations map, the unwrapped key is
+ * returned so the UI does not render raw {{...}} artefacts.
  * @param {Object} translations - The translations object.
  * @param {string} text - The text to resolve.
  * @returns {string} - The resolved text.
@@ -102,10 +105,22 @@ export const resolveElementText = (translations, text) => {
         return "";
     }
 
-    const i18nKeyMatch = text.match(/^\{\{(.+)\}\}$/);
+    // Wrapped i18n key ({{some.key}}) — return empty when unresolved so the calling component's
+    // own default text renders instead of leaking the raw key to the UI.
+    const wrappedMatch = text.match(/^\{\{(.+)\}\}$/);
 
-    if (i18nKeyMatch) {
-        return getTranslationByKey(translations, i18nKeyMatch[1]);
+    if (wrappedMatch) {
+        const resolved = getTranslationByKey(translations, wrappedMatch[1]);
+
+        return resolved != null ? resolved : "";
+    }
+
+    // Bare dot-separated short key (e.g. "account.restricted.message") — treat as an i18n
+    // lookup when the shape matches, otherwise return the literal text untouched.
+    if (/^[a-z][a-z0-9]*(?:\.[a-z0-9]+)+$/.test(text)) {
+        const resolved = getTranslationByKey(translations, text);
+
+        return resolved != null ? resolved : "";
     }
 
     return text;

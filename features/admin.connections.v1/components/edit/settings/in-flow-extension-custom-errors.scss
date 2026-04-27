@@ -17,7 +17,10 @@
  */
 
 .inflow-extension-custom-errors {
-    padding: 16px 0;
+    background-color: var(--oxygen-palette-background-paper, #ffffff);
+    border: 1px solid var(--oxygen-palette-divider, rgba(0, 0, 0, 0.12));
+    border-radius: 8px;
+    padding: 24px;
 
     .inflow-error-left-panel {
         display: flex;
