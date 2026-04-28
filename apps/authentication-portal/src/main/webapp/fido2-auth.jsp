@@ -20,6 +20,8 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%@include file="includes/localize.jsp" %>
@@ -164,15 +166,14 @@
     <script type="text/javascript" src="libs/base64js/base64js-1.3.0.min.js"></script>
     <script type="text/javascript" src="libs/base64url.js"></script>
 
+    <%
+        String myaccountUrl = IdentityManagementEndpointUtil.getUserPortalUrl(
+            application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL),
+            tenantDomain);
+    %>
     <script type="text/javascript">
         $(document).ready(function () {
-            var myaccountUrl = '<%=application.getInitParameter("MyAccountURL")%>';
-
-            if ("<%=tenantDomain%>" !== "" || "<%=tenantDomain%>" !== "null") {
-                myaccountUrl = myaccountUrl + "/t/" + "<%=tenantDomain%>";
-            }
-
-            $("#my-account-link").attr("href", myaccountUrl +"/myaccount");
+            $("#my-account-link").attr("href", '<%=Encode.forJavaScriptBlock(myaccountUrl)%>');
 
             if(navigator ){
                 let userAgent = navigator.userAgent;
