@@ -150,15 +150,13 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const [ m2mApplication, setM2MApplication ] = useState<boolean>(false);
     const [ isScopeSelectDropdownReady, setIsScopeSelectDropdownReady ] = useState<boolean>(true);
     const [ isDropdownOpen, setIsDropdownOpen ] = useState<boolean>(false);
-    const [ hasStartedFetchingAllResources, setHasStartedFetchingAllResources ] = useState<boolean>(false);
-
-    const shouldFetchAPIResources: boolean = isDropdownOpen || !hasStartedFetchingAllResources;
 
     const {
         data: currentAPIResourcesListData,
         isLoading: iscurrentAPIResourcesListLoading,
-        error: currentAPIResourcesFetchRequestError
-    } = useAPIResources(apiCallNextAfterValue, null, null, shouldFetchAPIResources);
+        error: currentAPIResourcesFetchRequestError,
+        mutate: mutatecurrentAPIResourcesList
+    } = useAPIResources(apiCallNextAfterValue, null, null, isDropdownOpen);
 
     const {
         data: currentAPIResourceScopeListData,
@@ -259,20 +257,22 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
             // Add the current API resources to the all API resources list.
             setAllAPIResourcesListData([ ...allAPIResourcesListData, ...currentAPIResourcesListData.apiResources ]);
 
+            // Check if there are more API resources to be fetched.
+            let isAfterValueExists: boolean = false;
+
             currentAPIResourcesListData?.links?.forEach((value: LinkInterface) => {
                 if (value.rel === APIResourcesConstants.NEXT_REL) {
                     afterValue = value.href.split(`${APIResourcesConstants.AFTER}=`)[1];
 
                     if (afterValue !== apiCallNextAfterValue) {
                         setAPICallNextAfterValue(afterValue);
+                        isAfterValueExists = true;
                     }
                 }
             });
 
-            // If this is the first page load, mark that we've started and stop automatic fetching
-            if (!hasStartedFetchingAllResources) {
-                setHasStartedFetchingAllResources(true);
-                setIsAPIResourcesListLoading(false);
+            if (isAfterValueExists) {
+                mutatecurrentAPIResourcesList();
             } else {
                 setIsAPIResourcesListLoading(false);
             }
@@ -498,7 +498,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                         (option: DropdownItemProps, value: DropdownItemProps) =>
                                             option.value === value.value
                                     }
-                                    loading={ isAPIResourcesListLoading }
+                                    loading={ isDropdownOpen && isAPIResourcesListLoading }
                                     onOpen={ () => setIsDropdownOpen(true) }
                                     onClose={ () => setIsDropdownOpen(false) }
                                     renderOption={ (props: any, apiResourcesListOption: any) =>
