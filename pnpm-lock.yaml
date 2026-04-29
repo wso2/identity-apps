@@ -2121,6 +2121,9 @@ importers:
       '@wso2is/admin.wsfed-configuration.v1':
         specifier: ^2.25.206
         version: link:../admin.wsfed-configuration.v1
+      '@wso2is/common.ui.shared-access.v1':
+        specifier: workspace:^
+        version: link:../common.ui.shared-access.v1
       '@wso2is/core':
         specifier: ^2.12.11
         version: link:../../modules/core
@@ -44507,8 +44510,6 @@ packages:
       webpack: '*'
     peerDependenciesMeta:
       webpack:
-        optional: true
-      webpack-sources:
         optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@4.10.0)

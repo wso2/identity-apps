@@ -19,6 +19,7 @@
 import { ResponseMode, Storage } from "@asgardeo/auth-react";
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { ActionsResourceEndpointsInterface } from "@wso2is/admin.actions.v1/models/endpoints";
+import { AgentsResourceEndpointsInterface } from "@wso2is/admin.agents.v1/models/endpoints";
 import { ApplicationsTemplatesEndpointsInterface } from "@wso2is/admin.application-templates.v1/models/endpoints";
 import {
     ApplicationTemplateLoadingStrategies
@@ -824,7 +825,8 @@ interface IdentityProviderTemplateConfigInterface {
 /**
  * Service resource endpoints config.
  */
-export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpointsInterface,
+export interface ServiceResourceEndpointsInterface extends AgentsResourceEndpointsInterface,
+    ClaimResourceEndpointsInterface,
     CertificatesResourceEndpointsInterface,
     GroupsResourceEndpointsInterface,
     ServerConfigurationsResourceEndpointsInterface,

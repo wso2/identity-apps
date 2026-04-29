@@ -1128,7 +1128,23 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         if (extensionTemplateMetadata?.edit?.tabs
                 && Array.isArray(extensionTemplateMetadata?.edit?.tabs)
                 && extensionTemplateMetadata?.edit?.tabs?.length > 0) {
-            return filterTabsBasedOnExtensionTemplateMetadata(availableTabs);
+            const filteredTabs: ResourceTabPaneInterface[] =
+                filterTabsBasedOnExtensionTemplateMetadata(availableTabs);
+
+            // The shared-access tab visibility is governed by feature flags, org type, and permissions —
+            // not by extension template metadata. Preserve it if resolved but filtered out.
+            const sharedAccessTab: ResourceTabPaneInterface | undefined = availableTabs.find(
+                (tab: ResourceTabPaneInterface) => tab?.["data-tabid"] === ApplicationTabIDs.SHARED_ACCESS
+            );
+            const isSharedAccessInFiltered: boolean = filteredTabs.some(
+                (tab: ResourceTabPaneInterface) => tab?.["data-tabid"] === ApplicationTabIDs.SHARED_ACCESS
+            );
+
+            if (sharedAccessTab && !isSharedAccessInFiltered) {
+                filteredTabs.push(sharedAccessTab);
+            }
+
+            return filteredTabs;
         }
 
         return availableTabs;
