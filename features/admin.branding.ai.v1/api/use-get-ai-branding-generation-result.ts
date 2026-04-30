@@ -34,7 +34,7 @@ import { BrandingGenerationResultAPIResponseInterface } from "../models/branding
  * @param operationId - Operation ID of the branding generation process.
  * @param brandingGenerationCompleted - Flag to determine if the branding generation is completed.
  */
-export const useGetAIBrandingGenerationResult = (
+const useGetAIBrandingGenerationResult = (
     operationId: string,
     brandingGenerationCompleted: boolean
 ): RequestResultInterface<BrandingGenerationResultAPIResponseInterface, RequestErrorInterface> => {

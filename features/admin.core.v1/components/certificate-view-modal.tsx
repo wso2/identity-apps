@@ -115,4 +115,3 @@ export const CertificateViewModal: FunctionComponent<CertificateViewModalInterfa
     );
 };
 
-export default CertificateViewModal;

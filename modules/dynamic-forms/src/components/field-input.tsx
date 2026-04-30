@@ -214,4 +214,3 @@ FieldInput.defaultProps = {
     width: 16
 };
 
-export default FieldInput;

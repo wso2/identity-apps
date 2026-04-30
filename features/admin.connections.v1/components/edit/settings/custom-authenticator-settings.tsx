@@ -90,7 +90,7 @@ export interface CustomAuthenticatorSettingsPagePropsInterface extends Identifia
  * @param props - Props injected to the component.
  * @returns React element.
  */
-export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorSettingsPagePropsInterface> = ({
+const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorSettingsPagePropsInterface> = ({
     isCustomLocalAuthenticator,
     isLoading,
     isReadOnly,

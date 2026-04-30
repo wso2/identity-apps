@@ -26,7 +26,7 @@ import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authenticati
 import useValidationStatus from "../../../../hooks/use-validation-status";
 import Notification, { NotificationType } from "../../../../models/notification";
 import { ExecutionStepViewTypes, ExecutionTypes, Step } from "../../../../models/steps";
-import { ValidationErrorBoundary } from "../../../validation-panel/validation-error-boundary";
+import ValidationErrorBoundary from "../../../validation-panel/validation-error-boundary";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 import View from "../view/view";
 

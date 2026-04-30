@@ -28,10 +28,13 @@ import {
     ProfileFlowIcon,
     UserFlowIcon
 } from "@oxygen-ui/react-icons";
+import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
+import FeatureLockedBanner from "@wso2is/admin.feature-gate.v1/components/feature-locked-banner";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -79,12 +82,17 @@ type ActionTypesListingPageInterface = IdentifiableComponentInterface;
  * @param props - Props injected to the component.
  * @returns Action Types listing page component.
  */
-export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInterface> = ({
+const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInterface> = ({
     "data-componentid": _componentId = "action-types-listing-page"
 }: ActionTypesListingPageInterface): ReactElement => {
 
     const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
         state.config.ui.features?.actions);
+
+    const actionsFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["ACTIONS_FEATURE_GATE"]
+    );
+    const isActionsFeatureEnabled: boolean = actionsFeatureStatus === FeatureStatus.ENABLED;
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
@@ -499,7 +507,11 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             contentTopMargin={ true }
             pageHeaderMaxWidth={ false }
         >
-            { isActionTypesConfigsLoading ? renderLoadingPlaceholder() : (
+            { !isActionsFeatureEnabled ? (
+                <FeatureLockedBanner
+                    data-componentid={ `${ _componentId }-feature-locked-banner` }
+                />
+            ) : isActionTypesConfigsLoading ? renderLoadingPlaceholder() : (
                 <div className="action-types-grid-wrapper" data-componentid={ `${ _componentId }-grid` }>
                     <div className="action-types-grid">
                         { enabledActionTypeCards?.map((cardProps: ActionTypeCardInterface) => {

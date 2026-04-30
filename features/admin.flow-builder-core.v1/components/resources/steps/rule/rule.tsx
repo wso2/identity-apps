@@ -48,7 +48,7 @@ export type RulePropsInterface = CommonStepFactoryPropsInterface & IdentifiableC
  * @param props - Props injected to the component.
  * @returns Rule component.
  */
-export const Rule: FunctionComponent<RulePropsInterface> = ({
+const Rule: FunctionComponent<RulePropsInterface> = ({
     data,
     "data-componentid": componentId = "rule"
 }: RulePropsInterface): ReactElement => {

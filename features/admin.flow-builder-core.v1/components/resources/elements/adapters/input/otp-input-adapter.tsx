@@ -40,7 +40,7 @@ export type OTPInputAdapterPropsInterface = IdentifiableComponentInterface & Com
  * @param props - Props injected to the component.
  * @returns The OTPInputAdapter component.
  */
-export const OTPInputAdapter: FunctionComponent<OTPInputAdapterPropsInterface> = ({
+const OTPInputAdapter: FunctionComponent<OTPInputAdapterPropsInterface> = ({
     resource
 }: OTPInputAdapterPropsInterface): ReactElement => {
     const { t } = useTranslation();

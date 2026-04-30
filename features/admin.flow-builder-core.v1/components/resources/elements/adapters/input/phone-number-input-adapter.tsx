@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import useRequiredFields, { RequiredFieldInterface } from "../../../../../hooks/use-required-fields";
 import { CommonElementFactoryPropsInterface } from "../../common-element-factory";
-import { Hint } from "../../hint";
+import Hint from "../../hint";
 
 /**
  * Props interface of {@link PhoneNumberInputAdapter}
@@ -37,7 +37,7 @@ export type PhoneNumberInputAdapterPropsInterface = IdentifiableComponentInterfa
  * @param props - Props injected to the component.
  * @returns The PhoneNumberInputAdapter component.
  */
-export const PhoneNumberInputAdapter: FunctionComponent<PhoneNumberInputAdapterPropsInterface> = ({
+const PhoneNumberInputAdapter: FunctionComponent<PhoneNumberInputAdapterPropsInterface> = ({
     resource
 }: PhoneNumberInputAdapterPropsInterface): ReactElement => {
     const { t } = useTranslation();

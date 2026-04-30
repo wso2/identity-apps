@@ -20,6 +20,9 @@ import { FeatureGateInterface, FeatureStatus } from "@wso2is/access-control";
 
 export const featureGateConfig: FeatureGateInterface  = {
     console:  {
+        actions: {
+            status: FeatureStatus.DEFAULT
+        },
         application: {
             signIn: {
                 adaptiveAuth : {
@@ -28,6 +31,9 @@ export const featureGateConfig: FeatureGateInterface  = {
                 },
                 status: FeatureStatus.DEFAULT
             },
+            status: FeatureStatus.DEFAULT
+        },
+        approvalWorkflows: {
             status: FeatureStatus.DEFAULT
         },
         branding: {
@@ -77,6 +83,9 @@ export const featureGateConfig: FeatureGateInterface  = {
             remoteUserStores: {
                 status: FeatureStatus.DEFAULT
             }
+        },
+        webhooks: {
+            status: FeatureStatus.DEFAULT
         }
     }
 };

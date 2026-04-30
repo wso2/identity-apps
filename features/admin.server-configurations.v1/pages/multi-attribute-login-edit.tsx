@@ -48,7 +48,7 @@ type GovernanceConnectorsPageInterface = TestableComponentInterface;
  * @param props - Props injected to the component.
  * @returns Multi Attribute Login connector edit page.
  */
-export const MultiAttributeLoginEdit: FunctionComponent<GovernanceConnectorsPageInterface> = (
+const MultiAttributeLoginEdit: FunctionComponent<GovernanceConnectorsPageInterface> = (
     props: GovernanceConnectorsPageInterface
 ): ReactElement => {
     const { [ "data-testid" ]: testId } = props;

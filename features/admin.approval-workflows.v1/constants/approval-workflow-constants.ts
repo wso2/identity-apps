@@ -126,4 +126,3 @@ export const OPERATION_FIELD_MAPPING: Record<string, string[]> = {
     ]
 };
 
-export default ApprovalWorkflowConstants;

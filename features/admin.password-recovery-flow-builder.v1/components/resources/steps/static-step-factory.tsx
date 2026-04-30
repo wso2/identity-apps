@@ -35,7 +35,7 @@ export type StaticStepFactoryPropsInterface = CommonStaticStepFactoryPropsInterf
  * @param props - Props injected to the component.
  * @returns The StaticStepFactory component.
  */
-export const StaticStepFactory: FunctionComponent<StaticStepFactoryPropsInterface> = ({
+const StaticStepFactory: FunctionComponent<StaticStepFactoryPropsInterface> = ({
     type,
     "data-componentid": componentId = "static-node-factory",
     ...rest

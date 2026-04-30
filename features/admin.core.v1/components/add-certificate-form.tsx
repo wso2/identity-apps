@@ -139,4 +139,3 @@ export const AddCertificateFormComponent: React.FunctionComponent<AddCertificate
 
 };
 
-export default AddCertificateFormComponent;

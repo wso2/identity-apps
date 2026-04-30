@@ -56,7 +56,7 @@ export interface CommonElementFactoryPropsInterface extends IdentifiableComponen
  * @param props - Props injected to the component.
  * @returns The CommonComponentFactory component.
  */
-export const CommonElementFactory: FunctionComponent<CommonElementFactoryPropsInterface> = ({
+const CommonElementFactory: FunctionComponent<CommonElementFactoryPropsInterface> = ({
     stepId,
     resource
 }: CommonElementFactoryPropsInterface & Node): ReactElement => {

@@ -62,7 +62,7 @@ interface AttributeMappingsPathParams {
     customAttributeMappingID?: string;
 }
 
-export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMappingsPathParams> &
+const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMappingsPathParams> &
     EditAttributeMappingsPropsInterface> = (
         props: RouteChildrenProps<AttributeMappingsPathParams> & EditAttributeMappingsPropsInterface
     ): ReactElement => {

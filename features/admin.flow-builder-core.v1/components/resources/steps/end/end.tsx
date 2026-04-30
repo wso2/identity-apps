@@ -27,7 +27,7 @@ import { useTranslation } from "react-i18next";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
-import { View } from "../view/view";
+import View from "../view/view";
 import "./end.scss";
 
 /**

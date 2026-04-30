@@ -54,7 +54,7 @@ const resolveIndividualFlow = (serverFlag: boolean, compatibilityFlag: boolean):
  * @param flowType - Legacy flow type for which the flag should be resolved.
  * @returns Effective enableLegacy flag for the given flow type.
  */
-export const useEnableLegacyFlows = (flowType: LegacyFlowType): boolean => {
+const useEnableLegacyFlows = (flowType: LegacyFlowType): boolean => {
     const { compatibilitySettings } = useCompatibilitySettings();
 
     const deploymentFlowExecutionConfig: {

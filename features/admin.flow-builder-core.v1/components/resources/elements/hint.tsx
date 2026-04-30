@@ -38,7 +38,7 @@ export interface HintPropsInterface extends IdentifiableComponentInterface {
  * @param props - Props injected to the component.
  * @returns The Hint component.
  */
-export const Hint: FunctionComponent<HintPropsInterface> = ({
+const Hint: FunctionComponent<HintPropsInterface> = ({
     hint
 }: HintPropsInterface): ReactElement => (
     <div className="composer-input-field-hint-container">

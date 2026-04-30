@@ -39,7 +39,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * @param actionId - Id of the Action.
  * TODO: Use `IdentityAppsApiException` and validate the return type.
  */
-export const deleteAction = (actionType: string, actionId: string): Promise<string> => {
+const deleteAction = (actionType: string, actionId: string): Promise<string> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {

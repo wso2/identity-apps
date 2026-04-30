@@ -173,7 +173,7 @@ export interface SignInBoxNodePropsInterface extends IdentifiableComponentInterf
  * @param props - Props injected to the component.
  * @returns Sign in box node component.
  */
-export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
+const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
     props: SignInBoxNodePropsInterface & Node
 ): ReactElement => {
     const {

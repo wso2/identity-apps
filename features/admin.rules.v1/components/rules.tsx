@@ -30,7 +30,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import RuleConditions from "./rule-conditions";
-import { useRulesContext } from "../hooks/use-rules-context";
+import useRulesContext from "../hooks/use-rules-context";
 import { ListDataInterface } from "../models/meta";
 import { RuleInterface } from "../models/rules";
 import "./rules.scss";

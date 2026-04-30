@@ -26,7 +26,7 @@ import CompatibilitySettingsContext, {
  *
  * @returns Context value: compatibilitySettings, isLoading
  */
-export const useCompatibilitySettings = (): CompatibilitySettingsContextInterface => {
+const useCompatibilitySettings = (): CompatibilitySettingsContextInterface => {
     const context: CompatibilitySettingsContextInterface | undefined =
         useContext(CompatibilitySettingsContext);
 

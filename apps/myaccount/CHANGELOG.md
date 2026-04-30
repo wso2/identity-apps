@@ -1,5 +1,26 @@
 # @wso2is/myaccount
 
+## 4.1.20
+
+### Patch Changes
+
+- [#10219](https://github.com/wso2/identity-apps/pull/10219) [`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove duplicate exports
+
+- Updated dependencies [[`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c)]:
+  - @wso2is/forms@2.3.27
+
+## 4.1.19
+
+### Patch Changes
+
+- [#10212](https://github.com/wso2/identity-apps/pull/10212) [`49e1a4ac7b047b2e5f6f75e3958831a889407859`](https://github.com/wso2/identity-apps/commit/49e1a4ac7b047b2e5f6f75e3958831a889407859) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Enhance feature checks for account linking feature
+
+## 4.1.18
+
+### Patch Changes
+
+- [#10208](https://github.com/wso2/identity-apps/pull/10208) [`acee8bcc6cde7d212cf28a40ccde208768643c53`](https://github.com/wso2/identity-apps/commit/acee8bcc6cde7d212cf28a40ccde208768643c53) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - update @asgardeo/auth-react dependency to version 5.6.1
+
 ## 4.1.17
 
 ### Patch Changes

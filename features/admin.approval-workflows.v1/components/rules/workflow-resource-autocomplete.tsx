@@ -25,7 +25,7 @@ import { ListItemProps } from "@oxygen-ui/react/ListItem";
 import TextField from "@oxygen-ui/react/TextField";
 import { TrashIcon } from "@oxygen-ui/react-icons";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { useRulesContext } from "@wso2is/admin.rules.v1/hooks/use-rules-context";
+import useRulesContext from "@wso2is/admin.rules.v1/hooks/use-rules-context";
 import { ResourceInterface } from "@wso2is/admin.rules.v1/models/resource";
 import { ExpressionFieldTypes } from "@wso2is/admin.rules.v1/models/rules";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";

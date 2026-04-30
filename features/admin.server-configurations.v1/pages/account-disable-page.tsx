@@ -62,7 +62,7 @@ type AccountDisablePageInterface = IdentifiableComponentInterface;
  * @param props - Props injected to the component.
  * @returns Account Disable configuration page.
  */
-export const AccountDisablePage: FC<AccountDisablePageInterface> = (
+const AccountDisablePage: FC<AccountDisablePageInterface> = (
     { [ "data-componentid" ]: componentId = "account-disable" }: AccountDisablePageInterface
 ): ReactElement => {
 

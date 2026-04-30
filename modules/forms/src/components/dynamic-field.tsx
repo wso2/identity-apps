@@ -604,4 +604,3 @@ DynamicField.defaultProps = {
     requiredField: false
 };
 
-export default DynamicField;

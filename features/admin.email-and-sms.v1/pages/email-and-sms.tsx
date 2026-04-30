@@ -44,7 +44,7 @@ type EmailAndSMSPageInterface = IdentifiableComponentInterface;
  * @param props - Props injected to the component.
  * @returns Notification channels listing page component.
  */
-export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
+const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
     props: EmailAndSMSPageInterface
 ): ReactElement => {
     const { ["data-componentid"]: componentid } = props;

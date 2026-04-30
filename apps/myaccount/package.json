@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/myaccount",
-    "version": "4.1.17",
+    "version": "4.1.20",
     "description": "WSO2 Identity Server My Account",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -35,7 +35,7 @@
         "typecheck": "pnpm run compile"
     },
     "dependencies": {
-        "@asgardeo/auth-react": "^5.6.0",
+        "@asgardeo/auth-react": "^5.6.1",
         "@babel/polyfill": "^7.0.0",
         "@mui/material": "catalog:",
         "@mui/system": "catalog:",
@@ -48,7 +48,7 @@
         "@wso2is/common.users.v1": "workspace:^",
         "@wso2is/common.workflow-approvals.v1": "^1.0.15",
         "@wso2is/core": "^2.13.1",
-        "@wso2is/forms": "^2.3.23",
+        "@wso2is/forms": "^2.3.27",
         "@wso2is/i18n": "^2.38.7",
         "@wso2is/react-components": "^2.10.1",
         "@wso2is/theme": "^2.10.1",

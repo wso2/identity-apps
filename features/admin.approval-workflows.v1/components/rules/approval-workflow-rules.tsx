@@ -26,7 +26,7 @@ import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
 import { PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
-import { useRulesContext } from "@wso2is/admin.rules.v1/hooks/use-rules-context";
+import useRulesContext from "@wso2is/admin.rules.v1/hooks/use-rules-context";
 import { ListDataInterface } from "@wso2is/admin.rules.v1/models/meta";
 import { RuleInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";

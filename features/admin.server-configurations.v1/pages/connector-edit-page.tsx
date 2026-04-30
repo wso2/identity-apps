@@ -85,7 +85,7 @@ type ConnectorEditPageInterface = TestableComponentInterface;
  *
  * @returns Connector edit page.
  */
-export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = (
+const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = (
     props: ConnectorEditPageInterface
 ): ReactElement => {
     const { [ "data-testid" ]: testId } = props;

@@ -21,7 +21,7 @@ import Autocomplete, {
     AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
-import { useRulesContext } from "@wso2is/admin.rules.v1/hooks/use-rules-context";
+import useRulesContext from "@wso2is/admin.rules.v1/hooks/use-rules-context";
 import { ConditionExpressionMetaInterface, ListDataInterface } from "@wso2is/admin.rules.v1/models/meta";
 import { ExpressionFieldTypes } from "@wso2is/admin.rules.v1/models/rules";
 import { Code } from "@wso2is/react-components";

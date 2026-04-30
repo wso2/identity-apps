@@ -533,11 +533,4 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     return resolveUserActions();
 };
 
-/**
- * Default props for the component.
- */
-UserImpersonationAction.defaultProps = {
-    "data-componentid": "impersonate-user-action"
-};
 
-export default UserImpersonationAction;

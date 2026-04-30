@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.extensions.v1",
-    "version": "2.43.4",
+    "version": "2.43.5",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -15,7 +15,7 @@
         "@mui/system": "^5.12.3",
         "@mui/utils": "^5.12.3",
         "@oxygen-ui/react": "^2.4.6",
-        "@wso2is/access-control": "^3.5.6",
+        "@wso2is/access-control": "^3.5.8",
         "@wso2is/admin.applications.v1": "^2.42.23",
         "@wso2is/admin.claims.v1": "^2.31.1",
         "@wso2is/admin.connections.v1": "^2.37.2",

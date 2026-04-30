@@ -102,7 +102,7 @@ const FORM_ID: string = "validation-config-form";
  * @param props - Props injected to the component.
  * @returns Validation configuration listing page component.
  */
-export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPage> = (
+const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPage> = (
     props: MyAccountSettingsEditPage
 ): ReactElement => {
     const { ["data-componentid"]: componentId } = props;

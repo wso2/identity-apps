@@ -17,7 +17,7 @@
  */
 
 import TextField from "@oxygen-ui/react/TextField";
-import { useRulesContext } from "@wso2is/admin.rules.v1/hooks/use-rules-context";
+import useRulesContext from "@wso2is/admin.rules.v1/hooks/use-rules-context";
 import { ExpressionFieldTypes } from "@wso2is/admin.rules.v1/models/rules";
 import React, {
     FunctionComponent,

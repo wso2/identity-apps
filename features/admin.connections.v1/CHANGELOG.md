@@ -1,5 +1,25 @@
 # @wso2is/admin.connections.v1
 
+## 2.37.4
+
+### Patch Changes
+
+- [#10219](https://github.com/wso2/identity-apps/pull/10219) [`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove duplicate exports
+
+- Updated dependencies [[`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c)]:
+  - @wso2is/admin.applications.v1@2.42.24
+  - @wso2is/admin.actions.v1@1.15.8
+  - @wso2is/admin.claims.v1@2.31.2
+  - @wso2is/admin.roles.v2@2.27.381
+  - @wso2is/admin.core.v1@2.57.6
+  - @wso2is/forms@2.3.27
+
+## 2.37.3
+
+### Patch Changes
+
+- [#10201](https://github.com/wso2/identity-apps/pull/10201) [`86c828169e4ebc17b8f9e059819e7739cb1e4e9e`](https://github.com/wso2/identity-apps/commit/86c828169e4ebc17b8f9e059819e7739cb1e4e9e) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add duo authenticator to connection constants
+
 ## 2.37.2
 
 ### Patch Changes

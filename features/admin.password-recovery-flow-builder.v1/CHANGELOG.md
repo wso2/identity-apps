@@ -1,5 +1,18 @@
 # @wso2is/admin.password-recovery-flow-builder.v1
 
+## 1.1.212
+
+### Patch Changes
+
+- [#10219](https://github.com/wso2/identity-apps/pull/10219) [`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove duplicate exports
+
+- Updated dependencies [[`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c)]:
+  - @wso2is/admin.server-configurations.v1@2.38.51
+  - @wso2is/admin.flow-builder-core.v1@0.10.212
+  - @wso2is/admin.claims.v1@2.31.2
+  - @wso2is/admin.rules.v1@0.7.50
+  - @wso2is/admin.core.v1@2.57.6
+
 ## 1.1.211
 
 ### Patch Changes

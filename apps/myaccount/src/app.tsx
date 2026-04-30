@@ -55,7 +55,7 @@ import { EventPublisher, filterRoutes } from "./utils";
  *
  * @returns App root component.
  */
-export const App = (): ReactElement => {
+const App = (): ReactElement => {
 
     const userName: string = useSelector((state: AppState) => state.authenticationInformation.username);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);

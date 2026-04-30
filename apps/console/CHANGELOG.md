@@ -1,5 +1,93 @@
 # @wso2is/console
 
+## 4.5.17
+
+### Patch Changes
+
+- [#10221](https://github.com/wso2/identity-apps/pull/10221) [`c64c9c7722283ef2624ef9a5bd8363dfc413a118`](https://github.com/wso2/identity-apps/commit/c64c9c7722283ef2624ef9a5bd8363dfc413a118) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - Fix: Copilot feature visibility to sub-level organizations
+
+## 4.5.16
+
+### Patch Changes
+
+- [#10219](https://github.com/wso2/identity-apps/pull/10219) [`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove duplicate exports
+
+- Updated dependencies [[`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c)]:
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.212
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.212
+  - @wso2is/admin.registration-flow-builder.v1@0.10.171
+  - @wso2is/admin.organization-discovery.v1@2.25.210
+  - @wso2is/admin.server-configurations.v1@2.38.51
+  - @wso2is/admin.saml2-configuration.v1@2.25.208
+  - @wso2is/admin.wsfed-configuration.v1@2.25.207
+  - @wso2is/admin.approval-workflows.v1@1.3.31
+  - @wso2is/admin.session-management.v1@2.26.6
+  - @wso2is/admin.administrators.v1@2.29.210
+  - @wso2is/admin.email-and-sms.v1@2.25.209
+  - @wso2is/admin.impersonation.v1@1.6.208
+  - @wso2is/admin.applications.v1@2.42.24
+  - @wso2is/admin.connections.v1@2.37.4
+  - @wso2is/admin.onboarding.v1@1.0.83
+  - @wso2is/admin.validation.v1@2.28.4
+  - @wso2is/admin.webhooks.v1@1.1.4
+  - @wso2is/admin.actions.v1@1.15.8
+  - @wso2is/admin.tenants.v1@2.29.28
+  - @wso2is/admin.claims.v1@2.31.2
+  - @wso2is/admin.roles.v2@2.27.381
+  - @wso2is/admin.users.v1@2.38.36
+  - @wso2is/admin.core.v1@2.57.6
+  - @wso2is/admin.logs.v1@1.6.8
+  - @wso2is/admin.cds.v1@1.6.4
+  - @wso2is/dynamic-forms@2.4.42
+  - @wso2is/forms@2.3.27
+
+## 4.5.15
+
+### Patch Changes
+
+- [#10216](https://github.com/wso2/identity-apps/pull/10216) [`da30fc3c8c2e70e55762781c1039a8a7f0b35bc1`](https://github.com/wso2/identity-apps/commit/da30fc3c8c2e70e55762781c1039a8a7f0b35bc1) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - fix: update copilot endpoint to include skipAuthzRuntimePath parameter
+
+- Updated dependencies [[`da30fc3c8c2e70e55762781c1039a8a7f0b35bc1`](https://github.com/wso2/identity-apps/commit/da30fc3c8c2e70e55762781c1039a8a7f0b35bc1)]:
+  - @wso2is/admin.core.v1@2.57.5
+
+## 4.5.14
+
+### Patch Changes
+
+- [#10210](https://github.com/wso2/identity-apps/pull/10210) [`f0f3d1335b420611e694640872d71e59c3505bd1`](https://github.com/wso2/identity-apps/commit/f0f3d1335b420611e694640872d71e59c3505bd1) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - update copilot toggle implementation to use button instead of menu item
+
+- Updated dependencies [[`f0f3d1335b420611e694640872d71e59c3505bd1`](https://github.com/wso2/identity-apps/commit/f0f3d1335b420611e694640872d71e59c3505bd1)]:
+  - @wso2is/admin.core.v1@2.57.4
+
+## 4.5.13
+
+### Patch Changes
+
+- [#10208](https://github.com/wso2/identity-apps/pull/10208) [`acee8bcc6cde7d212cf28a40ccde208768643c53`](https://github.com/wso2/identity-apps/commit/acee8bcc6cde7d212cf28a40ccde208768643c53) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - update @asgardeo/auth-react dependency to version 5.6.1
+
+## 4.5.12
+
+### Patch Changes
+
+- [#10203](https://github.com/wso2/identity-apps/pull/10203) [`4eb39168ef1c46f4c3d31013e09d5a3fbed15368`](https://github.com/wso2/identity-apps/commit/4eb39168ef1c46f4c3d31013e09d5a3fbed15368) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Feature gate webhooks, workflows, actions
+
+- Updated dependencies [[`4eb39168ef1c46f4c3d31013e09d5a3fbed15368`](https://github.com/wso2/identity-apps/commit/4eb39168ef1c46f4c3d31013e09d5a3fbed15368)]:
+  - @wso2is/admin.actions.v1@1.15.7
+  - @wso2is/admin.approval-workflows.v1@1.3.30
+  - @wso2is/admin.extensions.v1@2.43.5
+  - @wso2is/admin.feature-gate.v1@1.9.7
+  - @wso2is/admin.webhooks.v1@1.1.3
+  - @wso2is/access-control@3.5.8
+
+## 4.5.11
+
+### Patch Changes
+
+- [#10201](https://github.com/wso2/identity-apps/pull/10201) [`86c828169e4ebc17b8f9e059819e7739cb1e4e9e`](https://github.com/wso2/identity-apps/commit/86c828169e4ebc17b8f9e059819e7739cb1e4e9e) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Add duo authenticator to connection constants
+
+- Updated dependencies [[`86c828169e4ebc17b8f9e059819e7739cb1e4e9e`](https://github.com/wso2/identity-apps/commit/86c828169e4ebc17b8f9e059819e7739cb1e4e9e)]:
+  - @wso2is/admin.connections.v1@2.37.3
+
 ## 4.5.10
 
 ### Patch Changes

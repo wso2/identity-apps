@@ -23,8 +23,7 @@ env:
 jobs:
   knip:
     name: 🔪 Knip (DEAD CODE)
-    if: false # Keeping knip disabled until existing dead code is cleaned up.
-    # if: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' || github.event_name == 'workflow_dispatch' }}
+    if: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:

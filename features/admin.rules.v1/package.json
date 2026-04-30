@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.rules.v1",
-    "version": "0.7.49",
+    "version": "0.7.50",
     "description": "Manage conditional rules.",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -31,7 +31,7 @@
         "@mui/system": "catalog:",
         "@mui/utils": "^5.12.3",
         "@oxygen-ui/react": "catalog:",
-        "@wso2is/admin.core.v1": "^2.57.1",
+        "@wso2is/admin.core.v1": "^2.57.6",
         "@wso2is/admin.roles.v2": "workspace:^",
         "@wso2is/admin.extensions.v1": "workspace:^",
         "@wso2is/core": "^2.13.0",

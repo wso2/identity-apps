@@ -1,14 +1,14 @@
 {
     "private": true,
     "name": "@wso2is/admin.impersonation.v1",
-    "version": "1.6.207",
+    "version": "1.6.208",
     "description": "Impersonation Configuration Package",
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
         "@asgardeo/auth-react": "^5.1.2",
         "@wso2is/access-control": "^3.3.20",
-        "@wso2is/admin.core.v1": "^2.57.3",
+        "@wso2is/admin.core.v1": "^2.57.6",
         "@wso2is/core": "^2.7.0",
         "@wso2is/form": "^2.7.1",
         "@wso2is/react-components": "^2.9.16",

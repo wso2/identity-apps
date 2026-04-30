@@ -834,4 +834,3 @@ export const RemoteLoggingConfigForm = ({
     );
 };
 
-export default RemoteLoggingConfigForm;

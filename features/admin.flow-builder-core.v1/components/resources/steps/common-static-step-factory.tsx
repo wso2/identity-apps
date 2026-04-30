@@ -46,7 +46,7 @@ export interface CommonStaticStepFactoryPropsInterface extends Node, Identifiabl
  * @param props - Props injected to the component.
  * @returns The CommonStaticStepFactory component.
  */
-export const CommonStaticStepFactory: FunctionComponent<CommonStaticStepFactoryPropsInterface> = ({
+const CommonStaticStepFactory: FunctionComponent<CommonStaticStepFactoryPropsInterface> = ({
     type,
     "data-componentid": componentId = "common-static-node-factory",
     ...rest

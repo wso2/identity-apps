@@ -52,7 +52,7 @@ const FORM_ID: string = "session-management-config-form";
 /**
  * Session management page.
  */
-export const SessionManagementSettingsPage: FunctionComponent<SessionManagementSettingsPageInterface> = (
+const SessionManagementSettingsPage: FunctionComponent<SessionManagementSettingsPageInterface> = (
     props: SessionManagementSettingsPageInterface
 ): ReactElement => {
     const { [ "data-componentid" ]: componentId } = props;

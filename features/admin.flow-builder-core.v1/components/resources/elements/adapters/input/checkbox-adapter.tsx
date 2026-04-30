@@ -39,7 +39,7 @@ export type CheckboxAdapterPropsInterface = IdentifiableComponentInterface & Com
  * @param props - Props injected to the component.
  * @returns The CheckboxAdapter component.
  */
-export const CheckboxAdapter: FunctionComponent<CheckboxAdapterPropsInterface> = ({
+const CheckboxAdapter: FunctionComponent<CheckboxAdapterPropsInterface> = ({
     resource
 }: CheckboxAdapterPropsInterface): ReactElement => {
     const { t } = useTranslation();

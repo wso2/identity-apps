@@ -34,7 +34,7 @@ export type ElementFactoryPropsInterface = CommonElementFactoryPropsInterface & 
  * @param props - Props injected to the component.
  * @returns The ElementFactory component.
  */
-export const ElementFactory: FunctionComponent<ElementFactoryPropsInterface> = ({
+const ElementFactory: FunctionComponent<ElementFactoryPropsInterface> = ({
     resource,
     stepId
 }: ElementFactoryPropsInterface & Node): ReactElement => {

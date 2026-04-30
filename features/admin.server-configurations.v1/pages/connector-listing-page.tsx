@@ -78,7 +78,7 @@ const LEGACY_ONLY_CONNECTOR_IDS: string[] = [
  * @param props - Props injected to the component.
  * @returns Governance connector listing page component.
  */
-export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterface> = (
+const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterface> = (
     props: ConnectorListingPageInterface
 ): ReactElement => {
     const { [ "data-testid" ]: testId = "governance-connectors-listing-page" } = props;

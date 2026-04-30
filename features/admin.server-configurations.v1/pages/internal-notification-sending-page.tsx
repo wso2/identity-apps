@@ -53,7 +53,7 @@ type InternalNotificationSendingPageInterface = IdentifiableComponentInterface;
  * @param props - Props injected to the component.
  * @returns Internal Notification Sending configuration page.
  */
-export const InternalNotificationSendingPage: FC<InternalNotificationSendingPageInterface> = (
+const InternalNotificationSendingPage: FC<InternalNotificationSendingPageInterface> = (
     props: InternalNotificationSendingPageInterface
 ): ReactElement => {
 

@@ -423,4 +423,3 @@ export const ActionCertificateComponent: FunctionComponent<ActionCertificateProp
     );
 };
 
-export default ActionCertificateComponent;

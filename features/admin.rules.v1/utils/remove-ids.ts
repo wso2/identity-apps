@@ -22,7 +22,7 @@
  * @param obj - Input of a JSON object or an Array of JSON objects.
  * @returns Object without `id` properties.
  */
-export const removeIds = (obj: any): any => {
+const removeIds = (obj: any): any => {
     if (Array.isArray(obj)) {
         return obj.map(removeIds);
     } else if (typeof obj === "object" && obj !== null) {

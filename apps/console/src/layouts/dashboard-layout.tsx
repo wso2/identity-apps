@@ -432,7 +432,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                 className="dashboard-layout"
                 header={
                     (<Header
-                        copilotToggle={ isCopilotFeatureEnabled ? {
+                        copilotToggle={ isCopilotFeatureEnabled && !isSubOrganization() ? {
                             icon: <AISparkleIcon
                                 width={ 20 }
                                 height={ 20 }
@@ -525,7 +525,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                         <Switch>{ resolveRoutes() as ReactNode[] }</Switch>
                     </Suspense>
                 </ErrorBoundary>
-                { isCopilotFeatureEnabled && (
+                { isCopilotFeatureEnabled && !isSubOrganization() && (
                     <ErrorBoundary
                         onChunkLoadError={ AppUtils.onChunkLoadError }
                         handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {

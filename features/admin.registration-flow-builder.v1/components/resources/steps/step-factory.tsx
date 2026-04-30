@@ -35,7 +35,7 @@ export type StepFactoryPropsInterface = CommonStepFactoryPropsInterface & Identi
  * @param props - Props injected to the component.
  * @returns The StepFactory component.
  */
-export const StepFactory: FunctionComponent<StepFactoryPropsInterface> = ({
+const StepFactory: FunctionComponent<StepFactoryPropsInterface> = ({
     resources,
     resourceId,
     ...rest

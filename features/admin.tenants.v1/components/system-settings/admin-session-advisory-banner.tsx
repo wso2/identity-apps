@@ -56,7 +56,7 @@ interface AdminAdvisoryConfigurationInterface {
  * @param props - Props injected to the component.
  * @returns Admin Advisory Banner configuration component.
  */
-export const AdminSessionAdvisoryBanner: FC<AdminAdvisoryBannerInterface> = ({
+const AdminSessionAdvisoryBanner: FC<AdminAdvisoryBannerInterface> = ({
     ["data-componentid"]: componentId = "admin-advisory-edit"
 }: AdminAdvisoryBannerInterface): ReactElement => {
     const { t } = useTranslation();

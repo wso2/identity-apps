@@ -75,7 +75,7 @@ export interface RemoteLoggingConfigFormProps extends IdentifiableComponentInter
  * @param props - Props injected to the component.
  * @returns Remote logging component.
  */
-export const RemoteLoggingConfigForm = ({
+const RemoteLoggingConfigForm = ({
     logType,
     initialData,
     mutateRemoteLoggingRequest,

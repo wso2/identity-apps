@@ -66,7 +66,7 @@ import FeaturePreviewModal from "./modals/feature-preview-modal";
 import { ReactComponent as PreviewFeaturesIcon } from "../../themes/default/assets/images/icons/flask-icon.svg";
 import { ReactComponent as LogoutIcon } from "../../themes/default/assets/images/icons/logout-icon.svg";
 import { ReactComponent as MyAccountIcon } from "../../themes/default/assets/images/icons/user-icon.svg";
-import { ReactComponent as AskHelpAIIcon } from "../../themes/wso2is/assets/images/icons/ask-help-ai-icon.svg";
+import { ReactComponent as AskHelpIcon } from "../../themes/wso2is/assets/images/icons/ask-help-icon.svg";
 import { ReactComponent as DocsIcon } from "../../themes/wso2is/assets/images/icons/docs-icon.svg";
 import { ReactComponent as BillingPortalIcon } from "../../themes/wso2is/assets/images/icons/dollar-icon.svg";
 import { AppConstants } from "../constants/app-constants";
@@ -93,14 +93,14 @@ export interface CopilotToggleProps {
      */
     onClick: () => void;
     /**
-     * Optional icon to render in the menu item.
+     * Optional icon to render in the button.
      */
     icon?: ReactNode;
 }
 
 export interface HeaderPropsInterface extends HeaderProps, IdentifiableComponentInterface {
     /**
-     * Optional copilot toggle config to render as a menu item in the help dropdown.
+     * Optional copilot toggle config to render as a button in the header toolbar.
      * Pass \{ isActive, onClick, icon \} from the calling app to avoid
      * a direct feature dependency on admin.copilot.v1 from admin.core.v1.
      */
@@ -108,7 +108,7 @@ export interface HeaderPropsInterface extends HeaderProps, IdentifiableComponent
 }
 
 /**
- * Gradient text span for the Copilot menu item label.
+ * Gradient text span for the Ask AI button label.
  */
 const CopilotMenuItemText: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     WebkitBackgroundClip: "text",
@@ -362,6 +362,18 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 </Menu>
             </>
         ),
+        copilotToggle && (
+            <Button
+                color="inherit"
+                startIcon={ copilotToggle.icon }
+                onClick={ copilotToggle.onClick }
+                data-componentid="header-ask-ai-button"
+            >
+                <CopilotMenuItemText component="span">
+                    { t("console:common.copilot.title") }
+                </CopilotMenuItemText>
+            </Button>
+        ),
         window["AppUtils"].getConfig().docSiteUrl && (
             <Button
                 color="inherit"
@@ -378,7 +390,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
             <>
                 <Button
                     color="inherit"
-                    startIcon={ <AskHelpAIIcon /> }
+                    startIcon={ <AskHelpIcon /> }
                     endIcon={ <ChevronDownIcon /> }
                     data-testid="get-help-dropdown-link"
                     className="oxygen-user-dropdown-button"
@@ -395,58 +407,6 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                     transformOrigin={ { horizontal: "right", vertical: "top" } }
                     onClose={ onCloseHelpMenu }
                 >
-                    { copilotToggle && (
-                        <MenuItem
-                            className="get-help-dropdown-item"
-                            onClick={ () => {
-                                copilotToggle.onClick();
-                                onCloseHelpMenu();
-                            } }
-                        >
-                            <>
-                                { copilotToggle.icon && (
-                                    <ListItemIcon className="get-help-icon">
-                                        { copilotToggle.icon }
-                                    </ListItemIcon>
-                                ) }
-                                <ListItemText
-                                    primary={
-                                        (
-                                            <CopilotMenuItemText
-                                                component="span"
-                                            >
-                                                { t("console:common.copilot.title") }
-                                            </CopilotMenuItemText>
-                                        )
-                                    }
-                                />
-                            </>
-                        </MenuItem>
-                    ) }
-                    { copilotToggle && <Divider className="get-help-dropdown-divider" /> }
-                    { window["AppUtils"].getConfig().docSiteUrl && (
-                        <MenuItem
-                            className="get-help-dropdown-item"
-                            onClick={ () => {
-                                window.open(
-                                    window["AppUtils"].getConfig().docSiteUrl,
-                                    "_blank",
-                                    "noopener"
-                                );
-                                onCloseHelpMenu();
-                            } }
-                        >
-                            <ListItemIcon className="get-help-icon">
-                                <DocsIcon />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary={ t("console:common.help.docSiteLink") }
-                            />
-                        </MenuItem>
-                    ) }
-                    { window["AppUtils"].getConfig().docSiteUrl &&
-                        <Divider className="get-help-dropdown-divider" />
-                    }
                     { window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL && (
                         <MenuItem
                             className="get-help-dropdown-item contact-support-dropdown-item"

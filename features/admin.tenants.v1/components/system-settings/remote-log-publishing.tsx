@@ -37,7 +37,7 @@ export type RemoteLogPublishingInterface = IdentifiableComponentInterface;
  * @param props - Props injected to the component.
  * @returns Remote log publishing component.
  */
-export const RemoteLogPublishing: FC<RemoteLogPublishingInterface> = ({
+const RemoteLogPublishing: FC<RemoteLogPublishingInterface> = ({
     ["data-componentid"]: componentId = "remote-log-publishing"
 }: RemoteLogPublishingInterface): ReactElement => {
     const {

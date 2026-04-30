@@ -1434,5 +1434,3 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 AttributeSettings.defaultProps = {
     "data-componentid": "application-attribute-settings"
 };
-
-export default AttributeSettings;

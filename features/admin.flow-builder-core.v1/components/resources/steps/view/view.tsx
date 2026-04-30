@@ -92,7 +92,7 @@ export interface ViewPropsInterface
  * @param props - Props injected to the component.
  * @returns Step Node component.
  */
-export const View: FunctionComponent<ViewPropsInterface> = ({
+const View: FunctionComponent<ViewPropsInterface> = ({
     heading,
     droppableAllowedTypes,
     droppableRestrictedTypes,

@@ -37,7 +37,7 @@ export type DefaultInputAdapterPropsInterface = IdentifiableComponentInterface &
  * @param props - Props injected to the component.
  * @returns The DefaultInputAdapter component.
  */
-export const DefaultInputAdapter: FunctionComponent<DefaultInputAdapterPropsInterface> = ({
+const DefaultInputAdapter: FunctionComponent<DefaultInputAdapterPropsInterface> = ({
     resource
 }: DefaultInputAdapterPropsInterface): ReactElement => {
     const { t } = useTranslation();
