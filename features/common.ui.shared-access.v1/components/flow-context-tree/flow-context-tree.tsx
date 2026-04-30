@@ -50,6 +50,7 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
     initialAccessConfig,
     hasCertificate,
     readOnly,
+    allowReadOnlyClaimsModification = true,
     "data-componentid": componentId = "flow-context-tree"
 }: FlowContextTreeProps): ReactElement => {
 
@@ -68,9 +69,27 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
         return map;
     }, [allClaims]);
 
+    // Map of claim URI → readOnly. Used when reconciling an existing access config so that
+    // synthesised claim leaves inherit per-claim read-only status from the Claims API rather
+    // than falling back to the parent container's flag.
+    const claimReadOnlyMap: Map<string, boolean> = useMemo(() => {
+        const map: Map<string, boolean> = new Map();
+
+        allClaims.forEach((c: Claim) => {
+            if (c.claimURI) {
+                map.set(c.claimURI, !!c.readOnly);
+            }
+        });
+
+        return map;
+    }, [allClaims]);
+
     const [tree, setTree] = useState<TreeNodeState[]>(() =>
         initialAccessConfig
-            ? mapMetadataToStateWithAccessConfig(contextTree, initialAccessConfig)
+            ? mapMetadataToStateWithAccessConfig(contextTree, initialAccessConfig, undefined, {
+                allowReadOnlyClaimsModification,
+                claimReadOnlyMap: undefined  // claims not yet loaded on first render
+            })
             : mapMetadataToState(contextTree)
     );
 
@@ -115,14 +134,18 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
             });
     }, []);
 
-    // Re-initialize tree once claims are loaded (to resolve display names) or if input changes.
+    // Re-initialize tree once claims are loaded (to resolve display names + per-claim
+    // read-only status) or if input changes.
     useEffect(() => {
         setTree(
             initialAccessConfig
-                ? mapMetadataToStateWithAccessConfig(contextTree, initialAccessConfig, claimDisplayNames)
+                ? mapMetadataToStateWithAccessConfig(contextTree, initialAccessConfig, claimDisplayNames, {
+                    allowReadOnlyClaimsModification,
+                    claimReadOnlyMap
+                })
                 : mapMetadataToState(contextTree)
         );
-    }, [contextTree, initialAccessConfig, claimDisplayNames]);
+    }, [contextTree, initialAccessConfig, claimDisplayNames, claimReadOnlyMap, allowReadOnlyClaimsModification]);
 
     const handleToggleExpose = useCallback((key: string): void => {
         setTree((prev: TreeNodeState[]) =>
@@ -233,8 +256,18 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
             let updated: TreeNodeState[] = prev;
 
             claims.forEach((claim: Claim, idx: number) => {
+                // Carry the per-claim readOnly flag through to the synthesised tree entry so
+                // the modify-drop rule (and the `allowedOperations` gating below) can fire on
+                // it. Read-only claims get only EXPOSE in their allowedOperations unless the
+                // active flow type permits MODIFY on read-only claims.
+                const claimReadOnly: boolean = !!claim.readOnly;
+                const allowsModifyOnReadOnly: boolean = allowReadOnlyClaimsModification;
+                const allowedOps: string[] = (claimReadOnly && !allowsModifyOnReadOnly)
+                    ? [ "EXPOSE" ]
+                    : [ "EXPOSE", "MODIFY" ];
+
                 const newEntry: TreeNodeState = {
-                    allowedOperations: [ "EXPOSE", "MODIFY" ],
+                    allowedOperations: allowedOps,
                     canDelete: true,
                     children: undefined,
                     dataType: "String",
@@ -248,7 +281,7 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
                     modifyEncrypted: false,
                     nodeType: NodeType.LEAF,
                     path: `${parentNode.path}${claim.claimURI}`,
-                    readOnly: false,
+                    readOnly: claimReadOnly,
                     replaceable: false,
                     title: claim.displayName
                 };
@@ -259,7 +292,7 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
             return updated;
         });
         setClaimModal({ open: false, parentNode: null });
-    }, [claimModal]);
+    }, [claimModal, allowReadOnlyClaimsModification]);
 
     const handleClaimModalClose = useCallback((): void => {
         setClaimModal({ open: false, parentNode: null });
@@ -371,6 +404,7 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
                     ) || []
                 }
                 externalClaims={allClaims}
+                allowReadOnlyClaimsModification={allowReadOnlyClaimsModification}
                 onClose={handleClaimModalClose}
                 onSubmit={handleClaimModalSubmit}
                 data-componentid={`${componentId}-add-claim-modal`}

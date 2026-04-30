@@ -34,6 +34,23 @@ export const inFlowExtension: inFlowExtensionNS = {
                     "children. Conversely, exposing all children auto-selects the parent.",
                 heading: "EXPOSE"
             },
+            externalRedirect: {
+                description: "Extensions may pause the flow to send the user to an external " +
+                    "page (for example, a step-up MFA provider) and resume the flow on " +
+                    "callback. This works without any access-config setup — REDIRECT is " +
+                    "always permitted.",
+                heading: "External Redirection",
+                step1: "Return actionStatus: INCOMPLETE with a single " +
+                    "{ op: 'redirect', url: '<external-url>' } operation.",
+                step2: "Identity Server appends ?flowId=<one-time-id> to the URL. The " +
+                    "external service must redirect the user back to the registration " +
+                    "portal with the same flowId to resume the flow.",
+                step3: "REPLACE operations sent alongside a REDIRECT are ignored. Send any " +
+                    "context updates derived from the redirect-page input on the resume " +
+                    "call (with actionStatus: SUCCESS) instead.",
+                step4: "The resume call uses the same access configuration as the initial " +
+                    "call, so the same MODIFY/EXPOSE paths apply."
+            },
             howToUse: {
                 heading: "How to configure",
                 step1: "Expand a tree node to see its children by clicking on it.",

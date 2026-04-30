@@ -233,16 +233,14 @@
                 }, [code, state]);
 
                 useEffect(() => {
-                    if (mlt !== "null" && flowId !== "null") {
+                    if (flowId !== "null") {
                         setPostBody({
                             flowId: flowId,
                             actionId: "",
-                            inputs: {
-                                mlt
-                            }
+                            inputs: mlt !== "null" ? { mlt } : {}
                         });
                     }
-                }, [mlt, flowId]);
+                }, [flowId, mlt]);
 
                 useEffect(() => {
                     if (confirmationCode !== "null" && !confirmationEffectDone) {

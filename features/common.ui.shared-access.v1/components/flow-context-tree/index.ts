@@ -28,6 +28,7 @@ export type {
     EncryptionOutput,
     FlowContextMetadataResponse,
     FlowContextTreeProps,
+    InFlowExtensionContextTreeResponse,
     InitialAccessConfig,
     TreeNodeState
 } from "./models";
