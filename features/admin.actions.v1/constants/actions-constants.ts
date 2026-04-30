@@ -164,6 +164,21 @@ export class ActionsConstants {
         }
     ];
 
+    /**
+     * Authentication types available specifically for the Actions UI. Extends
+     * the shared AUTH_TYPES with Client Credential, which is not exposed in
+     * other surfaces (e.g. service-based custom authenticator settings) that
+     * also reuse ActionEndpointConfigForm.
+     */
+    public static readonly ACTION_AUTH_TYPES: AuthenticationTypeDropdownOption[] = [
+        ...ActionsConstants.AUTH_TYPES,
+        {
+            key: AuthenticationType.CLIENT_CREDENTIAL,
+            text: "actions:fields.authentication.types.clientCredential.name",
+            value: AuthenticationType.CLIENT_CREDENTIAL
+        }
+    ];
+
     public static readonly PASSWORD_SHARING_TYPES: DropdownChild[] = [
         {
             key: PasswordFormat.SHA_256_HASHED,

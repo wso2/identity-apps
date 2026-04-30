@@ -28,6 +28,7 @@ export enum AuthenticationType {
     BASIC = "BASIC",
     API_KEY = "API_KEY",
     BEARER = "BEARER",
+    CLIENT_CREDENTIAL = "CLIENT_CREDENTIAL",
 }
 
 /**
@@ -197,6 +198,22 @@ export interface AuthenticationPropertiesInterface {
      * Value auth property.
      */
     value: string;
+    /**
+     * Client ID auth property (OAuth2 client credentials).
+     */
+    clientId: string;
+    /**
+     * Client Secret auth property (OAuth2 client credentials).
+     */
+    clientSecret: string;
+    /**
+     * Token endpoint auth property (OAuth2 client credentials).
+     */
+    tokenEndpoint: string;
+    /**
+     * Scopes auth property (OAuth2 client credentials).
+     */
+    scopes: string;
 }
 
 /**
@@ -311,7 +328,11 @@ export interface EndpointResponseInterface {
         /**
          * Authentication Type.
          */
-        type: AuthenticationType
+        type: AuthenticationType;
+        /**
+         * Non-confidential authentication properties returned from the server.
+         */
+        properties?: Partial<AuthenticationPropertiesInterface>;
     };
 }
 
@@ -475,6 +496,22 @@ export interface EndpointConfigFormPropertyInterface {
      * Value property of apiKey authentication.
      */
     valueAuthProperty?: string;
+    /**
+     * Client ID property of OAuth2 client credentials authentication.
+     */
+    clientIdAuthProperty?: string;
+    /**
+     * Client Secret property of OAuth2 client credentials authentication.
+     */
+    clientSecretAuthProperty?: string;
+    /**
+     * Token Endpoint property of OAuth2 client credentials authentication.
+     */
+    tokenEndpointAuthProperty?: string;
+    /**
+     * Scopes property of OAuth2 client credentials authentication.
+     */
+    scopesAuthProperty?: string;
     /**
      * Allowed request headers to be shared with the endpoint.
      */

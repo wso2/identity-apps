@@ -27,12 +27,14 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalFormField, FormSpy, TextFieldAdapter, __DEPRECATED__SelectFieldAdapter } from "@wso2is/form/src";
 import { Hint, URLInput } from "@wso2is/react-components";
+import { FormApi } from "final-form";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { FieldRenderProps } from "react-final-form";
+import { FieldRenderProps, useForm } from "react-final-form";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon } from "semantic-ui-react";
 import { ActionsConstants } from "../constants/actions-constants";
 import {
+    ActionConfigFormPropertyInterface,
     AuthenticationType,
     AuthenticationTypeDropdownOption,
     EndpointConfigFormPropertyInterface
@@ -57,6 +59,13 @@ interface ActionEndpointConfigFormInterface extends IdentifiableComponentInterfa
      */
     isReadOnly: boolean;
     /**
+     * Authentication types to render in the dropdown. Defaults to
+     * `ActionsConstants.AUTH_TYPES` (the shared list without Client Credential)
+     * so callers outside the Actions UI — e.g. service-based custom
+     * authenticator settings — only see the common auth types.
+     */
+    authenticationTypes?: AuthenticationTypeDropdownOption[];
+    /**
      * Callback function triggered when the authentication type is changed.
      *
      * @param updatedValue - The new authentication type selected.
@@ -70,6 +79,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
     isCreateFormState,
     isReadOnly,
     showHeadersAndParams,
+    authenticationTypes = ActionsConstants.AUTH_TYPES,
     onAuthenticationTypeChange,
     ["data-componentid"]: _componentId = "action-endpoint-config-form"
 }: ActionEndpointConfigFormInterface): ReactElement => {
@@ -79,6 +89,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
     const [ isShowSecret2, setIsShowSecret2 ] = useState<boolean>(false);
     const [ isHttpEndpointUri, setIsHttpEndpointUri ] = useState<boolean>(false);
 
+    const form: FormApi<EndpointConfigFormPropertyInterface> = useForm<EndpointConfigFormPropertyInterface>();
     const { t } = useTranslation();
 
     /**
@@ -113,6 +124,39 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
     };
 
     const handleAuthenticationChangeCancel = (): void => {
+        // Roll the form back to the action's GET response. We snapshot user
+        // edits to non-auth fields first, run form.reset() to atomically
+        // restore every field (including the auth fields the user typed in)
+        // to its initial value, then re-apply the captured non-auth edits so
+        // they remain dirty and are still submitted. form.reset() is used
+        // here instead of per-field form.change() calls because reset()
+        // rebuilds the values object atomically against the form's existing
+        // initialValues — per-field updates were observed to leak the
+        // previously typed value through to the next render of the auth
+        // update widget.
+        const currentValues: ActionConfigFormPropertyInterface =
+            form.getState().values as ActionConfigFormPropertyInterface;
+        const preservedNonAuthValues: Partial<ActionConfigFormPropertyInterface> = {
+            allowedHeaders: currentValues?.allowedHeaders,
+            allowedParameters: currentValues?.allowedParameters,
+            endpointUri: currentValues?.endpointUri,
+            name: currentValues?.name
+        };
+
+        form.reset();
+
+        form.batch(() => {
+            (Object.keys(preservedNonAuthValues) as Array<keyof ActionConfigFormPropertyInterface>)
+                .forEach((fieldName: keyof ActionConfigFormPropertyInterface) => {
+                    const value: ActionConfigFormPropertyInterface[typeof fieldName] =
+                        preservedNonAuthValues[fieldName];
+
+                    if (value !== undefined) {
+                        (form.change as (name: string, value: unknown) => void)(fieldName, value);
+                    }
+                });
+        });
+
         onAuthenticationTypeChange(initialValues?.authenticationType as AuthenticationType, false);
         setAuthenticationType(initialValues?.authenticationType as AuthenticationType);
         setIsAuthenticationUpdateFormState(false);
@@ -130,6 +174,8 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                         return t("actions:fields.authentication.types.bearer.name");
                     case AuthenticationType.API_KEY:
                         return t("actions:fields.authentication.types.apiKey.name");
+                    case AuthenticationType.CLIENT_CREDENTIAL:
+                        return t("actions:fields.authentication.types.clientCredential.name");
                     default:
                         return;
                 }
@@ -366,6 +412,132 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                     </div>
                                 </div>
                             );
+                        case AuthenticationType.CLIENT_CREDENTIAL:
+                            return (
+                                <div className="auth-fields-container">
+                                    <div className="auth-field-wrapper">{ showAuthSecretsHint() }</div>
+                                    <div className="auth-field-wrapper">
+                                        <FinalFormField
+                                            key="clientId"
+                                            width={ 16 }
+                                            className="text-field-container"
+                                            FormControlProps={ {
+                                                margin: "dense"
+                                            } }
+                                            ariaLabel="clientId"
+                                            required={ true }
+                                            data-componentid={ `${_componentId}-authentication-property-clientId` }
+                                            name="clientIdAuthProperty"
+                                            type={ isShowSecret1 ? "text" : "password" }
+                                            InputProps={ {
+                                                endAdornment: renderInputAdornmentOfSecret(isShowSecret1, () =>
+                                                    setIsShowSecret1(!isShowSecret1)
+                                                )
+                                            } }
+                                            label={ t(
+                                                "actions:fields.authentication" +
+                                                    ".types.clientCredential.properties.clientId.label"
+                                            ) }
+                                            placeholder={ t(
+                                                "actions:fields.authentication" +
+                                                    ".types.clientCredential.properties.clientId.placeholder"
+                                            ) }
+                                            component={ TextFieldAdapter }
+                                            maxLength={ 1024 }
+                                            minLength={ 0 }
+                                            disabled={ isReadOnly }
+                                        />
+                                    </div>
+                                    <div className="auth-field-wrapper">
+                                        <FinalFormField
+                                            key="clientSecret"
+                                            className="text-field-container"
+                                            width={ 16 }
+                                            FormControlProps={ {
+                                                margin: "dense"
+                                            } }
+                                            ariaLabel="clientSecret"
+                                            required={ true }
+                                            data-componentid={ `${_componentId}-authentication-property-clientSecret` }
+                                            name="clientSecretAuthProperty"
+                                            type={ isShowSecret2 ? "text" : "password" }
+                                            InputProps={ {
+                                                endAdornment: renderInputAdornmentOfSecret(isShowSecret2, () =>
+                                                    setIsShowSecret2(!isShowSecret2)
+                                                )
+                                            } }
+                                            label={ t(
+                                                "actions:fields.authentication" +
+                                                    ".types.clientCredential.properties.clientSecret.label"
+                                            ) }
+                                            placeholder={ t(
+                                                "actions:fields.authentication" +
+                                                    ".types.clientCredential.properties.clientSecret.placeholder"
+                                            ) }
+                                            component={ TextFieldAdapter }
+                                            maxLength={ 1024 }
+                                            minLength={ 0 }
+                                            disabled={ isReadOnly }
+                                        />
+                                    </div>
+                                    <div className="auth-field-wrapper">
+                                        <FinalFormField
+                                            key="tokenEndpoint"
+                                            className="text-field-container"
+                                            width={ 16 }
+                                            FormControlProps={ {
+                                                margin: "dense"
+                                            } }
+                                            ariaLabel="tokenEndpoint"
+                                            required={ true }
+                                            data-componentid={
+                                                `${_componentId}-authentication-property-tokenEndpoint`
+                                            }
+                                            name="tokenEndpointAuthProperty"
+                                            type="text"
+                                            label={ t(
+                                                "actions:fields.authentication" +
+                                                    ".types.clientCredential.properties.tokenEndpoint.label"
+                                            ) }
+                                            placeholder={ t(
+                                                "actions:fields.authentication" +
+                                                    ".types.clientCredential.properties.tokenEndpoint.placeholder"
+                                            ) }
+                                            component={ TextFieldAdapter }
+                                            maxLength={ 1024 }
+                                            minLength={ 0 }
+                                            disabled={ isReadOnly }
+                                        />
+                                    </div>
+                                    <div className="auth-field-wrapper">
+                                        <FinalFormField
+                                            key="scopes"
+                                            className="text-field-container"
+                                            width={ 16 }
+                                            FormControlProps={ {
+                                                margin: "dense"
+                                            } }
+                                            ariaLabel="scopes"
+                                            required={ false }
+                                            data-componentid={ `${_componentId}-authentication-property-scopes` }
+                                            name="scopesAuthProperty"
+                                            type="text"
+                                            label={ t(
+                                                "actions:fields.authentication" +
+                                                    ".types.clientCredential.properties.scopes.label"
+                                            ) }
+                                            placeholder={ t(
+                                                "actions:fields.authentication" +
+                                                    ".types.clientCredential.properties.scopes.placeholder"
+                                            ) }
+                                            component={ TextFieldAdapter }
+                                            maxLength={ 1024 }
+                                            minLength={ 0 }
+                                            disabled={ isReadOnly }
+                                        />
+                                    </div>
+                                </div>
+                            );
                         default:
                             break;
                     }
@@ -391,6 +563,11 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                         case AuthenticationType.API_KEY.toString():
                             setAuthenticationType(AuthenticationType.API_KEY);
                             onAuthenticationTypeChange(AuthenticationType.API_KEY, true);
+
+                            break;
+                        case AuthenticationType.CLIENT_CREDENTIAL.toString():
+                            setAuthenticationType(AuthenticationType.CLIENT_CREDENTIAL);
+                            onAuthenticationTypeChange(AuthenticationType.CLIENT_CREDENTIAL, true);
 
                             break;
                         default:
@@ -422,7 +599,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                             maxLength={ 100 }
                             minLength={ 0 }
                             options={ [
-                                ...ActionsConstants.AUTH_TYPES.map((option: AuthenticationTypeDropdownOption) => ({
+                                ...authenticationTypes.map((option: AuthenticationTypeDropdownOption) => ({
                                     text: t(option.text),
                                     value: option.value.toString()
                                 }))
@@ -632,54 +809,12 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
             </Typography>
             { renderAuthenticationSection() }
             <FormSpy
+                subscription={ { values: true } }
                 onChange={ ({ values }: { values: EndpointConfigFormPropertyInterface }) => {
                     if (values?.endpointUri?.startsWith("http://")) {
                         setIsHttpEndpointUri(true);
                     } else {
                         setIsHttpEndpointUri(false);
-                    }
-
-                    if (isAuthenticationUpdateFormState) {
-                        // Clear inputs of property field values of other authentication types.
-                        switch (authenticationType) {
-                            case AuthenticationType.BASIC:
-                                delete values.accessTokenAuthProperty;
-                                delete values.headerAuthProperty;
-                                delete values.valueAuthProperty;
-
-                                break;
-                            case AuthenticationType.BEARER:
-                                delete values.usernameAuthProperty;
-                                delete values.passwordAuthProperty;
-                                delete values.headerAuthProperty;
-                                delete values.valueAuthProperty;
-
-                                break;
-                            case AuthenticationType.API_KEY:
-                                delete values.usernameAuthProperty;
-                                delete values.passwordAuthProperty;
-                                delete values.accessTokenAuthProperty;
-
-                                break;
-                            case AuthenticationType.NONE:
-                                delete values.usernameAuthProperty;
-                                delete values.passwordAuthProperty;
-                                delete values.headerAuthProperty;
-                                delete values.valueAuthProperty;
-                                delete values.accessTokenAuthProperty;
-
-                                break;
-                            default:
-                                break;
-                        }
-                    } else {
-                        // Clear inputs of all property field values.
-                        values.authenticationType = initialValues?.authenticationType;
-                        delete values.usernameAuthProperty;
-                        delete values.passwordAuthProperty;
-                        delete values.headerAuthProperty;
-                        delete values.valueAuthProperty;
-                        delete values.accessTokenAuthProperty;
                     }
                 } }
             />

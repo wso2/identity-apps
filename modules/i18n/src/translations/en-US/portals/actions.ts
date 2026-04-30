@@ -143,6 +143,37 @@ export const actions: actionsNS = {
                         }
                     }
                 },
+                clientCredential: {
+                    name: "Client Credential",
+                    properties: {
+                        clientId: {
+                            label: "Client ID",
+                            placeholder: "Client ID",
+                            validations: {
+                                empty: "Client ID is a required field."
+                            }
+                        },
+                        clientSecret: {
+                            label: "Client Secret",
+                            placeholder: "Client Secret",
+                            validations: {
+                                empty: "Client Secret is a required field."
+                            }
+                        },
+                        scopes: {
+                            label: "Scopes (optional)",
+                            placeholder: "Scopes"
+                        },
+                        tokenEndpoint: {
+                            label: "Token Endpoint",
+                            placeholder: "Token Endpoint",
+                            validations: {
+                                empty: "Token Endpoint is a required field.",
+                                invalidUrl: "Please enter a valid URL."
+                            }
+                        }
+                    }
+                },
                 none: {
                     name: "None"
                 }

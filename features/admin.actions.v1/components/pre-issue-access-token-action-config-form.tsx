@@ -197,6 +197,13 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                     authProperties.value = values.valueAuthProperty;
 
                     break;
+                case AuthenticationType.CLIENT_CREDENTIAL:
+                    authProperties.clientId = values.clientIdAuthProperty;
+                    authProperties.clientSecret = values.clientSecretAuthProperty;
+                    authProperties.tokenEndpoint = values.tokenEndpointAuthProperty;
+                    authProperties.scopes = values.scopesAuthProperty;
+
+                    break;
                 case AuthenticationType.NONE:
                     break;
                 default:
