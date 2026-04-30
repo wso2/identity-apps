@@ -305,7 +305,8 @@ export class Config {
                 I18nConstants.FLOWS_NAMESPACE,
                 I18nConstants.COMMON_USERS_NAMESPACE,
                 I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE,
-                I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE
+                I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE,
+                I18nConstants.IN_FLOW_EXTENSION_NAMESPACE
             ],
             preload: []
         };

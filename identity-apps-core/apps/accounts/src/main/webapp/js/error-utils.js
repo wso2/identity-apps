@@ -24,7 +24,7 @@
  * @param {string} errorCode - The error code (e.g., "60001")
  * @returns {object} The i18n keys for the given error code.
  */
-function getI18nKeyForError(errorCode, flowType, errorMessage) {
+function getI18nKeyForError(errorCode, flowType, errorMessage, errorDescription) {
     switch (errorCode) {
         case "FE-60001":
 
@@ -213,6 +213,15 @@ function getI18nKeyForError(errorCode, flowType, errorMessage) {
                 description: "orchestration.flow.error.preUpdatePassword.action.failure.description",
                 portalUrlStatus: "true"
             };
+
+        case "FE-65033": {
+            const stripBraces = (s) => (s && s.startsWith("{{") && s.endsWith("}}") ? s.slice(2, -2) : s);
+            return {
+                message: stripBraces(errorMessage) || "orchestration.flow.error.failed.message",
+                description: stripBraces(errorDescription) || "orchestration.flow.error.failed.description",
+                portalUrlStatus: "true"
+            };
+        }
 
         default:
 

@@ -1,0 +1,120 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.dynamic-error-wrapper {
+    width: 100%;
+}
+
+.dynamic-error-segment {
+    background: var(--asg-colors-background-surface-main, #ffffff);
+    border: 1px solid rgba(34, 36, 38, 0.15);
+    border-top: 1px solid #ff5000;
+    border-radius: 4px 4px 0 0;
+    padding: 1em;
+    margin: 1rem 0 0;
+    width: 100%;
+    min-width: 320px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.dynamic-error-header {
+    font-family: var(--asg-primary-font-family, "Gilmer", Roboto, Verdana, Helvetica, sans-serif);
+    font-size: 1.5em;
+    font-weight: 500;
+    text-align: center;
+    color: var(--asg-colors-error-main, #d95858);
+    margin: 1rem 0 3rem;
+    line-height: 1.4;
+}
+
+.dynamic-error-description {
+    font-family: var(--asg-primary-font-family, "Gilmer", Roboto, Verdana, Helvetica, sans-serif);
+    font-size: 17px;
+    color: var(--asg-colors-text-primary, #000000);
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.5;
+    margin: 0 0 1.5em;
+}
+
+.dynamic-error-button-container {
+    display: flex;
+    justify-content: center;
+    margin: 0.4em 0 1em;
+}
+
+.dynamic-error-retry-button {
+    font-family: var(--asg-primary-font-family, "Gilmer", Roboto, Verdana, Helvetica, sans-serif);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--asg-colors-primary-main, #FF7300);
+    background: transparent;
+    border: 1px solid var(--asg-colors-primary-main, #FF7300);
+    border-radius: var(--asg-buttons-primary-base-border-radius, 22px);
+    padding: 0.78571429em 1.5em;
+    line-height: 1em;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.dynamic-error-retry-button:hover {
+    background: transparent;
+    color: #e66800;
+    border: 1px solid #e66800;
+}
+
+.dynamic-error-retry-button:focus-visible {
+    outline: 2px solid var(--asg-colors-primary-main, #FF7300);
+    outline-offset: 2px;
+}
+
+.dynamic-error-support-card {
+    background: #fffaf3;
+    border: 1px solid rgba(34, 36, 38, 0.15);
+    border-top: none;
+    border-radius: 0 0 4px 4px;
+    color: #573a08;
+    padding: 1em 1.5em;
+    margin: 0 0 1em;
+    font-family: var(--asg-primary-font-family, "Gilmer", Roboto, Verdana, Helvetica, sans-serif);
+    font-size: 0.95em;
+}
+
+.dynamic-error-support-card p {
+    margin: 0;
+    text-align: left;
+    line-height: 1.5;
+}
+
+.dynamic-error-support-email {
+    color: var(--asg-colors-primary-main, #FF7300);
+    font-weight: 500;
+}
+
+/* When DynamicError mounts, its useEffect tags the host `.ui.segment.left.aligned` wrapper from
+   execution-flow.jsp with this class so the wrapper's white card styling is neutralised, letting
+   the orange-top segment + warning card render directly on the page background to match
+   execution_flow_error.jsp. !important is used because the theme's wrapper rules ship with
+   higher specificity. */
+.ui.segment.left.aligned.dynamic-error-host {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}

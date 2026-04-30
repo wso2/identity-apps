@@ -78,10 +78,10 @@
 
     if (StringUtils.isNotEmpty(errorMessage) || StringUtils.isNotEmpty(errorDescription)) {
         if (StringUtils.isNotEmpty(errorMessage)) {
-            errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage);
+            errorMessage = i18n(resourceBundle, customText, errorMessage);
         }
         if (StringUtils.isNotEmpty(errorDescription)) {
-            errorDescription = AuthenticationEndpointUtil.i18n(resourceBundle, errorDescription);
+            errorDescription = i18n(resourceBundle, customText, errorDescription);
         }
     }
 
