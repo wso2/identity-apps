@@ -76,7 +76,7 @@ const SECRETS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
 /**
  * Props interface of {@link SecretsList}
  */
-export type SecretsListProps = {
+type SecretsListProps = {
     onEmptyListPlaceholderActionClick?: () => void;
     isRenderedOnPortal?: boolean;
     onSearchQueryClear?: () => void;

@@ -22,7 +22,7 @@ import ConsoleSettingsContext, { ConsoleSettingsContextProps } from "../context/
 /**
  * Props interface of {@link useConsoleSettings}
  */
-export type UseConsoleSettingsInterface = ConsoleSettingsContextProps;
+type UseConsoleSettingsInterface = ConsoleSettingsContextProps;
 
 /**
  * Hook that provides access to the Console settings context.

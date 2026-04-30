@@ -28,7 +28,7 @@ import { BRANDING_PREVIEW_SCREEN_ID_PREFIX } from "../constants/preview-screen-c
 /**
  * Prop types for the language dropdown component.
  */
-export interface ScreenDropdownPropsInterface extends IdentifiableComponentInterface {
+interface ScreenDropdownPropsInterface extends IdentifiableComponentInterface {
     /**
      * Default screen.
      */

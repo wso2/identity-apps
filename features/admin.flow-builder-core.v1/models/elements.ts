@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -42,7 +42,6 @@ export interface Element<T = any> extends Base<T> {
 
 export enum ElementCategories {
     Action = "ACTION",
-    Block = "BLOCK",
     Display = "DISPLAY",
     Field = "FIELD"
 }
@@ -68,9 +67,9 @@ export enum InputVariants {
     Password = "PASSWORD",
     Email = "EMAIL",
     Telephone = "TELEPHONE",
-    Number = "NUMBER",
     Checkbox = "CHECKBOX",
-    OTP = "OTP"
+    OTP = "OTP",
+    Choice = "CHOICE"
 }
 
 export enum ButtonVariants {
@@ -81,8 +80,7 @@ export enum ButtonVariants {
 }
 
 export enum ButtonTypes {
-    Submit = "submit",
-    Button = "button"
+    Submit = "submit"
 }
 
 export enum TypographyVariants {
@@ -91,9 +89,7 @@ export enum TypographyVariants {
     H3 = "H3",
     H4 = "H4",
     H5 = "H5",
-    H6 = "H6",
-    Body1 = "BODY1",
-    Body2 = "BODY2"
+    H6 = "H6"
 }
 
 export enum DividerVariants {

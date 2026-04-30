@@ -21,7 +21,7 @@
         "common.users"
     ],
     "dependencies": {
-        "@oxygen-ui/react": "^2.4.6",
+        "@oxygen-ui/react": "catalog:",
         "@oxygen-ui/react-icons": "^2.4.6",
         "@wso2is/form": "^2.10.2",
         "lodash-es": "^4.17.21",
@@ -54,7 +54,7 @@
         "rollup-plugin-styles": "^4.0.0",
         "rollup-plugin-svg": "^2.0.0",
         "ts-jest": "^26.4.0",
-        "typescript": "^4.6.4"
+        "typescript": "^5.1.6"
     },
     "peerDependencies": {
         "react": "^18.2.0"

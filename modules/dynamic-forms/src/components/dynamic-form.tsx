@@ -220,4 +220,3 @@ export const DynamicForm: ForwardRefExoticComponent<PropsWithChildren<DynamicFor
     );
 });
 
-export default DynamicForm;

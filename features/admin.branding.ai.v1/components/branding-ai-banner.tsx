@@ -57,6 +57,9 @@ const BrandingAIBanner: FunctionComponent<PropsWithChildren<BrandingAIBannerProp
     const { t } = useTranslation();
 
     const { getLink } = useDocumentation();
+    const termsOfServiceLink: string = useSelector((state: AppState) =>
+        state.config?.ui?.termsOfUseUrl || ""
+    );
 
     const aiFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features?.ai);
@@ -185,7 +188,7 @@ const BrandingAIBanner: FunctionComponent<PropsWithChildren<BrandingAIBannerProp
                         <Typography variant="caption">
                             { t("branding:ai.disclaimer") }
                             <DocumentationLink
-                                link={ getLink("common.termsOfService") }
+                                link={ termsOfServiceLink }
                             >
                                 { t("branding:ai.termsAndConditions") }
                             </DocumentationLink>

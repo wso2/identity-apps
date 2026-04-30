@@ -51,7 +51,7 @@ export interface ApplicationTypeOptionInterface {
 /**
  * Test user credentials for testing the application.
  */
-export interface TestUserCredentialsInterface {
+interface TestUserCredentialsInterface {
     username: string;
     password: string;
     email?: string;

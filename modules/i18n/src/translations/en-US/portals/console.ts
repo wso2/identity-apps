@@ -368,6 +368,70 @@ export const console: ConsoleNS = {
                 }
             }
         },
+        copilot: {
+            // TODO: Switch back to "Copilot" once phase 2 is deployed
+            title: "Ask AI",
+            show: "Show Ask AI",
+            hide: "Hide Ask AI",
+            close: "Close",
+            collapse: "Collapse",
+            expand: "Expand",
+            exitFullscreen: "Exit fullscreen",
+            expandToFullscreen: "Expand to fullscreen",
+            clearChat: {
+                cancel: "Cancel",
+                confirm: "Clear Chat",
+                message: "Are you sure you want to clear the chat and start over?",
+                submessage: "This action cannot be undone.",
+                title: "Clear Chat"
+            },
+            tabs: {
+                chat: "Chat",
+                help: "Help"
+            },
+            help: {
+                content: "I can help you with various tasks in {{productName}}. Try asking me about:\n\n• User management\n• Application configuration\n• Identity providers\n• Authentication flows\n• Troubleshooting\n\nJust type your question in the chat!"
+            },
+            documentation: {
+                content: "Access comprehensive documentation and guides for {{productName}}."
+            },
+            chat: {
+                emptyChat: "Start a conversation...",
+                inputLabel: "Message (optional)",
+                loadEarlier: "Load earlier messages",
+                loadingHistory: "Loading...",
+                messageError: "This message could not be displayed.",
+                sendMessage: "Send message",
+                thinking: "Thinking..."
+            },
+            errors: {
+                authRequired: "Authentication required. Please log in to continue using the copilot.",
+                clearHistoryFailed: "Something went wrong. Please try again.",
+                connectionFailed: "Something went wrong. Please try again.",
+                default: "Sorry, I encountered an error while processing your request. Please try again.",
+                requestCancelled: "Request was cancelled.",
+                timeout: "The request is taking longer than expected. Please try again."
+            },
+            status: {
+                submitting: "Submitting your question..."
+            },
+            welcome: {
+                actions: {
+                    authenticationMethods: "What are the different authentication methods available?",
+                    configureSaml: "How can I configure SAML SSO for an application?",
+                    manageRoles: "How can I manage user roles?"
+                },
+                description: "I can help you with identity management, application setup, user management, and more.",
+                // TODO: Switch back to "Copilot" once phase 2 is deployed
+                disclaimer: "Ask AI can make mistakes; use mindfully. Avoid sharing personal or sensitive info.",
+                termsAndConditions: "Terms and Conditions",
+                placeholder: "Enter your message here...",
+                send: "Send message",
+                suggestionsTitle: "TRY ASKING ABOUT",
+                // TODO: Switch back to "Copilot" once phase 2 is deployed
+                title: "Hi, welcome to Ask AI! How can I assist you?"
+            }
+        },
         sidePanel: {
             privacy: "Privacy",
             loginAndRegistration: {

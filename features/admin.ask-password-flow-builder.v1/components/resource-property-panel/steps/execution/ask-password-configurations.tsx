@@ -62,7 +62,7 @@ import useAskPasswordFlowBuilder from "../../../../hooks/use-ask-password-flow-b
 /**
  * Proptypes for the Ask Password Form props interface.
  */
-export interface AskPasswordConfigurationsPropsInterface extends IdentifiableComponentInterface {
+interface AskPasswordConfigurationsPropsInterface extends IdentifiableComponentInterface {
     /**
      * Connector's initial values.
      */

@@ -31,7 +31,7 @@ import { BrandingPreferenceAPIResponseInterface } from "../models";
 /**
  * Props interface for the ThemeProvider.
  */
-export interface ThemeProviderProps {
+interface ThemeProviderProps {
     /**
      * The user's theme preference obtained from the BrandingPreferenceAPI.
      */

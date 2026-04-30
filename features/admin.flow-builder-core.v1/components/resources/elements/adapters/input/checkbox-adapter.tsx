@@ -31,7 +31,7 @@ import PlaceholderComponent from "../placeholder-component";
 /**
  * Props interface of {@link CheckboxAdapter}
  */
-export type CheckboxAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type CheckboxAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Checkbox component.
@@ -39,7 +39,7 @@ export type CheckboxAdapterPropsInterface = IdentifiableComponentInterface & Com
  * @param props - Props injected to the component.
  * @returns The CheckboxAdapter component.
  */
-export const CheckboxAdapter: FunctionComponent<CheckboxAdapterPropsInterface> = ({
+const CheckboxAdapter: FunctionComponent<CheckboxAdapterPropsInterface> = ({
     resource
 }: CheckboxAdapterPropsInterface): ReactElement => {
     const { t } = useTranslation();

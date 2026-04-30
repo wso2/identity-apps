@@ -26,6 +26,7 @@ import {
 import { useUsersList } from "@wso2is/admin.users.v1/api/users";
 import { UserAccountTypes } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { ProfileConstants } from "@wso2is/core/constants";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { useCallback, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
@@ -64,6 +65,9 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
     );
     const featureConfig: FeatureConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features
+    );
+    const allowedScopes: string = useSelector(
+        (state: AppState) => state?.auth?.allowedScopes
     );
     const onboardingFeatureConfig: FeatureAccessConfigInterface = featureConfig?.onboarding;
 
@@ -122,8 +126,17 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
         return (appListData.totalResults ?? 0) === 0;
     }, [ isOwner, appListData ]);
 
+    const hasOnboardingScopes: boolean = useMemo(
+        (): boolean => hasRequiredScopes(
+            onboardingFeatureConfig,
+            onboardingFeatureConfig?.scopes?.create,
+            allowedScopes
+        ),
+        [ onboardingFeatureConfig, allowedScopes ]
+    );
+
     const shouldShowOnboarding: boolean = useMemo((): boolean => {
-        if (isDismissed || !shouldFetch || !currentUser) {
+        if (isDismissed || !shouldFetch || !currentUser || !hasOnboardingScopes) {
             return false;
         }
 
@@ -136,7 +149,7 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
         }
 
         return hasPreference;
-    }, [ isDismissed, shouldFetch, currentUser, systemSchemaData, isOwner, ownerHasNoApps ]);
+    }, [ isDismissed, shouldFetch, currentUser, systemSchemaData, isOwner, ownerHasNoApps, hasOnboardingScopes ]);
 
     const isLoading: boolean =
         !featureConfig || (shouldFetch && (isUserListLoading || (isOwner && isAppListLoading)));

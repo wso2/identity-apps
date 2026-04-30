@@ -11,7 +11,6 @@
             "executor": "nx:run-commands",
             "outputs": ["{workspaceRoot}/modules/validation/dist"],
             "options": {
-                "tsconfig": "modules/validation/tsconfig.json",
                 "command": "pnpm build",
                 "cwd": "modules/validation"
             }

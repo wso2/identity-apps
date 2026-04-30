@@ -29,7 +29,7 @@ import "./flow-builder-page.scss";
 /**
  * Props interface of {@link FlowBuilderPage}
  */
-export type FlowBuilderPageProps = IdentifiableComponentInterface &
+type FlowBuilderPageProps = IdentifiableComponentInterface &
     HTMLAttributes<HTMLDivElement> &
     FloatingPublishButtonProps &
     FloatingRevertButtonProps;

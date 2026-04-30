@@ -23,7 +23,7 @@ import DecoratedVisualFlow, { DecoratedVisualFlowPropsInterface } from "./visual
 /**
  * Props interface of {@link FlowBuilder}
  */
-export type FlowBuilderPropsInterface = DecoratedVisualFlowPropsInterface & IdentifiableComponentInterface;
+type FlowBuilderPropsInterface = DecoratedVisualFlowPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Entry point for the flow builder.

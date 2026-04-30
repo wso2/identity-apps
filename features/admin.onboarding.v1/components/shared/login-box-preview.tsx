@@ -76,7 +76,7 @@ const getAuthMethodConfig: () => Record<string, AuthMethodDisplayConfigInterface
 /**
  * Props interface for LoginBoxPreview component.
  */
-export interface LoginBoxPreviewPropsInterface extends IdentifiableComponentInterface {
+interface LoginBoxPreviewPropsInterface extends IdentifiableComponentInterface {
     /** Sign-in options configuration */
     signInOptions?: SignInOptionsConfigInterface;
     /** Branding configuration */

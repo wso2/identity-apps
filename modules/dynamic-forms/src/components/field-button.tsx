@@ -13,7 +13,7 @@ import { ButtonAdapter } from "./adapters";
 import { DynamicFieldProps } from "./dynamic-form-field";
 import { FieldButtonTypes } from "../models";
 
-export interface FieldButtonPropsInterface extends DynamicFieldProps {
+interface FieldButtonPropsInterface extends DynamicFieldProps {
     /**
      * Unique id of the form that needs to be submitted.
      */

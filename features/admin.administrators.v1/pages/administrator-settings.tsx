@@ -52,7 +52,7 @@ interface EnterpriseLoginEnabledConfigInterface {
  *
  * @returns Admin settings page.
  */
-export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = (
+const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = (
     props: AdminSettingsPageInterface
 ): ReactElement => {
 

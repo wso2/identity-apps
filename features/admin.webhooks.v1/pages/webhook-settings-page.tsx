@@ -19,8 +19,10 @@
 import Box from "@oxygen-ui/react/Box";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import Typography from "@oxygen-ui/react/Typography";
+import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { AlertLevels,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
@@ -66,7 +68,7 @@ const ORGANIZATION_POLICY_RADIO_OPTIONS: RadioChild[] = [
  * @param props - Props injected to the component.
  * @returns Functional Component.
  */
-export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInterface> = ({
+const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInterface> = ({
     ["data-componentid"]: componentId = "webhook-settings-page"
 }: WebhookSettingsFormPropsInterface): ReactElement => {
 
@@ -74,6 +76,16 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInte
     const { t } = useTranslation();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
+    const webhooksFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["WEBHOOKS_FEATURE_GATE"]
+    );
+
+    useEffect(() => {
+        if (webhooksFeatureStatus && webhooksFeatureStatus !== FeatureStatus.ENABLED) {
+            history.push(AppConstants.getPaths().get("WEBHOOKS"));
+        }
+    }, [ webhooksFeatureStatus ]);
 
     /**
      * Get initial webhook metadata.

@@ -21,7 +21,7 @@ import { Form, Ref } from "semantic-ui-react";
 import { Field, GroupFields, InnerField, InnerGroupFields } from "./components";
 import { isCheckBoxField, isDropdownField, isFilePickerField,
     isInputField, isRadioField, isScopesField, isTextField, isToggleField } from "./helpers";
-import { Error, FormField, FormValue, Validation } from "./models";
+import type { Error, FormField, FormValue, Validation } from "./models";
 import { useNonInitialEffect } from "./utils";
 
 /**
@@ -190,7 +190,11 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                     itemIndex = index;
                 }
             });
-            itemIndex === -1 ? selectedItems.push(value) : selectedItems.splice(itemIndex, 1);
+            if (itemIndex === -1) {
+                selectedItems.push(value);
+            } else {
+                selectedItems.splice(itemIndex, 1);
+            }
 
             tempForm.set(name, selectedItems);
             tempTouchedFields.set(name, true);
@@ -226,17 +230,11 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                     tempForm.set(name, tempForm.get(name)?.toString()?.trim());
                     setForm(tempForm);
 
-                    value !== null && value?.toString()?.trim() !== ""
-                        ? requiredFieldsParam.set(name, true)
-                        : requiredFieldsParam.set(name, false);
+                    requiredFieldsParam.set(name, value !== null && value?.toString()?.trim() !== "");
                 } else if (isToggleField(inputField)) {
-                    value !== null && value !== "false"
-                        ? requiredFieldsParam.set(name, true)
-                        : requiredFieldsParam.set(name, false);
+                    requiredFieldsParam.set(name, value !== null && value !== "false");
                 } else {
-                    value !== null && value.length > 0
-                        ? requiredFieldsParam.set(name, true)
-                        : requiredFieldsParam.set(name, false);
+                    requiredFieldsParam.set(name, value !== null && value.length > 0);
                 }
             }
 
@@ -332,15 +330,17 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                         || isReset
                         || (inputField.enableReinitialize
                             && initialValues.current.get(inputField.name) !== inputField.value)) {
-                        inputField.value && !isReset
-                            ? tempForm.set(inputField.name, inputField.value)
-                            : (isRadioField(inputField) || isDropdownField(inputField)) && inputField.default
-                                ? tempForm.set(inputField.name, inputField.default)
-                                : isCheckBoxField(inputField)
-                                    ? tempForm.set(inputField.name, [])
-                                    : isToggleField(inputField)
-                                        ? tempForm.set(inputField.name, inputField.defaultChecked ?? "false")
-                                        : tempForm.set(inputField.name, "");
+                        if (inputField.value && !isReset) {
+                            tempForm.set(inputField.name, inputField.value);
+                        } else if ((isRadioField(inputField) || isDropdownField(inputField)) && inputField.default) {
+                            tempForm.set(inputField.name, inputField.default);
+                        } else if (isCheckBoxField(inputField)) {
+                            tempForm.set(inputField.name, []);
+                        } else if (isToggleField(inputField)) {
+                            tempForm.set(inputField.name, inputField.defaultChecked ?? "false");
+                        } else {
+                            tempForm.set(inputField.name, "");
+                        }
 
                         initialValues.current.set(inputField.name, inputField.value);
                     }
@@ -362,14 +362,14 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                      */
                     const value = tempForm.get(inputField.name);
 
-                    (
-                        !((value instanceof Array && value.length > 0)
-                            || (!(value instanceof Array) && value.trim && !!value.trim()))
-                        || isReset
-                    )
-                        && (!isRadioField(inputField) && inputField.required)
-                        ? tempRequiredFields.set(inputField.name, false)
-                        : tempRequiredFields.set(inputField.name, true);
+                    const isValueEmpty: boolean = !((value instanceof Array && value.length > 0)
+                        || (!(value instanceof Array) && value.trim && !!value.trim()));
+
+                    if ((isValueEmpty || isReset) && (!isRadioField(inputField) && inputField.required)) {
+                        tempRequiredFields.set(inputField.name, false);
+                    } else {
+                        tempRequiredFields.set(inputField.name, true);
+                    }
 
                     if (!tempValidFields.has(inputField.name) || isReset) {
                         tempValidFields.set(inputField.name, {
@@ -497,9 +497,13 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                 if (areAllRequiredFieldsFilled && areAllFieldsValid) {
                     setStartSubmission(false);
                     setIsSubmitting(false);
-                    onSubmit && onSubmit(form);
+                    if (onSubmit) {
+                        onSubmit(form);
+                    }
                 } else {
-                    onSubmitError && onSubmitError(requiredFields, validFields);
+                    if (onSubmitError) {
+                        onSubmitError(requiredFields, validFields);
+                    }
                     setIsSubmitting(true);
                     setStartSubmission(false);
                 }

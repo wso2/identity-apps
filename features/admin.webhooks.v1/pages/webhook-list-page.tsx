@@ -17,11 +17,19 @@
  */
 
 import { GearIcon } from "@oxygen-ui/react-icons";
-import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/access-control";
+import {
+    FeatureAccessConfigInterface,
+    FeatureStatus,
+    Show,
+    useCheckFeatureStatus,
+    useRequiredScopes
+} from "@wso2is/access-control";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureLockedBanner from "@wso2is/admin.feature-gate.v1/components/feature-locked-banner";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface,
     HttpErrorResponseDataInterface
@@ -66,6 +74,11 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
 
     const hasWebhookCreatePermissions: boolean = useRequiredScopes(webhooksFeatureConfig?.scopes?.create);
     const hasWebhookDeletePermissions: boolean = useRequiredScopes(webhooksFeatureConfig?.scopes?.delete);
+
+    const webhooksFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["WEBHOOKS_FEATURE_GATE"]
+    );
+    const isWebhooksFeatureEnabled: boolean = webhooksFeatureStatus === FeatureStatus.ENABLED;
 
     const [ isDeletingWebhook, setIsDeletingWebhook ] = useState<boolean>(false);
 
@@ -271,7 +284,7 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
     return (
         <PageLayout
             pageTitle="Webhooks"
-            action={ renderWebhookControls() }
+            action={ isWebhooksFeatureEnabled ? renderWebhookControls() : null }
             title={ t("webhooks:pages.list.heading") }
             description={
                 (<p>
@@ -284,7 +297,12 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
             contentTopMargin={ true }
             data-componentid={ `${_componentId}-page-layout` }
         >
-            <ListLayout
+            { !isWebhooksFeatureEnabled ? (
+                <FeatureLockedBanner
+                    data-componentid={ `${_componentId}-feature-locked-banner` }
+                />
+            ) : (
+                <ListLayout
                 advancedSearch={ !isLoading ? renderAdvancedSearch() : null }
                 currentListSize={ paginatedWebhooks.length }
                 isLoading={ isLoading }
@@ -312,6 +330,7 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
                     data-componentid={ `${_componentId}-webhook-list` }
                 />
             </ListLayout>
+            ) }
         </PageLayout>
     );
 };

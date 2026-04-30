@@ -1,5 +1,23 @@
 # @wso2is/admin.groups.v1
 
+## 2.27.129
+
+### Patch Changes
+
+- [#10215](https://github.com/wso2/identity-apps/pull/10215) [`237eda6cc0a0312286f8a4a2915fbb4856a02ba7`](https://github.com/wso2/identity-apps/commit/237eda6cc0a0312286f8a4a2915fbb4856a02ba7) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add support for handling groups tier limit
+
+## 2.27.128
+
+### Patch Changes
+
+- [#10197](https://github.com/wso2/identity-apps/pull/10197) [`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dependencies
+
+- Updated dependencies [[`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423)]:
+  - @wso2is/admin.applications.v1@2.42.23
+  - @wso2is/admin.extensions.v1@2.43.3
+  - @wso2is/admin.core.v1@2.57.3
+  - @wso2is/admin.users.v1@2.38.35
+
 ## 2.27.127
 
 ### Patch Changes

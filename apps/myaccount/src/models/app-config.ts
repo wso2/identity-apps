@@ -130,7 +130,7 @@ export interface ServiceResourceEndpointsInterface {
 /**
  * Authenticator app interface.
  */
-export interface AuthenticatorAppInterface {
+interface AuthenticatorAppInterface {
     link: string;
     name: string;
 }
@@ -236,7 +236,7 @@ export interface AppUtilsInterface {
     updateTenantQualifiedBaseName: (tenant: string) => void;
 }
 
-export interface InitialConfigInterface {
+interface InitialConfigInterface {
     consoleAppOrigin: string;
     contextPath: string;
     serverOrigin: string;

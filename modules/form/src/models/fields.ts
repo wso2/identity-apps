@@ -18,15 +18,7 @@
 
 export enum FieldInputTypes {
     INPUT_DEFAULT = "default",
-    INPUT_IDENTIFIER = "identifier",
-    INPUT_PHONE_NUMBER = "phone_number",
-    INPUT_NAME = "name",
     INPUT_NUMBER = "number",
-    INPUT_RESOURCE_NAME = "resource_name",
-    INPUT_CLIENT_ID = "client_id",
-    INPUT_DESCRIPTION = "description",
-    INPUT_EMAIL = "email",
-    INPUT_URL = "url",
     INPUT_COPY = "copy_input",
     INPUT_PASSWORD = "password",
     INPUT_TEXT_WITH_ADORNMENT = "text_with_adornment",

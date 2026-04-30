@@ -18,7 +18,7 @@
 
 import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
-import { ImpersonationConfigurationPage }  from "../pages/impersonation-configuration";
+import ImpersonationConfigurationPage from "../pages/impersonation-configuration";
 import "@testing-library/jest-dom";
 
 describe.skip("Impersonation Configuration", () => {

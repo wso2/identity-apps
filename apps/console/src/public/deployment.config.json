@@ -864,6 +864,20 @@
                     ]
                 }
             },
+            "copilot": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [
+                        "console:copilot"
+                    ],
+                    "read": [],
+                    "update": []
+                }
+            },
             "customerDataProfileAttributes": {
                 "disabledFeatures": [],
                 "enabled": false,
@@ -2162,6 +2176,7 @@
             "maxPasswordAllowedLength": 64
         },
         "privacyPolicyConfigs": {},
+        "privacyPolicyUrl": "/authenticationendpoint/privacy_policy.do",
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {
             "productVersion": "7.2.0"
@@ -2204,12 +2219,14 @@
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,
+        "showDocLinks": false,
         "showStatusLabelForNewAuthzRuntimeFeatures": false,
         "systemAppsIdentifiers": [
             "Console",
             "My Account"
         ],
         "systemReservedUserStores": ["AGENT"],
+        "termsOfUseUrl": "https://wso2.com/terms-of-use",
         "theme": {
             "name": "wso2is"
         },

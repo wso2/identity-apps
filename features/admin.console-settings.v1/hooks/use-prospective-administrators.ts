@@ -31,7 +31,7 @@ import useConsoleRoles from "./use-console-roles";
 /**
  * Props interface of {@link UseAdministrators}
  */
-export interface UseProspectiveAdministratorsInterface {
+interface UseProspectiveAdministratorsInterface {
     /**
      * Prospective administrators list.
      */

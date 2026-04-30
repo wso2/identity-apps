@@ -1,5 +1,26 @@
 # @wso2is/admin.sms-templates.v1
 
+## 1.0.212
+
+### Patch Changes
+
+- Updated dependencies [[`dd01f38682fd189b94802e06b3473a312c1bf7b1`](https://github.com/wso2/identity-apps/commit/dd01f38682fd189b94802e06b3473a312c1bf7b1)]:
+  - @wso2is/admin.feature-gate.v1@1.9.5
+  - @wso2is/access-control@3.5.6
+  - @wso2is/admin.branding.v1@2.32.162
+  - @wso2is/admin.core.v1@2.55.29
+
+## 1.0.211
+
+### Patch Changes
+
+- [#10102](https://github.com/wso2/identity-apps/pull/10102) [`8439c95207ab1890498315ea5ae5a996534898fd`](https://github.com/wso2/identity-apps/commit/8439c95207ab1890498315ea5ae5a996534898fd) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix the issue rendering the i18n text for the SMS template dropdown label
+
+- Updated dependencies [[`77852b794dd5b1c85fd82357e5157ad69d0be7fa`](https://github.com/wso2/identity-apps/commit/77852b794dd5b1c85fd82357e5157ad69d0be7fa)]:
+  - @wso2is/theme@2.9.6
+  - @wso2is/admin.core.v1@2.55.28
+  - @wso2is/admin.branding.v1@2.32.161
+
 ## 1.0.210
 
 ### Patch Changes

@@ -125,7 +125,7 @@ export type PatchOrganizationRoleDataInterface = {
 /**
  * Interface to store User information related to create role api
  */
-export interface CreateOrganizationRoleMemberInterface {
+interface CreateOrganizationRoleMemberInterface {
     value: string;
     display?: string;
 }

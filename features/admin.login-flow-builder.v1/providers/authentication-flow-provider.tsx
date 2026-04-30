@@ -64,7 +64,7 @@ import { isCustomAuthenticator, isSecondFactorAuthenticator } from "../utils/aut
 /**
  * Props interface for the Authentication flow provider.
  */
-export interface AuthenticationFlowProviderProps {
+interface AuthenticationFlowProviderProps {
     /**
      * Editing application.
      */

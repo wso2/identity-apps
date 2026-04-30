@@ -1,5 +1,26 @@
 # @wso2is/access-control
 
+## 3.5.8
+
+### Patch Changes
+
+- [#10203](https://github.com/wso2/identity-apps/pull/10203) [`4eb39168ef1c46f4c3d31013e09d5a3fbed15368`](https://github.com/wso2/identity-apps/commit/4eb39168ef1c46f4c3d31013e09d5a3fbed15368) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Feature gate webhooks, workflows, actions
+
+## 3.5.7
+
+### Patch Changes
+
+- [#10130](https://github.com/wso2/identity-apps/pull/10130) [`8ffe97ffe949b7846fb511dea88ff4672faf7001`](https://github.com/wso2/identity-apps/commit/8ffe97ffe949b7846fb511dea88ff4672faf7001) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Migrate `identity-apps` to nx 21
+
+- Updated dependencies [[`8ffe97ffe949b7846fb511dea88ff4672faf7001`](https://github.com/wso2/identity-apps/commit/8ffe97ffe949b7846fb511dea88ff4672faf7001)]:
+  - @wso2is/core@2.13.1
+
+## 3.5.6
+
+### Patch Changes
+
+- [#10113](https://github.com/wso2/identity-apps/pull/10113) [`dd01f38682fd189b94802e06b3473a312c1bf7b1`](https://github.com/wso2/identity-apps/commit/dd01f38682fd189b94802e06b3473a312c1bf7b1) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Feature gate console settings and connections
+
 ## 3.5.5
 
 ### Patch Changes

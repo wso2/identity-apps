@@ -57,7 +57,7 @@ export interface PreviewFeaturesListInterface {
 /**
  * Return type of usePreviewFeatures hook.
  */
-export interface UsePreviewFeaturesReturnInterface {
+interface UsePreviewFeaturesReturnInterface {
     accessibleFeatures: PreviewFeaturesListInterface[];
     canUsePreviewFeatures: boolean;
     handleCDSToggle: (enable: boolean) => Promise<void>;

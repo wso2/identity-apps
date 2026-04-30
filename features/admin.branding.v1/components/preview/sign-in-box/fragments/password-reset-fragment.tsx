@@ -27,7 +27,7 @@ import useBrandingPreference from "../../../../hooks/use-branding-preference";
 /**
  * Proptypes for the password-reset fragment of login screen skeleton.
  */
-export type PasswordResetFragmentInterface = IdentifiableComponentInterface;
+type PasswordResetFragmentInterface = IdentifiableComponentInterface;
 
 /**
  * Password reset fragment component for the branding preview of Sign In box.

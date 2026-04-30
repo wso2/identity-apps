@@ -1,12 +1,12 @@
 {
     "private": true,
     "name": "@wso2is/admin.template-core.v1",
-    "version": "1.6.1",
+    "version": "1.6.2",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/admin.core.v1": "^2.55.3",
+        "@wso2is/admin.core.v1": "^2.55.29",
         "@wso2is/core": "^2.12.10",
         "i18next": "^21.9.1",
         "react-markdown": "^9.0.1",
@@ -28,7 +28,7 @@
         "rollup-plugin-scss": "^4.0.0",
         "rollup-plugin-styles": "^4.0.0",
         "rollup-plugin-svg": "^2.0.0",
-        "typescript": "^4.6.4"
+        "typescript": "^5.1.6"
     },
     "peerDependencies": {
         "react": "^18.2.0",

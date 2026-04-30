@@ -135,7 +135,7 @@ interface SMSOTPAuthenticatorFormFieldsInterface {
 /**
  * Proptypes for the SMS OTP Authenticator Form error messages.
  */
-export interface SMSOTPAuthenticatorFormErrorValidationsInterface {
+interface SMSOTPAuthenticatorFormErrorValidationsInterface {
     /**
      * SMS OTP expiry time field.
      */

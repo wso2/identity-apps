@@ -29,7 +29,7 @@ import ApplicationTemplateMetadataContext from "../context/application-template-
 /**
  * Props interface for the Application template metadata provider.
  */
-export interface ApplicationTemplateMetadataProviderProps {
+interface ApplicationTemplateMetadataProviderProps {
     /**
      * Listing data of the selected template.
      */

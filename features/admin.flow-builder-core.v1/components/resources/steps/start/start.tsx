@@ -28,7 +28,7 @@ import "./start.scss";
 /**
  * Props interface of {@link Start}
  */
-export type StartPropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
+type StartPropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Start Node component.

@@ -96,7 +96,7 @@ export const getProfileInformation = (
     if (getProfileInfoFromToken || isSubOrg && meEndpoint.includes("scim2/Me")) {
         AsgardeoSPAClient.getInstance().getDecodedIDToken().then((decodedToken: DecodedIDTokenPayload) => {
             const profileInfo: ProfileInfoInterface = {
-                emails: [ decodedToken.email ] ?? [],
+                emails: decodedToken.email ? [ decodedToken.email ] : [],
                 id: decodedToken.sub,
                 name: {
                     familyName: decodedToken.family_name ?? "",

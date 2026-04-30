@@ -36,7 +36,7 @@ import { AttributeMappingList } from "../../edit/attribute-mapping/attributes-ma
 /**
  * Properties of {@link AttributesSelection}
  */
-export interface AttributesSelectionProps extends IdentifiableComponentInterface {
+interface AttributesSelectionProps extends IdentifiableComponentInterface {
     /**
      * List of mapped attributes.
      */

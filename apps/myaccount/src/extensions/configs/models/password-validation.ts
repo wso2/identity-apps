@@ -16,6 +16,8 @@
  * under the License.
  */
 
-export interface PasswordValidationConfig {
+interface PasswordValidationConfig {
     showPasswordValidation: boolean;
 }
+
+export {};

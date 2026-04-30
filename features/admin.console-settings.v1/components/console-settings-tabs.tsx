@@ -39,7 +39,12 @@ import "./console-settings-tabs.scss";
 /**
  * Props interface of {@link ConsoleSettingsTabs}
  */
-type ConsoleSettingsTabsInterface = IdentifiableComponentInterface;
+interface ConsoleSettingsTabsInterface extends IdentifiableComponentInterface {
+    /**
+     * Whether the console settings feature is locked.
+     */
+    isFeatureLocked?: boolean;
+}
 
 /**
  * Interface for tabs.
@@ -80,7 +85,7 @@ interface ConsoleSettingsTabInterface extends IdentifiableComponentInterface {
 const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
     props: ConsoleSettingsTabsInterface
 ): ReactElement => {
-    const { ["data-componentid"]: componentId } = props;
+    const { ["data-componentid"]: componentId, isFeatureLocked } = props;
 
     const { t } = useTranslation();
 
@@ -125,7 +130,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     "data-tabid": ConsoleSettingsModes.ADMINISTRATORS,
                     id: ConsoleSettingsModes.ADMINISTRATORS,
                     label: t("consoleSettings:administrators.tabLabel"),
-                    pane: <ConsoleAdministrators />,
+                    pane: <ConsoleAdministrators isFeatureLocked={ isFeatureLocked } />,
                     value: ConsoleSettingsTabIDs.ADMINISTRATORS
                 },
                 {
@@ -134,7 +139,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     "data-tabid": ConsoleSettingsModes.ROLES,
                     id: ConsoleSettingsModes.ROLES,
                     label: t("consoleSettings:roles.tabLabel"),
-                    pane: <ConsoleRolesList />,
+                    pane: <ConsoleRolesList isFeatureLocked={ isFeatureLocked } />,
                     value: ConsoleSettingsTabIDs.ROLES
                 },
                 isLoginFlowEnabled && {
@@ -143,7 +148,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     "data-tabid": ConsoleSettingsModes.LOGIN_FLOW,
                     id: ConsoleSettingsModes.LOGIN_FLOW,
                     label: t("consoleSettings:loginFlow.tabLabel"),
-                    pane: <ConsoleLoginFlow />,
+                    pane: <ConsoleLoginFlow isFeatureLocked={ isFeatureLocked } />,
                     value: ConsoleSettingsTabIDs.LOGIN_FLOW
                 },
                 !isSubOrganization() && {
@@ -153,7 +158,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     hidden: true,
                     id: ConsoleSettingsModes.PROTOCOL,
                     label: t("consoleSettings:protocol.tabLabel"),
-                    pane: <ConsoleProtocol />,
+                    pane: <ConsoleProtocol isFeatureLocked={ isFeatureLocked } />,
                     value: ConsoleSettingsTabIDs.PROTOCOL
                 },
                 !isSubOrganization() && !isSharedAccessDisabled && {
@@ -163,7 +168,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     hidden: false,
                     id: ConsoleSettingsModes.SHARED_ACCESS,
                     label: t("consoleSettings:sharedAccess.tabLabel"),
-                    pane: <ConsoleSharedAccess />,
+                    pane: <ConsoleSharedAccess isFeatureLocked={ isFeatureLocked } />,
                     value: ConsoleSettingsTabIDs.SHARED_ACCESS
                 },
                 !(isSubOrganization() || isEnterpriseLoginDisabled || tierName === TenantTier.FREE) && {
@@ -173,7 +178,7 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     hidden: false,
                     id: ConsoleSettingsModes.ENTERPRISE_LOGIN,
                     label: t("consoleSettings:enterpriseLogin.tabLabel"),
-                    pane: <ConsoleEnterpriseLogin />,
+                    pane: <ConsoleEnterpriseLogin isFeatureLocked={ isFeatureLocked } />,
                     value: ConsoleSettingsTabIDs.ENTERPRISE_LOGIN
                 }
             ]

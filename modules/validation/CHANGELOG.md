@@ -1,5 +1,11 @@
 # @wso2is/validation
 
+## 2.4.4
+
+### Patch Changes
+
+- [#10130](https://github.com/wso2/identity-apps/pull/10130) [`8ffe97ffe949b7846fb511dea88ff4672faf7001`](https://github.com/wso2/identity-apps/commit/8ffe97ffe949b7846fb511dea88ff4672faf7001) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Migrate `identity-apps` to nx 21
+
 ## 2.4.3
 
 ### Patch Changes

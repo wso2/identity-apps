@@ -710,8 +710,7 @@ export enum CommonConstants {
     FIELD_COMPONENT_SCOPES = "Scopes",
     QUERY_PARAMETERS_KEY = "commonAuthQueryParams",
     SCOPE_KEY = "scopes",
-    RADIO = "RADIO",
-    SELECTMODE = "SelectMode"
+    RADIO = "RADIO"
 }
 
 /**

@@ -202,7 +202,7 @@ export interface AuthenticationPropertiesInterface {
 /**
  *  Action Base Response.
  */
-export interface ActionBaseResponseInterface {
+interface ActionBaseResponseInterface {
     /**
      * ID of the Action.
      */
@@ -277,7 +277,7 @@ export interface PreUpdateProfileActionResponseInterface extends ActionResponseI
 /**
  *  Password Sharing configuration.
  */
-export interface PasswordSharing {
+interface PasswordSharing {
     /**
      * Password Sharing format.
      */
@@ -291,7 +291,7 @@ export interface PasswordSharing {
 /**
  *  Endpoint Response.
  */
-export interface EndpointResponseInterface {
+interface EndpointResponseInterface {
     /**
      * External endpoint.
      */
@@ -368,7 +368,7 @@ export interface PreUpdateProfileActionUpdateInterface extends ActionUpdateInter
 /**
  *  Password Sharing Format in Update configuration
  */
-export interface PasswordSharingUpdate {
+interface PasswordSharingUpdate {
     /**
      * Password Sharing format.
      */

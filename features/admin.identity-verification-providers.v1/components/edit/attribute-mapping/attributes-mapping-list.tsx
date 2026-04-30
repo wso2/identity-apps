@@ -37,7 +37,7 @@ import {
 /**
  * Proptypes for the attribute mapping list component.
  */
-export interface AttributeMappingListProps extends IdentifiableComponentInterface {
+interface AttributeMappingListProps extends IdentifiableComponentInterface {
     /**
      * This contains the mapped attributes list.
      */

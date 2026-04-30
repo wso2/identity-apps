@@ -20,6 +20,9 @@ import { FeatureGateInterface, FeatureStatus } from "../models/feature-gate";
 
 export const featureGateConfig: FeatureGateInterface  = {
     console:  {
+        actions: {
+            status: FeatureStatus.DEFAULT
+        },
         application: {
             signIn: {
                 adaptiveAuth : {
@@ -30,6 +33,9 @@ export const featureGateConfig: FeatureGateInterface  = {
             },
             status: FeatureStatus.DEFAULT
         },
+        approvalWorkflows: {
+            status: FeatureStatus.DEFAULT
+        },
         branding: {
             design: {
                 layout: {
@@ -38,6 +44,22 @@ export const featureGateConfig: FeatureGateInterface  = {
                     }
                 }
             }
+        },
+        connections: {
+            templates: {
+                customAuthenticator: {
+                    status: FeatureStatus.DEFAULT
+                },
+                enterprise: {
+                    status: FeatureStatus.DEFAULT
+                },
+                idvp: {
+                    status: FeatureStatus.DEFAULT
+                }
+            }
+        },
+        consoleSettings: {
+            status: FeatureStatus.DEFAULT
         },
         emailTemplates: {
             status: FeatureStatus.DEFAULT
@@ -61,6 +83,9 @@ export const featureGateConfig: FeatureGateInterface  = {
             remoteUserStores: {
                 status: FeatureStatus.DEFAULT
             }
+        },
+        webhooks: {
+            status: FeatureStatus.DEFAULT
         }
     }
 };

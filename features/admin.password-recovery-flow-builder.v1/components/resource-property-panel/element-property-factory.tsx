@@ -25,7 +25,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 /**
  * Props interface of {@link ElementPropertyFactory}
  */
-export type ComponentPropertyFactoryPropsInterface = CommonElementPropertyFactoryPropsInterface;
+type ComponentPropertyFactoryPropsInterface = CommonElementPropertyFactoryPropsInterface;
 
 /**
  * Factory to generate the property configurator for the given resource.

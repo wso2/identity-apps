@@ -24,7 +24,7 @@ export const SECRET_NAME_LENGTH = { max: 64, min: 3 };
 export const SECRET_VALUE_LENGTH = { max: 1024 * 2, min: 1 };
 export const SECRET_DESCRIPTION_LENGTH = { max: 256, min: 0 };
 
-export type ValidationResult = string | undefined;
+type ValidationResult = string | undefined;
 
 export const secretNameValidator = (
     value: string,

@@ -741,4 +741,3 @@ AdvancedSearchWithMultipleFilters.defaultProps = {
     showResetButton: false
 };
 
-export default AdvancedSearchWithMultipleFilters;

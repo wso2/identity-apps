@@ -1,5 +1,14 @@
 # @wso2is/admin.private-key-jwt.v1
 
+## 2.25.206
+
+### Patch Changes
+
+- [#10197](https://github.com/wso2/identity-apps/pull/10197) [`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dependencies
+
+- Updated dependencies [[`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423)]:
+  - @wso2is/admin.core.v1@2.57.3
+
 ## 2.25.205
 
 ### Patch Changes

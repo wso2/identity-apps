@@ -69,7 +69,11 @@ interface InvitedAdministratorsListProps extends IdentifiableComponentInterface 
     /**
      * List of available user stores.
      */
-    availableUserStores: UserStoreDropdownItem[]
+    availableUserStores: UserStoreDropdownItem[];
+    /**
+     * Whether the console settings feature is locked.
+     */
+    isFeatureLocked?: boolean;
 }
 
 /**
@@ -88,6 +92,7 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
         selection,
         showListItemActions,
         availableUserStores,
+        isFeatureLocked,
         ["data-componentid"]: componentId
     } = props;
 
@@ -255,6 +260,7 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
                     <PrimaryButton
                         data-componentid={ `${ componentId }-add-button` }
                         onClick={ () => setShowInviteNewAdministratorModal(true) }
+                        disabled={ isFeatureLocked }
                     >
                         <Icon data-componentid={ `${componentId}-add-button-icon` } name="add" />
                         Invite Parent User
@@ -282,7 +288,7 @@ const InvitedAdministratorsList: React.FunctionComponent<InvitedAdministratorsLi
                     onEmptyListPlaceholderActionClick={ () => null }
                     onIsLoading={ setLoading }
                     selection={ selection }
-                    showListItemActions={ showListItemActions }
+                    showListItemActions={ showListItemActions && !isFeatureLocked }
                     showMetaContent={ showMetaContent }
                     data-componentid={ `${componentId}-table` }
                 />)

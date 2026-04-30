@@ -52,7 +52,7 @@ import "./application-templates-grid.scss";
 /**
  * Props for the Application templates grid page.
  */
-export interface ApplicationTemplateGridPropsInterface extends
+interface ApplicationTemplateGridPropsInterface extends
     IdentifiableComponentInterface, LoadableComponentInterface {
     /**
      * Callback to be fired when a template is selected.

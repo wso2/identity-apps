@@ -26,7 +26,7 @@ import { CreatedApplicationResultInterface } from "../models/application";
 /**
  * Parameters for building the onboarding guide data object.
  */
-export interface BuildGuideDataParamsInterface {
+interface BuildGuideDataParamsInterface {
     /** Created application result from the wizard */
     createdApplication?: CreatedApplicationResultInterface;
     /** OIDC inbound protocol config (from useGetApplicationInboundConfigs) */

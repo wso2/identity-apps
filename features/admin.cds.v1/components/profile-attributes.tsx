@@ -271,4 +271,3 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingPropsIn
     );
 };
 
-export default ProfileSchemaListing;

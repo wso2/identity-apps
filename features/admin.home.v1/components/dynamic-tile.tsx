@@ -20,7 +20,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FC, ReactElement, ReactNode } from "react";
 
-export type DynamicTilePropsInterface = {
+type DynamicTilePropsInterface = {
     outlined?: boolean;
     disabled?: boolean;
     reduceOpacity?: boolean;

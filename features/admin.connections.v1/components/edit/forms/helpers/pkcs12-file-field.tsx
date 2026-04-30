@@ -26,7 +26,7 @@ import { Grid, Icon } from "semantic-ui-react";
 /**
  * Props interface of {@link Pkcs12FileField}
  */
-export interface Pkcs12FileFieldProps extends IdentifiableComponentInterface {
+interface Pkcs12FileFieldProps extends IdentifiableComponentInterface {
     onCertificateChange?: ( newFile: string) => void;
 }
 

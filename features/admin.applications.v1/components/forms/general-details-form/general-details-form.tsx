@@ -150,7 +150,7 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface, Id
 /**
  * Form values interface.
  */
-export interface GeneralDetailsFormValuesInterface {
+interface GeneralDetailsFormValuesInterface {
     /**
      * Application access URL.
      */
@@ -176,7 +176,7 @@ export interface GeneralDetailsFormValuesInterface {
 /**
  * Proptypes for the applications general details form error messages.
  */
-export interface GeneralDetailsFormErrorValidationsInterface {
+interface GeneralDetailsFormErrorValidationsInterface {
     /**
      *  Error message for the Application access URL.
      */

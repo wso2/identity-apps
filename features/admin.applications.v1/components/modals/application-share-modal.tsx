@@ -78,7 +78,7 @@ enum ShareType {
     UNSHARE
 }
 
-export interface ApplicationShareModalPropsInterface
+interface ApplicationShareModalPropsInterface
     extends ModalProps,
     IdentifiableComponentInterface {
     /**

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Theme, styled, useTheme } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Chip from "@oxygen-ui/react/Chip";
@@ -82,7 +83,40 @@ import "./header.scss";
 /**
  * Dashboard layout Prop types.
  */
-export type HeaderPropsInterface = HeaderProps & IdentifiableComponentInterface;
+interface CopilotToggleProps {
+    /**
+     * Whether the copilot panel is currently active/visible.
+     */
+    isActive: boolean;
+    /**
+     * Callback to toggle the copilot panel.
+     */
+    onClick: () => void;
+    /**
+     * Optional icon to render in the button.
+     */
+    icon?: ReactNode;
+}
+
+interface HeaderPropsInterface extends HeaderProps, IdentifiableComponentInterface {
+    /**
+     * Optional copilot toggle config to render as a button in the header toolbar.
+     * Pass \{ isActive, onClick, icon \} from the calling app to avoid
+     * a direct feature dependency on admin.copilot.v1 from admin.core.v1.
+     */
+    copilotToggle?: CopilotToggleProps;
+}
+
+/**
+ * Gradient text span for the Ask AI button label.
+ */
+const CopilotMenuItemText: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    background: `linear-gradient(135deg, ${theme.palette.primary.main}, #8b5cf6)`,
+    backgroundClip: "text",
+    fontWeight: 600
+}));
 
 /**
  * Implementation of the Reusable Header component.
@@ -92,10 +126,12 @@ export type HeaderPropsInterface = HeaderProps & IdentifiableComponentInterface;
  */
 const Header: FunctionComponent<HeaderPropsInterface> = ({
     "data-componentid": _componentId = "app-header",
+    copilotToggle,
     onCollapsibleHamburgerClick = () => null,
     ...rest
 }: HeaderPropsInterface): ReactElement => {
     const { t } = useTranslation();
+    const _theme: Theme = useTheme();
 
     const { showPreviewFeaturesModal, setShowPreviewFeaturesModal } = useFeatureGate();
     const { canUsePreviewFeatures } = usePreviewFeatures();
@@ -326,6 +362,18 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 </Menu>
             </>
         ),
+        copilotToggle && (
+            <Button
+                color="inherit"
+                startIcon={ copilotToggle.icon }
+                onClick={ copilotToggle.onClick }
+                data-componentid="header-ask-ai-button"
+            >
+                <CopilotMenuItemText component="span">
+                    { t("console:common.copilot.title") }
+                </CopilotMenuItemText>
+            </Button>
+        ),
         window["AppUtils"].getConfig().docSiteUrl && (
             <Button
                 color="inherit"
@@ -343,6 +391,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 <Button
                     color="inherit"
                     startIcon={ <AskHelpIcon /> }
+                    endIcon={ <ChevronDownIcon /> }
                     data-testid="get-help-dropdown-link"
                     className="oxygen-user-dropdown-button"
                     onClick={ handleHelpMenuClick }

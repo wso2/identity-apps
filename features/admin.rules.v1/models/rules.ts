@@ -76,7 +76,7 @@ export interface RuleInterface {
 /**
  * Interface to represent the rules data.
  */
-export type RulesInterface = RuleInterface[];
+type RulesInterface = RuleInterface[];
 
 /**
  * Interface to represent the rules execution data.
@@ -108,7 +108,7 @@ export type RuleWithoutIdInterface = Omit<RuleInterface, "id"> & {
 /**
  * Interface to represent the rules data without `id`.
  */
-export type RulesWithoutIdInterface = RuleWithoutIdInterface[];
+type RulesWithoutIdInterface = RuleWithoutIdInterface[];
 
 /**
  * Interface to represent the rules execution data without `id`.

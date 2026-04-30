@@ -100,7 +100,7 @@ export interface ProfileFieldFormRendererPropsInterface<T> extends IdentifiableC
     formId: string;
 }
 
-export interface ProfileFieldFormPropsInterface<T>
+interface ProfileFieldFormPropsInterface<T>
     extends Omit<
         ProfileFieldFormRendererPropsInterface<T>,
         | "triggerUpdate"
@@ -264,7 +264,7 @@ export interface SwitchFieldFormPropsInterface
         "isActive" | "isRequired" | "profileInfo" | "onEditClicked" | "onEditCancelClicked"
     > {}
 
-export interface DOBFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string> {}
+interface DOBFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string> {}
 
 export interface DropdownFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string | string[]> {
     /**

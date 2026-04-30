@@ -36,7 +36,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * TODO: Use `IdentityAppsApiException` and avoid any.
  * @param properties - Data that needs to be updated.
  */
-export const addOrganizationDiscoveryConfig = (
+const addOrganizationDiscoveryConfig = (
     properties: OrganizationDiscoveryConfigInterface
 ): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {

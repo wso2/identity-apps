@@ -88,7 +88,7 @@ interface SamlSettingsFormPropsInterface extends TestableComponentInterface {
     isSubmitting?: boolean;
 }
 
-export interface SamlPropertiesInterface {
+interface SamlPropertiesInterface {
     AuthRedirectUrl?: string;
     DigestAlgorithm?: string;
     IdPEntityId?: string;

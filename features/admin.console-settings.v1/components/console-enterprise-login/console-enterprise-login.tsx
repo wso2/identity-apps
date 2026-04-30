@@ -76,7 +76,12 @@ const CREATE_GROUP_SENTINEL: string = "__CREATE_GROUP__:";
 /**
  * Props interface of {@link ConsoleEnterpriseLogin}
  */
-type ConsoleEnterpriseLoginPropsInterface = IdentifiableComponentInterface;
+interface ConsoleEnterpriseLoginPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Whether the console settings feature is locked.
+     */
+    isFeatureLocked?: boolean;
+}
 
 /**
  * Console Enterprise Login tab component.
@@ -88,7 +93,8 @@ const ConsoleEnterpriseLogin: FunctionComponent<ConsoleEnterpriseLoginPropsInter
     props: ConsoleEnterpriseLoginPropsInterface
 ): ReactElement => {
     const {
-        ["data-componentid"]: componentId = "console-enterprise-login"
+        ["data-componentid"]: componentId = "console-enterprise-login",
+        isFeatureLocked
     } = props;
 
     const { t } = useTranslation();
@@ -492,6 +498,7 @@ const ConsoleEnterpriseLogin: FunctionComponent<ConsoleEnterpriseLoginPropsInter
                         options={ availableConnections }
                         value={ selectedIdp }
                         onChange={ handleIdpChange }
+                        disabled={ isFeatureLocked }
                         getOptionLabel={ (option: StrictConnectionInterface) =>
                             option?.name ?? "" }
                         isOptionEqualToValue={ (
@@ -792,6 +799,7 @@ const ConsoleEnterpriseLogin: FunctionComponent<ConsoleEnterpriseLoginPropsInter
                                                         () => handleRemoveMapping(index)
                                                     }
                                                     aria-label="Remove mapping"
+                                                    disabled={ isFeatureLocked }
                                                     data-componentid={
                                                         `${componentId}-remove-mapping-${index}`
                                                     }
@@ -811,6 +819,7 @@ const ConsoleEnterpriseLogin: FunctionComponent<ConsoleEnterpriseLoginPropsInter
                                 size="small"
                                 startIcon={ <PlusIcon /> }
                                 onClick={ handleAddMapping }
+                                disabled={ isFeatureLocked }
                                 sx={ {
                                     "& .MuiButton-startIcon": {
                                         marginLeft: 0,
@@ -842,7 +851,7 @@ const ConsoleEnterpriseLogin: FunctionComponent<ConsoleEnterpriseLoginPropsInter
                         size="small"
                         onClick={ handleSave }
                         disabled={
-                            isSaving || !selectedIdp || mappings.length === 0
+                            isSaving || !selectedIdp || mappings.length === 0 || isFeatureLocked
                         }
                         data-componentid={ `${componentId}-save-btn` }
                     >
@@ -857,7 +866,7 @@ const ConsoleEnterpriseLogin: FunctionComponent<ConsoleEnterpriseLoginPropsInter
                 </Box>
             </EmphasizedSegment>
 
-            { existingConfig && (
+            { existingConfig && !isFeatureLocked && (
                 <DangerZoneGroup
                     sectionHeader={
                         t("consoleSettings:enterpriseLogin.confirmations" +

@@ -204,4 +204,3 @@ export const ActionCertificateWizard: FunctionComponent<ActionCertificateWizardP
     );
 };
 
-export default ActionCertificateWizard;

@@ -42,7 +42,7 @@ interface DropDownItemInterface {
 /**
  * Props for the SelectFieldAdapter component.
  */
-export interface SelectFieldAdapterPropsInterface
+interface SelectFieldAdapterPropsInterface
     extends FieldRenderProps<string | string[], HTMLElement, string | string>, IdentifiableComponentInterface {
     /**
      * The label to display above the Select Field.

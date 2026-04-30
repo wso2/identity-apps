@@ -34,7 +34,7 @@ import "./resource-property-panel.scss";
 /**
  * Props interface of {@link ResourcePropertyPanel}
  */
-export interface ResourcePropertyPanelPropsInterface
+interface ResourcePropertyPanelPropsInterface
     extends DrawerProps,
         IdentifiableComponentInterface,
         HTMLAttributes<HTMLDivElement> {

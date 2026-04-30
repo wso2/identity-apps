@@ -74,7 +74,7 @@ import "./add-organization-discovery-domains.scss";
 /**
  * Props interface of {@link AddOrganizationDiscoveryDomains}
  */
-export interface AddOrganizationDiscoveryDomainsPropsInterface
+interface AddOrganizationDiscoveryDomainsPropsInterface
     extends SBACInterface<FeatureConfigInterface>,
         IdentifiableComponentInterface {
     /**

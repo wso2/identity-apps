@@ -43,7 +43,7 @@ import {
 /**
  * Interface for the dropdown options.
  */
-export interface DropdownOptionsInterface {
+interface DropdownOptionsInterface {
     key: string;
     text: string;
     value: string;

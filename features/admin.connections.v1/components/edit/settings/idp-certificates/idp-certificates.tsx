@@ -58,7 +58,7 @@ import { CertificatePatchRequestInterface, ConnectionInterface } from "../../../
 /**
  * Props interface of {@link IdpCertificates}
  */
-export interface IdpCertificatesV2Props extends IdentifiableComponentInterface {
+interface IdpCertificatesV2Props extends IdentifiableComponentInterface {
     editingIDP: ConnectionInterface;
     onUpdate: (id: string) => void;
     isReadOnly: boolean;
@@ -80,7 +80,7 @@ export interface IdpCertificatesV2Props extends IdentifiableComponentInterface {
     templateType?: string;
 }
 
-export type CertificateConfigurationMode = "jwks" | "certificates" | "samlMetadataUri";
+type CertificateConfigurationMode = "jwks" | "certificates" | "samlMetadataUri";
 
 const FORM_ID: string = "idp-certificate-jwks-input-form";
 const SAML_METADATA_URI_FORM_ID: string = "idp-certificate-saml-metadata-uri-form";

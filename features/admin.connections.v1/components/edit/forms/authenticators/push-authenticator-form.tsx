@@ -123,7 +123,7 @@ interface PushAuthenticatorFormFieldsInterface {
 /**
  * Proptypes for the Push Authenticator Form error messages.
  */
-export interface PushAuthenticatorFormErrorValidationsInterface {
+interface PushAuthenticatorFormErrorValidationsInterface {
     /**
      * Enable number challenge.
      */

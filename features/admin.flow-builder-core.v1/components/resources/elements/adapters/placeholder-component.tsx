@@ -23,7 +23,7 @@ import "./placeholder-component.scss";
 /**
  * Props interface of {@link PlaceholderComponent}
  */
-export interface PlaceholderComponentProps extends IdentifiableComponentInterface {
+interface PlaceholderComponentProps extends IdentifiableComponentInterface {
     value: string;
 }
 

@@ -452,6 +452,12 @@ export interface rolesNS {
         };
     };
     notifications: {
+        apiLimitReachedError: {
+            error: {
+                message: string;
+                description: string;
+            };
+        };
         createRolePendingApproval: {
             success: {
                 description: string;
@@ -525,6 +531,14 @@ export interface rolesNS {
                 message: string;
                 description: string;
             };
+        };
+        tierLimitReachedError: {
+            emptyPlaceholder: {
+                action: string;
+                title: string;
+                subtitles: string;
+            };
+            heading: string;
         };
     };
 }

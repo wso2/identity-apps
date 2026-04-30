@@ -25,7 +25,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
     .bind(AsgardeoSPAClient.getInstance());
 
-export type GetRequest = AxiosRequestConfig | null
+type GetRequest = AxiosRequestConfig | null
 
 /**
  * Request error interface.
@@ -85,7 +85,7 @@ export interface RequestErrorInterface {
     traceId: string;
 }
 
-export interface SWRConfig<Data = unknown, Error = unknown>
+interface SWRConfig<Data = unknown, Error = unknown>
     extends Omit<
         SWRConfiguration<AxiosResponse<Data>, AxiosError<Error>>,
         "fallbackData"

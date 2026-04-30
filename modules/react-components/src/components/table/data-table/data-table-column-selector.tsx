@@ -26,7 +26,7 @@ import { GenericIcon, GenericIconProps } from "../../icon";
 import { Popup } from "../../popup";
 import { Heading } from "../../typography";
 
-export interface DataTableColumnSelectorInterface extends IdentifiableComponentInterface,
+interface DataTableColumnSelectorInterface extends IdentifiableComponentInterface,
     TestableComponentInterface {
 
     /**

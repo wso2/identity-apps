@@ -61,6 +61,10 @@ interface ConsoleRolesEditPropsInterface extends IdentifiableComponentInterface 
      * Default active tab index.
      */
     defaultActiveIndex?: number;
+    /**
+     * Whether the role edit should be read-only.
+     */
+    isReadOnly?: boolean;
 }
 
 /**
@@ -71,7 +75,7 @@ interface ConsoleRolesEditPropsInterface extends IdentifiableComponentInterface 
 const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
     props: ConsoleRolesEditPropsInterface
 ): ReactElement => {
-    const { isLoading, roleObject, onRoleUpdate, defaultActiveIndex } = props;
+    const { isLoading, roleObject, onRoleUpdate, defaultActiveIndex, isReadOnly: isReadOnlyProp } = props;
 
     const { t } = useTranslation();
     const { isSuperOrganization, isFirstLevelOrganization, isSubOrganization, organizationType } =
@@ -153,7 +157,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                         <BasicRoleDetails
                             isReadOnly={
                                 isSubOrg || isAdminRole || !isConsoleRolesEditable || !hasRolesUpdatePermissions
-                                || roleObject?.meta?.systemRole
+                                || roleObject?.meta?.systemRole || isReadOnlyProp
                             }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
@@ -170,7 +174,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                         <ConsoleRolePermissions
                             isReadOnly={
                                 isSubOrg || isAdminRole || !isConsoleRolesEditable || !hasRolesUpdatePermissions
-                                || roleObject?.meta?.systemRole
+                                || roleObject?.meta?.systemRole || isReadOnlyProp
                             }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
@@ -189,7 +193,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RoleGroupsList
-                            isReadOnly={ !hasRolesUpdatePermissions }
+                            isReadOnly={ !hasRolesUpdatePermissions || isReadOnlyProp }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             tabIndex={ 2 }
@@ -228,7 +232,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
 
                         <RoleUsersList
                             isPrivilegedUsersToggleVisible={ isPrivilegedUsersToggleVisible }
-                            isReadOnly={ !hasRolesUpdatePermissions }
+                            isReadOnly={ !hasRolesUpdatePermissions || isReadOnlyProp }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
                             activeUserStore={
@@ -250,7 +254,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                     render: () => (
                         <ResourceTab.Pane controlledSegmentation attached={ false }>
                             <RoleConnectedApps
-                                isReadOnly={ !hasRolesUpdatePermissions }
+                                isReadOnly={ !hasRolesUpdatePermissions || isReadOnlyProp }
                                 role={ roleObject }
                                 onRoleUpdate={ onRoleUpdate }
                                 tabIndex={ 4 }

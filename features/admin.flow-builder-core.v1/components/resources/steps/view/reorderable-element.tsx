@@ -37,7 +37,7 @@ import ValidationErrorBoundary from "../../../validation-panel/validation-error-
 /**
  * Props interface of {@link ReorderableElement}
  */
-export interface ReorderableComponentPropsInterface
+interface ReorderableComponentPropsInterface
     extends IdentifiableComponentInterface,
         Omit<SortableProps, "element">,
         Omit<BoxProps, "children" | "id"> {
@@ -87,7 +87,7 @@ const GridDotsVerticalIcon = ({ width = 16, height = 16 }: SVGProps<SVGSVGElemen
  * @param props - Props injected to the component.
  * @returns ReorderableElement component.
  */
-export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInterface> = ({
+const ReorderableElement: FunctionComponent<ReorderableComponentPropsInterface> = ({
     id,
     element,
     className,

@@ -32,7 +32,7 @@ import {
 /**
  * Properties of {@link AttributesSelectionV2}
  */
-export interface AttributesSelectionV2Props extends TestableComponentInterface {
+interface AttributesSelectionV2Props extends TestableComponentInterface {
     attributeList: Array<ConnectionClaimInterface>;
     mappedAttributesList: Array<ConnectionCommonClaimMappingInterface>;
     onAttributesSelected: (mappingsToBeAdded: ConnectionCommonClaimMappingInterface[]) => void;

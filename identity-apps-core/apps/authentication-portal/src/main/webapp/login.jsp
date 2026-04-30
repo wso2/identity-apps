@@ -710,7 +710,7 @@
                                                     <input type="button" class="ui button primary"
                                                         onClick="javascript: myFunction(
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
-                                                        '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>', 
+                                                        '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>',
                                                         'domainName')"
                                                         value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"go")%>"/>
                                                 </form>
@@ -1301,7 +1301,8 @@
                         if (
                             !StringUtils.equals("CONSOLE",clientId)
                             && !StringUtils.equals("MY_ACCOUNT",clientId) && !hasLocalLoginOptions && hasFederatedOptions &&
-                            isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences
+                            ((isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences)
+                                || dynamicPortalSREnabled)
                         ) {
                                 urlParameters = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
                         %>

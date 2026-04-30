@@ -17,7 +17,7 @@ import { DynamicFieldProps } from "./dynamic-form-field";
 /**
  * Interface for the Checkbox field component.
  */
-export interface FieldCheckboxPropsInterface extends DynamicFieldProps {
+interface FieldCheckboxPropsInterface extends DynamicFieldProps {
 
     /**
      * Hint of the form field.

@@ -17,7 +17,7 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
+import { getAllLocalClaims } from "../api";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";

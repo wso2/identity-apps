@@ -32,7 +32,7 @@ import { AllowedIssuerInterface, OIDCMetadataInterface } from "../models/applica
 /**
  * Return type for the `useAllowedIssuers` hook.
  */
-export interface UseAllowedIssuersInterface {
+interface UseAllowedIssuersInterface {
     /**
      * Whether the allowed issuers are being loaded.
      */

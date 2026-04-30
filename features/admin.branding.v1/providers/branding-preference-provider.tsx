@@ -68,7 +68,7 @@ import processCustomTextTemplateLiterals from "../utils/process-custom-text-temp
 /**
  * Props interface for the Branding preference provider.
  */
-export type BrandingPreferenceProviderProps = PropsWithChildren;
+type BrandingPreferenceProviderProps = PropsWithChildren;
 
 /**
  * React context provider for the branding preference context.

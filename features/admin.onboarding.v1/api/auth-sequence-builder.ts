@@ -28,7 +28,7 @@ const LOCAL_IDP: string = LocalAuthenticatorConstants.LOCAL_IDP_IDENTIFIER;
 /**
  * Authenticator configuration for authentication sequence.
  */
-export interface AuthenticatorConfigInterface {
+interface AuthenticatorConfigInterface {
     idp: string;
     authenticator: string;
 }
@@ -36,7 +36,7 @@ export interface AuthenticatorConfigInterface {
 /**
  * Authentication step configuration.
  */
-export interface AuthenticationStepInterface {
+interface AuthenticationStepInterface {
     id: number;
     options: AuthenticatorConfigInterface[];
 }
@@ -44,7 +44,7 @@ export interface AuthenticationStepInterface {
 /**
  * Authentication sequence configuration.
  */
-export interface AuthenticationSequenceInterface {
+interface AuthenticationSequenceInterface {
     type: "DEFAULT" | "USER_DEFINED";
     steps: AuthenticationStepInterface[];
     subjectStepId?: number;

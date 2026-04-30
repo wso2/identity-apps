@@ -34,7 +34,7 @@ import { patchSecret } from "../api/secret";
 import { SecretModel } from "../models/secret";
 import { SECRET_DESCRIPTION_LENGTH } from "../utils/secrets.validation.utils";
 
-export type SecretDescriptionFormProps = {
+type SecretDescriptionFormProps = {
     editingSecret: SecretModel;
 } & IdentifiableComponentInterface;
 

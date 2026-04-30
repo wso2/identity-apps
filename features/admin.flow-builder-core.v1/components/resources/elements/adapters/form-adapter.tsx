@@ -36,7 +36,7 @@ import "./form-adapter.scss";
 /**
  * Props interface of {@link FormAdapter}
  */
-export type FormAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type FormAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Form component.

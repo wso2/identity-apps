@@ -22,7 +22,7 @@ import GroupManagementContext from "../context/group-management-context";
 /**
  * Props interface for the Group management provider.
  */
-export type GroupManagementProviderProps = PropsWithChildren;
+type GroupManagementProviderProps = PropsWithChildren;
 
 /**
  * React context provider for the group management context.

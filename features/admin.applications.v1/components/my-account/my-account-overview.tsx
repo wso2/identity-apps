@@ -35,7 +35,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
-export type MyAccountOverviewPropsInterface = IdentifiableComponentInterface;
+type MyAccountOverviewPropsInterface = IdentifiableComponentInterface;
 
 /**
  * Component to display in the General tab of the My Account application's edit page.

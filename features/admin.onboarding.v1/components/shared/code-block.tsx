@@ -29,7 +29,7 @@ import React, { FunctionComponent, ReactElement, useCallback, useState } from "r
 /**
  * Props interface for CodeBlock component.
  */
-export interface CodeBlockPropsInterface extends IdentifiableComponentInterface {
+interface CodeBlockPropsInterface extends IdentifiableComponentInterface {
     /** Code content to display */
     code: string;
     /** Optional label for the code block */

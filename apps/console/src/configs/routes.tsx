@@ -1354,8 +1354,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 {
                     component: lazy(() =>
                         import(
-                            "@wso2is/admin.approval-workflows.v1/pages/" +
-                            "approval-workflow-create-page"
+                            "@wso2is/admin.approval-workflows.v1/pages/approval-workflow-create-page"
                         )
                     ),
                     exact: true,

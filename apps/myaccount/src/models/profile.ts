@@ -27,7 +27,7 @@ export interface MultiValue {
 /**
  * Name model
  */
-export interface Name {
+interface Name {
     givenName: string;
     familyName: string;
 }
@@ -35,7 +35,7 @@ export interface Name {
 /**
  * Multi-valued pending emails model
  */
-export interface PendingEmail {
+interface PendingEmail {
     type?: string;
     value: string;
 }
@@ -147,7 +147,7 @@ export interface ProfileSchema {
 /**
  *  Profile attribute interface.
  */
-export interface ProfileAttributeInterface {
+interface ProfileAttributeInterface {
     /**
      * Flag to set mutability.
      */

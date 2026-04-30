@@ -25,7 +25,7 @@ import useBrandingPreference from "../../../../hooks/use-branding-preference";
 /**
  * Proptypes for the email-link-expiry fragment of login screen skeleton.
  */
-export type EmailLinkExpiryFragmentInterface = IdentifiableComponentInterface;
+type EmailLinkExpiryFragmentInterface = IdentifiableComponentInterface;
 
 /**
  * Email link expiry fragment component for the branding preview of Email Link Expiry screen.

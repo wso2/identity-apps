@@ -24,7 +24,7 @@ import AskPasswordFlowBuilderContext, {
 /**
  * Props interface of {@link useAskPasswordFlowBuilder}
  */
-export type useAskPasswordFlowBuilderInterface = AskPasswordFlowBuilderContextProps;
+type useAskPasswordFlowBuilderInterface = AskPasswordFlowBuilderContextProps;
 
 /**
  * Hook that provides access to the Password Recovery Flow Builder context.

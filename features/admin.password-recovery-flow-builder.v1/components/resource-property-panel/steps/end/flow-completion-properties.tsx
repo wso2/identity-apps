@@ -44,7 +44,7 @@ import { useSelector } from "react-redux";
 /**
  * Props interface of {@link FlowCompletionProperties}
  */
-export type FlowCompletionPropertiesPropsInterface = CommonResourcePropertiesPropsInterface &
+type FlowCompletionPropertiesPropsInterface = CommonResourcePropertiesPropsInterface &
     IdentifiableComponentInterface;
 
 /**

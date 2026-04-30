@@ -33,7 +33,7 @@ import "./push-providers-grid.scss";
 /**
  * Props for the Push Providers grid component.
  */
-export interface PushProvidersGridPropsInterface extends IdentifiableComponentInterface, LoadableComponentInterface {
+interface PushProvidersGridPropsInterface extends IdentifiableComponentInterface, LoadableComponentInterface {
     /**
      * Callback to be fired when a template is selected.
      */

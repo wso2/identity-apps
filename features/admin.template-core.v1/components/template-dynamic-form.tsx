@@ -40,7 +40,7 @@ import { DynamicFieldInterface, DynamicFormInterface, DynamicInputFieldTypes } f
 /**
  * Prop types of the `TemplateDynamicForm` component.
  */
-export interface TemplateDynamicFormPropsInterface extends IdentifiableComponentInterface {
+interface TemplateDynamicFormPropsInterface extends IdentifiableComponentInterface {
     /**
      * Custom validation functions for form validations.
      */

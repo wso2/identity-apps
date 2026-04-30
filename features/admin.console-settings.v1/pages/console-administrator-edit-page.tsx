@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -24,6 +24,8 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
+import FeatureLockedBanner from "@wso2is/admin.feature-gate.v1/components/feature-locked-banner";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
 import {
@@ -87,6 +89,11 @@ const ConsoleAdministratorsEditPage: FunctionComponent<ConsoleAdministratorsEdit
     const isUpdatingSharedProfilesFeatureEnabled: boolean = isFeatureEnabled(
         featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_SHARED_PROFILES"));
 
+    const consoleSettingsFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["CONSOLE_SETTINGS"]
+    );
+    const isConsoleSettingsFeatureEnabled: boolean = consoleSettingsFeatureStatus === FeatureStatus.ENABLED;
+
     const [ user, setUserProfile ] = useState<ProfileInfoInterface>(emptyProfileInfo);
     const [ isUserDetailsRequestLoading, setIsUserDetailsRequestLoading ] = useState<boolean>(false);
     const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
@@ -110,6 +117,7 @@ const ConsoleAdministratorsEditPage: FunctionComponent<ConsoleAdministratorsEdit
     const isReadOnly: boolean = !isUserUpdateFeatureEnabled
         || !hasUsersUpdatePermissions
         || isReadOnlyUserStore
+        || !isConsoleSettingsFeatureEnabled
         || user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
         || user[ SCIMConfigs.scim.systemSchema ]?.isReadOnlyUser === "true"
         || (user[ SCIMConfigs.scim.systemSchema ]?.managedOrg && !isUpdatingSharedProfilesFeatureEnabled);
@@ -352,6 +360,12 @@ const ConsoleAdministratorsEditPage: FunctionComponent<ConsoleAdministratorsEdit
                 bottomMargin={ false }
                 data-componentid={ componentId }
             >
+                { !isConsoleSettingsFeatureEnabled && (
+                    <FeatureLockedBanner
+                        data-componentid={ `${ componentId }-feature-locked-banner` }
+                        sx={ { marginBottom: "10px", marginTop: "-20px" } }
+                    />
+                ) }
                 <EditUser
                     user={ user }
                     handleUserUpdate={ handleUserUpdate }

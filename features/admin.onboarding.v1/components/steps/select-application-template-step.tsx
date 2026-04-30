@@ -105,63 +105,83 @@ const SelectApplicationTemplateStep: FunctionComponent<SelectApplicationTemplate
                     title="What are you building?"
                 />
 
-                { /* Framework Selection Section */ }
-                <Box sx={ { display: "flex", flexDirection: "column", gap: 1.5 } }>
-                    <SectionLabel>
-                        Select by technology
-                    </SectionLabel>
+                <Box
+                    sx={ {
+                        "&::-webkit-scrollbar": {
+                            background: "transparent",
+                            width: "8px"
+                        },
+                        "&::-webkit-scrollbar-thumb": {
+                            background: "transparent",
+                            borderRadius: "4px"
+                        },
+                        "&::-webkit-scrollbar-track": {
+                            background: "transparent"
+                        },
+                        "&:hover::-webkit-scrollbar-thumb": {
+                            background: "rgba(0, 0, 0, 0.2)"
+                        },
+                        display: "flex",
+                        flex: 1,
+                        flexDirection: "column",
+                        minHeight: 0,
+                        overflowY: "auto"
+                    } }
+                >
+                    <Box sx={ { display: "flex", flexDirection: "column", gap: 1.5 } }>
+                        <SectionLabel>
+                            Select by technology
+                        </SectionLabel>
 
-                    <FrameworkGrid>
-                        { visibleFrameworks.map((framework: FrameworkOptionInterface) => (
-                            <SelectableCard
-                                key={ framework.id }
-                                data-componentid={ `${componentId}-framework-${framework.id}` }
-                                icon={
-                                    framework.logo
-                                        ? (typeof framework.logo === "string"
-                                            ? <img alt={ framework.displayName } src={ framework.logo } />
-                                            : <framework.logo />)
-                                        : null
-                                }
-                                isSelected={
-                                    selectedFramework === framework.id
-                                    && selectedTemplateId === framework.templateId
-                                }
-                                onClick={ () => handleFrameworkSelect(framework) }
-                                title={ framework.displayName }
-                                variant="compact"
-                            />
-                        )) }
+                        <FrameworkGrid>
+                            { visibleFrameworks.map((framework: FrameworkOptionInterface) => (
+                                <SelectableCard
+                                    key={ framework.id }
+                                    data-componentid={ `${componentId}-framework-${framework.id}` }
+                                    icon={
+                                        framework.logo
+                                            ? (typeof framework.logo === "string"
+                                                ? <img alt={ framework.displayName } src={ framework.logo } />
+                                                : <framework.logo />)
+                                            : null
+                                    }
+                                    isSelected={
+                                        selectedFramework === framework.id
+                                        && selectedTemplateId === framework.templateId
+                                    }
+                                    onClick={ () => handleFrameworkSelect(framework) }
+                                    title={ framework.displayName }
+                                    variant="compact"
+                                />
+                            )) }
+                        </FrameworkGrid>
+                    </Box>
 
-                    </FrameworkGrid>
-                </Box>
+                    <Divider textAlign="left" sx={ { my: 3 } } />
 
-                <Divider textAlign="left" sx={ { my: 3 } } />
+                    <Box sx={ { display: "flex", flexDirection: "column", gap: 1.5 } }>
+                        <SectionLabel>
+                            Select by application type
+                        </SectionLabel>
 
-                { /* Application Type Selection Section */ }
-                <Box sx={ { display: "flex", flexDirection: "column", gap: 1.5 } }>
-                    <SectionLabel>
-                        Select by application type
-                    </SectionLabel>
-
-                    <AppTypeGrid>
-                        { visibleAppTypes?.map((appType: ApplicationTypeOptionInterface) => (
-                            <SelectableCard
-                                key={ appType.id }
-                                data-componentid={ `${componentId}-apptype-${appType.id}` }
-                                description={ appType.description }
-                                icon={ appType.icon ? <appType.icon /> : null }
-                                isSelected={
-                                    !selectedFramework
-                                    && selectedTemplateId === appType.templateId
-                                }
-                                onClick={ () => handleAppTypeSelect(appType) }
-                                title={ appType.displayName }
-                                variant="default"
-                            />
-                        )) }
-
-                    </AppTypeGrid>
+                        <AppTypeGrid>
+                            { visibleAppTypes?.map((appType: ApplicationTypeOptionInterface) => (
+                                <SelectableCard
+                                    key={ appType.id }
+                                    data-componentid={ `${componentId}-apptype-${appType.id}` }
+                                    description={ appType.description }
+                                    icon={ appType.icon ? <appType.icon /> : null }
+                                    isSelected={
+                                        !selectedFramework
+                                        && selectedTemplateId === appType.templateId
+                                    }
+                                    onClick={ () => handleAppTypeSelect(appType) }
+                                    title={ appType.displayName }
+                                    variant="default"
+                                />
+                            )) }
+                        </AppTypeGrid>
+                    </Box>
                 </Box>
             </LeftColumn>
         </TwoColumnLayout>

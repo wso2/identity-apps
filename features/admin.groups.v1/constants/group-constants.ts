@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { IdentityAppsError } from "@wso2is/core/errors";
+
 /**
  * Class containing groups constants.
  */
@@ -42,4 +44,14 @@ export class GroupConstants {
         .set("GROUP_UPDATE", "groups.update")
         .set("GROUP_DELETE", "groups.delete")
         .set("GROUP_READ", "groups.read");
+
+    /**
+     * Group create limit reached error.
+     */
+    public static readonly ERROR_CREATE_LIMIT_REACHED: IdentityAppsError = new IdentityAppsError(
+        "ASG-FG-API-60002",
+        "groups:notifications.apiLimitReachedError.error.description",
+        "groups:notifications.apiLimitReachedError.error.message",
+        "a47e1d62-bb71-4f0f-9e3a-7fcd4a9f7b21"
+    );
 }

@@ -26,7 +26,7 @@ import { BulkImportResponseOperationTypes, BulkUserImportStatus } from "../const
 /**
  * Captures meta details of the user.
  */
-export interface UserMetaInterface {
+interface UserMetaInterface {
     created: string;
     location: string;
     lastModified: string;
@@ -384,13 +384,13 @@ export interface BulkResponseSummary {
     failedUserAssignment: number;
 }
 
-export interface PatchBulkUserDataInterface {
+interface PatchBulkUserDataInterface {
     schemas: string[];
     Operations: PatchUserOpInterface[];
     failOnErrors?: number;
 }
 
-export interface PatchUserOpInterface {
+interface PatchUserOpInterface {
     data: {
         Operations: (PatchUserRemoveOpInterface | PatchUserAddOpInterface)[];
     };
@@ -398,12 +398,12 @@ export interface PatchUserOpInterface {
     path: string;
 }
 
-export interface PatchUserRemoveOpInterface {
+interface PatchUserRemoveOpInterface {
     op: string;
     path: string;
 }
 
-export interface PatchUserAddOpInterface {
+interface PatchUserAddOpInterface {
     op: string;
     value: {
         users: { value: string }[]
@@ -483,7 +483,7 @@ export enum InvitationStatus {
 /**
  * Interface for role audiences in user sharing.
  */
-export interface RoleAudiencesInterface {
+interface RoleAudiencesInterface {
     display: string;
     type: string;
 }
@@ -518,7 +518,7 @@ export interface UnshareUserWithAllOrganizationsDataInterface {
 /**
  * Interface for shared organization and roles for users.
  */
-export interface SharedOrganizationAndRolesInterface {
+interface SharedOrganizationAndRolesInterface {
     orgId: string;
     policy: string;
     roleAssignment?: {
@@ -563,7 +563,7 @@ export interface UnshareOrganizationsDataInterface {
 /**
  * Interface for User.
  */
-export interface UserInterface extends UserBasicInterface {
+interface UserInterface extends UserBasicInterface {
     id: string;
     associatedRoles?: {
         allowedAudience?: string;
@@ -574,7 +574,6 @@ export interface UserInterface extends UserBasicInterface {
  * User sharing policy enum.
  */
 export enum UserSharingPolicy {
-    ALL_EXISTING_ORGS_ONLY = "ALL_EXISTING_ORGS_ONLY",
     ALL_EXISTING_AND_FUTURE_ORGS = "ALL_EXISTING_AND_FUTURE_ORGS",
     SELECTED_ORG_ONLY = "SELECTED_ORG_ONLY",
     SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN = "SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN"

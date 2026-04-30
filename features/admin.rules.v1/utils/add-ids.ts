@@ -24,7 +24,7 @@ import { v4 as uuidv4 } from "uuid";
  * @param obj - Input of a JSON object or an Array of JSON objects.
  * @returns Object with `id` properties.
  */
-export const addIds = (obj: any): any => {
+const addIds = (obj: any): any => {
     if (Array.isArray(obj)) {
         return obj.map(addIds);
     } else if (typeof obj === "object" && obj !== null) {

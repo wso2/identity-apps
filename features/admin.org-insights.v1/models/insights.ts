@@ -89,7 +89,7 @@ export interface ChartDataPoint {
 /**
  * Interface for the insights data for the current and last periods.
  */
-export interface InsightsForCurrentAndLastPeriods {
+interface InsightsForCurrentAndLastPeriods {
     usageRecordsForCurrentPeriod: InsightsResponseInterface;
     usageRecordsForLastPeriod: InsightsResponseInterface;
 }
@@ -111,12 +111,10 @@ export enum ActivityType {
 
 export type FilterCondition = DropdownChild
 
-export type FilterAttribute = FilterCondition
+type FilterAttribute = FilterCondition
 
 export enum OrgInsightsFeature {
     COMPARE_WITH_LAST_PERIOD = "compareWithLastPeriod",
-    ADVANCED_INSIGHT_FILTERING = "advancedInsightFiltering",
-    REGISTRATION_INSIGHTS = "registrationInsights",
     M2M_INSIGHTS = "m2mInsights",
 }
 
@@ -142,6 +140,5 @@ export enum AuthenticatorFilterValue {
     OIDC = "OpenIDConnectAuthenticator",
     SAML = "SAMLSSOAuthenticator",
     HYPR = "HYPRAuthenticator",
-    IPROOV = "IproovAuthenticator",
-    ORGANIZATION_AUTHENTICATOR = "OrganizationAuthenticator"
+    IPROOV = "IproovAuthenticator"
 }

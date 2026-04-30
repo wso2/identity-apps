@@ -33,7 +33,7 @@ import { Tenant, TenantLifecycleStatus } from "../models/tenants";
 /**
  * Props interface of {@link TenantProvider}
  */
-export interface TenantProviderProps {
+interface TenantProviderProps {
     /**
      * Callback to be fired on successful tenant deletion.
      */

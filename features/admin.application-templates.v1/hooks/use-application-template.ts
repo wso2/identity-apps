@@ -22,7 +22,7 @@ import ApplicationTemplateContext, { ApplicationTemplateContextProps } from "../
 /**
  * Interface for the return type of the `useApplicationTemplate` hook.
  */
-export type UseApplicationTemplateInterface = ApplicationTemplateContextProps;
+type UseApplicationTemplateInterface = ApplicationTemplateContextProps;
 
 /**
  * Hook that provides access to the application template context.

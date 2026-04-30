@@ -23,7 +23,7 @@ import { Placeholder } from "semantic-ui-react";
 /**
  * Proptypes for the common fragment of login screen skeleton.
  */
-export type CommonFragmentInterface = IdentifiableComponentInterface;
+type CommonFragmentInterface = IdentifiableComponentInterface;
 
 /**
  * Common fragment component for the branding preview of Sign In box.

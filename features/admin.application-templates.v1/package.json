@@ -27,7 +27,7 @@
         "rollup-plugin-scss": "^4.0.0",
         "rollup-plugin-styles": "^4.0.0",
         "rollup-plugin-svg": "^2.0.0",
-        "typescript": "^4.6.4"
+        "typescript": "^5.1.6"
     },
     "peerDependencies": {
         "react": "^18.2.0",

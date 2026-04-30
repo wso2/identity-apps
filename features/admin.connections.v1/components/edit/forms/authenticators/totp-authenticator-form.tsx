@@ -67,7 +67,7 @@ interface TOTPAuthenticatorFormInitialValuesInterface {
 /**
  * Proptypes for the TOTP Authenticator Form error messages.
  */
-export interface TOTPAuthenticatorFormErrorValidationsInterface {
+interface TOTPAuthenticatorFormErrorValidationsInterface {
     /**
      * Enable progressive enrollment.
      */

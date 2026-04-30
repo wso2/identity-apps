@@ -1,5 +1,129 @@
 # @wso2is/admin.extensions.v1
 
+## 2.43.5
+
+### Patch Changes
+
+- [#10203](https://github.com/wso2/identity-apps/pull/10203) [`4eb39168ef1c46f4c3d31013e09d5a3fbed15368`](https://github.com/wso2/identity-apps/commit/4eb39168ef1c46f4c3d31013e09d5a3fbed15368) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Feature gate webhooks, workflows, actions
+
+- Updated dependencies [[`4eb39168ef1c46f4c3d31013e09d5a3fbed15368`](https://github.com/wso2/identity-apps/commit/4eb39168ef1c46f4c3d31013e09d5a3fbed15368)]:
+  - @wso2is/admin.feature-gate.v1@1.9.7
+  - @wso2is/access-control@3.5.8
+
+## 2.43.4
+
+### Patch Changes
+
+- [#10199](https://github.com/wso2/identity-apps/pull/10199) [`8b5c2d0feea5f6335ab9b27e7d661e0a2a813452`](https://github.com/wso2/identity-apps/commit/8b5c2d0feea5f6335ab9b27e7d661e0a2a813452) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Fix build errors
+
+- Updated dependencies [[`8b5c2d0feea5f6335ab9b27e7d661e0a2a813452`](https://github.com/wso2/identity-apps/commit/8b5c2d0feea5f6335ab9b27e7d661e0a2a813452)]:
+  - @wso2is/admin.server-configurations.v1@2.38.50
+
+## 2.43.3
+
+### Patch Changes
+
+- [#10197](https://github.com/wso2/identity-apps/pull/10197) [`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dependencies
+
+- Updated dependencies [[`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423)]:
+  - @wso2is/admin.identity-providers.v1@2.27.4
+  - @wso2is/admin.organizations.v1@2.28.4
+  - @wso2is/admin.applications.v1@2.42.23
+  - @wso2is/admin.provisioning.v1@2.25.210
+  - @wso2is/admin.connections.v1@2.37.2
+  - @wso2is/admin.claims.v1@2.31.1
+  - @wso2is/admin.core.v1@2.57.3
+  - @wso2is/admin.users.v1@2.38.35
+
+## 2.43.2
+
+### Patch Changes
+
+- [#10179](https://github.com/wso2/identity-apps/pull/10179) [`7a45b8862c5ec081691f5b9269a85f48bf662caa`](https://github.com/wso2/identity-apps/commit/7a45b8862c5ec081691f5b9269a85f48bf662caa) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove deprecated feature modules and unused code
+
+- Updated dependencies [[`7a45b8862c5ec081691f5b9269a85f48bf662caa`](https://github.com/wso2/identity-apps/commit/7a45b8862c5ec081691f5b9269a85f48bf662caa)]:
+  - @wso2is/admin.core.v1@2.57.2
+
+## 2.43.1
+
+### Patch Changes
+
+- [#10156](https://github.com/wso2/identity-apps/pull/10156) [`5e2cee30e0d0d16f071af34a399167452970dde0`](https://github.com/wso2/identity-apps/commit/5e2cee30e0d0d16f071af34a399167452970dde0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Migrate console app to vite
+
+- Updated dependencies [[`5e2cee30e0d0d16f071af34a399167452970dde0`](https://github.com/wso2/identity-apps/commit/5e2cee30e0d0d16f071af34a399167452970dde0)]:
+  - @wso2is/admin.authentication.v1@2.25.209
+  - @wso2is/react-components@2.10.2
+  - @wso2is/forms@2.3.26
+
+## 2.43.0
+
+### Minor Changes
+
+- [#10123](https://github.com/wso2/identity-apps/pull/10123) [`13a622370c3a3aaa07dadd0bec22ceb9ff486fea`](https://github.com/wso2/identity-apps/commit/13a622370c3a3aaa07dadd0bec22ceb9ff486fea) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Unify documentation extensions
+
+### Patch Changes
+
+- Updated dependencies [[`13a622370c3a3aaa07dadd0bec22ceb9ff486fea`](https://github.com/wso2/identity-apps/commit/13a622370c3a3aaa07dadd0bec22ceb9ff486fea)]:
+  - @wso2is/admin.connections.v1@2.37.0
+  - @wso2is/react-components@2.10.0
+  - @wso2is/admin.core.v1@2.57.0
+  - @wso2is/core@2.13.0
+  - @wso2is/admin.applications.v1@2.42.21
+  - @wso2is/admin.users.v1@2.38.32
+  - @wso2is/admin.server-configurations.v1@2.38.48
+  - @wso2is/admin.roles.v2@2.27.379
+
+## 2.42.1
+
+### Patch Changes
+
+- [#10131](https://github.com/wso2/identity-apps/pull/10131) [`e12a7d52749596d3728c79b33ae7763e81b90e13`](https://github.com/wso2/identity-apps/commit/e12a7d52749596d3728c79b33ae7763e81b90e13) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove redundant sms provider extension
+
+- Updated dependencies [[`e12a7d52749596d3728c79b33ae7763e81b90e13`](https://github.com/wso2/identity-apps/commit/e12a7d52749596d3728c79b33ae7763e81b90e13)]:
+  - @wso2is/admin.sms-providers.v1@2.25.211
+  - @wso2is/admin.users.v1@2.38.31
+  - @wso2is/admin.applications.v1@2.42.20
+  - @wso2is/admin.core.v1@2.56.1
+  - @wso2is/admin.roles.v2@2.27.378
+  - @wso2is/admin.connections.v1@2.36.48
+  - @wso2is/admin.server-configurations.v1@2.38.47
+
+## 2.42.0
+
+### Minor Changes
+
+- [#10112](https://github.com/wso2/identity-apps/pull/10112) [`793c5bde494bdde069a0fbc0b5311d279938ceb9`](https://github.com/wso2/identity-apps/commit/793c5bde494bdde069a0fbc0b5311d279938ceb9) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - feat: add AI Copilot ("Ask AI") assistant to the Admin Console
+
+### Patch Changes
+
+- Updated dependencies [[`793c5bde494bdde069a0fbc0b5311d279938ceb9`](https://github.com/wso2/identity-apps/commit/793c5bde494bdde069a0fbc0b5311d279938ceb9), [`3ab81080396569cab60e5e4b52d8715b54d9ef67`](https://github.com/wso2/identity-apps/commit/3ab81080396569cab60e5e4b52d8715b54d9ef67), [`2854c792d92d6157c3f8d32921ea410c5c451edd`](https://github.com/wso2/identity-apps/commit/2854c792d92d6157c3f8d32921ea410c5c451edd)]:
+  - @wso2is/admin.core.v1@2.56.0
+  - @wso2is/theme@2.10.0
+  - @wso2is/i18n@2.39.0
+  - @wso2is/admin.organizations.v1@2.28.3
+  - @wso2is/admin.users.v1@2.38.30
+  - @wso2is/admin.applications.v1@2.42.19
+  - @wso2is/admin.server-configurations.v1@2.38.46
+  - @wso2is/admin.roles.v2@2.27.377
+  - @wso2is/admin.connections.v1@2.36.47
+
+## 2.41.4
+
+### Patch Changes
+
+- [#10113](https://github.com/wso2/identity-apps/pull/10113) [`dd01f38682fd189b94802e06b3473a312c1bf7b1`](https://github.com/wso2/identity-apps/commit/dd01f38682fd189b94802e06b3473a312c1bf7b1) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Feature gate console settings and connections
+
+- Updated dependencies [[`dd01f38682fd189b94802e06b3473a312c1bf7b1`](https://github.com/wso2/identity-apps/commit/dd01f38682fd189b94802e06b3473a312c1bf7b1)]:
+  - @wso2is/admin.feature-gate.v1@1.9.5
+  - @wso2is/admin.connections.v1@2.36.46
+  - @wso2is/access-control@3.5.6
+  - @wso2is/admin.remote-userstores.v1@1.7.166
+  - @wso2is/admin.applications.v1@2.42.18
+  - @wso2is/admin.core.v1@2.55.29
+  - @wso2is/admin.server-configurations.v1@2.38.45
+  - @wso2is/admin.users.v1@2.38.29
+  - @wso2is/admin.roles.v2@2.27.376
+
 ## 2.41.3
 
 ### Patch Changes

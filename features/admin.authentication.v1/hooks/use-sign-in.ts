@@ -69,7 +69,7 @@ const LOGOUT_URL: string = "sign_out_url";
 /**
  * Props interface of {@link useSignIn}
  */
-export type UseSignInInterface = {
+type UseSignInInterface = {
     /**
      * Handles the sign-in process.
      *

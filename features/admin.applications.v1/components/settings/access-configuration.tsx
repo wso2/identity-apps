@@ -22,8 +22,8 @@ import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
-import { AlertLevels, IdentifiableComponentInterface, SBACInterface,
-    HttpErrorResponseDataInterface
+import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface,
+    SBACInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue } from "@wso2is/forms";
@@ -1373,6 +1373,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 )
                 : (
                     <Grid>
+                        {/* @ts-expect-error TODO(typescript-upgrade) */}
                         <>
                             { loadSupportedProtocols() }
                             {

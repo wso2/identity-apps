@@ -37,11 +37,11 @@ import CreateConsoleRoleWizardPermissionsForm from "./create-console-role-wizard
 import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";
 import useConsoleSettings from "../../../hooks/use-console-settings";
 
-export interface CreateConsoleRoleWizardPropsInterface extends IdentifiableComponentInterface, ModalProps {
+interface CreateConsoleRoleWizardPropsInterface extends IdentifiableComponentInterface, ModalProps {
     onClose: (e: MouseEvent<HTMLElement>, data: ModalProps) => void;
 }
 
-export type CreateConsoleRoleWizardFormValuesInterface = Partial<CreateRoleInterface>;
+type CreateConsoleRoleWizardFormValuesInterface = Partial<CreateRoleInterface>;
 
 /**
  * API resource wizard.

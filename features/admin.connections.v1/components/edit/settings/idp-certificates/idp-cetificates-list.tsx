@@ -51,7 +51,7 @@ import { CertificatePatchRequestInterface, ConnectionInterface } from "../../../
 /**
  * Props interface of {@link IdpCertificatesList}
  */
-export interface IdpCertificatesListProps extends IdentifiableComponentInterface {
+interface IdpCertificatesListProps extends IdentifiableComponentInterface {
     currentlyEditingIdP: ConnectionInterface;
     refreshIdP: (id: string) => void;
     isReadOnly: boolean;

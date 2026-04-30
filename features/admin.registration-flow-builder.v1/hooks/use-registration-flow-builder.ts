@@ -24,7 +24,7 @@ import RegistrationFlowBuilderContext, {
 /**
  * Props interface of {@link useRegistrationFlowBuilder}
  */
-export type useRegistrationFlowBuilderInterface = RegistrationFlowBuilderContextProps;
+type useRegistrationFlowBuilderInterface = RegistrationFlowBuilderContextProps;
 
 /**
  * Hook that provides access to the Registration Flow Builder context.

@@ -67,7 +67,7 @@ import "./remote-logging-config-form.scss";
 /**
  * Props interface of {@link RemoteLoggingConfigForm}
  */
-export interface RemoteLoggingConfigFormProps extends IdentifiableComponentInterface {
+interface RemoteLoggingConfigFormProps extends IdentifiableComponentInterface {
     /**
      * Log type such as `AUDIT`, `DEBUG`, etc.
      */
@@ -834,4 +834,3 @@ export const RemoteLoggingConfigForm = ({
     );
 };
 
-export default RemoteLoggingConfigForm;

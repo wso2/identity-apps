@@ -29,7 +29,7 @@ import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 /**
  * Props interface of {@link TypographyAdapter}
  */
-export type TypographyAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type TypographyAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Typography component.

@@ -283,8 +283,8 @@ export const booleanSentAsAStringValue = (value: any): boolean => {
     return false;
 };
 
-export type MinMaxLength = { max: number; min: number };
-export type FormErrors = { [ key: string ]: string };
+type MinMaxLength = { max: number; min: number };
+type FormErrors = { [ key: string ]: string };
 
 export const SERVICE_PROVIDER_ENTITY_ID_LENGTH: MinMaxLength = { max: 240, min: 3 };
 export const SSO_URL_LENGTH: MinMaxLength = { max: 2048, min: 10 };

@@ -37,7 +37,7 @@ import "./edit-tenant.scss";
 /**
  * Props interface of {@link EditTenant}
  */
-export type EditTenantProps = IdentifiableComponentInterface & {
+type EditTenantProps = IdentifiableComponentInterface & {
     /**
      * Tenant object.
      */

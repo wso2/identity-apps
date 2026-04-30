@@ -32,7 +32,7 @@ import "./autocomplete-field-adapter.scss";
 /**
  * Props interface of {@link AutocompleteFieldAdapter}
  */
-export interface AutocompleteFieldAdapterPropsInterface
+interface AutocompleteFieldAdapterPropsInterface
     extends FieldRenderProps<string | any, HTMLElement, string | any>,
         AutocompleteProps<unknown>,
         IdentifiableComponentInterface {

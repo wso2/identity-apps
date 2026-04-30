@@ -18,7 +18,7 @@
 
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
-import { useRulesContext } from "@wso2is/admin.rules.v1/hooks/use-rules-context";
+import useRulesContext from "@wso2is/admin.rules.v1/hooks/use-rules-context";
 import {
     ConditionExpressionMetaInterface,
     ExpressionValueInterface,
@@ -36,7 +36,7 @@ import { APPROVAL_WORKFLOW_RULE_FIELDS } from "../../constants/approval-workflow
 /**
  * Props interface of {@link WorkflowConditionValueInput}
  */
-export interface WorkflowConditionValueInputPropsInterface extends IdentifiableComponentInterface {
+interface WorkflowConditionValueInputPropsInterface extends IdentifiableComponentInterface {
     conditionId: string;
     expressionId: string;
     expressionValue: string;

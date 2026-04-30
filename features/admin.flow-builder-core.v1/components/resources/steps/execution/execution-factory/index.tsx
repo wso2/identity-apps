@@ -33,7 +33,7 @@ import { ExecutionMinimalPropsInterface } from "../execution-minimal";
 /**
  * Props interface of {@link CommonStepFactory}
  */
-export type ExecutionFactoryPropsInterface = ExecutionMinimalPropsInterface &
+type ExecutionFactoryPropsInterface = ExecutionMinimalPropsInterface &
     IdentifiableComponentInterface;
 
 /**

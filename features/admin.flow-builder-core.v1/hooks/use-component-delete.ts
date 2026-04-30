@@ -23,7 +23,7 @@ import { Element } from "../models/elements";
 /**
  * Represents the contract returned by the `useComponentDelete` hook.
  */
-export interface UseComponentDelete {
+interface UseComponentDelete {
     /**
      * Deletes a given component from a specified step.
      *

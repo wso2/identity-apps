@@ -23,7 +23,7 @@ import AppSettingsContext from "../contexts/app-settings-context";
 /**
  * Props interface of {@link AppSettingsProvider}
  */
-export type AppSettingsProviderProps = unknown;
+type AppSettingsProviderProps = unknown;
 
 /**
  * Provider for the Application local settings.

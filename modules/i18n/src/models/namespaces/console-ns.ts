@@ -110,6 +110,67 @@ export interface ConsoleNS {
                 };
             };
         };
+        copilot: {
+            title: string;
+            show: string;
+            hide: string;
+            close: string;
+            collapse: string;
+            expand: string;
+            exitFullscreen: string;
+            expandToFullscreen: string;
+            clearChat: {
+                cancel: string;
+                confirm: string;
+                message: string;
+                submessage: string;
+                title: string;
+            };
+            tabs: {
+                chat: string;
+                help: string;
+            };
+            help: {
+                content: string;
+            };
+            documentation: {
+                content: string;
+            };
+            chat: {
+                emptyChat: string;
+                inputLabel: string;
+                loadEarlier: string;
+                loadingHistory: string;
+                messageError: string;
+                sendMessage: string;
+                thinking: string;
+            };
+            errors: {
+                authRequired: string;
+                clearHistoryFailed: string;
+                connectionFailed: string;
+                default: string;
+                requestCancelled: string;
+                timeout: string;
+            };
+            status: {
+                submitting: string;
+            };
+            welcome: {
+                actions: {
+                    authenticationMethods: string;
+                    configureSaml: string;
+                    manageRoles: string;
+                };
+                description: string;
+                disclaimer: string;
+                placeholder: string;
+                send: string;
+                suggestionsTitle: string;
+                termsAndConditions: string;
+                title: string;
+            };
+        };
         help: {
             communityLinks: {
                 discord: string;

@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-export interface AddAgentInterface {
+interface AddAgentInterface {
     id?: string;
     name: string;
     description: string;
@@ -28,7 +28,7 @@ export enum AgentType {
     BACKGROUND = "BACKGROUND"
 }
 
-export interface AgentSchema {
+interface AgentSchema {
     Url?: string;
     Description?: string;
     DisplayName?: string;

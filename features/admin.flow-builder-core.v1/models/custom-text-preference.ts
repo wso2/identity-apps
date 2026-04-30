@@ -45,7 +45,7 @@ export interface CustomTextPreferenceResult {
 /**
  * Interface for the screen meta hook result.
  */
-export interface CustomTextPreferenceScreenMetaResult {
+interface CustomTextPreferenceScreenMetaResult {
     /**
      * The data returned by the hook.
      */

@@ -57,7 +57,7 @@ import "./custom-authenticator-settings.scss";
 /**
  * Proptypes for the Custom Local Authenticator edit page component.
  */
-export interface CustomAuthenticatorSettingsPagePropsInterface extends IdentifiableComponentInterface {
+interface CustomAuthenticatorSettingsPagePropsInterface extends IdentifiableComponentInterface {
     /**
      * Is the authenticator a custom local authenticator.
      */
@@ -90,7 +90,7 @@ export interface CustomAuthenticatorSettingsPagePropsInterface extends Identifia
  * @param props - Props injected to the component.
  * @returns React element.
  */
-export const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorSettingsPagePropsInterface> = ({
+const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorSettingsPagePropsInterface> = ({
     isCustomLocalAuthenticator,
     isLoading,
     isReadOnly,

@@ -26,7 +26,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 /**
  * Prop types for the text customization fields component.
  */
-export type CreateConsoleRoleWizardBasicInfoFormProps = IdentifiableComponentInterface;
+type CreateConsoleRoleWizardBasicInfoFormProps = IdentifiableComponentInterface;
 
 /**
  * Text customization fields component.

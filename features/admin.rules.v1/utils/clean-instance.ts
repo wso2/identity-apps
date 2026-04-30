@@ -31,7 +31,7 @@ import {
  * @returns RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface -
  * The cleaned object without the `isRuleInstanceTouched` property.
  */
-export const cleanInstance = (
+const cleanInstance = (
     obj: RuleExecuteCollectionInterface | RuleInterface,
     isCollection: boolean = false
 ): RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface => {

@@ -86,7 +86,7 @@ interface LoginAttemptSecurityFormInitialValuesInterface {
 /**
  * Proptypes for the Login Attempts Security Form error messages.
  */
-export interface LoginAttemptSecurityFormErrorValidationsInterface {
+interface LoginAttemptSecurityFormErrorValidationsInterface {
     /**
      * Max failed login attempts field.
      */

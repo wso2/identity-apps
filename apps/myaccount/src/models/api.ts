@@ -46,7 +46,7 @@ export interface HttpResponse extends AxiosResponse {}
  * from Axios library.
  */
 /* eslint-disable @typescript-eslint/no-empty-interface */
-export interface HttpError extends AxiosError {}
+interface HttpError extends AxiosError {}
 
 /**
  * Enum for HTTP methods.

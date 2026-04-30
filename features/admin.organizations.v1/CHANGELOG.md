@@ -1,5 +1,39 @@
 # @wso2is/admin.organizations.v1
 
+## 2.28.4
+
+### Patch Changes
+
+- [#10197](https://github.com/wso2/identity-apps/pull/10197) [`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dependencies
+
+- Updated dependencies [[`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423)]:
+  - @wso2is/admin.identity-providers.v1@2.27.4
+  - @wso2is/admin.console-settings.v1@2.26.45
+  - @wso2is/admin.authentication.v1@2.25.210
+  - @wso2is/admin.applications.v1@2.42.23
+  - @wso2is/admin.connections.v1@2.37.2
+  - @wso2is/admin.extensions.v1@2.43.3
+  - @wso2is/admin.groups.v1@2.27.128
+  - @wso2is/admin.core.v1@2.57.3
+  - @wso2is/admin.users.v1@2.38.35
+
+## 2.28.3
+
+### Patch Changes
+
+- [#10039](https://github.com/wso2/identity-apps/pull/10039) [`3ab81080396569cab60e5e4b52d8715b54d9ef67`](https://github.com/wso2/identity-apps/commit/3ab81080396569cab60e5e4b52d8715b54d9ef67) Thanks [@github-actions](https://github.com/apps/github-actions)! - fix incorrect UI input validation for orgHandle in sub-organization creation form
+
+- Updated dependencies [[`793c5bde494bdde069a0fbc0b5311d279938ceb9`](https://github.com/wso2/identity-apps/commit/793c5bde494bdde069a0fbc0b5311d279938ceb9), [`3ab81080396569cab60e5e4b52d8715b54d9ef67`](https://github.com/wso2/identity-apps/commit/3ab81080396569cab60e5e4b52d8715b54d9ef67), [`2854c792d92d6157c3f8d32921ea410c5c451edd`](https://github.com/wso2/identity-apps/commit/2854c792d92d6157c3f8d32921ea410c5c451edd)]:
+  - @wso2is/admin.extensions.v1@2.42.0
+  - @wso2is/admin.core.v1@2.56.0
+  - @wso2is/theme@2.10.0
+  - @wso2is/i18n@2.39.0
+  - @wso2is/admin.users.v1@2.38.30
+  - @wso2is/admin.applications.v1@2.42.19
+  - @wso2is/admin.roles.v2@2.27.377
+  - @wso2is/admin.console-settings.v1@2.26.41
+  - @wso2is/admin.connections.v1@2.36.47
+
 ## 2.28.2
 
 ### Patch Changes

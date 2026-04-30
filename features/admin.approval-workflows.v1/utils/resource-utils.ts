@@ -22,7 +22,7 @@ import { normalizeUserstoreList } from "./userstore-utils";
 /**
  * Interface for normalized resource list response.
  */
-export interface NormalizedResourceList {
+interface NormalizedResourceList {
     count: number;
     items: ResourceInterface[];
     totalResults: number;

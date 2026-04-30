@@ -193,7 +193,7 @@ export const updateAgentPassword = (agentId: string, newPassword: string): Promi
 /**
  * Interface for agent application configuration update parameters.
  */
-export interface UpdateAgentApplicationConfigInterface {
+interface UpdateAgentApplicationConfigInterface {
     agentType?: AgentType;
     callbackUrl?: string;
     cibaAuthReqExpiryTime?: number;

@@ -58,7 +58,7 @@ export enum CommonConfigActionTypes {
 /**
  * Common config base action interface.
  */
-export interface CommonConfigBaseActionInterface {
+interface CommonConfigBaseActionInterface {
     type: CommonConfigActionTypes;
 }
 

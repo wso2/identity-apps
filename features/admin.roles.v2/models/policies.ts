@@ -20,12 +20,5 @@
  * Policies enum.
  */
 export enum Policy {
-    /**
-     * Role based policy.
-     */
-    ROLE = "RBAC",
-    /**
-     * No Policy.
-     */
-    NO = "NONE"
+    ROLE = "RBAC"
 }

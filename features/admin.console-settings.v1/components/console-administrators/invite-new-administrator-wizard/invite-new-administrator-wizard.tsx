@@ -47,7 +47,7 @@ import "./invite-new-administrator-wizard.scss";
 /**
  * Props interface of {@link InviteNewAdministratorWizard}
  */
-export type InviteNewAdministratorWizardPropsInterface = IdentifiableComponentInterface & ModalProps;
+type InviteNewAdministratorWizardPropsInterface = IdentifiableComponentInterface & ModalProps;
 
 interface InviteNewAdministratorWizardFormValuesRoleInterface {
     key: string;

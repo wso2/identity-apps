@@ -33,7 +33,12 @@ import "./console-login-flow.scss";
 /**
  * Props interface of {@link ConsoleLoginFlow}
  */
-type ConsoleLoginFlowPropsInterface = IdentifiableComponentInterface;
+interface ConsoleLoginFlowPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Whether the console settings feature is locked.
+     */
+    isFeatureLocked?: boolean;
+}
 
 /**
  * Component to render the login and security settings.
@@ -44,7 +49,7 @@ type ConsoleLoginFlowPropsInterface = IdentifiableComponentInterface;
 const ConsoleLoginFlow: FunctionComponent<ConsoleLoginFlowPropsInterface> = (
     props: ConsoleLoginFlowPropsInterface
 ): ReactElement => {
-    const { ["data-componentid"]: componentId } = props;
+    const { ["data-componentid"]: componentId, isFeatureLocked } = props;
     const { UIConfig } = useUIConfig();
 
     // In Console login flow, Organization authenticator should not be shown.
@@ -63,7 +68,7 @@ const ConsoleLoginFlow: FunctionComponent<ConsoleLoginFlowPropsInterface> = (
         mutateConsoleConfigurations
     } = useConsoleSettings();
 
-    const isReadOnly: boolean = !(useRequiredScopes(applicationsFeatureConfig?.scopes?.update));
+    const isReadOnly: boolean = !(useRequiredScopes(applicationsFeatureConfig?.scopes?.update)) || isFeatureLocked;
 
     return (
         <AILoginFlowProvider>

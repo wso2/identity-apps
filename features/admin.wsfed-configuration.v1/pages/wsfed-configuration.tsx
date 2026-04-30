@@ -50,7 +50,7 @@ const FORM_ID: string = "wsfederation-configuration-form";
 /**
  * WSFederation Configuration page.
  */
-export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfigurationPageInterface> = (
+const WSFederationConfigurationPage: FunctionComponent<WSFederationConfigurationPageInterface> = (
     props: WSFederationConfigurationPageInterface
 ): ReactElement => {
     const { [ "data-componentid" ]: componentId } = props;

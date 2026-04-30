@@ -44,7 +44,7 @@ const FILTER_VALUES_FIELD_IDENTIFIER: string = "filterValues";
 /**
  * Prop types for the application search component.
  */
-export interface AdvancedSearchWithBasicFiltersPropsInterface extends
+interface AdvancedSearchWithBasicFiltersPropsInterface extends
     StrictAdvancedSearchWithBasicFiltersPropsInterface,
     TestableComponentInterface {
     [ key: string ]: any;
@@ -62,7 +62,7 @@ interface FilterAttributeOptionInterface {
 /**
  * Strict prop types for the application search component.
  */
-export interface StrictAdvancedSearchWithBasicFiltersPropsInterface extends TestableComponentInterface {
+interface StrictAdvancedSearchWithBasicFiltersPropsInterface extends TestableComponentInterface {
     /**
      * Default Search attribute. ex: "name"
      */

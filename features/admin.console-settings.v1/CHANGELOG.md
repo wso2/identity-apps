@@ -1,5 +1,117 @@
 # @wso2is/admin.console-settings.v1
 
+## 2.26.45
+
+### Patch Changes
+
+- [#10197](https://github.com/wso2/identity-apps/pull/10197) [`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dependencies
+
+- Updated dependencies [[`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423)]:
+  - @wso2is/admin.administrators.v1@2.29.209
+  - @wso2is/admin.authentication.v1@2.25.210
+  - @wso2is/admin.login-flow.ai.v1@2.28.1
+  - @wso2is/admin.organizations.v1@2.28.4
+  - @wso2is/admin.applications.v1@2.42.23
+  - @wso2is/admin.feature-gate.v1@1.9.6
+  - @wso2is/admin.connections.v1@2.37.2
+  - @wso2is/admin.extensions.v1@2.43.3
+  - @wso2is/admin.core.v1@2.57.3
+  - @wso2is/admin.users.v1@2.38.35
+
+## 2.26.44
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.applications.v1@2.42.22
+  - @wso2is/admin.core.v1@2.57.1
+  - @wso2is/admin.roles.v2@2.27.380
+  - @wso2is/admin.users.v1@2.38.33
+  - @wso2is/admin.connections.v1@2.37.1
+  - @wso2is/admin.subscription.v1@1.5.225
+  - @wso2is/admin.server-configurations.v1@2.38.49
+
+## 2.26.43
+
+### Patch Changes
+
+- Updated dependencies [[`13a622370c3a3aaa07dadd0bec22ceb9ff486fea`](https://github.com/wso2/identity-apps/commit/13a622370c3a3aaa07dadd0bec22ceb9ff486fea)]:
+  - @wso2is/admin.login-flow.ai.v1@2.28.0
+  - @wso2is/admin.connections.v1@2.37.0
+  - @wso2is/admin.extensions.v1@2.43.0
+  - @wso2is/react-components@2.10.0
+  - @wso2is/admin.core.v1@2.57.0
+  - @wso2is/core@2.13.0
+  - @wso2is/admin.applications.v1@2.42.21
+  - @wso2is/admin.users.v1@2.38.32
+  - @wso2is/admin.server-configurations.v1@2.38.48
+  - @wso2is/admin.subscription.v1@1.5.224
+  - @wso2is/admin.roles.v2@2.27.379
+
+## 2.26.42
+
+### Patch Changes
+
+- Updated dependencies [[`e12a7d52749596d3728c79b33ae7763e81b90e13`](https://github.com/wso2/identity-apps/commit/e12a7d52749596d3728c79b33ae7763e81b90e13)]:
+  - @wso2is/admin.extensions.v1@2.42.1
+  - @wso2is/admin.users.v1@2.38.31
+  - @wso2is/admin.applications.v1@2.42.20
+  - @wso2is/admin.subscription.v1@1.5.223
+  - @wso2is/admin.core.v1@2.56.1
+  - @wso2is/admin.roles.v2@2.27.378
+  - @wso2is/admin.connections.v1@2.36.48
+  - @wso2is/admin.server-configurations.v1@2.38.47
+
+## 2.26.41
+
+### Patch Changes
+
+- Updated dependencies [[`793c5bde494bdde069a0fbc0b5311d279938ceb9`](https://github.com/wso2/identity-apps/commit/793c5bde494bdde069a0fbc0b5311d279938ceb9), [`3ab81080396569cab60e5e4b52d8715b54d9ef67`](https://github.com/wso2/identity-apps/commit/3ab81080396569cab60e5e4b52d8715b54d9ef67), [`2854c792d92d6157c3f8d32921ea410c5c451edd`](https://github.com/wso2/identity-apps/commit/2854c792d92d6157c3f8d32921ea410c5c451edd)]:
+  - @wso2is/admin.extensions.v1@2.42.0
+  - @wso2is/admin.core.v1@2.56.0
+  - @wso2is/theme@2.10.0
+  - @wso2is/i18n@2.39.0
+  - @wso2is/admin.organizations.v1@2.28.3
+  - @wso2is/admin.users.v1@2.38.30
+  - @wso2is/admin.subscription.v1@1.5.222
+  - @wso2is/admin.applications.v1@2.42.19
+  - @wso2is/admin.server-configurations.v1@2.38.46
+  - @wso2is/admin.roles.v2@2.27.377
+  - @wso2is/admin.connections.v1@2.36.47
+
+## 2.26.40
+
+### Patch Changes
+
+- [#10113](https://github.com/wso2/identity-apps/pull/10113) [`dd01f38682fd189b94802e06b3473a312c1bf7b1`](https://github.com/wso2/identity-apps/commit/dd01f38682fd189b94802e06b3473a312c1bf7b1) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Feature gate console settings and connections
+
+- Updated dependencies [[`dd01f38682fd189b94802e06b3473a312c1bf7b1`](https://github.com/wso2/identity-apps/commit/dd01f38682fd189b94802e06b3473a312c1bf7b1)]:
+  - @wso2is/admin.feature-gate.v1@1.9.5
+  - @wso2is/admin.connections.v1@2.36.46
+  - @wso2is/admin.extensions.v1@2.41.4
+  - @wso2is/access-control@3.5.6
+  - @wso2is/admin.login-flow.ai.v1@2.27.113
+  - @wso2is/admin.subscription.v1@1.5.221
+  - @wso2is/admin.applications.v1@2.42.18
+  - @wso2is/admin.core.v1@2.55.29
+  - @wso2is/admin.server-configurations.v1@2.38.45
+  - @wso2is/admin.users.v1@2.38.29
+  - @wso2is/admin.roles.v2@2.27.376
+
+## 2.26.39
+
+### Patch Changes
+
+- Updated dependencies [[`77852b794dd5b1c85fd82357e5157ad69d0be7fa`](https://github.com/wso2/identity-apps/commit/77852b794dd5b1c85fd82357e5157ad69d0be7fa)]:
+  - @wso2is/theme@2.9.6
+  - @wso2is/admin.users.v1@2.38.28
+  - @wso2is/admin.subscription.v1@1.5.220
+  - @wso2is/admin.core.v1@2.55.28
+  - @wso2is/admin.roles.v2@2.27.375
+  - @wso2is/admin.applications.v1@2.42.17
+  - @wso2is/admin.connections.v1@2.36.45
+  - @wso2is/admin.server-configurations.v1@2.38.44
+
 ## 2.26.38
 
 ### Patch Changes

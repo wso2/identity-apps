@@ -19,7 +19,7 @@
 /**
  * Approval Task Summary model.
  */
-export interface ApprovalTaskSummary {
+interface ApprovalTaskSummary {
     /**
      * Unique ID to represent an Approval Task
      */
@@ -61,7 +61,7 @@ export interface ApprovalTaskSummary {
 /**
  * Approval Task Details model.
  */
-export interface ApprovalTaskDetails {
+interface ApprovalTaskDetails {
     /**
      * Unique ID to represent a approval task
      */
@@ -107,7 +107,7 @@ interface Property {
 /**
  * Approval Action model.
  */
-export interface ApprovalAction {
+interface ApprovalAction {
     /**
      * Action to perform on the task.
      */
@@ -119,7 +119,7 @@ export interface ApprovalAction {
  *
  * @readonly
  */
-export enum ApprovalStatus {
+enum ApprovalStatus {
     READY = "READY",
     COMPLETED = "COMPLETED",
     RESERVED = "RESERVED",
@@ -130,3 +130,5 @@ export enum ApprovalStatus {
     REJECT = "REJECT",
     ALL = "ALL"
 }
+
+export {};

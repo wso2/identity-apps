@@ -30,7 +30,7 @@ import Notification from "../../models/notification";
 /**
  * Props interface of {@link ValidationNotificationsList}
  */
-export interface ValidationNotificationsListPropsInterface
+interface ValidationNotificationsListPropsInterface
     extends IdentifiableComponentInterface {
     /**
      * Array of notifications to display.

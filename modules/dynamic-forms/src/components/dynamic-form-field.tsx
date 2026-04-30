@@ -21,7 +21,7 @@ import classNames from "classnames";
 import React, { FC, cloneElement } from "react";
 import { FieldButton } from "./field-button";
 import { FieldCheckbox } from "./field-checkbox";
-import FieldInput from "./field-input";
+import { FieldInput } from "./field-input";
 
 export type DynamicFieldProps = Partial<Omit<OuiTextFieldProps, "type" | "onChange" | "component">> & {
     /**

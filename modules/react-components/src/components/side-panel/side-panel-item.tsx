@@ -33,7 +33,7 @@ import { GenericIcon, GenericIconSizes } from "../icon";
 /**
  * Side panel item component Prop types.
  */
-export interface SidePanelItemPropsInterface extends CommonSidePanelPropsInterface, IdentifiableComponentInterface,
+interface SidePanelItemPropsInterface extends CommonSidePanelPropsInterface, IdentifiableComponentInterface,
     TestableComponentInterface {
 
     /**

@@ -1,5 +1,17 @@
 # @wso2is/admin.provisioning.v1
 
+## 2.25.210
+
+### Patch Changes
+
+- [#10197](https://github.com/wso2/identity-apps/pull/10197) [`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dependencies
+
+- Updated dependencies [[`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423)]:
+  - @wso2is/admin.identity-providers.v1@2.27.4
+  - @wso2is/admin.applications.v1@2.42.23
+  - @wso2is/admin.connections.v1@2.37.2
+  - @wso2is/admin.core.v1@2.57.3
+
 ## 2.25.209
 
 ### Patch Changes

@@ -48,7 +48,7 @@ import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 /**
  * Props interface of {@link ConsoleRolesTable}
  */
-export interface ConsoleRolesTableProps extends LoadableComponentInterface, IdentifiableComponentInterface {
+interface ConsoleRolesTableProps extends LoadableComponentInterface, IdentifiableComponentInterface {
     /**
      * Roles list.
      */

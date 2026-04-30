@@ -27,7 +27,7 @@ import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 /**
  * Props interface of {@link ImageAdapter}
  */
-export type ImageAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type ImageAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for displaying images.

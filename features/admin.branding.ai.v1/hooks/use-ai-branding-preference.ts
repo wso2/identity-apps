@@ -22,7 +22,7 @@ import AIBrandingFeatureContext, { AIBrandingFeatureContextProps } from "../cont
 /**
  * Interface for the return type of the `useAIBrandingPreference` hook.
  */
-export type UseAIBrandingPreferenceInterface = AIBrandingFeatureContextProps;
+type UseAIBrandingPreferenceInterface = AIBrandingFeatureContextProps;
 
 /**
  * Hook that provides access to the ai branding preference context.

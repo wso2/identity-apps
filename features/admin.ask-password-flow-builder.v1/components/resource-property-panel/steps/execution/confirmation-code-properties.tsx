@@ -51,7 +51,7 @@ import "./confirmation-code-properties.scss";
 /**
  * Props interface of {@link ConfirmationCodeProperties}
  */
-export type ConfirmationCodePropertiesPropsInterface = CommonResourcePropertiesPropsInterface &
+type ConfirmationCodePropertiesPropsInterface = CommonResourcePropertiesPropsInterface &
     IdentifiableComponentInterface;
 /**
  * Confirmation code step properties component.

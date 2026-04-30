@@ -9,7 +9,7 @@
         "@asgardeo/auth-react": "^5.1.2",
         "@emotion/react": "^11.11.0",
         "@emotion/styled": "^11.11.0",
-        "@oxygen-ui/react": "^2.4.6",
+        "@oxygen-ui/react": "catalog:",
         "@wso2is/access-control": "^3.5.3",
         "@wso2is/admin.claims.v1": "^2.30.6",
         "@wso2is/admin.core.v1": "^2.55.6",
@@ -48,7 +48,7 @@
         "rollup-plugin-scss": "^4.0.0",
         "rollup-plugin-styles": "^4.0.0",
         "rollup-plugin-svg": "^2.0.0",
-        "typescript": "^4.6.4"
+        "typescript": "^5.1.6"
     },
     "peerDependencies": {
         "react": "^18.2.0",

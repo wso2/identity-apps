@@ -21,7 +21,7 @@ import { FieldTestConstants } from "./constants";
 import { Field, Form, FormFieldPropsInterface } from "../../components";
 import { Type } from "../../models";
 
-export interface FormTestFields extends FormFieldPropsInterface {
+interface FormTestFields extends FormFieldPropsInterface {
     isRequired: boolean;
     isDefault: boolean;
     isValue: boolean;

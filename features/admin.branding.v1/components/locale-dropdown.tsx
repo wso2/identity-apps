@@ -26,7 +26,7 @@ import { DropdownProps, Form, Select } from "semantic-ui-react";
 /**
  * Prop types for the locale dropdown component.
  */
-export interface LocaleDropdownPropsInterface extends IdentifiableComponentInterface {
+interface LocaleDropdownPropsInterface extends IdentifiableComponentInterface {
     /**
      * Default locale.
      */

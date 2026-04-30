@@ -1,5 +1,27 @@
 # @wso2is/i18n
 
+## 2.39.2
+
+### Patch Changes
+
+- [#10227](https://github.com/wso2/identity-apps/pull/10227) [`20fb7dbbf0b7143036064ec6e5c1e1625c8fe220`](https://github.com/wso2/identity-apps/commit/20fb7dbbf0b7143036064ec6e5c1e1625c8fe220) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add support for handling roles tier limit
+
+## 2.39.1
+
+### Patch Changes
+
+- [#10215](https://github.com/wso2/identity-apps/pull/10215) [`237eda6cc0a0312286f8a4a2915fbb4856a02ba7`](https://github.com/wso2/identity-apps/commit/237eda6cc0a0312286f8a4a2915fbb4856a02ba7) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add support for handling groups tier limit
+
+## 2.39.0
+
+### Minor Changes
+
+- [#10112](https://github.com/wso2/identity-apps/pull/10112) [`793c5bde494bdde069a0fbc0b5311d279938ceb9`](https://github.com/wso2/identity-apps/commit/793c5bde494bdde069a0fbc0b5311d279938ceb9) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - feat: add AI Copilot ("Ask AI") assistant to the Admin Console
+
+### Patch Changes
+
+- [#10039](https://github.com/wso2/identity-apps/pull/10039) [`3ab81080396569cab60e5e4b52d8715b54d9ef67`](https://github.com/wso2/identity-apps/commit/3ab81080396569cab60e5e4b52d8715b54d9ef67) Thanks [@github-actions](https://github.com/apps/github-actions)! - fix incorrect UI input validation for orgHandle in sub-organization creation form
+
 ## 2.38.7
 
 ### Patch Changes

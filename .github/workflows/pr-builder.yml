@@ -21,18 +21,67 @@ env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
+  knip:
+    name: ✂️ Knip (DEAD CODE)
+    if: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 20.x ]
+        pnpm-version: [ 10.x ]
+    steps:
+      - name: ⬇️ Checkout
+        id: checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup node
+        id: setup-node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: 🥡 Setup pnpm
+        id: setup-pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ matrix.pnpm-version }}
+          run_install: false
+
+      - name: 🎈 Get pnpm store directory
+        id: get-pnpm-cache-dir
+        run: |
+          echo "pnpm_cache_dir=$(pnpm store path)" >> "$GITHUB_OUTPUT"
+
+      - name: 🔆 Cache pnpm modules
+        uses: actions/cache@v4
+        id: pnpm-cache
+        with:
+          path: ${{ steps.get-pnpm-cache-dir.outputs.pnpm_cache_dir }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: 🧩 Install Dependencies
+        id: install-dependencies
+        run: pnpm install
+
+      - name: ✂️ Run Knip
+        id: run-knip
+        # Knip findings and runtime failures will fail CI.
+        run: pnpm knip:ci
+
   lint:
     name: ⬣ ESLint (STATIC ANALYSIS)
     if: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ lts/* ]
-        pnpm-version: [ 8.7.4 ]
+        node-version: [ 20.x ]
+        pnpm-version: [ 10.x ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -50,7 +99,7 @@ jobs:
 
       - name: 🥡 Setup pnpm
         id: setup-pnpm
-        uses: pnpm/action-setup@v2.1.0
+        uses: pnpm/action-setup@v4
         with:
           version: ${{ matrix.pnpm-version }}
           run_install: false
@@ -58,10 +107,10 @@ jobs:
       - name: 🎈 Get pnpm store directory
         id: get-pnpm-cache-dir
         run: |
-          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+          echo "pnpm_cache_dir=$(pnpm store path)" >> "$GITHUB_OUTPUT"
 
       - name: 🔆 Cache pnpm modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: pnpm-cache
         with:
           path: ${{ steps.get-pnpm-cache-dir.outputs.pnpm_cache_dir }}
@@ -95,12 +144,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ lts/* ]
-        pnpm-version: [ 8.7.4 ]
+        node-version: [ 20.x ]
+        pnpm-version: [ 10.x ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
@@ -117,7 +166,7 @@ jobs:
           main-branch-name: "master"
 
       - name: 🥡 Setup pnpm
-        uses: pnpm/action-setup@v2.1.0
+        uses: pnpm/action-setup@v4
         with:
           version: ${{ matrix.pnpm-version }}
           run_install: false
@@ -125,10 +174,10 @@ jobs:
       - name: 🎈 Get pnpm store directory
         id: get-pnpm-cache-dir
         run: |
-          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+          echo "pnpm_cache_dir=$(pnpm store path)" >> "$GITHUB_OUTPUT"
 
       - name: 🔆 Cache pnpm modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: pnpm-cache
         with:
           path: ${{ steps.get-pnpm-cache-dir.outputs.pnpm_cache_dir }}
@@ -153,12 +202,12 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ lts/* ]
-        pnpm-version: [ 8.7.4 ]
+        node-version: [ 20.x ]
+        pnpm-version: [ 10.x ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v4
 
       - name: 🟢 Setup node
         id: setup-node
@@ -167,7 +216,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: 🥡 Setup pnpm
-        uses: pnpm/action-setup@v2.1.0
+        uses: pnpm/action-setup@v4
         with:
           version: ${{ matrix.pnpm-version }}
           run_install: false
@@ -175,10 +224,10 @@ jobs:
       - name: 🎈 Get pnpm store directory
         id: get-pnpm-cache-dir
         run: |
-          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+          echo "pnpm_cache_dir=$(pnpm store path)" >> "$GITHUB_OUTPUT"
 
       - name: 🔆 Cache pnpm modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: pnpm-cache
         with:
           path: ${{ steps.get-pnpm-cache-dir.outputs.pnpm_cache_dir }}
@@ -238,14 +287,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ lts/* ]
+        node-version: [ 20.x ]
         maven-version: [ 3.8.6 ]
         java-version: [ 21 ]
-        pnpm-version: [ 8.7.4 ]
+        pnpm-version: [ 10.x ]
     steps:
       - name: ⬇️ Checkout
         id: checkout
-        uses: actions/checkout@v2.3.3
+        uses: actions/checkout@v4
 
       - name: 🟢 Setup node
         id: setup-node
@@ -268,7 +317,7 @@ jobs:
           maven-version: ${{ matrix.maven-version }}
 
       - name: 🥡 Setup pnpm
-        uses: pnpm/action-setup@v2.1.0
+        uses: pnpm/action-setup@v4
         with:
           version: ${{ matrix.pnpm-version }}
           run_install: false
@@ -276,10 +325,10 @@ jobs:
       - name: 🎈 Get pnpm store directory
         id: get-pnpm-cache-dir
         run: |
-          echo "::set-output name=pnpm_cache_dir::$(pnpm store path)"
+          echo "pnpm_cache_dir=$(pnpm store path)" >> "$GITHUB_OUTPUT"
 
       - name: 🔆 Cache pnpm modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         id: pnpm-cache
         with:
           path: ${{ steps.get-pnpm-cache-dir.outputs.pnpm_cache_dir }}
@@ -303,7 +352,7 @@ jobs:
 
       - name: 💾 Cache local Maven repository
         id: cache-maven-m2
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}

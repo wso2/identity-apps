@@ -57,6 +57,5 @@ export interface GenerateLoginFlowAPIResponseInterface {
  */
 export enum LoginFlowResultStatus {
     COMPLETED = "COMPLETED",
-    FAILED = "FAILED",
-    IN_PROGRESS = "IN_PROGRESS"
+    FAILED = "FAILED"
 }

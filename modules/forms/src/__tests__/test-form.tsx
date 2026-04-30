@@ -24,7 +24,7 @@ import { Field, Forms } from "../../src";
 import { GroupFields } from "../components";
 import { FormField, Type, Validation } from "../models";
 
-export interface FormTestFields {
+interface FormTestFields {
     isRequired: boolean;
     isDefault: boolean;
     isValue: boolean;

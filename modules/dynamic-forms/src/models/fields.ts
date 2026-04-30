@@ -45,16 +45,8 @@ export type DynamicFieldInputTypes =
     | typeof TYPE_SCOPE_INPUT;
 
 export enum FieldInputTypes {
-    INPUT_DEFAULT = "default",
-    INPUT_IDENTIFIER = "identifier",
-    INPUT_PHONE_NUMBER = "phoneNumber",
-    INPUT_NAME = "name",
     INPUT_NUMBER = "number",
-    INPUT_RESOURCE_NAME = "resourceName",
     INPUT_CLIENT_ID = "clientId",
-    INPUT_DESCRIPTION = "description",
-    INPUT_EMAIL = "email",
-    INPUT_URL = "url",
     INPUT_COPY = "copyInput",
     INPUT_PASSWORD = "password",
     INPUT_TEXT = "text",
@@ -67,5 +59,4 @@ export enum FieldButtonTypes {
     BUTTON_CANCEL = "cancel_btn",
     BUTTON_LINK = "link_btn",
     BUTTON_DANGER= "danger_btn",
-    BUTTON_DEFAULT = "default_btn",
 }

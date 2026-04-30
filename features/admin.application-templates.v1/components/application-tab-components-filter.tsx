@@ -27,7 +27,7 @@ import { ApplicationEditTabMetadataInterface } from "../models/templates";
 /**
  * Prop types of the `ApplicationTabComponentsFilter` component.
  */
-export interface ApplicationTabComponentsFilterPropsInterface extends IdentifiableComponentInterface {
+interface ApplicationTabComponentsFilterPropsInterface extends IdentifiableComponentInterface {
     /**
      * Current tab id.
      */

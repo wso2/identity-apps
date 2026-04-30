@@ -41,7 +41,7 @@ import "./with-tenant-grid-placeholders.scss";
 /**
  * Props interface of {@link WithTenantGridPlaceholders}
  */
-export type WithTenantGridPlaceholdersProps = IdentifiableComponentInterface &
+type WithTenantGridPlaceholdersProps = IdentifiableComponentInterface &
     PropsWithChildren<{
         /**
          * Callback to be fired on add tenant modal trigger.

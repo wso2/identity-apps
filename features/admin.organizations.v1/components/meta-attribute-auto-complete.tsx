@@ -46,7 +46,7 @@ import { GetOrganizationsParamsInterface, OrganizationLinkInterface } from "../m
 /**
  * Prop types for the meta attribute autocomplete component.
  */
-export interface MetaAttributeAutoCompleteProps extends IdentifiableComponentInterface{
+interface MetaAttributeAutoCompleteProps extends IdentifiableComponentInterface{
 
     /**
      * Callback to handle changes in the selected meta attribute.

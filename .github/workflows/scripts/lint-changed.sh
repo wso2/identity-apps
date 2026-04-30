@@ -33,7 +33,7 @@ GITHUB_PR_NUMBER=$1
 ESLINT_SUPPORTED_EXT=(js jsx ts tsx json)
 
 # Excluding files that adhere to the specified patterns from the list of supported files.
-PATHS_TO_EXCLUDE=("identity-apps-core/apps/**/*.js" ".eslintrc.js")
+PATHS_TO_EXCLUDE=("identity-apps-core/apps/**/*.js" "eslint.config.js")
 
 MAX_FILE_THRESHOLD_FOR_LINTER=30
 
@@ -112,7 +112,7 @@ do
         echo -e "\n 🔥 Linting batch $((i/MAX_FILE_THRESHOLD_FOR_LINTER + 1))... \n"
     fi
 
-    pnpm eslint --ext .js,.jsx,.ts,.tsx --no-error-on-unmatched-pattern --max-warnings=0 --resolve-plugins-relative-to . -- "$filter_pattern"
+    pnpm eslint --no-error-on-unmatched-pattern --max-warnings=0 -- "$filter_pattern"
 
     # Capture the exit status of ESLint
     if [ $? -ne 0 ]; then

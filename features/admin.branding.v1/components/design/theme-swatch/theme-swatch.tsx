@@ -24,7 +24,7 @@ import React, { FunctionComponent, MouseEventHandler, PropsWithChildren, ReactEl
 /**
  * Proptypes for the Theme Swatch component.
  */
-export interface ThemeSwatchInterface extends IdentifiableComponentInterface {
+interface ThemeSwatchInterface extends IdentifiableComponentInterface {
 
     /**
      * Is the swatch active.
@@ -65,7 +65,7 @@ export interface ThemeSwatchUIConfigsInterface {
 /**
  * Interface for the theme swatch render colors.
  */
-export interface ThemeSwatchRenderColorsInterface extends BrandingPreferenceColorsInterface {
+interface ThemeSwatchRenderColorsInterface extends BrandingPreferenceColorsInterface {
 
     /**
      * Header background color to be shown in the swatch for the theme.

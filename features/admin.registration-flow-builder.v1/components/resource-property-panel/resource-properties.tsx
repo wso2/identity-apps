@@ -39,7 +39,7 @@ import RegistrationFlowBuilderConstants from "../../constants/registration-flow-
 /**
  * Props interface of {@link ResourceProperties}
  */
-export type ResourcePropertiesPropsInterface = CommonResourcePropertiesPropsInterface & IdentifiableComponentInterface;
+type ResourcePropertiesPropsInterface = CommonResourcePropertiesPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Factory to generate the property configurator for the given registration flow resource.

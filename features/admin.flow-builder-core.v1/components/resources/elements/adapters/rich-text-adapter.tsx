@@ -41,7 +41,7 @@ DOMPurify.addHook("afterSanitizeAttributes", (node: Element) => {
 /**
  * Props interface of {@link RichTextAdapter}
  */
-export type RichTextAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type RichTextAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Rich Text component.

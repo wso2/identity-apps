@@ -40,7 +40,7 @@ import { ConnectionInterface } from "../../../../models/connection";
 /**
  * Props of {@link AddIdpCertificateModal}
  */
-export interface AddIdPCertificateModalV2Props extends IdentifiableComponentInterface {
+interface AddIdPCertificateModalV2Props extends IdentifiableComponentInterface {
     currentlyEditingIdP: ConnectionInterface;
     refreshIdP: (id: string) => void;
     isOpen: boolean;

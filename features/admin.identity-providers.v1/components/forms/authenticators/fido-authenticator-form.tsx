@@ -18,7 +18,7 @@
 
 import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
-import { updateFidoConfigs, useFIDOConnectorConfigs } from "@wso2is/admin.identity-providers.v1/api/fido-configs";
+import { updateFidoConfigs, useFIDOConnectorConfigs } from "../../../api/fido-configs";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";

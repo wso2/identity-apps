@@ -29,7 +29,7 @@ import { RegistrationStaticStepTypes } from "../../../models/flow";
 /**
  * Props interface of {@link StaticStepFactory}
  */
-export type StaticStepFactoryPropsInterface = CommonStaticStepFactoryPropsInterface & IdentifiableComponentInterface;
+type StaticStepFactoryPropsInterface = CommonStaticStepFactoryPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Factory for creating static steps in the visual editor.
@@ -38,7 +38,7 @@ export type StaticStepFactoryPropsInterface = CommonStaticStepFactoryPropsInterf
  * @param props - Props injected to the component.
  * @returns The StaticStepFactory component.
  */
-export const StaticStepFactory: FunctionComponent<StaticStepFactoryPropsInterface> = ({
+const StaticStepFactory: FunctionComponent<StaticStepFactoryPropsInterface> = ({
     type,
     "data-componentid": componentId = "static-node-factory",
     ...rest

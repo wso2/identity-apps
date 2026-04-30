@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 /**
  * Props interface of {@link AIAgentBox}
  */
-export interface AIAgentBoxProps extends IdentifiableComponentInterface {}
+interface AIAgentBoxProps extends IdentifiableComponentInterface {}
 
 /**
  * AI Agent box svg component.

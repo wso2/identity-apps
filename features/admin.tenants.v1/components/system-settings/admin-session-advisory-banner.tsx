@@ -37,7 +37,7 @@ import "./admin-session-advisory-banner.scss";
 /**
  * Props interface of {@link SystemSettingsTabs}
  */
-export type AdminAdvisoryBannerInterface = IdentifiableComponentInterface;
+type AdminAdvisoryBannerInterface = IdentifiableComponentInterface;
 
 interface AdminAdvisoryConfigurationInterface {
     /**
@@ -56,7 +56,7 @@ interface AdminAdvisoryConfigurationInterface {
  * @param props - Props injected to the component.
  * @returns Admin Advisory Banner configuration component.
  */
-export const AdminSessionAdvisoryBanner: FC<AdminAdvisoryBannerInterface> = ({
+const AdminSessionAdvisoryBanner: FC<AdminAdvisoryBannerInterface> = ({
     ["data-componentid"]: componentId = "admin-advisory-edit"
 }: AdminAdvisoryBannerInterface): ReactElement => {
     const { t } = useTranslation();

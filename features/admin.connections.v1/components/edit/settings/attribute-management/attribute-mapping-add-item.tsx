@@ -29,7 +29,7 @@ import {
 /**
  * Props interface of {@link AttributeMappingAddItem}
  */
-export interface AttributeMappingAddItemProps {
+interface AttributeMappingAddItemProps {
     /**
      * This is the list of attributes that the user can pick from.
      * It only contains the non-mapped/selected ones.

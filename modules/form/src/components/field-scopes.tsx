@@ -24,7 +24,7 @@ import { FormFieldPropsInterface } from "./field";
 import { FieldInputTypes, FormFieldMessage } from "../models";
 import { getValidation } from "../utils";
 
-export interface FieldInputPropsInterface extends FormFieldPropsInterface {
+interface FieldInputPropsInterface extends FormFieldPropsInterface {
     /**
      * Type of the input field.
      */

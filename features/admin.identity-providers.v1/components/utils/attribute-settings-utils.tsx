@@ -33,7 +33,7 @@ import {
     IdentityProviderProvisioningClaimInterface
 } from "../../models";
 
-export interface DropdownOptionsInterface {
+interface DropdownOptionsInterface {
     key: string;
     text: string;
     value: string;

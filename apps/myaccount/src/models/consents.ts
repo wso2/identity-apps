@@ -156,7 +156,7 @@ export interface PIICategoryWithStatus extends PIICategory {
     status: PIICategoryStatus;
 }
 
-export type PIICategoryStatus = "accepted" | "denied";
+type PIICategoryStatus = "accepted" | "denied";
 
 /**
  * PIICategory Model

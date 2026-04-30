@@ -26,7 +26,7 @@ import WidgetPropertyFactory from "./widget-property-factory";
 /**
  * Props interface of {@link ResourcePropertyFactory}
  */
-export interface ResourcePropertyFactoryPropsInterface extends IdentifiableComponentInterface {
+interface ResourcePropertyFactoryPropsInterface extends IdentifiableComponentInterface {
     /**
      * The resource associated with the property.
      */

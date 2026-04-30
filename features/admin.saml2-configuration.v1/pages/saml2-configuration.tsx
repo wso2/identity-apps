@@ -63,7 +63,7 @@ const FORM_ID: string = "saml2-config-form";
 /**
  * saml2 configuration page.
  */
-export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInterface> = (
+const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInterface> = (
     props: Saml2ConfigurationPageInterface
 ): ReactElement => {
     const { [ "data-componentid" ]: componentId } = props;

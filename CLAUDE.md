@@ -475,9 +475,9 @@ Feature packages declare dependencies on other features in their `package.json`:
 ```
 
 - **`workspace:^`** — local monorepo feature (resolved by pnpm workspace)
-- **Semver version** (e.g., `^2.5.3`) — published package from the registry
+- **Semver version** (e.g., `^2.5.3`) — published package from the registry. If the referenced package is used across all feature modules, use the pnpm catalog to specify the version of that package for all feature modules in a single place. 
 
-When your feature imports from another feature, add it as a `workspace:^` dependency in your `package.json`. All features depend on `@wso2is/core` and `@wso2is/i18n` at minimum.
+When your feature imports from another feature, add it as a `workspace:^` dependency in your `package.json`.
 
 ## Prerequisites for Local Development
 

@@ -21,7 +21,7 @@ import { EventPublishingOrgSharePolicy } from "./shared-access";
 /**
  * Interface for individual event metadata.
  */
-export interface EventMetadataInterface {
+interface EventMetadataInterface {
     /**
      * Name of the event.
      */
@@ -39,7 +39,7 @@ export interface EventMetadataInterface {
 /**
  * Interface for event channel metadata.
  */
-export interface EventChannelMetadataInterface {
+interface EventChannelMetadataInterface {
     /**
      * Name of the channel.
      */
@@ -115,7 +115,7 @@ export interface WebhookChannelConfigInterface {
 /**
  * Interface for event profile list item in metadata response.
  */
-export interface EventProfileListItemInterface {
+interface EventProfileListItemInterface {
     /**
      * Name of the event profile.
      */
@@ -147,7 +147,7 @@ export interface AdapterMetadataInterface {
 /**
  * Interface for organization policy metadata.
  */
-export interface OrganizationPolicyMetadataInterface {
+interface OrganizationPolicyMetadataInterface {
     /**
      * Name of the organization policy.
      */

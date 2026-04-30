@@ -35,7 +35,7 @@ import React, {
 /**
  * Proptypes for the Authenticator Accordion component.
  */
-export interface AuthenticatorAccordionPropsInterface extends TestableComponentInterface {
+interface AuthenticatorAccordionPropsInterface extends TestableComponentInterface {
     /**
      * Set of authenticators.
      */
@@ -73,7 +73,7 @@ export interface AuthenticatorAccordionPropsInterface extends TestableComponentI
 /**
  * Authenticator interface.
  */
-export interface AuthenticatorAccordionItemInterface {
+interface AuthenticatorAccordionItemInterface {
     /**
      * Accordion actions.
      */

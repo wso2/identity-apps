@@ -89,7 +89,7 @@ export interface ExtendedExternalClaimInterface extends ExternalClaim {
     requested?: boolean;
 }
 
-export interface AdvanceSettingsSubmissionInterface {
+interface AdvanceSettingsSubmissionInterface {
     subject: SubjectConfigInterface;
     role: RoleConfigInterface;
     oidc: OIDCDataInterface
@@ -1434,5 +1434,3 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 AttributeSettings.defaultProps = {
     "data-componentid": "application-attribute-settings"
 };
-
-export default AttributeSettings;

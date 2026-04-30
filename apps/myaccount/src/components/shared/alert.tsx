@@ -30,7 +30,7 @@ import { initializeAlertSystem } from "../../store/actions";
  * Prop types for the Alert component.
  * Also see {@link Alert.defaultProps}
  */
-export interface AlertProps extends TestableComponentInterface {
+interface AlertProps extends TestableComponentInterface {
     dismissInterval?: number;
     alertsPosition?: "tr" | "tl" | "tc" | "br" | "bl" | "bc";
 }

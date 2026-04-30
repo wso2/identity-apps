@@ -22,7 +22,7 @@ import GlobalMarkdownContext, { GlobalMarkdownContextProps } from "../context/gl
 /**
  * Props interface for the global markdown provider.
  */
-export type GlobalMarkdownProviderProps = PropsWithChildren & GlobalMarkdownContextProps;
+type GlobalMarkdownProviderProps = PropsWithChildren & GlobalMarkdownContextProps;
 
 /**
  * Global markdown provider.

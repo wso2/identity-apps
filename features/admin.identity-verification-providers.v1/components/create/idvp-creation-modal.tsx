@@ -16,9 +16,12 @@
  * under the License.
  */
 
+import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { ConnectionTemplateInterface } from "@wso2is/admin.connections.v1/models/connection";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import FeatureLockedBanner from "@wso2is/admin.feature-gate.v1/components/feature-locked-banner";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { ResourceCreateWizard } from "@wso2is/admin.template-core.v1/components/resource-create-wizard";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -58,6 +61,12 @@ const IdVPCreationModal: FunctionComponent<IdVPCreationModalPropsInterface> = ({
 }: IdVPCreationModalPropsInterface): ReactElement => {
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const idvpFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CONNECTIONS_IDVP
+    );
+    const isFeatureLocked: boolean = idvpFeatureStatus !== undefined
+        && idvpFeatureStatus !== FeatureStatus.ENABLED;
 
     const {
         data: fetchedTemplateData,
@@ -173,6 +182,13 @@ const IdVPCreationModal: FunctionComponent<IdVPCreationModalPropsInterface> = ({
         <ResourceCreateWizard
             showWizard={ true }
             onClose={ onClose }
+            banner={ isFeatureLocked && (
+                <FeatureLockedBanner
+                    data-componentid={ `${componentId}-feature-locked-banner` }
+                    sx={ { marginBottom: 2 } }
+                />
+            ) }
+            isDisabled={ isFeatureLocked }
             form={ fetchedMetadata?.create?.form }
             customInitializers={ customInitializers }
             customValidations={ customValidations }

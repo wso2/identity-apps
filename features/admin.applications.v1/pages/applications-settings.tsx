@@ -60,7 +60,7 @@ const FORM_ID: string = "applications-settings";
  * @param props - Props injected to the component.
  * @returns Functional Component.
  */
-export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInterface> = (
+const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInterface> = (
     props: ApplicationsSettingsPropsInterface
 ): ReactElement => {
 

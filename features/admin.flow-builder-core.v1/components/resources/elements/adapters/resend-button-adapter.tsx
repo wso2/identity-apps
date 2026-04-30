@@ -29,7 +29,7 @@ import "./button-adapter.scss";
 /**
  * Props interface of {@link ResendButtonAdapter}
  */
-export type ResendButtonAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type ResendButtonAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the ResendButton component.

@@ -41,7 +41,7 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     isReadOnly: boolean;
 }
 
-export interface AttributeSelectionUIPropsInterface {
+interface AttributeSelectionUIPropsInterface {
     hint: string;
     attributeColumnHeader: string;
     attributeMapColumnHeader: string;

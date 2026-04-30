@@ -46,7 +46,7 @@ import replaceObjectKeySymbols from "../../utils/replace-object-key-symbols";
 /**
  * Prop types for the text customization fields component.
  */
-export interface CustomTextFieldsProps extends IdentifiableComponentInterface {
+interface CustomTextFieldsProps extends IdentifiableComponentInterface {
     onSubmit: (values: any) => void;
     fields: Record<string, string>;
     /**

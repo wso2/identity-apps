@@ -265,7 +265,7 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
 /**
  * Typed interface of {@link getSidePanelIcons}
  */
-export type GetSidePanelIconsInterface = {
+type GetSidePanelIconsInterface = {
     adminAdvisoryBanner: FunctionComponent | ReactNode,
     policyAdministration: FunctionComponent | ReactNode,
     administrators: FunctionComponent | ReactNode,
@@ -371,7 +371,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
 /**
  * Typed interface of {@link getSidePanelMiscIcons}
  */
-export type GetSidePanelMiscIconsInterface = {
+type GetSidePanelMiscIconsInterface = {
     caretRight: FunctionComponent | ReactNode,
 };
 
@@ -390,7 +390,7 @@ export const getSidePanelMiscIcons = (): GetSidePanelMiscIconsInterface => {
 /**
  * Typed interface of {@link getAdvancedSearchIcons}
  */
-export type GetAdvancedSearchIconsInterface = {
+type GetAdvancedSearchIconsInterface = {
     clear: FunctionComponent | ReactNode,
 };
 
@@ -409,7 +409,7 @@ export const getAdvancedSearchIcons = (): GetAdvancedSearchIconsInterface  => {
 /**
  * Typed interface of {@link getEmptyPlaceholderIllustrations}
  */
-export type GetEmptyPlaceholderIllustrationsInterface = {
+type GetEmptyPlaceholderIllustrationsInterface = {
     alert: FunctionComponent | ReactNode,
     brokenPage: FunctionComponent | ReactNode,
     createError: FunctionComponent | ReactNode,
@@ -448,7 +448,7 @@ export const getEmptyPlaceholderIllustrations = (): GetEmptyPlaceholderIllustrat
 /**
  * Typed interface of {@link getOperationIcons}
  */
-export type GetOperationIconsInterface = {
+type GetOperationIconsInterface = {
     darkMode: FunctionComponent | ReactNode,
     drag: FunctionComponent | ReactNode,
     keyIcon: FunctionComponent | ReactNode,
@@ -479,7 +479,7 @@ export const getOperationIcons = (): GetOperationIconsInterface => {
 /**
  * Typed interface of {@link getHelpPanelActionIcons}
  */
-export type GetHelpPanelActionIconsInterface = {
+type GetHelpPanelActionIconsInterface = {
     caretLeft: FunctionComponent | ReactNode,
     caretRight: FunctionComponent | ReactNode,
     close: FunctionComponent | ReactNode,
@@ -506,7 +506,7 @@ export const getHelpPanelActionIcons = (): GetHelpPanelActionIconsInterface => {
 /**
  * Typed interface of {@link getCertificateIllustrations}
  */
-export type GetCertificateIllustrationsInterface = {
+type GetCertificateIllustrationsInterface = {
     avatar: FunctionComponent | ReactNode,
     badge: FunctionComponent | ReactNode,
     file: FunctionComponent | ReactNode,
@@ -533,7 +533,7 @@ export const getCertificateIllustrations = (): GetCertificateIllustrationsInterf
 /**
  * Typed interface of {@link getSecretManagementIllustrations}
  */
-export type GetSecretManagementIllustrationsInterface = {
+type GetSecretManagementIllustrationsInterface = {
     editingSecretIcon: FunctionComponent | ReactNode
 };
 
@@ -551,7 +551,7 @@ export const getSecretManagementIllustrations = (): GetSecretManagementIllustrat
 /**
  * Typed interface of {@link getMiscellaneousIcons}
  */
-export type GetMiscellaneousIconsInterface = {
+type GetMiscellaneousIconsInterface = {
     tenantIcon: FunctionComponent | ReactNode,
     tenantLegacyIcon: FunctionComponent | ReactNode
 };
@@ -572,7 +572,7 @@ export const getMiscellaneousIcons = (): GetMiscellaneousIconsInterface => {
 /**
  * Typed interface of {@link AppSwitcherIcons}
  */
-export type GetAppSwitcherIconsInterface = {
+type GetAppSwitcherIconsInterface = {
     console: string,
     logout: string,
     myAccount: string
@@ -595,7 +595,7 @@ export const AppSwitcherIcons = (): GetAppSwitcherIconsInterface => {
 /**
  * Typed interface of {@link getGeneralIcons}
  */
-export type GetGeneralIconsInterface = {
+type GetGeneralIconsInterface = {
     crossIcon: FunctionComponent | ReactNode,
     myAccountSolidIcon: FunctionComponent | ReactNode
 };
@@ -616,7 +616,7 @@ export const getGeneralIcons = (): GetGeneralIconsInterface => {
 /**
  * Typed interface of {@link getAppHeaderIcons}
  */
-export type GetAppHeaderIconsInterface = {
+type GetAppHeaderIconsInterface = {
     homeIcon: FunctionComponent | ReactNode,
 };
 

@@ -22,5 +22,4 @@ export * from "./syntactic-sugars";
 export * from "./meta-file-picker";
 
 export { DynamicField } from "./dynamic-field";
-export type { KeyValue } from "./dynamic-field";
 

@@ -47,7 +47,7 @@ import {
 /**
  * Props interface of {@link AddSecretWizard}
  */
-export type AddSecretWizardProps = {
+type AddSecretWizardProps = {
     onClose: (shouldRefresh?: boolean) => void;
 } & IdentifiableComponentInterface;
 

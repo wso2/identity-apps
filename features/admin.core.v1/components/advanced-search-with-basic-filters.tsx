@@ -36,7 +36,7 @@ import { AdvanceSearchConstants } from "../constants/advance-search";
 /**
  * Prop types for the application search component.
  */
-export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableComponentInterface {
+interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableComponentInterface {
 
     /**
      * Children node form field passed from parent
@@ -155,7 +155,7 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
 /**
  * Interface for default filter condition options.
  */
-export interface DefaultFilterConditionOptionInterface {
+interface DefaultFilterConditionOptionInterface {
     text: string;
     value: string;
 }

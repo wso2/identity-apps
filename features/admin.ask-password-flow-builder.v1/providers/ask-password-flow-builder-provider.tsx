@@ -64,7 +64,7 @@ import transformFlow from "../utils/transform-flow";
 /**
  * Props interface of {@link AskPasswordFlowBuilderProvider}
  */
-export type AskPasswordFlowBuilderProviderProps = PropsWithChildren<unknown>;
+type AskPasswordFlowBuilderProviderProps = PropsWithChildren<unknown>;
 
 /**
  * This component provides password recovery flow builder related context to its children.

@@ -59,7 +59,7 @@ export interface MetadataInterface {
 /**
  * Common connector configuration interface.
  */
-export interface ConnectorConfigs {
+interface ConnectorConfigs {
     /**
      * Indicates if multi-attribute login is enabled.
      */
@@ -73,7 +73,7 @@ export interface ConnectorConfigs {
 /**
  * Interface for attribute metadata.
  */
-export interface AttributeMetadataInterface {
+interface AttributeMetadataInterface {
     /**
      * The name of the attribute.
      */

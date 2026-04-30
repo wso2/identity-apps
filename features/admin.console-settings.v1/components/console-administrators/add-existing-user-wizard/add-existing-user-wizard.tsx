@@ -59,7 +59,7 @@ import "./add-existing-user-wizard.scss";
 /**
  * Props interface of {@link AddExistingUserWizard}
  */
-export interface AddExistingUserWizardPropsInterface extends IdentifiableComponentInterface, ModalProps {
+interface AddExistingUserWizardPropsInterface extends IdentifiableComponentInterface, ModalProps {
     onSuccess?: () => void;
     selectedUserStore: string;
 }

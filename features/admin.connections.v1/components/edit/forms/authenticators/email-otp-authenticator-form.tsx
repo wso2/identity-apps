@@ -124,7 +124,7 @@ interface EmailOTPAuthenticatorFormFieldsInterface {
 /**
  * Proptypes for the Email OTP Authenticator Form error messages.
  */
-export interface EmailOTPAuthenticatorFormErrorValidationsInterface {
+interface EmailOTPAuthenticatorFormErrorValidationsInterface {
     /**
      * Email OTP expiry time field.
      */

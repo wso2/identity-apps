@@ -59,7 +59,7 @@ import {
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { WorkflowRequestsResourceEndpointsInterface } from "../../admin.workflow-requests.v1/configs/endpoints";
 
-export type ConfigInterface = CommonConfigInterface<
+type ConfigInterface = CommonConfigInterface<
     DeploymentConfigInterface,
     ServiceResourceEndpointsInterface,
     FeatureConfigInterface,
@@ -77,7 +77,7 @@ interface ConnectionConfigInterface extends FeatureAccessConfigInterface {
 /**
  * Extended feature config for onboarding with deployment-specific fields.
  */
-export interface OnboardingFeatureConfigInterface extends FeatureAccessConfigInterface {
+interface OnboardingFeatureConfigInterface extends FeatureAccessConfigInterface {
     /**
      * Cutoff date (YYYY-MM-DD) for determining whether a user is "new".
      * Users with SCIM2 meta.created on or after this date are considered new.
@@ -137,6 +137,10 @@ export interface FeatureConfigInterface {
      * Certificates configurations feature.
      */
     certificates?: FeatureAccessConfigInterface;
+    /**
+     * Copilot AI assistant feature.
+     */
+    copilot?: FeatureAccessConfigInterface;
     /**
      * Email providers feature.
      */
@@ -424,7 +428,7 @@ type GovernanceConnectorsFeatureConfig = Record<string, {
 /**
  * Interface representing the configuration for multi-tenancy.
  */
-export interface MultiTenancyConfigInterface {
+interface MultiTenancyConfigInterface {
     /**
      * Indicates if the dot extension is mandatory in the tenant domain.
      */
@@ -442,7 +446,7 @@ export interface MultiTenancyConfigInterface {
 /**
  * Interface for. Actions UI level configurations.
  */
-export interface ActionsUIConfigInterface {
+interface ActionsUIConfigInterface {
     types: {
         [ key: string ]: {
             version: {
@@ -638,6 +642,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Show App Switch button in the Header.
      */
     showAppSwitchButton?: boolean;
+    /**
+     * Show documentation links throughout the console.
+     */
+    showDocLinks?: boolean;
     /**
      * Show Label for the features introduced with new authz runtime.
      */
@@ -849,6 +857,7 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     FlowBuilderCoreResourceEndpointsInterface {
 
     CORSOrigins: string;
+    copilot: string;
     // TODO: Remove this endpoint and use ID token to get the details
     me: string;
     saml2Meta: string;

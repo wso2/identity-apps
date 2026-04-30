@@ -39,11 +39,11 @@ import { Card, Grid } from "semantic-ui-react";
 import { CategoryItem } from "./app-category-item";
 import { CardExpandedNavigationButton } from "./card-expanded-navigation-button";
 
-export type DynamicApplicationContextCardPropsInterface = {
+type DynamicApplicationContextCardPropsInterface = {
     onTemplateSelected: (group: ApplicationTemplateListItemInterface) => void;
 } & IdentifiableComponentInterface;
 
-export type Context = "TEMPLATES" | "RECENT_APPS";
+type Context = "TEMPLATES" | "RECENT_APPS";
 
 export const DynamicApplicationContextCard: FC<DynamicApplicationContextCardPropsInterface> = (
     props: DynamicApplicationContextCardPropsInterface

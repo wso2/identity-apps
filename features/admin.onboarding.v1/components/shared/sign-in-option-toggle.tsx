@@ -30,7 +30,7 @@ import { SignInOptionDefinitionInterface } from "../../models/sign-in-options";
 /**
  * Props interface for SignInOptionToggle component.
  */
-export interface SignInOptionTogglePropsInterface extends IdentifiableComponentInterface {
+interface SignInOptionTogglePropsInterface extends IdentifiableComponentInterface {
     /** Sign-in option definition */
     option: SignInOptionDefinitionInterface;
     /** Whether the option is enabled */

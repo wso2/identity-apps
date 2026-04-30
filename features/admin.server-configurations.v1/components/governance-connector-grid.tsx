@@ -59,7 +59,7 @@ import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } fr
  * Props for the Governance connector configuration categories page.
  */
 
-export interface GovernanceConnectorCategoriesGridInterface extends
+interface GovernanceConnectorCategoriesGridInterface extends
     IdentifiableComponentInterface, LoadableComponentInterface {
         /**
          * Connector categories.

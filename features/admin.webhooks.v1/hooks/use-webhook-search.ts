@@ -18,7 +18,7 @@
 import { useMemo, useState } from "react";
 import { WebhookListItemInterface } from "../models/webhooks";
 
-export interface UseWebhookSearchInterface {
+interface UseWebhookSearchInterface {
     searchQuery: string;
     searchOperator: string;
     searchAttribute: string;

@@ -75,7 +75,7 @@ import { AppUtils, CommonUtils as MyAccountCommonUtils, filterRoutes } from "../
 /**
  * Dashboard page layout component Prop types.
  */
-export interface DashboardLayoutPropsInterface {
+interface DashboardLayoutPropsInterface {
     /**
      * Is layout fluid.
      */

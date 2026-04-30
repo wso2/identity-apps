@@ -1,5 +1,145 @@
 # @wso2is/admin.users.v1
 
+## 2.38.36
+
+### Patch Changes
+
+- [#10219](https://github.com/wso2/identity-apps/pull/10219) [`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove duplicate exports
+
+- Updated dependencies [[`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c)]:
+  - @wso2is/admin.server-configurations.v1@2.38.51
+  - @wso2is/admin.approval-workflows.v1@1.3.31
+  - @wso2is/admin.flow-builder-core.v1@0.10.212
+  - @wso2is/admin.validation.v1@2.28.4
+  - @wso2is/admin.tenants.v1@2.29.28
+  - @wso2is/admin.claims.v1@2.31.2
+  - @wso2is/admin.roles.v2@2.27.381
+  - @wso2is/admin.users.v1@2.38.36
+  - @wso2is/admin.core.v1@2.57.6
+  - @wso2is/admin.cds.v1@1.6.4
+  - @wso2is/dynamic-forms@2.4.42
+  - @wso2is/forms@2.3.27
+
+## 2.38.35
+
+### Patch Changes
+
+- Updated dependencies [[`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423)]:
+  - @wso2is/admin.approval-workflows.v1@1.3.29
+  - @wso2is/admin.identity-providers.v1@2.27.4
+  - @wso2is/admin.flow-builder-core.v1@0.10.211
+  - @wso2is/admin.authentication.v1@2.25.210
+  - @wso2is/admin.organizations.v1@2.28.4
+  - @wso2is/admin.feature-gate.v1@1.9.6
+  - @wso2is/admin.extensions.v1@2.43.3
+  - @wso2is/admin.claims.v1@2.31.1
+  - @wso2is/admin.groups.v1@2.27.128
+  - @wso2is/admin.flows.v1@1.0.180
+  - @wso2is/admin.core.v1@2.57.3
+  - @wso2is/admin.cds.v1@1.6.3
+  - @wso2is/admin.users.v1@2.38.35
+
+## 2.38.34
+
+### Patch Changes
+
+- [#10173](https://github.com/wso2/identity-apps/pull/10173) [`e88c86cbfe47027559a3acc40fd8def4f42b88d7`](https://github.com/wso2/identity-apps/commit/e88c86cbfe47027559a3acc40fd8def4f42b88d7) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix NPE being thrown when the username is not available in the ID token
+
+- Updated dependencies [[`e88c86cbfe47027559a3acc40fd8def4f42b88d7`](https://github.com/wso2/identity-apps/commit/e88c86cbfe47027559a3acc40fd8def4f42b88d7)]:
+  - @wso2is/admin.users.v1@2.38.34
+
+## 2.38.33
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.approval-workflows.v1@1.3.28
+  - @wso2is/admin.core.v1@2.57.1
+  - @wso2is/admin.roles.v2@2.27.380
+  - @wso2is/admin.users.v1@2.38.33
+  - @wso2is/admin.flow-builder-core.v1@0.10.210
+  - @wso2is/admin.flows.v1@1.0.179
+  - @wso2is/admin.server-configurations.v1@2.38.49
+
+## 2.38.32
+
+### Patch Changes
+
+- Updated dependencies [[`13a622370c3a3aaa07dadd0bec22ceb9ff486fea`](https://github.com/wso2/identity-apps/commit/13a622370c3a3aaa07dadd0bec22ceb9ff486fea)]:
+  - @wso2is/admin.extensions.v1@2.43.0
+  - @wso2is/react-components@2.10.0
+  - @wso2is/admin.core.v1@2.57.0
+  - @wso2is/core@2.13.0
+  - @wso2is/admin.approval-workflows.v1@1.3.27
+  - @wso2is/admin.flow-builder-core.v1@0.10.209
+  - @wso2is/admin.users.v1@2.38.32
+  - @wso2is/admin.flows.v1@1.0.178
+  - @wso2is/admin.server-configurations.v1@2.38.48
+  - @wso2is/admin.roles.v2@2.27.379
+
+## 2.38.31
+
+### Patch Changes
+
+- Updated dependencies [[`e12a7d52749596d3728c79b33ae7763e81b90e13`](https://github.com/wso2/identity-apps/commit/e12a7d52749596d3728c79b33ae7763e81b90e13)]:
+  - @wso2is/admin.extensions.v1@2.42.1
+  - @wso2is/admin.approval-workflows.v1@1.3.26
+  - @wso2is/admin.users.v1@2.38.31
+  - @wso2is/admin.core.v1@2.56.1
+  - @wso2is/admin.roles.v2@2.27.378
+  - @wso2is/admin.flow-builder-core.v1@0.10.208
+  - @wso2is/admin.flows.v1@1.0.177
+  - @wso2is/admin.server-configurations.v1@2.38.47
+
+## 2.38.30
+
+### Patch Changes
+
+- [#10049](https://github.com/wso2/identity-apps/pull/10049) [`2854c792d92d6157c3f8d32921ea410c5c451edd`](https://github.com/wso2/identity-apps/commit/2854c792d92d6157c3f8d32921ea410c5c451edd) Thanks [@github-actions](https://github.com/apps/github-actions)! - Hide danger zone section for shared users on the user profile page
+
+- Updated dependencies [[`793c5bde494bdde069a0fbc0b5311d279938ceb9`](https://github.com/wso2/identity-apps/commit/793c5bde494bdde069a0fbc0b5311d279938ceb9), [`3ab81080396569cab60e5e4b52d8715b54d9ef67`](https://github.com/wso2/identity-apps/commit/3ab81080396569cab60e5e4b52d8715b54d9ef67), [`2854c792d92d6157c3f8d32921ea410c5c451edd`](https://github.com/wso2/identity-apps/commit/2854c792d92d6157c3f8d32921ea410c5c451edd)]:
+  - @wso2is/admin.extensions.v1@2.42.0
+  - @wso2is/admin.core.v1@2.56.0
+  - @wso2is/theme@2.10.0
+  - @wso2is/i18n@2.39.0
+  - @wso2is/admin.organizations.v1@2.28.3
+  - @wso2is/admin.users.v1@2.38.30
+  - @wso2is/admin.approval-workflows.v1@1.3.25
+  - @wso2is/admin.flow-builder-core.v1@0.10.207
+  - @wso2is/admin.flows.v1@1.0.176
+  - @wso2is/admin.server-configurations.v1@2.38.46
+  - @wso2is/admin.roles.v2@2.27.377
+
+## 2.38.29
+
+### Patch Changes
+
+- Updated dependencies [[`dd01f38682fd189b94802e06b3473a312c1bf7b1`](https://github.com/wso2/identity-apps/commit/dd01f38682fd189b94802e06b3473a312c1bf7b1)]:
+  - @wso2is/admin.feature-gate.v1@1.9.5
+  - @wso2is/admin.extensions.v1@2.41.4
+  - @wso2is/access-control@3.5.6
+  - @wso2is/admin.flows.v1@1.0.175
+  - @wso2is/admin.approval-workflows.v1@1.3.24
+  - @wso2is/admin.core.v1@2.55.29
+  - @wso2is/admin.flow-builder-core.v1@0.10.206
+  - @wso2is/admin.server-configurations.v1@2.38.45
+  - @wso2is/admin.users.v1@2.38.29
+  - @wso2is/admin.roles.v2@2.27.376
+
+## 2.38.28
+
+### Patch Changes
+
+- Updated dependencies [[`c1f7908a368bd6c7b762f3451b50511ab63bc8ff`](https://github.com/wso2/identity-apps/commit/c1f7908a368bd6c7b762f3451b50511ab63bc8ff), [`77852b794dd5b1c85fd82357e5157ad69d0be7fa`](https://github.com/wso2/identity-apps/commit/77852b794dd5b1c85fd82357e5157ad69d0be7fa)]:
+  - @wso2is/admin.approval-workflows.v1@1.3.23
+  - @wso2is/theme@2.9.6
+  - @wso2is/admin.users.v1@2.38.28
+  - @wso2is/admin.core.v1@2.55.28
+  - @wso2is/admin.roles.v2@2.27.375
+  - @wso2is/admin.flow-builder-core.v1@0.10.205
+  - @wso2is/admin.flows.v1@1.0.174
+  - @wso2is/admin.server-configurations.v1@2.38.44
+
 ## 2.38.27
 
 ### Patch Changes

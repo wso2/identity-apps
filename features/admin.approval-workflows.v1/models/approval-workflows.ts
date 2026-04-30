@@ -111,7 +111,7 @@ export interface WorkflowDetails {
 /**
  * Response structure for a workflow template.
  */
-export interface WorkflowTemplateResponse {
+interface WorkflowTemplateResponse {
     /**
      * Unique template ID.
      */

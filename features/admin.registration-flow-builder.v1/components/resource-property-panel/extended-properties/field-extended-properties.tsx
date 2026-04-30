@@ -33,7 +33,7 @@ import { Attribute } from "../../../models/attributes";
 /**
  * Props interface of {@link FieldExtendedProperties}
  */
-export type FieldExtendedPropertiesPropsInterface = CommonResourcePropertiesPropsInterface &
+type FieldExtendedPropertiesPropsInterface = CommonResourcePropertiesPropsInterface &
     IdentifiableComponentInterface;
 
 /**

@@ -35,7 +35,7 @@ import "./rules-properties.scss";
 /**
  * Props interface of {@link RulesProperties}
  */
-export interface RulesPropertiesPropsInterface extends IdentifiableComponentInterface { }
+interface RulesPropertiesPropsInterface extends IdentifiableComponentInterface { }
 
 /**
  * Rules properties component.

@@ -45,7 +45,7 @@ export interface CommonStepFactoryPropsInterface extends Node, IdentifiableCompo
  * @param props - Props injected to the component.
  * @returns The CommonStepFactory component.
  */
-export const CommonStepFactory: FunctionComponent<CommonStepFactoryPropsInterface> = ({
+const CommonStepFactory: FunctionComponent<CommonStepFactoryPropsInterface> = ({
     resources,
     "data-componentid": componentId = "step-factory",
     ...rest

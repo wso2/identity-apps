@@ -16,10 +16,12 @@
  * under the License.
  */
 
-export interface AccountRecoveryConfig {
+interface AccountRecoveryConfig {
     sections: {
         accountRecovery: {
             description: string
         }
     }
 }
+
+export {};

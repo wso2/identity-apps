@@ -28,7 +28,7 @@ import { getErrorLayoutRoutes } from "../configs/routes";
 /**
  * Error layout Prop types.
  */
-export interface ErrorLayoutPropsInterface {
+interface ErrorLayoutPropsInterface {
     /**
      * Is layout fluid.
      */

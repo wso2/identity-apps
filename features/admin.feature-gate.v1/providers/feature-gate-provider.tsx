@@ -22,7 +22,7 @@ import FeatureGateContext from "../context/feature-gate-context";
 /**
  * Props interface of {@link FeatureGateProvider}
  */
-export type FeatureGateProviderProps = PropsWithChildren<unknown>;
+type FeatureGateProviderProps = PropsWithChildren<unknown>;
 
 /**
  * Provider for the feature gate.
