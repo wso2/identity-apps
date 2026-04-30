@@ -30,7 +30,7 @@ import MenuItem from "@oxygen-ui/react/MenuItem";
 import TextField from "@oxygen-ui/react/TextField";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
-import { PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
+import { CheckIcon, CopyIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import deleteCustomTextPreference from "@wso2is/admin.branding.v1/api/delete-custom-text-preference";
 import updateCustomTextPreference from "@wso2is/admin.branding.v1/api/update-custom-text-preference";
 import { InFlowExtensionActionResponseInterface } from "@wso2is/admin.actions.v1/models/actions";
@@ -318,6 +318,7 @@ const EntryCard: FunctionComponent<EntryCardProps> = ({
 }: EntryCardProps): ReactElement => {
 
     const { t } = useTranslation();
+    const [ keyCopied, setKeyCopied ] = useState<boolean>(false);
 
     return (
         <Box
@@ -335,15 +336,33 @@ const EntryCard: FunctionComponent<EntryCardProps> = ({
                 : undefined
             }
         >
-            {/* Header row: key badge + delete button */}
+            {/* Header row: key badge + copy button + delete button */}
             <Box className="inflow-error-entry-header">
                 <Typography
                     variant="body2"
                     component="code"
                     className="inflow-error-entry-key"
                 >
-                    { entry.shortKey }
+                    { keyPrefix }{ entry.shortKey }
                 </Typography>
+                <Tooltip title={ keyCopied ? t("common:copied") : t("common:copyKey", { defaultValue: "Copy Key" }) }>
+                    <span>
+                        <IconButton
+                            size="small"
+                            onClick={ (e: React.MouseEvent) => {
+                                e.stopPropagation();
+                                navigator.clipboard.writeText(keyPrefix + entry.shortKey).then(() => {
+                                    setKeyCopied(true);
+                                    setTimeout(() => setKeyCopied(false), 2000);
+                                });
+                            } }
+                            disabled={ isSaving || isDeleting }
+                            aria-label={ `Copy key ${keyPrefix}${entry.shortKey}` }
+                        >
+                            { keyCopied ? <CheckIcon size={ 16 } /> : <CopyIcon size={ 16 } /> }
+                        </IconButton>
+                    </span>
+                </Tooltip>
                 { !isReadOnly && (
                     <Tooltip title={ t("common:delete") }>
                         <span>

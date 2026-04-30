@@ -67,7 +67,7 @@ import {
     getConnectedApps,
     getConnectedAppsOfAuthenticator
 } from "../api/connections";
-import { deleteAction } from "@wso2is/admin.actions.v1/api/delete-action";
+import deleteAction from "@wso2is/admin.actions.v1/api/delete-action";
 import { getConnectionIcons } from "../configs/ui";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
