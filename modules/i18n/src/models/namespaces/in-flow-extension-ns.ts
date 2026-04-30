@@ -163,6 +163,14 @@ export interface inFlowExtensionNS {
                 heading: string;
                 description: string;
             };
+            externalRedirect: {
+                heading: string;
+                description: string;
+                step1: string;
+                step2: string;
+                step3: string;
+                step4: string;
+            };
         };
     };
     notifications: {

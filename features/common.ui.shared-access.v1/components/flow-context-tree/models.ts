@@ -54,6 +54,28 @@ export interface FlowContextMetadataResponse {
 }
 
 /**
+ * Response shape for `GET /flow/in-flow-extension/context-tree`.
+ *
+ * The tree itself is filtered server-side by the deployment.toml whitelist —
+ * disabled fields are omitted entirely. The two policy flags drive UI behaviour
+ * that depends on the active flow type (REDIRECT op gating, MODIFY-on-read-only
+ * claim permission).
+ */
+export interface InFlowExtensionContextTreeResponse {
+    /** Echoed flow type, or null when the default tree was requested. */
+    flowType?: string | null;
+    /** Filtered context tree. Disabled fields are absent, not flagged. */
+    contextTree: ContextTreeNodeMetadata[];
+    /** Whether REDIRECT is advertised in `allowedOperations` for this flow type. */
+    redirectionEnabled: boolean;
+    /**
+     * Whether the Console UI may permit MODIFY on read-only claims for this flow type.
+     * Hardcoded enumerative mapping in the engine — see InFlowExtensionContextTreeBuilder.
+     */
+    allowReadOnlyClaimsModification: boolean;
+}
+
+/**
  * UI state for a single tree node. Extends metadata with selection flags.
  */
 export interface TreeNodeState {
@@ -85,6 +107,20 @@ export interface FlowContextTreeProps {
     initialAccessConfig?: InitialAccessConfig;
     hasCertificate?: boolean;
     readOnly?: boolean;
+    /**
+     * Whether the active flow type permits MODIFY on read-only claims (and other read-only
+     * leaves). When false:
+     *   - The add-claim modal does not allow adding read-only claims with the MODIFY flag.
+     *   - Existing access configs with MODIFY on a read-only claim render with the flag dropped.
+     * Defaults to true (matches the historical permissive behaviour).
+     */
+    allowReadOnlyClaimsModification?: boolean;
+    /**
+     * Whether REDIRECT is advertised in `allowedOperations` for this flow type. Surfaced as
+     * a prop so the embedding screen can render an informational banner. The tree component
+     * itself does not gate any controls on this — it is purely presentational.
+     */
+    redirectionEnabled?: boolean;
     "data-componentid"?: string;
 }
 

@@ -153,8 +153,20 @@ const normalisePath = (p: string): string => p.replace(/\/+$/, "");
 export const mapMetadataToStateWithAccessConfig = (
     nodes: ContextTreeNodeMetadata[],
     accessConfig: InitialAccessConfig,
-    claimDisplayNames?: Map<string, string>
+    claimDisplayNames?: Map<string, string>,
+    options: {
+        /** Whether the active flow type permits MODIFY on read-only nodes. Defaults to true. */
+        allowReadOnlyClaimsModification?: boolean;
+        /** claimURI → readOnly map; used when synthesising claim leaves to inherit per-claim
+         *  read-only status from the Claims API. Without this every synthesised claim is
+         *  treated as not-readOnly and the modify-drop rule below cannot fire on it. */
+        claimReadOnlyMap?: Map<string, boolean>;
+    } = {}
 ): TreeNodeState[] => {
+
+    const allowReadOnlyClaimsModification: boolean =
+        options.allowReadOnlyClaimsModification !== false;
+    const claimReadOnlyMap: Map<string, boolean> = options.claimReadOnlyMap ?? new Map();
     const exposePaths: Map<string, boolean> = new Map();
     const modifyPaths: Map<string, boolean> = new Map();
 
@@ -217,9 +229,17 @@ export const mapMetadataToStateWithAccessConfig = (
                         ? ancestor.encrypted
                         : parentEncrypted);
 
-            // Modify (leaf-only in practice)
-            const directModify: boolean = modifyPaths.has(np);
-            const modifyEncrypted: boolean = directModify ? modifyPaths.get(np) : false;
+            // Modify (leaf-only in practice). When the flow type forbids modifying read-only
+            // nodes, drop a previously-saved MODIFY mark on render. The cleanup commits on
+            // the next save — the saved access config remains untouched until then.
+            const nodeReadOnly: boolean = node.readOnly ?? false;
+            let directModify: boolean = modifyPaths.has(np);
+            let modifyEncrypted: boolean = directModify ? modifyPaths.get(np) : false;
+
+            if (nodeReadOnly && !allowReadOnlyClaimsModification) {
+                directModify = false;
+                modifyEncrypted = false;
+            }
 
             let children: TreeNodeState[] | undefined;
 
@@ -279,8 +299,15 @@ export const mapMetadataToStateWithAccessConfig = (
                         );
 
                         if (existingChild && modifyPaths.has(synthPath)) {
-                            existingChild.modify = true;
-                            existingChild.modifyEncrypted = modifyPaths.get(synthPath) ?? false;
+                            // Same drop rule as below — don't reinstate MODIFY on a read-only
+                            // node when the flow type forbids it.
+                            if (existingChild.readOnly && !allowReadOnlyClaimsModification) {
+                                existingChild.modify = false;
+                                existingChild.modifyEncrypted = false;
+                            } else {
+                                existingChild.modify = true;
+                                existingChild.modifyEncrypted = modifyPaths.get(synthPath) ?? false;
+                            }
                         }
 
                         return;
@@ -288,13 +315,26 @@ export const mapMetadataToStateWithAccessConfig = (
 
                     const isExposed: boolean = exposePaths.has(synthPath);
                     const synthExEnc: boolean = exposePaths.get(synthPath) ?? false;
-                    const isModify: boolean = modifyPaths.has(synthPath);
-                    const synthModEnc: boolean = modifyPaths.get(synthPath) ?? false;
+                    let isModify: boolean = modifyPaths.has(synthPath);
+                    let synthModEnc: boolean = modifyPaths.get(synthPath) ?? false;
                     const displayName: string = claimDisplayNames?.get(key) ?? key;
+                    // For dynamic entries under a claims map, prefer the per-claim readOnly
+                    // status (from the Claims API) over the parent container's flag. Falls
+                    // back to the parent's flag if the map doesn't carry the URI.
+                    const claimReadOnly: boolean | undefined = claimReadOnlyMap.get(key);
+                    const synthReadOnly: boolean = claimReadOnly ?? (node.readOnly ?? false);
+
+                    // Drop a previously-saved MODIFY when this flow type forbids modifying
+                    // read-only nodes (e.g., PASSWORD_RECOVERY). The saved access config still
+                    // carries it; the cleanup commits on the next save.
+                    if (synthReadOnly && !allowReadOnlyClaimsModification) {
+                        isModify = false;
+                        synthModEnc = false;
+                    }
 
                     children = children || [];
                     children.push({
-                        allowedOperations: (node.readOnly ?? false)
+                        allowedOperations: synthReadOnly
                             ? [ "EXPOSE" ]
                             : [ "EXPOSE", "MODIFY" ],
                         canDelete: true,
@@ -309,7 +349,7 @@ export const mapMetadataToStateWithAccessConfig = (
                         modifyEncrypted: synthModEnc,
                         nodeType: NodeType.LEAF,
                         path: synthPath,
-                        readOnly: node.readOnly ?? false,
+                        readOnly: synthReadOnly,
                         replaceable: false,
                         title: displayName
                     });

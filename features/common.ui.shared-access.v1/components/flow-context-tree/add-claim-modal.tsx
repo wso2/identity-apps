@@ -76,6 +76,11 @@ export interface AddClaimModalProps {
     parentNode: TreeNodeState | null;
     existingClaimURIs: string[];
     externalClaims?: Claim[];
+    /**
+     * Whether the active flow type permits MODIFY on read-only claims. Drives the
+     * informational badge per claim row. Defaults to true (the historical behaviour).
+     */
+    allowReadOnlyClaimsModification?: boolean;
     onClose: () => void;
     onSubmit: (claims: Claim[]) => void;
     "data-componentid"?: string;
@@ -90,6 +95,7 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
     parentNode,
     existingClaimURIs,
     externalClaims,
+    allowReadOnlyClaimsModification = true,
     onClose,
     onSubmit,
     "data-componentid": componentId = "add-claim-modal"
@@ -315,7 +321,9 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
                                                 px: "4px",
                                                 py: "2px"
                                             } }>
-                                                Modifying allowed in Registration flows only
+                                                { allowReadOnlyClaimsModification
+                                                    ? "Read-only — modify is opt-in"
+                                                    : "Read-only — modify not permitted in this flow" }
                                             </Typography>
                                         ) }
                                     </Box>

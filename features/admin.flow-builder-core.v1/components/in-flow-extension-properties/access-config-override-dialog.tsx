@@ -36,8 +36,8 @@ import {
 import {
     FlowContextTree,
     AccessConfigOutput,
-    ContextTreeNodeMetadata,
-    EncryptionOutput
+    EncryptionOutput,
+    InFlowExtensionContextTreeResponse
 } from "@wso2is/common.ui.shared-access.v1/components/flow-context-tree";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -45,8 +45,7 @@ import React, { FunctionComponent, ReactElement, useCallback, useMemo, useRef, u
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import defaultContextTreeData from
-    "@wso2is/admin.connections.v1/meta/default-flow-context-tree.json";
+import useInFlowExtensionContextTree from "../../api/use-in-flow-extension-context-tree";
 
 /**
  * Props interface of {@link AccessConfigOverrideDialog}
@@ -92,8 +91,14 @@ const AccessConfigOverrideDialog: FunctionComponent<AccessConfigOverrideDialogPr
     const encryptionRef: React.MutableRefObject<{ certificate?: string } | null> =
         useRef<{ certificate?: string } | null>(null);
 
-    const contextTreeMetadata: ContextTreeNodeMetadata[] =
-        defaultContextTreeData.contextTree as ContextTreeNodeMetadata[];
+    // Tree is fetched server-side per the active flow type so the deployment.toml whitelist
+    // and the per-flow-type policy flags (redirectionEnabled, allowReadOnlyClaimsModification)
+    // apply automatically.
+    const {
+        data: contextTreeData,
+        error: contextTreeError,
+        isLoading: isContextTreeLoading
+    } = useInFlowExtensionContextTree<InFlowExtensionContextTreeResponse>(flowType, open);
 
     const effectiveAccessConfig: AccessConfigInterface | undefined = useMemo(() => {
         if (overrideAccessConfig) {
@@ -234,9 +239,17 @@ const AccessConfigOverrideDialog: FunctionComponent<AccessConfigOverrideDialogPr
                         </IconButton>
                     </DialogTitle>
                     <DialogContent>
-                        { isActionLoading ? (
+                        { (isActionLoading || isContextTreeLoading) ? (
                             <Stack alignItems="center" py={ 4 }>
                                 <CircularProgress />
+                            </Stack>
+                        ) : contextTreeError || !contextTreeData ? (
+                            <Stack alignItems="center" py={ 4 }>
+                                <Typography color="error" variant="body2">
+                                    Failed to load the In-Flow Extension context tree for this
+                                    flow. Refresh and retry; check that the flow-management API
+                                    is reachable.
+                                </Typography>
                             </Stack>
                         ) : (
                             <Stack gap={ 2 } pt={ 1 }>
@@ -257,9 +270,11 @@ const AccessConfigOverrideDialog: FunctionComponent<AccessConfigOverrideDialogPr
                                 ) }
                                 <FlowContextTree
                                     key={ resetKey }
-                                    contextTree={ contextTreeMetadata }
+                                    contextTree={ contextTreeData.contextTree }
                                     initialAccessConfig={ effectiveAccessConfig }
                                     hasCertificate={ hasCertificate }
+                                    allowReadOnlyClaimsModification={ contextTreeData.allowReadOnlyClaimsModification }
+                                    redirectionEnabled={ contextTreeData.redirectionEnabled }
                                     onChange={ handleTreeChange }
                                     data-componentid={ `${componentId}-flow-context-tree` }
                                 />

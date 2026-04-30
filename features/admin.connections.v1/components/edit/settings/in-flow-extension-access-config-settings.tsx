@@ -28,13 +28,15 @@ import {
     InFlowExtensionActionResponseInterface,
     InFlowExtensionActionUpdateInterface
 } from "@wso2is/admin.actions.v1/models/actions";
+import useInFlowExtensionContextTree
+    from "@wso2is/admin.flow-builder-core.v1/api/use-in-flow-extension-context-tree";
 import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     AccessConfigOutput,
-    ContextTreeNodeMetadata,
     EncryptionOutput,
     FlowContextTree,
+    InFlowExtensionContextTreeResponse,
     InitialAccessConfig
 } from "@wso2is/common.ui.shared-access.v1/components/flow-context-tree";
 import { ConfirmationModal, ContentLoader, EmphasizedSegment, Heading, LinkButton } from "@wso2is/react-components";
@@ -43,7 +45,6 @@ import React, { FunctionComponent, ReactElement, useMemo, useState } from "react
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import defaultContextTreeData from "../../../meta/default-flow-context-tree.json";
 
 const ACTION_TYPE: string = "inFlowExtension";
 
@@ -70,8 +71,14 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const contextTreeMetadata: ContextTreeNodeMetadata[] =
-        defaultContextTreeData.contextTree as ContextTreeNodeMetadata[];
+    // Connection-level (action-level) access config editor — not bound to a specific flow.
+    // The hook is called with no flowType so the server returns the *default* tree, which
+    // already has the deployment.toml whitelist applied.
+    const {
+        data: contextTreeData,
+        error: contextTreeError,
+        isLoading: isContextTreeLoading
+    } = useInFlowExtensionContextTree<InFlowExtensionContextTreeResponse>();
 
     const [ accessConfig, setAccessConfig ] = useState<AccessConfigInterface>({
         expose: [],
@@ -161,8 +168,29 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
             });
     };
 
-    if (isLoading || !action) {
+    if (isLoading || !action || isContextTreeLoading) {
         return <Loader />;
+    }
+
+    if (contextTreeError || !contextTreeData) {
+        // Hard error — the editor cannot render without the tree. Surface a clear message
+        // rather than falling back to a stale/static schema, which could let an admin save
+        // an access config that references paths the deployment has switched off.
+        return (
+            <Box className="in-flow-extension-access-config-tab">
+                <EmphasizedSegment padded="very" data-componentid={ `${componentId}-section` }>
+                    <Alert
+                        severity="error"
+                        sx={ { mb: 2 } }
+                        data-componentid={ `${componentId}-tree-load-error` }
+                    >
+                        Failed to load the In-Flow Extension context tree from the server.
+                        Refresh the page to retry. If the problem persists, ensure the
+                        flow-management API is reachable and the deployment is up to date.
+                    </Alert>
+                </EmphasizedSegment>
+            </Box>
+        );
     }
 
     return (
@@ -196,11 +224,13 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
                     <Box sx={ { flex: "1 1 65%", minWidth: 0 } }>
                         <FlowContextTree
                             key={ resetKey }
-                            contextTree={ contextTreeMetadata }
+                            contextTree={ contextTreeData.contextTree }
                             onChange={ handleAccessConfigChange }
                             initialAccessConfig={ initialAccessConfig }
                             hasCertificate={ hasCertificate }
                             readOnly={ isReadOnly }
+                            allowReadOnlyClaimsModification={ contextTreeData.allowReadOnlyClaimsModification }
+                            redirectionEnabled={ contextTreeData.redirectionEnabled }
                             data-componentid={ `${componentId}-tree` }
                         />
                         { !isReadOnly && (
@@ -261,6 +291,32 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
                                 </li>
                                 <li>
                                     { t("inFlowExtension:createWizard.helpPanel.howToUse.step6") }
+                                </li>
+                            </ul>
+                        </Typography>
+                        <Divider sx={ { mb: 2, mt: 2 } } />
+                        <Heading as="h6">
+                            { t("inFlowExtension:createWizard.helpPanel.externalRedirect.heading") }
+                        </Heading>
+                        <Typography
+                            variant="body2"
+                            color="text.secondary"
+                            component="div"
+                            sx={ { mb: 2 } }
+                        >
+                            { t("inFlowExtension:createWizard.helpPanel.externalRedirect.description") }
+                            <ul style={ { lineHeight: 1.8, paddingLeft: "18px", marginTop: "8px" } }>
+                                <li>
+                                    { t("inFlowExtension:createWizard.helpPanel.externalRedirect.step1") }
+                                </li>
+                                <li>
+                                    { t("inFlowExtension:createWizard.helpPanel.externalRedirect.step2") }
+                                </li>
+                                <li>
+                                    { t("inFlowExtension:createWizard.helpPanel.externalRedirect.step3") }
+                                </li>
+                                <li>
+                                    { t("inFlowExtension:createWizard.helpPanel.externalRedirect.step4") }
                                 </li>
                             </ul>
                         </Typography>
