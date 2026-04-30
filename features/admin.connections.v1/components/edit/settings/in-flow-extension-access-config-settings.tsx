@@ -32,9 +32,9 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import {
     AccessConfigOutput,
-    ContextTreeNodeMetadata,
     EncryptionOutput,
     FlowContextTree,
+    InFlowExtensionContextTreeResponse,
     InitialAccessConfig
 } from "@wso2is/common.ui.shared-access.v1/components/flow-context-tree";
 import { ContentLoader, EmphasizedSegment, Heading } from "@wso2is/react-components";
@@ -42,7 +42,6 @@ import React, { FunctionComponent, ReactElement, useMemo, useState } from "react
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import defaultContextTreeData from "../../../meta/default-flow-context-tree.json";
 
 const ACTION_TYPE: string = "inFlowExtension";
 
@@ -68,8 +67,14 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const contextTreeMetadata: ContextTreeNodeMetadata[] =
-        defaultContextTreeData.contextTree as ContextTreeNodeMetadata[];
+    // Connection-level (action-level) access config editor — not bound to a specific flow.
+    // The hook is called with no flowType so the server returns the *default* tree, which
+    // already has the deployment.toml whitelist applied.
+    const {
+        data: contextTreeData,
+        error: contextTreeError,
+        isLoading: isContextTreeLoading
+    } = useInFlowExtensionContextTree<InFlowExtensionContextTreeResponse>();
 
     const [ accessConfig, setAccessConfig ] = useState<AccessConfigInterface>({
         expose: [],
@@ -159,8 +164,29 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
             });
     };
 
-    if (isLoading || !action) {
+    if (isLoading || !action || isContextTreeLoading) {
         return <Loader />;
+    }
+
+    if (contextTreeError || !contextTreeData) {
+        // Hard error — the editor cannot render without the tree. Surface a clear message
+        // rather than falling back to a stale/static schema, which could let an admin save
+        // an access config that references paths the deployment has switched off.
+        return (
+            <Box className="in-flow-extension-access-config-tab">
+                <EmphasizedSegment padded="very" data-componentid={ `${componentId}-section` }>
+                    <Alert
+                        severity="error"
+                        sx={ { mb: 2 } }
+                        data-componentid={ `${componentId}-tree-load-error` }
+                    >
+                        Failed to load the In-Flow Extension context tree from the server.
+                        Refresh the page to retry. If the problem persists, ensure the
+                        flow-management API is reachable and the deployment is up to date.
+                    </Alert>
+                </EmphasizedSegment>
+            </Box>
+        );
     }
 
     return (
