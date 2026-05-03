@@ -21,8 +21,6 @@ import { ApplicationsNS } from "../../../models";
  * NOTES: No need to care about the max-len for this file since it's easier to
  * translate the strings to other languages easily with editor translation tools.
  */
- 
- 
 
 export const applications: ApplicationsNS = {
     quickStart: {
