@@ -309,6 +309,10 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                 setIsTemplateNotAvailable(false);
                 // Mark as loaded after any successful fetch in app mode (including locale change)
                 hasLoadedOnceRef.current = true;
+            } else if (currentEmailTemplate && Object.keys(currentEmailTemplate).length > 0) {
+                // Neither app nor org template exists for the selected locale.
+                // Prefill the editor with content from the previous locale as placeholder.
+                setSelectedEmailTemplate({ ...currentEmailTemplate });
             }
         } else {
             setIsTemplateNotAvailable(false);
@@ -319,7 +323,14 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                 skipNextReplicateModalRef.current = false;
             }
         }
-    }, [ emailTemplate, appEmailTemplate ]);
+    }, [ emailTemplate, appEmailTemplate, isAppSpecific ]);
+
+    useEffect(() => {
+        if (emailTemplatesMode === EmailTemplatesMode.ORGANIZATION) {
+            setIsSystemTemplate(false);
+            setIsInheritedTemplate(false);
+        }
+    }, [ emailTemplatesMode ]);
 
     useEffect(() => {
         if (!applicationList?.applications) return;
@@ -364,24 +375,26 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
 
                 if (appEmailTemplateError.response?.status === 404) {
                     // 404 is expected when no app-specific template exists yet
-                    setIsTemplateNotAvailable(true);
                     setIsNewAppTemplate(true);
 
-                    // If the user previously had content for another locale, offer to replicate it.
+                    // If the user previously had content for another locale, auto-prefill
+                    // the editor with that content as placeholder instead of showing a modal.
                     // currentEmailTemplate is set by handleLocaleChange before the locale switch.
-                    // Only skip the modal on the very first load from app edit view.
                     if (
                         currentEmailTemplate &&
                         Object.keys(currentEmailTemplate).length > 0 &&
-                        hasEmailTemplateCreatePermissions &&
-                        !skipNextReplicateModalRef.current &&
-                        // Only skip the modal on the very first load from app redirect view
-                        !(isFromAppRedirect && hasLoadedOnceRef.current === false)
+                        hasEmailTemplateCreatePermissions
                     ) {
-                        setShowReplicatePreviousTemplateModal(true);
+                        setSelectedEmailTemplate({ ...currentEmailTemplate });
+                        setIsTemplateNotAvailable(true);
+                        skipNextReplicateModalRef.current = true;
 
                         return;
                     }
+
+                    setIsTemplateNotAvailable(true);
+
+                    return;
                 } else {
                     if (appEmailTemplateError.response?.data?.description) {
                         dispatch(addAlert({
@@ -408,7 +421,9 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
 
             // When app template is absent, also drive the org-level fallback chain so the system
             // template is fetched and pre-fills the editor when neither app nor org template exists.
-            if (isNewAppTemplate && emailTemplateError && selectedEmailTemplateId) {
+            // Skip if the editor was already pre-filled with content from a previous locale.
+            if (isNewAppTemplate && emailTemplateError && selectedEmailTemplateId &&
+                !(selectedEmailTemplate && Object.keys(selectedEmailTemplate).length > 0)) {
                 if (emailTemplateError.response?.status === 404) {
                     if (isSubOrganization() && !isInheritedTemplate) {
                         setIsInheritedTemplate(true);
@@ -497,16 +512,15 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         if (!mode) return;
 
         setEmailTemplatesMode(mode);
-        setSelectedEmailTemplate(null);
 
         if (mode === EmailTemplatesMode.ORGANIZATION) {
             setSelectedAppId(null);
+            skipNextReplicateModalRef.current = false;
+            setError(undefined);
+            emailTemplateMutate();
         }
 
-        skipNextReplicateModalRef.current = true;
         setIsTemplateNotAvailable(false);
-        setIsSystemTemplate(false);
-        setIsInheritedTemplate(false);
         setIsNewAppTemplate(false);
     };
 
@@ -778,8 +792,6 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                                             app: ApplicationListItemInterface | null
                                         ) => {
                                             setSelectedAppId(app?.id ?? null);
-                                            setSelectedEmailTemplate(null);
-                                            setCurrentEmailTemplate(undefined);
                                             setIsNewAppTemplate(false);
                                         } }
                                         isOptionEqualToValue={ (
