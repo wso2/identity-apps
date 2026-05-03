@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,11 +16,26 @@
  * under the License.
  */
 
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Card from "@oxygen-ui/react/Card";
 import Grid from "@oxygen-ui/react/Grid";
+import Paper from "@oxygen-ui/react/Paper";
+import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import { BuildingIcon, TilesIcon } from "@oxygen-ui/react-icons";
 import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
+import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
+import { useGetApplication } from "@wso2is/admin.applications.v1/api/use-get-application";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
+import {
+    ApplicationInterface,
+    ApplicationListItemInterface
+} from "@wso2is/admin.applications.v1/models/application";
 import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/branding-preference-provider";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import FeatureLockedBanner from "@wso2is/admin.feature-gate.v1/components/feature-locked-banner";
@@ -36,13 +51,17 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { DangerZone, DangerZoneGroup, DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+import createAppSmsTemplate from "../api/create-app-sms-template";
 import createSmsTemplate from "../api/create-sms-template";
+import deleteAppSmsTemplate from "../api/delete-app-sms-template";
 import deleteSmsTemplate from "../api/delete-sms-template";
+import updateAppSmsTemplate from "../api/update-app-sms-template";
 import updateSmsTemplate from "../api/update-sms-template";
+import useGetAppSmsTemplate from "../api/use-get-app-sms-template";
 import useGetSmsTemplate from "../api/use-get-sms-template";
 import useGetSmsTemplatesList from "../api/use-get-sms-templates-list";
 import SMSCustomizationFooter from "../components/sms-customization-footer";
@@ -54,6 +73,14 @@ import { SMSTemplate, SMSTemplateType } from "../models/sms-templates";
 import "./sms-customization.scss";
 
 type SMSCustomizationPageInterface = IdentifiableComponentInterface;
+
+/**
+ * Modes for the SMS templates page.
+ */
+enum SMSTemplatesMode {
+    APPLICATION = "APPLICATION",
+    ORGANIZATION = "ORGANIZATION"
+}
 
 /**
  * SMS customization page.
@@ -77,6 +104,13 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
     const [ selectedSmsTemplateDescription, setSelectedSmsTemplateDescription ] = useState<string>();
     const [ selectedSmsTemplate, setSelectedSmsTemplate ] = useState<SMSTemplate>();
     const [ error, setError ] = useState<AxiosError<HttpErrorResponseDataInterface>>();
+    const [ appIdFromQueryParam, setAppIdFromQueryParam ] = useState<string | null>(null);
+    const [ smsTemplatesMode, setSmsTemplatesMode ] =
+        useState<SMSTemplatesMode>(SMSTemplatesMode.ORGANIZATION);
+    const [ selectedAppId, setSelectedAppId ] = useState<string | null>(null);
+    const [ applications, setApplications ] = useState<ApplicationListItemInterface[]>([]);
+    const [ isFromAppRedirect, setIsFromAppRedirect ] = useState<boolean>(false);
+    const [ isNewAppTemplate, setIsNewAppTemplate ] = useState<boolean>(false);
 
     const smsTemplates: Record<string, string>[] = useSelector(
         (state: AppState) => state.config.deployment.extensions.smsTemplates
@@ -87,6 +121,12 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const smsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features.smsTemplates
+    );
+    const disabledFeatures: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.applications?.disabledFeatures);
+
+    const isAppSpecificSmsTemplateBrandingEnabled: boolean = !disabledFeatures?.includes(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_EDIT_SMS_TEMPLATES_LINK
     );
 
     const dispatch: Dispatch = useDispatch();
@@ -104,6 +144,15 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
     const hasSmsTemplateCreatePermissions: boolean = smsFeatureConfig.enabled && hasCreatePermission;
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
+
+    const isAppSpecific: boolean = smsTemplatesMode === SMSTemplatesMode.APPLICATION
+        && !!(appIdFromQueryParam ?? selectedAppId);
+
+    const activeAppId: string | null = appIdFromQueryParam ?? selectedAppId;
+
+    const {
+        data: selectedApplicationData
+    } = useGetApplication<ApplicationInterface>(activeAppId as string, isAppSpecific);
 
     const {
         data: smsTemplatesList,
@@ -123,6 +172,46 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         isInheritedTemplate,
         shouldFetch
     );
+
+    const {
+        data: appSmsTemplate,
+        isLoading: isAppSmsTemplateLoading,
+        error: appSmsTemplateError,
+        mutate: appSmsTemplateMutate
+    } = useGetAppSmsTemplate(
+        selectedSmsTemplateId!,
+        activeAppId as string,
+        selectedLocale,
+        !!selectedSmsTemplateId && isAppSpecific
+    );
+
+    const {
+        data: applicationList,
+        isLoading: isApplicationListFetchRequestLoading
+    } = useApplicationList(
+        "templateId",
+        100,
+        0,
+        undefined,
+        smsTemplatesMode === SMSTemplatesMode.APPLICATION
+    );
+
+    useEffect(() => {
+        if (!history?.location?.search) return;
+        const params: URLSearchParams = new URLSearchParams(history?.location?.search);
+        const appIdFromQuery: string | null = params.get("appId");
+
+        if (!appIdFromQuery) return;
+        setAppIdFromQueryParam(appIdFromQuery);
+        setSmsTemplatesMode(SMSTemplatesMode.APPLICATION);
+        setIsFromAppRedirect(true);
+
+        return () => {
+            setAppIdFromQueryParam(null);
+            setSmsTemplatesMode(SMSTemplatesMode.ORGANIZATION);
+            setIsFromAppRedirect(false);
+        };
+    }, [ history?.location?.search ]);
 
     useEffect(() => {
         // we don't have a good displayName and description coming from the backend
@@ -162,13 +251,48 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
     }, [ smsTemplatesList ]);
 
     useEffect(() => {
-        setSelectedSmsTemplate({ ...smsTemplate });
-        setIsTemplateNotAvailable(false);
+        if (isAppSpecific) {
+            const appTemplateAvailable: boolean =
+                !!appSmsTemplate && Object.keys(appSmsTemplate).length > 0;
 
-        if (smsTemplate && Object.keys(smsTemplate).length > 0) {
-            setCurrentSmsTemplate({ ...smsTemplate });
+            if (appTemplateAvailable) {
+                setSelectedSmsTemplate({ ...appSmsTemplate });
+                setCurrentSmsTemplate({ ...appSmsTemplate });
+                setIsTemplateNotAvailable(false);
+                setIsNewAppTemplate(false);
+            } else if (smsTemplate && Object.keys(smsTemplate).length > 0) {
+                setSelectedSmsTemplate({ ...smsTemplate });
+                setCurrentSmsTemplate({ ...smsTemplate });
+                setIsTemplateNotAvailable(false);
+            }
+        } else {
+            setIsTemplateNotAvailable(false);
+
+            if (smsTemplate && Object.keys(smsTemplate).length > 0) {
+                setSelectedSmsTemplate({ ...smsTemplate });
+                setCurrentSmsTemplate({ ...smsTemplate });
+            }
         }
-    }, [ smsTemplate ]);
+    }, [ smsTemplate, appSmsTemplate, isAppSpecific ]);
+
+    useEffect(() => {
+        if (smsTemplatesMode === SMSTemplatesMode.ORGANIZATION) {
+            setIsSystemTemplate(false);
+            setIsInheritedTemplate(false);
+        }
+    }, [ smsTemplatesMode ]);
+
+    useEffect(() => {
+        if (!applicationList?.applications) return;
+
+        setApplications(
+            applicationList.applications.filter((app: ApplicationListItemInterface) =>
+                !ApplicationManagementConstants.SYSTEM_APPS.includes(app.name) &&
+                !ApplicationManagementConstants.DEFAULT_APPS.includes(app.name) &&
+                !(app.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID)
+            )
+        );
+    }, [ applicationList ]);
 
     useEffect(() => {
         if (!smsTemplatesListError) {
@@ -185,6 +309,46 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
     }, [ smsTemplatesListError ]);
 
     useEffect(() => {
+        if (isAppSpecific) {
+            if (appSmsTemplateError && selectedSmsTemplateId && appSmsTemplateError !== error) {
+                setError(appSmsTemplateError as AxiosError<HttpErrorResponseDataInterface>);
+
+                if (appSmsTemplateError.response?.status === 404) {
+                    setIsTemplateNotAvailable(true);
+                    setIsNewAppTemplate(true);
+
+                    return;
+                } else {
+                    if (appSmsTemplateError?.response?.data?.code !==
+                        SMSTemplateConstants.TEMPLATE_NOT_AVAILABLE_ERROR_CODE &&
+                        appSmsTemplateError?.response?.data?.code !==
+                        SMSTemplateConstants.INVALID_TEMPLATE_TYPE_ERROR_CODE) {
+                        dispatch(
+                            addAlert({
+                                description: t("smsTemplates:notifications.getSmsTemplate.error.description"),
+                                level: AlertLevels.ERROR,
+                                message: t("smsTemplates:notifications.getSmsTemplate.error.message")
+                            })
+                        );
+                    }
+
+                    return;
+                }
+            }
+
+            if (isNewAppTemplate && smsTemplateError && selectedSmsTemplateId) {
+                if (smsTemplateError.response?.status === 404) {
+                    if (isSubOrganization() && !isInheritedTemplate) {
+                        setIsInheritedTemplate(true);
+                    } else if (!isSystemTemplate && selectedLocale === SMSTemplateConstants.DEAFULT_LOCALE) {
+                        setIsSystemTemplate(true);
+                    }
+                }
+            }
+
+            return;
+        }
+
         if (!smsTemplateError || !selectedSmsTemplateId || smsTemplateError === error) {
             return;
         }
@@ -216,7 +380,25 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                 })
             );
         }
-    }, [ smsTemplateError, isSystemTemplate, isInheritedTemplate ]);
+    }, [ smsTemplateError, appSmsTemplateError, isSystemTemplate, isInheritedTemplate, isNewAppTemplate ]);
+
+    const handleSmsTemplatesModeChange = (
+        _event: React.MouseEvent<HTMLElement>,
+        mode: SMSTemplatesMode
+    ): void => {
+        if (!mode) return;
+
+        setSmsTemplatesMode(mode);
+
+        if (mode === SMSTemplatesMode.ORGANIZATION) {
+            setSelectedAppId(null);
+            setError(undefined);
+            mutateSmsTemplate();
+        }
+
+        setIsTemplateNotAvailable(false);
+        setIsNewAppTemplate(false);
+    };
 
     const handleTemplateIdChange = (templateId: string): void => {
 
@@ -224,6 +406,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         setIsTemplateNotAvailable(false);
         setIsSystemTemplate(false);
         setIsInheritedTemplate(false);
+        setIsNewAppTemplate(false);
         setCurrentSmsTemplate(undefined);
         setSelectedLocale(SMSTemplateConstants.DEAFULT_LOCALE);
         setSelectedSmsTemplateId(templateId);
@@ -246,6 +429,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         setIsTemplateNotAvailable(true);
         setIsSystemTemplate(false);
         setIsInheritedTemplate(false);
+        setIsNewAppTemplate(false);
         setSelectedLocale(safeLocale);
         setShouldFetch(true);
     };
@@ -257,8 +441,14 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
             id: selectedLocale.replace("-", "_")
         };
 
-        if (isSystemTemplate || isInheritedTemplate) {
-            createSmsTemplate(selectedSmsTemplateId, template)
+        const mutateTemplate: () => void = isAppSpecific ? appSmsTemplateMutate : mutateSmsTemplate;
+
+        if (isSystemTemplate || isInheritedTemplate || (isAppSpecific && isNewAppTemplate)) {
+            const createFn: Promise<SMSTemplate> = isAppSpecific
+                ? createAppSmsTemplate(selectedSmsTemplateId, activeAppId as string, template)
+                : createSmsTemplate(selectedSmsTemplateId, template);
+
+            createFn
                 .then((_response: SMSTemplate) => {
                     dispatch(
                         addAlert<AlertInterface>({
@@ -269,8 +459,8 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                     );
                     setIsSystemTemplate(false);
                     setIsInheritedTemplate(false);
+                    setIsNewAppTemplate(false);
                     setShouldFetch(true);
-                    mutateSmsTemplate();
                 })
                 .catch(() => {
                     dispatch(
@@ -280,9 +470,14 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                             message: t("smsTemplates:notifications.updateSmsTemplate.error.message")
                         })
                     );
-                });
+                })
+                .finally(() => mutateTemplate());
         } else {
-            updateSmsTemplate(selectedSmsTemplateId, template, selectedLocale)
+            const updateFn: Promise<SMSTemplate> = isAppSpecific
+                ? updateAppSmsTemplate(selectedSmsTemplateId, activeAppId as string, template, selectedLocale)
+                : updateSmsTemplate(selectedSmsTemplateId, template, selectedLocale);
+
+            updateFn
                 .then((_response: SMSTemplate) => {
                     dispatch(
                         addAlert<AlertInterface>({
@@ -294,7 +489,6 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                     setIsSystemTemplate(false);
                     setIsInheritedTemplate(false);
                     setShouldFetch(true);
-                    mutateSmsTemplate();
                 })
                 .catch(() => {
                     dispatch(
@@ -304,7 +498,8 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                             message: t("smsTemplates:notifications.updateSmsTemplate.error.message")
                         })
                     );
-                });
+                })
+                .finally(() => mutateTemplate());
         }
 
         setIsTemplateNotAvailable(false);
@@ -314,7 +509,12 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
 
     const handleDeleteRequest = (): void => {
         setShouldFetch(false);
-        deleteSmsTemplate(selectedSmsTemplateId, selectedLocale)
+
+        const deleteFn: Promise<AxiosResponse> = isAppSpecific
+            ? deleteAppSmsTemplate(selectedSmsTemplateId, activeAppId as string, selectedLocale)
+            : deleteSmsTemplate(selectedSmsTemplateId, selectedLocale);
+
+        deleteFn
             .then((_response: AxiosResponse) => {
                 dispatch(
                     addAlert<AlertInterface>({
@@ -323,11 +523,15 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                         message: t("smsTemplates:notifications.deleteSmsTemplate.success.message")
                     })
                 );
-                setSelectedLocale(SMSTemplateConstants.DEAFULT_LOCALE);
-                setIsSystemTemplate(false);
-                setIsInheritedTemplate(false);
+
+                if (isAppSpecific) {
+                    setIsNewAppTemplate(true);
+                } else {
+                    setSelectedLocale(SMSTemplateConstants.DEAFULT_LOCALE);
+                    setIsSystemTemplate(false);
+                    setIsInheritedTemplate(false);
+                }
                 setShouldFetch(true);
-                mutateSmsTemplate();
             })
             .catch(() => {
                 dispatch(
@@ -337,13 +541,20 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                         message: t("smsTemplates:notifications.deleteSmsTemplate.error.message")
                     })
                 );
+            })
+            .finally(() => {
+                if (isAppSpecific) {
+                    appSmsTemplateMutate();
+                } else {
+                    mutateSmsTemplate();
+                }
             });
     };
 
     const renderDangerZone = (): ReactElement => {
         let zoneType: string = "revert";
 
-        if (isSystemTemplate || isInheritedTemplate) {
+        if (isSystemTemplate || isInheritedTemplate || (isAppSpecific && isNewAppTemplate)) {
             return null;
         } else if (selectedLocale !== SMSTemplateConstants.DEAFULT_LOCALE) {
             zoneType = "remove";
@@ -369,11 +580,105 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
     return (
         <BrandingPreferenceProvider>
             <PageLayout
-                title={ t("smsTemplates:page.header") }
+                title={ (
+                    <div style={ { alignItems: "center", display: "flex", justifyContent: "space-between",
+                        width: "100%" } }>
+                        <h1 style={ { margin: 0 } }>
+                            { isFromAppRedirect && selectedApplicationData?.name
+                                ? t("smsTemplates:page.appSpecificHeader",
+                                    { appName: selectedApplicationData.name })
+                                : t("smsTemplates:page.header") }
+                        </h1>
+                        { !appIdFromQueryParam && isAppSpecificSmsTemplateBrandingEnabled && (
+                            <div style={ { alignItems: "center", display: "flex", flexDirection: "row",
+                                gap: "10px" } }>
+                                <Paper
+                                    elevation={ 0 }
+                                    sx={ { borderColor: "#C0BFBF", display: "flex", height: "37px" } }
+                                >
+                                    <ToggleButtonGroup
+                                        exclusive
+                                        onChange={ handleSmsTemplatesModeChange }
+                                        size="small"
+                                        value={ smsTemplatesMode }
+                                    >
+                                        <ToggleButton
+                                            data-componentid={
+                                                `${ componentId }-organization-mode-button`
+                                            }
+                                            value={ SMSTemplatesMode.ORGANIZATION }
+                                        >
+                                            <span style={ { marginRight: "5px" } }>
+                                                <BuildingIcon size={ 14 } />
+                                            </span>
+                                            { t("extensions:develop.branding.pageHeader.organization") }
+                                        </ToggleButton>
+                                        <ToggleButton
+                                            data-componentid={
+                                                `${ componentId }-application-mode-button`
+                                            }
+                                            value={ SMSTemplatesMode.APPLICATION }
+                                        >
+                                            <span style={ { marginRight: "5px" } }>
+                                                <TilesIcon size={ 14 } />
+                                            </span>
+                                            { t("extensions:develop.branding.pageHeader.application") }
+                                        </ToggleButton>
+                                    </ToggleButtonGroup>
+                                </Paper>
+                                { smsTemplatesMode === SMSTemplatesMode.APPLICATION && (
+                                    <Autocomplete
+                                        data-componentid={ `${ componentId }-application-dropdown` }
+                                        sx={ { width: 190 } }
+                                        clearIcon={ null }
+                                        options={ applications ?? [] }
+                                        value={
+                                            applications?.find(
+                                                (app: ApplicationListItemInterface) =>
+                                                    app.id === selectedAppId
+                                            ) ?? null
+                                        }
+                                        onChange={ (
+                                            _event: SyntheticEvent<Element, Event>,
+                                            app: ApplicationListItemInterface | null
+                                        ) => {
+                                            setSelectedAppId(app?.id ?? null);
+                                            setIsNewAppTemplate(false);
+                                        } }
+                                        isOptionEqualToValue={ (
+                                            option: ApplicationListItemInterface,
+                                            value: ApplicationListItemInterface
+                                        ) => option.id === value.id }
+                                        loading={ isApplicationListFetchRequestLoading }
+                                        getOptionLabel={ (app: ApplicationListItemInterface) => app.name }
+                                        renderInput={ (params: AutocompleteRenderInputParams) => (
+                                            <TextField
+                                                { ...params }
+                                                size="small"
+                                                placeholder={ t(
+                                                    "extensions:develop.branding.pageHeader.selectApplication"
+                                                ) }
+                                                margin="none"
+                                            />
+                                        ) }
+                                    />
+                                ) }
+                            </div>
+                        ) }
+                    </div>
+                ) }
                 pageTitle={ t("smsTemplates:page.header") }
                 description={
                     (<>
-                        { t("smsTemplates:page.description") }
+                        { isAppSpecific && selectedApplicationData?.name
+                            ? (
+                                <Trans
+                                    i18nKey="smsTemplates:page.appSpecificDescription"
+                                    values={ { appName: selectedApplicationData.name } }
+                                    components={ { bold: <strong /> } }
+                                />
+                            )
+                            : t("smsTemplates:page.description") }
                         <DocumentationLink link={ getLink("develop.smsCustomization.learnMore") }>
                             { t("smsTemplates:common.learnMore") }
                         </DocumentationLink>
@@ -381,6 +686,14 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                 }
                 titleTextAlign="left"
                 bottomMargin={ false }
+                backButton={ isFromAppRedirect && {
+                    "data-componentid": `${ componentId }-page-back-button`,
+                    onClick: () => history.push(
+                        (AppConstants.getPaths().get("APPLICATION_EDIT") ?? "")
+                            .replace(":id", appIdFromQueryParam ?? "")
+                    ),
+                    text: t("smsTemplates:page.backButtonText")
+                } }
                 data-componentid={ componentId }
             >
 
@@ -414,7 +727,10 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
 
                         <Grid xs={ 8 } padding={ 2 } className="right-border bottom-border">
                             <SMSCustomizationForm
-                                isSmsTemplatesListLoading={ isSmsTemplatesListLoading || isSmsTemplateLoading }
+                                isSmsTemplatesListLoading={ isSmsTemplatesListLoading || isSmsTemplateLoading
+                                    || (isAppSpecific
+                                        ? isAppSmsTemplateLoading && !currentSmsTemplate
+                                        : isSmsTemplateLoading) }
                                 selectedSmsTemplate={ currentSmsTemplate }
                                 selectedLocale={ selectedLocale }
                                 onTemplateChanged={ (updatedTemplateAttributes: Partial<SMSTemplate>) =>
@@ -433,7 +749,9 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                                 { (!isTemplateNotAvailable || hasSmsTemplateCreatePermissions) && (
                                     <SMSCustomizationFooter
                                         isSaveButtonDisabled={ !isSmsFeatureEnabled }
-                                        isSaveButtonLoading={ isSmsTemplatesListLoading || isSmsTemplateLoading }
+                                        isSaveButtonLoading={ isSmsTemplatesListLoading || isSmsTemplateLoading
+                                            || (isAppSpecific && isAppSmsTemplateLoading)
+                                        }
                                         onSaveButtonClick={ handleSubmit }
                                     />
                                 ) }

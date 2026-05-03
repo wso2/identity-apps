@@ -1608,6 +1608,10 @@ export const applications: ApplicationsNS = {
                 hint: "This will take you to the Email Templates page where you can customize the email templates used for this application.",
                 label: "Configure Application Specific Email Templates"
             },
+            smsTemplatesLink: {
+                hint: "This will take you to the SMS Templates page where you can customize the SMS templates used for this application.",
+                label: "Configure Application Specific SMS Templates"
+            },
             fields: {
                 accessUrl: {
                     hint: "The landing page URL for this application. It will be used in the application" +

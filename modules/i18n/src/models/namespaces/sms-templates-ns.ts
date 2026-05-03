@@ -20,6 +20,9 @@ export interface SMSTemplatesNS {
     page: {
         header: string;
         description: string;
+        appSpecificHeader: string;
+        appSpecificDescription: string;
+        backButtonText: string;
     };
     tabs: {
         content: {

@@ -1373,6 +1373,10 @@ export interface ApplicationsNS {
                 hint: string;
                 label: string;
             };
+            smsTemplatesLink: {
+                hint: string;
+                label: string;
+            };
             fields: {
                 name: {
                     label: string;

@@ -46,6 +46,7 @@ class FeatureFlagConstants {
         APPLICATION_BRANDING_TEXT: "branding.stylesAndText.application.text",
         APPLICATION_EDIT_BRANDING_LINK: "applications.edit.general.branding",
         APPLICATION_EDIT_EMAIL_TEMPLATES_LINK: "applications.edit.general.emailTemplates",
+        APPLICATION_EDIT_SMS_TEMPLATES_LINK: "applications.edit.general.smsTemplates",
         APPLICATION_TEMPLATES: "applications.templates",
         APPROVALS: "approvals",
         APPROVAL_WORKFLOWS: "approvalWorkflows",

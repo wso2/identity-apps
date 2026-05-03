@@ -9340,6 +9340,9 @@ importers:
       '@wso2is/access-control':
         specifier: ^3.5.6
         version: link:../../modules/access-control
+      '@wso2is/admin.applications.v1':
+        specifier: workspace:^
+        version: link:../admin.applications.v1
       '@wso2is/admin.branding.v1':
         specifier: ^2.32.162
         version: link:../admin.branding.v1

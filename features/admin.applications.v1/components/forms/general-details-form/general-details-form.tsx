@@ -25,7 +25,7 @@ import Link from "@oxygen-ui/react/Link";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
-import { EnvelopeIcon, PaletteIcon } from "@oxygen-ui/react-icons";
+import { CommentLinesIcon, EnvelopeIcon, PaletteIcon } from "@oxygen-ui/react-icons";
 import { ApplicationTabComponentsFilter } from
     "@wso2is/admin.application-templates.v1/components/application-tab-components-filter";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -278,6 +278,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     const isAppSpecificEmailTemplateBrandingEnabled: boolean = !disabledFeatures?.includes(
         FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_EDIT_EMAIL_TEMPLATES_LINK
+    );
+
+    const isAppSpecificSmsTemplateEnabled: boolean = !disabledFeatures?.includes(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_EDIT_SMS_TEMPLATES_LINK
     );
 
     const {
@@ -990,6 +994,37 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                             type="chip"
                                         />
                                         <Hint>{ t("applications:forms.generalDetails.emailTemplatesLink.hint") }</Hint>
+                                    </>
+                                )
+                            }
+                            {
+                                (!isBrandingSectionHidden && !isM2MApplication &&
+                                    isAppSpecificSmsTemplateEnabled) && (
+                                    <>
+                                        <Divider hidden />
+                                        <CommentLinesIcon fill="#ff7300" /> &nbsp;
+                                        <Link
+                                            className="application-sms-templates-link"
+                                            color="primary"
+                                            data-componentid={ `${testId}-application-sms-templates-link` }
+                                            onClick={ () => {
+                                                history.push({
+                                                    pathname: AppConstants.getPaths().get("SMS_MANAGEMENT"),
+                                                    search: `?appId=${encodeURIComponent(appId ?? "")}`
+                                                });
+                                            } }
+                                        >
+                                            { t("applications:forms.generalDetails.smsTemplatesLink.label") }
+                                        </Link>
+                                        <FeatureFlagLabel
+                                            featureFlags={ applicationsFeatureFlagsConfig }
+                                            featureKey={
+                                                FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                                                    .APPLICATION_EDIT_SMS_TEMPLATES_LINK
+                                            }
+                                            type="chip"
+                                        />
+                                        <Hint>{ t("applications:forms.generalDetails.smsTemplatesLink.hint") }</Hint>
                                     </>
                                 )
                             }
