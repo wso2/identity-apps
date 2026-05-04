@@ -162,6 +162,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         userMetaListContent,
         usersList,
         isReadOnlyUserStore,
+        realmConfigs,
         [ "data-testid" ]: testId
     } = props;
 
@@ -532,6 +533,13 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         && user[SCIMConfigs?.scim?.systemSchema]?.sharedType
                         && user[SCIMConfigs?.scim?.systemSchema]?.sharedType!==UserSharedType.INVITED
                 ) {
+                    return true;
+                }
+
+                const isSuperAdmin: boolean = user?.userName === realmConfigs?.adminUser;
+                const isCurrentUserSuperAdmin: boolean = profileInfo?.userName === realmConfigs?.adminUser;
+
+                if (isSuperAdmin && !isCurrentUserSuperAdmin) {
                     return true;
                 }
 
