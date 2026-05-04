@@ -63,11 +63,10 @@ export interface SharedUserIdentifierFragmentPropsInterface extends Identifiable
  * @param props - Props injected to the component.
  * @returns Shared User Identifier fragment login option as a React component.
  */
-const SharedUserIdentifierFragment = (props: SharedUserIdentifierFragmentPropsInterface): ReactElement => {
-    const {
+const SharedUserIdentifierFragment = ({
         onOptionRemove,
-        ["data-componentid"]: componentId
-    } = props;
+        ["data-componentid"]: componentId = "shared-user-identifier-fragment"
+    }: SharedUserIdentifierFragmentPropsInterface): ReactElement => {
 
     const { t } = useTranslation();
 
@@ -120,13 +119,6 @@ const SharedUserIdentifierFragment = (props: SharedUserIdentifierFragmentPropsIn
             </Button>
         </div>
     );
-};
-
-/**
- * Default props for the Shared User Identifier fragment component.
- */
-SharedUserIdentifierFragment.defaultProps = {
-    "data-componentid": "shared-user-identifier-fragment"
 };
 
 export default SharedUserIdentifierFragment;
