@@ -119,6 +119,37 @@ export interface actionsNS {
                         };
                     };
                 };
+                clientCredential: {
+                    name: string;
+                    properties: {
+                        clientId: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        clientSecret: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        scopes: {
+                            label: string;
+                            placeholder: string;
+                        };
+                        tokenEndpoint: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                invalidUrl: string;
+                            };
+                        };
+                    };
+                };
                 none: {
                     name: string;
                 };

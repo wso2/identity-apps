@@ -62,7 +62,9 @@ import PreUpdateProfileActionConfigForm from "../components/pre-update-profile-a
 import { ActionsConstants } from "../constants/actions-constants";
 import { ActionVersionInfo, useActionVersioning } from "../hooks/use-action-versioning";
 import {
-    ActionConfigFormPropertyInterface, PreUpdatePasswordActionConfigFormPropertyInterface,
+    ActionConfigFormPropertyInterface,
+    AuthenticationPropertiesInterface,
+    PreUpdatePasswordActionConfigFormPropertyInterface,
     PreUpdatePasswordActionResponseInterface,
     PreUpdateProfileActionConfigFormPropertyInterface,
     PreUpdateProfileActionResponseInterface
@@ -156,14 +158,22 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     const actionCommonInitialValues: ActionConfigFormPropertyInterface =
         useMemo(() => {
             if (action) {
+                const authProperties: Partial<AuthenticationPropertiesInterface> =
+                    action?.endpoint?.authentication?.properties ?? {};
+
                 return {
                     allowedHeaders: action?.endpoint?.allowedHeaders,
                     allowedParameters: action?.endpoint?.allowedParameters,
                     authenticationType: action?.endpoint?.authentication?.type?.toString(),
+                    clientIdAuthProperty: authProperties?.clientId,
                     endpointUri: action?.endpoint?.uri,
+                    headerAuthProperty: authProperties?.header,
                     id: action?.id,
                     name: action?.name,
-                    rule: action?.rule
+                    rule: action?.rule,
+                    scopesAuthProperty: authProperties?.scopes,
+                    tokenEndpointAuthProperty: authProperties?.tokenEndpoint,
+                    usernameAuthProperty: authProperties?.username
                 };
 
             } else {

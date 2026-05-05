@@ -146,6 +146,47 @@ export const validateActionEndpointFields = (
             }
 
             break;
+        case AuthenticationType.CLIENT_CREDENTIAL:
+            if (
+                isCreateFormState || isAuthenticationUpdateFormState ||
+                values?.clientIdAuthProperty || values?.clientSecretAuthProperty ||
+                values?.tokenEndpointAuthProperty
+            ) {
+                if (!values?.tokenEndpointAuthProperty) {
+                    errors.tokenEndpointAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.clientCredential" +
+                        ".properties.tokenEndpoint.validations.empty"
+                    );
+                } else if (
+                    !FormValidation.url(values?.tokenEndpointAuthProperty, {
+                        domain: {
+                            allowUnicode: true,
+                            minDomainSegments: 1,
+                            tlds: false
+                        },
+                        scheme: [ "https", "http" ]
+                    })
+                ) {
+                    errors.tokenEndpointAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.clientCredential" +
+                        ".properties.tokenEndpoint.validations.invalidUrl"
+                    );
+                }
+                if (!values?.clientIdAuthProperty) {
+                    errors.clientIdAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.clientCredential" +
+                        ".properties.clientId.validations.empty"
+                    );
+                }
+                if (!values?.clientSecretAuthProperty) {
+                    errors.clientSecretAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.clientCredential" +
+                        ".properties.clientSecret.validations.empty"
+                    );
+                }
+            }
+
+            break;
         default:
             break;
     }

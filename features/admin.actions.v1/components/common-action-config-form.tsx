@@ -22,6 +22,7 @@ import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import ActionEndpointConfigForm from "./action-endpoint-config-form";
+import { ActionsConstants } from "../constants/actions-constants";
 import { ActionConfigFormPropertyInterface, AuthenticationType } from "../models/actions";
 import "./common-action-config-form.scss";
 
@@ -95,6 +96,7 @@ const CommonActionConfigForm: FunctionComponent<CommonActionConfigFormInterface>
                 onAuthenticationTypeChange={ onAuthenticationTypeChange }
                 isReadOnly={ isReadOnly }
                 showHeadersAndParams= { showHeadersAndParams }
+                authenticationTypes={ ActionsConstants.ACTION_AUTH_TYPES }
             />
         </div>
     );
