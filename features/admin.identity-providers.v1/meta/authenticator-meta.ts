@@ -51,6 +51,9 @@ export class AuthenticatorMeta {
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Get users Identity first to " +
                 "control the authentication flow.",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .SHARED_USER_IDENTIFIER_AUTHENTICATOR_ID ]: "Identify shared users " +
+                "first to control the authentication flow.",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID ]: "Login users with passkey, " +
                 "FIDO security key or biometrics.",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
@@ -138,6 +141,8 @@ export class AuthenticatorMeta {
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.identifierFirst,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .SHARED_USER_IDENTIFIER_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.identifierFirst,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .JWT_BASIC_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.jwtBasic,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.fido,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
@@ -192,6 +197,7 @@ export class AuthenticatorMeta {
 
         return get({
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Predefined",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SHARED_USER_IDENTIFIER_AUTHENTICATOR_ID ]: "Predefined",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID ]: "Predefined",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.MAGIC_LINK_AUTHENTICATOR_ID ]: "Predefined",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID ]: "Predefined",
@@ -247,6 +253,8 @@ export class AuthenticatorMeta {
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID ]: "email-otp",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: "push",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "identifier-first",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .SHARED_USER_IDENTIFIER_AUTHENTICATOR_ID ]: "shared-user-identifier",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "google",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID ]: "github",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID ]: "facebook",

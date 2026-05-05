@@ -48,6 +48,7 @@ export class LocalAuthenticatorConstants {
         ORGANIZATION_IDENTIFIER_HANDLER_AUTHENTICATOR_ID: string;
         PASSIVE_STS_AUTHENTICATOR_ID: string;
         PUSH_AUTHENTICATOR_ID: string;
+        SHARED_USER_IDENTIFIER_AUTHENTICATOR_ID: string;
         SMS_OTP_AUTHENTICATOR_ID: string;
         TOTP_AUTHENTICATOR_ID: string;
         X509_CERTIFICATE_AUTHENTICATOR_ID: string;
@@ -63,6 +64,7 @@ export class LocalAuthenticatorConstants {
             ORGANIZATION_IDENTIFIER_HANDLER_AUTHENTICATOR_ID: "T3JnYW5pemF0aW9uSWRlbnRpZmllckhhbmRsZXI",
             PASSIVE_STS_AUTHENTICATOR_ID: "UGFzc2l2ZVNUU0F1dGhlbnRpY2F0b3I",
             PUSH_AUTHENTICATOR_ID: "cHVzaC1ub3RpZmljYXRpb24tYXV0aGVudGljYXRvcg",
+            SHARED_USER_IDENTIFIER_AUTHENTICATOR_ID: "U2hhcmVkVXNlcklkZW50aWZpZXJFeGVjdXRvcg",
             SMS_OTP_AUTHENTICATOR_ID: "c21zLW90cC1hdXRoZW50aWNhdG9y",
             TOTP_AUTHENTICATOR_ID: "dG90cA",
             X509_CERTIFICATE_AUTHENTICATOR_ID: "eDUwOUNlcnRpZmljYXRlQXV0aGVudGljYXRvcg"
@@ -83,6 +85,7 @@ export class LocalAuthenticatorConstants {
         PASSIVE_STS_AUTHENTICATOR_NAME: string;
         PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME: string;
         PUSH_AUTHENTICATOR_NAME: string;
+        SHARED_USER_IDENTIFIER_AUTHENTICATOR_NAME: string;
         SMS_OTP_AUTHENTICATOR_NAME: string;
         TOTP_AUTHENTICATOR_NAME: string;
     } = {
@@ -97,6 +100,7 @@ export class LocalAuthenticatorConstants {
             PASSIVE_STS_AUTHENTICATOR_NAME: "PassiveSTSAuthenticator",
             PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME: "password-reset-enforcer",
             PUSH_AUTHENTICATOR_NAME: "push-notification-authenticator",
+            SHARED_USER_IDENTIFIER_AUTHENTICATOR_NAME: "SharedUserIdentifierExecutor",
             SMS_OTP_AUTHENTICATOR_NAME: "sms-otp-authenticator",
             TOTP_AUTHENTICATOR_NAME: "totp"
         };
