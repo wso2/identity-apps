@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 4.6.0
+
+### Minor Changes
+
+- [#10230](https://github.com/wso2/identity-apps/pull/10230) [`bb0115f5684773bfd99ecdfdcf48aadd784dc902`](https://github.com/wso2/identity-apps/commit/bb0115f5684773bfd99ecdfdcf48aadd784dc902) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Provide Console UI support to configure OAuth2 client Credential based Authentication for actions
+
+### Patch Changes
+
+- Updated dependencies [[`bb0115f5684773bfd99ecdfdcf48aadd784dc902`](https://github.com/wso2/identity-apps/commit/bb0115f5684773bfd99ecdfdcf48aadd784dc902)]:
+  - @wso2is/admin.actions.v1@1.16.0
+  - @wso2is/i18n@2.40.0
+
 ## 4.5.26
 
 ### Patch Changes
