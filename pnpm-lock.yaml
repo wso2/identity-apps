@@ -663,7 +663,7 @@ importers:
         specifier: ^2.13.1
         version: link:../../modules/core
       '@wso2is/forms':
-        specifier: ^2.10.2
+        specifier: ^2.10.3
         version: link:../../modules/forms
       '@wso2is/i18n':
         specifier: ^2.38.7
