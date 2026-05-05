@@ -33,7 +33,7 @@ import {
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FormState } from "@wso2is/form";
+import { FormState } from "@wso2is/forms";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";

@@ -46,7 +46,7 @@ import { AlertLevels, FeatureAccessConfigInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms/legacy";
 import {
     Code,
     ContentLoader,

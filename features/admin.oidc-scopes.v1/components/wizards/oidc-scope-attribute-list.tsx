@@ -17,7 +17,7 @@
  */
 
 import { ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
-import { Forms } from "@wso2is/forms";
+import { Forms } from "@wso2is/forms/legacy";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";

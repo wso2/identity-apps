@@ -20,7 +20,7 @@ import CountryFlag from "@oxygen-ui/react/CountryFlag";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
-import { FinalForm, FinalFormField, FormRenderProps, SelectFieldAdapter } from "@wso2is/form";
+import { FinalForm, FinalFormField, FormRenderProps, SelectFieldAdapter } from "@wso2is/forms";
 import { LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Button, Popup, useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";

@@ -18,8 +18,8 @@
 
 import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FinalForm, FinalFormField, FormRenderProps, RadioGroupFieldAdapter, TextFieldAdapter } from "@wso2is/form";
-import { RadioChild } from "@wso2is/forms";
+import { FinalForm, FinalFormField, FormRenderProps, RadioGroupFieldAdapter, TextFieldAdapter } from "@wso2is/forms";
+import { RadioChild } from "@wso2is/forms/legacy";
 import React, {
     ForwardRefExoticComponent,
     ForwardedRef,

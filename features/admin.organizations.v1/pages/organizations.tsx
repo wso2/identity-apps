@@ -57,7 +57,7 @@ import {
     Icon,
     PaginationProps
 } from "semantic-ui-react";
-import { FormValue } from "../../../modules/form/src";
+import { FormValue } from "@wso2is/forms/legacy";
 import { getOrganizations, useAuthorizedOrganizationsList } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
 import MetaAttributeAutoComplete from "../components/meta-attribute-auto-complete";

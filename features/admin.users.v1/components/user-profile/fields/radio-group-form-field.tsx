@@ -17,7 +17,7 @@
  */
 
 import { LabelValue } from "@wso2is/core/models";
-import { FinalFormField, RadioGroupFieldAdapter } from "@wso2is/form";
+import { FinalFormField, RadioGroupFieldAdapter } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { RadioGroupFormFieldPropsInterface } from "../../../models/ui";

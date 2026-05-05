@@ -24,7 +24,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { DropdownChild, Field, Form, composeValidators } from "@wso2is/form";
+import { DropdownChild, Field, Form, composeValidators } from "@wso2is/forms";
 import { Code, FormInputLabel, FormSection, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";

@@ -21,7 +21,7 @@ import Button from "@oxygen-ui/react/Button";
 import Divider from "@oxygen-ui/react/Divider";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FinalForm, FormRenderProps } from "@wso2is/form/src";
+import { FinalForm, FormRenderProps } from "@wso2is/forms";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";

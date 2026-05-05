@@ -25,7 +25,7 @@ import { AlertInterface, AlertLevels, IdentifiableComponentInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { CheckboxFieldAdapter, FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/form/src";
+import { CheckboxFieldAdapter, FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/forms";
 import {
     ConfirmationModal,
     DangerZone,

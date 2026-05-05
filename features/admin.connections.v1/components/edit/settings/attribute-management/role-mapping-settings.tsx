@@ -29,7 +29,7 @@ import { INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants/role-constants
 import { RoleListInterface, RolesInterface, TestableComponentInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
-import { DynamicField, KeyValue } from "@wso2is/forms";
+import { DynamicField, KeyValue } from "@wso2is/forms/legacy";
 import { Heading, Hint } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";

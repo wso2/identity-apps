@@ -54,9 +54,9 @@ import {
     FormRenderProps,
     SelectFieldAdapter,
     TextFieldAdapter
-} from "@wso2is/form";
-import { FormSpy } from "@wso2is/form/src";
-import { FormValue } from "@wso2is/forms";
+} from "@wso2is/forms";
+import { FormSpy } from "@wso2is/forms";
+import { FormValue } from "@wso2is/forms/legacy";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     MutableRefObject,

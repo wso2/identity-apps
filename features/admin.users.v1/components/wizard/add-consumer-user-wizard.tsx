@@ -42,7 +42,7 @@ import { AlertLevels, HttpErrorResponseDataInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FormValue, useTrigger } from "@wso2is/forms";
+import { FormValue, useTrigger } from "@wso2is/forms/legacy";
 import { GenericIconProps, Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";

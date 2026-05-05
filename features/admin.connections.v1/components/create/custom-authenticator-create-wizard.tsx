@@ -34,8 +34,8 @@ import { AlertLevels, HttpErrorResponseDataInterface,
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Wizard2, WizardPage } from "@wso2is/form";
-import { FormSpy } from "@wso2is/form/src";
+import { Field, Wizard2, WizardPage } from "@wso2is/forms";
+import { FormSpy } from "@wso2is/forms";
 import {
     ContentLoader,
     GenericIcon,

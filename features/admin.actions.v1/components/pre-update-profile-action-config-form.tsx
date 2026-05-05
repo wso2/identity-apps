@@ -32,7 +32,7 @@ import { IdentifiableComponentInterface,
 } from "@wso2is/core/models";
 import {
     FinalForm,
-    FormRenderProps } from "@wso2is/form";
+    FormRenderProps } from "@wso2is/forms";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import pickBy from "lodash-es/pickBy";

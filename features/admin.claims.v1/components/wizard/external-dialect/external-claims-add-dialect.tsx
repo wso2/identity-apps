@@ -18,7 +18,7 @@
 
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { FormValue } from "@wso2is/forms";
+import { FormValue } from "@wso2is/forms/legacy";
 import { EmptyPlaceholder } from "@wso2is/react-components";
 import differenceWith from "lodash-es/differenceWith";
 import isEqual from "lodash-es/isEqual";

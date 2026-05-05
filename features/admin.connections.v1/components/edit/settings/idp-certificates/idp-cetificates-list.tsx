@@ -28,7 +28,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
-import { Form } from "@wso2is/form";
+import { Form } from "@wso2is/forms";
 import {
     ConfirmationModal,
     Popup,

@@ -13,7 +13,6 @@
         "@wso2is/admin.claims.v1": "^2.30.6",
         "@wso2is/admin.core.v1": "^2.55.6",
         "@wso2is/core": "^2.12.10",
-        "@wso2is/form": "^2.10.1",
         "@wso2is/react-components": "^2.9.25",
         "axios": "^1.7.0",
         "i18next": "^21.9.1",

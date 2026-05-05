@@ -68,9 +68,9 @@ import {
 } from "@wso2is/core/models";
 import { Property } from "@wso2is/core/src/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
-import { DropDownItemInterface } from "@wso2is/form/src";
-import { DynamicField , KeyValue } from "@wso2is/forms";
+import { Field, Form } from "@wso2is/forms";
+import { DropDownItemInterface } from "@wso2is/forms";
+import { DynamicField , KeyValue } from "@wso2is/forms/legacy";
 import {
     ConfirmationModal,
     CopyInputField,

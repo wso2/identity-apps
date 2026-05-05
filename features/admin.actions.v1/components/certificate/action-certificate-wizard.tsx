@@ -20,7 +20,7 @@ import { AddCertificateFormComponent } from "@wso2is/admin.core.v1/components/ad
 import { IdentifiableComponentInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
-import { useTrigger } from "@wso2is/forms";
+import { useTrigger } from "@wso2is/forms/legacy";
 import { Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";

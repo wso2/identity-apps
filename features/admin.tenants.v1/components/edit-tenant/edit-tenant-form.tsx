@@ -41,7 +41,7 @@ import {
     MutableState,
     TextFieldAdapter,
     Tools
-} from "@wso2is/form";
+} from "@wso2is/forms";
 import { PasswordValidation } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";

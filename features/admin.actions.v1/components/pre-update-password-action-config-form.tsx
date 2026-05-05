@@ -36,7 +36,7 @@ import {
     FinalFormField,
     FormRenderProps,
     SelectFieldAdapter
-} from "@wso2is/form";
+} from "@wso2is/forms";
 import { DropdownChild } from "@wso2is/forms";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";

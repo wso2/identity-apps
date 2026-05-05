@@ -18,7 +18,7 @@
 
 import { ProfileConstants } from "@wso2is/core/constants";
 import { ClaimInputFormat, PatchOperationRequest } from "@wso2is/core/models";
-import { FormValue } from "@wso2is/forms";
+import { FormValue } from "@wso2is/forms/legacy";
 import React, { Dispatch, FunctionComponent, ReactElement } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CheckboxFieldForm from "./checkbox-field-form";

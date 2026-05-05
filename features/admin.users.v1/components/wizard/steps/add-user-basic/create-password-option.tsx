@@ -19,7 +19,7 @@
 import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FinalFormField, FormApi, FormSpy, TextFieldAdapter } from "@wso2is/form/src";
+import { FinalFormField, FormApi, FormSpy, TextFieldAdapter } from "@wso2is/forms";
 import { Button, PasswordValidation } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";

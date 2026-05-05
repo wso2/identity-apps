@@ -22,7 +22,7 @@ import {
     IdentifiableComponentInterface,
     ProfileSchemaInterface
 } from "@wso2is/core/models";
-import { CheckboxFieldAdapter, FinalFormField, SwitchFieldAdapter } from "@wso2is/form";
+import { CheckboxFieldAdapter, FinalFormField, SwitchFieldAdapter } from "@wso2is/forms";
 import dayjs, { Dayjs } from "dayjs";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";

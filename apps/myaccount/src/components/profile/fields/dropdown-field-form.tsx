@@ -20,7 +20,7 @@ import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
 import { LabelValue } from "@wso2is/core/models";
-import { FinalForm, FinalFormField, FormRenderProps, SelectFieldAdapter } from "@wso2is/form";
+import { FinalForm, FinalFormField, FormRenderProps, SelectFieldAdapter } from "@wso2is/forms";
 import { Button, Popup, useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";

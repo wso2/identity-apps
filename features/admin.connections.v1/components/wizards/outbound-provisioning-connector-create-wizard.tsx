@@ -21,8 +21,8 @@ import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalForm, FormApi, FormRenderProps, FormValue } from "@wso2is/form";
-import { useTrigger } from "@wso2is/forms";
+import { FinalForm, FormApi, FormRenderProps, FormValue } from "@wso2is/forms";
+import { useTrigger } from "@wso2is/forms/legacy";
 import { ContentLoader, Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo, useRef, useState } from "react";

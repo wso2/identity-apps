@@ -29,7 +29,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { store } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import { Link } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";

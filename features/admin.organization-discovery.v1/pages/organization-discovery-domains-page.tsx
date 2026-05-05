@@ -35,7 +35,7 @@ import {
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import { EmphasizedSegment, Link, PageLayout } from "@wso2is/react-components";
 import React, {
     FunctionComponent,

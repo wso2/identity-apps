@@ -25,7 +25,7 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { AlertLevels, IdentifiableComponentInterface, PatchOperationRequest } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
+import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
 import { FieldRenderProps } from "react-final-form";

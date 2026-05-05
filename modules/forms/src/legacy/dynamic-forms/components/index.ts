@@ -9,7 +9,8 @@
 
 export * from "./adapters";
 export * from "./dynamic-form";
-export * from "./dynamic-form-field";
+export { DynamicField as DynamicFormField } from "./dynamic-form-field";
+export type { DynamicFieldProps } from "./dynamic-form-field";
 export * from "./dynamic-wizard";
 export * from "./dynamic-wizard-page";
 export * from "./field-input";

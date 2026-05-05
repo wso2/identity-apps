@@ -23,7 +23,7 @@ import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores
 import { useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { AutocompleteFieldAdapter, FinalForm, FinalFormField } from "@wso2is/form";
+import { AutocompleteFieldAdapter, FinalForm, FinalFormField } from "@wso2is/forms";
 import { Hint, Message } from "@wso2is/react-components";
 import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";

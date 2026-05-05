@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Field } from "@wso2is/form";
+import { Field } from "@wso2is/forms";
 import {  Code, GenericIcon, Heading, ImagePreview } from "@wso2is/react-components";
 import React, { Fragment, ReactElement } from "react";
 import { Trans } from "react-i18next";

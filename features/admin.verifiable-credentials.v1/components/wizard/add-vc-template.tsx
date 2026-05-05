@@ -29,7 +29,7 @@ import { AlertInterface, AlertLevels, Claim, ExternalClaim, IdentifiableComponen
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form/src";
+import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/forms";
 import { Button, Hint } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { HTMLAttributes, ReactElement, SyntheticEvent, useEffect, useState } from "react";

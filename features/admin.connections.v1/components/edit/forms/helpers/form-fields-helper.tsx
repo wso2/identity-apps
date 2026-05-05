@@ -23,7 +23,7 @@ import {
     FormValue,
     StrictRadioChild,
     Validation
-} from "@wso2is/forms";
+} from "@wso2is/forms/legacy";
 import { I18n } from "@wso2is/i18n";
 import { CopyInputField, GenericIcon, Hint, P12FileStrategy } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";

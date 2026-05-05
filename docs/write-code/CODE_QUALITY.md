@@ -166,24 +166,24 @@ export const MyComponent = () => {
 import { MyComponent } from "./MyComponent";
 ```
 
-## Use `react-final-form` and related imports from `@wso2is/form` when implementing new forms.
+## Use `react-final-form` and related imports from `@wso2is/forms` when implementing new forms.
 
-The in-house form builder in modules/forms has limitations in scalability, flexibility, and styling, which makes it unsuitable for complex use cases. Instead of 
-maintaining this outdated implementation, we are adopting [React Final Form](https://final-form.org/react/) as our standard for building forms. Customized wrappers for React Final Form components are available in the `wso2is/form` module and should be used for all new forms.
+The in-house form builder in `@wso2is/forms/legacy` has limitations in scalability, flexibility, and styling, which makes it unsuitable for complex use cases. Instead of 
+maintaining this outdated implementation, we are adopting [React Final Form](https://final-form.org/react/) as our standard for building forms. Customized wrappers for React Final Form components are available in the `@wso2is/forms` module (located in `modules/forms`) and should be used for all new forms.
 
 **Why:**
 - The in-house form builder is difficult to scale for all use cases, and styling inconsistencies and difficulties arise in certain scenarios.
 - React Final Form is a robust, widely-used library with better features and community support.
 
 **What to do:**
-Always use React Final Form and related components from `@wso2is/form` (located in `modules/form`) for implementing new forms.
+Always use React Final Form and related components from `@wso2is/forms` (located in `modules/forms`) for implementing new forms.
 
 **Example:**
 
 Recommended:
 
 ```javascript
-import { FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/form";
+import { FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/forms";
 
 const MyForm = () => (
   <FinalForm
@@ -211,7 +211,7 @@ const MyForm = () => (
 Avoid:
 
 ```javascript
-import { Forms, Input } from "@wso2is/forms";
+import { Forms, Input } from "@wso2is/forms/legacy";
 
 const MyForm = () => (
   <Forms

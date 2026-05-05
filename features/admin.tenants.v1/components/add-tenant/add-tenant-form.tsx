@@ -39,7 +39,7 @@ import {
     TextFieldAdapter,
     Tools,
     composeValidators
-} from "@wso2is/form";
+} from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { FormState } from "final-form";

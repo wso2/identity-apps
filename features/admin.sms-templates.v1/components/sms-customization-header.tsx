@@ -21,7 +21,7 @@ import TextField from "@oxygen-ui/react/TextField";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
-import { DropdownChild, Field, Form } from "@wso2is/form";
+import { DropdownChild, Field, Form } from "@wso2is/forms";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";

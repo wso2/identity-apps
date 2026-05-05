@@ -20,7 +20,7 @@ import "@testing-library/jest-dom";
 import React from "react";
 import { Form } from "semantic-ui-react";
 import constants from "./constants";
-import { Field, Forms } from "../../src";
+import { Field, Forms } from "../";
 import { GroupFields } from "../components";
 import { FormField, Type, Validation } from "../models";
 

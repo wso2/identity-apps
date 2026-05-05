@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FormPropsInterface } from "@wso2is/form";
+import { FormPropsInterface } from "@wso2is/forms";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, MutableRefObject, PropsWithChildren, ReactElement } from "react";
 import { useTranslation } from "react-i18next";

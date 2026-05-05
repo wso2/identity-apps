@@ -19,7 +19,7 @@
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
-import { Field, FormField, FormValue, Forms, Validation } from "@wso2is/forms";
+import { Field, FormField, FormValue, Forms, Validation } from "@wso2is/forms/legacy";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useRef } from "react";
 import { Trans, useTranslation } from "react-i18next";

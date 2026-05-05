@@ -20,7 +20,7 @@ import { UploadCertificate } from "@wso2is/admin.core.v1/components/upload-certi
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Certificate, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { useTrigger } from "@wso2is/forms";
+import { useTrigger } from "@wso2is/forms/legacy";
 import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import { X509, zulutodate } from "jsrsasign";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";

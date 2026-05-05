@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FieldConstants } from "@wso2is/form";
+import { FieldConstants } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
 import { FormValidation } from "@wso2is/validation";
 

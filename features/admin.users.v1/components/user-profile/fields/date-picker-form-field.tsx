@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { DatePickerFieldAdapter, FinalFormField } from "@wso2is/form";
+import { DatePickerFieldAdapter, FinalFormField } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { DatePickerFormFieldPropsInterface } from "../../../models/ui";
