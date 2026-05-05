@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.0.20
+
+### Patch Changes
+
+- [#10096](https://github.com/wso2/identity-apps/pull/10096) [`95e91071923a2259708f5076ea6120e4df921225`](https://github.com/wso2/identity-apps/commit/95e91071923a2259708f5076ea6120e4df921225) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add support for shared user direct login.
+
 ## 5.0.19
 
 ### Patch Changes
