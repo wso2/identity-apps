@@ -36,6 +36,7 @@ interface RuleConfigFormInterface extends IdentifiableComponentInterface {
     isHasRule : boolean;
     setIsHasRule: (value: boolean) => void;
     setRule: Dispatch<React.SetStateAction<RuleWithoutIdInterface>>;
+    version?: string;
 }
 
 const RuleConfigForm: FunctionComponent<RuleConfigFormInterface> = ({
@@ -45,6 +46,7 @@ const RuleConfigForm: FunctionComponent<RuleConfigFormInterface> = ({
     isHasRule,
     setIsHasRule,
     setRule,
+    version,
     ["data-componentid"]: _componentId = "action-rule-config-form"
 }: RuleConfigFormInterface): ReactElement => {
 
@@ -97,13 +99,21 @@ const RuleConfigForm: FunctionComponent<RuleConfigFormInterface> = ({
                         </Trans>
                     </AlertTitle>
                     <Trans
-                        i18nKey={ "actions:fields.rules.info.message." + ruleActionType }
-                        defaults="This action will be executed without any conditions."
+                        i18nKey={ version
+                            ? `actions:fields.rules.info.message.${ruleActionType}.${version}`
+                            : `actions:fields.rules.info.message.${ruleActionType}`
+                        }
+                        defaults="This action will be executed without any conditio?ns."
                         components={ [
                             <Code key="authorization_code">authorization_code</Code>,
                             <Code key="client_credentials">client_credentials</Code>,
                             <Code key="password">password</Code>,
-                            <Code key="refresh_token">refresh_token</Code>
+                            <Code key="refresh_token">refresh_token</Code>,
+                            <Code key="token_exchange">token_exchange</Code>,
+                            <Code key="device_code">device_code</Code>,
+                            <Code key="organization_switch">organization_switch</Code>,
+                            <Code key="jwt_bearer">jwt_bearer</Code>,
+                            <Code key="saml2_bearer">saml2_bearer</Code>
                         ] }
                     />
                     <div>

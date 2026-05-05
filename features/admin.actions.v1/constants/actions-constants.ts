@@ -88,6 +88,15 @@ export class ActionsConstants {
                     "applicationInitiatedRegistration",
                     "adminInitiatedRegistration"
                 ]
+            },
+            [ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH]: {
+                "v1": [
+                    "urn:ietf:params:oauth:grant-type:token-exchange",
+                    "urn:ietf:params:oauth:grant-type:device_code",
+                    "organization_switch",
+                    "urn:ietf:params:oauth:grant-type:jwt-bearer",
+                    "urn:ietf:params:oauth:grant-type:saml2-bearer"
+                ]
             }
         };
 

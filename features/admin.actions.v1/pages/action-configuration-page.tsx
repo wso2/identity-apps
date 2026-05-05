@@ -21,8 +21,8 @@ import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/a
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface,
-    HttpErrorResponseDataInterface
+import { AlertInterface, AlertLevels, HttpErrorResponseDataInterface,
+    IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -62,7 +62,10 @@ import PreUpdateProfileActionConfigForm from "../components/pre-update-profile-a
 import { ActionsConstants } from "../constants/actions-constants";
 import { ActionVersionInfo, useActionVersioning } from "../hooks/use-action-versioning";
 import {
-    ActionConfigFormPropertyInterface, PreUpdatePasswordActionConfigFormPropertyInterface,
+    ActionConfigFormPropertyInterface,
+    PreIssueAccessTokenActionConfigFormPropertyInterface,
+    PreIssueAccessTokenActionResponseInterface,
+    PreUpdatePasswordActionConfigFormPropertyInterface,
     PreUpdatePasswordActionResponseInterface,
     PreUpdateProfileActionConfigFormPropertyInterface,
     PreUpdateProfileActionResponseInterface
@@ -93,7 +96,10 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     const { getLink } = useDocumentation();
 
     const handleSuccess: (operation: string) => void = useHandleSuccess();
-    const handleError: (error: AxiosError<HttpErrorResponseDataInterface>, operation: string) => void = useHandleError();
+    const handleError: (
+        error: AxiosError<HttpErrorResponseDataInterface>,
+        operation: string
+    ) => void = useHandleError();
 
     const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
     const hasActionCreatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.create);
@@ -166,6 +172,18 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                     rule: action?.rule
                 };
 
+            } else {
+                return null;
+            }
+        }, [ action ]);
+
+    const preIssueAccessTokenActionInitialValues: PreIssueAccessTokenActionConfigFormPropertyInterface =
+        useMemo(() => {
+            if (action && actionTypeApiPath === ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH ) {
+                return {
+                    ...actionCommonInitialValues,
+                    attributes: (action as PreIssueAccessTokenActionResponseInterface)?.attributes
+                };
             } else {
                 return null;
             }
@@ -504,7 +522,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                         <Grid.Column width={ 16 }>
                             { actionTypeApiPath === ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH && (
                                 <PreIssueAccessTokenActionConfigForm
-                                    initialValues={ actionCommonInitialValues }
+                                    initialValues={ preIssueAccessTokenActionInitialValues }
                                     isLoading={ isLoading }
                                     isReadOnly={ isReadOnly() }
                                     actionTypeApiPath={ actionTypeApiPath }
