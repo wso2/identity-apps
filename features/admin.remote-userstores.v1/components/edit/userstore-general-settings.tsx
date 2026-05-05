@@ -26,9 +26,7 @@ import { PatchData, UserStoreDetails, UserStoreProperty } from "@wso2is/admin.us
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FormValue } from "@wso2is/forms/legacy";
-import { Field } from "@wso2is/forms";
-import { Forms, Validation } from "@wso2is/forms/legacy";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms/legacy";
 import {
     ConfirmationModal,
     CopyInputField,

@@ -25,12 +25,19 @@
         "apps/myaccount/jest.config.ts": ["unresolved"],
         "modules/core/jest.config.ts": ["unresolved"],
         "modules/forms/jest.config.ts": ["unresolved"],
-        "modules/i18n/jest.config.ts": ["unresolved"]
+        "modules/i18n/jest.config.ts": ["unresolved"],
+        "modules/forms/src/legacy/dynamic-forms/components/adapters.tsx": ["exports", "types"],
+        "modules/forms/src/legacy/dynamic-forms/components/utils.tsx": ["exports", "types"],
+        "modules/forms/src/legacy/dynamic-forms/models/fields.ts": ["exports"],
+        "modules/forms/src/legacy/dynamic-forms/utils/validate.ts": ["exports"],
+        "modules/forms/src/legacy/index.ts": ["exports"],
+        "modules/forms/src/legacy/components/dynamic-field.tsx": ["types"],
+        "modules/forms/src/legacy/dynamic-forms/components/field-input.tsx": ["types"],
+        "modules/forms/src/legacy/dynamic-forms/components/field.tsx": ["types"],
+        "modules/forms/src/legacy/dynamic-forms/components/index.ts": ["types"],
+        "modules/forms/src/legacy/models/forms.ts": ["types"]
     },
-    "ignoreBinaries": [
-        "prebuild",
-        "postbuild"
-    ],
+    "ignoreBinaries": [],
     "ignoreDependencies": [],
     "workspaces": {
         ".": {
@@ -62,7 +69,6 @@
                 "config": []
             },
             "ignoreDependencies": [
-                "@wso2is/theme",
                 "buffer"
             ]
         },

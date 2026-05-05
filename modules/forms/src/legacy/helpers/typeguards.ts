@@ -32,7 +32,7 @@ import {
     ScopesField,
     TextField,
     ToggleField
-} from "../../src";
+} from "../models";
 
 /**
  * Type guard to check if an input element is a text field.
