@@ -1,5 +1,16 @@
 # @wso2is/admin.connections.v1
 
+## 2.37.6
+
+### Patch Changes
+
+- [#10108](https://github.com/wso2/identity-apps/pull/10108) [`89e10f134c1fbdd4308a877bcc8ba27be975d323`](https://github.com/wso2/identity-apps/commit/89e10f134c1fbdd4308a877bcc8ba27be975d323) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add UI improvements for shared user identifier.
+
+- Updated dependencies [[`89e10f134c1fbdd4308a877bcc8ba27be975d323`](https://github.com/wso2/identity-apps/commit/89e10f134c1fbdd4308a877bcc8ba27be975d323)]:
+  - @wso2is/admin.identity-providers.v1@2.27.5
+  - @wso2is/admin.applications.v1@2.42.25
+  - @wso2is/i18n@2.39.4
+
 ## 2.37.5
 
 ### Patch Changes

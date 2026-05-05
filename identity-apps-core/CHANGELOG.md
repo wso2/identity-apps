@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.0.21
+
+### Patch Changes
+
+- [#10252](https://github.com/wso2/identity-apps/pull/10252) [`e88e51997d3457e7a31d86f3b489f554c56ab85b`](https://github.com/wso2/identity-apps/commit/e88e51997d3457e7a31d86f3b489f554c56ab85b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove the hardcoded flow type from the flow API execution
+
 ## 5.0.20
 
 ### Patch Changes
