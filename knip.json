@@ -37,7 +37,10 @@
         "modules/forms/src/legacy/dynamic-forms/components/index.ts": ["types"],
         "modules/forms/src/legacy/models/forms.ts": ["types"]
     },
-    "ignoreBinaries": [],
+    "ignoreBinaries": [
+        "prebuild",
+        "postbuild"
+    ],
     "ignoreDependencies": [],
     "workspaces": {
         ".": {
