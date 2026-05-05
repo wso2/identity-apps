@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.40.0
+
+### Minor Changes
+
+- [#10230](https://github.com/wso2/identity-apps/pull/10230) [`bb0115f5684773bfd99ecdfdcf48aadd784dc902`](https://github.com/wso2/identity-apps/commit/bb0115f5684773bfd99ecdfdcf48aadd784dc902) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Provide Console UI support to configure OAuth2 client Credential based Authentication for actions
+
 ## 2.39.4
 
 ### Patch Changes
