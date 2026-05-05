@@ -26,7 +26,7 @@ import {
     KeyValueMapAdapter,
     TextFieldAdapter,
     __DEPRECATED__SelectFieldAdapter
-} from "@wso2is/form";
+} from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import ReactMarkdown from "react-markdown";

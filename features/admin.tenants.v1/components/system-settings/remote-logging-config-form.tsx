@@ -37,7 +37,7 @@ import {
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Forms, useTrigger } from "@wso2is/forms";
+import { Field, Forms, useTrigger } from "@wso2is/forms/legacy";
 import {
     ConfirmationModal,
     DangerZone,

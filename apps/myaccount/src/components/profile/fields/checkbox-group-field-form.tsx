@@ -24,7 +24,7 @@ import {
     FinalForm,
     FinalFormField,
     FormRenderProps
-} from "@wso2is/form";
+} from "@wso2is/forms";
 import { Button, Popup, useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";

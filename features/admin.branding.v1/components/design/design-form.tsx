@@ -28,7 +28,7 @@ import {
 } from "@wso2is/common.branding.v1/models";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form, FormPropsInterface } from "@wso2is/form";
+import { Field, Form, FormPropsInterface } from "@wso2is/forms";
 import {
     Code,
     ConfirmationModal,

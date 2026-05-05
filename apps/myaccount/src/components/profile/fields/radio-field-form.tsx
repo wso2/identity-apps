@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FinalForm, FinalFormField, FormRenderProps, RadioGroupFieldAdapter } from "@wso2is/form";
+import { FinalForm, FinalFormField, FormRenderProps, RadioGroupFieldAdapter } from "@wso2is/forms";
 import { Button, Popup, useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";

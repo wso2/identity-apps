@@ -24,8 +24,8 @@ import { AlertLevels, IdentifiableComponentInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalFormField, TextFieldAdapter, Wizard2, WizardPage } from "@wso2is/form";
-import { KeyValue } from "@wso2is/forms";
+import { FinalFormField, TextFieldAdapter, Wizard2, WizardPage } from "@wso2is/forms";
+import { KeyValue } from "@wso2is/forms/legacy";
 import {
     GenericIcon,
     Heading,

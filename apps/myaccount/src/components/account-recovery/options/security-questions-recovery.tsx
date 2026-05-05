@@ -19,7 +19,7 @@
 import { TestableComponentInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
-import { Field, FormValue, Forms } from "@wso2is/forms";
+import { Field, FormValue, Forms } from "@wso2is/forms/legacy";
 import { GenericIcon } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { ReactElement, useEffect, useState } from "react";

@@ -31,7 +31,6 @@
         "@wso2is/admin.userstores.v1": "^2.27.42",
         "@wso2is/admin.validation.v1": "^2.28.3",
         "@wso2is/core": "^2.13.0",
-        "@wso2is/form": "^2.10.1",
         "@wso2is/i18n": "^2.39.3",
         "@wso2is/react-components": "^2.10.2",
         "axios": "^1.7.0",

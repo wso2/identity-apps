@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { DropDownItemInterface, KeyValueMapValueFieldTypes, SupportedFileTypes } from "@wso2is/form";
+import { DropDownItemInterface, KeyValueMapValueFieldTypes, SupportedFileTypes } from "@wso2is/forms";
 
 /**
  * Interface to define a dynamic form.

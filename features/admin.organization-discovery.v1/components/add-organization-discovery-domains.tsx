@@ -44,7 +44,7 @@ import {
     FinalFormField,
     FormRenderProps,
     FormSpy
-} from "@wso2is/form";
+} from "@wso2is/forms";
 import { EmphasizedSegment, Hint, PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import debounce from "lodash-es/debounce";

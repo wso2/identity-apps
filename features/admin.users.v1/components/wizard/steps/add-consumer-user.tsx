@@ -27,7 +27,7 @@ import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constant
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { ProfileSchemaInterface } from "@wso2is/core/src/models";
-import { Field, FormValue, Forms, RadioChild, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, RadioChild, Validation } from "@wso2is/forms/legacy";
 import { Hint, PasswordValidation } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { DropdownChild } from "@wso2is/forms";
+import { DropdownChild } from "@wso2is/forms/legacy";
 
 /**
  * Interface for the Insights data that is passed to Charts.

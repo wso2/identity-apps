@@ -17,7 +17,7 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
-import { Field } from "@wso2is/form/src";
+import { Field } from "@wso2is/forms";
 import { Heading } from "@wso2is/react-components";
 import React, { ReactElement } from "react";
 import { TFunction } from "react-i18next";

@@ -22,7 +22,7 @@ import { AlertInterface, AlertLevels, TestableComponentInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormValue, Forms } from "@wso2is/forms";
+import { Field, FormValue, Forms } from "@wso2is/forms/legacy";
 import { Message } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import * as CountryLanguage from "country-language";

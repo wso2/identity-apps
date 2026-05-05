@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface, PatchOperationRequest, ProfileSchemaInterface } from "@wso2is/core/models";
-import { FormValue, Validation } from "@wso2is/forms";
+import { FormValue, Validation } from "@wso2is/forms/legacy";
 import { ProfilePatchOperationValue } from "./profile";
 
 /**

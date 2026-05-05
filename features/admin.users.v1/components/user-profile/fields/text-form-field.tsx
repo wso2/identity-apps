@@ -17,7 +17,7 @@
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
-import { FinalFormField, TextFieldAdapter } from "@wso2is/form";
+import { FinalFormField, TextFieldAdapter } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { TextFormFieldPropsInterface } from "../../../models/ui";

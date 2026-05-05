@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { DatePickerFieldAdapter, FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
+import { DatePickerFieldAdapter, FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/forms";
 import { Button, Popup, useMediaContext } from "@wso2is/react-components";
 import dayjs, { Dayjs } from "dayjs";
 import isEmpty from "lodash-es/isEmpty";

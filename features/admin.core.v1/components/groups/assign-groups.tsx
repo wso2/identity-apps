@@ -20,7 +20,7 @@ import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { RolesInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
-import { Forms } from "@wso2is/forms";
+import { Forms } from "@wso2is/forms/legacy";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
 import escapeRegExp from "lodash-es/escapeRegExp";
 import isEmpty from "lodash-es/isEmpty";

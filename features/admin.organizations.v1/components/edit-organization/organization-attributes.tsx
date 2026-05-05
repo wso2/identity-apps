@@ -24,7 +24,7 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { DynamicField, KeyValue, useTrigger } from "@wso2is/forms";
+import { DynamicField, KeyValue, useTrigger } from "@wso2is/forms/legacy";
 import {
     EmphasizedSegment,
     PrimaryButton

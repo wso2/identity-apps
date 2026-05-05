@@ -31,9 +31,9 @@ import { UserInviteInterface, UserListInterface } from "@wso2is/admin.users.v1/m
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
-import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
-import { AutocompleteFieldAdapter } from "@wso2is/form/src";
-import { Validation } from "@wso2is/forms";
+import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/forms";
+import { AutocompleteFieldAdapter } from "@wso2is/forms";
+import { Validation } from "@wso2is/forms/legacy";
 import {
     ContentLoader,
     DocumentationLink,

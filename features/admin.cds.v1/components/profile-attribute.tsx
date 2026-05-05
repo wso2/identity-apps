@@ -25,8 +25,8 @@ import { AlertLevels,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
-import { DynamicField, KeyValue } from "@wso2is/forms";
+import { Field, Form } from "@wso2is/forms";
+import { DynamicField, KeyValue } from "@wso2is/forms/legacy";
 import {
     AnimatedAvatar,
     ConfirmationModal,

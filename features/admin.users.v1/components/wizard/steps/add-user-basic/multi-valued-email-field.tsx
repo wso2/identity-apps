@@ -33,7 +33,7 @@ import {
     IdentifiableComponentInterface,
     ProfileSchemaInterface
 } from "@wso2is/core/models";
-import { FinalFormField, FormApi } from "@wso2is/form";
+import { FinalFormField, FormApi } from "@wso2is/forms";
 import { Popup } from "@wso2is/react-components";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";

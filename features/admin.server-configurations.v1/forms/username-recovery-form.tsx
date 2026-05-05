@@ -30,7 +30,7 @@ import {
     UsernameRecoveryFormValuesInterface
 } from "../models/username-recovery";
 import { CommonUtils } from "@wso2is/core/utils";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import { Heading, Link } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";

@@ -18,7 +18,7 @@
 
 import { UserAgentParser } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Forms } from "@wso2is/forms";
+import { Field, Forms } from "@wso2is/forms/legacy";
 import { ConfirmationModal, GenericIcon, Message, Popup } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";

@@ -18,7 +18,7 @@
 
 import { AttributeSelectList } from "@wso2is/admin.core.v1/components/attribute-select-list";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { useTrigger } from "@wso2is/forms";
+import { useTrigger } from "@wso2is/forms/legacy";
 import {
     Heading,
     LinkButton,

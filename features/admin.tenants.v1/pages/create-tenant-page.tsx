@@ -23,7 +23,7 @@ import { AlertInterface, AlertLevels, TestableComponentInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { DropdownChild, Field, Form } from "@wso2is/form";
+import { DropdownChild, Field, Form } from "@wso2is/forms";
 import {
     ContentLoader,
     GenericIcon,

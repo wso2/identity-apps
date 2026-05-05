@@ -23,7 +23,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import { Code, Heading, Hint, Text } from "@wso2is/react-components";
 import { Message } from "@wso2is/react-components/src";
 import isEmpty from "lodash-es/isEmpty";

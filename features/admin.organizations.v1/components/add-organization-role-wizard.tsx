@@ -24,7 +24,7 @@ import { TreeNode } from "@wso2is/admin.roles.v2/models/permission";
 import { CreateRoleInterface, CreateRoleMemberInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { useTrigger } from "@wso2is/forms";
+import { useTrigger } from "@wso2is/forms/legacy";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, SVGProps, useEffect, useState } from "react";

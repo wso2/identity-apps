@@ -29,8 +29,8 @@ import {
     PasswordRecoveryFormValuesInterface
 } from "../../models/password-recovery";
 import { CommonUtils } from "@wso2is/core/utils";
-import { Field, Form } from "@wso2is/form";
-import { RadioChild } from "@wso2is/forms";
+import { Field, Form } from "@wso2is/forms";
+import { RadioChild } from "@wso2is/forms/legacy";
 import { Heading, Hint, Link, Message } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";

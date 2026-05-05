@@ -23,7 +23,7 @@ import { AlertLevels, IdentifiableComponentInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, { FC, Fragment, ReactElement, useEffect, useState } from "react";

@@ -20,7 +20,7 @@ import { ProfileConstants } from "@wso2is/core/constants";
 import { PatchOperationRequest, TestableComponentInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
-import { Field, Forms, Validation, useTrigger } from "@wso2is/forms";
+import { Field, Forms, Validation, useTrigger } from "@wso2is/forms/legacy";
 import { FormValidation } from "@wso2is/validation";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { useState } from "react";

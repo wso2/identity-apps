@@ -26,7 +26,7 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, Claim, Property, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { DynamicField , KeyValue, useTrigger } from "@wso2is/forms";
+import { DynamicField , KeyValue, useTrigger } from "@wso2is/forms/legacy";
 import {
     EmphasizedSegment,
     Link,

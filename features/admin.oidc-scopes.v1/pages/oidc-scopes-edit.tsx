@@ -30,8 +30,8 @@ import { AlertLevels, Claim, ExternalClaim, TestableComponentInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
-import { useTrigger } from "@wso2is/forms";
+import { Field, Form } from "@wso2is/forms";
+import { useTrigger } from "@wso2is/forms/legacy";
 import { AnimatedAvatar, EmphasizedSegment, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import sortBy from "lodash-es/sortBy";

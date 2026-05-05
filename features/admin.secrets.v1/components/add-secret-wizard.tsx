@@ -20,7 +20,7 @@ import {  ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reduc
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import {
     ContentLoader,
     Heading,

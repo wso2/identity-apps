@@ -23,7 +23,7 @@ import {
     PreviewScreenType,
     PreviewScreenVariationType
 } from "@wso2is/common.branding.v1/models/branding-preferences";
-import { FormState } from "@wso2is/form";
+import { FormState } from "@wso2is/forms";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Context, createContext } from "react";
 import { BrandingModes } from "../constants/branding-preferences-constants";

@@ -15,7 +15,7 @@
         "features/admin.extensions.v1/configs/models/application.ts": ["enumMembers"],
         "features/admin.flow-builder-core.v1/components/resource-property-panel/choice-options-property-field.tsx": ["types"],
         "modules/core/src/models/http.ts": ["enumMembers"],
-        "modules/form/src/components/adapters/file-picker-adapter.tsx": ["enumMembers"],
+        "modules/forms/src/components/adapters/file-picker-adapter.tsx": ["enumMembers"],
         "features/admin.users.v1/components/guests/models/invite.ts": ["enumMembers"],
         "features/admin.core.v1/public-api.ts": ["unresolved"],
         "features/admin.extensions.v1/public-api.ts": ["unresolved"],
@@ -24,7 +24,6 @@
         "apps/console/jest.config.ts": ["unresolved"],
         "apps/myaccount/jest.config.ts": ["unresolved"],
         "modules/core/jest.config.ts": ["unresolved"],
-        "modules/form/jest.config.ts": ["unresolved"],
         "modules/forms/jest.config.ts": ["unresolved"],
         "modules/i18n/jest.config.ts": ["unresolved"]
     },
@@ -119,16 +118,6 @@
             ]
         },
         "modules/core": {
-            "project": [
-                "src/**/*.{ts,tsx}"
-            ]
-        },
-        "modules/dynamic-forms": {
-            "project": [
-                "src/**/*.{ts,tsx}"
-            ]
-        },
-        "modules/form": {
             "project": [
                 "src/**/*.{ts,tsx}"
             ]

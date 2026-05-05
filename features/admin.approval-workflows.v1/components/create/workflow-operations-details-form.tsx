@@ -25,7 +25,7 @@ import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalForm, FormRenderProps } from "@wso2is/form";
+import { FinalForm, FormRenderProps } from "@wso2is/forms";
 import { DataTable, Heading, Hint, TableActionsInterface, TableColumnInterface } from "@wso2is/react-components";
 import React, {
     ForwardRefExoticComponent,

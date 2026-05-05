@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Field, FieldConstants, Form } from "@wso2is/form";
+import { Field, FieldConstants, Form } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 import { FormApi } from "final-form";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";

@@ -23,7 +23,7 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import { DocumentationLink, Message, URLInput, useDocumentation } from "@wso2is/react-components";
 import classNames from "classnames";
 import isBoolean from "lodash-es/isBoolean";

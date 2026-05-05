@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Field, Wizard, WizardPage } from "@wso2is/form";
+import { Field, Wizard, WizardPage } from "@wso2is/forms";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";

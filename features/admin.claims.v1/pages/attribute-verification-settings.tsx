@@ -40,7 +40,7 @@ import { AlertLevels, IdentifiableComponentInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
 import { ContentLoader, EmphasizedSegment, Heading, PageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";

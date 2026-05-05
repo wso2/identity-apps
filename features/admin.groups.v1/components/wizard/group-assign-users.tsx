@@ -23,7 +23,7 @@ import { useUsersList } from "@wso2is/admin.users.v1/api/users";
 import { UserManagementUtils, generateAttributesString } from "@wso2is/admin.users.v1/utils";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FormValue } from "@wso2is/forms";
+import { FormValue } from "@wso2is/forms/legacy";
 import {
     Heading,
     Hint,

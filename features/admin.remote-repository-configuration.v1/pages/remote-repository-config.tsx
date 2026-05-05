@@ -18,7 +18,7 @@
 
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Forms } from "@wso2is/forms";
+import { Field, Forms } from "@wso2is/forms/legacy";
 import {
     ConfirmationModal,
     EmptyPlaceholder,

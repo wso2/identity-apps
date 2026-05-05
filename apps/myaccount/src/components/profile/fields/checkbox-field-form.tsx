@@ -23,7 +23,7 @@ import {
     FormRenderProps,
     FormSpy,
     FormState
-} from "@wso2is/form";
+} from "@wso2is/forms";
 import { FormValue } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Grid, List } from "semantic-ui-react";

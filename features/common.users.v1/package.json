@@ -23,7 +23,6 @@
     "dependencies": {
         "@oxygen-ui/react": "catalog:",
         "@oxygen-ui/react-icons": "^2.4.6",
-        "@wso2is/form": "^2.10.2",
         "lodash-es": "^4.17.21"
     },
     "devDependencies": {

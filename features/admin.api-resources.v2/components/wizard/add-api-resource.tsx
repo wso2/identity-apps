@@ -21,7 +21,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FormValue, useTrigger } from "@wso2is/forms";
+import { FormValue, useTrigger } from "@wso2is/forms/legacy";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { flushSync } from "react-dom";

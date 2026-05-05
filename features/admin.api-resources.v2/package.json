@@ -18,7 +18,6 @@
         "@oxygen-ui/react-icons": "^2.4.6",
         "@wso2is/access-control": "^3.5.3",
         "@wso2is/core": "^2.12.10",
-        "@wso2is/form": "^2.10.1",
         "@wso2is/forms": "^2.3.22",
         "@wso2is/react-components": "^2.9.16",
         "@wso2is/admin.core.v1": "^2.57.3",

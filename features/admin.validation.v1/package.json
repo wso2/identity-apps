@@ -23,7 +23,6 @@
         "@wso2is/admin.server-configurations.v1": "^2.38.51",
         "@wso2is/admin.users.v1": "^2.38.36",
         "@wso2is/core": "^2.12.10",
-        "@wso2is/form": "^2.10.1",
         "@wso2is/react-components": "^2.9.16",
         "@wso2is/admin.groups.v1": "^2.27.126",
         "@wso2is/admin.roles.v2": "^2.27.381",
