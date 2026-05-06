@@ -2642,7 +2642,7 @@
         "isClaimUniquenessValidationEnabled": {{ identity_mgt.user_claim_update.uniqueness.enable }},
         {% endif %}
         {% if oauth.hash_tokens_and_secrets is defined %}
-        "isClientSecretHashEnabled": {{ oauth.hash_tokens_and_secrets }},
+        "isClientSecretHashEnabled": {{ (oauth.hash_client_secret | default(false)) or (oauth.hash_tokens_and_secrets) }},
         {% endif %}
         {% if authentication.endpoint.enable_custom_claim_mappings is defined %}
         "isCustomClaimMappingEnabled": {{ authentication.endpoint.enable_custom_claim_mappings }},
