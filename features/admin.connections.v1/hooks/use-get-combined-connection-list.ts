@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import useGetActionsByType from "@wso2is/admin.actions.v1/api/use-get-actions-by-type";
+import useGetInFlowExtensions from "@wso2is/admin.flow-builder-core.v1/api/use-get-in-flow-extensions";
 import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -125,7 +125,7 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
         isValidating: isInFlowExtensionsFetchRequestValidating,
         error: inFlowExtensionsFetchRequestError,
         mutate: mutateInFlowExtensionsFetchRequest
-    } = useGetActionsByType("inFlowExtension", isInFlowExtensionEnabled && shouldFetchAuthenticators && offset === 0);
+    } = useGetInFlowExtensions(isInFlowExtensionEnabled && shouldFetchAuthenticators && offset === 0);
 
     const combinedData: ConnectionInterface[] = [];
 

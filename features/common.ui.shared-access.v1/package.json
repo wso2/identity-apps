@@ -23,6 +23,7 @@
         "v1"
     ],
     "dependencies": {
+        "@monaco-editor/react": "^4.5.1",
         "@mui/x-tree-view": "^8.5.2",
         "@oxygen-ui/react": "catalog:",
         "@oxygen-ui/react-icons": "^2.4.6",

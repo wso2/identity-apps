@@ -19,15 +19,12 @@
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
-import Divider from "@oxygen-ui/react/Divider";
-import Typography from "@oxygen-ui/react/Typography";
-import updateAction from "@wso2is/admin.actions.v1/api/update-action";
+import updateInFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/update-in-flow-extension";
 import {
     AccessConfigInterface,
-    EncryptionInterface,
-    InFlowExtensionActionResponseInterface,
-    InFlowExtensionActionUpdateInterface
-} from "@wso2is/admin.actions.v1/models/actions";
+    InFlowExtensionResponseInterface,
+    InFlowExtensionUpdateRequestInterface
+} from "@wso2is/admin.flow-builder-core.v1/models/in-flow-extension";
 import useInFlowExtensionContextTree
     from "@wso2is/admin.flow-builder-core.v1/api/use-in-flow-extension-context-tree";
 import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -39,18 +36,16 @@ import {
     InFlowExtensionContextTreeResponse,
     InitialAccessConfig
 } from "@wso2is/common.ui.shared-access.v1/components/flow-context-tree";
-import { ConfirmationModal, ContentLoader, EmphasizedSegment, Heading, LinkButton } from "@wso2is/react-components";
+import { ConfirmationModal, EmphasizedSegment, LinkButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 
-const ACTION_TYPE: string = "inFlowExtension";
-
 export interface InFlowExtensionAccessConfigSettingsPropsInterface extends IdentifiableComponentInterface {
     "data-componentid"?: string;
-    action: InFlowExtensionActionResponseInterface;
+    action: InFlowExtensionResponseInterface;
     isLoading: boolean;
     isReadOnly: boolean;
     onUpdate: () => void;
@@ -99,7 +94,9 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
         return undefined;
     }, [ action ]);
 
-    const hasCertificate: boolean = !!action?.encryption?.certificate;
+    // Backend does not return the certificate value (security); presence of the
+    // `encryption` object indicates a certificate is configured.
+    const hasCertificate: boolean = !!action?.encryption;
 
     const handleAccessConfigChange = (
         newAccessConfig: AccessConfigOutput,
@@ -111,11 +108,11 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
     const handleUpdate = (): void => {
         setIsSubmitting(true);
 
-        const updateBody: InFlowExtensionActionUpdateInterface = {
+        const updateBody: InFlowExtensionUpdateRequestInterface = {
             accessConfig
         };
 
-        updateAction<InFlowExtensionActionUpdateInterface>(ACTION_TYPE, action.id, updateBody)
+        updateInFlowExtension(action.id, updateBody)
             .then(() => {
                 dispatch(addAlert({
                     description: t("authenticationProvider:notifications.updateIDP.success.description"),
@@ -140,11 +137,11 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
     const handleReset = (): void => {
         setIsSubmitting(true);
 
-        const updateBody: InFlowExtensionActionUpdateInterface = {
+        const updateBody: InFlowExtensionUpdateRequestInterface = {
             accessConfig: { expose: [], modify: [] }
         };
 
-        updateAction<InFlowExtensionActionUpdateInterface>(ACTION_TYPE, action.id, updateBody)
+        updateInFlowExtension(action.id, updateBody)
             .then(() => {
                 dispatch(addAlert({
                     description: "Access configuration has been reset successfully.",
@@ -219,109 +216,38 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
                         and will not allow any modifications until you configure access here.
                     </Alert>
                 ) }
-                <Box sx={ { display: "flex", gap: 3 } }>
-                    { /* ── Left column: Tree + Update button ── */ }
-                    <Box sx={ { flex: "1 1 65%", minWidth: 0 } }>
-                        <FlowContextTree
-                            key={ resetKey }
-                            contextTree={ contextTreeData.contextTree }
-                            onChange={ handleAccessConfigChange }
-                            initialAccessConfig={ initialAccessConfig }
-                            hasCertificate={ hasCertificate }
-                            readOnly={ isReadOnly }
-                            allowReadOnlyClaimsModification={ contextTreeData.allowReadOnlyClaimsModification }
-                            redirectionEnabled={ contextTreeData.redirectionEnabled }
-                            data-componentid={ `${componentId}-tree` }
-                        />
-                        { !isReadOnly && (
-                            <Box sx={ { display: "flex", gap: 1, mt: 3 } }>
-                                <Button
-                                    size="medium"
-                                    variant="contained"
-                                    onClick={ handleUpdate }
-                                    loading={ isSubmitting }
-                                    data-componentid={ `${componentId}-update-button` }
-                                >
-                                    { t("actions:buttons.update") }
-                                </Button>
-                                { initialAccessConfig && (
-                                    <LinkButton
-                                        onClick={ () => setShowResetConfirmation(true) }
-                                        data-componentid={ `${componentId}-reset-button` }
-                                    >
-                                        Reset
-                                    </LinkButton>
-                                ) }
-                            </Box>
+                <FlowContextTree
+                    key={ resetKey }
+                    contextTree={ contextTreeData.contextTree }
+                    onChange={ handleAccessConfigChange }
+                    initialAccessConfig={ initialAccessConfig }
+                    hasCertificate={ hasCertificate }
+                    readOnly={ isReadOnly }
+                    allowReadOnlyClaimsModification={ contextTreeData.allowReadOnlyClaimsModification }
+                    redirectionEnabled={ contextTreeData.redirectionEnabled }
+                    data-componentid={ `${componentId}-tree` }
+                />
+                { !isReadOnly && (
+                    <Box sx={ { display: "flex", gap: 1, mt: 3 } }>
+                        <Button
+                            size="medium"
+                            variant="contained"
+                            onClick={ handleUpdate }
+                            loading={ isSubmitting }
+                            data-componentid={ `${componentId}-update-button` }
+                        >
+                            { t("actions:buttons.update") }
+                        </Button>
+                        { initialAccessConfig && (
+                            <LinkButton
+                                onClick={ () => setShowResetConfirmation(true) }
+                                data-componentid={ `${componentId}-reset-button` }
+                            >
+                                Reset
+                            </LinkButton>
                         ) }
                     </Box>
-                    { /* ── Right column: Instructions ── */ }
-                    <Box sx={ { flex: "0 0 35%", maxWidth: "35%" } }>
-                        <Heading as="h5">
-                            { t("inFlowExtension:createWizard.helpPanel.whatIsContext.heading") }
-                        </Heading>
-                        <Typography variant="body2" color="text.secondary" sx={ { mb: 1 } }>
-                            { t("inFlowExtension:createWizard.helpPanel.whatIsContext.description") }
-                        </Typography>
-                        <Divider sx={ { mb: 2, mt: 2 } } />
-                        <Heading as="h6">
-                            { t("inFlowExtension:createWizard.helpPanel.howToUse.heading") }
-                        </Heading>
-                        <Typography
-                            variant="body2"
-                            color="text.secondary"
-                            component="div"
-                            sx={ { mb: 2 } }
-                        >
-                            <ul style={ { lineHeight: 1.8, paddingLeft: "18px" } }>
-                                <li>
-                                    { t("inFlowExtension:createWizard.helpPanel.howToUse.step1") }
-                                </li>
-                                <li>
-                                    { t("inFlowExtension:createWizard.helpPanel.howToUse.step2") }
-                                </li>
-                                <li>
-                                    { t("inFlowExtension:createWizard.helpPanel.howToUse.step3") }
-                                </li>
-                                <li>
-                                    { t("inFlowExtension:createWizard.helpPanel.howToUse.step4") }
-                                </li>
-                                <li>
-                                    { t("inFlowExtension:createWizard.helpPanel.howToUse.step5") }
-                                </li>
-                                <li>
-                                    { t("inFlowExtension:createWizard.helpPanel.howToUse.step6") }
-                                </li>
-                            </ul>
-                        </Typography>
-                        <Divider sx={ { mb: 2, mt: 2 } } />
-                        <Heading as="h6">
-                            { t("inFlowExtension:createWizard.helpPanel.externalRedirect.heading") }
-                        </Heading>
-                        <Typography
-                            variant="body2"
-                            color="text.secondary"
-                            component="div"
-                            sx={ { mb: 2 } }
-                        >
-                            { t("inFlowExtension:createWizard.helpPanel.externalRedirect.description") }
-                            <ul style={ { lineHeight: 1.8, paddingLeft: "18px", marginTop: "8px" } }>
-                                <li>
-                                    { t("inFlowExtension:createWizard.helpPanel.externalRedirect.step1") }
-                                </li>
-                                <li>
-                                    { t("inFlowExtension:createWizard.helpPanel.externalRedirect.step2") }
-                                </li>
-                                <li>
-                                    { t("inFlowExtension:createWizard.helpPanel.externalRedirect.step3") }
-                                </li>
-                                <li>
-                                    { t("inFlowExtension:createWizard.helpPanel.externalRedirect.step4") }
-                                </li>
-                            </ul>
-                        </Typography>
-                    </Box>
-                </Box>
+                ) }
             </EmphasizedSegment>
             { showResetConfirmation && (
                 <ConfirmationModal

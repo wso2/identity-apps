@@ -206,14 +206,15 @@
                 const [ flowError, setFlowError ] = useState(undefined);
                 const [confirmationEffectDone, setConfirmationEffectDone] = useState(false);
                 const [userAssertion, setUserAssertion] = useState(null);
+                const [fatalExtensionError, setFatalExtensionError] = useState(null);
                 const [flowType, setFlowType] = useState("<%= Encode.forJavaScript(flowType) != null ? Encode.forJavaScript(flowType) : null %>");
                 const [ countDownRedirection, setCountDownRedirection ] = useState(null);
 
                 const extensionError = flowData && flowData.data && flowData.data.additionalData &&
-                    flowData.data.additionalData.errorType === "EXTENSION_ERROR"
+                    flowData.data.additionalData.failureType === "IN_FLOW_EXTENSION_FAILURE"
                     ? {
-                        message: flowData.data.additionalData.errorMessage,
-                        description: flowData.data.additionalData.errorDescription
+                        message: flowData.data.additionalData.failureMessage,
+                        description: flowData.data.additionalData.failureDescription
                     }
                     : null;
 
@@ -315,6 +316,10 @@
 
                 useEffect(() => {
                     if (error && error.code) {
+                        if (error.code === "FE-65033") {
+                            setFatalExtensionError({ message: error.message, description: error.description });
+                            return;
+                        }
                         const errorDetails = getI18nKeyForError(error.code, flowType, error.message, error.description);
                         let portal_url = accountsPortalUrl + "/register";
                         if (flowType === "PASSWORD_RECOVERY") {
@@ -335,7 +340,7 @@
                     }
 
                     if (flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error &&
-                            flowData.data.additionalData.errorType !== "EXTENSION_ERROR") {
+                            flowData.data.additionalData.failureType !== "IN_FLOW_EXTENSION_FAILURE") {
                         setFlowError(flowData.data.additionalData.error);
                         return;
                     }
@@ -484,6 +489,29 @@
                     return createElement(
                         AutoLoginForm,
                         { userAssertion: userAssertion }
+                    );
+                }
+
+                if (fatalExtensionError) {
+                    return createElement(
+                        "div",
+                        { className: "registration-content-container loaded" },
+                        createElement(
+                            DynamicError, {
+                                message: fatalExtensionError.message,
+                                description: fatalExtensionError.description,
+                                supportEmail: (typeof window !== "undefined" && window.__BRANDING__) ? window.__BRANDING__.supportEmail : undefined,
+                                supportText: (typeof window !== "undefined" && window.__BRANDING__) ? window.__BRANDING__.supportText : undefined,
+                                onRetry: () => {
+                                    localStorage.removeItem("flowId");
+                                    setFatalExtensionError(null);
+                                    setError(null);
+                                    setFlowData(null);
+                                    setComponents([]);
+                                    setPostBody({ applicationId: spId, flowType: flowType });
+                                }
+                            }
+                        )
                     );
                 }
 

@@ -145,6 +145,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             identityProviders: "",
             impersonationConfigurations: "",
             inFlowExtensionContextTree: "",
+            inFlowExtensions: "",
             issuerUsageScope: "",
             localAuthenticators: "",
             localClaims: "",

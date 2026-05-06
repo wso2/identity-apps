@@ -17,13 +17,13 @@
  */
 
 import Divider from "@oxygen-ui/react/Divider";
-import checkActionName from "@wso2is/admin.actions.v1/api/check-action-name";
-import deleteAction from "@wso2is/admin.actions.v1/api/delete-action";
-import updateAction from "@wso2is/admin.actions.v1/api/update-action";
+import checkInFlowExtensionName from "@wso2is/admin.flow-builder-core.v1/api/check-in-flow-extension-name";
+import deleteInFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/delete-in-flow-extension";
+import updateInFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/update-in-flow-extension";
 import {
-    InFlowExtensionActionResponseInterface,
-    InFlowExtensionActionUpdateInterface
-} from "@wso2is/admin.actions.v1/models/actions";
+    InFlowExtensionResponseInterface,
+    InFlowExtensionUpdateRequestInterface
+} from "@wso2is/admin.flow-builder-core.v1/models/in-flow-extension";
 import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -47,13 +47,12 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 
-const ACTION_TYPE: string = "inFlowExtension";
 const ACTION_NAME_REGEX: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9 _-]{0,254}$/;
 const FORM_ID: string = "in-flow-extension-general-settings-form";
 
 export interface InFlowExtensionGeneralSettingsPropsInterface extends IdentifiableComponentInterface {
     "data-componentid"?: string;
-    action: InFlowExtensionActionResponseInterface;
+    action: InFlowExtensionResponseInterface;
     isLoading: boolean;
     isReadOnly: boolean;
     onDelete: () => void;
@@ -98,7 +97,7 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
             return;
         }
         nameCheckTimer.current = setTimeout(() => {
-            checkActionName(ACTION_TYPE, name, action?.id)
+            checkInFlowExtensionName(name, action?.id)
                 .then((response: { available: boolean }) => {
                     setIsNameTaken(!response.available);
                 })
@@ -133,13 +132,13 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
     const handleFormSubmit = (values: { name: string; description?: string; image?: string }): void => {
         setIsSubmitting(true);
 
-        const updateBody: InFlowExtensionActionUpdateInterface = {
+        const updateBody: InFlowExtensionUpdateRequestInterface = {
             description: values.description?.toString() ?? "",
             iconUrl: values.image?.toString() ?? "",
             name: values.name?.toString()
         };
 
-        updateAction<InFlowExtensionActionUpdateInterface>(ACTION_TYPE, action.id, updateBody)
+        updateInFlowExtension(action.id, updateBody)
             .then(() => {
                 dispatch(addAlert({
                     description: t("authenticationProvider:notifications.updateIDP.success.description"),
@@ -164,7 +163,7 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
     const handleDelete = (): void => {
         setIsDeleting(true);
 
-        deleteAction(ACTION_TYPE, action.id)
+        deleteInFlowExtension(action.id)
             .then(() => {
                 dispatch(addAlert({
                     description: t("authenticationProvider:notifications.deleteConnection.success.description"),

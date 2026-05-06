@@ -44,9 +44,11 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { TreeNodeState } from "./models";
 
-const EXPOSE_COLOR: string = "var(--tree-expose, #ff7300)";
-
-/* ── Inline SVG icons ── */
+const EXPOSE_COLOR: string = "var(--tree-expose, #2E7D32)";
+const EXPOSE_FAINT_RGBA: string = "rgba(46, 125, 50, 0.06)";
+const EXPOSE_FAINT_RGBA_HOVER: string = "rgba(46, 125, 50, 0.1)";
+const EXPOSE_FAINT_RGBA_SELECTED_HOVER: string = "rgba(46, 125, 50, 0.08)";
+const EXPOSE_HOVER_DARK: string = "#1B5E20";
 
 const PlusIcon = (): ReactElement => (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
@@ -78,7 +80,7 @@ export interface AddClaimModalProps {
     externalClaims?: Claim[];
     /**
      * Whether the active flow type permits MODIFY on read-only claims. Drives the
-     * informational badge per claim row. Defaults to true (the historical behaviour).
+     * informational badge per claim row. Defaults to true.
      */
     allowReadOnlyClaimsModification?: boolean;
     onClose: () => void;
@@ -86,13 +88,9 @@ export interface AddClaimModalProps {
     "data-componentid"?: string;
 }
 
-/**
- * Modal for bulk-selecting claims to add to the claims MAP node.
- * Shows a filterable scrollable list with +/- toggle selection and a bulk area below.
- */
 const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
     open,
-    parentNode,
+    parentNode: _parentNode,
     existingClaimURIs,
     externalClaims,
     allowReadOnlyClaimsModification = true,
@@ -108,7 +106,6 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
 
     const dispatch: Dispatch = useDispatch();
 
-    // Fetch all local claims when modal opens (skip if external claims are provided).
     useEffect(() => {
         if (!open) return;
 
@@ -148,7 +145,6 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
             .finally(() => setIsLoading(false));
     }, [ open ]);
 
-    // Reset when modal opens.
     useEffect(() => {
         if (open) {
             setSelectedClaims([]);
@@ -161,13 +157,11 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
         [ selectedClaims ]
     );
 
-    // Claims available to pick (not already in the tree).
     const availableClaims: Claim[] = useMemo(
         () => allClaims.filter((c: Claim) => !existingClaimURIs.includes(c.claimURI)),
         [ allClaims, existingClaimURIs ]
     );
 
-    // Apply search filter on displayName + claimURI.
     const filteredClaims: Claim[] = useMemo(() => {
         if (!searchTerm.trim()) return availableClaims;
 
@@ -218,14 +212,15 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
                 sx: { border: "1px solid", borderColor: "grey.200", borderRadius: "10px" }
             } }
         >
-            <DialogTitle sx={ { color: "text.secondary", fontSize: 13, fontWeight: 600, pb: 0.5 } }>
-                Add Claims
-                <Typography sx={ { color: "text.disabled", fontSize: 11, fontWeight: 400, mt: 0.3 } }>
+            <DialogTitle sx={ { pb: 0.5 } }>
+                <Typography variant="subtitle2" sx={ { fontWeight: 600 } }>
+                    Add Claims
+                </Typography>
+                <Typography variant="caption" color="text.disabled">
                     Search and select claims to add to the claims map.
                 </Typography>
             </DialogTitle>
             <DialogContent sx={ { pt: "12px !important" } }>
-                { /* ── Search field ── */ }
                 <TextField
                     fullWidth
                     size="small"
@@ -248,14 +243,12 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
                     } }
                     sx={ {
                         "& .MuiOutlinedInput-root": {
-                            borderRadius: "7px",
-                            fontSize: 12
+                            borderRadius: "7px"
                         }
                     } }
                     data-componentid={ `${componentId}-search` }
                 />
 
-                { /* ── Scrollable claim list ── */ }
                 <Box sx={ {
                     border: "1px solid",
                     borderColor: "grey.200",
@@ -273,12 +266,11 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
                         </Box>
                     ) }
                     { !isLoading && filteredClaims.length === 0 && (
-                        <Typography sx={ {
-                            color: "text.disabled",
-                            fontSize: 11,
-                            py: 4,
-                            textAlign: "center"
-                        } }>
+                        <Typography
+                            variant="caption"
+                            color="text.disabled"
+                            sx={ { display: "block", py: 4, textAlign: "center" } }
+                        >
                             { searchTerm ? "No claims match your search." : "No claims available." }
                         </Typography>
                     ) }
@@ -289,9 +281,11 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
                             <Box
                                 key={ claim.id || claim.claimURI }
                                 sx={ {
-                                    "&:hover": { bgcolor: isSelected ? "rgba(255,115,0,0.06)" : "grey.50" },
+                                    "&:hover": {
+                                        bgcolor: isSelected ? EXPOSE_FAINT_RGBA_SELECTED_HOVER : "grey.50"
+                                    },
                                     alignItems: "center",
-                                    bgcolor: isSelected ? "rgba(255,115,0,0.04)" : "transparent",
+                                    bgcolor: isSelected ? EXPOSE_FAINT_RGBA : "transparent",
                                     borderBottom: "1px solid",
                                     borderColor: "grey.100",
                                     display: "flex",
@@ -303,39 +297,42 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
                             >
                                 <Box sx={ { minWidth: 0, overflow: "hidden" } }>
                                     <Box sx={ { alignItems: "center", display: "flex", gap: 0.8 } }>
-                                        <Typography sx={ {
-                                            fontSize: 12,
-                                            fontWeight: isSelected ? 600 : 500,
-                                            lineHeight: 1.3
-                                        } }>
+                                        <Typography
+                                            variant="body2"
+                                            sx={ { fontWeight: isSelected ? 600 : 500 } }
+                                        >
                                             { claim.displayName }
                                         </Typography>
                                         { claim.readOnly && (
-                                            <Typography sx={ {
-                                                bgcolor: "rgba(255,115,0,0.08)",
-                                                borderRadius: "3px",
-                                                color: "var(--tree-expose, #ff7300)",
-                                                fontSize: 8,
-                                                fontWeight: 600,
-                                                lineHeight: 1,
-                                                px: "4px",
-                                                py: "2px"
-                                            } }>
+                                            <Typography
+                                                variant="caption"
+                                                sx={ {
+                                                    bgcolor: EXPOSE_FAINT_RGBA_HOVER,
+                                                    borderRadius: "3px",
+                                                    color: EXPOSE_COLOR,
+                                                    fontWeight: 600,
+                                                    lineHeight: 1,
+                                                    px: "4px",
+                                                    py: "2px"
+                                                } }
+                                            >
                                                 { allowReadOnlyClaimsModification
                                                     ? "Read-only — modify is opt-in"
                                                     : "Read-only — modify not permitted in this flow" }
                                             </Typography>
                                         ) }
                                     </Box>
-                                    <Typography sx={ {
-                                        color: "text.disabled",
-                                        fontFamily: "'JetBrains Mono', monospace",
-                                        fontSize: 9,
-                                        lineHeight: 1.3,
-                                        overflow: "hidden",
-                                        textOverflow: "ellipsis",
-                                        whiteSpace: "nowrap"
-                                    } }>
+                                    <Typography
+                                        variant="caption"
+                                        color="text.disabled"
+                                        sx={ {
+                                            display: "block",
+                                            fontFamily: "'JetBrains Mono', monospace",
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                            whiteSpace: "nowrap"
+                                        } }
+                                    >
                                         { claim.claimURI }
                                     </Typography>
                                 </Box>
@@ -346,7 +343,7 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
                                         sx={ {
                                             "&:hover": {
                                                 bgcolor: isSelected
-                                                    ? "rgba(192,57,43,0.08)" : "rgba(255,115,0,0.1)",
+                                                    ? "rgba(192,57,43,0.08)" : EXPOSE_FAINT_RGBA_HOVER,
                                                 color: isSelected ? "error.main" : EXPOSE_COLOR
                                             },
                                             color: isSelected ? "error.light" : "grey.400",
@@ -362,7 +359,6 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
                     }) }
                 </Box>
 
-                { /* ── Bulk area: selected claims ── */ }
                 { selectedClaims.length > 0 && (
                     <Box sx={ { mt: 2 } }>
                         <Box sx={ {
@@ -371,20 +367,18 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
                             justifyContent: "space-between",
                             mb: 0.8
                         } }>
-                            <Typography sx={ {
-                                color: "text.secondary",
-                                fontSize: 10,
-                                fontWeight: 600,
-                                letterSpacing: "0.07em",
-                                textTransform: "uppercase"
-                            } }>
+                            <Typography
+                                variant="overline"
+                                color="text.secondary"
+                                sx={ { fontWeight: 600 } }
+                            >
                                 To be added ({ selectedClaims.length })
                             </Typography>
                             <Button
                                 size="small"
                                 variant="text"
                                 onClick={ () => setSelectedClaims([]) }
-                                sx={ { color: "text.disabled", fontSize: 10, minWidth: 0 } }
+                                sx={ { color: "text.disabled", minWidth: 0 } }
                             >
                                 Clear All
                             </Button>
@@ -414,18 +408,20 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
                                     } }
                                 >
                                     <Box sx={ { minWidth: 0, overflow: "hidden" } }>
-                                        <Typography sx={ { fontSize: 11, fontWeight: 500, lineHeight: 1.3 } }>
+                                        <Typography variant="body2" sx={ { fontWeight: 500 } }>
                                             { claim.displayName }
                                         </Typography>
-                                        <Typography sx={ {
-                                            color: "text.disabled",
-                                            fontFamily: "'JetBrains Mono', monospace",
-                                            fontSize: 8.5,
-                                            lineHeight: 1.3,
-                                            overflow: "hidden",
-                                            textOverflow: "ellipsis",
-                                            whiteSpace: "nowrap"
-                                        } }>
+                                        <Typography
+                                            variant="caption"
+                                            color="text.disabled"
+                                            sx={ {
+                                                display: "block",
+                                                fontFamily: "'JetBrains Mono', monospace",
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                                whiteSpace: "nowrap"
+                                            } }
+                                        >
                                             { claim.claimURI }
                                         </Typography>
                                     </Box>
@@ -461,7 +457,6 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
                         borderColor: "grey.200",
                         borderRadius: "6px",
                         color: "text.secondary",
-                        fontSize: 12,
                         fontWeight: 500,
                         px: 2
                     } }
@@ -475,11 +470,10 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
                     size="small"
                     disabled={ selectedClaims.length === 0 }
                     sx={ {
-                        "&:hover": { bgcolor: "#E05E00" },
+                        "&:hover": { bgcolor: EXPOSE_HOVER_DARK },
                         bgcolor: EXPOSE_COLOR,
                         borderRadius: "6px",
-                        boxShadow: "0 1px 6px rgba(255,107,0,0.3)",
-                        fontSize: 12,
+                        boxShadow: "0 1px 6px rgba(46,125,50,0.3)",
                         fontWeight: 600,
                         px: 2
                     } }
