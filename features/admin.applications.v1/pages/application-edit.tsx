@@ -1126,6 +1126,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                         template={ applicationTemplate }
                         data-componentid={ componentId }
                         urlSearchParams={ urlSearchParams }
+                        applicationInboundConfigs={ applicationInboundConfigs }
                         getConfiguredInboundProtocolsList={ (list: string[]) => {
                             setInboundProtocolList(list);
                         } }
