@@ -1362,20 +1362,20 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         const isOIDCConfigured: boolean = inboundProtocolList.includes(SupportedAuthProtocolTypes.OIDC);
 
-        const oidcConfigForSecret: OIDCDataInterface = applicationInboundConfigs ?? inboundProtocolConfig?.oidc;
+        const oidcConfig: OIDCDataInterface = applicationInboundConfigs ?? inboundProtocolConfig?.oidc;
 
         if (!isOIDCConfigured
-            || isEmpty(oidcConfigForSecret)
-            || !oidcConfigForSecret.clientId
-            || !oidcConfigForSecret.clientSecret) {
+            || isEmpty(oidcConfig)
+            || !oidcConfig.clientId
+            || !oidcConfig.clientSecret) {
 
             return null;
         }
 
         const clientSecret: string = clientSecretHashDisclaimerModalInputs.clientSecret
-            || oidcConfigForSecret.clientSecret;
+            || oidcConfig.clientSecret;
         const clientId: string = clientSecretHashDisclaimerModalInputs.clientId
-            || oidcConfigForSecret.clientId;
+            || oidcConfig.clientId;
 
         return (
             <ConfirmationModal
