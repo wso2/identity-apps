@@ -22,7 +22,7 @@ env:
 
 jobs:
   knip:
-    name: 🔪 Knip (DEAD CODE)
+    name: ✂️ Knip (DEAD CODE)
     if: ${{ github.event_name == 'pull_request' || github.event.label.name == 'trigger-pr-builder' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     strategy:
@@ -65,7 +65,7 @@ jobs:
         id: install-dependencies
         run: pnpm install
 
-      - name: 🔪 Run Knip
+      - name: ✂️ Run Knip
         id: run-knip
         # Knip findings and runtime failures will fail CI.
         run: pnpm knip:ci

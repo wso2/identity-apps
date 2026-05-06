@@ -23,7 +23,7 @@ import {
 } from "../../models/application";
 import { DefaultProtocolTemplate } from "../../models/application-inbound";
 
-export const PassiveStsProtocolTemplateItem: ApplicationTemplateListItemInterface = {
+const PassiveStsProtocolTemplateItem: ApplicationTemplateListItemInterface = {
     authenticationProtocol: "passive-sts",
     id: DefaultProtocolTemplate.WS_FEDERATION,
     image: "wsFed",

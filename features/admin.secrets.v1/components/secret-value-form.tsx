@@ -40,7 +40,7 @@ const FIELD_I18N_KEY: string = "secrets:forms.editSecret.secretValueField";
 /**
  * Props interface of {@link SecretValueForm}
  */
-export type SecretValueFormProps = {
+type SecretValueFormProps = {
     editingSecret: SecretModel;
     showInfoBanner?: boolean;
 } & IdentifiableComponentInterface;

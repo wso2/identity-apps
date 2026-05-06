@@ -24,7 +24,7 @@ import { store } from "../store";
  * @returns OAuth2 token request headers
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const getTokenRequestHeaders = (): any => {
+const getTokenRequestHeaders = (): any => {
     return {
         headers: {
             "Accept": "application/json",

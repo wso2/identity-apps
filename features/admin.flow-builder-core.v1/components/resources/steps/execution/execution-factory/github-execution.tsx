@@ -29,7 +29,7 @@ import { ExecutionMinimalPropsInterface } from "../execution-minimal";
 /**
  * Props interface of {@link GithubExecution}.
  */
-export type GithubExecutionPropsInterface = ExecutionMinimalPropsInterface
+type GithubExecutionPropsInterface = ExecutionMinimalPropsInterface
     & IdentifiableComponentInterface;
 
 const GithubExecution = ({

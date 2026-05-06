@@ -25,7 +25,7 @@ import { Trans, useTranslation } from "react-i18next";
 /**
  * Proptypes for the basic login flow change confirmation modal component.
  */
-export interface BasicLoginFlowTemplateChangeConfirmationModalPropsInterface
+interface BasicLoginFlowTemplateChangeConfirmationModalPropsInterface
     extends Partial<ConfirmationModalPropsInterface>,
         IdentifiableComponentInterface {
     /**

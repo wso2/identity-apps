@@ -223,7 +223,7 @@ export const deleteUser = (userId: string): Promise<any> => {
  * @returns `Promise<any>` a promise containing the response.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const addUserRole = (data: PatchGroupDataInterface, groupId: string): Promise<any> => {
+const addUserRole = (data: PatchGroupDataInterface, groupId: string): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {

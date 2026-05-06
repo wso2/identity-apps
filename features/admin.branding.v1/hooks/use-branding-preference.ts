@@ -22,7 +22,7 @@ import BrandingPreferenceContext, { BrandingPreferenceContextProps } from "../co
 /**
  * Interface for the return type of the `useBrandingPreference` hook.
  */
-export type UseBrandingPreferenceInterface = BrandingPreferenceContextProps;
+type UseBrandingPreferenceInterface = BrandingPreferenceContextProps;
 
 /**
  * Hook that provides access to the branding preference context.

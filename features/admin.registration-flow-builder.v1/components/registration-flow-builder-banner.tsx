@@ -35,7 +35,7 @@ import "./registration-flow-builder-banner.scss";
 /**
  * Props interface of {@link RegistrationFlowBuilderBanner}
  */
-export type RegistrationFlowBuilderBannerProps = IdentifiableComponentInterface;
+type RegistrationFlowBuilderBannerProps = IdentifiableComponentInterface;
 
 /**
  * Component to display the registration flow builder banner.

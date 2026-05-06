@@ -36,7 +36,7 @@ import { APPROVAL_WORKFLOW_RULE_FIELDS } from "../../constants/approval-workflow
 /**
  * Props interface of {@link WorkflowConditionValueInput}
  */
-export interface WorkflowConditionValueInputPropsInterface extends IdentifiableComponentInterface {
+interface WorkflowConditionValueInputPropsInterface extends IdentifiableComponentInterface {
     conditionId: string;
     expressionId: string;
     expressionValue: string;

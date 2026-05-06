@@ -36,7 +36,7 @@ import useCopilotPanel from "../hooks/use-copilot-panel";
 /**
  * Props interface for the CopilotWelcome component.
  */
-export interface CopilotWelcomeProps extends IdentifiableComponentInterface {
+interface CopilotWelcomeProps extends IdentifiableComponentInterface {
     /**
      * Additional CSS classes.
      */

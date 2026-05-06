@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export interface AttributeDTO {
+interface AttributeDTO {
     attributeValue: string;
     attributeDataType: string;
     attributeId: string;

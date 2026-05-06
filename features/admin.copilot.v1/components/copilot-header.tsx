@@ -39,7 +39,7 @@ const COPILOT_SECONDARY: string = "#8b5cf6";
 /**
  * Props interface for the CopilotHeader component.
  */
-export interface CopilotHeaderProps extends IdentifiableComponentInterface {
+interface CopilotHeaderProps extends IdentifiableComponentInterface {
     /**
      * Callback for close button click.
      */

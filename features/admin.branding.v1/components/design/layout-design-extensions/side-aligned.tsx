@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Field } from "@wso2is/form";
+import { Field } from "@wso2is/forms";
 import {  Heading } from "@wso2is/react-components";
 import React, { Fragment, ReactElement } from "react";
 import { Divider, Grid } from "semantic-ui-react";

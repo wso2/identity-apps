@@ -28,7 +28,7 @@ import { AlertLevels, IdentifiableComponentInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalForm, FormRenderProps } from "@wso2is/form";
+import { FinalForm, FormRenderProps } from "@wso2is/forms";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -57,7 +57,7 @@ import "./custom-authenticator-settings.scss";
 /**
  * Proptypes for the Custom Local Authenticator edit page component.
  */
-export interface CustomAuthenticatorSettingsPagePropsInterface extends IdentifiableComponentInterface {
+interface CustomAuthenticatorSettingsPagePropsInterface extends IdentifiableComponentInterface {
     /**
      * Is the authenticator a custom local authenticator.
      */

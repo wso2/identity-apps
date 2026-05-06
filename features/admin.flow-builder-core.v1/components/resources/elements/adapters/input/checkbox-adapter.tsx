@@ -31,7 +31,7 @@ import PlaceholderComponent from "../placeholder-component";
 /**
  * Props interface of {@link CheckboxAdapter}
  */
-export type CheckboxAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type CheckboxAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Checkbox component.

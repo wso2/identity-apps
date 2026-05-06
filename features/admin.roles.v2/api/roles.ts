@@ -99,7 +99,7 @@ export const getApplicationRolesByAudience = (
  *
  * @returns A promise containing the response.
  */
-export const getRoleByName = (
+const getRoleByName = (
     audienceId: string,
     roleName: string,
     before: string,
@@ -449,7 +449,7 @@ export const createRoleUsingV3Api = (data: CreateRoleInterface): Promise<AxiosRe
  * @param roleId - ID of the role which needs to be updated
  * @param data - Permission data of the role
  */
-export const updateRolePermissions = (roleId: string, data: unknown): Promise<any> => {
+const updateRolePermissions = (roleId: string, data: unknown): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
@@ -496,7 +496,7 @@ export const getPermissionList = (): Promise<any> => {
  *
  * @param roleId - Role Id to retrieve relevant permissions
  */
-export const getPermissionsForRole = (roleId: string): Promise<any> => {
+const getPermissionsForRole = (roleId: string): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -521,7 +521,7 @@ export const getPermissionsForRole = (roleId: string): Promise<any> => {
  * @returns `Promise<APIResourceInterface>`
  * @throws `IdentityAppsApiException`
  */
-export const getAPIResourceDetails = (apiResourceId: string): Promise<APIResourceInterface> => {
+const getAPIResourceDetails = (apiResourceId: string): Promise<APIResourceInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Accept": "application/json",
@@ -546,7 +546,7 @@ export const getAPIResourceDetails = (apiResourceId: string): Promise<APIResourc
  * @returns `Promise<APIResourceInterface[]>`
  * @throws `IdentityAppsApiException`
  */
-export const updateRolesBulk = (roleIds: string[], roleData: PatchRoleDataInterface): Promise<any[]> => {
+const updateRolesBulk = (roleIds: string[], roleData: PatchRoleDataInterface): Promise<any[]> => {
     // send the request for each ID and return the response.
     return Promise.all(roleIds.map((roleId: string) => {
         return updateRoleDetails(roleId, roleData);
@@ -601,7 +601,7 @@ export const getRolesList = (domain: string, filter?: string): Promise<RoleListI
         });
 };
 
-export const getRolesListUsingV3Api = (domain: string, filter?: string): Promise<RoleListInterface | any> => {
+const getRolesListUsingV3Api = (domain: string, filter?: string): Promise<RoleListInterface | any> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -648,7 +648,7 @@ export const getRolesListUsingV3Api = (domain: string, filter?: string): Promise
  * @returns The object containing the roles list.
  * @deprecated This is a temporary hook until the API resource feature moved to the features folder.
  */
-export const useAPIResourcesList = <Data = APIResourceListInterface, Error = RequestErrorInterface>(
+const useAPIResourcesList = <Data = APIResourceListInterface, Error = RequestErrorInterface>(
     filter?: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {

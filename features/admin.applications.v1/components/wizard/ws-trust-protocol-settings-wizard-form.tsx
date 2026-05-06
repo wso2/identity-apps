@@ -18,7 +18,7 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { DropdownChild, Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { DropdownChild, Field, FormValue, Forms, Validation } from "@wso2is/forms/legacy";
 import { ContentLoader, Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";

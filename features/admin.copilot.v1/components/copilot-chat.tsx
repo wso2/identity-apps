@@ -168,7 +168,7 @@ const StyledBotMessageBubble: typeof Paper = styled(Paper)(({ theme }: { theme: 
 /**
  * Props interface for the CopilotChat component.
  */
-export interface CopilotChatProps extends IdentifiableComponentInterface {
+interface CopilotChatProps extends IdentifiableComponentInterface {
     /**
      * Additional CSS classes.
      */

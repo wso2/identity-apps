@@ -1,5 +1,40 @@
 # @wso2is/myaccount
 
+## 4.1.25
+
+### Patch Changes
+
+- [#10250](https://github.com/wso2/identity-apps/pull/10250) [`ba3ab8dd9bf2548d3a4c02da71d90cfddf0f6de6`](https://github.com/wso2/identity-apps/commit/ba3ab8dd9bf2548d3a4c02da71d90cfddf0f6de6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Unify in-house form libraries
+
+- Updated dependencies [[`ba3ab8dd9bf2548d3a4c02da71d90cfddf0f6de6`](https://github.com/wso2/identity-apps/commit/ba3ab8dd9bf2548d3a4c02da71d90cfddf0f6de6)]:
+  - @wso2is/forms@2.10.3
+
+## 4.1.24
+
+### Patch Changes
+
+- [#10239](https://github.com/wso2/identity-apps/pull/10239) [`63d41fe8acdaec032e340ffe42e8596fc26baad9`](https://github.com/wso2/identity-apps/commit/63d41fe8acdaec032e340ffe42e8596fc26baad9) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dev dependencies
+
+* [#10241](https://github.com/wso2/identity-apps/pull/10241) [`0ff7cdd4e8c8d35d63080e867f0af18e0907ad56`](https://github.com/wso2/identity-apps/commit/0ff7cdd4e8c8d35d63080e867f0af18e0907ad56) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Migrate myaccount app to vite
+
+## 4.1.23
+
+### Patch Changes
+
+- [#10235](https://github.com/wso2/identity-apps/pull/10235) [`2721c0a576d38e16a6f5dceca4d61f88f6510147`](https://github.com/wso2/identity-apps/commit/2721c0a576d38e16a6f5dceca4d61f88f6510147) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dependencies
+
+## 4.1.22
+
+### Patch Changes
+
+- [#10231](https://github.com/wso2/identity-apps/pull/10231) [`fb88f19e4099e71f42bb9a0d286b53e045eca9d0`](https://github.com/wso2/identity-apps/commit/fb88f19e4099e71f42bb9a0d286b53e045eca9d0) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused exports
+
+## 4.1.21
+
+### Patch Changes
+
+- [#10223](https://github.com/wso2/identity-apps/pull/10223) [`7d6c89fe5e01a71db518ba2ae0b7f527e37dfd1f`](https://github.com/wso2/identity-apps/commit/7d6c89fe5e01a71db518ba2ae0b7f527e37dfd1f) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused exported enum members and unlisted dependencies
+
 ## 4.1.20
 
 ### Patch Changes

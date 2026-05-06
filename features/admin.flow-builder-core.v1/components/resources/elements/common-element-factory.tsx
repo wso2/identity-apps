@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -75,6 +75,10 @@ const CommonElementFactory: FunctionComponent<CommonElementFactoryPropsInterface
     } else if (resource.type === ElementTypes.Input) {
         if (resource.variant === InputVariants.Checkbox) {
             return <CheckboxAdapter stepId={ stepId } resource={ resource } />;
+        }
+
+        if (resource.variant === InputVariants.Choice) {
+            return <ChoiceAdapter stepId={ stepId } resource={ resource } />;
         }
 
         if (resource.variant === InputVariants.Telephone) {

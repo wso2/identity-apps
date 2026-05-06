@@ -24,7 +24,7 @@ import { RouteInterface } from "@wso2is/core/models";
  * @param key - key to be checked in the config
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const checkEnabled = (appConfig: any, key: string): boolean => {
+const checkEnabled = (appConfig: any, key: string): boolean => {
     if (appConfig[key] === undefined) {
         return true;
     } else if (typeof appConfig[key] === "boolean" && appConfig[key]) {

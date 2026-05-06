@@ -19,7 +19,7 @@
 import { ProfileConstants } from "@wso2is/core/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Forms, Validation } from "@wso2is/forms";
+import { Field, Forms, Validation } from "@wso2is/forms/legacy";
 import { GenericIcon, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";

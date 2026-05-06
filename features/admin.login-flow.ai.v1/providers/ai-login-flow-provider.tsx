@@ -34,7 +34,7 @@ import AILoginFlowContext from "../context/ai-login-flow-context";
 import { LoginFlowResultStatus } from "../models/ai-login-flow";
 import { BannerState } from "../models/banner-state";
 
-export type AILoginFlowProviderProps = unknown;
+type AILoginFlowProviderProps = unknown;
 
 /**
  * Provider for the sign on methods context.

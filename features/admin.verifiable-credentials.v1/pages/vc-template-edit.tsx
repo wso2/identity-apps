@@ -27,7 +27,7 @@ import { AppConstants as CommonAppConstants } from "@wso2is/admin.core.v1/consta
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertInterface, AlertLevels, Claim, ExternalClaim, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalForm, FinalFormField, FormRenderProps, SelectFieldAdapter, TextFieldAdapter } from "@wso2is/form/src";
+import { FinalForm, FinalFormField, FormRenderProps, SelectFieldAdapter, TextFieldAdapter } from "@wso2is/forms";
 import {
     ConfirmationModal,
     ContentLoader,

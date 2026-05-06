@@ -58,7 +58,7 @@ export interface TemplateContentInterface extends StrictTemplateContentInterface
     [ key: string ]: any;
 }
 
-export interface StrictTemplateContentInterface {
+interface StrictTemplateContentInterface {
     wizardHelp?: LazyExoticComponent<ComponentType<any>> | ReactElement | any;
     wizardHelp2?: LazyExoticComponent<ComponentType<any>> | ReactElement | any;
     wizardHelp3?: LazyExoticComponent<ComponentType<any>> | ReactElement | any;

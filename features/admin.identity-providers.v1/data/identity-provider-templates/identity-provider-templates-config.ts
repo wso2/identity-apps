@@ -25,7 +25,7 @@ export interface IdentityProviderTemplatesConfigInterface {
     templates: TemplateConfigInterface<any>[];
 }
 
-export interface TemplateConfigInterface<T> {
+interface TemplateConfigInterface<T> {
     content?: TemplateContentInterface;
     enabled: boolean;
     comingSoon?: boolean;
@@ -37,6 +37,6 @@ export interface TemplateContentInterface extends StrictTemplateContentInterface
     [ key: string ]: any;
 }
 
-export interface StrictTemplateContentInterface {
+interface StrictTemplateContentInterface {
     wizardHelp?: LazyExoticComponent<ComponentType<any>> | ReactElement | any;
 }

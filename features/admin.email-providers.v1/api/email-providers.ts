@@ -73,7 +73,7 @@ export const useEmailProviderConfig = <Data = EmailProviderConfigAPIResponseInte
  *
  * @returns the email provider configurations of the tenant.
  */
-export const useEmailProviderConfigV1 = <Data = EmailProviderConfigAPIResponseInterface[],
+const useEmailProviderConfigV1 = <Data = EmailProviderConfigAPIResponseInterface[],
     Error = RequestErrorInterface>(): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {

@@ -29,7 +29,7 @@ import { ExecutionMinimalPropsInterface } from "../execution-minimal";
 /**
  * Props interface of {@link AppleExecution}.
  */
-export type AppleExecutionPropsInterface = ExecutionMinimalPropsInterface
+type AppleExecutionPropsInterface = ExecutionMinimalPropsInterface
     & IdentifiableComponentInterface;
 
 const AppleExecution = ({

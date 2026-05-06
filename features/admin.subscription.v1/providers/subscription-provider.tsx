@@ -23,7 +23,7 @@ import { TenantTier } from "../models/tenant-tier";
 /**
  * Subscription provider props interface.
  */
-export interface SubscriptionProviderPropsInterface {
+interface SubscriptionProviderPropsInterface {
     /**
      * Initial reducer state.
      */

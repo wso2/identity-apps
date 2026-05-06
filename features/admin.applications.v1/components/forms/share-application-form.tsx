@@ -82,7 +82,7 @@ enum ShareType {
     UNSHARE
 }
 
-export interface ApplicationShareFormPropsInterface
+interface ApplicationShareFormPropsInterface
     extends IdentifiableComponentInterface {
     /**
      * Editing application.

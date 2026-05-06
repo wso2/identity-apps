@@ -39,7 +39,7 @@ import { Header, Icon, Label } from "semantic-ui-react";
 import { WebhookListInterface, WebhookListItemInterface, WebhookStatus } from "../models/webhooks";
 import "./webhook-list.scss";
 
-export interface WebhookListPropsInterface extends IdentifiableComponentInterface {
+interface WebhookListPropsInterface extends IdentifiableComponentInterface {
     /**
      * Advanced search component.
      */

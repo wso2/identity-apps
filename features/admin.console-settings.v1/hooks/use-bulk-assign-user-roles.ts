@@ -31,7 +31,7 @@ import { useSelector } from "react-redux";
 /**
  * Props interface of {@link useBulkAssignAdministratorRoles}
  */
-export type UseBulkAssignAdministratorRolesInterface = {
+type UseBulkAssignAdministratorRolesInterface = {
     /**
      * Function to assign administrator roles to a user.
      * @param user - User to assign roles to.

@@ -51,7 +51,7 @@ import "./new-feature-announcement.scss";
 /**
  * Props interface of {@link NewFeatureAnnouncement}
  */
-export interface NewFeatureAnnouncementProps extends IdentifiableComponentInterface {
+interface NewFeatureAnnouncementProps extends IdentifiableComponentInterface {
     id: string;
     title: ReactElement;
     description: ReactElement | string;
@@ -483,4 +483,4 @@ export const FeatureCarousel = () => {
     );
 };
 
-export default NewFeatureAnnouncement;
+

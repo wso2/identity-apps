@@ -23,7 +23,7 @@ import { BrandingPreferenceAPIResponseInterface, BrandingPreferenceOrganizationD
 /**
  * Interface for the return type of the useThemeProvider hook.
  */
-export type UseThemeProviderInterface = {
+type UseThemeProviderInterface = {
     /**
      * Organization's basic details.
      */

@@ -31,7 +31,7 @@ import { AsyncOperationStatusResponse, OperationStatus, OperationStatusSummary }
 /**
  * Proptypes for the use operation status poller hook.
  */
-export interface useAsyncOperationStatusProps {
+interface useAsyncOperationStatusProps {
     /**
      * Type of the operation being tracked
      */

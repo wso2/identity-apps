@@ -41,7 +41,7 @@ import "./approval-workflow-rule-conditions.scss";
 /**
  * Props interface of {@link ApprovalWorkflowRuleConditions}
  */
-export interface ApprovalWorkflowRuleConditionsPropsInterface extends IdentifiableComponentInterface {
+interface ApprovalWorkflowRuleConditionsPropsInterface extends IdentifiableComponentInterface {
     readonly?: boolean;
     rule: RuleInterface;
     submissionAttempted?: boolean;

@@ -53,7 +53,7 @@ export const initPushAuthenticatorQRCode = (): Promise<any> => {
         });
 };
 
-export const getPushEnabledDevices = () => {
+const getPushEnabledDevices = () => {
     const requestConfig: HttpRequestConfig = {
         headers: {
             "Content-Type": "application/json"

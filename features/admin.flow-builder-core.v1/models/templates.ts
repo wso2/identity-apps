@@ -20,7 +20,7 @@ import { Base } from "./base";
 
 export type Template = Base;
 
-export enum TemplateCategories {
+enum TemplateCategories {
     Starter = "STARTER"
 }
 

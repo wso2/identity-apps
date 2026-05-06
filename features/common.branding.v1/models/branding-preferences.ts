@@ -172,7 +172,7 @@ export interface BrandingPreferenceURLInterface {
 /**
  * Interface Branding preference stylesheets.
  */
-export interface BrandingPreferenceStylesheetsInterface {
+interface BrandingPreferenceStylesheetsInterface {
     /**
      * Login portal stylesheet.
      */
@@ -235,7 +235,7 @@ export interface ThemeConfigInterface {
 /**
  * Strict Interface Branding preference theme.
  */
-export interface StrictBrandingPreferenceThemeInterface {
+interface StrictBrandingPreferenceThemeInterface {
     /**
      * The active theme.
      */
@@ -245,7 +245,7 @@ export interface StrictBrandingPreferenceThemeInterface {
 /**
  * Represents a color palette with different shades and contrast text.
  */
-export interface PaletteColor {
+interface PaletteColor {
     /**
      * The light shade of the color.
      */
@@ -370,7 +370,7 @@ export interface BrandingPreferenceColorsInterface {
 /**
  * Interface Branding preference footer preferences.
  */
-export interface BrandingPreferenceFooterInterface {
+interface BrandingPreferenceFooterInterface {
     /**
      * Page Body Font.
      */
@@ -384,7 +384,7 @@ export interface BrandingPreferenceFooterInterface {
 /**
  * Interface Branding preference page preferences.
  */
-export interface BrandingPreferencePageInterface {
+interface BrandingPreferencePageInterface {
     /**
      * Page Background.
      */
@@ -398,7 +398,7 @@ export interface BrandingPreferencePageInterface {
 /**
  * Interface for the Branding Preference Typography.
  */
-export interface BrandingPreferenceTypographyInterface {
+interface BrandingPreferenceTypographyInterface {
     /**
      * Page Font.
      */
@@ -417,7 +417,7 @@ export interface BrandingPreferenceTypographyInterface {
 /**
  * Interface for the Font Typography Font.
  */
-export interface BrandingPreferenceTypographyFontInterface {
+interface BrandingPreferenceTypographyFontInterface {
     /**
      * URL to import if loaded from a CDN.
      */
@@ -431,7 +431,7 @@ export interface BrandingPreferenceTypographyFontInterface {
 /**
  * Interface for the Login Box Preferences.
  */
-export interface BrandingPreferenceButtonsInterface {
+interface BrandingPreferenceButtonsInterface {
     /**
      * Social, External IDP Connection Button Preference.
      */
@@ -449,7 +449,7 @@ export interface BrandingPreferenceButtonsInterface {
 /**
  * Interface for the Login Box Preferences.
  */
-export interface BrandingPreferenceInputInterface {
+interface BrandingPreferenceInputInterface {
     /**
      * Input Field Font Preferences.
      */
@@ -473,7 +473,7 @@ export interface BrandingPreferenceInputInterface {
     };
 }
 
-export interface BrandingPreferenceLoginBoxInterface {
+interface BrandingPreferenceLoginBoxInterface {
     /**
      * Login Box Background.
      */
@@ -497,7 +497,7 @@ export type BrandingPreferenceLayoutInterface = StrictBrandingPreferenceLayoutIn
 /**
  * Strict Interface Branding preference layout.
  */
-export interface StrictBrandingPreferenceLayoutInterface {
+interface StrictBrandingPreferenceLayoutInterface {
     /**
      * The active layout.
      */
@@ -529,7 +529,7 @@ export interface BrandingPreferenceSideAlignedLayoutInterface {
 /**
  * Interface for the custom layout configurations in the Branding Preference.
  */
-export interface BrandingPreferenceCustomLayoutInterface {
+interface BrandingPreferenceCustomLayoutInterface {
     /**
      * Custom layout content.
      */
@@ -557,7 +557,7 @@ export interface BrandingCustomLayoutContentInterface {
 /**
  * Interface Branding preference configurations.
  */
-export interface BrandingPreferenceConfigInterface {
+interface BrandingPreferenceConfigInterface {
     /**
      * Should the changes be published?
      */

@@ -26,7 +26,7 @@ import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInter
     SBACInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FormValue } from "@wso2is/forms";
+import { FormValue } from "@wso2is/forms/legacy";
 import {
     Code,
     ConfirmationModal,

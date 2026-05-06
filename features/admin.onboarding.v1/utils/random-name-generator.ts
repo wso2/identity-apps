@@ -23,7 +23,7 @@ import { humanId } from "human-id";
  *
  * @returns A random application name in Title Case format (e.g., "Swift Falcon").
  */
-export const generateRandomName = (): string => {
+const generateRandomName = (): string => {
     const fullId: string = humanId({
         capitalize: true,
         separator: " "

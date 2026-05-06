@@ -18,7 +18,7 @@
 
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FinalFormField, TextFieldAdapter } from "@wso2is/form";
+import { FinalFormField, TextFieldAdapter } from "@wso2is/forms";
 import {
     EmphasizedSegment,
     Hint,

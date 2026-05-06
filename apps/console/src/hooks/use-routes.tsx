@@ -45,7 +45,7 @@ import { getAppViewRoutes } from "../configs/routes";
 /**
  * Props interface of {@link useOrganizations}
  */
-export type useRoutesInterface = {
+type useRoutesInterface = {
     filterRoutes: (
         onRoutesFilterComplete: () => void,
         isUserTenantless: boolean,

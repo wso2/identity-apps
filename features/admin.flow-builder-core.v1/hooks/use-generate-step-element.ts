@@ -23,7 +23,7 @@ import generateResourceId from "../utils/generate-resource-id";
 /**
  * Props interface of {@link useGenerateStepElement}
  */
-export type UseGenerateStepElement = {
+type UseGenerateStepElement = {
     generateStepElement: (element: Element) => Element;
 };
 

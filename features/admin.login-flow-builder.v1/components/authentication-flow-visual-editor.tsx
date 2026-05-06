@@ -554,6 +554,11 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                 authenticator?.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
                     .IDENTIFIER_FIRST_AUTHENTICATOR_NAME
         );
+        const isSharedUserIdentifierAsFirstFactorOption: boolean = !!authenticationSequence?.steps[0]?.options.find(
+            (authenticator: AuthenticatorInterface) =>
+                authenticator?.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .SHARED_USER_IDENTIFIER_AUTHENTICATOR_NAME
+        );
         const isTOTPAsSecondFactorOption: boolean = !!authenticationSequence?.steps[1]?.options.find(
             (authenticator: AuthenticatorInterface) =>
                 authenticator?.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
@@ -561,25 +566,32 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
         );
 
         if (isTOTPAsSecondFactorOption) {
-            if (isIdentifierFirstAsFirstFactorOption) {
+            if (isIdentifierFirstAsFirstFactorOption || isSharedUserIdentifierAsFirstFactorOption) {
+                const infoKeyPrefix: string = isSharedUserIdentifierAsFirstFactorOption
+                    ? "totpWithSharedUserIdentifier"
+                    : "totpWithIdentifierFirst";
+                const handlerName: string = isSharedUserIdentifierAsFirstFactorOption
+                    ? "Shared User Identifier"
+                    : "Identifier First";
+
                 setAlertInfoContent(
                     <>
                         <AlertTitle>
                             {
                                 t("applications:edit.sections" +
                                 ".signOnMethod.sections.landing.flowBuilder." +
-                                "types.totp.info.totpWithIdentifierFirstEnabled")
+                                `types.totp.info.${ infoKeyPrefix }Enabled`)
                             }
                         </AlertTitle>
                         <Trans
                             i18nKey={
                                 t("applications:edit.sections" +
                                 ".signOnMethod.sections.landing.flowBuilder." +
-                                "types.totp.info.totpWithIdentifierFirstEnabledMessage")
+                                `types.totp.info.${ infoKeyPrefix }EnabledMessage`)
                             }
                         >
-                            Configuring TOTP authenticator with
-                            Identifier First handler is not recommended as <strong>TOTP progressive
+                            Configuring TOTP authenticator with { handlerName } handler
+                            is not recommended as <strong>TOTP progressive
                             enrollment</strong> is enabled by default. You can disable TOTP
                             progressive enrollment through <strong> Conditional Authentication</strong> script.
                         </Trans>

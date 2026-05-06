@@ -19,12 +19,12 @@
 import Grid from "@oxygen-ui/react/Grid";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
-    DynamicField,
+    DynamicFormField,
     DynamicFieldInputTypes,
     DynamicForm,
     FieldInputTypes,
     renderFormFields as renderDynamicFormFields
-} from "@wso2is/dynamic-forms";
+} from "@wso2is/forms/legacy";
 import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FC, ReactNode, useEffect, useState } from "react";
@@ -300,7 +300,7 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
                     {
                         displayOrder: value?.meta?.displayOrder,
                         element: (
-                            <DynamicField.Input
+                            <DynamicFormField.Input
                                 key={ key }
                                 name={ key }
                                 label={ value?.meta?.displayName }
@@ -429,7 +429,7 @@ export const AuthenticatorSettingsForm: FC<AuthenticatorSettingsFormPropsInterfa
                             </FormSection>
                         )
                     }
-                    <DynamicField.Button
+                    <DynamicFormField.Button
                         index={ 1 }
                         form={ `${FORM_ID}-${originalInitialValues?.authenticatorId}` }
                         ariaLabel="Update General Details"

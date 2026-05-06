@@ -30,76 +30,36 @@
             }
         },
         "build-base": {
-            "executor": "@nx/webpack:webpack",
+            "executor": "nx:run-commands",
             "outputs": [
-                "{options.outputPath}"
+                "{workspaceRoot}/apps/myaccount/build/myaccount"
             ],
-            "defaultConfiguration": "production",
             "options": {
-                "compiler": "babel",
-                "memoryLimit": 4096,
-                "outputPath": "apps/myaccount/build/myaccount",
-                "index": "index.html",
-                "baseHref": "/myaccount/",
-                "main": "apps/myaccount/src/index.tsx",
-                "polyfills": "",
-                "tsConfig": "apps/myaccount/tsconfig.json",
-                "assets": [
+                "commands": [
                     {
-                        "glob": "**/*",
-                        "input": "modules/theme/dist/lib",
-                        "output": "libs",
-                        "ignore": [
-                            "**/**.js",
-                            "**/**.json",
-                            "**/**.less",
-                            "**/assets/images/!(branding|identity-providers|flags.png)/**"
-                        ]
+                        "command": "pnpm vite build --config vite.config.ts --mode production",
+                        "description": "Build the My Account app using Vite."
                     },
                     {
-                        "glob": "**/*",
-                        "input": "apps/myaccount/src/public",
-                        "output": "."
-                    },
-                    {
-                        "glob": "**/*",
-                        "input": "modules/i18n/dist/bundle",
-                        "output": "resources/i18n"
-                    },
-                    {
-                        "glob": "**/auth.jsp",
-                        "input": "apps/console/src",
-                        "output": "."
+                        "command": "node scripts/build/assemble-vite-build.js",
+                        "description": "Assemble My Account deployable artifacts around Vite output."
                     }
                 ],
-                "styles": [],
-                "scripts": [],
-                "generateIndexHtml": false,
-                "postcssConfig": "apps/myaccount/postcss.config.js",
-                "webpackConfig": "apps/myaccount/webpack.config.ts"
-            },
-            "configurations": {
-                "development": {
-                    "index": "index.html",
-                    "staticIndex": "index.html",
-                    "extractLicenses": false,
-                    "optimization": false,
-                    "sourceMap": true,
-                    "vendorChunk": true,
-                    "verbose": true,
-                    "extractCss": false
-                },
-                "production": {
-                    "index": "index.jsp",
-                    "staticIndex": "index.html",
-                    "fileReplacements": [],
-                    "optimization": true,
-                    "outputHashing": "all",
-                    "sourceMap": false,
-                    "extractLicenses": false,
-                    "verbose": true,
-                    "extractCss": false
-                }
+                "cwd": "apps/myaccount",
+                "parallel": false
+            }
+        },
+        "build-windup": {
+            "executor": "nx:run-commands",
+            "options": {
+                "commands": [
+                    {
+                        "command": "pnpm postbuild",
+                        "description": "Clearing up the redundant files after the build."
+                    }
+                ],
+                "cwd": "apps/myaccount",
+                "parallel": false
             }
         },
         "build": {
@@ -108,7 +68,8 @@
             "options": {
                 "commands": [
                     "pnpm nx run myaccount:build-prepare",
-                    "pnpm nx run myaccount:build-base"
+                    "pnpm nx run myaccount:build-base",
+                    "pnpm nx run myaccount:build-windup"
                 ],
                 "cwd": "apps/myaccount",
                 "parallel": false
@@ -141,25 +102,16 @@
             }
         },
         "serve-base": {
-            "executor": "@nx/webpack:dev-server",
-            "defaultConfiguration": "development",
+            "executor": "nx:run-commands",
             "options": {
-                "buildTarget": "myaccount:build-base",
-                "port": 9000,
-                "baseHref": "/myaccount/",
-                "open": true,
-                "hmr": true,
-                "liveReload": true,
-                "ssl": true
-            },
-            "configurations": {
-                "development": {
-                    "buildTarget": "myaccount:build-base:development"
-                },
-                "production": {
-                    "buildTarget": "myaccount:build-base:production",
-                    "hmr": false
-                }
+                "commands": [
+                    {
+                        "command": "pnpm vite --config vite.config.ts --mode development",
+                        "description": "Serve the My Account app using Vite dev server."
+                    }
+                ],
+                "cwd": "apps/myaccount",
+                "parallel": false
             }
         },
         "serve": {

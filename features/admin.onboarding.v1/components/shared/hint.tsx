@@ -103,7 +103,7 @@ const ClickableHintMessage: typeof Typography = styled(Typography)(({ theme }: {
 /**
  * Container for optional child content (chips, buttons, etc).
  */
-export const HintContent: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+const HintContent: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
     flexWrap: "wrap",
     gap: theme.spacing(1)

@@ -93,7 +93,7 @@ export const useIdentityProviderList = <Data = IdentityProviderListResponseInter
  * @param authenticatorId - ID of the Federated Authenticator.
  * @returns A promise containing the response.
  */
-export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Promise<any> => {
+const getFederatedAuthenticatorMetadata = (authenticatorId: string): Promise<any> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -128,7 +128,7 @@ export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Prom
  *
  * @returns A promise containing the response.
  */
-export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
+const getIdentityProviderTemplateList = (limit?: number, offset?: number,
     filter?: string): Promise<IdentityProviderTemplateListResponseInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: {

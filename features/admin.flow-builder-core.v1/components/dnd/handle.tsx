@@ -30,7 +30,7 @@ import React, {
 } from "react";
 import Action from "./action";
 
-export interface HandleProps extends HTMLAttributes<HTMLButtonElement>, IdentifiableComponentInterface {
+interface HandleProps extends HTMLAttributes<HTMLButtonElement>, IdentifiableComponentInterface {
     cursor?: CSSProperties["cursor"];
     label: ReactNode;
     ref?: Ref<HTMLButtonElement>;

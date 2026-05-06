@@ -84,7 +84,7 @@ export const WorkflowRequestsStatusDropdown: React.FC<FilterDropdownProps> =
     );
 };
 
-export const WorkflowRequestRequestTypeDropdown: React.FC<FilterDropdownProps> =
+const WorkflowRequestRequestTypeDropdown: React.FC<FilterDropdownProps> =
 ({ value, onChange, style, placeholder, ..._rest }: FilterDropdownProps) => {
     const { t } = useTranslation([ "workflowRequests" ]);
     const eventTypeOptions: Array<{

@@ -33,7 +33,7 @@ import View from "../view/view";
 /**
  * Props interface of {@link Execution}
  */
-export type ExecutionPropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
+type ExecutionPropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Execution Node component.
@@ -151,7 +151,6 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
             };
         }
     }, [ fullResource ]);
-
 
     /**
      * Resolves the execution name based on the type.

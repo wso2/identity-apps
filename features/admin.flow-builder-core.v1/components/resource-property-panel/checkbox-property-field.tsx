@@ -29,7 +29,7 @@ import { Resource } from "../../models/resources";
 /**
  * Props interface of {@link CheckboxPropertyField}
  */
-export interface CheckboxPropertyFieldPropsInterface extends IdentifiableComponentInterface {
+interface CheckboxPropertyFieldPropsInterface extends IdentifiableComponentInterface {
     /**
      * The resource associated with the property.
      */

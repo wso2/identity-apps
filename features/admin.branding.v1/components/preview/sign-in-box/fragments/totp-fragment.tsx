@@ -24,7 +24,7 @@ import useBrandingPreference from "../../../../hooks/use-branding-preference";
 /**
  * Proptypes for the totp fragment of login screen skeleton.
  */
-export type TOTPInterface = IdentifiableComponentInterface;
+type TOTPInterface = IdentifiableComponentInterface;
 
 /**
  * TOTP fragment component for the branding preview of Sign In box.

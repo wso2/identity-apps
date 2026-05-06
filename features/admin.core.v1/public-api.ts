@@ -58,5 +58,4 @@ export { default as CompatibilitySettingsProvider } from "./providers/compatibil
 export * from "./hooks/use-compatibility-settings";
 export * from "./hooks/use-enable-legacy-flows";
 export * from "./hooks/use-resource-endpoints";
-export * from "./hooks/use-routes";
 export * from "./hooks/use-ui-configs";

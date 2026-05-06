@@ -31,7 +31,7 @@ import "./validation-status-labels.scss";
 /**
  * Props interface of {@link ValidationStatusLabelsPropsInterface}
  */
-export interface ValidationStatusLabelsPropsInterface extends IdentifiableComponentInterface {}
+interface ValidationStatusLabelsPropsInterface extends IdentifiableComponentInterface {}
 
 const BellIcon = ({ height = 16, width = 16 }: { height?: number; width?: number }): ReactElement => {
     /* eslint-disable-next-line max-len */

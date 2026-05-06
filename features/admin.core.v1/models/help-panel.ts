@@ -19,7 +19,7 @@
 /**
  * Interface for the portal documentation structure.
  */
-export interface PortalDocumentationStructureInterface extends StrictPortalDocumentationStructureInterface {
+interface PortalDocumentationStructureInterface extends StrictPortalDocumentationStructureInterface {
     [ key: string ]: any;
 }
 

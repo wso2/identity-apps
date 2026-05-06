@@ -78,7 +78,7 @@ export interface WorkflowOperationsDetailsFormValuesInterface {
 /**
  * Notification channel configuration.
  */
-export interface NotificationConfig {
+interface NotificationConfig {
     /**
      * Notification channels.
      */

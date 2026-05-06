@@ -34,7 +34,7 @@ import "./button-adapter.scss";
 /**
  * Props interface of {@link ButtonAdapter}
  */
-export type ButtonAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type ButtonAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Button component.

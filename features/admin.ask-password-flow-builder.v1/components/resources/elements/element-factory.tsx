@@ -26,7 +26,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 /**
  * Props interface of {@link ElementFactory}
  */
-export type ElementFactoryPropsInterface = CommonElementFactoryPropsInterface & IdentifiableComponentInterface;
+type ElementFactoryPropsInterface = CommonElementFactoryPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Factory for creating components.

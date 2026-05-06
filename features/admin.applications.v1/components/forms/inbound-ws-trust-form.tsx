@@ -20,7 +20,7 @@ import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { AlertInterface, AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
-import { DropdownChild, Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { DropdownChild, Field, FormValue, Forms, Validation } from "@wso2is/forms/legacy";
 import { Heading, Hint, LinkButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";

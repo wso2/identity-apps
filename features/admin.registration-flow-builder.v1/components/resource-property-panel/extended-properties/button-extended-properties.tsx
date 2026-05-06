@@ -44,7 +44,7 @@ import "./button-extended-properties.scss";
 /**
  * Props interface of {@link ButtonExtendedProperties}
  */
-export type ButtonExtendedPropertiesPropsInterface = CommonResourcePropertiesPropsInterface &
+type ButtonExtendedPropertiesPropsInterface = CommonResourcePropertiesPropsInterface &
     IdentifiableComponentInterface;
 
 /**

@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
+import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms/legacy";
 import { PasswordValidation, ValidationStatusInterface } from "@wso2is/react-components";
 import React, { Dispatch, FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";

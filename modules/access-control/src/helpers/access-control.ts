@@ -38,7 +38,7 @@ const hasScope = (scope: string, allowedScopes: string): boolean => {
  *
  * @returns `boolean` True is feature is enabled and false if not.
  */
-export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: string | string[]): boolean => {
+const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: string | string[]): boolean => {
     const isDefined: boolean = feature?.disabledFeatures
         && Array.isArray(feature.disabledFeatures)
         && feature.disabledFeatures.length > 0;
@@ -132,7 +132,7 @@ export const hasRequiredScopes = (
  *
  * @returns `boolean` True is access is granted, false if not.
  */
-export const isPortalAccessGranted = <T = unknown>(
+const isPortalAccessGranted = <T = unknown>(
     featureConfig: T,
     allowedScopes: string,
     organzationType?: string

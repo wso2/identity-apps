@@ -39,7 +39,7 @@ import { AlertLevels, HttpErrorResponseDataInterface,
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
-import { Field, Wizard2, WizardPage, composeValidators } from "@wso2is/form";
+import { Field, Wizard2, WizardPage, composeValidators } from "@wso2is/forms";
 import {
     CertFileStrategy,
     ContentLoader,

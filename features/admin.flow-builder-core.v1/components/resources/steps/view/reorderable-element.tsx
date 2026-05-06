@@ -37,7 +37,7 @@ import ValidationErrorBoundary from "../../../validation-panel/validation-error-
 /**
  * Props interface of {@link ReorderableElement}
  */
-export interface ReorderableComponentPropsInterface
+interface ReorderableComponentPropsInterface
     extends IdentifiableComponentInterface,
         Omit<SortableProps, "element">,
         Omit<BoxProps, "children" | "id"> {

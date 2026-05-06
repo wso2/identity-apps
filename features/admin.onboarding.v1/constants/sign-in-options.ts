@@ -49,7 +49,7 @@ export const DEFAULT_SIGN_IN_OPTIONS: SignInOptionsConfigInterface = {
  * Sign-in option definitions for identifier options.
  * Identifiers determine how users are recognized.
  */
-export const IDENTIFIER_OPTIONS: SignInOptionDefinitionInterface[] = [
+const IDENTIFIER_OPTIONS: SignInOptionDefinitionInterface[] = [
     {
         authenticatorConfig: {
             authenticator: AuthNames.BASIC_AUTHENTICATOR_NAME,
@@ -180,7 +180,7 @@ export const LOGIN_METHOD_OPTIONS: SignInOptionDefinitionInterface[] = [
 /**
  * All sign-in options combined.
  */
-export const ALL_SIGN_IN_OPTIONS: SignInOptionDefinitionInterface[] = [
+const ALL_SIGN_IN_OPTIONS: SignInOptionDefinitionInterface[] = [
     ...IDENTIFIER_OPTIONS,
     ...LOGIN_METHOD_OPTIONS
 ];
@@ -201,7 +201,7 @@ export const FIRST_FACTOR_METHOD_IDS: string[] = [ "password", "passkey", "magic
  * Validation rules for sign-in options.
  * Simplified for the Identifier First approach.
  */
-export const SignInOptionsValidationRules: Record<string, number> = {
+const SignInOptionsValidationRules: Record<string, number> = {
     /** Minimum one identifier required */
     MIN_IDENTIFIERS: 1,
     /** Minimum one login method required */

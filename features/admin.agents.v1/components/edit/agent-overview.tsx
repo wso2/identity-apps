@@ -26,7 +26,7 @@ import { AlertLevels, Claim, IdentifiableComponentInterface, Property,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
+import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/forms";
 import {
     ConfirmationModal,
     DangerZone,

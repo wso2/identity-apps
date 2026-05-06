@@ -30,7 +30,7 @@ import { useTranslation } from "react-i18next";
 /**
  * Props interface of {@link WorkflowConditionTextInput}
  */
-export interface WorkflowConditionTextInputPropsInterface {
+interface WorkflowConditionTextInputPropsInterface {
     expressionValue: string;
     ruleId: string;
     conditionId: string;

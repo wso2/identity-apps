@@ -29,7 +29,7 @@ import Hint from "../../hint";
 /**
  * Props interface of {@link PhoneNumberInputAdapter}
  */
-export type PhoneNumberInputAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type PhoneNumberInputAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Phone Number input component.

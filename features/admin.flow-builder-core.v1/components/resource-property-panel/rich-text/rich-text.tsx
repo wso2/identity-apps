@@ -79,7 +79,7 @@ const editorConfig: InitialConfigType = {
 /**
  * Props interface for the RichText component.
  */
-export interface RichTextProps extends IdentifiableComponentInterface {
+interface RichTextProps extends IdentifiableComponentInterface {
     /**
      * Options to customize the rich text editor toolbar.
      */

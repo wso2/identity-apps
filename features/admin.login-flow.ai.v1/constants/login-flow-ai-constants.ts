@@ -48,7 +48,7 @@ export const useGetStatusLabels = (): Record<string, string> => {
     };
 };
 
-export const STATUS_SEQUENCE: string[] = [
+const STATUS_SEQUENCE: string[] = [
     "optimizing_and_validating_user_query",
     "optimization_and_validation_complete",
     "retrieving_examples",
@@ -74,8 +74,8 @@ export const STATUS_PROGRESS_MAP: Record<string, number> = {
     retrieving_examples: 70
 };
 
-export const INITIAL_PROGRESS: number = 5;
-export const INCREMENT: number = 0.5;
+const INITIAL_PROGRESS: number = 5;
+const INCREMENT: number = 0.5;
 export const FACTS_ROTATION_DELAY: number = 8000;
 export const PROGRESS_UPDATE_INTERVAL: number = 100;
 

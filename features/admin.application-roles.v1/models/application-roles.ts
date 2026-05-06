@@ -19,7 +19,7 @@
 /**
  * Interface to store link data of paginated response.
  */
-export interface LinkInterface {
+interface LinkInterface {
     rel: string;
     href: string;
 }
@@ -43,7 +43,7 @@ export interface RoleListItemInterface {
 /**
  * Interface to store permission list item.
  */
-export interface PermissionListItemInterface {
+interface PermissionListItemInterface {
     name: string;
 }
 
@@ -64,7 +64,7 @@ export interface AuthorizedAPIListItemInterface {
 /**
  * Interface to store searched API list item.
  */
-export interface SearchedAPIListItemInterface {
+interface SearchedAPIListItemInterface {
     id: string;
     gwName?: string;
     permissions?: AuthorizedPermissionListItemInterface[];
@@ -73,7 +73,7 @@ export interface SearchedAPIListItemInterface {
 /**
  * Interface to store authorized permission list item.
  */
-export interface AuthorizedPermissionListItemInterface {
+interface AuthorizedPermissionListItemInterface {
     id: string;
     displayName: string;
     name: string;
@@ -99,21 +99,21 @@ export interface UpdateRolePayloadInterface {
 /**
  * Interface for basic role details.
  */
-export interface RoleBasicDetailsInterface {
+interface RoleBasicDetailsInterface {
     basic: RoleNameInterface;
 }
 
 /**
  * Interface for role name.
  */
-export interface RoleNameInterface {
+interface RoleNameInterface {
     roleName: string;
 }
 
 /**
  * Policy interface.
  */
-export interface PolicyInterface {
+interface PolicyInterface {
     policies: string[];
 }
 
@@ -178,7 +178,7 @@ export interface ApplicationRoleInterface {
 /**
  * Interface for group role assignment payload.
  */
-export interface GroupRoleAssignPayloadInterface {
+interface GroupRoleAssignPayloadInterface {
     added_roles: ApplicationRoleInterface[];
     removed_roles: ApplicationRoleInterface[];
 }

@@ -25,7 +25,7 @@ import ListItemText from "@oxygen-ui/react/ListItemText";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { DropdownChild } from "@wso2is/forms";
+import { DropdownChild } from "@wso2is/forms/legacy";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { USER_ACCOUNT_STATUS_FILTER_OPTIONS } from "../constants/user-management-constants";

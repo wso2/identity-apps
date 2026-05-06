@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { DropdownChild } from "@wso2is/forms";
+import { DropdownChild } from "@wso2is/forms/legacy";
 import { I18n } from "@wso2is/i18n";
 import { ReactNode } from "react";
 import { ActivityType } from "../models/insights";

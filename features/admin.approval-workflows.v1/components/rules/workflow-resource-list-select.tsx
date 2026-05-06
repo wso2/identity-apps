@@ -43,7 +43,7 @@ import { normalizeResourceResponse, processResourceItems } from "../../utils/res
 /**
  * Props interface of {@link WorkflowResourceListSelect}
  */
-export interface WorkflowResourceListSelectPropsInterface extends IdentifiableComponentInterface {
+interface WorkflowResourceListSelectPropsInterface extends IdentifiableComponentInterface {
     conditionId: string;
     expressionId: string;
     expressionValue: string;

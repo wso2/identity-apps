@@ -30,7 +30,7 @@ import { NotificationSeverity, VisualEditorNotification } from "../models/visual
 /**
  * Proptypes for the Authentication flow update warning modal component.
  */
-export interface AuthenticationFlowUpdateWarningModalPropsInterface
+interface AuthenticationFlowUpdateWarningModalPropsInterface
     extends Partial<ConfirmationModalPropsInterface>,
         IdentifiableComponentInterface {
     /**

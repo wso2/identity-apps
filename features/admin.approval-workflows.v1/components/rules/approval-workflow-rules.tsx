@@ -38,7 +38,7 @@ import "./approval-workflow-rules.scss";
 /**
  * Props interface of {@link ApprovalWorkflowRules}
  */
-export interface ApprovalWorkflowRulesPropsInterface extends IdentifiableComponentInterface {
+interface ApprovalWorkflowRulesPropsInterface extends IdentifiableComponentInterface {
     /**
      * Disable single rule delete button.
      */

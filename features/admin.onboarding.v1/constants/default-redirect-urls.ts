@@ -23,7 +23,7 @@ import { ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models
  * Framework-specific paths are auto-filled with industry standard defaults.
  * Generic types require user input (empty arrays).
  */
-export const DefaultRedirectUrls: Record<string, string[]> = {
+const DefaultRedirectUrls: Record<string, string[]> = {
     angular: [ "http://localhost:4200" ],
     express: [ "http://localhost:3000/callback" ],
     [ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION]: [],
@@ -53,7 +53,7 @@ export const getDefaultRedirectUrl = (frameworkOrTemplate?: string): string[] =>
  * @param frameworkOrTemplate - Framework ID or template ID
  * @returns True if auto-fill defaults are available
  */
-export const hasAutoFillDefaults = (frameworkOrTemplate?: string): boolean => {
+const hasAutoFillDefaults = (frameworkOrTemplate?: string): boolean => {
     if (!frameworkOrTemplate) {
         return false;
     }
@@ -87,7 +87,7 @@ export const RedirectUrlConstraints: RedirectUrlConstraintsInterface = {
 /**
  * Common localhost patterns for development.
  */
-export const LOCALHOST_PATTERNS: RegExp[] = [
+const LOCALHOST_PATTERNS: RegExp[] = [
     /^https?:\/\/localhost(:\d+)?/,
     /^https?:\/\/127\.0\.0\.1(:\d+)?/
 ];
@@ -97,7 +97,7 @@ export const LOCALHOST_PATTERNS: RegExp[] = [
  * @param url - URL to check
  * @returns True if the URL is a localhost URL
  */
-export const isLocalhostUrl = (url: string): boolean => {
+const isLocalhostUrl = (url: string): boolean => {
     return LOCALHOST_PATTERNS.some((pattern: RegExp) => pattern.test(url));
 };
 
@@ -106,7 +106,7 @@ export const isLocalhostUrl = (url: string): boolean => {
  * Used to check if user has modified the URL from a default.
  * @returns Set of all default URLs
  */
-export const getAllDefaultUrls = (): Set<string> => {
+const getAllDefaultUrls = (): Set<string> => {
     const allDefaults: Set<string> = new Set();
 
     Object.values(DefaultRedirectUrls).forEach((urls: string[]) => {

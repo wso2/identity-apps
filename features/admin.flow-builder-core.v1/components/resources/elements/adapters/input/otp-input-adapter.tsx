@@ -32,7 +32,7 @@ import PlaceholderComponent from "../placeholder-component";
 /**
  * Props interface of {@link OTPInputAdapter}
  */
-export type OTPInputAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type OTPInputAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the OTP inputs.

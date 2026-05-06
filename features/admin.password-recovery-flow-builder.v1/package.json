@@ -47,10 +47,8 @@
         "@types/testing-library__jest-dom": "^5.14.3",
         "rollup": "^4.17.2",
         "rollup-plugin-dts": "^6.1.1",
-        "rollup-plugin-generate-package-json": "^3.2.0",
         "rollup-plugin-polyfill-node": "^0.13.0",
         "rollup-plugin-scss": "^4.0.0",
-        "rollup-plugin-styles": "^4.0.0",
         "rollup-plugin-svg": "^2.0.0",
         "typescript": "^5.1.6"
     },

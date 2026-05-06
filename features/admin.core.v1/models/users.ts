@@ -34,7 +34,7 @@ export interface UserRoleInterface {
 /**
  * Captures meta details of the user.
  */
-export interface UserMetaInterface {
+interface UserMetaInterface {
     created: string;
     location: string;
     lastModified: string;

@@ -20,7 +20,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { HttpErrorResponseDataInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
-import { DropdownChild, Field, Form } from "@wso2is/form";
+import { DropdownChild, Field, Form } from "@wso2is/forms";
 import { Hint, Message } from "@wso2is/react-components";
 import { ContentLoader } from "@wso2is/react-components/src/components/loader/content-loader";
 import { AxiosError, AxiosResponse } from "axios";
@@ -58,7 +58,7 @@ interface AddTenantWizardFormPropsInterface extends TestableComponentInterface {
 /**
  * Interface to capture add tenant wizard form error messages.
  */
-export interface AddTenantWizardFormErrorValidationsInterface {
+interface AddTenantWizardFormErrorValidationsInterface {
     tenantName: string;
     deploymentUnitName?: string
 }

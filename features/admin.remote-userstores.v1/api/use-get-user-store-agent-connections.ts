@@ -33,7 +33,7 @@ import { AgentConnectionAPIResponseInterface, AgentConnectionInterface } from ".
  * @param apiAgentConnection - Agent connection data to be normalized.
  * @returns The normalized agent connection data.
  */
-export const normalizeAgentConnection = (
+const normalizeAgentConnection = (
     apiAgentConnection: AgentConnectionAPIResponseInterface
 ): AgentConnectionInterface => ({
     agent: {

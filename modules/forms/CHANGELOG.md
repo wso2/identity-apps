@@ -1,5 +1,11 @@
 # @wso2is/forms
 
+## 2.10.3
+
+### Patch Changes
+
+- [#10250](https://github.com/wso2/identity-apps/pull/10250) [`ba3ab8dd9bf2548d3a4c02da71d90cfddf0f6de6`](https://github.com/wso2/identity-apps/commit/ba3ab8dd9bf2548d3a4c02da71d90cfddf0f6de6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Unify in-house form libraries
+
 ## 2.3.27
 
 ### Patch Changes

@@ -120,7 +120,7 @@ export const getConnectionIcons = (): any => {
     };
 };
 
-export const getConnectionCapabilityIcons = (): any => {
+const getConnectionCapabilityIcons = (): any => {
 
     return {
         [ SupportedServices.AUTHENTICATION ]: ConnectionIcon,

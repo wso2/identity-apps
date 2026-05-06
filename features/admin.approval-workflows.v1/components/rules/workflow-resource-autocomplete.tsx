@@ -58,7 +58,7 @@ interface ValueInputAutocompleteOptionsInterface {
 /**
  * Props interface of {@link WorkflowResourceAutocomplete}
  */
-export interface WorkflowResourceAutocompletePropsInterface extends IdentifiableComponentInterface {
+interface WorkflowResourceAutocompletePropsInterface extends IdentifiableComponentInterface {
     conditionId: string;
     expressionId: string;
     expressionValue: string;

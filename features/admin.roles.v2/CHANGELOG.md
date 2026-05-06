@@ -1,5 +1,14 @@
 # @wso2is/admin.roles.v2
 
+## 2.27.382
+
+### Patch Changes
+
+- [#10227](https://github.com/wso2/identity-apps/pull/10227) [`20fb7dbbf0b7143036064ec6e5c1e1625c8fe220`](https://github.com/wso2/identity-apps/commit/20fb7dbbf0b7143036064ec6e5c1e1625c8fe220) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add support for handling roles tier limit
+
+- Updated dependencies [[`20fb7dbbf0b7143036064ec6e5c1e1625c8fe220`](https://github.com/wso2/identity-apps/commit/20fb7dbbf0b7143036064ec6e5c1e1625c8fe220)]:
+  - @wso2is/i18n@2.39.2
+
 ## 2.27.381
 
 ### Patch Changes

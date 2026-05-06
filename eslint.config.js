@@ -326,7 +326,6 @@ module.exports = [
             "no-unreachable": "off",
             "no-unsafe-negation": "off",
             "no-unsafe-optional-chaining": "off",
-            "no-unused-vars": "off",
             "no-use-before-define": "off",
             "no-with": "off",
             "padding-line-between-statements": [ ...LINE_PADDING_RULES ],

@@ -41,7 +41,7 @@ export const AVATAR_NAMES: string[] = [
 /**
  * Mapping of avatar names to imported image assets for display in Console.
  */
-export const AVATAR_IMAGES: Record<string, string> = {
+const AVATAR_IMAGES: Record<string, string> = {
     alpaca: AlpacaAvatar,
     armadillo: ArmadilloAvatar,
     badger: BadgerAvatar,
@@ -55,7 +55,7 @@ export const AVATAR_IMAGES: Record<string, string> = {
  * Base path for avatar images.
  * This is the runtime path used by the branding API for JSP portals.
  */
-export const AVATAR_BASE_PATH: string = "/libs/themes/default/assets/images/avatars";
+const AVATAR_BASE_PATH: string = "/libs/themes/default/assets/images/avatars";
 
 /**
  * Generate avatar logo URL for the branding API (runtime path).
@@ -96,7 +96,7 @@ export const getAnimalNameFromUrl = (url: string): string => {
 /**
  * Default primary color used across branding configuration.
  */
-export const DEFAULT_PRIMARY_COLOR: string = "#ff7300";
+const DEFAULT_PRIMARY_COLOR: string = "#ff7300";
 
 /**
  * Preset color options for quick selection.
@@ -146,7 +146,7 @@ export const BrandingConstraints: BrandingConstraintsInterface = {
  *
  * @returns Random hex color string
  */
-export const generateRandomColor = (): string => {
+const generateRandomColor = (): string => {
     const letters: string = "0123456789ABCDEF";
     let color: string = "#";
 

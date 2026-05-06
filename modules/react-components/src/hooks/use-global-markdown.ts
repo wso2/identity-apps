@@ -22,7 +22,7 @@ import GlobalMarkdownContext, { GlobalMarkdownContextProps } from "../context/gl
 /**
  * Interface for the return type of the `useGlobalMarkdown` hook.
  */
-export type UseGlobalMarkdownInterface = GlobalMarkdownContextProps;
+type UseGlobalMarkdownInterface = GlobalMarkdownContextProps;
 
 /**
  * Hook that provides access to the global markdown context.

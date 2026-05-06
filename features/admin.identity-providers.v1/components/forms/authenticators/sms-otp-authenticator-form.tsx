@@ -22,7 +22,7 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import { Code, Link } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isBoolean from "lodash-es/isBoolean";
@@ -135,7 +135,7 @@ interface SMSOTPAuthenticatorFormFieldsInterface {
 /**
  * Proptypes for the SMS OTP Authenticator Form error messages.
  */
-export interface SMSOTPAuthenticatorFormErrorValidationsInterface {
+interface SMSOTPAuthenticatorFormErrorValidationsInterface {
     /**
      * SMS OTP expiry time field.
      */

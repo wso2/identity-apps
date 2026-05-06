@@ -30,7 +30,7 @@ import {
  * @param totalResults - Total number of results, defaults to the length of the webhooks array.
  * @returns WebhookListInterface containing the webhooks and total results.
  */
-export const createWebhookListInterface = (
+const createWebhookListInterface = (
     webhooks: WebhookListItemInterface[],
     totalResults?: number
 ): WebhookListInterface => ({

@@ -17,6 +17,7 @@
  */
 
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { IdentityAppsError } from "@wso2is/core/errors";
 
 /**
  * Class containing API resources constants.
@@ -50,6 +51,16 @@ export class APIResourcesConstants {
     public static readonly IS_CHOREO_API: string = "isChoreoAPI";
 
     /**
+     * API resource create limit reached error.
+     */
+    public static readonly ERROR_CREATE_LIMIT_REACHED: IdentityAppsError = new IdentityAppsError(
+        "ASG-FG-API-60002",
+        "apiResources:notifications.apiLimitReachedError.error.description",
+        "apiResources:notifications.apiLimitReachedError.error.message",
+        "f3d8c4a2-1e7b-4d92-8c3a-9b6e2d4f8a51"
+    );
+
+    /**
      * Get the API resource paths as a map.
      *
      * @returns `Map<string, string>`
@@ -79,7 +90,6 @@ export class APIResourcesConstants {
 export enum APIResourceType {
     MANAGEMENT = "management",
     ORGANIZATION = "organization",
-    BUSINESS = "business",
     MCP = "MCP",
     CUSTOM = "custom",
 }
@@ -89,7 +99,7 @@ export enum APIResourceType {
 * Manamgement API Resources are prefixed with `TENANT`.
 * Organization API Resources are prefixed with `ORGANIZATION`.
 */
-export enum APIResourceCategoryPrefixes {
+enum APIResourceCategoryPrefixes {
     MANAGEMENT = "TENANT",
     ORGANIZATION = "ORGANIZATION"
 }

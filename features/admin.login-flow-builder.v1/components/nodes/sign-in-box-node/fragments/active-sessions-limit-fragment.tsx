@@ -32,7 +32,7 @@ import { StepOptionActionsDataInterface } from "../../../../models/visual-editor
 /**
  * Proptypes for the Active Sessions Limit fragment component.
  */
-export interface ActiveSessionsLimitFragmentPropsInterface extends IdentifiableComponentInterface {
+interface ActiveSessionsLimitFragmentPropsInterface extends IdentifiableComponentInterface {
     /**
      * Callback to be fired when the option is removed.
      * @param event - Click event.

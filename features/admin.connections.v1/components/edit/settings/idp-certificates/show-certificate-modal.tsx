@@ -28,7 +28,7 @@ import { Modal, Segment } from "semantic-ui-react";
 /**
  * Props interface of {@link ShowCertificateModal}
  */
-export interface ShowCertificateModalProps extends IdentifiableComponentInterface {
+interface ShowCertificateModalProps extends IdentifiableComponentInterface {
     certificateToDisplay: DisplayCertificate;
     show: boolean;
     onCloseClicked: (certificate: DisplayCertificate) => void;

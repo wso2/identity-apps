@@ -47,6 +47,13 @@
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
+    String errorKey = request.getParameter("errorKey");
+    if (StringUtils.isNotBlank(errorKey)) {
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                Encode.forJava(errorKey)));
+    }
+    
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
     String errorCode = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorCode"));
     String invalidConfirmationErrorCode = IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_INVALID_CODE.getCode();

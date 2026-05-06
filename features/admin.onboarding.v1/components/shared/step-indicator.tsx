@@ -47,7 +47,7 @@ export interface StepConfigInterface {
 /**
  * Props interface for StepIndicator component.
  */
-export interface StepIndicatorPropsInterface extends IdentifiableComponentInterface {
+interface StepIndicatorPropsInterface extends IdentifiableComponentInterface {
     /**
      * Array of step configurations.
      */

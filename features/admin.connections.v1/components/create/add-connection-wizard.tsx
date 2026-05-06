@@ -27,7 +27,7 @@ import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInter
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
-import { DynamicWizard, DynamicWizardPage, renderFormFields } from "@wso2is/dynamic-forms";
+import { DynamicWizard, DynamicWizardPage, renderFormFields } from "@wso2is/forms/legacy";
 import {
     ContentLoader,
     DocumentationLink,

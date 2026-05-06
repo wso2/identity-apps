@@ -32,13 +32,9 @@
         "@mui/utils": "^5.12.3",
         "@oxygen-ui/react": "catalog:",
         "@wso2is/admin.core.v1": "^2.57.6",
-        "@wso2is/admin.roles.v2": "workspace:^",
-        "@wso2is/admin.extensions.v1": "workspace:^",
         "@wso2is/core": "^2.13.0",
         "i18next": "^21.9.1",
         "react-i18next": "^11.18.5",
-        "react-redux": "^7.2.9",
-        "redux": "^4.0.4",
         "uuid": "^8.3.0"
     },
     "devDependencies": {
@@ -50,13 +46,10 @@
         "@rollup/plugin-typescript": "^11.1.6",
         "@svgr/rollup": "^6.2.1",
         "@types/react": "^18.0.18",
-        "@types/react-redux": "^7.1.25",
         "rollup": "^4.17.2",
         "rollup-plugin-dts": "^6.1.1",
-        "rollup-plugin-generate-package-json": "^3.2.0",
         "rollup-plugin-polyfill-node": "^0.13.0",
         "rollup-plugin-scss": "^4.0.0",
-        "rollup-plugin-styles": "^4.0.0",
         "rollup-plugin-svg": "^2.0.0",
         "typescript": "^5.1.6"
     },

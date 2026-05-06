@@ -49,7 +49,7 @@ const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
 /**
  * Prop types for the text customization component.
  */
-export interface CustomTextProps extends IdentifiableComponentInterface {
+interface CustomTextProps extends IdentifiableComponentInterface {
     /**
      * Is readonly.
      */

@@ -27,7 +27,7 @@ import { Resource } from "../../models/resources";
 /**
  * Props interface of {@link Droppable}
  */
-export type DroppableProps = IdentifiableComponentInterface & UseDroppableInput & BoxProps;
+type DroppableProps = IdentifiableComponentInterface & UseDroppableInput & BoxProps;
 
 /**
  * Droppable component.

@@ -32,7 +32,7 @@ export interface WebhookSettingsFormValuesInterface {
 /**
  * Organization policy form values interface.
  */
-export interface OrganizationPolicyFormValuesInterface {
+interface OrganizationPolicyFormValuesInterface {
     /**
      * Name of the organization policy.
      */
@@ -59,7 +59,7 @@ export interface WebhookMetadataUpdateRequestInterface {
 /**
  * Interface for organization policy update.
  */
-export interface OrganizationPolicyUpdateInterface {
+interface OrganizationPolicyUpdateInterface {
     /**
      * Name of the organization policy.
      */

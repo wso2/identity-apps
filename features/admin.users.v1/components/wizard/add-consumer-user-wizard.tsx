@@ -27,22 +27,22 @@ import {
     GroupsInterface,
     PatchGroupDataInterface
 } from "@wso2is/admin.groups.v1/models/groups";
-import { addUser } from "@wso2is/admin.users.v1/api/users";
-import { getUserWizardStepIcons } from "@wso2is/admin.users.v1/configs/ui";
+import { addUser } from "../../api/users";
+import { getUserWizardStepIcons } from "../../configs/ui";
 import {
     AddUserWizardStateInterface,
     UserDetailsInterface,
     createEmptyUserDetails
-} from "@wso2is/admin.users.v1/models/user";
-import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils";
+} from "../../models/user";
+import { getUsernameConfiguration } from "../../utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, TestableComponentInterface,
-    HttpErrorResponseDataInterface
+import { AlertLevels, HttpErrorResponseDataInterface,
+    TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FormValue, useTrigger } from "@wso2is/forms";
+import { FormValue, useTrigger } from "@wso2is/forms/legacy";
 import { GenericIconProps, Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -71,7 +71,7 @@ interface AddUserWizardPropsInterface extends TestableComponentInterface {
     submitStep?: WizardStepsFormTypes | string;
     showStepper?: boolean;
     requestedPasswordOption?: AddConsumerUserProps[ "requestedPasswordOption" ];
-    onSuccessfulUserAddition?: (id: string) => void;
+    onSuccessfulUserAddition?: (_id: string) => void;
     title?: string;
     description?: string;
 }

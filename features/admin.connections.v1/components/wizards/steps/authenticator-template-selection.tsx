@@ -18,7 +18,7 @@
 
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Forms } from "@wso2is/forms";
+import { Forms } from "@wso2is/forms/legacy";
 import { GenericIcon, Heading, Hint, ResourceGrid } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";

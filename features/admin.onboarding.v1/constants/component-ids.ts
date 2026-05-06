@@ -42,7 +42,7 @@ export const OnboardingComponentIds: Record<string, string> = {
 /**
  * Default user name when not available.
  */
-export const DEFAULT_USER_NAME: string = "User";
+const DEFAULT_USER_NAME: string = "User";
 
 /**
  * Number of random name suggestions to generate for application naming.

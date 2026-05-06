@@ -17,7 +17,7 @@
  */
 
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { DropdownChild } from "@wso2is/forms";
+import { DropdownChild } from "@wso2is/forms/legacy";
 import ActionType from "../models/action-type";
 import {
     AuthenticationType,
@@ -161,6 +161,21 @@ export class ActionsConstants {
             key: AuthenticationType.API_KEY,
             text: "actions:fields.authentication.types.apiKey.name",
             value: AuthenticationType.API_KEY
+        }
+    ];
+
+    /**
+     * Authentication types available specifically for the Actions UI. Extends
+     * the shared AUTH_TYPES with Client Credential, which is not exposed in
+     * other surfaces (e.g. service-based custom authenticator settings) that
+     * also reuse ActionEndpointConfigForm.
+     */
+    public static readonly ACTION_AUTH_TYPES: AuthenticationTypeDropdownOption[] = [
+        ...ActionsConstants.AUTH_TYPES,
+        {
+            key: AuthenticationType.CLIENT_CREDENTIAL,
+            text: "actions:fields.authentication.types.clientCredential.name",
+            value: AuthenticationType.CLIENT_CREDENTIAL
         }
     ];
 

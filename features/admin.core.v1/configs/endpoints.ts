@@ -19,7 +19,7 @@
 /**
  * Endpoints for compatibility settings (tenant/sub-org).
  */
-export interface CompatibilitySettingsResourceEndpointsInterface {
+interface CompatibilitySettingsResourceEndpointsInterface {
     compatibilitySettings: string;
 }
 

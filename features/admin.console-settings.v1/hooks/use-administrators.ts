@@ -40,7 +40,7 @@ import useConsoleSettings from "./use-console-settings";
 /**
  * Props interface of {@link UseAdministrators}
  */
-export interface UseAdministratorsInterface {
+interface UseAdministratorsInterface {
     /**
      * Error occurred while fetching admin users list.
      */

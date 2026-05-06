@@ -17,7 +17,7 @@
  */
 
 import { RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { Forms } from "@wso2is/forms";
+import { Forms } from "@wso2is/forms/legacy";
 import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
 import Tree from "rc-tree";
 import { DataNode, EventDataNode } from "rc-tree/es/interface";

@@ -519,6 +519,12 @@ export const roles: rolesNS = {
         }
     },
     notifications: {
+        apiLimitReachedError: {
+            error: {
+                description: "You have reached the maximum number of roles allowed.",
+                message: "Failed to create the role"
+            }
+        },
         createPermission: {
             error: {
                 description: "{{description}}",
@@ -578,6 +584,16 @@ export const roles: rolesNS = {
                 description: "An error occurred while retrieving roles.",
                 message: "Something went wrong"
             }
+        },
+        tierLimitReachedError: {
+            emptyPlaceholder: {
+                action: "View Plans",
+                subtitles: "You can contact the organization administrator or (if you are the " +
+                    "administrator) upgrade your subscription to increase the allowed limit.",
+                title: "You have reached the maximum number of roles allowed " +
+                    "for this organization."
+            },
+            heading: "You've reached the maximum limit for roles"
         },
         updateRole: {
             error: {

@@ -35,7 +35,7 @@ import {
 /**
  * Props interface for the Extension templates provider.
  */
-export interface ExtensionTemplatesProviderProps {
+interface ExtensionTemplatesProviderProps {
     /**
      * Should fetch the extension templates.
      */

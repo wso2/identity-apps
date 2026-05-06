@@ -85,7 +85,7 @@ export const addAlert = (alert: AlertInterface): AddAlertAction => ({
  * @param languages - Supported i18n languages.
  * @returns an action of type `SET_SUPPORTED_I18N_LANGUAGES`
  */
-export const setSupportedI18nLanguages = (
+const setSupportedI18nLanguages = (
     languages: SupportedLanguagesMeta
 ): SetSupportedI18nLanguagesActionInterface => ({
     payload: languages,
@@ -98,7 +98,7 @@ export const setSupportedI18nLanguages = (
  * @param locales - Supported locale extensions.
  * @returns an action of type `SET_SUPPORTED_LOCALE_EXTENSIONS`
  */
-export const setSupportedLocaleExtensions = (
+const setSupportedLocaleExtensions = (
     locales: SupportedLanguagesMeta
 ): SetSupportedLocaleExtensionsActionInterface => ({
     payload: locales,

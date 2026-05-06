@@ -55,7 +55,7 @@ import CreateConsoleRoleWizardPermissionsForm from
 /**
  * Props interface of {@link ConsoleRolePermissions}
  */
-export interface ConsoleRolePermissionsProps extends LoadableComponentInterface, IdentifiableComponentInterface {
+interface ConsoleRolePermissionsProps extends LoadableComponentInterface, IdentifiableComponentInterface {
     /**
      * Is read only.
      */

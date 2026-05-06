@@ -46,7 +46,7 @@ import transformFlow from "../utils/transform-flow";
 /**
  * Props interface of {@link PasswordRecoveryFlowBuilderProvider}
  */
-export type PasswordRecoveryFlowBuilderProviderProps = PropsWithChildren<unknown>;
+type PasswordRecoveryFlowBuilderProviderProps = PropsWithChildren<unknown>;
 
 const params: ClaimsGetParams = {
     "exclude-hidden-claims": true,

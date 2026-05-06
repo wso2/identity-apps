@@ -16,6 +16,8 @@
  * under the License.
  */
 
+/// <reference types="vite/client" />
+
 declare module "*.json" {
     const value: any;
 
@@ -29,6 +31,14 @@ declare module "*.svg" {
     const src: string;
 
     export default src;
+}
+
+declare module "*.svg?react" {
+    import React = require("react");
+
+    const ReactComponent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
+
+    export default ReactComponent;
 }
 
 declare module "*.png" {

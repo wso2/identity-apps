@@ -31,7 +31,7 @@ import Hint from "../hint";
 /**
  * Props interface of {@link ChoiceAdapter}
  */
-export type ChoiceAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type ChoiceAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Choice component that renders a radio group.

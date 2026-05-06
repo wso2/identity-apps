@@ -104,6 +104,5 @@ const authenticateReducer = (
 };
 
 export {
-    authenticateInitialState,
     authenticateReducer
 };

@@ -26,7 +26,7 @@ import {
     KeyValueMapAdapter,
     TextFieldAdapter,
     __DEPRECATED__SelectFieldAdapter
-} from "@wso2is/form";
+} from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import ReactMarkdown from "react-markdown";
@@ -43,7 +43,7 @@ import "./form-dynamic-field.scss";
 /**
  * Prop types for the dynamic input fields.
  */
-export interface FormDynamicFieldPropsInterface extends IdentifiableComponentInterface {
+interface FormDynamicFieldPropsInterface extends IdentifiableComponentInterface {
     /**
      * Field configs.
      */

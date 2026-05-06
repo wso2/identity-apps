@@ -25,7 +25,7 @@ import PlaceholderComponent from "./adapters/placeholder-component";
 /**
  * Props interface of {@link Hint}
  */
-export interface HintPropsInterface extends IdentifiableComponentInterface {
+interface HintPropsInterface extends IdentifiableComponentInterface {
     /**
      * Hint text to be displayed.
      */

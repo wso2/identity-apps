@@ -25,7 +25,7 @@ import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 /**
  * Props interface for StepHeader component.
  */
-export interface StepHeaderPropsInterface extends IdentifiableComponentInterface {
+interface StepHeaderPropsInterface extends IdentifiableComponentInterface {
     /**
      * Optional subtitle/description text.
      */

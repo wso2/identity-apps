@@ -63,7 +63,7 @@ export interface APIResourceCollectionInterface {
 /**
  * Represents the details of an API resource collection.
  */
-export interface APIResourceCollectionDetailsInterface {
+interface APIResourceCollectionDetailsInterface {
     /**
      * Set of read scopes.
      */

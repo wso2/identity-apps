@@ -57,7 +57,7 @@ import {
 /**
  * Return type of {@link useEnterpriseLoginConfig}.
  */
-export interface UseEnterpriseLoginConfigInterface {
+interface UseEnterpriseLoginConfigInterface {
     /**
      * The existing enterprise login configuration (null if not configured).
      */

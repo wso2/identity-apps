@@ -107,7 +107,6 @@ export class OrganizationManagementConstants {
 }
 
 export enum ORGANIZATION_TYPE {
-    STRUCTURAL = "STRUCTURAL",
     TENANT = "TENANT"
 }
 
@@ -131,7 +130,7 @@ export class OrganizationRoleManagementConstants {
 
 export const APPLICATION_DOMAIN: string = "Application/";
 export const INTERNAL_DOMAIN: string = "Internal";
-export const ROLE_VIEW_PATH: string = "/organization-roles/";
+const ROLE_VIEW_PATH: string = "/organization-roles/";
 
 export const ORGANIZATION_NAME_MIN_LENGTH: number = 3;
 export const ORGANIZATION_NAME_MAX_LENGTH: number = 32;

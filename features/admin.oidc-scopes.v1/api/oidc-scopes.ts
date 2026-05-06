@@ -40,7 +40,7 @@ const httpClient = AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAC
  * @return {Promise<T>} Promise of type T.
  * @throws {IdentityAppsApiException}
  */
-export const getOIDCScopesList = <T = {}>(): Promise<T> => {
+const getOIDCScopesList = <T = {}>(): Promise<T> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",

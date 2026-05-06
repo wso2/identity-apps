@@ -1,5 +1,35 @@
 # @wso2is/identity-apps-core
 
+## 5.0.21
+
+### Patch Changes
+
+- [#10252](https://github.com/wso2/identity-apps/pull/10252) [`e88e51997d3457e7a31d86f3b489f554c56ab85b`](https://github.com/wso2/identity-apps/commit/e88e51997d3457e7a31d86f3b489f554c56ab85b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Remove the hardcoded flow type from the flow API execution
+
+## 5.0.20
+
+### Patch Changes
+
+- [#10096](https://github.com/wso2/identity-apps/pull/10096) [`95e91071923a2259708f5076ea6120e4df921225`](https://github.com/wso2/identity-apps/commit/95e91071923a2259708f5076ea6120e4df921225) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add support for shared user direct login.
+
+## 5.0.19
+
+### Patch Changes
+
+- [#10239](https://github.com/wso2/identity-apps/pull/10239) [`63d41fe8acdaec032e340ffe42e8596fc26baad9`](https://github.com/wso2/identity-apps/commit/63d41fe8acdaec032e340ffe42e8596fc26baad9) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dev dependencies
+
+## 5.0.18
+
+### Patch Changes
+
+- [#10231](https://github.com/wso2/identity-apps/pull/10231) [`fb88f19e4099e71f42bb9a0d286b53e045eca9d0`](https://github.com/wso2/identity-apps/commit/fb88f19e4099e71f42bb9a0d286b53e045eca9d0) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused exports
+
+## 5.0.17
+
+### Patch Changes
+
+- [#10165](https://github.com/wso2/identity-apps/pull/10165) [`35bba067316090595ee02b61d3f9d2c262e31909`](https://github.com/wso2/identity-apps/commit/35bba067316090595ee02b61d3f9d2c262e31909) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add radio button support in flow composer
+
 ## 5.0.16
 
 ### Patch Changes

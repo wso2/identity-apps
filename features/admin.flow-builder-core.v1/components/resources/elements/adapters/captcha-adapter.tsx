@@ -24,7 +24,7 @@ import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 /**
  * Props interface of {@link CaptchaAdapter}
  */
-export type CaptchaAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type CaptchaAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for Captcha component.

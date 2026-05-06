@@ -19,9 +19,11 @@
 /**
  * Interface of the authenticated user.
  */
-export interface AuthenticatedUserInterface {
+interface AuthenticatedUserInterface {
     display_name?: string;
     email?: string;
     username: string;
     scope?: string;
 }
+
+export {};

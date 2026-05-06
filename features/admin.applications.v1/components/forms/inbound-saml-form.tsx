@@ -24,7 +24,7 @@ import { ApplicationTabIDs, applicationConfig, commonConfig } from "@wso2is/admi
 import { getAvailableNameIDFormats } from "@wso2is/admin.identity-providers.v1/components/utils/saml-idp-utils";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
-import { CheckboxChild, DropdownChild, Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
+import { CheckboxChild, DropdownChild, Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms/legacy";
 import { Code, CopyInputField, Heading, Hint, StickyBar, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";

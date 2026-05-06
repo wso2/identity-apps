@@ -43,7 +43,6 @@ export * from "./admin.org-insights.v1/public-api";
 export * from "./admin.organization-discovery.v1/public-api";
 export * from "./admin.organizations.v1/public-api";
 export * from "./admin.policy-administration.v1/public-api";
-export * from "./admin.private-key-jwt.v1/public-api";
 export * from "./admin.provisioning.v1/public-api";
 export * from "./admin.remote-repository-configuration.v1/public-api";
 export * from "./admin.remote-userstores.v1/public-api";

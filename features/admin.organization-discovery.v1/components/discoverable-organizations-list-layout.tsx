@@ -43,7 +43,7 @@ import "./discoverable-organizations-list-layout.scss";
 /**
  * Props interface of {@link DiscoverableOrganizationsListLayout}
  */
-export interface DiscoverableOrganizationsListLayoutPropsInterface extends IdentifiableComponentInterface {
+interface DiscoverableOrganizationsListLayoutPropsInterface extends IdentifiableComponentInterface {
     discoverableOrganizations: OrganizationListWithDiscoveryInterface
     listItemLimit: number;
     isDiscoverableOrganizationsFetchRequestLoading: boolean;

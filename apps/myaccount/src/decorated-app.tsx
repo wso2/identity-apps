@@ -27,7 +27,7 @@ import { AppState } from "./store";
 /**
  * Props interface of {@link DecoratedApp}
  */
-export type DecoratedAppProps = PropsWithChildren<Record<string, unknown>> & IdentifiableComponentInterface;
+type DecoratedAppProps = PropsWithChildren<Record<string, unknown>> & IdentifiableComponentInterface;
 
 /**
  * `DecoratedApp` is a higher-order component that wraps children with `UserPreferencesProvider`.

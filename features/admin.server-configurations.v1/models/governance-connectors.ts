@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export interface RealmConfigurationsInterface {
+interface RealmConfigurationsInterface {
 	homeRealmIdentifiers?: string[];
 	idleSessionTimeoutPeriod?: string;
 	rememberMePeriod?: string;
@@ -86,7 +86,7 @@ export interface UpdateMultipleGovernanceConnectorsInterface {
 	connectors: UpdateGovernanceConnectorInterface[];
 }
 
-export interface UpdateGovernanceConnectorInterface {
+interface UpdateGovernanceConnectorInterface {
 	id: string;
 	properties: UpdateGovernanceConnectorConfigPropertyInterface[];
 }

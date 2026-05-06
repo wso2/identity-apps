@@ -50,7 +50,7 @@ interface WizardSummaryProps extends TestableComponentInterface {
  * @param props - Props injected to the component.
  * @returns WizardSummary component.
  */
-export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
+const WizardSummary: FunctionComponent<WizardSummaryProps> = (
     props: WizardSummaryProps
 ): ReactElement => {
 

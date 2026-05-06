@@ -19,7 +19,7 @@
 import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import { Code } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isBoolean from "lodash-es/isBoolean";
@@ -138,7 +138,7 @@ interface EmailOTPAuthenticatorFormFieldsInterface {
 /**
  * Proptypes for the Email OTP Authenticator Form error messages.
  */
-export interface EmailOTPAuthenticatorFormErrorValidationsInterface {
+interface EmailOTPAuthenticatorFormErrorValidationsInterface {
     /**
      * Email OTP expiry time field.
      */

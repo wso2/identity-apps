@@ -46,7 +46,7 @@ export interface ProfileBaseActionWithCommonPayload extends ProfileBaseAction {
 /**
  * Set profile completion action interface.
  */
-export interface SetProfileCompletionAction extends ProfileBaseAction {
+interface SetProfileCompletionAction extends ProfileBaseAction {
     payload: ProfileCompletion;
     type: ProfileActionTypes.SET_PROFILE_COMPLETION;
 }
@@ -54,7 +54,7 @@ export interface SetProfileCompletionAction extends ProfileBaseAction {
 /**
  * Set profile linked accounts action interface.
  */
-export interface SetProfileLinkedAccountsAction extends ProfileBaseAction {
+interface SetProfileLinkedAccountsAction extends ProfileBaseAction {
     payload: LinkedAccountInterface[];
     type: ProfileActionTypes.SET_PROFILE_LINKED_ACCOUNTS;
 }

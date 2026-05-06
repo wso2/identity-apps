@@ -22,7 +22,7 @@ import GroupManagementContext, { GroupManagementContextProps } from "../context/
 /**
  * Interface for the return type of the `useGroupManagement` hook.
  */
-export type UseGroupManagementInterface = GroupManagementContextProps;
+type UseGroupManagementInterface = GroupManagementContextProps;
 
 /**
  * Hook that provides access to the group management context.

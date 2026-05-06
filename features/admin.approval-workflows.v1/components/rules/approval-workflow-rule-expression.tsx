@@ -70,7 +70,7 @@ interface FieldSelectionOptionInterface {
 /**
  * Props interface of {@link ApprovalWorkflowRuleExpression}
  */
-export interface ApprovalWorkflowRuleExpressionPropsInterface extends IdentifiableComponentInterface {
+interface ApprovalWorkflowRuleExpressionPropsInterface extends IdentifiableComponentInterface {
     expression: ConditionExpressionInterface;
     ruleId: string;
     conditionId: string;

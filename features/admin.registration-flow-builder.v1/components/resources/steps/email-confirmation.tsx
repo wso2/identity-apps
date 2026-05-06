@@ -32,7 +32,7 @@ import { RegistrationStaticStepTypes } from "../../../models/flow";
 /**
  * Props interface of {@link EmailConfirmation}
  */
-export type EmailConfirmationPropsInterface = IdentifiableComponentInterface;
+type EmailConfirmationPropsInterface = IdentifiableComponentInterface;
 
 /**
  * Email confirmation node component.

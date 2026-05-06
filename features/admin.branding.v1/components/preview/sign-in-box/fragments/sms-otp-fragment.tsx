@@ -24,7 +24,7 @@ import useBrandingPreference from "../../../../hooks/use-branding-preference";
 /**
  * Proptypes for the sms-otp fragment of login screen skeleton.
  */
-export type SMSOTPInterface = IdentifiableComponentInterface;
+type SMSOTPInterface = IdentifiableComponentInterface;
 
 /**
  * SMS OTP fragment component for the branding preview of Sign In box.

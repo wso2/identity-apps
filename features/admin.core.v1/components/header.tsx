@@ -83,7 +83,7 @@ import "./header.scss";
 /**
  * Dashboard layout Prop types.
  */
-export interface CopilotToggleProps {
+interface CopilotToggleProps {
     /**
      * Whether the copilot panel is currently active/visible.
      */
@@ -98,7 +98,7 @@ export interface CopilotToggleProps {
     icon?: ReactNode;
 }
 
-export interface HeaderPropsInterface extends HeaderProps, IdentifiableComponentInterface {
+interface HeaderPropsInterface extends HeaderProps, IdentifiableComponentInterface {
     /**
      * Optional copilot toggle config to render as a button in the header toolbar.
      * Pass \{ isActive, onClick, icon \} from the calling app to avoid

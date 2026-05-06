@@ -22,7 +22,7 @@ import UserManagementContext from "../context/user-management-context";
 /**
  * Props interface for the User management provider.
  */
-export type UserManagementProviderProps = PropsWithChildren;
+type UserManagementProviderProps = PropsWithChildren;
 
 /**
  * React context provider for the user management context.

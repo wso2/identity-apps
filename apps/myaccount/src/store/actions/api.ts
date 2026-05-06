@@ -57,7 +57,7 @@ export const apiRequestEnd = (actionType: string): ApiRequestEndAction => ({
  * @param config - Http request configuration
  * @returns An action of type `API_REQUEST`
  */
-export const apiRequest = (config: HttpRequestConfig): ApiRequestAction => {
+const apiRequest = (config: HttpRequestConfig): ApiRequestAction => {
     const { auth, data, dispatcher, headers, method, onSuccess, onError, url  } = config;
 
     return {

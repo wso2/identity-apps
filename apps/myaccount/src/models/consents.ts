@@ -156,12 +156,12 @@ export interface PIICategoryWithStatus extends PIICategory {
     status: PIICategoryStatus;
 }
 
-export type PIICategoryStatus = "accepted" | "denied";
+type PIICategoryStatus = "accepted" | "denied";
 
 /**
  * PIICategory Model
  */
-export const creatPIICategory = (): PIICategory => ({
+const creatPIICategory = (): PIICategory => ({
     piiCategoryDisplayName: "",
     piiCategoryId: 0,
     piiCategoryName: "",
@@ -225,7 +225,7 @@ export enum ConsentState {
  * a consent receipt in the state.
  * @returns an empty consent receipt object.
  */
-export const createEmptyConsentReceipt = (): ConsentReceiptInterface => ({
+const createEmptyConsentReceipt = (): ConsentReceiptInterface => ({
     collectionMethod: "",
     jurisdiction: "",
     language: "",
@@ -265,7 +265,7 @@ export const createEmptyConsentReceipt = (): ConsentReceiptInterface => ({
  * a consent in the state.
  * @returns an empty consent object.
  */
-export const createEmptyConsent = (): ConsentInterface => ({
+const createEmptyConsent = (): ConsentInterface => ({
     consentReceipt: createEmptyConsentReceipt(),
     consentReceiptID: "",
     language: "",

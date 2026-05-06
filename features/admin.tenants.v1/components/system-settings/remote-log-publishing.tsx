@@ -29,7 +29,7 @@ import { LogType, RemoteLogPublishingConfigurationInterface } from "../../models
 /**
  * Props interface of {@link RemoteLogPublishing}
  */
-export type RemoteLogPublishingInterface = IdentifiableComponentInterface;
+type RemoteLogPublishingInterface = IdentifiableComponentInterface;
 
 /**
  * Component to hold the remote log publishing configurations.

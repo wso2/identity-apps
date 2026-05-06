@@ -26,7 +26,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 /**
  * Props interface of {@link StaticStepFactory}
  */
-export type StaticStepFactoryPropsInterface = CommonStaticStepFactoryPropsInterface & IdentifiableComponentInterface;
+type StaticStepFactoryPropsInterface = CommonStaticStepFactoryPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Factory for creating static steps in the visual editor.

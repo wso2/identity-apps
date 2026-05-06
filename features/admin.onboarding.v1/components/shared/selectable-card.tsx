@@ -25,7 +25,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, memo, useCallback } 
 /**
  * Props for selectable card component.
  */
-export interface SelectableCardPropsInterface extends IdentifiableComponentInterface {
+interface SelectableCardPropsInterface extends IdentifiableComponentInterface {
     isSelected: boolean;
     onClick: () => void;
     icon: ReactNode;

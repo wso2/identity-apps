@@ -29,12 +29,12 @@ import { SystemSettingsModes, SystemSettingsTabIDs } from "../../models/system-s
 /**
  * Props interface of {@link SystemSettingsTabs}
  */
-export type SystemSettingsTabsInterface = IdentifiableComponentInterface;
+type SystemSettingsTabsInterface = IdentifiableComponentInterface;
 
 /**
  * System settings tab interface.
  */
-export interface SystemSettingsTabInterface extends IdentifiableComponentInterface {
+interface SystemSettingsTabInterface extends IdentifiableComponentInterface {
     /**
      * Tab id.
      */

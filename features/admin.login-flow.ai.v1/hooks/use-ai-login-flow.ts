@@ -22,7 +22,7 @@ import AILoginFlowContext, { AILoginFlowContextProps } from "../context/ai-login
 /**
  * Interface for the return type of the `useAILoginFlow` hook.
  */
-export type UseAILoginFlowInterface = AILoginFlowContextProps;
+type UseAILoginFlowInterface = AILoginFlowContextProps;
 
 /**
  * Hook that provides access to the ai login flow context.

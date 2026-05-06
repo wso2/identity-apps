@@ -25,7 +25,7 @@ import { Placeholder } from "semantic-ui-react";
 /**
  * Proptypes for the Layout Swatch component.
  */
-export interface LayoutSwatchInterface extends IdentifiableComponentInterface {
+interface LayoutSwatchInterface extends IdentifiableComponentInterface {
     /**
      * Is the swatch active.
      */

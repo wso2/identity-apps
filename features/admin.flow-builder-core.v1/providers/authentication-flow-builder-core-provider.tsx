@@ -67,7 +67,7 @@ import { StepTypes } from "../models/steps";
 /**
  * Props interface of {@link AuthenticationFlowBuilderCoreProvider}
  */
-export interface AuthenticationFlowBuilderProviderProps {
+interface AuthenticationFlowBuilderProviderProps {
     /**
      * The factory for creating nodes.
      */

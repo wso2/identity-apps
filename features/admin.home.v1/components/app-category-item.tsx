@@ -23,7 +23,7 @@ import React, { CSSProperties, FC, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { DynamicTile } from "./dynamic-tile";
 
-export type CategoryItemPropsInterface = {
+type CategoryItemPropsInterface = {
     categoryName: string;
     onClick: (event: React.SyntheticEvent) => void;
     comingSoon?: boolean;

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,11 +16,59 @@
  * under the License.
  */
 
+export * from "./adapters/__DEPRECATED__adapters";
+export * from "./adapters/text-field-adapter";
+export * from "./adapters/url-field-adapter";
+export * from "./adapters/file-picker-adapter";
+export * from "./adapters/__DEPRECATED__select-field-adapter";
+export * from "./adapters/checkbox-field-adapter";
+export * from "./adapters/checkbox-group-field-adapter";
+export * from "./adapters/checkbox-field-adapter";
+export * from "./adapters/switch-field-adapter";
+export * from "./adapters/date-picker-field-adapter";
+export * from "./adapters/key-value-map-field-adapter";
+
+export { default as TextFieldAdapter } from "./adapters/text-field-adapter";
+export { default as __DEPRECATED__SelectFieldAdapter } from "./adapters/__DEPRECATED__select-field-adapter";
+export { default as SelectFieldAdapter } from "./adapters/select-field-adapter";
+export { default as AutocompleteFieldAdapter } from "./adapters/autocomplete-field-adapter";
+export { default as URLFieldAdapter } from "./adapters/url-field-adapter";
+export { default as CheckboxFieldAdapter } from "./adapters/checkbox-field-adapter";
+export { default as CheckboxGroupFieldAdapter } from "./adapters/checkbox-group-field-adapter";
+export { default as SwitchFieldAdapter } from "./adapters/switch-field-adapter";
+export { default as FilePickerAdapter } from "./adapters/file-picker-adapter";
+export { default as RadioGroupFieldAdapter } from "./adapters/radio-group-field-adapter";
+export { default as DatePickerFieldAdapter } from "./adapters/date-picker-field-adapter";
+export { default as KeyValueMapAdapter } from "./adapters/key-value-map-field-adapter";
+
 export * from "./field";
-export * from "./group-fields";
-export * from "./syntactic-sugars";
-export * from "./meta-file-picker";
+export * from "./field-button";
+export * from "./field-color-picker";
+export * from "./__DEPRECATED__field-checkbox";
+export * from "./field-checkbox";
+export * from "./field-checkbox-legacy";
+export * from "./field-input";
+export * from "./field-textarea";
+export * from "./field-dropdown";
+export * from "./field-key-value-map";
+export * from "./field-query-params";
+export * from "./field-radio";
+export * from "./form";
+export * from "./wizard";
+export * from "./wizard2";
+export * from "./wizardPage";
 
-export { DynamicField } from "./dynamic-field";
-export type { KeyValue } from "./dynamic-field";
+// Export react-final-form components with a different name.
+export { Form as FinalForm } from "react-final-form";
+export { Field as FinalFormField } from "react-final-form";
+export { FormSpy } from "react-final-form";
 
+// Import types from react-final-form
+import type { FormProps as ReactFinalFormProps, FormRenderProps as ReactFinalFormRenderProps } from "react-final-form";
+
+// Re-export types
+export type FormProps = ReactFinalFormProps;
+export type FormRenderProps = ReactFinalFormRenderProps;
+
+export * from "final-form";
+export * as ReactFinalForm from "react-final-form";

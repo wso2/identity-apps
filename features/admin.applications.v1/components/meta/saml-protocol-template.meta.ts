@@ -25,7 +25,7 @@ import {
     DefaultProtocolTemplate
 } from "../../models/application-inbound";
 
-export const SAMLProtocolTemplateItem: ApplicationTemplateListItemInterface = {
+const SAMLProtocolTemplateItem: ApplicationTemplateListItemInterface = {
     authenticationProtocol: "saml",
     id: DefaultProtocolTemplate.SAML,
     image: "saml",

@@ -35,7 +35,7 @@ import {
     FinalFormField,
     FormRenderProps,
     TextFieldAdapter
-} from "@wso2is/form/src";
+} from "@wso2is/forms";
 import { Button, CopyInputField, Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { FieldRenderProps } from "react-final-form";

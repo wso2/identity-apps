@@ -68,8 +68,7 @@ export class ProfileConstants {
  * @readonly
  */
 export enum LocaleJoiningSymbol {
-    HYPHEN = "-",
-    UNDERSCORE = "_"
+    HYPHEN = "-"
 }
 
 export enum OTPVerificationRecoveryScenario {

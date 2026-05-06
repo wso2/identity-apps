@@ -40,7 +40,7 @@ import ConsoleRolesTable from "./console-role-table";
 /**
  * Props interface of {@link ConsoleRolesListLayout}
  */
-export interface ConsoleRolesListLayoutPropsInterface extends IdentifiableComponentInterface {
+interface ConsoleRolesListLayoutPropsInterface extends IdentifiableComponentInterface {
     /**
      * Is the user a sub org user.
      */

@@ -27,7 +27,7 @@ import "./validation-error-boundary.scss";
 /**
  * Props interface of {@link ValidationErrorBoundary}
  */
-export interface ValidationErrorBoundaryPropsInterface extends IdentifiableComponentInterface {
+interface ValidationErrorBoundaryPropsInterface extends IdentifiableComponentInterface {
     /**
      * The resource to check for validation errors.
      */

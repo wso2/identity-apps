@@ -23,7 +23,7 @@ import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FinalForm, FinalFormField, FormRenderProps, FormSpy, TextFieldAdapter } from "@wso2is/form";
+import { FinalForm, FinalFormField, FormRenderProps, FormSpy, TextFieldAdapter } from "@wso2is/forms";
 import {
     CodeEditor,
     ContentLoader, DangerZone,
@@ -129,12 +129,12 @@ export const EmailCustomizationForm: FunctionComponent<EmailCustomizationFormPro
                 } }
                 onSubmit={ onSubmit }
                 data-componentid={ componentId }
-                render={ ({ onSubmit }: FormRenderProps) => {
+                render={ ({ handleSubmit }: FormRenderProps) => {
 
                     return (
                         <form
                             id={ FORM_ID }
-                            onSubmit={ onSubmit }
+                            onSubmit={ handleSubmit }
                         >
                             <Grid rowSpacing={ 2 } container>
                                 <Grid xs={ 8 }>

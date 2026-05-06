@@ -24,7 +24,7 @@ import { AuthenticationFlowBuilderModes } from "../models/flow-builder";
 /**
  * Interface for the return type of the UseAuthenticationFlow hook.
  */
-export interface UseAuthenticationFlowInterface extends AuthenticationFlowContextProps {
+interface UseAuthenticationFlowInterface extends AuthenticationFlowContextProps {
     /**
      * The preferred authentication flow builder mode.
      */

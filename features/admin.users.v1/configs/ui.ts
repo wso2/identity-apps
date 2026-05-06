@@ -41,7 +41,7 @@ export const getUserWizardStepIcons = (): {
     };
 };
 
-export const getUserSessionAccordionIcons = (): {
+const getUserSessionAccordionIcons = (): {
     terminate: FunctionComponent<SVGProps<SVGSVGElement>>;
 } => {
 

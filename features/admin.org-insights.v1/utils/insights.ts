@@ -73,7 +73,7 @@ export const getTimestamps = (durationOption: DurationOption, options?: {
  *
  * @returns true if the feature is enabled, else false
  */
-export const isCompareToLastPeriodFeatureEnabled = (): boolean => {
+const isCompareToLastPeriodFeatureEnabled = (): boolean => {
     const featureConfig: FeatureConfigInterface = store.getState().config?.ui?.features;
 
     return !featureConfig?.insights?.disabledFeatures?.includes(

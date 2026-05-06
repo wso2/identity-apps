@@ -29,7 +29,7 @@ import PlaceholderComponent from "../placeholder-component";
 /**
  * Props interface of {@link DefaultInputAdapter}
  */
-export type DefaultInputAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type DefaultInputAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Fallback adapter for the inputs.

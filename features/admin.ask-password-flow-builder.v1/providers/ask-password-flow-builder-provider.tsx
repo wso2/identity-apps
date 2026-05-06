@@ -64,7 +64,7 @@ import transformFlow from "../utils/transform-flow";
 /**
  * Props interface of {@link AskPasswordFlowBuilderProvider}
  */
-export type AskPasswordFlowBuilderProviderProps = PropsWithChildren<unknown>;
+type AskPasswordFlowBuilderProviderProps = PropsWithChildren<unknown>;
 
 /**
  * This component provides password recovery flow builder related context to its children.
@@ -189,7 +189,7 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
             ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
             ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID
         ).then((response: GovernanceConnectorInterface) => {
-            // Set connector categoryID if not available
+            // Set connector categoryID if not available.
             if (!response?.categoryId) {
                 response.categoryId = ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID;
             }
@@ -204,7 +204,6 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
      *
      * @returns A promise that resolves to a boolean indicating the success of the publish action.
      */
-
     const handleSubmit = (values: AskPasswordFormUpdatableConfigsInterface) => {
         const data: UpdateGovernanceConnectorConfigInterface = {
             operation: "UPDATE",
@@ -239,7 +238,8 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
             })
             .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 handleUpdateError(error);
-            }).finally(() => {
+            })
+            .finally(() => {
                 // Reset the updated state.
                 loadConnectorDetails();
                 setIsInvitedUserRegistrationConfigUpdated(false);

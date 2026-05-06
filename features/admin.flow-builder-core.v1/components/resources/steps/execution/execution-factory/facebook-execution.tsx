@@ -29,7 +29,7 @@ import { ExecutionMinimalPropsInterface } from "../execution-minimal";
 /**
  * Props interface of {@link FacebookExecution}.
  */
-export type FacebookExecutionPropsInterface = ExecutionMinimalPropsInterface
+type FacebookExecutionPropsInterface = ExecutionMinimalPropsInterface
     & IdentifiableComponentInterface;
 
 const FacebookExecution = ({

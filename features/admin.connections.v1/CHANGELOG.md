@@ -1,5 +1,22 @@
 # @wso2is/admin.connections.v1
 
+## 2.37.6
+
+### Patch Changes
+
+- [#10108](https://github.com/wso2/identity-apps/pull/10108) [`89e10f134c1fbdd4308a877bcc8ba27be975d323`](https://github.com/wso2/identity-apps/commit/89e10f134c1fbdd4308a877bcc8ba27be975d323) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add UI improvements for shared user identifier.
+
+- Updated dependencies [[`89e10f134c1fbdd4308a877bcc8ba27be975d323`](https://github.com/wso2/identity-apps/commit/89e10f134c1fbdd4308a877bcc8ba27be975d323)]:
+  - @wso2is/admin.identity-providers.v1@2.27.5
+  - @wso2is/admin.applications.v1@2.42.25
+  - @wso2is/i18n@2.39.4
+
+## 2.37.5
+
+### Patch Changes
+
+- [#10229](https://github.com/wso2/identity-apps/pull/10229) [`5a26aad0664087eca9540f77478b2e0c2b2bc00a`](https://github.com/wso2/identity-apps/commit/5a26aad0664087eca9540f77478b2e0c2b2bc00a) Thanks [@ranuka-laksika](https://github.com/ranuka-laksika)! - Exclude Agent userstore from JIT provisioning user store domain dropdown
+
 ## 2.37.4
 
 ### Patch Changes

@@ -31,7 +31,7 @@ import AIBannerBackground from "../../themes/wso2is/assets/images/illustrations/
 import "./ai-generation-modal.scss";
 import "./ai-card.scss";
 
-export interface AICardProps extends IdentifiableComponentInterface {
+interface AICardProps extends IdentifiableComponentInterface {
     /**
      * The resource item.
      */

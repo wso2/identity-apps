@@ -38,7 +38,6 @@
         "@wso2is/admin.users.v1": "^2.36.57",
         "@wso2is/admin.validation.v1": "^2.27.147",
         "@wso2is/core": "^2.7.6",
-        "@wso2is/form": "^2.7.1",
         "@wso2is/react-components": "^2.9.16",
         "axios": "^1.7.0",
         "i18next": "^21.9.1",
@@ -60,10 +59,8 @@
         "@types/react-redux": "^7.1.25",
         "rollup": "^4.17.2",
         "rollup-plugin-dts": "^6.1.1",
-        "rollup-plugin-generate-package-json": "^3.2.0",
         "rollup-plugin-polyfill-node": "^0.13.0",
         "rollup-plugin-scss": "^4.0.0",
-        "rollup-plugin-styles": "^4.0.0",
         "rollup-plugin-svg": "^2.0.0",
         "typescript": "^5.1.6"
     },

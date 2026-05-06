@@ -26,7 +26,7 @@ import useBrandingPreference from "../../../../hooks/use-branding-preference";
 /**
  * Proptypes for the email-otp fragment of login screen skeleton.
  */
-export type EmailOTPInterface = IdentifiableComponentInterface;
+type EmailOTPInterface = IdentifiableComponentInterface;
 
 /**
  * Email OTP fragment component for the branding preview of Sign In box.

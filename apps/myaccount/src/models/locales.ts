@@ -19,7 +19,7 @@
 /**
  * Model for the common namespace
  */
-export interface Common {
+interface Common {
     access: string;
     active: string;
     add: string;
@@ -98,7 +98,7 @@ export interface Common {
 /**
  * Model for the views namespace
  */
-export interface Views {
+interface Views {
     components: {
         accountRecovery: {
             codeRecovery: {
@@ -876,3 +876,5 @@ interface Placeholder {
 interface PlaceholderSubtitle {
     [key: number]: string;
 }
+
+export {};

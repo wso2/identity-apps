@@ -30,7 +30,7 @@ import { initializeAlertSystem } from "../../store/actions";
  * Prop types for the Alert component.
  * Also see {@link Alert.defaultProps}
  */
-export interface AlertProps extends TestableComponentInterface {
+interface AlertProps extends TestableComponentInterface {
     dismissInterval?: number;
     alertsPosition?: "tr" | "tl" | "tc" | "br" | "bl" | "bc";
 }
@@ -41,7 +41,7 @@ export interface AlertProps extends TestableComponentInterface {
  * @param {AlertProps} props - Props injected in to the alert component.
  * @return {JSX.Element}
  */
-export const Alert: FunctionComponent<AlertProps> = (props: AlertProps): JSX.Element => {
+const Alert: FunctionComponent<AlertProps> = (props: AlertProps): JSX.Element => {
 
     const alertRef = useRef(null);
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);

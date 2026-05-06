@@ -26,7 +26,7 @@ import { SecretModel } from "../models/secret";
 /**
  * Props type interface of {@link EditSecret}
  */
-export type EditSecretProps = {
+type EditSecretProps = {
     editingSecret: SecretModel;
 } & IdentifiableComponentInterface;
 

@@ -45,7 +45,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
-import { FormValue, useTrigger } from "@wso2is/forms";
+import { FormValue, useTrigger } from "@wso2is/forms/legacy";
 import {
     AnimatedAvatar,
     AppAvatar,

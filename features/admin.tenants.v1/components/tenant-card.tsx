@@ -54,7 +54,7 @@ import "./tenant-card.scss";
 /**
  * Props interface of {@link TenantCard}
  */
-export interface TenantCardProps extends LoadableComponentInterface {
+interface TenantCardProps extends LoadableComponentInterface {
     /**
      * Tenant object.
      */

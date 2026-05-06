@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 /**
  * Props interface of {@link SurveyBox}
  */
-export interface SurveyBoxProps extends IdentifiableComponentInterface {}
+interface SurveyBoxProps extends IdentifiableComponentInterface {}
 
 /**
  * Survey box svg component.

@@ -33,7 +33,7 @@ import "./end.scss";
 /**
  * Props interface of {@link End}
  */
-export interface EndPropsInterface
+interface EndPropsInterface
     extends Pick<CommonStepFactoryPropsInterface, "data" | "resources">,
         IdentifiableComponentInterface {
     /**

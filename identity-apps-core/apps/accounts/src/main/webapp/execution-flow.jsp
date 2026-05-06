@@ -561,7 +561,7 @@
                                 setPostBody({
                                     flowId: flowData.flowId,
                                     actionId,
-                                    flowType: "REGISTRATION",
+                                    flowType: flowType,
                                     inputs: formValues
                                 });
                             },

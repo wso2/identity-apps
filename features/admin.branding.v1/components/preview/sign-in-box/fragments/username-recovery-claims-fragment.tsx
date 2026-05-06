@@ -24,7 +24,7 @@ import useBrandingPreference from "../../../../hooks/use-branding-preference";
 /**
  * Proptypes for the username-recovery-claims fragment of login screen skeleton.
  */
-export type UsernameRecoveryClaimsFragmentInterface = IdentifiableComponentInterface;
+type UsernameRecoveryClaimsFragmentInterface = IdentifiableComponentInterface;
 
 /**
  * Username recovery claim fragment component for the branding preview of Username Recovery box.

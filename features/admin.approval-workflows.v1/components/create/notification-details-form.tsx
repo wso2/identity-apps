@@ -39,7 +39,7 @@ import { NotificationDetailsFormValuesInterface } from "../../models/ui";
 /**
  * Props for the notification details form component.
  */
-export interface NotificationDetailsPropsInterface extends IdentifiableComponentInterface {
+interface NotificationDetailsPropsInterface extends IdentifiableComponentInterface {
     /**
      * Whether the form is in read-only mode.
      */

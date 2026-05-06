@@ -25,7 +25,7 @@ import {
     SetSanitizedManageRoutesActionInterface
 } from "./types/routes";
 
-export const setFilteredManageRoutes = (routes: RouteInterface[]): SetFilteredManageRoutesActionInterface => {
+const setFilteredManageRoutes = (routes: RouteInterface[]): SetFilteredManageRoutesActionInterface => {
     return {
         payload: routes,
         type: RoutesActionTypes.SET_FILTERED_MANAGE_ROUTES
@@ -39,7 +39,7 @@ export const setFilteredDevelopRoutes = (routes: RouteInterface[]): SetFilteredD
     };
 };
 
-export const setSanitizedManageRoutes = (routes: RouteInterface[]): SetSanitizedManageRoutesActionInterface => {
+const setSanitizedManageRoutes = (routes: RouteInterface[]): SetSanitizedManageRoutesActionInterface => {
     return {
         payload: routes,
         type: RoutesActionTypes.SET_SANITIZED_MANAGE_ROUTES

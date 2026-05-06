@@ -27,7 +27,7 @@ import ConsoleSettingsContext from "../context/console-settings-context";
 /**
  * Props interface of {@link ConsoleSettingsProvider}
  */
-export type ConsoleSettingsProviderProps = unknown;
+type ConsoleSettingsProviderProps = unknown;
 
 /**
  * Provider for the Console settings context.

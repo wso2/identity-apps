@@ -141,7 +141,7 @@ export const getIdPIcons = (): any => {
     };
 };
 
-export const getIdPCapabilityIcons = (): any => {
+const getIdPCapabilityIcons = (): any => {
 
     return {
         [ SupportedServices.AUTHENTICATION ]: ConnectionIcon,
@@ -149,7 +149,7 @@ export const getIdPCapabilityIcons = (): any => {
     };
 };
 
-export const getOutboundProvisioningConnectorWizard = (): any => {
+const getOutboundProvisioningConnectorWizard = (): any => {
 
     return {
         connectorDetails: DocumentIcon,

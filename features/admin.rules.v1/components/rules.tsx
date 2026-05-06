@@ -38,7 +38,7 @@ import "./rules.scss";
 /**
  * Props interface of {@link RulesComponent}
  */
-export interface RulesPropsInterface extends IdentifiableComponentInterface {
+interface RulesPropsInterface extends IdentifiableComponentInterface {
     /**
      * Disable single rule delete button.
      */

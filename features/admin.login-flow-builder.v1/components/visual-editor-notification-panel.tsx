@@ -35,7 +35,7 @@ import { NotificationSeverity, VisualEditorNotification } from "../models/visual
 /**
  * Props interface for VisualEditorNotificationPanel.
  */
-export interface VisualEditorNotificationPanelPropsInterface extends IdentifiableComponentInterface {}
+interface VisualEditorNotificationPanelPropsInterface extends IdentifiableComponentInterface {}
 
 /**
  * Component to render the visual editor notification panel with tabbed notifications.

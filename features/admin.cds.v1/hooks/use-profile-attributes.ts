@@ -45,7 +45,7 @@ import { toAttributeDropdownOptions } from "../utils/profile-attribute-utils";
  * @param config - SWR configuration options
  * @returns SWR response with schema attributes for the scope
  */
-export const useProfileSchemaByScope = (
+const useProfileSchemaByScope = (
     scope: ProfileSchemaScope | null,
     filter?: string,
     config?: SWRConfiguration<ProfileSchemaScopeResponse, AxiosError<HttpErrorResponseDataInterface>>
@@ -131,7 +131,7 @@ export const useProfileSchemaDropdownOptions = (
     };
 };
 
-export const useProfileSchemaDropdown = (
+const useProfileSchemaDropdown = (
     scope: ProfileSchemaScope | null,
     filter?: string
 ): RequestResultInterface<ProfileSchemaScopeResponse, RequestErrorInterface> & {

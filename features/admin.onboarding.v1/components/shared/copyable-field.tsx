@@ -28,7 +28,7 @@ import React, { FunctionComponent, ReactElement, useCallback, useState } from "r
 /**
  * Props for the CopyableField component.
  */
-export interface CopyableFieldPropsInterface extends IdentifiableComponentInterface {
+interface CopyableFieldPropsInterface extends IdentifiableComponentInterface {
     /** Field label */
     label: string;
     /** Field value */

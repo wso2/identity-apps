@@ -31,14 +31,14 @@ const httpClient: HttpClientInstance =
 /**
  * Interface for chat message request.
  */
-export interface CopilotChatRequest {
+interface CopilotChatRequest {
     question: string;
 }
 
 /**
  * Interface for chat message response.
  */
-export interface CopilotChatResponse {
+interface CopilotChatResponse {
     answer: string;
     conversationId?: string;
     messageId?: string;
@@ -47,12 +47,12 @@ export interface CopilotChatResponse {
 /**
  * Server-Sent Events (SSE) event types from the backend.
  */
-export type SSEEventType = "STATUS" | "STREAM" | "STREAM_END" | "ERROR" | "SUGGESTIONS_LOADING" | "SUGGESTIONS";
+type SSEEventType = "STATUS" | "STREAM" | "STREAM_END" | "ERROR" | "SUGGESTIONS_LOADING" | "SUGGESTIONS";
 
 /**
  * Interface for a parsed Server-Sent Events (SSE) event from the backend.
  */
-export interface SSEEvent {
+interface SSEEvent {
     type: SSEEventType;
     content?: string | string[]; // Can be string for token, or array of strings for suggestions.
     message?: string;
@@ -61,7 +61,7 @@ export interface SSEEvent {
 /**
  * Callbacks for Server-Sent Events (SSE) streaming.
  */
-export interface StreamCallbacks {
+interface StreamCallbacks {
     /** Called when a STATUS event is received (e.g., "Searching docs...") */
     onStatus?: (step: string) => void;
     /** Called for each STREAM token (the answer typing out) */
@@ -79,7 +79,7 @@ export interface StreamCallbacks {
 /**
  * Interface for clear chat response.
  */
-export interface CopilotClearResponse {
+interface CopilotClearResponse {
     success: boolean;
     message?: string;
 }
@@ -87,7 +87,7 @@ export interface CopilotClearResponse {
 /**
  * Interface for API error response.
  */
-export interface CopilotApiError {
+interface CopilotApiError {
     error: string;
     detail?: string;
     status?: number;

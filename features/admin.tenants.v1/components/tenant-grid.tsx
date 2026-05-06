@@ -34,7 +34,7 @@ import "./tenant-grid.scss";
 /**
  * Props interface of {@link TenantsPage}
  */
-export interface TenantGridProps extends IdentifiableComponentInterface {
+interface TenantGridProps extends IdentifiableComponentInterface {
     onAddTenantModalTrigger: () => void;
 }
 

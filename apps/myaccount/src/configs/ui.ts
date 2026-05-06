@@ -104,7 +104,7 @@ export const UserImage: string = DummyUser;
 export const ConsentedAppIcon: React.FunctionComponent<React.SVGProps<SVGSVGElement>> = PackageIcon;
 export const DefaultAppIcon: React.FunctionComponent<React.SVGProps<SVGSVGElement>> = CodeIcon;
 
-export const getSidePanelIcons = (): {
+const getSidePanelIcons = (): {
     account: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     apps: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     consent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
@@ -273,7 +273,7 @@ export const AlertIcons = (): {
     };
 };
 
-export const AppSwitcherIcons = (): {
+const AppSwitcherIcons = (): {
     console: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     myAccount: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
  } => {
@@ -283,10 +283,10 @@ export const AppSwitcherIcons = (): {
     };
 };
 
-export const getQRCodeScanIcon = (): React.FunctionComponent<React.SVGProps<SVGSVGElement>> => {
+const getQRCodeScanIcon = (): React.FunctionComponent<React.SVGProps<SVGSVGElement>> => {
     return QRCodeScanIcon;
 };
 
-export const getEnterCodeIcon = (): React.FunctionComponent<React.SVGProps<SVGSVGElement>> => {
+const getEnterCodeIcon = (): React.FunctionComponent<React.SVGProps<SVGSVGElement>> => {
     return EnterVerificationCodeIcon;
 };

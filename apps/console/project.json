@@ -9,7 +9,6 @@
     "implicitDependencies": [
         "access-control",
         "core",
-        "form",
         "forms",
         "i18n",
         "react-components",

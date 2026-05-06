@@ -38,7 +38,7 @@ import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
-import { Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms";
+import { Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms/legacy";
 import { LinkButton, Message, PasswordValidation, PrimaryButton } from "@wso2is/react-components";
 import React,
 {

@@ -51,7 +51,7 @@ import { FlowsHistoryInterface } from "../../models/flows";
 /**
  * Props interface of {@link VersionHistoryItem}
  */
-export interface VersionHistoryItemPropsInterface
+interface VersionHistoryItemPropsInterface
     extends IdentifiableComponentInterface,
         HTMLAttributes<HTMLDivElement> {
     /**

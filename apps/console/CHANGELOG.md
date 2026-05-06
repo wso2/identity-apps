@@ -1,5 +1,91 @@
 # @wso2is/console
 
+## 4.6.0
+
+### Minor Changes
+
+- [#10230](https://github.com/wso2/identity-apps/pull/10230) [`bb0115f5684773bfd99ecdfdcf48aadd784dc902`](https://github.com/wso2/identity-apps/commit/bb0115f5684773bfd99ecdfdcf48aadd784dc902) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Provide Console UI support to configure OAuth2 client Credential based Authentication for actions
+
+### Patch Changes
+
+- Updated dependencies [[`bb0115f5684773bfd99ecdfdcf48aadd784dc902`](https://github.com/wso2/identity-apps/commit/bb0115f5684773bfd99ecdfdcf48aadd784dc902)]:
+  - @wso2is/admin.actions.v1@1.16.0
+  - @wso2is/i18n@2.40.0
+
+## 4.5.26
+
+### Patch Changes
+
+- [#10250](https://github.com/wso2/identity-apps/pull/10250) [`ba3ab8dd9bf2548d3a4c02da71d90cfddf0f6de6`](https://github.com/wso2/identity-apps/commit/ba3ab8dd9bf2548d3a4c02da71d90cfddf0f6de6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Unify in-house form libraries
+
+## 4.5.25
+
+### Patch Changes
+
+- [#10185](https://github.com/wso2/identity-apps/pull/10185) [`60dc6035b6d72c77f65247dc951d53bcc8f930be`](https://github.com/wso2/identity-apps/commit/60dc6035b6d72c77f65247dc951d53bcc8f930be) Thanks [@ranuka-laksika](https://github.com/ranuka-laksika)! - Add Token Exchange grant type to agent application template
+
+* [#10247](https://github.com/wso2/identity-apps/pull/10247) [`520a54257c26a2e7f006f3428639ac722fb301ed`](https://github.com/wso2/identity-apps/commit/520a54257c26a2e7f006f3428639ac722fb301ed) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add support for handling api resources tier limit reached
+
+* Updated dependencies [[`60dc6035b6d72c77f65247dc951d53bcc8f930be`](https://github.com/wso2/identity-apps/commit/60dc6035b6d72c77f65247dc951d53bcc8f930be), [`520a54257c26a2e7f006f3428639ac722fb301ed`](https://github.com/wso2/identity-apps/commit/520a54257c26a2e7f006f3428639ac722fb301ed)]:
+  - @wso2is/admin.extensions.v1@2.43.6
+  - @wso2is/admin.api-resources.v2@2.26.10
+  - @wso2is/i18n@2.39.3
+
+## 4.5.24
+
+### Patch Changes
+
+- [#10239](https://github.com/wso2/identity-apps/pull/10239) [`63d41fe8acdaec032e340ffe42e8596fc26baad9`](https://github.com/wso2/identity-apps/commit/63d41fe8acdaec032e340ffe42e8596fc26baad9) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dev dependencies
+
+## 4.5.23
+
+### Patch Changes
+
+- [#10235](https://github.com/wso2/identity-apps/pull/10235) [`2721c0a576d38e16a6f5dceca4d61f88f6510147`](https://github.com/wso2/identity-apps/commit/2721c0a576d38e16a6f5dceca4d61f88f6510147) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dependencies
+
+## 4.5.22
+
+### Patch Changes
+
+- [#10231](https://github.com/wso2/identity-apps/pull/10231) [`fb88f19e4099e71f42bb9a0d286b53e045eca9d0`](https://github.com/wso2/identity-apps/commit/fb88f19e4099e71f42bb9a0d286b53e045eca9d0) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused exports
+
+## 4.5.21
+
+### Patch Changes
+
+- [#10229](https://github.com/wso2/identity-apps/pull/10229) [`5a26aad0664087eca9540f77478b2e0c2b2bc00a`](https://github.com/wso2/identity-apps/commit/5a26aad0664087eca9540f77478b2e0c2b2bc00a) Thanks [@ranuka-laksika](https://github.com/ranuka-laksika)! - Exclude Agent userstore from JIT provisioning user store domain dropdown
+
+- Updated dependencies [[`5a26aad0664087eca9540f77478b2e0c2b2bc00a`](https://github.com/wso2/identity-apps/commit/5a26aad0664087eca9540f77478b2e0c2b2bc00a)]:
+  - @wso2is/admin.connections.v1@2.37.5
+
+## 4.5.20
+
+### Patch Changes
+
+- [#10223](https://github.com/wso2/identity-apps/pull/10223) [`7d6c89fe5e01a71db518ba2ae0b7f527e37dfd1f`](https://github.com/wso2/identity-apps/commit/7d6c89fe5e01a71db518ba2ae0b7f527e37dfd1f) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused exported enum members and unlisted dependencies
+
+## 4.5.19
+
+### Patch Changes
+
+- [#10165](https://github.com/wso2/identity-apps/pull/10165) [`35bba067316090595ee02b61d3f9d2c262e31909`](https://github.com/wso2/identity-apps/commit/35bba067316090595ee02b61d3f9d2c262e31909) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add radio button support in flow composer
+
+* [#10227](https://github.com/wso2/identity-apps/pull/10227) [`20fb7dbbf0b7143036064ec6e5c1e1625c8fe220`](https://github.com/wso2/identity-apps/commit/20fb7dbbf0b7143036064ec6e5c1e1625c8fe220) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add support for handling roles tier limit
+
+* Updated dependencies [[`20fb7dbbf0b7143036064ec6e5c1e1625c8fe220`](https://github.com/wso2/identity-apps/commit/20fb7dbbf0b7143036064ec6e5c1e1625c8fe220)]:
+  - @wso2is/admin.roles.v2@2.27.382
+  - @wso2is/i18n@2.39.2
+
+## 4.5.18
+
+### Patch Changes
+
+- [#10215](https://github.com/wso2/identity-apps/pull/10215) [`237eda6cc0a0312286f8a4a2915fbb4856a02ba7`](https://github.com/wso2/identity-apps/commit/237eda6cc0a0312286f8a4a2915fbb4856a02ba7) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add support for handling groups tier limit
+
+- Updated dependencies [[`237eda6cc0a0312286f8a4a2915fbb4856a02ba7`](https://github.com/wso2/identity-apps/commit/237eda6cc0a0312286f8a4a2915fbb4856a02ba7)]:
+  - @wso2is/admin.groups.v1@2.27.129
+  - @wso2is/i18n@2.39.1
+
 ## 4.5.17
 
 ### Patch Changes

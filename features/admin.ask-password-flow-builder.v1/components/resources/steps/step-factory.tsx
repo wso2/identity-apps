@@ -26,7 +26,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 /**
  * Props interface of {@link StepFactory}
  */
-export type StepFactoryPropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
+type StepFactoryPropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Factory for creating steps.

@@ -28,7 +28,7 @@ import {
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import {
     ConfirmationModal,
     ContentLoader,

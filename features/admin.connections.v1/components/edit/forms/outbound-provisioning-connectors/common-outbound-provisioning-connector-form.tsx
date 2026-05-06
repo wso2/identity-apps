@@ -26,7 +26,7 @@ import { CommonPluggableComponentForm } from "../components";
  * @param {CommonPluggableComponentFormPropsInterface} props
  * @return { ReactElement }
  */
-export const CommonOutboundProvisioningConnectorForm: FunctionComponent<
+const CommonOutboundProvisioningConnectorForm: FunctionComponent<
     CommonPluggableComponentFormPropsInterface
 > = (props: CommonPluggableComponentFormPropsInterface): ReactElement => {
 

@@ -32,7 +32,7 @@ import { IdentifiableComponentInterface,
 } from "@wso2is/core/models";
 import {
     FinalForm,
-    FormRenderProps } from "@wso2is/form";
+    FormRenderProps } from "@wso2is/forms";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import pickBy from "lodash-es/pickBy";
@@ -229,6 +229,13 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                 case AuthenticationType.API_KEY:
                     authProperties.header = values.headerAuthProperty;
                     authProperties.value = values.valueAuthProperty;
+
+                    break;
+                case AuthenticationType.CLIENT_CREDENTIAL:
+                    authProperties.clientId = values.clientIdAuthProperty;
+                    authProperties.clientSecret = values.clientSecretAuthProperty;
+                    authProperties.tokenEndpoint = values.tokenEndpointAuthProperty;
+                    authProperties.scopes = values.scopesAuthProperty;
 
                     break;
                 case AuthenticationType.NONE:

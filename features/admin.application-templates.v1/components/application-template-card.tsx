@@ -43,7 +43,7 @@ import "./application-template-card.scss";
 /**
  * Props for the application template card component.
  */
-export interface ApplicationTemplateCardPropsInterface extends IdentifiableComponentInterface {
+interface ApplicationTemplateCardPropsInterface extends IdentifiableComponentInterface {
     /**
      * Callback function triggered upon clicking on the application template card.
      *

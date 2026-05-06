@@ -24,11 +24,12 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
+import { AGENT_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { AlertLevels, Claim, TestableComponentInterface, UniquenessScope } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormValue, Forms, RadioChild } from "@wso2is/forms";
+import { Field, FormValue, Forms, RadioChild } from "@wso2is/forms/legacy";
 import {
     Code,
     DocumentationLink,
@@ -168,7 +169,9 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                 const isReadOnly: boolean = isUserStoreReadOnly(store.name);
                 const isEnabled: boolean = store.enabled;
 
-                if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && !isReadOnly && isEnabled) {
+                if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName
+                    && store.name.toUpperCase() !== AGENT_USERSTORE
+                    && !isReadOnly && isEnabled) {
                     const storeOption: DropdownItemProps = {
                         key: index,
                         text: store.name,

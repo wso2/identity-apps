@@ -25,7 +25,7 @@ import { AlertInterface, AlertLevels, TestableComponentInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { useTrigger } from "@wso2is/forms";
+import { useTrigger } from "@wso2is/forms/legacy";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";

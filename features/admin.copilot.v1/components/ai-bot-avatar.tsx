@@ -48,7 +48,7 @@ const StyledAiBotAvatarRoot: typeof Box = styled(Box)(() => ({
 /**
  * Props interface for the AiBotAvatar component.
  */
-export interface AiBotAvatarProps extends IdentifiableComponentInterface {
+interface AiBotAvatarProps extends IdentifiableComponentInterface {
     /**
      * Size of the avatar.
      */

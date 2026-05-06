@@ -23,7 +23,7 @@ import { OnboardingChoice, OnboardingDataInterface, OnboardingStep } from "../mo
 /**
  * Status of a step in the progress stepper.
  */
-export type ProgressStepStatus = "completed" | "current" | "upcoming";
+type ProgressStepStatus = "completed" | "current" | "upcoming";
 
 /**
  * A single step in the progress stepper.
@@ -37,7 +37,7 @@ export interface ProgressStepInterface {
 /**
  * Return type for the useStepProgress hook.
  */
-export interface UseStepProgressReturnInterface {
+interface UseStepProgressReturnInterface {
     currentStepIndex: number;
     isVisible: boolean;
     steps: ProgressStepInterface[];

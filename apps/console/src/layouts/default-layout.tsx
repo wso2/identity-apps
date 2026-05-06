@@ -54,7 +54,7 @@ import "./default-layout.scss";
 /**
  * Default page layout component Prop types.
  */
-export interface DefaultLayoutPropsInterface extends RouteComponentProps {
+interface DefaultLayoutPropsInterface extends RouteComponentProps {
     /**
      * Is layout fluid.
      */

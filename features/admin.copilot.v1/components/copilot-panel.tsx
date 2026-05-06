@@ -36,7 +36,7 @@ import { CopilotContentType } from "../store/types/copilot-action-types";
 /**
  * Props interface for the CopilotPanel component.
  */
-export interface CopilotPanelProps extends IdentifiableComponentInterface {
+interface CopilotPanelProps extends IdentifiableComponentInterface {
     /**
      * Additional CSS classes.
      */

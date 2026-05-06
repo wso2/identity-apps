@@ -94,7 +94,6 @@ import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid, Icon } 
 import { v4 as uuidv4 } from "uuid";
 import { addBulkUsers } from "../../api";
 import {
-    BlockedBulkUserImportAttributes,
     BulkImportResponseOperationTypes,
     BulkUserImportStatus,
     RequiredBulkUserImportAttributes,
@@ -659,7 +658,14 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
             : [ RequiredBulkUserImportAttributes.USERNAME ];
         const missingFields: string[] = getMissingFields(headers, requiredFields);
         const duplicateEntries: string[] = getDuplicateEntries(headers);
-        const blockedAttributes: string[] = Object.values(BlockedBulkUserImportAttributes);
+        const blockedAttributes: string[] = [
+            "password",
+            "oneTimePassword",
+            "x509Certificates",
+            "gtalk",
+            "skype",
+            "roles"
+        ];
         const blockedHeaders: string[] = getBlockedAttributes(headers, blockedAttributes);
         const invalidHeaders: string[] = getInvalidHeaderAttributes(headers, externalClaimAttributes);
         const emptyHeaderIndices: number[] = getEmptyHeaderIndices(headers);

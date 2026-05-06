@@ -35,7 +35,7 @@ export const setProfileCompletion = (completion: ProfileCompletion): ProfileBase
 /**
  * Dispatches an action of type `SET_PROFILE_LINKED_ACCOUNTS`.
  */
-export const setProfileLinkedAccounts = (accounts: LinkedAccountInterface[]): ProfileBaseActionWithCommonPayload => ({
+const setProfileLinkedAccounts = (accounts: LinkedAccountInterface[]): ProfileBaseActionWithCommonPayload => ({
     payload: accounts,
     type: ProfileActionTypes.SET_PROFILE_LINKED_ACCOUNTS
 });

@@ -132,7 +132,7 @@ interface RuleExpressionComponentProps extends IdentifiableComponentInterface {
 /**
  * Props interface of {@link RulesComponent}
  */
-export interface RulesComponentPropsInterface extends IdentifiableComponentInterface {
+interface RulesComponentPropsInterface extends IdentifiableComponentInterface {
     readonly?: boolean;
     rule: RuleInterface;
 }

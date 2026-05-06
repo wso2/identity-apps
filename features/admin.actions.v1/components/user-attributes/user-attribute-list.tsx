@@ -59,7 +59,7 @@ import { Divider, DropdownProps, Header, SemanticICONS } from "semantic-ui-react
 import { ActionsConstants } from "../../constants/actions-constants";
 import "./user-attribute-list.scss";
 
-export interface UserAttributeListPropsInterface extends IdentifiableComponentInterface {
+interface UserAttributeListPropsInterface extends IdentifiableComponentInterface {
     /**
      * Previously saved attribute list.
      */
