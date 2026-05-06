@@ -19,9 +19,7 @@
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
-import Divider from "@oxygen-ui/react/Divider";
-import Typography from "@oxygen-ui/react/Typography";
-import updateAction from "@wso2is/admin.actions.v1/api/update-action";
+import updateInFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/update-in-flow-extension";
 import {
     AccessConfigInterface,
     EncryptionInterface,
@@ -42,8 +40,6 @@ import React, { FunctionComponent, ReactElement, useMemo, useState } from "react
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-
-const ACTION_TYPE: string = "inFlowExtension";
 
 export interface InFlowExtensionAccessConfigSettingsPropsInterface extends IdentifiableComponentInterface {
     action: InFlowExtensionActionResponseInterface;
@@ -95,7 +91,9 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
         return undefined;
     }, [ action ]);
 
-    const hasCertificate: boolean = !!action?.encryption?.certificate;
+    // Backend does not return the certificate value (security); presence of the
+    // `encryption` object indicates a certificate is configured.
+    const hasCertificate: boolean = !!action?.encryption;
 
     const handleAccessConfigChange = (
         newAccessConfig: AccessConfigOutput,
@@ -107,11 +105,11 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
     const handleUpdate = (): void => {
         setIsSubmitting(true);
 
-        const updateBody: InFlowExtensionActionUpdateInterface = {
+        const updateBody: InFlowExtensionUpdateRequestInterface = {
             accessConfig
         };
 
-        updateAction<InFlowExtensionActionUpdateInterface>(ACTION_TYPE, action.id, updateBody)
+        updateInFlowExtension(action.id, updateBody)
             .then(() => {
                 dispatch(addAlert({
                     description: t("authenticationProvider:notifications.updateIDP.success.description"),
@@ -136,11 +134,11 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
     const handleReset = (): void => {
         setIsSubmitting(true);
 
-        const updateBody: InFlowExtensionActionUpdateInterface = {
+        const updateBody: InFlowExtensionUpdateRequestInterface = {
             accessConfig: { expose: [], modify: [] }
         };
 
-        updateAction<InFlowExtensionActionUpdateInterface>(ACTION_TYPE, action.id, updateBody)
+        updateInFlowExtension(action.id, updateBody)
             .then(() => {
                 dispatch(addAlert({
                     description: "Access configuration has been reset successfully.",

@@ -33,7 +33,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import deleteCustomTextPreference from "@wso2is/admin.branding.v1/api/delete-custom-text-preference";
 import updateCustomTextPreference from "@wso2is/admin.branding.v1/api/update-custom-text-preference";
-import { InFlowExtensionActionResponseInterface } from "@wso2is/admin.actions.v1/models/actions";
+import { InFlowExtensionResponseInterface } from "@wso2is/admin.flow-builder-core.v1/models/in-flow-extension";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -67,7 +67,7 @@ import "./in-flow-extension-custom-errors.scss";
  */
 export interface InFlowExtensionCustomErrorsPropsInterface extends IdentifiableComponentInterface {
     "data-componentid"?: string;
-    action: InFlowExtensionActionResponseInterface;
+    action: InFlowExtensionResponseInterface;
     isLoading: boolean;
     isReadOnly: boolean;
     loader: () => ReactElement;

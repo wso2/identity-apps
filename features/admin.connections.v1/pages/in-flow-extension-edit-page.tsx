@@ -17,8 +17,8 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import useGetActionById from "@wso2is/admin.actions.v1/api/use-get-action-by-id";
-import { InFlowExtensionActionResponseInterface } from "@wso2is/admin.actions.v1/models/actions";
+import useGetInFlowExtensionById from "@wso2is/admin.flow-builder-core.v1/api/use-get-in-flow-extension-by-id";
+import { InFlowExtensionResponseInterface } from "@wso2is/admin.flow-builder-core.v1/models/in-flow-extension";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
@@ -48,8 +48,6 @@ import { InFlowExtensionCustomErrors } from
 import { InFlowExtensionEndpointSettings } from "../components/edit/settings/in-flow-extension-endpoint-settings";
 import { InFlowExtensionGeneralSettings } from "../components/edit/settings/in-flow-extension-general-settings";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
-
-const ACTION_TYPE: string = "inFlowExtension";
 
 type InFlowExtensionEditPagePropsInterface = IdentifiableComponentInterface & RouteComponentProps;
 
@@ -83,7 +81,7 @@ const InFlowExtensionEditPage: FunctionComponent<InFlowExtensionEditPagePropsInt
         error: actionFetchError,
         isLoading: isActionLoading,
         mutate: mutateAction
-    } = useGetActionById<InFlowExtensionActionResponseInterface>(ACTION_TYPE, actionId);
+    } = useGetInFlowExtensionById<InFlowExtensionResponseInterface>(actionId);
 
     useEffect(() => {
         if (actionFetchError) {

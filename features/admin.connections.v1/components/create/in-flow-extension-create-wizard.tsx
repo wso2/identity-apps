@@ -21,12 +21,15 @@ import Box from "@oxygen-ui/react/Box";
 import Divider from "@oxygen-ui/react/Divider";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import Typography from "@oxygen-ui/react/Typography";
-import checkActionName from "@wso2is/admin.actions.v1/api/check-action-name";
-import createAction from "@wso2is/admin.actions.v1/api/create-action";
+import checkInFlowExtensionName from "@wso2is/admin.flow-builder-core.v1/api/check-in-flow-extension-name";
+import createInFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/create-in-flow-extension";
+import {
+    InFlowExtensionCreateRequestInterface,
+    InFlowExtensionResponseInterface
+} from "@wso2is/admin.flow-builder-core.v1/models/in-flow-extension";
 import {
     ActionResponseInterface,
-    AuthenticationType,
-    InFlowExtensionActionInterface
+    AuthenticationType
 } from "@wso2is/admin.actions.v1/models/actions";
 import { EndpointConfigFormPropertyInterface } from "@wso2is/admin.actions.v1/models/actions";
 import { AddCertificateFormComponent } from "@wso2is/admin.core.v1/components/add-certificate-form";
@@ -85,7 +88,6 @@ export interface InFlowExtensionCreateWizardPropsInterface
     onWizardClose: () => void;
 }
 
-const ACTION_TYPE_PATH: string = "inFlowExtension";
 const ACTION_NAME_REGEX: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9 _-]{0,254}$/;
 
 /**
@@ -157,7 +159,7 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
         }
         setIsCheckingName(true);
         nameCheckTimer.current = setTimeout(() => {
-            checkActionName(ACTION_TYPE_PATH, name)
+            checkInFlowExtensionName(name)
                 .then((response) => {
                     setIsNameTaken(!response.available);
                     setNextShouldBeDisabled(!response.available);
@@ -469,7 +471,7 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
         const resolvedEncryption: { certificate: string } | undefined =
             certPEMRef.current ? { certificate: certPEMRef.current } : undefined;
 
-        const actionBody: InFlowExtensionActionInterface = {
+        const actionBody: InFlowExtensionCreateRequestInterface = {
             description: values?.description?.toString() || "",
             encryption: resolvedEncryption,
             endpoint: {
@@ -483,8 +485,8 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
         };
 
         setIsSubmitting(true);
-        createAction<InFlowExtensionActionInterface>(ACTION_TYPE_PATH, actionBody)
-            .then((response: ActionResponseInterface) => {
+        createInFlowExtension(actionBody)
+            .then((response: InFlowExtensionResponseInterface) => {
                 dispatch(
                     addAlert({
                         description: t("inFlowExtension:notifications.createSuccess.description"),

@@ -17,9 +17,9 @@
  */
 
 import Divider from "@oxygen-ui/react/Divider";
-import checkActionName from "@wso2is/admin.actions.v1/api/check-action-name";
-import deleteAction from "@wso2is/admin.actions.v1/api/delete-action";
-import updateAction from "@wso2is/admin.actions.v1/api/update-action";
+import checkInFlowExtensionName from "@wso2is/admin.flow-builder-core.v1/api/check-in-flow-extension-name";
+import deleteInFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/delete-in-flow-extension";
+import updateInFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/update-in-flow-extension";
 import {
     InFlowExtensionActionResponseInterface,
     InFlowExtensionActionUpdateInterface
@@ -47,7 +47,6 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 
-const ACTION_TYPE: string = "inFlowExtension";
 const ACTION_NAME_REGEX: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9 _-]{0,254}$/;
 const FORM_ID: string = "in-flow-extension-general-settings-form";
 
@@ -132,12 +131,12 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
     const handleFormSubmit = (values: { name: string; description?: string; image?: string }): void => {
         setIsSubmitting(true);
 
-        const updateBody: InFlowExtensionActionUpdateInterface = {
+        const updateBody: InFlowExtensionUpdateRequestInterface = {
             description: values.description?.toString() ?? "",
             name: values.name?.toString()
         };
 
-        updateAction<InFlowExtensionActionUpdateInterface>(ACTION_TYPE, action.id, updateBody)
+        updateInFlowExtension(action.id, updateBody)
             .then(() => {
                 dispatch(addAlert({
                     description: t("authenticationProvider:notifications.updateIDP.success.description"),
@@ -162,7 +161,7 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
     const handleDelete = (): void => {
         setIsDeleting(true);
 
-        deleteAction(ACTION_TYPE, action.id)
+        deleteInFlowExtension(action.id)
             .then(() => {
                 dispatch(addAlert({
                     description: t("authenticationProvider:notifications.deleteConnection.success.description"),
