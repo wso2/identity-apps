@@ -16,18 +16,17 @@
  * under the License.
  */
 
-// ── Color tokens for the FlowContextTree component ──
-// These map to the Oxygen UI theme where possible.
-// Custom domain colors (expose orange, modify blue) are defined here
-// so they can be updated centrally during a rebrand.
-
-$expose-color: #ff7300;
-$expose-faint: #FFF4EC;
+// EXPOSE moved from orange to green; orange is now reserved for the brand
+// (selected-row highlight). MODIFY stays blue.
+$expose-color: #2E7D32;
+$expose-faint: #E8F5E9;
 $modify-color: #1565C0;
 $modify-faint: #E3F2FD;
-$encrypt-green: #2E7D32;
-$encrypt-green-faint: #E8F5E9;
 $danger-color: #C0392B;
+
+$row-selected-bg: #FFF4EC;
+$row-selected-border: #FFB066;
+$container-bg: #F4F4F4;
 
 $gray-05: #F5F5F5;
 $gray-10: #EBEBEB;
@@ -37,31 +36,24 @@ $gray-50: #787878;
 $gray-70: #4A4A4A;
 $gray-90: #2C2C2C;
 
-$type-tag-font: 'JetBrains Mono', monospace;
 $indent: 22px;
 $row-min-height: 36px;
 $chip-height: 19px;
 
-// ── Encryption mini-switch ──
-// Small toggle that sits inline next to EXPOSE / MODIFY chips.
-
 // ── Global: prevent Semantic UI blurring dimmer from blurring MUI Dialogs ──
-// MUI Dialog portals to <body>. Semantic UI's dimmer="blurring" applies
-// blur(5px) to ALL body children except .dimmer. This rule opts Dialog out
-// and lifts it above the Semantic UI modal (z-index 1001) + dimmer (z-index 1000).
 .blurring.dimmed.dimmable > :not(.dimmer).MuiDialog-root {
     filter: none !important;
     z-index: 2000 !important;
 }
 
 .flow-context-tree {
-    // CSS custom properties for domain colors — usable in TSX via var()
     --tree-expose: #{$expose-color};
     --tree-expose-faint: #{$expose-faint};
     --tree-modify: #{$modify-color};
     --tree-modify-faint: #{$modify-faint};
-    --tree-green: #{$encrypt-green};
     --tree-gray-20: #{$gray-20};
+    --tree-row-selected: #{$row-selected-bg};
+    --tree-container-bg: #{$container-bg};
 
     .tree-node-row {
         display: flex;
@@ -69,69 +61,52 @@ $chip-height: 19px;
         flex-wrap: nowrap;
         gap: 4px;
         min-height: $row-min-height;
-        // Use individual properties so dynamic pl from sx prop is not overridden
         padding-top: 4px;
         padding-right: 10px;
         padding-bottom: 4px;
         border: 1px solid transparent;
         border-radius: 6px;
         position: relative;
-        transition: background 0.1s, border-color 0.1s;
-        cursor: default;
+        transition: background 0.1s;
+        cursor: pointer;
 
-        &.expandable {
-            cursor: pointer;
-        }
-
+        // Light-gray hover — only applies to leaf rows (containers opt out below).
         &:hover {
-            background-color: $expose-faint;
-        }
-    }
-
-    .encrypt-mini-switch {
-        display: inline-flex;
-        align-items: center;
-        gap: 2px;
-        flex-shrink: 0;
-
-        .MuiSwitch-root {
-            width: 22px !important;
-            height: 12px !important;
-            padding: 0 !important;
+            background-color: #F4F4F4;
         }
 
-        .MuiSwitch-switchBase {
-            padding: 1px !important;
-            color: $gray-20 !important;
+        // Selected row uses the brand orange tint, no border.
+        &.selected {
+            background-color: $row-selected-bg;
+        }
 
-            &.Mui-checked {
-                transform: translateX(10px) !important;
+        // Container rows (OBJECT/MAP/COMPLEX_MAP) get a gray banded background that
+        // starts at the row's name column and extends to (just before) the right
+        // edge of the tree column. The band itself provides the visual emphasis —
+        // hover + selected backgrounds are suppressed so they don't compete.
+        &.tree-node-row--container {
+            &:hover {
+                background-color: transparent;
+            }
+
+            &::before {
+                content: "";
+                position: absolute;
+                left: var(--container-band-left, 0);
+                right: 6px;
+                top: 4px;
+                bottom: 4px;
+                background-color: $container-bg;
+                border-radius: 6px;
+                z-index: 0;
+                pointer-events: none;
             }
         }
 
-        .MuiSwitch-thumb {
-            width: 10px !important;
-            height: 10px !important;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-        }
-
-        .MuiSwitch-track {
-            border-radius: 6px;
-            opacity: 1 !important;
-            background-color: #fff !important;
-            border: 1px solid $gray-20;
-        }
-
-        &.expose-encrypt {
-            .MuiSwitch-switchBase.Mui-checked {
-                color: $expose-color !important;
-            }
-        }
-
-        &.modify-encrypt {
-            .MuiSwitch-switchBase.Mui-checked {
-                color: $modify-color !important;
-            }
+        // Lift row content above the container band.
+        > * {
+            position: relative;
+            z-index: 1;
         }
     }
 
@@ -189,23 +164,6 @@ $chip-height: 19px;
         }
     }
 
-    // Lock icon used in collapsed (non-hovered) state.
-    .lock-icon {
-        display: inline-flex;
-        align-items: center;
-        flex-shrink: 0;
-
-        &.lock-expose-only svg {
-            stroke: $expose-color;
-        }
-        &.lock-modify-only svg {
-            stroke: $modify-color;
-        }
-        &.lock-both svg {
-            stroke: $encrypt-green;
-        }
-    }
-
     // ── Tree connector lines ──
     .tree-connector-vertical {
         position: absolute;
@@ -222,5 +180,30 @@ $chip-height: 19px;
         width: 11px;
         background-color: $gray-10;
         pointer-events: none;
+    }
+}
+
+// ── Field configuration panel ──
+// Fixed min-height so switching between fields with different op shapes does
+// not change the panel size.
+.field-config-panel {
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
+}
+
+// ── Access config Monaco wrapper ──
+// Internal flex grow so the editor fills the RHS column when the tree is tall;
+// min-height keeps it readable when the tree is short.
+.access-config-monaco {
+    min-height: 280px;
+    flex: 1 1 auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+
+    .access-config-monaco__editor {
+        flex: 1 1 auto;
+        min-height: 0;
     }
 }

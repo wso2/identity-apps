@@ -33,4 +33,8 @@ export interface FlowBuilderCoreResourceEndpointsInterface {
      * (filtered by deployment.toml whitelist) for a given flow type.
      */
     inFlowExtensionContextTree: string;
+    /**
+     * API base URL for In-Flow Extension CRUD operations.
+     */
+    inFlowExtensions: string;
 }

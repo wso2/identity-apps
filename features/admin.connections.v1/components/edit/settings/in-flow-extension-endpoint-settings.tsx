@@ -22,12 +22,14 @@ import Button from "@oxygen-ui/react/Button";
 import Divider from "@oxygen-ui/react/Divider";
 import Typography from "@oxygen-ui/react/Typography";
 import ActionEndpointConfigForm from "@wso2is/admin.actions.v1/components/action-endpoint-config-form";
-import updateAction from "@wso2is/admin.actions.v1/api/update-action";
+import updateInFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/update-in-flow-extension";
+import {
+    InFlowExtensionResponseInterface,
+    InFlowExtensionUpdateRequestInterface
+} from "@wso2is/admin.flow-builder-core.v1/models/in-flow-extension";
 import {
     AuthenticationType,
-    EndpointConfigFormPropertyInterface,
-    InFlowExtensionActionResponseInterface,
-    InFlowExtensionActionUpdateInterface
+    EndpointConfigFormPropertyInterface
 } from "@wso2is/admin.actions.v1/models/actions";
 import { validateActionEndpointFields } from "@wso2is/admin.actions.v1/util/form-field-util";
 import { AddCertificateFormComponent } from "@wso2is/admin.core.v1/components/add-certificate-form";
@@ -46,11 +48,9 @@ import {
     EndpointAuthenticationType
 } from "../../../models/connection";
 
-const ACTION_TYPE: string = "inFlowExtension";
-
 export interface InFlowExtensionEndpointSettingsPropsInterface extends IdentifiableComponentInterface {
     "data-componentid"?: string;
-    action: InFlowExtensionActionResponseInterface;
+    action: InFlowExtensionResponseInterface;
     isLoading: boolean;
     isReadOnly: boolean;
     onUpdate: () => void;
@@ -77,16 +77,15 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
     const [ certificatePEM, setCertificatePEM ] = useState<string>("");
     const [ hasCertificate, setHasCertificate ] = useState<boolean>(false);
     const [ isCertificateModified, setIsCertificateModified ] = useState<boolean>(false);
+    const [ userHasStagedCert, setUserHasStagedCert ] = useState<boolean>(false);
     const [ triggerCertUpload, setTriggerCertUpload ] = useTrigger();
     const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
-
-    // Deferred submit — waits for cert extraction before submitting.
-    const pendingSubmit: MutableRefObject<boolean> = useRef<boolean>(false);
-    const formHandleSubmitRef: MutableRefObject<(() => void) | null> = useRef<(() => void) | null>(null);
 
     // Refs that mirror cert state so handleSubmit never reads a stale closure.
     const isCertificateModifiedRef: MutableRefObject<boolean> = useRef<boolean>(false);
     const certificatePEMRef: MutableRefObject<string> = useRef<string>("");
+    // Stores the FinalForm handleSubmit so the async cert callback can invoke it.
+    const formHandleSubmitRef: MutableRefObject<(() => void) | null> = useRef<(() => void) | null>(null);
 
     useEffect(() => {
         if (action) {
@@ -94,7 +93,9 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
                 authenticationType: action.endpoint?.authentication?.type,
                 endpointUri: action.endpoint?.uri
             });
-            setHasCertificate(!!action.encryption?.certificate);
+            // Backend does not return the certificate value (security); presence of the
+            // `encryption` object indicates a certificate is configured.
+            setHasCertificate(!!action.encryption);
         }
     }, [ action ]);
 
@@ -109,7 +110,7 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
     };
 
     const handleSubmit = (values: EndpointConfigFormPropertyInterface): void => {
-        const updateBody: InFlowExtensionActionUpdateInterface = {};
+        const updateBody: InFlowExtensionUpdateRequestInterface = {};
 
         const isUriChanged: boolean = values.endpointUri !== action.endpoint?.uri;
 
@@ -158,7 +159,7 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
             return;
         }
 
-        updateAction<InFlowExtensionActionUpdateInterface>(ACTION_TYPE, action.id, updateBody)
+        updateInFlowExtension(action.id, updateBody)
             .then(() => {
                 dispatch(addAlert({
                     description: t("authenticationProvider:notifications.updateIDP.success.description"),
@@ -178,19 +179,15 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
     };
 
     const handleCertificateSubmit = (value: string): void => {
-        setCertificatePEM(value);
-        setHasCertificate(!!value);
-        setIsCertificateModified(true);
-        // Keep refs in sync so handleSubmit never reads a stale closure value.
-        certificatePEMRef.current = value;
-        isCertificateModifiedRef.current = true;
-
-        // If a form submission was deferred waiting for cert extraction, trigger it now.
-        if (pendingSubmit.current) {
-            pendingSubmit.current = false;
-            // Refs are already updated above, so formHandleSubmit will see the new values.
-            setTimeout(() => formHandleSubmitRef.current?.(), 0);
+        if (value) {
+            setCertificatePEM(value);
+            setHasCertificate(true);
+            setIsCertificateModified(true);
+            certificatePEMRef.current = value;
+            isCertificateModifiedRef.current = true;
         }
+        // Proceed with the form submission now that cert data is extracted.
+        formHandleSubmitRef.current?.();
     };
 
     if (isLoading || !action) {
@@ -204,8 +201,6 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
                 initialValues={ initialValues }
                 validate={ validateForm }
                 render={ ({ handleSubmit: formHandleSubmit }: FormRenderProps) => {
-                    // Store reference for deferred cert-upload submissions.
-                    formHandleSubmitRef.current = formHandleSubmit;
 
                     return (
                     <EmphasizedSegment
@@ -265,6 +260,7 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
                                 triggerCertificateUpload={ triggerCertUpload }
                                 triggerSubmit={ triggerCertSubmit }
                                 onSubmit={ handleCertificateSubmit }
+                                setShowFinishButton={ setUserHasStagedCert }
                                 data-componentid={ `${componentId}-certificate-upload` }
                             />
                             { !isReadOnly && (
@@ -272,24 +268,15 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
                                     size="medium"
                                     variant="contained"
                                     onClick={ () => {
-                                        if (isCertificateModified) {
-                                            // Certificate was already extracted; submit directly.
-                                            formHandleSubmit();
-                                        } else {
-                                            // Trigger cert extraction; defer form submission
-                                            // until handleCertificateSubmit fires.
+                                        formHandleSubmitRef.current = formHandleSubmit;
+                                        if (userHasStagedCert) {
+                                            // Two-phase: extract cert first, then submit.
                                             setTriggerCertUpload();
-                                            pendingSubmit.current = true;
-                                            // Fallback timeout in case no cert is staged.
-                                            setTimeout(() => {
-                                                if (pendingSubmit.current) {
-                                                    pendingSubmit.current = false;
-                                                    formHandleSubmit();
-                                                }
-                                            }, 300);
+                                        } else {
+                                            formHandleSubmit();
                                         }
                                     } }
-                                    sx={ { mt: 4 } }
+                                    sx={ { mt: 4, display: "block" } }
                                     data-componentid={ `${componentId}-update-button` }
                                 >
                                     { t("actions:buttons.update") }

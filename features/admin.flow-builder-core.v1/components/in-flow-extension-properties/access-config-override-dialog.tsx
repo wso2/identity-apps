@@ -16,23 +16,23 @@
  * under the License.
  */
 
-import Box from "@oxygen-ui/react/Box";
+import Alert from "@oxygen-ui/react/Alert";
 import Button from "@oxygen-ui/react/Button";
+import Checkbox from "@oxygen-ui/react/Checkbox";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Dialog from "@oxygen-ui/react/Dialog";
 import DialogActions from "@oxygen-ui/react/DialogActions";
 import DialogContent from "@oxygen-ui/react/DialogContent";
 import DialogTitle from "@oxygen-ui/react/DialogTitle";
-import Divider from "@oxygen-ui/react/Divider";
-import IconButton from "@oxygen-ui/react/IconButton";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
-import updateAction from "@wso2is/admin.actions.v1/api/update-action";
 import {
     AccessConfigInterface,
-    InFlowExtensionActionResponseInterface,
-    InFlowExtensionActionUpdateInterface
-} from "@wso2is/admin.actions.v1/models/actions";
+    InFlowExtensionResponseInterface,
+    InFlowExtensionUpdateRequestInterface
+} from "../../models/in-flow-extension";
+import updateInFlowExtension from "../../api/update-in-flow-extension";
 import {
     FlowContextTree,
     AccessConfigOutput,
@@ -52,7 +52,7 @@ import useInFlowExtensionContextTree from "../../api/use-in-flow-extension-conte
  */
 export interface AccessConfigOverrideDialogPropsInterface extends IdentifiableComponentInterface {
     actionId: string;
-    actionResponse?: InFlowExtensionActionResponseInterface;
+    actionResponse?: InFlowExtensionResponseInterface;
     isActionLoading?: boolean;
     mutateAction?: () => void;
     flowType: string;
@@ -83,7 +83,7 @@ const AccessConfigOverrideDialog: FunctionComponent<AccessConfigOverrideDialogPr
     const [ isSaving, setIsSaving ] = useState<boolean>(false);
     const [ resetKey, setResetKey ] = useState<number>(0);
     const [ isResetDialogOpen, setIsResetDialogOpen ] = useState<boolean>(false);
-    const [ isHelpOpen, setIsHelpOpen ] = useState<boolean>(false);
+    const [ resetOption, setResetOption ] = useState<"clear" | "default" | null>(null);
     const [ overrideAccessConfig, setOverrideAccessConfig ] =
         useState<AccessConfigInterface | null>(null);
     const accessConfigRef: React.MutableRefObject<AccessConfigInterface | null> =
@@ -124,24 +124,21 @@ const AccessConfigOverrideDialog: FunctionComponent<AccessConfigOverrideDialogPr
 
     const handleResetClose = (): void => {
         setIsResetDialogOpen(false);
+        setResetOption(null);
     };
 
-    const handleClearAll = (): void => {
-        // Clear all annotations — set empty access config.
-        const emptyConfig: AccessConfigInterface = { expose: [], modify: [] };
+    const handleResetConfirm = (): void => {
+        if (resetOption === "clear") {
+            const emptyConfig: AccessConfigInterface = { expose: [], modify: [] };
 
-        setOverrideAccessConfig(emptyConfig);
-        accessConfigRef.current = emptyConfig;
-        setResetKey((prev: number) => prev + 1);
-        handleResetClose();
-    };
+            setOverrideAccessConfig(emptyConfig);
+            accessConfigRef.current = emptyConfig;
+        } else if (resetOption === "default") {
+            const defaultConfig: AccessConfigInterface | undefined = actionResponse?.accessConfig;
 
-    const handleResetToDefault = (): void => {
-        // Reset to the action's default access config.
-        const defaultConfig: AccessConfigInterface | undefined = actionResponse?.accessConfig;
-
-        setOverrideAccessConfig(defaultConfig ?? { expose: [], modify: [] });
-        accessConfigRef.current = defaultConfig ?? null;
+            setOverrideAccessConfig(defaultConfig ?? { expose: [], modify: [] });
+            accessConfigRef.current = defaultConfig ?? null;
+        }
         setResetKey((prev: number) => prev + 1);
         handleResetClose();
     };
@@ -156,7 +153,7 @@ const AccessConfigOverrideDialog: FunctionComponent<AccessConfigOverrideDialogPr
         setIsSaving(true);
 
         try {
-            const updateBody: InFlowExtensionActionUpdateInterface = {
+            const updateBody: InFlowExtensionUpdateRequestInterface = {
                 flowTypeOverrides: {
                     [flowType]: accessConfigRef.current
                 }
@@ -166,11 +163,7 @@ const AccessConfigOverrideDialog: FunctionComponent<AccessConfigOverrideDialogPr
                 updateBody.encryption = encryptionRef.current;
             }
 
-            await updateAction<InFlowExtensionActionUpdateInterface>(
-                "inFlowExtension",
-                actionId,
-                updateBody
-            );
+            await updateInFlowExtension(actionId, updateBody);
 
             dispatch(
                 addAlert({
@@ -195,7 +188,7 @@ const AccessConfigOverrideDialog: FunctionComponent<AccessConfigOverrideDialogPr
         }
     }, [ actionId, flowType, onClose, dispatch, mutateAction ]);
 
-    const hasCertificate: boolean = !!actionResponse?.encryption?.certificate;
+    const hasCertificate: boolean = !!actionResponse?.encryption;
 
     return (
         <>
@@ -206,210 +199,163 @@ const AccessConfigOverrideDialog: FunctionComponent<AccessConfigOverrideDialogPr
             data-componentid={ componentId }
             sx={ {
                 "& .MuiDialog-paper": {
-                    transition: "width 200ms ease",
-                    width: isHelpOpen ? 1100 : 700
+                    width: 1100
                 }
             } }
         >
-            <Box sx={ { display: "flex", minHeight: 0 } }>
-                <Box sx={ { display: "flex", flexDirection: "column", flex: "0 0 700px", minHeight: 0 } }>
-                    <DialogTitle>
-                        Configure Access
-                        <IconButton
-                            size="small"
-                            onClick={ () => setIsHelpOpen((prev: boolean) => !prev) }
-                            sx={ { float: "right", fontSize: "0.85rem" } }
-                            title={ isHelpOpen ? "Collapse help panel" : "Expand help panel" }
-                        >
-                            <svg
-                                width="16"
-                                height="16"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
+            <DialogTitle>Configure Access</DialogTitle>
+            <DialogContent>
+                { (isActionLoading || isContextTreeLoading) ? (
+                    <Stack alignItems="center" py={ 4 }>
+                        <CircularProgress />
+                    </Stack>
+                ) : contextTreeError || !contextTreeData ? (
+                    <Stack alignItems="center" py={ 4 }>
+                        <Typography color="error" variant="body2">
+                            Failed to load the In-Flow Extension context tree for this
+                            flow. Refresh and retry; check that the flow-management API
+                            is reachable.
+                        </Typography>
+                    </Stack>
+                ) : (
+                    <Stack gap={ 2 } pt={ 1 }>
+                        <Typography variant="body2" color="text.secondary">
+                            Configure which data is exposed to and modifiable by the in-flow extension
+                            for the { flowType?.toLowerCase()?.replace("_", " ") } flow.
+                            This sets the flow-type-specific override for the access configuration.
+                        </Typography>
+                        { !hasCertificate && (
+                            <Alert
+                                severity="warning"
+                                data-componentid={ `${componentId}-cert-warning` }
                             >
-                                { isHelpOpen
-                                    ? <><polyline points="11 17 6 12 11 7" /><polyline points="18 17 13 12 18 7" /></>
-                                    : <><polyline points="13 17 18 12 13 7" /><polyline points="6 17 11 12 6 7" /></>
-                                }
-                            </svg>
-                        </IconButton>
-                    </DialogTitle>
-                    <DialogContent>
-                        { (isActionLoading || isContextTreeLoading) ? (
-                            <Stack alignItems="center" py={ 4 }>
-                                <CircularProgress />
-                            </Stack>
-                        ) : contextTreeError || !contextTreeData ? (
-                            <Stack alignItems="center" py={ 4 }>
-                                <Typography color="error" variant="body2">
-                                    Failed to load the In-Flow Extension context tree for this
-                                    flow. Refresh and retry; check that the flow-management API
-                                    is reachable.
-                                </Typography>
-                            </Stack>
-                        ) : (
-                            <Stack gap={ 2 } pt={ 1 }>
-                                <Typography variant="body2" color="text.secondary">
-                                    Configure which data is exposed to and modifiable by the in-flow extension
-                                    for the { flowType?.toLowerCase()?.replace("_", " ") } flow.
-                                    This sets the flow-type-specific override for the access configuration.
-                                </Typography>
-                                { !hasCertificate && (
-                                    <Typography
-                                        variant="caption"
-                                        color="warning.main"
-                                        sx={ { display: "block" } }
-                                    >
-                                        No certificate configured. Encryption toggles are disabled.
-                                        Add a certificate from the connection settings to enable encryption.
-                                    </Typography>
-                                ) }
-                                <FlowContextTree
-                                    key={ resetKey }
-                                    contextTree={ contextTreeData.contextTree }
-                                    initialAccessConfig={ effectiveAccessConfig }
-                                    hasCertificate={ hasCertificate }
-                                    allowReadOnlyClaimsModification={ contextTreeData.allowReadOnlyClaimsModification }
-                                    redirectionEnabled={ contextTreeData.redirectionEnabled }
-                                    onChange={ handleTreeChange }
-                                    data-componentid={ `${componentId}-flow-context-tree` }
-                                />
-                            </Stack>
+                                No certificate configured. Encryption toggles are disabled.
+                                Add a certificate from the connection settings to enable encryption.
+                            </Alert>
                         ) }
-                    </DialogContent>
-                    <DialogActions sx={ { justifyContent: "space-between" } }>
-                        <Button
-                            onClick={ handleResetClick }
-                            disabled={ isSaving || isActionLoading }
-                            color="error"
-                            size="small"
-                        >
-                            Reset
-                        </Button>
-                        <Stack direction="row" spacing={ 1 }>
-                            <Button onClick={ onClose } disabled={ isSaving }>
-                                Cancel
-                            </Button>
-                            <Button
-                                variant="contained"
-                                onClick={ handleSave }
-                                disabled={ isSaving || isActionLoading }
-                            >
-                                { isSaving ? "Saving..." : "Save" }
-                            </Button>
-                        </Stack>
-                    </DialogActions>
-                </Box>
-                { isHelpOpen && (
-                    <Box
-                        sx={ {
-                            borderLeft: "1px solid #f5f5f5",
-                            boxShadow: "-4px 0px 15px -8px #d6d6d6",
-                            display: "flex",
-                            flex: "1 1 auto",
-                            flexDirection: "column",
-                            minWidth: 0,
-                            overflow: "auto"
-                        } }
-                    >
-                        <Box
-                            sx={ {
-                                alignItems: "center",
-                                backgroundColor: "#f1f1f1",
-                                display: "flex",
-                                height: 75,
-                                px: 3
-                            } }
-                        >
-                            <Typography variant="subtitle1" sx={ { fontWeight: 600 } }>
-                                What is the Flow Execution Context?
-                            </Typography>
-                        </Box>
-                        <Box sx={ { p: 3 } }>
-                            <Typography variant="body2" color="text.secondary" sx={ { mb: 2 } }>
-                                { t("inFlowExtension:createWizard.helpPanel.whatIsContext.description",
-                                    { defaultValue: "The context tree represents data available during "
-                                        + "flow execution. Select which fields to expose or allow "
-                                        + "modifications on." }) }
-                            </Typography>
-                            <Divider sx={ { mb: 2 } } />
-                            <Typography variant="subtitle2" sx={ { mb: 1 } }>
-                                { t("inFlowExtension:createWizard.helpPanel.howToUse.heading",
-                                    { defaultValue: "How to Use" }) }
-                            </Typography>
-                            <Typography
-                                variant="body2"
-                                color="text.secondary"
-                                component="div"
-                            >
-                                <ul style={ { lineHeight: 1.8, paddingLeft: "18px" } }>
-                                    <li>
-                                        { t("inFlowExtension:createWizard.helpPanel.howToUse.step1",
-                                            { defaultValue: "Click EXPOSE to share a field with "
-                                                + "the external service." }) }
-                                    </li>
-                                    <li>
-                                        { t("inFlowExtension:createWizard.helpPanel.howToUse.step2",
-                                            { defaultValue: "Click MODIFY to allow the external service "
-                                                + "to change a field." }) }
-                                    </li>
-                                    <li>
-                                        { t("inFlowExtension:createWizard.helpPanel.howToUse.step3",
-                                            { defaultValue: "Toggle encryption for sensitive fields "
-                                                + "when a certificate is available." }) }
-                                    </li>
-                                    <li>
-                                        Complex objects (maps, nested structures) can have
-                                        dynamic entries added via the + ADD ENTRY button.
-                                    </li>
-                                </ul>
-                            </Typography>
-                            <Divider sx={ { mb: 2, mt: 1 } } />
-                            <Typography variant="body2" color="text.secondary">
-                                Changes here override the connection&apos;s default access
-                                configuration for this specific flow type only.
-                            </Typography>
-                        </Box>
-                    </Box>
+                        <FlowContextTree
+                            key={ resetKey }
+                            contextTree={ contextTreeData.contextTree }
+                            initialAccessConfig={ effectiveAccessConfig }
+                            hasCertificate={ hasCertificate }
+                            allowReadOnlyClaimsModification={ contextTreeData.allowReadOnlyClaimsModification }
+                            redirectionEnabled={ contextTreeData.redirectionEnabled }
+                            onChange={ handleTreeChange }
+                            data-componentid={ `${componentId}-flow-context-tree` }
+                        />
+                    </Stack>
                 ) }
-            </Box>
+            </DialogContent>
+            <DialogActions sx={ { justifyContent: "space-between" } }>
+                <Button
+                    onClick={ handleResetClick }
+                    disabled={ isSaving || isActionLoading }
+                    color="error"
+                    size="small"
+                >
+                    Reset
+                </Button>
+                <Stack direction="row" spacing={ 1 }>
+                    <Button onClick={ onClose } disabled={ isSaving }>
+                        Cancel
+                    </Button>
+                    <Button
+                        variant="contained"
+                        onClick={ handleSave }
+                        disabled={ isSaving || isActionLoading }
+                    >
+                        { isSaving ? "Saving..." : "Save" }
+                    </Button>
+                </Stack>
+            </DialogActions>
         </Dialog>
         <Dialog
             open={ isResetDialogOpen }
             onClose={ handleResetClose }
-            maxWidth="xs"
+            maxWidth="sm"
             fullWidth
             data-componentid={ `${componentId}-reset-dialog` }
         >
-            <DialogTitle sx={ { color: "error.main", fontWeight: 600 } }>
-                Reset Configuration
+            <DialogTitle
+                data-componentid={ `${componentId}-reset-dialog-header` }
+                sx={ { fontWeight: 600 } }
+            >
+                Reset Access Configuration
             </DialogTitle>
-            <DialogContent>
-                <Stack direction="row" spacing={ 2 } sx={ { pt: 1 } }>
-                    <Button
-                        variant="outlined"
-                        color="error"
-                        onClick={ handleClearAll }
-                        fullWidth
-                    >
-                        Clear All
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        color="error"
-                        onClick={ handleResetToDefault }
-                        fullWidth
-                    >
-                        Reset to Default
-                    </Button>
+            <Alert
+                severity="warning"
+                sx={ { borderRadius: 0, mx: 0 } }
+                data-componentid={ `${componentId}-reset-dialog-message` }
+            >
+                This action will overwrite the current access configuration for this flow type.
+            </Alert>
+            <DialogContent data-componentid={ `${componentId}-reset-dialog-content` }>
+                <Typography variant="body2" sx={ { mb: 2, mt: 1 } }>
+                    If clear all, every annotation done in the UI will be removed, and reset to the default will 
+                    overwrite current state with default configuration from the connections. This action
+                    will not take effect unless you save the changes.
+                </Typography>
+                <Stack spacing={ 1 }>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={ resetOption === "clear" }
+                                onChange={ () => setResetOption("clear") }
+                                size="small"
+                            />
+                        }
+                        label={
+                            <>
+                                <Typography variant="body2" component="span" fontWeight={ 500 }>
+                                    Clear All
+                                </Typography>
+                                <Typography
+                                    variant="caption"
+                                    color="text.secondary"
+                                    sx={ { display: "block" } }
+                                >
+                                    Remove all expose and modify paths for this flow type.
+                                </Typography>
+                            </>
+                        }
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={ resetOption === "default" }
+                                onChange={ () => setResetOption("default") }
+                                size="small"
+                            />
+                        }
+                        label={
+                            <>
+                                <Typography variant="body2" component="span" fontWeight={ 500 }>
+                                    Reset to Default
+                                </Typography>
+                                <Typography
+                                    variant="caption"
+                                    color="text.secondary"
+                                    sx={ { display: "block" } }
+                                >
+                                    Restore the action&apos;s default access configuration.
+                                </Typography>
+                            </>
+                        }
+                    />
                 </Stack>
             </DialogContent>
             <DialogActions sx={ { px: 3, pb: 2 } }>
-                <Button onClick={ handleResetClose }>Cancel</Button>
+                <Button onClick={ handleResetClose }>
+                    { t("common:cancel") }
+                </Button>
+                <Button
+                    variant="contained"
+                    color="error"
+                    disabled={ !resetOption }
+                    onClick={ handleResetConfirm }
+                >
+                    { t("common:confirm") }
+                </Button>
             </DialogActions>
         </Dialog>
         </>

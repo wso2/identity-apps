@@ -19,345 +19,242 @@
 import Box from "@oxygen-ui/react/Box";
 import Chip from "@oxygen-ui/react/Chip";
 import Collapse from "@oxygen-ui/react/Collapse";
-import IconButton from "@oxygen-ui/react/IconButton";
-import Switch from "@oxygen-ui/react/Switch";
-import TextField from "@oxygen-ui/react/TextField";
-import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { CSSProperties, FunctionComponent, ReactElement, useState } from "react";
 import "./flow-context-tree.scss";
 import { NodeType, TreeNodeState } from "./models";
 
 const INDENT: number = 18;
 
-/**
- * Domain color CSS custom property names — set on .flow-context-tree root.
- */
-const V = {
-    expose: "var(--tree-expose)",
-    exposeFaint: "var(--tree-expose-faint)",
-    green: "var(--tree-green)",
-    modify: "var(--tree-modify)",
-    modifyFaint: "var(--tree-modify-faint)"
-} as const;
-
 interface FlowContextTreeNodeProps {
     node: TreeNodeState;
     depth?: number;
-    hasCertificate?: boolean;
+    selectedKey?: string | null;
+    onSelect: (key: string) => void;
     onToggleExpose: (key: string) => void;
     onToggleModify: (key: string) => void;
-    onToggleExposeEncrypt: (key: string) => void;
-    onToggleModifyEncrypt: (key: string) => void;
-    onDelete: (key: string) => void;
-    onRename: (key: string, newTitle: string) => void;
     onAddChild: (node: TreeNodeState) => void;
     readOnly?: boolean;
     "data-componentid"?: string;
 }
 
 /**
- * Data type tag displayed next to the node title.
+ * Lock SVG used inside an active EXPOSE / MODIFY chip when the corresponding
+ * encryption flag is set. Inherits the chip's foreground color via `currentColor`.
  */
-const TypeTag = ({ type }: { type: string }): ReactElement => (
-    <Chip
-        label={type}
-        size="small"
-        sx={{
-            "& .MuiChip-label": { px: "5px" },
-            bgcolor: "grey.50",
-            border: "1px solid",
-            borderColor: "grey.200",
-            borderRadius: "20px",
-            color: "text.disabled",
-            flexShrink: 0,
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: "7px",
-            fontWeight: 500,
-            height: 13
-        }}
-    />
-);
-
-/**
- * Inline mini encryption switch — sits next to its corresponding EXPOSE / MODIFY chip.
- */
-const EncryptMiniSwitch = ({
-    checked,
-    kind,
-    onChange,
-    readOnly
-}: {
-    checked: boolean;
-    kind: "expose" | "modify";
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    readOnly?: boolean;
-}): ReactElement => (
-    <Box
-        className={ `encrypt-mini-switch ${kind}-encrypt` }
-        onClick={ (e: React.MouseEvent) => e.stopPropagation() }
+const ChipLockIcon = (): ReactElement => (
+    <svg width="8" height="8" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" strokeWidth="2.5"
+        strokeLinecap="round" strokeLinejoin="round"
+        style={ { marginRight: 3 } }
     >
-        <Switch
-            size="small"
-            checked={ checked }
-            onChange={ readOnly ? undefined : onChange }
-            disabled={ readOnly }
-        />
-        <svg width="9" height="9" viewBox="0 0 24 24" fill="none"
-            stroke={ checked
-                ? (kind === "expose" ? V.expose : V.modify)
-                : "var(--tree-gray-20, #D0D0D0)" }
-            strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-        >
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-        </svg>
-    </Box>
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+    </svg>
 );
 
 /**
- * Determine lock icon className based on encryption state.
- * Returns null if no encryption is active.
- */
-const getLockClass = (node: TreeNodeState): string | null => {
-    const hasExposeEnc: boolean = node.exposeEncrypted && node.exposed;
-    const hasModifyEnc: boolean = node.modifyEncrypted && node.modify;
-
-    if (hasExposeEnc && hasModifyEnc) return "lock-both";
-    if (hasExposeEnc) return "lock-expose-only";
-    if (hasModifyEnc) return "lock-modify-only";
-
-    return null;
-};
-
-/**
- * Operation chip buttons for EXPOSE and MODIFY, with inline encryption toggles.
+ * EXPOSE / MODIFY / ADD ENTRY chips, always-visible, right-aligned.
+ * Lock indicator is folded inside the active chip when the field is encrypted —
+ * the chip's foreground color gives the lock its color automatically.
  */
 const OpChips = ({
     node,
-    rowHovered,
-    hasCertificate,
     onToggleExpose,
     onToggleModify,
-    onToggleExposeEncrypt,
-    onToggleModifyEncrypt,
+    onAddChild,
     readOnly
 }: {
     node: TreeNodeState;
-    rowHovered: boolean;
-    hasCertificate: boolean;
     onToggleExpose: () => void;
     onToggleModify: () => void;
-    onToggleExposeEncrypt: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onToggleModifyEncrypt: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    onAddChild: () => void;
     readOnly?: boolean;
 }): ReactElement | null => {
 
     const isLeaf: boolean = node.nodeType === NodeType.LEAF;
     const canExpose: boolean = node.allowedOperations.includes("EXPOSE") && isLeaf;
     const canModify: boolean = node.allowedOperations.includes("MODIFY") && isLeaf && !node.readOnly;
+    const showAddEntry: boolean = node.dynamicEntryAllowed && !readOnly;
 
-    if (!canExpose && !canModify) return null;
-
-    // When not hovered, show only active chips + lock icon
-    if (!rowHovered) {
-        const chips: ReactElement[] = [];
-
-        if (node.exposed) {
-            chips.push(
-                <Chip
-                    key="expose"
-                    label="EXPOSE"
-                    size="small"
-                    className="expose-chip expose-chip-active"
-                    onClick={ readOnly ? undefined : (e: React.MouseEvent) => {
-                        e.stopPropagation(); onToggleExpose();
-                    } }
-                    sx={ {
-                        "& .MuiChip-label": { px: "6px" },
-                        cursor: readOnly ? "default" : "pointer"
-                    } }
-                />
-            );
-        }
-        if (node.modify && canModify) {
-            chips.push(
-                <Chip
-                    key="modify"
-                    label="MODIFY"
-                    size="small"
-                    className="modify-chip modify-chip-active"
-                    onClick={ readOnly ? undefined : (e: React.MouseEvent) => {
-                        e.stopPropagation(); onToggleModify();
-                    } }
-                    sx={ {
-                        "& .MuiChip-label": { px: "6px" },
-                        cursor: readOnly ? "default" : "pointer"
-                    } }
-                />
-            );
-        }
-
-        // Collapsed lock icon showing encryption state
-        const lockClass: string | null = getLockClass(node);
-
-        if (lockClass) {
-            chips.push(
-                <Tooltip key="lock" title="Encrypted" placement="top">
-                    <Box className={ `lock-icon ${lockClass}` }>
-                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
-                            strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-                        >
-                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                        </svg>
-                    </Box>
-                </Tooltip>
-            );
-        }
-
-        if (chips.length === 0) return null;
-
-        return (
-            <Box sx={ { alignItems: "center", display: "inline-flex", flexShrink: 0, gap: "3px" } }>
-                { chips }
-            </Box>
-        );
+    if (!canExpose && !canModify && !showAddEntry) {
+        return null;
     }
 
-    // When hovered, show all available ops with inline encryption toggles
     return (
-        <Box sx={ { alignItems: "center", display: "inline-flex", flexShrink: 0, gap: "4px" } }>
+        <Box
+            sx={ {
+                alignItems: "center",
+                display: "inline-flex",
+                flexShrink: 0,
+                gap: "4px",
+                marginLeft: "auto"
+            } }
+        >
             { canExpose && (
-                <>
-                    <Chip
-                        label="EXPOSE"
-                        size="small"
-                        className={ `expose-chip${node.exposed ? " expose-chip-active" : ""}` }
-                        onClick={ readOnly ? undefined : (e: React.MouseEvent) => {
-                            e.stopPropagation(); onToggleExpose();
-                        } }
-                        sx={ {
-                            "& .MuiChip-label": { px: "6px" },
-                            cursor: readOnly ? "default" : "pointer"
-                        } }
-                    />
-                    { /* Expose encryption toggle — only when exposed AND certificate is available */ }
-                    { node.exposed && hasCertificate && (
-                        <EncryptMiniSwitch
-                            checked={ node.exposeEncrypted }
-                            kind="expose"
-                            onChange={ onToggleExposeEncrypt }
-                            readOnly={ readOnly }
-                        />
+                <Chip
+                    label={ (
+                        <Box component="span" sx={ { alignItems: "center", display: "inline-flex" } }>
+                            { node.exposed && node.exposeEncrypted && <ChipLockIcon /> }
+                            EXPOSE
+                        </Box>
                     ) }
-                </>
+                    size="small"
+                    className={ `expose-chip${node.exposed ? " expose-chip-active" : ""}` }
+                    onClick={ readOnly ? undefined : (e: React.MouseEvent) => {
+                        e.stopPropagation();
+                        onToggleExpose();
+                    } }
+                    sx={ {
+                        "& .MuiChip-label": { px: "6px" },
+                        cursor: readOnly ? "default" : "pointer"
+                    } }
+                />
             ) }
             { canModify && (
-                <>
-                    <Chip
-                        label="MODIFY"
-                        size="small"
-                        className={ `modify-chip${node.modify ? " modify-chip-active" : ""}` }
-                        onClick={ readOnly ? undefined : (e: React.MouseEvent) => {
-                            e.stopPropagation(); onToggleModify();
-                        } }
-                        sx={ {
-                            "& .MuiChip-label": { px: "6px" },
-                            cursor: readOnly ? "default" : "pointer"
-                        } }
-                    />
-                    { /* Modify encryption toggle — only when modify is active */ }
-                    { node.modify && (
-                        <EncryptMiniSwitch
-                            checked={ node.modifyEncrypted }
-                            kind="modify"
-                            onChange={ onToggleModifyEncrypt }
-                            readOnly={ readOnly }
-                        />
+                <Chip
+                    label={ (
+                        <Box component="span" sx={ { alignItems: "center", display: "inline-flex" } }>
+                            { node.modify && node.modifyEncrypted && <ChipLockIcon /> }
+                            MODIFY
+                        </Box>
                     ) }
-                </>
+                    size="small"
+                    className={ `modify-chip${node.modify ? " modify-chip-active" : ""}` }
+                    onClick={ readOnly ? undefined : (e: React.MouseEvent) => {
+                        e.stopPropagation();
+                        onToggleModify();
+                    } }
+                    sx={ {
+                        "& .MuiChip-label": { px: "6px" },
+                        cursor: readOnly ? "default" : "pointer"
+                    } }
+                />
+            ) }
+            { showAddEntry && (
+                <Chip
+                    label="+ ADD ENTRY"
+                    className="add-entry-chip"
+                    size="small"
+                    onClick={ (e: React.MouseEvent) => {
+                        e.stopPropagation();
+                        onAddChild();
+                    } }
+                    variant="outlined"
+                    sx={ {
+                        "&:hover": {
+                            bgcolor: "var(--tree-expose-faint)",
+                            border: "1px dashed var(--tree-expose)",
+                            color: "var(--tree-expose)"
+                        },
+                        border: "1px dashed",
+                        borderColor: "grey.300",
+                        borderRadius: "20px",
+                        color: "text.disabled",
+                        cursor: "pointer",
+                        flexShrink: 0,
+                        fontSize: "8px",
+                        fontWeight: 700,
+                        height: 15,
+                        letterSpacing: "0.06em",
+                        ml: 0,
+                        transition: "all 0.12s"
+                    } }
+                />
             ) }
         </Box>
     );
 };
 
 /**
- * Recursive tree node component for the Flow Context Tree.
+ * Recursive tree node renderer. Field-config / encryption / rename / delete
+ * actions live in the parent's RHS panel, not on the row itself.
  */
 const FlowContextTreeNode: FunctionComponent<FlowContextTreeNodeProps> = ({
     node,
     depth = 0,
-    hasCertificate = false,
+    selectedKey,
+    onSelect,
     onToggleExpose,
     onToggleModify,
-    onToggleExposeEncrypt,
-    onToggleModifyEncrypt,
-    onDelete,
-    onRename,
     onAddChild,
     readOnly,
     "data-componentid": componentId = "flow-context-tree-node"
 }: FlowContextTreeNodeProps): ReactElement => {
 
-    const [open, setOpen] = useState<boolean>(true);
-    const [editing, setEditing] = useState<boolean>(false);
-    const [editValue, setEditValue] = useState<string>(node.title);
-    const [hovered, setHovered] = useState<boolean>(false);
+    const [ open, setOpen ] = useState<boolean>(true);
 
     const expandable: boolean = Array.isArray(node.children);
-    const isNodeContainer: boolean =
+    const isLeaf: boolean = node.nodeType === NodeType.LEAF;
+    const isContainer: boolean =
         node.nodeType === NodeType.OBJECT ||
         node.nodeType === NodeType.MAP ||
         node.nodeType === NodeType.COMPLEX_MAP;
+    const selected: boolean = selectedKey === node.key && isLeaf;
 
-    const saveEdit = (val: string): void => {
-        setEditing(false);
-        onRename(node.key, val.trim() || "untitled");
+    // Container band sits a few pixels to the left of the row's content padding so
+    // the chevron + title get a small left gutter inside the band.
+    const containerBandLeft: number = Math.max(depth * INDENT + 2, 2);
+
+    const handleRowClick = (): void => {
+        if (isLeaf) {
+            onSelect(node.key);
+
+            return;
+        }
+        if (expandable) {
+            setOpen((o: boolean) => !o);
+        }
     };
 
+    const rowClassName: string =
+        "tree-node-row" +
+        (expandable ? " expandable" : "") +
+        (selected ? " selected" : "") +
+        (isContainer ? " tree-node-row--container" : "");
+
+    const rowStyle: CSSProperties & Record<string, string | number> = isContainer
+        ? { ["--container-band-left" as string]: `${containerBandLeft}px` }
+        : {};
+
     return (
-        <Box data-componentid={`${componentId}-${node.key}`}>
-            { /* ── Row ── */}
+        <Box data-componentid={ `${componentId}-${node.key}` }>
             <Box
-                className={ `tree-node-row${expandable ? " expandable" : ""}` }
-                onMouseEnter={() => setHovered(true)}
-                onMouseLeave={() => setHovered(false)}
-                onClick={() => expandable && setOpen((o: boolean) => !o)}
-                sx={{
+                className={ rowClassName }
+                onClick={ handleRowClick }
+                style={ rowStyle }
+                sx={ {
                     pl: `${depth * INDENT + 6}px`
-                }}
+                } }
             >
-                { /* Tree connector lines */}
-                {depth > 0 && (
+                { depth > 0 && (
                     <>
                         <Box
                             className="tree-connector-vertical"
-                            sx={{
+                            sx={ {
                                 left: (depth - 1) * INDENT + 9
-                            }}
+                            } }
                         />
                         <Box
                             className="tree-connector-horizontal"
-                            sx={{
+                            sx={ {
                                 left: (depth - 1) * INDENT + 9
-                            }}
+                            } }
                         />
                     </>
-                )}
+                ) }
 
-                { /* Expand / leaf icon */}
+                { /* Expand / leaf icon */ }
                 <Box
-                    sx={{
+                    sx={ {
                         alignItems: "center",
                         display: "flex",
                         flexShrink: 0,
                         justifyContent: "center",
-                        width: 12,
-                        zIndex: 1
-                    }}
+                        width: 12
+                    } }
                 >
-                    {expandable ? (
+                    { expandable ? (
                         <svg
                             width="14"
                             height="14"
@@ -367,10 +264,10 @@ const FlowContextTreeNode: FunctionComponent<FlowContextTreeNodeProps> = ({
                             strokeWidth="2.5"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            style={{
+                            style={ {
                                 transform: open ? "rotate(90deg)" : "rotate(0deg)",
                                 transition: "transform 0.18s ease"
-                            }}
+                            } }
                         >
                             <polyline points="9 18 15 12 9 6" />
                         </svg>
@@ -382,227 +279,82 @@ const FlowContextTreeNode: FunctionComponent<FlowContextTreeNodeProps> = ({
                         >
                             <circle cx="4" cy="4" r="3" fill="var(--tree-gray-20, #D0D0D0)" />
                         </svg>
-                    )}
+                    ) }
                 </Box>
 
-                { /* Title or edit field */}
-                {editing ? (
-                    <TextField
-                        autoFocus
-                        size="small"
-                        value={editValue}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditValue(e.target.value)}
-                        onKeyDown={(e: React.KeyboardEvent) => {
-                            if (e.key === "Enter") saveEdit(editValue);
-                            if (e.key === "Escape") setEditing(false);
-                        }}
-                        onBlur={() => saveEdit(editValue)}
-                        onClick={(e: React.MouseEvent) => e.stopPropagation()}
-                        sx={{
-                            "& .MuiInputBase-input": {
-                                bgcolor: V.exposeFaint,
-                                fontFamily: "'JetBrains Mono', monospace",
-                                fontSize: 12,
-                                px: "7px",
-                                py: "2px"
-                            },
-                            "& .MuiOutlinedInput-root": {
-                                "& fieldset": { borderColor: V.expose },
-                                "&.Mui-focused fieldset": {
-                                    borderColor: V.expose,
-                                    borderWidth: "1.5px"
-                                }
-                            },
-                            width: 210
-                        }}
-                    />
-                ) : (
-                    <Typography
-                        component="span"
-                        sx={{
-                            color: node.readOnly
-                                ? "text.secondary"
-                                : node.nodeType === NodeType.OBJECT
-                                    ? "text.primary"
-                                    : node.nodeType === NodeType.MAP || node.nodeType === NodeType.COMPLEX_MAP
-                                        ? "text.primary"
-                                        : "text.secondary",
-                            flexShrink: 0,
-                            fontFamily: node.nodeType === NodeType.LEAF || node.canDelete
-                                ? "'JetBrains Mono', monospace"
-                                : "'Inter', sans-serif",
-                            fontSize: node.nodeType === NodeType.OBJECT
-                                  ? 14
-                                  : isNodeContainer ? 13.5 : 13,
-                            fontWeight: node.nodeType === NodeType.OBJECT
-                                ? 700
-                                : isNodeContainer ? 600 : 500,
-                            letterSpacing: "-0.015em",
-                            lineHeight: 1,
-                            whiteSpace: "nowrap"
-                        }}
-                    >
-                        {node.title}
-                    </Typography>
-                )}
+                { /* Title */ }
+                <Typography
+                    component="span"
+                    sx={ {
+                        color: node.readOnly
+                            ? "text.secondary"
+                            : isContainer
+                                ? "text.primary"
+                                : "text.secondary",
+                        flex: "0 1 auto",
+                        fontFamily: isLeaf || node.canDelete
+                            ? "'JetBrains Mono', monospace"
+                            : "'Inter', sans-serif",
+                        fontSize: node.nodeType === NodeType.OBJECT
+                            ? 14
+                            : isContainer ? 13.5 : 13,
+                        fontWeight: node.nodeType === NodeType.OBJECT
+                            ? 700
+                            : isContainer ? 600 : 500,
+                        letterSpacing: "-0.015em",
+                        lineHeight: 1,
+                        minWidth: 0,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap"
+                    } }
+                >
+                    { node.title }
+                </Typography>
 
-                { /* Data type tag */}
-                {node.dataType && !editing && <TypeTag type={node.dataType} />}
-
-                { /* Operation chips with inline encryption */}
-                {!editing && (
-                    <OpChips
-                        node={node}
-                        rowHovered={hovered}
-                        hasCertificate={hasCertificate}
-                        onToggleExpose={() => onToggleExpose(node.key)}
-                        onToggleModify={() => onToggleModify(node.key)}
-                        onToggleExposeEncrypt={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            e.stopPropagation();
-                            onToggleExposeEncrypt(node.key);
-                        }}
-                        onToggleModifyEncrypt={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            e.stopPropagation();
-                            onToggleModifyEncrypt(node.key);
-                        }}
-                        readOnly={readOnly}
-                    />
-                )}
-
-                { /* Add entry chip for maps */}
-                {node.dynamicEntryAllowed && !editing && hovered && !readOnly && (
-                    <Chip
-                        label="+ ADD ENTRY"
-                        className="add-entry-chip"
-                        size="small"
-                        onClick={(e: React.MouseEvent) => {
-                            e.stopPropagation();
-                            onAddChild(node);
-                        }}
-                        variant="outlined"
-                        sx={{
-                            "&:hover": {
-                                bgcolor: V.exposeFaint,
-                                border: `1px dashed ${V.expose}`,
-                                color: V.expose
-                            },
-                            border: "1px dashed",
-                            borderColor: "grey.300",
-                            borderRadius: "20px",
-                            color: "text.disabled",
-                            cursor: "pointer",
-                            flexShrink: 0,
-                            fontSize: "8px",
-                            fontWeight: 700,
-                            height: 15,
-                            letterSpacing: "0.06em",
-                            transition: "all 0.12s"
-                        }}
-                    />
-                )}
-
-                { /* Edit / Delete buttons for dynamic entries */}
-                {node.canDelete && !editing && hovered && !readOnly && (
-                    <Box sx={{ alignItems: "center", display: "inline-flex", gap: "1px" }}>
-                        { !node.isClaim && (
-                            <Tooltip title="Rename key" placement="top">
-                                <IconButton
-                                    size="small"
-                                    onClick={(e: React.MouseEvent) => {
-                                        e.stopPropagation();
-                                        setEditing(true);
-                                    }}
-                                    sx={{
-                                        "&:hover": { bgcolor: "transparent", color: V.expose },
-                                        color: "grey.300",
-                                        p: "2px"
-                                    }}
-                                >
-                                    <svg
-                                        width="13"
-                                        height="13"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    >
-                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                                    </svg>
-                                </IconButton>
-                            </Tooltip>
-                        ) }
-                        <Tooltip title="Remove entry" placement="top">
-                            <IconButton
-                                size="small"
-                                onClick={(e: React.MouseEvent) => {
-                                    e.stopPropagation();
-                                    onDelete(node.key);
-                                }}
-                                sx={{
-                                    "&:hover": { bgcolor: "transparent", color: "error.main" },
-                                    color: "grey.300",
-                                    p: "2px"
-                                }}
-                            >
-                                <svg
-                                    width="13"
-                                    height="13"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                >
-                                    <polyline points="3 6 5 6 21 6" />
-                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1
-                                        2-2h4a2 2 0 0 1 2 2v2" />
-                                </svg>
-                            </IconButton>
-                        </Tooltip>
-                    </Box>
-                )}
+                { /* Operation chips — always pushed to the RHS via marginLeft: auto */ }
+                <OpChips
+                    node={ node }
+                    onToggleExpose={ () => onToggleExpose(node.key) }
+                    onToggleModify={ () => onToggleModify(node.key) }
+                    onAddChild={ () => onAddChild(node) }
+                    readOnly={ readOnly }
+                />
             </Box>
 
-            { /* ── Children ── */}
-            {expandable && (
-                <Collapse in={open} timeout={180}>
-                    {node.children.map((child: TreeNodeState) => (
+            { /* Children */ }
+            { expandable && (
+                <Collapse in={ open } timeout={ 180 }>
+                    { node.children.map((child: TreeNodeState) => (
                         <FlowContextTreeNode
-                            key={child.key}
-                            node={child}
-                            depth={depth + 1}
-                            hasCertificate={hasCertificate}
-                            onToggleExpose={onToggleExpose}
-                            onToggleModify={onToggleModify}
-                            onToggleExposeEncrypt={onToggleExposeEncrypt}
-                            onToggleModifyEncrypt={onToggleModifyEncrypt}
-                            onDelete={onDelete}
-                            onRename={onRename}
-                            onAddChild={onAddChild}
-                            readOnly={readOnly}
-                            data-componentid={componentId}
+                            key={ child.key }
+                            node={ child }
+                            depth={ depth + 1 }
+                            selectedKey={ selectedKey }
+                            onSelect={ onSelect }
+                            onToggleExpose={ onToggleExpose }
+                            onToggleModify={ onToggleModify }
+                            onAddChild={ onAddChild }
+                            readOnly={ readOnly }
+                            data-componentid={ componentId }
                         />
-                    ))}
-                    {node.dynamicEntryAllowed && node.children.length === 0 && (
+                    )) }
+                    { node.dynamicEntryAllowed && node.children.length === 0 && (
                         <Typography
-                            sx={{
+                            sx={ {
                                 color: "grey.300",
                                 fontSize: 10,
                                 fontStyle: "italic",
                                 pb: "4px",
                                 pl: `${(depth + 1) * INDENT + 23}px`,
                                 pt: "2px"
-                            }}
+                            } }
                         >
                             No entries yet
                         </Typography>
-                    )}
+                    ) }
                 </Collapse>
-            )}
+            ) }
         </Box>
     );
 };

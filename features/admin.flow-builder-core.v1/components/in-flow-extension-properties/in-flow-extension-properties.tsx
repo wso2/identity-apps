@@ -27,8 +27,8 @@ import DialogTitle from "@oxygen-ui/react/DialogTitle";
 import Stack from "@oxygen-ui/react/Stack";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
-import useGetActionById from "@wso2is/admin.actions.v1/api/use-get-action-by-id";
-import { InFlowExtensionActionResponseInterface } from "@wso2is/admin.actions.v1/models/actions";
+import useGetInFlowExtensionById from "../../api/use-get-in-flow-extension-by-id";
+import { InFlowExtensionResponseInterface } from "../../models/in-flow-extension";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -118,8 +118,7 @@ const InFlowExtensionProperties: FunctionComponent<InFlowExtensionPropertiesProp
         data: actionResponse,
         isLoading: isActionLoading,
         mutate: mutateAction
-    } = useGetActionById<InFlowExtensionActionResponseInterface>(
-        "inFlowExtension",
+    } = useGetInFlowExtensionById<InFlowExtensionResponseInterface>(
         selectedConnection?.actionId
     );
 

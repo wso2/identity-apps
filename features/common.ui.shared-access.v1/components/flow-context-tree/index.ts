@@ -37,6 +37,8 @@ export {
     addChild,
     buildAccessConfig,
     deleteNode,
+    findFirstLeafKey,
+    findNode,
     mapMetadataToState,
     mapMetadataToStateWithAccessConfig,
     updateNode

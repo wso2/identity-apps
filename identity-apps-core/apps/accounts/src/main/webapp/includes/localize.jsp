@@ -38,7 +38,6 @@
     // List of screen names for retrieving text branding customizations.
     List<String> screenNames = new ArrayList<>();
     screenNames.add("common");
-    screenNames.add("inflow-extension");
 
     // Map to store default supported language codes.
     // TODO: Use this map to generate the `language-switcher.jsp`.

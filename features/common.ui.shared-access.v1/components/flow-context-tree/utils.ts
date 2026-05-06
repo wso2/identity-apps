@@ -332,6 +332,8 @@ export const mapMetadataToStateWithAccessConfig = (
                         synthModEnc = false;
                     }
 
+                    const isUnderClaims: boolean = containerPrefix === "/user/claims/";
+
                     children = children || [];
                     children.push({
                         allowedOperations: synthReadOnly
@@ -344,7 +346,10 @@ export const mapMetadataToStateWithAccessConfig = (
                         dynamicEntryType: "",
                         exposeEncrypted: synthExEnc,
                         exposed: isExposed,
-                        key: `synth-${Date.now()}-${children.length}`,
+                        isClaim: isUnderClaims,
+                        // Path-derived key so two synthesised entries in different containers
+                        // never collide (Date.now() collisions caused dual-row highlighting).
+                        key: `synth:${synthPath}`,
                         modify: isModify,
                         modifyEncrypted: synthModEnc,
                         nodeType: NodeType.LEAF,
@@ -391,6 +396,52 @@ export const mapMetadataToStateWithAccessConfig = (
 //
 // modify[]:  LEAF nodes with modify=true.
 //            If modifyEncrypted → { path, encrypted: true }, else { path, encrypted: false }.
+
+// ── Selection Helpers ────────────────────────────────────────────────────────
+
+/**
+ * Depth-first lookup for the first leaf node's key. Used to seed the default
+ * selection in the field-configuration panel when the tree first renders.
+ */
+export const findFirstLeafKey = (nodes: TreeNodeState[]): string | null => {
+    for (const node of nodes) {
+        if (node.nodeType === NodeType.LEAF) {
+            return node.key;
+        }
+        if (node.children) {
+            const found: string | null = findFirstLeafKey(node.children);
+
+            if (found) {
+                return found;
+            }
+        }
+    }
+
+    return null;
+};
+
+/**
+ * Find a node by key anywhere in the tree.
+ */
+export const findNode = (
+    nodes: TreeNodeState[],
+    key: string
+): TreeNodeState | null => {
+    for (const node of nodes) {
+        if (node.key === key) {
+            return node;
+        }
+        if (node.children) {
+            const found: TreeNodeState | null = findNode(node.children, key);
+
+            if (found) {
+                return found;
+            }
+        }
+    }
+
+    return null;
+};
 
 /**
  * Build the access config output from the current tree state.
