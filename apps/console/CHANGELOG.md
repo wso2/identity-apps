@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 4.6.1
+
+### Patch Changes
+
+- [#10258](https://github.com/wso2/identity-apps/pull/10258) [`2a6285ee9794b66bcd3e3257c8290883270dc13f`](https://github.com/wso2/identity-apps/commit/2a6285ee9794b66bcd3e3257c8290883270dc13f) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add MCP servers to the organizationEnabledRoutes list
+
+* [#10257](https://github.com/wso2/identity-apps/pull/10257) [`a590754c0ece0ba0c9acaa493fc16d1fae95c49c`](https://github.com/wso2/identity-apps/commit/a590754c0ece0ba0c9acaa493fc16d1fae95c49c) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Skip auth-property validation when actions auth flow is not in update mode
+
+* Updated dependencies [[`2a6285ee9794b66bcd3e3257c8290883270dc13f`](https://github.com/wso2/identity-apps/commit/2a6285ee9794b66bcd3e3257c8290883270dc13f), [`c331b91996fa0a2b84e73a5162aa46305d72539a`](https://github.com/wso2/identity-apps/commit/c331b91996fa0a2b84e73a5162aa46305d72539a), [`a590754c0ece0ba0c9acaa493fc16d1fae95c49c`](https://github.com/wso2/identity-apps/commit/a590754c0ece0ba0c9acaa493fc16d1fae95c49c)]:
+  - @wso2is/admin.core.v1@2.57.7
+  - @wso2is/admin.applications.v1@2.42.26
+  - @wso2is/admin.actions.v1@1.16.1
+
 ## 4.6.0
 
 ### Minor Changes
