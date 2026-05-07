@@ -32,7 +32,7 @@ import { AgentSharedOrganizationsResponse } from "../models/endpoints";
  * @param shouldFetch - Should fetch the data.
  * @param recursive - Determines whether a recursive search should happen.
  * @param filter - Filter condition.
- * @param attributes - Comma-separated attributes to include in response (e.g., "roles,sharingMode").
+ * @param attributes - Attributes to include in response (e.g., ["roles", "sharingMode"]).
  * @param limit - Maximum number of records to return.
  * @param before - Base64 encoded cursor value for backward pagination.
  * @param after - Base64 encoded cursor value for forward pagination.
@@ -43,30 +43,20 @@ const useGetAgentShare = (
     shouldFetch: boolean = true,
     recursive?: boolean,
     filter?: string,
-    attributes?: string,
+    attributes?: string[],
     limit?: number,
     before?: string,
-    after?: string,
-    ...additionalAttributes: string[]
+    after?: string
 ): RequestResultInterface<AgentSharedOrganizationsResponse, RequestErrorInterface> => {
     const { resourceEndpoints } = useResourceEndpoints();
-
-    // Combine all attributes into a single comma-separated string.
-    const allAttributes: string = attributes
-        ? additionalAttributes.length > 0
-            ? `${attributes},${additionalAttributes.join(",")}`
-            : attributes
-        : additionalAttributes.length > 0
-            ? additionalAttributes.join(",")
-            : undefined;
 
     const params: URLSearchParams = new URLSearchParams();
 
     if (recursive !== undefined && recursive !== null) {
         params.append("recursive", String(recursive));
     }
-    if (allAttributes) {
-        params.append("attributes", allAttributes);
+    if (attributes && attributes.length > 0) {
+        params.append("attributes", attributes.join(","));
     }
     if (limit !== undefined && limit !== null) {
         params.append("limit", String(limit));
@@ -80,8 +70,6 @@ const useGetAgentShare = (
 
     if (filter) {
         params.append("filter", filter);
-    } else {
-        params.append("filter", "");
     }
 
     const queryString: string = params.toString();

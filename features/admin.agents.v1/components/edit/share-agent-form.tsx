@@ -87,7 +87,10 @@ import {
 } from "../../models/agents";
 import { RoleInterface, SharedOrganizationInterface } from "../../models/endpoints";
 
-const RoleSharingModes: { NONE: string; SELECTED: string } = {
+const RoleSharingModes: {
+    readonly NONE: "NONE";
+    readonly SELECTED: "SELECTED";
+} = {
     NONE: "NONE",
     SELECTED: "SELECTED"
 };
@@ -127,7 +130,7 @@ interface AgentShareFormPropsInterface
 
 export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
     props: AgentShareFormPropsInterface
-) => {
+): ReactElement => {
 
     const {
         agent,
@@ -183,7 +186,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
         !isEmpty(agent?.id) && isOrganizationManagementEnabled,
         true,
         undefined,
-        "sharingMode,roles",
+        [ "sharingMode", "roles" ],
         10
     );
 
@@ -835,12 +838,21 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
     const shareAllorNoRolesWithSelectedOrgs = async (shareAllRoles: boolean): Promise<void> => {
         const sharedPromises: Promise<any>[] = [];
         const tempShareWithFutureChildOrgsMap: Record<string, boolean> = { ...shouldShareWithFutureChildOrgsMap };
+        const existingSharedOrgIds: Set<string> = new Set(
+            (agentShareData?.organizations ?? []).map((org: SharedOrganizationInterface) => org.orgId)
+        );
+        const effectiveAddedOrgIds: string[] = addedOrgIds.filter(
+            (orgId: string) => !existingSharedOrgIds.has(orgId)
+        );
+        const effectiveRemovedOrgIds: string[] = removedOrgIds.filter(
+            (orgId: string) => existingSharedOrgIds.has(orgId)
+        );
         let orgSharingSuccess: boolean = true;
 
-        if (addedOrgIds.length > 0) {
+        if (effectiveAddedOrgIds.length > 0) {
             const data: ShareAgentWithSelectedOrganizationsAndRolesDataInterface = {
                 agentId: agent.id,
-                organizations: addedOrgIds.map((orgId: string) => {
+                organizations: effectiveAddedOrgIds.map((orgId: string) => {
                     return {
                         orgId: orgId,
                         policy: tempShareWithFutureChildOrgsMap[orgId]
@@ -867,7 +879,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
                     .then(() => {
                         // Upon sucessful sharing, remove the orgs from tempShareWithFutureChildOrgsMap
                         // as they are already processed along with the org sharing.
-                        addedOrgIds.forEach((orgId: string) => {
+                        effectiveAddedOrgIds.forEach((orgId: string) => {
                             delete tempShareWithFutureChildOrgsMap[orgId];
                         });
                     })
@@ -886,10 +898,10 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
         }
 
         // Call unshare API for removed organizations.
-        if (removedOrgIds.length > 0) {
+        if (effectiveRemovedOrgIds.length > 0) {
             const data: UnshareOrganizationsDataInterface = {
                 agentId: agent.id,
-                orgIds: removedOrgIds
+                orgIds: effectiveRemovedOrgIds
             };
 
             sharedPromises.push(
@@ -897,7 +909,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
                     .then(() => {
                         // Upon sucessful unsharing, Remove the orgs from tempShareWithFutureChildOrgsMap
                         // as they are already removed along with the org unsharing and no need of patch operation.
-                        removedOrgIds.forEach((orgId: string) => {
+                        effectiveRemovedOrgIds.forEach((orgId: string) => {
                             delete tempShareWithFutureChildOrgsMap[orgId];
                         });
                     })

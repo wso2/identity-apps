@@ -23,7 +23,7 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpErrorResponseDataInterface, HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { AgentManagementConstants } from "../constants/agents";
+import { AGENT_SHARING_ERROR } from "../constants/agents";
 import {
     AgentCriteriaInterface,
     AgentScimSchema,
@@ -331,7 +331,7 @@ export const shareAgentsWithAllOrganizations = (
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                AgentManagementConstants.AGENT_SHARING_ERROR,
+                AGENT_SHARING_ERROR,
                 error.stack,
                 error.code,
                 error.request,
@@ -373,7 +373,7 @@ export const unShareAgentsWithAllOrganizations = (
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                AgentManagementConstants.AGENT_SHARING_ERROR,
+                AGENT_SHARING_ERROR,
                 error.stack,
                 error.code,
                 error.request,
@@ -421,7 +421,7 @@ export const shareAgentsWithSelectedOrganizationsAndRoles = (
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                AgentManagementConstants.AGENT_SHARING_ERROR,
+                AGENT_SHARING_ERROR,
                 error.stack,
                 error.code,
                 error.request,
@@ -469,7 +469,7 @@ export const unshareAgentWithSelectedOrganizations = (
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                AgentManagementConstants.AGENT_SHARING_ERROR,
+                AGENT_SHARING_ERROR,
                 error.stack,
                 error.code,
                 error.request,
@@ -517,7 +517,7 @@ export const editAgentRolesOfExistingOrganizations = (
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
-                AgentManagementConstants.AGENT_SHARING_ERROR,
+                AGENT_SHARING_ERROR,
                 error.stack,
                 error.code,
                 error.request,

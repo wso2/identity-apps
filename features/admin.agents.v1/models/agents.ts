@@ -68,9 +68,9 @@ export interface RoleSharingInterface {
  */
 export interface ShareAgentWithAllOrganizationsDataInterface {
     agentId: string;
-    policy: string;
+    policy: AgentSharingPolicy;
     roleAssignment: {
-        mode: string;
+        mode: "NONE" | "SELECTED";
         roles?: RoleSharingInterface[];
     };
 }
@@ -87,9 +87,9 @@ export interface UnshareAgentWithAllOrganizationsDataInterface {
  */
 interface SharedOrganizationAndRolesInterface {
     orgId: string;
-    policy: string;
+    policy: AgentSharingPolicy;
     roleAssignment?: {
-        mode: string;
+        mode: "NONE" | "SELECTED";
         roles: RoleSharingInterface[];
     };
 }

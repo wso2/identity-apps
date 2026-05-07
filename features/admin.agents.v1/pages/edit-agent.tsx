@@ -54,11 +54,11 @@ export default function EditAgent({
     const agentFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.agents);
 
-    const agentSharing: Omit<FeatureAccessConfigInterface, "subFeatures"> | undefined =
+    const agentSharingFeatureConfig: Omit<FeatureAccessConfigInterface, "subFeatures"> | undefined =
         agentFeatureConfig?.subFeatures?.agentSharing;
-    const isSharedAccessEnabled: boolean = agentSharing?.enabled ?? false;
-    const hasSharedAccessReadPermission: boolean = useRequiredScopes(agentSharing?.scopes?.read ?? []);
-    const hasSharedAccessUpdatePermission: boolean = useRequiredScopes(agentSharing?.scopes?.update ?? []);
+    const isSharedAccessEnabled: boolean = agentSharingFeatureConfig?.enabled ?? false;
+    const hasSharedAccessReadPermission: boolean = useRequiredScopes(agentSharingFeatureConfig?.scopes?.read ?? []);
+    const hasSharedAccessUpdatePermission: boolean = useRequiredScopes(agentSharingFeatureConfig?.scopes?.update ?? []);
 
     const {
         data: agentInfo,

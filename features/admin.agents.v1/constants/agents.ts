@@ -16,9 +16,7 @@
  * under the License.
  */
 
-export class AgentManagementConstants {
-    public static readonly AGENT_SHARING_ERROR: string = "AGENT_SHARING_ERROR";
-}
+export const AGENT_SHARING_ERROR: string = "AGENT_SHARING_ERROR";
 
 export const AGENT_FEATURE_DICTIONARY: Map<string, string> = new Map()
     .set("AGENT_GROUPS", "agents.groups")

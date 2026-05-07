@@ -95,7 +95,7 @@ export const agents: AgentsNS = {
                     },
                     share: {
                         error: {
-                            description: "An error occurred while sharing agent. {{error}}",
+                            description: "An error occurred while sharing agent.",
                             message: "Error occurred while sharing agent"
                         },
                         success: {
@@ -105,7 +105,7 @@ export const agents: AgentsNS = {
                     },
                     unshare: {
                         error: {
-                            description: "An error occurred while unsharing agent. {{error}}",
+                            description: "An error occurred while unsharing agent.",
                             message: "Error occurred while unsharing agent"
                         },
                         success: {
@@ -120,7 +120,7 @@ export const agents: AgentsNS = {
                 },
                 roleAvailabilityInfo: "Only roles that are already available in the child organizations will be assigned to the shared agent.",
                 searchAvailableRolesPlaceholder: "Search available roles",
-                shareAgentWithFutureChildOrgs: "Share agent and roles with future child organizations",
+                shareAgentWithFutureChildOrgs: "Share agent with future child organizations",
                 shareAllAgent: "Share agent with all organizations",
                 shareAllRoles: "Assign all roles",
                 shareRoleSubsetWithAllOrgs: "Share and assign only a subset of roles to the agent in all organizations",
@@ -138,9 +138,9 @@ export const agents: AgentsNS = {
                 sharingSettingsLabel: "Sharing settings",
                 showShareAllWarningModal: {
                     assertionHint: "Please confirm your action.",
-                    description: "This will share the agent with selected roles across ALL existing and future organizations. This action will affect all current and future organizations in your system.",
+                    description: "This will share the agent across ALL existing and future organizations. This action will affect all current and future organizations in your system.",
                     header: "Share with all organizations",
-                    message: "You are about to share this agent, along with their assigned roles, across all organizations."
+                    message: "You are about to share this agent across all organizations."
                 },
                 subTitle: "Configure how this agent should be shared across organizations",
                 title: "Sharing Policy"
