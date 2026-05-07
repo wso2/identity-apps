@@ -79,6 +79,7 @@ import useGetApplicationInboundConfigs from "../api/use-get-application-inbound-
 import { EditApplication } from "../components/edit-application";
 import { InboundProtocolDefaultFallbackTemplates } from "../components/meta/inbound-protocols.meta";
 import { ApplicationManagementConstants } from "../constants/application-management";
+import TryItApplicationConstants from "../constants/try-it-constants";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
@@ -1002,7 +1003,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             pageTitle="Edit Application"
             title={ (
                 <>
-                    <span>{ moderatedApplicationData?.name }</span>
+                    <span>
+                        { moderatedApplicationData?.name === TryItApplicationConstants.DISPLAY_NAME
+                            ? "WSO2 Identity Platform Try It"
+                            : moderatedApplicationData?.name }
+                    </span>
                     { /*TODO - Application status is not shown until the backend support for disabling is given
                         @link https://github.com/wso2/product-is/issues/11453
                         { resolveApplicationStatusLabel() }*/ }
