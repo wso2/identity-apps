@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -45,4 +45,114 @@ export interface AgentScimSchema {
     userName?: string;
     password?: string;
     "urn:scim:wso2:agent:schema"?: AgentSchema;
+}
+
+/**
+ * Interface for role audiences in agent sharing.
+ */
+interface RoleAudiencesInterface {
+    display: string;
+    type: string;
+}
+
+/**
+ * Interface for role sharing in agent sharing.
+ */
+export interface RoleSharingInterface {
+    displayName: string;
+    audience: RoleAudiencesInterface;
+}
+
+/**
+ * Interface for sharing the agent with all organizations.
+ */
+export interface ShareAgentWithAllOrganizationsDataInterface {
+    agentId: string;
+    policy: string;
+    roleAssignment: {
+        mode: string;
+        roles?: RoleSharingInterface[];
+    };
+}
+
+/**
+ * Interface for unsharing the agent with all organizations.
+ */
+export interface UnshareAgentWithAllOrganizationsDataInterface {
+    agentId: string;
+}
+
+/**
+ * Interface for shared organization and roles for agents.
+ */
+interface SharedOrganizationAndRolesInterface {
+    orgId: string;
+    policy: string;
+    roleAssignment?: {
+        mode: string;
+        roles: RoleSharingInterface[];
+    };
+}
+
+/**
+ * Interface for sharing the agent with selected organization and roles.
+ */
+export interface ShareAgentWithSelectedOrganizationsAndRolesDataInterface {
+    agentId: string;
+    organizations: SharedOrganizationAndRolesInterface[];
+}
+
+/**
+ * Interface for the patch operation to share the agent with selected organizations and roles.
+ */
+export interface ShareOrganizationsAndRolesPatchOperationInterface {
+    op: string;
+    path: string;
+    value: RoleSharingInterface[];
+}
+
+/**
+ * Interface for the patch data to share the agent with selected organizations and roles.
+ */
+export interface ShareOrganizationsAndRolesPatchDataInterface {
+    agentId: string;
+    Operations: ShareOrganizationsAndRolesPatchOperationInterface[];
+}
+
+/**
+ * Interface for unsharing the agent from organizations.
+ */
+export interface UnshareOrganizationsDataInterface {
+    agentId: string;
+    orgIds: string[];
+}
+
+/**
+ * Interface for basic agent fields shared across create and read operations.
+ */
+interface AgentBasicInterface {
+    name: string;
+    description: string;
+    version: string;
+    url?: string;
+    owner?: string;
+}
+
+/**
+ * Interface for agent.
+ */
+interface AgentInterface extends AgentBasicInterface {
+    id: string;
+    associatedRoles?: {
+        allowedAudience?: string;
+    };
+}
+
+/**
+ * Agent sharing policy enum.
+ */
+export enum AgentSharingPolicy {
+    ALL_EXISTING_AND_FUTURE_ORGS = "ALL_EXISTING_AND_FUTURE_ORGS",
+    SELECTED_ORG_ONLY = "SELECTED_ORG_ONLY",
+    SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN = "SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN"
 }

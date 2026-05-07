@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 
 import Typography from "@oxygen-ui/react/Typography";
-import { FeatureAccessConfigInterface } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -33,6 +33,7 @@ import AgentCredentials from "../components/edit/agent-credentials";
 import AgentGroups from "../components/edit/agent-groups";
 import AgentOverview from "../components/edit/agent-overview";
 import AgentRoles from "../components/edit/agent-roles";
+import { ShareAgentForm } from "../components/edit/share-agent-form";
 import { AGENT_FEATURE_DICTIONARY } from "../constants/agents";
 import useGetAgent from "../hooks/use-get-agent";
 
@@ -52,6 +53,14 @@ export default function EditAgent({
 
     const agentFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.agents);
+
+    const isSharedAccessEnabled: boolean = (agentFeatureConfig as any)?.subFeatures?.agentSharing?.enabled ?? false;
+    const hasSharedAccessReadPermission: boolean = useRequiredScopes(
+        (agentFeatureConfig as any)?.subFeatures?.agentSharing?.scopes?.read
+    );
+    const hasSharedAccessUpdatePermission: boolean = useRequiredScopes(
+        (agentFeatureConfig as any)?.subFeatures?.agentSharing?.scopes?.update
+    );
 
     const {
         data: agentInfo,
@@ -93,9 +102,25 @@ export default function EditAgent({
             });
         }
 
+        if (isSharedAccessEnabled && hasSharedAccessReadPermission) {
+            tabPanes.push({
+                componentId: "shared-access",
+                menuItem: "Shared Access",
+                render: () => (
+                    <ResourceTab.Pane>
+                        <ShareAgentForm
+                            agent={ agentInfo }
+                            readOnly={ !hasSharedAccessUpdatePermission }
+                        />
+                    </ResourceTab.Pane>
+                )
+            });
+        }
+
         return tabPanes;
 
-    }, [ agentFeatureConfig ]);
+    }, [ agentFeatureConfig, agentInfo, isSharedAccessEnabled, hasSharedAccessReadPermission,
+        hasSharedAccessUpdatePermission ]);
 
     const [ agentOwnerDisplayName, setAgentOwnerDisplayName ] = useState<string>("");
 

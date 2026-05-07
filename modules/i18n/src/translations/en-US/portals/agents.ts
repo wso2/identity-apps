@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -51,6 +51,96 @@ export const agents: AgentsNS = {
             subtitle: "View roles assigned directly to this agent",
             title: "Roles"
 
+        },
+        sections: {
+            shareAgent: {
+                addAsyncSharingNotification: {
+                    description: "Agent sharing process has started. You will be notified once the process is complete.",
+                    message: "Agent sharing in progress"
+                },
+                getSharedOrganizations: {
+                    genericError: {
+                        description: "An error occurred while fetching shared organizations.",
+                        message: "Error occurred while fetching shared organizations"
+                    }
+                }
+            },
+            sharedAccess: {
+                allAgentRolesSharingMessage: "All roles of the agent in the current organization will be shared and assigned.",
+                allRolesAndOrgsSharingMessage: "All roles will be shared with all existing and future organizations.",
+                assignedRolesLabel: "Assigned roles",
+                commonRoleSharingHint: "Configure the set of roles that will be assigned to the shared agent in all existing and future organizations.",
+                commonRoleSharingLabel: "Assigned roles",
+                currentlyAssignedRolesLabel: "Currently assigned roles",
+                doNotShareAgent: "Do not share agent with any organization",
+                individualRoleSharingHint: "Configure role sharing for specific organizations individually.",
+                individualRoleSharingLabel: "Individually shared roles",
+                noRolesAndOrgsSharingMessage: "No roles will be assigned to the shared agent in all existing and future organizations.",
+                notifications: {
+                    fetchAgentRoles: {
+                        genericError: {
+                            description: "An error occurred while fetching agent roles.",
+                            message: "Error occurred while fetching agent roles"
+                        }
+                    },
+                    fetchOrganizations: {
+                        genericError: {
+                            description: "An error occurred while fetching organizations.",
+                            message: "Error occurred while fetching organizations"
+                        }
+                    },
+                    noOrganizationsSelected: {
+                        description: "Please select at least one organization to share the agent with.",
+                        message: "No organizations selected"
+                    },
+                    share: {
+                        error: {
+                            description: "An error occurred while sharing agent. {{error}}",
+                            message: "Error occurred while sharing agent"
+                        },
+                        success: {
+                            description: "Agent shared with all organizations successfully.",
+                            message: "Shared successfully"
+                        }
+                    },
+                    unshare: {
+                        error: {
+                            description: "An error occurred while unsharing agent. {{error}}",
+                            message: "Error occurred while unsharing agent"
+                        },
+                        success: {
+                            description: "Agent unshared successfully.",
+                            message: "Unshared successfully"
+                        }
+                    }
+                },
+                roleAvailabilityInfo: "Only roles that are already available in the child organizations will be assigned to the shared agent.",
+                searchAvailableRolesPlaceholder: "Search available roles",
+                shareAgentWithFutureChildOrgs: "Share agent and roles with future child organizations",
+                shareAllAgent: "Share agent with all organizations",
+                shareAllRoles: "Assign all roles",
+                shareRoleSubsetWithAllOrgs: "Share and assign only a subset of roles to the agent in all organizations",
+                shareSelectedAgent: "Share agent with selected organizations",
+                shareSelectedRoles: "Assign selected roles",
+                shareTypeSwitchModal: {
+                    description: "Choose how you want to proceed:",
+                    header: "Switch to selective sharing",
+                    message: "You are about to switch from sharing with all organizations to selective sharing.",
+                    preserveStateLabel1: "Preserve current sharing",
+                    preserveStateLabel2: "Keep agent shared with existing organizations and switch to selective mode.",
+                    resetToDefaultLabel1: "Reset to default",
+                    resetToDefaultLabel2: "Unshare agent from all organizations and start fresh with selective sharing."
+                },
+                sharingSettingsLabel: "Sharing settings",
+                showShareAllWarningModal: {
+                    assertionHint: "Please confirm your action.",
+                    description: "This will share the agent with selected roles across ALL existing and future organizations. This action will affect all current and future organizations in your system.",
+                    header: "Share with all organizations",
+                    message: "You are about to share this agent, along with their assigned roles, across all organizations."
+                },
+                subTitle: "Configure how this agent should be shared across organizations",
+                title: "Sharing Policy"
+            }
         }
     },
     list: {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,10 +20,10 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { OIDCDataInterface } from "@wso2is/admin.applications.v1/models/application-inbound";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
-import { HttpMethods,
-    HttpErrorResponseDataInterface
-} from "@wso2is/core/models";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { HttpErrorResponseDataInterface, HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
+import { AgentManagementConstants } from "../constants/agents";
 import { AgentScimSchema, AgentType } from "../models/agents";
 
 /**
@@ -278,4 +278,184 @@ export const updateAgentApplicationConfiguration = async (
     } catch (error) {
         return Promise.reject(error);
     }
+};
+
+/**
+ * Share agents with all organizations.
+ *
+ * @param data - The data to share agents with all organizations.
+ * @returns A promise containing the response.
+ */
+export const shareAgentsWithAllOrganizations = (data: any): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data: {
+            agentCriteria: {
+                agentIds: [ data.agentId ]
+            },
+            policy: data.policy,
+            roleAssignment: data.roleAssignment
+        },
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${ store.getState().config.endpoints.agentSharing }/share-with-all`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                AgentManagementConstants.AGENT_SHARING_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Unshare agents from all organizations.
+ *
+ * @param data - The data to unshare agents from all organizations.
+ * @returns A promise containing the response.
+ */
+export const unShareAgentsWithAllOrganizations = (data: any): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data: {
+            agentCriteria: {
+                agentIds: [ data.agentId ]
+            }
+        },
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${ store.getState().config.endpoints.agentSharing }/unshare-with-all`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                AgentManagementConstants.AGENT_SHARING_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Share agents with selected organizations and roles.
+ *
+ * @param data - The data to share agents with selected organizations.
+ * @returns A promise containing the response.
+ */
+export const shareAgentsWithSelectedOrganizationsAndRoles = (data: any): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data: {
+            agentCriteria: {
+                agentIds: [ data.agentId ]
+            },
+            organizations: data.organizations
+        },
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${ store.getState().config.endpoints.agentSharing }/share`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                AgentManagementConstants.AGENT_SHARING_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Unshare agents from selected organizations.
+ *
+ * @param data - The data to unshare agents from selected organizations.
+ * @returns A promise containing the response.
+ */
+export const unshareAgentWithSelectedOrganizations = (data: any): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data: {
+            agentCriteria: {
+                agentIds: [ data.agentId ]
+            },
+            orgIds: data.orgIds
+        },
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${ store.getState().config.endpoints.agentSharing }/unshare`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                AgentManagementConstants.AGENT_SHARING_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Edit agent roles of existing organizations (PATCH operation).
+ *
+ * @param data - The patch data for agent role assignments.
+ * @returns A promise containing the response.
+ */
+export const editAgentRolesOfExistingOrganizations = (data: any): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data: {
+            Operations: data.Operations,
+            agentCriteria: {
+                agentIds: [ data.agentId ]
+            }
+        },
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: `${ store.getState().config.endpoints.agentSharing }/share`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                AgentManagementConstants.AGENT_SHARING_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
 };

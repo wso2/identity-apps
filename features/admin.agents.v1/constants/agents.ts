@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,11 @@
  * under the License.
  */
 
+export class AgentManagementConstants {
+    public static readonly AGENT_SHARING_ERROR: string = "AGENT_SHARING_ERROR";
+}
+
 export const AGENT_FEATURE_DICTIONARY: Map<string, string> = new Map()
     .set("AGENT_GROUPS", "agents.groups")
+    .set("AGENT_SHARED_ACCESS", "agents.sharedAccess")
     .set("DISABLE_AGENT", "agents.disable");
