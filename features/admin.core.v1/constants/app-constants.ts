@@ -540,6 +540,7 @@ export class AppConstants {
         "groups": "v0.0.0",
         "identityProviders": "v0.0.0",
         "loginAndRegistration": "v1.0.0",
+        "mcpServers": "v0.0.0",
         "oidcScopes": "v0.0.0",
         "organizations": "v0.0.0",
         "password-recovery": "v1.0.0",
