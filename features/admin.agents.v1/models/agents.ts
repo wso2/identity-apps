@@ -156,3 +156,61 @@ export enum AgentSharingPolicy {
     SELECTED_ORG_ONLY = "SELECTED_ORG_ONLY",
     SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN = "SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN"
 }
+
+/**
+ * Interface for the agentCriteria field used in sharing request bodies.
+ */
+export interface AgentCriteriaInterface {
+    agentIds: string[];
+}
+
+/**
+ * Interface for the HTTP request body of the share-with-all endpoint.
+ */
+export interface ShareWithAllRequestInterface {
+    agentCriteria: AgentCriteriaInterface;
+    policy: string;
+    roleAssignment: {
+        mode: string;
+        roles?: RoleSharingInterface[];
+    };
+}
+
+/**
+ * Interface for the HTTP request body of the unshare-with-all endpoint.
+ */
+export interface UnshareWithAllRequestInterface {
+    agentCriteria: AgentCriteriaInterface;
+}
+
+/**
+ * Interface for the HTTP request body of the share-with-selected endpoint.
+ */
+export interface ShareSelectedRequestInterface {
+    agentCriteria: AgentCriteriaInterface;
+    organizations: SharedOrganizationAndRolesInterface[];
+}
+
+/**
+ * Interface for the HTTP request body of the unshare-with-selected endpoint.
+ */
+export interface UnshareSelectedRequestInterface {
+    agentCriteria: AgentCriteriaInterface;
+    orgIds: string[];
+}
+
+/**
+ * Interface for the HTTP request body of the PATCH edit-roles endpoint.
+ */
+export interface EditRolesRequestInterface {
+    agentCriteria: AgentCriteriaInterface;
+    Operations: ShareOrganizationsAndRolesPatchOperationInterface[];
+}
+
+/**
+ * Interface for agent sharing API responses.
+ */
+export interface AgentSharingResponseInterface {
+    message?: string;
+    status?: string;
+}

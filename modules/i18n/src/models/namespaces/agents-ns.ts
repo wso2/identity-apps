@@ -297,6 +297,10 @@ export interface AgentsNS {
                 allRolesAndOrgsSharingMessage: string;
                 allAgentRolesSharingMessage: string;
                 noRolesAndOrgsSharingMessage: string;
+                roleAudience: {
+                    application: string;
+                    organization: string;
+                };
                 roleAvailabilityInfo: string;
                 shareAgentWithFutureChildOrgs: string;
                 sharingSettingsLabel: string;

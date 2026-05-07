@@ -58,6 +58,7 @@ import React, {
     ReactElement,
     useEffect,
     useMemo,
+    useRef,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -163,6 +164,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
     const [ removedRoles, setRemovedRoles ] = useState<Record<string, RoleSharingInterface[]>>({});
     const [ addedOrgIds, setAddedOrgIds ] = useState<string[]>([]);
     const [ removedOrgIds, setRemovedOrgIds ] = useState<string[]>([]);
+
     // Tracks the roles that are actually assigned to the agent in each organization.
     // This is distinct from roleSelections, which represents the sharing policy roles.
     const [ agentAssignedRolesMap, setAgentAssignedRolesMap ]
@@ -275,7 +277,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
             setShareType(ShareType.SHARE_SELECTED);
             setSavedShareType(ShareType.SHARE_SELECTED);
 
-            // Populate selected organizations and their role assignments for display
+            // Populate selected organizations and their role assignments for display.
             if (agentShareData.organizations && Array.isArray(agentShareData.organizations)) {
                 const orgIds: string[] =
                     agentShareData.organizations.map((org: SharedOrganizationInterface) => org.orgId);
@@ -284,11 +286,11 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
                 const assignedRolesMap: Record<string, RoleInterface[]> = {};
 
                 agentShareData.organizations.forEach((org: SharedOrganizationInterface) => {
-                    // Track the sharing policy for each organization
+                    // Track the sharing policy for each organization.
                     shouldShareWithFutureChildOrgsMap[org.orgId] =
                         org.sharingMode?.policy ===
                             AgentSharingPolicy.SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN;
-                    // Map roles from the sharingMode role assignment
+                    // Map roles from the sharingMode role assignment.
                     const sharingModeRoles: RoleSharingInterface[] =
                         org.sharingMode?.roleAssignment?.roles as RoleSharingInterface[];
 
@@ -297,7 +299,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
                             sharingModeRoles.map((role: RoleSharingInterface) => ({
                                 ...role,
                                 id: `${role.displayName}:${role.audience?.type}:${role.audience?.display}`,
-                                selected: true // Mark all existing roles as selected
+                                selected: true
                             }));
 
                         rolesMap[org.orgId] = roles;
@@ -319,7 +321,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
             return;
         }
 
-        // Otherwise, agent is shared with all organizations
+        // Otherwise, agent is shared with all organizations.
         const orgSharingPolicy: string = agentShareData.sharingMode?.policy;
 
         // If the agent is shared with all existing and future organizations, set the share type to SHARE_ALL.
@@ -331,7 +333,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
 
             // Based on the role sharing mode, set the role share type.
             if (roleSharingMode === RoleSharingModes.SELECTED) {
-                // Store and display the shared roles
+                // Store and display the shared roles.
                 const initialRoles: RolesInterface[] =
                     agentShareData?.sharingMode?.roleAssignment?.roles?.map(
                         (role: RoleSharingInterface) => ({
@@ -346,19 +348,12 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
 
                 if (initialRoles?.length > 0) {
                     setInitialSelectedRoles(initialRoles);
-                    setSelectedRoles(initialRoles); // Show the selected roles in the UI
+                    setSelectedRoles(initialRoles);
                 }
             }
         }
     }, [ agentShareData ]);
 
-    // When agentRolesList or agentShareData becomes available (or changes), expand each pre-existing
-    // org entry in roleSelections so that it contains the *full* role list — not just the
-    // previously-saved roles stored by the agentShareData effect. Adding agentShareData as a
-    // dependency ensures this re-runs even when agentRolesList loaded first (before the sparse
-    // entries from agentShareData were written). React batches both setRoleSelections calls from
-    // the same render cycle, so the functional updater here receives the sparse map as prev and
-    // produces the fully-expanded map in one commit. Existing `selected` state is preserved.
     useEffect(() => {
         if (!agentRolesList?.length) {
             return;
@@ -467,23 +462,63 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
         }
     }, [ organizationsFetchRequestError ]);
 
+    const handleAgentSharingRef: React.MutableRefObject<() => void> = useRef((): void => undefined);
+
+    useEffect(() => {
+        handleAgentSharingRef.current = (): void => {
+            if (shareType === ShareType.SHARE_SELECTED && selectedOrgIds?.length === 0) {
+                dispatch(addAlert({
+                    description: t("agents:edit.sections.sharedAccess.notifications." +
+                            "noOrganizationsSelected.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("agents:edit.sections.sharedAccess.notifications." +
+                            "noOrganizationsSelected.message")
+                }));
+
+                return;
+            }
+
+            if (shareType === ShareType.UNSHARE) {
+                unshareWithAllOrganizations();
+            } else if (shareType === ShareType.SHARE_ALL) {
+                setShowShareAllWarningModal(true);
+            } else if (shareType === ShareType.SHARE_SELECTED) {
+                if (roleShareTypeSelected === RoleShareType.SHARE_SELECTED) {
+                    shareSelectedRolesWithSelectedOrgs();
+                }
+
+                if (roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL) {
+                    shareAllorNoRolesWithSelectedOrgs(true);
+                }
+
+                if (roleShareTypeSelected === RoleShareType.SHARE_NONE) {
+                    shareAllorNoRolesWithSelectedOrgs(false);
+                }
+            }
+        };
+    });
+
     useEffect(() => {
         if (triggerAgentShare) {
-            handleAgentSharing();
+            handleAgentSharingRef.current();
         }
     }, [ triggerAgentShare ]);
+
+    const triggerCurrentAgentSharing: () => void = (): void => {
+        handleAgentSharingRef.current();
+    };
 
     /**
      * Reset role sharing states when switching away from SHARE_ALL or SHARE_SELECTED modes.
      */
     useEffect(() => {
-        // Reset role sharing states when switching away from SHARE_ALL
+        // Reset role sharing states when switching away from SHARE_ALL.
         if (shareType !== ShareType.SHARE_ALL) {
             setSelectedRoles([]);
             setInitialSelectedRoles([]);
         }
 
-        // Reset selected organization role sharing states when switching away from SHARE_SELECTED
+        // Reset selected organization role sharing states when switching away from SHARE_SELECTED.
         if (shareType !== ShareType.SHARE_SELECTED) {
             setRoleShareTypeSelected(RoleShareType.SHARE_SELECTED);
         }
@@ -517,43 +552,6 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
         }
     };
 
-    const handleAgentSharing = (): void => {
-        if (shareType === ShareType.SHARE_SELECTED && selectedOrgIds?.length === 0) {
-            dispatch(addAlert({
-                description: t("agents:edit.sections.sharedAccess.notifications." +
-                        "noOrganizationsSelected.description"),
-                level: AlertLevels.ERROR,
-                message: t("agents:edit.sections.sharedAccess.notifications." +
-                        "noOrganizationsSelected.message")
-            }));
-
-            return;
-        }
-
-        if (shareType === ShareType.UNSHARE) {
-            // Unshare the agent with all organizations
-            unshareWithAllOrganizations();
-        } else if (shareType === ShareType.SHARE_ALL) {
-            // Always show warning modal for share with all organizations operations
-            setShowShareAllWarningModal(true);
-        } else if (shareType === ShareType.SHARE_SELECTED) {
-            // logic to handle sharing the agent with selected organizations
-            if (roleShareTypeSelected === RoleShareType.SHARE_SELECTED) {
-                // Share selected roles with selected organizations
-                shareSelectedRolesWithSelectedOrgs();
-            }
-
-            if (roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL) {
-                // Share all roles with selected organizations
-                shareAllorNoRolesWithSelectedOrgs(true);
-            }
-
-            if (roleShareTypeSelected === RoleShareType.SHARE_NONE) {
-                // Do not share any roles with selected organizations
-                shareAllorNoRolesWithSelectedOrgs(false);
-            }
-        }
-    };
 
     const unshareWithAllOrganizations = async (): Promise<boolean> => {
         const data: UnshareAgentWithAllOrganizationsDataInterface = {
@@ -581,8 +579,6 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
             }));
 
             return false;
-        } finally {
-            // onAgentSharingCompleted();
         }
     };
 
@@ -655,10 +651,10 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
         const tempAddedRoles: Record<string, RoleSharingInterface[]> = { ...addedRoles };
         const tempRemovedRoles: Record<string, RoleSharingInterface[]> = { ...removedRoles };
         const tempShareWithFutureChildOrgsMap: Record<string, boolean> = { ...shouldShareWithFutureChildOrgsMap };
-        const sharedPromises: Promise<any>[] = [];
+        const sharedPromises: Promise<void>[] = [];
         let orgSharingSuccess: boolean = true;
 
-        // If there are added orgs we need to add both orgs and roles
+        // If there are added orgs we need to add both orgs and roles.
         if (effectiveAddedOrgIds.length > 0) {
             const data: ShareAgentWithSelectedOrganizationsAndRolesDataInterface = {
                 agentId: agent.id,
@@ -685,7 +681,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
                     .then(() => {
                         // Upon sucessful sharing, Remove the roles of the added orgs from tempAddedRoles
                         // and tempShareWithFutureChildOrgsMap
-                        // as they are already processed along with the org sharing
+                        // as they are already processed along with the org sharing.
                         effectiveAddedOrgIds.forEach((orgId: string) => {
                             delete tempAddedRoles[orgId];
                             delete tempShareWithFutureChildOrgsMap[orgId];
@@ -705,7 +701,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
             );
         }
 
-        // If there are removed orgs we need to unshare the agent with those orgs
+        // If there are removed orgs we need to unshare the agent with those orgs.
         if (effectiveRemovedOrgIds.length > 0) {
             const data: UnshareOrganizationsDataInterface = {
                 agentId: agent.id,
@@ -717,7 +713,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
                     .then(() => {
                         // Upon sucessful unsharing, Remove the orgs from tempRemovedRoles
                         // and tempShareWithFutureChildOrgsMap
-                        // as they are already removed along with the org unsharing and no need of patch operation
+                        // as they are already removed along with the org unsharing and no need of patch operation.
                         effectiveRemovedOrgIds.forEach((orgId: string) => {
                             delete tempRemovedRoles[orgId];
                             delete tempShareWithFutureChildOrgsMap[orgId];
@@ -738,7 +734,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
             );
         }
 
-        // Wait for sharing/unsharing to complete
+        // Wait for sharing/unsharing to complete.
         await Promise.all(sharedPromises);
 
         // If there are any entries remaining in tempShareWithFutureChildOrgsMap, that means the agent has only changed
@@ -764,7 +760,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
             const data: ShareAgentWithSelectedOrganizationsAndRolesDataInterface = {
                 agentId: agent.id,
                 organizations: policyChangedOrgIds.map((orgId: string) => {
-                    // Get the selected roles for the organization
+                    // Get the selected roles for the organization.
                     const selectedRoles: RoleSharingInterface[] = roleSelections[orgId]?.filter(
                         (role: SelectedOrganizationRoleInterface) => role.selected).map(
                         (mappedRole: SelectedOrganizationRoleInterface) => ({
@@ -806,19 +802,18 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
             }
         }
 
-        // If the org sharing was not successful, do not proceed with role patch operations
+        // If the org sharing was not successful, do not proceed with role patch operations.
         if (!orgSharingSuccess) {
-            // onAgentSharingCompleted();
 
             return;
         }
 
-        // Handle individual role changes for existing organizations
-        // Only call patch operations if there are remaining roles to add/remove for existing organizations
+        // Handle individual role changes for existing organizations.
+        // Only call patch operations if there are remaining roles to add/remove for existing organizations.
         const remainingAddedRoles: Record<string, RoleSharingInterface[]> = { ...tempAddedRoles };
         const remainingRemovedRoles: Record<string, RoleSharingInterface[]> = { ...tempRemovedRoles };
 
-        // Check if there are any role operations left to perform
+        // Check if there are any role operations left to perform.
         const hasRemainingOperations: boolean =
             Object.keys(remainingAddedRoles).some((orgId: string) => remainingAddedRoles[orgId]?.length > 0) ||
             Object.keys(remainingRemovedRoles).some((orgId: string) => remainingRemovedRoles[orgId]?.length > 0);
@@ -826,7 +821,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
         if (hasRemainingOperations) {
             shareIndividualRolesWithSelectedOrgs();
         } else {
-            // No additional role operations needed, just show success and reset state
+            // No additional role operations needed, just show success and reset state.
             dispatch(addAlert({
                 description: t("agents:edit.sections.sharedAccess.notifications.share.success.description"),
                 level: AlertLevels.SUCCESS,
@@ -870,8 +865,8 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
             sharedPromises.push(
                 shareAgentsWithSelectedOrganizationsAndRoles(data)
                     .then(() => {
-                        // Upon sucessful sharing, Remove the orgs from tempShareWithFutureChildOrgsMap
-                        // as they are already processed along with the org sharing
+                        // Upon sucessful sharing, remove the orgs from tempShareWithFutureChildOrgsMap
+                        // as they are already processed along with the org sharing.
                         addedOrgIds.forEach((orgId: string) => {
                             delete tempShareWithFutureChildOrgsMap[orgId];
                         });
@@ -890,35 +885,37 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
             );
         }
 
-        // Call unshare API for removed organizations
+        // Call unshare API for removed organizations.
         if (removedOrgIds.length > 0) {
             const data: UnshareOrganizationsDataInterface = {
                 agentId: agent.id,
                 orgIds: removedOrgIds
             };
 
-            unshareAgentWithSelectedOrganizations(data)
-                .then(() => {
-                    // Upon sucessful unsharing, Remove the orgs from tempShareWithFutureChildOrgsMap
-                    // as they are already removed along with the org unsharing and no need of patch operation
-                    removedOrgIds.forEach((orgId: string) => {
-                        delete tempShareWithFutureChildOrgsMap[orgId];
-                    });
-                })
-                .catch((error: Error) => {
-                    orgSharingSuccess = false;
+            sharedPromises.push(
+                unshareAgentWithSelectedOrganizations(data)
+                    .then(() => {
+                        // Upon sucessful unsharing, Remove the orgs from tempShareWithFutureChildOrgsMap
+                        // as they are already removed along with the org unsharing and no need of patch operation.
+                        removedOrgIds.forEach((orgId: string) => {
+                            delete tempShareWithFutureChildOrgsMap[orgId];
+                        });
+                    })
+                    .catch((error: Error) => {
+                        orgSharingSuccess = false;
 
-                    dispatch(addAlert({
-                        description: t("agents:edit.sections.sharedAccess.notifications.unshare." +
-                            "error.description",
-                        { error: error.message }),
-                        level: AlertLevels.ERROR,
-                        message: t("agents:edit.sections.sharedAccess.notifications.unshare.error.message")
-                    }));
-                });
+                        dispatch(addAlert({
+                            description: t("agents:edit.sections.sharedAccess.notifications.unshare." +
+                                "error.description",
+                            { error: error.message }),
+                            level: AlertLevels.ERROR,
+                            message: t("agents:edit.sections.sharedAccess.notifications.unshare.error.message")
+                        }));
+                    })
+            );
         }
 
-        // Wait for sharing/unsharing to complete
+        // Wait for sharing/unsharing to complete.
         await Promise.all(sharedPromises);
 
         // If there are any entries remaining in tempShareWithFutureChildOrgsMap, that means the agent has only changed
@@ -965,7 +962,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
             }
         }
 
-        // If org sharing was successful, show success notification
+        // If org sharing was successful, show success notification.
         if (orgSharingSuccess) {
             dispatch(addAlert({
                 description: t("agents:edit.sections.sharedAccess.notifications.share.success.description"),
@@ -975,13 +972,10 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
 
             resetStates();
         }
-
-        // Fire the agent sharing completed callback
-        // onAgentSharingCompleted();
     };
 
     const shareSelectedRolesWithAllOrgs = async (): Promise<boolean> => {
-        // If the selected roles are the same as the initial roles, no changes needed
+        // If the selected roles are the same as the initial roles, no changes needed.
         if (!isEmpty(selectedRoles) && JSON.stringify(selectedRoles) === JSON.stringify(initialSelectedRoles)) {
             return true;
         }
@@ -1027,8 +1021,6 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
             }));
 
             return false;
-        } finally {
-            // onAgentSharingCompleted();
         }
     };
 
@@ -1114,13 +1106,8 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
                         level: AlertLevels.ERROR,
                         message: t("agents:edit.sections.sharedAccess.notifications.share.error.message")
                     }));
-                })
-                .finally(() => {
-                    // onAgentSharingCompleted();
                 });
         } else {
-            // If there are no further operations to perform, just show a success notification
-            // and reset the state.
             dispatch(addAlert({
                 description: t("agents:edit.sections.sharedAccess.notifications.share." +
                     "success.description"),
@@ -1129,11 +1116,10 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
             }));
 
             resetStates();
-            // onAgentSharingCompleted();
         }
     };
 
-    // Function to mark a specific role as selected/unselected across all organizations
+    // Function to mark a specific role as selected/unselected across all organizations.
     const updateRoleSelectionForAllOrganizations = (
         updatedRole: RolesV2Interface,
         isSelected: boolean
@@ -1158,7 +1144,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
         setRoleSelections(updatedRoleSelections);
 
         if (isSelected) {
-            // If the role is selected, we have to remove it from the removedRoles for all organizations
+            // If the role is selected, we have to remove it from the removedRoles for all organizations.
             const updatedRemovedRoles: Record<string, RoleSharingInterface[]> = { ...removedRoles };
 
             Object.keys(updatedRemovedRoles).forEach((orgId: string) => {
@@ -1169,7 +1155,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
 
             setRemovedRoles(updatedRemovedRoles);
         } else {
-            // If the role is unselected, we have to remove it from the addedRoles for all organizations
+            // If the role is unselected, we have to remove it from the addedRoles for all organizations.
             const updatedAddedRoles: Record<string, RoleSharingInterface[]> = { ...addedRoles };
 
             Object.keys(updatedAddedRoles).forEach((orgId: string) => {
@@ -1184,7 +1170,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
 
     const switchShareTypeFromAllToSelected = async (): Promise<void> => {
         if (shareTypeSwitchApproach === ShareTypeSwitchApproach.WITH_UNSHARE) {
-            // Unshare the agent with all organizations and switch to selective sharing
+            // Unshare the agent with all organizations and switch to selective sharing.
             const unshareSuccess: boolean = await unshareWithAllOrganizations();
 
             if (unshareSuccess) {
@@ -1292,7 +1278,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
                     primaryAction={ t("common:confirm") }
                     secondaryAction={ t("common:cancel") }
                     onPrimaryActionClick={ (): void => {
-                        handleAgentSharing();
+                        triggerCurrentAgentSharing();
                         setShowConfirmationModal(false);
                     } }
                     onSecondaryActionClick={ (): void => {
@@ -1315,7 +1301,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
     };
 
     /**
-     * Renders a confirmation modal asking the agent to confirm if they want to switch the share type
+     * Renders a confirmation modal asking the agent to confirm if they want to switch the share type.
      */
     const renderShareTypeSwitchModal = (): ReactElement | null => {
         return (
@@ -1394,7 +1380,7 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
     };
 
     /**
-     * Renders a warning modal to convey agent that they are doing a SHARE ALL operation
+     * Renders a warning modal to convey agent that they are doing a SHARE ALL operation.
      */
     const renderShareAllWarningModal = (): ReactElement | null => {
         return (
@@ -1504,11 +1490,12 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
                                             </Alert>
                                             <div className="role-share-all-container">
                                                 <RolesShareWithAll
-                                                    user={ agent }
+                                                    agent={ agent }
                                                     selectedRoles={ selectedRoles }
                                                     setSelectedRoles={ setSelectedRoles }
                                                     onRoleChange={ updateRoleSelectionForAllOrganizations }
                                                     enableConsoleAdminRole={ enableConsoleAdminRole }
+                                                    readOnly={ readOnly }
                                                 />
                                             </div>
                                         </motion.div>
@@ -1612,7 +1599,9 @@ export const ShareAgentForm: FunctionComponent<AgentShareFormPropsInterface> = (
                                 variant="contained"
                                 size="small"
                                 data-componentid={ `${ componentId }-update-button` }
-                                onClick={ isSharingInProgress ? handleInterruptOngoingShare : handleAgentSharing }
+                                onClick={ isSharingInProgress
+                                    ? handleInterruptOngoingShare
+                                    : triggerCurrentAgentSharing }
                             >
                                 { t("common:save") }
                             </Button>

@@ -23,15 +23,12 @@ import Autocomplete, {
 } from "@oxygen-ui/react/Autocomplete";
 import Chip from "@oxygen-ui/react/Chip";
 import TextField from "@oxygen-ui/react/TextField";
-import { useRequiredScopes } from "@wso2is/access-control";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { RolesV2Interface, RolesV2ResponseInterface } from "@wso2is/admin.roles.v2/models/roles";
 import {
     AlertLevels,
-    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
     ProfileInfoInterface,
     RolesInterface
@@ -51,15 +48,14 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownProps } from "semantic-ui-react";
 
 /**
  * Props interface for the ConsoleRolesShareWithAll component.
  */
 interface RolesShareWithAllPropsInterface extends IdentifiableComponentInterface {
-    user: ProfileInfoInterface;
+    agent: ProfileInfoInterface;
     selectedRoles: RolesInterface[];
     setSelectedRoles: (_roles: RolesInterface[]) => void;
     onRoleChange: (_role: RolesV2Interface, _isSelected: boolean) => void;
@@ -68,6 +64,7 @@ interface RolesShareWithAllPropsInterface extends IdentifiableComponentInterface
      * Should only be true in the console settings administrator edit view.
      */
     enableConsoleAdminRole?: boolean;
+    readOnly?: boolean;
 }
 
 /**
@@ -79,22 +76,17 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
     props: RolesShareWithAllPropsInterface
 ): ReactElement => {
     const {
-        ["data-componentid"]: componentId = "user-roles-share-with-all",
-        user,
+        ["data-componentid"]: componentId = "agent-roles-share-with-all",
+        agent,
         selectedRoles,
         setSelectedRoles,
         onRoleChange,
-        enableConsoleAdminRole = false
+        enableConsoleAdminRole = false,
+        readOnly = false
     } = props;
-
-    const usersFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
-        return state.config?.ui?.features?.users;
-    });
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
-
-    const isReadOnly: boolean = !(useRequiredScopes(usersFeatureConfig?.scopes?.update));
 
     const [ searchQuery, setSearchQuery ] = useState<string>();
     const [ isSearching, setIsSearching ] = useState<boolean>(false);
@@ -102,18 +94,18 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
     const {
         data: originalUserRoles,
         isLoading: isUserRolesFetchRequestLoading,
-        error: userRolesFetchRequestError
+        error: agentRolesFetchRequestError
     } = useGetRolesList<RolesV2ResponseInterface>(
         null,
         null,
         searchQuery,
         "users,groups,permissions,associatedApplications",
-        !isEmpty(user?.id)
+        !isEmpty(agent?.id)
     );
 
     // Roles available for sharing. Console application roles are excluded unless
     // enableConsoleAdminRole is true (e.g. in the console settings administrator edit view).
-    const userRolesList: RolesV2Interface[] = useMemo(() => {
+    const agentRolesList: RolesV2Interface[] = useMemo(() => {
         if (originalUserRoles?.Resources?.length > 0) {
             return originalUserRoles.Resources.filter((role: RolesV2Interface) =>
                 enableConsoleAdminRole
@@ -126,17 +118,17 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
     }, [ originalUserRoles, enableConsoleAdminRole ]);
 
     useEffect(() => {
-        if (userRolesFetchRequestError) {
+        if (agentRolesFetchRequestError) {
             dispatch(
                 addAlert({
                     description:
-                        t("users:edit.sections.sharedAccess.notifications.fetchUserRoles.genericError.description"),
+                        t("agents:edit.sections.sharedAccess.notifications.fetchAgentRoles.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("users:edit.sections.sharedAccess.notifications.fetchUserRoles.genericError.message")
+                    message: t("agents:edit.sections.sharedAccess.notifications.fetchAgentRoles.genericError.message")
                 })
             );
         }
-    }, [ userRolesFetchRequestError ]);
+    }, [ agentRolesFetchRequestError ]);
 
     /**
      * This is a debounced function to handle the roles search.
@@ -174,10 +166,10 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
         const audienceType: string = role?.audience?.type?.toUpperCase();
 
         if (audienceType === RoleAudienceTypes.ORGANIZATION) {
-            return t("user:editUser.sections.sharedAccess.roleAudience.organization");
+            return t("agents:edit.sections.sharedAccess.roleAudience.organization");
         }
 
-        return t("user:editUser.sections.sharedAccess.roleAudience.application", {
+        return t("agents:edit.sections.sharedAccess.roleAudience.application", {
             appName: role?.audience?.display ?? ""
         });
     };
@@ -185,11 +177,9 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
     return (
         <>
             <Typography variant="body1" marginBottom={ 1 }>
-                { t("user:editUser.sections.sharedAccess." +
-                    "commonRoleSharingLabel") }
+                { t("agents:edit.sections.sharedAccess.commonRoleSharingLabel") }
                 <Hint inline popup className="ml-1">
-                    { t("user:editUser.sections.sharedAccess." +
-                        "commonRoleSharingHint") }
+                    { t("agents:edit.sections.sharedAccess.commonRoleSharingHint") }
                 </Hint>
             </Typography>
             <Autocomplete
@@ -200,8 +190,8 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
                 className="role-select-autocomplete"
                 data-componentid={ `${componentId}-autocomplete` }
                 loading={ isUserRolesFetchRequestLoading || isSearching }
-                placeholder={ t("user:editUser.sections.sharedAccess.modes.shareWithSelectedPlaceholder") }
-                options={ userRolesList ?? [] }
+                placeholder={ t("agents:edit.sections.sharedAccess.searchAvailableRolesPlaceholder") }
+                options={ agentRolesList ?? [] }
                 value={ selectedRoles }
                 onChange={ (
                     _event: SyntheticEvent,
@@ -210,10 +200,9 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
                     details: AutocompleteChangeDetails<RolesV2Interface>) => {
                     handleRolesOnChange(value, reason, details);
                 } }
-                disabled={ isReadOnly }
+                disabled={ readOnly }
                 noOptionsText={ t("common:noResultsFound") }
-                getOptionLabel={ (dropdownOption: DropdownProps) =>
-                    dropdownOption?.displayName }
+                getOptionLabel={ (option: RolesV2Interface) => option?.displayName ?? "" }
                 renderOption={ (props: React.HTMLAttributes<HTMLLIElement>, option: RolesV2Interface) => (
                     <li
                         { ...props }
@@ -242,7 +231,7 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
                     <TextField
                         { ...params }
                         size="small"
-                        placeholder={ t("user:editUser.sections.sharedAccess.searchAvailableRolesPlaceholder") }
+                        placeholder={ t("agents:edit.sections.sharedAccess.searchAvailableRolesPlaceholder") }
                         data-componentid={ `${componentId}-role-search-input` }
                         onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                             const value: string = event.target.value.trim();

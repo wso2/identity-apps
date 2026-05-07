@@ -114,6 +114,10 @@ export const agents: AgentsNS = {
                         }
                     }
                 },
+                roleAudience: {
+                    application: "application/{{appName}}",
+                    organization: "organization"
+                },
                 roleAvailabilityInfo: "Only roles that are already available in the child organizations will be assigned to the shared agent.",
                 searchAvailableRolesPlaceholder: "Search available roles",
                 shareAgentWithFutureChildOrgs: "Share agent and roles with future child organizations",
