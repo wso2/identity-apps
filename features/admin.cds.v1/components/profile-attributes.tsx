@@ -192,7 +192,8 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingPropsIn
             onRefresh();
         } catch (err: any) {
             dispatch(addAlert({
-                description: err?.message
+                description: err?.response?.data?.description
+                    ?? err?.message
                     ?? t("profileAttributes.list.notifications.deleteAttribute.error.description"),
                 level: AlertLevels.ERROR,
                 message: t("profileAttributes.list.notifications.deleteAttribute.error.message")
