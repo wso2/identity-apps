@@ -48,7 +48,7 @@ export const PreLoader: FunctionComponent<PreLoaderPropsInterface> = (
             { commonConfig?.enableDefaultPreLoader ? (
                 <ContentLoader data-componentid={ componentId } />
             ) : (
-                <div className="trifacta-pre-loader" data-componentid={ componentId }>
+                <div className="app-pre-loader" data-componentid={ componentId }>
                     <Pulse data-componentid={ `${componentId}-svg` } />
                 </div>
             ) }

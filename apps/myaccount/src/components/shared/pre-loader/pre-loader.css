@@ -27,19 +27,19 @@
     background-image: none;
 }
 
-.trifacta-pre-loader {
+.app-pre-loader {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.trifacta-pre-loader svg {
+.app-pre-loader svg {
     width: 80px;
     height: 80px;
-    animation: trifacta-pre-loader-pulse 2s ease-in-out infinite;
+    animation: app-pre-loader-pulse 2s ease-in-out infinite;
 }
 
-@keyframes trifacta-pre-loader-pulse {
+@keyframes app-pre-loader-pulse {
     0%, 100% {
         opacity: 1;
     }

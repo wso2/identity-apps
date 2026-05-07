@@ -80,7 +80,7 @@ export const PreLoader: FunctionComponent<PreLoaderPropsInterface> = (
         <div className="pre-loader-wrapper" data-testid={ `${ componentId }-wrapper` }>
             {
                 AppConstants.getTenant() === AppConstants.getSuperTenant() && !commonConfig?.enableDefaultPreLoader ? (
-                    <div className="trifacta-pre-loader" data-testid={ componentId }>
+                    <div className="app-pre-loader" data-testid={ componentId }>
                         <Pulse data-testid={ `${ componentId }-svg` } />
                     </div>
                 ) : (
