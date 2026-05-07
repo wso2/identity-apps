@@ -262,8 +262,8 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
 
             setModalAlert({
                 description: axiosErr?.response?.data?.description
-                    || axiosErr?.message
-                    || t("customerDataService:profileAttributes.edit.notifications" +
+                    ?? axiosErr?.message
+                    ?? t("customerDataService:profileAttributes.edit.notifications" +
                         ".deleteAttribute.error.description"),
                 level: AlertLevels.ERROR,
                 message: t("customerDataService:profileAttributes.edit.notifications" +
