@@ -314,7 +314,7 @@ importers:
         specifier: ^3.5.8
         version: link:../../modules/access-control
       '@wso2is/admin.actions.v1':
-        specifier: ^1.16.0
+        specifier: ^1.16.1
         version: link:../../features/admin.actions.v1
       '@wso2is/admin.administrators.v1':
         specifier: ^2.29.210
@@ -335,7 +335,7 @@ importers:
         specifier: ^1.6.1
         version: link:../../features/admin.application-templates.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.42.24
+        specifier: ^2.42.26
         version: link:../../features/admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
         specifier: ^1.3.31
@@ -368,7 +368,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.copilot.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.6
+        specifier: ^2.57.7
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
         specifier: ^2.25.209
@@ -1025,7 +1025,7 @@ importers:
         specifier: ^2.31.2
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.6
+        specifier: ^2.57.7
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: workspace:^
@@ -1981,7 +1981,7 @@ importers:
         specifier: ^2.26.45
         version: link:../admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.6
+        specifier: ^2.57.7
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.43.3
@@ -3784,7 +3784,7 @@ importers:
         specifier: ^3.5.6
         version: link:../../modules/access-control
       '@wso2is/admin.actions.v1':
-        specifier: ^1.15.8
+        specifier: ^1.16.1
         version: link:../admin.actions.v1
       '@wso2is/admin.administrators.v1':
         specifier: ^2.29.210
@@ -3799,7 +3799,7 @@ importers:
         specifier: ^1.6.1
         version: link:../admin.application-templates.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.42.24
+        specifier: ^2.42.26
         version: link:../admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
         specifier: ^1.3.31

@@ -97,10 +97,7 @@ export const validateActionEndpointFields = (
 
     switch (authenticationType) {
         case AuthenticationType.BASIC:
-            if (
-                isCreateFormState || isAuthenticationUpdateFormState || values?.usernameAuthProperty ||
-                    values?.passwordAuthProperty
-            ) {
+            if (isCreateFormState || isAuthenticationUpdateFormState) {
                 if (!values?.usernameAuthProperty) {
                     errors.usernameAuthProperty = I18n.instance.t(
                         "actions:fields.authentication.types.basic.properties.username.validations.empty"
@@ -125,9 +122,7 @@ export const validateActionEndpointFields = (
 
             break;
         case AuthenticationType.API_KEY:
-            if (isCreateFormState || isAuthenticationUpdateFormState || values?.headerAuthProperty ||
-                   values?.valueAuthProperty
-            ) {
+            if (isCreateFormState || isAuthenticationUpdateFormState) {
                 if (!values?.headerAuthProperty) {
                     errors.headerAuthProperty = I18n.instance.t(
                         "actions:fields.authentication.types.apiKey.properties.header.validations.empty"
@@ -147,11 +142,7 @@ export const validateActionEndpointFields = (
 
             break;
         case AuthenticationType.CLIENT_CREDENTIAL:
-            if (
-                isCreateFormState || isAuthenticationUpdateFormState ||
-                values?.clientIdAuthProperty || values?.clientSecretAuthProperty ||
-                values?.tokenEndpointAuthProperty
-            ) {
+            if (isCreateFormState || isAuthenticationUpdateFormState) {
                 if (!values?.tokenEndpointAuthProperty) {
                     errors.tokenEndpointAuthProperty = I18n.instance.t(
                         "actions:fields.authentication.types.clientCredential" +

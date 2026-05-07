@@ -1,5 +1,14 @@
 # @wso2is/admin.actions.v1
 
+## 1.16.1
+
+### Patch Changes
+
+- [#10257](https://github.com/wso2/identity-apps/pull/10257) [`a590754c0ece0ba0c9acaa493fc16d1fae95c49c`](https://github.com/wso2/identity-apps/commit/a590754c0ece0ba0c9acaa493fc16d1fae95c49c) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Skip auth-property validation when actions auth flow is not in update mode
+
+- Updated dependencies [[`2a6285ee9794b66bcd3e3257c8290883270dc13f`](https://github.com/wso2/identity-apps/commit/2a6285ee9794b66bcd3e3257c8290883270dc13f)]:
+  - @wso2is/admin.core.v1@2.57.7
+
 ## 1.16.0
 
 ### Minor Changes
