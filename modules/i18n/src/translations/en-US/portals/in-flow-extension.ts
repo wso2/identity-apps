@@ -20,61 +20,6 @@ import { inFlowExtensionNS } from "../../../models";
 
 export const inFlowExtension: inFlowExtensionNS = {
     createWizard: {
-        helpPanel: {
-            encryption: {
-                description: "Toggle the encryption switch on any field to encrypt its value " +
-                    "before sending it to the extension endpoint. Encryption cascades " +
-                    "to all child fields. The certificate must be uploaded in the Endpoint " +
-                    "Configuration step.",
-                heading: "Encryption"
-            },
-            expose: {
-                description: "Select EXPOSE on a field to include it in the data sent to the " +
-                    "extension. Selecting EXPOSE on a parent automatically exposes all its " +
-                    "children. Conversely, exposing all children auto-selects the parent.",
-                heading: "EXPOSE"
-            },
-            externalRedirect: {
-                description: "Extensions may pause the flow to send the user to an external " +
-                    "page (for example, a step-up MFA provider) and resume the flow on " +
-                    "callback. This works without any access-config setup — REDIRECT is " +
-                    "always permitted.",
-                heading: "External Redirection",
-                step1: "Return actionStatus: INCOMPLETE with a single " +
-                    "{ op: 'redirect', url: '<external-url>' } operation.",
-                step2: "Identity Server appends ?flowId=<one-time-id> to the URL. The " +
-                    "external service must redirect the user back to the registration " +
-                    "portal with the same flowId to resume the flow.",
-                step3: "REPLACE operations sent alongside a REDIRECT are ignored. Send any " +
-                    "context updates derived from the redirect-page input on the resume " +
-                    "call (with actionStatus: SUCCESS) instead.",
-                step4: "The resume call uses the same access configuration as the initial " +
-                    "call, so the same MODIFY/EXPOSE paths apply."
-            },
-            howToUse: {
-                heading: "How to configure",
-                step1: "Expand a tree node to see its children by clicking on it.",
-                step2: "Hover over a row to see available operations (EXPOSE / MODIFY).",
-                step3: "Click EXPOSE to share the field with your extension endpoint.",
-                step4: "Click MODIFY on leaf fields to allow the extension to change them.",
-                step5: "Toggle the ENC switch to encrypt sensitive values before sending.",
-                step6: "Use + ADD ENTRY on map nodes to add custom keys at runtime."
-            },
-            operations: {
-                description: "Select MODIFY on leaf fields to allow the extension endpoint to " +
-                    "change their values. MODIFY is only available on leaf nodes (not " +
-                    "containers) and does not propagate to parent or child nodes.",
-                heading: "MODIFY"
-            },
-            whatIsContext: {
-                description: "The flow execution context is the data available during an " +
-                    "authentication flow. It includes user attributes, claims, flow " +
-                    "metadata, graph state, user inputs, and custom properties. Use this " +
-                    "tree to control exactly which data is exposed to and modifiable by " +
-                    "your extension endpoint.",
-                heading: "What is the Flow Execution Context?"
-            }
-        },
         steps: {
             accessConfig: {
                 encrypted: "Encrypted",

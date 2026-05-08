@@ -285,10 +285,7 @@
                         return response.json();
                     })
                     .then((data) => {
-                        console.log("[execution-flow] response payload:", data);
                         if (data.error) {
-                            console.log("[execution-flow] data.error received:", data.error,
-                                "(typeof:", typeof data.error, ", code:", data.error && data.error.code, ")");
                             if (data.error.flowType) {
                                 setFlowType(data.error.flowType);
                             }
@@ -448,7 +445,7 @@
                             break;
 
                         default:
-                            console.log(`Flow step type: ${flow.type}. No special action.`);
+                            break;
                     }
                 };
 

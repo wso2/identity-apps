@@ -111,6 +111,12 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
         }
     }, [ initialValues ]);
 
+    useEffect(() => {
+        if (!showAllowedParameters) {
+            (form.change as (name: string, value: unknown) => void)("allowedParameters", undefined);
+        }
+    }, [ showAllowedParameters ]);
+
     const renderInputAdornmentOfSecret = (showSecret: boolean, onClick: () => void): ReactElement => (
         <InputAdornment position="end">
             <Icon

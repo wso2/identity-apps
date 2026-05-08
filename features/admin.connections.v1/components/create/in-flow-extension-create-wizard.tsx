@@ -39,9 +39,8 @@ import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/moda
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { useTrigger } from "@wso2is/forms";
-import { Field, Wizard2, WizardPage } from "@wso2is/form";
-import { FormSpy } from "@wso2is/form/src";
+import { Field, FormSpy, Wizard2, WizardPage } from "@wso2is/forms";
+import { useTrigger } from "@wso2is/forms/legacy";
 import {
     GenericIcon,
     Heading,
@@ -79,7 +78,7 @@ import {
     WizardStepsInFlowExtension
 } from "../../models/connection";
 
-export interface InFlowExtensionCreateWizardPropsInterface
+interface InFlowExtensionCreateWizardPropsInterface
     extends GenericConnectionCreateWizardPropsInterface,
     IdentifiableComponentInterface {
     "data-componentid"?: string;
@@ -90,6 +89,17 @@ export interface InFlowExtensionCreateWizardPropsInterface
 }
 
 const ACTION_NAME_REGEX: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9 _-]{0,254}$/;
+
+interface InFlowExtensionWizardFormValues {
+    name: string;
+    description?: string;
+    endpointUri: string;
+    usernameAuthProperty?: string;
+    passwordAuthProperty?: string;
+    accessTokenAuthProperty?: string;
+    headerAuthProperty?: string;
+    valueAuthProperty?: string;
+}
 
 /**
  * In-Flow Extension create wizard component.
@@ -457,14 +467,25 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
         setTimeout(() => setAlert(undefined), ConnectionUIConstants.WIZARD_ERROR_CLEAR_TIMEOUT);
     };
 
-    const handleFormSubmit = (values: any): void => {
+    const handleFormSubmit = (values: InFlowExtensionWizardFormValues): void => {
         const authProperties: Record<string, string> = {};
 
-        authProperties["username"] = values?.usernameAuthProperty;
-        authProperties["password"] = values?.passwordAuthProperty;
-        authProperties["accessToken"] = values?.accessTokenAuthProperty;
-        authProperties["header"] = values?.headerAuthProperty;
-        authProperties["value"] = values?.valueAuthProperty;
+        switch (endpointAuthType) {
+            case EndpointAuthenticationType.BASIC:
+                authProperties["username"] = values.usernameAuthProperty ?? "";
+                authProperties["password"] = values.passwordAuthProperty ?? "";
+                break;
+            case EndpointAuthenticationType.BEARER:
+                authProperties["accessToken"] = values.accessTokenAuthProperty ?? "";
+                break;
+            case EndpointAuthenticationType.API_KEY:
+                authProperties["header"] = values.headerAuthProperty ?? "";
+                authProperties["value"] = values.valueAuthProperty ?? "";
+                break;
+            case EndpointAuthenticationType.NONE:
+            default:
+                break;
+        }
 
         // Build encryption object from the certificate in step 2.
         // Read from the ref (not state) so we always get the value that was
@@ -473,16 +494,16 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
             certPEMRef.current ? { certificate: certPEMRef.current } : undefined;
 
         const actionBody: InFlowExtensionCreateRequestInterface = {
-            description: values?.description?.toString() || "",
+            description: values.description?.toString() || "",
             encryption: resolvedEncryption,
             endpoint: {
                 authentication: {
                     properties: authProperties,
-                    type: endpointAuthType as unknown as AuthenticationType
+                    type: endpointAuthType as AuthenticationType
                 },
-                uri: values?.endpointUri?.toString()
+                uri: values.endpointUri?.toString()
             },
-            name: values?.name?.toString()
+            name: values.name?.toString()
         };
 
         setIsSubmitting(true);

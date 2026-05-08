@@ -998,8 +998,7 @@ export type FormErrors = { [key: string]: string };
  */
 export enum WizardStepsInFlowExtension {
     GENERAL_SETTINGS = "General Settings",
-    ENDPOINT_CONFIG = "Endpoint Configuration",
-    ACCESS_CONFIG = "Access Configuration"
+    ENDPOINT_CONFIG = "Endpoint Configuration"
 }
 
 /**

@@ -24,6 +24,7 @@ import Dialog from "@oxygen-ui/react/Dialog";
 import DialogActions from "@oxygen-ui/react/DialogActions";
 import DialogContent from "@oxygen-ui/react/DialogContent";
 import DialogTitle from "@oxygen-ui/react/DialogTitle";
+import Link from "@oxygen-ui/react/Link";
 import Stack from "@oxygen-ui/react/Stack";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
@@ -52,7 +53,7 @@ const DEFAULT_ICON: string = "assets/images/icons/in-flow-extension.svg";
 /**
  * Props interface of {@link InFlowExtensionProperties}
  */
-export interface InFlowExtensionPropertiesPropsInterface extends CommonResourcePropertiesPropsInterface,
+interface InFlowExtensionPropertiesPropsInterface extends CommonResourcePropertiesPropsInterface,
     IdentifiableComponentInterface {
     flowType: string;
 }
@@ -213,7 +214,7 @@ const InFlowExtensionProperties: FunctionComponent<InFlowExtensionPropertiesProp
             { !isFlowMetadataLoading && !connections?.length && (
                 <Alert severity="warning" data-componentid={ `${componentId}-no-actions-warning` }>
                     No active in-flow extensions available. Please create an
-                    <a style={ { cursor: "pointer" } } onClick={ handleCreateConnection }> in-flow extension </a>
+                    <Link component="button" onClick={ handleCreateConnection }> in-flow extension </Link>
                     to link with this flow.
                 </Alert>
             ) }

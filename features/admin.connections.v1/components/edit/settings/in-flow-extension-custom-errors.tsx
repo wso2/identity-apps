@@ -65,7 +65,7 @@ import "./in-flow-extension-custom-errors.scss";
 /**
  * Props interface for `InFlowExtensionCustomErrors` component.
  */
-export interface InFlowExtensionCustomErrorsPropsInterface extends IdentifiableComponentInterface {
+interface InFlowExtensionCustomErrorsPropsInterface extends IdentifiableComponentInterface {
     "data-componentid"?: string;
     action: InFlowExtensionResponseInterface;
     isLoading: boolean;
