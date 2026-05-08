@@ -18,7 +18,6 @@
 
 import {
     AccessConfigInterface,
-    EndpointResponseInterface,
     EncryptionInterface
 } from "@wso2is/admin.actions.v1/models/actions";
 
@@ -28,9 +27,22 @@ export type {
     AuthenticationType,
     AuthenticationPropertiesInterface,
     ContextPathInterface,
-    EncryptionInterface,
-    EndpointResponseInterface
+    EncryptionInterface
 } from "@wso2is/admin.actions.v1/models/actions";
+
+/**
+ * Endpoint response shape returned by the In-Flow Extension API.
+ * Defined locally because EndpointResponseInterface in admin.actions.v1 is not exported.
+ */
+export interface InFlowExtensionEndpointResponseInterface {
+    uri: string;
+    authentication: {
+        type: string;
+        properties?: Record<string, string>;
+    };
+    allowedHeaders?: string[];
+    allowedParameters?: string[];
+}
 
 /**
  * Endpoint configuration used in In-Flow Extension create/update requests.
@@ -77,7 +89,7 @@ export interface InFlowExtensionResponseInterface {
     name: string;
     description?: string;
     iconUrl?: string;
-    endpoint: EndpointResponseInterface;
+    endpoint: InFlowExtensionEndpointResponseInterface;
     accessConfig?: AccessConfigInterface;
     encryption?: EncryptionInterface;
     flowTypeOverrides?: Record<string, AccessConfigInterface>;
