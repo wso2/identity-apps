@@ -391,7 +391,7 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                             setSelectedTemplate(undefined);
                             handleModalVisibility(false);
                             onWizardClose();
-                        }}
+                        } }
                         template={ selectedTemplateWithUniqueName }
                         data-componentid={ selectedTemplate?.templateId }
                         connectionNamesList={ possibleListOfDuplicateIDPs }
