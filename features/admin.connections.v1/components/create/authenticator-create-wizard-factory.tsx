@@ -276,7 +276,7 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                     <OrganizationEnterpriseConnectionCreateWizard
                         title={ selectedTemplateWithUniqueName?.name }
                         subTitle={ selectedTemplateWithUniqueName?.description }
-                        onWizardClose={() => {
+                        onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             setSelectedTemplate(undefined);
                             handleModalVisibility(false);
@@ -317,7 +317,7 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                             setSelectedTemplate(undefined);
                             handleModalVisibility(false);
                             onWizardClose();
-                        }}
+                        } }
                         template={ selectedTemplateWithUniqueName }
                         data-componentid={ selectedTemplate?.templateId }
                         { ...rest }
@@ -334,7 +334,7 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                             setSelectedTemplate(undefined);
                             handleModalVisibility(false);
                             onWizardClose();
-                        }}
+                        } }
                         template={ selectedTemplateWithUniqueName }
                         data-componentid={ selectedTemplate?.templateId }
                         { ...rest }
@@ -356,7 +356,7 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
                             setSelectedTemplate(undefined);
                             handleModalVisibility(false);
                             onWizardClose();
-                        }}
+                        } }
                         template={ selectedTemplateWithUniqueName }
                         data-componentid={ selectedTemplate?.templateId }
                         { ...rest }
@@ -383,19 +383,19 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
             default:
                 return (
                     <CreateConnectionWizard
-                        isLoading={isConnectionsFetchRequestLoading || isConnectionTemplateFetchRequestLoading}
-                        title={selectedTemplateWithUniqueName?.name}
-                        subTitle={selectedTemplateWithUniqueName?.description}
-                        onWizardClose={() => {
+                        isLoading={ isConnectionsFetchRequestLoading || isConnectionTemplateFetchRequestLoading }
+                        title={ selectedTemplateWithUniqueName?.name }
+                        subTitle={ selectedTemplateWithUniqueName?.description }
+                        onWizardClose={ () => {
                             setSelectedTemplateWithUniqueName(undefined);
                             setSelectedTemplate(undefined);
                             handleModalVisibility(false);
                             onWizardClose();
                         }}
-                        template={selectedTemplateWithUniqueName}
-                        data-componentid={selectedTemplate?.templateId}
-                        connectionNamesList={possibleListOfDuplicateIDPs}
-                        {...rest}
+                        template={ selectedTemplateWithUniqueName }
+                        data-componentid={ selectedTemplate?.templateId }
+                        connectionNamesList={ possibleListOfDuplicateIDPs }
+                        { ...rest }
                     />
                 );
         }

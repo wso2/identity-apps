@@ -499,7 +499,7 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
             endpoint: {
                 authentication: {
                     properties: authProperties,
-                    type: endpointAuthType as AuthenticationType
+                    type: endpointAuthType as unknown as AuthenticationType
                 },
                 uri: values.endpointUri?.toString()
             },
