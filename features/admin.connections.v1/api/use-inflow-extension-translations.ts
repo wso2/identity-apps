@@ -42,7 +42,7 @@ export interface TranslationEntry {
 /**
  * Return type of the `useInflowExtensionTranslations` hook.
  */
-export interface UseInflowExtensionTranslationsResult {
+interface UseInflowExtensionTranslationsResult {
     entries: TranslationEntry[];
     localeData: Record<string, Record<string, string>>;
     isConfiguredPerLocale: Record<string, boolean>;

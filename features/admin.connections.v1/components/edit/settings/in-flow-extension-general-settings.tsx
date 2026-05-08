@@ -26,7 +26,7 @@ import {
 } from "@wso2is/admin.actions.v1/models/actions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import {
     ConfirmationModal,
     DangerZone,
@@ -39,6 +39,7 @@ import React, {
     MutableRefObject,
     ReactElement,
     useCallback,
+    useEffect,
     useRef,
     useState
 } from "react";
@@ -81,9 +82,12 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
     const lastCheckedName: MutableRefObject<string> = useRef<string>("");
 
     const debouncedCheckName: (name: string) => void = useCallback((name: string) => {
-        if (lastCheckedName.current === name || name === action?.name) {
+        if (name === action?.name) {
             setIsNameTaken(false);
 
+            return;
+        }
+        if (lastCheckedName.current === name) {
             return;
         }
         if (nameCheckTimer.current) {
@@ -105,6 +109,14 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
                 });
         }, 500);
     }, [ action?.name ]);
+
+    useEffect(() => {
+        return () => {
+            if (nameCheckTimer.current) {
+                clearTimeout(nameCheckTimer.current);
+            }
+        };
+    }, []);
 
     const validateForm = (
         values: { name: string; description?: string }

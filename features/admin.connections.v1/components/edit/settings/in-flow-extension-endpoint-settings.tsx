@@ -35,8 +35,8 @@ import { validateActionEndpointFields } from "@wso2is/admin.actions.v1/util/form
 import { AddCertificateFormComponent } from "@wso2is/admin.core.v1/components/add-certificate-form";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { useTrigger } from "@wso2is/forms";
-import { FinalForm, FormRenderProps } from "@wso2is/form";
+import { FinalForm, FormRenderProps } from "@wso2is/forms";
+import { useTrigger } from "@wso2is/forms/legacy";
 import { EmphasizedSegment, Heading, LinkButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";

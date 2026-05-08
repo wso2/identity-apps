@@ -3324,9 +3324,6 @@ importers:
       '@wso2is/admin.claims.v1':
         specifier: ^2.31.2
         version: link:../admin.claims.v1
-      '@wso2is/admin.connections.v1':
-        specifier: ^2.36.36
-        version: 'link:'
       '@wso2is/admin.console-settings.v1':
         specifier: ^2.26.45
         version: link:../admin.console-settings.v1
@@ -5107,9 +5104,6 @@ importers:
       '@wso2is/admin.claims.v1':
         specifier: ^2.31.2
         version: link:../admin.claims.v1
-      '@wso2is/admin.connections.v1':
-        specifier: workspace:^
-        version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
         specifier: workspace:^
         version: link:../admin.core.v1
