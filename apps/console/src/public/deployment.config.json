@@ -980,6 +980,18 @@
                     ]
                 }
             },
+            "devices": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [],
+                    "update": []
+                }
+            },
             "dynamicClientRegistration": {
                 "disabledFeatures": [],
                 "enabled": true,

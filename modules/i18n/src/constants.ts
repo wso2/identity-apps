@@ -411,6 +411,11 @@ export class I18nModuleConstants {
     public static readonly EXTERNAL_API_AUTHENTICATION_NAMESPACE: string = "externalApiAuthentication";
 
     /**
+     * Devices namespace.
+     */
+    public static readonly DEVICES_NAMESPACE: string = "devices";
+
+    /**
      * Flows namespace.
      */
     public static readonly FLOWS_NAMESPACE: string = "flows";

@@ -75,6 +75,7 @@ export * from "./webhooks";
 export * from "./approval-workflows";
 export * from "./workflow-requests";
 export * from "./agents";
+export * from "./devices";
 export * from "./flows";
 export * from "./common-users";
 export * from "./verifiable-credentials";

@@ -19,6 +19,7 @@
 import { getActionsResourceEndpoints } from "@wso2is/admin.actions.v1/configs/endpoints";
 import { getAdministratorsResourceEndpoints } from "@wso2is/admin.administrators.v1/config/endpoints";
 import { getAgentsResourceEndpoints } from "@wso2is/admin.agents.v1/configs/endpoints";
+import { getDevicesResourceEndpoints } from "@wso2is/admin.devices.v1/configs/endpoints";
 import { getAPIResourceEndpoints } from "@wso2is/admin.api-resources.v2/configs/endpoint";
 import { getApplicationTemplatesResourcesEndpoints } from "@wso2is/admin.application-templates.v1/configs/endpoints";
 import { getApplicationsResourceEndpoints } from "@wso2is/admin.applications.v1/configs/endpoints";
@@ -302,6 +303,7 @@ export class Config {
                 I18nConstants.WEBHOOKS_NAMESPACE,
                 I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE,
                 I18nConstants.AGENTS_NAMESPACE,
+                I18nConstants.DEVICES_NAMESPACE,
                 I18nConstants.FLOWS_NAMESPACE,
                 I18nConstants.COMMON_USERS_NAMESPACE,
                 I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE,
@@ -379,6 +381,7 @@ export class Config {
             ...getFlowsResourceEndpoints(this.resolveServerHost()),
             ...getWebhooksResourceEndpoints(this.resolveServerHost()),
             ...getAgentsResourceEndpoints(this.resolveServerHost()),
+            ...getDevicesResourceEndpoints(this.resolveServerHost()),
             ...getFlowBuilderCoreResourceEndpoints(this.resolveServerHost()),
             ...getVCTemplateEndpoints(this.resolveServerHost()),
             ...getCustomerDataServiceEndpoints(this.resolveServerHost()),

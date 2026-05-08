@@ -24,6 +24,9 @@ import {
 } from "@oxygen-ui/react-icons";
 import { FeatureStatus } from "@wso2is/access-control";
 import { ReactComponent as CustomerDataIcon } from "@wso2is/admin.cds.v1/assets/images/icons/customer-data.svg";
+import {
+    ReactComponent as DeviceOutlineIcon
+} from "../../themes/default/assets/images/icons/outline-icons/device-outline.svg";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { NavCategory, NavRouteInterface, RouteInterface } from "@wso2is/core/models";
 import groupBy from "lodash-es/groupBy";
@@ -294,6 +297,13 @@ export class RouteUtils {
             order: 3
         };
 
+        const deviceManagement: Omit<RouteInterface, "showOnSidePanel"> = {
+            icon: DeviceOutlineIcon,
+            id: "deviceManagement",
+            name: "Devices",
+            order: 4
+        };
+
         const resourceServers: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: ResourceServersIcon,
             id: "resourceServers",
@@ -510,6 +520,22 @@ export class RouteUtils {
                 order: 3,
                 parent: userManagement,
                 selected: history.location.pathname.includes("approvals")
+            },
+            {
+                category: manage,
+                id: "devices",
+                order: 0,
+                parent: deviceManagement,
+                selected: history.location.pathname === AppConstants.getPaths().get("DEVICES")
+            },
+            {
+                category: manage,
+                id: "deviceAssurancePolicies",
+                order: 1,
+                parent: deviceManagement,
+                selected: history.location.pathname.startsWith(
+                    AppConstants.getPaths().get("DEVICE_ASSURANCE_POLICIES")
+                )
             },
             {
                 category: build,

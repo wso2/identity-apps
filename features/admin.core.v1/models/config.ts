@@ -28,6 +28,7 @@ import {
     WorkflowAssociationsResourceEndpointsInterface,
     WorkflowsResourceEndpointsInterface
 } from "@wso2is/admin.approval-workflows.v1/models/endpoints";
+import { DevicesResourceEndpointsInterface } from "@wso2is/admin.devices.v1/models/endpoints";
 import { BrandingPreferenceResourceEndpointsInterface } from "@wso2is/admin.branding.v1/models/endpoints";
 import { CustomerDataServiceEndpointsInterface } from "@wso2is/admin.cds.v1/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificates.v1";
@@ -97,6 +98,10 @@ export interface FeatureConfigInterface {
      * Agent management feature.
      */
     agents?: FeatureAccessConfigInterface;
+    /**
+     * Device management feature.
+     */
+    devices?: FeatureAccessConfigInterface;
     /**
      * Admin user management feature.
      */
@@ -854,7 +859,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     WorkflowRequestsResourceEndpointsInterface,
     RulesEndpointsInterface,
     RemoteLoggingResourceEndpointsInterface,
-    FlowBuilderCoreResourceEndpointsInterface {
+    FlowBuilderCoreResourceEndpointsInterface,
+    DevicesResourceEndpointsInterface {
 
     CORSOrigins: string;
     copilot: string;

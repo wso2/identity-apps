@@ -19,6 +19,7 @@
         "@wso2is/admin.actions.v1": "^1.15.8",
         "@wso2is/admin.administrators.v1": "^2.29.210",
         "@wso2is/admin.agents.v1": "workspace:^",
+        "@wso2is/admin.devices.v1": "workspace:^",
         "@wso2is/admin.api-resources.v2": "^2.26.9",
         "@wso2is/admin.application-templates.v1": "^1.6.1",
         "@wso2is/admin.applications.v1": "^2.42.24",

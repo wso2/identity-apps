@@ -464,6 +464,9 @@ export class AppConstants {
                 `${ AppConstants.getDeveloperViewBasePath() }/edit-invited-user-registration-flow` ],
             [ "AGENTS", `${AppConstants.getAdminViewBasePath()}/agents` ],
             [ "AGENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/agents/:id` ],
+            [ "DEVICES", `${ AppConstants.getAdminViewBasePath() }/devices` ],
+            [ "DEVICE_ASSURANCE_POLICIES", `${ AppConstants.getAdminViewBasePath() }/devices/assurance-policies` ],
+            [ "DEVICE_POLICY_EDIT", `${ AppConstants.getAdminViewBasePath() }/devices/assurance-policies/:id` ],
             [ "VC_TEMPLATES", `${AppConstants.getAdminViewBasePath()}/verifiable-credentials` ],
             [ "VC_TEMPLATE_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/verifiable-credentials/:id` ]
         ]);

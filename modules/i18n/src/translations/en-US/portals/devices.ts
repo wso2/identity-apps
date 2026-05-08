@@ -1,0 +1,204 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import { DevicesNS } from "../../../models/namespaces/devices-ns";
+
+export const devices: DevicesNS = {
+    advancedSearch: {
+        form: {
+            inputs: {
+                filterAttribute: {
+                    placeholder: "E.g. Device name, user, status etc."
+                },
+                filterCondition: {
+                    placeholder: "E.g. Starts with etc."
+                },
+                filterValue: {
+                    placeholder: "Enter value to search"
+                }
+            }
+        },
+        placeholder: "Search by device name"
+    },
+    assurancePolicies: {
+        wizard: {
+            heading: "Create Device Assurance Policy",
+            subHeading: "Create a new device assurance policy for your organization.",
+            steps: {
+                platform: {
+                    description: "Select the platform for which you want to create a device assurance policy.",
+                    heading: "Select Platform",
+                    title: "Platform"
+                },
+                ruleBuilder: {
+                    conditionsDescription: "Enable the conditions you want to enforce and configure their values.",
+                    conditionsHeading: "Conditions",
+                    description: "Define a name and configure the conditions for this policy.",
+                    heading: "Configure Policy",
+                    policyNameLabel: "Policy Name",
+                    policyNamePlaceholder: "Enter a name for this policy",
+                    title: "Configure"
+                }
+            },
+            platforms: {
+                android: "Android",
+                ios: "iOS",
+                macos: "macOS",
+                windows: "Windows"
+            },
+            buttons: {
+                back: "Back",
+                cancel: "Cancel",
+                create: "Create",
+                next: "Next"
+            },
+            notifications: {
+                create: {
+                    genericError: {
+                        description: "An error occurred while creating the device assurance policy.",
+                        message: "Creation failed"
+                    },
+                    success: {
+                        description: "The device assurance policy has been created successfully.",
+                        message: "Policy created"
+                    }
+                },
+                metadataFetch: {
+                    genericError: {
+                        description: "An error occurred while loading policy field metadata.",
+                        message: "Failed to load metadata"
+                    }
+                }
+            }
+        },
+        description: "Define and manage device assurance policies for your organization.",
+        list: {
+            columns: {
+                actions: "Actions",
+                name: "Policy Name"
+            },
+            confirmations: {
+                delete: {
+                    assertionHint: "Please confirm your action.",
+                    content: "This action is irreversible. The policy will be permanently removed.",
+                    header: "Are you sure?",
+                    message: "If you delete this policy, it cannot be recovered."
+                }
+            }
+        },
+        notifications: {
+            delete: {
+                error: {
+                    description: "An error occurred while deleting the device policy.",
+                    message: "Delete failed"
+                },
+                success: {
+                    description: "The device policy has been deleted successfully.",
+                    message: "Policy deleted"
+                }
+            },
+            fetch: {
+                genericError: {
+                    description: "An error occurred while retrieving device policies.",
+                    message: "Retrieval failed"
+                }
+            }
+        },
+        placeholders: {
+            empty: {
+                subtitles: {
+                    0: "There are no device assurance policies configured yet."
+                },
+                title: "No Policies"
+            }
+        },
+        edit: {
+            backButton: "Go back to Device Assurance Policies",
+            fields: {
+                name: {
+                    label: "Policy Name"
+                },
+                ruleId: {
+                    label: "Rule ID"
+                }
+            },
+            notifications: {
+                fetch: {
+                    genericError: {
+                        description: "An error occurred while retrieving the device policy.",
+                        message: "Retrieval failed"
+                    }
+                }
+            }
+        },
+        title: "Device Assurance Policies"
+    },
+    description: "View and manage push notification devices registered by users in your organization.",
+    list: {
+        columns: {
+            actions: "Actions",
+            deviceName: "Device",
+            registeredAt: "Registered At",
+            status: "Status",
+            user: "User"
+        },
+        confirmations: {
+            delete: {
+                assertionHint: "Please confirm your action.",
+                content: "This action is irreversible. The device will be permanently removed.",
+                header: "Are you sure?",
+                message: "If you delete this device, the user will need to re-register it."
+            }
+        }
+    },
+    notifications: {
+        delete: {
+            error: {
+                description: "An error occurred while deleting the device.",
+                message: "Delete failed"
+            },
+            success: {
+                description: "The device has been deleted successfully.",
+                message: "Device deleted"
+            }
+        },
+        fetch: {
+            genericError: {
+                description: "An error occurred while retrieving devices.",
+                message: "Retrieval failed"
+            }
+        }
+    },
+    placeholders: {
+        empty: {
+            subtitles: {
+                0: "There are no registered devices in your organization yet."
+            },
+            title: "No Devices"
+        },
+        emptySearch: {
+            action: "Clear search query",
+            subtitles: {
+                0: "We could not find any results for \"{{searchQuery}}\"",
+                1: "Please try a different search term."
+            },
+            title: "No results found"
+        }
+    },
+    title: "Registered Devices"
+};
