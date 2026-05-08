@@ -48,6 +48,22 @@ import {
     EndpointAuthenticationType
 } from "../../../models/connection";
 
+const areStringSetsEqual = (a: string[] | undefined, b: string[] | undefined): boolean => {
+    const setA: Set<string> = new Set(a ?? []);
+    const setB: Set<string> = new Set(b ?? []);
+
+    if (setA.size !== setB.size) {
+        return false;
+    }
+    for (const value of setA) {
+        if (!setB.has(value)) {
+            return false;
+        }
+    }
+
+    return true;
+};
+
 export interface InFlowExtensionEndpointSettingsPropsInterface extends IdentifiableComponentInterface {
     "data-componentid"?: string;
     action: InFlowExtensionResponseInterface;
@@ -90,6 +106,7 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
     useEffect(() => {
         if (action) {
             setInitialValues({
+                allowedHeaders: action.endpoint?.allowedHeaders ?? [],
                 authenticationType: action.endpoint?.authentication?.type,
                 endpointUri: action.endpoint?.uri
             });
@@ -113,39 +130,49 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
         const updateBody: InFlowExtensionUpdateRequestInterface = {};
 
         const isUriChanged: boolean = values.endpointUri !== action.endpoint?.uri;
+        const isHeadersChanged: boolean = !areStringSetsEqual(
+            values.allowedHeaders, action.endpoint?.allowedHeaders);
 
-        // Only include endpoint in update when URI changed or auth was explicitly updated.
-        if (isUriChanged || isEndpointAuthenticationUpdated) {
-            const authProperties: Partial<AuthenticationPropertiesInterface> = {};
+        // Only include endpoint in update when URI, auth, or headers changed.
+        if (isUriChanged || isEndpointAuthenticationUpdated || isHeadersChanged) {
+            const endpointPatch: Partial<InFlowExtensionUpdateRequestInterface["endpoint"]> = {};
 
-            switch (values.authenticationType) {
-                case AuthenticationType.BASIC:
-                    authProperties.username = values.usernameAuthProperty;
-                    authProperties.password = values.passwordAuthProperty;
+            if (isUriChanged || isEndpointAuthenticationUpdated) {
+                const authProperties: Partial<AuthenticationPropertiesInterface> = {};
 
-                    break;
-                case AuthenticationType.BEARER:
-                    authProperties.accessToken = values.accessTokenAuthProperty;
+                switch (values.authenticationType) {
+                    case AuthenticationType.BASIC:
+                        authProperties.username = values.usernameAuthProperty;
+                        authProperties.password = values.passwordAuthProperty;
 
-                    break;
-                case AuthenticationType.API_KEY:
-                    authProperties.header = values.headerAuthProperty;
-                    authProperties.value = values.valueAuthProperty;
+                        break;
+                    case AuthenticationType.BEARER:
+                        authProperties.accessToken = values.accessTokenAuthProperty;
 
-                    break;
-                case AuthenticationType.NONE:
-                    break;
-                default:
-                    break;
-            }
+                        break;
+                    case AuthenticationType.API_KEY:
+                        authProperties.header = values.headerAuthProperty;
+                        authProperties.value = values.valueAuthProperty;
 
-            updateBody.endpoint = {
-                authentication: {
+                        break;
+                    case AuthenticationType.NONE:
+                        break;
+                    default:
+                        break;
+                }
+
+                endpointPatch.authentication = {
                     properties: authProperties,
                     type: values.authenticationType as unknown as AuthenticationType
-                },
-                uri: values.endpointUri
-            };
+                };
+                endpointPatch.uri = values.endpointUri;
+            }
+
+            if (isHeadersChanged) {
+                endpointPatch.allowedHeaders = values.allowedHeaders ?? [];
+            }
+
+            updateBody.endpoint = endpointPatch;
         }
 
         // Include encryption update if certificate was explicitly changed (including clearing).
@@ -213,6 +240,8 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
                                 initialValues={ initialValues }
                                 isCreateFormState={ false }
                                 isReadOnly={ isReadOnly }
+                                showHeadersAndParams={ true }
+                                showAllowedParameters={ false }
                                 onAuthenticationTypeChange={ (
                                     authenticationType: AuthenticationType,
                                     isAuthenticationUpdated: boolean

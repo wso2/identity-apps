@@ -210,8 +210,12 @@
                 const [flowType, setFlowType] = useState("<%= Encode.forJavaScript(flowType) != null ? Encode.forJavaScript(flowType) : null %>");
                 const [ countDownRedirection, setCountDownRedirection ] = useState(null);
 
+
+                const IN_FLOW_EXTENSION_FAILURE_TYPE = "IN_FLOW_EXTENSION_FAILURE";
+                const IN_FLOW_EXTENSION_ERROR_CODE   = "FE-65033";
+
                 const extensionError = flowData && flowData.data && flowData.data.additionalData &&
-                    flowData.data.additionalData.failureType === "IN_FLOW_EXTENSION_FAILURE"
+                    flowData.data.additionalData.failureType === IN_FLOW_EXTENSION_FAILURE_TYPE
                     ? {
                         message: flowData.data.additionalData.failureMessage,
                         description: flowData.data.additionalData.failureDescription
@@ -281,7 +285,10 @@
                         return response.json();
                     })
                     .then((data) => {
+                        console.log("[execution-flow] response payload:", data);
                         if (data.error) {
+                            console.log("[execution-flow] data.error received:", data.error,
+                                "(typeof:", typeof data.error, ", code:", data.error && data.error.code, ")");
                             if (data.error.flowType) {
                                 setFlowType(data.error.flowType);
                             }
@@ -316,7 +323,7 @@
 
                 useEffect(() => {
                     if (error && error.code) {
-                        if (error.code === "FE-65033") {
+                        if (error.code === IN_FLOW_EXTENSION_ERROR_CODE) {
                             setFatalExtensionError({ message: error.message, description: error.description });
                             return;
                         }
@@ -340,7 +347,7 @@
                     }
 
                     if (flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error &&
-                            flowData.data.additionalData.failureType !== "IN_FLOW_EXTENSION_FAILURE") {
+                            flowData.data.additionalData.failureType !== IN_FLOW_EXTENSION_FAILURE_TYPE) {
                         setFlowError(flowData.data.additionalData.error);
                         return;
                     }

@@ -35,7 +35,7 @@ export interface ActionNameCheckResponse {
 /**
  * Check if an action name is available for a given action type.
  *
- * @param actionType - Action Type path param (e.g., "inFlowExtension").
+ * @param actionType - Action Type path param (e.g., "preIssueAccessToken").
  * @param name - The action name to check.
  * @param excludeId - Optional action ID to exclude from the uniqueness check (used during update).
  * @returns Promise resolving to the availability check response.

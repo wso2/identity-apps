@@ -92,14 +92,15 @@ interface EncryptionCardProps {
     checked: boolean;
     disabled: boolean;
     disabledReason: string;
+    enabledDescription: string;
     onToggle: () => void;
     "data-componentid"?: string;
 }
 
 /**
- * One of two side-by-side encryption cards in the field configuration panel.
- * Uses fixed flex-basis so the panel height stays constant when switching between
- * a leaf that supports both expose+modify and one that only supports expose.
+ * Encryption configuration card for the field-configuration panel.
+ * Shows an explanatory line both when disabled (why it can't be enabled) and
+ * when active (what enabling means) so the height stays stable across states.
  */
 const EncryptionCard: FunctionComponent<EncryptionCardProps> = ({
     title,
@@ -107,6 +108,7 @@ const EncryptionCard: FunctionComponent<EncryptionCardProps> = ({
     checked,
     disabled,
     disabledReason,
+    enabledDescription,
     onToggle,
     "data-componentid": componentId
 }: EncryptionCardProps): ReactElement => (
@@ -119,7 +121,6 @@ const EncryptionCard: FunctionComponent<EncryptionCardProps> = ({
                 borderColor: "grey.200",
                 borderRadius: "8px",
                 display: "flex",
-                flex: "1 1 0",
                 gap: 1.5,
                 minHeight: 64,
                 opacity: disabled ? 0.55 : 1,
@@ -133,15 +134,13 @@ const EncryptionCard: FunctionComponent<EncryptionCardProps> = ({
                 <Typography variant="body2" sx={ { fontWeight: 600, lineHeight: 1.2 } }>
                     { title }
                 </Typography>
-                { disabled && (
-                    <Typography
-                        variant="caption"
-                        color="text.disabled"
-                        sx={ { display: "block", lineHeight: 1.3, mt: 0.3 } }
-                    >
-                        { disabledReason }
-                    </Typography>
-                ) }
+                <Typography
+                    variant="caption"
+                    color="text.disabled"
+                    sx={ { display: "block", lineHeight: 1.3, mt: 0.3 } }
+                >
+                    { disabled ? disabledReason : enabledDescription }
+                </Typography>
             </Box>
             <Switch
                 size="small"
@@ -149,8 +148,19 @@ const EncryptionCard: FunctionComponent<EncryptionCardProps> = ({
                 disabled={ disabled }
                 onChange={ disabled ? undefined : onToggle }
                 sx={ {
-                    "& .MuiSwitch-switchBase.Mui-checked": { color },
-                    "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": { backgroundColor: color }
+                    // Track gets a faint shade of the operation color; thumb stays white when on.
+                    "& .MuiSwitch-switchBase.Mui-checked, & .MuiSwitch-switchBase.Mui-checked.MuiSwitch-colorPrimary": {
+                        color: "#fff"
+                    },
+                    "& .MuiSwitch-switchBase.Mui-checked .MuiSwitch-thumb, & .MuiSwitch-switchBase.Mui-checked.MuiSwitch-colorPrimary .MuiSwitch-thumb": {
+                        backgroundColor: "#fff",
+                        boxShadow: "0 0 0 1px rgba(0, 0, 0, 0.18), 0 1px 2px rgba(0, 0, 0, 0.12)",
+                        color: "#fff"
+                    },
+                    "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track, & .MuiSwitch-switchBase.Mui-checked.MuiSwitch-colorPrimary + .MuiSwitch-track": {
+                        backgroundColor: color,
+                        opacity: 0.50
+                    }
                 } }
             />
         </Box>
@@ -195,6 +205,30 @@ const FieldConfigPanel: FunctionComponent<FieldConfigPanelProps> = ({
     const isLeaf: boolean = selectedNode?.nodeType === NodeType.LEAF;
     const isPropertiesEntry: boolean = !!selectedNode?.path?.startsWith("/properties/")
         && selectedNode?.path !== "/properties/";
+
+    /**
+     * For dynamic /properties/ entries, the raw dataType is a structure string like
+     * "Integer", "[String]", or "risk: String, scores: Integer[]". Collapse it to a
+     * compact display label (e.g. "Object", "Object[]") for the chip in the header.
+     * Static-tree leaves and non-properties entries already carry a friendly type.
+     */
+    const displayDataType: string = (() => {
+        if (!selectedNode?.dataType) return "";
+        if (!isPropertiesEntry) return selectedNode.dataType;
+        const raw: string = selectedNode.dataType.trim();
+
+        if (!raw) return "String";
+        if (raw.startsWith("[") && raw.endsWith("]")) {
+            const inner: string = raw.slice(1, -1).trim();
+
+            if (inner.includes(":")) return "Object[]";
+
+            return `${inner || "String"}[]`;
+        }
+        if (raw.includes(":")) return "Object";
+
+        return raw;
+    })();
 
     const canRename: boolean = !readOnly
         && !!selectedNode?.canDelete
@@ -298,9 +332,9 @@ const FieldConfigPanel: FunctionComponent<FieldConfigPanelProps> = ({
                                         { selectedNode.title }
                                     </Typography>
                                 ) }
-                                { !editing && selectedNode.dataType && (
+                                { !editing && displayDataType && (
                                     <Chip
-                                        label={ selectedNode.dataType }
+                                        label={ displayDataType }
                                         size="small"
                                         sx={ {
                                             "& .MuiChip-label": { px: "6px" },
@@ -396,7 +430,7 @@ const FieldConfigPanel: FunctionComponent<FieldConfigPanelProps> = ({
 
                     { /* ── Encryption section ── */ }
                     <Typography
-                        variant="overline"
+                        variant="subtitle2"
                         color="text.secondary"
                         sx={ { display: "block", fontWeight: 600, mt: 2.5 } }
                     >
@@ -404,34 +438,36 @@ const FieldConfigPanel: FunctionComponent<FieldConfigPanelProps> = ({
                     </Typography>
                     <Box sx={ { display: "flex", flexDirection: "column", gap: 1.5, mt: 1 } }>
                         <EncryptionCard
-                            title="Expose encrypted"
+                            title="Read encrypted"
                             color="var(--tree-expose)"
                             checked={ !!selectedNode.exposeEncrypted }
                             disabled={ !canExposeOp || readOnly || !selectedNode.exposed || !hasCertificate }
                             disabledReason={
                                 !canExposeOp
-                                    ? "Expose is not allowed for this field."
+                                    ? "Read is not allowed for this field."
                                     : !selectedNode.exposed
-                                        ? "Mark this field as EXPOSE in the tree to enable encryption."
+                                        ? "Mark this field as READ in the tree to enable encryption."
                                         : !hasCertificate
                                             ? "Add a certificate to enable encryption."
                                             : "Read only."
                             }
+                            enabledDescription="This field will be sent to the extension encrypted."
                             onToggle={ () => onToggleExposeEncrypt(selectedNode.key) }
                             data-componentid="field-config-panel-expose-enc"
                         />
                         <EncryptionCard
-                            title="Modify encrypted"
+                            title="Write encrypted"
                             color="var(--tree-modify)"
                             checked={ !!selectedNode.modifyEncrypted }
                             disabled={ !canModifyOp || readOnly || !selectedNode.modify }
                             disabledReason={
                                 !canModifyOp
-                                    ? "Modify is not allowed for this field."
+                                    ? "Write is not allowed for this field."
                                     : !selectedNode.modify
-                                        ? "Mark this field as MODIFY in the tree to enable encryption."
+                                        ? "Mark this field as WRITE in the tree to enable encryption."
                                         : "Read only."
                             }
+                            enabledDescription="The extension will return this field's value encrypted."
                             onToggle={ () => onToggleModifyEncrypt(selectedNode.key) }
                             data-componentid="field-config-panel-modify-enc"
                         />
@@ -822,9 +858,11 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
             let updated: TreeNodeState[] = prev;
 
             claims.forEach((claim: Claim, idx: number) => {
-                const claimReadOnly: boolean = !!claim.readOnly;
-                const allowsModifyOnReadOnly: boolean = allowReadOnlyClaimsModification;
-                const allowedOps: string[] = (claimReadOnly && !allowsModifyOnReadOnly)
+                // When the flow type permits modifying read-only claims, the claim's
+                // read-only flag is ignored entirely — it's treated as a normal writable
+                // entry. Only when modification is disallowed do we honour the flag.
+                const treatAsReadOnly: boolean = !!claim.readOnly && !allowReadOnlyClaimsModification;
+                const allowedOps: string[] = treatAsReadOnly
                     ? [ "EXPOSE" ]
                     : [ "EXPOSE", "MODIFY" ];
 
@@ -843,7 +881,7 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
                     modifyEncrypted: false,
                     nodeType: NodeType.LEAF,
                     path: `${parentNode.path}${claim.claimURI}`,
-                    readOnly: claimReadOnly,
+                    readOnly: treatAsReadOnly,
                     replaceable: false,
                     title: claim.displayName
                 };

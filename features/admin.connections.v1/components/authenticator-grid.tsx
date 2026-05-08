@@ -67,7 +67,7 @@ import {
     getConnectedApps,
     getConnectedAppsOfAuthenticator
 } from "../api/connections";
-import deleteAction from "@wso2is/admin.actions.v1/api/delete-action";
+import deleteInFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/delete-in-flow-extension";
 import { getConnectionIcons } from "../configs/ui";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
@@ -398,7 +398,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
         setIsDeletionLoading(true);
 
         if (connectionType === ConnectionTypes.IN_FLOW_EXTENSION) {
-            deleteAction("inFlowExtension", id)
+            deleteInFlowExtension(id)
                 .then(() => {
                     dispatch(addAlert({
                         description: t("authenticationProvider:" +

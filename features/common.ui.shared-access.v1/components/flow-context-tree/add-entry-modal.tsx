@@ -34,20 +34,22 @@ import Typography from "@oxygen-ui/react/Typography";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { TreeNodeState } from "./models";
 
-const EXPOSE_COLOR: string = "var(--tree-expose, #2E7D32)";
-const EXPOSE_HOVER_DARK: string = "#1B5E20";
-const EXPOSE_FAINT_HOVER: string = "rgba(46, 125, 50, 0.1)";
-
 const FIELD_SX: Record<string, unknown> = {
     "& .MuiOutlinedInput-root": {
-        "&.Mui-focused fieldset": { borderColor: EXPOSE_COLOR },
+        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgba(0, 0, 0, 0.23)",
+            borderWidth: "1px"
+        },
         borderRadius: "7px"
     }
 };
 
 const SELECT_SX: Record<string, unknown> = {
     "& .MuiOutlinedInput-root": {
-        "&.Mui-focused fieldset": { borderColor: EXPOSE_COLOR },
+        "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgba(0, 0, 0, 0.23)",
+            borderWidth: "1px"
+        },
         borderRadius: "7px"
     }
 };
@@ -285,7 +287,11 @@ const AddEntryModal: FunctionComponent<AddEntryModalProps> = ({
                 </Typography>
             </DialogTitle>
             <DialogContent sx={ { pt: "12px !important" } }>
-                <Typography variant="overline" color="text.secondary" sx={ { fontWeight: 600 } }>
+                <Typography
+                    variant="subtitle2"
+                    color="text.secondary"
+                    sx={ { display: "block", fontWeight: 600, mb: 0.5 } }
+                >
                     Key Name <span style={ { color: "var(--tree-danger, #C0392B)" } }>*</span>
                 </Typography>
                 <TextField
@@ -304,9 +310,9 @@ const AddEntryModal: FunctionComponent<AddEntryModalProps> = ({
                 { isPropertiesParent && (
                     <>
                         <Typography
-                            variant="overline"
+                            variant="subtitle2"
                             color="text.secondary"
-                            sx={ { display: "block", fontWeight: 600, mt: 1.5 } }
+                            sx={ { display: "block", fontWeight: 600, mb: 0.5, mt: 1.5 } }
                         >
                             Data Type
                         </Typography>
@@ -339,14 +345,6 @@ const AddEntryModal: FunctionComponent<AddEntryModalProps> = ({
                                     checked={ isMultiValued }
                                     onChange={ () => setIsMultiValued(!isMultiValued) }
                                     size="small"
-                                    sx={ {
-                                        "& .MuiSwitch-switchBase.Mui-checked": {
-                                            color: EXPOSE_COLOR
-                                        },
-                                        "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-                                            backgroundColor: EXPOSE_COLOR
-                                        }
-                                    } }
                                 />
                             }
                             label={
@@ -362,9 +360,9 @@ const AddEntryModal: FunctionComponent<AddEntryModalProps> = ({
                 { isPropertiesParent && isObjectSelected && (
                     <>
                         <Typography
-                            variant="overline"
+                            variant="subtitle2"
                             color="text.secondary"
-                            sx={ { display: "block", fontWeight: 600, mt: 2 } }
+                            sx={ { display: "block", fontWeight: 600, mb: 0.5, mt: 2 } }
                         >
                             Attributes <span style={ { color: "var(--tree-danger, #C0392B)" } }>*</span>
                         </Typography>
@@ -419,14 +417,6 @@ const AddEntryModal: FunctionComponent<AddEntryModalProps> = ({
                                             checked={ attrIsArray }
                                             onChange={ () => setAttrIsArray(!attrIsArray) }
                                             size="small"
-                                            sx={ {
-                                                "& .MuiSwitch-switchBase.Mui-checked": {
-                                                    color: EXPOSE_COLOR
-                                                },
-                                                "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track": {
-                                                    backgroundColor: EXPOSE_COLOR
-                                                }
-                                            } }
                                         />
                                     }
                                     label={
@@ -442,11 +432,11 @@ const AddEntryModal: FunctionComponent<AddEntryModalProps> = ({
                                 onClick={ handleAddAttribute }
                                 disabled={ !attrName.trim() }
                                 sx={ {
-                                    "&:hover": { bgcolor: EXPOSE_FAINT_HOVER, color: EXPOSE_COLOR },
+                                    "&:hover": { bgcolor: "grey.100", color: "text.primary" },
                                     border: "1px solid",
                                     borderColor: "grey.200",
                                     borderRadius: "6px",
-                                    color: attrName.trim() ? EXPOSE_COLOR : "grey.300",
+                                    color: attrName.trim() ? "text.secondary" : "grey.300",
                                     p: "5px"
                                 } }
                                 data-componentid={ `${componentId}-add-attr-button` }
@@ -487,7 +477,7 @@ const AddEntryModal: FunctionComponent<AddEntryModalProps> = ({
                                         } }
                                     >
                                         <Box sx={ { alignItems: "center", display: "flex", gap: 1 } }>
-                                            <Typography variant="body2" sx={ { fontWeight: 600 } }>
+                                            <Typography variant="body2" sx={ { fontWeight: 500 } }>
                                                 { attr.name }
                                             </Typography>
                                             <Box sx={ {
@@ -565,15 +555,6 @@ const AddEntryModal: FunctionComponent<AddEntryModalProps> = ({
                     onClick={ handleClose }
                     variant="outlined"
                     size="small"
-                    sx={ {
-                        "&:hover": { bgcolor: "grey.50" },
-                        border: "1px solid",
-                        borderColor: "grey.200",
-                        borderRadius: "6px",
-                        color: "text.secondary",
-                        fontWeight: 500,
-                        px: 2
-                    } }
                     data-componentid={ `${componentId}-cancel-button` }
                 >
                     Cancel
@@ -583,14 +564,6 @@ const AddEntryModal: FunctionComponent<AddEntryModalProps> = ({
                     variant="contained"
                     size="small"
                     disabled={ !canSubmit }
-                    sx={ {
-                        "&:hover": { bgcolor: EXPOSE_HOVER_DARK },
-                        bgcolor: EXPOSE_COLOR,
-                        borderRadius: "6px",
-                        boxShadow: "0 1px 6px rgba(46,125,50,0.3)",
-                        fontWeight: 600,
-                        px: 2
-                    } }
                     data-componentid={ `${componentId}-submit-button` }
                 >
                     { submitLabel }

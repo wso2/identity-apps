@@ -96,7 +96,7 @@ const OpChips = ({
                     label={ (
                         <Box component="span" sx={ { alignItems: "center", display: "inline-flex" } }>
                             { node.exposed && node.exposeEncrypted && <ChipLockIcon /> }
-                            EXPOSE
+                            READ
                         </Box>
                     ) }
                     size="small"
@@ -116,7 +116,7 @@ const OpChips = ({
                     label={ (
                         <Box component="span" sx={ { alignItems: "center", display: "inline-flex" } }>
                             { node.modify && node.modifyEncrypted && <ChipLockIcon /> }
-                            MODIFY
+                            WRITE
                         </Box>
                     ) }
                     size="small"
@@ -143,9 +143,9 @@ const OpChips = ({
                     variant="outlined"
                     sx={ {
                         "&:hover": {
-                            bgcolor: "var(--tree-expose-faint)",
-                            border: "1px dashed var(--tree-expose)",
-                            color: "var(--tree-expose)"
+                            bgcolor: "#FFF4EC",
+                            border: "1px dashed #FFB066",
+                            color: "#E07B2A"
                         },
                         border: "1px dashed",
                         borderColor: "grey.300",
@@ -282,35 +282,57 @@ const FlowContextTreeNode: FunctionComponent<FlowContextTreeNodeProps> = ({
                     ) }
                 </Box>
 
-                { /* Title */ }
-                <Typography
-                    component="span"
+                { /* Title + optional Read-Only indicator (leaves only) */ }
+                <Box
                     sx={ {
-                        color: node.readOnly
-                            ? "text.secondary"
-                            : isContainer
-                                ? "text.primary"
-                                : "text.secondary",
+                        alignItems: "center",
+                        display: "flex",
                         flex: "0 1 auto",
-                        fontFamily: isLeaf || node.canDelete
-                            ? "'JetBrains Mono', monospace"
-                            : "'Inter', sans-serif",
-                        fontSize: node.nodeType === NodeType.OBJECT
-                            ? 14
-                            : isContainer ? 13.5 : 13,
-                        fontWeight: node.nodeType === NodeType.OBJECT
-                            ? 700
-                            : isContainer ? 600 : 500,
-                        letterSpacing: "-0.015em",
-                        lineHeight: 1,
-                        minWidth: 0,
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap"
+                        gap: "6px",
+                        minWidth: 0
                     } }
                 >
-                    { node.title }
-                </Typography>
+                    <Typography
+                        component="span"
+                        sx={ {
+                            color: node.readOnly
+                                ? "text.secondary"
+                                : isContainer
+                                    ? "text.primary"
+                                    : "text.secondary",
+                            fontFamily: isLeaf || node.canDelete
+                                ? "'JetBrains Mono', monospace"
+                                : "'Inter', sans-serif",
+                            fontSize: node.nodeType === NodeType.OBJECT
+                                ? 14
+                                : isContainer ? 13.5 : 13,
+                            fontWeight: node.nodeType === NodeType.OBJECT
+                                ? 700
+                                : isContainer ? 600 : 500,
+                            letterSpacing: "-0.015em",
+                            lineHeight: 1,
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap"
+                        } }
+                    >
+                        { node.title }
+                    </Typography>
+                    { isLeaf && node.readOnly && (
+                        <Typography
+                            component="span"
+                            sx={ {
+                                color: "text.disabled",
+                                flexShrink: 0,
+                                fontSize: "9px",
+                                fontWeight: 500,
+                                lineHeight: 1
+                            } }
+                        >
+                            Read-Only
+                        </Typography>
+                    ) }
+                </Box>
 
                 { /* Operation chips — always pushed to the RHS via marginLeft: auto */ }
                 <OpChips

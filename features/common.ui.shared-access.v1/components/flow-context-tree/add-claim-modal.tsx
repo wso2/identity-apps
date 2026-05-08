@@ -48,7 +48,6 @@ const EXPOSE_COLOR: string = "var(--tree-expose, #2E7D32)";
 const EXPOSE_FAINT_RGBA: string = "rgba(46, 125, 50, 0.06)";
 const EXPOSE_FAINT_RGBA_HOVER: string = "rgba(46, 125, 50, 0.1)";
 const EXPOSE_FAINT_RGBA_SELECTED_HOVER: string = "rgba(46, 125, 50, 0.08)";
-const EXPOSE_HOVER_DARK: string = "#1B5E20";
 
 const PlusIcon = (): ReactElement => (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
@@ -299,26 +298,24 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
                                     <Box sx={ { alignItems: "center", display: "flex", gap: 0.8 } }>
                                         <Typography
                                             variant="body2"
-                                            sx={ { fontWeight: isSelected ? 600 : 500 } }
+                                            sx={ { fontWeight: 500 } }
                                         >
                                             { claim.displayName }
                                         </Typography>
-                                        { claim.readOnly && (
+                                        { claim.readOnly && !allowReadOnlyClaimsModification && (
                                             <Typography
                                                 variant="caption"
                                                 sx={ {
-                                                    bgcolor: EXPOSE_FAINT_RGBA_HOVER,
+                                                    bgcolor: "grey.100",
                                                     borderRadius: "3px",
-                                                    color: EXPOSE_COLOR,
+                                                    color: "text.disabled",
                                                     fontWeight: 600,
                                                     lineHeight: 1,
                                                     px: "4px",
                                                     py: "2px"
                                                 } }
                                             >
-                                                { allowReadOnlyClaimsModification
-                                                    ? "Read-only — modify is opt-in"
-                                                    : "Read-only — modify not permitted in this flow" }
+                                                Read-only
                                             </Typography>
                                         ) }
                                     </Box>
@@ -368,9 +365,9 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
                             mb: 0.8
                         } }>
                             <Typography
-                                variant="overline"
+                                variant="subtitle2"
                                 color="text.secondary"
-                                sx={ { fontWeight: 600 } }
+                                sx={ { display: "block", fontWeight: 600 } }
                             >
                                 To be added ({ selectedClaims.length })
                             </Typography>
@@ -451,15 +448,6 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
                     onClick={ handleClose }
                     variant="outlined"
                     size="small"
-                    sx={ {
-                        "&:hover": { bgcolor: "grey.50" },
-                        border: "1px solid",
-                        borderColor: "grey.200",
-                        borderRadius: "6px",
-                        color: "text.secondary",
-                        fontWeight: 500,
-                        px: 2
-                    } }
                     data-componentid={ `${componentId}-cancel-button` }
                 >
                     Cancel
@@ -469,14 +457,6 @@ const AddClaimModal: FunctionComponent<AddClaimModalProps> = ({
                     variant="contained"
                     size="small"
                     disabled={ selectedClaims.length === 0 }
-                    sx={ {
-                        "&:hover": { bgcolor: EXPOSE_HOVER_DARK },
-                        bgcolor: EXPOSE_COLOR,
-                        borderRadius: "6px",
-                        boxShadow: "0 1px 6px rgba(46,125,50,0.3)",
-                        fontWeight: 600,
-                        px: 2
-                    } }
                     data-componentid={ `${componentId}-submit-button` }
                 >
                     Add Claims{ selectedClaims.length > 0 ? ` (${selectedClaims.length})` : "" }
