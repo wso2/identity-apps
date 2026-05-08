@@ -111,6 +111,7 @@ export interface flowsNS {
                 apple: string;
                 confirmationCode: string;
                 default: string;
+                deviceRegistration: string;
                 facebook: string;
                 github: string;
                 google: string;

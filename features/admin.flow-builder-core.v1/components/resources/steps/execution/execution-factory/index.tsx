@@ -29,6 +29,7 @@ import MicrosoftExecution from "./microsoft-execution";
 import { ExecutionTypes } from "../../../../../models/steps";
 import "./execution-factory.scss";
 import { ExecutionMinimalPropsInterface } from "../execution-minimal";
+import { ReactComponent as MobilePhoneIcon } from "../../../../../assets/icons/mobile-phone.svg";
 
 /**
  * Props interface of {@link CommonStepFactory}
@@ -117,6 +118,19 @@ const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
             >
                 <img src="https://www.svgrepo.com/show/468264/check-mark-square-2.svg" height="20"/>
                 <Typography variant="body1">{ t("flows:core.executions.names.confirmationCode") }</Typography>
+            </Box>
+        );
+    }
+
+    if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.DeviceRegistration) {
+        return (
+            <Box display="flex" gap={ 1 } data-componentid={ componentId }>
+                <MobilePhoneIcon width={ 20 } height={ 20 } />
+                <Typography variant="body1">
+                    { t("flows:core.executions.names.deviceRegistration", {
+                        defaultValue: "Device Register"
+                    }) }
+                </Typography>
             </Box>
         );
     }

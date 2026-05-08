@@ -26,7 +26,7 @@ import { FeatureStatus } from "@wso2is/access-control";
 import { ReactComponent as CustomerDataIcon } from "@wso2is/admin.cds.v1/assets/images/icons/customer-data.svg";
 import {
     ReactComponent as DeviceOutlineIcon
-} from "../../themes/default/assets/images/icons/outline-icons/device-outline.svg";
+} from "../../themes/default/assets/images/icons/outline-icons/application-window-outline.svg";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { NavCategory, NavRouteInterface, RouteInterface } from "@wso2is/core/models";
 import groupBy from "lodash-es/groupBy";

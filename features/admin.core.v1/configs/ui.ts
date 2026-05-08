@@ -64,7 +64,7 @@ import {
 import { ReactComponent as AgentOutlineIcon } from "../../themes/default/assets/images/icons/outline-icons/agent.svg";
 import {
     ReactComponent as DeviceOutlineIcon
-} from "../../themes/default/assets/images/icons/outline-icons/device-outline.svg";
+} from "../../themes/default/assets/images/icons/outline-icons/application-window-outline.svg";
 import {
     ReactComponent as AnalyticsIcon
 } from "../../themes/default/assets/images/icons/outline-icons/analytics.svg";

@@ -55,9 +55,9 @@ import {
     Modal
 } from "semantic-ui-react";
 import { ReactComponent as DeviceOutlineIcon }
-    from "../../themes/default/assets/images/icons/outline-icons/device-outline.svg";
+    from "../assets/icons/device-window-outline.svg";
 import { ReactComponent as SettingsOutlineIcon }
-    from "../../themes/default/assets/images/icons/outline-icons/settings-outline.svg";
+    from "../assets/icons/settings-outline.svg";
 import { AxiosError } from "axios";
 import { createDevicePolicy } from "../api/device-policies";
 import useGetDevicePolicyMetadata from "../hooks/use-get-device-policy-metadata";
