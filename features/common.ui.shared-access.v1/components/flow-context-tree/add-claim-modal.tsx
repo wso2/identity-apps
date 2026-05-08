@@ -72,7 +72,7 @@ const CloseIcon = (): ReactElement => (
     </svg>
 );
 
-export interface AddClaimModalProps {
+interface AddClaimModalProps {
     open: boolean;
     parentNode: TreeNodeState | null;
     existingClaimURIs: string[];

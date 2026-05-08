@@ -19,7 +19,7 @@
 /**
  * The i18n key prefix for inflow extension error messages.
  */
-export const INFLOW_EXTENSION_KEY_PREFIX: string = "inflow.extension.";
+const INFLOW_EXTENSION_KEY_PREFIX: string = "inflow.extension.";
 
 /**
  * The branding screen name for inflow extension custom text.
@@ -36,7 +36,7 @@ export const INFLOW_EXTENSION_SCREEN: string = "inflow-extension";
  * @param name - The display name of the connection.
  * @returns The sanitized dot-separated lowercase name.
  */
-export const sanitizeConnectionName = (name: string | null | undefined): string => {
+const sanitizeConnectionName = (name: string | null | undefined): string => {
 
     if (!name) {
         return "";

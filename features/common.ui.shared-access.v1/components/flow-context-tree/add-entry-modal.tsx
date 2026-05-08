@@ -123,7 +123,7 @@ const parseDataType = (raw: string): {
     return { attributes: [], isMultiValued, selectedType: working || "String" };
 };
 
-export interface AddEntryModalInitialValues {
+interface AddEntryModalInitialValues {
     keyName: string;
     /**
      * Raw stored data type string — same shape that `buildAccessConfig` round-trips.
@@ -132,7 +132,7 @@ export interface AddEntryModalInitialValues {
     dataType: string;
 }
 
-export interface AddEntryModalProps {
+interface AddEntryModalProps {
     open: boolean;
     parentNode: TreeNodeState | null;
     /** "create" (default) opens an empty form; "edit" prefills from `initialValues`. */

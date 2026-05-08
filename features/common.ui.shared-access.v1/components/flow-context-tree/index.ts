@@ -17,29 +17,9 @@
  */
 
 export { default as FlowContextTree } from "./flow-context-tree";
-export { default as AddClaimModal } from "./add-claim-modal";
-export { default as AddEntryModal } from "./add-entry-modal";
-export { default as FlowContextTreeNode } from "./flow-context-tree-node";
 export type {
     AccessConfigOutput,
-    AddEntryModalState,
-    ContextPathOutput,
-    ContextTreeNodeMetadata,
     EncryptionOutput,
-    FlowContextMetadataResponse,
-    FlowContextTreeProps,
     InFlowExtensionContextTreeResponse,
-    InitialAccessConfig,
-    TreeNodeState
+    InitialAccessConfig
 } from "./models";
-export { NodeType } from "./models";
-export {
-    addChild,
-    buildAccessConfig,
-    deleteNode,
-    findFirstLeafKey,
-    findNode,
-    mapMetadataToState,
-    mapMetadataToStateWithAccessConfig,
-    updateNode
-} from "./utils";

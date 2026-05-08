@@ -50,7 +50,7 @@ import useInFlowExtensionContextTree from "../../api/use-in-flow-extension-conte
 /**
  * Props interface of {@link AccessConfigOverrideDialog}
  */
-export interface AccessConfigOverrideDialogPropsInterface extends IdentifiableComponentInterface {
+interface AccessConfigOverrideDialogPropsInterface extends IdentifiableComponentInterface {
     actionId: string;
     actionResponse?: InFlowExtensionResponseInterface;
     isActionLoading?: boolean;

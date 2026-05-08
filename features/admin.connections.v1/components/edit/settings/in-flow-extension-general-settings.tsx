@@ -26,7 +26,7 @@ import {
 } from "@wso2is/admin.flow-builder-core.v1/models/in-flow-extension";
 import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import {
     ConfirmationModal,
     DangerZone,
@@ -39,6 +39,7 @@ import React, {
     MutableRefObject,
     ReactElement,
     useCallback,
+    useEffect,
     useRef,
     useState
 } from "react";
@@ -50,7 +51,7 @@ import { ConnectionUIConstants } from "../../../constants/connection-ui-constant
 const ACTION_NAME_REGEX: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9 _-]{0,254}$/;
 const FORM_ID: string = "in-flow-extension-general-settings-form";
 
-export interface InFlowExtensionGeneralSettingsPropsInterface extends IdentifiableComponentInterface {
+interface InFlowExtensionGeneralSettingsPropsInterface extends IdentifiableComponentInterface {
     "data-componentid"?: string;
     action: InFlowExtensionResponseInterface;
     isLoading: boolean;
@@ -82,9 +83,12 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
     const lastCheckedName: MutableRefObject<string> = useRef<string>("");
 
     const debouncedCheckName: (name: string) => void = useCallback((name: string) => {
-        if (lastCheckedName.current === name || name === action?.name) {
+        if (name === action?.name) {
             setIsNameTaken(false);
 
+            return;
+        }
+        if (lastCheckedName.current === name) {
             return;
         }
         if (nameCheckTimer.current) {
@@ -106,6 +110,14 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
                 });
         }, 500);
     }, [ action?.name, action?.id ]);
+
+    useEffect(() => {
+        return () => {
+            if (nameCheckTimer.current) {
+                clearTimeout(nameCheckTimer.current);
+            }
+        };
+    }, []);
 
     const validateForm = (
         values: { name: string; description?: string }

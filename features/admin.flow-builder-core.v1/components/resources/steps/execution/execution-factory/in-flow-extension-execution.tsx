@@ -32,7 +32,7 @@ const DEFAULT_ICON: string = "assets/images/icons/in-flow-extension.svg";
 /**
  * Props interface of {@link InFlowExtensionExecution}.
  */
-export type InFlowExtensionExecutionPropsInterface = ExecutionMinimalPropsInterface
+type InFlowExtensionExecutionPropsInterface = ExecutionMinimalPropsInterface
     & IdentifiableComponentInterface;
 
 const InFlowExtensionExecution = ({
@@ -71,6 +71,7 @@ const InFlowExtensionExecution = ({
         >
             <img
                 src={ iconSrc }
+                alt={ displayName }
                 height="20"
                 style={ { filter: isDefaultIcon ? "invert(1)" : "none", objectFit: "contain" } }
             />

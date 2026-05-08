@@ -137,41 +137,6 @@ export interface inFlowExtensionNS {
                 };
             };
         };
-        helpPanel: {
-            whatIsContext: {
-                heading: string;
-                description: string;
-            };
-            howToUse: {
-                heading: string;
-                step1: string;
-                step2: string;
-                step3: string;
-                step4: string;
-                step5: string;
-                step6: string;
-            };
-            expose: {
-                heading: string;
-                description: string;
-            };
-            operations: {
-                heading: string;
-                description: string;
-            };
-            encryption: {
-                heading: string;
-                description: string;
-            };
-            externalRedirect: {
-                heading: string;
-                description: string;
-                step1: string;
-                step2: string;
-                step3: string;
-                step4: string;
-            };
-        };
     };
     notifications: {
         createSuccess: {

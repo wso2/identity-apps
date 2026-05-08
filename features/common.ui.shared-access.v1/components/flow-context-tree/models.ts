@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+
 /**
  * Node types matching the backend ContextTreeNode.NodeType enum.
  */
@@ -47,7 +49,7 @@ export interface ContextTreeNodeMetadata {
 /**
  * Backend response for the flow context metadata endpoint.
  */
-export interface FlowContextMetadataResponse {
+interface FlowContextMetadataResponse {
     contextTree: ContextTreeNodeMetadata[];
     flowType: string;
     claimDialect: string;
@@ -101,7 +103,7 @@ export interface TreeNodeState {
 /**
  * Props for the FlowContextTree component.
  */
-export interface FlowContextTreeProps {
+export interface FlowContextTreeProps extends IdentifiableComponentInterface {
     contextTree: ContextTreeNodeMetadata[];
     onChange: (accessConfig: AccessConfigOutput, encryption: EncryptionOutput) => void;
     initialAccessConfig?: InitialAccessConfig;
@@ -121,7 +123,6 @@ export interface FlowContextTreeProps {
      * itself does not gate any controls on this — it is purely presentational.
      */
     redirectionEnabled?: boolean;
-    "data-componentid"?: string;
 }
 
 /**

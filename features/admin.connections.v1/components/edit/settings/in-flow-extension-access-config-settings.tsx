@@ -43,7 +43,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 
-export interface InFlowExtensionAccessConfigSettingsPropsInterface extends IdentifiableComponentInterface {
+interface InFlowExtensionAccessConfigSettingsPropsInterface extends IdentifiableComponentInterface {
     "data-componentid"?: string;
     action: InFlowExtensionResponseInterface;
     isLoading: boolean;
