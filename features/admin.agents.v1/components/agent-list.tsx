@@ -43,6 +43,7 @@ interface AgentListProps extends IdentifiableComponentInterface {
     isLoading: boolean;
     mutateAgentList: any;
     list: any[];
+    hasAgentCreatePermissions: boolean;
     setShowAgentAddWizard: () => void;
 }
 
@@ -56,6 +57,7 @@ export default function AgentList ({
     isLoading,
     list,
     mutateAgentList,
+    hasAgentCreatePermissions,
     setShowAgentAddWizard,
     [ "data-componentid" ]: componentId
 }: AgentListProps) {
@@ -182,7 +184,7 @@ export default function AgentList ({
                 <EmptyPlaceholder
                     className="list-placeholder mr-0"
                     action={
-                        (<PrimaryButton
+                        hasAgentCreatePermissions && (<PrimaryButton
                             data-testid={ `${ componentId }-empty-placeholder-add-agent-button` }
                             onClick={ () => setShowAgentAddWizard() }
                         >
