@@ -165,12 +165,18 @@ export interface DevicesNS {
         };
         edit: {
             backButton: string;
-            fields: {
-                name: {
-                    label: string;
+            sections: {
+                platform: {
+                    heading: string;
                 };
-                ruleId: {
-                    label: string;
+                conditions: {
+                    heading: string;
+                    description: string;
+                    columns: {
+                        field: string;
+                        operator: string;
+                        value: string;
+                    };
                 };
             };
             notifications: {

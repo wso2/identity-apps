@@ -46,10 +46,31 @@ export interface DevicePolicyRequestInterface {
     rule: PolicyRuleInterface;
 }
 
+export interface DevicePolicyExpressionValueInterface {
+    type: string;
+    value: string;
+}
+
+export interface DevicePolicyExpressionInterface {
+    field: string;
+    displayName: string;
+    operator: string;
+    value: DevicePolicyExpressionValueInterface;
+}
+
+export interface DevicePolicyRuleGroupInterface {
+    expressions: DevicePolicyExpressionInterface[];
+}
+
+export interface DevicePolicyFullRuleInterface {
+    rules: DevicePolicyRuleGroupInterface[];
+}
+
 export interface DevicePolicyResponseInterface {
     id: string;
     name: string;
     ruleId?: string;
+    rule?: DevicePolicyFullRuleInterface;
 }
 
 export type DevicePlatformType = "android" | "ios" | "macos" | "windows";

@@ -58,6 +58,7 @@ import { ReactComponent as DeviceOutlineIcon }
     from "../../themes/default/assets/images/icons/outline-icons/device-outline.svg";
 import { ReactComponent as SettingsOutlineIcon }
     from "../../themes/default/assets/images/icons/outline-icons/settings-outline.svg";
+import { AxiosError } from "axios";
 import { createDevicePolicy } from "../api/device-policies";
 import useGetDevicePolicyMetadata from "../hooks/use-get-device-policy-metadata";
 import {
@@ -199,24 +200,31 @@ const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsI
     const handleCreate = (): void => {
         setIsSubmitting(true);
 
-        const enabledExpressions = nonPlatformFields
-            .filter(
-                (field: DevicePolicyFieldDefinitionInterface): boolean =>
-                    conditions[field.field.name]?.enabled === true
-            )
-            .map((field: DevicePolicyFieldDefinitionInterface) => ({
-                field: field.field.name,
-                operator: conditions[field.field.name].operator,
-                value: field.value.valueType === "NUMBER"
-                    ? Number(conditions[field.field.name].value)
-                    : conditions[field.field.name].value
-            }));
+        // Platform expression is always the first — the API requires it
+        const platformExpression: { field: string; operator: string; value: string } = {
+            field: "platform",
+            operator: "equals",
+            value: selectedPlatform
+        };
+
+        const enabledExpressions: { field: string; operator: string; value: string }[] =
+            nonPlatformFields
+                .filter(
+                    (field: DevicePolicyFieldDefinitionInterface): boolean =>
+                        conditions[field.field.name]?.enabled === true
+                )
+                .map((field: DevicePolicyFieldDefinitionInterface) => ({
+                    field: field.field.name,
+                    operator: conditions[field.field.name].operator,
+                    // All values are sent as strings regardless of valueType
+                    value: String(conditions[field.field.name].value)
+                }));
 
         createDevicePolicy({
             name: policyName.trim(),
             rule: {
                 condition: "AND",
-                expressions: enabledExpressions
+                expressions: [ platformExpression, ...enabledExpressions ]
             }
         })
             .then((): void => {
@@ -231,11 +239,15 @@ const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsI
                 }));
                 onSuccess();
             })
-            .catch((): void => {
-                dispatch(addAlert({
-                    description: t(
+            .catch((error: AxiosError<{ description?: string }>): void => {
+                const errorDescription: string =
+                    error?.response?.data?.description
+                    ?? t(
                         "devices:assurancePolicies.wizard.notifications.create.genericError.description"
-                    ),
+                    );
+
+                dispatch(addAlert({
+                    description: errorDescription,
                     level: AlertLevels.ERROR,
                     message: t(
                         "devices:assurancePolicies.wizard.notifications.create.genericError.message"

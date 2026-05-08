@@ -129,12 +129,18 @@ export const devices: DevicesNS = {
         },
         edit: {
             backButton: "Go back to Device Assurance Policies",
-            fields: {
-                name: {
-                    label: "Policy Name"
+            sections: {
+                conditions: {
+                    columns: {
+                        field: "Condition",
+                        operator: "Operator",
+                        value: "Value"
+                    },
+                    description: "The following conditions must all be met for this policy to pass.",
+                    heading: "Conditions"
                 },
-                ruleId: {
-                    label: "Rule ID"
+                platform: {
+                    heading: "Platform"
                 }
             },
             notifications: {
