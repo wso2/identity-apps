@@ -41,6 +41,7 @@ export interface InFlowExtensionEndpointInterface {
         type: string;
         properties?: Record<string, string>;
     };
+    allowedHeaders?: string[];
 }
 
 /**

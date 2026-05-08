@@ -169,15 +169,24 @@ export const mapMetadataToStateWithAccessConfig = (
     const claimReadOnlyMap: Map<string, boolean> = options.claimReadOnlyMap ?? new Map();
     const exposePaths: Map<string, boolean> = new Map();
     const modifyPaths: Map<string, boolean> = new Map();
+    // Preserve the type-hint string ("Integer", "[String]", "risk: String, …") keyed
+    // by clean path so synthesised properties children get the correct dataType on
+    // reload. Without this, the round-trip collapses every dynamic entry's type back
+    // to the container's `dynamicEntryType` ("Object").
+    const modifyTypeHints: Map<string, string> = new Map();
 
     (accessConfig.expose ?? []).forEach((e: { path: string; encrypted: boolean }) => {
         exposePaths.set(normalisePath(e.path), e.encrypted);
     });
     (accessConfig.modify ?? []).forEach((m: { path: string; encrypted: boolean }) => {
-        // Strip type-hint braces used in modify paths e.g. /properties/riskScore{Integer}
+        const typeHintMatch: RegExpMatchArray | null = m.path.match(/\{([^}]+)\}$/);
         const cleanPath: string = m.path.replace(/\{[^}]+\}$/, "");
+        const norm: string = normalisePath(cleanPath);
 
-        modifyPaths.set(normalisePath(cleanPath), m.encrypted);
+        modifyPaths.set(norm, m.encrypted);
+        if (typeHintMatch) {
+            modifyTypeHints.set(norm, typeHintMatch[1]);
+        }
     });
 
     /**
@@ -333,6 +342,11 @@ export const mapMetadataToStateWithAccessConfig = (
                     }
 
                     const isUnderClaims: boolean = containerPrefix === "/user/claims/";
+                    // Prefer the type hint extracted from the modify path (e.g. "Integer"
+                    // from /properties/riskScore{Integer}) so dataType round-trips correctly
+                    // and the edit modal pre-populates with the actual configured type.
+                    const synthDataType: string =
+                        modifyTypeHints.get(synthPath) ?? node.dynamicEntryType ?? "String";
 
                     children = children || [];
                     children.push({
@@ -341,7 +355,7 @@ export const mapMetadataToStateWithAccessConfig = (
                             : [ "EXPOSE", "MODIFY" ],
                         canDelete: true,
                         children: undefined,
-                        dataType: node.dynamicEntryType ?? "String",
+                        dataType: synthDataType,
                         dynamicEntryAllowed: false,
                         dynamicEntryType: "",
                         exposeEncrypted: synthExEnc,
