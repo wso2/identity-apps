@@ -29,6 +29,7 @@ export enum AuthenticationType {
     API_KEY = "API_KEY",
     BEARER = "BEARER",
     CLIENT_CREDENTIAL = "CLIENT_CREDENTIAL",
+    PASSWORD_CREDENTIAL = "PASSWORD_CREDENTIAL",
 }
 
 /**

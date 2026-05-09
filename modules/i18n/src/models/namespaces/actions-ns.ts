@@ -150,6 +150,51 @@ export interface actionsNS {
                         };
                     };
                 };
+                passwordCredential: {
+                    name: string;
+                    properties: {
+                        clientId: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        clientSecret: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        password: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        scopes: {
+                            label: string;
+                            placeholder: string;
+                        };
+                        tokenEndpoint: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                                invalidUrl: string;
+                            };
+                        };
+                        username: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                    };
+                };
                 none: {
                     name: string;
                 };

@@ -249,6 +249,15 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                     authProperties.scopes = values.scopesAuthProperty;
 
                     break;
+                case AuthenticationType.PASSWORD_CREDENTIAL:
+                    authProperties.clientId = values.clientIdAuthProperty;
+                    authProperties.clientSecret = values.clientSecretAuthProperty;
+                    authProperties.tokenEndpoint = values.tokenEndpointAuthProperty;
+                    authProperties.username = values.usernameAuthProperty;
+                    authProperties.password = values.passwordAuthProperty;
+                    authProperties.scopes = values.scopesAuthProperty;
+
+                    break;
                 case AuthenticationType.NONE:
                     break;
                 default:
