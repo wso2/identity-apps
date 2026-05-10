@@ -180,13 +180,13 @@ export const validateActionEndpointFields = (
             break;
         case AuthenticationType.PASSWORD_CREDENTIAL:
             if (isCreateFormState || isAuthenticationUpdateFormState) {
-                if (!values?.tokenEndpointAuthProperty) {
-                    errors.tokenEndpointAuthProperty = I18n.instance.t(
+                if (!values?.tokenEndpoint) {
+                    errors.tokenEndpoint = I18n.instance.t(
                         "actions:fields.authentication.types.passwordCredential" +
                         ".properties.tokenEndpoint.validations.empty"
                     );
                 } else if (
-                    !FormValidation.url(values?.tokenEndpointAuthProperty, {
+                    !FormValidation.url(values?.tokenEndpoint, {
                         domain: {
                             allowUnicode: true,
                             minDomainSegments: 1,
@@ -195,31 +195,31 @@ export const validateActionEndpointFields = (
                         scheme: [ "https", "http" ]
                     })
                 ) {
-                    errors.tokenEndpointAuthProperty = I18n.instance.t(
+                    errors.tokenEndpoint = I18n.instance.t(
                         "actions:fields.authentication.types.passwordCredential" +
                         ".properties.tokenEndpoint.validations.invalidUrl"
                     );
                 }
-                if (!values?.clientIdAuthProperty) {
-                    errors.clientIdAuthProperty = I18n.instance.t(
+                if (!values?.clientId) {
+                    errors.clientId = I18n.instance.t(
                         "actions:fields.authentication.types.passwordCredential" +
                         ".properties.clientId.validations.empty"
                     );
                 }
-                if (!values?.clientSecretAuthProperty) {
-                    errors.clientSecretAuthProperty = I18n.instance.t(
+                if (!values?.clientSecret) {
+                    errors.clientSecret = I18n.instance.t(
                         "actions:fields.authentication.types.passwordCredential" +
                         ".properties.clientSecret.validations.empty"
                     );
                 }
-                if (!values?.usernameAuthProperty) {
-                    errors.usernameAuthProperty = I18n.instance.t(
+                if (!values?.username) {
+                    errors.username = I18n.instance.t(
                         "actions:fields.authentication.types.passwordCredential" +
                         ".properties.username.validations.empty"
                     );
                 }
-                if (!values?.passwordAuthProperty) {
-                    errors.passwordAuthProperty = I18n.instance.t(
+                if (!values?.password) {
+                    errors.password = I18n.instance.t(
                         "actions:fields.authentication.types.passwordCredential" +
                         ".properties.password.validations.empty"
                     );

@@ -205,12 +205,12 @@ const PreIssueIdTokenActionConfigForm: FunctionComponent<PreIssueIdTokenActionCo
 
                     break;
                 case AuthenticationType.PASSWORD_CREDENTIAL:
-                    authProperties.clientId = values.clientIdAuthProperty;
-                    authProperties.clientSecret = values.clientSecretAuthProperty;
-                    authProperties.tokenEndpoint = values.tokenEndpointAuthProperty;
-                    authProperties.username = values.usernameAuthProperty;
-                    authProperties.password = values.passwordAuthProperty;
-                    authProperties.scopes = values.scopesAuthProperty;
+                    authProperties.clientId = values.clientId;
+                    authProperties.clientSecret = values.clientSecret;
+                    authProperties.tokenEndpoint = values.tokenEndpoint;
+                    authProperties.username = values.username;
+                    authProperties.password = values.password;
+                    authProperties.scopes = values.scopes;
 
                     break;
                 case AuthenticationType.NONE:

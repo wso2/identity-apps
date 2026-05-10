@@ -64,6 +64,7 @@ import { ActionVersionInfo, useActionVersioning } from "../hooks/use-action-vers
 import {
     ActionConfigFormPropertyInterface,
     AuthenticationPropertiesInterface,
+    AuthenticationType,
     PreUpdatePasswordActionConfigFormPropertyInterface,
     PreUpdatePasswordActionResponseInterface,
     PreUpdateProfileActionConfigFormPropertyInterface,
@@ -160,20 +161,31 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
             if (action) {
                 const authProperties: Partial<AuthenticationPropertiesInterface> =
                     action?.endpoint?.authentication?.properties ?? {};
+                const authType: AuthenticationType = action?.endpoint?.authentication?.type;
+                const isPasswordCredential: boolean = authType === AuthenticationType.PASSWORD_CREDENTIAL;
 
+                // Password-grant inputs use form-state slots whose names match the
+                // API `authProperties` keys 1:1. Other auth types continue to use
+                // the legacy `XxxAuthProperty` slots, so each type's response
+                // values land in their own isolated form fields with no leakage
+                // when the user toggles between auth types.
                 return {
                     allowedHeaders: action?.endpoint?.allowedHeaders,
                     allowedParameters: action?.endpoint?.allowedParameters,
-                    authenticationType: action?.endpoint?.authentication?.type?.toString(),
-                    clientIdAuthProperty: authProperties?.clientId,
+                    authenticationType: authType?.toString(),
+                    clientId: isPasswordCredential ? authProperties?.clientId : undefined,
+                    clientIdAuthProperty: !isPasswordCredential ? authProperties?.clientId : undefined,
                     endpointUri: action?.endpoint?.uri,
                     headerAuthProperty: authProperties?.header,
                     id: action?.id,
                     name: action?.name,
                     rule: action?.rule,
-                    scopesAuthProperty: authProperties?.scopes,
-                    tokenEndpointAuthProperty: authProperties?.tokenEndpoint,
-                    usernameAuthProperty: authProperties?.username
+                    scopes: isPasswordCredential ? authProperties?.scopes : undefined,
+                    scopesAuthProperty: !isPasswordCredential ? authProperties?.scopes : undefined,
+                    tokenEndpoint: isPasswordCredential ? authProperties?.tokenEndpoint : undefined,
+                    tokenEndpointAuthProperty: !isPasswordCredential ? authProperties?.tokenEndpoint : undefined,
+                    username: isPasswordCredential ? authProperties?.username : undefined,
+                    usernameAuthProperty: !isPasswordCredential ? authProperties?.username : undefined
                 };
 
             } else {

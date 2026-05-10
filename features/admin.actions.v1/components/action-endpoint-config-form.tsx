@@ -87,8 +87,6 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
     const [ isShowSecret1, setIsShowSecret1 ] = useState<boolean>(false);
     const [ isShowSecret2, setIsShowSecret2 ] = useState<boolean>(false);
-    const [ isShowSecret3, setIsShowSecret3 ] = useState<boolean>(false);
-    const [ isShowSecret4, setIsShowSecret4 ] = useState<boolean>(false);
     const [ isHttpEndpointUri, setIsHttpEndpointUri ] = useState<boolean>(false);
 
     const form: FormApi<EndpointConfigFormPropertyInterface> = useForm<EndpointConfigFormPropertyInterface>();
@@ -557,13 +555,8 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                             ariaLabel="clientId"
                                             required={ true }
                                             data-componentid={ `${_componentId}-authentication-property-clientId` }
-                                            name="clientIdAuthProperty"
-                                            type={ isShowSecret1 ? "text" : "password" }
-                                            InputProps={ {
-                                                endAdornment: renderInputAdornmentOfSecret(isShowSecret1, () =>
-                                                    setIsShowSecret1(!isShowSecret1)
-                                                )
-                                            } }
+                                            name="clientId"
+                                            type="password"
                                             label={ t(
                                                 "actions:fields.authentication" +
                                                     ".types.passwordCredential.properties.clientId.label"
@@ -589,13 +582,8 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                             ariaLabel="clientSecret"
                                             required={ true }
                                             data-componentid={ `${_componentId}-authentication-property-clientSecret` }
-                                            name="clientSecretAuthProperty"
-                                            type={ isShowSecret2 ? "text" : "password" }
-                                            InputProps={ {
-                                                endAdornment: renderInputAdornmentOfSecret(isShowSecret2, () =>
-                                                    setIsShowSecret2(!isShowSecret2)
-                                                )
-                                            } }
+                                            name="clientSecret"
+                                            type="password"
                                             label={ t(
                                                 "actions:fields.authentication" +
                                                     ".types.passwordCredential.properties.clientSecret.label"
@@ -623,7 +611,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                             data-componentid={
                                                 `${_componentId}-authentication-property-tokenEndpoint`
                                             }
-                                            name="tokenEndpointAuthProperty"
+                                            name="tokenEndpoint"
                                             type="text"
                                             label={ t(
                                                 "actions:fields.authentication" +
@@ -650,13 +638,8 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                             ariaLabel="username"
                                             required={ true }
                                             data-componentid={ `${_componentId}-authentication-property-username` }
-                                            name="usernameAuthProperty"
-                                            type={ isShowSecret3 ? "text" : "password" }
-                                            InputProps={ {
-                                                endAdornment: renderInputAdornmentOfSecret(isShowSecret3, () =>
-                                                    setIsShowSecret3(!isShowSecret3)
-                                                )
-                                            } }
+                                            name="username"
+                                            type="password"
                                             label={ t(
                                                 "actions:fields.authentication" +
                                                     ".types.passwordCredential.properties.username.label"
@@ -682,13 +665,8 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                             ariaLabel="password"
                                             required={ true }
                                             data-componentid={ `${_componentId}-authentication-property-password` }
-                                            name="passwordAuthProperty"
-                                            type={ isShowSecret4 ? "text" : "password" }
-                                            InputProps={ {
-                                                endAdornment: renderInputAdornmentOfSecret(isShowSecret4, () =>
-                                                    setIsShowSecret4(!isShowSecret4)
-                                                )
-                                            } }
+                                            name="password"
+                                            type="password"
                                             label={ t(
                                                 "actions:fields.authentication" +
                                                     ".types.passwordCredential.properties.password.label"
@@ -714,7 +692,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                             ariaLabel="scopes"
                                             required={ false }
                                             data-componentid={ `${_componentId}-authentication-property-scopes` }
-                                            name="scopesAuthProperty"
+                                            name="scopes"
                                             type="text"
                                             label={ t(
                                                 "actions:fields.authentication" +
@@ -738,70 +716,6 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 };
 
                 const handleAuthTypeChange = (event: SelectChangeEvent) => {
-                    // Clear every auth property field so values from the previously
-                    // selected auth type do not leak into the newly selected one
-                    // (clientId, clientSecret, tokenEndpoint, scopes, username and
-                    // password are shared across multiple auth types). When the
-                    // newly selected type matches the action's originally stored
-                    // type, restore that type's fields from initialValues so the
-                    // user sees their saved configuration again on toggle-back.
-                    const authPropertyFieldNames: Array<keyof EndpointConfigFormPropertyInterface> = [
-                        "usernameAuthProperty",
-                        "passwordAuthProperty",
-                        "accessTokenAuthProperty",
-                        "headerAuthProperty",
-                        "valueAuthProperty",
-                        "clientIdAuthProperty",
-                        "clientSecretAuthProperty",
-                        "tokenEndpointAuthProperty",
-                        "scopesAuthProperty"
-                    ];
-
-                    const fieldsByAuthType: Record<AuthenticationType,
-                        Array<keyof EndpointConfigFormPropertyInterface>> = {
-                            [AuthenticationType.NONE]: [],
-                            [AuthenticationType.BASIC]: [ "usernameAuthProperty", "passwordAuthProperty" ],
-                            [AuthenticationType.BEARER]: [ "accessTokenAuthProperty" ],
-                            [AuthenticationType.API_KEY]: [ "headerAuthProperty", "valueAuthProperty" ],
-                            [AuthenticationType.CLIENT_CREDENTIAL]: [
-                                "clientIdAuthProperty",
-                                "clientSecretAuthProperty",
-                                "tokenEndpointAuthProperty",
-                                "scopesAuthProperty"
-                            ],
-                            [AuthenticationType.PASSWORD_CREDENTIAL]: [
-                                "clientIdAuthProperty",
-                                "clientSecretAuthProperty",
-                                "tokenEndpointAuthProperty",
-                                "scopesAuthProperty",
-                                "usernameAuthProperty",
-                                "passwordAuthProperty"
-                            ]
-                        };
-
-                    const newAuthType: AuthenticationType = event.target.value as AuthenticationType;
-                    const isReselectingOriginalType: boolean =
-                        initialValues?.authenticationType === newAuthType;
-                    const fieldsToRestore: Array<keyof EndpointConfigFormPropertyInterface> =
-                        isReselectingOriginalType ? fieldsByAuthType[newAuthType] ?? [] : [];
-
-                    form.batch(() => {
-                        authPropertyFieldNames.forEach(
-                            (fieldName: keyof EndpointConfigFormPropertyInterface) => {
-                                const restoredValue: EndpointConfigFormPropertyInterface[
-                                    keyof EndpointConfigFormPropertyInterface] =
-                                        fieldsToRestore.includes(fieldName)
-                                            ? initialValues?.[fieldName]
-                                            : undefined;
-
-                                (form.change as (name: string, value: unknown) => void)(
-                                    fieldName,
-                                    restoredValue
-                                );
-                            }
-                        );
-                    });
-
                     switch (event.target.value) {
                         case AuthenticationType.NONE.toString():
                             setAuthenticationType(AuthenticationType.NONE);
