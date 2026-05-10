@@ -24,9 +24,7 @@ import {
     ApplicationManagementConstants
 } from "@wso2is/admin.applications.v1/constants/application-management";
 import { ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
-import {
-    TierLimitReachErrorModal
-} from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
+import { showTierLimitReachedModal } from "@wso2is/admin.core.v1/store/actions/tier-limit-modal";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -291,7 +289,6 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         ...initialData
     });
     const [ isCreatingApp, setIsCreatingApp ] = useState<boolean>(false);
-    const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
     // Validate restored step on mount - ensure required data exists for the URL-restored step
     useEffect(() => {
@@ -466,7 +463,15 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
             if (response?.status === 403 &&
                 responseData?.code ===
                 ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
-                setOpenLimitReachedModal(true);
+                dispatch(showTierLimitReachedModal({
+                    actionLabel: "View Plans",
+                    description:
+                        "You have reached the maximum number of applications " +
+                        "allowed for your subscription tier.",
+                    header: "Application Limit Reached",
+                    message: "Upgrade your plan to create more applications."
+                }));
+                history.push(AppConstants.getAppHomePath());
 
                 return;
             }
@@ -746,22 +751,6 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
                     </ActionButtons>
                 </Footer>
             </ContentCard>
-            { openLimitReachedModal && (
-                <TierLimitReachErrorModal
-                    actionLabel="View Plans"
-                    description={
-                        "You have reached the maximum number of applications " +
-                        "allowed for your subscription tier."
-                    }
-                    handleModalClose={ (): void => {
-                        setOpenLimitReachedModal(false);
-                        history.push(AppConstants.getAppHomePath());
-                    } }
-                    header="Application Limit Reached"
-                    message="Upgrade your plan to create more applications."
-                    openModal={ openLimitReachedModal }
-                />
-            ) }
         </>
     );
 };
