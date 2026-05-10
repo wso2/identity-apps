@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals";
+import { showTierLimitReachedModal } from "@wso2is/admin.core.v1/store/actions/tier-limit-modal";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -94,7 +94,6 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
         = useState<AddAPIResourceWizardStepsFormTypes>(AddAPIResourceWizardStepsFormTypes.BASIC_DETAILS);
     const [ isIdentifierValidationLoading, setIdentifierValidationLoading ] = useState<boolean>(false);
     const [ isPermissionValidationLoading, setPermissionValidationLoading ] = useState<boolean>(false);
-    const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
     /**
     * Handles the wizard form submission.
@@ -189,7 +188,13 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
                 if (error?.response?.status === 403
                     && error?.code === APIResourcesConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
                     limitReached = true;
-                    setOpenLimitReachedModal(true);
+                    dispatch(showTierLimitReachedModal({
+                        actionLabel: t("apiResources:notifications.tierLimitReachedError.emptyPlaceholder.action"),
+                        description: t("apiResources:notifications.tierLimitReachedError.emptyPlaceholder.subtitles"),
+                        header: t("apiResources:notifications.tierLimitReachedError.heading"),
+                        message: t("apiResources:notifications.tierLimitReachedError.emptyPlaceholder.title")
+                    }));
+                    closeWizard();
 
                     return;
                 }
@@ -268,22 +273,6 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
         (step: APIResourceWizardStepInterface) =>
             !createResourceWizard?.hiddenSteps?.includes(step.addAPIResourceWizardStepsFormType)
     ).filter(Boolean);
-
-    if (openLimitReachedModal) {
-        return (
-            <TierLimitReachErrorModal
-                actionLabel={ t("apiResources:notifications.tierLimitReachedError.emptyPlaceholder.action") }
-                handleModalClose={ () => {
-                    setOpenLimitReachedModal(false);
-                    closeWizard();
-                } }
-                header={ t("apiResources:notifications.tierLimitReachedError.heading") }
-                description={ t("apiResources:notifications.tierLimitReachedError.emptyPlaceholder.subtitles") }
-                message={ t("apiResources:notifications.tierLimitReachedError.emptyPlaceholder.title") }
-                openModal={ openLimitReachedModal }
-            />
-        );
-    }
 
     return (
         <Modal
