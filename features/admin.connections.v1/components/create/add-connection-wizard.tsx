@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { ModalWithSidePanel, TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals";
+import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals";
+import { showTierLimitReachedModal } from "@wso2is/admin.core.v1/store/actions/tier-limit-modal";
 import { HelpPanelModal } from "@wso2is/admin.core.v1/components/modals/help-panel-modal";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-app-configs";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
@@ -88,7 +89,6 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
     // External connection resources URL from the UI config.
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
 
-    const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
     const [ wizStep, setWizStep ] = useState<number>(0);
     const [ totalStep, setTotalStep ] = useState<number>(0);
@@ -198,7 +198,22 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                 if (error?.response?.status === 403 &&
                 error?.response?.data?.code ===
                 identityAppsError.getErrorCode()) {
-                    setOpenLimitReachedModal(true);
+                    dispatch(showTierLimitReachedModal({
+                        actionLabel: t(
+                            "idp:notifications." +
+                            "tierLimitReachedError.emptyPlaceholder.action"
+                        ),
+                        description: t(
+                            "idp:notifications." +
+                            "tierLimitReachedError.emptyPlaceholder.subtitles"
+                        ),
+                        header: t("idp:notifications.tierLimitReachedError.heading"),
+                        message: t(
+                            "idp:notifications." +
+                            "tierLimitReachedError.emptyPlaceholder.title"
+                        )
+                    }));
+                    handleWizardClose();
 
                     return;
                 }
@@ -235,14 +250,6 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
     const handleWizardClose = (): void => {
         // Trigger the close method from props.
         onWizardClose();
-    };
-
-    /**
-     * Close the limit reached modal.
-     */
-    const handleLimitReachedModalClose = (): void => {
-        setOpenLimitReachedModal(false);
-        handleWizardClose();
     };
 
     /**
@@ -522,32 +529,9 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
 
     return (
         <>
-            { openLimitReachedModal &&
-                (
-                    <TierLimitReachErrorModal
-                        actionLabel={ t(
-                            "idp:notifications." +
-                        "tierLimitReachedError.emptyPlaceholder.action"
-                        ) }
-                        handleModalClose={ handleLimitReachedModalClose }
-                        header={ t(
-                            "idp:notifications.tierLimitReachedError.heading"
-                        ) }
-                        description={ t(
-                            "idp:notifications." +
-                        "tierLimitReachedError.emptyPlaceholder.subtitles"
-                        ) }
-                        message={ t(
-                            "idp:notifications." +
-                        "tierLimitReachedError.emptyPlaceholder.title"
-                        ) }
-                        openModal={ openLimitReachedModal }
-                    />
-                )
-            }
             <HelpPanelModal
                 isLoading={ isLoading || isConnectionMetaDataFetchRequestLoading }
-                open={ !openLimitReachedModal }
+                open={ true }
                 className="wizard identity-provider-create-wizard"
                 dimmer="blurring"
                 onClose={ handleWizardClose }
