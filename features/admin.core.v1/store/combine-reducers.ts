@@ -44,6 +44,7 @@ import { commonRequestLoadersInitialState } from "./reducers/loaders";
 import { organizationReducer } from "./reducers/organization";
 import { commonProfileReducerInitialState } from "./reducers/profile";
 import { routeReducer } from "./reducers/routes";
+import { tierLimitModalReducer } from "./reducers/tier-limit-modal";
 import { copilotReducer } from "../../admin.copilot.v1/store/reducers/copilot";
 import {
     DeploymentConfigInterface,
@@ -80,5 +81,6 @@ export const reducers: Reducer = combineReducers({
         ProfileSchemaInterface[],
         LinkedAccountInterface[]
         >(commonProfileReducerInitialState),
-    routes: routeReducer
+    routes: routeReducer,
+    tierLimitModal: tierLimitModalReducer
 });
