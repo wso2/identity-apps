@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
+import { showTierLimitReachedModal } from "@wso2is/admin.core.v1/store/actions/tier-limit-modal";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
@@ -89,8 +89,6 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
     const currentOrganization: OrganizationResponseInterface = useSelector(
         (state: AppState) => state.organization.organization);
-    const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
-    const [ orgLevelReachedError, setOrgLevelReachedError ] = useState<boolean>(false);
     const [ orgHandleError, setOrgHandleError ] = useState<string>("");
     const [ orgNameError, setOrgNameError ] = useState<string>("");
     const [ orgHandle, setOrgHandle ] = useState<string>();
@@ -155,10 +153,30 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
             .catch((error: any) => {
                 if (error?.description) {
                     if (error.code === OrganizationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
-                        if (error.description.includes(SUB_ORG_LEVELS_EXCEEDED_ERROR)) {
-                            setOrgLevelReachedError(true);
-                        }
-                        setOpenLimitReachedModal(true);
+                        const isOrgLevelReachedError: boolean =
+                            error.description.includes(SUB_ORG_LEVELS_EXCEEDED_ERROR);
+
+                        dispatch(showTierLimitReachedModal({
+                            actionLabel: isOrgLevelReachedError
+                                ? t("suborganizations:notifications.subOrgLevelsLimitReachedError." +
+                                    "emptyPlaceholder.action")
+                                : t("suborganizations:notifications.tierLimitReachedError." +
+                                    "emptyPlaceholder.action"),
+                            description: isOrgLevelReachedError
+                                ? t("suborganizations:notifications.subOrgLevelsLimitReachedError." +
+                                    "emptyPlaceholder.subtitles")
+                                : t("suborganizations:notifications.tierLimitReachedError." +
+                                    "emptyPlaceholder.subtitles"),
+                            header: isOrgLevelReachedError
+                                ? t("suborganizations:notifications.subOrgLevelsLimitReachedError.heading")
+                                : t("suborganizations:notifications.tierLimitReachedError.heading"),
+                            message: isOrgLevelReachedError
+                                ? t("suborganizations:notifications.subOrgLevelsLimitReachedError." +
+                                    "emptyPlaceholder.title")
+                                : t("suborganizations:notifications.tierLimitReachedError." +
+                                    "emptyPlaceholder.title")
+                        }));
+                        handleWizardClose();
                     } else if (error.code ===
                         OrganizationManagementConstants.ERROR_SUB_ORGANIZATION_EXIST.getErrorCode()) {
                         setOrgNameError(
@@ -249,16 +267,6 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const handleWizardClose = (): void => {
 
         closeWizard();
-    };
-
-    /**
-     * Close the limit reached modal.
-     */
-    const handleLimitReachedModalClose = (): void => {
-
-        setOpenLimitReachedModal(false);
-        setOrgLevelReachedError(false);
-        handleWizardClose();
     };
 
     /**
@@ -466,47 +474,6 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
 
     return (
         <>
-            { openLimitReachedModal && (
-                <TierLimitReachErrorModal
-                    actionLabel={
-                        orgLevelReachedError
-                            ?
-                            t("suborganizations:notifications.subOrgLevelsLimitReachedError." +
-                        "emptyPlaceholder.action")
-                            :
-                            t("suborganizations:notifications.tierLimitReachedError." +
-                        "emptyPlaceholder.action")
-                    }
-                    handleModalClose={ handleLimitReachedModalClose }
-                    header={
-                        orgLevelReachedError
-                            ?
-                            t("suborganizations:notifications.subOrgLevelsLimitReachedError." +
-                        "heading")
-                            :
-                            t("suborganizations:notifications.tierLimitReachedError.heading")
-                    }
-                    description={
-                        orgLevelReachedError
-                            ?
-                            t("suborganizations:notifications.subOrgLevelsLimitReachedError." +
-                        "emptyPlaceholder.subtitles")
-                            :
-                            t("suborganizations:notifications.tierLimitReachedError." +
-                        "emptyPlaceholder.subtitles")
-                    }
-                    message={
-                        orgLevelReachedError
-                            ?
-                            t("suborganizations:notifications.subOrgLevelsLimitReachedError." +
-                        "emptyPlaceholder.title")
-                            :
-                            t("suborganizations:notifications.tierLimitReachedError." +
-                        "emptyPlaceholder.title")
-                    }
-                    openModal={ openLimitReachedModal }
-                />
-            ) }
             <Modal
                 open={ true }
                 className="wizard application-create-wizard add-organization-modal"
