@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -242,6 +242,100 @@ export interface AgentsNS {
         roles: {
             title: string;
             subtitle: string;
+        };
+        sections: {
+            sharedAccess: {
+                doNotShareAgent: string;
+                notifications: {
+                    fetchAgentRoles: {
+                        genericError: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    fetchOrganizations: {
+                        genericError: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    noOrganizationsSelected: {
+                        description: string;
+                        message: string;
+                    };
+                    share: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    unshare: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                };
+                shareAllAgent: string;
+                shareAllRoles: string;
+                shareRoleSubsetWithAllOrgs: string;
+                shareSelectedRoles: string;
+                shareSelectedAgent: string;
+                commonRoleSharingLabel: string;
+                commonRoleSharingHint: string;
+                individualRoleSharingLabel: string;
+                individualRoleSharingHint: string;
+                searchAvailableRolesPlaceholder: string;
+                allRolesAndOrgsSharingMessage: string;
+                allAgentRolesSharingMessage: string;
+                noRolesAndOrgsSharingMessage: string;
+                roleAudience: {
+                    application: string;
+                    organization: string;
+                };
+                roleAvailabilityInfo: string;
+                shareAgentWithFutureChildOrgs: string;
+                sharingSettingsLabel: string;
+                assignedRolesLabel: string;
+                currentlyAssignedRolesLabel: string;
+                shareTypeSwitchModal: {
+                    description: string;
+                    header: string;
+                    message: string;
+                    preserveStateLabel1: string;
+                    preserveStateLabel2: string;
+                    resetToDefaultLabel1: string;
+                    resetToDefaultLabel2: string;
+                };
+                showShareAllWarningModal: {
+                    assertionHint: string;
+                    description: string;
+                    header: string;
+                    message: string;
+                };
+                subTitle: string;
+                title: string;
+            };
+            shareAgent: {
+                addAsyncSharingNotification: {
+                    description: string;
+                    message: string;
+                };
+                getSharedOrganizations: {
+                    genericError: {
+                        description: string;
+                        message: string;
+                    };
+                };
+            };
         };
     };
 }

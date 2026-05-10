@@ -1,5 +1,14 @@
 # @wso2is/admin.applications.v1
 
+## 2.42.26
+
+### Patch Changes
+
+- [#10254](https://github.com/wso2/identity-apps/pull/10254) [`c331b91996fa0a2b84e73a5162aa46305d72539a`](https://github.com/wso2/identity-apps/commit/c331b91996fa0a2b84e73a5162aa46305d72539a) Thanks [@Thumimku](https://github.com/Thumimku)! - Fix Client secret hash support to console
+
+- Updated dependencies [[`2a6285ee9794b66bcd3e3257c8290883270dc13f`](https://github.com/wso2/identity-apps/commit/2a6285ee9794b66bcd3e3257c8290883270dc13f)]:
+  - @wso2is/admin.core.v1@2.57.7
+
 ## 2.42.25
 
 ### Patch Changes

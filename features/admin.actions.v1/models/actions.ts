@@ -29,6 +29,7 @@ export enum AuthenticationType {
     API_KEY = "API_KEY",
     BEARER = "BEARER",
     CLIENT_CREDENTIAL = "CLIENT_CREDENTIAL",
+    PASSWORD_CREDENTIAL = "PASSWORD_CREDENTIAL",
 }
 
 /**
@@ -516,6 +517,34 @@ export interface EndpointConfigFormPropertyInterface {
      * Scopes property of OAuth2 client credentials authentication.
      */
     scopesAuthProperty?: string;
+    /**
+     * Client ID property of OAuth2 password grant authentication.
+     * Password-grant form fields are explicitly suffixed with the auth type
+     * to make their purpose obvious when read in isolation, and to keep
+     * each auth type in its own form-state slot (preventing cross-type
+     * leakage with BASIC / CLIENT_CREDENTIAL).
+     */
+    clientId_passwordCredentialAuthProperty?: string;
+    /**
+     * Client Secret property of OAuth2 password grant authentication.
+     */
+    clientSecret_passwordCredentialAuthProperty?: string;
+    /**
+     * Token Endpoint property of OAuth2 password grant authentication.
+     */
+    tokenEndpoint_passwordCredentialAuthProperty?: string;
+    /**
+     * Username property of OAuth2 password grant authentication.
+     */
+    username_passwordCredentialAuthProperty?: string;
+    /**
+     * Password property of OAuth2 password grant authentication.
+     */
+    password_passwordCredentialAuthProperty?: string;
+    /**
+     * Scopes property of OAuth2 password grant authentication.
+     */
+    scopes_passwordCredentialAuthProperty?: string;
     /**
      * Allowed request headers to be shared with the endpoint.
      */

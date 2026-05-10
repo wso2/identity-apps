@@ -190,9 +190,18 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingPropsIn
             }));
 
             onRefresh();
-        } catch (err: any) {
+        } catch (err: unknown) {
+            const typedErr: {
+                response?: { data?: { description?: string } };
+                message?: string;
+            } = err as {
+                response?: { data?: { description?: string } };
+                message?: string;
+            };
+
             dispatch(addAlert({
-                description: err?.message
+                description: typedErr?.response?.data?.description
+                    ?? typedErr?.message
                     ?? t("profileAttributes.list.notifications.deleteAttribute.error.description"),
                 level: AlertLevels.ERROR,
                 message: t("profileAttributes.list.notifications.deleteAttribute.error.message")
