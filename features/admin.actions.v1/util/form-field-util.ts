@@ -178,6 +178,55 @@ export const validateActionEndpointFields = (
             }
 
             break;
+        case AuthenticationType.PASSWORD_CREDENTIAL:
+            if (isCreateFormState || isAuthenticationUpdateFormState) {
+                if (!values?.tokenEndpoint_passwordCredentialAuthProperty) {
+                    errors.tokenEndpoint_passwordCredentialAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.passwordCredential" +
+                        ".properties.tokenEndpoint.validations.empty"
+                    );
+                } else if (
+                    !FormValidation.url(values?.tokenEndpoint_passwordCredentialAuthProperty, {
+                        domain: {
+                            allowUnicode: true,
+                            minDomainSegments: 1,
+                            tlds: false
+                        },
+                        scheme: [ "https", "http" ]
+                    })
+                ) {
+                    errors.tokenEndpoint_passwordCredentialAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.passwordCredential" +
+                        ".properties.tokenEndpoint.validations.invalidUrl"
+                    );
+                }
+                if (!values?.clientId_passwordCredentialAuthProperty) {
+                    errors.clientId_passwordCredentialAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.passwordCredential" +
+                        ".properties.clientId.validations.empty"
+                    );
+                }
+                if (!values?.clientSecret_passwordCredentialAuthProperty) {
+                    errors.clientSecret_passwordCredentialAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.passwordCredential" +
+                        ".properties.clientSecret.validations.empty"
+                    );
+                }
+                if (!values?.username_passwordCredentialAuthProperty) {
+                    errors.username_passwordCredentialAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.passwordCredential" +
+                        ".properties.username.validations.empty"
+                    );
+                }
+                if (!values?.password_passwordCredentialAuthProperty) {
+                    errors.password_passwordCredentialAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.passwordCredential" +
+                        ".properties.password.validations.empty"
+                    );
+                }
+            }
+
+            break;
         default:
             break;
     }

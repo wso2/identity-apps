@@ -176,6 +176,11 @@ export class ActionsConstants {
             key: AuthenticationType.CLIENT_CREDENTIAL,
             text: "actions:fields.authentication.types.clientCredential.name",
             value: AuthenticationType.CLIENT_CREDENTIAL
+        },
+        {
+            key: AuthenticationType.PASSWORD_CREDENTIAL,
+            text: "actions:fields.authentication.types.passwordCredential.name",
+            value: AuthenticationType.PASSWORD_CREDENTIAL
         }
     ];
 

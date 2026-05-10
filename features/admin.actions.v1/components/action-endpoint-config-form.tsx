@@ -176,6 +176,8 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                         return t("actions:fields.authentication.types.apiKey.name");
                     case AuthenticationType.CLIENT_CREDENTIAL:
                         return t("actions:fields.authentication.types.clientCredential.name");
+                    case AuthenticationType.PASSWORD_CREDENTIAL:
+                        return t("actions:fields.authentication.types.passwordCredential.name");
                     default:
                         return;
                 }
@@ -538,6 +540,176 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                     </div>
                                 </div>
                             );
+                        case AuthenticationType.PASSWORD_CREDENTIAL:
+                            return (
+                                <div className="auth-fields-container">
+                                    <div className="auth-field-wrapper">{ showAuthSecretsHint() }</div>
+                                    <div className="auth-field-wrapper">
+                                        <FinalFormField
+                                            key="clientId"
+                                            width={ 16 }
+                                            className="text-field-container"
+                                            FormControlProps={ {
+                                                margin: "dense"
+                                            } }
+                                            ariaLabel="clientId"
+                                            required={ true }
+                                            data-componentid={ `${_componentId}-authentication-property-clientId` }
+                                            name="clientId_passwordCredentialAuthProperty"
+                                            type="password"
+                                            label={ t(
+                                                "actions:fields.authentication" +
+                                                    ".types.passwordCredential.properties.clientId.label"
+                                            ) }
+                                            placeholder={ t(
+                                                "actions:fields.authentication" +
+                                                    ".types.passwordCredential.properties.clientId.placeholder"
+                                            ) }
+                                            component={ TextFieldAdapter }
+                                            maxLength={ 1024 }
+                                            minLength={ 0 }
+                                            disabled={ isReadOnly }
+                                        />
+                                    </div>
+                                    <div className="auth-field-wrapper">
+                                        <FinalFormField
+                                            key="clientSecret"
+                                            className="text-field-container"
+                                            width={ 16 }
+                                            FormControlProps={ {
+                                                margin: "dense"
+                                            } }
+                                            ariaLabel="clientSecret"
+                                            required={ true }
+                                            data-componentid={ `${_componentId}-authentication-property-clientSecret` }
+                                            name="clientSecret_passwordCredentialAuthProperty"
+                                            type="password"
+                                            label={ t(
+                                                "actions:fields.authentication" +
+                                                    ".types.passwordCredential.properties.clientSecret.label"
+                                            ) }
+                                            placeholder={ t(
+                                                "actions:fields.authentication" +
+                                                    ".types.passwordCredential.properties.clientSecret.placeholder"
+                                            ) }
+                                            component={ TextFieldAdapter }
+                                            maxLength={ 1024 }
+                                            minLength={ 0 }
+                                            disabled={ isReadOnly }
+                                        />
+                                    </div>
+                                    <div className="auth-field-wrapper">
+                                        <FinalFormField
+                                            key="tokenEndpoint"
+                                            className="text-field-container"
+                                            width={ 16 }
+                                            FormControlProps={ {
+                                                margin: "dense"
+                                            } }
+                                            ariaLabel="tokenEndpoint"
+                                            required={ true }
+                                            data-componentid={
+                                                `${_componentId}-authentication-property-tokenEndpoint`
+                                            }
+                                            name="tokenEndpoint_passwordCredentialAuthProperty"
+                                            type="text"
+                                            label={ t(
+                                                "actions:fields.authentication" +
+                                                    ".types.passwordCredential.properties.tokenEndpoint.label"
+                                            ) }
+                                            placeholder={ t(
+                                                "actions:fields.authentication" +
+                                                    ".types.passwordCredential.properties.tokenEndpoint.placeholder"
+                                            ) }
+                                            component={ TextFieldAdapter }
+                                            maxLength={ 1024 }
+                                            minLength={ 0 }
+                                            disabled={ isReadOnly }
+                                        />
+                                    </div>
+                                    <div className="auth-field-wrapper">
+                                        <FinalFormField
+                                            key="username"
+                                            className="text-field-container"
+                                            width={ 16 }
+                                            FormControlProps={ {
+                                                margin: "dense"
+                                            } }
+                                            ariaLabel="username"
+                                            required={ true }
+                                            data-componentid={ `${_componentId}-authentication-property-username` }
+                                            name="username_passwordCredentialAuthProperty"
+                                            type="password"
+                                            label={ t(
+                                                "actions:fields.authentication" +
+                                                    ".types.passwordCredential.properties.username.label"
+                                            ) }
+                                            placeholder={ t(
+                                                "actions:fields.authentication" +
+                                                    ".types.passwordCredential.properties.username.placeholder"
+                                            ) }
+                                            component={ TextFieldAdapter }
+                                            maxLength={ 1024 }
+                                            minLength={ 0 }
+                                            disabled={ isReadOnly }
+                                        />
+                                    </div>
+                                    <div className="auth-field-wrapper">
+                                        <FinalFormField
+                                            key="password"
+                                            className="text-field-container"
+                                            width={ 16 }
+                                            FormControlProps={ {
+                                                margin: "dense"
+                                            } }
+                                            ariaLabel="password"
+                                            required={ true }
+                                            data-componentid={ `${_componentId}-authentication-property-password` }
+                                            name="password_passwordCredentialAuthProperty"
+                                            type="password"
+                                            label={ t(
+                                                "actions:fields.authentication" +
+                                                    ".types.passwordCredential.properties.password.label"
+                                            ) }
+                                            placeholder={ t(
+                                                "actions:fields.authentication" +
+                                                    ".types.passwordCredential.properties.password.placeholder"
+                                            ) }
+                                            component={ TextFieldAdapter }
+                                            maxLength={ 1024 }
+                                            minLength={ 0 }
+                                            disabled={ isReadOnly }
+                                        />
+                                    </div>
+                                    <div className="auth-field-wrapper">
+                                        <FinalFormField
+                                            key="scopes"
+                                            className="text-field-container"
+                                            width={ 16 }
+                                            FormControlProps={ {
+                                                margin: "dense"
+                                            } }
+                                            ariaLabel="scopes"
+                                            required={ false }
+                                            data-componentid={ `${_componentId}-authentication-property-scopes` }
+                                            name="scopes_passwordCredentialAuthProperty"
+                                            type="text"
+                                            label={ t(
+                                                "actions:fields.authentication" +
+                                                    ".types.passwordCredential.properties.scopes.label"
+                                            ) }
+                                            placeholder={ t(
+                                                "actions:fields.authentication" +
+                                                    ".types.passwordCredential.properties.scopes.placeholder"
+                                            ) }
+                                            component={ TextFieldAdapter }
+                                            maxLength={ 1024 }
+                                            minLength={ 0 }
+                                            disabled={ isReadOnly }
+                                        />
+                                    </div>
+                                </div>
+                            );
                         default:
                             break;
                     }
@@ -568,6 +740,11 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                         case AuthenticationType.CLIENT_CREDENTIAL.toString():
                             setAuthenticationType(AuthenticationType.CLIENT_CREDENTIAL);
                             onAuthenticationTypeChange(AuthenticationType.CLIENT_CREDENTIAL, true);
+
+                            break;
+                        case AuthenticationType.PASSWORD_CREDENTIAL.toString():
+                            setAuthenticationType(AuthenticationType.PASSWORD_CREDENTIAL);
+                            onAuthenticationTypeChange(AuthenticationType.PASSWORD_CREDENTIAL, true);
 
                             break;
                         default:
