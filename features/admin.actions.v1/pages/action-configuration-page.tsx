@@ -164,28 +164,36 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 const authType: AuthenticationType = action?.endpoint?.authentication?.type;
                 const isPasswordCredential: boolean = authType === AuthenticationType.PASSWORD_CREDENTIAL;
 
-                // Password-grant inputs use form-state slots whose names match the
-                // API `authProperties` keys 1:1. Other auth types continue to use
-                // the legacy `XxxAuthProperty` slots, so each type's response
-                // values land in their own isolated form fields with no leakage
-                // when the user toggles between auth types.
+                // Password-grant inputs use form-state slots suffixed with
+                // `_passwordCredentialAuthProperty` so the auth type is obvious
+                // when read in isolation, and so each type's response values
+                // land in their own isolated form fields with no cross-type
+                // leakage when the user toggles between auth types.
                 return {
                     allowedHeaders: action?.endpoint?.allowedHeaders,
                     allowedParameters: action?.endpoint?.allowedParameters,
                     authenticationType: authType?.toString(),
-                    clientId: isPasswordCredential ? authProperties?.clientId : undefined,
                     clientIdAuthProperty: !isPasswordCredential ? authProperties?.clientId : undefined,
+                    clientId_passwordCredentialAuthProperty: isPasswordCredential
+                        ? authProperties?.clientId
+                        : undefined,
                     endpointUri: action?.endpoint?.uri,
                     headerAuthProperty: authProperties?.header,
                     id: action?.id,
                     name: action?.name,
                     rule: action?.rule,
-                    scopes: isPasswordCredential ? authProperties?.scopes : undefined,
                     scopesAuthProperty: !isPasswordCredential ? authProperties?.scopes : undefined,
-                    tokenEndpoint: isPasswordCredential ? authProperties?.tokenEndpoint : undefined,
+                    scopes_passwordCredentialAuthProperty: isPasswordCredential
+                        ? authProperties?.scopes
+                        : undefined,
                     tokenEndpointAuthProperty: !isPasswordCredential ? authProperties?.tokenEndpoint : undefined,
-                    username: isPasswordCredential ? authProperties?.username : undefined,
-                    usernameAuthProperty: !isPasswordCredential ? authProperties?.username : undefined
+                    tokenEndpoint_passwordCredentialAuthProperty: isPasswordCredential
+                        ? authProperties?.tokenEndpoint
+                        : undefined,
+                    usernameAuthProperty: !isPasswordCredential ? authProperties?.username : undefined,
+                    username_passwordCredentialAuthProperty: isPasswordCredential
+                        ? authProperties?.username
+                        : undefined
                 };
 
             } else {

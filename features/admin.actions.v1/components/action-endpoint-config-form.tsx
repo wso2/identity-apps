@@ -555,7 +555,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                             ariaLabel="clientId"
                                             required={ true }
                                             data-componentid={ `${_componentId}-authentication-property-clientId` }
-                                            name="clientId"
+                                            name="clientId_passwordCredentialAuthProperty"
                                             type="password"
                                             label={ t(
                                                 "actions:fields.authentication" +
@@ -582,7 +582,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                             ariaLabel="clientSecret"
                                             required={ true }
                                             data-componentid={ `${_componentId}-authentication-property-clientSecret` }
-                                            name="clientSecret"
+                                            name="clientSecret_passwordCredentialAuthProperty"
                                             type="password"
                                             label={ t(
                                                 "actions:fields.authentication" +
@@ -611,7 +611,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                             data-componentid={
                                                 `${_componentId}-authentication-property-tokenEndpoint`
                                             }
-                                            name="tokenEndpoint"
+                                            name="tokenEndpoint_passwordCredentialAuthProperty"
                                             type="text"
                                             label={ t(
                                                 "actions:fields.authentication" +
@@ -638,7 +638,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                             ariaLabel="username"
                                             required={ true }
                                             data-componentid={ `${_componentId}-authentication-property-username` }
-                                            name="username"
+                                            name="username_passwordCredentialAuthProperty"
                                             type="password"
                                             label={ t(
                                                 "actions:fields.authentication" +
@@ -665,7 +665,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                             ariaLabel="password"
                                             required={ true }
                                             data-componentid={ `${_componentId}-authentication-property-password` }
-                                            name="password"
+                                            name="password_passwordCredentialAuthProperty"
                                             type="password"
                                             label={ t(
                                                 "actions:fields.authentication" +
@@ -692,7 +692,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                                             ariaLabel="scopes"
                                             required={ false }
                                             data-componentid={ `${_componentId}-authentication-property-scopes` }
-                                            name="scopes"
+                                            name="scopes_passwordCredentialAuthProperty"
                                             type="text"
                                             label={ t(
                                                 "actions:fields.authentication" +

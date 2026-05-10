@@ -515,32 +515,32 @@ export interface EndpointConfigFormPropertyInterface {
     scopesAuthProperty?: string;
     /**
      * Client ID property of OAuth2 password grant authentication.
-     * Field names for password-grant inputs intentionally match the API
-     * `authProperties` keys 1:1 so values can be copied to the request
-     * payload without per-field remapping, and so they live in their own
-     * form-state slots (no cross-type leakage with BASIC / CLIENT_CREDENTIAL).
+     * Password-grant form fields are explicitly suffixed with the auth type
+     * to make their purpose obvious when read in isolation, and to keep
+     * each auth type in its own form-state slot (preventing cross-type
+     * leakage with BASIC / CLIENT_CREDENTIAL).
      */
-    clientId?: string;
+    clientId_passwordCredentialAuthProperty?: string;
     /**
      * Client Secret property of OAuth2 password grant authentication.
      */
-    clientSecret?: string;
+    clientSecret_passwordCredentialAuthProperty?: string;
     /**
      * Token Endpoint property of OAuth2 password grant authentication.
      */
-    tokenEndpoint?: string;
+    tokenEndpoint_passwordCredentialAuthProperty?: string;
     /**
      * Username property of OAuth2 password grant authentication.
      */
-    username?: string;
+    username_passwordCredentialAuthProperty?: string;
     /**
      * Password property of OAuth2 password grant authentication.
      */
-    password?: string;
+    password_passwordCredentialAuthProperty?: string;
     /**
      * Scopes property of OAuth2 password grant authentication.
      */
-    scopes?: string;
+    scopes_passwordCredentialAuthProperty?: string;
     /**
      * Allowed request headers to be shared with the endpoint.
      */
