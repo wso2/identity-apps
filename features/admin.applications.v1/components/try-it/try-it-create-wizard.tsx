@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
+import { showTierLimitReachedModal } from "@wso2is/admin.core.v1/store/actions/tier-limit-modal";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { getUserDetails } from "@wso2is/admin.users.v1/api/users";
@@ -85,7 +85,6 @@ const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
     const [ isLoading, setIsLoading ] = useState(false);
     const [ isUserAdded, setIsUserAdded ] = useState(false);
     const [ addedUserList, setAddedUserList ] = useState<string[]>([]);
-    const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -335,7 +334,24 @@ const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
                 if (error.response.status === 403 &&
                     error?.response?.data?.code ===
                     ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
-                    setOpenLimitReachedModal(true);
+                    dispatch(showTierLimitReachedModal({
+                        actionLabel: t(
+                            "applications:notifications." +
+                            "tierLimitReachedError.emptyPlaceholder.action"
+                        ),
+                        description: t(
+                            "applications:notifications." +
+                            "tierLimitReachedError.emptyPlaceholder.subtitles"
+                        ),
+                        header: t("applications:notifications." +
+                            "tierLimitReachedError.heading"
+                        ),
+                        message: t(
+                            "applications:notifications." +
+                            "tierLimitReachedError.emptyPlaceholder.title"
+                        )
+                    }));
+                    handleWizardClose();
 
                     return;
                 } else if (error?.response?.status === 409 && error?.response?.data?.code ===
@@ -392,38 +408,8 @@ const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
         closeWizard();
     };
 
-    /**
-     * Close the limit reached modal.
-     */
-    const handleLimitReachedModalClose = (): void => {
-        setOpenLimitReachedModal(false);
-        handleWizardClose();
-    };
-
     return (
         <>
-            { openLimitReachedModal && (
-                <TierLimitReachErrorModal
-                    actionLabel={ t(
-                        "applications:notifications." +
-                        "tierLimitReachedError.emptyPlaceholder.action"
-                    ) }
-                    handleModalClose={ handleLimitReachedModalClose }
-                    header={ t(
-                        "applications:notifications.tierLimitReachedError.heading"
-                    ) }
-                    description={ t(
-                        "applications:notifications." +
-                        "tierLimitReachedError.emptyPlaceholder.subtitles"
-                    ) }
-                    message={ t(
-                        "applications:notifications." +
-                        "tierLimitReachedError.emptyPlaceholder.title"
-                    ) }
-                    openModal={ openLimitReachedModal }
-                />
-            ) }
-
             <Modal
                 open={ true }
                 className="wizard login-playground-wizard"
