@@ -161,23 +161,22 @@
                      if ("orgHandle".equals(defaultDiscoveryParam)) {
                      %>
                         <div class="social-login blurring social-dimmer">
-                           <input type="submit" id="orgHandleButton" onclick="enterOrgHandle();" 
+                           <input type="submit" id="orgHandleButton" onclick="enterOrgHandle();"
                                   class="ui primary basic button link-button"
-                                  value="<%=i18n(resourceBundle, customText, "provide.organization.handle")%>"
+                                  value="<%=i18n(resourceBundle, customText, "provide.organization.handle")%>"/>
                         </div>
                      <%
                      } else {
                      %>
                         <div class="social-login blurring social-dimmer">
-                           <input type="submit" id="orgNameButton" onclick="enterOrgName();" 
+                           <input type="submit" id="orgNameButton" onclick="enterOrgName();"
                                   class="ui primary basic button link-button"
-                                  value="<%=i18n(resourceBundle, customText, "provide.organization.name")%>"
+                                  value="<%=i18n(resourceBundle, customText, "provide.organization.name")%>"/>
                         </div>
                      <%
                      }
                   }
                   %>
-               </form>
                </form>
             </div>
          </layout:component>
@@ -196,6 +195,9 @@
             }
             %>
          </layout:component>
+         <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
+            <jsp:include page="${pathOfDynamicComponent}" />
+         </layout:dynamicComponent>
       </layout:main>
       <%-- footer --%>
       <%
