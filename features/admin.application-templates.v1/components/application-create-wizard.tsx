@@ -242,7 +242,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                             "tierLimitReachedError.emptyPlaceholder.subtitles"
                         ),
                         header: t("applications:notifications." +
-                            "tierLimitReachedError.heading"),
+                            "tierLimitReachedError.heading"
+                        ),
                         message: t(
                             "applications:notifications." +
                             "tierLimitReachedError.emptyPlaceholder.title"
