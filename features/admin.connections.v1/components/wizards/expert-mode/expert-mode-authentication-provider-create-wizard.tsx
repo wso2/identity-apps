@@ -17,7 +17,7 @@
  */
 
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
-import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
+import { showTierLimitReachedModal } from "@wso2is/admin.core.v1/store/actions/tier-limit-modal";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface,
@@ -117,7 +117,6 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
         const [ wizStep, setWizStep ] = useState<number>(0);
         const [ totalStep, setTotalStep ] = useState<number>(0);
         const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-        const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
         const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -172,7 +171,22 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
                     if (error.response.status === 403 &&
                     error?.response?.data?.code ===
                     identityAppsError.getErrorCode()) {
-                        setOpenLimitReachedModal(true);
+                        dispatch(showTierLimitReachedModal({
+                            actionLabel: t(
+                                "idp:notifications." +
+                                "tierLimitReachedError.emptyPlaceholder.action"
+                            ),
+                            description: t(
+                                "idp:notifications." +
+                                "tierLimitReachedError.emptyPlaceholder.subtitles"
+                            ),
+                            header: t("idp:notifications.tierLimitReachedError.heading"),
+                            message: t(
+                                "idp:notifications." +
+                                "tierLimitReachedError.emptyPlaceholder.title"
+                            )
+                        }));
+                        handleWizardClose();
 
                         return;
                     }
@@ -210,14 +224,6 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
 
             // Trigger the close method from props.
             onWizardClose();
-        };
-
-        /**
-        * Close the limit reached modal.
-        */
-        const handleLimitReachedModalClose = (): void => {
-            setOpenLimitReachedModal(false);
-            handleWizardClose();
         };
 
         /**
@@ -353,29 +359,8 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
 
         return (
             <>
-                { openLimitReachedModal && (
-                    <TierLimitReachErrorModal
-                        actionLabel={ t(
-                            "idp:notifications." +
-                        "tierLimitReachedError.emptyPlaceholder.action"
-                        ) }
-                        handleModalClose={ handleLimitReachedModalClose }
-                        header={ t(
-                            "idp:notifications.tierLimitReachedError.heading"
-                        ) }
-                        description={ t(
-                            "idp:notifications." +
-                        "tierLimitReachedError.emptyPlaceholder.subtitles"
-                        ) }
-                        message={ t(
-                            "idp:notifications." +
-                        "tierLimitReachedError.emptyPlaceholder.title"
-                        ) }
-                        openModal={ openLimitReachedModal }
-                    />
-                ) }
                 <ModalWithSidePanel
-                    open={ !openLimitReachedModal }
+                    open={ true }
                     className="wizard identity-provider-create-wizard"
                     dimmer="blurring"
                     onClose={ handleWizardClose }
