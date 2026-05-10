@@ -37,9 +37,12 @@ import {
 import {
     DocumentationLinksInterface
 }  from "@wso2is/admin.core.v1/models/documentation";
+import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals";
 import {
-    ConfigReducerStateInterface
+    ConfigReducerStateInterface,
+    TierLimitModalReducerStateInterface
 } from "@wso2is/admin.core.v1/models/reducer-state";
+import { hideTierLimitReachedModal } from "@wso2is/admin.core.v1/store/actions/tier-limit-modal";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
@@ -193,6 +196,8 @@ const App = ({
     const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
+    const tierLimitReachedModal: TierLimitModalReducerStateInterface =
+        useSelector((state: AppState) => state?.tierLimitModal);
 
     const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
     const [ featureGateConfigData, setFeatureGateConfigData ] =
@@ -214,6 +219,10 @@ const App = ({
     const isTrialActivationEnabled: boolean =
         (config?.deployment?.extensions as Record<string, Record<string, unknown>>)
             ?.trial?.enabled === true;
+
+    const handleTierLimitReachedModalClose = (): void => {
+        dispatch(hideTierLimitReachedModal());
+    };
 
     /**
      * Redirect to onboarding page if user should see onboarding.
@@ -660,6 +669,14 @@ const App = ({
                                                         Reload the App
                                                     </Trans>)
                                                 }
+                                            />
+                                            <TierLimitReachErrorModal
+                                                actionLabel={ tierLimitReachedModal?.actionLabel }
+                                                handleModalClose={ handleTierLimitReachedModalClose }
+                                                header={ tierLimitReachedModal?.header }
+                                                description={ tierLimitReachedModal?.description }
+                                                message={ tierLimitReachedModal?.message }
+                                                openModal={ tierLimitReachedModal?.open }
                                             />
                                             <UserStoresProvider>
                                                 <Base
