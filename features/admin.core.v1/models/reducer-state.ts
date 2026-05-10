@@ -45,6 +45,14 @@ export type ConfigReducerStateInterface = CommonConfigReducerStateInterface<
     I18nModuleOptionsInterface,
     UIConfigInterface>;
 
+export interface TierLimitModalReducerStateInterface {
+    actionLabel: string;
+    description: string;
+    header: string;
+    message: string;
+    open: boolean;
+}
+
 /**
  * Global reducer state interface.
  */
