@@ -17,7 +17,7 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
-import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals";
+import { showTierLimitReachedModal } from "@wso2is/admin.core.v1/store/actions/tier-limit-modal";
 import { VerticalStepper, VerticalStepperStepInterface } from "@wso2is/admin.core.v1/components/vertical-stepper";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -70,7 +70,6 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
     const [ isPermissionStepNextButtonDisabled, setIsPermissionStepNextButtonDisabled ] = useState<boolean>(true);
     const [ selectedPermissions, setSelectedPermissions ] = useState<SelectedPermissionsInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
     const userRolesV3FeatureEnabled: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
@@ -155,7 +154,13 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
                     if (error?.response?.status === 403
                         && error?.response?.data?.code
                             === RoleConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
-                        setOpenLimitReachedModal(true);
+                        dispatch(showTierLimitReachedModal({
+                            actionLabel: t("roles:notifications.tierLimitReachedError.emptyPlaceholder.action"),
+                            description: t("roles:notifications.tierLimitReachedError.emptyPlaceholder.subtitles"),
+                            header: t("roles:notifications.tierLimitReachedError.heading"),
+                            message: t("roles:notifications.tierLimitReachedError.emptyPlaceholder.title")
+                        }));
+                        history.push(AppConstants.getPaths().get("ROLES"));
 
                         return;
                     }
@@ -232,22 +237,6 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
             stepTitle: t("roles:addRoleWizard.wizardSteps.1")
         }
     ];
-
-    if (openLimitReachedModal) {
-        return (
-            <TierLimitReachErrorModal
-                actionLabel={ t("roles:notifications.tierLimitReachedError.emptyPlaceholder.action") }
-                handleModalClose={ () => {
-                    setOpenLimitReachedModal(false);
-                    history.push(AppConstants.getPaths().get("ROLES"));
-                } }
-                header={ t("roles:notifications.tierLimitReachedError.heading") }
-                description={ t("roles:notifications.tierLimitReachedError.emptyPlaceholder.subtitles") }
-                message={ t("roles:notifications.tierLimitReachedError.emptyPlaceholder.title") }
-                openModal={ openLimitReachedModal }
-            />
-        );
-    }
 
     return (
         <PageLayout
