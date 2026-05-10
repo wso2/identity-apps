@@ -18,7 +18,7 @@
 
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
-import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals";
+import { showTierLimitReachedModal } from "@wso2is/admin.core.v1/store/actions/tier-limit-modal";
 import { AssignRoles } from "@wso2is/admin.core.v1/components/roles";
 import { RolePermissions } from "@wso2is/admin.core.v1/components/roles/role-permissions";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -135,7 +135,6 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
     const [ isRoleSelected, setRoleSelection ] = useState<boolean>(false);
     const [ viewRolePermissions, setViewRolePermissions ] = useState<boolean>(false);
     const [ submitStep, setSubmitStep ] = useState<WizardStepsFormTypes>(undefined);
-    const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
     const userRoleFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRoles);
@@ -404,7 +403,13 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
             if (error?.response?.status === 403
                 && error?.response?.data?.code === GroupConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
                 limitReached = true;
-                setOpenLimitReachedModal(true);
+                dispatch(showTierLimitReachedModal({
+                    actionLabel: t("groups:notifications.tierLimitReachedError.emptyPlaceholder.action"),
+                    description: t("groups:notifications.tierLimitReachedError.emptyPlaceholder.subtitles"),
+                    header: t("groups:notifications.tierLimitReachedError.heading"),
+                    message: t("groups:notifications.tierLimitReachedError.emptyPlaceholder.title")
+                }));
+                closeWizard();
 
                 return;
             }
@@ -597,22 +602,6 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
     const WIZARD_STEPS: WizardStepInterface[] = !isRoleReadOnly
         ? [ getBasicDetailsWizardStep(), getRoleAssignmentWizardStep() ]
         : [ getBasicDetailsWizardStep() ];
-
-    if (openLimitReachedModal) {
-        return (
-            <TierLimitReachErrorModal
-                actionLabel={ t("groups:notifications.tierLimitReachedError.emptyPlaceholder.action") }
-                handleModalClose={ () => {
-                    setOpenLimitReachedModal(false);
-                    closeWizard();
-                } }
-                header={ t("groups:notifications.tierLimitReachedError.heading") }
-                description={ t("groups:notifications.tierLimitReachedError.emptyPlaceholder.subtitles") }
-                message={ t("groups:notifications.tierLimitReachedError.emptyPlaceholder.title") }
-                openModal={ openLimitReachedModal }
-            />
-        );
-    }
 
     return (
         <Modal
