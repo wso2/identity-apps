@@ -22,6 +22,8 @@ export interface UnificationRuleModel {
     rule_name: string;
     is_active: boolean;
     priority: number;
+    attribute_type: string;
+    unification_method: string;
 }
 
 /**
@@ -37,4 +39,6 @@ export interface CreateUnificationRulePayload {
     rule_name: string;
     is_active: boolean;
     priority: number;
+    attribute_type: string;
+    unification_method: string;
 }

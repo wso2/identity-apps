@@ -37,7 +37,13 @@ import { Dispatch } from "redux";
 import { createUnificationRule } from "../api/unification-rules";
 import { useProfileSchemaDropdownOptions } from "../hooks/use-profile-attributes";
 import { useUnificationRules } from "../hooks/use-unification-rules";
-import { APPLICATION_DATA, IDENTITY_ATTRIBUTES, TRAITS } from "../models/constants";
+import {
+    APPLICATION_DATA,
+    ATTRIBUTE_TYPE_PRIMITIVE_EXACT,
+    IDENTITY_ATTRIBUTES,
+    TRAITS,
+    UNIFICATION_METHOD_DETERMINISTIC
+} from "../models/constants";
 import { FilterAttributeOption, ProfileSchemaScope } from "../models/profile-attributes";
 import { UnificationRuleModel } from "../models/unification-rules";
 
@@ -427,10 +433,12 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
 
         try {
             await createUnificationRule({
+                attribute_type: ATTRIBUTE_TYPE_PRIMITIVE_EXACT,
                 is_active: formData.isActive,
                 priority: Number(formData.priority),
                 property_name: buildPropertyName(formData.scope, formData.attribute),
-                rule_name: formData.ruleName
+                rule_name: formData.ruleName,
+                unification_method: UNIFICATION_METHOD_DETERMINISTIC
             });
 
             dispatch(addAlert({
