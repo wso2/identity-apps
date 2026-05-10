@@ -21,7 +21,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import { Show } from "@wso2is/access-control";
 import { getCORSOrigins } from "@wso2is/admin.core.v1/api/cors-configurations";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
-import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
+import { showTierLimitReachedModal } from "@wso2is/admin.core.v1/store/actions/tier-limit-modal";
 import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -228,7 +228,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [ issuerError, setIssuerError ] = useState<boolean>(false);
     const [ metaUrlError, setMetaUrlError ] = useState<boolean>(false);
     const [ protocolValuesChange, setProtocolValuesChange ] = useState<boolean>(false);
-    const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
     const [ isAppSharingEnabled, setIsAppSharingEnabled ] = useState<boolean>(false);
     const [ isAgentCompliantApp, setIsAgentCompliantApp ] = useState<boolean>(false);
 
@@ -531,9 +530,24 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
 
                 if (error?.response?.status === 403 &&
-                error?.response?.data?.code ===
-                ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
-                    setOpenLimitReachedModal(true);
+                    error?.response?.data?.code ===
+                    ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
+                    dispatch(showTierLimitReachedModal({
+                        actionLabel: t(
+                            "applications:notifications." +
+                            "tierLimitReachedError.emptyPlaceholder.action"
+                        ),
+                        description: t(
+                            "applications:notifications." +
+                            "tierLimitReachedError.emptyPlaceholder.subtitles"
+                        ),
+                        header: t("applications:notifications.tierLimitReachedError.heading"),
+                        message: t(
+                            "applications:notifications." +
+                            "tierLimitReachedError.emptyPlaceholder.title"
+                        )
+                    }));
+                    handleWizardClose();
 
                     return;
                 }
@@ -645,14 +659,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
      */
     const handleWizardClose = (): void => {
         closeWizard();
-    };
-
-    /**
-     * Close the limit reached modal.
-     */
-    const handleLimitReachedModalClose = (): void => {
-        setOpenLimitReachedModal(false);
-        handleWizardClose();
     };
 
     /**
@@ -1463,29 +1469,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     return (
         <>
-            { openLimitReachedModal && (
-                <TierLimitReachErrorModal
-                    actionLabel={ t(
-                        "applications:notifications." +
-                        "tierLimitReachedError.emptyPlaceholder.action"
-                    ) }
-                    handleModalClose={ handleLimitReachedModalClose }
-                    header={ t(
-                        "applications:notifications.tierLimitReachedError.heading"
-                    ) }
-                    description={ t(
-                        "applications:notifications." +
-                        "tierLimitReachedError.emptyPlaceholder.subtitles"
-                    ) }
-                    message={ t(
-                        "applications:notifications." +
-                        "tierLimitReachedError.emptyPlaceholder.title"
-                    ) }
-                    openModal={ openLimitReachedModal }
-                />
-            ) }
             <ModalWithSidePanel
-                open={ !openLimitReachedModal && !showAppShareModal }
+                open={ !showAppShareModal }
                 className="wizard minimal-application-create-wizard"
                 dimmer="blurring"
                 onClose={ handleWizardClose }
