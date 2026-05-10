@@ -20,25 +20,20 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { RouteProps } from "react-router";
 import { Dispatch } from "redux";
 import { Grid } from "semantic-ui-react";
-import { Consents } from "../components";
-import { AlertInterface, AuthStateInterface } from "../models";
-import { AppState } from "../store";
+import { Consents, PolicyConsent } from "../components";
+import { AlertInterface } from "../models";
 import { addAlert } from "../store/actions";
 
 interface ConsentsPagePropsInterface extends TestableComponentInterface, RouteProps {}
 
-const ConsentsPage: FunctionComponent<ConsentsPagePropsInterface> = (
-    props: ConsentsPagePropsInterface
-): ReactElement => {
+const ConsentsPage: FunctionComponent<ConsentsPagePropsInterface> = (): ReactElement => {
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-
-    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
 
     const handleAlerts = (alert: AlertInterface): void => {
         dispatch(addAlert(alert));
@@ -54,6 +49,11 @@ const ConsentsPage: FunctionComponent<ConsentsPagePropsInterface> = (
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
                         <Consents onAlertFired={ handleAlerts } />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column width={ 16 }>
+                        <PolicyConsent onAlertFired={ handleAlerts } />
                     </Grid.Column>
                 </Grid.Row>
             </Grid>

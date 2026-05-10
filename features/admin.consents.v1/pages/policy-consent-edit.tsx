@@ -16,9 +16,11 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { deletePurpose, useGetPurpose } from "@wso2is/common.consents.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
@@ -29,7 +31,7 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { EditPolicyConsent } from "../components/edit-policy-consent";
@@ -59,6 +61,11 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.consents
+    );
+    const hasDeletePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.delete);
 
     const [ showDeleteConfirmation, setShowDeleteConfirmation ] = React.useState<boolean>(false);
     const [ isDeleting, setIsDeleting ] = React.useState<boolean>(false);
@@ -146,16 +153,18 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
             { consent && (
                 <>
                     <EditPolicyConsent purposeId={ consent.id } />
-                    <DangerZoneGroup
-                        sectionHeader={ t("common:dangerZone") }
-                    >
-                        <DangerZone
-                            actionTitle={ t("consents:pages.edit.dangerZone.actionTitle") }
-                            header={ t("consents:pages.edit.dangerZone.header") }
-                            subheader={ t("consents:pages.edit.dangerZone.subheader") }
-                            onActionClick={ () => setShowDeleteConfirmation(true) }
-                        />
-                    </DangerZoneGroup>
+                    { hasDeletePermission && (
+                        <DangerZoneGroup
+                            sectionHeader={ t("common:dangerZone") }
+                        >
+                            <DangerZone
+                                actionTitle={ t("consents:pages.edit.dangerZone.actionTitle") }
+                                header={ t("consents:pages.edit.dangerZone.header") }
+                                subheader={ t("consents:pages.edit.dangerZone.subheader") }
+                                onActionClick={ () => setShowDeleteConfirmation(true) }
+                            />
+                        </DangerZoneGroup>
+                    ) }
                     <ConfirmationModal
                         onClose={ () => setShowDeleteConfirmation(false) }
                         type="negative"

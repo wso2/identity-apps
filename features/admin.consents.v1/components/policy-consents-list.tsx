@@ -16,9 +16,11 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { ConsentListItemInterface } from "@wso2is/common.consents.v1";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar,
     AppAvatar,
@@ -30,6 +32,7 @@ import {
 } from "@wso2is/react-components";
 import React, { ReactElement, ReactNode, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 
 /**
@@ -81,6 +84,14 @@ export const PolicyConsentsList = (props: PolicyConsentsListProps): ReactElement
 
     const { t } = useTranslation();
 
+    const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.consents
+    );
+    const hasCreatePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.create);
+    const hasReadPermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.read);
+    const hasUpdatePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.update);
+    const hasDeletePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.delete);
+
     /**
      * Resolves data table actions.
      *
@@ -89,7 +100,17 @@ export const PolicyConsentsList = (props: PolicyConsentsListProps): ReactElement
     const resolveTableActions = (): TableActionsInterface[] => {
         return [
             {
+                "data-testid": `${componentId}-item-view-button`,
+                hidden: (): boolean => hasUpdatePermission || !hasReadPermission,
+                icon: (): SemanticICONS => "eye",
+                onClick: (_e: SyntheticEvent, consent: ConsentListItemInterface): void =>
+                    onEditConsentClick(consent),
+                popupText: (): string => t("common:view"),
+                renderer: "semantic-icon"
+            },
+            {
                 "data-testid": `${componentId}-item-edit-button`,
+                hidden: (): boolean => !hasUpdatePermission,
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (_e: SyntheticEvent, consent: ConsentListItemInterface): void =>
                     onEditConsentClick(consent),
@@ -98,6 +119,7 @@ export const PolicyConsentsList = (props: PolicyConsentsListProps): ReactElement
             },
             {
                 "data-testid": `${componentId}-item-delete-button`,
+                hidden: (): boolean => !hasDeletePermission,
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (_e: SyntheticEvent, consent: ConsentListItemInterface): void =>
                     onDeleteConsentClick(consent),
@@ -169,15 +191,15 @@ export const PolicyConsentsList = (props: PolicyConsentsListProps): ReactElement
             return (
                 <EmptyPlaceholder
                     className="list-placeholder mr-0"
-                    action={
-                        (<PrimaryButton
+                    action={ hasCreatePermission && (
+                        <PrimaryButton
                             data-testid={ `${componentId}-empty-placeholder-add-policy-button` }
                             onClick={ onAddConsentClick }
                         >
                             <Icon name="add" />
                             { t("consents:list.emptyPlaceholder.addPolicy") }
-                        </PrimaryButton>)
-                    }
+                        </PrimaryButton>
+                    ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     subtitle={ [

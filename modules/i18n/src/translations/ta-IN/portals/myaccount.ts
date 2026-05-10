@@ -450,28 +450,26 @@ export const myAccount: MyAccountNS = {
         policyConsentManagement: {
             dangerZones: {
                 revoke: {
-                    actionTitle: "Revoke",
-                    header: "Revoke Policy Consent",
-                    subheader: "This action will revoke your consent for this policy. You may be asked to re-consent " +
-                        "the next time you access the service."
+                    actionTitle: "திரும்பப் பெறுக",
+                    header: "கொள்கை சம்மதத்தை திரும்பப் பெறுக",
+                    subheader: "இந்த செயல் இந்த கொள்கைக்கான உங்கள் சம்மதத்தை திரும்பப் பெற்றுவிடும். அடுத்த முறை நீங்கள் சேவைக்கு அணுகும்போது மீண்டும் சம்மதம் அளிக்குமாறு கேட்கப்படலாம்."
                 }
             },
             modals: {
                 revokeModal: {
-                    heading: "Revoke consent for {{policyName}}",
-                    message: "This will revoke your consent for this policy. You may be asked to re-consent the " +
-                        "next time you access the service. Are you sure you want to continue?"
+                    heading: "{{policyName}} க்கான சம்மதத்தை திரும்பப் பெறுக",
+                    message: "இது இந்த கொள்கைக்கான உங்கள் சம்மதத்தை திரும்பப் பெற்றுவிடும். அடுத்த முறை நீங்கள் சேவைக்கு அணுகும்போது மீண்டும் சம்மதம் அளிக்குமாறு கேட்கப்படலாம். நீங்கள் தொடர விரும்புகிறீர்களா?"
                 }
             },
             notifications: {
                 fetch: {
                     error: {
-                        description: "An error occurred while retrieving your policy consents.",
-                        message: "Retrieval Failed"
+                        description: "உங்கள் கொள்கை சம்மதத்தை பெறுந்தோதில் எLaravel ஏற்பட்டுவிட்டது.",
+                        message: "பெறுதல் தோல்வியடைந்தது"
                     },
                     genericError: {
-                        description: "An error occurred while retrieving your policy consents.",
-                        message: "Retrieval Failed"
+                        description: "உங்கள் கொள்கை சம்மதத்தை பெறுந்தோதில் எள ஏற்பட்டுவிட்டது.",
+                        message: "பெறுதல் தோல்வியடைந்தது"
                     },
                     success: {
                         description: "",
@@ -480,21 +478,21 @@ export const myAccount: MyAccountNS = {
                 },
                 revoke: {
                     error: {
-                        description: "An error occurred while revoking the policy consent.",
-                        message: "Revoke Failed"
+                        description: "கொள்கை சம்மதத்தை திரும்பப் பெறுக போது எள ஏற்பட்டுவிட்டது.",
+                        message: "திரும்பப் பெறுதல் தோல்வியடைந்தது"
                     },
                     genericError: {
-                        description: "An error occurred while revoking the policy consent.",
-                        message: "Revoke Failed"
+                        description: "கொள்கை சம்மதத்தை திரும்பப் பெறுக போது எள ஏற்பட்டுவிட்டது.",
+                        message: "திரும்பப் பெறுதல் தோல்வியடைந்தது"
                     },
                     success: {
-                        description: "The policy consent has been revoked successfully.",
-                        message: "Consent Revoked"
+                        description: "கொள்கை சம்மதம் வெற்றிகரமாக திரும்பப் பெறப்பட்டுவிட்டது.",
+                        message: "சம்மதம் திரும்பப் பெறப்பட்டுவிட்டது"
                     }
                 }
             },
-            policyUrlLabel: "View Policy",
-            versionLabel: "Version {{version}}"
+            policyUrlLabel: "கொள்கையைக் காணுக",
+            versionLabel: "பதிப்பு {{version}}"
         },
         
         cookieConsent: {
@@ -1767,6 +1765,10 @@ export const myAccount: MyAccountNS = {
             subTitle: "உங்கள் பயன்பாடுகளைக் கண்டறிந்து அணுகவும்",
             title: "பயன்பாடுகள்"
         },
+        consents: {
+            subTitle: "நீங்கள் பயன்பாடு மற்றும் ஏற்றுக்கொண்ட கொள்கைகளுக்கு வழங்கிய அனுமதிகளை நிர்வகிக்கவும்",
+            title: "அனுமதிகள்"
+        },
         overview: {
             subTitle: "உங்கள் தனிப்பட்ட தகவல், கணக்கு பாதுகாப்பு மற்றும் தனியுரிமை அமைப்புகளை நிர்வகிக்கவும்",
             title: "வருக, {{firstName}}"
@@ -1861,23 +1863,22 @@ export const myAccount: MyAccountNS = {
         },
         consentManagement: {
             actionTitles: {
-                empty: "நீங்கள் எந்தவொரு செயலிற்கும் அனுமதி அளிக்கவில்லை"
+                empty: "நீங்கள் எந்தவொரு பயன்பாட்டிற்கும் சம்மதம் அளிக்கவில்லை"
             },
-            description: "ஒவ்வொரு பயன்பாட்டிற்கும் நீங்கள் வழங்கிய சம்மதங்களை மதிப்பாய்வு செய்யவும். " +
-                "மேலும், அவற்றில் ஒன்று அல்லது பலவற்றை நீங்கள் தேவைக்கேற்ப திரும்பப் பெறலாம்.",
-            heading: "அனுமதியளிக்கப்பட்ட செயலிகள்",
+            description: "ஒவ்வொரு பயன்பாட்டிற்கும் நீங்கள் வழங்கிய சம்மதங்களை மதிப்பாய்வு செய்யுங்கள். மேலும், நீங்கள் தேவைக்கேற்ப அவற்றில் ஒன்று அல்லது பலவற்றை திரும்பப் பெறலாம்.",
+            heading: "சம்மதங்களை நிர்வகிக்கவும்",
             placeholders: {
                 emptyConsentList: {
-                    heading: "நீங்கள் எந்தவொரு செயலிற்கும் அனுமதி அளிக்கவில்லை."
+                    heading: "நீங்கள் எந்தவொரு பயன்பாட்டிற்கும் சம்மதம் அளிக்கவில்லை"
                 }
             }
         },
         policyConsentManagement: {
-            description: "Review the policies you have accepted.",
-            heading: "Policy Consents",
+            description: "நீங்கள் ஏற்றுக்கொண்ட கொள்கைகளை மதிப்பாய்வு செய்யுங்கள்.",
+            heading: "கொள்கை சம்மதங்கள்",
             placeholders: {
                 emptyConsentList: {
-                    heading: "You have not accepted any policy consents"
+                    heading: "நீங்கள் எந்த கொள்கை சம்மதத்தையும் ஏற்றுக்கொள்ளவில்லை"
                 }
             }
         },

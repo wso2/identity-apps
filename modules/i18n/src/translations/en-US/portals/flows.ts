@@ -281,7 +281,7 @@ export const flows: flowsNS = {
                     label: "Phone number field must have a label to be displayed to users."
                 },
                 policyConsent: {
-                    general: "Required fields are not properly configured for the policy consent with ID <1>{{id}}</1>.",
+                    general: "Required fields are not properly configured for the policy consent.",
                     noPoliciesAvailable: "No policies are available for selection.",
                     policiesRequired: "At least one policy must be selected."
                 },

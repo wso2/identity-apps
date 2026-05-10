@@ -448,28 +448,28 @@ export const myAccount: MyAccountNS = {
         policyConsentManagement: {
             dangerZones: {
                 revoke: {
-                    actionTitle: "Revoke",
-                    header: "Revoke Policy Consent",
-                    subheader: "This action will revoke your consent for this policy. You may be asked to re-consent " +
-                        "the next time you access the service."
+                    actionTitle: "Revogar",
+                    header: "Revogar Consentimento de Política",
+                    subheader: "Esta ação revogará seu consentimento para esta política. Você pode ser solicitado a consentir novamente " +
+                        "na próxima vez que acessar o serviço."
                 }
             },
             modals: {
                 revokeModal: {
-                    heading: "Revoke consent for {{policyName}}",
-                    message: "This will revoke your consent for this policy. You may be asked to re-consent the " +
-                        "next time you access the service. Are you sure you want to continue?"
+                    heading: "Revogar consentimento para {{policyName}}",
+                    message: "Isso revogará seu consentimento para esta política. Você pode ser solicitado a consentir novamente " +
+                        "na próxima vez que acessar o serviço. Tem certeza de que deseja continuar?"
                 }
             },
             notifications: {
                 fetch: {
                     error: {
-                        description: "An error occurred while retrieving your policy consents.",
-                        message: "Retrieval Failed"
+                        description: "Ocorreu um erro ao recuperar seus consentimentos de política.",
+                        message: "Falha na Recuperação"
                     },
                     genericError: {
-                        description: "An error occurred while retrieving your policy consents.",
-                        message: "Retrieval Failed"
+                        description: "Ocorreu um erro ao recuperar seus consentimentos de política.",
+                        message: "Falha na Recuperação"
                     },
                     success: {
                         description: "",
@@ -478,21 +478,21 @@ export const myAccount: MyAccountNS = {
                 },
                 revoke: {
                     error: {
-                        description: "An error occurred while revoking the policy consent.",
-                        message: "Revoke Failed"
+                        description: "Ocorreu um erro ao revogar o consentimento da política.",
+                        message: "Falha na Revogação"
                     },
                     genericError: {
-                        description: "An error occurred while revoking the policy consent.",
-                        message: "Revoke Failed"
+                        description: "Ocorreu um erro ao revogar o consentimento da política.",
+                        message: "Falha na Revogação"
                     },
                     success: {
-                        description: "The policy consent has been revoked successfully.",
-                        message: "Consent Revoked"
+                        description: "O consentimento da política foi revogado com sucesso.",
+                        message: "Consentimento Revogado"
                     }
                 }
             },
-            policyUrlLabel: "View Policy",
-            versionLabel: "Version {{version}}"
+            policyUrlLabel: "Ver Política",
+            versionLabel: "Versão {{version}}"
         },
         
         cookieConsent: {
@@ -1750,6 +1750,10 @@ export const myAccount: MyAccountNS = {
             subTitle: "Descubra e acesse seus aplicativos",
             title: "Applications"
         },
+        consents: {
+            subTitle: "Gerencie os consentimentos que forneceu para aplicativos e políticas aceitas",
+            title: "Consentimentos"
+        },
         overview: {
             subTitle: "Gerenciar suas informações pessoais, segurança da conta e configurações de privacidade",
             title: "Bem-vindo, {{firstName}}"
@@ -1855,11 +1859,11 @@ export const myAccount: MyAccountNS = {
             }
         },
         policyConsentManagement: {
-            description: "Review the policies you have accepted.",
-            heading: "Policy Consents",
+            description: "Revise as políticas que aceitou.",
+            heading: "Consentimentos de Política",
             placeholders: {
                 emptyConsentList: {
-                    heading: "You have not accepted any policy consents"
+                    heading: "Você não aceitou nenhum consentimento de política"
                 }
             }
         },

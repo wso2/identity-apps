@@ -22,18 +22,19 @@ import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
+import { useRequiredScopes } from "@wso2is/access-control";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 import { PolicyConfigItemInterface } from "@wso2is/admin.flow-builder-core.v1/models/policies";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import {
-    ConsentInterface,
     ConsentListItemInterface,
-    useGetPurposes,
-    useGetPurposesByIds
+    useGetPurposes
 } from "@wso2is/common.consents.v1";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
+import { useSelector } from "react-redux";
 
 /**
  * Props interface of {@link ConsentExtendedProperties}
@@ -52,16 +53,15 @@ const ConsentExtendedProperties: FunctionComponent<ConsentExtendedPropertiesProp
     resource,
     onChange
 }: ConsentExtendedPropertiesPropsInterface): ReactElement => {
-    const { mappedData: allPolicies, isLoading: isPoliciesLoading } = useGetPurposes({
-        filter: "type eq Policy",
-        limit: 50
-    });
+    const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.consents
+    );
 
-    const allPolicyIds: string[] = useMemo((): string[] => {
-        return allPolicies?.map((p: ConsentListItemInterface) => p.id) ?? [];
-    }, [ allPolicies ]);
+    const hasConsentsReadPermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.read);
 
-    const { data: allPolicyDetails, isLoading: isPolicyDetailsLoading } = useGetPurposesByIds(allPolicyIds);
+    const { mappedData: allPolicies, isLoading: isPoliciesLoading } = useGetPurposes(
+        hasConsentsReadPermission ? { filter: "type eq Policy", limit: 50 } : null
+    );
 
     const selectedPolicies: PolicyConfigItemInterface[] = useMemo((): PolicyConfigItemInterface[] => {
         return resource.config?.policies ?? [];
@@ -71,23 +71,7 @@ const ConsentExtendedProperties: FunctionComponent<ConsentExtendedPropertiesProp
         let updatedPolicies: PolicyConfigItemInterface[];
 
         if (isChecked) {
-            const fullDetails: ConsentInterface | undefined = allPolicyDetails.find(
-                (p: ConsentInterface) => p.id === policyId
-            );
-
-            if (!fullDetails) {
-                return;
-            }
-
-            const newItem: PolicyConfigItemInterface = {
-                description: fullDetails.description,
-                mandatory: fullDetails.mandatory ?? false,
-                name: fullDetails.name,
-                policyUrl: fullDetails.policyUrl ?? "",
-                purposeId: fullDetails.id
-            };
-
-            updatedPolicies = [ ...selectedPolicies, newItem ];
+            updatedPolicies = [ ...selectedPolicies, { purposeId: policyId } ];
         } else {
             updatedPolicies = selectedPolicies.filter(
                 (p: PolicyConfigItemInterface) => p.purposeId !== policyId
@@ -102,7 +86,7 @@ const ConsentExtendedProperties: FunctionComponent<ConsentExtendedPropertiesProp
             handlePolicyToggle(policyId, isChecked);
         };
 
-    if (isPoliciesLoading || isPolicyDetailsLoading) {
+    if (isPoliciesLoading) {
         return (
             <Stack data-componentid={ componentId }>
                 <CircularProgress size={ 24 } />

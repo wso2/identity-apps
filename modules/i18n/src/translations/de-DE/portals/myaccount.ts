@@ -442,28 +442,26 @@ export const myAccount: MyAccountNS = {
         "policyConsentManagement": {
             "dangerZones": {
                 "revoke": {
-                    "actionTitle": "Revoke",
-                    "header": "Revoke Policy Consent",
-                    "subheader": "This action will revoke your consent for this policy. You may be asked to re-consent " +
-                        "the next time you access the service."
+                    "actionTitle": "Widerrufen",
+                    "header": "Richtlinienzustimmung widerrufen",
+                    "subheader": "Diese Aktion widerruft Ihre Zustimmung zu dieser Richtlinie. Möglicherweise werden Sie beim nächsten Zugriff auf den Dienst aufgefordert, erneut zuzustimmen."
                 }
             },
             "modals": {
                 "revokeModal": {
-                    "heading": "Revoke consent for {{policyName}}",
-                    "message": "This will revoke your consent for this policy. You may be asked to re-consent the " +
-                        "next time you access the service. Are you sure you want to continue?"
+                    "heading": "Zustimmung für {{policyName}} widerrufen",
+                    "message": "Dies widerruft Ihre Zustimmung zu dieser Richtlinie. Möglicherweise werden Sie beim nächsten Zugriff auf den Dienst aufgefordert, erneut zuzustimmen. Möchten Sie fortfahren?"
                 }
             },
             "notifications": {
                 "fetch": {
                     "error": {
-                        "description": "An error occurred while retrieving your policy consents.",
-                        "message": "Retrieval Failed"
+                        "description": "Beim Abrufen Ihrer Richtlinienzustimmungen ist ein Fehler aufgetreten.",
+                        "message": "Abruf fehlgeschlagen"
                     },
                     "genericError": {
-                        "description": "An error occurred while retrieving your policy consents.",
-                        "message": "Retrieval Failed"
+                        "description": "Beim Abrufen Ihrer Richtlinienzustimmungen ist ein Fehler aufgetreten.",
+                        "message": "Abruf fehlgeschlagen"
                     },
                     "success": {
                         "description": "",
@@ -472,20 +470,20 @@ export const myAccount: MyAccountNS = {
                 },
                 "revoke": {
                     "error": {
-                        "description": "An error occurred while revoking the policy consent.",
-                        "message": "Revoke Failed"
+                        "description": "Beim Widerrufen der Richtlinienzustimmung ist ein Fehler aufgetreten.",
+                        "message": "Widerruf fehlgeschlagen"
                     },
                     "genericError": {
-                        "description": "An error occurred while revoking the policy consent.",
-                        "message": "Revoke Failed"
+                        "description": "Beim Widerrufen der Richtlinienzustimmung ist ein Fehler aufgetreten.",
+                        "message": "Widerruf fehlgeschlagen"
                     },
                     "success": {
-                        "description": "The policy consent has been revoked successfully.",
-                        "message": "Consent Revoked"
+                        "description": "Die Richtlinienzustimmung wurde erfolgreich widerrufen.",
+                        "message": "Zustimmung widerrufen"
                     }
                 }
             },
-            "policyUrlLabel": "View Policy",
+            "policyUrlLabel": "Richtlinie anzeigen",
             "versionLabel": "Version {{version}}"
         },
         
@@ -1704,6 +1702,10 @@ export const myAccount: MyAccountNS = {
             "subTitle": "Entdecken Sie Ihre Anwendungen und greifen Sie darauf zu",
             "title": "Anwendungen"
         },
+        "consents": {
+            "subTitle": "Verwalten Sie die Zustimmungen, die Sie für Anwendungen und akzeptierte Richtlinien erteilt haben",
+            "title": "Zustimmungen"
+        },
         "overview": {
             "subTitle": "Verwalten Sie Ihre persönlichen Daten, Kontosicherheit und Datenschutzeinstellungen",
             "title": "Willkommen, {{firstName}}"
@@ -1805,11 +1807,11 @@ export const myAccount: MyAccountNS = {
             }
         },
         "policyConsentManagement": {
-            "description": "Review the policies you have accepted.",
-            "heading": "Policy Consents",
+            "description": "Überprüfen Sie die Richtlinien, denen Sie zugestimmt haben.",
+            "heading": "Richtlinienzustimmungen",
             "placeholders": {
                 "emptyConsentList": {
-                    "heading": "You have not accepted any policy consents"
+                    "heading": "Sie haben keiner Richtlinienzustimmung zugestimmt"
                 }
             }
         },

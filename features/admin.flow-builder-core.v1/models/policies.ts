@@ -17,13 +17,8 @@
  */
 
 /**
- * Represents a single policy stored inline in the flow API payload.
- * Embedding name, description, mandatory, and policyUrl avoids API calls during login flow execution.
+ * Represents a policy reference stored in the flow API payload.
  */
 export interface PolicyConfigItemInterface {
-    description?: string;
-    mandatory: boolean;
-    name: string;
-    policyUrl: string;
     purposeId: string;
 }

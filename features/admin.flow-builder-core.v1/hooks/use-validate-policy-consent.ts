@@ -59,8 +59,7 @@ const useValidatePolicyConsent = (
             if (!getNotification(notificationId)) {
                 const error: Notification = new Notification(
                     notificationId,
-                    t("flows:core.validation.fields.policyConsent.general",
-                        { id: resource.id }),
+                    t("flows:core.validation.fields.policyConsent.general"),
                     NotificationType.ERROR
                 );
 

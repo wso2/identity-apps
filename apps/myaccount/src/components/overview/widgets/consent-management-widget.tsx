@@ -40,7 +40,7 @@ export const ConsentManagementWidget: FunctionComponent<ConsentManagementWidgetP
     const { t } = useTranslation();
 
     const navigate = () => {
-        history.push(AppConstants.getPaths().get("CONSENTS"));
+        history.push(AppConstants.getPaths().get("SECURITY") + "#" + CommonConstants.CONSENTS_CONTROL);
     };
 
     return (

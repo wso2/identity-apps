@@ -93,6 +93,7 @@
         "resourceType": "STEP",
         "category": "INTERFACE",
         "type": "VIEW",
+        "variant": "POLICY_CONSENT",
         "version": "0.1.0",
         "deprecated": false,
         "display": {

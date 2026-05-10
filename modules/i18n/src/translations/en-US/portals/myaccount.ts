@@ -1751,6 +1751,10 @@ export const myAccount: MyAccountNS = {
             subTitle: "Discover and access your applications",
             title: "Applications"
         },
+        consents: {
+            subTitle: "Manage the consents you have provided for applications and accepted policies",
+            title: "Consents"
+        },
         overview: {
             subTitle: "Manage your personal information, account security, and privacy settings",
             title: "Welcome, {{firstName}}"

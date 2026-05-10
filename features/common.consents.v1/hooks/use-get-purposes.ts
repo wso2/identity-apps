@@ -36,30 +36,30 @@ interface UseGetPurposesParamsInterface {
 /**
  * Hook to get the list of purposes via SWR.
  *
- * @param params - Pagination parameters.
+ * @param params - Pagination parameters. Pass `null` to skip the request.
  * @returns SWR result with the mapped consent list and links.
  */
 export const useGetPurposes = (
-    params: UseGetPurposesParamsInterface
+    params: UseGetPurposesParamsInterface | null
 ): RequestResultInterface<PurposeListResponseDTOInterface, RequestErrorInterface> & {
     mappedData: ConsentListItemInterface[] | undefined;
 } => {
-    const { after, before, filter, limit } = params;
-
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        params: {
-            ...(after ? { after } : {}),
-            ...(before ? { before } : {}),
-            ...(filter ? { filter } : {}),
-            limit
-        },
-        url: store.getState().config.endpoints.consentMgtPurposes
-    };
+    const requestConfig: RequestConfigInterface | null = params
+        ? {
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            method: HttpMethods.GET,
+            params: {
+                ...(params.after ? { after: params.after } : {}),
+                ...(params.before ? { before: params.before } : {}),
+                ...(params.filter ? { filter: params.filter } : {}),
+                limit: params.limit
+            },
+            url: store.getState().config.endpoints.consentMgtPurposes
+        }
+        : null;
 
     const requestResult: RequestResultInterface<PurposeListResponseDTOInterface, RequestErrorInterface> =
         useRequest<PurposeListResponseDTOInterface, RequestErrorInterface>(requestConfig);

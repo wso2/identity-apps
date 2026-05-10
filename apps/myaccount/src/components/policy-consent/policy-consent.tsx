@@ -31,15 +31,18 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { List } from "semantic-ui-react";
-import { PolicyConsentList } from "../consents/policy-consents";
+import { PolicyConsentList } from "./policy-consents-list";
 import {
     AlertInterface,
     AlertLevels
 } from "../../models";
 import { AppState } from "../../store";
-import { ModalComponent } from "../shared";
+import { ModalComponent, SettingsSection } from "../shared";
 
+/**
+ * Proptypes for the policy consent component.
+ * Also see {@link PolicyConsent.defaultProps}
+ */
 interface PolicyConsentComponentProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
@@ -209,21 +212,30 @@ export const PolicyConsent: FunctionComponent<PolicyConsentComponentProps> = (
     };
 
     return (
-        <List
-            divided
-            verticalAlign="middle"
-            className="main-content-inner"
-            data-testid={ `${testId}-policy-list` }
-        >
-            <PolicyConsentList
-                data-testid={ `${testId}-policy-consent-list` }
-                items={ policyConsentItems }
-                activeIndexes={ policyActiveIndexes }
-                onToggleDetail={ handlePolicyToggleDetail }
-                onRevokeClick={ handlePolicyRevokeClick }
-            />
-            { revokingPolicyItem && policyConsentRevokeModal() }
-        </List>
+        <>
+            <SettingsSection
+                data-testid={ `${testId}-settings-section` }
+                description={ t("myAccount:sections.policyConsentManagement.description") }
+                header={ t("myAccount:sections.policyConsentManagement.heading") }
+                placeholder={
+                    !(policyConsentItems && policyConsentItems.length && policyConsentItems.length > 0)
+                        ? t("myAccount:sections.policyConsentManagement.placeholders.emptyConsentList.heading")
+                        : null
+                }
+                showActionBar={
+                    !(policyConsentItems && policyConsentItems.length && policyConsentItems.length > 0)
+                }
+            >
+                <PolicyConsentList
+                    data-testid={ `${testId}-policy-consent-list` }
+                    items={ policyConsentItems }
+                    activeIndexes={ policyActiveIndexes }
+                    onToggleDetail={ handlePolicyToggleDetail }
+                    onRevokeClick={ handlePolicyRevokeClick }
+                />
+                { revokingPolicyItem && policyConsentRevokeModal() }
+            </SettingsSection>
+        </>
     );
 };
 

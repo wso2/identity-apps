@@ -308,6 +308,10 @@ export interface FeatureConfigInterface {
      */
     ruleBasedPasswordExpiry?: FeatureAccessConfigInterface;
     /**
+     * Consent management feature.
+     */
+    consents?: FeatureAccessConfigInterface;
+    /**
      * Connection management feature.
      */
     connections?: ConnectionConfigInterface;

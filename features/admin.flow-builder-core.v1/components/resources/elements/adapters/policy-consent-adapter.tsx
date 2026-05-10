@@ -21,13 +21,16 @@ import Box from "@oxygen-ui/react/Box";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import FormLabel from "@oxygen-ui/react/FormLabel";
+import { useRequiredScopes } from "@wso2is/access-control";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { i18nLink } from "@wso2is/common.branding.v1/utils/i18n-link";
 import { sanitizedHtmlWithLocalizedLinks } from "@wso2is/common.branding.v1/utils/sanitized-html";
-import { useGetPurposes } from "@wso2is/common.consents.v1";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { ConsentInterface, useGetPurposes, useGetPurposesByIds } from "@wso2is/common.consents.v1";
+import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import parse from "html-react-parser";
 import React, { CSSProperties, FunctionComponent, ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import useValidatePolicyConsent from "../../../../hooks/use-validate-policy-consent";
 import { PolicyConfigItemInterface } from "../../../../models/policies";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
@@ -93,14 +96,25 @@ const PolicyConsentAdapter: FunctionComponent<PolicyConsentAdapterPropsInterface
 }: PolicyConsentAdapterPropsInterface): ReactElement => {
     const { i18n } = useTranslation();
 
-    const { mappedData: allPolicies, isLoading: isAllPoliciesLoading } = useGetPurposes({
-        filter: "type eq Policy",
-        limit: 50
-    });
+    const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.consents
+    );
+
+    const hasConsentsReadPermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.read);
+
+    const { mappedData: allPolicies, isLoading: isAllPoliciesLoading } = useGetPurposes(
+        hasConsentsReadPermission ? { filter: "type eq Policy", limit: 50 } : null
+    );
 
     const selectedPolicies: PolicyConfigItemInterface[] = useMemo((): PolicyConfigItemInterface[] => {
         return resource.config?.policies ?? [];
     }, [ resource.config?.policies ]);
+
+    const selectedPurposeIds: string[] = useMemo((): string[] => {
+        return selectedPolicies.map((p: PolicyConfigItemInterface): string => p.purposeId);
+    }, [ selectedPolicies ]);
+
+    const { data: selectedPolicyDetails, isLoading: isPolicyDetailsLoading } = useGetPurposesByIds(selectedPurposeIds);
 
     useValidatePolicyConsent(resource, selectedPolicies, allPolicies);
 
@@ -114,10 +128,10 @@ const PolicyConsentAdapter: FunctionComponent<PolicyConsentAdapterPropsInterface
                 </div>
             ) }
             <Box sx={ { display: "flex", flexDirection: "column" } }>
-                { isAllPoliciesLoading ? (
+                { isAllPoliciesLoading || isPolicyDetailsLoading ? (
                     <CircularProgress size={ 24 } />
-                ) : selectedPolicies.length > 0 ? (
-                    selectedPolicies.map((policy: PolicyConfigItemInterface): ReactElement => {
+                ) : selectedPolicyDetails.length > 0 ? (
+                    selectedPolicyDetails.map((policy: ConsentInterface): ReactElement => {
                         const sanitized: string = sanitizedHtmlWithLocalizedLinks(
                             policy.description ?? "",
                             i18n.language,
@@ -126,8 +140,8 @@ const PolicyConsentAdapter: FunctionComponent<PolicyConsentAdapterPropsInterface
 
                         return (
                             <CheckboxRow
-                                key={ policy.purposeId }
-                                data-componentid={ `policy-consent-${policy.purposeId}` }
+                                key={ policy.id }
+                                data-componentid={ `policy-consent-${policy.id}` }
                             >
                                 <Checkbox
                                     checked={ false }

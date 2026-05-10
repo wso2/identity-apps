@@ -25,6 +25,7 @@
         "@mui/utils": "^5.12.3",
         "@oxygen-ui/react": "catalog:",
         "@oxygen-ui/react-icons": "^2.4.6",
+        "@wso2is/access-control": "^3.5.6",
         "@wso2is/admin.branding.v1": "workspace:^",
         "@wso2is/admin.claims.v1": "^2.31.2",
         "@wso2is/admin.core.v1": "workspace:^",

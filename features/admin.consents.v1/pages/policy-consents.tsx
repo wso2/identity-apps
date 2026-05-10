@@ -16,17 +16,19 @@
  * under the License.
  */
 
+import { Show } from "@wso2is/access-control";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     ConsentListItemInterface,
     deletePurpose,
     useGetPurposes
 } from "@wso2is/common.consents.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -36,7 +38,7 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { PolicyConsentsList } from "../components/policy-consents-list";
@@ -59,6 +61,10 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.consents
+    );
 
     const [ searchQuery, setSearchQuery ] = useState<string>(null);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
@@ -256,15 +262,17 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                 text: t("consents:pages.list.backButton")
             } }
             action={ (
-                <PrimaryButton
-                    onClick={ (): void => {
-                        history.push(AppConstants.getPaths().get("POLICY_CONSENTS_NEW"));
-                    } }
-                    data-componentid={ `${componentId}-add-button` }
-                >
-                    <Icon name="add" />
-                    { t("consents:pages.list.actions.addPolicy") }
-                </PrimaryButton>
+                <Show when={ consentsFeatureConfig?.scopes?.create }>
+                    <PrimaryButton
+                        onClick={ (): void => {
+                            history.push(AppConstants.getPaths().get("POLICY_CONSENTS_NEW"));
+                        } }
+                        data-componentid={ `${componentId}-add-button` }
+                    >
+                        <Icon name="add" />
+                        { t("consents:pages.list.actions.addPolicy") }
+                    </PrimaryButton>
+                </Show>
             ) }
         >
             <ListLayout

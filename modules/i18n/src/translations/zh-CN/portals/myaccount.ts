@@ -440,28 +440,26 @@ export const myAccount: MyAccountNS = {
         "policyConsentManagement": {
             "dangerZones": {
                 "revoke": {
-                    "actionTitle": "Revoke",
-                    "header": "Revoke Policy Consent",
-                    "subheader": "This action will revoke your consent for this policy. You may be asked to re-consent " +
-                        "the next time you access the service."
+                    "actionTitle": "撤销",
+                    "header": "撤销政策同意",
+                    "subheader": "此操作将撤销您对此政策的同意。下次您访问该服务时，可能会要求您重新同意。"
                 }
             },
             "modals": {
                 "revokeModal": {
-                    "heading": "Revoke consent for {{policyName}}",
-                    "message": "This will revoke your consent for this policy. You may be asked to re-consent the " +
-                        "next time you access the service. Are you sure you want to continue?"
+                    "heading": "撤销对 {{policyName}} 的同意",
+                    "message": "这将撤销您对此政策的同意。下次您访问该服务时，可能会要求您重新同意。您确定要继续吗？"
                 }
             },
             "notifications": {
                 "fetch": {
                     "error": {
-                        "description": "An error occurred while retrieving your policy consents.",
-                        "message": "Retrieval Failed"
+                        "description": "检索您的政策同意时出错。",
+                        "message": "检索失败"
                     },
                     "genericError": {
-                        "description": "An error occurred while retrieving your policy consents.",
-                        "message": "Retrieval Failed"
+                        "description": "检索您的政策同意时出错。",
+                        "message": "检索失败"
                     },
                     "success": {
                         "description": "",
@@ -470,21 +468,21 @@ export const myAccount: MyAccountNS = {
                 },
                 "revoke": {
                     "error": {
-                        "description": "An error occurred while revoking the policy consent.",
-                        "message": "Revoke Failed"
+                        "description": "撤销政策同意时出错。",
+                        "message": "撤销失败"
                     },
                     "genericError": {
-                        "description": "An error occurred while revoking the policy consent.",
-                        "message": "Revoke Failed"
+                        "description": "撤销政策同意时出错。",
+                        "message": "撤销失败"
                     },
                     "success": {
-                        "description": "The policy consent has been revoked successfully.",
-                        "message": "Consent Revoked"
+                        "description": "政策同意已成功撤销。",
+                        "message": "同意已撤销"
                     }
                 }
             },
-            "policyUrlLabel": "View Policy",
-            "versionLabel": "Version {{version}}"
+            "policyUrlLabel": "查看政策",
+            "versionLabel": "版本 {{version}}"
         },
         
         "cookieConsent": {
@@ -1700,6 +1698,10 @@ export const myAccount: MyAccountNS = {
             "subTitle": "发现并访问您的应用程序",
             "title": "申请"
         },
+        "consents": {
+            "subTitle": "管理您为应用程序和已接受的政策提供的同意",
+            "title": "同意"
+        },
         "overview": {
             "subTitle": "管理您的个人信息，帐户安全和隐私设置",
             "title": "欢迎，{{firstName}}"
@@ -1801,11 +1803,11 @@ export const myAccount: MyAccountNS = {
             }
         },
         "policyConsentManagement": {
-            "description": "Review the policies you have accepted.",
-            "heading": "Policy Consents",
+            "description": "查看您已接受的政策。",
+            "heading": "政策同意",
             "placeholders": {
                 "emptyConsentList": {
-                    "heading": "You have not accepted any policy consents"
+                    "heading": "您尚未接受任何政策同意"
                 }
             }
         },

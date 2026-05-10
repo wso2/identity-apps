@@ -1077,6 +1077,7 @@ export interface MyAccountNS {
     };
     pages: {
         applications: Page;
+        consents: Page;
         overview: Page;
         personalInfo: Page;
         personalInfoWithoutLinkedAccounts: Page;

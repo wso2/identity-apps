@@ -24,8 +24,10 @@ import Grid from "@oxygen-ui/react/Grid";
 import Link from "@oxygen-ui/react/Link";
 import Switch from "@oxygen-ui/react/Switch";
 import Typography from "@oxygen-ui/react/Typography";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
 import { BrandingPreferenceTypes } from "@wso2is/common.branding.v1/models";
 import {
@@ -38,7 +40,7 @@ import {
     useGetPurposeVersions
 } from "@wso2is/common.consents.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
 import { FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/form";
@@ -47,7 +49,7 @@ import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, type ReactElement } from "react";
 import { Field, FieldInputProps, FormRenderProps } from "react-final-form";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { ConsentDescriptionEditor } from "./consent-description-editor";
 import { ConsentDescriptionPreview } from "./consent-description-preview";
@@ -112,6 +114,12 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.consents
+    );
+    const hasCreatePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.create);
+    const hasUpdatePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.update);
 
     const {
         data: consent,
@@ -489,7 +497,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                         ) => (
                                                             <Box>
                                                                 <FormControlLabel
-                                                                    disabled
+                                                                    disabled={ !isCreateMode }
                                                                     control={ (
                                                                         <Switch
                                                                             name={ input.name }
@@ -499,7 +507,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                                             ) => {
                                                                                 input.onChange(e.target.checked);
                                                                             } }
-                                                                            disabled
+                                                                            disabled={ !isCreateMode }
                                                                         />
                                                                     ) }
                                                                     label={ t("consents:form.mandatory.label") }
@@ -560,16 +568,18 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                         </Hint>
                                                     )
                                                 }
-                                                <PrimaryButton
-                                                    type="submit"
-                                                    loading={ isSubmitting }
-                                                    disabled={ isUnchanged }
-                                                >
-                                                    { isCreateMode
-                                                        ? t("common:create")
-                                                        : t("consents:form.createNewVersion")
-                                                    }
-                                                </PrimaryButton>
+                                                { (isCreateMode ? hasCreatePermission : hasUpdatePermission) && (
+                                                    <PrimaryButton
+                                                        type="submit"
+                                                        loading={ isSubmitting }
+                                                        disabled={ isUnchanged }
+                                                    >
+                                                        { isCreateMode
+                                                            ? t("common:create")
+                                                            : t("consents:form.createNewVersion")
+                                                        }
+                                                    </PrimaryButton>
+                                                ) }
                                             </Grid>
                                         </Grid>
                                     </form>

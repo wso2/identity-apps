@@ -449,28 +449,29 @@ export const myAccount: MyAccountNS = {
         policyConsentManagement: {
             dangerZones: {
                 revoke: {
-                    actionTitle: "Revoke",
-                    header: "Revoke Policy Consent",
-                    subheader: "This action will revoke your consent for this policy. You may be asked to re-consent " +
-                        "the next time you access the service."
+                    actionTitle: "අවලංගු කරන්න",
+                    header: "ප්‍රතිපත්තිය අනුමැතිය අවලංගු කරන්න",
+                    subheader: "මෙම ක්‍රියාව ඔබගේ ඉල්ලුම අනුසාරයෙන් මෙම ප්‍රතිපත්තිය සඳහා වන අනුමැතිය අවලංගු කරනු ඇත. " +
+                        "ඔබ ඊළඟ වතාවට සේවාවට ප්‍රවේශ වන විට නැවත අනුමැතිය දීමට ඔබෙන් ඉල්ලා සිටින්න පුළුවන්."
                 }
             },
             modals: {
                 revokeModal: {
-                    heading: "Revoke consent for {{policyName}}",
-                    message: "This will revoke your consent for this policy. You may be asked to re-consent the " +
-                        "next time you access the service. Are you sure you want to continue?"
+                    heading: "{{policyName}} සඳහා අනුමැතිය අවලංගු කරන්න",
+                    message: "මෙය ඔබගේ {{policyName}} ප්‍රතිපත්තිය සඳහා වන අනුමැතිය අවලංගු කරනු ඇත. " +
+                        "ඔබ ඊළඟ වතාවට සේවාවට ප්‍රවේශ වන විට නැවත අනුමැතිය දීමට ඔබෙන් ඉල්ලා සිටින්න පුළුවන්. " +
+                        "ඔබට ඉදිරියට යාමට අවශ්‍යද?"
                 }
             },
             notifications: {
                 fetch: {
                     error: {
-                        description: "An error occurred while retrieving your policy consents.",
-                        message: "Retrieval Failed"
+                        description: "ඔබගේ ප්‍රතිපත්තිය අනුමැතිය ලබා ගැනීමේදී දෝෂයක් ඇතිවිය.",
+                        message: "ලබා ගැනීම අසාර්ථක විය"
                     },
                     genericError: {
-                        description: "An error occurred while retrieving your policy consents.",
-                        message: "Retrieval Failed"
+                        description: "ඔබගේ ප්‍රතිපත්තිය අනුමැතිය ලබා ගැනීමේදී දෝෂයක් ඇතිවිය.",
+                        message: "ලබා ගැනීම අසාර්ථක විය"
                     },
                     success: {
                         description: "",
@@ -479,21 +480,21 @@ export const myAccount: MyAccountNS = {
                 },
                 revoke: {
                     error: {
-                        description: "An error occurred while revoking the policy consent.",
-                        message: "Revoke Failed"
+                        description: "ප්‍රතිපත්තිය අනුමැතිය අවලංගු කිරීමේදී දෝෂයක් ඇතිවිය.",
+                        message: "අවලංගු කිරීම අසාර්ථක විය"
                     },
                     genericError: {
-                        description: "An error occurred while revoking the policy consent.",
-                        message: "Revoke Failed"
+                        description: "ප්‍රතිපත්තිය අනුමැතිය අවලංගු කිරීමේදී දෝෂයක් ඇතිවිය.",
+                        message: "අවලංගු කිරීම අසාර්ථක විය"
                     },
                     success: {
-                        description: "The policy consent has been revoked successfully.",
-                        message: "Consent Revoked"
+                        description: "ප්‍රතිපත්තිය අනුමැතිය සාර්ථකව අවලංගු කරන ලදි.",
+                        message: "අනුමැතිය අවලංගු කරන ලදි"
                     }
                 }
             },
-            policyUrlLabel: "View Policy",
-            versionLabel: "Version {{version}}"
+            policyUrlLabel: "ප්‍රතිපත්තිය බලන්න",
+            versionLabel: "පිටපත {{version}}"
         },
         
         cookieConsent: {
@@ -1749,6 +1750,10 @@ export const myAccount: MyAccountNS = {
             subTitle: "ඔබගේ යෙදුම් සොයාගෙන ප්‍රවේශ වන්න",
             title: "අයදුම්පත්"
         },
+        consents: {
+            subTitle: "ඔබ යෙදුම් සහ ස්වීකෘත කළ ප්‍රතිපත්තිවලට ලබා දුන් අනුමતිය කළමනාකරණය කරන්න",
+            title: "අනුමතිය"
+        },
         overview: {
             subTitle: "ඔබගේ පුද්ගලික තොරතුරු, ගිණුම් ආරක්ෂාව සහ රහස්‍යතා සැකසුම් කළමනාකරණය කරන්න",
             title: "ආයුබෝවන්, {{firstName}}"
@@ -1846,9 +1851,8 @@ export const myAccount: MyAccountNS = {
             actionTitles: {
                 empty: "ඔබ කිසිදු යෙදුමක් අනුමත කර නැත"
             },
-            description: "එක් එක් යෙදුම සඳහා ඔබ ලබා දී ඇති කැමැත්ත සමාලෝචනය කරන්න. " +
-                "එසේම, ඔබට අවශ්‍ය පරිදි එකක් හෝ කිහිපයක් අවලංගු කළ හැකිය.",
-            heading: "අනුමත යෙදුම්",
+            description: "එක් එක් යෙදුම සඳහා ඔබ ලබා දී ඇති අනුමැතිය සමාලෝචනය කරන්න. එසේම, ඔබට අවශ්‍ය පරිදි එකක් හෝ බොහොමයක් අවලංගු කළ හැකිය.",
+            heading: "අනුමැතිය කළමනාකරණය කරන්න",
             placeholders: {
                 emptyConsentList: {
                     heading: "ඔබ කිසිදු යෙදුමක් අනුමත කර නැත"
@@ -1856,11 +1860,11 @@ export const myAccount: MyAccountNS = {
             }
         },
         policyConsentManagement: {
-            description: "Review the policies you have accepted.",
-            heading: "Policy Consents",
+            description: "ඔබ පිළිගැනීමට ඇත්තන් ප්‍රතිපත්තිය සමාලෝචනය කරන්න.",
+            heading: "ප්‍රතිපත්තිය අනුමැතිය",
             placeholders: {
                 emptyConsentList: {
-                    heading: "You have not accepted any policy consents"
+                    heading: "ඔබ ප්‍රතිපත්තිය කිසිදු අනුමැතිය පිළිගෙන නැත"
                 }
             }
         },

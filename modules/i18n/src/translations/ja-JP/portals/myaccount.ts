@@ -440,28 +440,26 @@ export const myAccount: MyAccountNS = {
         "policyConsentManagement": {
             "dangerZones": {
                 "revoke": {
-                    "actionTitle": "Revoke",
-                    "header": "Revoke Policy Consent",
-                    "subheader": "This action will revoke your consent for this policy. You may be asked to re-consent " +
-                        "the next time you access the service."
+                    "actionTitle": "取り消す",
+                    "header": "ポリシー同意を取り消す",
+                    "subheader": "このアクションはこのポリシーに対するあなたの同意を取り消します。次回サービスにアクセスするときに、再度同意するよう求められる場合があります。"
                 }
             },
             "modals": {
                 "revokeModal": {
-                    "heading": "Revoke consent for {{policyName}}",
-                    "message": "This will revoke your consent for this policy. You may be asked to re-consent the " +
-                        "next time you access the service. Are you sure you want to continue?"
+                    "heading": "{{policyName}} の同意を取り消す",
+                    "message": "これはこのポリシーに対するあなたの同意を取り消します。次回サービスにアクセスするときに、再度同意するよう求められる場合があります。続行してよろしいですか？"
                 }
             },
             "notifications": {
                 "fetch": {
                     "error": {
-                        "description": "An error occurred while retrieving your policy consents.",
-                        "message": "Retrieval Failed"
+                        "description": "ポリシー同意を取得中にエラーが発生しました。",
+                        "message": "取得に失敗しました"
                     },
                     "genericError": {
-                        "description": "An error occurred while retrieving your policy consents.",
-                        "message": "Retrieval Failed"
+                        "description": "ポリシー同意を取得中にエラーが発生しました。",
+                        "message": "取得に失敗しました"
                     },
                     "success": {
                         "description": "",
@@ -470,21 +468,21 @@ export const myAccount: MyAccountNS = {
                 },
                 "revoke": {
                     "error": {
-                        "description": "An error occurred while revoking the policy consent.",
-                        "message": "Revoke Failed"
+                        "description": "ポリシー同意を取り消中にエラーが発生しました。",
+                        "message": "取り消しに失敗しました"
                     },
                     "genericError": {
-                        "description": "An error occurred while revoking the policy consent.",
-                        "message": "Revoke Failed"
+                        "description": "ポリシー同意を取り消中にエラーが発生しました。",
+                        "message": "取り消しに失敗しました"
                     },
                     "success": {
-                        "description": "The policy consent has been revoked successfully.",
-                        "message": "Consent Revoked"
+                        "description": "ポリシー同意は正常に取り消されました。",
+                        "message": "同意が取り消されました"
                     }
                 }
             },
-            "policyUrlLabel": "View Policy",
-            "versionLabel": "Version {{version}}"
+            "policyUrlLabel": "ポリシーを表示",
+            "versionLabel": "バージョン {{version}}"
         },
         
         "cookieConsent": {
@@ -1699,6 +1697,10 @@ export const myAccount: MyAccountNS = {
             "subTitle": "アプリケーションを発見してアクセスします",
             "title": "アプリケーション"
         },
+        "consents": {
+            "subTitle": "アプリケーションと受け入れられたポリシーに提供した同意を管理します",
+            "title": "同意"
+        },
         "overview": {
             "subTitle": "個人情報、アカウントセキュリティ、プライバシー設定を管理する",
             "title": "ようこそ、{{firstName}}"
@@ -1800,11 +1802,11 @@ export const myAccount: MyAccountNS = {
             }
         },
         "policyConsentManagement": {
-            "description": "Review the policies you have accepted.",
-            "heading": "Policy Consents",
+            "description": "受け入れたポリシーを確認します。",
+            "heading": "ポリシー同意",
             "placeholders": {
                 "emptyConsentList": {
-                    "heading": "You have not accepted any policy consents"
+                    "heading": "ポリシーの同意を受け入れていません"
                 }
             }
         },

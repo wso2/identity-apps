@@ -49,6 +49,10 @@ interface ReorderableComponentPropsInterface
      * Additional props needed for the draggable functionality.
      */
     draggableProps?: Partial<GetDragItemProps>;
+    /**
+     * When true, hides the edit button and disables double-click to open the property panel.
+     */
+    disableEdit?: boolean;
 }
 
 const PencilIcon = ({ width = 16, height = 16 }: SVGProps<SVGSVGElement>): ReactElement => (
@@ -91,6 +95,7 @@ const ReorderableElement: FunctionComponent<ReorderableComponentPropsInterface> 
     id,
     element,
     className,
+    disableEdit = false,
     "data-componentid": componentId = "sortable-component",
     ...rest
 }: ReorderableComponentPropsInterface): ReactElement => {
@@ -148,18 +153,20 @@ const ReorderableElement: FunctionComponent<ReorderableComponentPropsInterface> 
                     alignItems="center"
                     className={ classNames("reorderable-component", className) }
                     data-componentid={ `${componentId}-${element.type}` }
-                    onDoubleClick={ handlePropertyPanelOpen }
+                    onDoubleClick={ disableEdit ? undefined : handlePropertyPanelOpen }
                 >
                     <Box className="flow-builder-dnd-actions">
                         <Handle label="Drag" cursor="grab" ref={ handleRef }>
                             <GridDotsVerticalIcon />
                         </Handle>
-                        <Handle
-                            label="Edit"
-                            onClick={ handlePropertyPanelOpen }
-                        >
-                            <PencilIcon />
-                        </Handle>
+                        { !disableEdit && (
+                            <Handle
+                                label="Edit"
+                                onClick={ handlePropertyPanelOpen }
+                            >
+                                <PencilIcon />
+                            </Handle>
+                        ) }
                         <Handle
                             label="Delete"
                             onClick={ handleElementDelete }
