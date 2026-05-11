@@ -6,14 +6,14 @@ packages:
   - "features/*"
 
 allowBuilds:
-  '@parcel/watcher': set this to true or false
-  '@swc/core': set this to true or false
-  core-js: set this to true or false
-  core-js-pure: set this to true or false
-  esbuild: set this to true or false
-  msw: set this to true or false
-  nx: set this to true or false
-  unrs-resolver: set this to true or false
+  '@parcel/watcher': true
+  '@swc/core': true
+  core-js: true
+  core-js-pure: true
+  esbuild: true
+  msw: true
+  nx: true
+  unrs-resolver: true
 
 catalog:
   "@mui/icons-material": "^5.11.16"

@@ -22,13 +22,12 @@ import Button from "@oxygen-ui/react/Button";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
-import { useAPIResources } from "@wso2is/admin.api-resources.v2/api";
-import { APIResourceCategories, APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
+import { APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
 import { APIResourceInterface, APIResourcePermissionInterface } from "@wso2is/admin.api-resources.v2/models";
 import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     Code,
@@ -53,7 +52,6 @@ import {
     ApplicationFeatureDictionaryKeys,
     ApplicationManagementConstants
 } from "../../../constants/application-management";
-import { AuthorizedAPIListItemInterface } from "../../../models/api-authorization";
 import { ApplicationTemplateIdTypes } from "../../../models/application";
 
 interface AuthorizeAPIResourcePropsInterface extends IdentifiableComponentInterface {
@@ -66,9 +64,17 @@ interface AuthorizeAPIResourcePropsInterface extends IdentifiableComponentInterf
      */
     originalTemplateId?: string,
     /**
-     * List of subscribed API Resources
+     * List of all API resources.
      */
-    subscribedAPIResourcesListData: AuthorizedAPIListItemInterface[],
+    allAPIResourcesListData: APIResourceInterface[],
+    /**
+     * List of all API resource dropdown options.
+     */
+    allAPIResourcesDropdownOptions: DropdownItemProps[],
+    /**
+     * Whether the API resources list is loading.
+     */
+    isAPIResourcesListLoading: boolean,
     /**
      * Close the wizard.
      */
@@ -76,7 +82,9 @@ interface AuthorizeAPIResourcePropsInterface extends IdentifiableComponentInterf
     /**
      * Invoke authorized API resource creation.
      */
-    handleCreateAPIResource: (apiId: string, scopes: string[], policyIdentifier: string, callback: () => void) => void;
+    handleCreateAPIResource: (
+        _apiId: string, _scopes: string[], _policyIdentifier: string, _callback: () => void
+    ) => void;
 }
 
 /**
@@ -89,7 +97,9 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const {
         templateId,
         originalTemplateId,
-        subscribedAPIResourcesListData,
+        allAPIResourcesListData,
+        allAPIResourcesDropdownOptions,
+        isAPIResourcesListLoading,
         closeWizard,
         handleCreateAPIResource,
         ["data-componentid"]: componentId = "authorize-api-resource"
@@ -127,15 +137,11 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const hasBusinessAPIResourceAuthorizationPermission: boolean = useRequiredScopes(
         applicationFeatureConfig?.subFeatures?.applicationBusinessAPIAuthorization?.scopes?.update);
 
-    const [ allAPIResourcesListData, setAllAPIResourcesListData ] = useState<APIResourceInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ isAPIResourcesListLoading, setIsAPIResourcesListLoading ] = useState<boolean>(false);
-    const [ apiCallNextAfterValue, setAPICallNextAfterValue ] = useState<string>(null);
     const [ selectedAPIResource, setSelectedAPIResource ] = useState<APIResourceInterface>(null);
     const [ selectedAPIResourceRequiresAuthorization, setSelectedAPIResourceRequiresAuthorization ]
         = useState<boolean>(true);
     const [ authorizedScopes, setAuthorizedScopes ] = useState<DropdownItemProps[]>([]);
-    const [ allAPIResourcesDropdownOptions, setAllAPIResourcesDropdownOptions ] = useState<DropdownItemProps[]>([]);
     const [ scopesDropdownOptions, setScopesDropdownOptions ] = useState<DropdownItemProps[]>([]);
     const [ isScopesDropdownLoading, setIsScopesDropdownLoading ] = useState<boolean>(false);
     const [ policyDropdownOptions, setPolicyDropdownOptions ] = useState<DropdownItemProps[]>([]);
@@ -149,17 +155,6 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const [ isSelectNoneHidden, setIsSelectNoneHidden ] = useState<boolean>(true);
     const [ m2mApplication, setM2MApplication ] = useState<boolean>(false);
     const [ isScopeSelectDropdownReady, setIsScopeSelectDropdownReady ] = useState<boolean>(true);
-    const [ isDropdownOpen, setIsDropdownOpen ] = useState<boolean>(false);
-    const [ hasStartedFetchingAllResources, setHasStartedFetchingAllResources ] = useState<boolean>(false);
-
-    const shouldFetchAPIResources: boolean = isDropdownOpen || !hasStartedFetchingAllResources;
-
-    const {
-        data: currentAPIResourcesListData,
-        isLoading: iscurrentAPIResourcesListLoading,
-        error: currentAPIResourcesFetchRequestError
-    } = useAPIResources(apiCallNextAfterValue, null, null, shouldFetchAPIResources);
-
     const {
         data: currentAPIResourceScopeListData,
         isLoading: isCurrentAPIResourceScopeListDataLoading,
@@ -173,13 +168,13 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
             || isCurrentAPIResourceScopeListDataLoading
             || currentAPIResourceScopeListData?.length === 0
         ));
-    },[ selectedAPIResource,currentAPIResourceScopeListData, iscurrentAPIResourcesListLoading ]);
+    },[ selectedAPIResource,currentAPIResourceScopeListData, isCurrentAPIResourceScopeListDataLoading ]);
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching API resources.
      */
     useEffect(() => {
-        if (currentAPIResourcesFetchRequestError || currentAPIResourceScopeListFetchError) {
+        if (currentAPIResourceScopeListFetchError) {
             dispatch(addAlert<AlertInterface>({
                 description: t("extensions:develop.apiResource.notifications.getAPIResources" +
                     ".genericError.description", {
@@ -193,91 +188,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
             }));
             closeWizard();
         }
-    }, [ currentAPIResourcesFetchRequestError ]);
-
-    /**
-     * Assign all the API resources to the dropdown options if the after value is not null.
-     */
-    useEffect(() => {
-        if (!isAPIResourcesListLoading) {
-            setIsAPIResourcesListLoading(true);
-        }
-
-        let afterValue: string;
-
-        if (currentAPIResourcesListData) {
-            const filteredDropdownItemOptions: DropdownItemProps[] =
-                (currentAPIResourcesListData?.apiResources.reduce(function (filtered: DropdownItemProps[],
-                    apiResource: APIResourceInterface) {
-
-                    const isCurrentAPIResourceSubscribed: boolean = subscribedAPIResourcesListData?.length === 0
-                        || !subscribedAPIResourcesListData?.some(
-                            (subscribedAPIResource: AuthorizedAPIListItemInterface) =>
-                                subscribedAPIResource.identifier === apiResource.identifier);
-
-                    if (isCurrentAPIResourceSubscribed) {
-                        const isCurrentAPIResourceAlreadyAdded: boolean = allAPIResourcesDropdownOptions.length === 0
-                            || !allAPIResourcesDropdownOptions?.some(
-                                (dropdownOption: DropdownItemProps) => dropdownOption.key === apiResource.id);
-
-                        if (isCurrentAPIResourceAlreadyAdded) {
-                            let isOptionDisabled: boolean = false;
-
-                            // If the feature to enforce API resource update permission is enabled,
-                            // check if the user has the required permission to authorize the API resource.
-                            if (isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled) {
-                                if (apiResource.type === APIResourceCategories.BUSINESS ||
-                                    apiResource.type === APIResourceCategories.MCP) {
-                                    // Disable business and MCP API resources
-                                    // if the user does not have the required permission.
-                                    isOptionDisabled = !hasBusinessAPIResourceAuthorizationPermission;
-                                } else {
-                                    // Disable internal API resources if the user does not have the required permission.
-                                    isOptionDisabled = !hasInternalAPIResourceAuthorizationPermission;
-                                }
-                            }
-
-                            filtered.push({
-                                disabled: isOptionDisabled,
-                                identifier: apiResource?.identifier,
-                                key: apiResource.id,
-                                text: apiResource.name,
-                                type: apiResource.type,
-                                value: apiResource.id
-                            });
-                        }
-                    }
-
-                    return filtered;
-                }, []));
-
-            setAllAPIResourcesDropdownOptions([
-                ...allAPIResourcesDropdownOptions,
-                ...filteredDropdownItemOptions ? filteredDropdownItemOptions : []
-            ]);
-
-            // Add the current API resources to the all API resources list.
-            setAllAPIResourcesListData([ ...allAPIResourcesListData, ...currentAPIResourcesListData.apiResources ]);
-
-            currentAPIResourcesListData?.links?.forEach((value: LinkInterface) => {
-                if (value.rel === APIResourcesConstants.NEXT_REL) {
-                    afterValue = value.href.split(`${APIResourcesConstants.AFTER}=`)[1];
-
-                    if (afterValue !== apiCallNextAfterValue) {
-                        setAPICallNextAfterValue(afterValue);
-                    }
-                }
-            });
-
-            // If this is the first page load, mark that we've started and stop automatic fetching
-            if (!hasStartedFetchingAllResources) {
-                setHasStartedFetchingAllResources(true);
-                setIsAPIResourcesListLoading(false);
-            } else {
-                setIsAPIResourcesListLoading(false);
-            }
-        }
-    }, [ currentAPIResourcesListData ]);
+    }, [ currentAPIResourceScopeListFetchError ]);
 
     /**
      * Assign scopes to the scopes dropdown options.
@@ -435,7 +346,6 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
      */
     const callBack = () => {
         setIsSubmitting(false);
-        setAllAPIResourcesDropdownOptions([]);
     };
 
     return (
@@ -499,8 +409,6 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                             option.value === value.value
                                     }
                                     loading={ isAPIResourcesListLoading }
-                                    onOpen={ () => setIsDropdownOpen(true) }
-                                    onClose={ () => setIsDropdownOpen(false) }
                                     renderOption={ (props: any, apiResourcesListOption: any) =>
                                         (<div { ...props }>
                                             <Header.Content>
@@ -531,30 +439,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                 ) }
                                             </Header.Content>
                                         </div>) }
-                                    options={ allAPIResourcesDropdownOptions
-                                        ?.filter((item: DropdownItemProps) => {
-                                            // For Digital Wallet apps, show ONLY VC type resources
-                                            if (isDigitalWallet) {
-                                                return item?.type === APIResourceCategories.VC;
-                                            }
-                                            // When unified MCP capabilities is enabled: all apps can access MCP servers
-                                            // When disabled: only MCP client apps can access MCP servers
-                                            if (isUnifiedMcpCapabilitiesEnabled || isMCPClient) {
-                                                return item?.type === APIResourceCategories.MCP ||
-                                                    item?.type === APIResourceCategories.TENANT ||
-                                                    item?.type === APIResourceCategories.ORGANIZATION ||
-                                                    item?.type === APIResourceCategories.BUSINESS;
-                                            } else {
-                                                // For other apps when flag is disabled: show only standard
-                                                // API resources
-                                                return item?.type === APIResourceCategories.TENANT ||
-                                                    item?.type === APIResourceCategories.ORGANIZATION ||
-                                                    item?.type === APIResourceCategories.BUSINESS;
-                                            }
-                                        }).sort((a: DropdownItemProps, b: DropdownItemProps) =>
-                                            APIResourceUtils.sortApiResourceTypes(a, b)
-                                        )
-                                    }
+                                    options={ allAPIResourcesDropdownOptions }
                                     getOptionDisabled={ (apiResourcesListOption: DropdownItemProps) =>
                                         apiResourcesListOption?.disabled }
                                     onChange={ (
