@@ -314,7 +314,7 @@ importers:
         specifier: ^3.5.8
         version: link:../../modules/access-control
       '@wso2is/admin.actions.v1':
-        specifier: ^1.16.1
+        specifier: ^1.17.0
         version: link:../../features/admin.actions.v1
       '@wso2is/admin.administrators.v1':
         specifier: ^2.29.210
@@ -335,7 +335,7 @@ importers:
         specifier: ^1.6.1
         version: link:../../features/admin.application-templates.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.42.26
+        specifier: ^2.42.27
         version: link:../../features/admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
         specifier: ^1.3.31
@@ -350,7 +350,7 @@ importers:
         specifier: ^2.32.167
         version: link:../../features/admin.branding.v1
       '@wso2is/admin.cds.v1':
-        specifier: ^1.6.4
+        specifier: ^1.6.5
         version: link:../../features/admin.cds.v1
       '@wso2is/admin.certificates.v1':
         specifier: ^2.25.206
@@ -368,7 +368,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.copilot.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.7
+        specifier: ^2.57.8
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
         specifier: ^2.25.209
@@ -467,7 +467,7 @@ importers:
         specifier: ^1.5.205
         version: link:../../features/admin.username-validation.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.38.36
+        specifier: ^2.38.37
         version: link:../../features/admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.42
@@ -497,7 +497,7 @@ importers:
         specifier: ^2.13.2
         version: link:../../modules/core
       '@wso2is/i18n':
-        specifier: ^2.40.0
+        specifier: ^2.41.0
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.2
@@ -1025,7 +1025,7 @@ importers:
         specifier: ^2.31.2
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.7
+        specifier: ^2.57.8
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: workspace:^
@@ -1040,7 +1040,7 @@ importers:
         specifier: ^2.12.10
         version: link:../../modules/core
       '@wso2is/i18n':
-        specifier: ^2.40.0
+        specifier: ^2.41.0
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.24
@@ -1312,7 +1312,7 @@ importers:
         specifier: ^2.31.1
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.3
+        specifier: ^2.57.8
         version: link:../admin.core.v1
       '@wso2is/admin.organizations.v1':
         specifier: workspace:^
@@ -1981,7 +1981,7 @@ importers:
         specifier: ^2.26.45
         version: link:../admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.7
+        specifier: ^2.57.8
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.43.3
@@ -2023,7 +2023,7 @@ importers:
         specifier: ^1.6.2
         version: link:../admin.template-core.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.38.36
+        specifier: ^2.38.37
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.42
@@ -2041,7 +2041,7 @@ importers:
         specifier: ^2.3.27
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.39.4
+        specifier: ^2.41.0
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.0
@@ -2872,10 +2872,10 @@ importers:
         specifier: 'catalog:'
         version: 2.4.6(68d5af65e266984a0e5c55056d1c3c66)
       '@wso2is/admin.applications.v1':
-        specifier: ^2.42.24
+        specifier: ^2.42.27
         version: link:../admin.applications.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.6
+        specifier: ^2.57.8
         version: link:../admin.core.v1
       '@wso2is/core':
         specifier: ^2.12.10
@@ -3784,7 +3784,7 @@ importers:
         specifier: ^3.5.6
         version: link:../../modules/access-control
       '@wso2is/admin.actions.v1':
-        specifier: ^1.16.1
+        specifier: ^1.17.0
         version: link:../admin.actions.v1
       '@wso2is/admin.administrators.v1':
         specifier: ^2.29.210
@@ -3799,7 +3799,7 @@ importers:
         specifier: ^1.6.1
         version: link:../admin.application-templates.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.42.26
+        specifier: ^2.42.27
         version: link:../admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
         specifier: ^1.3.31
@@ -3814,7 +3814,7 @@ importers:
         specifier: ^2.32.167
         version: link:../admin.branding.v1
       '@wso2is/admin.cds.v1':
-        specifier: ^1.6.4
+        specifier: ^1.6.5
         version: link:../admin.cds.v1
       '@wso2is/admin.certificates.v1':
         specifier: ^2.25.206
@@ -3901,7 +3901,7 @@ importers:
         specifier: ^2.29.28
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.38.36
+        specifier: ^2.38.37
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.42
@@ -3928,7 +3928,7 @@ importers:
         specifier: ^2.3.27
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.39.0
+        specifier: ^2.41.0
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.0
@@ -9880,13 +9880,13 @@ importers:
         specifier: ^2.25.210
         version: link:../admin.authentication.v1
       '@wso2is/admin.cds.v1':
-        specifier: 1.6.4
+        specifier: 1.6.5
         version: link:../admin.cds.v1
       '@wso2is/admin.claims.v1':
         specifier: ^2.31.2
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.6
+        specifier: ^2.57.8
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.43.3
@@ -9937,7 +9937,7 @@ importers:
         specifier: ^2.3.27
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.39.0
+        specifier: ^2.41.0
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.0
@@ -25823,8 +25823,8 @@ snapshots:
       jest-regex-util: 26.0.0
       jest-resolve: 26.6.2
       jest-resolve-dependencies: 26.6.3
-      jest-runner: 26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@13.13.52)(typescript@5.9.3))
-      jest-runtime: 26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@13.13.52)(typescript@5.9.3))
+      jest-runner: 26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@18.11.9)(typescript@5.9.3))
+      jest-runtime: 26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@18.11.9)(typescript@5.9.3))
       jest-snapshot: 26.6.2
       jest-util: 26.6.2
       jest-validate: 26.6.2
@@ -26217,6 +26217,20 @@ snapshots:
       jest-haste-map: 26.6.2
       jest-runner: 26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@13.13.52)(typescript@5.9.3))
       jest-runtime: 26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@13.13.52)(typescript@5.9.3))
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - supports-color
+      - ts-node
+      - utf-8-validate
+
+  '@jest/test-sequencer@26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@18.11.9)(typescript@5.9.3))':
+    dependencies:
+      '@jest/test-result': 26.6.2
+      graceful-fs: 4.2.11
+      jest-haste-map: 26.6.2
+      jest-runner: 26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@18.11.9)(typescript@5.9.3))
+      jest-runtime: 26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@18.11.9)(typescript@5.9.3))
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -33857,7 +33871,7 @@ snapshots:
       jest-environment-jsdom: 26.6.2
       jest-environment-node: 26.6.2
       jest-get-type: 26.3.0
-      jest-jasmine2: 26.6.3
+      jest-jasmine2: 26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@13.13.52)(typescript@5.9.3))
       jest-regex-util: 26.0.0
       jest-resolve: 26.6.2
       jest-util: 26.6.2
@@ -33875,7 +33889,7 @@ snapshots:
   jest-config@26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@18.11.9)(typescript@5.9.3)):
     dependencies:
       '@babel/core': 7.29.0
-      '@jest/test-sequencer': 26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@13.13.52)(typescript@5.9.3))
+      '@jest/test-sequencer': 26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@18.11.9)(typescript@5.9.3))
       '@jest/types': 26.6.2
       babel-jest: 26.6.3(@babel/core@7.29.0)
       chalk: 4.1.2
@@ -33885,7 +33899,7 @@ snapshots:
       jest-environment-jsdom: 26.6.2
       jest-environment-node: 26.6.2
       jest-get-type: 26.3.0
-      jest-jasmine2: 26.6.3
+      jest-jasmine2: 26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@18.11.9)(typescript@5.9.3))
       jest-regex-util: 26.0.0
       jest-resolve: 26.6.2
       jest-util: 26.6.2
@@ -34232,7 +34246,7 @@ snapshots:
       fsevents: 2.3.3
     optional: true
 
-  jest-jasmine2@26.6.3:
+  jest-jasmine2@26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@13.13.52)(typescript@5.9.3)):
     dependencies:
       '@babel/traverse': 7.29.0
       '@jest/environment': 26.6.2
@@ -34253,7 +34267,38 @@ snapshots:
       pretty-format: 26.6.2
       throat: 5.0.0
     transitivePeerDependencies:
+      - bufferutil
+      - canvas
       - supports-color
+      - ts-node
+      - utf-8-validate
+
+  jest-jasmine2@26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@18.11.9)(typescript@5.9.3)):
+    dependencies:
+      '@babel/traverse': 7.29.0
+      '@jest/environment': 26.6.2
+      '@jest/source-map': 26.6.2
+      '@jest/test-result': 26.6.2
+      '@jest/types': 26.6.2
+      '@types/node': 13.13.52
+      chalk: 4.1.2
+      co: 4.6.0
+      expect: 26.6.2
+      is-generator-fn: 2.1.0
+      jest-each: 26.6.2
+      jest-matcher-utils: 26.6.2
+      jest-message-util: 26.6.2
+      jest-runtime: 26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@18.11.9)(typescript@5.9.3))
+      jest-snapshot: 26.6.2
+      jest-util: 26.6.2
+      pretty-format: 26.6.2
+      throat: 5.0.0
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - supports-color
+      - ts-node
+      - utf-8-validate
 
   jest-leak-detector@26.6.2:
     dependencies:
@@ -34472,6 +34517,35 @@ snapshots:
       - ts-node
       - utf-8-validate
 
+  jest-runner@26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@18.11.9)(typescript@5.9.3)):
+    dependencies:
+      '@jest/console': 26.6.2
+      '@jest/environment': 26.6.2
+      '@jest/test-result': 26.6.2
+      '@jest/types': 26.6.2
+      '@types/node': 13.13.52
+      chalk: 4.1.2
+      emittery: 0.7.2
+      exit: 0.1.2
+      graceful-fs: 4.2.11
+      jest-config: 26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@18.11.9)(typescript@5.9.3))
+      jest-docblock: 26.0.0
+      jest-haste-map: 26.6.2
+      jest-leak-detector: 26.6.2
+      jest-message-util: 26.6.2
+      jest-resolve: 26.6.2
+      jest-runtime: 26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@18.11.9)(typescript@5.9.3))
+      jest-util: 26.6.2
+      jest-worker: 26.6.2
+      source-map-support: 0.5.21
+      throat: 5.0.0
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - supports-color
+      - ts-node
+      - utf-8-validate
+
   jest-runner@29.7.0:
     dependencies:
       '@jest/console': 29.7.0
@@ -34543,6 +34617,42 @@ snapshots:
       glob: 7.2.3
       graceful-fs: 4.2.11
       jest-config: 26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@13.13.52)(typescript@5.9.3))
+      jest-haste-map: 26.6.2
+      jest-message-util: 26.6.2
+      jest-mock: 26.6.2
+      jest-regex-util: 26.0.0
+      jest-resolve: 26.6.2
+      jest-snapshot: 26.6.2
+      jest-util: 26.6.2
+      jest-validate: 26.6.2
+      slash: 3.0.0
+      strip-bom: 4.0.0
+      yargs: 15.4.1
+    transitivePeerDependencies:
+      - bufferutil
+      - canvas
+      - supports-color
+      - ts-node
+      - utf-8-validate
+
+  jest-runtime@26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@18.11.9)(typescript@5.9.3)):
+    dependencies:
+      '@jest/console': 26.6.2
+      '@jest/environment': 26.6.2
+      '@jest/fake-timers': 26.6.2
+      '@jest/globals': 26.6.2
+      '@jest/source-map': 26.6.2
+      '@jest/test-result': 26.6.2
+      '@jest/transform': 26.6.2
+      '@jest/types': 26.6.2
+      '@types/yargs': 15.0.20
+      chalk: 4.1.2
+      cjs-module-lexer: 0.6.0
+      collect-v8-coverage: 1.0.3
+      exit: 0.1.2
+      glob: 7.2.3
+      graceful-fs: 4.2.11
+      jest-config: 26.6.3(ts-node@10.9.2(@swc/core@1.5.7(@swc/helpers@0.5.21))(@types/node@18.11.9)(typescript@5.9.3))
       jest-haste-map: 26.6.2
       jest-message-util: 26.6.2
       jest-mock: 26.6.2
