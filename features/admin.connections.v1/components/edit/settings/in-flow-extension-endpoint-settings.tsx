@@ -47,6 +47,7 @@ import {
     AuthenticationPropertiesInterface,
     EndpointAuthenticationType
 } from "../../../models/connection";
+import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 
 export interface InFlowExtensionEndpointSettingsPropsInterface extends IdentifiableComponentInterface {
     action: InFlowExtensionActionResponseInterface;

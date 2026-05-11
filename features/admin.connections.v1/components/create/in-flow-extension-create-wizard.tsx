@@ -19,8 +19,8 @@
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Divider from "@oxygen-ui/react/Divider";
-import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import Typography from "@oxygen-ui/react/Typography";
+import ActionEndpointConfigForm from "@wso2is/admin.actions.v1/components/action-endpoint-config-form";
 import checkInFlowExtensionName from "@wso2is/admin.flow-builder-core.v1/api/check-in-flow-extension-name";
 import createInFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/create-in-flow-extension";
 import {
@@ -28,10 +28,10 @@ import {
     InFlowExtensionResponseInterface
 } from "@wso2is/admin.flow-builder-core.v1/models/in-flow-extension";
 import {
-    ActionResponseInterface,
-    AuthenticationType
+    AuthenticationType,
+    EndpointConfigFormPropertyInterface
 } from "@wso2is/admin.actions.v1/models/actions";
-import { EndpointConfigFormPropertyInterface } from "@wso2is/admin.actions.v1/models/actions";
+import { validateActionEndpointFields } from "@wso2is/admin.actions.v1/util/form-field-util";
 import { AddCertificateFormComponent } from "@wso2is/admin.core.v1/components/add-certificate-form";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -39,7 +39,7 @@ import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/moda
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormSpy, Wizard2, WizardPage } from "@wso2is/forms";
+import { Field, Wizard2, WizardPage } from "@wso2is/forms";
 import { useTrigger } from "@wso2is/forms/legacy";
 import {
     GenericIcon,
@@ -50,7 +50,6 @@ import {
     Steps,
     useWizardAlert
 } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
 import { AxiosError } from "axios";
 import React, {
     FunctionComponent,
@@ -64,15 +63,12 @@ import React, {
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownProps, Icon, Grid as SemanticGrid } from "semantic-ui-react";
+import { Icon, Grid as SemanticGrid } from "semantic-ui-react";
 import { getConnectionWizardStepIcons } from "../../configs/ui";
-import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
 import { AuthenticatorMeta } from "../../meta/authenticator-meta";
 import {
-    AuthenticationTypeDropdownOption,
     ConnectionTemplateInterface,
-    EndpointAuthenticationType,
     GenericConnectionCreateWizardPropsInterface,
     WizardStepInterface,
     WizardStepsInFlowExtension
@@ -89,15 +85,9 @@ interface InFlowExtensionCreateWizardPropsInterface
 
 const ACTION_NAME_REGEX: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9 _-]{0,254}$/;
 
-interface InFlowExtensionWizardFormValues {
+interface InFlowExtensionWizardFormValues extends EndpointConfigFormPropertyInterface {
     name: string;
     description?: string;
-    endpointUri: string;
-    usernameAuthProperty?: string;
-    passwordAuthProperty?: string;
-    accessTokenAuthProperty?: string;
-    headerAuthProperty?: string;
-    valueAuthProperty?: string;
 }
 
 /**
@@ -122,10 +112,7 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
     const nameCheckTimer: MutableRefObject<ReturnType<typeof setTimeout> | null> =
         useRef<ReturnType<typeof setTimeout> | null>(null);
     const lastCheckedName = useRef<string>("");
-    const [showPrimarySecret, setShowPrimarySecret] = useState<boolean>(false);
-    const [showSecondarySecret, setShowSecondarySecret] = useState<boolean>(false);
-    const [endpointAuthType, setEndpointAuthType] = useState<EndpointAuthenticationType>(null);
-    const [isHttpEndpointUri, setIsHttpEndpointUri] = useState<boolean>(false);
+    const [endpointAuthType, setEndpointAuthType] = useState<AuthenticationType>(null);
     const [nextShouldBeDisabled, setNextShouldBeDisabled] = useState<boolean>(true);
 
     // Certificate state — managed in the endpoint config step.
@@ -200,138 +187,8 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
         ] as WizardStepInterface[];
     };
 
-    const renderInputAdornmentOfSecret = (showSecret: boolean, onClick: () => void): ReactElement => (
-        <InputAdornment position="end">
-            <Icon
-                link={true}
-                className="list-icon reset-field-to-default-adornment"
-                size="small"
-                color="grey"
-                name={!showSecret ? "eye" : "eye slash"}
-                data-componentid={`${componentId}-endpoint-authentication-property-secret-view-button`}
-                onClick={onClick}
-            />
-        </InputAdornment>
-    );
-
     const hasValidationErrors = (errors: Record<string, unknown>): boolean => {
         return !Object.keys(errors).every((k: string) => !errors[k]);
-    };
-
-    const handleDropdownChange = (_event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
-        setEndpointAuthType(data.value as EndpointAuthenticationType);
-    };
-
-    const renderEndpointAuthPropertyFields = (): ReactElement | undefined => {
-        switch (endpointAuthType) {
-            case EndpointAuthenticationType.NONE:
-                break;
-            case EndpointAuthenticationType.BASIC:
-                return (
-                    <>
-                        <Field.Input
-                            ariaLabel="username"
-                            className="addon-field-wrapper"
-                            name="usernameAuthProperty"
-                            label={t("inFlowExtension:createWizard.steps.endpointConfig.authProperties.username.label")}
-                            placeholder={t("inFlowExtension:createWizard.steps.endpointConfig.authProperties.username.placeholder")}
-                            inputType="password"
-                            type={showPrimarySecret ? "text" : "password"}
-                            InputProps={{
-                                endAdornment: renderInputAdornmentOfSecret(showPrimarySecret, () =>
-                                    setShowPrimarySecret(!showPrimarySecret)
-                                )
-                            }}
-                            required={true}
-                            maxLength={100}
-                            minLength={0}
-                            data-componentid={`${componentId}-endpoint-authentication-property-username`}
-                            width={15}
-                        />
-                        <Field.Input
-                            ariaLabel="password"
-                            className="addon-field-wrapper"
-                            label={t("inFlowExtension:createWizard.steps.endpointConfig.authProperties.password.label")}
-                            placeholder={t("inFlowExtension:createWizard.steps.endpointConfig.authProperties.password.placeholder")}
-                            name="passwordAuthProperty"
-                            inputType="password"
-                            type={showSecondarySecret ? "text" : "password"}
-                            InputProps={{
-                                endAdornment: renderInputAdornmentOfSecret(showSecondarySecret, () =>
-                                    setShowSecondarySecret(!showSecondarySecret)
-                                )
-                            }}
-                            required={true}
-                            maxLength={100}
-                            minLength={0}
-                            data-componentid={`${componentId}-endpoint-authentication-property-password`}
-                            width={15}
-                        />
-                    </>
-                );
-            case EndpointAuthenticationType.BEARER:
-                return (
-                    <Field.Input
-                        ariaLabel="accessToken"
-                        className="addon-field-wrapper"
-                        name="accessTokenAuthProperty"
-                        inputType="password"
-                        type={showPrimarySecret ? "text" : "password"}
-                        InputProps={{
-                            endAdornment: renderInputAdornmentOfSecret(showPrimarySecret, () =>
-                                setShowPrimarySecret(!showPrimarySecret)
-                            )
-                        }}
-                        label={t("inFlowExtension:createWizard.steps.endpointConfig.authProperties.accessToken.label")}
-                        placeholder={t("inFlowExtension:createWizard.steps.endpointConfig.authProperties.accessToken.placeholder")}
-                        required={true}
-                        maxLength={100}
-                        minLength={0}
-                        data-componentid={`${componentId}-endpoint-authentication-property-accessToken`}
-                        width={15}
-                    />
-                );
-            case EndpointAuthenticationType.API_KEY:
-                return (
-                    <>
-                        <Field.Input
-                            ariaLabel="header"
-                            className="addon-field-wrapper"
-                            name="headerAuthProperty"
-                            inputType="text"
-                            type="text"
-                            label={t("inFlowExtension:createWizard.steps.endpointConfig.authProperties.header.label")}
-                            placeholder={t("inFlowExtension:createWizard.steps.endpointConfig.authProperties.header.placeholder")}
-                            required={true}
-                            maxLength={100}
-                            minLength={0}
-                            data-componentid={`${componentId}-endpoint-authentication-property-header`}
-                            width={15}
-                        />
-                        <Field.Input
-                            ariaLabel="value"
-                            className="addon-field-wrapper"
-                            name="valueAuthProperty"
-                            inputType="password"
-                            type={showSecondarySecret ? "text" : "password"}
-                            InputProps={{
-                                endAdornment: renderInputAdornmentOfSecret(showSecondarySecret, () =>
-                                    setShowSecondarySecret(!showSecondarySecret)
-                                )
-                            }}
-                            label={t("inFlowExtension:createWizard.steps.endpointConfig.authProperties.value.label")}
-                            placeholder={t("inFlowExtension:createWizard.steps.endpointConfig.authProperties.value.placeholder")}
-                            required={true}
-                            maxLength={100}
-                            minLength={0}
-                            data-componentid={`${componentId}-endpoint-authentication-property-value`}
-                            width={15}
-                        />
-                    </>
-                );
-            default:
-                break;
-        }
     };
 
     const validateGeneralSettings = (
@@ -363,73 +220,12 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
     const validateEndpointConfigs = (
         values: EndpointConfigFormPropertyInterface
     ): Partial<EndpointConfigFormPropertyInterface> => {
-        const errors: Partial<EndpointConfigFormPropertyInterface> = {};
+        const errors: Partial<EndpointConfigFormPropertyInterface> = validateActionEndpointFields(values, {
+            authenticationType: endpointAuthType,
+            isAuthenticationUpdateFormState: true
+        });
 
-        if (!values?.endpointUri) {
-            errors.endpointUri = t("inFlowExtension:createWizard.steps.endpointConfig.endpoint.validations.empty");
-        }
-
-        if (
-            !FormValidation.url(values?.endpointUri, {
-                domain: { allowUnicode: true, minDomainSegments: 1, tlds: false },
-                scheme: ["https", "http"]
-            })
-        ) {
-            errors.endpointUri = t("inFlowExtension:createWizard.steps.endpointConfig.endpoint.validations.general");
-        }
-
-        if (!endpointAuthType) {
-            errors.authenticationType = t(
-                "inFlowExtension:createWizard.steps.endpointConfig.authenticationType.validations.required"
-            );
-        }
-
-        switch (endpointAuthType) {
-            case EndpointAuthenticationType.BASIC:
-                if (!values?.usernameAuthProperty) {
-                    errors.usernameAuthProperty = t(
-                        "inFlowExtension:createWizard.steps.endpointConfig.authProperties.username.validations.required"
-                    );
-                }
-                if (!values?.passwordAuthProperty) {
-                    errors.passwordAuthProperty = t(
-                        "inFlowExtension:createWizard.steps.endpointConfig.authProperties.password.validations.required"
-                    );
-                }
-
-                break;
-            case EndpointAuthenticationType.BEARER:
-                if (!values?.accessTokenAuthProperty) {
-                    errors.accessTokenAuthProperty = t(
-                        "inFlowExtension:createWizard.steps.endpointConfig.authProperties.accessToken.validations.required"
-                    );
-                }
-
-                break;
-            case EndpointAuthenticationType.API_KEY:
-                if (!values?.headerAuthProperty) {
-                    errors.headerAuthProperty = t(
-                        "inFlowExtension:createWizard.steps.endpointConfig.authProperties.header.validations.required"
-                    );
-                }
-                if (values?.headerAuthProperty &&
-                    !CommonAuthenticatorConstants.API_KEY_HEADER_REGEX.test(values.headerAuthProperty)) {
-                    errors.headerAuthProperty = t(
-                        "inFlowExtension:createWizard.steps.endpointConfig.authProperties.header.validations.invalid"
-                    );
-                }
-                if (!values?.valueAuthProperty) {
-                    errors.valueAuthProperty = t(
-                        "inFlowExtension:createWizard.steps.endpointConfig.authProperties.value.validations.required"
-                    );
-                }
-
-                break;
-            default:
-                break;
-        }
-
-        setNextShouldBeDisabled(hasValidationErrors(errors));
+        setNextShouldBeDisabled(hasValidationErrors(errors as Record<string, unknown>));
 
         return errors;
     };
@@ -470,18 +266,26 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
         const authProperties: Record<string, string> = {};
 
         switch (endpointAuthType) {
-            case EndpointAuthenticationType.BASIC:
+            case AuthenticationType.BASIC:
                 authProperties["username"] = values.usernameAuthProperty ?? "";
                 authProperties["password"] = values.passwordAuthProperty ?? "";
                 break;
-            case EndpointAuthenticationType.BEARER:
+            case AuthenticationType.BEARER:
                 authProperties["accessToken"] = values.accessTokenAuthProperty ?? "";
                 break;
-            case EndpointAuthenticationType.API_KEY:
+            case AuthenticationType.API_KEY:
                 authProperties["header"] = values.headerAuthProperty ?? "";
                 authProperties["value"] = values.valueAuthProperty ?? "";
                 break;
-            case EndpointAuthenticationType.NONE:
+            case AuthenticationType.CLIENT_CREDENTIAL:
+                authProperties["clientId"] = values.clientIdAuthProperty ?? "";
+                authProperties["clientSecret"] = values.clientSecretAuthProperty ?? "";
+                authProperties["tokenEndpoint"] = values.tokenEndpointAuthProperty ?? "";
+                if (values.scopesAuthProperty) {
+                    authProperties["scopes"] = values.scopesAuthProperty;
+                }
+                break;
+            case AuthenticationType.NONE:
             default:
                 break;
         }
@@ -578,66 +382,18 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
 
     const endpointConfigPage = (): ReactElement => (
         <WizardPage validate={validateEndpointConfigs}>
-            <Field.Input
-                ariaLabel="endpointUri"
-                className="addon-field-wrapper"
-                inputType="url"
-                name="endpointUri"
-                label={t("inFlowExtension:createWizard.steps.endpointConfig.endpoint.label")}
-                placeholder={t("inFlowExtension:createWizard.steps.endpointConfig.endpoint.placeholder")}
-                hint={t("inFlowExtension:createWizard.steps.endpointConfig.endpoint.hint")}
-                required={true}
-                maxLength={100}
-                minLength={0}
-                data-componentid={`${componentId}-create-wizard-endpoint-uri`}
-                width={15}
-            />
-            <FormSpy
-                onChange={({ values }: { values: EndpointConfigFormPropertyInterface }) => {
-                    if (values?.endpointUri?.startsWith("http://")) {
-                        setIsHttpEndpointUri(true);
-                    } else {
-                        setIsHttpEndpointUri(false);
-                    }
+            <ActionEndpointConfigForm
+                initialValues={null}
+                isCreateFormState={true}
+                isReadOnly={false}
+                showHeadersAndParams={false}
+                showAllowedParameters={false}
+                authenticationTypes={ConnectionUIConstants.IN_FLOW_EXTENSION_AUTH_TYPES}
+                onAuthenticationTypeChange={(type: AuthenticationType) => {
+                    setEndpointAuthType(type);
                 }}
+                data-componentid={`${componentId}-endpoint-config-form`}
             />
-            {isHttpEndpointUri && (
-                <Alert
-                    severity="warning"
-                    className="endpoint-uri-alert"
-                    data-componentid={`${componentId}-endpoint-uri-alert`}
-                >
-                    <Trans i18nKey="actions:fields.endpoint.validations.notHttps">
-                        The URL is not secure (HTTP). Use HTTPS for a secure connection.
-                    </Trans>
-                </Alert>
-            )}
-            <Divider className="divider-container" sx={{ mb: "20px", mt: "20px" }} />
-            <Heading className="heading-container" as="h5">
-                {t("inFlowExtension:createWizard.steps.endpointConfig.authenticationType.title")}
-            </Heading>
-            <Box className="box-container">
-                <Field.Dropdown
-                    ariaLabel="authenticationType"
-                    name="authenticationType"
-                    label={t("inFlowExtension:createWizard.steps.endpointConfig.authenticationType.label")}
-                    placeholder={t("inFlowExtension:createWizard.steps.endpointConfig.authenticationType.placeholder")}
-                    hint={t("inFlowExtension:createWizard.steps.endpointConfig.authenticationType.hint")}
-                    required={true}
-                    value={endpointAuthType}
-                    options={[
-                        ...ConnectionUIConstants.AUTH_TYPES.map((option: AuthenticationTypeDropdownOption) => ({
-                            text: t(option.text),
-                            value: option.value.toString()
-                        }))
-                    ]}
-                    onChange={handleDropdownChange}
-                    enableReinitialize={true}
-                    data-componentid={`${componentId}-create-wizard-endpoint-authentication-dropdown`}
-                    width={15}
-                />
-                <div className="box-field">{renderEndpointAuthPropertyFields()}</div>
-            </Box>
             <Divider className="divider-container" sx={{ mb: "20px", mt: "20px" }} />
             <Heading className="heading-container" as="h5">
                 {t("inFlowExtension:createWizard.steps.endpointConfig.certificate.title")}
