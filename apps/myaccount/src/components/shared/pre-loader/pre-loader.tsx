@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
 import Image from "@oxygen-ui/react/Image";
 import { PredefinedThemes } from "@wso2is/common.branding.v1/models";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
@@ -80,9 +81,25 @@ export const PreLoader: FunctionComponent<PreLoaderPropsInterface> = (
         <div className="pre-loader-wrapper" data-testid={ `${ componentId }-wrapper` }>
             {
                 AppConstants.getTenant() === AppConstants.getSuperTenant() && !commonConfig?.enableDefaultPreLoader ? (
-                    <div className="app-pre-loader" data-testid={ componentId }>
+                    <Box
+                        data-testid={ componentId }
+                        sx={ {
+                            "& svg": {
+                                animation: "app-pre-loader-pulse 2s ease-in-out infinite",
+                                height: 80,
+                                width: 80
+                            },
+                            "@keyframes app-pre-loader-pulse": {
+                                "0%, 100%": { opacity: 1 },
+                                "50%": { opacity: 0.5 }
+                            },
+                            alignItems: "center",
+                            display: "flex",
+                            justifyContent: "center"
+                        } }
+                    >
                         <Pulse data-testid={ `${ componentId }-svg` } />
-                    </div>
+                    </Box>
                 ) : (
                     <>
                         {
