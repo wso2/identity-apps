@@ -265,7 +265,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             return;
         }
 
-        // In-flow extensions are managed via the Actions API; skip connected apps check.
+        // In-flow extensions are managed via the flow management API; skip connected apps check.
         if (connectionType === ConnectionTypes.IN_FLOW_EXTENSION) {
             setDeletingIDP(authenticators.find(
                 (idp: ConnectionInterface | AuthenticatorInterface) => idp.id === idpId)
