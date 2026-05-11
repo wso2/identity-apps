@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.0.22
+
+### Patch Changes
+
+- [#10266](https://github.com/wso2/identity-apps/pull/10266) [`1370c63fb2f6e1b98dbf934e96d4155ef4c39ecb`](https://github.com/wso2/identity-apps/commit/1370c63fb2f6e1b98dbf934e96d4155ef4c39ecb) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Fix email domain discovery page cookie banner style
+
 ## 5.0.21
 
 ### Patch Changes
