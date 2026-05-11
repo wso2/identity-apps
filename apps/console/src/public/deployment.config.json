@@ -398,7 +398,9 @@
                     "actions.types.list.preUpdatePassword.headersAndParameters",
                     "actions.types.list.preUpdateProfile.headersAndParameters",
                     "actions.types.org.list.preIssueAccessToken",
-                    "actions.types.org.list.preRegistration"
+                    "actions.types.org.list.preRegistration",
+                    "actions.types.list.inFlowExtension.customErrors",
+                    "actions.types.list.inFlowExtension.flowLevelOverrides"
                 ],
                 "enabled": true,
                 "featureFlags": [],

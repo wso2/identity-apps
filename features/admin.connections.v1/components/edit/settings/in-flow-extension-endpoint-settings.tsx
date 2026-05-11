@@ -47,6 +47,7 @@ import {
     AuthenticationPropertiesInterface,
     EndpointAuthenticationType
 } from "../../../models/connection";
+import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 
 const areStringSetsEqual = (a: string[] | undefined, b: string[] | undefined): boolean => {
     const setA: Set<string> = new Set(a ?? []);
@@ -155,6 +156,15 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
                         authProperties.value = values.valueAuthProperty;
 
                         break;
+                    case AuthenticationType.CLIENT_CREDENTIAL:
+                        authProperties.clientId = values.clientIdAuthProperty;
+                        authProperties.clientSecret = values.clientSecretAuthProperty;
+                        authProperties.tokenEndpoint = values.tokenEndpointAuthProperty;
+                        if (values.scopesAuthProperty) {
+                            authProperties.scopes = values.scopesAuthProperty;
+                        }
+
+                        break;
                     case AuthenticationType.NONE:
                         break;
                     default:
@@ -242,6 +252,7 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
                                 isReadOnly={ isReadOnly }
                                 showHeadersAndParams={ true }
                                 showAllowedParameters={ false }
+                                authenticationTypes={ ConnectionUIConstants.IN_FLOW_EXTENSION_AUTH_TYPES }
                                 onAuthenticationTypeChange={ (
                                     authenticationType: AuthenticationType,
                                     isAuthenticationUpdated: boolean
