@@ -38,6 +38,7 @@ import { TabPageLayout } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router-dom";
+import { Accordion, Icon } from "semantic-ui-react";
 
 
 /**
@@ -62,21 +63,68 @@ const RotateIcon = (): ReactElement => {
 const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) => {
     const { id: connectorId = "" } = props.match.params || {};
     const { location } = props;
+    const resultCacheKey = `idp-test-result:${connectorId}`;
+    const locationState = location?.state as any;
+    const hasPendingAutoRun = Boolean(locationState?.debugId && locationState?.authorizationUrl);
+
+    const getCachedResult = (): any => {
+        if (typeof window === "undefined" || !connectorId) {
+            return null;
+        }
+
+        const cachedResult = window.localStorage.getItem(resultCacheKey);
+
+        if (!cachedResult) {
+            return null;
+        }
+
+        try {
+            return JSON.parse(cachedResult);
+        } catch (e) {
+            window.localStorage.removeItem(resultCacheKey);
+
+            return null;
+        }
+    };
 
     const { t } = useTranslation();
     const { resourceEndpoints } = useResourceEndpoints();
 
     const [ debugId, setDebugId ] = useState<string | null>(null);
-    const [ result, setResult ] = useState<any>(null);
+    const [ result, setResult ] = useState<any>(() => hasPendingAutoRun ? null : getCachedResult());
     const [ error, setError ] = useState<string | null>(null);
     const [ loading, setLoading ] = useState(false);
     const [ hasError, setHasError ] = useState(false);
     const [ hasPartial, setHasPartial ] = useState(false);
     const [ activeTab, setActiveTab ] = useState(0);
     const [ autoRunTriggered, setAutoRunTriggered ] = useState(false);
+    const [ isStatusBannerVisible, setIsStatusBannerVisible ] = useState(true);
+    const [ expandedDiagnosticLogs, setExpandedDiagnosticLogs ] = useState<number[]>([]);
 
     const popupInterval = useRef<any>(null);
     const fetchTimer = useRef<any>(null);
+
+    /**
+     * Clears cached test result for the current connection.
+     */
+    const clearCachedResult = (): void => {
+        if (typeof window === "undefined" || !connectorId) {
+            return;
+        }
+
+        window.localStorage.removeItem(resultCacheKey);
+    };
+
+    /**
+     * Saves latest test result payload to browser cache.
+     */
+    const cacheResult = (value: any): void => {
+        if (typeof window === "undefined" || !connectorId) {
+            return;
+        }
+
+        window.localStorage.setItem(resultCacheKey, JSON.stringify(value));
+    };
 
     /**
      * Clears all running timers for popup monitoring and result fetching.
@@ -103,9 +151,18 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
      * Auto-run test if debugId and authUrl are provided via location state.
      */
     useEffect(() => {
-        const state = location?.state as any;
+        const state = locationState;
 
         if (state?.debugId && state?.authorizationUrl && !autoRunTriggered) {
+            // Reset stale UI/cached data before starting an auto-run flow.
+            setResult(null);
+            setError(null);
+            setHasError(false);
+            setHasPartial(false);
+            setIsStatusBannerVisible(true);
+            setExpandedDiagnosticLogs([]);
+            clearCachedResult();
+
             setAutoRunTriggered(true);
             setDebugId(state.debugId);
 
@@ -133,7 +190,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                 fetchResult(state.debugId);
             }, 30000);
         }
-    }, [ location, autoRunTriggered ]);
+    }, [ locationState, autoRunTriggered ]);
 
 
     /**
@@ -149,6 +206,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
         setLoading(true);
         setError(null);
         setResult(null);
+        setExpandedDiagnosticLogs([]);
 
         try {
             const axios = (await import("axios")).default;
@@ -157,14 +215,18 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                 { withCredentials: true }
             );
 
+            clearCachedResult();
             setResult(response.data);
+            setIsStatusBannerVisible(true);
+            cacheResult(response.data);
+            setExpandedDiagnosticLogs([]);
 
         } catch (err: any) {
             // eslint-disable-next-line no-console
             console.error("[ConnectionTest] Fetch error:", err?.response?.status, err?.message);
 
             if (err?.response?.status === 404) {
-                setError("Unable to retrieve test results. Please try running the test again.");
+                setError("Unable to retrieve test results for this session.");
             } else {
                 setError(err?.response?.data?.message || err?.message || "Failed to fetch debug results.");
             }
@@ -182,6 +244,9 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
         setResult(null);
         setHasError(false);
         setHasPartial(false);
+        setIsStatusBannerVisible(true);
+        setExpandedDiagnosticLogs([]);
+        clearCachedResult();
 
         if (!connectorId) {
             setError("Connection ID is missing. Cannot run test.");
@@ -257,7 +322,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
             const stepStatus = metadataObj?.stepStatus || metadataObj?.steps || {};
             
             const steps: Record<string, string | undefined> = {
-                connectionStatus: stepStatus?.connectionStatus || metadataObj?.connectionStatus,
+                connectionCreation: stepStatus?.connectionCreation || metadataObj?.connectionCreation,
                 authenticationStatus: stepStatus?.authenticationStatus || metadataObj?.authenticationStatus,
                 claimMappingStatus: stepStatus?.claimMappingStatus || metadataObj?.claimMappingStatus,
                 claimExtractionStatus: stepStatus?.claimExtractionStatus || metadataObj?.claimExtractionStatus,
@@ -269,7 +334,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
 
             // Check if any step explicitly failed (not pending or success)
             const hasStepError = (
-                (steps.connectionStatus && steps.connectionStatus !== "success" && steps.connectionStatus !== "pending") ||
+                (steps.connectionCreation && steps.connectionCreation !== "success" && steps.connectionCreation !== "pending") ||
                 (steps.authenticationStatus && steps.authenticationStatus !== "success" && steps.authenticationStatus !== "pending") ||
                 (steps.claimMappingStatus && steps.claimMappingStatus !== "success" && steps.claimMappingStatus !== "pending" && steps.claimMappingStatus !== "partial") ||
                 steps.accountLinkingStatus && steps.accountLinkingStatus !== "success" && steps.accountLinkingStatus !== "pending" ||
@@ -353,6 +418,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
 
         const tabPanes = [
             {
+                key: "id-token",
                 menuItem: "ID Token",
                 render: () => {
                     const decodeJWT = (token?: string) => {
@@ -416,6 +482,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                 }
             },
             {
+                key: "claim-mappings",
                 menuItem: "Claim Mappings",
                 render: () => {
                     const claimsArray = Array.isArray(result?.metadata?.mappedClaims) ? result?.metadata?.mappedClaims : [];
@@ -460,13 +527,43 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                             component="tr"
                                             sx={ { backgroundColor: "#F8FAFC", borderBottom: "1px solid #E5E7EB" } }
                                         >
-                                            <Box component="th" sx={ { borderRight: "1px solid #E5E7EB", fontSize: 15, fontWeight: 600, p: "10px 8px", textAlign: "left" } }>
-                                                IS Claim (URI)
+                                            <Box
+                                                component="th"
+                                                sx={ {
+                                                    borderRight: "1px solid #E5E7EB",
+                                                    fontSize: 15,
+                                                    fontWeight: 600,
+                                                    p: "10px 8px",
+                                                    textAlign: "left",
+                                                    width: "48%"
+                                                } }
+                                            >
+                                                Local Claim (URI)
                                             </Box>
-                                            <Box component="th" sx={ { borderRight: "1px solid #E5E7EB", fontSize: 15, fontWeight: 600, p: "10px 8px", textAlign: "left" } }>
+                                            <Box
+                                                component="th"
+                                                sx={ {
+                                                    borderRight: "1px solid #E5E7EB",
+                                                    fontSize: 15,
+                                                    fontWeight: 600,
+                                                    p: "10px 8px",
+                                                    textAlign: "left",
+                                                    width: "24%"
+                                                } }
+                                            >
                                                 IDP Claim
                                             </Box>
-                                            <Box component="th" sx={ { borderRight: "1px solid #E5E7EB", fontSize: 15, fontWeight: 600, p: "10px 8px", textAlign: "left" } }>
+                                            <Box
+                                                component="th"
+                                                sx={ {
+                                                    borderRight: "1px solid #E5E7EB",
+                                                    fontSize: 15,
+                                                    fontWeight: 600,
+                                                    p: "10px 8px",
+                                                    textAlign: "left",
+                                                    width: "28%"
+                                                } }
+                                            >
                                                 Value
                                             </Box>
                                         </Box>
@@ -494,14 +591,14 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                                         borderRight: "1px solid #E5E7EB",
                                                         fontFamily: "monospace",
                                                         fontSize: 13,
-                                                        maxWidth: 200,
-                                                        overflow: "hidden",
+                                                        maxWidth: 360,
                                                         p: 1,
-                                                        textOverflow: "ellipsis"
+                                                        whiteSpace: "normal",
+                                                        wordBreak: "break-word"
                                                     } }
-                                                    title={ claim.isClaim || "-" }
+                                                    title={ claim.localClaim || claim.isClaim || "-" }
                                                 >
-                                                    { claim.isClaim || "-" }
+                                                    { claim.localClaim || claim.isClaim || "-" }
                                                 </Box>
                                                 <Box
                                                     component="td"
@@ -509,7 +606,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                                         borderRight: "1px solid #E5E7EB",
                                                         fontFamily: "monospace",
                                                         fontSize: 13,
-                                                        maxWidth: 200,
+                                                        maxWidth: 180,
                                                         overflow: "hidden",
                                                         p: 1,
                                                         textOverflow: "ellipsis"
@@ -525,7 +622,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                                         color: "text.secondary",
                                                         fontFamily: "monospace",
                                                         fontSize: 13,
-                                                        maxWidth: 250,
+                                                        maxWidth: 200,
                                                         overflow: "hidden",
                                                         p: 1,
                                                         textOverflow: "ellipsis"
@@ -533,15 +630,6 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                                     title={ formatValue(claim.value) }
                                                 >
                                                     { formatValue(claim.value) }
-                                                </Box>
-                                                <Box
-                                                    component="td"
-                                                    sx={ {
-                                                        display: "flex",
-                                                        justifyContent: "flex-end",
-                                                        p: 1
-                                                    } }
-                                                >
                                                 </Box>
                                             </Box>
                                         )) }
@@ -553,16 +641,22 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                 }
             },
             {
-                menuItem: "Step Status",
+                key: "diagnosis",
+                menuItem: "Diagnosis",
                 render: () => {
                     const formatLogs = () => {
                         const metadataObj = result?.metadata || {};
                         const stepStatus = metadataObj?.stepStatus || {};
+                        const allDiagnostics = Array.isArray(metadataObj?.diagnostics) ? metadataObj.diagnostics : [];
+                        // Filter out 'started' status entries and claim validation stage entries
+                        const diagnostics = allDiagnostics.filter((log: any) =>
+                            !(log.status === "started" || log.stage === "claimValidation")
+                        );
                         const steps: Record<string, string | undefined> = {
                             authenticationStatus: stepStatus?.authenticationStatus || metadataObj?.authenticationStatus,
                             claimExtractionStatus: stepStatus?.claimExtractionStatus || metadataObj?.claimExtractionStatus,
                             claimMappingStatus: stepStatus?.claimMappingStatus || metadataObj?.claimMappingStatus,
-                            connectionStatus: stepStatus?.connectionStatus || metadataObj?.connectionStatus,
+                            connectionCreation: stepStatus?.connectionCreation || metadataObj?.connectionCreation,
                             accountLinkingStatus: stepStatus?.accountLinkingStatus || metadataObj?.accountLinkingStatus
                         };
                         const errorDescription = metadataObj?.error_description || null;
@@ -570,142 +664,285 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                         const accountLinkingMessage = metadataObj?.accountLinkingMessage || null;
                         const topLevelStatus = result?.status;
                         const accountLinkingFailed = steps.accountLinkingStatus === "failed";
+                        const getStepStatusPalette = (status?: string) => {
+                            const normalizedStatus = String(status || "unknown").toLowerCase();
+
+                            switch (normalizedStatus) {
+                                case "success":
+                                    return { background: "#E8F5E9", color: "#15803D" };
+                                case "partial":
+                                    return { background: "#FFFBEB", color: "#B45309" };
+                                case "started":
+                                case "pending":
+                                    return { background: "#E0F2FE", color: "#0284C7" };
+                                case "failed":
+                                case "error":
+                                    return { background: "#FEE4E2", color: "#B42318" };
+                                default:
+                                    return { background: "#F3F4F6", color: "#6B7280" };
+                            }
+                        };
+                        const getDiagnosticStatusIcon = (status?: string): ReactElement => {
+                            let iconName: string;
+                            let iconColor: "green" | "yellow" | "red";
+
+                            switch (String(status || "").toUpperCase()) {
+                                case "SUCCESS":
+                                    iconName = "check circle";
+                                    iconColor = "green";
+                                    break;
+                                case "PARTIAL":
+                                    iconName = "check circle";
+                                    iconColor = "yellow";
+                                    break;
+                                case "FAILED":
+                                case "ERROR":
+                                    iconName = "times circle";
+                                    iconColor = "red";
+                                    break;
+                                default:
+                                    return <></>;
+                            }
+
+                            return (
+                                <Box
+                                    sx={ {
+                                        alignItems: "center",
+                                        display: "inline-flex",
+                                        flexShrink: 0,
+                                        height: 16,
+                                        justifyContent: "center",
+                                        position: "relative",
+                                        top: -1,
+                                        width: 16
+                                    } }
+                                >
+                                    <Icon
+                                        name={ iconName }
+                                        color={ iconColor }
+                                        style={ {
+                                            display: "block",
+                                            fontSize: 16,
+                                            lineHeight: 1,
+                                            margin: 0
+                                        } }
+                                    />
+                                </Box>
+                            );
+                        };
+                        const toggleDiagnosticLog = (index: number) => {
+                            setExpandedDiagnosticLogs((previous: number[]) => (
+                                previous.includes(index)
+                                    ? previous.filter((item: number) => item !== index)
+                                    : [ ...previous, index ]
+                            ));
+                        };
+                        const renderDiagnosticLogValue = (value: unknown) => {
+                            if (value === null || value === undefined || value === "") {
+                                return "-";
+                            }
+
+                            if (typeof value === "object") {
+                                return (
+                                    <Box
+                                        component="pre"
+                                        sx={ {
+                                            backgroundColor: "#F7F7F7",
+                                            border: "1px solid #D4D4D4",
+                                            borderRadius: 1,
+                                            fontFamily: "monospace",
+                                            fontSize: 12,
+                                            m: 0,
+                                            overflowX: "auto",
+                                            p: 1,
+                                            whiteSpace: "pre-wrap",
+                                            wordBreak: "break-word"
+                                        } }
+                                    >
+                                        { JSON.stringify(value, null, 2) }
+                                    </Box>
+                                );
+                            }
+
+                            return String(value);
+                        };
+                        const renderExpandedDiagnosticRows = (log: any) => {
+                            const rows: Array<{ label: string; value: unknown }> = [
+                                {
+                                    label: "recordedAt",
+                                    value: log.timestamp ? new Date(log.timestamp).toLocaleString() : null
+                                },
+                                { label: "resultStatus", value: log.status },
+                                { label: "details", value: log.details },
+                                { label: "errorCode", value: log.errorCode },
+                                { label: "federatedAttribute", value: log.federatedAttribute },
+                                { label: "errorDescription", value: log.errorDescription },
+                            ];
+
+                            return rows.filter((row) => row.value !== undefined && row.value !== null && row.value !== "");
+                        };
 
                         return (
                             <Stack spacing={ 2 }>
-                                { (errorDescription || errorCode || (accountLinkingFailed && accountLinkingMessage)) && (
-                                    <Alert severity="error">
-                                        <AlertTitle>Error Information</AlertTitle>
-                                        { errorCode && (
-                                            <Box sx={ { mb: errorDescription ? 1.5 : 0 } }>
-                                                <Typography sx={ { color: "#B42318", fontWeight: 600 } }>
-                                                    Error Code
-                                                </Typography>
-                                                <Typography
-                                                    sx={ {
-                                                        color: "#B42318",
-                                                        fontFamily: "monospace",
-                                                        fontSize: 13,
-                                                        mt: 0.5,
-                                                        whiteSpace: "pre-wrap",
-                                                        wordBreak: "break-word"
-                                                    } }
-                                                >
-                                                    { errorCode }
-                                                </Typography>
-                                            </Box>
-                                        ) }
-                                        { errorDescription && (
-                                            <Box>
-                                                <Typography sx={ { color: "#B42318", fontWeight: 600 } }>
-                                                    Description
-                                                </Typography>
-                                                <Typography
-                                                    sx={ {
-                                                        color: "#B42318",
-                                                        fontFamily: "monospace",
-                                                        fontSize: 13,
-                                                        mt: 0.5,
-                                                        whiteSpace: "pre-wrap",
-                                                        wordBreak: "break-word"
-                                                    } }
-                                                >
-                                                    { errorDescription }
-                                                </Typography>
-                                            </Box>
-                                        ) }
-                                        { accountLinkingFailed && accountLinkingMessage && (
-                                            <Box>
-                                                <Typography sx={ { color: "#B42318", fontWeight: 600 } }>
-                                                    Account Linking Error
-                                                </Typography>
-                                                <Typography
-                                                    sx={ {
-                                                        color: "#B42318",
-                                                        fontFamily: "monospace",
-                                                        fontSize: 13,
-                                                        mt: 0.5,
-                                                        whiteSpace: "pre-wrap",
-                                                        wordBreak: "break-word"
-                                                    } }
-                                                >
-                                                    { accountLinkingMessage }
-                                                </Typography>
-                                            </Box>
-                                        ) }
-                                    </Alert>
-                                ) }
 
-                                { Object.keys(steps).length > 0 && (
-                                    <Card variant="outlined" sx={ { backgroundColor: "#FCFDFD", borderRadius: 2, p: 2 } }>
-                                        <Stack spacing={ 1 }>
-                                            { [
-                                                { key: "connectionStatus", label: "Connection Creation" },
-                                                { key: "authenticationStatus", label: "Authentication" },
-                                                { key: "claimMappingStatus", label: "Claim Mappings" },
-                                                { key: "accountLinkingStatus", label: "Account Linking" },
-                                            ].map(({ key, label }) => (
-                                                steps[key] ? (
-                                                    <Box
-                                                        key={ key }
-                                                        sx={ {
-                                                            alignItems: "center",
-                                                            display: "flex",
-                                                            justifyContent: "space-between"
-                                                        } }
-                                                    >
-                                                        <Typography
-                                                            sx={ {
-                                                                color: "text.secondary",
-                                                                fontFamily: "monospace",
-                                                                fontSize: 13
-                                                            } }
-                                                        >
-                                                            { label }
-                                                        </Typography>
-                                                        <Box
-                                                            component="span"
-                                                            sx={ {
-                                                                backgroundColor: steps[key] === "success"
-                                                                    ? "#E8F5E9"
-                                                                    : steps[key] === "partial"
-                                                                        ? "#FFFBEB"
-                                                                        : steps[key] === "failed" || steps[key] === "error"
-                                                                            ? "#FEE4E2"
-                                                                            : "#F3F4F6",
-                                                                borderRadius: 1,
-                                                                color: steps[key] === "success"
-                                                                    ? "#15803D"
-                                                                    : steps[key] === "partial"
-                                                                        ? "#B45309"
-                                                                        : steps[key] === "failed" || steps[key] === "error"
-                                                                            ? "#B42318"
-                                                                            : "text.secondary",
-                                                                display: "inline-block",
-                                                                fontFamily: "monospace",
-                                                                fontSize: 13,
-                                                                fontWeight: 500,
-                                                                lineHeight: 1,
-                                                                minWidth: 60,
-                                                                px: 1,
-                                                                py: 0.5,
-                                                                textAlign: "center",
-                                                                textTransform: "capitalize"
-                                                            } }
-                                                        >
-                                                            { String(steps[key]) }
-                                                        </Box>
-                                                    </Box>
-                                                ) : null
-                                            )) }
-                                        </Stack>
-                                    </Card>
-                                ) }
 
                                 { !errorDescription && !errorCode && Object.keys(steps).length === 0 && topLevelStatus !== "FAILURE" && (
                                     <Alert severity="info" icon={ false }>
                                         No log information available.
                                     </Alert>
+                                ) }
+
+                                { diagnostics.length > 0 && (
+                                    <Box>
+                                        <Box
+                                            sx={ {
+                                                maxHeight: { xs: 420, md: 520 },
+                                                overflowY: "auto",
+                                                scrollbarColor: "#BDBDBD #F5F5F5",
+                                                scrollbarWidth: "thin",
+                                                "&::-webkit-scrollbar": {
+                                                    width: 10
+                                                },
+                                                "&::-webkit-scrollbar-thumb": {
+                                                    backgroundColor: "#BDBDBD",
+                                                    border: "2px solid #F5F5F5",
+                                                    borderRadius: 999
+                                                },
+                                                "&::-webkit-scrollbar-track": {
+                                                    backgroundColor: "#F5F5F5",
+                                                    borderRadius: 999
+                                                }
+                                            } }
+                                        >
+                                            <Accordion exclusive={ false } fluid>
+                                                { diagnostics.map((log: any, idx: number) => {
+                                                    const timestamp = log.timestamp
+                                                        ? new Date(log.timestamp).toLocaleString()
+                                                        : "Timestamp unavailable";
+                                                    const isExpanded = expandedDiagnosticLogs.includes(idx);
+
+                                                    return (
+                                                        <Box
+                                                            key={ idx }
+                                                            sx={ {
+                                                                borderBottom: idx === diagnostics.length - 1
+                                                                    ? "none"
+                                                                    : "1px solid #E5E7EB"
+                                                            } }
+                                                        >
+                                                            <Accordion.Title
+                                                                active={ isExpanded }
+                                                                index={ idx }
+                                                                onClick={ () => toggleDiagnosticLog(idx) }
+                                                                style={ { padding: 0 } }
+                                                            >
+                                                                <Box
+                                                                    sx={ {
+                                                                        alignItems: "center",
+                                                                        cursor: "pointer",
+                                                                        display: "flex",
+                                                                        flexDirection: "row",
+                                                                        gap: 1.5,
+                                                                        px: 1.5,
+                                                                        py: 1.75
+                                                                    } }
+                                                                >
+                                                                    <Box
+                                                                        sx={ {
+                                                                            alignItems: "center",
+                                                                            display: "flex",
+                                                                            minWidth: 22,
+                                                                            pt: { xs: 0.25, sm: 0 }
+                                                                        } }
+                                                                    >
+                                                                        <Icon name="dropdown" />
+                                                                    </Box>
+                                                                    <Box
+                                                                        sx={ {
+                                                                            alignItems: "center",
+                                                                            display: "flex",
+                                                                            flex: 1,
+                                                                            gap: 1,
+                                                                            minWidth: 0
+                                                                        } }
+                                                                    >
+                                                                        { getDiagnosticStatusIcon(log.status) }
+                                                                        <Typography
+                                                                            sx={ {
+                                                                                color: "text.primary",
+                                                                                fontSize: 13,
+                                                                                overflow: "hidden",
+                                                                                textOverflow: "ellipsis",
+                                                                                whiteSpace: "nowrap"
+                                                                            } }
+                                                                        >
+                                                                            { log.message || "No diagnostic message provided." }
+                                                                        </Typography>
+                                                                    </Box>
+                                                                    <Box
+                                                                        sx={ {
+                                                                            color: "text.primary",
+                                                                            flexShrink: 0,
+                                                                            fontSize: 12,
+                                                                            marginLeft: "auto",
+                                                                            textAlign: "right",
+                                                                            whiteSpace: "nowrap"
+                                                                        } }
+                                                                    >
+                                                                        { timestamp }
+                                                                    </Box>
+                                                                </Box>
+                                                            </Accordion.Title>
+                                                            <Accordion.Content active={ isExpanded }>
+                                                                <Box sx={ { px: 5.5, pb: 2 } }>
+                                                                    <Box
+                                                                        component="table"
+                                                                        sx={ {
+                                                                            borderCollapse: "collapse",
+                                                                            width: "100%",
+                                                                            "& td": {
+                                                                                borderTop: "1px solid #E5E7EB",
+                                                                                px: 1.5,
+                                                                                py: 1,
+                                                                                verticalAlign: "top"
+                                                                            }
+                                                                        } }
+                                                                    >
+                                                                        <tbody>
+                                                                            { renderExpandedDiagnosticRows(log).map((row) => (
+                                                                                <Box component="tr" key={ row.label }>
+                                                                                    <Box
+                                                                                        component="td"
+                                                                                        sx={ {
+                                                                                            color: "text.secondary",
+                                                                                            fontFamily: "monospace",
+                                                                                            fontSize: 12,
+                                                                                            width: 160
+                                                                                        } }
+                                                                                    >
+                                                                                        { row.label }:
+                                                                                    </Box>
+                                                                                    <Box
+                                                                                        component="td"
+                                                                                        sx={ {
+                                                                                            color: "text.primary",
+                                                                                            fontSize: 13
+                                                                                        } }
+                                                                                    >
+                                                                                        { renderDiagnosticLogValue(row.value) }
+                                                                                    </Box>
+                                                                                </Box>
+                                                                            )) }
+                                                                        </tbody>
+                                                                    </Box>
+                                                                </Box>
+                                                            </Accordion.Content>
+                                                        </Box>
+                                                    );
+                                                }) }
+                                            </Accordion>
+                                        </Box>
+                                    </Box>
                                 ) }
                             </Stack>
                         );
@@ -724,11 +961,11 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
             <Box>
                 <Tabs value={ activeTab } onChange={ (_, value: number) => setActiveTab(value) }>
                     { tabPanes.map((tabPane) => (
-                        <Tab key={ tabPane.menuItem } label={ tabPane.menuItem } />
+                        <Tab key={ tabPane.key } label={ tabPane.menuItem } />
                     )) }
                 </Tabs>
                 { tabPanes.map((tabPane, index) => (
-                    <TabPanel key={ tabPane.menuItem } value={ activeTab } index={ index }>
+                    <TabPanel key={ tabPane.key } value={ activeTab } index={ index }>
                         { tabPane.render() }
                     </TabPanel>
                 )) }
@@ -737,42 +974,46 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
     };
 
     return (
-        <TabPageLayout
-            isLoading={ loading }
-            pageTitle="Test Results"
-            title="Test Results"
-            description="Results for the connection test session."
-            backButton={ {
-                "data-testid": `${testId}-back-button`,
-                onClick: handleBackButtonClick,
-                text: t("console:develop.pages.idpTest.backButton", "Go back to Connection")
-            } }
-            action={
-                (<Button
-                    onClick={ handleRunTests }
-                    disabled={ loading }
-                    color="primary"
-                    variant="contained"
-                    startIcon={ <RotateIcon /> }
-                    data-testid="idp-test-result-rerun-button"
-                >
-                    Rerun Test
-                </Button>)
-            }
-            titleTextAlign="left"
-            contentTopMargin={ true }
-            bottomMargin={ false }
-            data-testid={ `${testId}-page-layout` }
-        >
+        <div className="diagnostic-logs">
+            <TabPageLayout
+                isLoading={ loading }
+                pageTitle="Test Results"
+                title="Test Results"
+                description="Results for the connection test session."
+                backButton={ {
+                    "data-testid": `${testId}-back-button`,
+                    onClick: handleBackButtonClick,
+                    text: t("console:develop.pages.idpTest.backButton", "Go back to Connection")
+                } }
+                action={
+                    (<Button
+                        onClick={ handleRunTests }
+                        disabled={ loading }
+                        color="primary"
+                        variant="contained"
+                        startIcon={ <RotateIcon /> }
+                        data-testid="idp-test-result-rerun-button"
+                    >
+                        Rerun Test
+                    </Button>)
+                }
+                titleTextAlign="left"
+                contentTopMargin={ true }
+                bottomMargin={ false }
+                data-testid={ `${testId}-page-layout` }
+            >
             { /* Test Status Banner */ }
-            { result && !error && (
+            { result && !error && isStatusBannerVisible && (
                 <Box sx={ { mt: 4 } } data-testid="test-status-banner">
-                    <Alert severity={ hasError ? "error" : hasPartial ? "warning" : "success" }>
+                    <Alert
+                        severity={ hasError ? "error" : hasPartial ? "warning" : "success" }
+                        onClose={ () => setIsStatusBannerVisible(false) }
+                    >
                         <AlertTitle>
-                            { hasError ? "Test Failed" : hasPartial ? "Test Passed with Warnings" : "Test Passed" }
+                            { hasError ? "Test Failed" : hasPartial ? "Test Passed Partially" : "Test Passed" }
                         </AlertTitle>
                         { hasError
-                            ? "Some steps failed during the connection test. Check the Diagnostic Logs tab for details."
+                            ? "Some steps failed during the connection test. Check the Diagnosis tab for details."
                             : hasPartial
                                 ? "Test passed but some claims were not successfully mapped. Check the Claim Mappings tab for details."
                                 : "All connection test steps completed successfully." }
@@ -835,7 +1076,8 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                     </Stack>
                 </Card>
             ) }
-        </TabPageLayout>
+            </TabPageLayout>
+        </div>
     );
 };
 
