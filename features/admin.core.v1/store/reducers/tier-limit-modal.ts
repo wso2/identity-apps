@@ -41,12 +41,8 @@ export const tierLimitModalReducer = (
                 open: true
             };
         case TierLimitModalActionTypes.HIDE_TIER_LIMIT_REACHED_MODAL:
-            return {
-                ...initialState
-            };
+            return initialState;
         default:
-            return {
-                ...state
-            };
+            return state;
     }
 };
