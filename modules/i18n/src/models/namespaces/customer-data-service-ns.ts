@@ -658,6 +658,7 @@ export interface CustomerDataServiceNS {
             columns: {
                 attribute: string;
                 enabled: string;
+                matchingType: string;
                 priority: string;
                 rule: string;
             };
