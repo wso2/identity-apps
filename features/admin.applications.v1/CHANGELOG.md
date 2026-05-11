@@ -1,5 +1,16 @@
 # @wso2is/admin.applications.v1
 
+## 2.42.27
+
+### Patch Changes
+
+- [#10204](https://github.com/wso2/identity-apps/pull/10204) [`3b11c4f98352aa1584865ea84e096665a6f7d608`](https://github.com/wso2/identity-apps/commit/3b11c4f98352aa1584865ea84e096665a6f7d608) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix api resource search behaviour in authorize wizard in application edit view
+
+- Updated dependencies [[`2de3739f867501a0d18a29253f5091e37432d2bd`](https://github.com/wso2/identity-apps/commit/2de3739f867501a0d18a29253f5091e37432d2bd), [`bb7f3db51dd616c0a662db3a233730bbbc0c0b15`](https://github.com/wso2/identity-apps/commit/bb7f3db51dd616c0a662db3a233730bbbc0c0b15)]:
+  - @wso2is/admin.core.v1@2.57.8
+  - @wso2is/admin.users.v1@2.38.37
+  - @wso2is/i18n@2.41.0
+
 ## 2.42.26
 
 ### Patch Changes

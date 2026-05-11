@@ -1,5 +1,15 @@
 # @wso2is/i18n
 
+## 2.41.0
+
+### Minor Changes
+
+- [#10265](https://github.com/wso2/identity-apps/pull/10265) [`bb7f3db51dd616c0a662db3a233730bbbc0c0b15`](https://github.com/wso2/identity-apps/commit/bb7f3db51dd616c0a662db3a233730bbbc0c0b15) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Provide Console UI support to configure OAuth2 Password Grant based Authentication for actions
+
+### Patch Changes
+
+- [#10259](https://github.com/wso2/identity-apps/pull/10259) [`2de3739f867501a0d18a29253f5091e37432d2bd`](https://github.com/wso2/identity-apps/commit/2de3739f867501a0d18a29253f5091e37432d2bd) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add UI support for agent sharing feature
+
 ## 2.40.0
 
 ### Minor Changes

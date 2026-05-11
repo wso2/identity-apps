@@ -1,5 +1,19 @@
 # @wso2is/admin.core.v1
 
+## 2.57.8
+
+### Patch Changes
+
+- [#10259](https://github.com/wso2/identity-apps/pull/10259) [`2de3739f867501a0d18a29253f5091e37432d2bd`](https://github.com/wso2/identity-apps/commit/2de3739f867501a0d18a29253f5091e37432d2bd) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add UI support for agent sharing feature
+
+- Updated dependencies [[`2de3739f867501a0d18a29253f5091e37432d2bd`](https://github.com/wso2/identity-apps/commit/2de3739f867501a0d18a29253f5091e37432d2bd), [`cfeb2b7fea5af98845e44feec8035575e0abc6f2`](https://github.com/wso2/identity-apps/commit/cfeb2b7fea5af98845e44feec8035575e0abc6f2), [`bb7f3db51dd616c0a662db3a233730bbbc0c0b15`](https://github.com/wso2/identity-apps/commit/bb7f3db51dd616c0a662db3a233730bbbc0c0b15), [`3b11c4f98352aa1584865ea84e096665a6f7d608`](https://github.com/wso2/identity-apps/commit/3b11c4f98352aa1584865ea84e096665a6f7d608)]:
+  - @wso2is/admin.agents.v1@1.2.0
+  - @wso2is/admin.users.v1@2.38.37
+  - @wso2is/i18n@2.41.0
+  - @wso2is/admin.cds.v1@1.6.5
+  - @wso2is/admin.actions.v1@1.17.0
+  - @wso2is/admin.applications.v1@2.42.27
+
 ## 2.57.7
 
 ### Patch Changes
