@@ -68,3 +68,10 @@ export const TEMP_PRIORITY: number = 999999;
 
 export const ATTRIBUTE_TYPE_PRIMITIVE_EXACT: string = "PRIMITIVE_EXACT";
 export const UNIFICATION_METHOD_DETERMINISTIC: string = "deterministic";
+export const UNIFICATION_METHOD_FUZZY: string = "fuzzy";
+
+export const FUZZY_ATTRIBUTE_TYPE_FUZZY_STRING: string = "FUZZY_STRING";
+export const FUZZY_ATTRIBUTE_TYPE_NAME: string = "NAME";
+export const FUZZY_ATTRIBUTE_TYPE_EMAIL: string = "EMAIL";
+export const FUZZY_ATTRIBUTE_TYPE_PHONE: string = "PHONE";
+export const FUZZY_ATTRIBUTE_TYPE_LOCATION: string = "LOCATION";

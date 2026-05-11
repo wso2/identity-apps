@@ -589,10 +589,32 @@ export interface CustomerDataServiceNS {
                     label: string;
                     placeholder: string;
                 };
+                fuzzyAttributeType: {
+                    errors: {
+                        required: string;
+                    };
+                    hint: string;
+                    label: string;
+                    options: {
+                        email: string;
+                        fuzzyString: string;
+                        location: string;
+                        name: string;
+                        phone: string;
+                    };
+                };
                 scope: {
                     options: {
                         identity: string;
                         trait: string;
+                    };
+                };
+                unificationMethod: {
+                    hint: string;
+                    label: string;
+                    options: {
+                        deterministic: string;
+                        fuzzy: string;
                     };
                 };
             };
