@@ -204,6 +204,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const [ languageSwitcherAnchorEl, setLanguageSwitcherAnchorEl ] = useState<
         HTMLElement
     >(null);
+    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
 
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
@@ -627,6 +628,11 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         <>
             <OxygenHeader
                 className="is-header"
+                sx={ isSAASDeployment ? {
+                    "&&.is-header.oxygen-header .oxygen-brand-logo": {
+                        height: "40px"
+                    }
+                } : undefined }
                 brand={ {
                     logo: {
                         desktop: <LOGO_IMAGE />,
@@ -635,7 +641,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                     onClick: () =>
                         hasGettingStartedViewPermission &&
                         history.push(config.deployment.appHomePath),
-                    title: config.ui.appName
+                    title: isSAASDeployment ? "" : config.ui.appName
                 } }
                 user={ {
                     email: resolveEmail(),
