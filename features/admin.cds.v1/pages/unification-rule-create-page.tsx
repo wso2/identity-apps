@@ -37,7 +37,19 @@ import { Dispatch } from "redux";
 import { createUnificationRule } from "../api/unification-rules";
 import { useProfileSchemaDropdownOptions } from "../hooks/use-profile-attributes";
 import { useUnificationRules } from "../hooks/use-unification-rules";
-import { APPLICATION_DATA, IDENTITY_ATTRIBUTES, TRAITS } from "../models/constants";
+import {
+    APPLICATION_DATA,
+    ATTRIBUTE_TYPE_PRIMITIVE_EXACT,
+    FUZZY_ATTRIBUTE_TYPE_EMAIL,
+    FUZZY_ATTRIBUTE_TYPE_FUZZY_STRING,
+    FUZZY_ATTRIBUTE_TYPE_LOCATION,
+    FUZZY_ATTRIBUTE_TYPE_NAME,
+    FUZZY_ATTRIBUTE_TYPE_PHONE,
+    IDENTITY_ATTRIBUTES,
+    TRAITS,
+    UNIFICATION_METHOD_DETERMINISTIC,
+    UNIFICATION_METHOD_FUZZY
+} from "../models/constants";
 import { FilterAttributeOption, ProfileSchemaScope } from "../models/profile-attributes";
 import { UnificationRuleModel } from "../models/unification-rules";
 
@@ -51,6 +63,8 @@ interface FormData {
     attribute: string; // raw opt.value (e.g., "emails.home" OR "identity_attributes.emails.home")
     priority: number;
     isActive: boolean;
+    unificationMethod: string;
+    fuzzyAttributeType: string;
 }
 
 /**
@@ -83,10 +97,12 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
 
     const [ formData, setFormData ] = useState<FormData>({
         attribute: "",
+        fuzzyAttributeType: "",
         isActive: true,
         priority: 1,
         ruleName: "",
-        scope: IDENTITY_ATTRIBUTES
+        scope: IDENTITY_ATTRIBUTES,
+        unificationMethod: UNIFICATION_METHOD_DETERMINISTIC
     });
 
     const [ errors, setErrors ] = useState<Partial<Record<keyof FormData, string>>>({});
@@ -293,6 +309,29 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
         });
     }, [ attributeAlreadyUsed, formData.attribute, t ]);
 
+    const fuzzyAttributeTypeOptions: { value: string; label: string }[] = useMemo(() => ([
+        {
+            label: t("customerDataService:unificationRules.create.fields.fuzzyAttributeType.options.fuzzyString"),
+            value: FUZZY_ATTRIBUTE_TYPE_FUZZY_STRING
+        },
+        {
+            label: t("customerDataService:unificationRules.create.fields.fuzzyAttributeType.options.name"),
+            value: FUZZY_ATTRIBUTE_TYPE_NAME
+        },
+        {
+            label: t("customerDataService:unificationRules.create.fields.fuzzyAttributeType.options.email"),
+            value: FUZZY_ATTRIBUTE_TYPE_EMAIL
+        },
+        {
+            label: t("customerDataService:unificationRules.create.fields.fuzzyAttributeType.options.phone"),
+            value: FUZZY_ATTRIBUTE_TYPE_PHONE
+        },
+        {
+            label: t("customerDataService:unificationRules.create.fields.fuzzyAttributeType.options.location"),
+            value: FUZZY_ATTRIBUTE_TYPE_LOCATION
+        }
+    ]), [ t ]);
+
     const clearFieldError = (field: keyof FormData): void => {
         if (!errors[field]) return;
 
@@ -307,6 +346,24 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
 
         setFormData((prev: FormData) => ({ ...prev, ruleName: value }));
         clearFieldError("ruleName");
+    };
+
+    const handleUnificationMethodChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        const value: string = event.target.value;
+
+        setFormData((prev: FormData) => ({
+            ...prev,
+            fuzzyAttributeType: "",
+            unificationMethod: value
+        }));
+        clearFieldError("fuzzyAttributeType");
+    };
+
+    const handleFuzzyAttributeTypeChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+        const value: string = event.target.value;
+
+        setFormData((prev: FormData) => ({ ...prev, fuzzyAttributeType: value }));
+        clearFieldError("fuzzyAttributeType");
     };
 
     const handleScopeChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -389,6 +446,11 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
             newErrors.attribute = t("customerDataService:unificationRules.create.fields.attribute.errors.alreadyUsed");
         }
 
+        if (formData.unificationMethod === UNIFICATION_METHOD_FUZZY && !formData.fuzzyAttributeType) {
+            newErrors.fuzzyAttributeType =
+                t("customerDataService:unificationRules.create.fields.fuzzyAttributeType.errors.required");
+        }
+
         if (Number(formData.priority) < 1) {
             newErrors.priority = t("customerDataService:unificationRules.create.fields.priority.errors.min");
         } else if (usedPriorities.has(Number(formData.priority))) {
@@ -427,10 +489,14 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
 
         try {
             await createUnificationRule({
+                attribute_type: formData.unificationMethod === UNIFICATION_METHOD_FUZZY
+                    ? formData.fuzzyAttributeType
+                    : ATTRIBUTE_TYPE_PRIMITIVE_EXACT,
                 is_active: formData.isActive,
                 priority: Number(formData.priority),
                 property_name: buildPropertyName(formData.scope, formData.attribute),
-                rule_name: formData.ruleName
+                rule_name: formData.ruleName,
+                unification_method: formData.unificationMethod
             });
 
             dispatch(addAlert({
@@ -505,6 +571,63 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
                             <Hint>{ t("customerDataService:unificationRules.create.fields.ruleName.hint") }</Hint>
                         ) }
                     </div>
+
+                    { /* ── Matching Type ── */ }
+                    <div>
+                        <TextField
+                            fullWidth
+                            select
+                            required
+                            label={ t("customerDataService:unificationRules.create.fields.unificationMethod.label") }
+                            value={ formData.unificationMethod }
+                            onChange={ handleUnificationMethodChange }
+                            InputLabelProps={ { required: true } }
+                            data-componentid={ `${componentId}-unification-method` }
+                        >
+                            <MenuItem value={ UNIFICATION_METHOD_DETERMINISTIC }>
+                                { t("customerDataService:unificationRules.create.fields." +
+                                    "unificationMethod.options.deterministic") }
+                            </MenuItem>
+                            <MenuItem value={ UNIFICATION_METHOD_FUZZY }>
+                                { t("customerDataService:unificationRules.create.fields." +
+                                    "unificationMethod.options.fuzzy") }
+                            </MenuItem>
+                        </TextField>
+                        <Hint>
+                            { t("customerDataService:unificationRules.create.fields.unificationMethod.hint") }
+                        </Hint>
+                    </div>
+
+                    { /* ── Fuzzy Attribute Type (conditional) ── */ }
+                    { formData.unificationMethod === UNIFICATION_METHOD_FUZZY && (
+                        <div>
+                            <TextField
+                                fullWidth
+                                select
+                                required
+                                label={
+                                    t("customerDataService:unificationRules.create.fields.fuzzyAttributeType.label")
+                                }
+                                value={ formData.fuzzyAttributeType }
+                                onChange={ handleFuzzyAttributeTypeChange }
+                                error={ !!errors.fuzzyAttributeType }
+                                helperText={ errors.fuzzyAttributeType ?? "" }
+                                InputLabelProps={ { required: true } }
+                                data-componentid={ `${componentId}-fuzzy-attribute-type` }
+                            >
+                                { fuzzyAttributeTypeOptions.map((option: { value: string; label: string }) => (
+                                    <MenuItem key={ option.value } value={ option.value }>
+                                        { option.label }
+                                    </MenuItem>
+                                )) }
+                            </TextField>
+                            { !errors.fuzzyAttributeType && (
+                                <Hint>
+                                    { t("customerDataService:unificationRules.create.fields.fuzzyAttributeType.hint") }
+                                </Hint>
+                            ) }
+                        </div>
+                    ) }
 
                     { /* ── Attribute (compound field: scope + attribute) ── */ }
                     <div data-componentid={ `${componentId}-attribute-group` }>

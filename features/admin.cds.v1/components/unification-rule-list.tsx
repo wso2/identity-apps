@@ -38,7 +38,15 @@ import { useDispatch } from "react-redux";
 import { AnyAction } from "redux";
 import { Header, Icon, Label } from "semantic-ui-react";
 import { deleteUnificationRule, updateUnificationRule } from "../api/unification-rules";
-import { TEMP_PRIORITY } from "../models/constants";
+import {
+    FUZZY_ATTRIBUTE_TYPE_EMAIL,
+    FUZZY_ATTRIBUTE_TYPE_FUZZY_STRING,
+    FUZZY_ATTRIBUTE_TYPE_LOCATION,
+    FUZZY_ATTRIBUTE_TYPE_NAME,
+    FUZZY_ATTRIBUTE_TYPE_PHONE,
+    TEMP_PRIORITY,
+    UNIFICATION_METHOD_FUZZY
+} from "../models/constants";
 import { UnificationRuleModel } from "../models/unification-rules";
 import { getPropertyScope } from "../utils/profile-attribute-utils";
 
@@ -271,6 +279,19 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
         }
     };
 
+    const FUZZY_ATTRIBUTE_TYPE_I18N_KEY: Record<string, string> = {
+        [FUZZY_ATTRIBUTE_TYPE_EMAIL]: "customerDataService:unificationRules.create.fields" +
+            ".fuzzyAttributeType.options.email",
+        [FUZZY_ATTRIBUTE_TYPE_FUZZY_STRING]: "customerDataService:unificationRules.create.fields" +
+            ".fuzzyAttributeType.options.fuzzyString",
+        [FUZZY_ATTRIBUTE_TYPE_LOCATION]: "customerDataService:unificationRules.create.fields" +
+            ".fuzzyAttributeType.options.location",
+        [FUZZY_ATTRIBUTE_TYPE_NAME]: "customerDataService:unificationRules.create.fields" +
+            ".fuzzyAttributeType.options.name",
+        [FUZZY_ATTRIBUTE_TYPE_PHONE]: "customerDataService:unificationRules.create.fields" +
+            ".fuzzyAttributeType.options.phone"
+    };
+
     const columns: TableColumnInterface[] = [
         {
             dataIndex: "rule_name",
@@ -327,6 +348,38 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
             },
             title: t("customerDataService:unificationRules.list.columns.attribute"),
             width: 5
+        },
+        {
+            dataIndex: "unification_method",
+            id: "unification_method",
+            key: "unification_method",
+            render: (rule: UnificationRuleModel) => {
+                const isFuzzy: boolean = rule.unification_method === UNIFICATION_METHOD_FUZZY;
+                const methodLabel: string = isFuzzy
+                    ? t("customerDataService:unificationRules.create.fields.unificationMethod.options.fuzzy")
+                    : t("customerDataService:unificationRules.create.fields.unificationMethod.options.deterministic");
+                const methodStyle: { color: string; fontWeight: number; backgroundColor: string } = isFuzzy
+                    ? { backgroundColor: "#fff3e0", color: "#e65100", fontWeight: 500 }
+                    : { backgroundColor: "#e0f2f1", color: "#00796b", fontWeight: 500 };
+                const attributeTypeKey: string | undefined = isFuzzy
+                    ? FUZZY_ATTRIBUTE_TYPE_I18N_KEY[rule.attribute_type]
+                    : undefined;
+
+                return (
+                    <Box sx={ { alignItems: "flex-start", display: "flex", flexDirection: "column", gap: "4px" } }>
+                        <Label size="mini" style={ methodStyle }>
+                            { methodLabel }
+                        </Label>
+                        { attributeTypeKey && (
+                            <Typography variant="caption" color="text.secondary">
+                                { t(attributeTypeKey) }
+                            </Typography>
+                        ) }
+                    </Box>
+                );
+            },
+            title: t("customerDataService:unificationRules.list.columns.matchingType"),
+            width: 2
         },
         {
             dataIndex: "priority",

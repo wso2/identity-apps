@@ -654,10 +654,33 @@ export const customerDataService: CustomerDataServiceNS = {
                     label: "Rule Name",
                     placeholder: "Enter a descriptive rule name."
                 },
+                fuzzyAttributeType: {
+                    errors: {
+                        required: "Attribute type is required for fuzzy matching."
+                    },
+                    hint: "Select how the attribute value should be interpreted during fuzzy matching.",
+                    label: "Attribute Type",
+                    options: {
+                        email: "Email Address",
+                        fuzzyString: "General Text",
+                        location: "Location / Address",
+                        name: "Person / Company Name",
+                        phone: "Phone Number"
+                    }
+                },
                 scope: {
                     options: {
                         identity: "Identity Attributes",
                         trait: "Trait"
+                    }
+                },
+                unificationMethod: {
+                    hint: "Deterministic matching uses exact attribute values. Fuzzy matching allows " +
+                        "approximate comparisons.",
+                    label: "Matching Type",
+                    options: {
+                        deterministic: "Deterministic",
+                        fuzzy: "Fuzzy"
                     }
                 }
             },
@@ -701,6 +724,7 @@ export const customerDataService: CustomerDataServiceNS = {
             columns: {
                 attribute: "Attribute",
                 enabled: "Enabled",
+                matchingType: "Matching Type",
                 priority: "Priority",
                 rule: "Rule"
             },
