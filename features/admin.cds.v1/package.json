@@ -33,6 +33,7 @@
         "@oxygen-ui/react": "catalog:",
         "@wso2is/admin.core.v1": "^2.57.6",
         "@wso2is/admin.applications.v1": "^2.42.24",
+        "@wso2is/admin.organizations.v1": "workspace:^",
         "@wso2is/core": "^2.12.10",
         "axios": "^1.7.0",
         "i18next": "^21.9.1",
