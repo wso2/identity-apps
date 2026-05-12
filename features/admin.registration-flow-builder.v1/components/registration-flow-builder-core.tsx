@@ -20,6 +20,7 @@ import FlowBuilder from "@wso2is/admin.flow-builder-core.v1/components/flow-buil
 import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from
     "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import {
     BlockTypes,
     ButtonTypes,
@@ -83,6 +84,9 @@ import { RegistrationStaticStepTypes } from "../models/flow";
  * Props interface of {@link RegistrationFlowBuilderCore}
  */
 type RegistrationFlowBuilderCorePropsInterface = IdentifiableComponentInterface;
+interface RegistrationFlowBuilderCoreExtendedPropsInterface extends RegistrationFlowBuilderCorePropsInterface {
+    flowType?: FlowTypes;
+}
 
 /**
  * Main component that wraps the `FlowBuilder` from the flow builder core.
@@ -90,10 +94,11 @@ type RegistrationFlowBuilderCorePropsInterface = IdentifiableComponentInterface;
  * @param props - Props injected to the component.
  * @returns RegistrationFlowBuilder component.
  */
-const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCorePropsInterface> = ({
+const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCoreExtendedPropsInterface> = ({
     "data-componentid": componentId = "registration-flow-builder-core",
+    flowType = FlowTypes.REGISTRATION,
     ...rest
-}: RegistrationFlowBuilderCorePropsInterface): ReactElement => {
+}: RegistrationFlowBuilderCoreExtendedPropsInterface): ReactElement => {
     const { addEmailVerificationEdges, addEmailVerificationNodes } = useDefaultFlow();
 
     const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
@@ -132,9 +137,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         error: registrationFlowFetchRequestError,
         isLoading: isRegistrationFlowFetchRequestLoading,
         isValidating: isRegistrationFlowFetchRequestValidating
-    } = useGetRegistrationFlow();
+    } = useGetRegistrationFlow(flowType);
 
-    const { data: resources } = useGetRegistrationFlowBuilderResources();
+    const { data: resources } = useGetRegistrationFlowBuilderResources(flowType);
 
     const { steps, templates } = resources;
 
@@ -543,9 +548,13 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         return edges;
     };
 
-    const getBasicTemplateStepsWithoutOnBoardingStep: () => Step[] = useCallback(() => {
+    const getInitialTemplateStepsWithoutOnBoardingStep: () => Step[] = useCallback(() => {
+        const initialTemplateType: TemplateTypes = flowType === FlowTypes.DEVICE_REGISTRATION
+            ? TemplateTypes.BasicDeviceRegister
+            : TemplateTypes.Basic;
+
         const basicTemplate: Template = cloneDeep(
-            templates.find((template: Template) => template.type === TemplateTypes.Basic)
+            templates.find((template: Template) => template.type === initialTemplateType)
         );
 
         const templateSteps: Step[] = basicTemplate?.config?.data?.steps ?? [];
@@ -575,11 +584,11 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         });
 
         return resolveStepMetadata(resources, withResolvedComponents) as Step[];
-    }, [ templates, resources ]);
+    }, [ flowType, templates, resources ]);
 
     const initialNodes: Node[] = useMemo<Node[]>(() => {
         // Try to seed from Basic template (without the last step).
-        const basicSteps: Step[] = getBasicTemplateStepsWithoutOnBoardingStep();
+        const basicSteps: Step[] = getInitialTemplateStepsWithoutOnBoardingStep();
 
         if (basicSteps.length > 0) {
             const seedNodes: Node[] = [
@@ -593,7 +602,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
             return generateSteps(seedNodes);
         }
-    }, [ getBasicTemplateStepsWithoutOnBoardingStep, generateSteps ]);
+    }, [ getInitialTemplateStepsWithoutOnBoardingStep, generateSteps ]);
 
     const [ nodes, setNodes, onNodesChange ] = useNodesState([]);
     const [ edges, setEdges, onEdgesChange ] = useEdgesState([]);

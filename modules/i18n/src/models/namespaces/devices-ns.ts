@@ -101,6 +101,7 @@ export interface DevicesNS {
                 cancel: string;
                 create: string;
                 back: string;
+                save: string;
             };
             notifications: {
                 metadataFetch: {
@@ -165,6 +166,11 @@ export interface DevicesNS {
         };
         edit: {
             backButton: string;
+            editButton: string;
+            wizard: {
+                heading: string;
+                subHeading: string;
+            };
             sections: {
                 platform: {
                     heading: string;
@@ -186,6 +192,16 @@ export interface DevicesNS {
                         description: string;
                     };
                 };
+                update: {
+                    success: {
+                        message: string;
+                        description: string;
+                    };
+                    genericError: {
+                        message: string;
+                        description: string;
+                    };
+                };
             };
         };
     };
@@ -202,6 +218,45 @@ export interface DevicesNS {
             title: string;
             subtitles: {
                 0: string;
+            };
+        };
+    };
+    detail: {
+        backButton: string;
+        sections: {
+            deviceInfo: {
+                heading: string;
+                fields: {
+                    deviceName: string;
+                    deviceModel: string;
+                    status: string;
+                    registeredAt: string;
+                };
+            };
+            metadata: {
+                heading: string;
+                description: string;
+                columns: {
+                    key: string;
+                    value: string;
+                };
+                empty: string;
+            };
+            userInfo: {
+                heading: string;
+                fields: {
+                    username: string;
+                    email: string;
+                };
+                notFound: string;
+            };
+        };
+        notifications: {
+            fetch: {
+                genericError: {
+                    message: string;
+                    description: string;
+                };
             };
         };
     };

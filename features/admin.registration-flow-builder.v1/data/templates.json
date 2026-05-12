@@ -902,7 +902,7 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "Basic + Device Register",
+            "label": "Device Register",
             "description": "Basic registration experience with device registration",
             "image": "assets/images/icons/smartphone.svg",
             "showOnResourcePanel": true

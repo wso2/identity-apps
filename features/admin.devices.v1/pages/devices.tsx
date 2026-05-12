@@ -98,14 +98,16 @@ const DevicesPage: FunctionComponent<DevicesPagePropsInterface> = (
             );
         }
 
-        const sortKey: string = (listSortingStrategy?.value ?? sortingOptions[0]?.value ?? "deviceName") as string;
+        if (listSortingStrategy) {
+            const sortKey: string = listSortingStrategy.value as string;
 
-        result.sort((a: DeviceResponseInterface, b: DeviceResponseInterface): number => {
-            const aVal: string = (a[sortKey as keyof DeviceResponseInterface] ?? "") as string;
-            const bVal: string = (b[sortKey as keyof DeviceResponseInterface] ?? "") as string;
+            result.sort((a: DeviceResponseInterface, b: DeviceResponseInterface): number => {
+                const aVal: string = (a[sortKey as keyof DeviceResponseInterface] ?? "") as string;
+                const bVal: string = (b[sortKey as keyof DeviceResponseInterface] ?? "") as string;
 
-            return aVal.localeCompare(bVal);
-        });
+                return aVal.localeCompare(bVal);
+            });
+        }
 
         return result;
     }, [ deviceList, searchQuery, listSortingStrategy ]);
@@ -205,7 +207,7 @@ const DevicesPage: FunctionComponent<DevicesPagePropsInterface> = (
                 showPagination={ filteredAndSortedList.length > listItemLimit }
                 showTopActionPanel={ isDeviceListLoading || filteredAndSortedList.length > 0 || !!searchQuery }
                 sortOptions={ sortingOptions }
-                sortStrategy={ listSortingStrategy ?? sortingOptions[0] }
+                sortStrategy={ listSortingStrategy }
                 totalPages={ totalPages }
                 totalListSize={ filteredAndSortedList.length }
                 data-componentid={ `${ componentId }-list-layout` }

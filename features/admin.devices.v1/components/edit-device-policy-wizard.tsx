@@ -26,6 +26,7 @@ import {
     SelectionCard,
     Steps
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, {
     ChangeEvent,
     FunctionComponent,
@@ -60,15 +61,19 @@ import { ReactComponent as DeviceOutlineIcon }
     from "../assets/icons/device-window-outline.svg";
 import { ReactComponent as SettingsOutlineIcon }
     from "../assets/icons/settings-outline.svg";
-import { AxiosError } from "axios";
-import { createDevicePolicy } from "../api/device-policies";
+import { updateDevicePolicy } from "../api/device-policies";
 import useGetDevicePolicyMetadata from "../hooks/use-get-device-policy-metadata";
 import {
     DevicePlatformType,
+    DevicePolicyExpressionInterface,
     DevicePolicyFieldDefinitionInterface
 } from "../models/devices";
 
-interface CreateDevicePolicyWizardPropsInterface extends IdentifiableComponentInterface {
+interface EditDevicePolicyWizardPropsInterface extends IdentifiableComponentInterface {
+    policyId: string;
+    initialName: string;
+    initialPlatform: DevicePlatformType;
+    initialExpressions: DevicePolicyExpressionInterface[];
     onClose: () => void;
     onSuccess: () => void;
 }
@@ -91,11 +96,15 @@ interface ConditionStateInterface {
     listValues: string[];
 }
 
-const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsInterface> = (
-    props: CreateDevicePolicyWizardPropsInterface
+const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInterface> = (
+    props: EditDevicePolicyWizardPropsInterface
 ): ReactElement => {
     const {
-        "data-componentid": componentId = "create-device-policy-wizard",
+        "data-componentid": componentId = "edit-device-policy-wizard",
+        policyId,
+        initialName,
+        initialPlatform,
+        initialExpressions,
         onClose,
         onSuccess
     } = props;
@@ -104,11 +113,12 @@ const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsI
     const dispatch: Dispatch = useDispatch();
 
     const [ currentStep, setCurrentStep ] = useState<WizardStep>(WizardStep.PLATFORM);
-    const [ selectedPlatform, setSelectedPlatform ] = useState<DevicePlatformType | null>(null);
-    const [ policyName, setPolicyName ] = useState<string>("");
+    const [ selectedPlatform, setSelectedPlatform ] = useState<DevicePlatformType | null>(initialPlatform);
+    const [ policyName, setPolicyName ] = useState<string>(initialName);
     const [ conditions, setConditions ] = useState<Record<string, ConditionStateInterface>>({});
     const [ listInputValues, setListInputValues ] = useState<Record<string, string>>({});
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ conditionsInitialised, setConditionsInitialised ] = useState<boolean>(false);
 
     const technologyLogos: ReturnType<typeof getTechnologyLogos> = getTechnologyLogos();
 
@@ -133,7 +143,7 @@ const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsI
         [ metadata ]
     );
 
-    // Initialise condition state whenever the field list loads
+    // Initialise conditions from existing expressions when metadata loads; reset when platform changes
     useEffect((): void => {
         if (nonPlatformFields.length === 0) {
             return;
@@ -142,19 +152,41 @@ const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsI
         const initial: Record<string, ConditionStateInterface> = {};
 
         nonPlatformFields.forEach((field: DevicePolicyFieldDefinitionInterface): void => {
+            const existing: DevicePolicyExpressionInterface | undefined = initialExpressions.find(
+                (e: DevicePolicyExpressionInterface): boolean => e.field === field.field.name
+            );
+
+            const existingOperator: string = existing?.operator ?? field.operators[0]?.name ?? "";
+            const isIn: boolean = existingOperator === "in";
+
+            // For "in" operator, split the comma-separated value string into an array
+            const existingListValues: string[] = isIn && existing?.value?.value
+                ? existing.value.value.split(",").map((v: string): string => v.trim()).filter(Boolean)
+                : [];
+
             initial[field.field.name] = {
-                enabled: false,
-                listValues: [],
-                operator: field.operators[0]?.name ?? "",
-                value: field.value.inputType === "OPTIONS"
-                    ? (field.value.values?.[0]?.name ?? "")
-                    : ""
+                enabled: !!existing,
+                listValues: existingListValues,
+                operator: existingOperator,
+                value: isIn ? "" : (existing?.value?.value ?? (
+                    field.value.inputType === "OPTIONS"
+                        ? (field.value.values?.[0]?.name ?? "")
+                        : ""
+                ))
             };
         });
 
         setConditions(initial);
         setListInputValues({});
+        setConditionsInitialised(true);
     }, [ nonPlatformFields ]);
+
+    // When the user switches platforms, clear the pre-populated conditions
+    useEffect((): void => {
+        if (selectedPlatform !== initialPlatform) {
+            setConditionsInitialised(false);
+        }
+    }, [ selectedPlatform ]);
 
     useEffect((): void => {
         if (!metadataError) {
@@ -237,7 +269,7 @@ const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsI
         }));
     };
 
-    const isCreateEnabled: boolean = useMemo((): boolean => {
+    const isSaveEnabled: boolean = useMemo((): boolean => {
         if (!policyName.trim()) {
             return false;
         }
@@ -255,10 +287,9 @@ const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsI
         });
     }, [ policyName, conditions ]);
 
-    const handleCreate = (): void => {
+    const handleSave = (): void => {
         setIsSubmitting(true);
 
-        // Platform expression is always the first — the API requires it
         const platformExpression: { field: string; operator: string; value: string } = {
             field: "platform",
             operator: "equals",
@@ -283,7 +314,7 @@ const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsI
                     };
                 });
 
-        createDevicePolicy({
+        updateDevicePolicy(policyId, {
             name: policyName.trim(),
             rule: {
                 condition: "AND",
@@ -293,11 +324,11 @@ const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsI
             .then((): void => {
                 dispatch(addAlert({
                     description: t(
-                        "devices:assurancePolicies.wizard.notifications.create.success.description"
+                        "devices:assurancePolicies.edit.notifications.update.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "devices:assurancePolicies.wizard.notifications.create.success.message"
+                        "devices:assurancePolicies.edit.notifications.update.success.message"
                     )
                 }));
                 onSuccess();
@@ -306,14 +337,14 @@ const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsI
                 const errorDescription: string =
                     error?.response?.data?.description
                     ?? t(
-                        "devices:assurancePolicies.wizard.notifications.create.genericError.description"
+                        "devices:assurancePolicies.edit.notifications.update.genericError.description"
                     );
 
                 dispatch(addAlert({
                     description: errorDescription,
                     level: AlertLevels.ERROR,
                     message: t(
-                        "devices:assurancePolicies.wizard.notifications.create.genericError.message"
+                        "devices:assurancePolicies.edit.notifications.update.genericError.message"
                     )
                 }));
             })
@@ -674,12 +705,12 @@ const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsI
                     { currentStep === WizardStep.RULE_BUILDER && (
                         <PrimaryButton
                             floated="right"
-                            disabled={ !isCreateEnabled || isSubmitting }
+                            disabled={ !isSaveEnabled || isSubmitting }
                             loading={ isSubmitting }
-                            onClick={ handleCreate }
-                            data-componentid={ `${ componentId }-create-button` }
+                            onClick={ handleSave }
+                            data-componentid={ `${ componentId }-save-button` }
                         >
-                            { t("devices:assurancePolicies.wizard.buttons.create") }
+                            { t("devices:assurancePolicies.wizard.buttons.save") }
                         </PrimaryButton>
                     ) }
                 </Grid.Column>
@@ -690,7 +721,7 @@ const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsI
     return (
         <Modal
             open
-            className="wizard create-device-policy-wizard"
+            className="wizard edit-device-policy-wizard"
             dimmer="blurring"
             size="small"
             onClose={ onClose }
@@ -699,14 +730,17 @@ const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsI
             data-componentid={ componentId }
         >
             <Modal.Header className="wizard-header">
-                { t("devices:assurancePolicies.wizard.heading") }
+                { t("devices:assurancePolicies.edit.wizard.heading") }
                 <Heading as="h6">
-                    { t("devices:assurancePolicies.wizard.subHeading") }
+                    { t("devices:assurancePolicies.edit.wizard.subHeading") }
                 </Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">
                 <Steps.Group current={ currentStep }>
-                    { WIZARD_STEPS.map((step: { icon: FunctionComponent<SVGProps<SVGSVGElement>>; title: string }, index: number) => (
+                    { WIZARD_STEPS.map((
+                        step: { icon: FunctionComponent<SVGProps<SVGSVGElement>>; title: string },
+                        index: number
+                    ) => (
                         <Steps.Step
                             key={ index }
                             icon={ step.icon }
@@ -725,4 +759,4 @@ const CreateDevicePolicyWizard: FunctionComponent<CreateDevicePolicyWizardPropsI
     );
 };
 
-export default CreateDevicePolicyWizard;
+export default EditDevicePolicyWizard;

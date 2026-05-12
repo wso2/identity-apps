@@ -257,6 +257,16 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER"),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import(
+                        "@wso2is/admin.registration-flow-builder.v1/pages/device-registration-flow-builder-page")),
+                    exact: true,
+                    id: "deviceRegistrationFlowBuilder",
+                    name: "Device Registration Flow Builder",
+                    path: AppConstants.getPaths().get("DEVICE_REGISTRATION_FLOW_BUILDER"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() => import("@wso2is/admin.flows.v1/pages/flows-page")),
@@ -554,6 +564,22 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             name: "Device Policy Edit",
             order: 9,
             path: AppConstants.getPaths().get("DEVICE_POLICY_EDIT"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
+            category: "extensions:manage.sidePanel.categories.userManagement",
+            component: lazy(() =>
+                import("@wso2is/admin.devices.v1/pages/device-detail")
+            ),
+            exact: true,
+            icon: {
+                icon: getSidePanelIcons().devices
+            },
+            id: "deviceDetail",
+            name: "Device Detail",
+            order: 9,
+            path: AppConstants.getPaths().get("DEVICE_DETAIL"),
             protected: true,
             showOnSidePanel: false
         },

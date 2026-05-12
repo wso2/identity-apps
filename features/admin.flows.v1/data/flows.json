@@ -10,6 +10,15 @@
             "disabled": false
         },
         {
+            "id": "device-registration",
+            "heading": "Device Registration",
+            "description": "Configure registration journeys that collect and enroll user device details as part of onboarding.",
+            "featureStatusKey": "flows.types.list.deviceRegistration",
+            "path": "DEVICE_REGISTRATION_FLOW_BUILDER",
+            "type": "DEVICE_REGISTRATION",
+            "disabled": false
+        },
+        {
             "id": "password-recovery",
             "heading": "Password Recovery",
             "description": "Configure secure multi-step recovery flows for users who forget their password or are locked out.",

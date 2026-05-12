@@ -65,7 +65,8 @@ export const devices: DevicesNS = {
                 back: "Back",
                 cancel: "Cancel",
                 create: "Create",
-                next: "Next"
+                next: "Next",
+                save: "Save"
             },
             notifications: {
                 create: {
@@ -129,6 +130,11 @@ export const devices: DevicesNS = {
         },
         edit: {
             backButton: "Go back to Device Assurance Policies",
+            editButton: "Edit Policy",
+            wizard: {
+                heading: "Update Device Assurance Policy",
+                subHeading: "Update the device assurance policy for your organization."
+            },
             sections: {
                 conditions: {
                     columns: {
@@ -149,12 +155,22 @@ export const devices: DevicesNS = {
                         description: "An error occurred while retrieving the device policy.",
                         message: "Retrieval failed"
                     }
+                },
+                update: {
+                    genericError: {
+                        description: "An error occurred while updating the device assurance policy.",
+                        message: "Update failed"
+                    },
+                    success: {
+                        description: "The device assurance policy has been updated successfully.",
+                        message: "Policy updated"
+                    }
                 }
             }
         },
         title: "Device Assurance Policies"
     },
-    description: "View and manage push notification devices registered by users in your organization.",
+    description: "View and manage devices registered by users in your organization.",
     list: {
         columns: {
             actions: "Actions",
@@ -206,5 +222,44 @@ export const devices: DevicesNS = {
             title: "No results found"
         }
     },
-    title: "Registered Devices"
+    title: "Registered Devices",
+    detail: {
+        backButton: "Go back to Registered Devices",
+        notifications: {
+            fetch: {
+                genericError: {
+                    description: "An error occurred while retrieving the device details.",
+                    message: "Retrieval failed"
+                }
+            }
+        },
+        sections: {
+            deviceInfo: {
+                fields: {
+                    deviceModel: "Model",
+                    deviceName: "Device Name",
+                    registeredAt: "Registered At",
+                    status: "Status"
+                },
+                heading: "Device Information"
+            },
+            metadata: {
+                columns: {
+                    key: "Property",
+                    value: "Value"
+                },
+                description: "Additional hardware and software properties reported by the device.",
+                empty: "No metadata available for this device.",
+                heading: "Device Metadata"
+            },
+            userInfo: {
+                fields: {
+                    email: "Email",
+                    username: "Username"
+                },
+                heading: "Registered User",
+                notFound: "User details could not be loaded."
+            }
+        }
+    }
 };

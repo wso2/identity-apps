@@ -177,9 +177,7 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
             case ExecutionTypes.MagicLinkExecutor:
                 return t("flows:core.executions.names.magicLink");
             case ExecutionTypes.DeviceRegistration:
-                return t("flows:core.executions.names.deviceRegistration", {
-                    defaultValue: "Device Register"
-                });
+                return t("flows:core.executions.names.deviceRegistration");
             default:
                 return t("flows:core.executions.names.default");
         }

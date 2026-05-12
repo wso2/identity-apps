@@ -17,6 +17,7 @@
  */
 
 import AIGeneratedFlowProvider from "@wso2is/admin.flow-builder-core.v1/providers/ai-generated-flow-provider";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import RegistrationFlowBuilderCore from "./registration-flow-builder-core";
@@ -25,6 +26,9 @@ import RegistrationFlowBuilderCore from "./registration-flow-builder-core";
  * Props interface of {@link RegistrationFlowBuilder}
  */
 type RegistrationFlowBuilderPropsInterface = IdentifiableComponentInterface;
+interface RegistrationFlowBuilderExtendedPropsInterface extends RegistrationFlowBuilderPropsInterface {
+    flowType?: FlowTypes;
+}
 
 /**
  * Entry point for the registration flow builder decorated with the necessary providers.
@@ -32,12 +36,13 @@ type RegistrationFlowBuilderPropsInterface = IdentifiableComponentInterface;
  * @param props - Props injected to the component.
  * @returns RegistrationFlowBuilder component.
  */
-const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderPropsInterface> = ({
+const RegistrationFlowBuilder: FunctionComponent<RegistrationFlowBuilderExtendedPropsInterface> = ({
     "data-componentid": componentId = "registration-flow-builder",
+    flowType = FlowTypes.REGISTRATION,
     ...rest
-}: RegistrationFlowBuilderPropsInterface): ReactElement => (
+}: RegistrationFlowBuilderExtendedPropsInterface): ReactElement => (
     <AIGeneratedFlowProvider>
-        <RegistrationFlowBuilderCore { ...rest } />
+        <RegistrationFlowBuilderCore { ...rest } flowType={ flowType } />
     </AIGeneratedFlowProvider>
 );
 

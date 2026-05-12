@@ -17,6 +17,8 @@
  */
 
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -62,6 +64,12 @@ const DeviceList: FunctionComponent<DeviceListPropsInterface> = (
 
     const [ showDeleteConfirmation, setShowDeleteConfirmation ] = useState<boolean>(false);
     const [ deletingDevice, setDeletingDevice ] = useState<DeviceResponseInterface | null>(null);
+
+    const handleRowClick = (_e: SyntheticEvent, device: DeviceResponseInterface): void => {
+        history.push(
+            AppConstants.getPaths().get("DEVICE_DETAIL").replace(":id", device.id)
+        );
+    };
 
     const handleDeleteConfirm = (): void => {
         deleteDevice(deletingDevice.id)
@@ -219,7 +227,8 @@ const DeviceList: FunctionComponent<DeviceListPropsInterface> = (
                 columns={ resolveTableColumns() }
                 data={ list }
                 placeholders={ renderPlaceholder() }
-                selectable={ false }
+                selectable={ true }
+                onRowClick={ handleRowClick }
                 showHeader={ true }
                 transparent={ !isLoading && (!list || list.length === 0) }
                 data-componentid={ componentId }

@@ -26,15 +26,17 @@ import {
     EmphasizedSegment,
     GenericIcon,
     Heading,
-    PageLayout
+    PageLayout,
+    PrimaryButton
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Divider, Icon, Label, Table } from "semantic-ui-react";
+import EditDevicePolicyWizard from "../components/edit-device-policy-wizard";
 import useGetDevicePolicyById from "../hooks/use-get-device-policy-by-id";
 import {
     DevicePlatformType,
@@ -66,12 +68,15 @@ const DevicePolicyEditPage: FunctionComponent<DevicePolicyEditPagePropsInterface
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
+    const [ showEditWizard, setShowEditWizard ] = useState<boolean>(false);
+
     const technologyLogos: ReturnType<typeof getTechnologyLogos> = getTechnologyLogos();
 
     const {
         data: policy,
         isLoading: isPolicyLoading,
-        error: policyFetchError
+        error: policyFetchError,
+        mutate: mutatePolicy
     } = useGetDevicePolicyById(policyId, !isEmpty(policyId));
 
     useEffect((): void => {
@@ -135,6 +140,7 @@ const DevicePolicyEditPage: FunctionComponent<DevicePolicyEditPagePropsInterface
     };
 
     return (
+        <>
         <PageLayout
             isLoading={ isPolicyLoading }
             title={ policy?.name ?? policyId }
@@ -153,6 +159,16 @@ const DevicePolicyEditPage: FunctionComponent<DevicePolicyEditPagePropsInterface
                     history.push(AppConstants.getPaths().get("DEVICE_ASSURANCE_POLICIES")),
                 text: t("devices:assurancePolicies.edit.backButton")
             } }
+            action={ (
+                <PrimaryButton
+                    disabled={ isPolicyLoading || !policy }
+                    onClick={ (): void => setShowEditWizard(true) }
+                    data-componentid={ `${ componentId }-edit-button` }
+                >
+                    <Icon name="pencil" />
+                    { t("devices:assurancePolicies.edit.editButton") }
+                </PrimaryButton>
+            ) }
             data-componentid={ `${ componentId }-layout` }
             bottomMargin={ false }
             contentTopMargin={ true }
@@ -241,6 +257,22 @@ const DevicePolicyEditPage: FunctionComponent<DevicePolicyEditPagePropsInterface
                 </>
             ) }
         </PageLayout>
+
+        { showEditWizard && platformKey && (
+            <EditDevicePolicyWizard
+                policyId={ policyId }
+                initialName={ policy?.name ?? "" }
+                initialPlatform={ platformKey }
+                initialExpressions={ conditionExpressions }
+                onClose={ (): void => setShowEditWizard(false) }
+                onSuccess={ (): void => {
+                    setShowEditWizard(false);
+                    mutatePolicy();
+                } }
+                data-componentid={ `${ componentId }-edit-wizard` }
+            />
+        ) }
+        </>
     );
 };
 

@@ -22,6 +22,7 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { HttpMethods } from "@wso2is/core/models";
 import { useMemo } from "react";
 import RegistrationFlowConstants from "../constants/registration-flow-constants";
@@ -40,6 +41,7 @@ import { RegistrationFlow } from "../models/flow";
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
 const useGetRegistrationFlow = <Data = any, Error = RequestErrorInterface>(
+    flowType: FlowTypes = FlowTypes.REGISTRATION,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     const requestConfig: RequestConfigInterface = {
@@ -49,7 +51,7 @@ const useGetRegistrationFlow = <Data = any, Error = RequestErrorInterface>(
         },
         method: HttpMethods.GET,
         url: `${store.getState().config.endpoints.registrationFlow}?flowType=${
-            RegistrationFlowConstants.REGISTRATION_FLOW_TYPE
+            flowType || RegistrationFlowConstants.REGISTRATION_FLOW_TYPE
         }`
     };
 

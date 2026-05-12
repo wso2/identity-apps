@@ -24,6 +24,7 @@ export interface DeviceResponseInterface {
     deviceModel: string;
     status: string;
     registeredAt: string;
+    metadata?: string;
 }
 
 export interface DevicePatchRequestInterface {

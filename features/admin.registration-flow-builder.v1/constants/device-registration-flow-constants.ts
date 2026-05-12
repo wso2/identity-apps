@@ -16,20 +16,13 @@
  * under the License.
  */
 
-import { Base } from "./base";
+class DeviceRegistrationFlowConstants {
+    /**
+     * Private constructor to avoid object instantiation from outside the class.
+     */
+    private constructor() {}
 
-export type Template = Base;
-
-enum TemplateCategories {
-    Starter = "STARTER"
+    public static readonly DEVICE_REGISTRATION_FLOW_TYPE: string = "DEVICE_REGISTRATION";
 }
 
-export enum TemplateTypes {
-    Blank = "BLANK",
-    Basic = "BASIC",
-    BasicDeviceRegister = "BASIC_DEVICE_REGISTER",
-    BasicFederated = "BASIC_FEDERATED",
-    GeneratedWithAI = "GENERATE_WITH_AI",
-    BasicPasskey = "BASIC_PASSKEY",
-    Default = "DEFAULT"
-}
+export default DeviceRegistrationFlowConstants;

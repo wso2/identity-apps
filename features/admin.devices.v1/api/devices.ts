@@ -52,6 +52,24 @@ export const updateDeviceName = (
 };
 
 /**
+ * Fetches a single registered device by ID.
+ *
+ * @param deviceId - UUID of the device.
+ * @returns The device.
+ */
+export const getDeviceById = (deviceId: string): Promise<DeviceResponseInterface> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: { "Content-Type": "application/json" },
+        method: HttpMethods.GET,
+        url: `${ store.getState().config.endpoints.devices }/${ deviceId }`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<DeviceResponseInterface>) => Promise.resolve(response.data))
+        .catch((error: unknown) => Promise.reject(error));
+};
+
+/**
  * Deletes a registered device by ID.
  *
  * @param deviceId - UUID of the device.

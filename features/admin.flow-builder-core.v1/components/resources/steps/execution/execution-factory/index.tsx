@@ -127,9 +127,7 @@ const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
             <Box display="flex" gap={ 1 } data-componentid={ componentId }>
                 <MobilePhoneIcon width={ 20 } height={ 20 } />
                 <Typography variant="body1">
-                    { t("flows:core.executions.names.deviceRegistration", {
-                        defaultValue: "Device Register"
-                    }) }
+                    { t("flows:core.executions.names.deviceRegistration") }
                 </Typography>
             </Box>
         );
