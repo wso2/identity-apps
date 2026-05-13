@@ -223,6 +223,14 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 plannedRollOutDate: undefined
             },
             announcements: [],
+            apiResourceManagement: {
+                applicationAPIAuthorization: {
+                    blockedAPIResources: []
+                },
+                rolePermissionAssignment: {
+                    blockedAPIResources: []
+                }
+            },
             appCopyright: "",
             appLogo: {
                 defaultLogoPath: "",

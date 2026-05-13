@@ -324,6 +324,14 @@
         },
         "administratorRoleDisplayName": "Administrator",
         "announcements": [],
+        "apiResourceManagement": {
+            "applicationAPIAuthorization": {
+                "blockedAPIResources": []
+            },
+            "rolePermissionAssignment": {
+                "blockedAPIResources": []
+            }
+        },
         "appCopyright": "${copyright} ${year} WSO2 LLC.",
         "appFaviconPath": "/assets/images/branding/favicon.ico",
         "appLogoPath": "/assets/images/branding/logo.svg",

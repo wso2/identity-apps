@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -102,6 +102,10 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
         const hasRolePermissionUpdatePermission: boolean = useRequiredScopes(
             userRolesFeatureConfig?.subFeatures?.rolePermissionAssignments?.scopes?.update);
 
+        const blockedAPIResources: string[] = useSelector(
+            (state: AppState) => state?.config?.ui?.apiResourceManagement?.rolePermissionAssignment?.blockedAPIResources
+        );
+
         const [ previousRoleAudience, setPreviousRoleAudience ] = useState<RoleAudienceTypes>(undefined);
         const [ selectedAPIResources, setSelectedAPIResources ] = useState<APIResourceInterface[]>([]);
         const [ selectedAPIResourceId, setSelectedAPIResourceId ] = useState<string>(undefined);
@@ -171,6 +175,11 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
             if(roleAudience === RoleAudienceTypes.APPLICATION) {
                 // API resources list options when role audience is "application".
                 authorizedAPIListForApplication?.map((api: AuthorizedAPIListItemInterface) => {
+                    // Hide the blocked API resources.
+                    if (blockedAPIResources?.length > 0 && blockedAPIResources.includes(api?.identifier)) {
+                        return;
+                    }
+
                     if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
                         selectedAPIResource?.id === api?.id) && api.policyId == Policy.ROLE) {
                         options.push({
@@ -185,7 +194,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
 
                 setAllAPIResourcesDropdownOptions(options);
             }
-        }, [ authorizedAPIListForApplication, selectedAPIResources ]);
+        }, [ authorizedAPIListForApplication, selectedAPIResources, blockedAPIResources ]);
 
         useEffect(() => {
             const options: DropdownItemProps[] = [];
@@ -193,6 +202,11 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
             if(roleAudience === RoleAudienceTypes.ORGANIZATION) {
                 // API resources list options when role audience is "organization".
                 allAPIResourcesListData.map((api: APIResourceInterface) => {
+                    // Hide the blocked API resources.
+                    if (blockedAPIResources?.length > 0 && blockedAPIResources.includes(api?.identifier)) {
+                        return;
+                    }
+
                     if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
                         selectedAPIResource?.id === api?.id)) {
                         options.push({
@@ -217,7 +231,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
 
                 setAllAPIResourcesDropdownOptions(filteredOptions);
             }
-        }, [ selectedAPIResources ]);
+        }, [ selectedAPIResources, blockedAPIResources ]);
 
         /**
          * Assign all the API resources to the dropdown options if the after value is not null.
@@ -233,6 +247,10 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                 const filteredDropdownItemOptions: DropdownItemProps[] =
                 (currentAPIResourcesListData?.apiResources.reduce(function (filtered: DropdownItemProps[],
                     apiResource: APIResourceInterface) {
+                    // Hide the blocked API resources.
+                    if (blockedAPIResources?.length > 0 && blockedAPIResources.includes(apiResource?.identifier)) {
+                        return filtered;
+                    }
 
                     const isCurrentAPIResourceSubscribed: boolean = selectedAPIResources?.length === 0
                         || !selectedAPIResources?.some(

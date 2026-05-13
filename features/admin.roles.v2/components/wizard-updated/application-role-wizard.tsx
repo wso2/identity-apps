@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -111,6 +111,10 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
     );
 
+    const blockedAPIResources: string[] = useSelector(
+        (state: AppState) => state?.config?.ui?.apiResourceManagement?.rolePermissionAssignment?.blockedAPIResources
+    );
+
     const createRoleFunction: (role: CreateRoleInterface) => Promise<AxiosResponse> =
         userRolesV3FeatureEnabled ? createRoleUsingV3Api : createRole;
 
@@ -141,6 +145,11 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         const options: DropdownItemProps[] = [];
 
         subscribedAPIResourcesListData?.map((apiResource: AuthorizedAPIListItemInterface) => {
+            // Hide the blocked API resources.
+            if (blockedAPIResources?.length > 0 && blockedAPIResources.includes(apiResource?.identifier)) {
+                return;
+            }
+
             const isNotSelected: boolean = !selectedAPIResources
                 ?.find((selectedAPIResource: APIResourceInterface) => selectedAPIResource?.id === apiResource?.id);
 
@@ -155,7 +164,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
             }
         });
         setAPIResourcesListOptions(options);
-    }, [ subscribedAPIResourcesListData, selectedAPIResources ]);
+    }, [ subscribedAPIResourcesListData, selectedAPIResources, blockedAPIResources ]);
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching API resources.

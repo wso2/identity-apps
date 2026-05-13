@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -112,6 +112,9 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const applicationFeatureConfig: FeatureAccessConfigInterface = featureConfig?.applications;
+    const blockedAPIResources: string[] = useSelector(
+        (state: AppState) => state?.config?.ui?.apiResourceManagement?.applicationAPIAuthorization?.blockedAPIResources
+    );
 
     const isUnifiedMcpCapabilitiesEnabled: boolean = isFeatureEnabled(
         applicationFeatureConfig,
@@ -260,6 +263,11 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
             filtered: DropdownItemProps[],
             apiResource: APIResourceInterface
         ) => {
+            // Hide the blocked API resources.
+            if (blockedAPIResources?.length > 0 && blockedAPIResources.includes(apiResource?.identifier)) {
+                return filtered;
+            }
+
             const isCurrentAPIResourceSubscribed: boolean = subscribedAPIResourcesListData?.length === 0
                 || !subscribedAPIResourcesListData?.some(
                     (subscribedAPIResource: AuthorizedAPIListItemInterface) =>
@@ -327,7 +335,8 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
         hasInternalAPIResourceAuthorizationPermission,
         isDigitalWallet,
         isUnifiedMcpCapabilitiesEnabled,
-        isMCPClient
+        isMCPClient,
+        blockedAPIResources
     ]);
 
     /**

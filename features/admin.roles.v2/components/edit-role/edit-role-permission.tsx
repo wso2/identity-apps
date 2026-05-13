@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -139,6 +139,10 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         userRolesFeatureConfig?.subFeatures?.rolePermissionAssignments?.scopes?.update
     );
 
+    const blockedAPIResources: string[] = useSelector(
+        (state: AppState) => state?.config?.ui?.apiResourceManagement?.rolePermissionAssignment?.blockedAPIResources
+    );
+
     // If the enforce role operation permission feature is enabled,
     // only allow to edit the role if the user has the relevant permission.
     const isReadOnlyView: boolean = isReadOnly ||
@@ -201,6 +205,11 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         if (role.audience.type.toUpperCase() === RoleAudienceTypes.APPLICATION) {
             // API resources list options when role audience is "application".
             authorizedAPIListForApplication?.map((api: AuthorizedAPIListItemInterface) => {
+                // Hide the blocked API resources.
+                if (blockedAPIResources?.length > 0 && blockedAPIResources.includes(api?.identifier)) {
+                    return;
+                }
+
                 if (
                     !selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
                         selectedAPIResource?.id === api?.id)) {
@@ -222,7 +231,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
             setAllAPIResourcesDropdownOptions(options);
         }
 
-    }, [ authorizedAPIListForApplication, selectedAPIResources ]);
+    }, [ authorizedAPIListForApplication, selectedAPIResources, blockedAPIResources ]);
 
     useEffect(() => {
         const options: DropdownItemProps[] = [];
@@ -230,6 +239,11 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         if(role.audience.type.toUpperCase() === RoleAudienceTypes.ORGANIZATION) {
             // API resources list options when role audience is "organization".
             allAPIResourcesListData.map((api: APIResourceInterface) => {
+                // Hide the blocked API resources.
+                if (blockedAPIResources?.length > 0 && blockedAPIResources.includes(api?.identifier)) {
+                    return;
+                }
+
                 if (!selectedAPIResources.find((selectedAPIResource: APIResourceInterface) =>
                     selectedAPIResource?.id === api?.id)) {
                     options.push({
@@ -253,7 +267,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
 
             setAllAPIResourcesDropdownOptions(filteredOptions);
         }
-    }, [ selectedAPIResources ]);
+    }, [ selectedAPIResources, blockedAPIResources ]);
 
     /**
      * Add API resource to the selected API resources list.
@@ -290,6 +304,10 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
             const filteredDropdownItemOptions: DropdownItemProps[] =
             (currentAPIResourcesListData?.apiResources.reduce(function (filtered: DropdownItemProps[],
                 apiResource: APIResourceInterface) {
+                // Hide the blocked API resources.
+                if (blockedAPIResources?.length > 0 && blockedAPIResources.includes(apiResource?.identifier)) {
+                    return filtered;
+                }
 
                 const isCurrentAPIResourceSubscribed: boolean = selectedAPIResources?.length === 0
                     || !selectedAPIResources?.some(

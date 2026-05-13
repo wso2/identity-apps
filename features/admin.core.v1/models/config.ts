@@ -487,6 +487,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     googleOneTapEnabledTenants?: string[];
     /**
+     * API resource management UI configurations.
+     */
+    apiResourceManagement?: APIResourceManagementUIConfigInterface;
+    /**
      * Set of authenticators to be hidden in application sign on methods.
      */
     hiddenAuthenticators?: string[];
@@ -770,6 +774,30 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Flag to check whether the password reset enforcement scope configuration is enabled.
      */
     isPasswordResetEnforcementScopeEnabled?: boolean;
+}
+
+/**
+ * API resource management UI configurations.
+ */
+export interface APIResourceManagementUIConfigInterface {
+    /**
+     * Configurations for the application API Authorization.
+     */
+    applicationAPIAuthorization?: APIResourceBlockListConfigInterface;
+    /**
+     * Configurations for the role permission assignment.
+     */
+    rolePermissionAssignment?: APIResourceBlockListConfigInterface;
+}
+
+/**
+ * Blocklist configuration conataining the api resource identifiers.
+ */
+export interface APIResourceBlockListConfigInterface {
+    /**
+     * API resource identifiers (e.g., "/api/server/v1/authenticators") to hide on the particular resource.
+     */
+    blockedAPIResources?: string[];
 }
 
 /**
