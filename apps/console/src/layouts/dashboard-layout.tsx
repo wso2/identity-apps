@@ -175,12 +175,13 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
         }
 
         if (initLoad.current) {
-            // Try to handle any un-expected routing issues. Returns a void if no issues are found.
-            RouteUtils.gracefullyHandleRouting(
-                filteredRoutes,
-                AppConstants.getAdminViewBasePath(),
-                location.pathname
-            );
+            if (!isOrganizationSwitchRequestLoading) {
+                RouteUtils.gracefullyHandleRouting(
+                    filteredRoutes,
+                    AppConstants.getAdminViewBasePath(),
+                    location.pathname
+                );
+            }
             initLoad.current = false;
         }
 
