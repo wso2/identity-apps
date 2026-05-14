@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.41.1
+
+### Patch Changes
+
+- [#10275](https://github.com/wso2/identity-apps/pull/10275) [`1b282113955a70809c1beb686757845a894bc512`](https://github.com/wso2/identity-apps/commit/1b282113955a70809c1beb686757845a894bc512) Thanks [@Malith-19](https://github.com/Malith-19)! - Update the refresh token extend expiry time description.
+
 ## 2.41.0
 
 ### Minor Changes

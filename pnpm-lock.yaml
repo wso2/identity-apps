@@ -335,7 +335,7 @@ importers:
         specifier: ^1.6.1
         version: link:../../features/admin.application-templates.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.42.27
+        specifier: ^2.42.28
         version: link:../../features/admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
         specifier: ^1.3.31
@@ -497,7 +497,7 @@ importers:
         specifier: ^2.13.2
         version: link:../../modules/core
       '@wso2is/i18n':
-        specifier: ^2.41.0
+        specifier: ^2.41.1
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.2
@@ -669,7 +669,7 @@ importers:
         specifier: ^2.10.3
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.38.7
+        specifier: ^2.41.1
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.1
@@ -2047,7 +2047,7 @@ importers:
         specifier: ^2.3.27
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.41.0
+        specifier: ^2.41.1
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.0
@@ -11477,7 +11477,7 @@ importers:
   identity-apps-core:
     dependencies:
       '@wso2is/theme':
-        specifier: ^2.10.2
+        specifier: ^2.10.3
         version: link:../modules/theme
       dompurify:
         specifier: ^3.0.9

@@ -1,5 +1,14 @@
 # @wso2is/admin.applications.v1
 
+## 2.42.28
+
+### Patch Changes
+
+- [#10275](https://github.com/wso2/identity-apps/pull/10275) [`1b282113955a70809c1beb686757845a894bc512`](https://github.com/wso2/identity-apps/commit/1b282113955a70809c1beb686757845a894bc512) Thanks [@Malith-19](https://github.com/Malith-19)! - Update the refresh token extend expiry time description.
+
+- Updated dependencies [[`1b282113955a70809c1beb686757845a894bc512`](https://github.com/wso2/identity-apps/commit/1b282113955a70809c1beb686757845a894bc512)]:
+  - @wso2is/i18n@2.41.1
+
 ## 2.42.27
 
 ### Patch Changes
