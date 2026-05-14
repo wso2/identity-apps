@@ -56,20 +56,13 @@ const Header = () => {
                 },
                 onClick: () => {
                     history.push(AppConstants.getPaths().get("ONBOARDING"));
-                }
+                },
+                title: "Onboarding"
             } }
             position="fixed"
             sx={ {
                 "& .OxygenHeader-userDropdownMenu": {
                     display: "none"
-                },
-                "&&.is-header.oxygen-header .oxygen-brand-logo": {
-                    height: "40px",
-                    maxWidth: "none"
-                },
-                "&&.is-header.oxygen-header .oxygen-brand-logo .oxygen-image": {
-                    height: "40px",
-                    width: "auto"
                 }
             } }
         />
