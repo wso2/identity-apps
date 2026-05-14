@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 4.1.26
+
+### Patch Changes
+
+- [#10272](https://github.com/wso2/identity-apps/pull/10272) [`80f84ddeb8e4a73882f889b48660824ad364e30f`](https://github.com/wso2/identity-apps/commit/80f84ddeb8e4a73882f889b48660824ad364e30f) Thanks [@savindi7](https://github.com/savindi7)! - Update Branding logos.
+
+- Updated dependencies [[`80f84ddeb8e4a73882f889b48660824ad364e30f`](https://github.com/wso2/identity-apps/commit/80f84ddeb8e4a73882f889b48660824ad364e30f)]:
+  - @wso2is/theme@2.10.2
+
 ## 4.1.25
 
 ### Patch Changes
