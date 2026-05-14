@@ -1,5 +1,15 @@
 # @wso2is/admin.core.v1
 
+## 2.57.9
+
+### Patch Changes
+
+- [#10272](https://github.com/wso2/identity-apps/pull/10272) [`80f84ddeb8e4a73882f889b48660824ad364e30f`](https://github.com/wso2/identity-apps/commit/80f84ddeb8e4a73882f889b48660824ad364e30f) Thanks [@savindi7](https://github.com/savindi7)! - Update Branding logos.
+
+- Updated dependencies [[`80f84ddeb8e4a73882f889b48660824ad364e30f`](https://github.com/wso2/identity-apps/commit/80f84ddeb8e4a73882f889b48660824ad364e30f)]:
+  - @wso2is/admin.extensions.v1@2.43.7
+  - @wso2is/admin.tenants.v1@2.29.29
+
 ## 2.57.8
 
 ### Patch Changes
