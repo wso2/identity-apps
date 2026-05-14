@@ -16,10 +16,13 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
+import { ReactComponent as Pulse } from "./pulse.svg";
+import "./pre-loader.css";
 
 /**
  * Pre loader component props interface.
@@ -42,46 +45,30 @@ export const PreLoader: FunctionComponent<PreLoaderPropsInterface> = (
     } = props;
 
     return (
-        <div className="pre-loader-wrapper" data-componentid={ `${ componentId }-wrapper` }>
-            {
-                commonConfig?.enableDefaultPreLoader ? (
-                    <ContentLoader data-componentid={ componentId }/>
-                ) : (
-                    <div className="trifacta-pre-loader" data-componentid={ componentId }>
-                        <svg
-                            data-componentid={ `${ componentId }-svg` }
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="67.56"
-                            height="58.476"
-                            viewBox="0 0 67.56 58.476"
-                        >
-                            <g id="logo-only" transform="translate(-424.967 -306)">
-                                <path
-                                    id="_3"
-                                    data-name="3"
-                                    d="M734.291,388.98l6.194,10.752-6.868,11.907h13.737l6.226,10.751H714.97Z"
-                                    transform="translate(-261.054 -82.98)"
-                                    fill="#ff7300"
-                                />
-                                <path
-                                    id="_2"
-                                    data-name="2"
-                                    d="M705.95,422.391l6.227-10.751h13.736l-6.867-11.907,6.193-10.752,19.321,33.411Z"
-                                    transform="translate(-280.983 -82.98)"
-                                    fill="#ff7300"
-                                />
-                                <path
-                                    id="_1"
-                                    data-name="1"
-                                    d="M736.65,430.2l-6.868-11.907-6.9,11.907H710.46l19.322-33.411L749.071,430.2Z"
-                                    transform="translate(-271.019 -65.725)"
-                                    fill="#000"
-                                />
-                            </g>
-                        </svg>
-                    </div>
-                )
-            }
+        <div className="pre-loader-wrapper" data-componentid={ `${componentId}-wrapper` }>
+            { commonConfig?.enableDefaultPreLoader ? (
+                <ContentLoader data-componentid={ componentId } />
+            ) : (
+                <Box
+                    data-componentid={ componentId }
+                    sx={ {
+                        "& svg": {
+                            animation: "app-pre-loader-pulse 2s ease-in-out infinite",
+                            height: 80,
+                            width: 80
+                        },
+                        "@keyframes app-pre-loader-pulse": {
+                            "0%, 100%": { opacity: 1 },
+                            "50%": { opacity: 0.5 }
+                        },
+                        alignItems: "center",
+                        display: "flex",
+                        justifyContent: "center"
+                    } }
+                >
+                    <Pulse data-componentid={ `${componentId}-svg` } />
+                </Box>
+            ) }
         </div>
     );
 };
