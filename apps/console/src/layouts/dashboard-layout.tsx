@@ -181,8 +181,8 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                     AppConstants.getAdminViewBasePath(),
                     location.pathname
                 );
+                initLoad.current = false;
             }
-            initLoad.current = false;
         }
 
         setSelectedRoute(
@@ -191,7 +191,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                 filteredRoutes
             )
         );
-    }, [ location.pathname, filteredRoutes ]);
+    }, [ location.pathname, filteredRoutes, isOrganizationSwitchRequestLoading ]);
 
     useEffect(() => {
         if (!isEmpty(profileInfo)) {
