@@ -118,6 +118,14 @@ export interface ConnectionCommonClaimMappingInterface {
     claim: ConnectionClaimInterface;
 }
 
+export interface MappedClaimInterface {
+    idpClaim?: string;
+    isClaim?: string;
+    localClaim?: string;
+    status?: string;
+    value?: unknown;
+}
+
 /**
  * Captures the connection claim details.
  */

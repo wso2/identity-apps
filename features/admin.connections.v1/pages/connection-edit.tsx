@@ -20,8 +20,8 @@ import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-
 import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import {
@@ -39,10 +39,11 @@ import {
     DocumentationLink,
     LabelWithPopup,
     Popup,
+    SecondaryButton,
     TabPageLayout,
     useDocumentation
 } from "@wso2is/react-components";
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import get from "lodash-es/get";
 import orderBy from "lodash-es/orderBy";
 import React, { Fragment, FunctionComponent, ReactElement, ReactNode, useEffect, useRef, useState } from "react";
@@ -50,8 +51,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { Label } from "semantic-ui-react";
+import { Icon, Label } from "semantic-ui-react";
 import { getLocalAuthenticator, getMultiFactorAuthenticatorDetails } from "../api/authenticators";
+import {
+    ConnectionTestSessionResponseInterface,
+    resolveConnectionTestErrorMessage,
+    startConnectionTestSession
+} from "../api/connection-test-api";
 import { getConnectionDetails, getConnectionMetaData, getConnectionTemplates } from "../api/connections";
 import { EditConnection } from "../components/edit/connection-edit";
 import { EditMultiFactorAuthenticator } from "../components/edit/edit-multi-factor-authenticator";
@@ -67,10 +73,6 @@ import {
     CustomAuthConnectionInterface,
     SupportedQuickStartTemplateTypes
 } from "../models/connection";
-import { Icon } from "semantic-ui-react";
-import {
-    PrimaryButton, SecondaryButton
-} from "@wso2is/react-components";
 import { ConnectionTemplateManagementUtils } from "../utils/connection-template-utils";
 import { ConnectionsManagementUtils, handleGetConnectionsMetaDataError } from "../utils/connection-utils";
 
@@ -697,7 +699,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         if (!connector?.id) {
             dispatch(
                 addAlert({
-                    description: "Connection ID is not available.",
+                    description: t("authenticationProvider:notifications.getIDP.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t("authenticationProvider:notifications.getIDP.error.message")
                 })
@@ -707,48 +709,40 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         }
 
         setIsTestingConnection(true);
+        const authPopup: Window | null = window.open("", "_blank");
 
         try {
-            const axios = (await import("axios")).default;
+            const response: AxiosResponse<ConnectionTestSessionResponseInterface> =
+                await startConnectionTestSession(resourceEndpoints, connector.id);
 
-            const response = await axios.post(
-                `${resourceEndpoints.debug}/idp`,
-                { connectionId: connector.id },
-                { withCredentials: true }
-            );
-
-            const debugId = response.data?.debugId;
-            const authorizationUrl = response.data?.metadata?.authorizationUrl;
+            const authorizationUrl: string | undefined = response.data?.metadata?.authorizationUrl;
+            const debugId: string | undefined = response.data?.debugId;
 
             if (debugId && authorizationUrl) {
-                // Navigate to test page with debug session data
-                const pathParts = location.pathname.split("/");
-                const tenantIndex = pathParts.indexOf("t");
-                const tenantDomain = tenantIndex !== -1 ? pathParts[tenantIndex + 1] : "carbon.super";
-                
+                authPopup?.location.assign(authorizationUrl);
                 history.push({
-                    pathname: `/t/${tenantDomain}/console/connections/${connector.id}/test`,
+                    pathname: AppConstants.getPaths().get("IDP_TEST").replace(":id", connector.id),
                     state: {
-                        debugId,
-                        authorizationUrl
+                        debugId
                     }
                 });
             } else {
+                authPopup?.close();
                 // Handle case where debug session data is incomplete
                 dispatch(
                     addAlert({
-                        description: t("authenticationProvider:notifications.getIDP.error.description", 
-                            { description: "Debug session data is incomplete." }),
+                        description: t("authenticationProvider:notifications.getIDP.genericError.description"),
                         level: AlertLevels.ERROR,
                         message: t("authenticationProvider:notifications.getIDP.error.message")
                     })
                 );
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
+            authPopup?.close();
             dispatch(
                 addAlert({
-                    description: error?.response?.data?.message || error?.response?.data?.description || 
-                        error?.message || t("authenticationProvider:notifications.getIDP.genericError.description"),
+                    description: resolveConnectionTestErrorMessage(error)
+                        ?? t("authenticationProvider:notifications.getIDP.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t("authenticationProvider:notifications.getIDP.genericError.message")
                 })

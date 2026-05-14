@@ -32,22 +32,60 @@ import Tab from "@oxygen-ui/react/Tab";
 import TabPanel from "@oxygen-ui/react/TabPanel";
 import Tabs from "@oxygen-ui/react/Tabs";
 import Typography from "@oxygen-ui/react/Typography";
+import { Theme, useTheme } from "@mui/material/styles";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
 import { TabPageLayout } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useRef, useState } from "react";
+import { AxiosResponse } from "axios";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router-dom";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Accordion, Icon } from "semantic-ui-react";
+import {
+    ConnectionTestSessionResponseInterface,
+    getConnectionTestResult,
+    resolveConnectionTestErrorMessage,
+    startConnectionTestSession
+} from "../api/connection-test-api";
+import {
+    StyledCodeBlock,
+    StyledCodeBlockContainer,
+    StyledDiagnosticAccordionRow,
+    StyledDiagnosticAccordionTitle,
+    StyledDiagnosticsScroller,
+    StyledDiagnosticValueBlock,
+    StyledExpandedDetailsTable,
+    StyledExpandedLabelCell,
+    StyledExpandedValueCell,
+    StyledHeaderCell,
+    StyledMonoCell,
+    StyledResultCard,
+    StyledTableHeaderRow,
+    StyledTableRow,
+    StyledTableWrapper,
+    StyledValueCell
+} from "../components/connection-test-styles";
+import { MappedClaimInterface } from "../models/connection";
+import {
+    ConnectionTestDiagnosticLogInterface,
+    ConnectionTestResultInterface,
+    ConnectionTestResultMetadataInterface,
+    ConnectionTestStepStatusInterface
+} from "../models/connection-test";
 
-
-/**
- * Interface for the route parameters.
- */
 interface RouteParams {
     tenantDomain?: string;
     id?: string;
 }
+
+interface ConnectionTestLocationStateInterface {
+    debugId?: string;
+}
+
+interface ConnectionTestPagePropsInterface
+    extends IdentifiableComponentInterface, RouteComponentProps<RouteParams> {}
 
 const RotateIcon = (): ReactElement => {
     /* eslint-disable-next-line max-len */
@@ -60,14 +98,18 @@ const RotateIcon = (): ReactElement => {
  * @param props - Props injected to the component.
  * @returns React element.
  */
-const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) => {
+const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = (
+    props: ConnectionTestPagePropsInterface
+): ReactElement => {
+    const theme: Theme = useTheme();
     const { id: connectorId = "" } = props.match.params || {};
     const { location } = props;
-    const resultCacheKey = `idp-test-result:${connectorId}`;
-    const locationState = location?.state as any;
-    const hasPendingAutoRun = Boolean(locationState?.debugId && locationState?.authorizationUrl);
+    const resultCacheKey: string = `idp-test-result:${connectorId}`;
+    const locationState: ConnectionTestLocationStateInterface | undefined =
+        location?.state as ConnectionTestLocationStateInterface | undefined;
+    const hasPendingAutoRun: boolean = Boolean(locationState?.debugId);
 
-    const getCachedResult = (): any => {
+    const getCachedResult = (): ConnectionTestResultInterface | null => {
         if (typeof window === "undefined" || !connectorId) {
             return null;
         }
@@ -91,18 +133,20 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
     const { resourceEndpoints } = useResourceEndpoints();
 
     const [ debugId, setDebugId ] = useState<string | null>(null);
-    const [ result, setResult ] = useState<any>(() => hasPendingAutoRun ? null : getCachedResult());
+    const [ result, setResult ] = useState<ConnectionTestResultInterface | null>(
+        () => hasPendingAutoRun ? null : getCachedResult()
+    );
     const [ error, setError ] = useState<string | null>(null);
-    const [ loading, setLoading ] = useState(false);
-    const [ hasError, setHasError ] = useState(false);
-    const [ hasPartial, setHasPartial ] = useState(false);
-    const [ activeTab, setActiveTab ] = useState(0);
-    const [ autoRunTriggered, setAutoRunTriggered ] = useState(false);
-    const [ isStatusBannerVisible, setIsStatusBannerVisible ] = useState(true);
+    const [ loading, setLoading ] = useState<boolean>(false);
+    const [ hasError, setHasError ] = useState<boolean>(false);
+    const [ hasPartial, setHasPartial ] = useState<boolean>(false);
+    const [ activeTab, setActiveTab ] = useState<number>(0);
+    const [ autoRunTriggered, setAutoRunTriggered ] = useState<boolean>(false);
+    const [ isStatusBannerVisible, setIsStatusBannerVisible ] = useState<boolean>(true);
     const [ expandedDiagnosticLogs, setExpandedDiagnosticLogs ] = useState<number[]>([]);
 
-    const popupInterval = useRef<any>(null);
-    const fetchTimer = useRef<any>(null);
+    const popupInterval = useRef<NodeJS.Timeout | null>(null);
+    const fetchTimer = useRef<NodeJS.Timeout | null>(null);
 
     /**
      * Clears cached test result for the current connection.
@@ -118,7 +162,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
     /**
      * Saves latest test result payload to browser cache.
      */
-    const cacheResult = (value: any): void => {
+    const cacheResult = (value: ConnectionTestResultInterface): void => {
         if (typeof window === "undefined" || !connectorId) {
             return;
         }
@@ -148,12 +192,12 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
     }, []);
 
     /**
-     * Auto-run test if debugId and authUrl are provided via location state.
+     * Auto-run result retrieval if a debug id is provided via location state.
      */
     useEffect(() => {
-        const state = locationState;
+        const state: ConnectionTestLocationStateInterface | undefined = locationState;
 
-        if (state?.debugId && state?.authorizationUrl && !autoRunTriggered) {
+        if (state?.debugId && !autoRunTriggered) {
             // Reset stale UI/cached data before starting an auto-run flow.
             setResult(null);
             setError(null);
@@ -166,25 +210,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
             setAutoRunTriggered(true);
             setDebugId(state.debugId);
 
-            // Open the authorization URL
-            const authPopup = window.open(state.authorizationUrl, "_blank");
-
-            // Monitor the popup
-            popupInterval.current = setInterval(() => {
-                try {
-                    if (authPopup && authPopup.closed) {
-                        clearTimers();
-                        // Fetch results after popup closes
-                        fetchTimer.current = setTimeout(() => {
-                            fetchResult(state.debugId);
-                        }, 1000);
-                    }
-                } catch (e) {
-                    // ignore
-                }
-            }, 500);
-
-            // Set a timeout to fetch results after 30 seconds
+            // Fetch results after the authorization flow has had time to complete.
             fetchTimer.current = setTimeout(() => {
                 clearTimers();
                 fetchResult(state.debugId);
@@ -198,7 +224,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
      */
     const fetchResult = async (sid: string): Promise<void> => {
         if (!sid) {
-            setError("No debug session id found...");
+            setError(t("authenticationProvider:notifications.getIDP.genericError.description"));
 
             return;
         }
@@ -209,11 +235,8 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
         setExpandedDiagnosticLogs([]);
 
         try {
-            const axios = (await import("axios")).default;
-            const response = await axios.get(
-                `${resourceEndpoints.debug}/${sid}/result`,
-                { withCredentials: true }
-            );
+            const response: AxiosResponse<ConnectionTestResultInterface> =
+                await getConnectionTestResult<ConnectionTestResultInterface>(resourceEndpoints, sid);
 
             clearCachedResult();
             setResult(response.data);
@@ -221,15 +244,19 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
             cacheResult(response.data);
             setExpandedDiagnosticLogs([]);
 
-        } catch (err: any) {
+        } catch (error: unknown) {
             // eslint-disable-next-line no-console
-            console.error("[ConnectionTest] Fetch error:", err?.response?.status, err?.message);
+            console.error("[ConnectionTest] Fetch error:", resolveConnectionTestErrorMessage(error));
 
-            if (err?.response?.status === 404) {
-                setError("Unable to retrieve test results for this session.");
-            } else {
-                setError(err?.response?.data?.message || err?.message || "Failed to fetch debug results.");
+            const errorMessage: string | undefined = resolveConnectionTestErrorMessage(error);
+
+            if (errorMessage) {
+                setError(errorMessage);
+
+                return;
             }
+
+            setError(t("authenticationProvider:notifications.getIDP.genericError.description"));
         } finally {
             setLoading(false);
         }
@@ -249,25 +276,24 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
         clearCachedResult();
 
         if (!connectorId) {
-            setError("Connection ID is missing. Cannot run test.");
+            setError(t("authenticationProvider:notifications.getIDP.genericError.description"));
 
             return;
         }
 
         try {
-            const axios = (await import("axios")).default;
-            const payload = {
-                connectionId: connectorId
-            };
+            const response: AxiosResponse<ConnectionTestSessionResponseInterface> =
+                await startConnectionTestSession(resourceEndpoints, connectorId);
 
-            const response = await axios.post(
-                `${resourceEndpoints.debug}/idp`,
-                payload,
-                { withCredentials: true }
-            );
+            const authorizationUrl: string | undefined = response.data?.metadata?.authorizationUrl;
+            const newDebugId: string | undefined = response.data?.debugId;
 
-            const newDebugId = response.data.debugId;
-            const authorizationUrl = response.data.metadata.authorizationUrl;
+            if (!newDebugId) {
+                clearTimers();
+                setError(t("authenticationProvider:notifications.getIDP.genericError.description"));
+
+                return;
+            }
 
             setDebugId(newDebugId);
 
@@ -304,11 +330,14 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                     fetchResult(newDebugId);
                 }, 2000);
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             // eslint-disable-next-line no-console
             console.error("[ConnectionTest] Error running test:", error);
             clearTimers();
-            setError(error?.response?.data?.message || error?.message || "Failed to run test.");
+            setError(
+                resolveConnectionTestErrorMessage(error)
+                    ?? t("authenticationProvider:notifications.getIDP.genericError.description")
+            );
         }
     };
 
@@ -366,13 +395,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
-        // Extract tenant domain from current path
-        const pathParts = location.pathname.split("/");
-        const tenantIndex = pathParts.indexOf("t");
-        const tenantDomain = tenantIndex !== -1 ? pathParts[tenantIndex + 1] : "carbon.super";
-
-        // Navigate to the specific connection page
-        history.push(`/t/${tenantDomain}/console/connections/${connectorId}`);
+        history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", connectorId));
     };
 
     // State for connector details - removed as we no longer display connector info on this page
@@ -390,30 +413,17 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                 wordBreak?: "break-all" | "break-word";
             } = {}
         ) => (
-            <Box
-                sx={ {
-                    backgroundColor: "#F8FAFC",
-                    border: "1px solid #E5E7EB",
-                    borderRadius: 1.5,
-                    mb: options.marginBottom ?? 0,
-                    overflowX: "auto"
-                } }
-            >
-                <Box
+            <StyledCodeBlockContainer sx={ { mb: options.marginBottom ?? 0 } }>
+                <StyledCodeBlock
                     component="pre"
                     sx={ {
                         color: options.color ?? "text.primary",
-                        fontFamily: "monospace",
-                        fontSize: 13,
-                        m: 0,
-                        p: 1.5,
-                        whiteSpace: "pre-wrap",
                         wordBreak: options.wordBreak ?? "break-word"
                     } }
                 >
                     { typeof value === "string" ? value : JSON.stringify(value, null, 2) }
-                </Box>
-            </Box>
+                </StyledCodeBlock>
+            </StyledCodeBlockContainer>
         );
 
         const tabPanes = [
@@ -455,7 +465,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                         <Box sx={ { pt: 3 } }>
                             <Stack spacing={ 3 }>
                                 { decoded ? (
-                                    <Card variant="outlined" sx={ { backgroundColor: "#FCFDFD", borderRadius: 2, p: 3 } }>
+                                    <StyledResultCard variant="outlined">
                                         <Typography variant="h6" sx={ { mb: 1 } }>
                                             Header
                                         </Typography>
@@ -470,7 +480,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                             Signature
                                         </Typography>
                                         { renderCodeBlock(decoded.signature, { wordBreak: "break-all" }) }
-                                    </Card>
+                                    </StyledResultCard>
                                 ) : (
                                     <Alert severity="info" icon={ false }>
                                         Unable to decode token or not a valid JWT.
@@ -485,8 +495,13 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                 key: "claim-mappings",
                 menuItem: "Claim Mappings",
                 render: () => {
-                    const claimsArray = Array.isArray(result?.metadata?.mappedClaims) ? result?.metadata?.mappedClaims : [];
-                    const sortedClaims = claimsArray.sort((a, b) => {
+                    const claimsArray: MappedClaimInterface[] = Array.isArray(result?.metadata?.mappedClaims)
+                        ? result?.metadata?.mappedClaims as MappedClaimInterface[]
+                        : [];
+                    const sortedClaims: MappedClaimInterface[] = [ ...claimsArray ].sort((
+                        a: MappedClaimInterface,
+                        b: MappedClaimInterface
+                    ) => {
                         if (a.status === "Successful" && b.status !== "Successful") {
                             return -1;
                         }
@@ -511,62 +526,43 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                     return (
                         <Box sx={ { pt: 3 } }>
                             <Box sx={ { overflowX: "auto" } }>
-                                <Box
+                                <StyledTableWrapper>
+                                    <Box
                                     component="table"
                                     sx={ {
-                                        backgroundColor: "#FCFDFD",
                                         borderCollapse: "collapse",
-                                        borderRadius: 2,
                                         minWidth: 760,
-                                        overflow: "hidden",
                                         width: "100%"
                                     } }
                                 >
                                     <thead>
-                                        <Box
-                                            component="tr"
-                                            sx={ { backgroundColor: "#F8FAFC", borderBottom: "1px solid #E5E7EB" } }
-                                        >
-                                            <Box
+                                        <StyledTableHeaderRow component="tr">
+                                            <StyledHeaderCell
                                                 component="th"
                                                 sx={ {
-                                                    borderRight: "1px solid #E5E7EB",
-                                                    fontSize: 15,
-                                                    fontWeight: 600,
-                                                    p: "10px 8px",
-                                                    textAlign: "left",
                                                     width: "48%"
                                                 } }
                                             >
                                                 Local Claim (URI)
-                                            </Box>
-                                            <Box
+                                            </StyledHeaderCell>
+                                            <StyledHeaderCell
                                                 component="th"
                                                 sx={ {
-                                                    borderRight: "1px solid #E5E7EB",
-                                                    fontSize: 15,
-                                                    fontWeight: 600,
-                                                    p: "10px 8px",
-                                                    textAlign: "left",
                                                     width: "24%"
                                                 } }
                                             >
                                                 IDP Claim
-                                            </Box>
-                                            <Box
+                                            </StyledHeaderCell>
+                                            <StyledHeaderCell
                                                 component="th"
                                                 sx={ {
-                                                    borderRight: "1px solid #E5E7EB",
-                                                    fontSize: 15,
-                                                    fontWeight: 600,
-                                                    p: "10px 8px",
-                                                    textAlign: "left",
+                                                    borderRight: "none",
                                                     width: "28%"
                                                 } }
                                             >
                                                 Value
-                                            </Box>
-                                        </Box>
+                                            </StyledHeaderCell>
+                                        </StyledTableHeaderRow>
                                     </thead>
                                     <tbody>
                                         { sortedClaims.length === 0 && (
@@ -577,64 +573,49 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                             </Box>
                                         ) }
                                         { sortedClaims.map((claim, idx) => (
-                                            <Box
+                                            <StyledTableRow
                                                 component="tr"
                                                 key={ idx }
-                                                sx={ {
-                                                    backgroundColor: "#FFFFFF",
-                                                    borderBottom: "1px solid #E5E7EB"
-                                                } }
                                             >
-                                                <Box
+                                                <StyledMonoCell
                                                     component="td"
                                                     sx={ {
-                                                        borderRight: "1px solid #E5E7EB",
-                                                        fontFamily: "monospace",
-                                                        fontSize: 13,
                                                         maxWidth: 360,
-                                                        p: 1,
                                                         whiteSpace: "normal",
                                                         wordBreak: "break-word"
                                                     } }
                                                     title={ claim.localClaim || claim.isClaim || "-" }
                                                 >
                                                     { claim.localClaim || claim.isClaim || "-" }
-                                                </Box>
-                                                <Box
+                                                </StyledMonoCell>
+                                                <StyledMonoCell
                                                     component="td"
                                                     sx={ {
-                                                        borderRight: "1px solid #E5E7EB",
-                                                        fontFamily: "monospace",
-                                                        fontSize: 13,
                                                         maxWidth: 180,
                                                         overflow: "hidden",
-                                                        p: 1,
                                                         textOverflow: "ellipsis"
                                                     } }
                                                     title={ claim.idpClaim }
                                                 >
                                                     { claim.idpClaim }
-                                                </Box>
-                                                <Box
+                                                </StyledMonoCell>
+                                                <StyledValueCell
                                                     component="td"
                                                     sx={ {
-                                                        borderRight: "1px solid #E5E7EB",
-                                                        color: "text.secondary",
-                                                        fontFamily: "monospace",
-                                                        fontSize: 13,
+                                                        borderRight: "none",
                                                         maxWidth: 200,
                                                         overflow: "hidden",
-                                                        p: 1,
                                                         textOverflow: "ellipsis"
                                                     } }
                                                     title={ formatValue(claim.value) }
                                                 >
                                                     { formatValue(claim.value) }
-                                                </Box>
-                                            </Box>
+                                                </StyledValueCell>
+                                            </StyledTableRow>
                                         )) }
                                     </tbody>
                                 </Box>
+                                </StyledTableWrapper>
                             </Box>
                         </Box>
                     );
@@ -645,11 +626,14 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                 menuItem: "Diagnosis",
                 render: () => {
                     const formatLogs = () => {
-                        const metadataObj = result?.metadata || {};
-                        const stepStatus = metadataObj?.stepStatus || {};
-                        const allDiagnostics = Array.isArray(metadataObj?.diagnostics) ? metadataObj.diagnostics : [];
+                        const metadataObj: ConnectionTestResultMetadataInterface = result?.metadata || {};
+                        const stepStatus: ConnectionTestStepStatusInterface = metadataObj?.stepStatus || {};
+                        const allDiagnostics: ConnectionTestDiagnosticLogInterface[] =
+                            Array.isArray(metadataObj?.diagnostics) ? metadataObj.diagnostics : [];
                         // Filter out 'started' status entries and claim validation stage entries
-                        const diagnostics = allDiagnostics.filter((log: any) =>
+                        const diagnostics: ConnectionTestDiagnosticLogInterface[] = allDiagnostics.filter((
+                            log: ConnectionTestDiagnosticLogInterface
+                        ) =>
                             !(log.status === "started" || log.stage === "claimValidation")
                         );
                         const steps: Record<string, string | undefined> = {
@@ -669,21 +653,21 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
 
                             switch (normalizedStatus) {
                                 case "success":
-                                    return { background: "#E8F5E9", color: "#15803D" };
+                                    return { background: theme.palette.success.light, color: theme.palette.success.dark };
                                 case "partial":
-                                    return { background: "#FFFBEB", color: "#B45309" };
+                                    return { background: theme.palette.warning.light, color: theme.palette.warning.dark };
                                 case "started":
                                 case "pending":
-                                    return { background: "#E0F2FE", color: "#0284C7" };
+                                    return { background: theme.palette.info.light, color: theme.palette.info.dark };
                                 case "failed":
                                 case "error":
-                                    return { background: "#FEE4E2", color: "#B42318" };
+                                    return { background: theme.palette.error.light, color: theme.palette.error.dark };
                                 default:
-                                    return { background: "#F3F4F6", color: "#6B7280" };
+                                    return { background: theme.palette.action.hover, color: theme.palette.text.secondary };
                             }
                         };
                         const getDiagnosticStatusIcon = (status?: string): ReactElement => {
-                            let iconName: string;
+                            let iconName: "check circle" | "times circle";
                             let iconColor: "green" | "yellow" | "red";
 
                             switch (String(status || "").toUpperCase()) {
@@ -744,29 +728,17 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
 
                             if (typeof value === "object") {
                                 return (
-                                    <Box
+                                    <StyledDiagnosticValueBlock
                                         component="pre"
-                                        sx={ {
-                                            backgroundColor: "#F7F7F7",
-                                            border: "1px solid #D4D4D4",
-                                            borderRadius: 1,
-                                            fontFamily: "monospace",
-                                            fontSize: 12,
-                                            m: 0,
-                                            overflowX: "auto",
-                                            p: 1,
-                                            whiteSpace: "pre-wrap",
-                                            wordBreak: "break-word"
-                                        } }
                                     >
                                         { JSON.stringify(value, null, 2) }
-                                    </Box>
+                                    </StyledDiagnosticValueBlock>
                                 );
                             }
 
                             return String(value);
                         };
-                        const renderExpandedDiagnosticRows = (log: any) => {
+                        const renderExpandedDiagnosticRows = (log: ConnectionTestDiagnosticLogInterface) => {
                             const rows: Array<{ label: string; value: unknown }> = [
                                 {
                                     label: "recordedAt",
@@ -794,26 +766,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
 
                                 { diagnostics.length > 0 && (
                                     <Box>
-                                        <Box
-                                            sx={ {
-                                                maxHeight: { xs: 420, md: 520 },
-                                                overflowY: "auto",
-                                                scrollbarColor: "#BDBDBD #F5F5F5",
-                                                scrollbarWidth: "thin",
-                                                "&::-webkit-scrollbar": {
-                                                    width: 10
-                                                },
-                                                "&::-webkit-scrollbar-thumb": {
-                                                    backgroundColor: "#BDBDBD",
-                                                    border: "2px solid #F5F5F5",
-                                                    borderRadius: 999
-                                                },
-                                                "&::-webkit-scrollbar-track": {
-                                                    backgroundColor: "#F5F5F5",
-                                                    borderRadius: 999
-                                                }
-                                            } }
-                                        >
+                                        <StyledDiagnosticsScroller sx={ { maxHeight: { xs: 420, md: 520 } } }>
                                             <Accordion exclusive={ false } fluid>
                                                 { diagnostics.map((log: any, idx: number) => {
                                                     const timestamp = log.timestamp
@@ -822,13 +775,9 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                                     const isExpanded = expandedDiagnosticLogs.includes(idx);
 
                                                     return (
-                                                        <Box
+                                                        <StyledDiagnosticAccordionRow
                                                             key={ idx }
-                                                            sx={ {
-                                                                borderBottom: idx === diagnostics.length - 1
-                                                                    ? "none"
-                                                                    : "1px solid #E5E7EB"
-                                                            } }
+                                                            sx={ idx === diagnostics.length - 1 ? { borderBottom: "none" } : undefined }
                                                         >
                                                             <Accordion.Title
                                                                 active={ isExpanded }
@@ -836,17 +785,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                                                 onClick={ () => toggleDiagnosticLog(idx) }
                                                                 style={ { padding: 0 } }
                                                             >
-                                                                <Box
-                                                                    sx={ {
-                                                                        alignItems: "center",
-                                                                        cursor: "pointer",
-                                                                        display: "flex",
-                                                                        flexDirection: "row",
-                                                                        gap: 1.5,
-                                                                        px: 1.5,
-                                                                        py: 1.75
-                                                                    } }
-                                                                >
+                                                                <StyledDiagnosticAccordionTitle>
                                                                     <Box
                                                                         sx={ {
                                                                             alignItems: "center",
@@ -884,64 +823,44 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                                                             color: "text.primary",
                                                                             flexShrink: 0,
                                                                             fontSize: 12,
-                                                                            marginLeft: "auto",
+                                                                            ml: "auto",
                                                                             textAlign: "right",
                                                                             whiteSpace: "nowrap"
                                                                         } }
                                                                     >
                                                                         { timestamp }
                                                                     </Box>
-                                                                </Box>
+                                                                </StyledDiagnosticAccordionTitle>
                                                             </Accordion.Title>
                                                             <Accordion.Content active={ isExpanded }>
                                                                 <Box sx={ { px: 5.5, pb: 2 } }>
-                                                                    <Box
+                                                                    <StyledExpandedDetailsTable
                                                                         component="table"
-                                                                        sx={ {
-                                                                            borderCollapse: "collapse",
-                                                                            width: "100%",
-                                                                            "& td": {
-                                                                                borderTop: "1px solid #E5E7EB",
-                                                                                px: 1.5,
-                                                                                py: 1,
-                                                                                verticalAlign: "top"
-                                                                            }
-                                                                        } }
                                                                     >
                                                                         <tbody>
                                                                             { renderExpandedDiagnosticRows(log).map((row) => (
                                                                                 <Box component="tr" key={ row.label }>
-                                                                                    <Box
+                                                                                    <StyledExpandedLabelCell
                                                                                         component="td"
-                                                                                        sx={ {
-                                                                                            color: "text.secondary",
-                                                                                            fontFamily: "monospace",
-                                                                                            fontSize: 12,
-                                                                                            width: 160
-                                                                                        } }
                                                                                     >
                                                                                         { row.label }:
-                                                                                    </Box>
-                                                                                    <Box
+                                                                                    </StyledExpandedLabelCell>
+                                                                                    <StyledExpandedValueCell
                                                                                         component="td"
-                                                                                        sx={ {
-                                                                                            color: "text.primary",
-                                                                                            fontSize: 13
-                                                                                        } }
                                                                                     >
                                                                                         { renderDiagnosticLogValue(row.value) }
-                                                                                    </Box>
+                                                                                    </StyledExpandedValueCell>
                                                                                 </Box>
                                                                             )) }
                                                                         </tbody>
-                                                                    </Box>
+                                                                    </StyledExpandedDetailsTable>
                                                                 </Box>
                                                             </Accordion.Content>
-                                                        </Box>
+                                                        </StyledDiagnosticAccordionRow>
                                                     );
                                                 }) }
                                             </Accordion>
-                                        </Box>
+                                        </StyledDiagnosticsScroller>
                                     </Box>
                                 ) }
                             </Stack>

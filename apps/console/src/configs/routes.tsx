@@ -629,7 +629,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 }
             ],
             component: lazy(() => import("@wso2is/admin.connections.v1/pages/connections")),
-            exact: false,
+            exact: true,
             icon: {
                 icon: <NodesIcon />
             },
