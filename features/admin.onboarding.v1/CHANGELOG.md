@@ -1,5 +1,11 @@
 # @wso2is/admin.onboarding.v1
 
+## 1.0.84
+
+### Patch Changes
+
+- [#10278](https://github.com/wso2/identity-apps/pull/10278) [`e72bf00d7c6bb6199611f72bd5d0f7a46d29451d`](https://github.com/wso2/identity-apps/commit/e72bf00d7c6bb6199611f72bd5d0f7a46d29451d) Thanks [@savindi7](https://github.com/savindi7)! - Update Onboarding Wizard header.
+
 ## 1.0.83
 
 ### Patch Changes
