@@ -17,6 +17,7 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FapiProfile } from "@wso2is/admin.fapi-security-policy.v1";
 
 /**
  * Form values interface.
@@ -37,7 +38,11 @@ export interface ApplicationsSettingsFormValuesInterface {
     /**
      * Is fapi complience enforced for the dcr apps.
      */
-    enableFapiEnforcement?: boolean
+    enableFapiEnforcement?: boolean;
+    /**
+     * The FAPI profile to enforce for DCR apps.
+     */
+    fapiProfile?: FapiProfile;
 }
 
 /**
@@ -81,7 +86,11 @@ export interface ApplicationsSettingsPropsInterface extends IdentifiableComponen
     /**
      * Is fapi compliance enforced for the DCR apps.
      */
-    enableFapiEnforcement?: boolean
+    enableFapiEnforcement?: boolean;
+    /**
+     * The FAPI profile to enforce for DCR apps.
+     */
+    fapiProfile?: FapiProfile;
 }
 
 /**

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -62,6 +62,7 @@ export * from "./api-resources-ns";
 export * from "./ai-ns";
 export * from "./impersonation-ns";
 export * from "./issuer-usage-scope-ns";
+export * from "./fapi-security-policy-ns";
 export * from "./actions-ns";
 export * from "./tenants-ns";
 export * from "./sms-templates-ns";

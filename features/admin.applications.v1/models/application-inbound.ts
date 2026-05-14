@@ -17,6 +17,7 @@
  */
 
 import { MandatoryArray } from "@wso2is/core/models";
+import { FapiProfile } from "@wso2is/admin.fapi-security-policy.v1";
 
 /**
  * Captures the auth protocols
@@ -232,6 +233,7 @@ export interface OIDCDataInterface {
     scopeValidators?: string[];
     subject?: SubjectConfigInterface;
     isFAPIApplication?: boolean;
+    fapiProfile?: FapiProfile;
     hybridFlow?: HybridFlowConfigurationInterface;
     cibaAuthenticationRequest?: CIBAAuthenticationConfigurationInterface;
     issuer?: AllowedIssuerInterface;

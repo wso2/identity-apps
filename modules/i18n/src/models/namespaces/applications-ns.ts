@@ -1832,6 +1832,11 @@ export interface ApplicationsNS {
                         };
                     };
                 };
+                fapiProfile: {
+                    heading: string;
+                    hint: string;
+                    unsupportedProfile: string;
+                };
                 requestObject: {
                     heading: string;
                     fields: {
