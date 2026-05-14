@@ -16,66 +16,12 @@
  * under the License.
  */
 
-import {
-    BrandingPreferenceTypes,
-    PreviewScreenType,
-    PreviewScreenVariationType
-} from "@wso2is/common.branding.v1/models";
-
-/**
- * Interface for the custom text preference API response.
- */
-export interface CustomTextPreferenceAPIResponseInterface {
-    /**
-     * Preference type.
-     */
-    type: BrandingPreferenceTypes;
-    /**
-     * Requested resource name.
-     */
-    name: string;
-    /**
-     * Resource locale.
-     */
-    locale: string;
-    /**
-     * Branding
-     */
-    screen: string;
-    /**
-     * Text preference object.
-     */
-    preference: CustomTextPreferenceInterface;
-}
-
-/**
- * Interface for the custom text preference.
- */
-export interface CustomTextPreferenceInterface {
-    /**
-     * Text object.
-     */
-    text: Record<string, string>;
-}
+import { PreviewScreenType, PreviewScreenVariationType } from "@wso2is/common.branding.v1/models";
 
 /**
  * Interface for the custom text values object.
  */
 export type CustomTextInterface = Record<string, string>;
-
-/**
- * Interface for the custom text preference meta.
- */
-export interface CustomTextPreferenceMeta {
-    /**
-     * Set of supported screens and variations.
-     */
-    screens: Record<PreviewScreenType, PreviewScreenVariationType[]>;
-    /**
-     * Set of supported locales.
-     */
-    locales: string[];
-}
 
 /**
  * Enum for the custom text modes.

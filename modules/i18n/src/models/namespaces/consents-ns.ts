@@ -176,6 +176,38 @@ export interface ConsentsNS {
         create: {
             form: {
                 description: {
+                    configureTranslation: string;
+                    i18nCard: {
+                        brandingRequired: string;
+                        createTitle: string;
+                        deleteError: {
+                            description: string;
+                            message: string;
+                        };
+                        deleteSuccess: {
+                            description: string;
+                            message: string;
+                        };
+                        deleteTooltip: string;
+                        editTooltip: string;
+                        i18nKey: string;
+                        keyPlaceholder: string;
+                        language: string;
+                        newTooltip: string;
+                        saveError: {
+                            description: string;
+                            message: string;
+                        };
+                        saveSuccess: {
+                            description: string;
+                            message: string;
+                        };
+                        selectKey: string;
+                        title: string;
+                        translationPlaceholder: string;
+                        translationText: string;
+                        updateTitle: string;
+                    };
                     insertPolicyLink: string;
                     insertPolicyLinkShort: string;
                     insertPolicyLinkTooltip: string;

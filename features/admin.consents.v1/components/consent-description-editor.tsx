@@ -29,8 +29,11 @@ import { HeadingNode } from "@lexical/rich-text";
 import { mergeRegister } from "@lexical/utils";
 import { Theme, alpha, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
+import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
 import Tooltip from "@oxygen-ui/react/Tooltip";
+import { LanguageIcon } from "@oxygen-ui/react-icons";
+import PlaceholderComponent from "@wso2is/common.branding.v1/components/placeholder-component";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Hint } from "@wso2is/react-components";
 import {
@@ -52,9 +55,11 @@ import {
     UNDO_COMMAND
 } from "lexical";
 import React, {
+    ChangeEvent,
     FunctionComponent,
     MutableRefObject,
     ReactElement,
+    RefObject,
     SVGProps,
     useCallback,
     useEffect,
@@ -62,6 +67,7 @@ import React, {
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import ConsentI18nConfigurationCard, { LanguageTextFieldPropsInterface } from "./consent-i18n-configuration-card";
 
 // ─── HTML Processing ──────────────────────────────────────────────────────────
 
@@ -182,7 +188,6 @@ const EditorContainer: typeof Box = styled(Box)({
     width: "100%"
 });
 
-
 // ─── SVG Icons ────────────────────────────────────────────────────────────────
 
 const UndoIcon = (props: SVGProps<SVGSVGElement>): ReactElement => (
@@ -213,12 +218,6 @@ const ItalicIcon = (props: SVGProps<SVGSVGElement>): ReactElement => (
     </svg>
 );
 
-const UnderlineIcon = (props: SVGProps<SVGSVGElement>): ReactElement => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" { ...props }>
-        { /* eslint-disable-next-line max-len */ }
-        <path d="M5.313 3.136h-1.23V9.54c0 2.105 1.47 3.623 3.917 3.623s3.917-1.518 3.917-3.623V3.136h-1.23v6.323c0 1.49-.978 2.57-2.687 2.57-1.709 0-2.687-1.08-2.687-2.57V3.136zM12.5 15h-9v-1h9v1z" />
-    </svg>
-);
 
 const LinkIcon = (props: SVGProps<SVGSVGElement>): ReactElement => (
     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" { ...props }>
@@ -269,6 +268,8 @@ const HtmlSyncPlugin = ({ initialHtml, onChange, disabled }: HtmlSyncPluginProps
                 return;
             }
 
+            if (!editor.isEditable()) return;
+
             editorState.read(() => {
                 const html: string = $generateHtmlFromNodes(editor);
                 const processed: string = preProcessHTML(html);
@@ -307,7 +308,6 @@ const ConsentEditorToolbar = ({
     const [ canRedo, setCanRedo ] = useState<boolean>(false);
     const [ isBold, setIsBold ] = useState<boolean>(false);
     const [ isItalic, setIsItalic ] = useState<boolean>(false);
-    const [ isUnderline, setIsUnderline ] = useState<boolean>(false);
     const [ hasSelection, setHasSelection ] = useState<boolean>(false);
 
     const updateToolbar: () => void = useCallback(() => {
@@ -316,7 +316,6 @@ const ConsentEditorToolbar = ({
         if ($isRangeSelection(selection)) {
             setIsBold(selection.hasFormat("bold"));
             setIsItalic(selection.hasFormat("italic"));
-            setIsUnderline(selection.hasFormat("underline"));
             setHasSelection(!selection.isCollapsed());
         }
     }, []);
@@ -411,17 +410,6 @@ const ConsentEditorToolbar = ({
                 >
                     <ItalicIcon />
                 </ToolbarIconButton>
-                <ToolbarIconButton
-                    component="button"
-                    type="button"
-                    className={ isUnderline ? "active" : undefined }
-                    title={ t("common:underline") }
-                    disabled={ disabled }
-                    onClick={ () => editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline") }
-                    aria-label={ t("common:underline") }
-                >
-                    <UnderlineIcon />
-                </ToolbarIconButton>
                 { policyUrl !== undefined && (
                     <>
                         <ToolbarDivider component="span" />
@@ -461,6 +449,50 @@ const ConsentEditorToolbar = ({
     );
 };
 
+// ─── Translation Editor ───────────────────────────────────────────────────────
+
+const TranslationDescriptionEditor: FunctionComponent<LanguageTextFieldPropsInterface> = ({
+    value,
+    onChange,
+    disabled = false
+}: LanguageTextFieldPropsInterface): ReactElement => {
+    const handleChange: (_value: string) => void = useCallback((html: string): void => {
+        onChange({ target: { value: html } } as ChangeEvent<HTMLInputElement>);
+    }, [ onChange ]);
+
+    return (
+        <LexicalComposer initialConfig={ { ...editorConfig, namespace: "ConsentTranslation" } }>
+            <ConsentEditorToolbar disabled={ disabled } componentId="consent-translation-editor" />
+            <EditorWrapperBox>
+                <RichTextPlugin
+                    contentEditable={ (
+                        <ContentEditable
+                            style={ {
+                                caretColor: "currentColor",
+                                fontSize: "14px",
+                                maxHeight: "160px",
+                                minHeight: "80px",
+                                outline: "none",
+                                overflowY: "auto",
+                                padding: "10px 12px",
+                                tabSize: 1
+                            } }
+                        />
+                    ) }
+                    ErrorBoundary={ LexicalErrorBoundary }
+                />
+                <HistoryPlugin />
+                <LinkPlugin />
+                <HtmlSyncPlugin
+                    initialHtml={ value }
+                    onChange={ handleChange }
+                    disabled={ disabled }
+                />
+            </EditorWrapperBox>
+        </LexicalComposer>
+    );
+};
+
 // ─── Main Component ───────────────────────────────────────────────────────────
 
 /**
@@ -491,6 +523,15 @@ export interface ConsentDescriptionEditorProps extends IdentifiableComponentInte
      * Renders error border when true.
      */
     hasError?: boolean;
+    /**
+     * The i18n key currently linked to this description (e.g. "consent.description").
+     * When set, the description field value is `{{keyName}}` and the editor shows a key chip.
+     */
+    i18nKey?: string;
+    /**
+     * Called when the admin links or clears an i18n key via the translation configuration card.
+     */
+    onI18nKeyChange?: (key: string | null) => void;
 }
 
 /**
@@ -504,9 +545,13 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
     policyUrl,
     policyName,
     disabled = false,
-    hasError = false
+    hasError = false,
+    i18nKey,
+    onI18nKeyChange
 }: ConsentDescriptionEditorProps): ReactElement => {
     const { t } = useTranslation();
+    const [ isI18nCardOpen, setIsI18nCardOpen ] = useState<boolean>(false);
+    const i18nButtonRef: RefObject<HTMLButtonElement> = useRef<HTMLButtonElement>(null);
 
     const exampleLinkText: string =
         policyName || policyUrl || t("consents:form.name.placeholder");
@@ -516,7 +561,7 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
             <LexicalComposer initialConfig={ editorConfig }>
                 <ConsentEditorToolbar
                     policyUrl={ policyUrl }
-                    disabled={ disabled }
+                    disabled={ disabled || !!i18nKey }
                     componentId={ componentId }
                 />
                 <EditorWrapperBox
@@ -529,7 +574,7 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
                                     "consents:wizard.create.preview.exampleDescription",
                                     { policyName: exampleLinkText }
                                 ).replace(/<[^>]*>/g, "") }
-                                placeholder={ (
+                                placeholder={ i18nKey ? <></> : (
                                     <EditorPlaceholder>
                                         <Trans
                                             i18nKey="consents:wizard.create.preview.exampleDescription"
@@ -552,7 +597,7 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
                                     minHeight: "120px",
                                     outline: "none",
                                     overflowY: "auto",
-                                    padding: "10px 12px",
+                                    padding: "10px 40px 10px 12px",
                                     tabSize: 1
                                 } }
                             />
@@ -564,10 +609,70 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
                     <HtmlSyncPlugin
                         initialHtml={ value }
                         onChange={ onChange }
-                        disabled={ disabled }
+                        disabled={ disabled || !!i18nKey }
                     />
+                    { i18nKey && (
+                        <Box sx={ {
+                            backgroundColor: "background.paper",
+                            borderRadius: "inherit",
+                            bottom: 0,
+                            cursor: "default",
+                            fontSize: "14px",
+                            left: 0,
+                            padding: "10px 40px 10px 12px",
+                            position: "absolute",
+                            right: 0,
+                            top: 0,
+                            zIndex: 1
+                        } }>
+                            <PlaceholderComponent value={ `{{${i18nKey}}}` } />
+                        </Box>
+                    ) }
+                    <Tooltip
+                        title={ t("consents:wizard.create.form.description.configureTranslation") }
+                        placement="top"
+                        arrow
+                    >
+                        <IconButton
+                            ref={ i18nButtonRef }
+                            size="small"
+                            disabled={ disabled }
+                            onClick={ () => setIsI18nCardOpen(!isI18nCardOpen) }
+                            aria-label={ t("consents:wizard.create.form.description.configureTranslation") }
+                            aria-pressed={ isI18nCardOpen }
+                            sx={ {
+                                backgroundColor: "background.paper",
+                                border: "1px solid",
+                                borderColor: "divider",
+                                borderRadius: 1,
+                                height: 24,
+                                padding: "4px",
+                                position: "absolute",
+                                right: 6,
+                                top: 6,
+                                width: 24,
+                                zIndex: 2
+                            } }
+                        >
+                            <LanguageIcon size={ 13 } />
+                        </IconButton>
+                    </Tooltip>
                 </EditorWrapperBox>
             </LexicalComposer>
+            { isI18nCardOpen && (
+                <ConsentI18nConfigurationCard
+                    open={ isI18nCardOpen }
+                    anchorEl={ i18nButtonRef.current }
+                    i18nKey={ i18nKey ?? "" }
+                    onClose={ () => setIsI18nCardOpen(false) }
+                    onChange={ (key: string | null) => {
+                        onI18nKeyChange?.(key);
+                        setIsI18nCardOpen(false);
+                    } }
+                    LanguageTextField={ TranslationDescriptionEditor }
+                    data-componentid={ `${componentId}-i18n-card` }
+                />
+            ) }
             <Hint>
                 { t("consents:wizard.create.form.description.labelRoleHint") }
             </Hint>

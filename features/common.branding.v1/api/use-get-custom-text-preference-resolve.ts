@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,33 +25,22 @@ import useRequest, {
 import { store } from "@wso2is/admin.core.v1/store";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { BrandingPreferenceTypes } from "@wso2is/common.branding.v1/models/branding-preferences";
+import { BrandingPreferenceTypes } from "../models/branding-preferences";
 import { HttpMethods } from "@wso2is/core/models";
 import { mutate as swrMutate } from "swr";
-import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
-import {
-    CustomTextPreferenceAPIResponseInterface
-} from "../models/custom-text-preference";
+import { CustomTextPreferenceApiConstants } from "../constants/custom-text-preference-constants";
+import { CustomTextPreferenceAPIResponseInterface } from "../models/custom-text-preference";
 
-/**
- * Hook to get the branding preference text customizations from the API.
- *
- * @param shouldFetch - Should fetch the data.
- * @param name - Resource Name.
- * @param screen - Resource Screen.
- * @param locale - Resource Locale.
- * @param type - Resource Type.
- * @returns SWR response object containing the data, error, isValidating, mutate.
- */
 const useGetCustomTextPreferenceResolve = <
     Data = CustomTextPreferenceAPIResponseInterface,
-    Error = RequestErrorInterface>(
-        shouldFetch: boolean,
-        name: string,
-        screen: string,
-        locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE,
-        type: BrandingPreferenceTypes = BrandingPreferenceTypes.ORG
-    ): RequestResultInterface<Data, Error> => {
+    Error = RequestErrorInterface
+>(
+    shouldFetch: boolean,
+    name: string,
+    screen: string,
+    locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE,
+    type: BrandingPreferenceTypes = BrandingPreferenceTypes.ORG
+): RequestResultInterface<Data, Error> => {
     const { organizationType } = useGetCurrentOrganizationType();
 
     const endpointUrl: string = organizationType === OrganizationType.SUBORGANIZATION
@@ -77,31 +66,20 @@ const useGetCustomTextPreferenceResolve = <
         url: endpointUrl
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch? requestConfig : null, {
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null, {
         shouldRetryOnError: false
     });
 
-    /**
-     * This function is used to mutate the request cache of custom text preference retrieval requests
-     * across all screens.
-     *
-     * @remarks
-     *
-     * If you want to mutate the request cache of a custom text preference retrieval
-     * request for a specific screen, use 'mutate' instead.
-     */
     const mutateMultiple = () => {
         swrMutate(
-            (key: string) => {
-                return typeof key === "string" && key.includes(endpointUrl);
-            },
+            (key: string) => typeof key === "string" && key.includes(endpointUrl),
             undefined,
             { revalidate: false }
         );
     };
 
     if ((error?.response?.data as any)?.code
-        === CustomTextPreferenceConstants.CUSTOM_TEXT_PREFERENCE_NOT_CONFIGURED_ERROR_CODE) {
+        === CustomTextPreferenceApiConstants.CUSTOM_TEXT_PREFERENCE_NOT_CONFIGURED_ERROR_CODE) {
         return {
             data: null,
             error,

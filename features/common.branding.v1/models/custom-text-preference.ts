@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,15 +16,21 @@
  * under the License.
  */
 
-.flow-builder-display-field-i18n-placeholder {
-    background-color: var(--oxygen-palette-background-paper);
+import { BrandingPreferenceTypes, PreviewScreenType, PreviewScreenVariationType } from "./branding-preferences";
 
-    .flow-builder-display-field-i18n-placeholder-key {
-        background-color: rgb(from var(--oxygen-palette-primary-main) r g b / 0.1);
-        color: var(--oxygen-palette-primary-main);
-        font-family: monospace;
-        font-size: 13px;
-        padding: 2px 4px;
-        border-radius: var(--oxygen-shape-borderRadius);
-    }
+export interface CustomTextPreferenceAPIResponseInterface {
+    type: BrandingPreferenceTypes;
+    name: string;
+    locale: string;
+    screen: string;
+    preference: CustomTextPreferenceInterface;
+}
+
+export interface CustomTextPreferenceInterface {
+    text: Record<string, string>;
+}
+
+export interface CustomTextPreferenceMeta {
+    screens: Record<PreviewScreenType, PreviewScreenVariationType[]>;
+    locales: string[];
 }

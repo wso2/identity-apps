@@ -182,6 +182,38 @@ export const consents: ConsentsNS = {
         create: {
             form: {
                 description: {
+                    configureTranslation: "Configure translation",
+                    i18nCard: {
+                        brandingRequired: "Enable branding to configure translations.",
+                        createTitle: "Create Translation",
+                        deleteError: {
+                            description: "Failed to delete the translation. Please try again.",
+                            message: "Delete Failed"
+                        },
+                        deleteSuccess: {
+                            description: "Translation deleted successfully.",
+                            message: "Translation Deleted"
+                        },
+                        deleteTooltip: "Delete the translation for the selected key.",
+                        editTooltip: "Edit the translation text for the selected key.",
+                        i18nKey: "Translation Key",
+                        keyPlaceholder: "e.g. consent.description",
+                        language: "Language",
+                        newTooltip: "Create a new translation key for this description.",
+                        saveError: {
+                            description: "Failed to save the translation. Please try again.",
+                            message: "Save Failed"
+                        },
+                        saveSuccess: {
+                            description: "Translation saved successfully.",
+                            message: "Translation Saved"
+                        },
+                        selectKey: "Select a translation key",
+                        title: "Configure Translation",
+                        translationPlaceholder: "Enter the translated description text...",
+                        translationText: "Translation Text",
+                        updateTitle: "Update Translation"
+                    },
                     insertPolicyLink: "Wrap selected text with the policy URL as a link",
                     insertPolicyLinkNoPolicyUrl: "Define a Policy URL above before inserting a link.",
                     insertPolicyLinkNoSelection: "Select the words you want to link, then click.",

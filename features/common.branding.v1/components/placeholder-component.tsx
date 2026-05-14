@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,7 +28,7 @@ interface PlaceholderComponentProps extends IdentifiableComponentInterface {
 }
 
 /**
- * Placeholder component for displaying a placeholder text.
+ * Renders an i18n key `{{key}}` as a styled chip, or falls back to children / plain value.
  *
  * @param props - Props injected to the component.
  * @returns The PlaceholderComponent component.
@@ -37,21 +37,16 @@ const PlaceholderComponent: FunctionComponent<PropsWithChildren<PlaceholderCompo
     value,
     children
 }: PropsWithChildren<PlaceholderComponentProps>): ReactElement => {
-    /**
-     * Check if the value matches the i18n pattern.
-     */
     const isI18nPattern: boolean = useMemo(() => {
         if (!value) return false;
 
-        const i18nPattern: RegExp = /^\{\{[^}]+\}\}$/;
-
-        return i18nPattern.test(value.trim());
+        return /^\{\{[^}]+\}\}$/.test(value.trim());
     }, [ value ]);
 
     if (isI18nPattern) {
         return (
-            <span className="flow-builder-display-field-i18n-placeholder">
-                <span className="flow-builder-display-field-i18n-placeholder-key">
+            <span className="i18n-placeholder">
+                <span className="i18n-placeholder-key">
                     { value }
                 </span>
             </span>

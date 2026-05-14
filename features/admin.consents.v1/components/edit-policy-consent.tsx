@@ -475,18 +475,33 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                             subscription={ { value: true } }
                                                             render={ (
                                                                 { input }: { input: FieldInputProps<string> }
-                                                            ) => (
-                                                                <ConsentDescriptionEditor
-                                                                    value={ input.value ?? "" }
-                                                                    onChange={ input.onChange }
-                                                                    policyUrl={ _values?.policyUrl }
-                                                                    policyName={
-                                                                        isCreateMode
-                                                                            ? _values?.name
-                                                                            : consent?.name
-                                                                    }
-                                                                />
-                                                            ) }
+                                                            ) => {
+                                                                const i18nMatch: RegExpExecArray | null =
+                                                                    /^\{\{([^}]+)\}\}$/.exec(input.value ?? "");
+
+                                                                return (
+                                                                    <ConsentDescriptionEditor
+                                                                        value={ i18nMatch ? "" : (input.value ?? "") }
+                                                                        onChange={ input.onChange }
+                                                                        policyUrl={ _values?.policyUrl }
+                                                                        policyName={
+                                                                            isCreateMode
+                                                                                ? _values?.name
+                                                                                : consent?.name
+                                                                        }
+                                                                        i18nKey={
+                                                                            i18nMatch ? i18nMatch[1] : undefined
+                                                                        }
+                                                                        onI18nKeyChange={
+                                                                            (key: string | null) => {
+                                                                                input.onChange(
+                                                                                    key ? `{{${key}}}` : ""
+                                                                                );
+                                                                            }
+                                                                        }
+                                                                    />
+                                                                );
+                                                            } }
                                                         />
                                                     </Box>
                                                     <Field
