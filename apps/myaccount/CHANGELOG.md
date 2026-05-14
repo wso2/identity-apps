@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 4.1.27
+
+### Patch Changes
+
+- [#10285](https://github.com/wso2/identity-apps/pull/10285) [`86edd97f85adc0496cc78ec2a8c8d1db7c434006`](https://github.com/wso2/identity-apps/commit/86edd97f85adc0496cc78ec2a8c8d1db7c434006) Thanks [@savindi7](https://github.com/savindi7)! - Add Changeset for revert branding PR changes.
+
+- Updated dependencies [[`1b282113955a70809c1beb686757845a894bc512`](https://github.com/wso2/identity-apps/commit/1b282113955a70809c1beb686757845a894bc512), [`86edd97f85adc0496cc78ec2a8c8d1db7c434006`](https://github.com/wso2/identity-apps/commit/86edd97f85adc0496cc78ec2a8c8d1db7c434006)]:
+  - @wso2is/i18n@2.41.1
+  - @wso2is/theme@2.10.3
+
 ## 4.1.26
 
 ### Patch Changes
