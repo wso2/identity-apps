@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 4.7.3
+
+### Patch Changes
+
+- [#10281](https://github.com/wso2/identity-apps/pull/10281) [`381d9a7349aeb0a6fd83d1cf83a29bd5331f0381`](https://github.com/wso2/identity-apps/commit/381d9a7349aeb0a6fd83d1cf83a29bd5331f0381) Thanks [@sumedhe](https://github.com/sumedhe)! - Fix sub-org to root org switch bounce-back
+
+* [#10275](https://github.com/wso2/identity-apps/pull/10275) [`1b282113955a70809c1beb686757845a894bc512`](https://github.com/wso2/identity-apps/commit/1b282113955a70809c1beb686757845a894bc512) Thanks [@Malith-19](https://github.com/Malith-19)! - Update the refresh token extend expiry time description.
+
+- [#10285](https://github.com/wso2/identity-apps/pull/10285) [`86edd97f85adc0496cc78ec2a8c8d1db7c434006`](https://github.com/wso2/identity-apps/commit/86edd97f85adc0496cc78ec2a8c8d1db7c434006) Thanks [@savindi7](https://github.com/savindi7)! - Add Changeset for revert branding PR changes.
+
+- Updated dependencies [[`1b282113955a70809c1beb686757845a894bc512`](https://github.com/wso2/identity-apps/commit/1b282113955a70809c1beb686757845a894bc512)]:
+  - @wso2is/admin.applications.v1@2.42.28
+  - @wso2is/i18n@2.41.1
+
 ## 4.7.2
 
 ### Patch Changes
