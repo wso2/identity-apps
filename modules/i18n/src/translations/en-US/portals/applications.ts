@@ -2189,8 +2189,8 @@ export const applications: ApplicationsNS = {
                 refreshToken: {
                     fields: {
                         extendRenewedRefreshTokenExpiryTime: {
-                            hint: "Select to ensure renewed refresh tokens retain the remaining validity period from " +
-                                "the original token instead of receiving a fresh expiry time.",
+                            hint: "Select to ensure renewed refresh tokens receive a fresh expiry time " +
+                                "instead of retaining the remaining validity period from the original token.",
                             label: "Extend expiry time of renewed refresh tokens"
                         },
                         expiry: {
