@@ -22,7 +22,6 @@ import Button from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import FormLabel from "@oxygen-ui/react/FormLabel";
 import Typography from "@oxygen-ui/react/Typography";
-import { i18nLink } from "@wso2is/common.branding.v1/utils/i18n-link";
 import { sanitizedHtml } from "@wso2is/common.branding.v1/utils/sanitized-html";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import parse from "html-react-parser";
@@ -127,10 +126,6 @@ interface ConsentDescriptionPreviewProps extends IdentifiableComponentInterface 
      * Optional policy name used as fallback text when description is empty.
      */
     policyName?: string;
-    /**
-     * Optional policy URL used for the fallback link when description is empty.
-     */
-    policyUrl?: string;
 }
 
 /**
@@ -147,15 +142,15 @@ export const ConsentDescriptionPreview: FunctionComponent<ConsentDescriptionPrev
     "data-componentid": componentId = "consent-description-preview",
     description,
     mandatory = false,
-    policyName,
-    policyUrl
+    policyName
 }: ConsentDescriptionPreviewProps): ReactElement => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
 
     const [ isChecked, setIsChecked ] = useState<boolean>(false);
 
-    const sanitized: string = sanitizedHtml(description);
-    const resolvedPolicyUrl: string = i18nLink(i18n.language, policyUrl);
+    const i18nKeyMatch: RegExpMatchArray | null = description?.match(/^\{\{(.+)\}\}$/);
+    const resolvedDescription: string = i18nKeyMatch ? i18nKeyMatch[1] : description;
+    const sanitized: string = i18nKeyMatch ? "" : sanitizedHtml(description);
 
     return (
         <PreviewContainer data-componentid={ componentId }>
@@ -188,18 +183,22 @@ export const ConsentDescriptionPreview: FunctionComponent<ConsentDescriptionPrev
                                         </Box>
                                     ) }
                                 </>
-                            ) : (policyName || resolvedPolicyUrl) ? (
+                            ) : i18nKeyMatch ? (
+                                <>
+                                    { resolvedDescription }
+                                    { mandatory && (
+                                        <Box component="span" sx={ { color: "error.main" } } aria-hidden="true">
+                                            { " *" }
+                                        </Box>
+                                    ) }
+                                </>
+                            ) : policyName ? (
                                 <>
                                     <Trans
                                         i18nKey="consents:wizard.create.preview.exampleDescription"
-                                        values={ { policyName: policyName || resolvedPolicyUrl } }
+                                        values={ { policyName } }
                                         components={ [
-                                            <a
-                                                href={ resolvedPolicyUrl || undefined }
-                                                className="rich-text-link"
-                                                target={ resolvedPolicyUrl ? "_blank" : undefined }
-                                                rel={ resolvedPolicyUrl ? "noopener noreferrer" : undefined }
-                                            />
+                                            <a className="rich-text-link" />
                                         ] }
                                     />
                                     { mandatory && (

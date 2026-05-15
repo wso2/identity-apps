@@ -29,7 +29,7 @@ import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
-import { PenToSquareIcon, PlusIcon, TrashIcon, XMarkIcon } from "@oxygen-ui/react-icons";
+import { PenToSquareIcon, PlusIcon, XMarkIcon } from "@oxygen-ui/react-icons";
 import updateCustomTextPreference from "@wso2is/common.branding.v1/api/update-custom-text-preference";
 import useGetCustomTextPreferenceFallbacks from
     "@wso2is/common.branding.v1/api/use-get-custom-text-preference-fallbacks";
@@ -73,6 +73,7 @@ export interface LanguageTextFieldPropsInterface {
     value: string;
     onChange: (_: ChangeEvent<HTMLInputElement>) => void;
     disabled?: boolean;
+    policyUrl?: string;
 }
 
 /**
@@ -85,6 +86,7 @@ interface ConsentI18nConfigurationCardPropsInterface extends IdentifiableCompone
     onClose: () => void;
     onChange: (_: string | null) => void;
     LanguageTextField?: FunctionComponent<LanguageTextFieldPropsInterface>;
+    policyUrl?: string;
 }
 
 /**
@@ -97,7 +99,8 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
     i18nKey: selectedI18nKey,
     onClose,
     onChange,
-    LanguageTextField
+    LanguageTextField,
+    policyUrl
 }: ConsentI18nConfigurationCardPropsInterface): ReactElement | null => {
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -172,13 +175,18 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
 
     const availableKeys: string[] = useMemo(() => Object.keys(i18nText), [ i18nText ]);
 
+    const i18nTextRef: MutableRefObject<Record<string, string>> = useRef<Record<string, string>>(i18nText);
+
+    i18nTextRef.current = i18nText;
+
     useEffect(() => {
-        if (i18nKeyInput && i18nText[i18nKeyInput] !== undefined) {
-            setLanguageText(i18nText[i18nKeyInput]);
+        if (i18nKeyInput && i18nTextRef.current[i18nKeyInput] !== undefined) {
+            setLanguageText(i18nTextRef.current[i18nKeyInput]);
         } else {
             setLanguageText("");
         }
-    }, [ i18nKeyInput, i18nText ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [ i18nKeyInput ]);
 
     useEffect(() => {
         const updatePosition = (): void => {
@@ -242,10 +250,12 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
         setIsSubmitting(true);
 
         try {
-            const updatedText: Record<string, string> = {
-                ...(userTextData?.preference?.text ?? {}),
-                [i18nKeyInput]: languageText
-            };
+            const updatedText: Record<string, string> = Object.fromEntries(
+                Object.entries({
+                    ...(userTextData?.preference?.text ?? {}),
+                    [i18nKeyInput]: languageText
+                }).filter(([ , v ]: [ string, string ]) => v !== "")
+            );
 
             await updateCustomTextPreference(
                 isAlreadyConfigured,
@@ -275,44 +285,6 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
             setIsSubmitting(false);
         }
     }, [ i18nKeyInput, selectedLanguage, languageText, isAlreadyConfigured, userTextData, tenantDomain, onChange ]);
-
-    const handleDelete: () => Promise<void> = useCallback(async (): Promise<void> => {
-        if (!selectedI18nKey || !selectedLanguage) return;
-
-        setIsSubmitting(true);
-
-        try {
-            const existingText: Record<string, string> = userTextData?.preference?.text ?? {};
-            const updatedText: Record<string, string> = { ...existingText };
-
-            delete updatedText[selectedI18nKey];
-
-            await updateCustomTextPreference(
-                isAlreadyConfigured,
-                { text: updatedText },
-                tenantDomain,
-                CONSENT_I18N_SCREEN,
-                selectedLanguage,
-                BrandingPreferenceTypes.ORG
-            );
-
-            dispatch(addAlert({
-                description: t("consents:wizard.create.form.description.i18nCard.deleteSuccess.description"),
-                level: AlertLevels.SUCCESS,
-                message: t("consents:wizard.create.form.description.i18nCard.deleteSuccess.message")
-            }));
-
-            onChange(null);
-        } catch {
-            dispatch(addAlert({
-                description: t("consents:wizard.create.form.description.i18nCard.deleteError.description"),
-                level: AlertLevels.ERROR,
-                message: t("consents:wizard.create.form.description.i18nCard.deleteError.message")
-            }));
-        } finally {
-            setIsSubmitting(false);
-        }
-    }, [ selectedI18nKey, selectedLanguage, isAlreadyConfigured, userTextData, tenantDomain, onChange ]);
 
     const handleBack = (): void => {
         setIsCustomizeView(false);
@@ -387,7 +359,12 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                             size="small"
                             select
                             value={ i18nKeyInput }
-                            onChange={ (e: ChangeEvent<HTMLInputElement>) => setI18nKeyInput(e.target.value) }
+                            onChange={ (e: ChangeEvent<HTMLInputElement>) => {
+                                const newKey: string = e.target.value;
+
+                                setLanguageText(i18nTextRef.current[newKey] ?? "");
+                                setI18nKeyInput(newKey);
+                            } }
                         >
                             { availableKeys.map((key: string) => (
                                 <MenuItem key={ key } value={ key }>{ key }</MenuItem>
@@ -430,10 +407,11 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                     </Typography>
                     { LanguageTextField ? (
                         <LanguageTextField
-                            key={ selectedLanguage }
+                            key={ `${selectedLanguage}-${i18nKeyInput}` }
                             value={ languageText }
                             onChange={ (e: ChangeEvent<HTMLInputElement>) => setLanguageText(e.target.value) }
                             disabled={ !selectedLanguage || !i18nKeyInput }
+                            policyUrl={ policyUrl }
                         />
                     ) : (
                         <TextField
@@ -497,27 +475,6 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                                     <Tooltip
                                         title={ !isBrandingEnabled
                                             ? t("consents:wizard.create.form.description.i18nCard.brandingRequired")
-                                            : t("consents:wizard.create.form.description.i18nCard.deleteTooltip")
-                                        }
-                                        placement="top"
-                                    >
-                                        <span>
-                                            <Button
-                                                variant="outlined"
-                                                size="small"
-                                                color="error"
-                                                disabled={ !isBrandingEnabled || isSubmitting }
-                                                loading={ isSubmitting }
-                                                startIcon={ <TrashIcon /> }
-                                                onClick={ handleDelete }
-                                            >
-                                                { t("common:delete") }
-                                            </Button>
-                                        </span>
-                                    </Tooltip>
-                                    <Tooltip
-                                        title={ !isBrandingEnabled
-                                            ? t("consents:wizard.create.form.description.i18nCard.brandingRequired")
                                             : t("consents:wizard.create.form.description.i18nCard.editTooltip")
                                         }
                                         placement="top"
@@ -531,6 +488,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                                                 startIcon={ <PenToSquareIcon /> }
                                                 onClick={ () => {
                                                     isCreationMode.current = false;
+                                                    setLanguageText(i18nTextRef.current[selectedI18nKey] ?? "");
                                                     setI18nKeyInput(selectedI18nKey);
                                                     setIsCustomizeView(true);
                                                 } }

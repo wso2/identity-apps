@@ -615,7 +615,6 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                     description={ _values?.description ?? "" }
                                                     mandatory={ _values?.mandatory ?? false }
                                                     policyName={ isCreateMode ? _values?.name : consent?.name }
-                                                    policyUrl={ _values?.policyUrl }
                                                 />
                                             </Grid>
                                             <Grid xs={ 12 } padding={ 2 }>

@@ -454,7 +454,8 @@ const ConsentEditorToolbar = ({
 const TranslationDescriptionEditor: FunctionComponent<LanguageTextFieldPropsInterface> = ({
     value,
     onChange,
-    disabled = false
+    disabled = false,
+    policyUrl
 }: LanguageTextFieldPropsInterface): ReactElement => {
     const handleChange: (_value: string) => void = useCallback((html: string): void => {
         onChange({ target: { value: html } } as ChangeEvent<HTMLInputElement>);
@@ -462,7 +463,10 @@ const TranslationDescriptionEditor: FunctionComponent<LanguageTextFieldPropsInte
 
     return (
         <LexicalComposer initialConfig={ { ...editorConfig, namespace: "ConsentTranslation" } }>
-            <ConsentEditorToolbar disabled={ disabled } componentId="consent-translation-editor" />
+            <ConsentEditorToolbar
+                policyUrl={ policyUrl }
+                disabled={ disabled }
+                componentId="consent-translation-editor" />
             <EditorWrapperBox>
                 <RichTextPlugin
                     contentEditable={ (
@@ -670,6 +674,7 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
                         setIsI18nCardOpen(false);
                     } }
                     LanguageTextField={ TranslationDescriptionEditor }
+                    policyUrl={ policyUrl }
                     data-componentid={ `${componentId}-i18n-card` }
                 />
             ) }

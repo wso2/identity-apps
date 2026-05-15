@@ -23,10 +23,12 @@
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.LinkedHashMap" %>
-<%@ page import="java.net.URI" %>
-<%@ page import="java.net.URISyntaxException" %>
+<%@ page import="java.util.Set" %>
+<%@ page import="java.util.HashSet" %>
 <%@ page import="org.json.JSONArray" %>
 <%@ page import="org.json.JSONObject" %>
+<%@ page import="java.util.regex.Matcher" %>
+<%@ page import="java.util.regex.Pattern" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
@@ -43,14 +45,27 @@
         mandatoryPurposeIds = mandatoryPurposeIdsParam.split(",");
     }
 
+    String mandatoryNewVersionIdsParam = request.getParameter("mandatoryNewVersionPurposeIds");
+    String[] mandatoryNewVersionIds = new String[0];
+    if (mandatoryNewVersionIdsParam != null && !mandatoryNewVersionIdsParam.trim().isEmpty()) {
+        mandatoryNewVersionIds = mandatoryNewVersionIdsParam.split(",");
+    }
+
     String optionalPurposeIdsParam = request.getParameter("optionalPurposeIds");
     String[] optionalPurposeIds = new String[0];
     if (optionalPurposeIdsParam != null && !optionalPurposeIdsParam.trim().isEmpty()) {
         optionalPurposeIds = optionalPurposeIdsParam.split(",");
     }
 
+    String optionalNewVersionIdsParam = request.getParameter("optionalNewVersionPurposeIds");
+    String[] optionalNewVersionIds = new String[0];
+    if (optionalNewVersionIdsParam != null && !optionalNewVersionIdsParam.trim().isEmpty()) {
+        optionalNewVersionIds = optionalNewVersionIdsParam.split(",");
+    }
+
     // Parse purposeMetadata to build display labels server-side (no client-side API calls needed).
     Map<String, String> purposeLabelMap = new LinkedHashMap<>();
+    Set<String> newVersionPurposeIds = new HashSet<>();
     String purposeMetadataParam = request.getParameter("purposeMetadata");
     if (StringUtils.isNotBlank(purposeMetadataParam)) {
         try {
@@ -64,34 +79,40 @@
                 JSONObject obj = metadataArray.getJSONObject(i);
                 String purposeId = obj.optString("purposeId", "");
                 String name = obj.optString("name", purposeId);
-                String description = obj.optString("description", "");
+                String rawDescription = obj.optString("description", "");
                 String policyUrl = obj.optString("policyUrl", "");
+                if (obj.optBoolean("newVersion", false)) {
+                    newVersionPurposeIds.add(purposeId.trim());
+                }
 
                 // Mirrors the buildPurposeLabel JS function: prefer description, else build link from name/policyUrl.
                 String labelHtml;
-                if (StringUtils.isNotBlank(description)) {
-                    labelHtml = Encode.forHtml(description);
-                } else if (StringUtils.isNotBlank(policyUrl)) {
-                    // Validate URL scheme: only allow http/https
-                    boolean isValidUrl = false;
-                    try {
-                        URI uri = new URI(policyUrl);
-                        String scheme = uri.getScheme();
-                        if (scheme != null && (scheme.equalsIgnoreCase("http") || scheme.equalsIgnoreCase("https"))) {
-                            isValidUrl = true;
+                if (StringUtils.isNotBlank(rawDescription)) {
+                    if (rawDescription.startsWith("{{") && rawDescription.endsWith("}}")) {
+                        String i18nKey = rawDescription.substring(2, rawDescription.length() - 2);
+                        String resolved;
+                        try {
+                            resolved = resourceBundle.getString(i18nKey);
+                        } catch (Exception e) {
+                            resolved = null;
                         }
-                    } catch (URISyntaxException e) {
-                        // Invalid URI syntax, fall back to non-link
-                    }
-
-                    if (isValidUrl) {
-                        labelHtml = Encode.forHtml(agreePrefix) + " <a href=\""
-                                + Encode.forHtmlAttribute(policyUrl)
-                                + "\" target=\"_blank\" rel=\"noopener noreferrer\">"
-                                + Encode.forHtml(name) + "</a>";
+                        labelHtml = StringUtils.isNotBlank(resolved) ? resolved : Encode.forHtml(i18nKey);
                     } else {
-                        labelHtml = Encode.forHtml(StringUtils.isNotBlank(name) ? name : purposeId);
+                        labelHtml = rawDescription;
                     }
+                    Matcher hrefMatcher = Pattern.compile("href=\"([^\"]+)\"").matcher(labelHtml);
+                    StringBuffer processed = new StringBuffer();
+                    while (hrefMatcher.find()) {
+                        hrefMatcher.appendReplacement(processed,
+                            Matcher.quoteReplacement("href=\"" + i18nLink(userLocale, hrefMatcher.group(1)) + "\""));
+                    }
+                    hrefMatcher.appendTail(processed);
+                    labelHtml = processed.toString();
+                } else if (StringUtils.isNotBlank(policyUrl)) {
+                    labelHtml = Encode.forHtml(agreePrefix) + " <a href=\""
+                            + Encode.forHtmlAttribute(policyUrl)
+                            + "\" target=\"_blank\" rel=\"noopener noreferrer\">"
+                            + Encode.forHtml(name) + "</a>";
                 } else {
                     labelHtml = Encode.forHtml(StringUtils.isNotBlank(name) ? name : purposeId);
                 }
@@ -155,6 +176,7 @@
                     <div class="segment-form">
                         <div class="ui" style="text-align: left;">
                             <div class="ui list">
+                                <%-- Mandatory: first-time policies --%>
                                 <% for (String purposeId : mandatoryPurposeIds) {
                                     String trimmedId = purposeId.trim();
                                     String label = purposeLabelMap.containsKey(trimmedId)
@@ -175,6 +197,31 @@
                                     </div>
                                 </div>
                                 <% } %>
+                                <%-- Mandatory: updated policy versions --%>
+                                <% for (String purposeId : mandatoryNewVersionIds) {
+                                    String trimmedId = purposeId.trim();
+                                    String label = purposeLabelMap.containsKey(trimmedId)
+                                            ? purposeLabelMap.get(trimmedId)
+                                            : Encode.forHtml(trimmedId);
+                                %>
+                                <div class="item" style="margin-bottom: 0.5em;">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" name="mandatoryPurposeId"
+                                            value="<%=Encode.forHtmlAttribute(trimmedId)%>"
+                                            id="mandatory-<%=Encode.forHtmlAttribute(trimmedId)%>"
+                                            class="mandatory-consent"/>
+                                        <label for="mandatory-<%=Encode.forHtmlAttribute(trimmedId)%>"
+                                            class="light-font">
+                                            <%=label%>
+                                            <span title="required" style="color: red; margin-left: 2px;">*</span>
+                                            <span class="ui mini orange label" style="margin-left: 4px;">
+                                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.updated")%>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <% } %>
+                                <%-- Optional: first-time policies --%>
                                 <% for (String purposeId : optionalPurposeIds) {
                                     String trimmedId = purposeId.trim();
                                     String label = purposeLabelMap.containsKey(trimmedId)
@@ -189,6 +236,28 @@
                                         <label for="optional-<%=Encode.forHtmlAttribute(trimmedId)%>"
                                             class="light-font">
                                             <%=label%>
+                                        </label>
+                                    </div>
+                                </div>
+                                <% } %>
+                                <%-- Optional: updated policy versions --%>
+                                <% for (String purposeId : optionalNewVersionIds) {
+                                    String trimmedId = purposeId.trim();
+                                    String label = purposeLabelMap.containsKey(trimmedId)
+                                            ? purposeLabelMap.get(trimmedId)
+                                            : Encode.forHtml(trimmedId);
+                                %>
+                                <div class="item" style="margin-bottom: 0.5em;">
+                                    <div class="ui checkbox">
+                                        <input type="checkbox" name="optionalPurposeId"
+                                            value="<%=Encode.forHtmlAttribute(trimmedId)%>"
+                                            id="optional-<%=Encode.forHtmlAttribute(trimmedId)%>"/>
+                                        <label for="optional-<%=Encode.forHtmlAttribute(trimmedId)%>"
+                                            class="light-font">
+                                            <%=label%>
+                                            <span class="ui mini orange label" style="margin-left: 4px;">
+                                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.updated")%>
+                                            </span>
                                         </label>
                                     </div>
                                 </div>
