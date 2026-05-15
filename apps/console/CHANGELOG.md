@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.7.5
+
+### Patch Changes
+
+- [#10291](https://github.com/wso2/identity-apps/pull/10291) [`9a4b4bc5ad8047659f0ea504dd7eade3fc9f1505`](https://github.com/wso2/identity-apps/commit/9a4b4bc5ad8047659f0ea504dd7eade3fc9f1505) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix user sharing view being read only for Administrators
+
+- Updated dependencies [[`9a4b4bc5ad8047659f0ea504dd7eade3fc9f1505`](https://github.com/wso2/identity-apps/commit/9a4b4bc5ad8047659f0ea504dd7eade3fc9f1505)]:
+  - @wso2is/admin.users.v1@2.38.38
+
 ## 4.7.4
 
 ### Patch Changes
