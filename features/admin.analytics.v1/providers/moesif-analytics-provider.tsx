@@ -20,6 +20,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { getAssociatedTenants } from "@wso2is/admin.tenants.v1/api/tenants";
 import { TenantInfo, TenantRequestResponse } from "@wso2is/admin.tenants.v1/models/tenant";
 import { MultiValueAttributeInterface, ProfileInfoInterface } from "@wso2is/core/models";
+import { URLUtils } from "@wso2is/core/utils";
 import moesif from "moesif-browser-js";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useCallback, useEffect, useMemo, useRef }
     from "react";
@@ -83,9 +84,14 @@ const MoesifAnalyticsProvider: FunctionComponent<PropsWithChildren> = (
             "moesif_campaign_data"
         ];
 
+        const cookieDomain: string | undefined = URLUtils.getDomain(window.location.href);
+
         legacyCookies.forEach((name: string) => {
             document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
-            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=.asgardeo.io`;
+            if (cookieDomain) {
+                document.cookie =
+                    `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=${cookieDomain}`;
+            }
         });
 
         try {
