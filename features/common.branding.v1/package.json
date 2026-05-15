@@ -35,7 +35,6 @@
         "@rollup/plugin-node-resolve": "^15.2.3",
         "@rollup/plugin-typescript": "^11.1.6",
         "@svgr/rollup": "^6.2.1",
-        "@types/dompurify": "^3.0.5",
         "@types/lodash-es": "^4.17.4",
         "@types/react": "^18.0.18",
         "rollup": "^4.17.2",

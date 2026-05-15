@@ -38,7 +38,7 @@ import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 /**
  * Props interface of {@link PolicyConsentAdapter}
  */
-export type PolicyConsentAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type PolicyConsentAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 const CONSENT_DESCRIPTION_STYLE: CSSProperties = {
     fontSize: "13px",

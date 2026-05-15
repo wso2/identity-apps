@@ -39,7 +39,7 @@ import { useSelector } from "react-redux";
 /**
  * Props interface of {@link ConsentExtendedProperties}
  */
-export type ConsentExtendedPropertiesPropsInterface = CommonResourcePropertiesPropsInterface &
+type ConsentExtendedPropertiesPropsInterface = CommonResourcePropertiesPropsInterface &
     IdentifiableComponentInterface;
 
 /**

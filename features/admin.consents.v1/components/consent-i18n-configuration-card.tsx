@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import Autocomplete from "@oxygen-ui/react/Autocomplete";
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
 import CardActions from "@oxygen-ui/react/CardActions";
@@ -200,8 +200,8 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
             setPosition({ left, top });
         };
 
-        const handleScroll = (): void => requestAnimationFrame(updatePosition);
-        const handleResize = (): void => requestAnimationFrame(updatePosition);
+        const handleScroll = (): void => { requestAnimationFrame(updatePosition); };
+        const handleResize = (): void => { requestAnimationFrame(updatePosition); };
 
         if (open && anchorEl && cardRef.current) {
             requestAnimationFrame(updatePosition);
@@ -337,7 +337,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                             ) => {
                                 onChange(newValue);
                             } }
-                            renderInput={ (params: Record<string, unknown>) => (
+                            renderInput={ (params: AutocompleteRenderInputParams): ReactElement => (
                                 <TextField
                                     { ...params }
                                     placeholder={

@@ -114,7 +114,7 @@ const PlaceholderText: typeof Typography = styled(Typography)(({ theme }: { them
 /**
  * Props interface for the ConsentDescriptionPreview component.
  */
-export interface ConsentDescriptionPreviewProps extends IdentifiableComponentInterface {
+interface ConsentDescriptionPreviewProps extends IdentifiableComponentInterface {
     /**
      * HTML description string rendered as the checkbox label.
      */

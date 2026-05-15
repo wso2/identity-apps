@@ -498,7 +498,7 @@ const TranslationDescriptionEditor: FunctionComponent<LanguageTextFieldPropsInte
 /**
  * Props interface for the ConsentDescriptionEditor component.
  */
-export interface ConsentDescriptionEditorProps extends IdentifiableComponentInterface {
+interface ConsentDescriptionEditorProps extends IdentifiableComponentInterface {
     /**
      * Initial HTML string. The editor is uncontrolled after mount; use a `key` prop to reset it.
      */

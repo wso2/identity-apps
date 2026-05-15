@@ -66,7 +66,7 @@ export const sanitizedHtml = (html: string | null | undefined): string => {
  * @param linkMapper - Function that maps a URL to its localized version.
  * @returns HTML string with localized URLs in href attributes.
  */
-export const localizeHtmlLinks = (
+const localizeHtmlLinks = (
     html: string,
     locale: string,
     linkMapper: (locale: string, url: string) => string

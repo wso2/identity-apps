@@ -186,7 +186,7 @@ export const PolicyConsentsList = (props: PolicyConsentsListProps): ReactElement
      *
      * @returns React element.
      */
-    const showPlaceholders = (): ReactElement => {
+    const showPlaceholders = (): ReactElement | null => {
         if (!list || list?.length === 0) {
             return (
                 <EmptyPlaceholder

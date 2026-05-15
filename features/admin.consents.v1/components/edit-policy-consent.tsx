@@ -43,7 +43,7 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
-import { FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/form";
+import { FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/forms";
 import { ConfirmationModal, ContentLoader, Hint, Message, PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, type ReactElement } from "react";
