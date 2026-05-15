@@ -60,7 +60,7 @@ interface EditUserPropsInterface extends IdentifiableComponentInterface {
     /**
      * Handle user update callback.
      */
-    handleUserUpdate: (userId: string) => void;
+    handleUserUpdate: (_userId: string) => void;
     /**
      * Password reset connector properties
      */
@@ -331,7 +331,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <ShareUserForm
                             user={ user }
-                            readOnly={ isReadOnly || !hasSharedAccessUpdatePermission }
+                            readOnly={ !hasSharedAccessUpdatePermission }
                             enableConsoleAdminRole={ enableConsoleAdminRole }
                         />
                     </ResourceTab.Pane>
