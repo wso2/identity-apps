@@ -68,9 +68,31 @@ const MoesifAnalyticsProvider: FunctionComponent<PropsWithChildren> = (
         }
 
         try {
+            Object.keys(localStorage)
+                .filter((key: string) => key.startsWith("moesif_"))
+                .forEach((key: string) => localStorage.removeItem(key));
+        } catch (_error: unknown) {
+            // localStorage may be unavailable in some contexts.
+        }
+
+        const legacyCookies: string[] = [
+            "moesif_anonymous_id",
+            "moesif_stored_user_id",
+            "moesif_stored_company_id",
+            "moesif_campaign_company",
+            "moesif_campaign_data"
+        ];
+
+        legacyCookies.forEach((name: string) => {
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; domain=.asgardeo.io`;
+        });
+
+        try {
             moesif.init({
                 applicationId: moesifApplicationId,
-                disableFetch: true
+                disableFetch: true,
+                persistence: "none"
             });
 
             isInitializedRef.current = true;

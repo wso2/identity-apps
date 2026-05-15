@@ -20,6 +20,7 @@ declare module "moesif-browser-js" {
     interface MoesifOptions {
         applicationId: string;
         disableFetch?: boolean;
+        persistence?: "cookie" | "localStorage" | "sessionStorage" | "none";
     }
 
     interface MoesifInstance {
