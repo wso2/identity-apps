@@ -21,8 +21,6 @@ import { ApplicationsNS } from "../../../models";
  * NOTES: No need to care about the max-len for this file since it's easier to
  * translate the strings to other languages easily with editor translation tools.
  */
-/* eslint-disable max-len */
-/* eslint-disable sort-keys */
 
 export const applications: ApplicationsNS = {
     quickStart: {
@@ -1607,14 +1605,17 @@ export const applications: ApplicationsNS = {
             }
         },
         generalDetails: {
-            sections: {
-                branding: {
-                    title: "Branding"
-                }
-            },
             brandingLink: {
                 hint: "This will take you to the Branding page where you can customize consumer-facing user interfaces of the application such as the logo, colors, fonts.",
                 label: "Go to Application Branding"
+            },
+            emailTemplatesLink: {
+                hint: "This will take you to the Email Templates page where you can customize the email templates used for this application.",
+                label: "Configure Application Specific Email Templates"
+            },
+            smsTemplatesLink: {
+                hint: "This will take you to the SMS Templates page where you can customize the SMS templates used for this application.",
+                label: "Configure Application Specific SMS Templates"
             },
             fields: {
                 accessUrl: {
@@ -1683,7 +1684,12 @@ export const applications: ApplicationsNS = {
                 }
             },
             managementAppBanner: "The application is allowed to access the management APIs of this " +
-                "organization."
+                "organization.",
+            sections: {
+                branding: {
+                    title: "Branding"
+                }
+            }
         },
         inboundCustom: {
             fields: {

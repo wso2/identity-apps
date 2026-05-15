@@ -16,9 +16,24 @@
  * under the License.
  */
 
+import ToggleButton from "@mui/material/ToggleButton";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import Paper from "@oxygen-ui/react/Paper";
+import TextField from "@oxygen-ui/react/TextField";
+import { BuildingIcon, TilesIcon } from "@oxygen-ui/react-icons";
 import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
+import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
+import { useGetApplication } from "@wso2is/admin.applications.v1/api/use-get-application";
+import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
+import {
+    ApplicationInterface,
+    ApplicationListItemInterface
+} from "@wso2is/admin.applications.v1/models/application";
 import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/branding-preference-provider";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
@@ -42,16 +57,20 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { TabProps } from "semantic-ui-react";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import {
+    createNewAppEmailTemplate,
     createNewEmailTemplate,
+    deleteAppEmailTemplate,
     deleteEmailTemplate,
+    updateAppEmailTemplate,
     updateEmailTemplate,
+    useAppEmailTemplate,
     useEmailTemplate,
     useEmailTemplatesList
 } from "../api";
@@ -63,6 +82,14 @@ import { EmailManagementConstants } from "../constants/email-management-constant
 import { EmailTemplate, EmailTemplateType } from "../models";
 
 type EmailCustomizationPageInterface = IdentifiableComponentInterface;
+
+/**
+ * Modes for the email templates page.
+ */
+enum EmailTemplatesMode {
+    APPLICATION = "APPLICATION",
+    ORGANIZATION = "ORGANIZATION"
+}
 
 /**
  * Email customization page.
@@ -88,6 +115,18 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     const [ isSystemTemplate, setIsSystemTemplate ] = useState(false);
     const [ isInheritedTemplate, setIsInheritedTemplate ] = useState(false);
     const [ error, setError ] = useState<AxiosError<HttpErrorResponseDataInterface>>();
+    const [ appIdFromQueryParam, setAppIdFromQueryParam ] = useState<string | null>(null);
+    const [ emailTemplatesMode, setEmailTemplatesMode ] =
+        useState<EmailTemplatesMode>(EmailTemplatesMode.ORGANIZATION);
+    const [ selectedAppId, setSelectedAppId ] = useState<string | null>(null);
+    const [ applications, setApplications ] = useState<ApplicationListItemInterface[]>([]);
+    const [ isFromAppRedirect, setIsFromAppRedirect ] = useState<boolean>(false);
+    const [ isNewAppTemplate, setIsNewAppTemplate ] = useState<boolean>(false);
+
+    // When the user switches modes (not a locale change), the replicate modal should not appear.
+    const skipNextReplicateModalRef: React.MutableRefObject<boolean> = React.useRef<boolean>(false);
+    // Only skip the replicate modal on the very first load from app edit view.
+    const hasLoadedOnceRef: React.MutableRefObject<boolean> = React.useRef<boolean>(false);
 
     const emailTemplates: Record<string, string>[] = useSelector(
         (state: AppState) => state.config.deployment.extensions.emailTemplates) as Record<string, string>[];
@@ -97,6 +136,12 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         (state: AppState) => state?.config?.ui?.features?.emailTemplates);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const disabledFeatures: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.applications?.disabledFeatures);
+
+    const isAppSpecificEmailTemplateBrandingEnabled: boolean = !disabledFeatures?.includes(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_EDIT_EMAIL_TEMPLATES_LINK
+    );
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -132,6 +177,15 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     const { isSubOrganization } = useGetCurrentOrganizationType();
     const { data: invitedUserRegistrationFlowConfig } = useGetFlowConfig(FlowTypes.INVITED_USER_REGISTRATION);
 
+    const isAppSpecific: boolean = emailTemplatesMode === EmailTemplatesMode.APPLICATION
+        && !!(appIdFromQueryParam ?? selectedAppId);
+
+    const activeAppId: string | null = appIdFromQueryParam ?? selectedAppId;
+
+    const {
+        data: selectedApplicationData
+    } = useGetApplication<ApplicationInterface>(activeAppId as string, isAppSpecific);
+
     const {
         data: emailTemplatesList,
         isLoading: isEmailTemplatesListLoading,
@@ -144,11 +198,34 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         error: emailTemplateError,
         mutate: emailTemplateMutate
     } = useEmailTemplate(
-        selectedEmailTemplateId,
+        selectedEmailTemplateId!,
         selectedLocale,
         isSystemTemplate,
         isInheritedTemplate,
         !!selectedEmailTemplateId
+    );
+
+    const {
+        data: appEmailTemplate,
+        isLoading: isAppEmailTemplateLoading,
+        error: appEmailTemplateError,
+        mutate: appEmailTemplateMutate
+    } = useAppEmailTemplate(
+        selectedEmailTemplateId!,
+        activeAppId as string,
+        selectedLocale,
+        !!selectedEmailTemplateId && isAppSpecific
+    );
+
+    const {
+        data: applicationList,
+        isLoading: isApplicationListFetchRequestLoading
+    } = useApplicationList(
+        "templateId",
+        100,
+        0,
+        undefined,
+        emailTemplatesMode === EmailTemplatesMode.APPLICATION
     );
 
     useEffect(() => {
@@ -197,13 +274,75 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     }, [ emailTemplatesList ]);
 
     useEffect(() => {
-        setSelectedEmailTemplate({ ...emailTemplate });
-        setIsTemplateNotAvailable(false);
+        if (!history?.location?.search) return;
+        const params: URLSearchParams = new URLSearchParams(history?.location?.search);
+        const appIdFromQuery: string | null = params.get("appId");
 
-        if (emailTemplate && Object.keys(emailTemplate).length > 0) {
-            setCurrentEmailTemplate({ ...emailTemplate });
+        if (!appIdFromQuery) return;
+        setAppIdFromQueryParam(appIdFromQuery);
+        setEmailTemplatesMode(EmailTemplatesMode.APPLICATION);
+        setIsFromAppRedirect(true);
+
+        return () => {
+            setAppIdFromQueryParam(null);
+            setEmailTemplatesMode(EmailTemplatesMode.ORGANIZATION);
+            setIsFromAppRedirect(false);
+        };
+    }, [ history?.location?.search ]);
+
+    useEffect(() => {
+        if (isAppSpecific) {
+            const appTemplateAvailable: boolean =
+                !!appEmailTemplate && Object.keys(appEmailTemplate).length > 0;
+
+            if (appTemplateAvailable) {
+                setSelectedEmailTemplate({ ...appEmailTemplate });
+                setCurrentEmailTemplate({ ...appEmailTemplate });
+                setIsTemplateNotAvailable(false);
+                setIsNewAppTemplate(false);
+                // Mark as loaded after any successful fetch in app mode (including locale change)
+                hasLoadedOnceRef.current = true;
+            } else if (emailTemplate && Object.keys(emailTemplate).length > 0) {
+                // App template not available — fall back to org template for display
+                setSelectedEmailTemplate({ ...emailTemplate });
+                setCurrentEmailTemplate({ ...emailTemplate });
+                setIsTemplateNotAvailable(false);
+                // Mark as loaded after any successful fetch in app mode (including locale change)
+                hasLoadedOnceRef.current = true;
+            } else if (currentEmailTemplate && Object.keys(currentEmailTemplate).length > 0) {
+                // Neither app nor org template exists for the selected locale.
+                // Prefill the editor with content from the previous locale as placeholder.
+                setSelectedEmailTemplate({ ...currentEmailTemplate });
+            }
+        } else {
+            setIsTemplateNotAvailable(false);
+
+            if (emailTemplate && Object.keys(emailTemplate).length > 0) {
+                setSelectedEmailTemplate({ ...emailTemplate });
+                setCurrentEmailTemplate({ ...emailTemplate });
+                skipNextReplicateModalRef.current = false;
+            }
         }
-    }, [ emailTemplate ]);
+    }, [ emailTemplate, appEmailTemplate, isAppSpecific ]);
+
+    useEffect(() => {
+        if (emailTemplatesMode === EmailTemplatesMode.ORGANIZATION) {
+            setIsSystemTemplate(false);
+            setIsInheritedTemplate(false);
+        }
+    }, [ emailTemplatesMode ]);
+
+    useEffect(() => {
+        if (!applicationList?.applications) return;
+
+        setApplications(
+            applicationList.applications.filter((app: ApplicationListItemInterface) =>
+                !ApplicationManagementConstants.SYSTEM_APPS.includes(app.name) &&
+                !ApplicationManagementConstants.DEFAULT_APPS.includes(app.name) &&
+                !(app.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID)
+            )
+        );
+    }, [ applicationList ]);
 
     useEffect(() => {
         if (!emailTemplatesListError) {
@@ -229,16 +368,86 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     }, [ emailTemplatesListError ]);
 
     useEffect(() => {
-        if (!emailTemplateError || !selectedEmailTemplateId || emailTemplateError === error) {
+        if (isAppSpecific) {
+            // Handle app-specific template error
+            if (appEmailTemplateError && selectedEmailTemplateId && appEmailTemplateError !== error) {
+                setError(appEmailTemplateError as AxiosError<HttpErrorResponseDataInterface>);
+
+                if (appEmailTemplateError.response?.status === 404) {
+                    // 404 is expected when no app-specific template exists yet
+                    setIsNewAppTemplate(true);
+
+                    // If the user previously had content for another locale, auto-prefill
+                    // the editor with that content as placeholder instead of showing a modal.
+                    // currentEmailTemplate is set by handleLocaleChange before the locale switch.
+                    if (
+                        currentEmailTemplate &&
+                        Object.keys(currentEmailTemplate).length > 0 &&
+                        hasEmailTemplateCreatePermissions
+                    ) {
+                        setSelectedEmailTemplate({ ...currentEmailTemplate });
+                        setIsTemplateNotAvailable(true);
+                        skipNextReplicateModalRef.current = true;
+
+                        return;
+                    }
+
+                    setIsTemplateNotAvailable(true);
+
+                    return;
+                } else {
+                    if (appEmailTemplateError.response?.data?.description) {
+                        dispatch(addAlert({
+                            description: appEmailTemplateError.response?.data?.description,
+                            level: AlertLevels.ERROR,
+                            message: appEmailTemplateError.response.data.message ??
+                                t("extensions:develop.emailTemplates.notifications.getEmailTemplate.error.message")
+                        }));
+                    } else {
+                        dispatch(addAlert({
+                            description: t(
+                                "extensions:develop.emailTemplates.notifications.getEmailTemplate.error.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "extensions:develop.emailTemplates.notifications.getEmailTemplate.error.message"
+                            )
+                        }));
+                    }
+
+                    return;
+                }
+            }
+
+            // When app template is absent, also drive the org-level fallback chain so the system
+            // template is fetched and pre-fills the editor when neither app nor org template exists.
+            // Skip if the editor was already pre-filled with content from a previous locale.
+            if (isNewAppTemplate && emailTemplateError && selectedEmailTemplateId &&
+                !(selectedEmailTemplate && Object.keys(selectedEmailTemplate).length > 0)) {
+                if (emailTemplateError.response?.status === 404) {
+                    if (isSubOrganization() && !isInheritedTemplate) {
+                        setIsInheritedTemplate(true);
+                    } else if (!isSystemTemplate && selectedLocale === EmailManagementConstants.DEAFULT_LOCALE) {
+                        setIsSystemTemplate(true);
+                    }
+                }
+            }
+
             return;
         }
 
-        setError(emailTemplateError);
+        // Org mode error handling
+        const activeError: AxiosError<HttpErrorResponseDataInterface> | undefined = emailTemplateError;
 
-        // Show the replicate previous template modal and set the "isTemplateNotAvailable" flag to identify whether the
-        // current template is a new template or not
-        if (emailTemplateError.response.status === 404) {
+        if (!activeError || !selectedEmailTemplateId || activeError === error) {
+            return;
+        }
+
+        setError(activeError);
+
+        if (activeError.response?.status === 404) {
             setIsTemplateNotAvailable(true);
+
             if (isSubOrganization() && !isInheritedTemplate) {
                 setIsInheritedTemplate(true);
 
@@ -248,7 +457,12 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
 
                 return;
             } else if (hasEmailTemplateCreatePermissions) {
-                setShowReplicatePreviousTemplateModal(true);
+                if (skipNextReplicateModalRef.current) {
+                    skipNextReplicateModalRef.current = false;
+                    setCurrentEmailTemplate(undefined);
+                } else {
+                    setShowReplicatePreviousTemplateModal(true);
+                }
 
                 return;
             } else {
@@ -259,11 +473,11 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
             return;
         }
 
-        if (emailTemplateError.response.data.description) {
+        if (activeError.response?.data?.description) {
             dispatch(addAlert({
-                description: emailTemplateError.response?.data?.description,
+                description: activeError.response?.data?.description,
                 level: AlertLevels.ERROR,
-                message: emailTemplateError.response.data.message ??
+                message: activeError.response.data.message ??
                     t("extensions:develop.emailTemplates.notifications.getEmailTemplate.error.message")
             }));
 
@@ -275,7 +489,8 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
             level: AlertLevels.ERROR,
             message: t("extensions:develop.emailTemplates.notifications.getEmailTemplate.error.message")
         }));
-    }, [ emailTemplateError, isSystemTemplate, isInheritedTemplate ]);
+    }, [ emailTemplateError, appEmailTemplateError, isSystemTemplate, isInheritedTemplate, isNewAppTemplate,
+        currentEmailTemplate ]);
 
     // This is used to check whether the URL contains a template ID, and if so, set it as the selected template.
     useEffect(() => {
@@ -290,10 +505,30 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         }
     }, [ window.location.hash ]);
 
+    const handleEmailTemplatesModeChange = (
+        _event: React.MouseEvent<HTMLElement>,
+        mode: EmailTemplatesMode
+    ): void => {
+        if (!mode) return;
+
+        setEmailTemplatesMode(mode);
+
+        if (mode === EmailTemplatesMode.ORGANIZATION) {
+            setSelectedAppId(null);
+            skipNextReplicateModalRef.current = false;
+            setError(undefined);
+            emailTemplateMutate();
+        }
+
+        setIsTemplateNotAvailable(false);
+        setIsNewAppTemplate(false);
+    };
+
     const handleTemplateIdChange = (templateId: string) => {
         setIsTemplateNotAvailable(false);
         setIsSystemTemplate(false);
         setIsInheritedTemplate(false);
+        setIsNewAppTemplate(false);
         setCurrentEmailTemplate(undefined);
         setSelectedLocale(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
         setSelectedEmailTemplateId(templateId);
@@ -312,6 +547,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         setIsTemplateNotAvailable(false);
         setIsSystemTemplate(false);
         setIsInheritedTemplate(false);
+        setIsNewAppTemplate(false);
         setSelectedLocale(safeLocale);
     };
 
@@ -325,8 +561,14 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
             template.contentType = EmailManagementConstants.DEFAULT_CONTENT_TYPE;
         }
 
-        if (isSystemTemplate || isInheritedTemplate) {
-            createNewEmailTemplate(selectedEmailTemplateId, template)
+        const mutateTemplate: () => void = isAppSpecific ? appEmailTemplateMutate : emailTemplateMutate;
+
+        if (isSystemTemplate || isInheritedTemplate || (isAppSpecific && isNewAppTemplate)) {
+            const createFn: Promise<EmailTemplate> = isAppSpecific
+                ? createNewAppEmailTemplate(selectedEmailTemplateId, activeAppId as string, template)
+                : createNewEmailTemplate(selectedEmailTemplateId, template);
+
+            createFn
                 .then((_response: EmailTemplate) => {
                     dispatch(addAlert<AlertInterface>({
                         description: t("extensions:develop.emailTemplates.notifications.updateEmailTemplate" +
@@ -337,6 +579,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                     }));
                     setIsSystemTemplate(false);
                     setIsInheritedTemplate(false);
+                    setIsNewAppTemplate(false);
                 }).catch((error: IdentityAppsApiException) => {
                     dispatch(addAlert<AlertInterface>({
                         description: t("extensions:develop.emailTemplates.notifications.updateEmailTemplate" +
@@ -345,9 +588,14 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                         message: error.message ?? t("extensions:develop.emailTemplates.notifications" +
                             ".updateEmailTemplate.error.message")
                     }));
-                }).finally(() => emailTemplateMutate());
+                }).finally(() => mutateTemplate());
         } else {
-            updateEmailTemplate(selectedEmailTemplateId, template, selectedLocale)
+            const updateFn: Promise<EmailTemplate> = isAppSpecific
+                ? updateAppEmailTemplate(
+                    selectedEmailTemplateId, activeAppId as string, template, selectedLocale)
+                : updateEmailTemplate(selectedEmailTemplateId, template, selectedLocale);
+
+            updateFn
                 .then((_response: EmailTemplate) => {
                     dispatch(addAlert<AlertInterface>({
                         description: t("extensions:develop.emailTemplates.notifications.updateEmailTemplate" +
@@ -366,14 +614,18 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                         message: error.message ?? t("extensions:develop.emailTemplates.notifications" +
                             ".updateEmailTemplate.error.message")
                     }));
-                }).finally(() => emailTemplateMutate());
+                }).finally(() => mutateTemplate());
         }
 
         setIsTemplateNotAvailable(false);
     };
 
     const handleDeleteRequest = () => {
-        deleteEmailTemplate(selectedEmailTemplateId, selectedLocale)
+        const deleteFn: Promise<AxiosResponse> = isAppSpecific
+            ? deleteAppEmailTemplate(selectedEmailTemplateId, activeAppId as string, selectedLocale)
+            : deleteEmailTemplate(selectedEmailTemplateId, selectedLocale);
+
+        deleteFn
             .then((_response: AxiosResponse) => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.emailTemplates.notifications.deleteEmailTemplate" +
@@ -382,8 +634,13 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                     message: t("extensions:develop.emailTemplates.notifications.deleteEmailTemplate" +
                         ".success.message")
                 }));
-                setIsSystemTemplate(true);
-                setIsInheritedTemplate(false);
+
+                if (isAppSpecific) {
+                    setIsNewAppTemplate(true);
+                } else {
+                    setIsSystemTemplate(true);
+                    setIsInheritedTemplate(false);
+                }
             }).catch((error: IdentityAppsApiException) => {
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.emailTemplates.notifications.deleteEmailTemplate" +
@@ -394,6 +651,13 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                 }));
             }).finally(() => {
                 setSelectedLocale(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
+                setSelectedEmailTemplate(null);
+                setCurrentEmailTemplate(undefined);
+                setIsNewAppTemplate(false);
+                setIsSystemTemplate(false);
+                if (isAppSpecific) {
+                    appEmailTemplateMutate();
+                }
             });
     };
 
@@ -441,7 +705,10 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                     data-componentid="email-customization-template-content"
                 >
                     <EmailCustomizationForm
-                        isEmailTemplatesListLoading={ isEmailTemplatesListLoading || isEmailTemplateLoading }
+                        isEmailTemplatesListLoading={ isEmailTemplatesListLoading
+                            || (isAppSpecific
+                                ? isAppEmailTemplateLoading && !currentEmailTemplate
+                                : isEmailTemplateLoading) }
                         selectedEmailTemplate={ currentEmailTemplate }
                         selectedLocale={ selectedLocale }
                         onTemplateChanged={
@@ -462,11 +729,105 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     return (
         <BrandingPreferenceProvider>
             <PageLayout
-                title={ t("extensions:develop.emailTemplates.page.header") }
+                title={ (
+                    <div style={ { alignItems: "center", display: "flex", justifyContent: "space-between",
+                        width: "100%" } }>
+                        <h1 style={ { margin: 0 } }>
+                            { isFromAppRedirect && selectedApplicationData?.name
+                                ? t("extensions:develop.emailTemplates.page.appSpecificHeader",
+                                    { appName: selectedApplicationData.name })
+                                : t("extensions:develop.emailTemplates.page.header") }
+                        </h1>
+                        { !appIdFromQueryParam && isAppSpecificEmailTemplateBrandingEnabled && (
+                            <div style={ { alignItems: "center", display: "flex", flexDirection: "row",
+                                gap: "10px" } }>
+                                <Paper
+                                    elevation={ 0 }
+                                    sx={ { borderColor: "#C0BFBF", display: "flex", height: "37px" } }
+                                >
+                                    <ToggleButtonGroup
+                                        exclusive
+                                        onChange={ handleEmailTemplatesModeChange }
+                                        size="small"
+                                        value={ emailTemplatesMode }
+                                    >
+                                        <ToggleButton
+                                            data-componentid={
+                                                `${ componentId }-organization-mode-button`
+                                            }
+                                            value={ EmailTemplatesMode.ORGANIZATION }
+                                        >
+                                            <span style={ { marginRight: "5px" } }>
+                                                <BuildingIcon size={ 14 } />
+                                            </span>
+                                            { t("extensions:develop.branding.pageHeader.organization") }
+                                        </ToggleButton>
+                                        <ToggleButton
+                                            data-componentid={
+                                                `${ componentId }-application-mode-button`
+                                            }
+                                            value={ EmailTemplatesMode.APPLICATION }
+                                        >
+                                            <span style={ { marginRight: "5px" } }>
+                                                <TilesIcon size={ 14 } />
+                                            </span>
+                                            { t("extensions:develop.branding.pageHeader.application") }
+                                        </ToggleButton>
+                                    </ToggleButtonGroup>
+                                </Paper>
+                                { emailTemplatesMode === EmailTemplatesMode.APPLICATION && (
+                                    <Autocomplete
+                                        data-componentid={ `${ componentId }-application-dropdown` }
+                                        sx={ { width: 190 } }
+                                        clearIcon={ null }
+                                        options={ applications ?? [] }
+                                        value={
+                                            applications?.find(
+                                                (app: ApplicationListItemInterface) =>
+                                                    app.id === selectedAppId
+                                            ) ?? null
+                                        }
+                                        onChange={ (
+                                            _event: SyntheticEvent<Element, Event>,
+                                            app: ApplicationListItemInterface | null
+                                        ) => {
+                                            setSelectedAppId(app?.id ?? null);
+                                            setIsNewAppTemplate(false);
+                                        } }
+                                        isOptionEqualToValue={ (
+                                            option: ApplicationListItemInterface,
+                                            value: ApplicationListItemInterface
+                                        ) => option.id === value.id }
+                                        loading={ isApplicationListFetchRequestLoading }
+                                        getOptionLabel={ (app: ApplicationListItemInterface) => app.name }
+                                        renderInput={ (params: AutocompleteRenderInputParams) => (
+                                            <TextField
+                                                { ...params }
+                                                size="small"
+                                                placeholder={ t(
+                                                    "extensions:develop.branding.pageHeader.selectApplication"
+                                                ) }
+                                                margin="none"
+                                            />
+                                        ) }
+                                    />
+                                ) }
+                            </div>
+                        ) }
+                    </div>
+                ) }
                 pageTitle="Email Templates"
                 description={ (
                     <>
-                        { t("extensions:develop.emailTemplates.page.description") }
+                        { isAppSpecific && selectedApplicationData?.name
+                            ? (
+                                <Trans
+                                    i18nKey="extensions:develop.emailTemplates.page.appSpecificDescription"
+                                    values={ { appName: selectedApplicationData.name } }
+                                    components={ { bold: <strong /> } }
+                                />
+                            )
+                            : t("extensions:develop.emailTemplates.page.description") }
                         <DocumentationLink
                             link={ getLink("develop.emailCustomization.learnMore") }
                         >
@@ -476,6 +837,14 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                 }
                 titleTextAlign="left"
                 bottomMargin={ false }
+                backButton={ isFromAppRedirect && {
+                    "data-componentid": `${ componentId }-page-back-button`,
+                    onClick: () => history.push(
+                        (AppConstants.getPaths().get("APPLICATION_EDIT") ?? "")
+                            .replace(":id", appIdFromQueryParam ?? "")
+                    ),
+                    text: t("extensions:develop.emailTemplates.page.backButtonText")
+                } }
                 data-componentid={ componentId }
             >
                 { !isEmailFeatureEnabled && (
@@ -559,7 +928,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                         { t("extensions:develop.emailTemplates.modal.updateFromRootOrg.message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content
-                        data-testid={ `${ componentId }-update-template-from-root-org-modal-content` }
+                        data-componentid={ `${ componentId }-update-template-from-root-org-modal-content` }
                     >
                         { t("extensions:develop.emailTemplates.modal.updateFromRootOrg.content") }
                     </ConfirmationModal.Content>

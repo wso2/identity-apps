@@ -4250,11 +4250,14 @@ importers:
       '@wso2is/access-control':
         specifier: ^3.5.6
         version: link:../../modules/access-control
+      '@wso2is/admin.applications.v1':
+        specifier: workspace:^
+        version: link:../admin.applications.v1
       '@wso2is/admin.branding.v1':
-        specifier: ^2.32.167
+        specifier: ^2.32.166
         version: link:../admin.branding.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.3
+        specifier: ^2.57.1
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: workspace:^
@@ -9253,6 +9256,9 @@ importers:
       '@wso2is/access-control':
         specifier: ^3.5.6
         version: link:../../modules/access-control
+      '@wso2is/admin.applications.v1':
+        specifier: workspace:^
+        version: link:../admin.applications.v1
       '@wso2is/admin.branding.v1':
         specifier: ^2.32.162
         version: link:../admin.branding.v1

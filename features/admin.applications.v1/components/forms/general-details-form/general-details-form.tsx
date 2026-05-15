@@ -25,7 +25,7 @@ import Link from "@oxygen-ui/react/Link";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
-import { PaletteIcon } from "@oxygen-ui/react-icons";
+import { CommentLinesIcon, EnvelopeIcon, PaletteIcon } from "@oxygen-ui/react-icons";
 import { ApplicationTabComponentsFilter } from
     "@wso2is/admin.application-templates.v1/components/application-tab-components-filter";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -241,7 +241,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const { getLink } = useDocumentation();
 
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
-    const brandingFeatureFlagsConfig: FeatureFlagsInterface[] = UIConfig?.features?.applications?.featureFlags;
+    const applicationsFeatureFlagsConfig: FeatureFlagsInterface[] = UIConfig?.features?.applications?.featureFlags;
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const [ isDiscoverable, setDiscoverability ] = useState<boolean>(discoverability);
@@ -272,6 +272,17 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             setIsMcpClientApplication(true);
         }
     }, [ template ]);
+
+    const disabledFeatures: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.applications?.disabledFeatures);
+
+    const isAppSpecificEmailTemplateBrandingEnabled: boolean = !disabledFeatures?.includes(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_EDIT_EMAIL_TEMPLATES_LINK
+    );
+
+    const isAppSpecificSmsTemplateEnabled: boolean = !disabledFeatures?.includes(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_EDIT_SMS_TEMPLATES_LINK
+    );
 
     const {
         data: myAccountStatus,
@@ -928,14 +939,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     <>
                                         <Heading as="h4">
                                             { t("applications:forms.generalDetails.sections.branding.title") }
-                                            <FeatureFlagLabel
-                                                featureFlags={ brandingFeatureFlagsConfig }
-                                                featureKey={
-                                                    FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
-                                                        .APPLICATION_EDIT_BRANDING_LINK
-                                                }
-                                                type="chip"
-                                            />
                                         </Heading>
                                         <PaletteIcon fill="#ff7300" /> &nbsp;
                                         <Link
@@ -951,7 +954,77 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                         >
                                             { t("applications:forms.generalDetails.brandingLink.label") }
                                         </Link>
+                                        <FeatureFlagLabel
+                                            featureFlags={ applicationsFeatureFlagsConfig }
+                                            featureKey={
+                                                FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                                                    .APPLICATION_EDIT_BRANDING_LINK
+                                            }
+                                            type="chip"
+                                        />
                                         <Hint>{ t("applications:forms.generalDetails.brandingLink.hint") }</Hint>
+                                    </>
+                                )
+                            }
+                            {
+                                (!isBrandingSectionHidden && !isM2MApplication &&
+                                    isAppSpecificEmailTemplateBrandingEnabled) && (
+                                    <>
+                                        <Divider hidden />
+                                        <EnvelopeIcon fill="#ff7300" /> &nbsp;
+                                        <Link
+                                            className="application-email-templates-link"
+                                            color="primary"
+                                            data-componentid={ `${testId}-application-email-templates-link` }
+                                            onClick={ () => {
+                                                history.push({
+                                                    pathname: AppConstants.getPaths().get("EMAIL_MANAGEMENT"),
+                                                    search: `?appId=${encodeURIComponent(appId ?? "")}`
+                                                });
+                                            } }
+                                        >
+                                            { t("applications:forms.generalDetails.emailTemplatesLink.label") }
+                                        </Link>
+                                        <FeatureFlagLabel
+                                            featureFlags={ applicationsFeatureFlagsConfig }
+                                            featureKey={
+                                                FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                                                    .APPLICATION_EDIT_EMAIL_TEMPLATES_LINK
+                                            }
+                                            type="chip"
+                                        />
+                                        <Hint>{ t("applications:forms.generalDetails.emailTemplatesLink.hint") }</Hint>
+                                    </>
+                                )
+                            }
+                            {
+                                (!isBrandingSectionHidden && !isM2MApplication &&
+                                    isAppSpecificSmsTemplateEnabled) && (
+                                    <>
+                                        <Divider hidden />
+                                        <CommentLinesIcon fill="#ff7300" /> &nbsp;
+                                        <Link
+                                            className="application-sms-templates-link"
+                                            color="primary"
+                                            data-componentid={ `${testId}-application-sms-templates-link` }
+                                            onClick={ () => {
+                                                history.push({
+                                                    pathname: AppConstants.getPaths().get("SMS_MANAGEMENT"),
+                                                    search: `?appId=${encodeURIComponent(appId ?? "")}`
+                                                });
+                                            } }
+                                        >
+                                            { t("applications:forms.generalDetails.smsTemplatesLink.label") }
+                                        </Link>
+                                        <FeatureFlagLabel
+                                            featureFlags={ applicationsFeatureFlagsConfig }
+                                            featureKey={
+                                                FeatureFlagConstants.FEATURE_FLAG_KEY_MAP
+                                                    .APPLICATION_EDIT_SMS_TEMPLATES_LINK
+                                            }
+                                            type="chip"
+                                        />
+                                        <Hint>{ t("applications:forms.generalDetails.smsTemplatesLink.hint") }</Hint>
                                     </>
                                 )
                             }

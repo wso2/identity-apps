@@ -16,6 +16,7 @@
         "@mui/utils": "^5.12.3",
         "@oxygen-ui/react": "catalog:",
         "@wso2is/access-control": "^3.5.6",
+        "@wso2is/admin.applications.v1": "workspace:^",
         "@wso2is/admin.feature-gate.v1": "workspace:^",
         "@wso2is/admin.organizations.v1": "^2.28.2",
         "@wso2is/admin.branding.v1": "^2.32.162",

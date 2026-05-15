@@ -88,6 +88,9 @@ export const smsTemplates: SMSTemplatesNS = {
         }
     },
     page: {
+        appSpecificDescription: "Customize SMS templates specific to <bold>{{ appName }}</bold> application.",
+        appSpecificHeader: "SMS Templates - {{ appName }}",
+        backButtonText: "Go back to Application Settings",
         description: "Customize sms templates used in your organization.",
         header: "SMS Templates"
     },
