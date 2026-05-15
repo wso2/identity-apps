@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 4.7.4
+
+### Patch Changes
+
+- [#10287](https://github.com/wso2/identity-apps/pull/10287) [`37b297be4a2c178eddb52d5378801ebe61012d31`](https://github.com/wso2/identity-apps/commit/37b297be4a2c178eddb52d5378801ebe61012d31) Thanks [@savindi7](https://github.com/savindi7)! - optimize analytics initialization config.
+
 ## 4.7.3
 
 ### Patch Changes
