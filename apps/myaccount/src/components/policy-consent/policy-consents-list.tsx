@@ -18,7 +18,7 @@
 
 import { i18nLink } from "@wso2is/common.branding.v1/utils/i18n-link";
 import { PolicyConsentItemInterface } from "@wso2is/common.consents.v1";
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { DangerZone, DangerZoneGroup, GenericIcon, Media } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -29,7 +29,7 @@ import { EditSection } from "../shared";
 /**
  * Prop types for the policy consent list component.
  */
-interface PolicyConsentListProps extends TestableComponentInterface {
+interface PolicyConsentListProps extends IdentifiableComponentInterface {
     items: PolicyConsentItemInterface[];
     activeIndexes: number[];
     onToggleDetail: (index: number) => void;
@@ -44,12 +44,12 @@ export const PolicyConsentList: FunctionComponent<PolicyConsentListProps> = (
     props: PolicyConsentListProps
 ): ReactElement => {
 
-    const { items, activeIndexes, onToggleDetail, onRevokeClick, ["data-testid"]: testId } = props;
+    const { items, activeIndexes, onToggleDetail, onRevokeClick, ["data-componentid"]: componentId } = props;
     const { t, i18n } = useTranslation();
 
     return (
         <>
-            <List divided verticalAlign="middle" className="main-content-inner" data-testid={ testId }>
+            <List divided verticalAlign="middle" className="main-content-inner" data-componentid={ componentId }>
                 {
                     (items && items.length && items.length > 0)
                         ? items.map((item: PolicyConsentItemInterface, index: number) => (
@@ -106,8 +106,8 @@ export const PolicyConsentList: FunctionComponent<PolicyConsentListProps> = (
                                                             labelPosition="right"
                                                             className="show-more-button"
                                                             size="mini"
-                                                            data-testid={
-                                                                `${ testId }-${ item.purposeId }-view-policy-button`
+                                                            data-componentid={
+                                                                `${ componentId }-${ item.purposeId }-view-policy-button`
                                                             }
                                                         >
                                                             { t(
@@ -124,8 +124,8 @@ export const PolicyConsentList: FunctionComponent<PolicyConsentListProps> = (
                                                         className="show-more-button"
                                                         size="mini"
                                                         onClick={ () => onToggleDetail(index) }
-                                                        data-testid={
-                                                            `${ testId }-${ item.purposeId }-show-more-button`
+                                                        data-componentid={
+                                                            `${ componentId }-${ item.purposeId }-show-more-button`
                                                         }
                                                     >
                                                         { activeIndexes.includes(index)
@@ -149,7 +149,7 @@ export const PolicyConsentList: FunctionComponent<PolicyConsentListProps> = (
                                     </Grid.Row>
                                     { activeIndexes.includes(index) && (
                                         <EditSection
-                                            data-testid={ `${ testId }-${ item.purposeId }-edit-section` }
+                                            data-componentid={ `${ componentId }-${ item.purposeId }-edit-section` }
                                         >
                                             <Grid padded>
                                                 <Grid.Row columns={ 1 }>
@@ -171,8 +171,8 @@ export const PolicyConsentList: FunctionComponent<PolicyConsentListProps> = (
                                                                     ".dangerZones.revoke.subheader"
                                                                 ) }
                                                                 onActionClick={ () => onRevokeClick(item) }
-                                                                data-testid={
-                                                                    `${ testId }-${ item.purposeId }-danger-zone-revoke`
+                                                                data-componentid={
+                                                                    `${ componentId }-${ item.purposeId }-danger-zone-revoke`
                                                                 }
                                                             />
                                                         </DangerZoneGroup>
@@ -192,5 +192,5 @@ export const PolicyConsentList: FunctionComponent<PolicyConsentListProps> = (
 };
 
 PolicyConsentList.defaultProps = {
-    "data-testid": "policy-consent-list"
+    "data-componentid": "policy-consent-list"
 };

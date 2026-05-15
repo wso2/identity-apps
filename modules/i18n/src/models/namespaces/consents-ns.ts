@@ -57,6 +57,10 @@ export interface ConsentsNS {
             subtitle: string;
         };
     };
+    registrationFlow: {
+        noPolicies: string;
+        selectPolicies: string;
+    };
     notifications: {
         create: {
             error: {

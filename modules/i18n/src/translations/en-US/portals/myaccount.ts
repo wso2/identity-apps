@@ -473,8 +473,8 @@ export const myAccount: MyAccountNS = {
                         message: "Retrieval Failed"
                     },
                     success: {
-                        description: "",
-                        message: ""
+                        description: "Your policy consents were retrieved successfully.",
+                        message: "Retrieval Successful"
                     }
                 },
                 revoke: {

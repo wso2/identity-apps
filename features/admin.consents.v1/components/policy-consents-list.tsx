@@ -100,7 +100,7 @@ export const PolicyConsentsList = (props: PolicyConsentsListProps): ReactElement
     const resolveTableActions = (): TableActionsInterface[] => {
         return [
             {
-                "data-testid": `${componentId}-item-view-button`,
+                "data-componentid": `${componentId}-item-view-button`,
                 hidden: (): boolean => hasUpdatePermission || !hasReadPermission,
                 icon: (): SemanticICONS => "eye",
                 onClick: (_e: SyntheticEvent, consent: ConsentListItemInterface): void =>
@@ -109,7 +109,7 @@ export const PolicyConsentsList = (props: PolicyConsentsListProps): ReactElement
                 renderer: "semantic-icon"
             },
             {
-                "data-testid": `${componentId}-item-edit-button`,
+                "data-componentid": `${componentId}-item-edit-button`,
                 hidden: (): boolean => !hasUpdatePermission,
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (_e: SyntheticEvent, consent: ConsentListItemInterface): void =>
@@ -118,7 +118,7 @@ export const PolicyConsentsList = (props: PolicyConsentsListProps): ReactElement
                 renderer: "semantic-icon"
             },
             {
-                "data-testid": `${componentId}-item-delete-button`,
+                "data-componentid": `${componentId}-item-delete-button`,
                 hidden: (): boolean => !hasDeletePermission,
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (_e: SyntheticEvent, consent: ConsentListItemInterface): void =>
@@ -147,19 +147,19 @@ export const PolicyConsentsList = (props: PolicyConsentsListProps): ReactElement
                             image
                             as="h6"
                             className="header-with-icon"
-                            data-testid={ `${componentId}-item-heading` }
+                            data-componentid={ `${componentId}-item-heading` }
                         >
                             <AppAvatar
                                 image={ (
                                     <AnimatedAvatar
                                         name={ consent.name }
                                         size="mini"
-                                        data-testid={ `${componentId}-item-display-name-avatar` }
+                                        data-componentid={ `${componentId}-item-display-name-avatar` }
                                     />
                                 ) }
                                 size="mini"
                                 spaced="right"
-                                data-testid={ `${componentId}-item-display-name` }
+                                data-componentid={ `${componentId}-item-display-name` }
                             />
 
                             <Header.Content>
@@ -193,7 +193,7 @@ export const PolicyConsentsList = (props: PolicyConsentsListProps): ReactElement
                     className="list-placeholder mr-0"
                     action={ hasCreatePermission && (
                         <PrimaryButton
-                            data-testid={ `${componentId}-empty-placeholder-add-policy-button` }
+                            data-componentid={ `${componentId}-empty-placeholder-add-policy-button` }
                             onClick={ onAddConsentClick }
                         >
                             <Icon name="add" />
@@ -205,7 +205,7 @@ export const PolicyConsentsList = (props: PolicyConsentsListProps): ReactElement
                     subtitle={ [
                         t("consents:list.emptyPlaceholder.subtitle")
                     ] }
-                    data-testid={ `${componentId}-empty-placeholder` }
+                    data-componentid={ `${componentId}-empty-placeholder` }
                 />
             );
         }
@@ -233,7 +233,7 @@ export const PolicyConsentsList = (props: PolicyConsentsListProps): ReactElement
                 !(isLoading)
                 && (showPlaceholders() !== null)
             }
-            data-testid={ componentId }
+            data-componentid={ componentId }
         />
     );
 };

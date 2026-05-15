@@ -25,12 +25,22 @@ import { useTranslations } from "../../hooks/use-translations";
 import { i18nLink, resolveElementText } from "../../utils/i18n-utils";
 import "./rich-text-field-adapter.css";
 
-DOMPurify.addHook("afterSanitizeAttributes", (node) => {
-    if (node.tagName === "A") {
-        node.setAttribute("target", "_blank");
-        node.setAttribute("rel", "noopener noreferrer");
+let isAfterSanitizeHookRegistered = false;
+
+const ensureAfterSanitizeAttributesHookRegistered = () => {
+    if (isAfterSanitizeHookRegistered) {
+        return;
     }
-});
+
+    DOMPurify.addHook("afterSanitizeAttributes", (node) => {
+        if (node.tagName === "A") {
+            node.setAttribute("target", "_blank");
+            node.setAttribute("rel", "noopener noreferrer");
+        }
+    });
+
+    isAfterSanitizeHookRegistered = true;
+};
 
 /**
  * Reports the current accepted and rejected policy ID lists to the form state.
@@ -64,7 +74,14 @@ const PolicyConsentFieldAdapter = ({ component, formStateHandler, fieldErrorHand
     const handlePolicyValidation = (map, policies) => {
         const hasUncheckedMandatory = policies.some((policy) => policy.mandatory && !map[policy.id]);
 
-        fieldErrorHandler(identifier, hasUncheckedMandatory ? [ "You must accept all required policies." ] : null);
+        let errorMessage = null;
+
+        if (hasUncheckedMandatory) {
+            errorMessage = resolveElementText(translations, "{{consent.validation.requiredPolicies}}")
+                || "You must accept all required policies.";
+        }
+
+        fieldErrorHandler(identifier, errorMessage ? [ errorMessage ] : null);
     };
 
     useEffect(() => {
@@ -90,6 +107,9 @@ const PolicyConsentFieldAdapter = ({ component, formStateHandler, fieldErrorHand
         reportPolicyState(updated, formStateHandler);
         handlePolicyValidation(updated, policiesToShow);
     };
+
+    // Ensure the DOMPurify hook is registered before sanitizing HTML
+    ensureAfterSanitizeAttributesHookRegistered();
 
     return (
         <div className="consent-field">
@@ -121,11 +141,15 @@ const PolicyConsentFieldAdapter = ({ component, formStateHandler, fieldErrorHand
                         style={ { alignItems: "center", display: "flex", gap: "10px" } }
                     >
                         <Checkbox
+                            id={ `policy-consent-${ policy.id }` }
                             name={ policy.id }
                             checked={ checkedMap[policy.id] || false }
                             onChange={ (_e, data) => handleChange(_e, data, policy) }
                         />
-                        <label style={ { cursor: "pointer", flex: 1, margin: 0 } }>
+                        <label
+                            htmlFor={ `policy-consent-${ policy.id }` }
+                            style={ { cursor: "pointer", flex: 1, margin: 0 } }
+                        >
                             { sanitizedHtml ? (
                                 <div className="rich-text-paragraph">
                                     { parse(sanitizedHtml) }

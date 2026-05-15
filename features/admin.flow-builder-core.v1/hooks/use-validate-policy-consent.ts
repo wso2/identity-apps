@@ -121,7 +121,7 @@ const useValidatePolicyConsent = (
                 removeNotification(`${ resource.id }_policy-consent-validation`);
             }
         };
-    }, []);
+    }, [ resource?.id, removeNotification ]);
 };
 
 export default useValidatePolicyConsent;

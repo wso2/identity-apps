@@ -63,6 +63,10 @@ export const consents: ConsentsNS = {
             subtitle: "There are no policies available at the moment"
         }
     },
+    registrationFlow: {
+        noPolicies: "No policies available. Create policies from Policy Consents.",
+        selectPolicies: "Select Policies:"
+    },
     notifications: {
         create: {
             error: {

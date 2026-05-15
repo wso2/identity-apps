@@ -472,8 +472,8 @@ export const myAccount: MyAccountNS = {
                         message: "Falha na Recuperação"
                     },
                     success: {
-                        description: "",
-                        message: ""
+                        description: "Os consentimentos de política foram recuperados com sucesso.",
+                        message: "Recuperação bem-sucedida"
                     }
                 },
                 revoke: {

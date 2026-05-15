@@ -169,7 +169,7 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
             const nextAfter: string = getCursorFromHref("next");
 
             if (nextAfter) {
-                setPageHistory([ ...pageHistory, before || "" ]);
+                setPageHistory([ ...pageHistory, after || "" ]);
                 setAfter(nextAfter);
                 setBefore(undefined);
             }

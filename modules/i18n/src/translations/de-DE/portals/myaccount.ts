@@ -464,8 +464,8 @@ export const myAccount: MyAccountNS = {
                         "message": "Abruf fehlgeschlagen"
                     },
                     "success": {
-                        "description": "",
-                        "message": ""
+                        "description": "Ihre Richtlinienzustimmungen wurden erfolgreich abgerufen.",
+                        "message": "Abruf erfolgreich"
                     }
                 },
                 "revoke": {

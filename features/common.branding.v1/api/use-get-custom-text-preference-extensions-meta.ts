@@ -60,11 +60,16 @@ const useGetCustomTextPreferenceExtensionsMeta = <
             locales: Object.keys(supportedLocaleExtensions)
         } as Data;
     } else if (Array.isArray((data as CustomTextPreferenceMeta)?.locales) && supportedLocaleExtensions) {
-        (data as CustomTextPreferenceMeta).locales = Array.from(new Set([
-            ...(data as CustomTextPreferenceMeta).locales,
+        const baseData: CustomTextPreferenceMeta = data as CustomTextPreferenceMeta;
+        const mergedLocales: string[] = Array.from(new Set([
+            ...(baseData.locales ?? []),
             ...Object.keys(supportedLocaleExtensions)
         ]));
-        mergedData = data;
+
+        mergedData = {
+            ...baseData,
+            locales: mergedLocales
+        } as Data;
     }
 
     return {

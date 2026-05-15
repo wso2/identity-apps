@@ -17,6 +17,7 @@
  */
 
 import {
+    ConsentedPurposeInterface,
     PolicyConsentDetailInterface,
     PolicyConsentItemInterface,
     PolicyConsentListResponseInterface,
@@ -27,7 +28,7 @@ import {
     getPurposeVersionById,
     revokeConsentById
 } from "@wso2is/common.consents.v1";
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -43,7 +44,7 @@ import { ModalComponent, SettingsSection } from "../shared";
  * Proptypes for the policy consent component.
  * Also see {@link PolicyConsent.defaultProps}
  */
-interface PolicyConsentComponentProps extends TestableComponentInterface {
+interface PolicyConsentComponentProps extends IdentifiableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -51,12 +52,13 @@ export const PolicyConsent: FunctionComponent<PolicyConsentComponentProps> = (
     props: PolicyConsentComponentProps
 ): ReactElement => {
 
-    const { onAlertFired, ["data-testid"]: testId } = props;
+    const { onAlertFired, ["data-componentid"]: componentId } = props;
 
     const [ policyConsentItems, setPolicyConsentItems ] = useState<PolicyConsentItemInterface[]>([]);
     const [ policyActiveIndexes, setPolicyActiveIndexes ] = useState<number[]>([]);
     const [ revokingPolicyItem, setRevokingPolicyItem ] = useState<PolicyConsentItemInterface | null>(null);
     const [ isPolicyRevokeModalVisible, setPolicyRevokeModalVisible ] = useState<boolean>(false);
+    const [ isRevoking, setIsRevoking ] = useState<boolean>(false);
 
     const userName: string = useSelector((state: AppState) => state?.authenticationInformation?.profileInfo.userName);
     const consentsBaseUrl: string = useSelector(
@@ -92,7 +94,10 @@ export const PolicyConsent: FunctionComponent<PolicyConsentComponentProps> = (
             const items: PolicyConsentItemInterface[] = await Promise.all(
                 details.map(async (detail: PolicyConsentDetailInterface, index: number):
                     Promise<PolicyConsentItemInterface> => {
-                    const purpose = detail.purposes[0];
+                    const purpose: ConsentedPurposeInterface | undefined =
+                        Array.isArray(detail.purposes) && detail.purposes.length > 0
+                            ? detail.purposes[0]
+                            : undefined;
                     let policyUrl: string | null = null;
 
                     if (purpose) {
@@ -158,10 +163,11 @@ export const PolicyConsent: FunctionComponent<PolicyConsentComponentProps> = (
     };
 
     const handlePolicyRevokeConfirm = (): void => {
-        if (!revokingPolicyItem) {
+        if (isRevoking || !revokingPolicyItem) {
             return;
         }
 
+        setIsRevoking(true);
         revokeConsentById(consentsBaseUrl, revokingPolicyItem.consentId)
             .then(async () => {
                 onAlertFired({
@@ -175,6 +181,7 @@ export const PolicyConsent: FunctionComponent<PolicyConsentComponentProps> = (
                 });
                 handlePolicyRevokeModalClose();
                 await loadPolicyConsents();
+                setIsRevoking(false);
             })
             .catch(() => {
                 onAlertFired({
@@ -186,14 +193,16 @@ export const PolicyConsent: FunctionComponent<PolicyConsentComponentProps> = (
                         "myAccount:components.policyConsentManagement.notifications.revoke.genericError.message"
                     )
                 });
+                setIsRevoking(false);
             });
     };
 
     const policyConsentRevokeModal = (): ReactElement => {
         return (
             <ModalComponent
-                data-testid={ `${testId}-policy-revoke-modal` }
+                data-componentid={ `${componentId}-policy-revoke-modal` }
                 primaryAction={ t("common:revoke") }
+                primaryActionDisabled={ isRevoking }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ handlePolicyRevokeModalClose }
                 onPrimaryActionClick={ handlePolicyRevokeConfirm }
@@ -214,7 +223,7 @@ export const PolicyConsent: FunctionComponent<PolicyConsentComponentProps> = (
     return (
         <>
             <SettingsSection
-                data-testid={ `${testId}-settings-section` }
+                data-componentid={ `${componentId}-settings-section` }
                 description={ t("myAccount:sections.policyConsentManagement.description") }
                 header={ t("myAccount:sections.policyConsentManagement.heading") }
                 placeholder={
@@ -227,7 +236,7 @@ export const PolicyConsent: FunctionComponent<PolicyConsentComponentProps> = (
                 }
             >
                 <PolicyConsentList
-                    data-testid={ `${testId}-policy-consent-list` }
+                    data-componentid={ `${componentId}-policy-consent-list` }
                     items={ policyConsentItems }
                     activeIndexes={ policyActiveIndexes }
                     onToggleDetail={ handlePolicyToggleDetail }
@@ -240,5 +249,5 @@ export const PolicyConsent: FunctionComponent<PolicyConsentComponentProps> = (
 };
 
 PolicyConsent.defaultProps = {
-    "data-testid": "policy-consent"
+    "data-componentid": "policy-consent"
 };

@@ -111,10 +111,14 @@ const PolicyConsentAdapter: FunctionComponent<PolicyConsentAdapterPropsInterface
     }, [ resource.config?.policies ]);
 
     const selectedPurposeIds: string[] = useMemo((): string[] => {
-        return selectedPolicies.map((p: PolicyConfigItemInterface): string => p.purposeId);
-    }, [ selectedPolicies ]);
+        if (!hasConsentsReadPermission) {
+            return [];
+        }
 
-    const { data: selectedPolicyDetails, isLoading: isPolicyDetailsLoading } = useGetPurposesByIds(selectedPurposeIds);
+        return selectedPolicies.map((p: PolicyConfigItemInterface): string => p.purposeId);
+    }, [ selectedPolicies, hasConsentsReadPermission ]);
+
+    const { data: selectedPolicyDetails, error: policyDetailsFetchError, isLoading: isPolicyDetailsLoading } = useGetPurposesByIds(selectedPurposeIds);
 
     useValidatePolicyConsent(resource, selectedPolicies, allPolicies);
 
@@ -130,7 +134,7 @@ const PolicyConsentAdapter: FunctionComponent<PolicyConsentAdapterPropsInterface
             <Box sx={ { display: "flex", flexDirection: "column" } }>
                 { isAllPoliciesLoading || isPolicyDetailsLoading ? (
                     <CircularProgress size={ 24 } />
-                ) : selectedPolicyDetails.length > 0 ? (
+                ) : selectedPolicyDetails && selectedPolicyDetails.length > 0 ? (
                     selectedPolicyDetails.map((policy: ConsentInterface): ReactElement => {
                         const sanitized: string = sanitizedHtmlWithLocalizedLinks(
                             policy.description ?? "",

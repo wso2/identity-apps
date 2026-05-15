@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteProps } from "react-router";
@@ -35,9 +35,12 @@ const ConsentsPage: FunctionComponent<ConsentsPagePropsInterface> = (): ReactEle
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const handleAlerts = (alert: AlertInterface): void => {
-        dispatch(addAlert(alert));
-    };
+    const handleAlerts: (alert: AlertInterface) => void = useCallback(
+        (alert: AlertInterface): void => {
+            dispatch(addAlert(alert));
+        },
+        [ dispatch ]
+    );
 
     return (
         <PageLayout

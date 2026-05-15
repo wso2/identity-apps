@@ -44,9 +44,12 @@ export const i18nLink = (locale: string, link: string): string => {
                 .replace(/\{\{locale\}\}/g, locale);
         }
 
-        return link.includes("?")
-            ? `${ link }&ui_locales=${ locale }`
-            : `${ link }?ui_locales=${ locale }`;
+        const hashIndex: number = link.indexOf("#");
+        const baseAndQuery: string = hashIndex > -1 ? link.substring(0, hashIndex) : link;
+        const fragment: string = hashIndex > -1 ? link.substring(hashIndex) : "";
+        const separator: string = baseAndQuery.includes("?") ? "&" : "?";
+
+        return `${ baseAndQuery }${ separator }ui_locales=${ encodeURIComponent(locale) }${ fragment }`;
     } catch {
         return link;
     }

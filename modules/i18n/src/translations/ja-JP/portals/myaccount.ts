@@ -468,11 +468,11 @@ export const myAccount: MyAccountNS = {
                 },
                 "revoke": {
                     "error": {
-                        "description": "ポリシー同意を取り消中にエラーが発生しました。",
+                        "description": "ポリシー同意を取り消し中にエラーが発生しました。",
                         "message": "取り消しに失敗しました"
                     },
                     "genericError": {
-                        "description": "ポリシー同意を取り消中にエラーが発生しました。",
+                        "description": "ポリシー同意を取り消し中にエラーが発生しました。",
                         "message": "取り消しに失敗しました"
                     },
                     "success": {

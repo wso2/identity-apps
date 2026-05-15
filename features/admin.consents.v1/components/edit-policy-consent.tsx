@@ -128,7 +128,8 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
     } = useGetPurpose(purposeId ?? "");
     const {
         data: consentVersions,
-        isLoading: isVersionsLoading
+        isLoading: isVersionsLoading,
+        mutate: mutateVersions
     } = useGetPurposeVersions(purposeId ?? "");
 
     const {
@@ -140,6 +141,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
     const [ showVersionWarningModal, setShowVersionWarningModal ] = React.useState<boolean>(false);
     const pendingValues: React.MutableRefObject<PolicyFormValuesInterface | null> =
         React.useRef<PolicyFormValuesInterface | null>(null);
+    const nameValidationTokenRef: React.MutableRefObject<number> = React.useRef<number>(0);
 
     const brandingPolicyUrl: string = React.useMemo((): string => {
         if (!brandingPreference) {
@@ -201,27 +203,61 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
         }, [ consentVersions ]);
 
     /**
-     * Validates the create form fields.
+     * Debounced field-level async validator for the policy name.
+     * Uses a token to discard stale results from previous in-flight checks.
      */
-    const validateCreateForm = async (values: PolicyFormValuesInterface): Promise<PolicyFormErrorsInterface> => {
-        const errors: PolicyFormErrorsInterface = {};
-
-        if (!values?.name?.trim()) {
-            errors.name = t("common:required");
-        } else {
-            try {
-                const isAvailable: boolean = await isPolicyNameAvailable(values.name);
-
-                if (!isAvailable) {
-                    errors.name = t("consents:form.name.error.duplicateName");
-                }
-            } catch {
-                // Let the API error surface during submission
+    const validateName: (_: string) => Promise<string | undefined> | string | undefined =
+        React.useCallback((value: string): Promise<string | undefined> | string | undefined => {
+            if (!value?.trim()) {
+                return t("common:required");
             }
-        }
+
+            const token: number = ++nameValidationTokenRef.current;
+
+            return new Promise<string | undefined>((resolve: (_: string | undefined) => void): void => {
+                setTimeout(async (): Promise<void> => {
+                    if (token !== nameValidationTokenRef.current) {
+                        resolve(undefined);
+
+                        return;
+                    }
+
+                    try {
+                        const isAvailable: boolean = await isPolicyNameAvailable(value.trim());
+
+                        resolve(
+                            token === nameValidationTokenRef.current && !isAvailable
+                                ? t("consents:form.name.error.duplicateName")
+                                : undefined
+                        );
+                    } catch {
+                        resolve(undefined);
+                    }
+                }, 500);
+            });
+        }, [ t ]);
+
+    /**
+     * Validates the create form fields (synchronous — name uniqueness is checked by validateName).
+     */
+    const validateCreateForm = (values: PolicyFormValuesInterface): PolicyFormErrorsInterface => {
+        const errors: PolicyFormErrorsInterface = {};
 
         if (!values?.policyUrl?.trim()) {
             errors.policyUrl = t("common:required");
+        } else {
+            const urlValidationError: string | undefined = validateTemplatableURL(
+                values.policyUrl,
+                t(
+                    "extensions:develop.branding" +
+                    ".forms.advance.links.fields" +
+                    ".common.validations.invalid"
+                )
+            );
+
+            if (urlValidationError) {
+                errors.policyUrl = urlValidationError;
+            }
         }
 
         return errors;
@@ -235,7 +271,12 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
     const createNewPurpose = (values: PolicyFormValuesInterface): void => {
         setIsSubmitting(true);
 
-        createPurpose(values.name, values.policyUrl ?? "", values.description, values.mandatory)
+        createPurpose(
+            values.name?.trim() ?? "",
+            values.policyUrl?.trim() ?? "",
+            values.description,
+            values.mandatory
+        )
             .then((created: PurposeDTOInterface): void => {
                 dispatch(addAlert({
                     description: t("consents:notifications.create.success.description"),
@@ -301,6 +342,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                     message: t("consents:notifications.updatePolicy.success.message")
                 }));
                 mutateConsent();
+                mutateVersions();
             })
             .catch((error: IdentityAppsApiException): void => {
                 const status: number = error?.response?.status;
@@ -432,6 +474,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                                 required
                                                                 type="text"
                                                                 component={ TextFieldAdapter }
+                                                                validate={ validateName }
                                                             />
                                                         </Box>
                                                     ) }

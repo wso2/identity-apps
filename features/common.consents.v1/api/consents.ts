@@ -71,7 +71,7 @@ export const isPolicyNameAvailable = (name: string): Promise<boolean> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.consentMgtPurposes }?filter=name+eq+${ encodeURIComponent(name) }`
+        url: `${ store.getState().config.endpoints.consentMgtPurposes }?filter=name+eq+${ encodeURIComponent(`'${name}'`) }`
     };
 
     return httpClient(requestConfig)

@@ -29,16 +29,17 @@ const httpClient: (config: HttpRequestConfig) => Promise<any> = AsgardeoSPAClien
 /**
  * Hook to fetch full purpose details for a given list of IDs in parallel.
  * Returns mapped ConsentInterface items including the mandatory flag.
+ * Exposes fetch errors to allow callers to distinguish between "no purposes" and "request failed".
  *
  * @param ids - Array of purpose IDs to fetch.
- * @returns SWR result with mapped consent details and loading state.
+ * @returns SWR result with mapped consent details, error, and loading state.
  */
 export const useGetPurposesByIds = (
     ids: string[]
-): { data: ConsentInterface[]; isLoading: boolean } => {
+): { data: ConsentInterface[] | null; error: any; isLoading: boolean } => {
     const baseUrl: string = store.getState().config.endpoints.consentMgtPurposes;
 
-    const { data, isLoading }: SWRResponse<ConsentInterface[]> = useSWR<ConsentInterface[]>(
+    const { data, error, isLoading }: SWRResponse<ConsentInterface[]> = useSWR<ConsentInterface[]>(
         ids.length > 0 ? [ "purposes-by-ids", ...[ ...ids ].sort() ] : null,
         async (): Promise<ConsentInterface[]> => {
             const results: ConsentInterface[] = await Promise.all(
@@ -49,7 +50,7 @@ export const useGetPurposesByIds = (
                             "Content-Type": "application/json"
                         },
                         method: HttpMethods.GET,
-                        url: `${ baseUrl }/${ id }`
+                        url: `${ baseUrl }/${ encodeURIComponent(id) }`
                     };
                     const response: any = await httpClient(config);
 
@@ -61,5 +62,5 @@ export const useGetPurposesByIds = (
         }
     );
 
-    return { data: data ?? [], isLoading: isLoading ?? false };
+    return { data: data ?? null, error, isLoading: isLoading ?? false };
 };

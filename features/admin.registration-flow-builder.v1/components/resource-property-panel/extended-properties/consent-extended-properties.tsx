@@ -34,6 +34,7 @@ import {
 } from "@wso2is/common.consents.v1";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
 /**
@@ -53,6 +54,7 @@ const ConsentExtendedProperties: FunctionComponent<ConsentExtendedPropertiesProp
     resource,
     onChange
 }: ConsentExtendedPropertiesPropsInterface): ReactElement => {
+    const { t } = useTranslation();
     const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
     );
@@ -98,7 +100,7 @@ const ConsentExtendedProperties: FunctionComponent<ConsentExtendedPropertiesProp
         return (
             <Stack data-componentid={ componentId }>
                 <Typography variant="body2" color="textSecondary">
-                    No policies available. Create policies from Policy Consents.
+                    { t("consents:registrationFlow.noPolicies") }
                 </Typography>
             </Stack>
         );
@@ -106,7 +108,7 @@ const ConsentExtendedProperties: FunctionComponent<ConsentExtendedPropertiesProp
 
     return (
         <Stack data-componentid={ componentId } spacing={ 1 }>
-            <Typography variant="subtitle2">Select Policies:</Typography>
+            <Typography variant="subtitle2">{ t("consents:registrationFlow.selectPolicies") }</Typography>
             <Box sx={ { pl: 1 } }>
                 {
                     allPolicies.map((policy: ConsentListItemInterface): ReactElement => (

@@ -28,6 +28,7 @@ import { Button, Icon, Modal, ModalProps } from "semantic-ui-react";
 interface ModalComponentProps extends ModalProps, TestableComponentInterface {
     type: "positive" | "negative" | "warning" | "info";
     primaryAction?: string;
+    primaryActionDisabled?: boolean;
     secondaryAction?: string;
     onPrimaryActionClick?: () => void;
     onSecondaryActionClick?: (e: MouseEvent<HTMLElement>) => void;
@@ -43,6 +44,7 @@ export const ModalComponent = (props: ModalComponentProps): ReactElement => {
         open,
         onClose,
         primaryAction,
+        primaryActionDisabled,
         secondaryAction,
         onPrimaryActionClick,
         onSecondaryActionClick,
@@ -164,6 +166,7 @@ export const ModalComponent = (props: ModalComponentProps): ReactElement => {
                     { secondaryAction }
                 </Button>
                 <PrimaryButton
+                    disabled={ primaryActionDisabled }
                     onClick={ () => onPrimaryActionClick() }
                 >
                     { primaryAction }

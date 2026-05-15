@@ -71,10 +71,28 @@ const localizeHtmlLinks = (
     locale: string,
     linkMapper: (locale: string, url: string) => string
 ): string => {
-    return html.replace(
-        /href="([^"]*)"/g,
-        (_match: string, url: string): string => `href="${ linkMapper(locale, url) }"`
-    );
+    if (typeof DOMParser === "undefined") {
+        return html;
+    }
+
+    try {
+        const parser: DOMParser = new DOMParser();
+        const doc: Document = parser.parseFromString(html, "text/html");
+        const links: NodeListOf<Element> = doc.querySelectorAll("a[href]");
+
+        links.forEach((link: Element): void => {
+            const originalHref: string | null = link.getAttribute("href");
+
+            if (originalHref) {
+                const mappedHref: string = linkMapper(locale, originalHref);
+                link.setAttribute("href", mappedHref);
+            }
+        });
+
+        return doc.body.innerHTML;
+    } catch {
+        return html;
+    }
 };
 
 /**
@@ -90,6 +108,7 @@ export const sanitizedHtmlWithLocalizedLinks = (
     locale: string,
     linkMapper: (locale: string, url: string) => string
 ): string => {
-    const localized: string = localizeHtmlLinks(html || "", locale, linkMapper);
+    const sanitized: string = sanitizedHtml(html);
+    const localized: string = localizeHtmlLinks(sanitized, locale, linkMapper);
     return sanitizedHtml(localized);
 };

@@ -23,6 +23,8 @@
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.LinkedHashMap" %>
+<%@ page import="java.net.URI" %>
+<%@ page import="java.net.URISyntaxException" %>
 <%@ page import="org.json.JSONArray" %>
 <%@ page import="org.json.JSONObject" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
@@ -69,11 +71,27 @@
                 String labelHtml;
                 if (StringUtils.isNotBlank(description)) {
                     labelHtml = Encode.forHtml(description);
-                } else if (StringUtils.isNotBlank(policyUrl) && !policyUrl.contains("javascript:") && !policyUrl.contains("data:")) {
-                    labelHtml = Encode.forHtml(agreePrefix) + " <a href=\""
-                            + Encode.forHtmlAttribute(policyUrl)
-                            + "\" target=\"_blank\" rel=\"noopener noreferrer\">"
-                            + Encode.forHtml(name) + "</a>";
+                } else if (StringUtils.isNotBlank(policyUrl)) {
+                    // Validate URL scheme: only allow http/https
+                    boolean isValidUrl = false;
+                    try {
+                        URI uri = new URI(policyUrl);
+                        String scheme = uri.getScheme();
+                        if (scheme != null && (scheme.equalsIgnoreCase("http") || scheme.equalsIgnoreCase("https"))) {
+                            isValidUrl = true;
+                        }
+                    } catch (URISyntaxException e) {
+                        // Invalid URI syntax, fall back to non-link
+                    }
+
+                    if (isValidUrl) {
+                        labelHtml = Encode.forHtml(agreePrefix) + " <a href=\""
+                                + Encode.forHtmlAttribute(policyUrl)
+                                + "\" target=\"_blank\" rel=\"noopener noreferrer\">"
+                                + Encode.forHtml(name) + "</a>";
+                    } else {
+                        labelHtml = Encode.forHtml(StringUtils.isNotBlank(name) ? name : purposeId);
+                    }
                 } else {
                     labelHtml = Encode.forHtml(StringUtils.isNotBlank(name) ? name : purposeId);
                 }

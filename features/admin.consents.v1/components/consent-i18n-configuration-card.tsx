@@ -30,10 +30,11 @@ import TextField from "@oxygen-ui/react/TextField";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { PenToSquareIcon, PlusIcon, TrashIcon, XMarkIcon } from "@oxygen-ui/react-icons";
-import deleteCustomTextPreference from "@wso2is/common.branding.v1/api/delete-custom-text-preference";
 import updateCustomTextPreference from "@wso2is/common.branding.v1/api/update-custom-text-preference";
-import useGetCustomTextPreferenceFallbacks from "@wso2is/common.branding.v1/api/use-get-custom-text-preference-fallbacks";
-import useGetCustomTextPreferenceMeta from "@wso2is/common.branding.v1/api/use-get-custom-text-preference-meta";
+import useGetCustomTextPreferenceFallbacks from
+    "@wso2is/common.branding.v1/api/use-get-custom-text-preference-fallbacks";
+import useGetCustomTextPreferenceMeta from
+    "@wso2is/common.branding.v1/api/use-get-custom-text-preference-meta";
 import useGetCustomTextPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-custom-text-preference-resolve";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetBrandingPreference from "@wso2is/common.branding.v1/api/use-get-branding-preference";
@@ -70,7 +71,7 @@ const CONSENT_I18N_SCREEN: PreviewScreenType = PreviewScreenType.COMMON;
  */
 export interface LanguageTextFieldPropsInterface {
     value: string;
-    onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+    onChange: (_: ChangeEvent<HTMLInputElement>) => void;
     disabled?: boolean;
 }
 
@@ -82,7 +83,7 @@ interface ConsentI18nConfigurationCardPropsInterface extends IdentifiableCompone
     anchorEl: HTMLElement | null;
     i18nKey: string;
     onClose: () => void;
-    onChange: (i18nKey: string | null) => void;
+    onChange: (_: string | null) => void;
     LanguageTextField?: FunctionComponent<LanguageTextFieldPropsInterface>;
 }
 
@@ -281,7 +282,14 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
         setIsSubmitting(true);
 
         try {
-            await deleteCustomTextPreference(
+            const existingText: Record<string, string> = userTextData?.preference?.text ?? {};
+            const updatedText: Record<string, string> = { ...existingText };
+
+            delete updatedText[selectedI18nKey];
+
+            await updateCustomTextPreference(
+                isAlreadyConfigured,
+                { text: updatedText },
                 tenantDomain,
                 CONSENT_I18N_SCREEN,
                 selectedLanguage,
@@ -304,7 +312,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
         } finally {
             setIsSubmitting(false);
         }
-    }, [ selectedI18nKey, selectedLanguage, tenantDomain, onChange ]);
+    }, [ selectedI18nKey, selectedLanguage, isAlreadyConfigured, userTextData, tenantDomain, onChange ]);
 
     const handleBack = (): void => {
         setIsCustomizeView(false);
