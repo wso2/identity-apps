@@ -45,8 +45,37 @@ reviews:
             **Fail Criteria:**
             - No changeset files are present in the CHANGED FILE LIST of the pull request.
             - Only `.changeset/README.md` is modified
+  finishing_touches:
+    custom:
+      - name: "create changeset"
+        instructions: |
+          Create a changeset file for this pull request, ONLY IF NOT ALREADY EXISTING, following these steps:
 
-            If no changeset is found, the check should fail with a clear explanation that changesets are required for tracking changes.
+          1. Inspect the list of changed files in this PR to identify all modified packages
+             (look for packages under `features/`, `modules/` directories and their `package.json` files).
+
+          2. For changes in `features/` or `modules/` directories, also include:
+             - `@wso2is/console`
+             - `@wso2is/myaccount`
+             - `@wso2is/identity-apps-core`
+             with an appropriate version bump.
+
+          3. For any brand-new packages introduced in this PR, use a `major` version bump.
+             For everything else, default to `patch` unless the change clearly warrants `minor`.
+
+          4. Use the PR title as the change description.
+
+          5. Generate a new file at `.changeset/<random-slug>.md` with the following structure:
+             ```
+             ---
+             "`@scope/package-name`": patch
+             ---
+
+             <PR title here>
+             ```
+
+          6. Commit the new changeset file to the PR branch.
+
   # path_instructions:
   #   - path: ".changeset/**-**-**.md"
   #     instructions: |
