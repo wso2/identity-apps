@@ -228,7 +228,7 @@ export const consents: ConsentsNS = {
                 }
             },
             preview: {
-                allowButton: "Accept and Continue",
+                allowButton: "Confirm and Continue",
                 appLoginMessage: "This will be the UI you see when you log in to an application.",
                 consentHeader: "Please review and accept the following policies to proceed.",
                 denyButton: "Decline",

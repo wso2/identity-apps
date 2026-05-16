@@ -110,11 +110,11 @@
                     labelHtml = processed.toString();
                 } else if (StringUtils.isNotBlank(policyUrl)) {
                     labelHtml = Encode.forHtml(agreePrefix) + " <a href=\""
-                            + Encode.forHtmlAttribute(policyUrl)
+                            + Encode.forHtmlAttribute(i18nLink(userLocale, policyUrl))
                             + "\" target=\"_blank\" rel=\"noopener noreferrer\">"
                             + Encode.forHtml(name) + "</a>";
                 } else {
-                    labelHtml = Encode.forHtml(StringUtils.isNotBlank(name) ? name : purposeId);
+                    continue;
                 }
                 purposeLabelMap.put(purposeId.trim(), labelHtml);
             }
@@ -175,94 +175,103 @@
 
                     <div class="segment-form">
                         <div class="ui" style="text-align: left;">
-                            <div class="ui list">
-                                <%-- Mandatory: first-time policies --%>
-                                <% for (String purposeId : mandatoryPurposeIds) {
-                                    String trimmedId = purposeId.trim();
-                                    String label = purposeLabelMap.containsKey(trimmedId)
-                                            ? purposeLabelMap.get(trimmedId)
-                                            : Encode.forHtml(trimmedId);
-                                %>
-                                <div class="item" style="margin-bottom: 0.5em;">
-                                    <div class="ui checkbox">
-                                        <input type="checkbox" name="mandatoryPurposeId"
-                                            value="<%=Encode.forHtmlAttribute(trimmedId)%>"
-                                            id="mandatory-<%=Encode.forHtmlAttribute(trimmedId)%>"
-                                            class="mandatory-consent"/>
-                                        <label for="mandatory-<%=Encode.forHtmlAttribute(trimmedId)%>"
-                                            class="light-font">
-                                            <%=label%>
-                                            <span title="required" style="color: red; margin-left: 2px;">*</span>
-                                        </label>
-                                    </div>
+                            <%-- New policies section --%>
+                            <% if (mandatoryPurposeIds.length > 0 || optionalPurposeIds.length > 0) { %>
+                            <div style="margin-bottom: 1em;">
+                                <div class="light-font" style="font-size: 0.9em; margin-bottom: 0.75em; color: #666;">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.section.new.title")%>
                                 </div>
-                                <% } %>
-                                <%-- Mandatory: updated policy versions --%>
-                                <% for (String purposeId : mandatoryNewVersionIds) {
-                                    String trimmedId = purposeId.trim();
-                                    String label = purposeLabelMap.containsKey(trimmedId)
-                                            ? purposeLabelMap.get(trimmedId)
-                                            : Encode.forHtml(trimmedId);
-                                %>
-                                <div class="item" style="margin-bottom: 0.5em;">
-                                    <div class="ui checkbox">
-                                        <input type="checkbox" name="mandatoryPurposeId"
-                                            value="<%=Encode.forHtmlAttribute(trimmedId)%>"
-                                            id="mandatory-<%=Encode.forHtmlAttribute(trimmedId)%>"
-                                            class="mandatory-consent"/>
-                                        <label for="mandatory-<%=Encode.forHtmlAttribute(trimmedId)%>"
-                                            class="light-font">
-                                            <%=label%>
-                                            <span title="required" style="color: red; margin-left: 2px;">*</span>
-                                            <span class="ui mini orange label" style="margin-left: 4px;">
-                                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.updated")%>
-                                            </span>
-                                        </label>
+                                <div class="ui list">
+                                    <% for (String purposeId : mandatoryPurposeIds) {
+                                        String trimmedId = purposeId.trim();
+                                        String label = purposeLabelMap.containsKey(trimmedId)
+                                                ? purposeLabelMap.get(trimmedId)
+                                                : Encode.forHtml(trimmedId);
+                                    %>
+                                    <div class="item" style="margin-bottom: 0.5em;">
+                                        <div class="ui checkbox">
+                                            <input type="checkbox" name="mandatoryPurposeId"
+                                                value="<%=Encode.forHtmlAttribute(trimmedId)%>"
+                                                id="mandatory-<%=Encode.forHtmlAttribute(trimmedId)%>"
+                                                class="mandatory-consent"/>
+                                            <label for="mandatory-<%=Encode.forHtmlAttribute(trimmedId)%>"
+                                                class="light-font">
+                                                <%=label%>
+                                                <span title="required" style="color: #FF7300; margin-left: 2px;">*</span>
+                                            </label>
+                                        </div>
                                     </div>
-                                </div>
-                                <% } %>
-                                <%-- Optional: first-time policies --%>
-                                <% for (String purposeId : optionalPurposeIds) {
-                                    String trimmedId = purposeId.trim();
-                                    String label = purposeLabelMap.containsKey(trimmedId)
-                                            ? purposeLabelMap.get(trimmedId)
-                                            : Encode.forHtml(trimmedId);
-                                %>
-                                <div class="item" style="margin-bottom: 0.5em;">
-                                    <div class="ui checkbox">
-                                        <input type="checkbox" name="optionalPurposeId"
-                                            value="<%=Encode.forHtmlAttribute(trimmedId)%>"
-                                            id="optional-<%=Encode.forHtmlAttribute(trimmedId)%>"/>
-                                        <label for="optional-<%=Encode.forHtmlAttribute(trimmedId)%>"
-                                            class="light-font">
-                                            <%=label%>
-                                        </label>
+                                    <% } %>
+                                    <% for (String purposeId : optionalPurposeIds) {
+                                        String trimmedId = purposeId.trim();
+                                        String label = purposeLabelMap.containsKey(trimmedId)
+                                                ? purposeLabelMap.get(trimmedId)
+                                                : Encode.forHtml(trimmedId);
+                                    %>
+                                    <div class="item" style="margin-bottom: 0.5em;">
+                                        <div class="ui checkbox">
+                                            <input type="checkbox" name="optionalPurposeId"
+                                                value="<%=Encode.forHtmlAttribute(trimmedId)%>"
+                                                id="optional-<%=Encode.forHtmlAttribute(trimmedId)%>"/>
+                                            <label for="optional-<%=Encode.forHtmlAttribute(trimmedId)%>"
+                                                class="light-font">
+                                                <%=label%>
+                                            </label>
+                                        </div>
                                     </div>
+                                    <% } %>
                                 </div>
-                                <% } %>
-                                <%-- Optional: updated policy versions --%>
-                                <% for (String purposeId : optionalNewVersionIds) {
-                                    String trimmedId = purposeId.trim();
-                                    String label = purposeLabelMap.containsKey(trimmedId)
-                                            ? purposeLabelMap.get(trimmedId)
-                                            : Encode.forHtml(trimmedId);
-                                %>
-                                <div class="item" style="margin-bottom: 0.5em;">
-                                    <div class="ui checkbox">
-                                        <input type="checkbox" name="optionalPurposeId"
-                                            value="<%=Encode.forHtmlAttribute(trimmedId)%>"
-                                            id="optional-<%=Encode.forHtmlAttribute(trimmedId)%>"/>
-                                        <label for="optional-<%=Encode.forHtmlAttribute(trimmedId)%>"
-                                            class="light-font">
-                                            <%=label%>
-                                            <span class="ui mini orange label" style="margin-left: 4px;">
-                                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.updated")%>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </div>
-                                <% } %>
                             </div>
+                            <% } %>
+
+                            <%-- Updated policies section --%>
+                            <% if (mandatoryNewVersionIds.length > 0 || optionalNewVersionIds.length > 0) { %>
+                            <div style="margin-bottom: 1em;">
+                                <div class="light-font" style="font-size: 0.9em; margin-bottom: 0.75em; color: #666;">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.section.updated.title")%>
+                                </div>
+                                <div class="ui list">
+                                    <% for (String purposeId : mandatoryNewVersionIds) {
+                                        String trimmedId = purposeId.trim();
+                                        String label = purposeLabelMap.containsKey(trimmedId)
+                                                ? purposeLabelMap.get(trimmedId)
+                                                : Encode.forHtml(trimmedId);
+                                    %>
+                                    <div class="item" style="margin-bottom: 0.5em;">
+                                        <div class="ui checkbox">
+                                            <input type="checkbox" name="mandatoryPurposeId"
+                                                value="<%=Encode.forHtmlAttribute(trimmedId)%>"
+                                                id="mandatory-<%=Encode.forHtmlAttribute(trimmedId)%>"
+                                                class="mandatory-consent"/>
+                                            <label for="mandatory-<%=Encode.forHtmlAttribute(trimmedId)%>"
+                                                class="light-font">
+                                                <%=label%>
+                                                <span title="required" style="color: #FF7300; margin-left: 2px;">*</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <% } %>
+                                    <% for (String purposeId : optionalNewVersionIds) {
+                                        String trimmedId = purposeId.trim();
+                                        String label = purposeLabelMap.containsKey(trimmedId)
+                                                ? purposeLabelMap.get(trimmedId)
+                                                : Encode.forHtml(trimmedId);
+                                    %>
+                                    <div class="item" style="margin-bottom: 0.5em;">
+                                        <div class="ui checkbox">
+                                            <input type="checkbox" name="optionalPurposeId"
+                                                value="<%=Encode.forHtmlAttribute(trimmedId)%>"
+                                                id="optional-<%=Encode.forHtmlAttribute(trimmedId)%>"/>
+                                            <label for="optional-<%=Encode.forHtmlAttribute(trimmedId)%>"
+                                                class="light-font">
+                                                <%=label%>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <% } %>
                         </div>
 
                         <div class="ui divider hidden"></div>
@@ -271,8 +280,7 @@
                             <input type="button" class="ui primary fluid large button" id="approve"
                                 name="approve"
                                 onclick="javascript: approved(); return false;"
-                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.button.accept")%>"/>
-                        </div>
+                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.button.confirm")%>"/>
                         <div class="mt-2 align-center">
                             <input class="ui fluid large button secondary" type="reset"
                                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.button.decline")%>"
@@ -316,6 +324,11 @@
     <% } %>
 
     <script type="text/javascript">
+        function updateApproveButton() {
+            var unchecked = document.querySelectorAll("input.mandatory-consent:not(:checked)");
+            document.getElementById("approve").disabled = unchecked.length > 0;
+        }
+
         function approved() {
             var unchecked = document.querySelectorAll("input.mandatory-consent:not(:checked)");
             if (unchecked.length > 0) {
@@ -330,6 +343,13 @@
             document.getElementById('consent').value = "deny";
             document.getElementById("policy-consent-form").submit();
         }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            updateApproveButton();
+            document.querySelectorAll("input.mandatory-consent").forEach(function(cb) {
+                cb.addEventListener("change", updateApproveButton);
+            });
+        });
     </script>
 </body>
 </html>
