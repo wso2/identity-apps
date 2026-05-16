@@ -46,7 +46,7 @@ reviews:
             - No changeset files are present in the CHANGED FILE LIST of the pull request.
             - Only `.changeset/README.md` is modified
 
-            If no changeset is found, create a changeset file with appropriate content in the .changeset directory. Use the PR title as the change description in the changeset.
+If no changeset is found, the check should FAIL with a clear explanation directing the author to run `@coderabbitai run create changeset` or use the "✨ Create changeset" finishing touch to generate one automatically.
   # path_instructions:
   #   - path: ".changeset/**-**-**.md"
   #     instructions: |
