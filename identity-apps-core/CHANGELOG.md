@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.0.26
+
+### Patch Changes
+
+- [#10297](https://github.com/wso2/identity-apps/pull/10297) [`c4f86e4adf5f3cb9c47024a4fc6d60ad83241ad7`](https://github.com/wso2/identity-apps/commit/c4f86e4adf5f3cb9c47024a4fc6d60ad83241ad7) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix console maven release build
+
 ## 5.0.25
 
 ### Patch Changes
