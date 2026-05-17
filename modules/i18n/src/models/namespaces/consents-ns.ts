@@ -39,16 +39,18 @@ export interface ConsentsNS {
             hint: string;
             versionHint: string;
         };
+        promptOnLogin: {
+            label: string;
+            hint: string;
+        };
         versionDropdown: {
             trigger: string;
             currentVersionLabel: string;
         };
         versionModal: {
-            header: string;
-            message: string;
-            content: string;
-            primaryAction: string;
-            secondaryAction: string;
+            createNewVersion: string;
+            promptAtLogin: string;
+            promptDescription: string;
         };
     };
     list: {

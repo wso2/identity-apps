@@ -143,6 +143,7 @@ export const mapPurposeDTOToConsent = (purpose: PurposeDTOInterface): ConsentInt
                 (element: PurposeElementDTOInterface) =>
                     element.name.startsWith(`${ POLICY_URL_ELEMENT_PREFIX }:`)
             )?.displayName,
+        promptOnLogin: purpose.properties?.promptOnLogin ?? false,
         type: purpose.type,
         version: purpose.latestVersion?.version,
         versionId: purpose.latestVersion?.id
@@ -293,13 +294,15 @@ const getOrCreatePolicyConsentElement = async (): Promise<string> => {
  * @param policyUrl - Policy URL stored in the version properties.
  * @param description - Optional description of the purpose.
  * @param mandatory - Whether this policy is mandatory (blocks login until accepted).
+ * @param promptOnLogin - Whether to prompt user for this policy during login.
  * @returns A promise containing the created purpose DTO.
  */
 export const createPurpose = async (
     name: string,
     policyUrl: string,
     description?: string,
-    mandatory?: boolean
+    mandatory?: boolean,
+    promptOnLogin?: boolean
 ): Promise<PurposeDTOInterface> => {
     const policyConsentElementId: string = await getOrCreatePolicyConsentElement();
 
@@ -309,7 +312,7 @@ export const createPurpose = async (
             { id: policyConsentElementId, mandatory: mandatory ?? false }
         ],
         name,
-        properties: { policyUrl },
+        properties: { policyUrl, promptOnLogin: promptOnLogin ?? false },
         type: CONSENT_MGT_GROUP,
         version: "1"
     };
@@ -401,6 +404,7 @@ export const deletePurpose = (id: string): Promise<void> => {
  * @param description - Description for this version.
  * @param policyUrl - Policy URL stored in the version properties.
  * @param mandatory - Whether this policy is mandatory (blocks login until accepted).
+ * @param promptOnLogin - Whether to prompt user for this policy during login.
  * @returns A promise containing the created version DTO.
  */
 export const createPurposeVersion = async (
@@ -408,7 +412,8 @@ export const createPurposeVersion = async (
     versionLabel: string,
     description: string,
     policyUrl: string,
-    mandatory?: boolean
+    mandatory?: boolean,
+    promptOnLogin?: boolean
 ): Promise<PurposeVersionDTOInterface> => {
     const policyConsentElementId: string = await getOrCreatePolicyConsentElement();
 
@@ -417,7 +422,7 @@ export const createPurposeVersion = async (
         elements: [
             { id: policyConsentElementId, mandatory: mandatory ?? false }
         ],
-        properties: { policyUrl },
+        properties: { policyUrl, promptOnLogin: promptOnLogin ?? false },
         setAsLatest: true,
         version: versionLabel
     };

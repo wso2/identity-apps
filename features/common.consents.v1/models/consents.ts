@@ -38,6 +38,7 @@ export interface PurposeVersionDTOInterface {
     id: string;
     properties?: {
         policyUrl?: string;
+        promptOnLogin?: boolean;
     };
     version: string;
 }
@@ -114,6 +115,7 @@ export interface PurposeDTOInterface {
     name: string;
     properties?: {
         policyUrl?: string;
+        promptOnLogin?: boolean;
     };
     type: string;
 }
@@ -164,6 +166,7 @@ export interface CreatePurposeRequestInterface {
     newElements?: NewElementBindingInterface[];
     properties?: {
         policyUrl: string;
+        promptOnLogin?: boolean;
     };
     type: string;
     version?: string;
@@ -178,6 +181,7 @@ export interface CreatePurposeVersionRequestInterface {
     newElements?: NewElementBindingInterface[];
     properties?: {
         policyUrl: string;
+        promptOnLogin?: boolean;
     };
     setAsLatest?: boolean;
     version: string;
@@ -200,6 +204,7 @@ export interface ConsentInterface {
     mandatory?: boolean;
     name: string;
     policyUrl?: string;
+    promptOnLogin?: boolean;
     type: string;
     /**
      * Version label, e.g. "v1".

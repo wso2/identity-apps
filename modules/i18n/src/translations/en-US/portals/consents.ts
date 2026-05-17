@@ -25,7 +25,7 @@ export const consents: ConsentsNS = {
             label: "Description"
         },
         mandatory: {
-            hint: "When enabled, users will not be able to log in without accepting this policy.",
+            hint: "Set during policy creation. When enabled, users will not be able to continue the flow without accepting this policy.",
             label: "Mandatory",
             linkHint: "To add to registration flow, navigate to <0>registration flow builder</0>."
         },
@@ -41,20 +41,20 @@ export const consents: ConsentsNS = {
                 "You can use placeholders like {{lang}}, {{country}}, or {{locale}} " +
                 "to customize the URL for different regions or languages.",
             label: "Policy URL",
-            versionHint: "To create a new version, update the policy URL or description above. " +
-                "Existing users will be required to re-accept the policy on their next login."
+            versionHint: "To create a new version, update the policy URL, description, or prompt settings above."
+        },
+        promptOnLogin: {
+            hint: "When enabled, users will be prompted to review and accept this policy during login.",
+            label: "Prompt on Login"
         },
         versionDropdown: {
             currentVersionLabel: "Version {{version}} (current)",
             trigger: "Version {{version}}"
         },
         versionModal: {
-            content: "Do you want to proceed?",
-            header: "Create a New Version?",
-            message: "Creating a new version will require existing users to review and accept " +
-                "the updated policy at their next login.",
-            primaryAction: "Confirm",
-            secondaryAction: "Cancel"
+            createNewVersion: "Create New Version?",
+            promptAtLogin: "Prompt users at next login",
+            promptDescription: "Choose whether users should be prompted to accept the updated policy."
         }
     },
     list: {

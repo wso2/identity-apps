@@ -18,6 +18,7 @@
 
 import Box from "@oxygen-ui/react/Box";
 import Card from "@oxygen-ui/react/Card";
+import Checkbox from "@oxygen-ui/react/Checkbox";
 import InputLabel from "@oxygen-ui/react/InputLabel";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
@@ -64,6 +65,7 @@ interface PolicyFormValuesInterface {
     mandatory: boolean;
     name?: string;
     policyUrl: string;
+    promptOnLogin: boolean;
 }
 
 interface PolicyFormErrorsInterface {
@@ -139,6 +141,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
 
     const [ isSubmitting, setIsSubmitting ] = React.useState<boolean>(false);
     const [ showVersionWarningModal, setShowVersionWarningModal ] = React.useState<boolean>(false);
+    const [ modalPromptOnLogin, setModalPromptOnLogin ] = React.useState<boolean>(false);
     const pendingValues: React.MutableRefObject<PolicyFormValuesInterface | null> =
         React.useRef<PolicyFormValuesInterface | null>(null);
     const nameValidationTokenRef: React.MutableRefObject<number> = React.useRef<number>(0);
@@ -166,7 +169,8 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                     description: "",
                     mandatory: false,
                     name: "",
-                    policyUrl: ""
+                    policyUrl: "",
+                    promptOnLogin: false
                 };
             }
 
@@ -177,7 +181,8 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
             return {
                 description: consent.description ?? "",
                 mandatory: consent.mandatory ?? false,
-                policyUrl: consent.policyUrl ?? brandingPolicyUrl
+                policyUrl: consent.policyUrl ?? brandingPolicyUrl,
+                promptOnLogin: consent.promptOnLogin ?? false
             };
         }, [ isCreateMode, consent, brandingPolicyUrl ]);
 
@@ -266,7 +271,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
     /**
      * Creates a new purpose.
      *
-     * @param values - Form values containing name, policy URL, description and consent flag.
+     * @param values - Form values containing name, policy URL, description, consent flag, and promptOnLogin.
      */
     const createNewPurpose = (values: PolicyFormValuesInterface): void => {
         setIsSubmitting(true);
@@ -275,7 +280,8 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
             values.name?.trim() ?? "",
             values.policyUrl?.trim() ?? "",
             values.description,
-            values.mandatory
+            values.mandatory,
+            values.promptOnLogin
         )
             .then((created: PurposeDTOInterface): void => {
                 dispatch(addAlert({
@@ -327,14 +333,21 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
     /**
      * Creates a new purpose version with the updated policy URL, promoted as latest in a single call.
      *
-     * @param values - Form values containing the new policy URL.
+     * @param values - Form values containing the new policy URL and description.
      */
     const updatePolicyInfo = (values: PolicyFormValuesInterface): void => {
         setIsSubmitting(true);
 
         const nextLabel: string = generateNextVersionLabel(consent.version ?? "1");
 
-        createPurposeVersion(purposeId, nextLabel, values.description, values.policyUrl, values.mandatory)
+        createPurposeVersion(
+            purposeId,
+            nextLabel,
+            values.description,
+            values.policyUrl,
+            values.mandatory,
+            modalPromptOnLogin
+        )
             .then((): void => {
                 dispatch(addAlert({
                     description: t("consents:notifications.updatePolicy.success.description"),
@@ -423,6 +436,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                     createNewPurpose(values);
                                 } else {
                                     pendingValues.current = values;
+                                    setModalPromptOnLogin(values.promptOnLogin);
                                     setShowVersionWarningModal(true);
                                 }
                             } }
@@ -547,56 +561,86 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                             } }
                                                         />
                                                     </Box>
-                                                    <Field
-                                                        name="mandatory"
-                                                        subscription={ { value: true } }
-                                                        render={ (
-                                                            { input }: { input: FieldInputProps<boolean> }
-                                                        ) => (
-                                                            <Box>
-                                                                <FormControlLabel
-                                                                    disabled={ !isCreateMode }
-                                                                    control={ (
-                                                                        <Switch
-                                                                            name={ input.name }
-                                                                            checked={ input.value ?? false }
-                                                                            onChange={ (
-                                                                                e: React.ChangeEvent<HTMLInputElement>
-                                                                            ) => {
-                                                                                input.onChange(e.target.checked);
-                                                                            } }
-                                                                            disabled={ !isCreateMode }
-                                                                        />
-                                                                    ) }
-                                                                    label={ t("consents:form.mandatory.label") }
-                                                                    sx={ { mr: 0 } }
-                                                                />
-                                                                <Hint>
-                                                                    { t("consents:form.mandatory.hint") }
-                                                                </Hint>
-                                                                { !isCreateMode && (
-                                                                    <Message
-                                                                        type="info"
-                                                                        content={ (
-                                                                            <Trans
-                                                                                i18nKey=
-                                                                                    "consents:form.mandatory.linkHint"
-                                                                            >
-                                                                                <Link
-                                                                                    onClick={
-                                                                                        handleRegFlowBuilderClick
-                                                                                    }
-                                                                                    sx={ { cursor: "pointer" } }
-                                                                                >
-                                                                                    this link
-                                                                                </Link>
-                                                                            </Trans>
+                                                    { isCreateMode && (
+                                                        <Field
+                                                            name="mandatory"
+                                                            subscription={ { value: true } }
+                                                            render={ (
+                                                                { input }: { input: FieldInputProps<boolean> }
+                                                            ) => (
+                                                                <Box>
+                                                                    <FormControlLabel
+                                                                        control={ (
+                                                                            <Switch
+                                                                                name={ input.name }
+                                                                                checked={ input.value ?? false }
+                                                                                onChange={ ( e:
+                                                                                    React.ChangeEvent<HTMLInputElement>
+                                                                                ) => {
+                                                                                    input.onChange(e.target.checked);
+                                                                                } }
+                                                                            />
                                                                         ) }
+                                                                        label={ t("consents:form.mandatory.label") }
+                                                                        sx={ { mr: 0 } }
                                                                     />
-                                                                ) }
-                                                            </Box>
-                                                        ) }
-                                                    />
+                                                                    <Hint>
+                                                                        { t("consents:form.mandatory.hint") }
+                                                                    </Hint>
+                                                                </Box>
+                                                            ) }
+                                                        />
+                                                    ) }
+                                                    { isCreateMode && (
+                                                        <Message
+                                                            type="info"
+                                                            content={ (
+                                                                <Trans
+                                                                    i18nKey=
+                                                                        "consents:form.mandatory.linkHint"
+                                                                >
+                                                                    <Link
+                                                                        onClick={
+                                                                            handleRegFlowBuilderClick
+                                                                        }
+                                                                        sx={ { cursor: "pointer" } }
+                                                                    >
+                                                                        this link
+                                                                    </Link>
+                                                                </Trans>
+                                                            ) }
+                                                        />
+                                                    ) }
+                                                    { isCreateMode && (
+                                                        <Field
+                                                            name="promptOnLogin"
+                                                            subscription={ { value: true } }
+                                                            render={ (
+                                                                { input }: { input: FieldInputProps<boolean> }
+                                                            ) => (
+                                                                <Box>
+                                                                    <FormControlLabel
+                                                                        control={ (
+                                                                            <Switch
+                                                                                name={ input.name }
+                                                                                checked={ input.value ?? false }
+                                                                                onChange={ ( e:
+                                                                                    React.ChangeEvent<HTMLInputElement>
+                                                                                ) => {
+                                                                                    input.onChange(e.target.checked);
+                                                                                } }
+                                                                            />
+                                                                        ) }
+                                                                        label={ t("consents:form.promptOnLogin.label") }
+                                                                        sx={ { mr: 0 } }
+                                                                    />
+                                                                    <Hint>
+                                                                        { t("consents:form.promptOnLogin.hint") }
+                                                                    </Hint>
+                                                                </Box>
+                                                            ) }
+                                                        />
+                                                    ) }
                                                 </Box>
                                             </Grid>
                                             { /* Preview column */ }
@@ -606,11 +650,6 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                 flexDirection={ "column" }
                                                 sx={ { borderBottom: "1px solid var(--oxygen-palette-divider)" } }
                                             >
-                                                <Message
-                                                    type="info"
-                                                    className="mb-0"
-                                                    content = { t("consents:wizard.create.preview.appLoginMessage") }
-                                                />
                                                 <ConsentDescriptionPreview
                                                     description={ _values?.description ?? "" }
                                                     mandatory={ _values?.mandatory ?? false }
@@ -650,8 +689,8 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                 onClose={ () => setShowVersionWarningModal(false) }
                 type="warning"
                 open={ showVersionWarningModal }
-                primaryAction={ t("consents:form.versionModal.primaryAction") }
-                secondaryAction={ t("consents:form.versionModal.secondaryAction") }
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ () => setShowVersionWarningModal(false) }
                 onPrimaryActionClick={ () => {
                     setShowVersionWarningModal(false);
@@ -661,13 +700,24 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                 primaryActionLoading={ isSubmitting }
             >
                 <ConfirmationModal.Header>
-                    { t("consents:form.versionModal.header") }
+                    { t("consents:form.versionModal.createNewVersion") }
                 </ConfirmationModal.Header>
-                <ConfirmationModal.Message attached negative>
-                    { t("consents:form.versionModal.message") }
-                </ConfirmationModal.Message>
                 <ConfirmationModal.Content>
-                    { t("consents:form.versionModal.content") }
+                    { t("consents:form.versionModal.promptDescription") }
+                    <Box sx={ { mt: 2 } }>
+                        <FormControlLabel
+                            control={ (
+                                <Checkbox
+                                    checked={ modalPromptOnLogin }
+                                    onChange={ (e: React.ChangeEvent<HTMLInputElement>) => {
+                                        setModalPromptOnLogin(e.target.checked);
+                                    } }
+                                />
+                            ) }
+                            label={ t("consents:form.versionModal.promptAtLogin") }
+                            sx={ { mr: 0 } }
+                        />
+                    </Box>
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         </>
