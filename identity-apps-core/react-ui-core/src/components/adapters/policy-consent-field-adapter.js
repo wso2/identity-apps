@@ -61,13 +61,15 @@ const PolicyConsentFieldAdapter = ({ component, formStateHandler, fieldErrorHand
     const { description, identifier = "consent_policy", policies: rawPolicies = [] } = component.config;
     const { locale, translations } = useTranslations();
 
-    const policiesToShow = useMemo(() => rawPolicies.map((p) => ({
-        description: p.description,
-        id: p.purposeId,
-        mandatory: p.mandatory,
-        name: p.name,
-        url: p.policyUrl
-    })), [ rawPolicies ]);
+    const policiesToShow = useMemo(() => rawPolicies
+        .filter((p) => p.policyUrl)
+        .map((p) => ({
+            description: p.description,
+            id: p.purposeId,
+            mandatory: p.mandatory,
+            name: p.name,
+            url: p.policyUrl
+        })), [ rawPolicies ]);
 
     const [ checkedMap, setCheckedMap ] = useState({});
 
@@ -110,6 +112,10 @@ const PolicyConsentFieldAdapter = ({ component, formStateHandler, fieldErrorHand
 
     // Ensure the DOMPurify hook is registered before sanitizing HTML
     ensureAfterSanitizeAttributesHookRegistered();
+
+    if (policiesToShow.length === 0) {
+        return null;
+    }
 
     return (
         <div className="consent-field">

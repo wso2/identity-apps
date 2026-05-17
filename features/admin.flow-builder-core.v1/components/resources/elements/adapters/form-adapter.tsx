@@ -20,11 +20,12 @@ import { CollisionPriority } from "@dnd-kit/abstract";
 import Badge from "@mui/material/Badge";
 import Box from "@oxygen-ui/react/Box";
 import Typography from "@oxygen-ui/react/Typography";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
-import { Element, ElementCategories } from "../../../../models/elements";
+import { Element, ElementCategories, ElementTypes } from "../../../../models/elements";
 import { EventTypes } from "../../../../models/extension";
 import PluginRegistry from "../../../../plugins/plugin-registry";
 import generateResourceId from "../../../../utils/generate-resource-id";
@@ -48,6 +49,8 @@ const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
     resource,
     stepId
 }: FormAdapterPropsInterface): ReactElement => {
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
     const shouldShowFormFieldsPlaceholder: boolean = !resource?.components?.some(
         (element: Element) => element.category === ElementCategories.Field
     );
@@ -76,19 +79,26 @@ const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
                         <Typography variant="body2">DROP FORM COMPONENTS HERE</Typography>
                     </Box>
                 ) }
-                { (resource?.components as any)?.map((component: Element, index: number) => PluginRegistry
-                    .getInstance().executeSync(EventTypes.ON_NODE_ELEMENT_FILTER, component) && (
-                    <ReorderableElement
-                        key={ component.id }
-                        id={ component.id }
-                        index={ index }
-                        element={ component }
-                        className={ classNames("flow-builder-step-content-form-field") }
-                        group={ resource.id }
-                        type={ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID }
-                        accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
-                    />
-                )) }
+                { (resource?.components as any)?.map((component: Element, index: number) => {
+                    // Hide consent elements from sub-organizations
+                    if (component.type === ElementTypes.Policy && isSubOrganization()) {
+                        return null;
+                    }
+
+                    return PluginRegistry
+                        .getInstance().executeSync(EventTypes.ON_NODE_ELEMENT_FILTER, component) && (
+                        <ReorderableElement
+                            key={ component.id }
+                            id={ component.id }
+                            index={ index }
+                            element={ component }
+                            className={ classNames("flow-builder-step-content-form-field") }
+                            group={ resource.id }
+                            type={ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID }
+                            accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
+                        />
+                    );
+                }) }
             </Droppable>
         </Badge>
     );
