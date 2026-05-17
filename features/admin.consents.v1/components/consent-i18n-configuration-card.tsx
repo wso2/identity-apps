@@ -64,7 +64,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import "./consent-i18n-configuration-card.scss";
 
-const CONSENT_I18N_SCREEN: PreviewScreenType = PreviewScreenType.COMMON;
+const CONSENT_I18N_SCREEN: PreviewScreenType = PreviewScreenType.CONSENT;
 
 /**
  * Props interface for a custom language text field component.
