@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 5.0.27
+
+### Patch Changes
+
+- [#10301](https://github.com/wso2/identity-apps/pull/10301) [`c227585e5afd4eb06948113e987671db958c7dbf`](https://github.com/wso2/identity-apps/commit/c227585e5afd4eb06948113e987671db958c7dbf) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix hardcoded English terms and conditions text in self-registration federated flow by replacing with i18n key lookup
+
+* [#10302](https://github.com/wso2/identity-apps/pull/10302) [`e149e68a3ffc41a1b47ab932d828d3f9044703d5`](https://github.com/wso2/identity-apps/commit/e149e68a3ffc41a1b47ab932d828d3f9044703d5) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix tenant domain field incorrectly shown as mandatory input on username recovery error
+
 ## 5.0.26
 
 ### Patch Changes

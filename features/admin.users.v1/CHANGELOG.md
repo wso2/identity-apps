@@ -1,5 +1,11 @@
 # @wso2is/admin.users.v1
 
+## 2.38.39
+
+### Patch Changes
+
+- [#10261](https://github.com/wso2/identity-apps/pull/10261) [`93332f8b7d0731cbb8c435f5d991e616cade7ffb`](https://github.com/wso2/identity-apps/commit/93332f8b7d0731cbb8c435f5d991e616cade7ffb) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Hide super admin management options (delete, lock, disable) for non-super-admin users
+
 ## 2.38.38
 
 ### Patch Changes
