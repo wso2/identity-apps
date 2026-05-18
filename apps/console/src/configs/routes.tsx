@@ -422,6 +422,26 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("ACCOUNT_DISABLE"),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.devices.v1/pages/device-assurance-policies")
+                    ),
+                    exact: true,
+                    id: "deviceAssurancePolicies",
+                    path: AppConstants.getPaths().get("DEVICE_ASSURANCE_POLICIES"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.devices.v1/pages/device-policy-edit")
+                    ),
+                    exact: true,
+                    id: "devicePolicyEdit",
+                    path: AppConstants.getPaths().get("DEVICE_POLICY_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() =>
@@ -523,59 +543,10 @@ export const getAppViewRoutes = (): RouteInterface[] => {
 
         {
             category: "extensions:manage.sidePanel.categories.userManagement",
-            component: lazy(() => import("@wso2is/admin.devices.v1/pages/devices")),
-            exact: true,
-            icon: {
-                icon: getSidePanelIcons().devices
-            },
-            id: "devices",
-            name: "Devices",
-            order: 7,
-            path: AppConstants.getPaths().get("DEVICES"),
-            protected: true,
-            showOnSidePanel: true
-        },
-        {
-            category: "extensions:manage.sidePanel.categories.userManagement",
-            component: lazy(() =>
-                import("@wso2is/admin.devices.v1/pages/device-assurance-policies")
-            ),
-            exact: true,
-            icon: {
-                icon: getSidePanelIcons().devices
-            },
-            id: "deviceAssurancePolicies",
-            name: "Device Assurance Policies",
-            order: 8,
-            path: AppConstants.getPaths().get("DEVICE_ASSURANCE_POLICIES"),
-            protected: true,
-            showOnSidePanel: true
-        },
-        {
-            category: "extensions:manage.sidePanel.categories.userManagement",
-            component: lazy(() =>
-                import("@wso2is/admin.devices.v1/pages/device-policy-edit")
-            ),
-            exact: true,
-            icon: {
-                icon: getSidePanelIcons().devices
-            },
-            id: "devicePolicyEdit",
-            name: "Device Policy Edit",
-            order: 9,
-            path: AppConstants.getPaths().get("DEVICE_POLICY_EDIT"),
-            protected: true,
-            showOnSidePanel: false
-        },
-        {
-            category: "extensions:manage.sidePanel.categories.userManagement",
             component: lazy(() =>
                 import("@wso2is/admin.devices.v1/pages/device-detail")
             ),
             exact: true,
-            icon: {
-                icon: getSidePanelIcons().devices
-            },
             id: "deviceDetail",
             name: "Device Detail",
             order: 9,

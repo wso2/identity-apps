@@ -312,11 +312,25 @@ export class GovernanceConnectorUtils {
                         id: ServerConfigurationsConstants.SESSION_MANAGEMENT_CONNECTOR_ID,
                         route: AppConstants.getPaths().get("SESSION_MANAGEMENT"),
                         testId: "session-management-card"
-                    }
+                    },
                 ],
                 displayOrder: 1,
                 id: "login-security",
                 title: "Login Security"
+            },
+            {
+                connectors: [
+                    {
+                        description: "Define and manage device assurance policies for your organization.",
+                        header: "Device Assurance",
+                        id: "device-assurance-policies",
+                        route: AppConstants.getPaths().get("DEVICE_ASSURANCE_POLICIES"),
+                        testId: "device-assurance-policies-card"
+                    }
+                ],
+                displayOrder: 1,
+                id: "policies",
+                title: "Policies"
             },
             {
                 connectors: [
