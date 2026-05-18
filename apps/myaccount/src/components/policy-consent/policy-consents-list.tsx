@@ -17,8 +17,8 @@
  */
 
 import { i18nLink } from "@wso2is/common.branding.v1/utils/i18n-link";
-import { PolicyConsentItemInterface } from "@wso2is/common.consents.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { PolicyConsentItemInterface } from "../../models/consents";
 import { DangerZone, DangerZoneGroup, GenericIcon, Media } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";

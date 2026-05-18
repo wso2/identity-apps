@@ -275,3 +275,92 @@ const createEmptyConsent = (): ConsentInterface => ({
     state: ConsentState.ACTIVE,
     tenantDomain: ""
 });
+
+/**
+ * Summary of a user consent record returned from GET /consents list.
+ */
+export interface PolicyConsentSummaryInterface {
+    id: string;
+    serviceId: string;
+    state: string;
+    subjectId: string;
+    timestamp: number;
+    validityTime: number | null;
+}
+
+/**
+ * Paginated list response for user consent records.
+ */
+export interface PolicyConsentListResponseInterface {
+    Consents: PolicyConsentSummaryInterface[];
+    links?: Array<{ rel: "next" | "previous"; href: string }>;
+    totalResults: number;
+}
+
+/**
+ * A data element within a consented purpose.
+ */
+export interface ConsentedElementInterface {
+    displayName: string;
+    id: string;
+    name: string;
+}
+
+/**
+ * A purpose within a full user consent record.
+ */
+export interface ConsentedPurposeInterface {
+    elements: ConsentedElementInterface[];
+    id: string;
+    name: string;
+    purposeVersionId: string;
+    version: string | null;
+}
+
+/**
+ * Full user consent record returned from GET /consents/{consentId}.
+ */
+export interface PolicyConsentDetailInterface {
+    id: string;
+    language: string;
+    properties?: Record<string, string>;
+    purposes: ConsentedPurposeInterface[];
+    serviceId: string;
+    state: string;
+    subjectId: string;
+    timestamp: number;
+    validityTime: number | null;
+}
+
+/**
+ * UI-level flat item representing a single policy a user has consented to.
+ */
+export interface PolicyConsentItemInterface {
+    consentId: string;
+    policyUrl: string | null;
+    purposeId: string;
+    purposeName: string;
+    purposeVersionId: string;
+    timestamp: number;
+    version: string | null;
+}
+
+/**
+ * API DTO for a purpose version.
+ */
+export interface PurposeVersionDTOInterface {
+    description: string;
+    elements?: Array<{
+        description: string;
+        displayName: string;
+        id: string;
+        mandatory: boolean;
+        name: string;
+    }>;
+    id: string;
+    properties?: {
+        policyUrl?: string;
+        promptOnLogin?: boolean;
+    };
+    version: string;
+}

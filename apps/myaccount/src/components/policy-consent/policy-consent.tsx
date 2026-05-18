@@ -22,12 +22,14 @@ import {
     PolicyConsentItemInterface,
     PolicyConsentListResponseInterface,
     PolicyConsentSummaryInterface,
-    PurposeVersionDTOInterface,
+    PurposeVersionDTOInterface
+} from "../../models/consents";
+import {
     getConsentById,
     getConsentsBySubject,
     getPurposeVersionById,
     revokeConsentById
-} from "@wso2is/common.consents.v1";
+} from "../../api/consents";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";

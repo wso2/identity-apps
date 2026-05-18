@@ -5,9 +5,10 @@
     "description": "WSO2 Identity Server Common Consents Feature",
     "author": "WSO2",
     "license": "Apache-2.0",
-    "main": "index.ts",
     "dependencies": {
         "@asgardeo/auth-react": "^5.1.2",
+        "@mui/material": "catalog:",
+        "@mui/system": "catalog:",
         "@wso2is/admin.core.v1": "workspace:^",
         "@wso2is/core": "^2.12.7",
         "axios": "^1.4.0",

@@ -307,3 +307,140 @@ export const updateConsentedClaims = (
             return Promise.reject(error);
         });
 };
+
+/**
+ * Retrieves the list of user consent records from the v2 consents API.
+ *
+ * @param consentsBaseUrl - Base URL for the v2 consents endpoint.
+ * @param subjectId - Username of the subject to filter consents.
+ * @param state - Consent state filter (defaults to "ACTIVE").
+ * @returns A promise containing the paginated consent list response.
+ */
+export const getConsentsBySubject = (
+    consentsBaseUrl: string,
+    subjectId: string,
+    state: string = "ACTIVE"
+): Promise<any> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: "GET",
+        params: { state, subjectId },
+        url: consentsBaseUrl
+    };
+
+    return httpClient(requestConfig)
+        .then((response: any) => {
+            if (response.status !== 200) {
+                throw new Error("Failed to retrieve consents.");
+            }
+
+            return response.data;
+        })
+        .catch((error: any) => {
+            throw error;
+        });
+};
+
+/**
+ * Retrieves the full details of a single user consent record from the v2 consents API.
+ *
+ * @param consentsBaseUrl - Base URL for the v2 consents endpoint.
+ * @param consentId - ID of the consent record to retrieve.
+ * @returns A promise containing the full consent detail.
+ */
+export const getConsentById = (
+    consentsBaseUrl: string,
+    consentId: string
+): Promise<any> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: "GET",
+        url: `${consentsBaseUrl}/${consentId}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: any) => {
+            if (response.status !== 200) {
+                throw new Error("Failed to retrieve consent details.");
+            }
+
+            return response.data;
+        })
+        .catch((error: any) => {
+            throw error;
+        });
+};
+
+/**
+ * Retrieves a specific purpose version from the v2 purposes API.
+ *
+ * @param purposesBaseUrl - Base URL for the v2 purposes endpoint.
+ * @param purposeId - ID of the purpose.
+ * @param versionId - ID of the version.
+ * @returns A promise containing the purpose version DTO.
+ */
+export const getPurposeVersionById = (
+    purposesBaseUrl: string,
+    purposeId: string,
+    versionId: string
+): Promise<any> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: "GET",
+        url: `${purposesBaseUrl}/${purposeId}/versions/${versionId}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: any) => {
+            if (response.status !== 200) {
+                throw new Error("Failed to retrieve purpose version.");
+            }
+
+            return response.data;
+        })
+        .catch((error: any) => {
+            throw error;
+        });
+};
+
+/**
+ * Revokes a user consent record via the v2 consents API.
+ *
+ * @param consentsBaseUrl - Base URL for the v2 consents endpoint.
+ * @param consentId - ID of the consent record to revoke.
+ * @returns A promise that resolves when the revocation succeeds.
+ */
+export const revokeConsentById = (
+    consentsBaseUrl: string,
+    consentId: string
+): Promise<void> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: "POST",
+        url: `${consentsBaseUrl}/${consentId}/revoke`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: any) => {
+            if (response.status !== 204) {
+                throw new Error("Failed to revoke consent.");
+            }
+
+            return Promise.resolve();
+        })
+        .catch((error: any) => {
+            throw error;
+        });
+};
