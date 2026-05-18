@@ -56,6 +56,10 @@ export interface FeatureConfigInterface {
      * Pending operation tasks feature.
      */
     operations?: FeatureAccessConfigInterface;
+    /**
+     * Consents management feature.
+     */
+    consents?: FeatureAccessConfigInterface;
 }
 
 /**

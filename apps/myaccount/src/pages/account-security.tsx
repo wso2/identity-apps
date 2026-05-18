@@ -269,6 +269,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
 
                 { hasLocalAccount
                     && hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes)
+                    && !accessConfig?.consents?.enabled
                     && isFeatureEnabled(
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_CONSENTS")
