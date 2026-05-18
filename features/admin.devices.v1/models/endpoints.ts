@@ -20,4 +20,5 @@ export interface DevicesResourceEndpointsInterface {
     devicePolicies: string;
     devicePolicyMetadata: string;
     devices: string;
+    userDevices: string;
 }

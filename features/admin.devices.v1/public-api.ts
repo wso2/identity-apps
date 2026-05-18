@@ -21,6 +21,7 @@ export * from "./configs/endpoints";
 export * from "./hooks/use-get-device-policies";
 export * from "./hooks/use-get-device-policy-by-id";
 export * from "./hooks/use-get-device-policy-metadata";
+export { default as useGetDevicesByUserId } from "./hooks/use-get-devices-by-user-id";
 export * from "./models/devices";
 export * from "./pages/device-assurance-policies";
 export * from "./pages/device-policy-edit";

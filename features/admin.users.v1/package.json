@@ -18,6 +18,7 @@
         "@oxygen-ui/react-icons": "^2.4.6",
         "@wso2is/access-control": "^3.5.6",
         "@wso2is/admin.approval-workflows.v1": "workspace:^",
+        "@wso2is/admin.devices.v1": "workspace:^",
         "@wso2is/admin.cds.v1": "1.6.4",
         "@wso2is/admin.authentication.v1": "^2.25.210",
         "@wso2is/admin.claims.v1": "^2.31.2",

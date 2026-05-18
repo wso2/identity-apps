@@ -120,7 +120,7 @@ const DeviceDetailPage: FunctionComponent<DeviceDetailPagePropsInterface> = ({
             ) }
             backButton={ {
                 "data-componentid": `${ componentId }-back-button`,
-                onClick: (): void => history.push(AppConstants.getPaths().get("DEVICES")),
+                onClick: (): void => history.goBack(),
                 text: t("devices:detail.backButton")
             } }
             data-componentid={ `${ componentId }-layout` }

@@ -49,6 +49,7 @@ import { UserGroupsList } from "./user-groups-edit";
 import { UserProfile } from "./user-profile";
 import { UserRolesList } from "./user-roles-list";
 import { UserSessions } from "./user-sessions";
+import UserDevices from "./user-devices";
 import { AdminAccountTypes, UserFeatureDictionaryKeys, UserManagementConstants } from "../constants";
 import useUserManagement from "../hooks/use-user-management";
 
@@ -338,6 +339,15 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 )
             });
         }
+
+        _panes.push({
+            menuItem: t("users:editUser.tab.menuItems.5"),
+            render: () => (
+                <ResourceTab.Pane controlledSegmentation attached={ false }>
+                    <UserDevices user={ user } />
+                </ResourceTab.Pane>
+            )
+        });
 
         return _panes;
     }, [

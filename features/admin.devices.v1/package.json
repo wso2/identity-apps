@@ -5,6 +5,7 @@
     "description": "Device management UI for WSO2 Identity Server console",
     "author": "WSO2",
     "license": "Apache-2.0",
+    "main": "public-api.ts",
     "dependencies": {
         "@emotion/react": "^11.11.0",
         "@emotion/styled": "^11.11.0",
@@ -12,7 +13,7 @@
         "@mui/lab": "catalog:",
         "@mui/material": "catalog:",
         "@mui/system": "catalog:",
-        "@oxygen-ui/react": "^2.3.4",
+        "@oxygen-ui/react": "catalog:",
         "@wso2is/access-control": "^3.5.6",
         "@wso2is/admin.core.v1": "workspace:^",
         "@wso2is/core": "^2.13.0",

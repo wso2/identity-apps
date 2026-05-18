@@ -69,6 +69,7 @@ const DeviceRegistrationFlowBuilderProvider: FC<DeviceRegistrationFlowBuilderPro
             ResourceProperties={ ResourceProperties }
             flowType={ FlowTypes.DEVICE_REGISTRATION }
             screenTypes={ screensList }
+            shouldFetchMetadata={ false }
             validationConfig={ {
                 isOTPValidationEnabled: true,
                 isPasswordExecutorValidationEnabled: true

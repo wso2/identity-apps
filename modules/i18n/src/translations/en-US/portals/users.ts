@@ -134,7 +134,8 @@ export const users: usersNS = {
                 1: "Groups",
                 2: "Roles",
                 3: "Active Sessions",
-                4: "Shared Access"
+                4: "Shared Access",
+                5: "Devices"
             }
         }
     },
@@ -495,6 +496,31 @@ export const users: usersNS = {
         userstoreOptions: {
             all: "All user stores",
             primary: "Primary"
+        }
+    },
+    userDevices: {
+        list: {
+            columns: {
+                deviceName: "Device",
+                registeredAt: "Registered At",
+                status: "Status"
+            }
+        },
+        notifications: {
+            fetch: {
+                genericError: {
+                    description: "An error occurred while retrieving devices for this user.",
+                    message: "Retrieval failed"
+                }
+            }
+        },
+        placeholders: {
+            empty: {
+                subtitles: {
+                    0: "This user has no registered devices."
+                },
+                title: "No Devices"
+            }
         }
     }
 };

@@ -89,6 +89,11 @@ interface AuthenticationFlowBuilderProviderProps {
      * Validation configuration settings.
      */
     validationConfig?: ValidationConfig;
+    /**
+     * Whether to fetch flow metadata from the server.
+     * Set to false for flow types not supported by the /flow/meta endpoint.
+     */
+    shouldFetchMetadata?: boolean;
 }
 
 /**
@@ -100,6 +105,7 @@ const FlowContextWrapper = ({
     children,
     flowType,
     screenTypes,
+    shouldFetchMetadata = true,
     validationConfig
 }: PropsWithChildren<AuthenticationFlowBuilderProviderProps>): ReactElement => {
     const dispatch: Dispatch = useDispatch();
@@ -143,7 +149,7 @@ const FlowContextWrapper = ({
 
     const { data: flowMetadata, error: flowMetadataError, isLoading: isFlowMetadataLoading } = useGetMetadata(
         flowType,
-        !!flowType
+        shouldFetchMetadata && !!flowType
     );
     const {
         data: textPreference,

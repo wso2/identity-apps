@@ -89,6 +89,7 @@ export interface usersNS {
                 2: string;
                 3: string;
                 4: string;
+                5: string;
             };
         };
         placeholders: {
@@ -484,6 +485,31 @@ export interface usersNS {
         userstoreOptions: {
             all: string;
             primary: string;
+        };
+    };
+    userDevices: {
+        list: {
+            columns: {
+                deviceName: string;
+                status: string;
+                registeredAt: string;
+            };
+        };
+        notifications: {
+            fetch: {
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+            };
+        };
+        placeholders: {
+            empty: {
+                title: string;
+                subtitles: {
+                    0: string;
+                };
+            };
         };
     };
 }

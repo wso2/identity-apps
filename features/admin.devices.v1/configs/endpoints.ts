@@ -28,6 +28,7 @@ export const getDevicesResourceEndpoints = (serverHost: string): DevicesResource
     return {
         devicePolicies: `${ serverHost }/api/server/v1/device-policies`,
         devicePolicyMetadata: `${ serverHost }/api/server/v1/device-policies/metadata`,
-        devices: `${ serverHost }/api/server/v1/devices`
+        devices: `${ serverHost }/api/server/v1/devices`,
+        userDevices: `${ serverHost }/api/server/v1/devices/user`
     };
 };
