@@ -277,7 +277,7 @@
                         </div>
                         <% } %>
 
-                        <% if (!isSaaSApp && (StringUtils.isNotEmpty(tenantDomain) && !error)) { %>
+                        <% if (!isSaaSApp && StringUtils.isNotEmpty(tenantDomain)) { %>
                         <div>
                             <input id="tenant-domain" type="hidden" name="tenantDomain" value="<%=Encode.forHtmlAttribute(tenantDomain)%>"/>
                         </div>
