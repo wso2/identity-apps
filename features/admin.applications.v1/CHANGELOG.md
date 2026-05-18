@@ -1,5 +1,14 @@
 # @wso2is/admin.applications.v1
 
+## 2.42.29
+
+### Patch Changes
+
+- [#10300](https://github.com/wso2/identity-apps/pull/10300) [`188876f6235b1f0e81c285187feabe92309ddfbd`](https://github.com/wso2/identity-apps/commit/188876f6235b1f0e81c285187feabe92309ddfbd) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Fix issue when not loading the authorized API resources when only view permissions are assigned to the logged in user
+
+- Updated dependencies [[`93332f8b7d0731cbb8c435f5d991e616cade7ffb`](https://github.com/wso2/identity-apps/commit/93332f8b7d0731cbb8c435f5d991e616cade7ffb)]:
+  - @wso2is/admin.users.v1@2.38.39
+
 ## 2.42.28
 
 ### Patch Changes
