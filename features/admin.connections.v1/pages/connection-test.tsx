@@ -245,7 +245,6 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
             setExpandedDiagnosticLogs([]);
 
         } catch (error: unknown) {
-            // eslint-disable-next-line no-console
             console.error("[ConnectionTest] Fetch error:", resolveConnectionTestErrorMessage(error));
 
             const errorMessage: string | undefined = resolveConnectionTestErrorMessage(error);

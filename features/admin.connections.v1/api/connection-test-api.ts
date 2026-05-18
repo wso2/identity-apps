@@ -22,8 +22,7 @@ import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
-    .httpRequest.bind(AsgardeoSPAClient.getInstance())
-    .bind(AsgardeoSPAClient.getInstance());
+    .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 interface ConnectionTestErrorResponseInterface {
     description?: string;
