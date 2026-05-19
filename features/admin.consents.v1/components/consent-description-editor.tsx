@@ -455,7 +455,8 @@ const TranslationDescriptionEditor: FunctionComponent<LanguageTextFieldPropsInte
     value,
     onChange,
     disabled = false,
-    policyUrl
+    policyUrl,
+    "aria-labelledby": ariaLabelledBy
 }: LanguageTextFieldPropsInterface): ReactElement => {
     const handleChange: (_value: string) => void = useCallback((html: string): void => {
         onChange({ target: { value: html } } as ChangeEvent<HTMLInputElement>);
@@ -471,6 +472,7 @@ const TranslationDescriptionEditor: FunctionComponent<LanguageTextFieldPropsInte
                 <RichTextPlugin
                     contentEditable={ (
                         <ContentEditable
+                            ariaLabelledBy={ ariaLabelledBy }
                             style={ {
                                 caretColor: "currentColor",
                                 fontSize: "14px",

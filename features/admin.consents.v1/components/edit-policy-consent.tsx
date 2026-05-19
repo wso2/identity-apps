@@ -591,7 +591,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                             ) }
                                                         />
                                                     ) }
-                                                    { isCreateMode && (
+                                                    { !isCreateMode && (
                                                         <Message
                                                             type="info"
                                                             content={ (

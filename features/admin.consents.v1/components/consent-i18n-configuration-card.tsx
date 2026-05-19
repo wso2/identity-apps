@@ -74,6 +74,7 @@ export interface LanguageTextFieldPropsInterface {
     onChange: (_: ChangeEvent<HTMLInputElement>) => void;
     disabled?: boolean;
     policyUrl?: string;
+    "aria-labelledby"?: string;
 }
 
 /**
@@ -287,9 +288,15 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
     }, [ i18nKeyInput, selectedLanguage, languageText, isAlreadyConfigured, userTextData, tenantDomain, onChange ]);
 
     const handleBack = (): void => {
+        isCreationMode.current = false;
         setIsCustomizeView(false);
         setI18nKeyInput("");
         setLanguageText("");
+    };
+
+    const handleClose = (): void => {
+        handleBack();
+        onClose();
     };
 
     const renderCardContent = (): ReactElement => {
@@ -305,7 +312,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
             return (
                 <div className="i18n-config-container">
                     <div>
-                        <Typography variant="subtitle2" gutterBottom>
+                        <Typography id="consent-i18n-key-label" variant="subtitle2" gutterBottom>
                             { t("consents:wizard.create.form.description.i18nCard.i18nKey") }
                         </Typography>
                         <Autocomplete
@@ -324,6 +331,10 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                                         t("consents:wizard.create.form.description.i18nCard.selectKey")
                                     }
                                     size="small"
+                                    inputProps={ {
+                                        ...params.inputProps,
+                                        "aria-labelledby": "consent-i18n-key-label"
+                                    } }
                                 />
                             ) }
                         />
@@ -335,7 +346,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
         return (
             <div className="i18n-config-container">
                 <div>
-                    <Typography variant="subtitle2" gutterBottom>
+                    <Typography id="consent-i18n-key-label" variant="subtitle2" gutterBottom>
                         { t("consents:wizard.create.form.description.i18nCard.i18nKey") }
                     </Typography>
                     { isCreationMode.current ? (
@@ -352,6 +363,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                                 if (!/^[a-zA-Z0-9._-]*$/.test(value)) return;
                                 setI18nKeyInput(value);
                             } }
+                            inputProps={ { "aria-labelledby": "consent-i18n-key-label" } }
                         />
                     ) : (
                         <TextField
@@ -365,6 +377,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                                 setLanguageText(i18nTextRef.current[newKey] ?? "");
                                 setI18nKeyInput(newKey);
                             } }
+                            SelectProps={ { inputProps: { "aria-labelledby": "consent-i18n-key-label" } } }
                         >
                             { availableKeys.map((key: string) => (
                                 <MenuItem key={ key } value={ key }>{ key }</MenuItem>
@@ -374,7 +387,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                 </div>
 
                 <div>
-                    <Typography variant="subtitle2" gutterBottom>
+                    <Typography id="consent-language-label" variant="subtitle2" gutterBottom>
                         { t("consents:wizard.create.form.description.i18nCard.language") }
                     </Typography>
                     <Select
@@ -383,6 +396,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                         onChange={ (e: SelectChangeEvent<unknown>) => setSelectedLanguage(e.target.value as string) }
                         displayEmpty
                         size="small"
+                        inputProps={ { "aria-labelledby": "consent-language-label" } }
                         renderValue={ (value: string) => (
                             <>
                                 <i className={ `${supportedLocales[value]?.flag} flag` } />
@@ -402,7 +416,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                 </div>
 
                 <div>
-                    <Typography variant="subtitle2" gutterBottom>
+                    <Typography id="consent-translation-label" variant="subtitle2" gutterBottom>
                         { t("consents:wizard.create.form.description.i18nCard.translationText") }
                     </Typography>
                     { LanguageTextField ? (
@@ -412,6 +426,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                             onChange={ (e: ChangeEvent<HTMLInputElement>) => setLanguageText(e.target.value) }
                             disabled={ !selectedLanguage || !i18nKeyInput }
                             policyUrl={ policyUrl }
+                            aria-labelledby="consent-translation-label"
                         />
                     ) : (
                         <TextField
@@ -425,6 +440,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                             value={ languageText }
                             onChange={ (e: ChangeEvent<HTMLInputElement>) => setLanguageText(e.target.value) }
                             disabled={ !selectedLanguage || !i18nKeyInput }
+                            inputProps={ { "aria-labelledby": "consent-translation-label" } }
                         />
                     ) }
                 </div>
@@ -437,7 +453,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
     return createPortal(
         <div
             className="consent-i18n-configuration card-backdrop"
-            onClick={ onClose }
+            onClick={ handleClose }
             data-componentid={ `${componentId}-backdrop` }
         >
             <Card
@@ -455,7 +471,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                         : t("consents:wizard.create.form.description.i18nCard.title")
                     }
                     action={ (
-                        <IconButton size="small" aria-label={ t("common:close") } onClick={ onClose }>
+                        <IconButton size="small" aria-label={ t("common:close") } onClick={ handleClose }>
                             <XMarkIcon />
                         </IconButton>
                     ) }
