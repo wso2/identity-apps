@@ -18,9 +18,8 @@
 
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AlertLevels, IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import {
     AnimatedAvatar,
     EmphasizedSegment,
@@ -33,9 +32,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { Divider, Grid, Icon, Label, Table } from "semantic-ui-react";
+import { Divider, Grid, Label, Table } from "semantic-ui-react";
 import useGetDeviceById from "../hooks/use-get-device-by-id";
-import useGetUserById from "../hooks/use-get-user-by-id";
 import { DeviceResponseInterface } from "../models/devices";
 
 type DeviceDetailPagePropsInterface = IdentifiableComponentInterface & RouteComponentProps;
@@ -54,11 +52,6 @@ const DeviceDetailPage: FunctionComponent<DeviceDetailPagePropsInterface> = ({
         isLoading: isDeviceLoading,
         error: deviceFetchError
     } = useGetDeviceById(deviceId, !isEmpty(deviceId));
-
-    const {
-        data: userProfile,
-        isLoading: isUserLoading
-    } = useGetUserById(device?.userId, !!device?.userId);
 
     useEffect((): void => {
         if (!deviceFetchError) {
@@ -169,61 +162,6 @@ const DeviceDetailPage: FunctionComponent<DeviceDetailPagePropsInterface> = ({
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-            </EmphasizedSegment>
-
-            <Divider hidden />
-
-            { /* ── Registered User ── */ }
-            <EmphasizedSegment padded="very" data-componentid={ `${ componentId }-user-segment` }>
-                <Heading as="h5">
-                    { t("devices:detail.sections.userInfo.heading") }
-                </Heading>
-                { isUserLoading ? (
-                    <p style={ { color: "rgba(0,0,0,0.4)" } }>Loading...</p>
-                ) : userProfile ? (
-                    <Grid className="mt-2">
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column>
-                                <div style={ { marginBottom: "1rem" } }>
-                                    <div style={ {
-                                        color: "rgba(0,0,0,0.5)",
-                                        fontSize: "0.85rem",
-                                        marginBottom: "4px"
-                                    } }>
-                                        { t("devices:detail.sections.userInfo.fields.username") }
-                                    </div>
-                                    <strong>
-                                        <Icon name="user circle" />
-                                        { getUserNameWithoutDomain(userProfile.userName) }
-                                    </strong>
-                                </div>
-                            </Grid.Column>
-                            <Grid.Column>
-                                <div style={ { marginBottom: "1rem" } }>
-                                    <div style={ {
-                                        color: "rgba(0,0,0,0.5)",
-                                        fontSize: "0.85rem",
-                                        marginBottom: "4px"
-                                    } }>
-                                        { t("devices:detail.sections.userInfo.fields.email") }
-                                    </div>
-                                    <strong>
-                                        { Array.isArray(userProfile.emails) && userProfile.emails.length > 0
-                                            ? (typeof userProfile.emails[0] === "string"
-                                                ? userProfile.emails[0]
-                                                : (userProfile.emails[0] as { value: string }).value)
-                                            : device?.userName ?? "-"
-                                        }
-                                    </strong>
-                                </div>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                ) : (
-                    <p style={ { color: "rgba(0,0,0,0.4)" } }>
-                        { t("devices:detail.sections.userInfo.notFound") }
-                    </p>
-                ) }
             </EmphasizedSegment>
 
             <Divider hidden />

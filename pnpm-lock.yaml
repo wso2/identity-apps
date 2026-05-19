@@ -7960,6 +7960,9 @@ importers:
       '@wso2is/admin.core.v1':
         specifier: ^2.57.6
         version: link:../admin.core.v1
+      '@wso2is/admin.devices.v1':
+        specifier: workspace:^
+        version: link:../admin.devices.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.9.5
         version: link:../admin.feature-gate.v1

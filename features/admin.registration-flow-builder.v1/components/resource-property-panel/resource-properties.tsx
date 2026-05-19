@@ -34,7 +34,9 @@ import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
 import FlowCompletionProperties from "./steps/end/flow-completion-properties";
 import FederationProperties from "./steps/execution/federation-properties";
+import DeviceRegistrationProperties from "./steps/execution/device-registration-properties";
 import RegistrationFlowBuilderConstants from "../../constants/registration-flow-builder-constants";
+import { ExecutionTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 
 /**
  * Props interface of {@link ResourceProperties}
@@ -163,13 +165,22 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
             }
 
             break;
-        case StepCategories.Workflow:
+        case StepCategories.Workflow: {
+            const executorName: string = resource?.data?.action?.executor?.name;
+
             return (
                 <>
                     { renderElementId() }
-                    {
-                        !RegistrationFlowBuilderConstants.FEDERATION_CONFIG_SKIPPED_EXECUTORS.includes(
-                            resource?.data?.action?.executor?.name) && (
+                    { executorName === ExecutionTypes.DeviceRegistration
+                        ? (
+                            <DeviceRegistrationProperties
+                                resource={ resource }
+                                data-componentid="device-registration-properties"
+                                onChange={ onChange }
+                            />
+                        )
+                        : !RegistrationFlowBuilderConstants.FEDERATION_CONFIG_SKIPPED_EXECUTORS.includes(
+                            executorName) && (
                             <FederationProperties
                                 resource={ resource }
                                 data-componentid="federation-properties"
@@ -180,6 +191,7 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                     { renderElementPropertyFactory() }
                 </>
             );
+        }
         default:
             return (
                 <>
