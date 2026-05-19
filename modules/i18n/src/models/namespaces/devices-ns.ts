@@ -89,8 +89,48 @@ export interface DevicesNS {
                     conditionsHeading: string;
                     conditionsDescription: string;
                 };
+                executionRules: {
+                    title: string;
+                    heading: string;
+                    description: string;
+                    noMetadata: string;
+                    loadingMetadata: string;
+                    configureRule: string;
+                    clearRule: string;
+                    executeIf: string;
+                    sectionLabel: string;
+                    emptyState: {
+                        heading: string;
+                        description: string;
+                    };
+                };
+                review: {
+                    title: string;
+                    heading: string;
+                    description: string;
+                    policyName: string;
+                    platforms: string;
+                    rules: string;
+                    noRules: string;
+                    sectionPolicy: string;
+                    sectionRules: string;
+                    edit: string;
+                    noRuleNote: string;
+                    conditionCount: string;
+                    assignHint: {
+                        title: string;
+                        loginFlow: string;
+                        otherFlows: string;
+                    };
+                };
             };
             platforms: {
+                android: string;
+                ios: string;
+                macos: string;
+                windows: string;
+            };
+            platformDescriptions: {
                 android: string;
                 ios: string;
                 macos: string;

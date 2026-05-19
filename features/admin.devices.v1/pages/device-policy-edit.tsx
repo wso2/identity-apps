@@ -40,7 +40,8 @@ import EditDevicePolicyWizard from "../components/edit-device-policy-wizard";
 import useGetDevicePolicyById from "../hooks/use-get-device-policy-by-id";
 import {
     DevicePlatformType,
-    DevicePolicyExpressionInterface
+    DevicePolicyExpressionInterface,
+    DevicePolicyPlatformRuleResponseInterface
 } from "../models/devices";
 
 type DevicePolicyEditPagePropsInterface = IdentifiableComponentInterface & RouteComponentProps;
@@ -91,29 +92,10 @@ const DevicePolicyEditPage: FunctionComponent<DevicePolicyEditPagePropsInterface
         }));
     }, [ policyFetchError ]);
 
-    const allExpressions: DevicePolicyExpressionInterface[] = useMemo(
-        (): DevicePolicyExpressionInterface[] =>
-            (policy?.rule?.rules ?? []).flatMap(
-                (group) => group.expressions
-            ),
+    const platformRules: DevicePolicyPlatformRuleResponseInterface[] = useMemo(
+        (): DevicePolicyPlatformRuleResponseInterface[] => policy?.rules ?? [],
         [ policy ]
     );
-
-    const platformExpression: DevicePolicyExpressionInterface | undefined = useMemo(
-        (): DevicePolicyExpressionInterface | undefined =>
-            allExpressions.find((e: DevicePolicyExpressionInterface): boolean => e.field === "platform"),
-        [ allExpressions ]
-    );
-
-    const conditionExpressions: DevicePolicyExpressionInterface[] = useMemo(
-        (): DevicePolicyExpressionInterface[] =>
-            allExpressions.filter((e: DevicePolicyExpressionInterface): boolean => e.field !== "platform"),
-        [ allExpressions ]
-    );
-
-    const platformKey: DevicePlatformType | undefined = platformExpression?.value?.value as DevicePlatformType;
-
-    const platformLogo: unknown = platformKey ? technologyLogos[platformKey] : undefined;
 
     const formatValue = (expression: DevicePolicyExpressionInterface): ReactNode => {
         const raw: string = expression.value?.value ?? "";
@@ -136,6 +118,18 @@ const DevicePolicyEditPage: FunctionComponent<DevicePolicyEditPagePropsInterface
             );
         }
 
+        if (raw.includes(",")) {
+            return (
+                <span>
+                    { raw.split(",").map((v: string): ReactNode => (
+                        <Label key={ v } size="small" basic style={ { marginBottom: 2 } }>
+                            { v.trim() }
+                        </Label>
+                    )) }
+                </span>
+            );
+        }
+
         return <span>{ raw }</span>;
     };
 
@@ -144,7 +138,6 @@ const DevicePolicyEditPage: FunctionComponent<DevicePolicyEditPagePropsInterface
         <PageLayout
             isLoading={ isPolicyLoading }
             title={ policy?.name ?? policyId }
-            description={ policy?.ruleId }
             image={ (
                 <AnimatedAvatar
                     name={ policy?.name ?? "" }
@@ -174,96 +167,94 @@ const DevicePolicyEditPage: FunctionComponent<DevicePolicyEditPagePropsInterface
             contentTopMargin={ true }
             pageHeaderMaxWidth={ false }
         >
-            { platformLogo && (
-                <EmphasizedSegment padded="very" data-componentid={ `${ componentId }-platform-segment` }>
-                    <Heading as="h5">
-                        { t("devices:assurancePolicies.edit.sections.platform.heading") }
-                    </Heading>
-                    <div
-                        style={ {
-                            alignItems: "center",
-                            display: "flex",
-                            gap: "12px",
-                            marginTop: "12px"
-                        } }
-                    >
-                        <GenericIcon
-                            icon={ platformLogo }
-                            size="x30"
-                            inline
-                            transparent
-                            data-componentid={ `${ componentId }-platform-logo` }
-                        />
-                        <span style={ { fontSize: "1rem", fontWeight: 500 } }>
-                            { PLATFORM_DISPLAY_NAMES[platformKey] ?? platformKey }
-                        </span>
-                    </div>
-                </EmphasizedSegment>
-            ) }
+            { platformRules.map((platformRule: DevicePolicyPlatformRuleResponseInterface): ReactElement => {
+                const platform: DevicePlatformType = platformRule.platform;
+                const logo: unknown = technologyLogos[platform];
+                const expressions: DevicePolicyExpressionInterface[] =
+                    (platformRule.rule?.rules ?? []).flatMap(
+                        (group) => group.expressions
+                    );
 
-            { conditionExpressions.length > 0 && (
-                <>
-                    <Divider hidden />
-                    <EmphasizedSegment
-                        padded="very"
-                        data-componentid={ `${ componentId }-conditions-segment` }
-                    >
-                        <Heading as="h5">
-                            { t("devices:assurancePolicies.edit.sections.conditions.heading") }
-                        </Heading>
-                        <p className="sub-heading">
-                            { t("devices:assurancePolicies.edit.sections.conditions.description") }
-                        </p>
-                        <Table
-                            celled
-                            padded
-                            data-componentid={ `${ componentId }-conditions-table` }
-                        >
-                            <Table.Header>
-                                <Table.Row>
-                                    <Table.HeaderCell>
-                                        { t("devices:assurancePolicies.edit.sections.conditions.columns.field") }
-                                    </Table.HeaderCell>
-                                    <Table.HeaderCell>
-                                        { t("devices:assurancePolicies.edit.sections.conditions.columns.operator") }
-                                    </Table.HeaderCell>
-                                    <Table.HeaderCell>
-                                        { t("devices:assurancePolicies.edit.sections.conditions.columns.value") }
-                                    </Table.HeaderCell>
-                                </Table.Row>
-                            </Table.Header>
-                            <Table.Body>
-                                { conditionExpressions.map(
-                                    (expression: DevicePolicyExpressionInterface): ReactElement => (
-                                        <Table.Row key={ expression.field }>
-                                            <Table.Cell>
-                                                <strong>{ expression.displayName }</strong>
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                <Label size="small" color="blue" basic>
-                                                    { OPERATOR_DISPLAY_NAMES[expression.operator]
-                                                        ?? expression.operator }
-                                                </Label>
-                                            </Table.Cell>
-                                            <Table.Cell>
-                                                { formatValue(expression) }
-                                            </Table.Cell>
-                                        </Table.Row>
-                                    )
-                                ) }
-                            </Table.Body>
-                        </Table>
-                    </EmphasizedSegment>
-                </>
-            ) }
+                return (
+                    <React.Fragment key={ platform }>
+                        <EmphasizedSegment padded="very" data-componentid={ `${ componentId }-${ platform }-segment` }>
+                            <div style={ { alignItems: "center", display: "flex", gap: 12, marginBottom: 16 } }>
+                                <GenericIcon
+                                    icon={ logo }
+                                    size="x30"
+                                    inline
+                                    transparent
+                                    data-componentid={ `${ componentId }-${ platform }-logo` }
+                                />
+                                <Heading as="h5" style={ { margin: 0 } }>
+                                    { PLATFORM_DISPLAY_NAMES[platform] ?? platform }
+                                </Heading>
+                            </div>
+
+                            { expressions.length === 0 ? (
+                                <p className="sub-heading">
+                                    { t("devices:assurancePolicies.wizard.steps.review.noRuleNote",
+                                        { platform: PLATFORM_DISPLAY_NAMES[platform] ?? platform }
+                                    ) }
+                                </p>
+                            ) : (
+                                <>
+                                    <p className="sub-heading">
+                                        { t("devices:assurancePolicies.edit.sections.conditions.description") }
+                                    </p>
+                                    <Table
+                                        celled
+                                        padded
+                                        data-componentid={ `${ componentId }-${ platform }-conditions-table` }
+                                    >
+                                        <Table.Header>
+                                            <Table.Row>
+                                                <Table.HeaderCell>
+                                                    { t("devices:assurancePolicies.edit.sections.conditions.columns.field") }
+                                                </Table.HeaderCell>
+                                                <Table.HeaderCell>
+                                                    { t("devices:assurancePolicies.edit.sections.conditions.columns.operator") }
+                                                </Table.HeaderCell>
+                                                <Table.HeaderCell>
+                                                    { t("devices:assurancePolicies.edit.sections.conditions.columns.value") }
+                                                </Table.HeaderCell>
+                                            </Table.Row>
+                                        </Table.Header>
+                                        <Table.Body>
+                                            { expressions.map(
+                                                (expression: DevicePolicyExpressionInterface): ReactElement => (
+                                                    <Table.Row key={ expression.field }>
+                                                        <Table.Cell>
+                                                            <strong>{ expression.displayName }</strong>
+                                                        </Table.Cell>
+                                                        <Table.Cell>
+                                                            <Label size="small" color="blue" basic>
+                                                                { OPERATOR_DISPLAY_NAMES[expression.operator]
+                                                                    ?? expression.operator }
+                                                            </Label>
+                                                        </Table.Cell>
+                                                        <Table.Cell>
+                                                            { formatValue(expression) }
+                                                        </Table.Cell>
+                                                    </Table.Row>
+                                                )
+                                            ) }
+                                        </Table.Body>
+                                    </Table>
+                                </>
+                            ) }
+                        </EmphasizedSegment>
+                        <Divider hidden />
+                    </React.Fragment>
+                );
+            }) }
         </PageLayout>
 
-        { showEditWizard && platformKey && (
+        { showEditWizard && policy && (
             <EditDevicePolicyWizard
                 policyId={ policyId }
-                initialName={ policy?.name ?? "" }
-                initialPlatform={ platformKey }
-                initialExpressions={ conditionExpressions }
+                initialName={ policy.name }
+                initialRules={ platformRules }
                 onClose={ (): void => setShowEditWizard(false) }
                 onSuccess={ (): void => {
                     setShowEditWizard(false);

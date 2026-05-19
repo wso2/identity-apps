@@ -16,24 +16,40 @@
  * under the License.
  */
 
+import { alpha, styled, Theme } from "@mui/material/styles";
+import Alert from "@oxygen-ui/react/Alert";
+import AlertTitle from "@oxygen-ui/react/AlertTitle";
+import Box from "@oxygen-ui/react/Box";
+import Button from "@oxygen-ui/react/Button";
+import Chip from "@oxygen-ui/react/Chip";
+import Stack from "@oxygen-ui/react/Stack";
+import Typography from "@oxygen-ui/react/Typography";
+import { TrashIcon } from "@oxygen-ui/react-icons";
 import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
+import RulesComponent from "@wso2is/admin.rules.v1/components/rules-component";
+import {
+    ConditionExpressionMetaInterface,
+    ConditionExpressionsMetaDataInterface
+} from "@wso2is/admin.rules.v1/models/meta";
+import {
+    ConditionExpressionWithoutIdInterface,
+    RuleConditionWithoutIdInterface,
+    RuleWithoutIdInterface
+} from "@wso2is/admin.rules.v1/models/rules";
+import { getRuleInstanceValue } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     Heading,
     LinkButton,
     PrimaryButton,
-    SelectionCard,
     Steps
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, {
-    ChangeEvent,
     FunctionComponent,
     ReactElement,
     SVGProps,
-    SyntheticEvent,
-    useEffect,
     useMemo,
     useState
 } from "react";
@@ -41,60 +57,196 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import {
-    Button,
-    Card,
-    Checkbox,
-    CheckboxProps,
-    Divider,
-    Dropdown,
-    DropdownItemProps,
-    DropdownProps,
-    Form,
     Grid,
     Icon,
-    Input,
-    InputOnChangeData,
-    Label,
     Modal
 } from "semantic-ui-react";
-import { ReactComponent as DeviceOutlineIcon }
-    from "../assets/icons/device-window-outline.svg";
-import { ReactComponent as SettingsOutlineIcon }
-    from "../assets/icons/settings-outline.svg";
-import { updateDevicePolicy } from "../api/device-policies";
+import { ReactComponent as DeviceOutlineIcon } from "../assets/icons/device-window-outline.svg";
+import { ReactComponent as SettingsOutlineIcon } from "../assets/icons/settings-outline.svg";
+import { updateDevicePolicyMulti } from "../api/device-policies";
 import useGetDevicePolicyMetadata from "../hooks/use-get-device-policy-metadata";
 import {
     DevicePlatformType,
     DevicePolicyExpressionInterface,
-    DevicePolicyFieldDefinitionInterface
+    DevicePolicyFieldDefinitionInterface,
+    DevicePolicyPlatformRuleResponseInterface,
+    PolicyExpressionInterface,
+    PolicyRuleInterface
 } from "../models/devices";
 
 interface EditDevicePolicyWizardPropsInterface extends IdentifiableComponentInterface {
     policyId: string;
     initialName: string;
-    initialPlatform: DevicePlatformType;
-    initialExpressions: DevicePolicyExpressionInterface[];
+    initialRules: DevicePolicyPlatformRuleResponseInterface[];
     onClose: () => void;
     onSuccess: () => void;
 }
 
 enum WizardStep {
-    PLATFORM = 0,
-    RULE_BUILDER = 1
+    EXECUTION_RULES = 0,
+    REVIEW = 1
 }
 
-interface PlatformOptionInterface {
+interface PlatformDefinitionInterface {
     key: DevicePlatformType;
     label: string;
-    logo: unknown;
+    logo: FunctionComponent | string;
 }
 
-interface ConditionStateInterface {
-    enabled: boolean;
-    operator: string;
-    value: string;
-    listValues: string[];
-}
+/* ------------------------------------------------------------------ */
+/*  Styled components                                                   */
+/* ------------------------------------------------------------------ */
+
+const StyledPlatformTabBar = styled(Box)(({ theme }: { theme: Theme }) => ({
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    display: "flex",
+    gap: 4,
+    margin: `0 -36px ${theme.spacing(3)}`,
+    overflowX: "auto",
+    padding: "0 36px"
+}));
+
+const StyledPlatformTab = styled("button", {
+    shouldForwardProp: (prop: string): boolean => prop !== "isActive"
+})<{ isActive?: boolean }>(
+    ({ theme, isActive }: { theme: Theme; isActive?: boolean }) => ({
+        alignItems: "center",
+        background: "transparent",
+        border: "none",
+        borderBottom: `2.5px solid ${isActive ? theme.palette.primary.main : "transparent"}`,
+        color: isActive ? theme.palette.primary.main : theme.palette.text.secondary,
+        cursor: "pointer",
+        display: "inline-flex",
+        fontFamily: "inherit",
+        fontSize: 14,
+        fontWeight: 600,
+        gap: 8,
+        marginBottom: -1,
+        padding: "14px 16px",
+        transition: "color 140ms ease, border-color 140ms ease",
+        whiteSpace: "nowrap",
+        "&:hover": {
+            color: isActive ? theme.palette.primary.main : theme.palette.text.primary
+        }
+    })
+);
+
+const StyledTabBadge = styled(Box, {
+    shouldForwardProp: (prop: string): boolean => prop !== "isActive"
+})<{ isActive?: boolean }>(
+    ({ theme, isActive }: { theme: Theme; isActive?: boolean }) => ({
+        background: isActive ? alpha(theme.palette.primary.light, 0.2) : theme.palette.action.hover,
+        borderRadius: 999,
+        color: isActive ? theme.palette.primary.main : theme.palette.text.secondary,
+        fontSize: 11,
+        fontWeight: 700,
+        lineHeight: "1",
+        padding: "2px 7px"
+    })
+);
+
+const StyledRuleSummaryCode = styled(Box)(({ theme }: { theme: Theme }) => ({
+    background: theme.palette.action.hover,
+    borderRadius: theme.shape.borderRadius,
+    fontFamily: "ui-monospace, \"SFMono-Regular\", Menlo, monospace",
+    fontSize: 13,
+    lineHeight: 1.8,
+    padding: theme.spacing(1.5, 1.75)
+}));
+
+const StyledReviewPlatformCard = styled(Box)(({ theme }: { theme: Theme }) => ({
+    background: theme.palette.background.paper,
+    border: `1px solid ${theme.palette.divider}`,
+    borderRadius: theme.shape.borderRadius,
+    marginBottom: theme.spacing(2),
+    padding: theme.spacing(2, 2.25)
+}));
+
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                             */
+/* ------------------------------------------------------------------ */
+
+const mapToConditionsMeta = (
+    fields: DevicePolicyFieldDefinitionInterface[]
+): ConditionExpressionsMetaDataInterface =>
+    fields
+        .filter((f: DevicePolicyFieldDefinitionInterface): boolean => f.field.name !== "platform")
+        .map(
+            (f: DevicePolicyFieldDefinitionInterface): ConditionExpressionMetaInterface => ({
+                field: f.field,
+                operators: f.operators,
+                value: {
+                    ...f.value,
+                    inputType: f.value.inputType.toLowerCase() as "input" | "options"
+                }
+            })
+        );
+
+const convertApiRuleToRuleFormat = (
+    platformRule: DevicePolicyPlatformRuleResponseInterface
+): RuleWithoutIdInterface | null => {
+    const groups: { expressions: DevicePolicyExpressionInterface[] }[] =
+        platformRule.rule?.rules ?? [];
+
+    if (groups.length === 0) {
+        return null;
+    }
+
+    const rules: RuleConditionWithoutIdInterface[] = groups.map(
+        (group: { expressions: DevicePolicyExpressionInterface[] }): RuleConditionWithoutIdInterface => {
+            const expressions: ConditionExpressionWithoutIdInterface[] =
+                (group.expressions ?? []).map(
+                    (expr: DevicePolicyExpressionInterface): ConditionExpressionWithoutIdInterface => ({
+                        field: expr.field,
+                        operator: expr.operator,
+                        value: expr.value?.value ?? ""
+                    })
+                );
+
+            return { condition: "AND", expressions } as RuleConditionWithoutIdInterface;
+        }
+    );
+
+    return { condition: "OR", rules } as unknown as RuleWithoutIdInterface;
+};
+
+const buildFlatRule = (rule: RuleWithoutIdInterface | null): PolicyRuleInterface => {
+    const expressions: PolicyExpressionInterface[] = (rule?.rules ?? []).flatMap(
+        (group: RuleConditionWithoutIdInterface) =>
+            (group.expressions ?? []).map(
+                (e: { field: string; operator: string; value: string }): PolicyExpressionInterface => ({
+                    field: e.field,
+                    operator: e.operator,
+                    value: e.value
+                })
+            )
+    );
+
+    return { condition: "AND", expressions };
+};
+
+const countConditions = (rule: RuleWithoutIdInterface | null): number =>
+    (rule?.rules ?? []).reduce(
+        (acc: number, g: RuleConditionWithoutIdInterface) => acc + (g.expressions?.length ?? 0),
+        0
+    );
+
+const renderPlatformLogo = (
+    logo: FunctionComponent | string,
+    size: number
+): ReactElement => {
+    if (typeof logo === "string") {
+        return <img src={ logo } alt="" style={ { height: size, objectFit: "contain", width: size } } />;
+    }
+
+    const LogoComponent: FunctionComponent<SVGProps<SVGSVGElement>> = logo as FunctionComponent<SVGProps<SVGSVGElement>>;
+
+    return <LogoComponent width={ size } height={ size } />;
+};
+
+/* ------------------------------------------------------------------ */
+/*  Component                                                           */
+/* ------------------------------------------------------------------ */
 
 const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInterface> = (
     props: EditDevicePolicyWizardPropsInterface
@@ -103,8 +255,7 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
         "data-componentid": componentId = "edit-device-policy-wizard",
         policyId,
         initialName,
-        initialPlatform,
-        initialExpressions,
+        initialRules,
         onClose,
         onSuccess
     } = props;
@@ -112,215 +263,192 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const [ currentStep, setCurrentStep ] = useState<WizardStep>(WizardStep.PLATFORM);
-    const [ selectedPlatform, setSelectedPlatform ] = useState<DevicePlatformType | null>(initialPlatform);
-    const [ policyName, setPolicyName ] = useState<string>(initialName);
-    const [ conditions, setConditions ] = useState<Record<string, ConditionStateInterface>>({});
-    const [ listInputValues, setListInputValues ] = useState<Record<string, string>>({});
-    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ conditionsInitialised, setConditionsInitialised ] = useState<boolean>(false);
-
     const technologyLogos: ReturnType<typeof getTechnologyLogos> = getTechnologyLogos();
 
-    const platformOptions: PlatformOptionInterface[] = [
-        { key: "android", label: t("devices:assurancePolicies.wizard.platforms.android"), logo: technologyLogos.android },
-        { key: "ios",     label: t("devices:assurancePolicies.wizard.platforms.ios"),     logo: technologyLogos.ios },
-        { key: "macos",   label: t("devices:assurancePolicies.wizard.platforms.macos"),   logo: technologyLogos.macos },
-        { key: "windows", label: t("devices:assurancePolicies.wizard.platforms.windows"), logo: technologyLogos.windows }
-    ];
-
-    const {
-        data: metadata,
-        isLoading: isMetadataLoading,
-        error: metadataError
-    } = useGetDevicePolicyMetadata(selectedPlatform, selectedPlatform !== null);
-
-    const nonPlatformFields: DevicePolicyFieldDefinitionInterface[] = useMemo(
-        (): DevicePolicyFieldDefinitionInterface[] =>
-            (metadata ?? []).filter(
-                (field: DevicePolicyFieldDefinitionInterface): boolean => field.field.name !== "platform"
-            ),
-        [ metadata ]
+    const allPlatformDefs: PlatformDefinitionInterface[] = useMemo(
+        (): PlatformDefinitionInterface[] => [
+            {
+                key: "android",
+                label: t("devices:assurancePolicies.wizard.platforms.android"),
+                logo: technologyLogos.android as FunctionComponent
+            },
+            {
+                key: "ios",
+                label: t("devices:assurancePolicies.wizard.platforms.ios"),
+                logo: technologyLogos.ios as FunctionComponent
+            },
+            {
+                key: "macos",
+                label: t("devices:assurancePolicies.wizard.platforms.macos"),
+                logo: technologyLogos.macos
+            },
+            {
+                key: "windows",
+                label: t("devices:assurancePolicies.wizard.platforms.windows"),
+                logo: technologyLogos.windows as FunctionComponent
+            }
+        ],
+        [ t, technologyLogos ]
     );
 
-    // Initialise conditions from existing expressions when metadata loads; reset when platform changes
-    useEffect((): void => {
-        if (nonPlatformFields.length === 0) {
-            return;
-        }
+    const selectedPlatforms: DevicePlatformType[] = useMemo(
+        (): DevicePlatformType[] => initialRules.map(
+            (r: DevicePolicyPlatformRuleResponseInterface): DevicePlatformType => r.platform
+        ),
+        [ initialRules ]
+    );
 
-        const initial: Record<string, ConditionStateInterface> = {};
-
-        nonPlatformFields.forEach((field: DevicePolicyFieldDefinitionInterface): void => {
-            const existing: DevicePolicyExpressionInterface | undefined = initialExpressions.find(
-                (e: DevicePolicyExpressionInterface): boolean => e.field === field.field.name
-            );
-
-            const existingOperator: string = existing?.operator ?? field.operators[0]?.name ?? "";
-            const isIn: boolean = existingOperator === "in";
-
-            // For "in" operator, split the comma-separated value string into an array
-            const existingListValues: string[] = isIn && existing?.value?.value
-                ? existing.value.value.split(",").map((v: string): string => v.trim()).filter(Boolean)
-                : [];
-
-            initial[field.field.name] = {
-                enabled: !!existing,
-                listValues: existingListValues,
-                operator: existingOperator,
-                value: isIn ? "" : (existing?.value?.value ?? (
-                    field.value.inputType === "OPTIONS"
-                        ? (field.value.values?.[0]?.name ?? "")
-                        : ""
-                ))
-            };
-        });
-
-        setConditions(initial);
-        setListInputValues({});
-        setConditionsInitialised(true);
-    }, [ nonPlatformFields ]);
-
-    // When the user switches platforms, clear the pre-populated conditions
-    useEffect((): void => {
-        if (selectedPlatform !== initialPlatform) {
-            setConditionsInitialised(false);
-        }
-    }, [ selectedPlatform ]);
-
-    useEffect((): void => {
-        if (!metadataError) {
-            return;
-        }
-
-        dispatch(addAlert({
-            description: t(
-                "devices:assurancePolicies.wizard.notifications.metadataFetch.genericError.description"
+    const initialPlatformRules: Partial<Record<DevicePlatformType, RuleWithoutIdInterface | null>> = useMemo(
+        (): Partial<Record<DevicePlatformType, RuleWithoutIdInterface | null>> =>
+            initialRules.reduce(
+                (
+                    acc: Partial<Record<DevicePlatformType, RuleWithoutIdInterface | null>>,
+                    r: DevicePolicyPlatformRuleResponseInterface
+                ) => ({
+                    ...acc,
+                    [r.platform]: convertApiRuleToRuleFormat(r)
+                }),
+                {}
             ),
-            level: AlertLevels.ERROR,
-            message: t(
-                "devices:assurancePolicies.wizard.notifications.metadataFetch.genericError.message"
-            )
-        }));
-    }, [ metadataError ]);
+        [ initialRules ]
+    );
 
-    const handleToggleCondition = (fieldName: string, checked: boolean): void => {
-        setConditions((prev: Record<string, ConditionStateInterface>) => ({
-            ...prev,
-            [fieldName]: { ...prev[fieldName], enabled: checked }
-        }));
+    const initialPlatformConfigured: Partial<Record<DevicePlatformType, boolean>> = useMemo(
+        (): Partial<Record<DevicePlatformType, boolean>> =>
+            initialRules.reduce(
+                (
+                    acc: Partial<Record<DevicePlatformType, boolean>>,
+                    r: DevicePolicyPlatformRuleResponseInterface
+                ) => ({
+                    ...acc,
+                    [r.platform]: (r.rule?.rules?.length ?? 0) > 0
+                }),
+                {}
+            ),
+        [ initialRules ]
+    );
+
+    /* -- State --------------------------------------------------------- */
+
+    const [ currentStep, setCurrentStep ] = useState<WizardStep>(WizardStep.EXECUTION_RULES);
+    const [ policyName ] = useState<string>(initialName);
+    const [ activeTabIndex, setActiveTabIndex ] = useState<number>(0);
+    const [ platformRules, setPlatformRules ] =
+        useState<Partial<Record<DevicePlatformType, RuleWithoutIdInterface | null>>>(initialPlatformRules);
+    const [ platformConfigured, setPlatformConfigured ] =
+        useState<Partial<Record<DevicePlatformType, boolean>>>(initialPlatformConfigured);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
+    const activePlatform: DevicePlatformType | null = selectedPlatforms[activeTabIndex] ?? null;
+
+    /* -- Metadata ------------------------------------------------------ */
+
+    const { data: androidMeta, isLoading: isAndroidLoading } =
+        useGetDevicePolicyMetadata("android", selectedPlatforms.includes("android"));
+    const { data: iosMeta, isLoading: isIosLoading } =
+        useGetDevicePolicyMetadata("ios", selectedPlatforms.includes("ios"));
+    const { data: macosMeta, isLoading: isMacosLoading } =
+        useGetDevicePolicyMetadata("macos", selectedPlatforms.includes("macos"));
+    const { data: windowsMeta, isLoading: isWindowsLoading } =
+        useGetDevicePolicyMetadata("windows", selectedPlatforms.includes("windows"));
+
+    const allRawMeta: Record<DevicePlatformType, DevicePolicyFieldDefinitionInterface[] | undefined> = useMemo(
+        () => ({
+            android: androidMeta,
+            ios: iosMeta,
+            macos: macosMeta,
+            windows: windowsMeta
+        }),
+        [ androidMeta, iosMeta, macosMeta, windowsMeta ]
+    );
+
+    const metaLoading: Record<DevicePlatformType, boolean> = {
+        android: isAndroidLoading,
+        ios: isIosLoading,
+        macos: isMacosLoading,
+        windows: isWindowsLoading
     };
 
-    const handleOperatorChange = (fieldName: string, operator: string): void => {
-        setConditions((prev: Record<string, ConditionStateInterface>) => ({
-            ...prev,
-            [fieldName]: { ...prev[fieldName], listValues: [], operator }
-        }));
-        setListInputValues((prev: Record<string, string>) => ({ ...prev, [fieldName]: "" }));
-    };
+    const activeConditionsMeta: ConditionExpressionsMetaDataInterface = useMemo(
+        (): ConditionExpressionsMetaDataInterface => {
+            if (!activePlatform) return [];
 
-    const handleValueChange = (fieldName: string, value: string): void => {
-        setConditions((prev: Record<string, ConditionStateInterface>) => ({
-            ...prev,
-            [fieldName]: { ...prev[fieldName], value }
-        }));
-    };
+            return mapToConditionsMeta(allRawMeta[activePlatform] ?? []);
+        },
+        [ activePlatform, allRawMeta ]
+    );
 
-    const handleListInputChange = (fieldName: string, value: string): void => {
-        setListInputValues((prev: Record<string, string>) => ({ ...prev, [fieldName]: value }));
-    };
+    /* -- Handlers ------------------------------------------------------ */
 
-    const handleMultiSelectChange = (fieldName: string, values: string[]): void => {
-        setConditions((prev: Record<string, ConditionStateInterface>) => ({
-            ...prev,
-            [fieldName]: { ...prev[fieldName], listValues: values }
-        }));
-    };
+    const saveActivePlatformRule = (): void => {
+        if (activePlatform !== null && platformConfigured[activePlatform]) {
+            const rule: RuleWithoutIdInterface | null =
+                getRuleInstanceValue() as RuleWithoutIdInterface | null;
 
-    const handleAddListValue = (fieldName: string): void => {
-        const inputVal: string = (listInputValues[fieldName] ?? "").trim();
-
-        if (!inputVal) {
-            return;
+            setPlatformRules(
+                (prev: Partial<Record<DevicePlatformType, RuleWithoutIdInterface | null>>) => ({
+                    ...prev,
+                    [activePlatform]: rule
+                })
+            );
         }
+    };
 
-        setConditions((prev: Record<string, ConditionStateInterface>) => {
-            const existing: string[] = prev[fieldName]?.listValues ?? [];
+    const handleTabChange = (newIndex: number): void => {
+        saveActivePlatformRule();
+        setActiveTabIndex(newIndex);
+    };
 
-            if (existing.includes(inputVal)) {
-                return prev;
-            }
-
-            return {
+    const handleConfigureRule = (): void => {
+        setPlatformConfigured(
+            (prev: Partial<Record<DevicePlatformType, boolean>>) => ({
                 ...prev,
-                [fieldName]: { ...prev[fieldName], listValues: [ ...existing, inputVal ] }
-            };
-        });
-        setListInputValues((prev: Record<string, string>) => ({ ...prev, [fieldName]: "" }));
+                [activePlatform]: true
+            })
+        );
     };
 
-    const handleRemoveListValue = (fieldName: string, val: string): void => {
-        setConditions((prev: Record<string, ConditionStateInterface>) => ({
-            ...prev,
-            [fieldName]: {
-                ...prev[fieldName],
-                listValues: prev[fieldName].listValues.filter((v: string): boolean => v !== val)
-            }
-        }));
+    const handleClearRule = (): void => {
+        setPlatformConfigured(
+            (prev: Partial<Record<DevicePlatformType, boolean>>) => ({
+                ...prev,
+                [activePlatform]: false
+            })
+        );
+        setPlatformRules(
+            (prev: Partial<Record<DevicePlatformType, RuleWithoutIdInterface | null>>) => ({
+                ...prev,
+                [activePlatform]: null
+            })
+        );
     };
 
-    const isSaveEnabled: boolean = useMemo((): boolean => {
-        if (!policyName.trim()) {
-            return false;
-        }
-
-        return Object.values(conditions).some((c: ConditionStateInterface): boolean => {
-            if (!c.enabled) {
-                return false;
-            }
-
-            if (c.operator === "in") {
-                return c.listValues.length > 0;
-            }
-
-            return true;
-        });
-    }, [ policyName, conditions ]);
+    const handleNextToReview = (): void => {
+        saveActivePlatformRule();
+        setCurrentStep(WizardStep.REVIEW);
+    };
 
     const handleSave = (): void => {
         setIsSubmitting(true);
 
-        const platformExpression: { field: string; operator: string; value: string } = {
-            field: "platform",
-            operator: "equals",
-            value: selectedPlatform
+        const saved: Partial<Record<DevicePlatformType, RuleWithoutIdInterface | null>> = {
+            ...platformRules
         };
 
-        const enabledExpressions: { field: string; operator: string; value: string }[] =
-            nonPlatformFields
-                .filter(
-                    (field: DevicePolicyFieldDefinitionInterface): boolean =>
-                        conditions[field.field.name]?.enabled === true
-                )
-                .map((field: DevicePolicyFieldDefinitionInterface) => {
-                    const state: ConditionStateInterface = conditions[field.field.name];
+        if (activePlatform !== null && platformConfigured[activePlatform]) {
+            saved[activePlatform] =
+                getRuleInstanceValue() as RuleWithoutIdInterface | null;
+        }
 
-                    return {
-                        field: field.field.name,
-                        operator: state.operator,
-                        value: state.operator === "in"
-                            ? state.listValues.join(",")
-                            : String(state.value)
-                    };
-                });
+        const rules: { platform: DevicePlatformType; rule: PolicyRuleInterface }[] =
+            selectedPlatforms.map(
+                (p: DevicePlatformType) => ({
+                    platform: p,
+                    rule: buildFlatRule(platformConfigured[p] ? (saved[p] ?? null) : null)
+                })
+            );
 
-        updateDevicePolicy(policyId, {
-            name: policyName.trim(),
-            rule: {
-                condition: "AND",
-                expressions: [ platformExpression, ...enabledExpressions ]
-            }
-        })
+        updateDevicePolicyMulti(policyId, { name: policyName.trim(), rules })
             .then((): void => {
                 dispatch(addAlert({
                     description: t(
@@ -334,14 +462,12 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
                 onSuccess();
             })
             .catch((error: AxiosError<{ description?: string }>): void => {
-                const errorDescription: string =
-                    error?.response?.data?.description
-                    ?? t(
-                        "devices:assurancePolicies.edit.notifications.update.genericError.description"
-                    );
-
                 dispatch(addAlert({
-                    description: errorDescription,
+                    description:
+                        error?.response?.data?.description
+                        ?? t(
+                            "devices:assurancePolicies.edit.notifications.update.genericError.description"
+                        ),
                     level: AlertLevels.ERROR,
                     message: t(
                         "devices:assurancePolicies.edit.notifications.update.genericError.message"
@@ -353,315 +479,366 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
             });
     };
 
+    /* -- Wizard steps -------------------------------------------------- */
+
     const WIZARD_STEPS: { icon: FunctionComponent<SVGProps<SVGSVGElement>>; title: string }[] = [
         {
-            icon: DeviceOutlineIcon,
-            title: t("devices:assurancePolicies.wizard.steps.platform.title")
+            icon: SettingsOutlineIcon,
+            title: t("devices:assurancePolicies.wizard.steps.executionRules.title")
         },
         {
-            icon: SettingsOutlineIcon,
-            title: t("devices:assurancePolicies.wizard.steps.ruleBuilder.title")
+            icon: DeviceOutlineIcon,
+            title: t("devices:assurancePolicies.wizard.steps.review.title")
         }
     ];
 
-    const renderPlatformStep = (): ReactElement => (
-        <div className="device-policy-platform-selection">
-            <Heading as="h6">
-                { t("devices:assurancePolicies.wizard.steps.platform.heading") }
-            </Heading>
-            <p className="sub-heading">
-                { t("devices:assurancePolicies.wizard.steps.platform.description") }
-            </p>
-            <Card.Group itemsPerRow={ 2 } className="platform-selection-cards">
-                { platformOptions.map((platform: PlatformOptionInterface) => (
-                    <SelectionCard
-                        key={ platform.key }
-                        image={ platform.logo }
-                        size="default"
-                        header={ platform.label }
-                        selected={ selectedPlatform === platform.key }
-                        onClick={ (): void => setSelectedPlatform(platform.key) }
-                        imageSize="tiny"
-                        imageOptions={ {
-                            relaxed: true,
-                            square: false,
-                            width: "auto"
-                        } }
-                        contentTopBorder={ false }
-                        renderDisabledItemsAsGrayscale={ false }
-                        data-componentid={ `${ componentId }-${ platform.key }-selection-card` }
-                    />
-                )) }
-            </Card.Group>
-        </div>
-    );
+    /* ------------------------------------------------------------------ */
+    /*  Step renderers                                                      */
+    /* ------------------------------------------------------------------ */
 
-    const renderConditionValueInput = (
-        field: DevicePolicyFieldDefinitionInterface,
-        conditionState: ConditionStateInterface
-    ): ReactElement => {
-        const isIn: boolean = conditionState.operator === "in";
-        const isOptions: boolean = field.value.inputType === "OPTIONS";
+    const renderRuleEmptyState = (): ReactElement => {
+        const pname: string =
+            allPlatformDefs.find((p: PlatformDefinitionInterface) => p.key === activePlatform)?.label
+            ?? (activePlatform ?? "");
 
-        const options: DropdownItemProps[] = (field.value.values ?? []).map(
-            (v: { name: string; displayName: string }): DropdownItemProps => ({
-                key: v.name,
-                text: v.displayName,
-                value: v.name
-            })
-        );
-
-        // "in" + OPTIONS → multi-select dropdown
-        if (isIn && isOptions) {
-            return (
-                <Dropdown
-                    fluid
-                    selection
-                    multiple
-                    disabled={ !conditionState.enabled }
-                    options={ options }
-                    value={ conditionState.listValues }
-                    onChange={ (
-                        _e: SyntheticEvent<HTMLElement>,
-                        data: DropdownProps
-                    ): void => handleMultiSelectChange(field.field.name, data.value as string[]) }
-                    data-componentid={ `${ componentId }-${ field.field.name }-multi-value` }
-                />
-            );
-        }
-
-        // "in" + free-text → chip/tag input
-        if (isIn) {
-            return (
-                <div data-componentid={ `${ componentId }-${ field.field.name }-list-value` }>
-                    { conditionState.listValues.length > 0 && (
-                        <Label.Group style={ { marginBottom: "6px" } }>
-                            { conditionState.listValues.map((val: string): ReactElement => (
-                                <Label key={ val } size="small">
-                                    { val }
-                                    <Icon
-                                        name="delete"
-                                        onClick={ (): void => {
-                                            if (conditionState.enabled) {
-                                                handleRemoveListValue(field.field.name, val);
-                                            }
-                                        } }
-                                        style={ { cursor: conditionState.enabled ? "pointer" : "default" } }
-                                    />
-                                </Label>
-                            )) }
-                        </Label.Group>
-                    ) }
-                    <Input
-                        fluid
-                        disabled={ !conditionState.enabled }
-                        placeholder="Type a value and press Add"
-                        value={ listInputValues[field.field.name] ?? "" }
-                        onChange={ (
-                            _e: ChangeEvent<HTMLInputElement>,
-                            data: InputOnChangeData
-                        ): void => handleListInputChange(field.field.name, data.value) }
-                        onKeyDown={ (e: React.KeyboardEvent<HTMLInputElement>): void => {
-                            if (e.key === "Enter") {
-                                e.preventDefault();
-                                handleAddListValue(field.field.name);
-                            }
-                        } }
-                        action={
-                            <Button
-                                type="button"
-                                disabled={ !conditionState.enabled }
-                                onClick={ (): void => handleAddListValue(field.field.name) }
-                                data-componentid={ `${ componentId }-${ field.field.name }-add-btn` }
-                            >
-                                Add
-                            </Button>
-                        }
-                        data-componentid={ `${ componentId }-${ field.field.name }-list-input` }
-                    />
-                </div>
-            );
-        }
-
-        // single-select dropdown
-        if (isOptions) {
-            return (
-                <Dropdown
-                    fluid
-                    selection
-                    disabled={ !conditionState.enabled }
-                    options={ options }
-                    value={ conditionState.value }
-                    onChange={ (
-                        _e: SyntheticEvent<HTMLElement>,
-                        data: DropdownProps
-                    ): void => handleValueChange(field.field.name, data.value as string) }
-                    data-componentid={ `${ componentId }-${ field.field.name }-value` }
-                />
-            );
-        }
-
-        // free-text number input
         return (
-            <Input
-                fluid
-                type="number"
-                disabled={ !conditionState.enabled }
-                value={ conditionState.value }
-                onChange={ (
-                    _e: ChangeEvent<HTMLInputElement>,
-                    data: InputOnChangeData
-                ): void => handleValueChange(field.field.name, data.value) }
-                data-componentid={ `${ componentId }-${ field.field.name }-value` }
+            <Alert
+                sx={ { backgroundColor: "var(--oxygen-palette-grey-100)" } }
+                icon={ false }
+                data-componentid={ `${ componentId }-no-rule-info-box` }
+            >
+                <AlertTitle>
+                    { t("devices:assurancePolicies.wizard.steps.executionRules.emptyState.heading") }
+                </AlertTitle>
+                { t(
+                    "devices:assurancePolicies.wizard.steps.executionRules.emptyState.description",
+                    { platform: pname }
+                ) }
+                <Box sx={ { mt: 1.5 } }>
+                    <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={ handleConfigureRule }
+                        data-componentid={ `${ componentId }-configure-rule-btn` }
+                    >
+                        { t("devices:assurancePolicies.wizard.steps.executionRules.configureRule") }
+                    </Button>
+                </Box>
+            </Alert>
+        );
+    };
+
+    const renderRuleBuilder = (): ReactElement => {
+        const isLoading: boolean = activePlatform ? metaLoading[activePlatform] : false;
+
+        if (isLoading) {
+            return (
+                <Box sx={ { pt: 3, color: "text.secondary" } }>
+                    <Typography variant="body2">
+                        { t("devices:assurancePolicies.wizard.steps.executionRules.loadingMetadata") }
+                    </Typography>
+                </Box>
+            );
+        }
+
+        if (activeConditionsMeta.length === 0) {
+            return (
+                <Box sx={ { pt: 3, color: "text.secondary" } }>
+                    <Typography variant="body2">
+                        { t("devices:assurancePolicies.wizard.steps.executionRules.noMetadata") }
+                    </Typography>
+                </Box>
+            );
+        }
+
+        return (
+            <RulesComponent
+                key={ `rules-${ activePlatform }` }
+                conditionExpressionsMetaData={ activeConditionsMeta }
+                initialData={ platformRules[activePlatform] ?? null }
+                data-componentid={ `${ componentId }-${ activePlatform }-rules` }
             />
         );
     };
 
-    const renderRuleBuilderStep = (): ReactElement => (
-        <div className="device-policy-rule-builder">
-            <Heading as="h6">
-                { t("devices:assurancePolicies.wizard.steps.ruleBuilder.heading") }
-            </Heading>
-            <p className="sub-heading">
-                { t("devices:assurancePolicies.wizard.steps.ruleBuilder.description") }
-            </p>
-            <Form>
-                <Form.Field required>
-                    <label>
-                        { t("devices:assurancePolicies.wizard.steps.ruleBuilder.policyNameLabel") }
-                    </label>
-                    <Input
-                        fluid
-                        value={ policyName }
-                        placeholder={ t(
-                            "devices:assurancePolicies.wizard.steps.ruleBuilder.policyNamePlaceholder"
-                        ) }
-                        onChange={ (
-                            _e: ChangeEvent<HTMLInputElement>,
-                            data: InputOnChangeData
-                        ): void => setPolicyName(data.value) }
-                        data-componentid={ `${ componentId }-policy-name` }
-                    />
-                </Form.Field>
-            </Form>
+    const renderExecutionRulesStep = (): ReactElement => {
+        const activePlatformDef: PlatformDefinitionInterface | undefined =
+            allPlatformDefs.find((p: PlatformDefinitionInterface) => p.key === activePlatform);
 
-            <Divider />
+        return (
+            <Box>
+                <StyledPlatformTabBar>
+                    { selectedPlatforms.map((platform: DevicePlatformType, index: number) => {
+                        const pDef: PlatformDefinitionInterface | undefined =
+                            allPlatformDefs.find((p: PlatformDefinitionInterface) => p.key === platform);
+                        const isActive: boolean = activeTabIndex === index;
+                        const condCount: number = platformRules[platform]
+                            ? countConditions(platformRules[platform])
+                            : 0;
+                        const isConfigured: boolean = platformConfigured[platform] === true;
 
-            <Heading as="h6">
-                { t("devices:assurancePolicies.wizard.steps.ruleBuilder.conditionsHeading") }
-            </Heading>
-            <p className="sub-heading">
-                { t("devices:assurancePolicies.wizard.steps.ruleBuilder.conditionsDescription") }
-            </p>
+                        return (
+                            <StyledPlatformTab
+                                key={ platform }
+                                type="button"
+                                isActive={ isActive }
+                                onClick={ (): void => handleTabChange(index) }
+                                data-componentid={ `${ componentId }-${ platform }-tab` }
+                            >
+                                { pDef?.logo ? renderPlatformLogo(pDef.logo, 18) : null }
+                                { pDef?.label ?? platform }
+                                { isConfigured ? (
+                                    <StyledTabBadge isActive={ isActive }>
+                                        { condCount }
+                                    </StyledTabBadge>
+                                ) : (
+                                    <StyledTabBadge isActive={ isActive }
+                                        sx={ { fontSize: 14, lineHeight: 1, px: "5px", py: 0 } }
+                                    >
+                                        ·
+                                    </StyledTabBadge>
+                                ) }
+                            </StyledPlatformTab>
+                        );
+                    }) }
+                </StyledPlatformTabBar>
 
-            <Form>
-                { nonPlatformFields.map((field: DevicePolicyFieldDefinitionInterface): ReactElement => {
-                    const conditionState: ConditionStateInterface = conditions[field.field.name] ?? {
-                        enabled: false,
-                        listValues: [],
-                        operator: field.operators[0]?.name ?? "",
-                        value: ""
-                    };
+                <Stack direction="row" alignItems="center" justifyContent="space-between" sx={ { mb: 1.5 } }>
+                    <Heading as="h5">
+                        { t("devices:assurancePolicies.wizard.steps.executionRules.sectionLabel") }
+                        { " " }
+                        <Typography
+                            component="span"
+                            variant="body2"
+                            sx={ { color: "text.secondary", fontWeight: 400 } }
+                        >
+                            — { activePlatformDef?.label }
+                        </Typography>
+                    </Heading>
+                    { platformConfigured[activePlatform] && (
+                        <Button
+                            variant="text"
+                            color="error"
+                            size="small"
+                            startIcon={ <TrashIcon /> }
+                            onClick={ handleClearRule }
+                            data-componentid={ `${ componentId }-clear-rule-btn` }
+                        >
+                            { t("devices:assurancePolicies.wizard.steps.executionRules.clearRule") }
+                        </Button>
+                    ) }
+                </Stack>
 
-                    const operatorOptions: DropdownItemProps[] = field.operators.map(
-                        (op: { name: string; displayName: string }): DropdownItemProps => ({
-                            key: op.name,
-                            text: op.displayName,
-                            value: op.name
-                        })
-                    );
+                { !platformConfigured[activePlatform]
+                    ? renderRuleEmptyState()
+                    : renderRuleBuilder()
+                }
+            </Box>
+        );
+    };
+
+    const renderReviewStep = (): ReactElement => {
+        const selectedPlatformDefs: PlatformDefinitionInterface[] = allPlatformDefs.filter(
+            (p: PlatformDefinitionInterface) => selectedPlatforms.includes(p.key)
+        );
+
+        return (
+            <Box>
+                <Stack
+                    direction="row"
+                    alignItems="baseline"
+                    justifyContent="space-between"
+                    sx={ { mb: 1.5 } }
+                >
+                    <Typography
+                        variant="overline"
+                        sx={ { fontWeight: 700, letterSpacing: "0.06em", color: "text.secondary" } }
+                    >
+                        { t("devices:assurancePolicies.wizard.steps.review.sectionPolicy") }
+                    </Typography>
+                </Stack>
+                <Box
+                    sx={ {
+                        display: "grid",
+                        gridTemplateColumns: "160px 1fr",
+                        gap: "14px 20px",
+                        mb: 3.5
+                    } }
+                >
+                    <Typography variant="body2" sx={ { color: "text.secondary", fontWeight: 600, pt: 0.5 } }>
+                        { t("devices:assurancePolicies.wizard.steps.review.policyName") }
+                    </Typography>
+                    <Typography variant="body1" sx={ { fontWeight: 600 } }>
+                        { policyName }
+                    </Typography>
+                    <Typography variant="body2" sx={ { color: "text.secondary", fontWeight: 600, pt: 0.5 } }>
+                        { t("devices:assurancePolicies.wizard.steps.review.platforms") }
+                    </Typography>
+                    <Stack direction="row" spacing={ 1 } flexWrap="wrap" useFlexGap>
+                        { selectedPlatformDefs.map((p: PlatformDefinitionInterface) => (
+                            <Chip
+                                key={ p.key }
+                                label={ p.label }
+                                size="small"
+                                color="primary"
+                                variant="outlined"
+                            />
+                        )) }
+                    </Stack>
+                </Box>
+
+                <Stack
+                    direction="row"
+                    alignItems="baseline"
+                    justifyContent="space-between"
+                    sx={ { mb: 1.5 } }
+                >
+                    <Typography
+                        variant="overline"
+                        sx={ { fontWeight: 700, letterSpacing: "0.06em", color: "text.secondary" } }
+                    >
+                        { t("devices:assurancePolicies.wizard.steps.review.sectionRules") }
+                    </Typography>
+                    <Button
+                        variant="text"
+                        color="primary"
+                        size="small"
+                        onClick={ (): void => setCurrentStep(WizardStep.EXECUTION_RULES) }
+                    >
+                        { t("devices:assurancePolicies.wizard.steps.review.edit") }
+                    </Button>
+                </Stack>
+
+                { selectedPlatformDefs.map((p: PlatformDefinitionInterface) => {
+                    const rule: RuleWithoutIdInterface | null | undefined = platformRules[p.key];
+                    const isConfigured: boolean = platformConfigured[p.key] === true;
+                    const condCount: number = isConfigured && rule ? countConditions(rule) : 0;
+                    const groupCount: number = isConfigured && rule ? (rule.rules?.length ?? 0) : 0;
 
                     return (
-                        <Form.Group
-                            key={ field.field.name }
-                            className="condition-row"
-                            style={ {
-                                alignItems: "center",
-                                marginBottom: "1rem"
-                            } }
-                        >
-                            <Form.Field
-                                width={ 2 }
-                                style={ { display: "flex", alignItems: "center" } }
+                        <StyledReviewPlatformCard key={ p.key }>
+                            <Stack
+                                direction="row"
+                                alignItems="center"
+                                justifyContent="space-between"
+                                sx={ { mb: 1.25 } }
                             >
-                                <Checkbox
-                                    toggle
-                                    checked={ conditionState.enabled }
-                                    onChange={ (
-                                        _e: SyntheticEvent,
-                                        data: CheckboxProps
-                                    ): void =>
-                                        handleToggleCondition(field.field.name, data.checked as boolean)
-                                    }
-                                    data-componentid={
-                                        `${ componentId }-${ field.field.name }-toggle`
-                                    }
+                                <Chip
+                                    label={ p.label }
+                                    size="small"
+                                    variant="outlined"
+                                    sx={ { color: "text.secondary", borderColor: "divider" } }
                                 />
-                            </Form.Field>
-                            <Form.Field
-                                width={ 4 }
-                                style={ { display: "flex", alignItems: "center" } }
-                            >
-                                <strong
-                                    style={ {
-                                        color: conditionState.enabled
-                                            ? "inherit"
-                                            : "rgba(0,0,0,0.4)",
-                                        whiteSpace: "nowrap"
-                                    } }
-                                >
-                                    { field.field.displayName }
-                                </strong>
-                            </Form.Field>
-                            <Form.Field width={ 4 } disabled={ !conditionState.enabled }>
-                                { field.operators.length === 1 ? (
-                                    <span
-                                        style={ {
-                                            color: conditionState.enabled
-                                                ? "inherit"
-                                                : "rgba(0,0,0,0.4)"
-                                        } }
-                                    >
-                                        { field.operators[0].displayName }
-                                    </span>
-                                ) : (
-                                    <Dropdown
-                                        fluid
-                                        selection
-                                        disabled={ !conditionState.enabled }
-                                        options={ operatorOptions }
-                                        value={ conditionState.operator }
-                                        onChange={ (
-                                            _e: SyntheticEvent<HTMLElement>,
-                                            data: DropdownProps
-                                        ): void =>
-                                            handleOperatorChange(
-                                                field.field.name,
-                                                data.value as string
-                                            )
-                                        }
-                                        data-componentid={
-                                            `${ componentId }-${ field.field.name }-operator`
-                                        }
-                                    />
-                                ) }
-                            </Form.Field>
-                            <Form.Field width={ 5 }>
-                                { renderConditionValueInput(field, conditionState) }
-                            </Form.Field>
-                        </Form.Group>
+                                <Typography variant="caption" sx={ { color: "text.secondary" } }>
+                                    { !isConfigured
+                                        ? (
+                                            <span>
+                                                Applies to <strong>all { p.label } devices</strong>
+                                            </span>
+                                        )
+                                        : `${ condCount } condition(s) across ${ groupCount } group(s)`
+                                    }
+                                </Typography>
+                            </Stack>
+                            { isConfigured && rule && (
+                                <StyledRuleSummaryCode>
+                                    { (rule.rules ?? []).map(
+                                        (
+                                            group: RuleConditionWithoutIdInterface,
+                                            gi: number
+                                        ): ReactElement => (
+                                            <React.Fragment key={ gi }>
+                                                { gi > 0 && (
+                                                    <Box
+                                                        component="div"
+                                                        sx={ {
+                                                            color: "primary.main",
+                                                            fontWeight: 700,
+                                                            my: 0.75
+                                                        } }
+                                                    >
+                                                        OR
+                                                    </Box>
+                                                ) }
+                                                <div>
+                                                    (
+                                                    { (group.expressions ?? []).map(
+                                                        (
+                                                            expr: {
+                                                                field: string;
+                                                                operator: string;
+                                                                value: string;
+                                                            },
+                                                            ei: number
+                                                        ): ReactElement => (
+                                                            <span key={ ei }>
+                                                                { ei > 0 && (
+                                                                    <Typography
+                                                                        component="span"
+                                                                        sx={ {
+                                                                            color: "text.secondary",
+                                                                            fontFamily: "inherit",
+                                                                            fontSize: "inherit",
+                                                                            fontWeight: 700
+                                                                        } }
+                                                                    >
+                                                                        { " AND " }
+                                                                    </Typography>
+                                                                ) }
+                                                                <Typography
+                                                                    component="span"
+                                                                    sx={ {
+                                                                        fontFamily: "inherit",
+                                                                        fontSize: "inherit",
+                                                                        fontWeight: 600
+                                                                    } }
+                                                                >
+                                                                    { expr.field }
+                                                                </Typography>
+                                                                <Typography
+                                                                    component="span"
+                                                                    sx={ {
+                                                                        color: "text.secondary",
+                                                                        fontFamily: "inherit",
+                                                                        fontSize: "inherit"
+                                                                    } }
+                                                                >
+                                                                    { " " }{ expr.operator }{ " " }
+                                                                </Typography>
+                                                                <Typography
+                                                                    component="span"
+                                                                    sx={ {
+                                                                        color: "primary.main",
+                                                                        fontFamily: "inherit",
+                                                                        fontSize: "inherit",
+                                                                        fontWeight: 600
+                                                                    } }
+                                                                >
+                                                                    &ldquo;{ expr.value || "?" }&rdquo;
+                                                                </Typography>
+                                                            </span>
+                                                        )
+                                                    ) }
+                                                    )
+                                                </div>
+                                            </React.Fragment>
+                                        )
+                                    ) }
+                                </StyledRuleSummaryCode>
+                            ) }
+                        </StyledReviewPlatformCard>
                     );
                 }) }
-            </Form>
-        </div>
-    );
+            </Box>
+        );
+    };
 
     const resolveStepContent = (): ReactElement => {
         switch (currentStep) {
-            case WizardStep.PLATFORM:
-                return renderPlatformStep();
-            case WizardStep.RULE_BUILDER:
-                return renderRuleBuilderStep();
+            case WizardStep.EXECUTION_RULES:
+                return renderExecutionRulesStep();
+            case WizardStep.REVIEW:
+                return renderReviewStep();
             default:
                 return null;
         }
@@ -680,32 +857,30 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
                     </LinkButton>
                 </Grid.Column>
                 <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                    { currentStep === WizardStep.RULE_BUILDER && (
+                    { currentStep === WizardStep.REVIEW && (
                         <LinkButton
                             floated="right"
-                            onClick={ (): void => setCurrentStep(WizardStep.PLATFORM) }
+                            onClick={ (): void => setCurrentStep(WizardStep.EXECUTION_RULES) }
                             data-componentid={ `${ componentId }-back-button` }
                         >
                             <Icon name="arrow left" />
                             { t("devices:assurancePolicies.wizard.buttons.back") }
                         </LinkButton>
                     ) }
-                    { currentStep === WizardStep.PLATFORM && (
+                    { currentStep === WizardStep.EXECUTION_RULES && (
                         <PrimaryButton
                             floated="right"
-                            disabled={ !selectedPlatform || isMetadataLoading }
-                            loading={ isMetadataLoading }
-                            onClick={ (): void => setCurrentStep(WizardStep.RULE_BUILDER) }
-                            data-componentid={ `${ componentId }-next-button` }
+                            onClick={ handleNextToReview }
+                            data-componentid={ `${ componentId }-review-button` }
                         >
                             { t("devices:assurancePolicies.wizard.buttons.next") }
                             <Icon name="arrow right" />
                         </PrimaryButton>
                     ) }
-                    { currentStep === WizardStep.RULE_BUILDER && (
+                    { currentStep === WizardStep.REVIEW && (
                         <PrimaryButton
                             floated="right"
-                            disabled={ !isSaveEnabled || isSubmitting }
+                            disabled={ isSubmitting }
                             loading={ isSubmitting }
                             onClick={ handleSave }
                             data-componentid={ `${ componentId }-save-button` }
@@ -717,6 +892,10 @@ const EditDevicePolicyWizard: FunctionComponent<EditDevicePolicyWizardPropsInter
             </Grid.Row>
         </Grid>
     );
+
+    /* ------------------------------------------------------------------ */
+    /*  Render                                                              */
+    /* ------------------------------------------------------------------ */
 
     return (
         <Modal

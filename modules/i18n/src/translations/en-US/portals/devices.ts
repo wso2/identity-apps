@@ -40,10 +40,44 @@ export const devices: DevicesNS = {
             heading: "Create Device Assurance Policy",
             subHeading: "Create a new device assurance policy for your organization.",
             steps: {
+                executionRules: {
+                    clearRule: "Clear Rule",
+                    configureRule: "Configure Rule",
+                    description: "Configure the rule conditions for each selected platform.",
+                    emptyState: {
+                        description: "Policy is applied to all {{platform}} devices. Configure a rule to scope by device and user attributes.",
+                        heading: "No execution rule is configured."
+                    },
+                    executeIf: "Execute If",
+                    heading: "Configure Rules",
+                    loadingMetadata: "Loading field definitions...",
+                    noMetadata: "No rule fields are available for this platform.",
+                    sectionLabel: "Execution Rule",
+                    title: "Execution Rules"
+                },
                 platform: {
-                    description: "Select the platform for which you want to create a device assurance policy.",
-                    heading: "Select Platform",
-                    title: "Platform"
+                    description: "Pick one or more platforms. On the next step you'll define an execution rule for each platform separately — fields available depend on the platform.",
+                    heading: "Target platforms",
+                    title: "Basic Details"
+                },
+                review: {
+                    conditionCount: "{{count}} condition(s) across {{groups}} group(s)",
+                    description: "Review the policy details before creating.",
+                    edit: "Edit",
+                    heading: "Review",
+                    noRuleNote: "Applies to all {{platform}} devices",
+                    noRules: "No conditions configured.",
+                    platforms: "Platforms",
+                    policyName: "Policy Name",
+                    rules: "Conditions",
+                    sectionPolicy: "Policy",
+                    sectionRules: "Execution rules",
+                    title: "Review & Save",
+                    assignHint: {
+                        loginFlow: "To assign this policy in a <strong>login flow</strong>, use an Adaptive Authentication script.",
+                        otherFlows: "To assign this policy in other flows (e.g. User Registration, Self Registration), click the <strong>cogwheel icon</strong> on the executor step and select this policy.",
+                        title: "How to apply this policy"
+                    }
                 },
                 ruleBuilder: {
                     conditionsDescription: "Enable the conditions you want to enforce and configure their values.",
@@ -54,6 +88,12 @@ export const devices: DevicesNS = {
                     policyNamePlaceholder: "Enter a name for this policy",
                     title: "Configure"
                 }
+            },
+            platformDescriptions: {
+                android: "Phones, tablets, wearables",
+                ios: "iPhone, iPad",
+                macos: "MacBook, iMac, Mac mini",
+                windows: "Windows 10 / 11 devices"
             },
             platforms: {
                 android: "Android",

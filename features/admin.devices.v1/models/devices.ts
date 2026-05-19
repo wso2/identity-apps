@@ -47,6 +47,16 @@ export interface DevicePolicyRequestInterface {
     rule: PolicyRuleInterface;
 }
 
+export interface DevicePlatformRuleInterface {
+    platform: DevicePlatformType;
+    rule: PolicyRuleInterface;
+}
+
+export interface DevicePolicyCreateRequestInterface {
+    name: string;
+    rules: DevicePlatformRuleInterface[];
+}
+
 export interface DevicePolicyExpressionValueInterface {
     type: string;
     value: string;
@@ -67,11 +77,24 @@ export interface DevicePolicyFullRuleInterface {
     rules: DevicePolicyRuleGroupInterface[];
 }
 
+export interface DevicePolicyPlatformRuleResponseInterface {
+    id: string;
+    ruleId: string;
+    platform: DevicePlatformType;
+    rule: DevicePolicyFullRuleInterface;
+}
+
 export interface DevicePolicyResponseInterface {
     id: string;
     name: string;
     ruleId?: string;
     rule?: DevicePolicyFullRuleInterface;
+    rules?: DevicePolicyPlatformRuleResponseInterface[];
+}
+
+export interface DevicePolicyMultiUpdateRequestInterface {
+    name: string;
+    rules: DevicePlatformRuleInterface[];
 }
 
 export type DevicePlatformType = "android" | "ios" | "macos" | "windows";

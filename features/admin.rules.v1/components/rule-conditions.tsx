@@ -83,6 +83,7 @@ interface ConditionValueInputProps extends ComponentCommonPropsInterface {
     metaValue: ExpressionValueInterface;
     findMetaValuesAgainst: ConditionExpressionMetaInterface;
     expressionField: string;
+    operator: string;
     setIsResourceMissing: Dispatch<React.SetStateAction<boolean>>;
     hiddenResources?: string[];
     hiddenValues?: string[];
@@ -665,12 +666,58 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         expressionId,
         expressionValue,
         metaValue,
+        operator,
         setIsResourceMissing,
         hiddenResources = [],
         hiddenValues = []
     }: ConditionValueInputProps) => {
 
-        if (metaValue?.inputType === "input" || null) {
+        if (operator?.toLowerCase() === "in" && metaValue?.inputType?.toLowerCase() === "options"
+            && (metaValue?.values?.length ?? 0) > 0) {
+            const filteredOptions: ListDataInterface[] = (metaValue.values ?? []).filter(
+                (item: ListDataInterface): boolean => !hiddenValues.includes(item.name)
+            );
+            const selectedNames: string[] = expressionValue
+                ? expressionValue.split(",").map((v: string): string => v.trim()).filter(Boolean)
+                : [];
+
+            return (
+                <Select
+                    multiple
+                    disabled={ readonly }
+                    value={ selectedNames }
+                    data-componentid={ componentId }
+                    onChange={ (e: SelectChangeEvent<string[]>): void => {
+                        const newValues: string[] = typeof e.target.value === "string"
+                            ? e.target.value.split(",")
+                            : e.target.value;
+
+                        updateConditionExpression(
+                            newValues.join(","),
+                            ruleId,
+                            conditionId,
+                            expressionId,
+                            ExpressionFieldTypes.Value,
+                            true
+                        );
+                    } }
+                    renderValue={ (selected: string[]): string =>
+                        filteredOptions
+                            .filter((opt: ListDataInterface): boolean => selected.includes(opt.name))
+                            .map((opt: ListDataInterface): string => opt.displayName)
+                            .join(", ")
+                    }
+                >
+                    { filteredOptions.map((item: ListDataInterface): ReactElement => (
+                        <MenuItem key={ item.name } value={ item.name }>
+                            { item.displayName }
+                        </MenuItem>
+                    )) }
+                </Select>
+            );
+        }
+
+        if (metaValue?.inputType?.toLowerCase() === "input" || null) {
             return (
                 <TextField
                     disabled={ readonly }
@@ -690,7 +737,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             );
         }
 
-        if (metaValue?.inputType === "options") {
+        if (metaValue?.inputType?.toLowerCase() === "options") {
             if (metaValue?.values?.length > 1) {
 
                 // Set first value of the list if option is empty
@@ -858,14 +905,29 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         value={ expression.operator }
                         data-componentid={ "rules-condition-expression-input-operator-select" }
                         onChange={ (e: SelectChangeEvent) => {
+                            const newOperator: string = e.target.value;
+                            const isCurrentlyIn: boolean = expression.operator?.toLowerCase() === "in";
+                            const willBeIn: boolean = newOperator?.toLowerCase() === "in";
+
                             updateConditionExpression(
-                                e.target.value,
+                                newOperator,
                                 ruleId,
                                 conditionId,
                                 expression.id,
                                 ExpressionFieldTypes.Operator,
                                 true
                             );
+
+                            if (isCurrentlyIn !== willBeIn) {
+                                updateConditionExpression(
+                                    "",
+                                    ruleId,
+                                    conditionId,
+                                    expression.id,
+                                    ExpressionFieldTypes.Value,
+                                    true
+                                );
+                            }
                         } }
                     >
                         { findMetaValuesAgainst?.operators?.map((item: ListDataInterface, index: number) => (
@@ -883,6 +945,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         expressionValue={ expression.value }
                         findMetaValuesAgainst={ findMetaValuesAgainst }
                         metaValue={ findMetaValuesAgainst?.value }
+                        operator={ expression.operator }
                         ruleId={ ruleId }
                         setIsResourceMissing={ setIsResourceMissing }
                         hiddenResources={ hiddenResources }
