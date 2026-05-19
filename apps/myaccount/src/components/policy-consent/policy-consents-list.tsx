@@ -22,6 +22,7 @@ import { PolicyConsentItemInterface } from "../../models/consents";
 import { DangerZone, DangerZoneGroup, GenericIcon, Media } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import { toSentenceCase } from "../../utils";
 import { Button, Grid, Icon, List } from "semantic-ui-react";
 import { PolicyConsentIcon } from "../../configs";
 import { EditSection } from "../shared";
@@ -46,6 +47,14 @@ export const PolicyConsentList: FunctionComponent<PolicyConsentListProps> = (
 
     const { items, activeIndexes, onToggleDetail, onRevokeClick, ["data-componentid"]: componentId } = props;
     const { t, i18n } = useTranslation();
+
+    const resolveStateClassname = (state: string): string => {
+        if (state === "ACTIVE") {
+            return "positive";
+        }
+
+        return "";
+    };
 
     return (
         <>
@@ -72,7 +81,12 @@ export const PolicyConsentList: FunctionComponent<PolicyConsentListProps> = (
                                                 <List.Header>{ item.purposeName }</List.Header>
                                                 <List.Description>
                                                     <p className="small-text">
-                                                        <span className="active-label positive" />
+                                                        <span
+                                                            className={
+                                                                `active-label ${ resolveStateClassname(item.state) }`
+                                                            }
+                                                        />
+                                                        { toSentenceCase(item.state) }
                                                     </p>
                                                 </List.Description>
                                             </List.Content>
@@ -80,6 +94,21 @@ export const PolicyConsentList: FunctionComponent<PolicyConsentListProps> = (
                                         <Grid.Column width={ 5 } className="last-column">
                                             <List.Content floated="right">
                                                 <Media lessThan="computer">
+                                                    { item.policyUrl && (
+                                                        <Button
+                                                            as="a"
+                                                            href={ i18nLink(i18n.language, item.policyUrl) }
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="borderless-button"
+                                                            basic={ true }
+                                                            data-componentid={
+                                                                `${ componentId }-${ item.purposeId }-view-policy-button`
+                                                            }
+                                                        >
+                                                            <Icon name="external alternate" />
+                                                        </Button>
+                                                    ) }
                                                     <Button
                                                         className="borderless-button"
                                                         basic={ true }
@@ -147,40 +176,49 @@ export const PolicyConsentList: FunctionComponent<PolicyConsentListProps> = (
                                             </List.Content>
                                         </Grid.Column>
                                     </Grid.Row>
-                                    { activeIndexes.includes(index) && (
-                                        <EditSection
-                                            data-componentid={ `${ componentId }-${ item.purposeId }-edit-section` }
-                                        >
-                                            <Grid padded>
-                                                <Grid.Row columns={ 1 }>
-                                                    <Grid.Column width={ 16 }>
-                                                        <DangerZoneGroup
-                                                            sectionHeader={ t("common:dangerZone") }
-                                                        >
-                                                            <DangerZone
-                                                                actionTitle={ t(
-                                                                    "myAccount:components.policyConsentManagement" +
-                                                                    ".dangerZones.revoke.actionTitle"
-                                                                ) }
-                                                                header={ t(
-                                                                    "myAccount:components.policyConsentManagement" +
-                                                                    ".dangerZones.revoke.header"
-                                                                ) }
-                                                                subheader={ t(
-                                                                    "myAccount:components.policyConsentManagement" +
-                                                                    ".dangerZones.revoke.subheader"
-                                                                ) }
-                                                                onActionClick={ () => onRevokeClick(item) }
-                                                                data-componentid={
-                                                                    `${ componentId }-${ item.purposeId }-danger-zone-revoke`
-                                                                }
-                                                            />
-                                                        </DangerZoneGroup>
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                            </Grid>
-                                        </EditSection>
-                                    ) }
+                                    {
+                                        activeIndexes.includes(index)
+                                            ? (
+                                                <EditSection
+                                                    data-componentid={
+                                                        `${ componentId }-${ item.purposeId }-edit-section`
+                                                    }
+                                                >
+                                                    <Grid padded>
+                                                        <Grid.Row columns={ 1 }>
+                                                            <Grid.Column width={ 16 }>
+                                                                <DangerZoneGroup
+                                                                    sectionHeader={ t("common:dangerZone") }
+                                                                >
+                                                                    <DangerZone
+                                                                        actionTitle={ t(
+                                                                            "myAccount:components" +
+                                                                            ".policyConsentManagement" +
+                                                                            ".dangerZones.revoke.actionTitle"
+                                                                        ) }
+                                                                        header={ t(
+                                                                            "myAccount:components" +
+                                                                            ".policyConsentManagement" +
+                                                                            ".dangerZones.revoke.header"
+                                                                        ) }
+                                                                        subheader={ t(
+                                                                            "myAccount:components" +
+                                                                            ".policyConsentManagement" +
+                                                                            ".dangerZones.revoke.subheader"
+                                                                        ) }
+                                                                        onActionClick={ () => onRevokeClick(item) }
+                                                                        data-componentid={
+                                                                            `${ componentId }-${ item.purposeId }` +
+                                                                            "-danger-zone-revoke"
+                                                                        }
+                                                                    />
+                                                                </DangerZoneGroup>
+                                                            </Grid.Column>
+                                                        </Grid.Row>
+                                                    </Grid>
+                                                </EditSection>
+                                            ) : null
+                                    }
                                 </Grid>
                             </List.Item>
                         ))

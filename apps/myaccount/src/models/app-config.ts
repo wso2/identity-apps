@@ -133,7 +133,6 @@ export interface ServiceResourceEndpointsInterface {
      */
     consentMgtV2: {
         consents: string;
-        purposes: string;
     };
 
     homeRealmIdentifiers: string;

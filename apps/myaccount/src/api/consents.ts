@@ -378,41 +378,6 @@ export const getConsentById = (
 };
 
 /**
- * Retrieves a specific purpose version from the v2 purposes API.
- *
- * @param purposesBaseUrl - Base URL for the v2 purposes endpoint.
- * @param purposeId - ID of the purpose.
- * @param versionId - ID of the version.
- * @returns A promise containing the purpose version DTO.
- */
-export const getPurposeVersionById = (
-    purposesBaseUrl: string,
-    purposeId: string,
-    versionId: string
-): Promise<any> => {
-    const requestConfig: AxiosRequestConfig = {
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        method: "GET",
-        url: `${purposesBaseUrl}/${purposeId}/versions/${versionId}`
-    };
-
-    return httpClient(requestConfig)
-        .then((response: any) => {
-            if (response.status !== 200) {
-                throw new Error("Failed to retrieve purpose version.");
-            }
-
-            return response.data;
-        })
-        .catch((error: any) => {
-            throw error;
-        });
-};
-
-/**
  * Revokes a user consent record via the v2 consents API.
  *
  * @param consentsBaseUrl - Base URL for the v2 consents endpoint.

@@ -21,13 +21,11 @@ import {
     PolicyConsentDetailInterface,
     PolicyConsentItemInterface,
     PolicyConsentListResponseInterface,
-    PolicyConsentSummaryInterface,
-    PurposeVersionDTOInterface
+    PolicyConsentSummaryInterface
 } from "../../models/consents";
 import {
     getConsentById,
     getConsentsBySubject,
-    getPurposeVersionById,
     revokeConsentById
 } from "../../api/consents";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -66,13 +64,10 @@ export const PolicyConsent: FunctionComponent<PolicyConsentComponentProps> = (
     const consentsBaseUrl: string = useSelector(
         (state: AppState) => state?.config?.endpoints?.consentMgtV2?.consents
     );
-    const purposesBaseUrl: string = useSelector(
-        (state: AppState) => state?.config?.endpoints?.consentMgtV2?.purposes
-    );
     const { t } = useTranslation();
 
     const loadPolicyConsents: () => Promise<void> = useCallback(async (): Promise<void> => {
-        if (!userName || !consentsBaseUrl || !purposesBaseUrl) {
+        if (!userName || !consentsBaseUrl) {
             return;
         }
 
@@ -93,39 +88,24 @@ export const PolicyConsent: FunctionComponent<PolicyConsentComponentProps> = (
                 )
             );
 
-            const items: PolicyConsentItemInterface[] = await Promise.all(
-                details.map(async (detail: PolicyConsentDetailInterface, index: number):
-                    Promise<PolicyConsentItemInterface> => {
+            const items: PolicyConsentItemInterface[] = details.map(
+                (detail: PolicyConsentDetailInterface, index: number): PolicyConsentItemInterface => {
                     const purpose: ConsentedPurposeInterface | undefined =
                         Array.isArray(detail.purposes) && detail.purposes.length > 0
                             ? detail.purposes[0]
                             : undefined;
-                    let policyUrl: string | null = null;
-
-                    if (purpose) {
-                        try {
-                            const versionDetail: PurposeVersionDTOInterface = await getPurposeVersionById(
-                                purposesBaseUrl,
-                                purpose.id,
-                                purpose.purposeVersionId
-                            );
-
-                            policyUrl = versionDetail.properties?.policyUrl ?? null;
-                        } catch {
-                            // policyUrl stays null if version fetch fails
-                        }
-                    }
 
                     return {
                         consentId: summaries[index].id,
-                        policyUrl,
+                        policyUrl: purpose?.properties?.policyUrl ?? null,
                         purposeId: purpose?.id ?? "",
                         purposeName: purpose?.name ?? "",
                         purposeVersionId: purpose?.purposeVersionId ?? "",
+                        state: detail.state,
                         timestamp: summaries[index].timestamp,
                         version: purpose?.version ?? null
                     };
-                })
+                }
             );
 
             setPolicyConsentItems(items);
@@ -140,7 +120,7 @@ export const PolicyConsent: FunctionComponent<PolicyConsentComponentProps> = (
                 )
             });
         }
-    }, [ userName, consentsBaseUrl, purposesBaseUrl, t, onAlertFired ]);
+    }, [ userName, consentsBaseUrl, t, onAlertFired ]);
 
     useEffect(() => {
         loadPolicyConsents();

@@ -28,6 +28,5 @@ export class ConsentConstants {
     public static readonly DEFAULT_CONSENT: string = "DEFAULT";
     public static readonly CONSENT_TYPE: string = "EXPLICIT";
     public static readonly TERMINATION: string = "DATE_UNTIL:INDEFINITE";
-    public static readonly DEFAULT_APP_NAME_V2: string = "SYSTEM";
 
 }

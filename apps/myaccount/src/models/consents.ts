@@ -313,6 +313,10 @@ export interface ConsentedPurposeInterface {
     elements: ConsentedElementInterface[];
     id: string;
     name: string;
+    properties?: {
+        policyUrl?: string;
+        promptOnLogin?: string;
+    };
     purposeVersionId: string;
     version: string | null;
 }
@@ -341,26 +345,8 @@ export interface PolicyConsentItemInterface {
     purposeId: string;
     purposeName: string;
     purposeVersionId: string;
+    state: string;
     timestamp: number;
     version: string | null;
 }
 
-/**
- * API DTO for a purpose version.
- */
-export interface PurposeVersionDTOInterface {
-    description: string;
-    elements?: Array<{
-        description: string;
-        displayName: string;
-        id: string;
-        mandatory: boolean;
-        name: string;
-    }>;
-    id: string;
-    properties?: {
-        policyUrl?: string;
-        promptOnLogin?: boolean;
-    };
-    version: string;
-}
