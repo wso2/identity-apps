@@ -32,16 +32,16 @@ import Tab from "@oxygen-ui/react/Tab";
 import TabPanel from "@oxygen-ui/react/TabPanel";
 import Tabs from "@oxygen-ui/react/Tabs";
 import Typography from "@oxygen-ui/react/Typography";
-import { Theme, useTheme } from "@mui/material/styles";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { LocalStorageUtils } from "@wso2is/core/utils";
 import { TabPageLayout } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router-dom";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Accordion, Icon } from "semantic-ui-react";
 import {
     ConnectionTestSessionResponseInterface,
@@ -87,11 +87,6 @@ interface ConnectionTestLocationStateInterface {
 interface ConnectionTestPagePropsInterface
     extends IdentifiableComponentInterface, RouteComponentProps<RouteParams> {}
 
-const RotateIcon = (): ReactElement => {
-    /* eslint-disable-next-line max-len */
-    return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width={ 16 } height={ 16 } fill="currentColor"><path d="M129.9 292.5C143.2 199.5 223.3 128 320 128C373 128 421 149.5 455.8 184.2C456 184.4 456.2 184.6 456.4 184.8L464 192L416.1 192C398.4 192 384.1 206.3 384.1 224C384.1 241.7 398.4 256 416.1 256L544.1 256C561.8 256 576.1 241.7 576.1 224L576.1 96C576.1 78.3 561.8 64 544.1 64C526.4 64 512.1 78.3 512.1 96L512.1 149.4L500.8 138.7C454.5 92.6 390.5 64 320 64C191 64 84.3 159.4 66.6 283.5C64.1 301 76.2 317.2 93.7 319.7C111.2 322.2 127.4 310 129.9 292.6zM573.4 356.5C575.9 339 563.7 322.8 546.3 320.3C528.9 317.8 512.6 330 510.1 347.4C496.8 440.4 416.7 511.9 320 511.9C267 511.9 219 490.4 184.2 455.7C184 455.5 183.8 455.3 183.6 455.1L176 447.9L223.9 447.9C241.6 447.9 255.9 433.6 255.9 415.9C255.9 398.2 241.6 383.9 223.9 383.9L96 384C87.5 384 79.3 387.4 73.3 393.5C67.3 399.6 63.9 407.7 64 416.3L65 543.3C65.1 561 79.6 575.2 97.3 575C115 574.8 129.2 560.4 129 542.7L128.6 491.2L139.3 501.3C185.6 547.4 249.5 576 320 576C449 576 555.7 480.6 573.4 356.5z" /></svg>;
-};
-
 /**
  * Connection Test page component.
  *
@@ -101,7 +96,6 @@ const RotateIcon = (): ReactElement => {
 const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = (
     props: ConnectionTestPagePropsInterface
 ): ReactElement => {
-    const theme: Theme = useTheme();
     const { id: connectorId = "" } = props.match.params || {};
     const { location } = props;
     const resultCacheKey: string = `idp-test-result:${connectorId}`;
@@ -110,11 +104,11 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
     const hasPendingAutoRun: boolean = Boolean(locationState?.debugId);
 
     const getCachedResult = (): ConnectionTestResultInterface | null => {
-        if (typeof window === "undefined" || !connectorId) {
+        if (!connectorId) {
             return null;
         }
 
-        const cachedResult = window.localStorage.getItem(resultCacheKey);
+        const cachedResult: string = LocalStorageUtils.getValueFromLocalStorage(resultCacheKey);
 
         if (!cachedResult) {
             return null;
@@ -122,8 +116,8 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
 
         try {
             return JSON.parse(cachedResult);
-        } catch (e) {
-            window.localStorage.removeItem(resultCacheKey);
+        } catch {
+            LocalStorageUtils.clearItemFromLocalStorage(resultCacheKey);
 
             return null;
         }
@@ -145,29 +139,29 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
     const [ isStatusBannerVisible, setIsStatusBannerVisible ] = useState<boolean>(true);
     const [ expandedDiagnosticLogs, setExpandedDiagnosticLogs ] = useState<number[]>([]);
 
-    const popupInterval = useRef<NodeJS.Timeout | null>(null);
-    const fetchTimer = useRef<NodeJS.Timeout | null>(null);
+    const popupInterval: React.MutableRefObject<NodeJS.Timeout | null> = useRef<NodeJS.Timeout | null>(null);
+    const fetchTimer: React.MutableRefObject<NodeJS.Timeout | null> = useRef<NodeJS.Timeout | null>(null);
 
     /**
      * Clears cached test result for the current connection.
      */
     const clearCachedResult = (): void => {
-        if (typeof window === "undefined" || !connectorId) {
+        if (!connectorId) {
             return;
         }
 
-        window.localStorage.removeItem(resultCacheKey);
+        LocalStorageUtils.clearItemFromLocalStorage(resultCacheKey);
     };
 
     /**
      * Saves latest test result payload to browser cache.
      */
     const cacheResult = (value: ConnectionTestResultInterface): void => {
-        if (typeof window === "undefined" || !connectorId) {
+        if (!connectorId) {
             return;
         }
 
-        window.localStorage.setItem(resultCacheKey, JSON.stringify(value));
+        LocalStorageUtils.setValueInLocalStorage(resultCacheKey, JSON.stringify(value));
     };
 
     /**
@@ -218,7 +212,6 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
         }
     }, [ locationState, autoRunTriggered ]);
 
-
     /**
      * Fetches the test results from the backend.
      */
@@ -244,10 +237,8 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
             cacheResult(response.data);
             setExpandedDiagnosticLogs([]);
 
-        } catch (error: unknown) {
-            console.error("[ConnectionTest] Fetch error:", resolveConnectionTestErrorMessage(error));
-
-            const errorMessage: string | undefined = resolveConnectionTestErrorMessage(error);
+        } catch (fetchError: unknown) {
+            const errorMessage: string | undefined = resolveConnectionTestErrorMessage(fetchError);
 
             if (errorMessage) {
                 setError(errorMessage);
@@ -301,7 +292,7 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
 
             // Open authorizationUrl in a new tab if present
             if (authorizationUrl) {
-                const authPopup = window.open(authorizationUrl, "_blank");
+                const authPopup: Window | null = window.open(authorizationUrl, "_blank");
 
                 // Monitor the popup and fetch results when it closes
                 popupInterval.current = setInterval(() => {
@@ -313,8 +304,8 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
                                 fetchResult(newDebugId);
                             }, 1000);
                         }
-                    } catch (e) {
-                        // ignore
+                    } catch {
+                        // ignore cross-origin access errors
                     }
                 }, 500);
 
@@ -329,60 +320,57 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
                     fetchResult(newDebugId);
                 }, 2000);
             }
-        } catch (error: unknown) {
-            // eslint-disable-next-line no-console
-            console.error("[ConnectionTest] Error running test:", error);
+        } catch (runError: unknown) {
             clearTimers();
             setError(
-                resolveConnectionTestErrorMessage(error)
+                resolveConnectionTestErrorMessage(runError)
                     ?? t("authenticationProvider:notifications.getIDP.genericError.description")
             );
         }
     };
 
-    // Update error status based on result metadata
+    // Update error/partial status based on result metadata
     useEffect(() => {
         if (result) {
             // Handle nested metadata structure
-            const metadataObj = result?.metadata?.metadata || result?.metadata || {};
-            
-            // Try to get steps from stepStatus directly
-            const stepStatus = metadataObj?.stepStatus || metadataObj?.steps || {};
-            
+            const metadataObj: ConnectionTestResultMetadataInterface =
+                result?.metadata?.metadata || result?.metadata || {};
+
+            const stepStatus: ConnectionTestStepStatusInterface =
+                metadataObj?.stepStatus || metadataObj?.steps || {};
+
             const steps: Record<string, string | undefined> = {
-                connectionCreation: stepStatus?.connectionCreation || metadataObj?.connectionCreation,
+                accountLinkingStatus: stepStatus?.accountLinkingStatus || metadataObj?.accountLinkingStatus,
                 authenticationStatus: stepStatus?.authenticationStatus || metadataObj?.authenticationStatus,
-                claimMappingStatus: stepStatus?.claimMappingStatus || metadataObj?.claimMappingStatus,
                 claimExtractionStatus: stepStatus?.claimExtractionStatus || metadataObj?.claimExtractionStatus,
-                accountLinkingStatus: stepStatus?.accountLinkingStatus || metadataObj?.accountLinkingStatus
+                claimMappingStatus: stepStatus?.claimMappingStatus || metadataObj?.claimMappingStatus,
+                connectionCreation: stepStatus?.connectionCreation || metadataObj?.connectionCreation
             };
 
-            // Check for top-level FAILURE status first
-            const topLevelFailure = result?.status === "FAILURE";
+            const topLevelFailure: boolean = result?.status === "FAILURE";
 
-            // Check if any step explicitly failed (not pending or success)
-            const hasStepError = (
+            const hasStepError: boolean = Boolean(
                 (steps.connectionCreation && steps.connectionCreation !== "success" && steps.connectionCreation !== "pending") ||
                 (steps.authenticationStatus && steps.authenticationStatus !== "success" && steps.authenticationStatus !== "pending") ||
                 (steps.claimMappingStatus && steps.claimMappingStatus !== "success" && steps.claimMappingStatus !== "pending" && steps.claimMappingStatus !== "partial") ||
-                steps.accountLinkingStatus && steps.accountLinkingStatus !== "success" && steps.accountLinkingStatus !== "pending" ||
+                (steps.accountLinkingStatus && steps.accountLinkingStatus !== "success" && steps.accountLinkingStatus !== "pending") ||
                 result?.error
             );
 
-            // Check if claim mapping is partial
-            const hasPartialStatus = steps.claimMappingStatus === "partial";
+            const hasPartialStatus: boolean = steps.claimMappingStatus === "partial";
 
-            // Check for error fields in metadata
-            const hasErrorFields = metadataObj?.error_details || metadataObj?.error_description || metadataObj?.error_code;
+            const hasErrorFields: boolean = Boolean(
+                metadataObj?.error_details || metadataObj?.error_description || metadataObj?.error_code
+            );
 
             if (topLevelFailure || hasStepError || hasErrorFields) {
                 setHasError(true);
                 setHasPartial(false);
-                setActiveTab(2); // Switch to Logs tab (index 2)
+                setActiveTab(2);
             } else if (hasPartialStatus) {
                 setHasError(false);
                 setHasPartial(true);
-                setActiveTab(2); // Switch to Logs tab (index 2) for partial status
+                setActiveTab(2);
             } else {
                 setHasError(false);
                 setHasPartial(false);
@@ -397,13 +385,12 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
         history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", connectorId));
     };
 
-    // State for connector details - removed as we no longer display connector info on this page
-    const testId = "idp-test-connection";
+    const testId: string = "idp-test-connection";
 
     /**
      * Renders the results tabs when test results are available.
      */
-    const renderResultsTabs = () => {
+    const renderResultsTabs = (): ReactElement => {
         const renderCodeBlock = (
             value: unknown,
             options: {
@@ -411,7 +398,7 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
                 marginBottom?: number;
                 wordBreak?: "break-all" | "break-word";
             } = {}
-        ) => (
+        ): ReactElement => (
             <StyledCodeBlockContainer sx={ { mb: options.marginBottom ?? 0 } }>
                 <StyledCodeBlock
                     component="pre"
@@ -425,18 +412,22 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
             </StyledCodeBlockContainer>
         );
 
-        const tabPanes = [
+        const tabPanes: Array<{ key: string; menuItem: string; render: () => ReactElement }> = [
             {
                 key: "id-token",
-                menuItem: "ID Token",
-                render: () => {
-                    const decodeJWT = (token?: string) => {
+                menuItem: t("authenticationProvider:connectionTest.tabs.idToken"),
+                render: (): ReactElement => {
+                    const decodeJWT = (token?: string): {
+                        header: unknown;
+                        payload: unknown;
+                        signature: string;
+                    } | null => {
                         if (!token || typeof token !== "string" || token.split(".").length < 3) {
                             return null;
                         }
 
                         const [ header, payload, signature ] = token.split(".");
-                        const decode = (value: string) => {
+                        const decode = (value: string): unknown => {
                             try {
                                 let base64: string = value.replace(/-/g, "+").replace(/_/g, "/");
 
@@ -458,7 +449,8 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
                     };
 
                     const idToken: string | undefined = result?.metadata?.idToken;
-                    const decoded = decodeJWT(idToken);
+                    const decoded: { header: unknown; payload: unknown; signature: string } | null =
+                        decodeJWT(idToken);
 
                     return (
                         <Box sx={ { pt: 3 } }>
@@ -466,23 +458,23 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
                                 { decoded ? (
                                     <StyledResultCard variant="outlined">
                                         <Typography variant="h6" sx={ { mb: 1 } }>
-                                            Header
+                                            { t("authenticationProvider:connectionTest.idToken.header") }
                                         </Typography>
                                         { renderCodeBlock(decoded.header, { marginBottom: 2 }) }
 
                                         <Typography variant="h6" sx={ { mb: 1 } }>
-                                            Payload
+                                            { t("authenticationProvider:connectionTest.idToken.payload") }
                                         </Typography>
                                         { renderCodeBlock(decoded.payload, { marginBottom: 2 }) }
 
                                         <Typography variant="h6" sx={ { mb: 1 } }>
-                                            Signature
+                                            { t("authenticationProvider:connectionTest.idToken.signature") }
                                         </Typography>
                                         { renderCodeBlock(decoded.signature, { wordBreak: "break-all" }) }
                                     </StyledResultCard>
                                 ) : (
                                     <Alert severity="info" icon={ false }>
-                                        Unable to decode token or not a valid JWT.
+                                        { t("authenticationProvider:connectionTest.idToken.decodeError") }
                                     </Alert>
                                 ) }
                             </Stack>
@@ -492,8 +484,8 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
             },
             {
                 key: "claim-mappings",
-                menuItem: "Claim Mappings",
-                render: () => {
+                menuItem: t("authenticationProvider:connectionTest.tabs.claimMappings"),
+                render: (): ReactElement => {
                     const claimsArray: MappedClaimInterface[] = Array.isArray(result?.metadata?.mappedClaims)
                         ? result?.metadata?.mappedClaims as MappedClaimInterface[]
                         : [];
@@ -511,7 +503,7 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
                         return 0;
                     });
 
-                    const formatValue = (value: unknown) => {
+                    const formatValue = (value: unknown): string => {
                         if (value === null || value === undefined) {
                             return "-";
                         }
@@ -527,93 +519,93 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
                             <Box sx={ { overflowX: "auto" } }>
                                 <StyledTableWrapper>
                                     <Box
-                                    component="table"
-                                    sx={ {
-                                        borderCollapse: "collapse",
-                                        minWidth: 760,
-                                        width: "100%"
-                                    } }
-                                >
-                                    <thead>
-                                        <StyledTableHeaderRow component="tr">
-                                            <StyledHeaderCell
-                                                component="th"
-                                                sx={ {
-                                                    width: "48%"
-                                                } }
-                                            >
-                                                Local Claim (URI)
-                                            </StyledHeaderCell>
-                                            <StyledHeaderCell
-                                                component="th"
-                                                sx={ {
-                                                    width: "24%"
-                                                } }
-                                            >
-                                                IDP Claim
-                                            </StyledHeaderCell>
-                                            <StyledHeaderCell
-                                                component="th"
-                                                sx={ {
-                                                    borderRight: "none",
-                                                    width: "28%"
-                                                } }
-                                            >
-                                                Value
-                                            </StyledHeaderCell>
-                                        </StyledTableHeaderRow>
-                                    </thead>
-                                    <tbody>
-                                        { sortedClaims.length === 0 && (
-                                            <Box component="tr">
-                                                <Box component="td" colSpan={ 3 } sx={ { color: "text.secondary", p: 2, textAlign: "center" } }>
-                                                    No claim mappings configured.
-                                                </Box>
-                                            </Box>
-                                        ) }
-                                        { sortedClaims.map((claim, idx) => (
-                                            <StyledTableRow
-                                                component="tr"
-                                                key={ idx }
-                                            >
-                                                <StyledMonoCell
-                                                    component="td"
-                                                    sx={ {
-                                                        maxWidth: 360,
-                                                        whiteSpace: "normal",
-                                                        wordBreak: "break-word"
-                                                    } }
-                                                    title={ claim.localClaim || claim.isClaim || "-" }
+                                        component="table"
+                                        sx={ {
+                                            borderCollapse: "collapse",
+                                            minWidth: 760,
+                                            width: "100%"
+                                        } }
+                                    >
+                                        <thead>
+                                            <StyledTableHeaderRow component="tr">
+                                                <StyledHeaderCell
+                                                    component="th"
+                                                    sx={ { width: "48%" } }
                                                 >
-                                                    { claim.localClaim || claim.isClaim || "-" }
-                                                </StyledMonoCell>
-                                                <StyledMonoCell
-                                                    component="td"
-                                                    sx={ {
-                                                        maxWidth: 180,
-                                                        overflow: "hidden",
-                                                        textOverflow: "ellipsis"
-                                                    } }
-                                                    title={ claim.idpClaim }
+                                                    { t("authenticationProvider:connectionTest.claimMappings.localClaimColumn") }
+                                                </StyledHeaderCell>
+                                                <StyledHeaderCell
+                                                    component="th"
+                                                    sx={ { width: "24%" } }
                                                 >
-                                                    { claim.idpClaim }
-                                                </StyledMonoCell>
-                                                <StyledValueCell
-                                                    component="td"
+                                                    { t("authenticationProvider:connectionTest.claimMappings.idpClaimColumn") }
+                                                </StyledHeaderCell>
+                                                <StyledHeaderCell
+                                                    component="th"
                                                     sx={ {
                                                         borderRight: "none",
-                                                        maxWidth: 200,
-                                                        overflow: "hidden",
-                                                        textOverflow: "ellipsis"
+                                                        width: "28%"
                                                     } }
-                                                    title={ formatValue(claim.value) }
                                                 >
-                                                    { formatValue(claim.value) }
-                                                </StyledValueCell>
-                                            </StyledTableRow>
-                                        )) }
-                                    </tbody>
-                                </Box>
+                                                    { t("authenticationProvider:connectionTest.claimMappings.valueColumn") }
+                                                </StyledHeaderCell>
+                                            </StyledTableHeaderRow>
+                                        </thead>
+                                        <tbody>
+                                            { sortedClaims.length === 0 && (
+                                                <Box component="tr">
+                                                    <Box
+                                                        component="td"
+                                                        colSpan={ 3 }
+                                                        sx={ { color: "text.secondary", p: 2, textAlign: "center" } }
+                                                    >
+                                                        { t("authenticationProvider:connectionTest.claimMappings.empty") }
+                                                    </Box>
+                                                </Box>
+                                            ) }
+                                            { sortedClaims.map((claim: MappedClaimInterface, idx: number) => (
+                                                <StyledTableRow
+                                                    component="tr"
+                                                    key={ idx }
+                                                >
+                                                    <StyledMonoCell
+                                                        component="td"
+                                                        sx={ {
+                                                            maxWidth: 360,
+                                                            whiteSpace: "normal",
+                                                            wordBreak: "break-word"
+                                                        } }
+                                                        title={ claim.localClaim || claim.isClaim || "-" }
+                                                    >
+                                                        { claim.localClaim || claim.isClaim || "-" }
+                                                    </StyledMonoCell>
+                                                    <StyledMonoCell
+                                                        component="td"
+                                                        sx={ {
+                                                            maxWidth: 180,
+                                                            overflow: "hidden",
+                                                            textOverflow: "ellipsis"
+                                                        } }
+                                                        title={ claim.idpClaim }
+                                                    >
+                                                        { claim.idpClaim }
+                                                    </StyledMonoCell>
+                                                    <StyledValueCell
+                                                        component="td"
+                                                        sx={ {
+                                                            borderRight: "none",
+                                                            maxWidth: 200,
+                                                            overflow: "hidden",
+                                                            textOverflow: "ellipsis"
+                                                        } }
+                                                        title={ formatValue(claim.value) }
+                                                    >
+                                                        { formatValue(claim.value) }
+                                                    </StyledValueCell>
+                                                </StyledTableRow>
+                                            )) }
+                                        </tbody>
+                                    </Box>
                                 </StyledTableWrapper>
                             </Box>
                         </Box>
@@ -622,9 +614,9 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
             },
             {
                 key: "diagnosis",
-                menuItem: "Diagnosis",
-                render: () => {
-                    const formatLogs = () => {
+                menuItem: t("authenticationProvider:connectionTest.tabs.diagnosis"),
+                render: (): ReactElement => {
+                    const formatLogs = (): ReactElement => {
                         const metadataObj: ConnectionTestResultMetadataInterface = result?.metadata || {};
                         const stepStatus: ConnectionTestStepStatusInterface = metadataObj?.stepStatus || {};
                         const allDiagnostics: ConnectionTestDiagnosticLogInterface[] =
@@ -636,35 +628,16 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
                             !(log.status === "started" || log.stage === "claimValidation")
                         );
                         const steps: Record<string, string | undefined> = {
+                            accountLinkingStatus: stepStatus?.accountLinkingStatus || metadataObj?.accountLinkingStatus,
                             authenticationStatus: stepStatus?.authenticationStatus || metadataObj?.authenticationStatus,
                             claimExtractionStatus: stepStatus?.claimExtractionStatus || metadataObj?.claimExtractionStatus,
                             claimMappingStatus: stepStatus?.claimMappingStatus || metadataObj?.claimMappingStatus,
-                            connectionCreation: stepStatus?.connectionCreation || metadataObj?.connectionCreation,
-                            accountLinkingStatus: stepStatus?.accountLinkingStatus || metadataObj?.accountLinkingStatus
+                            connectionCreation: stepStatus?.connectionCreation || metadataObj?.connectionCreation
                         };
-                        const errorDescription = metadataObj?.error_description || null;
-                        const errorCode = metadataObj?.error_code || null;
-                        const accountLinkingMessage = metadataObj?.accountLinkingMessage || null;
-                        const topLevelStatus = result?.status;
-                        const accountLinkingFailed = steps.accountLinkingStatus === "failed";
-                        const getStepStatusPalette = (status?: string) => {
-                            const normalizedStatus = String(status || "unknown").toLowerCase();
+                        const errorDescription: string | null = metadataObj?.error_description || null;
+                        const errorCode: string | null = metadataObj?.error_code || null;
+                        const topLevelStatus: string | undefined = result?.status;
 
-                            switch (normalizedStatus) {
-                                case "success":
-                                    return { background: theme.palette.success.light, color: theme.palette.success.dark };
-                                case "partial":
-                                    return { background: theme.palette.warning.light, color: theme.palette.warning.dark };
-                                case "started":
-                                case "pending":
-                                    return { background: theme.palette.info.light, color: theme.palette.info.dark };
-                                case "failed":
-                                case "error":
-                                    return { background: theme.palette.error.light, color: theme.palette.error.dark };
-                                default:
-                                    return { background: theme.palette.action.hover, color: theme.palette.text.secondary };
-                            }
-                        };
                         const getDiagnosticStatusIcon = (status?: string): ReactElement => {
                             let iconName: "check circle" | "times circle";
                             let iconColor: "green" | "yellow" | "red";
@@ -713,14 +686,16 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
                                 </Box>
                             );
                         };
-                        const toggleDiagnosticLog = (index: number) => {
+
+                        const toggleDiagnosticLog = (index: number): void => {
                             setExpandedDiagnosticLogs((previous: number[]) => (
                                 previous.includes(index)
                                     ? previous.filter((item: number) => item !== index)
                                     : [ ...previous, index ]
                             ));
                         };
-                        const renderDiagnosticLogValue = (value: unknown) => {
+
+                        const renderDiagnosticLogValue = (value: unknown): string | ReactElement => {
                             if (value === null || value === undefined || value === "") {
                                 return "-";
                             }
@@ -737,7 +712,10 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
 
                             return String(value);
                         };
-                        const renderExpandedDiagnosticRows = (log: ConnectionTestDiagnosticLogInterface) => {
+
+                        const renderExpandedDiagnosticRows = (
+                            log: ConnectionTestDiagnosticLogInterface
+                        ): Array<{ label: string; value: unknown }> => {
                             const rows: Array<{ label: string; value: unknown }> = [
                                 {
                                     label: "recordedAt",
@@ -747,36 +725,42 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
                                 { label: "details", value: log.details },
                                 { label: "errorCode", value: log.errorCode },
                                 { label: "federatedAttribute", value: log.federatedAttribute },
-                                { label: "errorDescription", value: log.errorDescription },
+                                { label: "errorDescription", value: log.errorDescription }
                             ];
 
-                            return rows.filter((row) => row.value !== undefined && row.value !== null && row.value !== "");
+                            return rows.filter(
+                                (row: { label: string; value: unknown }) =>
+                                    row.value !== undefined && row.value !== null && row.value !== ""
+                            );
                         };
 
                         return (
                             <Stack spacing={ 2 }>
-
-
                                 { !errorDescription && !errorCode && Object.keys(steps).length === 0 && topLevelStatus !== "FAILURE" && (
                                     <Alert severity="info" icon={ false }>
-                                        No log information available.
+                                        { t("authenticationProvider:connectionTest.diagnosis.noLogs") }
                                     </Alert>
                                 ) }
 
                                 { diagnostics.length > 0 && (
                                     <Box>
-                                        <StyledDiagnosticsScroller sx={ { maxHeight: { xs: 420, md: 520 } } }>
+                                        <StyledDiagnosticsScroller sx={ { maxHeight: { md: 520, xs: 420 } } }>
                                             <Accordion exclusive={ false } fluid>
-                                                { diagnostics.map((log: any, idx: number) => {
-                                                    const timestamp = log.timestamp
+                                                { diagnostics.map((
+                                                    log: ConnectionTestDiagnosticLogInterface,
+                                                    idx: number
+                                                ) => {
+                                                    const timestamp: string = log.timestamp
                                                         ? new Date(log.timestamp).toLocaleString()
-                                                        : "Timestamp unavailable";
-                                                    const isExpanded = expandedDiagnosticLogs.includes(idx);
+                                                        : t("authenticationProvider:connectionTest.diagnosis.timestampUnavailable");
+                                                    const isExpanded: boolean = expandedDiagnosticLogs.includes(idx);
 
                                                     return (
                                                         <StyledDiagnosticAccordionRow
                                                             key={ idx }
-                                                            sx={ idx === diagnostics.length - 1 ? { borderBottom: "none" } : undefined }
+                                                            sx={ idx === diagnostics.length - 1
+                                                                ? { borderBottom: "none" }
+                                                                : undefined }
                                                         >
                                                             <Accordion.Title
                                                                 active={ isExpanded }
@@ -790,7 +774,7 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
                                                                             alignItems: "center",
                                                                             display: "flex",
                                                                             minWidth: 22,
-                                                                            pt: { xs: 0.25, sm: 0 }
+                                                                            pt: { sm: 0, xs: 0.25 }
                                                                         } }
                                                                     >
                                                                         <Icon name="dropdown" />
@@ -814,7 +798,8 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
                                                                                 whiteSpace: "nowrap"
                                                                             } }
                                                                         >
-                                                                            { log.message || "No diagnostic message provided." }
+                                                                            { log.message ||
+                                                                                t("authenticationProvider:connectionTest.diagnosis.noMessage") }
                                                                         </Typography>
                                                                     </Box>
                                                                     <Box
@@ -832,25 +817,27 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
                                                                 </StyledDiagnosticAccordionTitle>
                                                             </Accordion.Title>
                                                             <Accordion.Content active={ isExpanded }>
-                                                                <Box sx={ { px: 5.5, pb: 2 } }>
+                                                                <Box sx={ { pb: 2, px: 5.5 } }>
                                                                     <StyledExpandedDetailsTable
                                                                         component="table"
                                                                     >
                                                                         <tbody>
-                                                                            { renderExpandedDiagnosticRows(log).map((row) => (
-                                                                                <Box component="tr" key={ row.label }>
-                                                                                    <StyledExpandedLabelCell
-                                                                                        component="td"
-                                                                                    >
-                                                                                        { row.label }:
-                                                                                    </StyledExpandedLabelCell>
-                                                                                    <StyledExpandedValueCell
-                                                                                        component="td"
-                                                                                    >
-                                                                                        { renderDiagnosticLogValue(row.value) }
-                                                                                    </StyledExpandedValueCell>
-                                                                                </Box>
-                                                                            )) }
+                                                                            { renderExpandedDiagnosticRows(log).map(
+                                                                                (row: { label: string; value: unknown }) => (
+                                                                                    <Box component="tr" key={ row.label }>
+                                                                                        <StyledExpandedLabelCell
+                                                                                            component="td"
+                                                                                        >
+                                                                                            { row.label }:
+                                                                                        </StyledExpandedLabelCell>
+                                                                                        <StyledExpandedValueCell
+                                                                                            component="td"
+                                                                                        >
+                                                                                            { renderDiagnosticLogValue(row.value) }
+                                                                                        </StyledExpandedValueCell>
+                                                                                    </Box>
+                                                                                )
+                                                                            ) }
                                                                         </tbody>
                                                                     </StyledExpandedDetailsTable>
                                                                 </Box>
@@ -877,12 +864,12 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
 
         return (
             <Box>
-                <Tabs value={ activeTab } onChange={ (_, value: number) => setActiveTab(value) }>
-                    { tabPanes.map((tabPane) => (
+                <Tabs value={ activeTab } onChange={ (_: React.SyntheticEvent, value: number) => setActiveTab(value) }>
+                    { tabPanes.map((tabPane: { key: string; menuItem: string }) => (
                         <Tab key={ tabPane.key } label={ tabPane.menuItem } />
                     )) }
                 </Tabs>
-                { tabPanes.map((tabPane, index) => (
+                { tabPanes.map((tabPane: { key: string; menuItem: string; render: () => ReactElement }, index: number) => (
                     <TabPanel key={ tabPane.key } value={ activeTab } index={ index }>
                         { tabPane.render() }
                     </TabPanel>
@@ -895,13 +882,13 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
         <div className="diagnostic-logs">
             <TabPageLayout
                 isLoading={ loading }
-                pageTitle="Test Results"
-                title="Test Results"
-                description="Results for the connection test session."
+                pageTitle={ t("authenticationProvider:connectionTest.pageTitle") }
+                title={ t("authenticationProvider:connectionTest.pageTitle") }
+                description={ t("authenticationProvider:connectionTest.pageDescription") }
                 backButton={ {
-                    "data-testid": `${testId}-back-button`,
+                    "data-componentid": `${testId}-back-button`,
                     onClick: handleBackButtonClick,
-                    text: t("console:develop.pages.idpTest.backButton", "Go back to Connection")
+                    text: t("authenticationProvider:connectionTest.backButton")
                 } }
                 action={
                     (<Button
@@ -909,91 +896,98 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
                         disabled={ loading }
                         color="primary"
                         variant="contained"
-                        startIcon={ <RotateIcon /> }
-                        data-testid="idp-test-result-rerun-button"
+                        data-componentid="idp-test-result-rerun-button"
                     >
-                        Rerun Test
+                        { t("authenticationProvider:connectionTest.rerunButton") }
                     </Button>)
                 }
                 titleTextAlign="left"
                 contentTopMargin={ true }
                 bottomMargin={ false }
-                data-testid={ `${testId}-page-layout` }
+                data-componentid={ `${testId}-page-layout` }
             >
-            { /* Test Status Banner */ }
-            { result && !error && isStatusBannerVisible && (
-                <Box sx={ { mt: 4 } } data-testid="test-status-banner">
-                    <Alert
-                        severity={ hasError ? "error" : hasPartial ? "warning" : "success" }
-                        onClose={ () => setIsStatusBannerVisible(false) }
-                    >
-                        <AlertTitle>
-                            { hasError ? "Test Failed" : hasPartial ? "Test Passed Partially" : "Test Passed" }
-                        </AlertTitle>
-                        { hasError
-                            ? "Some steps failed during the connection test. Check the Diagnosis tab for details."
-                            : hasPartial
-                                ? "Test passed but some claims were not successfully mapped. Check the Claim Mappings tab for details."
-                                : "All connection test steps completed successfully." }
-                    </Alert>
-                </Box>
-            ) }
-
-            { /* Results Section */ }
-            { error && (
-                <Card
-                    variant="outlined"
-                    sx={ { mt: 4, p: 3 } }
-                    data-testid="idp-test-result-error"
-                >
-                    <Alert severity="error" sx={ { mb: 2 } }>
-                        <AlertTitle>Error</AlertTitle>
-                        { error }
-                    </Alert>
-                    <Box sx={ { mt: 1.5 } }>
-                        <Button
-                            onClick={ handleRunTests }
-                            color="primary"
-                            variant="contained"
-                            data-testid="idp-test-result-retry"
+                { /* Test Status Banner */ }
+                { result && !error && isStatusBannerVisible && (
+                    <Box sx={ { mt: 4 } } data-componentid="test-status-banner">
+                        <Alert
+                            severity={ hasError ? "error" : hasPartial ? "warning" : "success" }
+                            onClose={ () => setIsStatusBannerVisible(false) }
                         >
-                                    Retry
-                        </Button>
+                            <AlertTitle>
+                                { hasError
+                                    ? t("authenticationProvider:connectionTest.status.failed")
+                                    : hasPartial
+                                        ? t("authenticationProvider:connectionTest.status.partial")
+                                        : t("authenticationProvider:connectionTest.status.passed") }
+                            </AlertTitle>
+                            { hasError
+                                ? t("authenticationProvider:connectionTest.status.failedDescription")
+                                : hasPartial
+                                    ? t("authenticationProvider:connectionTest.status.partialDescription")
+                                    : t("authenticationProvider:connectionTest.status.passedDescription") }
+                        </Alert>
                     </Box>
-                </Card>
-            ) }
+                ) }
 
-            { !error && result && (
-                <Card
-                    variant="outlined"
-                    sx={ { mt: 4, p: 3 } }
-                    data-testid="idp-test-result-tabs"
-                >
-                    { renderResultsTabs() }
-                </Card>
-            ) }
+                { /* Results Section */ }
+                { error && (
+                    <Card
+                        variant="outlined"
+                        sx={ { mt: 4, p: 3 } }
+                        data-componentid="idp-test-result-error"
+                    >
+                        <Alert severity="error" sx={ { mb: 2 } }>
+                            <AlertTitle>
+                                { t("authenticationProvider:connectionTest.error.title") }
+                            </AlertTitle>
+                            { error }
+                        </Alert>
+                        <Box sx={ { mt: 1.5 } }>
+                            <Button
+                                onClick={ handleRunTests }
+                                color="primary"
+                                variant="contained"
+                                data-componentid="idp-test-result-retry"
+                            >
+                                { t("authenticationProvider:connectionTest.error.retry") }
+                            </Button>
+                        </Box>
+                    </Card>
+                ) }
 
-            { !error && !result && (debugId || loading) && (
-                <Card
-                    variant="outlined"
-                    sx={ { mt: 4, p: 3 } }
-                    data-testid="idp-test-result-loading"
-                >
-                    <Box sx={ { alignItems: "center", display: "flex", gap: 1, mb: 2 } }>
-                        <CircularProgress color="primary" size={ 20 } />
-                        <Typography variant="body2" color="text.secondary">
-                            { loading ? "Loading test results..." : "Waiting for authentication to complete..." }
-                        </Typography>
-                    </Box>
+                { !error && result && (
+                    <Card
+                        variant="outlined"
+                        sx={ { mt: 4, p: 3 } }
+                        data-componentid="idp-test-result-tabs"
+                    >
+                        { renderResultsTabs() }
+                    </Card>
+                ) }
 
-                    <Stack spacing={ 1.5 }>
-                        <Skeleton variant="rectangular" height={ 32 } />
-                        <Skeleton width="65%" />
-                        <Skeleton />
-                        <Skeleton />
-                    </Stack>
-                </Card>
-            ) }
+                { !error && !result && (debugId || loading) && (
+                    <Card
+                        variant="outlined"
+                        sx={ { mt: 4, p: 3 } }
+                        data-componentid="idp-test-result-loading"
+                    >
+                        <Box sx={ { alignItems: "center", display: "flex", gap: 1, mb: 2 } }>
+                            <CircularProgress color="primary" size={ 20 } />
+                            <Typography variant="body2" color="text.secondary">
+                                { loading
+                                    ? t("authenticationProvider:connectionTest.loading.results")
+                                    : t("authenticationProvider:connectionTest.loading.waitingForAuth") }
+                            </Typography>
+                        </Box>
+
+                        <Stack spacing={ 1.5 }>
+                            <Skeleton variant="rectangular" height={ 32 } />
+                            <Skeleton width="65%" />
+                            <Skeleton />
+                            <Skeleton />
+                        </Stack>
+                    </Card>
+                ) }
             </TabPageLayout>
         </div>
     );

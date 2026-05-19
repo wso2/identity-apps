@@ -2166,6 +2166,51 @@ export const authenticationProvider:AuthenticationProviderNS = {
             }
         }
     },
+    connectionTest: {
+        backButton: "Go back to Connection",
+        button: "Test Connection",
+        claimMappings: {
+            empty: "No claim mappings configured.",
+            idpClaimColumn: "IDP Claim",
+            localClaimColumn: "Local Claim (URI)",
+            valueColumn: "Value"
+        },
+        diagnosis: {
+            noLogs: "No log information available.",
+            noMessage: "No diagnostic message provided.",
+            timestampUnavailable: "Timestamp unavailable"
+        },
+        error: {
+            retry: "Retry",
+            title: "Error"
+        },
+        idToken: {
+            decodeError: "Unable to decode token or not a valid JWT.",
+            header: "Header",
+            payload: "Payload",
+            signature: "Signature"
+        },
+        loading: {
+            results: "Loading test results...",
+            waitingForAuth: "Waiting for authentication to complete..."
+        },
+        pageDescription: "Results for the connection test session.",
+        pageTitle: "Test Results",
+        rerunButton: "Rerun Test",
+        status: {
+            failed: "Test Failed",
+            failedDescription: "Some steps failed during the connection test. Check the Diagnosis tab for details.",
+            partial: "Test Passed Partially",
+            partialDescription: "Test passed but some claims were not successfully mapped. Check the Claim Mappings tab for details.",
+            passed: "Test Passed",
+            passedDescription: "All connection test steps completed successfully."
+        },
+        tabs: {
+            claimMappings: "Claim Mappings",
+            diagnosis: "Diagnosis",
+            idToken: "ID Token"
+        }
+    },
     wizards: {
         addAuthenticator: {
             header: "Fill the basic information about the authenticator.",

@@ -2080,6 +2080,51 @@ export interface AuthenticationProviderNS {
             };
         };
     };
+    connectionTest: {
+        button: string;
+        pageTitle: string;
+        pageDescription: string;
+        backButton: string;
+        rerunButton: string;
+        tabs: {
+            idToken: string;
+            claimMappings: string;
+            diagnosis: string;
+        };
+        idToken: {
+            header: string;
+            payload: string;
+            signature: string;
+            decodeError: string;
+        };
+        claimMappings: {
+            localClaimColumn: string;
+            idpClaimColumn: string;
+            valueColumn: string;
+            empty: string;
+        };
+        diagnosis: {
+            noLogs: string;
+            timestampUnavailable: string;
+            noMessage: string;
+        };
+        status: {
+            passed: string;
+            partial: string;
+            failed: string;
+            passedDescription: string;
+            partialDescription: string;
+            failedDescription: string;
+        };
+        error: {
+            title: string;
+            retry: string;
+        };
+        loading: {
+            results: string;
+            waitingForAuth: string;
+        };
+    };
     wizards: {
         addAuthenticator: {
             header: string;

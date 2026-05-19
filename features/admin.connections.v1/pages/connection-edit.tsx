@@ -768,13 +768,13 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                 title={ resolveConnectorName(connector) }
                 action={ ConnectionsManagementUtils.isConnectorIdentityProvider(connector) ? (
                     <SecondaryButton
-                        data-testid="idp-test-connection-button"
+                        data-componentid="idp-test-connection-button"
                         onClick={ handleTestConnection }
                         loading={ isTestingConnection }
                         disabled={ isTestingConnection }
                     >
                         <Icon name="flask"/>
-                        Test Connection
+                        { t("authenticationProvider:connectionTest.button") }
                     </SecondaryButton>
                 ) : null }
                 contentTopMargin={ true }

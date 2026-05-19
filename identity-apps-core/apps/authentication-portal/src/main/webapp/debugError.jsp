@@ -16,6 +16,9 @@
   ~ under the License.
 --%>
 
+<%@ page import="java.io.File" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 <%@include file="includes/localize.jsp" %>
@@ -28,7 +31,7 @@
 <head>
     <%-- header include --%>
     <%
-        java.io.File headerFile = new java.io.File(getServletContext().getRealPath("extensions/header.jsp"));
+        File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
     %>
     <jsp:include page="extensions/header.jsp"/>
@@ -44,7 +47,7 @@
     <layout:component componentName="ProductHeader">
         <%-- product-title include --%>
         <%
-            java.io.File productTitleFile = new java.io.File(getServletContext().getRealPath("extensions/product-title.jsp"));
+            File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
             if (productTitleFile.exists()) {
         %>
         <jsp:include page="extensions/product-title.jsp"/>
@@ -70,7 +73,7 @@
     <layout:component componentName="ProductFooter">
         <%-- product-footer include --%>
         <%
-            java.io.File productFooterFile = new java.io.File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+            File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
             if (productFooterFile.exists()) {
         %>
         <jsp:include page="extensions/product-footer.jsp"/>
@@ -86,7 +89,7 @@
 
 <%-- footer include --%>
 <%
-    java.io.File footerFile = new java.io.File(getServletContext().getRealPath("extensions/footer.jsp"));
+    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
     if (footerFile.exists()) {
 %>
 <jsp:include page="extensions/footer.jsp"/>
