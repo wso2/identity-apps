@@ -21,6 +21,7 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="java.io.File" %>
+<%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.LinkedHashMap" %>
 <%@ page import="java.util.Set" %>
@@ -29,6 +30,7 @@
 <%@ page import="org.json.JSONObject" %>
 <%@ page import="java.util.regex.Matcher" %>
 <%@ page import="java.util.regex.Pattern" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.framework.handler.request.impl.consent.PolicyConsentUtil" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
@@ -39,34 +41,36 @@
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
 <%
-    String mandatoryPurposeIdsParam = request.getParameter("mandatoryPurposeIds");
-    String[] mandatoryPurposeIds = new String[0];
-    if (mandatoryPurposeIdsParam != null && !mandatoryPurposeIdsParam.trim().isEmpty()) {
-        mandatoryPurposeIds = mandatoryPurposeIdsParam.split(",");
+    String sessionDataKey = request.getParameter(Constants.SESSION_DATA_KEY);
+    PolicyConsentUtil.ClassifiedPolicies classifiedPolicies = null;
+    try {
+        classifiedPolicies = PolicyConsentUtil.classifyUnconsentedPolicies(sessionDataKey);
+    } catch (Exception e) {
+        // Fallback to empty result on error; the handler will re-validate on form submit.
+        classifiedPolicies = null;
     }
 
-    String mandatoryNewVersionIdsParam = request.getParameter("mandatoryNewVersionPurposeIds");
-    String[] mandatoryNewVersionIds = new String[0];
-    if (mandatoryNewVersionIdsParam != null && !mandatoryNewVersionIdsParam.trim().isEmpty()) {
-        mandatoryNewVersionIds = mandatoryNewVersionIdsParam.split(",");
-    }
+    String[] mandatoryPurposeIds = (classifiedPolicies != null && classifiedPolicies.getMandatoryUnconsentedIds() != null)
+            ? classifiedPolicies.getMandatoryUnconsentedIds().toArray(new String[0]) : new String[0];
+    String[] mandatoryNewVersionIds = (classifiedPolicies != null && classifiedPolicies.getMandatoryNewVersionIds() != null)
+            ? classifiedPolicies.getMandatoryNewVersionIds().toArray(new String[0]) : new String[0];
+    String[] optionalPurposeIds = (classifiedPolicies != null && classifiedPolicies.getOptionalUnconsentedIds() != null)
+            ? classifiedPolicies.getOptionalUnconsentedIds().toArray(new String[0]) : new String[0];
+    String[] optionalNewVersionIds = (classifiedPolicies != null && classifiedPolicies.getOptionalNewVersionIds() != null)
+            ? classifiedPolicies.getOptionalNewVersionIds().toArray(new String[0]) : new String[0];
 
-    String optionalPurposeIdsParam = request.getParameter("optionalPurposeIds");
-    String[] optionalPurposeIds = new String[0];
-    if (optionalPurposeIdsParam != null && !optionalPurposeIdsParam.trim().isEmpty()) {
-        optionalPurposeIds = optionalPurposeIdsParam.split(",");
-    }
-
-    String optionalNewVersionIdsParam = request.getParameter("optionalNewVersionPurposeIds");
-    String[] optionalNewVersionIds = new String[0];
-    if (optionalNewVersionIdsParam != null && !optionalNewVersionIdsParam.trim().isEmpty()) {
-        optionalNewVersionIds = optionalNewVersionIdsParam.split(",");
-    }
+    // Build all mandatory and optional IDs for hidden inputs (sent back to handler on form submit).
+    List<String> allMandatoryIds = new java.util.ArrayList<>();
+    for (String id : mandatoryPurposeIds) allMandatoryIds.add(id);
+    for (String id : mandatoryNewVersionIds) allMandatoryIds.add(id);
+    List<String> allOptionalIds = new java.util.ArrayList<>();
+    for (String id : optionalPurposeIds) allOptionalIds.add(id);
+    for (String id : optionalNewVersionIds) allOptionalIds.add(id);
 
     // Parse purposeMetadata to build display labels server-side (no client-side API calls needed).
     Map<String, String> purposeLabelMap = new LinkedHashMap<>();
     Set<String> newVersionPurposeIds = new HashSet<>();
-    String purposeMetadataParam = request.getParameter("purposeMetadata");
+    String purposeMetadataParam = (classifiedPolicies != null) ? classifiedPolicies.getPurposeMetadataJson() : null;
     if (StringUtils.isNotBlank(purposeMetadataParam)) {
         try {
             JSONArray metadataArray = new JSONArray(purposeMetadataParam);
@@ -291,6 +295,15 @@
                                 value="<%=Encode.forHtmlAttribute(request.getParameter(Constants.SESSION_DATA_KEY))%>"/>
                         <% if (spId != null && !spId.trim().isEmpty()) { %>
                         <input type="hidden" name="spId" value="<%=Encode.forHtmlAttribute(spId.trim())%>"/>
+                        <% } %>
+                        <%-- Hidden inputs carrying all purpose IDs back to the handler (avoids session storage). --%>
+                        <% for (String hiddenId : allMandatoryIds) { %>
+                        <input type="hidden" name="policyMandatoryIds"
+                               value="<%=Encode.forHtmlAttribute(hiddenId)%>"/>
+                        <% } %>
+                        <% for (String hiddenId : allOptionalIds) { %>
+                        <input type="hidden" name="policyOptionalIds"
+                               value="<%=Encode.forHtmlAttribute(hiddenId)%>"/>
                         <% } %>
                         <input type="hidden" name="consent" id="consent" value="deny"/>
                     </div>
