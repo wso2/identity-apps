@@ -113,7 +113,7 @@ const FloatingCardActions: typeof CardActions = styled(CardActions)(({ theme }: 
     },
     justifyContent: "flex-end",
     padding: theme.spacing(0, 3, 3)
-}));
+})) as unknown as typeof CardActions;
 
 const I18nConfigContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
