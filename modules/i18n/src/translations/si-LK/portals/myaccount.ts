@@ -447,6 +447,7 @@ export const myAccount: MyAccountNS = {
             }
         },
         policyConsentManagement: {
+            consentedOnLabel: "සිට ක්‍රියාත්මකයි",
             dangerZones: {
                 revoke: {
                     actionTitle: "අවලංගු කරන්න",

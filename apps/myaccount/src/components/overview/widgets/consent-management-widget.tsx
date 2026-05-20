@@ -19,9 +19,12 @@
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { getWidgetIcons } from "../../../configs";
 import { AppConstants, CommonConstants } from "../../../constants";
 import { history } from "../../../helpers";
+import { FeatureConfigInterface } from "../../../models";
+import { AppState } from "../../../store";
 import { SettingsSection } from "../../shared";
 
 type ConsentManagementWidgetPropsInterface = TestableComponentInterface & IdentifiableComponentInterface;
@@ -38,9 +41,16 @@ export const ConsentManagementWidget: FunctionComponent<ConsentManagementWidgetP
 
     const { ["data-testid"]: testId } = props;
     const { t } = useTranslation();
+    const accessConfig: FeatureConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features
+    );
 
-    const navigate = () => {
-        history.push(AppConstants.getPaths().get("SECURITY") + "#" + CommonConstants.CONSENTS_CONTROL);
+    const navigate: () => void = () => {
+        if (accessConfig?.consents?.enabled) {
+            history.push(AppConstants.getPaths().get("CONSENTS"));
+        } else {
+            history.push(AppConstants.getPaths().get("SECURITY") + "#" + CommonConstants.CONSENTS_CONTROL);
+        }
     };
 
     return (

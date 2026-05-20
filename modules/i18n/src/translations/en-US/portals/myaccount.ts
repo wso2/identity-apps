@@ -447,6 +447,7 @@ export const myAccount: MyAccountNS = {
             }
         },
         policyConsentManagement: {
+            consentedOnLabel: "Active from",
             dangerZones: {
                 revoke: {
                     actionTitle: "Revoke",

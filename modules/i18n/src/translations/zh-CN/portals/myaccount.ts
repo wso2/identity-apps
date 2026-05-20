@@ -438,6 +438,7 @@ export const myAccount: MyAccountNS = {
             }
         },
         "policyConsentManagement": {
+            "consentedOnLabel": "活跃自",
             "dangerZones": {
                 "revoke": {
                     "actionTitle": "撤销",

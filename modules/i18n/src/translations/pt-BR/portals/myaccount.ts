@@ -443,6 +443,7 @@ export const myAccount: MyAccountNS = {
             }
         },
         policyConsentManagement: {
+            consentedOnLabel: "Ativo desde",
             dangerZones: {
                 revoke: {
                     actionTitle: "Revogar",

@@ -380,6 +380,7 @@ export interface MyAccountNS {
             };
         };
         policyConsentManagement: {
+            consentedOnLabel: string;
             dangerZones: {
                 revoke: {
                     actionTitle: string;

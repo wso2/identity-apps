@@ -448,6 +448,7 @@ export const myAccount: MyAccountNS = {
             }
         },
         policyConsentManagement: {
+            consentedOnLabel: "இதிலிருந்து செயல்பாட்டில்",
             dangerZones: {
                 revoke: {
                     actionTitle: "திரும்பப் பெறுக",

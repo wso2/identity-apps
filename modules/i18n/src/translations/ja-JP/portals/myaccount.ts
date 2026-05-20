@@ -438,6 +438,7 @@ export const myAccount: MyAccountNS = {
             }
         },
         "policyConsentManagement": {
+            "consentedOnLabel": "有効開始日",
             "dangerZones": {
                 "revoke": {
                     "actionTitle": "取り消す",
