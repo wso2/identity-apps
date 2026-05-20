@@ -3526,9 +3526,6 @@ importers:
       '@wso2is/react-components':
         specifier: ^2.9.25
         version: link:../../modules/react-components
-      classnames:
-        specifier: ^2.2.6
-        version: 2.5.1
       html-react-parser:
         specifier: ^2.0.0
         version: 2.0.0(react@18.3.1)
