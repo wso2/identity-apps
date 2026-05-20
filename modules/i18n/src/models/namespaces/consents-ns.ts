@@ -63,6 +63,7 @@ export interface ConsentsNS {
     registrationFlow: {
         noPolicies: string;
         policiesLabel: string;
+        policiesLabelOptional: string;
         selectPolicies: string;
     };
     notifications: {

@@ -16,19 +16,19 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import Box from "@oxygen-ui/react/Box";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteProps } from "react-router";
 import { Dispatch } from "redux";
-import { Grid } from "semantic-ui-react";
 import { Consents, PolicyConsent } from "../components";
 import { AlertInterface } from "../models";
 import { addAlert } from "../store/actions";
 
-interface ConsentsPagePropsInterface extends TestableComponentInterface, RouteProps {}
+interface ConsentsPagePropsInterface extends IdentifiableComponentInterface, RouteProps {}
 
 const ConsentsPage: FunctionComponent<ConsentsPagePropsInterface> = (): ReactElement => {
 
@@ -44,22 +44,14 @@ const ConsentsPage: FunctionComponent<ConsentsPagePropsInterface> = (): ReactEle
 
     return (
         <PageLayout
-            pageTitle="Consents"
+            pageTitle={ t("myAccount:pages.consents.title") }
             title={ t("myAccount:pages.consents.title") }
             description={ t("myAccount:pages.consents.subTitle") }
         >
-            <Grid>
-                <Grid.Row>
-                    <Grid.Column width={ 16 }>
-                        <Consents onAlertFired={ handleAlerts } />
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column width={ 16 }>
-                        <PolicyConsent onAlertFired={ handleAlerts } />
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+            <Box display="flex" flexDirection="column" gap={ 2 }>
+                <Consents onAlertFired={ handleAlerts } />
+                <PolicyConsent onAlertFired={ handleAlerts } />
+            </Box>
         </PageLayout>
     );
 };

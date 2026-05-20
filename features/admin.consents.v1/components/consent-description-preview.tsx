@@ -39,17 +39,19 @@ const PreviewContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) =
     width: "100%"
 }));
 
+const PREVIEW_CARD_MAX_WIDTH: string = "400px";
+
 const PreviewCard: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     background: theme.palette.background.paper,
     borderRadius: theme.shape.borderRadius * 2,
     boxShadow: theme.shadows[4],
-    maxWidth: "400px",
+    maxWidth: PREVIEW_CARD_MAX_WIDTH,
     padding: theme.spacing(4, 3.5, 3.5),
     width: "100%"
 }));
 
 const PreviewTitle: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
-    fontSize: "22px",
+    fontSize: theme.typography.h4.fontSize,
     fontWeight: 700,
     lineHeight: 1.2,
     marginBottom: theme.spacing(3.5),
@@ -58,7 +60,7 @@ const PreviewTitle: typeof Typography = styled(Typography)(({ theme }: { theme: 
 
 const PreviewHeader: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
     color: theme.palette.text.secondary,
-    fontSize: "14px",
+    fontSize: theme.typography.body2.fontSize,
     lineHeight: 1.5,
     marginBottom: theme.spacing(2.25)
 }));
@@ -99,13 +101,13 @@ const RichTextDescription: typeof Box = styled(Box)(({ theme }: { theme: Theme }
         color: theme.palette.primary.main,
         textDecoration: "underline"
     },
-    fontSize: "14px",
+    fontSize: theme.typography.body2.fontSize,
     lineHeight: 1.5
 }));
 
 const PlaceholderText: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
     color: theme.palette.text.disabled,
-    fontSize: "14px",
+    fontSize: theme.typography.body2.fontSize,
     fontStyle: "italic"
 }));
 
@@ -113,7 +115,7 @@ const PlaceholderText: typeof Typography = styled(Typography)(({ theme }: { them
 /**
  * Props interface for the ConsentDescriptionPreview component.
  */
-interface ConsentDescriptionPreviewProps extends IdentifiableComponentInterface {
+interface ConsentDescriptionPreviewPropsInterface extends IdentifiableComponentInterface {
     /**
      * HTML description string rendered as the checkbox label.
      */
@@ -138,12 +140,12 @@ interface ConsentDescriptionPreviewProps extends IdentifiableComponentInterface 
  * the Name / Description fields and the rendered checkbox label explicit without
  * requiring the user to discover it through trial-and-error.
  */
-export const ConsentDescriptionPreview: FunctionComponent<ConsentDescriptionPreviewProps> = ({
+export const ConsentDescriptionPreview: FunctionComponent<ConsentDescriptionPreviewPropsInterface> = ({
     "data-componentid": componentId = "consent-description-preview",
     description,
     mandatory = false,
     policyName
-}: ConsentDescriptionPreviewProps): ReactElement => {
+}: ConsentDescriptionPreviewPropsInterface): ReactElement => {
     const { t } = useTranslation();
 
     const [ isChecked, setIsChecked ] = useState<boolean>(false);

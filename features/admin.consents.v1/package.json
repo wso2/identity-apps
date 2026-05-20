@@ -20,7 +20,7 @@
         "@wso2is/forms": "workspace:^",
         "@wso2is/i18n": "^2.31.6",
         "@wso2is/react-components": "^2.9.25",
-"lodash-es": "^4.17.21",
+        "lodash-es": "^4.17.21",
         "html-react-parser": "^2.0.0",
         "lexical": "^0.21.0",
         "react": "^18.2.0",

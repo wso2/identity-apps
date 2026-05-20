@@ -32,7 +32,7 @@ import Box from "@oxygen-ui/react/Box";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
 import Tooltip from "@oxygen-ui/react/Tooltip";
-import { LanguageIcon } from "@oxygen-ui/react-icons";
+import { LanguageIcon, LinkIcon as OxygenLinkIcon } from "@oxygen-ui/react-icons";
 import PlaceholderComponent from "@wso2is/common.branding.v1/components/placeholder-component";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
@@ -70,38 +70,37 @@ import React, {
 import { Trans, useTranslation } from "react-i18next";
 import ConsentI18nConfigurationCard, { LanguageTextFieldPropsInterface } from "./consent-i18n-configuration-card";
 
-// ─── HTML Processing ──────────────────────────────────────────────────────────
-
 const TEXT_ALIGN_TYPES: string[] = [ "left", "right", "center", "justify" ];
 const EMPTY_CONTENT: string = "<p class=\"rich-text-paragraph\"><br></p>";
 
-const preProcessHTML = (html: string): string => {
-    html = html.replaceAll("\" dir=\"ltr\"", "\"");
-    html = html.replaceAll("dir=\"ltr\"", "");
-    html = html.replaceAll("\" style=\"white-space: pre-wrap;\"", " rich-text-pre-wrap\"");
-    html = html.replaceAll("style=\"white-space: pre-wrap;\"", "class=\"rich-text-pre-wrap\"");
+const preProcessHTML = (rawHtml: string): string => {
+    let result: string = rawHtml.replaceAll("\" dir=\"ltr\"", "\"");
+
+    result = result.replaceAll("dir=\"ltr\"", "");
+    result = result.replaceAll("\" style=\"white-space: pre-wrap;\"", " rich-text-pre-wrap\"");
+    result = result.replaceAll("style=\"white-space: pre-wrap;\"", "class=\"rich-text-pre-wrap\"");
 
     for (const align of TEXT_ALIGN_TYPES) {
-        html = html.replaceAll(`" style="text-align: ${align};"`, ` rich-text-align-${align}"`);
-        html = html.replaceAll(`style="text-align: ${align};"`, `class="rich-text-align-${align}"`);
+        result = result.replaceAll(`" style="text-align: ${align};"`, ` rich-text-align-${align}"`);
+        result = result.replaceAll(`style="text-align: ${align};"`, `class="rich-text-align-${align}"`);
     }
 
-    return html;
+    return result;
 };
 
-const postProcessHTML = (html: string): string => {
+const postProcessHTML = (rawHtml: string): string => {
+    let result: string = rawHtml;
+
     for (const align of TEXT_ALIGN_TYPES) {
-        html = html.replaceAll(` rich-text-align-${align}"`, `" style="text-align: ${align};"`);
-        html = html.replaceAll(`class="rich-text-align-${align}"`, `style="text-align: ${align};"`);
+        result = result.replaceAll(` rich-text-align-${align}"`, `" style="text-align: ${align};"`);
+        result = result.replaceAll(`class="rich-text-align-${align}"`, `style="text-align: ${align};"`);
     }
 
-    html = html.replaceAll(" rich-text-pre-wrap\"", "\" style=\"white-space: pre-wrap;\"");
-    html = html.replaceAll("class=\"rich-text-pre-wrap\"", "style=\"white-space: pre-wrap;\"");
+    result = result.replaceAll(" rich-text-pre-wrap\"", "\" style=\"white-space: pre-wrap;\"");
+    result = result.replaceAll("class=\"rich-text-pre-wrap\"", "style=\"white-space: pre-wrap;\"");
 
-    return html;
+    return result;
 };
-
-// ─── Lexical Config ───────────────────────────────────────────────────────────
 
 const ThemeClasses: EditorThemeClasses = {
     link: "rich-text-link",
@@ -121,8 +120,6 @@ const editorConfig: InitialConfigType = {
     },
     theme: ThemeClasses
 };
-
-// ─── Styled Components ────────────────────────────────────────────────────────
 
 const ToolbarMainRow: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     alignItems: "center",
@@ -249,8 +246,6 @@ const TranslationContentEditable: React.ComponentType<React.ComponentProps<typeo
         tabSize: 1
     }));
 
-// ─── SVG Icons ────────────────────────────────────────────────────────────────
-
 const UndoIcon = (props: SVGProps<SVGSVGElement>): ReactElement => (
     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" { ...props }>
         <path fillRule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2v1z" />
@@ -280,24 +275,16 @@ const ItalicIcon = (props: SVGProps<SVGSVGElement>): ReactElement => (
 );
 
 
-const LinkIcon = (props: SVGProps<SVGSVGElement>): ReactElement => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" { ...props }>
-        { /* eslint-disable-next-line max-len */ }
-        <path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9q-.13 0-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/>
-        { /* eslint-disable-next-line max-len */ }
-        <path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4 4 0 0 1-.82 1H12a3 3 0 1 0 0-6z"/>
-    </svg>
-);
 
-// ─── HTML Sync Plugin ─────────────────────────────────────────────────────────
-
-interface HtmlSyncPluginProps {
+interface HtmlSyncPluginPropsInterface {
     initialHtml: string;
     onChange: (html: string) => void;
     disabled?: boolean;
 }
 
-const HtmlSyncPlugin = ({ initialHtml, onChange, disabled }: HtmlSyncPluginProps): ReactElement => {
+const HtmlSyncPlugin: FunctionComponent<HtmlSyncPluginPropsInterface> = (
+    { initialHtml, onChange, disabled }: HtmlSyncPluginPropsInterface
+): ReactElement => {
     const [ editor ] = useLexicalComposerContext();
     const isSkipNextUpdate: MutableRefObject<boolean> = useRef<boolean>(false);
 
@@ -346,9 +333,7 @@ const HtmlSyncPlugin = ({ initialHtml, onChange, disabled }: HtmlSyncPluginProps
     return null;
 };
 
-// ─── Toolbar ──────────────────────────────────────────────────────────────────
-
-interface ConsentEditorToolbarProps {
+interface ConsentEditorToolbarPropsInterface {
     policyUrl?: string;
     disabled?: boolean;
     componentId: string;
@@ -356,11 +341,11 @@ interface ConsentEditorToolbarProps {
 
 const LowPriority: CommandListenerPriority = 1;
 
-const ConsentEditorToolbar = ({
+const ConsentEditorToolbar: FunctionComponent<ConsentEditorToolbarPropsInterface> = ({
     policyUrl,
     disabled = false,
     componentId
-}: ConsentEditorToolbarProps): ReactElement => {
+}: ConsentEditorToolbarPropsInterface): ReactElement => {
     const { t } = useTranslation();
     const [ editor ] = useLexicalComposerContext();
 
@@ -405,7 +390,7 @@ const ConsentEditorToolbar = ({
 
     const isValidPolicyUrl: boolean = !!policyUrl && URLUtils.isHttpsOrHttpUrl(policyUrl);
 
-    const handleInsertPolicyLink = (): void => {
+    const handleInsertPolicyLink: () => void = (): void => {
         if (isValidPolicyUrl) {
             editor.dispatchCommand(TOGGLE_LINK_COMMAND, policyUrl);
         }
@@ -415,7 +400,7 @@ const ConsentEditorToolbar = ({
      * Resolves the appropriate tooltip message for the Policy Link button
      * based on whether a URL exists, whether it is valid, and whether text is selected.
      */
-    const policyLinkTooltip = (): string => {
+    const policyLinkTooltip: () => string = (): string => {
         if (!policyUrl) {
             return t("consents:wizard.create.form.description.insertPolicyLinkNoPolicyUrl");
         }
@@ -495,7 +480,7 @@ const ConsentEditorToolbar = ({
                                     onClick={ handleInsertPolicyLink }
                                     aria-label={ t("consents:wizard.create.form.description.insertPolicyLink") }
                                 >
-                                    <LinkIcon />
+                                    <OxygenLinkIcon />
                                     { t("consents:wizard.create.form.description.insertPolicyLinkShort") }
                                 </ToolbarPolicyLinkButton>
                             </span>
@@ -506,8 +491,6 @@ const ConsentEditorToolbar = ({
         </Paper>
     );
 };
-
-// ─── Translation Editor ───────────────────────────────────────────────────────
 
 const TranslationDescriptionEditor: FunctionComponent<LanguageTextFieldPropsInterface> = ({
     value,
@@ -546,8 +529,6 @@ const TranslationDescriptionEditor: FunctionComponent<LanguageTextFieldPropsInte
         </LexicalComposer>
     );
 };
-
-// ─── Main Component ───────────────────────────────────────────────────────────
 
 /**
  * Props interface for the ConsentDescriptionEditor component.

@@ -418,7 +418,8 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                         sx={ {
                             borderBottom: "1px solid",
                             borderColor: "divider",
-                            borderRight: "1px solid"
+                            borderRight: "1px solid",
+                            borderRightColor: "divider"
                         } }
                         className="p-3"
                     >
@@ -471,7 +472,8 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                 sx={ {
                                                     borderBottom: "1px solid",
                                                     borderColor: "divider",
-                                                    borderRight: "1px solid"
+                                                    borderRight: "1px solid",
+                                                    borderRightColor: "divider"
                                                 } }
                                             >
                                                 {

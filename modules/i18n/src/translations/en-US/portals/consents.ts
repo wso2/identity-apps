@@ -67,6 +67,7 @@ export const consents: ConsentsNS = {
     registrationFlow: {
         noPolicies: "No policies available. Create policies from Policy Consents.",
         policiesLabel: "Policies",
+        policiesLabelOptional: "Policies (optional)",
         selectPolicies: "Select Policies:"
     },
     notifications: {

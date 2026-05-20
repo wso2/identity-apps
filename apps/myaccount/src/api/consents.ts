@@ -36,6 +36,7 @@ import {
     ServiceInterface,
     UpdateReceiptInterface
 } from "../models";
+import { PolicyConsentDetailInterface, PolicyConsentListResponseInterface } from "../models/consents";
 import { store } from "../store";
 
 /**
@@ -320,7 +321,7 @@ export const getConsentsBySubject = (
     consentsBaseUrl: string,
     subjectId: string,
     state: string = "ACTIVE"
-): Promise<any> => {
+): Promise<PolicyConsentListResponseInterface> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
@@ -332,15 +333,11 @@ export const getConsentsBySubject = (
     };
 
     return httpClient(requestConfig)
-        .then((response: any) => {
-            if (response.status !== 200) {
-                throw new Error("Failed to retrieve consents.");
-            }
-
+        .then((response: HttpResponse<PolicyConsentListResponseInterface>) => {
             return response.data;
         })
-        .catch((error: any) => {
-            throw error;
+        .catch((error: HttpError) => {
+            return Promise.reject(error);
         });
 };
 
@@ -354,7 +351,7 @@ export const getConsentsBySubject = (
 export const getConsentById = (
     consentsBaseUrl: string,
     consentId: string
-): Promise<any> => {
+): Promise<PolicyConsentDetailInterface> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
@@ -365,15 +362,11 @@ export const getConsentById = (
     };
 
     return httpClient(requestConfig)
-        .then((response: any) => {
-            if (response.status !== 200) {
-                throw new Error("Failed to retrieve consent details.");
-            }
-
+        .then((response: HttpResponse<PolicyConsentDetailInterface>) => {
             return response.data;
         })
-        .catch((error: any) => {
-            throw error;
+        .catch((error: HttpError) => {
+            return Promise.reject(error);
         });
 };
 
@@ -398,14 +391,10 @@ export const revokeConsentById = (
     };
 
     return httpClient(requestConfig)
-        .then((response: any) => {
-            if (response.status !== 204) {
-                throw new Error("Failed to revoke consent.");
-            }
-
+        .then(() => {
             return Promise.resolve();
         })
-        .catch((error: any) => {
-            throw error;
+        .catch((error: HttpError) => {
+            return Promise.reject(error);
         });
 };

@@ -217,7 +217,6 @@ export class AppConstants {
             .set("APPLICATIONS", `${ this.getMainViewBasePath() }/applications`)
             .set("APPROVALS", `${ this.getMainViewBasePath() }/approvals`)
             .set("CONSENTS", `${ this.getMainViewBasePath() }/consents`)
-            .set("POLICY_CONSENTS", `${ this.getMainViewBasePath() }/policy-consents`)
             .set("LOGIN", window[ "AppUtils" ].getConfig().routes.login)
             .set("LOGOUT", window[ "AppUtils" ].getConfig().routes.logout)
             .set("LOGIN_ERROR", `${ this.getMainViewBasePath() }/login-error`)

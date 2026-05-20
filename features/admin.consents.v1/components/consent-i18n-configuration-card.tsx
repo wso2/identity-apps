@@ -63,27 +63,27 @@ import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
+
 const CONSENT_I18N_SCREEN: PreviewScreenType = PreviewScreenType.CONSENT;
+const FLOATING_CARD_WIDTH: string = "370px";
 
-// ─── Styled Components ────────────────────────────────────────────────────────
-
-const CardBackdrop: typeof Box = styled(Box)({
+const CardBackdrop: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     bottom: 0,
     left: 0,
     position: "fixed",
     right: 0,
     top: 0,
-    zIndex: 1300
-});
+    zIndex: theme.zIndex.modal
+}));
 
 const FloatingCard: typeof Card = styled(Card)(({ theme }: { theme: Theme }) => ({
     border: `1px solid ${theme.palette.divider}`,
     borderRadius: theme.shape.borderRadius,
-    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.12)",
+    boxShadow: theme.shadows[8],
     padding: 0,
     position: "absolute",
-    width: "370px",
-    zIndex: 1301
+    width: FLOATING_CARD_WIDTH,
+    zIndex: theme.zIndex.modal + 1
 }));
 
 const FloatingCardHeader: typeof CardHeader = styled(CardHeader)(({ theme }: { theme: Theme }) => ({
@@ -103,7 +103,7 @@ const FloatingCardContent: typeof CardContent = styled(CardContent)(({ theme }: 
     padding: theme.spacing(2, 3)
 }));
 
-const FloatingCardActions: typeof CardActions = styled(CardActions)(({ theme }: { theme: Theme }) => ({
+const FloatingCardActions = styled(CardActions)(({ theme }: { theme: Theme }) => ({
     "& .MuiButton-containedPrimary.Mui-disabled": {
         color: theme.palette.primary.contrastText,
         opacity: 0.5
@@ -113,7 +113,7 @@ const FloatingCardActions: typeof CardActions = styled(CardActions)(({ theme }: 
     },
     justifyContent: "flex-end",
     padding: theme.spacing(0, 3, 3)
-})) as unknown as typeof CardActions;
+}));
 
 const I18nConfigContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
@@ -342,19 +342,19 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
         }
     }, [ i18nKeyInput, selectedLanguage, languageText, isAlreadyConfigured, userTextData, tenantDomain, onChange ]);
 
-    const handleBack = (): void => {
+    const handleBack: () => void = (): void => {
         isCreationMode.current = false;
         setIsCustomizeView(false);
         setI18nKeyInput("");
         setLanguageText("");
     };
 
-    const handleClose = (): void => {
+    const handleClose: () => void = (): void => {
         handleBack();
         onClose();
     };
 
-    const renderCardContent = (): ReactElement => {
+    const renderCardContent: () => ReactElement = (): ReactElement => {
         if (isLoading) {
             return (
                 <I18nConfigContainer sx={ { alignItems: "center", justifyContent: "center", padding: 4 } }>
