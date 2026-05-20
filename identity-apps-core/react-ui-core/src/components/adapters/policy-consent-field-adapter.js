@@ -43,22 +43,28 @@ const ensureAfterSanitizeAttributesHookRegistered = () => {
 };
 
 /**
- * Reports the current accepted and rejected policy ID lists to the form state.
+ * Reports the current accepted and rejected policy ID lists to the form state
+ * as a serialized JSON payload keyed by purpose type.
  *
  * @param {Record<string, boolean>} checkedMap - Map of policyId → checked boolean.
  * @param {Function} formStateHandler - Form state updater.
+ * @param {string} purposeType - The consent purpose type (e.g. "Policy").
  */
-const reportPolicyState = (checkedMap, formStateHandler) => {
-    const acceptedIds = Object.keys(checkedMap).filter((id) => checkedMap[id]).join(",");
-    const rejectedIds = Object.keys(checkedMap).filter((id) => !checkedMap[id]).join(",");
+const reportPolicyState = (checkedMap, formStateHandler, purposeType) => {
+    const accepted = Object.keys(checkedMap).filter((id) => checkedMap[id]);
+    const rejected = Object.keys(checkedMap).filter((id) => !checkedMap[id]);
 
-    formStateHandler("consent.Policy", acceptedIds);
-    formStateHandler("consent.rejected.Policy", rejectedIds);
+    const payload = {
+        [purposeType]: { accepted, rejected }
+    };
+
+    formStateHandler("consent", JSON.stringify(payload));
 };
 
 const PolicyConsentFieldAdapter = ({ component, formStateHandler, fieldErrorHandler }) => {
 
-    const { description, identifier = "consent_policy", policies: rawPolicies = [] } = component.config;
+    const { description, identifier = "consent_policy", policies: rawPolicies = [],
+        purposeType = "Policy" } = component.config;
     const { locale, translations } = useTranslations();
 
     const policiesToShow = useMemo(() => rawPolicies
@@ -98,7 +104,7 @@ const PolicyConsentFieldAdapter = ({ component, formStateHandler, fieldErrorHand
         });
 
         setCheckedMap(initial);
-        reportPolicyState(initial, formStateHandler);
+        reportPolicyState(initial, formStateHandler, purposeType);
         handlePolicyValidation(initial, policiesToShow);
     }, [ policiesToShow ]);
 
@@ -106,7 +112,7 @@ const PolicyConsentFieldAdapter = ({ component, formStateHandler, fieldErrorHand
         const updated = { ...checkedMap, [policy.id]: data.checked };
 
         setCheckedMap(updated);
-        reportPolicyState(updated, formStateHandler);
+        reportPolicyState(updated, formStateHandler, purposeType);
         handlePolicyValidation(updated, policiesToShow);
     };
 
