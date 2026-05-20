@@ -34,7 +34,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { Label } from "semantic-ui-react";
 import { EditPolicyConsent } from "../components/edit-policy-consent";
 
 /**
@@ -130,11 +129,7 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
         <PageLayout
             pageTitle={ t("consents:pages.edit.title") }
             title={ consent?.displayName || "" }
-            description={ consent?.mandatory ? (
-                <Label size="small" className="no-margin-left">
-                    { t("consents:form.mandatory.label") }
-                </Label>
-            ) : undefined }
+            description={ undefined }
             image={ (
                 <AnimatedAvatar
                     name={ consent?.displayName }

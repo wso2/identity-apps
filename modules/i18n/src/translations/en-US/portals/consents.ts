@@ -44,6 +44,7 @@ export const consents: ConsentsNS = {
             versionHint: "To create a new version, update the policy URL, description, or prompt settings above."
         },
         promptOnLogin: {
+            activeHint: "Users will be prompted to review and accept this policy during login.",
             hint: "When enabled, users will be prompted to review and accept this policy during login.",
             label: "Prompt on Login"
         },

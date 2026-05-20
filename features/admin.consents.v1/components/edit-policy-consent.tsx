@@ -448,7 +448,8 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                             }: FormRenderProps & { values: PolicyFormValuesInterface }) => {
                                 const isUnchanged: boolean = !isCreateMode && (
                                     (_values?.policyUrl ?? "") === (initialValues?.policyUrl ?? "") &&
-                                    (_values?.description ?? "") === (initialValues?.description ?? "")
+                                    (_values?.description ?? "") === (initialValues?.description ?? "") &&
+                                    (_values?.mandatory ?? false) === (initialValues?.mandatory ?? false)
                                 );
 
                                 return (
@@ -561,56 +562,62 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                             } }
                                                         />
                                                     </Box>
-                                                    { isCreateMode && (
-                                                        <Field
-                                                            name="mandatory"
-                                                            subscription={ { value: true } }
-                                                            render={ (
-                                                                { input }: { input: FieldInputProps<boolean> }
-                                                            ) => (
-                                                                <Box>
-                                                                    <FormControlLabel
-                                                                        control={ (
-                                                                            <Switch
-                                                                                name={ input.name }
-                                                                                checked={ input.value ?? false }
-                                                                                onChange={ ( e:
-                                                                                    React.ChangeEvent<HTMLInputElement>
-                                                                                ) => {
-                                                                                    input.onChange(e.target.checked);
-                                                                                } }
-                                                                            />
-                                                                        ) }
-                                                                        label={ t("consents:form.mandatory.label") }
-                                                                        sx={ { mr: 0 } }
-                                                                    />
-                                                                    <Hint>
-                                                                        { t("consents:form.mandatory.hint") }
-                                                                    </Hint>
-                                                                </Box>
-                                                            ) }
-                                                        />
-                                                    ) }
-                                                    { !isCreateMode && (
-                                                        <Message
-                                                            type="info"
-                                                            content={ (
-                                                                <Trans
-                                                                    i18nKey=
-                                                                        "consents:form.mandatory.linkHint"
-                                                                >
-                                                                    <Link
-                                                                        onClick={
-                                                                            handleRegFlowBuilderClick
-                                                                        }
-                                                                        sx={ { cursor: "pointer" } }
+                                                    <Field
+                                                        name="mandatory"
+                                                        subscription={ { value: true } }
+                                                        render={ (
+                                                            { input }: { input: FieldInputProps<boolean> }
+                                                        ) => (
+                                                            <Box>
+                                                                <FormControlLabel
+                                                                    control={ (
+                                                                        <Switch
+                                                                            name={ input.name }
+                                                                            checked={ input.value ?? false }
+                                                                            onChange={ ( e:
+                                                                                React.ChangeEvent<HTMLInputElement>
+                                                                            ) => {
+                                                                                input.onChange(e.target.checked);
+                                                                            } }
+                                                                        />
+                                                                    ) }
+                                                                    label={ t("consents:form.mandatory.label") }
+                                                                    sx={ { mr: 0 } }
+                                                                />
+                                                                <Hint>
+                                                                    { t("consents:form.mandatory.hint") }
+                                                                </Hint>
+                                                            </Box>
+                                                        ) }
+                                                    />
+                                                    <Box>
+                                                        { !isCreateMode && consent?.promptOnLogin && (
+                                                            <Message
+                                                                type="info"
+                                                                content={ t("consents:form.promptOnLogin.activeHint") }
+                                                            />
+                                                        ) }
+                                                        { !isCreateMode && (
+                                                            <Message
+                                                                type="info"
+                                                                content={ (
+                                                                    <Trans
+                                                                        i18nKey=
+                                                                            "consents:form.mandatory.linkHint"
                                                                     >
-                                                                        this link
-                                                                    </Link>
-                                                                </Trans>
-                                                            ) }
-                                                        />
-                                                    ) }
+                                                                        <Link
+                                                                            onClick={
+                                                                                handleRegFlowBuilderClick
+                                                                            }
+                                                                            sx={ { cursor: "pointer" } }
+                                                                        >
+                                                                            this link
+                                                                        </Link>
+                                                                    </Trans>
+                                                                ) }
+                                                            />
+                                                        ) }
+                                                    </Box>
                                                     { isCreateMode && (
                                                         <Field
                                                             name="promptOnLogin"

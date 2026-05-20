@@ -42,6 +42,7 @@ export interface ConsentsNS {
         promptOnLogin: {
             label: string;
             hint: string;
+            activeHint: string;
         };
         versionDropdown: {
             trigger: string;
