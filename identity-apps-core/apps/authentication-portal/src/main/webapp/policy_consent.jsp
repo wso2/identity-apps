@@ -168,129 +168,127 @@
             <div class="ui segment">
                 <form class="ui large form" action="<%=commonauthURL%>" method="post" id="policy-consent-form">
                     <div class="field light-font">
-                        <h4>
-                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.title")%>
-                        </h4>
+                        <div>
+                            <h4>
+                                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.title")%>
+                            </h4>
+                        </div>
                     </div>
 
-                    <p class="login-portal-app-consent-request">
+                    <p class="login-portal-app-consent-request larger-font">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.description")%>
                     </p>
 
                     <div class="segment-form">
                         <div class="ui" style="text-align: left;">
-                            <%-- New policies section --%>
-                            <% if (mandatoryPurposeIds.length > 0 || optionalPurposeIds.length > 0) { %>
-                            <div style="margin-bottom: 1em;">
-                                <div class="light-font" style="font-size: 0.9em; margin-bottom: 0.75em; color: #666;">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.section.new.title")%>
-                                </div>
-                                <div class="ui list">
-                                    <% for (String purposeId : mandatoryPurposeIds) {
-                                        String trimmedId = purposeId.trim();
-                                        String label = purposeLabelMap.containsKey(trimmedId)
-                                                ? purposeLabelMap.get(trimmedId)
-                                                : Encode.forHtml(trimmedId);
-                                    %>
-                                    <div class="item" style="margin-bottom: 0.5em;">
-                                        <div class="ui checkbox">
-                                            <input type="checkbox" name="mandatoryPurposeId"
-                                                value="<%=Encode.forHtmlAttribute(trimmedId)%>"
-                                                id="mandatory-<%=Encode.forHtmlAttribute(trimmedId)%>"
-                                                class="mandatory-consent"/>
-                                            <label for="mandatory-<%=Encode.forHtmlAttribute(trimmedId)%>"
-                                                class="light-font">
-                                                <%=label%>
-                                                <span title="required" style="color: #FF7300; margin-left: 2px;">*</span>
-                                            </label>
+                            <div class="ui list">
+                                <%-- New policies section --%>
+                                <% if (mandatoryPurposeIds.length > 0 || optionalPurposeIds.length > 0) { %>
+                                <div class="item">
+                                    <i aria-hidden="true" class="circle tiny icon primary consent-item-bullet" id="new_policies_section_icon"></i>
+                                    <div class="content">
+                                        <div class="header light-font consentItem">
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.section.new.title")%>
                                         </div>
                                     </div>
-                                    <% } %>
-                                    <% for (String purposeId : optionalPurposeIds) {
-                                        String trimmedId = purposeId.trim();
-                                        String label = purposeLabelMap.containsKey(trimmedId)
-                                                ? purposeLabelMap.get(trimmedId)
-                                                : Encode.forHtml(trimmedId);
-                                    %>
-                                    <div class="item" style="margin-bottom: 0.5em;">
-                                        <div class="ui checkbox">
-                                            <input type="checkbox" name="optionalPurposeId"
-                                                value="<%=Encode.forHtmlAttribute(trimmedId)%>"
-                                                id="optional-<%=Encode.forHtmlAttribute(trimmedId)%>"/>
-                                            <label for="optional-<%=Encode.forHtmlAttribute(trimmedId)%>"
-                                                class="light-font">
-                                                <%=label%>
-                                            </label>
+                                    <div class="content light-font">
+                                        <div class="border-gray margin-bottom-double">
+                                            <div class="mt-3 mb-3 claim-list">
+                                                <% for (String purposeId : mandatoryPurposeIds) {
+                                                    String trimmedId = purposeId.trim();
+                                                    String label = purposeLabelMap.containsKey(trimmedId)
+                                                            ? purposeLabelMap.get(trimmedId)
+                                                            : Encode.forHtml(trimmedId);
+                                                %>
+                                                <div class="mt-1 pl-5 required mandatoryClaim" title="This is a mandatory policy">
+                                                    <div class="ui checkbox claim-cb">
+                                                        <input type="checkbox" class="mandatory-consent hidden" name="mandatoryPurposeId"
+                                                            value="<%=Encode.forHtmlAttribute(trimmedId)%>"
+                                                            id="mandatory-<%=Encode.forHtmlAttribute(trimmedId)%>"/>
+                                                        <label for="mandatory-<%=Encode.forHtmlAttribute(trimmedId)%>">
+                                                            <%=label%> <b class="login-portal-app-font">*</b>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                                <% for (String purposeId : optionalPurposeIds) {
+                                                    String trimmedId = purposeId.trim();
+                                                    String label = purposeLabelMap.containsKey(trimmedId)
+                                                            ? purposeLabelMap.get(trimmedId)
+                                                            : Encode.forHtml(trimmedId);
+                                                %>
+                                                <div class="mt-1 pl-5">
+                                                    <div class="ui checkbox claim-cb">
+                                                        <input type="checkbox" class="hidden" name="optionalPurposeId"
+                                                            value="<%=Encode.forHtmlAttribute(trimmedId)%>"
+                                                            id="optional-<%=Encode.forHtmlAttribute(trimmedId)%>"/>
+                                                        <label for="optional-<%=Encode.forHtmlAttribute(trimmedId)%>">
+                                                            <%=label%>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                            </div>
                                         </div>
                                     </div>
-                                    <% } %>
                                 </div>
-                            </div>
-                            <% } %>
+                                <% } %>
 
-                            <%-- Updated policies section --%>
-                            <% if (mandatoryNewVersionIds.length > 0 || optionalNewVersionIds.length > 0) { %>
-                            <div style="margin-bottom: 1em;">
-                                <div class="light-font" style="font-size: 0.9em; margin-bottom: 0.75em; color: #666;">
-                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.section.updated.title")%>
-                                </div>
-                                <div class="ui list">
-                                    <% for (String purposeId : mandatoryNewVersionIds) {
-                                        String trimmedId = purposeId.trim();
-                                        String label = purposeLabelMap.containsKey(trimmedId)
-                                                ? purposeLabelMap.get(trimmedId)
-                                                : Encode.forHtml(trimmedId);
-                                    %>
-                                    <div class="item" style="margin-bottom: 0.5em;">
-                                        <div class="ui checkbox">
-                                            <input type="checkbox" name="mandatoryPurposeId"
-                                                value="<%=Encode.forHtmlAttribute(trimmedId)%>"
-                                                id="mandatory-<%=Encode.forHtmlAttribute(trimmedId)%>"
-                                                class="mandatory-consent"/>
-                                            <label for="mandatory-<%=Encode.forHtmlAttribute(trimmedId)%>"
-                                                class="light-font">
-                                                <%=label%>
-                                                <span title="required" style="color: #FF7300; margin-left: 2px;">*</span>
-                                            </label>
+                                <%-- Updated policies section --%>
+                                <% if (mandatoryNewVersionIds.length > 0 || optionalNewVersionIds.length > 0) { %>
+                                <div class="item">
+                                    <i aria-hidden="true" class="circle tiny icon primary consent-item-bullet" id="updated_policies_section_icon"></i>
+                                    <div class="content">
+                                        <div class="header light-font consentItem">
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.section.updated.title")%>
                                         </div>
                                     </div>
-                                    <% } %>
-                                    <% for (String purposeId : optionalNewVersionIds) {
-                                        String trimmedId = purposeId.trim();
-                                        String label = purposeLabelMap.containsKey(trimmedId)
-                                                ? purposeLabelMap.get(trimmedId)
-                                                : Encode.forHtml(trimmedId);
-                                    %>
-                                    <div class="item" style="margin-bottom: 0.5em;">
-                                        <div class="ui checkbox">
-                                            <input type="checkbox" name="optionalPurposeId"
-                                                value="<%=Encode.forHtmlAttribute(trimmedId)%>"
-                                                id="optional-<%=Encode.forHtmlAttribute(trimmedId)%>"/>
-                                            <label for="optional-<%=Encode.forHtmlAttribute(trimmedId)%>"
-                                                class="light-font">
-                                                <%=label%>
-                                            </label>
+                                    <div class="content light-font">
+                                        <div class="border-gray margin-bottom-double">
+                                            <div class="mt-3 mb-3 claim-list">
+                                                <% for (String purposeId : mandatoryNewVersionIds) {
+                                                    String trimmedId = purposeId.trim();
+                                                    String label = purposeLabelMap.containsKey(trimmedId)
+                                                            ? purposeLabelMap.get(trimmedId)
+                                                            : Encode.forHtml(trimmedId);
+                                                %>
+                                                <div class="mt-1 pl-5 required mandatoryClaim" title="This is a mandatory policy">
+                                                    <div class="ui checkbox claim-cb">
+                                                        <input type="checkbox" class="mandatory-consent hidden" name="mandatoryPurposeId"
+                                                            value="<%=Encode.forHtmlAttribute(trimmedId)%>"
+                                                            id="mandatory-<%=Encode.forHtmlAttribute(trimmedId)%>"/>
+                                                        <label for="mandatory-<%=Encode.forHtmlAttribute(trimmedId)%>">
+                                                            <%=label%> <b class="login-portal-app-font">*</b>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                                <% for (String purposeId : optionalNewVersionIds) {
+                                                    String trimmedId = purposeId.trim();
+                                                    String label = purposeLabelMap.containsKey(trimmedId)
+                                                            ? purposeLabelMap.get(trimmedId)
+                                                            : Encode.forHtml(trimmedId);
+                                                %>
+                                                <div class="mt-1 pl-5">
+                                                    <div class="ui checkbox claim-cb">
+                                                        <input type="checkbox" class="hidden" name="optionalPurposeId"
+                                                            value="<%=Encode.forHtmlAttribute(trimmedId)%>"
+                                                            id="optional-<%=Encode.forHtmlAttribute(trimmedId)%>"/>
+                                                        <label for="optional-<%=Encode.forHtmlAttribute(trimmedId)%>">
+                                                            <%=label%>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <% } %>
+                                            </div>
                                         </div>
                                     </div>
-                                    <% } %>
                                 </div>
+                                <% } %>
                             </div>
-                            <% } %>
                         </div>
 
                         <div class="ui divider hidden"></div>
-
-                        <div class="mt-0">
-                            <input type="button" class="ui primary fluid large button" id="approve"
-                                name="approve"
-                                onclick="javascript: approved(); return false;"
-                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.button.confirm")%>"/>
-                        <div class="mt-2 align-center">
-                            <input class="ui fluid large button secondary" type="reset"
-                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.button.decline")%>"
-                                onclick="javascript: deny(); return false;"/>
-                        </div>
-
                         <input type="hidden" name="<%="sessionDataKey"%>"
                                 value="<%=Encode.forHtmlAttribute(request.getParameter(Constants.SESSION_DATA_KEY))%>"/>
                         <% if (spId != null && !spId.trim().isEmpty()) { %>
@@ -305,7 +303,18 @@
                         <input type="hidden" name="policyOptionalIds"
                                value="<%=Encode.forHtmlAttribute(hiddenId)%>"/>
                         <% } %>
-                        <input type="hidden" name="consent" id="consent" value="deny"/>
+                        <div class="mt-0">
+                            <input type="button" class="ui primary fluid large button" id="approve"
+                                name="approve"
+                                onclick="javascript: approved(); return false;"
+                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.button.confirm")%>"/>
+                        </div>
+                        <div class="mt-3 align-center">
+                            <input type="hidden" name="consent" id="consent" value="deny"/>
+                            <input class="ui fluid large button secondary" type="reset"
+                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.button.decline")%>"
+                                onclick="javascript: deny(); return false;"/>
+                        </div>
                     </div>
                 </form>
             </div>
