@@ -200,7 +200,7 @@
                                                             ? purposeLabelMap.get(trimmedId)
                                                             : Encode.forHtml(trimmedId);
                                                 %>
-                                                <div class="mt-1 pl-5 required mandatoryClaim" title="This is a mandatory policy">
+                                                <div class="mt-1 pl-5 required mandatoryClaim" title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.mandatory")%>">
                                                     <div class="ui checkbox claim-cb">
                                                         <input type="checkbox" class="mandatory-consent hidden" name="mandatoryPurposeId"
                                                             value="<%=Encode.forHtmlAttribute(trimmedId)%>"
@@ -252,7 +252,7 @@
                                                             ? purposeLabelMap.get(trimmedId)
                                                             : Encode.forHtml(trimmedId);
                                                 %>
-                                                <div class="mt-1 pl-5 required mandatoryClaim" title="This is a mandatory policy">
+                                                <div class="mt-1 pl-5 required mandatoryClaim" title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.mandatory")%>">
                                                     <div class="ui checkbox claim-cb">
                                                         <input type="checkbox" class="mandatory-consent hidden" name="mandatoryPurposeId"
                                                             value="<%=Encode.forHtmlAttribute(trimmedId)%>"

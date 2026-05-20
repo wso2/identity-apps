@@ -66,6 +66,7 @@ export const consents: ConsentsNS = {
     },
     registrationFlow: {
         noPolicies: "No policies available. Create policies from Policy Consents.",
+        policiesLabel: "Policies",
         selectPolicies: "Select Policies:"
     },
     notifications: {
@@ -220,6 +221,7 @@ export const consents: ConsentsNS = {
                         updateTitle: "Update Translation"
                     },
                     insertPolicyLink: "Wrap selected text with the policy URL as a link",
+                    insertPolicyLinkInvalidUrl: "The Policy URL must be a valid HTTP or HTTPS URL.",
                     insertPolicyLinkNoPolicyUrl: "Define a Policy URL above before inserting a link.",
                     insertPolicyLinkNoSelection: "Select the words you want to link, then click.",
                     insertPolicyLinkShort: "Policy Link",

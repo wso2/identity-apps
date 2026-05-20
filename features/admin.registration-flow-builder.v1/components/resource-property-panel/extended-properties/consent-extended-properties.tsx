@@ -123,6 +123,7 @@ const ConsentExtendedProperties: FunctionComponent<ConsentExtendedPropertiesProp
                 renderInput={ (params: AutocompleteRenderInputParams): ReactElement => (
                     <TextField
                         { ...params }
+                        label={ `${t("consents:registrationFlow.policiesLabel")} (optional)` }
                         placeholder={ selectedPolicyOptions.length === 0
                             ? t("consents:registrationFlow.selectPolicies") : "" }
                     />

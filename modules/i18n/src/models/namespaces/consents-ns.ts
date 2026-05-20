@@ -62,6 +62,7 @@ export interface ConsentsNS {
     };
     registrationFlow: {
         noPolicies: string;
+        policiesLabel: string;
         selectPolicies: string;
     };
     notifications: {
@@ -216,6 +217,7 @@ export interface ConsentsNS {
                         updateTitle: string;
                     };
                     insertPolicyLink: string;
+                    insertPolicyLinkInvalidUrl: string;
                     insertPolicyLinkShort: string;
                     insertPolicyLinkTooltip: string;
                     insertPolicyLinkNoPolicyUrl: string;

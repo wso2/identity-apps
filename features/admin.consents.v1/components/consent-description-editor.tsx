@@ -343,19 +343,24 @@ const ConsentEditorToolbar = ({
         );
     }, [ editor, updateToolbar ]);
 
+    const isValidPolicyUrl: boolean = !!policyUrl && URLUtils.isHttpsOrHttpUrl(policyUrl);
+
     const handleInsertPolicyLink = (): void => {
-        if (policyUrl && URLUtils.isHttpsOrHttpUrl(policyUrl)) {
+        if (isValidPolicyUrl) {
             editor.dispatchCommand(TOGGLE_LINK_COMMAND, policyUrl);
         }
     };
 
     /**
      * Resolves the appropriate tooltip message for the Policy Link button
-     * based on whether a URL exists and whether text is currently selected.
+     * based on whether a URL exists, whether it is valid, and whether text is selected.
      */
     const policyLinkTooltip = (): string => {
         if (!policyUrl) {
             return t("consents:wizard.create.form.description.insertPolicyLinkNoPolicyUrl");
+        }
+        if (!isValidPolicyUrl) {
+            return t("consents:wizard.create.form.description.insertPolicyLinkInvalidUrl");
         }
         if (!hasSelection) {
             return t("consents:wizard.create.form.description.insertPolicyLinkNoSelection");
@@ -426,7 +431,7 @@ const ConsentEditorToolbar = ({
                                 <ToolbarIconButton
                                     component="button"
                                     type="button"
-                                    disabled={ disabled || !hasSelection || !policyUrl }
+                                    disabled={ disabled || !hasSelection || !isValidPolicyUrl }
                                     onClick={ handleInsertPolicyLink }
                                     aria-label={ t("consents:wizard.create.form.description.insertPolicyLink") }
                                     sx={ {
