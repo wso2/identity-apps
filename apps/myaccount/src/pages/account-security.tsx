@@ -102,7 +102,7 @@ const AccountSecurityPage: FunctionComponent<AccountSecurityPagePropsInterface>=
         setTimeout(() => {
             switch (props.location.hash) {
                 case `#${ CommonConstants.CONSENTS_CONTROL }`:
-                    consentControl.current.scrollIntoView({
+                    consentControl.current?.scrollIntoView({
                         behavior: "smooth",
                         block: "center"
                     });

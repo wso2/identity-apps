@@ -30,7 +30,7 @@ interface ModalComponentProps extends ModalProps, TestableComponentInterface {
     primaryAction?: string;
     primaryActionDisabled?: boolean;
     secondaryAction?: string;
-    onPrimaryActionClick?: () => void;
+    onPrimaryActionClick: () => void;
     onSecondaryActionClick?: (e: MouseEvent<HTMLElement>) => void;
 }
 
@@ -167,7 +167,7 @@ export const ModalComponent = (props: ModalComponentProps): ReactElement => {
                 </Button>
                 <PrimaryButton
                     disabled={ primaryActionDisabled }
-                    onClick={ () => onPrimaryActionClick() }
+                    onClick={ onPrimaryActionClick }
                 >
                     { primaryAction }
                 </PrimaryButton>

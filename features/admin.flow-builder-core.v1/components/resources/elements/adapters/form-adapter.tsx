@@ -51,7 +51,11 @@ const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
 }: FormAdapterPropsInterface): ReactElement => {
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
-    const shouldShowFormFieldsPlaceholder: boolean = !resource?.components?.some(
+    const visibleComponents: Element[] = (resource?.components ?? []).filter(
+        (component: Element) => !(component.type === ElementTypes.Policy && isSubOrganization())
+    );
+
+    const shouldShowFormFieldsPlaceholder: boolean = !visibleComponents.some(
         (element: Element) => element.category === ElementCategories.Field
     );
 
@@ -79,12 +83,7 @@ const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
                         <Typography variant="body2">DROP FORM COMPONENTS HERE</Typography>
                     </Box>
                 ) }
-                { (resource?.components as any)?.map((component: Element, index: number) => {
-                    // Hide consent elements from sub-organizations
-                    if (component.type === ElementTypes.Policy && isSubOrganization()) {
-                        return null;
-                    }
-
+                { visibleComponents?.map((component: Element, index: number) => {
                     return PluginRegistry
                         .getInstance().executeSync(EventTypes.ON_NODE_ELEMENT_FILTER, component) && (
                         <ReorderableElement

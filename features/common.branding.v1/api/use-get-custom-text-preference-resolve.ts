@@ -66,7 +66,7 @@ const useGetCustomTextPreferenceResolve = <
         url: endpointUrl
     };
 
-    const { data, error, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null, {
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(shouldFetch ? requestConfig : null, {
         shouldRetryOnError: false
     });
 
@@ -83,7 +83,7 @@ const useGetCustomTextPreferenceResolve = <
         return {
             data: null,
             error,
-            isLoading: !error && !data,
+            isLoading,
             isValidating,
             mutate,
             mutateMultiple
@@ -93,7 +93,7 @@ const useGetCustomTextPreferenceResolve = <
     return {
         data,
         error,
-        isLoading: !error && !data,
+        isLoading,
         isValidating,
         mutate,
         mutateMultiple

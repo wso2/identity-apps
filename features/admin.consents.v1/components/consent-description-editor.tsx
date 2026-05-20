@@ -35,6 +35,7 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import { LanguageIcon } from "@oxygen-ui/react-icons";
 import PlaceholderComponent from "@wso2is/common.branding.v1/components/placeholder-component";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { URLUtils } from "@wso2is/core/utils";
 import { Hint } from "@wso2is/react-components";
 import {
     $getRoot,
@@ -255,8 +256,7 @@ const HtmlSyncPlugin = ({ initialHtml, onChange, disabled }: HtmlSyncPluginProps
 
             $insertNodes(nodes);
         });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [ editor, initialHtml ]);
 
     useEffect(() => {
         if (!editor) return;
@@ -344,7 +344,7 @@ const ConsentEditorToolbar = ({
     }, [ editor, updateToolbar ]);
 
     const handleInsertPolicyLink = (): void => {
-        if (policyUrl) {
+        if (policyUrl && URLUtils.isHttpsOrHttpUrl(policyUrl)) {
             editor.dispatchCommand(TOGGLE_LINK_COMMAND, policyUrl);
         }
     };
@@ -561,6 +561,7 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
 
     const exampleLinkText: string =
         policyName || policyUrl || t("consents:form.name.placeholder");
+    const isValidPolicyUrl: boolean = !!policyUrl && URLUtils.isHttpsOrHttpUrl(policyUrl);
 
     return (
         <EditorContainer data-componentid={ componentId } className="mt-2 mb-1">
@@ -587,10 +588,10 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
                                             values={ { policyName: exampleLinkText } }
                                             components={ [
                                                 <a
-                                                    href={ policyUrl || undefined }
+                                                    href={ isValidPolicyUrl ? policyUrl : undefined }
                                                     className="rich-text-link"
-                                                    target={ policyUrl ? "_blank" : undefined }
-                                                    rel={ policyUrl ? "noopener noreferrer" : undefined }
+                                                    target={ isValidPolicyUrl ? "_blank" : undefined }
+                                                    rel={ isValidPolicyUrl ? "noopener noreferrer" : undefined }
                                                 />
                                             ] }
                                         />

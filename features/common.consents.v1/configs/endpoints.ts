@@ -24,7 +24,11 @@ import { ConsentMgtResourceEndpointsInterface } from "../models/endpoints";
  * @param serverHost - Server host.
  * @returns The resource endpoints for the Consent Management feature.
  */
-export const getConsentMgtResourceEndpoints = (serverHost: string): ConsentMgtResourceEndpointsInterface => ({
-    consentMgtElements: `${ serverHost }/api/identity/consent-mgt/v2.0/elements`,
-    consentMgtPurposes: `${ serverHost }/api/identity/consent-mgt/v2.0/purposes`
-});
+export const getConsentMgtResourceEndpoints = (serverHost: string): ConsentMgtResourceEndpointsInterface => {
+    const normalizedHost: string = serverHost?.replace(/\/+$/, "") ?? "";
+
+    return {
+        consentMgtElements: `${ normalizedHost }/api/identity/consent-mgt/v2.0/elements`,
+        consentMgtPurposes: `${ normalizedHost }/api/identity/consent-mgt/v2.0/purposes`
+    };
+};

@@ -44,21 +44,39 @@ const ensureAfterSanitizeAttributesHookRegistered = () => {
 
 /**
  * Reports the current accepted and rejected policy ID lists to the form state
- * as a serialized JSON payload keyed by purpose type.
+ * as a serialized JSON payload keyed by purpose type, preserving any existing
+ * entries for other purpose types already stored in the "consent" field.
  *
  * @param {Record<string, boolean>} checkedMap - Map of policyId → checked boolean.
  * @param {Function} formStateHandler - Form state updater.
  * @param {string} purposeType - The consent purpose type (e.g. "Policy").
+ * @param {{ current: string | null }} consentRef - Ref holding the current serialized consent JSON.
  */
-const reportPolicyState = (checkedMap, formStateHandler, purposeType) => {
+const reportPolicyState = (checkedMap, formStateHandler, purposeType, consentRef) => {
     const accepted = Object.keys(checkedMap).filter((id) => checkedMap[id]);
     const rejected = Object.keys(checkedMap).filter((id) => !checkedMap[id]);
 
-    const payload = {
+    let existingConsent = {};
+
+    try {
+        const raw = consentRef.current;
+
+        if (raw) {
+            existingConsent = JSON.parse(raw);
+        }
+    } catch {
+        existingConsent = {};
+    }
+
+    const mergedConsent = {
+        ...existingConsent,
         [purposeType]: { accepted, rejected }
     };
 
-    formStateHandler("consent", JSON.stringify(payload));
+    const serialized = JSON.stringify(mergedConsent);
+
+    consentRef.current = serialized;
+    formStateHandler("consent", serialized);
 };
 
 const PolicyConsentFieldAdapter = ({ component, formStateHandler, fieldErrorHandler }) => {
@@ -78,6 +96,7 @@ const PolicyConsentFieldAdapter = ({ component, formStateHandler, fieldErrorHand
         })), [ rawPolicies ]);
 
     const [ checkedMap, setCheckedMap ] = useState({});
+    const consentRef = useRef(null);
 
     const handlePolicyValidation = (map, policies) => {
         const hasUncheckedMandatory = policies.some((policy) => policy.mandatory && !map[policy.id]);
@@ -104,7 +123,7 @@ const PolicyConsentFieldAdapter = ({ component, formStateHandler, fieldErrorHand
         });
 
         setCheckedMap(initial);
-        reportPolicyState(initial, formStateHandler, purposeType);
+        reportPolicyState(initial, formStateHandler, purposeType, consentRef);
         handlePolicyValidation(initial, policiesToShow);
     }, [ policiesToShow ]);
 
@@ -112,7 +131,7 @@ const PolicyConsentFieldAdapter = ({ component, formStateHandler, fieldErrorHand
         const updated = { ...checkedMap, [policy.id]: data.checked };
 
         setCheckedMap(updated);
-        reportPolicyState(updated, formStateHandler, purposeType);
+        reportPolicyState(updated, formStateHandler, purposeType, consentRef);
         handlePolicyValidation(updated, policiesToShow);
     };
 
