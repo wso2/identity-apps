@@ -44,6 +44,7 @@ import { ApplicationManagementConstants } from "../../admin.applications.v1/cons
 import { ApplicationListItemInterface } from "../../admin.applications.v1/models/application";
 import { useProfileInfo } from "../api";
 import { UserManagementConstants } from "../constants";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 
 /**
  * Props for Impersonate User Action component.
@@ -123,6 +124,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
         isLoading: isAuthenticatedUserFetchRequestLoading
     } = useProfileInfo();
     const { getUserOrgInLocalStorage } = useOrganizations();
+    const { isSubOrganization } = useGetCurrentOrganizationType();
     const isSwitchedFromRootOrg: boolean = getUserOrgInLocalStorage() === "undefined";
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
     const IMPERSONATION_ARTIFACTS: string = "impersonation_artifacts";
@@ -438,6 +440,8 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     };
 
     const userOrganizationId: string = useSelector((state: AppState) => state?.organization?.userOrganizationId);
+    const currentOrganizationId: string = useSelector((state: AppState) => state?.organization?.organization?.id);
+    const resolvedOrgId: string = currentOrganizationId || userOrganizationId;
 
     /**
      * This function resolves the iframe for the impersonation.
@@ -452,7 +456,8 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
                         + `?userId=${encodeURIComponent(user.id)}`
                         + `&codeChallenge=${encodeURIComponent(codeChallenge)}`
                         + `&clientId=${encodeURIComponent(accountAppClientID)}`
-                        + `&orgId=${encodeURIComponent(userOrganizationId)}`
+                        + `&orgId=${encodeURIComponent(resolvedOrgId)}`
+                        + `&isSubOrganization=${encodeURIComponent(isSubOrganization())}`
                     }
                 />
             );
