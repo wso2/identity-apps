@@ -2300,6 +2300,9 @@ importers:
       '@wso2is/common.ai.v1':
         specifier: ^2.28.0
         version: link:../common.ai.v1
+      '@wso2is/common.consents.v1':
+        specifier: workspace:^
+        version: link:../common.consents.v1
       '@wso2is/core':
         specifier: ^2.13.0
         version: link:../../modules/core
@@ -11202,12 +11205,6 @@ importers:
       '@asgardeo/auth-react':
         specifier: ^5.6.1
         version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@mui/material':
-        specifier: ^5.13.0
-        version: 5.18.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      '@mui/system':
-        specifier: 'catalog:'
-        version: 5.18.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1)
       '@wso2is/admin.core.v1':
         specifier: workspace:^
         version: link:../admin.core.v1
