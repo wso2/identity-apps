@@ -225,27 +225,29 @@ const ToolbarPolicyLinkButton: typeof Box = styled(ToolbarIconButton)({
     width: "auto"
 });
 
-const EditorContentEditable: typeof ContentEditable = styled(ContentEditable)(({ theme }: { theme: Theme }) => ({
-    caretColor: "currentColor",
-    fontSize: "14px",
-    maxHeight: "260px",
-    minHeight: "120px",
-    outline: "none",
-    overflowY: "auto",
-    padding: theme.spacing(1.25, 5, 1.25, 1.5),
-    tabSize: 1
-}));
+const EditorContentEditable: React.ComponentType<React.ComponentProps<typeof ContentEditable>> =
+    styled(ContentEditable)(({ theme }: { theme: Theme }) => ({
+        caretColor: "currentColor",
+        fontSize: "14px",
+        maxHeight: "260px",
+        minHeight: "120px",
+        outline: "none",
+        overflowY: "auto",
+        padding: theme.spacing(1.25, 5, 1.25, 1.5),
+        tabSize: 1
+    }));
 
-const TranslationContentEditable: typeof ContentEditable = styled(ContentEditable)(({ theme }: { theme: Theme }) => ({
-    caretColor: "currentColor",
-    fontSize: "14px",
-    maxHeight: "160px",
-    minHeight: "80px",
-    outline: "none",
-    overflowY: "auto",
-    padding: theme.spacing(1.25, 1.5),
-    tabSize: 1
-}));
+const TranslationContentEditable: React.ComponentType<React.ComponentProps<typeof ContentEditable>> =
+    styled(ContentEditable)(({ theme }: { theme: Theme }) => ({
+        caretColor: "currentColor",
+        fontSize: "14px",
+        maxHeight: "160px",
+        minHeight: "80px",
+        outline: "none",
+        overflowY: "auto",
+        padding: theme.spacing(1.25, 1.5),
+        tabSize: 1
+    }));
 
 // ─── SVG Icons ────────────────────────────────────────────────────────────────
 
