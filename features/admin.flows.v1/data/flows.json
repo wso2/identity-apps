@@ -11,8 +11,8 @@
         },
         {
             "id": "device-registration",
-            "heading": "Device Registration",
-            "description": "Configure registration journeys that collect and enroll user device details as part of onboarding.",
+            "heading": "Self Service Device Registration",
+            "description": "Configure registration journeys that allow users to enroll their own devices as part of onboarding.",
             "featureStatusKey": "flows.types.list.deviceRegistration",
             "path": "DEVICE_REGISTRATION_FLOW_BUILDER",
             "type": "DEVICE_REGISTRATION",

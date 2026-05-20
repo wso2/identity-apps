@@ -88,5 +88,26 @@
                 "next": ""
             }
         }
+    },
+    {
+        "resourceType": "STEP",
+        "category": "WORKFLOW",
+        "type": "EXECUTION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Device Registration",
+            "image": "assets/images/icons/device-registration.svg",
+            "showOnResourcePanel": true
+        },
+        "data": {
+            "action": {
+                "type": "EXECUTOR",
+                "executor": {
+                    "name": "DeviceRegistrationExecutor"
+                },
+                "next": ""
+            }
+        }
     }
 ]
