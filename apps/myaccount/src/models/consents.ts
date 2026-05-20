@@ -300,7 +300,7 @@ export interface PolicyConsentListResponseInterface {
 /**
  * A data element within a consented purpose.
  */
-export interface ConsentedElementInterface {
+interface ConsentedElementInterface {
     displayName: string;
     id: string;
     name: string;

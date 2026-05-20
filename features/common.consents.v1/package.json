@@ -7,9 +7,7 @@
     "license": "Apache-2.0",
     "dependencies": {
         "@asgardeo/auth-react": "^5.1.2",
-        "@mui/material": "catalog:",
-        "@mui/system": "catalog:",
-        "@wso2is/admin.core.v1": "workspace:^",
+"@wso2is/admin.core.v1": "workspace:^",
         "@wso2is/core": "^2.12.7",
         "axios": "^1.4.0",
         "react": "^18.2.0",
