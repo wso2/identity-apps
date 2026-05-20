@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
+import Typography from "@oxygen-ui/react/Typography";
+import { PlusIcon } from "@oxygen-ui/react-icons";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -30,10 +33,10 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
-import React, { ReactElement, ReactNode, SyntheticEvent } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Header, Icon, SemanticICONS } from "semantic-ui-react";
+import { SemanticICONS } from "semantic-ui-react";
 
 /**
  * Props interface for the Policy Consents list component.
@@ -71,7 +74,9 @@ interface PolicyConsentsListProps extends IdentifiableComponentInterface {
  * @param props - Props injected to the component.
  * @returns Policy Consents list component.
  */
-export const PolicyConsentsList = (props: PolicyConsentsListProps): ReactElement => {
+export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
+    props: PolicyConsentsListProps
+): ReactElement => {
     const {
         advancedSearch,
         isLoading,
@@ -143,10 +148,9 @@ export const PolicyConsentsList = (props: PolicyConsentsListProps): ReactElement
                 key: "name",
                 render: (consent: ConsentListItemInterface): ReactNode => {
                     return (
-                        <Header
-                            image
-                            as="h6"
-                            className="header-with-icon"
+                        <Box
+                            alignItems="center"
+                            display="flex"
                             data-componentid={ `${componentId}-item-heading` }
                         >
                             <AppAvatar
@@ -161,11 +165,10 @@ export const PolicyConsentsList = (props: PolicyConsentsListProps): ReactElement
                                 spaced="right"
                                 data-componentid={ `${componentId}-item-display-name` }
                             />
-
-                            <Header.Content>
+                            <Typography variant="body1">
                                 { consent.name }
-                            </Header.Content>
-                        </Header>
+                            </Typography>
+                        </Box>
                     );
                 },
                 title: null
@@ -196,7 +199,7 @@ export const PolicyConsentsList = (props: PolicyConsentsListProps): ReactElement
                             data-componentid={ `${componentId}-empty-placeholder-add-policy-button` }
                             onClick={ onAddConsentClick }
                         >
-                            <Icon name="add" />
+                            <PlusIcon />
                             { t("consents:list.emptyPlaceholder.addPolicy") }
                         </PrimaryButton>
                     ) }

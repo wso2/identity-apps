@@ -24,16 +24,17 @@ import { styled } from "@mui/material/styles";
 import type { Theme } from "@mui/material/styles";
 import { ChevronDownIcon } from "@oxygen-ui/react-icons";
 import type { PurposeVersionSummaryDTOInterface } from "@wso2is/common.consents.v1";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { type FunctionComponent, type ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-interface ConsentVersionDropdownPropsInterface {
-	currentVersion: string;
-	versions: PurposeVersionSummaryDTOInterface[];
-	onVersionChange?: (version: string) => void;
+interface ConsentVersionDropdownPropsInterface extends IdentifiableComponentInterface {
+    currentVersion: string;
+    versions: PurposeVersionSummaryDTOInterface[];
+    onVersionChange?: (version: string) => void;
 }
 
-const DropdownTrigger = styled(Button)(({ theme }: { theme: Theme }) => ({
+const DropdownTrigger: typeof Button = styled(Button)(({ theme }: { theme: Theme }) => ({
 	textTransform: "none",
 	display: "flex",
 	alignItems: "center",
@@ -44,7 +45,12 @@ const DropdownTrigger = styled(Button)(({ theme }: { theme: Theme }) => ({
 export const ConsentVersionDropdown: FunctionComponent<ConsentVersionDropdownPropsInterface> = (
     props: ConsentVersionDropdownPropsInterface
 ): ReactElement => {
-    const { currentVersion, versions, onVersionChange } = props;
+    const {
+        currentVersion,
+        versions,
+        onVersionChange,
+        ["data-componentid"]: componentId = "consent-version-dropdown"
+    } = props;
     const { t } = useTranslation();
     const [ anchorEl, setAnchorEl ] = useState<null | HTMLElement>(null);
     const open: boolean = Boolean(anchorEl);
@@ -59,7 +65,7 @@ export const ConsentVersionDropdown: FunctionComponent<ConsentVersionDropdownPro
 
     return (
         <Box
-            data-componentid="consent-version-dropdown"
+            data-componentid={ componentId }
             sx={ {
                 display: "flex",
                 justifyContent: "flex-end",
@@ -68,7 +74,7 @@ export const ConsentVersionDropdown: FunctionComponent<ConsentVersionDropdownPro
         >
             <DropdownTrigger
                 id="consent-version-dropdown-trigger"
-                data-componentid="consent-version-dropdown-trigger"
+                data-componentid={ `${componentId}-trigger` }
                 aria-controls={ open ? "consent-version-menu" : undefined }
                 aria-haspopup="true"
                 aria-expanded={ open ? "true" : undefined }

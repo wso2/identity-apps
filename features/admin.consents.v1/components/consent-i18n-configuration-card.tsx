@@ -16,7 +16,9 @@
  * under the License.
  */
 
+import { Theme, styled } from "@mui/material/styles";
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
 import CardActions from "@oxygen-ui/react/CardActions";
@@ -42,7 +44,6 @@ import { BrandingPreferenceTypes, PreviewScreenType } from "@wso2is/common.brand
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
-import classNames from "classnames";
 import merge from "lodash-es/merge";
 import pick from "lodash-es/pick";
 import React, {
@@ -62,9 +63,63 @@ import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import "./consent-i18n-configuration-card.scss";
-
 const CONSENT_I18N_SCREEN: PreviewScreenType = PreviewScreenType.CONSENT;
+
+// ─── Styled Components ────────────────────────────────────────────────────────
+
+const CardBackdrop: typeof Box = styled(Box)({
+    bottom: 0,
+    left: 0,
+    position: "fixed",
+    right: 0,
+    top: 0,
+    zIndex: 1300
+});
+
+const FloatingCard: typeof Card = styled(Card)(({ theme }: { theme: Theme }) => ({
+    border: `1px solid ${theme.palette.divider}`,
+    borderRadius: theme.shape.borderRadius,
+    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.12)",
+    padding: 0,
+    position: "absolute",
+    width: "370px",
+    zIndex: 1301
+}));
+
+const FloatingCardHeader: typeof CardHeader = styled(CardHeader)(({ theme }: { theme: Theme }) => ({
+    "& .MuiCardHeader-title": {
+        fontSize: "1rem",
+        fontWeight: 500,
+        marginRight: theme.spacing(0.625)
+    },
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    padding: theme.spacing(2)
+}));
+
+const FloatingCardContent: typeof CardContent = styled(CardContent)(({ theme }: { theme: Theme }) => ({
+    margin: theme.spacing(1.25, 0),
+    maxHeight: "550px",
+    overflowY: "auto",
+    padding: theme.spacing(2, 3)
+}));
+
+const FloatingCardActions: typeof CardActions = styled(CardActions)(({ theme }: { theme: Theme }) => ({
+    "& .MuiButton-containedPrimary.Mui-disabled": {
+        color: theme.palette.primary.contrastText,
+        opacity: 0.5
+    },
+    "& .MuiButton-root": {
+        minWidth: "auto"
+    },
+    justifyContent: "flex-end",
+    padding: theme.spacing(0, 3, 3)
+}));
+
+const I18nConfigContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    display: "flex",
+    flexDirection: "column",
+    gap: theme.spacing(2)
+}));
 
 /**
  * Props interface for a custom language text field component.
@@ -302,15 +357,15 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
     const renderCardContent = (): ReactElement => {
         if (isLoading) {
             return (
-                <div className="i18n-config-container loading">
+                <I18nConfigContainer sx={ { alignItems: "center", justifyContent: "center", padding: 4 } }>
                     <CircularProgress size={ 20 } />
-                </div>
+                </I18nConfigContainer>
             );
         }
 
         if (!isCustomizeView) {
             return (
-                <div className="i18n-config-container">
+                <I18nConfigContainer>
                     <div>
                         <Typography id="consent-i18n-key-label" variant="subtitle2" gutterBottom>
                             { t("consents:wizard.create.form.description.i18nCard.i18nKey") }
@@ -339,12 +394,12 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                             ) }
                         />
                     </div>
-                </div>
+                </I18nConfigContainer>
             );
         }
 
         return (
-            <div className="i18n-config-container">
+            <I18nConfigContainer>
                 <div>
                     <Typography id="consent-i18n-key-label" variant="subtitle2" gutterBottom>
                         { t("consents:wizard.create.form.description.i18nCard.i18nKey") }
@@ -444,26 +499,24 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                         />
                     ) }
                 </div>
-            </div>
+            </I18nConfigContainer>
         );
     };
 
     if (!open) return null;
 
     return createPortal(
-        <div
-            className="consent-i18n-configuration card-backdrop"
+        <CardBackdrop
             onClick={ handleClose }
             data-componentid={ `${componentId}-backdrop` }
         >
-            <Card
+            <FloatingCard
                 ref={ cardRef }
-                className="card"
-                style={ { left: position.left, top: position.top } }
+                sx={ { left: position.left, top: position.top } }
                 onClick={ (e: React.MouseEvent) => e.stopPropagation() }
                 data-componentid={ componentId }
             >
-                <CardHeader
+                <FloatingCardHeader
                     title={ isCustomizeView
                         ? (isCreationMode.current
                             ? t("consents:wizard.create.form.description.i18nCard.createTitle")
@@ -475,15 +528,14 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                             <XMarkIcon />
                         </IconButton>
                     ) }
-                    className="card-header"
                 />
-                <CardContent
+                <FloatingCardContent
                     ref={ cardContentRef }
-                    className={ classNames("card-content", { scrolled: isScrolled }) }
+                    sx={ isScrolled ? { paddingRight: 1 } : undefined }
                 >
                     { renderCardContent() }
-                </CardContent>
-                <CardActions className="card-actions">
+                </FloatingCardContent>
+                <FloatingCardActions>
                     { !isCustomizeView ? (
                         <>
                             { selectedI18nKey && (
@@ -558,9 +610,9 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                             </Button>
                         </>
                     ) }
-                </CardActions>
-            </Card>
-        </div>,
+                </FloatingCardActions>
+            </FloatingCard>
+        </CardBackdrop>,
         document.body
     );
 };

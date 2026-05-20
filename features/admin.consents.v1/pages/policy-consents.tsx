@@ -66,10 +66,10 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
         (state: AppState) => state?.config?.ui?.features?.consents
     );
 
-    const [ searchQuery, setSearchQuery ] = useState<string>(null);
+    const [ searchQuery, setSearchQuery ] = useState<string | null>(null);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
-    const [ deletingConsent, setDeletingConsent ] = useState<ConsentListItemInterface>(null);
+    const [ deletingConsent, setDeletingConsent ] = useState<ConsentListItemInterface | null>(null);
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
 
     const [ after, setAfter ] = useState<string>(undefined);

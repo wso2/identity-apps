@@ -47,7 +47,15 @@ import { URLUtils } from "@wso2is/core/utils";
 import { FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/forms";
 import { ConfirmationModal, ContentLoader, Hint, Message, PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, type ReactElement } from "react";
+import React, {
+    FunctionComponent,
+    MutableRefObject,
+    type ReactElement,
+    useCallback,
+    useMemo,
+    useRef,
+    useState
+} from "react";
 import { Field, FieldInputProps, FormRenderProps } from "react-final-form";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -139,14 +147,14 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
         isLoading: isBrandingLoading
     } = useGetBrandingPreferenceResolve(AppConstants.getTenant(), BrandingPreferenceTypes.ORG);
 
-    const [ isSubmitting, setIsSubmitting ] = React.useState<boolean>(false);
-    const [ showVersionWarningModal, setShowVersionWarningModal ] = React.useState<boolean>(false);
-    const [ modalPromptOnLogin, setModalPromptOnLogin ] = React.useState<boolean>(false);
-    const pendingValues: React.MutableRefObject<PolicyFormValuesInterface | null> =
-        React.useRef<PolicyFormValuesInterface | null>(null);
-    const nameValidationTokenRef: React.MutableRefObject<number> = React.useRef<number>(0);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ showVersionWarningModal, setShowVersionWarningModal ] = useState<boolean>(false);
+    const [ modalPromptOnLogin, setModalPromptOnLogin ] = useState<boolean>(false);
+    const pendingValues: MutableRefObject<PolicyFormValuesInterface | null> =
+        useRef<PolicyFormValuesInterface | null>(null);
+    const nameValidationTokenRef: MutableRefObject<number> = useRef<number>(0);
 
-    const brandingPolicyUrl: string = React.useMemo((): string => {
+    const brandingPolicyUrl: string = useMemo((): string => {
         if (!brandingPreference) {
             return "";
         }
@@ -162,7 +170,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
         return "";
     }, [ brandingPreference, consent ]);
 
-    const initialValues: PolicyFormValuesInterface | null = React.useMemo(
+    const initialValues: PolicyFormValuesInterface | null = useMemo(
         (): PolicyFormValuesInterface | null => {
             if (isCreateMode) {
                 return {
@@ -186,7 +194,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
             };
         }, [ isCreateMode, consent, brandingPolicyUrl ]);
 
-    const sortedConsentVersions: PurposeVersionSummaryDTOInterface[] = React.useMemo(
+    const sortedConsentVersions: PurposeVersionSummaryDTOInterface[] = useMemo(
         (): PurposeVersionSummaryDTOInterface[] => {
             if (!consentVersions) {
                 return [];
@@ -212,7 +220,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
      * Uses a token to discard stale results from previous in-flight checks.
      */
     const validateName: (_: string) => Promise<string | undefined> | string | undefined =
-        React.useCallback((value: string): Promise<string | undefined> | string | undefined => {
+        useCallback((value: string): Promise<string | undefined> | string | undefined => {
             if (!value?.trim()) {
                 return t("common:required");
             }
@@ -408,8 +416,9 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                     <Grid
                         xs={ 8 }
                         sx={ {
-                            borderBottom: "1px solid var(--oxygen-palette-divider)",
-                            borderRight: "1px solid var(--oxygen-palette-divider)"
+                            borderBottom: "1px solid",
+                            borderColor: "divider",
+                            borderRight: "1px solid"
                         } }
                         className="p-3"
                     >
@@ -419,7 +428,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                     </Grid>
                     <Grid
                         xs={ 4 }
-                        sx={ { borderBottom: "1px solid var(--oxygen-palette-divider)" } }
+                        sx={ { borderBottom: "1px solid", borderColor: "divider" } }
                         className="p-3"
                     >
                         <Typography>
@@ -460,8 +469,9 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                 xs={ 8 }
                                                 padding={ 2 }
                                                 sx={ {
-                                                    borderBottom: "1px solid var(--oxygen-palette-divider)",
-                                                    borderRight: "1px solid var(--oxygen-palette-divider)"
+                                                    borderBottom: "1px solid",
+                                                    borderColor: "divider",
+                                                    borderRight: "1px solid"
                                                 } }
                                             >
                                                 {
@@ -655,7 +665,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                 xs={ 4 }
                                                 display={ "flex" }
                                                 flexDirection={ "column" }
-                                                sx={ { borderBottom: "1px solid var(--oxygen-palette-divider)" } }
+                                                sx={ { borderBottom: "1px solid", borderColor: "divider" } }
                                             >
                                                 <ConsentDescriptionPreview
                                                     description={ _values?.description ?? "" }

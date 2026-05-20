@@ -189,6 +189,64 @@ const EditorContainer: typeof Box = styled(Box)({
     width: "100%"
 });
 
+const I18nKeyOverlay: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    backgroundColor: theme.palette.background.paper,
+    borderRadius: "inherit",
+    bottom: 0,
+    cursor: "default",
+    fontSize: "14px",
+    left: 0,
+    padding: theme.spacing(1.25, 5, 1.25, 1.5),
+    position: "absolute",
+    right: 0,
+    top: 0,
+    zIndex: 1
+}));
+
+const I18nIconButton: typeof IconButton = styled(IconButton)(({ theme }: { theme: Theme }) => ({
+    backgroundColor: theme.palette.background.paper,
+    border: "1px solid",
+    borderColor: theme.palette.divider,
+    borderRadius: theme.shape.borderRadius,
+    height: 24,
+    padding: theme.spacing(0.5),
+    position: "absolute",
+    right: 6,
+    top: 6,
+    width: 24,
+    zIndex: 2
+}));
+
+const ToolbarPolicyLinkButton: typeof Box = styled(ToolbarIconButton)({
+    fontSize: "10px",
+    fontWeight: 600,
+    gap: "4px",
+    padding: "0 8px",
+    width: "auto"
+});
+
+const EditorContentEditable: typeof ContentEditable = styled(ContentEditable)(({ theme }: { theme: Theme }) => ({
+    caretColor: "currentColor",
+    fontSize: "14px",
+    maxHeight: "260px",
+    minHeight: "120px",
+    outline: "none",
+    overflowY: "auto",
+    padding: theme.spacing(1.25, 5, 1.25, 1.5),
+    tabSize: 1
+}));
+
+const TranslationContentEditable: typeof ContentEditable = styled(ContentEditable)(({ theme }: { theme: Theme }) => ({
+    caretColor: "currentColor",
+    fontSize: "14px",
+    maxHeight: "160px",
+    minHeight: "80px",
+    outline: "none",
+    overflowY: "auto",
+    padding: theme.spacing(1.25, 1.5),
+    tabSize: 1
+}));
+
 // ─── SVG Icons ────────────────────────────────────────────────────────────────
 
 const UndoIcon = (props: SVGProps<SVGSVGElement>): ReactElement => (
@@ -428,23 +486,16 @@ const ConsentEditorToolbar = ({
                             arrow
                         >
                             <span>
-                                <ToolbarIconButton
+                                <ToolbarPolicyLinkButton
                                     component="button"
                                     type="button"
                                     disabled={ disabled || !hasSelection || !isValidPolicyUrl }
                                     onClick={ handleInsertPolicyLink }
                                     aria-label={ t("consents:wizard.create.form.description.insertPolicyLink") }
-                                    sx={ {
-                                        fontSize: "10px",
-                                        fontWeight: 600,
-                                        gap: "4px",
-                                        padding: "0 8px",
-                                        width: "auto"
-                                    } }
                                 >
                                     <LinkIcon />
                                     { t("consents:wizard.create.form.description.insertPolicyLinkShort") }
-                                </ToolbarIconButton>
+                                </ToolbarPolicyLinkButton>
                             </span>
                         </Tooltip>
                     </>
@@ -476,18 +527,8 @@ const TranslationDescriptionEditor: FunctionComponent<LanguageTextFieldPropsInte
             <EditorWrapperBox>
                 <RichTextPlugin
                     contentEditable={ (
-                        <ContentEditable
+                        <TranslationContentEditable
                             ariaLabelledBy={ ariaLabelledBy }
-                            style={ {
-                                caretColor: "currentColor",
-                                fontSize: "14px",
-                                maxHeight: "160px",
-                                minHeight: "80px",
-                                outline: "none",
-                                overflowY: "auto",
-                                padding: "10px 12px",
-                                tabSize: 1
-                            } }
                         />
                     ) }
                     ErrorBoundary={ LexicalErrorBoundary }
@@ -581,7 +622,7 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
                 >
                     <RichTextPlugin
                         contentEditable={ (
-                            <ContentEditable
+                            <EditorContentEditable
                                 aria-placeholder={ t(
                                     "consents:wizard.create.preview.exampleDescription",
                                     { policyName: exampleLinkText }
@@ -602,16 +643,6 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
                                         />
                                     </EditorPlaceholder>
                                 ) }
-                                style={ {
-                                    caretColor: "currentColor",
-                                    fontSize: "14px",
-                                    maxHeight: "260px",
-                                    minHeight: "120px",
-                                    outline: "none",
-                                    overflowY: "auto",
-                                    padding: "10px 40px 10px 12px",
-                                    tabSize: 1
-                                } }
                             />
                         ) }
                         ErrorBoundary={ LexicalErrorBoundary }
@@ -624,50 +655,25 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
                         disabled={ disabled || !!i18nKey }
                     />
                     { i18nKey && (
-                        <Box sx={ {
-                            backgroundColor: "background.paper",
-                            borderRadius: "inherit",
-                            bottom: 0,
-                            cursor: "default",
-                            fontSize: "14px",
-                            left: 0,
-                            padding: "10px 40px 10px 12px",
-                            position: "absolute",
-                            right: 0,
-                            top: 0,
-                            zIndex: 1
-                        } }>
+                        <I18nKeyOverlay>
                             <PlaceholderComponent value={ `{{${i18nKey}}}` } />
-                        </Box>
+                        </I18nKeyOverlay>
                     ) }
                     <Tooltip
                         title={ t("consents:wizard.create.form.description.configureTranslation") }
                         placement="top"
                         arrow
                     >
-                        <IconButton
+                        <I18nIconButton
                             ref={ i18nButtonRef }
                             size="small"
                             disabled={ disabled }
                             onClick={ () => setIsI18nCardOpen(!isI18nCardOpen) }
                             aria-label={ t("consents:wizard.create.form.description.configureTranslation") }
                             aria-pressed={ isI18nCardOpen }
-                            sx={ {
-                                backgroundColor: "background.paper",
-                                border: "1px solid",
-                                borderColor: "divider",
-                                borderRadius: 1,
-                                height: 24,
-                                padding: "4px",
-                                position: "absolute",
-                                right: 6,
-                                top: 6,
-                                width: 24,
-                                zIndex: 2
-                            } }
                         >
                             <LanguageIcon size={ 13 } />
-                        </IconButton>
+                        </I18nIconButton>
                     </Tooltip>
                 </EditorWrapperBox>
             </LexicalComposer>
