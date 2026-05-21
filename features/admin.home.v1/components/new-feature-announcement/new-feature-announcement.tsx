@@ -19,16 +19,16 @@
 import { IntegrationInstructions, ListAlt, ManageAccounts, Security } from "@mui/icons-material";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
-import Chip from "@oxygen-ui/react/Chip";
 import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronRightIcon } from "@oxygen-ui/react-icons";
-import { FeatureAccessConfigInterface } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, FeatureFlagsInterface } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
 import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { AGENT_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
@@ -40,9 +40,8 @@ import classNames from "classnames";
 import DOMPurify from "dompurify";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Grid, Message, Modal } from "semantic-ui-react";
+import { Grid, Modal } from "semantic-ui-react";
 import AIAgentBox from "./ai-agent-box";
 import RebrandingAnnouncement from "./rebranding-announcement";
 import SurveyBox from "./survey-box";
@@ -61,6 +60,10 @@ interface NewFeatureAnnouncementProps extends IdentifiableComponentInterface {
     onTryOut: any;
     illustration: any;
     buttonText: ReactElement;
+    featureFlags?: FeatureFlagsInterface[];
+    featureName?: string;
+    featureStatusKey?: string;
+    featureConfig?: FeatureAccessConfigInterface
 }
 
 /**
@@ -79,10 +82,12 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
     onTryOut,
     illustration,
     buttonText,
+    featureFlags,
+    featureStatusKey,
+    featureConfig,
+    featureName,
     ...rest
 }: NewFeatureAnnouncementProps): ReactElement => {
-    const { t } = useTranslation();
-
     const { setShowPreviewFeaturesModal, setSelectedPreviewFeatureToShow } = useFeatureGate();
 
     // Handle both string and ReactElement descriptions
@@ -111,10 +116,13 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                 <Box>
                     <Typography variant="h3">
                         { title }
-                        { id !== "agents" && id !== "user-survey" && (
-                            <Chip
-                                label={ t(FeatureStatusLabel.PREVIEW) }
-                                className="oxygen-menu-item-chip oxygen-chip-experimental"
+                        { featureStatusKey && (
+                            <FeatureFlagLabel
+                                featureFlags={ featureFlags }
+                                featureKey={ featureStatusKey }
+                                featureConfig={ featureConfig }
+                                featureName={ featureName }
+                                type="chip"
                             />
                         ) }
                     </Typography>
@@ -193,6 +201,11 @@ export const FeatureCarousel = () => {
         return false;
     }, [ isUserStoresListFetchRequestLoading, userStoresList ]);
 
+    const customerDataServiceFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state.config.ui.features?.customerDataService);
+    const isCDSFeatureEnabled: boolean = customerDataServiceFeatureConfig?.enabled ?? false;
+
+
     const isUserSurveyBannerEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.userSurveyBanner?.enabled);
     const userSurveyURL: string = useSelector((state: AppState) => state?.config?.ui?.userSurveyBanner?.url);
@@ -243,6 +256,9 @@ export const FeatureCarousel = () => {
         },
         agentFeatureConfig?.enabled && {
             description: "Extend your identity management to autonomous agents and AI systems",
+            featureFlags: agentFeatureConfig?.featureFlags,
+            featureName: "agents",
+            featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.AGENTS,
             id: "agents",
             illustration: <Box className="ai-agent-box">
                 <AIAgentBox />
@@ -260,13 +276,39 @@ export const FeatureCarousel = () => {
                     window.open(url, "_blank");
                 }
             },
-            title: "Identity for AI Agents "
+            title: "Identity for AI Agents"
+        },
+        {
+            description: "Power personalization, automation, and customer engagement " +
+                "with identity-aware customer data.",
+            featureConfig: customerDataServiceFeatureConfig,
+            featureFlags: customerDataServiceFeatureConfig?.featureFlags,
+            featureName: "customerDataService",
+            featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_SERVICE,
+            id: "customer-data-platform",
+            illustration: <Box className="ai-agent-box">
+                <AIAgentBox />
+            </Box>,
+            isEnabled: isCDSFeatureEnabled,
+            isEnabledStatusLoading: false,
+            onTryOut: () => {
+                history.push(AppConstants.getPaths().get("PROFILES"));
+            },
+            title: "Your Identity Platform, Now With Customer Intelligence."
         }
     ].filter(Boolean), [
         agentFeatureConfig,
         isAgentManagementFeatureEnabledForOrganization,
+        isCDSFeatureEnabled,
+        customerDataServiceFeatureConfig,
         isRebrandingBannerEnabled,
-        isUserSurveyBannerEnabled
+        isUserSurveyBannerEnabled,
+        supportEmail,
+        tierName,
+        userSurveyButtonText,
+        userSurveyDescription,
+        userSurveyTitle,
+        userSurveyURL
     ]);
 
     useEffect(() => {
@@ -335,6 +377,10 @@ export const FeatureCarousel = () => {
                             isEnabledStatusLoading={ features[currentIndex]?.isEnabledStatusLoading }
                             onTryOut={ features[currentIndex]?.onTryOut }
                             buttonText={ features[currentIndex]?.buttonText }
+                            featureFlags={ features[currentIndex]?.featureFlags }
+                            featureName={ features[currentIndex]?.featureName }
+                            featureStatusKey={ features[currentIndex]?.featureStatusKey }
+                            featureConfig={ features[currentIndex]?.featureConfig }
                         />
                     ) }
                 </motion.div>
@@ -357,24 +403,6 @@ export const FeatureCarousel = () => {
                         </Heading>
                     </Modal.Header>
                     <Modal.Content className="content-container" scrolling>
-
-                        { isAgentManagementFeatureEnabledForOrganization ? (
-                            <Message warning>
-                                This feature is experimental. Some functionality may be limited or subject to change.
-                            </Message>
-                        ): (
-                            <Message info>
-                                AI agent management is coming soon to your organization! Create a fresh organization
-                                { " " }for instant access, or <a
-                                    href={
-                                        tierName === TenantTier.FREE
-                                            ? "mailto:" + supportEmail
-                                            : window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL
-                                    }>contact us</a> { " " }
-                                for early access.
-                            </Message>
-                        ) }
-
                         <Box display="flex" flexDirection="column" gap={ 3 } width="100%">
                             <Box display="flex" gap={ 3 }>
                                 <Paper
@@ -521,5 +549,3 @@ export const FeatureCarousel = () => {
         </div>
     );
 };
-
-
