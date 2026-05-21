@@ -497,7 +497,7 @@ importers:
         specifier: ^1.0.15
         version: link:../../features/common.workflow-approvals.v1
       '@wso2is/core':
-        specifier: ^2.13.2
+        specifier: ^2.13.3
         version: link:../../modules/core
       '@wso2is/i18n':
         specifier: ^2.41.2
@@ -666,7 +666,7 @@ importers:
         specifier: ^1.0.15
         version: link:../../features/common.workflow-approvals.v1
       '@wso2is/core':
-        specifier: ^2.13.1
+        specifier: ^2.13.3
         version: link:../../modules/core
       '@wso2is/forms':
         specifier: ^2.10.3
