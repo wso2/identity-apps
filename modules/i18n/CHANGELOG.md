@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.41.2
+
+### Patch Changes
+
+- [#10286](https://github.com/wso2/identity-apps/pull/10286) [`ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0`](https://github.com/wso2/identity-apps/commit/ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0) Thanks [@hwupathum](https://github.com/hwupathum)! - Add consent management related features
+
 ## 2.41.1
 
 ### Patch Changes

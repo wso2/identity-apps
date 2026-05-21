@@ -1,5 +1,14 @@
 # @wso2is/common.branding.v1
 
+## 2.28.4
+
+### Patch Changes
+
+- [#10286](https://github.com/wso2/identity-apps/pull/10286) [`ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0`](https://github.com/wso2/identity-apps/commit/ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0) Thanks [@hwupathum](https://github.com/hwupathum)! - Add consent management related features
+
+- Updated dependencies [[`ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0`](https://github.com/wso2/identity-apps/commit/ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0)]:
+  - @wso2is/admin.core.v1@2.57.10
+
 ## 2.28.3
 
 ### Patch Changes
