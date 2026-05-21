@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,15 +27,6 @@ import merge from "lodash-es/merge";
 import useGetCustomTextPreferenceExtensionsMeta from "./use-get-custom-text-preference-extensions-meta";
 import { CustomTextPreferenceMeta } from "../models/custom-text-preference";
 
-/**
- * Hook to get the platform default branding preference text customization metadata from the distribution.
- *
- * @remarks Use the extensions hook to get additional locale data and if both main and extensions data exist,
- * deep merge the entire objects.
- *
- * @param shouldFetch - Should fetch the data.
- * @returns SWR response object containing the data, error, isValidating, mutate.
- */
 const useGetCustomTextPreferenceMeta = <
     Data = CustomTextPreferenceMeta,
     Error = RequestErrorInterface

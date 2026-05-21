@@ -19,8 +19,8 @@
 import Avatar from "@oxygen-ui/react/Avatar";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
-import updateCustomTextPreference from "@wso2is/admin.branding.v1/api/update-custom-text-preference";
-import useGetCustomTextPreferenceMeta from "@wso2is/admin.branding.v1/api/use-get-custom-text-preference-meta";
+import updateCustomTextPreference from "@wso2is/common.branding.v1/api/update-custom-text-preference";
+import useGetCustomTextPreferenceMeta from "@wso2is/common.branding.v1/api/use-get-custom-text-preference-meta";
 import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";

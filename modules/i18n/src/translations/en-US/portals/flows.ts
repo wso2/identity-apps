@@ -281,6 +281,11 @@ export const flows: flowsNS = {
                     identifier: "Phone number field must be mapped to an attribute for data collection.",
                     label: "Phone number field must have a label to be displayed to users."
                 },
+                policyConsent: {
+                    general: "Required fields are not properly configured for the policy consent.",
+                    noPoliciesAvailable: "No policies are available for selection.",
+                    policiesRequired: "At least one policy must be selected."
+                },
                 richText: {
                     general: "Required fields are not properly configured for the rich text with ID <1>{{id}}</1>.",
                     text: "Rich text must have content to be displayed to users."

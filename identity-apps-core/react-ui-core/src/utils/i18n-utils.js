@@ -54,6 +54,44 @@ export const getLocaleTranslationMap = async (basePath, locale = "en-US") => {
 };
 
 /**
+ * Replaces i18n path placeholders in a given link with locale and country codes,
+ * or appends a ui_locales query parameter when no placeholders are present.
+ * Mirrors the server-side i18nLink(Locale, String) method in localize.jsp.
+ * @param {string} locale - The locale string (e.g., 'en_US').
+ * @param {string} link - The URL to transform.
+ * @returns {string} - The transformed URL.
+ */
+export const i18nLink = (locale, link) => {
+    if (!link) {
+        return link;
+    }
+
+    try {
+        const parts = locale.split("_");
+        const langCode = parts[0] || "";
+        const countryCode = parts[1] || "";
+        const localeCode = locale;
+
+        if (
+            link.includes("{{lang}}") ||
+            link.includes("{{country}}") ||
+            link.includes("{{locale}}")
+        ) {
+            return link
+                .replace(/\{\{lang\}\}/g, langCode)
+                .replace(/\{\{country\}\}/g, countryCode)
+                .replace(/\{\{locale\}\}/g, localeCode);
+        }
+
+        return link.includes("?")
+            ? `${link}&ui_locales=${localeCode}`
+            : `${link}?ui_locales=${localeCode}`;
+    } catch (error) {
+        return link;
+    }
+};
+
+/**
  * Resolves the text of an element. Accepts either a wrapped i18n key
  * ({@code "{{some.key}}"}) or a bare dot-separated short key ({@code "some.key"}).
  * If the key cannot be resolved from the translations map, the unwrapped key is

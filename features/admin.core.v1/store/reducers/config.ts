@@ -114,6 +114,8 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             certificates: "",
             claims: "",
             clientCertificates: "",
+            consentMgtElements: "",
+            consentMgtPurposes: "",
             copilot: "",
             createSecret: "",
             createSecretType: "",

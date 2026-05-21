@@ -28,6 +28,7 @@ import { ChevronDownIcon } from "@oxygen-ui/react-icons";
 import AICard from "@wso2is/common.ai.v1/components/ai-card";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import kebabCase from "lodash-es/kebabCase";
@@ -37,7 +38,7 @@ import ResourcePanelDraggable from "./resource-panel-draggable";
 import ResourcePanelStatic from "./resource-panel-static";
 import { Element, ElementTypes } from "../../models/elements";
 import { Resource, Resources } from "../../models/resources";
-import { ExecutionTypes, Step } from "../../models/steps";
+import { ExecutionTypes, Step, StepTypes, ViewStepVariants } from "../../models/steps";
 import { Template } from "../../models/templates";
 import { Widget } from "../../models/widget";
 import "./resource-panel.scss";
@@ -158,8 +159,25 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
         actionsFeatureConfig, "actions.types.list.flowExtension");
 
     const elements: Element[] = unfilteredElements.filter(
-        (element: Element) => element.display?.showOnResourcePanel !== false
+        (element: Element) => element.display?.showOnResourcePanel !== false);
+    const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: any) => state?.config?.ui?.features?.consents
     );
+
+    const hasConsentsReadPermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.read);
+
+    const elements: Element[] = unfilteredElements.filter((element: Element) => {
+        if (element.display?.showOnResourcePanel === false) {
+            return false;
+        }
+
+        if (element.type === ElementTypes.Policy
+            && (!consentsFeatureConfig?.enabled || !hasConsentsReadPermission)) {
+            return false;
+        }
+
+        return true;
+    });
     const widgets: Widget[] = unfilteredWidgets.filter(
         (widget: Widget) => widget.display?.showOnResourcePanel !== false
     );
@@ -171,6 +189,11 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
         // Hide FlowExtension step when the feature is disabled.
         if (!isFlowExtensionEnabled
             && (step.data as any)?.action?.executor?.name === ExecutionTypes.FlowExtension) {
+            return false;
+        }
+
+        if (step.type === StepTypes.View && step.variant === ViewStepVariants.PolicyConsent
+            && (!consentsFeatureConfig?.enabled || !hasConsentsReadPermission)) {
             return false;
         }
 

@@ -308,6 +308,9 @@ export class AppConstants {
             [ "CONNECTIONS", `${ AppConstants.getDeveloperViewBasePath() }/connections` ],
             [ "CONNECTION_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/connections/templates` ],
             [ "CONNECTION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/connections/:id` ],
+            [ "POLICY_CONSENTS", `${ AppConstants.getDeveloperViewBasePath() }/policy-consents` ],
+            [ "POLICY_CONSENTS_NEW", `${ AppConstants.getDeveloperViewBasePath() }/policy-consents/new` ],
+            [ "POLICY_CONSENTS_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/policy-consents/:id` ],
             [ "CUSTOMIZE", `${ AppConstants.getMainViewBasePath() }/customize` ],
             [ "DEVELOPER_OVERVIEW", `${ AppConstants.getDeveloperViewBasePath() }/overview` ],
             [

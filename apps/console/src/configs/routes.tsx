@@ -570,6 +570,46 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
+            category: "extensions:manage.sidePanel.categories.userManagement",
+            children: [
+                {
+                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/policy-consent-new")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "consents-new",
+                    name: "Consent New",
+                    path: AppConstants.getPaths().get("POLICY_CONSENTS_NEW"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/policy-consent-edit")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "consents-edit",
+                    name: "Consent Edit",
+                    path: AppConstants.getPaths().get("POLICY_CONSENTS_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("@wso2is/admin.consents.v1/pages/policy-consents")),
+            exact: true,
+            icon: {
+                icon: getSidePanelIcons().consents
+            },
+            id: "consents",
+            name: "extensions:develop.sidePanel.consents",
+            order: 7,
+            path: AppConstants.getPaths().get("POLICY_CONSENTS"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
             category: "console:develop.features.sidePanel.categories.application",
             children: [
                 {

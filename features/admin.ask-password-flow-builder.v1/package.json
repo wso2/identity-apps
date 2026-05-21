@@ -23,6 +23,7 @@
         "@wso2is/admin.rules.v1": "^0.7.50",
         "@wso2is/admin.server-configurations.v1": "^2.38.51",
         "@wso2is/common.ai.v1": "^2.28.0",
+        "@wso2is/common.consents.v1": "workspace:^",
         "@wso2is/core": "^2.13.0",
         "@xyflow/react": "^12.3.2",
         "@xyflow/system": "^0.0.52",

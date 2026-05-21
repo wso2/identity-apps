@@ -81,3 +81,7 @@ export enum ExecutionStepViewTypes {
     MagicLinkView = "Magic Link View",
     PasskeyView = "Passkey View"
 }
+
+export enum ViewStepVariants {
+    PolicyConsent = "POLICY_CONSENT"
+}

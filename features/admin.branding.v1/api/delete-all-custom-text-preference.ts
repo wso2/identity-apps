@@ -24,7 +24,7 @@ import { HttpMethods,
 } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
-import { CustomTextPreferenceAPIResponseInterface } from "../models/custom-text-preference";
+import { CustomTextPreferenceAPIResponseInterface } from "@wso2is/common.branding.v1/models/custom-text-preference";
 
 /**
  * Get an axios instance.

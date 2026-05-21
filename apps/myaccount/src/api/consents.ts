@@ -36,6 +36,7 @@ import {
     ServiceInterface,
     UpdateReceiptInterface
 } from "../models";
+import { PolicyConsentDetailInterface, PolicyConsentListResponseInterface } from "../models/consents";
 import { store } from "../store";
 
 /**
@@ -302,6 +303,96 @@ export const updateConsentedClaims = (
     return httpClient(requestConfig)
         .then((response: HttpResponse<ConsentReceiptInterface>) => {
             return response.data;
+        })
+        .catch((error: HttpError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Retrieves the list of user consent records from the v2 consents API.
+ *
+ * @param consentsBaseUrl - Base URL for the v2 consents endpoint.
+ * @param subjectId - Username of the subject to filter consents.
+ * @param state - Consent state filter (defaults to "ACTIVE").
+ * @returns A promise containing the paginated consent list response.
+ */
+export const getConsentsBySubject = (
+    consentsBaseUrl: string,
+    subjectId: string,
+    state: string = "ACTIVE"
+): Promise<PolicyConsentListResponseInterface> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: "GET",
+        params: { state, subjectId },
+        url: consentsBaseUrl
+    };
+
+    return httpClient(requestConfig)
+        .then((response: HttpResponse<PolicyConsentListResponseInterface>) => {
+            return response.data;
+        })
+        .catch((error: HttpError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Retrieves the full details of a single user consent record from the v2 consents API.
+ *
+ * @param consentsBaseUrl - Base URL for the v2 consents endpoint.
+ * @param consentId - ID of the consent record to retrieve.
+ * @returns A promise containing the full consent detail.
+ */
+export const getConsentById = (
+    consentsBaseUrl: string,
+    consentId: string
+): Promise<PolicyConsentDetailInterface> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: "GET",
+        url: `${consentsBaseUrl}/${consentId}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: HttpResponse<PolicyConsentDetailInterface>) => {
+            return response.data;
+        })
+        .catch((error: HttpError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Revokes a user consent record via the v2 consents API.
+ *
+ * @param consentsBaseUrl - Base URL for the v2 consents endpoint.
+ * @param consentId - ID of the consent record to revoke.
+ * @returns A promise that resolves when the revocation succeeds.
+ */
+export const revokeConsentById = (
+    consentsBaseUrl: string,
+    consentId: string
+): Promise<void> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: "POST",
+        url: `${consentsBaseUrl}/${consentId}/revoke`
+    };
+
+    return httpClient(requestConfig)
+        .then(() => {
+            return Promise.resolve();
         })
         .catch((error: HttpError) => {
             return Promise.reject(error);
