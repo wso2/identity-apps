@@ -261,22 +261,6 @@ const createEmptyConsentReceipt = (): ConsentReceiptInterface => ({
 });
 
 /**
- * Creates an empty consent object. This can be used to initialize
- * a consent in the state.
- * @returns an empty consent object.
- */
-const createEmptyConsent = (): ConsentInterface => ({
-    consentReceipt: createEmptyConsentReceipt(),
-    consentReceiptID: "",
-    language: "",
-    piiPrincipalId: "",
-    spDescription: "",
-    spDisplayName: "",
-    state: ConsentState.ACTIVE,
-    tenantDomain: ""
-});
-
-/**
  * Summary of a user consent record returned from GET /consents list.
  */
 export interface PolicyConsentSummaryInterface {

@@ -20,15 +20,9 @@ import { i18nLink } from "@wso2is/common.branding.v1/utils/i18n-link";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { PolicyConsentItemInterface } from "../../models/consents";
 import { DangerZone, DangerZoneGroup, GenericIcon, Media } from "@wso2is/react-components";
-import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
-import Divider from "@oxygen-ui/react/Divider";
-import List from "@oxygen-ui/react/List";
-import ListItem from "@oxygen-ui/react/ListItem";
-import Typography from "@oxygen-ui/react/Typography";
-import { ArrowUpRightFromSquareIcon, ChevronDownIcon, ChevronUpIcon } from "@oxygen-ui/react-icons";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import { Button, Grid, Icon, List } from "semantic-ui-react";
 import { toSentenceCase } from "../../utils";
 import { PolicyConsentIcon } from "../../configs";
 import { EditSection } from "../shared";
@@ -63,23 +57,16 @@ export const PolicyConsentList: FunctionComponent<PolicyConsentListPropsInterfac
     };
 
     return (
-        <List className="main-content-inner" data-componentid={ componentId } disablePadding>
+        <List divided verticalAlign="middle" className="main-content-inner" data-componentid={componentId}>
             {
-                items.length > 0
-                    ? items.map((item: PolicyConsentItemInterface, index: number) => (
-                        <Box key={ item.consentId }>
-                            <ListItem className="inner-list-item" disableGutters>
-                                <Box
-                                    display="flex"
-                                    alignItems="center"
-                                    justifyContent="space-between"
-                                    width="100%"
-                                    px={ 2 }
-                                    py={ 1 }
-                                >
-                                    <Box display="flex" alignItems="center" gap={ 1.5 }>
+                items.length > 0 && items.map((item: PolicyConsentItemInterface, index: number) => (
+                    <List.Item className="inner-list-item" key={item.consentId}>
+                        <Grid padded>
+                            <Grid.Row columns={2}>
+                                <Grid.Column className="first-column">
+                                    <List.Content verticalAlign="middle">
                                         <GenericIcon
-                                            icon={ PolicyConsentIcon }
+                                            icon={PolicyConsentIcon}
                                             size="micro"
                                             bordered
                                             defaultIcon
@@ -89,148 +76,165 @@ export const PolicyConsentList: FunctionComponent<PolicyConsentListPropsInterfac
                                             square
                                             floated="left"
                                         />
-                                        <Box>
-                                            <Typography variant="body1" fontWeight={ 500 }>
-                                                { item.purposeName }
-                                            </Typography>
-                                            <Typography variant="body2" color="text.secondary">
-                                                <Box
-                                                    component="span"
+                                        <List.Header>{item.purposeName}</List.Header>
+                                        <List.Description>
+                                            <p className="small-text">
+                                                <span
                                                     className={
-                                                        `active-label ${ resolveStateClassname(item.state) }`
+                                                        `active-label ${resolveStateClassname(item.state)}`
                                                     }
                                                 />
-                                                { item.state === "ACTIVE"
-                                                    ? `${ t(
+                                                {item.state === "ACTIVE"
+                                                    ? `${t(
                                                         "myAccount:components" +
                                                         ".policyConsentManagement" +
                                                         ".consentedOnLabel"
-                                                    ) } ${ new Date(
+                                                    )} ${new Date(
                                                         item.timestamp
-                                                    ).toLocaleDateString(i18n.language) }`
+                                                    ).toLocaleDateString(i18n.language)}`
                                                     : toSentenceCase(item.state)
                                                 }
-                                            </Typography>
-                                        </Box>
-                                    </Box>
-                                    <Box display="flex" alignItems="center">
+                                            </p>
+                                        </List.Description>
+                                    </List.Content>
+                                </Grid.Column>
+                                <Grid.Column className="last-column">
+                                    <List.Content floated="right">
                                         <Media lessThan="computer">
-                                            <Box display="flex" alignItems="center">
-                                                { item.policyUrl && (
+                                            <div style={{ alignItems: "center", display: "flex" }}>
+                                                {item.policyUrl && (
                                                     <Button
-                                                        component="a"
-                                                        href={ i18nLink(i18n.language, item.policyUrl) }
+                                                        as="a"
+                                                        href={i18nLink(i18n.language, item.policyUrl)}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        variant="text"
-                                                        size="small"
+                                                        className="borderless-button"
+                                                        basic={true}
                                                         data-componentid={
-                                                            `${ componentId }-${ item.purposeId }-view-policy-button`
+                                                            // eslint-disable-next-line max-len
+                                                            `${componentId}-${item.purposeId}-view-policy-button`
                                                         }
                                                     >
-                                                        <ArrowUpRightFromSquareIcon />
+                                                        <Icon name="external alternate" />
                                                     </Button>
-                                                ) }
+                                                )}
                                                 <Button
-                                                    variant="text"
-                                                    size="small"
-                                                    onClick={ () => onToggleDetail(index) }
+                                                    className="borderless-button"
+                                                    basic={true}
+                                                    onClick={() => onToggleDetail(index)}
                                                 >
-                                                    { activeIndexes.includes(index)
-                                                        ? <ChevronUpIcon />
-                                                        : <ChevronDownIcon />
-                                                    }
+                                                    <Icon
+                                                        name={
+                                                            activeIndexes.includes(index)
+                                                                ? "angle up"
+                                                                : "angle down"
+                                                        }
+                                                    />
                                                 </Button>
-                                            </Box>
+                                            </div>
                                         </Media>
                                         <Media greaterThanOrEqual="computer">
-                                            <Box display="flex" alignItems="center">
-                                                { item.policyUrl && (
+                                            <div style={{ alignItems: "center", display: "flex" }}>
+                                                {item.policyUrl && (
                                                     <Button
-                                                        component="a"
-                                                        href={ i18nLink(i18n.language, item.policyUrl) }
+                                                        as="a"
+                                                        href={i18nLink(i18n.language, item.policyUrl)}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        variant="text"
-                                                        size="small"
-                                                        endIcon={ <ArrowUpRightFromSquareIcon /> }
+                                                        icon
+                                                        basic
+                                                        labelPosition="right"
                                                         className="show-more-button"
+                                                        size="mini"
                                                         data-componentid={
-                                                            `${ componentId }-${ item.purposeId }-view-policy-button`
+                                                            // eslint-disable-next-line max-len
+                                                            `${componentId}-${item.purposeId}-view-policy-button`
                                                         }
                                                     >
-                                                        { t(
+                                                        {t(
                                                             "myAccount:components.policyConsentManagement" +
                                                             ".policyUrlLabel"
-                                                        ) }
+                                                        )}
+                                                        <Icon name="external alternate" />
                                                     </Button>
-                                                ) }
+                                                )}
                                                 <Button
-                                                    variant="text"
-                                                    size="small"
-                                                    endIcon={
-                                                        activeIndexes.includes(index)
-                                                            ? <ChevronUpIcon />
-                                                            : <ChevronDownIcon />
-                                                    }
+                                                    icon
+                                                    basic
+                                                    labelPosition="right"
                                                     className="show-more-button"
-                                                    onClick={ () => onToggleDetail(index) }
+                                                    size="mini"
+                                                    onClick={() => onToggleDetail(index)}
                                                     data-componentid={
-                                                        `${ componentId }-${ item.purposeId }-show-more-button`
+                                                        `${componentId}-${item.purposeId}-show-more-button`
                                                     }
                                                 >
-                                                    { activeIndexes.includes(index)
-                                                        ? t("common:showLess")
-                                                        : t("common:showMore")
+                                                    {activeIndexes.includes(index)
+                                                        ? (
+                                                            <>
+                                                                {t("common:showLess")}
+                                                                <Icon name="arrow down" flipped="vertically" />
+                                                            </>
+                                                        )
+                                                        : (
+                                                            <>
+                                                                {t("common:showMore")}
+                                                                <Icon name="arrow down" />
+                                                            </>
+                                                        )
                                                     }
                                                 </Button>
-                                            </Box>
+                                            </div>
                                         </Media>
-                                    </Box>
-                                </Box>
-                            </ListItem>
-                            {
-                                activeIndexes.includes(index) && (
-                                    <EditSection
-                                        data-componentid={
-                                            `${ componentId }-${ item.purposeId }-edit-section`
-                                        }
-                                    >
-                                        <Box px={ 2 } pb={ 2 }>
-                                            <DangerZoneGroup
-                                                sectionHeader={ t("common:dangerZone") }
-                                            >
-                                                <DangerZone
-                                                    actionTitle={ t(
-                                                        "myAccount:components" +
-                                                        ".policyConsentManagement" +
-                                                        ".dangerZones.revoke.actionTitle"
-                                                    ) }
-                                                    header={ t(
-                                                        "myAccount:components" +
-                                                        ".policyConsentManagement" +
-                                                        ".dangerZones.revoke.header"
-                                                    ) }
-                                                    subheader={ t(
-                                                        "myAccount:components" +
-                                                        ".policyConsentManagement" +
-                                                        ".dangerZones.revoke.subheader"
-                                                    ) }
-                                                    onActionClick={ () => onRevokeClick(item) }
-                                                    data-componentid={
-                                                        `${ componentId }-${ item.purposeId }` +
-                                                        "-danger-zone-revoke"
-                                                    }
-                                                />
-                                            </DangerZoneGroup>
-                                        </Box>
-                                    </EditSection>
-                                )
-                            }
-                            { index < items.length - 1 && <Divider /> }
-                        </Box>
-                    ))
-                    : null
+                                    </List.Content>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                        {
+                            activeIndexes.includes(index) && (
+                                <EditSection
+                                    data-componentid={
+                                        `${componentId}-${item.purposeId}-edit-section`
+                                    }
+                                >
+                                    <Grid padded>
+                                        <Grid.Row columns={1}>
+
+                                            <Grid.Column width={16}>
+                                                <DangerZoneGroup
+                                                    sectionHeader={t("common:dangerZone")}
+                                                >
+                                                    <DangerZone
+                                                        actionTitle={t(
+                                                            "myAccount:components" +
+                                                            ".policyConsentManagement" +
+                                                            ".dangerZones.revoke.actionTitle"
+                                                        )}
+                                                        header={t(
+                                                            "myAccount:components" +
+                                                            ".policyConsentManagement" +
+                                                            ".dangerZones.revoke.header"
+                                                        )}
+                                                        subheader={t(
+                                                            "myAccount:components" +
+                                                            ".policyConsentManagement" +
+                                                            ".dangerZones.revoke.subheader"
+                                                        )}
+                                                        onActionClick={() => onRevokeClick(item)}
+                                                        data-componentid={
+                                                            `${componentId}-${item.purposeId}` +
+                                                            "-danger-zone-revoke"
+                                                        }
+                                                    />
+                                                </DangerZoneGroup>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
+                                </EditSection>
+                            )
+                        }
+                    </List.Item>
+                ))
             }
         </List>
     );

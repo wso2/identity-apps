@@ -62,12 +62,15 @@ export const consents: ConsentsNS = {
         emptyPlaceholder: {
             addPolicy: "New Policy",
             subtitle: "There are no policies available at the moment"
+        },
+        emptySearchPlaceholder: {
+            action: "Clear search",
+            subtitle: "No policies found for the search query.",
+            title: "No results found"
         }
     },
     registrationFlow: {
         noPolicies: "No policies available. Create policies from Policy Consents.",
-        policiesLabel: "Policies",
-        policiesLabelOptional: "Policies (optional)",
         selectPolicies: "Select Policies:"
     },
     notifications: {

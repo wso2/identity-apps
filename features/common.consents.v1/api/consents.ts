@@ -143,7 +143,7 @@ export const mapPurposeDTOToConsent = (purpose: PurposeDTOInterface): ConsentInt
                 (element: PurposeElementDTOInterface) =>
                     element.name.startsWith(`${ POLICY_URL_ELEMENT_PREFIX }:`)
             )?.displayName,
-        promptOnLogin: purpose.properties?.promptOnLogin ?? false,
+        promptOnLogin: purpose.properties?.promptOnLogin ?? "false",
         type: purpose.type,
         version: purpose.latestVersion?.version,
         versionId: purpose.latestVersion?.id
@@ -302,7 +302,7 @@ export const createPurpose = async (
     policyUrl: string,
     description?: string,
     mandatory?: boolean,
-    promptOnLogin?: boolean
+    promptOnLogin?: string
 ): Promise<PurposeDTOInterface> => {
     const policyConsentElementId: string = await getOrCreatePolicyConsentElement();
 
@@ -312,7 +312,7 @@ export const createPurpose = async (
             { id: policyConsentElementId, mandatory: mandatory ?? false }
         ],
         name,
-        properties: { policyUrl, promptOnLogin: promptOnLogin ?? false },
+        properties: { policyUrl, promptOnLogin: promptOnLogin ?? "false" },
         type: CONSENT_MGT_GROUP,
         version: "1"
     };
@@ -413,7 +413,7 @@ export const createPurposeVersion = async (
     description: string,
     policyUrl: string,
     mandatory?: boolean,
-    promptOnLogin?: boolean
+    promptOnLogin?: string
 ): Promise<PurposeVersionDTOInterface> => {
     const policyConsentElementId: string = await getOrCreatePolicyConsentElement();
 
@@ -422,7 +422,7 @@ export const createPurposeVersion = async (
         elements: [
             { id: policyConsentElementId, mandatory: mandatory ?? false }
         ],
-        properties: { policyUrl, promptOnLogin: promptOnLogin ?? false },
+        properties: { policyUrl, promptOnLogin: promptOnLogin ?? "false" },
         setAsLatest: true,
         version: versionLabel
     };

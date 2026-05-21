@@ -287,9 +287,11 @@ const HtmlSyncPlugin: FunctionComponent<HtmlSyncPluginPropsInterface> = (
 ): ReactElement => {
     const [ editor ] = useLexicalComposerContext();
     const isSkipNextUpdate: MutableRefObject<boolean> = useRef<boolean>(false);
+    const isInitialized: MutableRefObject<boolean> = useRef<boolean>(false);
 
     useEffect(() => {
-        if (!editor || !initialHtml) return;
+        if (!editor || !initialHtml || isInitialized.current) return;
+        isInitialized.current = true;
 
         const parser: DOMParser = new DOMParser();
         const dom: Document = parser.parseFromString(postProcessHTML(initialHtml), "text/html");
