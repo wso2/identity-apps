@@ -255,14 +255,32 @@ export const FeatureCarousel = () => {
             },
             title: userSurveyTitle
         },
+        {
+            description: "Power personalization, automation, and customer engagement " +
+                "with identity-aware customer data.",
+            featureConfig: customerDataServiceFeatureConfig,
+            featureFlags: customerDataServiceFeatureConfig?.featureFlags,
+            featureName: "customerDataService",
+            featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_SERVICE,
+            id: "customer-data-platform",
+            illustration: <Box className="customer-data-service-box">
+                <CustomerDataServiceIllustration />
+            </Box>,
+            isEnabled: isCDSFeatureEnabled,
+            isEnabledStatusLoading: false,
+            onTryOut: () => {
+                history.push(AppConstants.getPaths().get("PROFILES"));
+            },
+            title: "Your Identity Platform, Now With Customer Intelligence."
+        },
         agentFeatureConfig?.enabled && {
             description: "Extend your identity management to autonomous agents and AI systems",
             featureFlags: agentFeatureConfig?.featureFlags,
             featureName: "agents",
             featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.AGENTS,
             id: "agents",
-            illustration: <Box className="customer-data-service-box">
-                <CustomerDataServiceIllustration />
+            illustration: <Box className="ai-agent-box">
+                <AIAgentBox />
             </Box>,
             isEnabled: isAgentManagementFeatureEnabledForOrganization,
             isEnabledStatusLoading: false,
@@ -278,24 +296,6 @@ export const FeatureCarousel = () => {
                 }
             },
             title: "Identity for AI Agents"
-        },
-        {
-            description: "Power personalization, automation, and customer engagement " +
-                "with identity-aware customer data.",
-            featureConfig: customerDataServiceFeatureConfig,
-            featureFlags: customerDataServiceFeatureConfig?.featureFlags,
-            featureName: "customerDataService",
-            featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_SERVICE,
-            id: "customer-data-platform",
-            illustration: <Box className="ai-agent-box">
-                <AIAgentBox />
-            </Box>,
-            isEnabled: isCDSFeatureEnabled,
-            isEnabledStatusLoading: false,
-            onTryOut: () => {
-                history.push(AppConstants.getPaths().get("PROFILES"));
-            },
-            title: "Your Identity Platform, Now With Customer Intelligence."
         }
     ].filter(Boolean), [
         agentFeatureConfig,
