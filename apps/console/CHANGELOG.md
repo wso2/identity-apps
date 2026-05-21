@@ -1,5 +1,24 @@
 # @wso2is/console
 
+## 4.7.9
+
+### Patch Changes
+
+- [#10305](https://github.com/wso2/identity-apps/pull/10305) [`e09c6c1b68f7d5759e6be9fe4350888a732dba09`](https://github.com/wso2/identity-apps/commit/e09c6c1b68f7d5759e6be9fe4350888a732dba09) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Improve sub-organization ID resolution to support shared actor impersonation.
+
+* [#10286](https://github.com/wso2/identity-apps/pull/10286) [`ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0`](https://github.com/wso2/identity-apps/commit/ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0) Thanks [@hwupathum](https://github.com/hwupathum)! - Add consent management related features
+
+* Updated dependencies [[`e09c6c1b68f7d5759e6be9fe4350888a732dba09`](https://github.com/wso2/identity-apps/commit/e09c6c1b68f7d5759e6be9fe4350888a732dba09), [`ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0`](https://github.com/wso2/identity-apps/commit/ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0)]:
+  - @wso2is/admin.users.v1@2.38.40
+  - @wso2is/admin.consents.v1@1.0.0
+  - @wso2is/admin.branding.v1@2.32.168
+  - @wso2is/admin.core.v1@2.57.10
+  - @wso2is/admin.extensions.v1@2.43.8
+  - @wso2is/admin.registration-flow-builder.v1@0.10.172
+  - @wso2is/admin.server-configurations.v1@2.38.52
+  - @wso2is/i18n@2.41.2
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.213
+
 ## 4.7.8
 
 ### Patch Changes

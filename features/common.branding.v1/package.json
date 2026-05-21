@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/common.branding.v1",
-    "version": "2.28.3",
+    "version": "2.28.4",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -17,7 +17,7 @@
         "@asgardeo/auth-react": "catalog:",
         "@oxygen-ui/react": "catalog:",
         "@wso2is/core": "^2.12.10",
-        "@wso2is/admin.core.v1": "^2.55.3",
+        "@wso2is/admin.core.v1": "^2.57.10",
         "@wso2is/admin.organizations.v1": "^2.28.2",
         "axios": "catalog:",
         "dompurify": "^3.0.9",
