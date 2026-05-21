@@ -28,7 +28,8 @@ import {
     ConnectionListResponseInterface,
     CustomAuthConnectionInterface,
     CustomAuthGeneralDetailsFormValuesInterface,
-    CustomAuthenticatorCreateWizardGeneralFormValuesInterface
+    CustomAuthenticatorCreateWizardGeneralFormValuesInterface,
+    ExternalEndpoint
 } from "../../../models/connection";
 import {
     resolveCustomAuthenticatorDisplayName
@@ -132,10 +133,27 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
     const updateConfigurations = (values: CustomAuthGeneralDetailsFormValuesInterface): void => {
 
         if (isCustomLocalAuth) {
+            const existingEndpoint: ExternalEndpoint =
+                (editingIDP as CustomAuthConnectionInterface)?.endpoint;
+
+            // The General tab doesn't touch authentication, but the backend
+            // requires the authentication object on every update and rejects
+            // a payload that includes the non-confidential auth properties
+            // without their corresponding confidentials (which the API never
+            // returns). Preserve the existing auth type and send an empty
+            // properties bag so the server keeps the stored credentials.
+            const sanitizedEndpoint: ExternalEndpoint = {
+                ...existingEndpoint,
+                authentication: {
+                    properties: {},
+                    type: existingEndpoint?.authentication?.type
+                }
+            };
+
             onSubmit({
                 description: values.description?.toString(),
                 displayName: values.displayName?.toString(),
-                endpoint: (editingIDP as CustomAuthConnectionInterface)?.endpoint,
+                endpoint: sanitizedEndpoint,
                 image: values.image?.toString(),
                 isEnabled: values?.isEnabled
             });
