@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 /**
  * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
@@ -15,8 +17,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
