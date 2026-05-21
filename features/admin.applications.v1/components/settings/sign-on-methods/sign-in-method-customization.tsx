@@ -27,6 +27,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import {
+    ADAPTIVE_AUTH_ORG_GOVERNANCE_FEATURE_ID,
     ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID,
     SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID
 } from "@wso2is/admin.login-flow-builder.v1/constants/editor-constants";
@@ -65,6 +66,7 @@ import { Dispatch } from "redux";
 import { Divider, Icon  } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow/script-based-flow";
 import { StepBasedFlow } from "./step-based-flow/step-based-flow";
+import useEvaluateAdaptiveAuthCapability from "../../../hooks/use-evaluate-adaptive-auth-capability";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
 import { updateAdaptiveScript, updateAuthenticationSequence } from "../../../api/application";
 import {
@@ -198,6 +200,20 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     const hasScriptUpdatePermission: boolean = useRequiredScopes(
         applicationsFeatureConfig?.subFeatures?.applicationAuthenticationScript?.scopes?.update);
     const isScriptUpdateReadOnly: boolean = isScriptUpdatePermissionEnforced && !hasScriptUpdatePermission;
+
+    // For sub-orgs where the feature flag doesn't grant access, fall back to the org-governance
+    // capability check (only when org-governance evaluation is enabled in deployment config).
+    const isAdaptiveAuthOrgGovernanceEnabled: boolean = isFeatureEnabled(applicationsFeatureConfig,
+        ADAPTIVE_AUTH_ORG_GOVERNANCE_FEATURE_ID);
+    const isInSubOrgWithoutSharedApp: boolean =
+        orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled;
+    const shouldCheckOrgGovernance: boolean =
+        isInSubOrgWithoutSharedApp && isAdaptiveAuthOrgGovernanceEnabled;
+    const { isAdaptiveAuthAllowed, isCheckLoading } = useEvaluateAdaptiveAuthCapability(
+        shouldCheckOrgGovernance
+    );
+    const isSubOrgAdaptiveAuthBlocked: boolean = isInSubOrgWithoutSharedApp
+        && (!shouldCheckOrgGovernance || isCheckLoading || isAdaptiveAuthAllowed !== true);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -523,8 +539,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
      */
     const handleUpdateClick = (): void => {
         if (AdaptiveScriptUtils.isEmptyScript(adaptiveScript)) {
-            if (!isAdaptiveAuthenticationAvailable ||
-                (orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled)) {
+            if (!isAdaptiveAuthenticationAvailable || isSubOrgAdaptiveAuthBlocked) {
                 setAdaptiveScript("");
             } else {
                 setIsDefaultScript(true);
@@ -923,8 +938,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             }
             <Divider className="x2"/>
             {
-                (isAdaptiveAuthenticationAvailable &&
-                    !(orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled))
+                (isAdaptiveAuthenticationAvailable && !isSubOrgAdaptiveAuthBlocked)
                 && (
                     <ScriptBasedFlow
                         authenticationSequence={ sequence }

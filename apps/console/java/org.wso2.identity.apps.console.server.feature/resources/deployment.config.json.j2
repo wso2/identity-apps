@@ -651,6 +651,9 @@
                     {%- if authentication.adaptive.shared_applications.enable is not defined or authentication.adaptive.shared_applications.enable != true -%}
                         {%- set _ = disabled_features.append('"applications.sharedApp.adaptiveAuth"') -%}
                     {%- endif -%}
+                    {%- if authentication.adaptive.org_governance.enable is not defined or authentication.adaptive.org_governance.enable != true -%}
+                        {%- set _ = disabled_features.append('"applications.adaptiveAuth.orgGovernance"') -%}
+                    {%- endif -%}
                     {%- if operation_permission_enforcement.skip_enforce_authorized_api_update_permission is defined and operation_permission_enforcement.skip_enforce_authorized_api_update_permission == true -%}
                         {%- set _ = disabled_features.append('"applications.enforceAuthorizedAPIUpdatePermission"') -%}
                     {%- endif -%}
