@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.0.29
+
+### Patch Changes
+
+- [#10310](https://github.com/wso2/identity-apps/pull/10310) [`7896791d2fcc274ed6624582b88aeecffef38773`](https://github.com/wso2/identity-apps/commit/7896791d2fcc274ed6624582b88aeecffef38773) Thanks [@hwupathum](https://github.com/hwupathum)! - Add policy consent management related UIs
+
 ## 5.0.28
 
 ### Patch Changes
