@@ -44,6 +44,7 @@ import { useSelector } from "react-redux";
 import { Grid, Modal } from "semantic-ui-react";
 import AIAgentBox from "./ai-agent-box";
 import RebrandingAnnouncement from "./rebranding-announcement";
+import CustomerDataServiceIllustration from "./customer-data-service-illustration";
 import SurveyBox from "./survey-box";
 import { ReactComponent as PreviewFeaturesIcon } from "../../../themes/default/assets/images/icons/flask-icon.svg";
 import "./new-feature-announcement.scss";
@@ -260,8 +261,8 @@ export const FeatureCarousel = () => {
             featureName: "agents",
             featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.AGENTS,
             id: "agents",
-            illustration: <Box className="ai-agent-box">
-                <AIAgentBox />
+            illustration: <Box className="customer-data-service-box">
+                <CustomerDataServiceIllustration />
             </Box>,
             isEnabled: isAgentManagementFeatureEnabledForOrganization,
             isEnabledStatusLoading: false,
