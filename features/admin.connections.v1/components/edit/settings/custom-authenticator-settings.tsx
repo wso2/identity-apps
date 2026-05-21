@@ -18,6 +18,7 @@
 
 import Button from "@oxygen-ui/react/Button";
 import ActionEndpointConfigForm from "@wso2is/admin.actions.v1/components/action-endpoint-config-form";
+import { ActionsConstants } from "@wso2is/admin.actions.v1/constants/actions-constants";
 import { AuthenticationType, EndpointConfigFormPropertyInterface } from "@wso2is/admin.actions.v1/models/actions";
 import { validateActionEndpointFields } from "@wso2is/admin.actions.v1/util/form-field-util";
 import {
@@ -45,7 +46,8 @@ import {
     ConnectionInterface,
     CustomAuthConnectionInterface,
     EndpointAuthenticationType,
-    EndpointAuthenticationUpdateInterface
+    EndpointAuthenticationUpdateInterface,
+    ExternalEndpoint
 } from "../../../models/connection";
 import {
     handleConnectionUpdateError,
@@ -107,14 +109,60 @@ const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorSettings
     const [ isEndpointAuthenticationUpdated, setIsEndpointAuthenticationUpdated ] = useState<boolean>(false);
     const [ isEndpointDetailsLoading, setIsEndpointDetailsLoading ] = useState<boolean>(false);
 
+    /**
+     * Builds initial form values from an endpoint configuration, populating
+     * the non-secret auth-type-specific fields so the Authentication section
+     * shows the previously saved values. Secrets (password, clientSecret,
+     * accessToken, value) are intentionally omitted because the API does not
+     * return them.
+     */
+    const buildEndpointInitialValues = (
+        endpoint: ExternalEndpoint
+    ): EndpointConfigFormPropertyInterface => {
+        const authProperties: Partial<AuthenticationPropertiesInterface> =
+            endpoint?.authentication?.properties ?? {};
+        const authType: EndpointAuthenticationType = endpoint?.authentication?.type;
+        const values: EndpointConfigFormPropertyInterface = {
+            allowedHeaders: endpoint?.allowedHeaders,
+            allowedParameters: endpoint?.allowedParameters,
+            authenticationType: authType,
+            endpointUri: endpoint?.uri
+        };
+
+        switch (authType) {
+            case EndpointAuthenticationType.BASIC:
+                values.usernameAuthProperty = authProperties?.username;
+
+                break;
+            case EndpointAuthenticationType.API_KEY:
+                values.headerAuthProperty = authProperties?.header;
+
+                break;
+            case EndpointAuthenticationType.CLIENT_CREDENTIAL:
+                values.clientIdAuthProperty = authProperties?.clientId;
+                values.tokenEndpointAuthProperty = authProperties?.tokenEndpoint;
+                values.scopesAuthProperty = authProperties?.scopes;
+
+                break;
+            case EndpointAuthenticationType.PASSWORD_CREDENTIAL:
+                values.clientId_passwordCredentialAuthProperty = authProperties?.clientId;
+                values.tokenEndpoint_passwordCredentialAuthProperty = authProperties?.tokenEndpoint;
+                values.username_passwordCredentialAuthProperty = authProperties?.username;
+                values.scopes_passwordCredentialAuthProperty = authProperties?.scopes;
+
+                break;
+            default:
+                break;
+        }
+
+        return values;
+    };
+
     useEffect(() => {
         if (isCustomLocalAuthenticator) {
-            setInitialValues({
-                allowedHeaders: (connector as CustomAuthConnectionInterface)?.endpoint?.allowedHeaders,
-                allowedParameters: (connector as CustomAuthConnectionInterface)?.endpoint?.allowedParameters,
-                authenticationType: (connector as CustomAuthConnectionInterface)?.endpoint?.authentication?.type,
-                endpointUri: (connector as CustomAuthConnectionInterface)?.endpoint?.uri
-            });
+            setInitialValues(
+                buildEndpointInitialValues((connector as CustomAuthConnectionInterface)?.endpoint)
+            );
         } else {
             const customAuthenticatorId: string = connector?.federatedAuthenticators?.
                 authenticators[0]?.authenticatorId;
@@ -136,14 +184,7 @@ const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorSettings
         setIsEndpointDetailsLoading(true);
         getFederatedAuthenticatorDetails(connector?.id, customFederatedAuthenticatorId)
             .then((data: FederatedAuthenticatorListItemInterface) => {
-                const endpointAuth: EndpointConfigFormPropertyInterface = {
-                    allowedHeaders: data?.endpoint?.allowedHeaders,
-                    allowedParameters: data?.endpoint?.allowedParameters,
-                    authenticationType: data?.endpoint?.authentication?.type,
-                    endpointUri: data?.endpoint?.uri
-                };
-
-                setInitialValues(endpointAuth);
+                setInitialValues(buildEndpointInitialValues(data?.endpoint as ExternalEndpoint));
             })
             .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 handleGetCustomAuthenticatorError(error);
@@ -263,6 +304,17 @@ const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorSettings
     ) => {
         const authProperties: Partial<AuthenticationPropertiesInterface> = {};
 
+        if (!isEndpointAuthenticationUpdated) {
+            if (isCustomLocalAuthenticator) {
+                handleUpdateCustomLocalAuthenticator(values, authProperties);
+
+                return;
+            }
+            handleUpdateCustomFederatedAuthenticator(values, authProperties);
+
+            return;
+        }
+
         switch (values.authenticationType) {
             case AuthenticationType.BASIC:
                 authProperties.username = values.usernameAuthProperty;
@@ -276,6 +328,22 @@ const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorSettings
             case AuthenticationType.API_KEY:
                 authProperties.header = values.headerAuthProperty;
                 authProperties.value = values.valueAuthProperty;
+
+                break;
+            case AuthenticationType.CLIENT_CREDENTIAL:
+                authProperties.clientId = values.clientIdAuthProperty;
+                authProperties.clientSecret = values.clientSecretAuthProperty;
+                authProperties.tokenEndpoint = values.tokenEndpointAuthProperty;
+                authProperties.scopes = values.scopesAuthProperty;
+
+                break;
+            case AuthenticationType.PASSWORD_CREDENTIAL:
+                authProperties.clientId = values.clientId_passwordCredentialAuthProperty;
+                authProperties.clientSecret = values.clientSecret_passwordCredentialAuthProperty;
+                authProperties.tokenEndpoint = values.tokenEndpoint_passwordCredentialAuthProperty;
+                authProperties.username = values.username_passwordCredentialAuthProperty;
+                authProperties.password = values.password_passwordCredentialAuthProperty;
+                authProperties.scopes = values.scopes_passwordCredentialAuthProperty;
 
                 break;
             case AuthenticationType.NONE:
@@ -314,6 +382,7 @@ const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorSettings
                                 initialValues={ initialValues }
                                 isCreateFormState={ false }
                                 isReadOnly={ isReadOnly }
+                                authenticationTypes={ ActionsConstants.ACTION_AUTH_TYPES }
                                 onAuthenticationTypeChange={ (
                                     authenticationType: AuthenticationType,
                                     isAuthenticationUpdated: boolean
