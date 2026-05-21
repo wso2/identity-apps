@@ -32,6 +32,7 @@ export const getApplicationsResourceEndpoints = (serverHost: string): Applicatio
         dcrConfiguration: `${ serverHost }/api/server/v1/configs/dcr`,
         groupMetadata: `${ serverHost }/api/server/v1/applications/meta/groups`,
         myAccountConfigMgt: `${ serverHostWithoutOPath }/api/identity/config-mgt/v1.0/resource/myaccount`,
+        orgGovernanceEvaluate: `${ serverHost }/api/server/v1/org-governance/evaluate`,
         requestPathAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators?type=REQUEST_PATH`
     };
 };

@@ -17,6 +17,7 @@
  */
 
 import { useGetAdaptiveAuthTemplates } from "@wso2is/admin.applications.v1/api/application";
+import useEvaluateAdaptiveAuthCapability from "@wso2is/admin.applications.v1/hooks/use-evaluate-adaptive-auth-capability";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import {
     ApplicationInterface,
@@ -51,6 +52,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import {
+    ADAPTIVE_AUTH_ORG_GOVERNANCE_FEATURE_ID,
     LEGACY_EDITOR_FEATURE_ID,
     SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID,
     VISUAL_EDITOR_FEATURE_ID
@@ -127,6 +129,8 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         return state.config?.ui?.features?.applications;
     });
     const sharedAppAdaptiveAuthEnabled: boolean = isFeatureEnabled(featureConfig, SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID);
+    const isAdaptiveAuthOrgGovernanceEnabled: boolean = isFeatureEnabled(
+        featureConfig, ADAPTIVE_AUTH_ORG_GOVERNANCE_FEATURE_ID);
 
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
@@ -279,13 +283,31 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         return isCustomAuthenticator(authenticator) && isSecondFactorAuthenticator(authenticator);
     };
 
+    const isInSubOrgWithoutSharedApp: boolean =
+        orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled;
+    const shouldCheckOrgGovernance: boolean =
+        isInSubOrgWithoutSharedApp && isAdaptiveAuthOrgGovernanceEnabled;
+    const { isAdaptiveAuthAllowed, isCheckLoading } = useEvaluateAdaptiveAuthCapability(
+        shouldCheckOrgGovernance
+    );
+
     const isAdaptiveAuthAvailable: boolean = useMemo(() => {
-        if (orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled) {
+        if (!isAdaptiveAuthenticationAvailable) {
             return false;
         }
 
-        return isAdaptiveAuthenticationAvailable;
-    }, [ isAdaptiveAuthenticationAvailable, orgType ]);
+        if (isInSubOrgWithoutSharedApp) {
+            return shouldCheckOrgGovernance && !isCheckLoading && isAdaptiveAuthAllowed === true;
+        }
+
+        return true;
+    }, [
+        isAdaptiveAuthenticationAvailable,
+        isInSubOrgWithoutSharedApp,
+        shouldCheckOrgGovernance,
+        isCheckLoading,
+        isAdaptiveAuthAllowed
+    ]);
 
     const isVisualEditorEnabled: boolean = useMemo(() => {
         const disabledFeatures: string[] = featureConfig?.disabledFeatures;
