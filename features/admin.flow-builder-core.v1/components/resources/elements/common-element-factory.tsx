@@ -29,6 +29,7 @@ import CheckboxAdapter from "./adapters/input/checkbox-adapter";
 import DefaultInputAdapter from "./adapters/input/default-input-adapter";
 import OTPInputAdapter from "./adapters/input/otp-input-adapter";
 import PhoneNumberInputAdapter from "./adapters/input/phone-number-input-adapter";
+import PolicyConsentAdapter from "./adapters/policy-consent-adapter";
 import ResendButtonAdapter from "./adapters/resend-button-adapter";
 import RichTextAdapter from "./adapters/rich-text-adapter";
 import TypographyAdapter from "./adapters/typography-adapter";
@@ -104,6 +105,8 @@ const CommonElementFactory: FunctionComponent<CommonElementFactoryPropsInterface
         return <ImageAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.Captcha) {
         return <CaptchaAdapter stepId={ stepId } resource={ resource } />;
+    } else if (resource.type === ElementTypes.Policy) {
+        return <PolicyConsentAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.Resend) {
         return <ResendButtonAdapter stepId={ stepId } resource={ resource } />;
     }

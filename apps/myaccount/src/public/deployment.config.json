@@ -78,6 +78,16 @@
                     ]
                 }
             },
+            "consents": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "read": [],
+                    "update": []
+                }
+            },
             "operations": {
                 "disabledFeatures": [],
                 "enabled": true,

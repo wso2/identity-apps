@@ -59,6 +59,7 @@
         "@wso2is/admin.userstores.v1": "^2.27.42",
         "@wso2is/admin.validation.v1": "^2.28.4",
         "@wso2is/admin.verifiable-credentials.v1": "workspace:^",
+        "@wso2is/common.consents.v1": "workspace:^",
         "@wso2is/common.workflow-approvals.v1": "^1.0.14",
         "@wso2is/admin.webhooks.v1": "^1.1.4",
         "@wso2is/common.ui.v1": "workspace:^",

@@ -292,6 +292,11 @@ export interface flowsNS {
                     text: string;
                     variant: string;
                 };
+                policyConsent: {
+                    general: string;
+                    noPoliciesAvailable: string;
+                    policiesRequired: string;
+                };
             };
         };
         steps: {

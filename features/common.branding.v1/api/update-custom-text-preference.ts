@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,32 +20,22 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { store } from "@wso2is/admin.core.v1/store";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
-import { BrandingPreferenceTypes } from "@wso2is/common.branding.v1/models/branding-preferences";
+import { BrandingPreferenceTypes } from "../models/branding-preferences";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods,
-    HttpErrorResponseDataInterface
-} from "@wso2is/core/models";
+import { HttpErrorResponseDataInterface, HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
-import { CustomTextPreferenceAPIResponseInterface } from "../models/custom-text-preference";
+import { CustomTextPreferenceApiConstants } from "../constants/custom-text-preference-constants";
+import {
+    CustomTextPreferenceAPIResponseInterface,
+    CustomTextPreferenceInterface
+} from "../models/custom-text-preference";
 
-/**
- * Get an axios instance.
- */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
-/**
- * Delete the branding preference text customizations for a given screen and locale.
- *
- * @param preference - Text Customizations.
- * @param name - Resource Name.
- * @param screen - Resource Screen.
- * @param locale - Resource Locale.
- * @param type - Resource Type.
- * @returns Promise containing the response.
- */
-const deleteCustomTextPreference = (
+const updateCustomTextPreference = (
+    isAlreadyConfigured: boolean,
+    preference: CustomTextPreferenceInterface,
     name: string,
     screen: string,
     locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE,
@@ -56,45 +46,48 @@ const deleteCustomTextPreference = (
         : name;
 
     const requestConfig: AxiosRequestConfig = {
+        data: {
+            locale,
+            name: tenantDomain,
+            preference,
+            screen,
+            type
+        },
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
-        method: HttpMethods.DELETE,
-        params: {
-            locale,
-            name: tenantDomain,
-            screen,
-            type
-        },
+        method: isAlreadyConfigured ? HttpMethods.PUT : HttpMethods.POST,
         url: store.getState().config.endpoints.brandingTextPreference
     };
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
-            if (response.status !== 204) {
+            if (response.status !== 200 && response.status !== 201) {
                 throw new IdentityAppsApiException(
-                    CustomTextPreferenceConstants
+                    CustomTextPreferenceApiConstants
                         .ErrorMessages
-                        .CUSTOM_TEXT_PREFERENCE_DELETE_INVALID_STATUS_CODE_ERROR
+                        .CUSTOM_TEXT_PREFERENCE_UPDATE_INVALID_STATUS_CODE_ERROR
                         .getErrorMessage(),
                     null,
                     response.status,
                     response.request,
                     response,
-                    response.config);
+                    response.config
+                );
             }
 
-            return Promise.resolve(response.data);
+            return Promise.resolve(response.data as CustomTextPreferenceAPIResponseInterface);
         }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
-                CustomTextPreferenceConstants.ErrorMessages.CUSTOM_TEXT_PREFERENCE_DELETE_ERROR.getErrorMessage(),
+                CustomTextPreferenceApiConstants.ErrorMessages.CUSTOM_TEXT_PREFERENCE_UPDATE_ERROR.getErrorMessage(),
                 error.stack,
                 error.response?.data?.code,
                 error.request,
                 error.response,
-                error.config);
+                error.config
+            );
         });
 };
 
-export default deleteCustomTextPreference;
+export default updateCustomTextPreference;

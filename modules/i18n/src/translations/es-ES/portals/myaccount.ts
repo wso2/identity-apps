@@ -439,6 +439,55 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        "policyConsentManagement": {
+            "consentedOnLabel": "Activo desde",
+            "dangerZones": {
+                "revoke": {
+                    "actionTitle": "Revocar",
+                    "header": "Revocar consentimiento de política",
+                    "subheader": "Esta acción revocará su consentimiento para esta política. Se le puede pedir que vuelva a consentir la próxima vez que acceda al servicio."
+                }
+            },
+            "modals": {
+                "revokeModal": {
+                    "heading": "Revocar consentimiento para {{policyName}}",
+                    "message": "Esto revocará su consentimiento para esta política. Se le puede pedir que vuelva a consentir la próxima vez que acceda al servicio. ¿Está seguro de que desea continuar?"
+                }
+            },
+            "notifications": {
+                "fetch": {
+                    "error": {
+                        "description": "Ocurrió un error al recuperar sus consentimientos de política.",
+                        "message": "Error en la recuperación"
+                    },
+                    "genericError": {
+                        "description": "Ocurrió un error al recuperar sus consentimientos de política.",
+                        "message": "Error en la recuperación"
+                    },
+                    "success": {
+                        "description": "Sus consentimientos de política fueron recuperados correctamente.",
+                        "message": "Recuperación exitosa"
+                    }
+                },
+                "revoke": {
+                    "error": {
+                        "description": "Ocurrió un error al revocar el consentimiento de política.",
+                        "message": "Error en la revocación"
+                    },
+                    "genericError": {
+                        "description": "Ocurrió un error al revocar el consentimiento de política.",
+                        "message": "Error en la revocación"
+                    },
+                    "success": {
+                        "description": "El consentimiento de política ha sido revocado correctamente.",
+                        "message": "Consentimiento revocado"
+                    }
+                }
+            },
+            "policyUrlLabel": "Ver política",
+            "versionLabel": "Versión {{version}}"
+        },
+        
         "cookieConsent": {
             "confirmButton": "Entendido",
             "content": "Usamos cookies para asegurarnos de que obtenga la mejor experiencia en general. Estas cookies se utilizan para mantener una sesión continua e ininterrumpida mientras se brindan servicios fluidos y personalizados. Para obtener más información sobre cómo usamos las cookies, consulte nuestra <1>Política de cookies</1> ."
@@ -1653,6 +1702,10 @@ export const myAccount: MyAccountNS = {
             "subTitle": "Descubre y accede a tus aplicaciones",
             "title": "Aplicaciones"
         },
+        "consents": {
+            "subTitle": "Administre los consentimientos que ha proporcionado para aplicaciones y políticas aceptadas",
+            "title": "Consentimientos"
+        },
         "overview": {
             "subTitle": "Administre su información personal, la seguridad de la cuenta y la configuración de privacidad",
             "title": "Bienvenido, {{firstName}}"
@@ -1750,6 +1803,15 @@ export const myAccount: MyAccountNS = {
             "placeholders": {
                 "emptyConsentList": {
                     "heading": "No ha dado su consentimiento a ninguna aplicación."
+                }
+            }
+        },
+        "policyConsentManagement": {
+            "description": "Revise las políticas que ha aceptado.",
+            "heading": "Consentimientos de política",
+            "placeholders": {
+                "emptyConsentList": {
+                    "heading": "No ha aceptado ningún consentimiento de política"
                 }
             }
         },

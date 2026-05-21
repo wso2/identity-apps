@@ -62,6 +62,7 @@
         "@wso2is/admin.certificates.v1": "^2.25.206",
         "@wso2is/admin.claims.v1": "^2.31.2",
         "@wso2is/admin.connections.v1": "^2.37.5",
+        "@wso2is/admin.consents.v1": "workspace:^",
         "@wso2is/admin.console-settings.v1": "^2.26.45",
         "@wso2is/admin.copilot.v1": "workspace:^",
         "@wso2is/admin.core.v1": "^2.57.9",

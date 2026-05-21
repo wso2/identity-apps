@@ -25,6 +25,7 @@
         "@wso2is/admin.validation.v1": "workspace:^",
         "@wso2is/common.ai.v1": "^2.28.0",
         "@wso2is/common.branding.v1": "workspace:^",
+        "@wso2is/common.consents.v1": "workspace:^",
         "@wso2is/core": "^2.13.0",
         "@xyflow/react": "^12.3.2",
         "@xyflow/system": "^0.0.52",
