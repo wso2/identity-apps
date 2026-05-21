@@ -23,6 +23,7 @@ import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronRightIcon } from "@oxygen-ui/react-icons";
 import { FeatureAccessConfigInterface, FeatureFlagsInterface } from "@wso2is/access-control";
+import { CDSConfig, useCDSConfig } from "@wso2is/admin.cds.v1";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -172,9 +173,11 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
 
 const AUTO_SLIDE_INTERVAL: number = 5000;
 const SLIDE_TRANSITION_DURATION: number = 0.75;
+const CUSTOMER_DATA_SERVICE_FEATURE_ID: string = "customer-data-platform";
 
 export const FeatureCarousel = () => {
     const [ currentIndex, setCurrentIndex ] = useState(0);
+    const { setShowPreviewFeaturesModal, setSelectedPreviewFeatureToShow } = useFeatureGate();
 
     const {
         isLoading: isUserStoresListFetchRequestLoading,
@@ -205,6 +208,11 @@ export const FeatureCarousel = () => {
     const customerDataServiceFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
         state.config.ui.features?.customerDataService);
     const isCDSFeatureEnabled: boolean = customerDataServiceFeatureConfig?.enabled ?? false;
+    const {
+        data: cdsConfig,
+        isLoading: isCDSConfigFetchRequestLoading
+    } = useCDSConfig<CDSConfig>(isCDSFeatureEnabled);
+    const isCDSEnabledForOrganization: boolean = isCDSFeatureEnabled && (cdsConfig?.cds_enabled ?? false);
 
 
     const isUserSurveyBannerEnabled: boolean = useSelector((state: AppState) =>
@@ -262,14 +270,21 @@ export const FeatureCarousel = () => {
             featureFlags: customerDataServiceFeatureConfig?.featureFlags,
             featureName: "customerDataService",
             featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_SERVICE,
-            id: "customer-data-platform",
+            id: CUSTOMER_DATA_SERVICE_FEATURE_ID,
             illustration: <Box className="customer-data-service-box">
                 <CustomerDataServiceIllustration />
             </Box>,
-            isEnabled: isCDSFeatureEnabled,
-            isEnabledStatusLoading: false,
+            isEnabled: isCDSEnabledForOrganization,
+            isEnabledStatusLoading: isCDSConfigFetchRequestLoading,
             onTryOut: () => {
-                history.push(AppConstants.getPaths().get("PROFILES"));
+                if (isCDSEnabledForOrganization) {
+                    history.push(AppConstants.getPaths().get("PROFILES"));
+
+                    return;
+                }
+
+                setSelectedPreviewFeatureToShow(CUSTOMER_DATA_SERVICE_FEATURE_ID);
+                setShowPreviewFeaturesModal(true);
             },
             title: "Your Identity Platform, Now With Customer Intelligence."
         },
@@ -300,11 +315,14 @@ export const FeatureCarousel = () => {
     ].filter(Boolean), [
         agentFeatureConfig,
         isAgentManagementFeatureEnabledForOrganization,
-        isCDSFeatureEnabled,
+        isCDSConfigFetchRequestLoading,
+        isCDSEnabledForOrganization,
         customerDataServiceFeatureConfig,
         isRebrandingBannerEnabled,
         isUserSurveyBannerEnabled,
         supportEmail,
+        setSelectedPreviewFeatureToShow,
+        setShowPreviewFeaturesModal,
         tierName,
         userSurveyButtonText,
         userSurveyDescription,
