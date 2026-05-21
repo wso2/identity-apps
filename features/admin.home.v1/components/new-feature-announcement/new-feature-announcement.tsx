@@ -171,10 +171,10 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
 };
 
 const AUTO_SLIDE_INTERVAL: number = 5000;
+const SLIDE_TRANSITION_DURATION: number = 0.75;
 
 export const FeatureCarousel = () => {
     const [ currentIndex, setCurrentIndex ] = useState(0);
-    const [ direction, setDirection ] = useState(1);
 
     const {
         isLoading: isUserStoresListFetchRequestLoading,
@@ -314,7 +314,6 @@ export const FeatureCarousel = () => {
 
     useEffect(() => {
         const interval: any = setInterval(() => {
-            setDirection(1);
             setCurrentIndex((prev: number) => (prev + 1) % features.length);
         }, AUTO_SLIDE_INTERVAL);
 
@@ -323,13 +322,14 @@ export const FeatureCarousel = () => {
 
     const variants: any = {
         center: {
-            opacity: 1,
-            x: 0
+            x: "0%"
         },
-        enter: (direction: number) => ({
-            opacity: 0.5,
-            x: direction > 0 ? 300 : -300
-        })
+        enter: {
+            x: "100%"
+        },
+        exit: {
+            x: "-100%"
+        }
     };
 
     return (
@@ -341,17 +341,16 @@ export const FeatureCarousel = () => {
                 width: "100%"
             } }
         >
-            <AnimatePresence custom={ direction } mode="wait">
+            <AnimatePresence initial={ false } mode="sync">
                 <motion.div
                     key={ currentIndex }
-                    custom={ direction }
                     variants={ variants }
                     initial="enter"
                     animate="center"
                     exit="exit"
                     transition={ {
-                        opacity: { duration: 0.2 },
-                        x: { damping: 30,stiffness: 300, type: "spring" }
+                        duration: SLIDE_TRANSITION_DURATION,
+                        ease: [ 0.4, 0, 0.2, 1 ]
                     } }
                     style={ {
                         height: "100%",
