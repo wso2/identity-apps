@@ -150,6 +150,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             multiFactorAuthenticators: "",
             myAccountConfigMgt: "",
             oidcScopes: "",
+            orgGovernanceEvaluate: "",
             organizations: "",
             passiveStsConfigurations: "",
             passwordExpiry: "",

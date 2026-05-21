@@ -16,8 +16,10 @@
  * under the License.
  */
 
-import { useEffect, useState } from "react";
-import { evaluateOrgGovernanceCapability } from "../api/evaluate-org-governance";
+import useRequest, { RequestErrorInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { HttpMethods } from "@wso2is/core/models";
+import { AxiosRequestConfig } from "axios";
 import { OrgGovernanceEvaluateResponseInterface } from "../models/endpoints";
 
 /**
@@ -26,7 +28,7 @@ import { OrgGovernanceEvaluateResponseInterface } from "../models/endpoints";
 interface UseEvaluateAdaptiveAuthCapabilityInterface {
     /**
      * Whether adaptive auth is allowed per org governance.
-     * `null` when the check has not been performed (shouldCheck was false).
+     * `null` when the check has not been performed or has not yet resolved.
      */
     isAdaptiveAuthAllowed: boolean | null;
     isCheckLoading: boolean;
@@ -46,33 +48,27 @@ const useEvaluateAdaptiveAuthCapability = (
     shouldCheck: boolean
 ): UseEvaluateAdaptiveAuthCapabilityInterface => {
 
-    const [ isAdaptiveAuthAllowed, setIsAdaptiveAuthAllowed ] = useState<boolean | null>(null);
-    const [ isCheckLoading, setIsCheckLoading ] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (!shouldCheck) {
-            setIsAdaptiveAuthAllowed(null);
-
-            return;
-        }
-
-        setIsCheckLoading(true);
-        evaluateOrgGovernanceCapability({
+    const requestConfig: AxiosRequestConfig = {
+        data: {
             capability: "adaptive-auth",
             resourceType: "application"
-        })
-            .then((response: OrgGovernanceEvaluateResponseInterface) => {
-                setIsAdaptiveAuthAllowed(response.allowed);
-            })
-            .catch(() => {
-                setIsAdaptiveAuthAllowed(false);
-            })
-            .finally(() => {
-                setIsCheckLoading(false);
-            });
-    }, [ shouldCheck ]);
+        },
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.orgGovernanceEvaluate
+    };
 
-    return { isAdaptiveAuthAllowed, isCheckLoading };
+    const { data, isLoading } = useRequest<OrgGovernanceEvaluateResponseInterface, RequestErrorInterface>(
+        shouldCheck ? requestConfig : null
+    );
+
+    return {
+        isAdaptiveAuthAllowed: data?.allowed ?? null,
+        isCheckLoading: !!isLoading
+    };
 };
 
 export default useEvaluateAdaptiveAuthCapability;

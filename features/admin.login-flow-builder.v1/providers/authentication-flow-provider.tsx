@@ -287,9 +287,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled;
     const shouldCheckOrgGovernance: boolean =
         isInSubOrgWithoutSharedApp && isAdaptiveAuthOrgGovernanceEnabled;
-    const { isAdaptiveAuthAllowed, isCheckLoading } = useEvaluateAdaptiveAuthCapability(
-        shouldCheckOrgGovernance
-    );
+    const { isAdaptiveAuthAllowed } = useEvaluateAdaptiveAuthCapability(shouldCheckOrgGovernance);
 
     const isAdaptiveAuthAvailable: boolean = useMemo(() => {
         if (!isAdaptiveAuthenticationAvailable) {
@@ -297,7 +295,14 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         }
 
         if (isInSubOrgWithoutSharedApp) {
-            return shouldCheckOrgGovernance && !isCheckLoading && isAdaptiveAuthAllowed === true;
+            if (!shouldCheckOrgGovernance) {
+                return false;
+            }
+
+            // Preserve availability while the capability check is pending; only mark unavailable
+            // once the API has explicitly returned allowed=false. This prevents save handlers
+            // from clearing adaptive scripts during the loading window.
+            return isAdaptiveAuthAllowed !== false;
         }
 
         return true;
@@ -305,7 +310,6 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
         isAdaptiveAuthenticationAvailable,
         isInSubOrgWithoutSharedApp,
         shouldCheckOrgGovernance,
-        isCheckLoading,
         isAdaptiveAuthAllowed
     ]);
 

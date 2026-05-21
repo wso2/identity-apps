@@ -37,14 +37,6 @@ export interface ApplicationsResourceEndpointsInterface {
 }
 
 /**
- * Request interface for the org-governance capability evaluation endpoint.
- */
-export interface OrgGovernanceEvaluateRequestInterface {
-    capability: string;
-    resourceType: string;
-}
-
-/**
  * Response interface for the org-governance capability evaluation endpoint.
  */
 export interface OrgGovernanceEvaluateResponseInterface {

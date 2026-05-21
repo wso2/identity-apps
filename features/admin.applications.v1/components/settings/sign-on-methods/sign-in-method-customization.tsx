@@ -209,11 +209,15 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled;
     const shouldCheckOrgGovernance: boolean =
         isInSubOrgWithoutSharedApp && isAdaptiveAuthOrgGovernanceEnabled;
-    const { isAdaptiveAuthAllowed, isCheckLoading } = useEvaluateAdaptiveAuthCapability(
-        shouldCheckOrgGovernance
-    );
+    const {
+        isAdaptiveAuthAllowed,
+        isCheckLoading: isAdaptiveAuthCapabilityCheckPending
+    } = useEvaluateAdaptiveAuthCapability(shouldCheckOrgGovernance);
+    // Only decide "blocked" after the capability check resolves. While the check is pending,
+    // the editor and update/revert actions are gated via isAdaptiveAuthCapabilityCheckPending.
     const isSubOrgAdaptiveAuthBlocked: boolean = isInSubOrgWithoutSharedApp
-        && (!shouldCheckOrgGovernance || isCheckLoading || isAdaptiveAuthAllowed !== true);
+        && !isAdaptiveAuthCapabilityCheckPending
+        && isAdaptiveAuthAllowed !== true;
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -599,7 +603,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 <PrimaryButton
                     onClick={ handleUpdateClick }
                     data-componentid={ `${ componentId }-update-button` }
-                    disabled={ isButtonDisabled || isLoading }
+                    disabled={ isButtonDisabled || isLoading || isAdaptiveAuthCapabilityCheckPending }
                     loading={ isLoading }
                 >
                     { t("common:update") }
@@ -881,6 +885,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                         <div className="display-inline-block floated right">
                             <LinkButton
                                 className="pr-0"
+                                disabled={ isAdaptiveAuthCapabilityCheckPending }
                                 onClick={ () => {
                                     eventPublisher.publish(
                                         "application-revert-sign-in-method-default",
@@ -938,7 +943,9 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             }
             <Divider className="x2"/>
             {
-                (isAdaptiveAuthenticationAvailable && !isSubOrgAdaptiveAuthBlocked)
+                (isAdaptiveAuthenticationAvailable
+                    && !isSubOrgAdaptiveAuthBlocked
+                    && !isAdaptiveAuthCapabilityCheckPending)
                 && (
                     <ScriptBasedFlow
                         authenticationSequence={ sequence }
