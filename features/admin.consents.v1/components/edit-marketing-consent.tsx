@@ -16,41 +16,40 @@
  * under the License.
  */
 
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Box from "@oxygen-ui/react/Box";
 import Card from "@oxygen-ui/react/Card";
-import Checkbox from "@oxygen-ui/react/Checkbox";
-import InputLabel from "@oxygen-ui/react/InputLabel";
-import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
+import InputLabel from "@oxygen-ui/react/InputLabel";
 import Link from "@oxygen-ui/react/Link";
-import Switch from "@oxygen-ui/react/Switch";
+import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { useRequiredScopes } from "@wso2is/access-control";
+import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
-import { BrandingPreferenceTypes } from "@wso2is/common.branding.v1/models";
 import {
+    NewElementBindingInterface,
     PurposeDTOInterface,
+    PurposeElementDTOInterface,
     PurposeVersionSummaryDTOInterface,
-    createPurpose,
-    createPurposeVersion,
+    createMarketingPurpose,
+    createMarketingPurposeVersion,
     isPolicyNameAvailable,
     useGetPurpose,
     useGetPurposeVersions
 } from "@wso2is/common.consents.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, Claim, ClaimsGetParams, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { URLUtils } from "@wso2is/core/utils";
 import { FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/forms";
 import { ConfirmationModal, ContentLoader, Hint, Message, PrimaryButton } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
 import React, {
     FunctionComponent,
     MutableRefObject,
     type ReactElement,
+    SyntheticEvent,
     useCallback,
     useMemo,
     useRef,
@@ -61,24 +60,30 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { ConsentDescriptionEditor } from "./consent-description-editor";
-import { PolicyConsentPreview } from "./policy-consent-preview";
+import { MarketingConsentPreview } from "./marketing-consent-preview";
 import { ConsentVersionDropdown } from "./consent-version-dropdown";
 
-interface EditPolicyConsentProps extends IdentifiableComponentInterface {
+interface EditMarketingConsentProps extends IdentifiableComponentInterface {
     purposeId?: string;
 }
 
-interface PolicyFormValuesInterface {
+interface MarketingFormValuesInterface {
+    attributes: Claim[];
     description: string;
-    mandatory: boolean;
     name?: string;
-    policyUrl: string;
-    promptOnLogin: string;
 }
 
-interface PolicyFormErrorsInterface {
+const CLAIMS_PARAMS: ClaimsGetParams = {
+    "exclude-hidden-claims": true,
+    "exclude-identity-claims": true,
+    filter: null,
+    limit: null,
+    offset: null,
+    sort: null
+};
+
+interface MarketingFormErrorsInterface {
     name?: string;
-    policyUrl?: string;
 }
 
 /**
@@ -99,24 +104,8 @@ const generateNextVersionLabel = (currentLabel: string): string => {
     return `${ nextNumber }`;
 };
 
-const URL_PLACEHOLDERS_PATTERN: string = "\\{\\{lang\\}\\}|\\{\\{country\\}\\}|\\{\\{locale\\}\\}";
-
-/**
- * Validates a URL that may contain templating placeholders.
- */
-const validateTemplatableURL = (value: string, errorMessage: string): string | undefined => {
-    const moderated: string = value?.trim().replace(new RegExp(URL_PLACEHOLDERS_PATTERN, "g"), "");
-
-    if (moderated && (!URLUtils.isURLValid(moderated, true) || !FormValidation.url(moderated))) {
-        return errorMessage;
-    }
-
-    return undefined;
-};
-
-
-export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
-    props: EditPolicyConsentProps
+export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> = (
+    props: EditMarketingConsentProps
 ): ReactElement => {
     const { purposeId } = props;
 
@@ -125,15 +114,15 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+    const marketingConsentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
     );
-    const hasCreatePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.create);
-    const hasUpdatePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.update);
+    const hasCreatePermission: boolean = useRequiredScopes(marketingConsentsFeatureConfig?.scopes?.create);
+    const hasUpdatePermission: boolean = useRequiredScopes(marketingConsentsFeatureConfig?.scopes?.update);
 
     const {
         data: consent,
-        isLoading: isPolicyInfoLoading,
+        isLoading: isConsentInfoLoading,
         mutate: mutateConsent
     } = useGetPurpose(purposeId ?? "");
     const {
@@ -141,44 +130,24 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
         isLoading: isVersionsLoading,
         mutate: mutateVersions
     } = useGetPurposeVersions(purposeId ?? "");
-
     const {
-        data: brandingPreference,
-        isLoading: isBrandingLoading
-    } = useGetBrandingPreferenceResolve(AppConstants.getTenant(), BrandingPreferenceTypes.ORG);
+        data: claims,
+        isLoading: isClaimsLoading
+    } = useGetAllLocalClaims<Claim[]>(CLAIMS_PARAMS);
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ showVersionWarningModal, setShowVersionWarningModal ] = useState<boolean>(false);
-    const [ modalPromptOnLogin, setModalPromptOnLogin ] = useState<boolean>(false);
-    const pendingValues: MutableRefObject<PolicyFormValuesInterface | null> =
-        useRef<PolicyFormValuesInterface | null>(null);
+    const pendingValues: MutableRefObject<MarketingFormValuesInterface | null> =
+        useRef<MarketingFormValuesInterface | null>(null);
     const nameValidationTokenRef: MutableRefObject<number> = useRef<number>(0);
 
-    const brandingPolicyUrl: string = useMemo((): string => {
-        if (!brandingPreference) {
-            return "";
-        }
-
-        if (consent?.name === "privacy_policy") {
-            return brandingPreference.preference.urls.privacyPolicyURL;
-        } else if (consent?.name === "terms_and_conditions") {
-            return brandingPreference.preference.urls.termsOfUseURL;
-        } else if (consent?.name === "cookie_policy") {
-            return brandingPreference.preference.urls.cookiePolicyURL;
-        }
-
-        return "";
-    }, [ brandingPreference, consent ]);
-
-    const initialValues: PolicyFormValuesInterface | null = useMemo(
-        (): PolicyFormValuesInterface | null => {
+    const initialValues: MarketingFormValuesInterface | null = useMemo(
+        (): MarketingFormValuesInterface | null => {
             if (isCreateMode) {
                 return {
+                    attributes: [],
                     description: "",
-                    mandatory: false,
-                    name: "",
-                    policyUrl: "",
-                    promptOnLogin: "false"
+                    name: ""
                 };
             }
 
@@ -186,13 +155,17 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                 return null;
             }
 
+            const prePopulatedAttributes: Claim[] = (consent.elements ?? [])
+                .map((el: PurposeElementDTOInterface): Claim | undefined =>
+                    (claims ?? []).find((c: Claim): boolean => c.claimURI === el.name)
+                )
+                .filter((c: Claim | undefined): c is Claim => c !== undefined);
+
             return {
-                description: consent.description ?? "",
-                mandatory: consent.mandatory ?? false,
-                policyUrl: consent.policyUrl ?? brandingPolicyUrl,
-                promptOnLogin: consent.promptOnLogin ?? "false"
+                attributes: prePopulatedAttributes,
+                description: consent.description ?? ""
             };
-        }, [ isCreateMode, consent, brandingPolicyUrl ]);
+        }, [ isCreateMode, consent, claims ]);
 
     const sortedConsentVersions: PurposeVersionSummaryDTOInterface[] = useMemo(
         (): PurposeVersionSummaryDTOInterface[] => {
@@ -216,8 +189,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
         }, [ consentVersions ]);
 
     /**
-     * Debounced field-level async validator for the policy name.
-     * Uses a token to discard stale results from previous in-flight checks.
+     * Debounced field-level async validator for the marketing consent name.
      */
     const validateName: (_: string) => Promise<string | undefined> | string | undefined =
         useCallback((value: string): Promise<string | undefined> | string | undefined => {
@@ -240,7 +212,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
 
                         resolve(
                             token === nameValidationTokenRef.current && !isAvailable
-                                ? t("consents:form.name.error.duplicateName")
+                                ? t("consents:marketingConsents.form.name.error.duplicateName")
                                 : undefined
                         );
                     } catch {
@@ -250,55 +222,39 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
             });
         }, [ t ]);
 
-    /**
-     * Validates the create form fields (synchronous — name uniqueness is checked by validateName).
-     */
-    const validateCreateForm = (values: PolicyFormValuesInterface): PolicyFormErrorsInterface => {
-        const errors: PolicyFormErrorsInterface = {};
+    const registrationFlowBuilderPath: string = AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER");
 
-        if (!values?.policyUrl?.trim()) {
-            errors.policyUrl = t("common:required");
-        } else {
-            const urlValidationError: string | undefined = validateTemplatableURL(
-                values.policyUrl,
-                t(
-                    "extensions:develop.branding" +
-                    ".forms.advance.links.fields" +
-                    ".common.validations.invalid"
-                )
-            );
-
-            if (urlValidationError) {
-                errors.policyUrl = urlValidationError;
-            }
-        }
-
-        return errors;
+    const handleRegFlowBuilderClick = (): void => {
+        history.push(registrationFlowBuilderPath);
     };
 
     /**
-     * Creates a new purpose.
-     *
-     * @param values - Form values containing name, policy URL, description, consent flag, and promptOnLogin.
+     * Creates a new marketing consent purpose.
      */
-    const createNewPurpose = (values: PolicyFormValuesInterface): void => {
+    const createNewMarketingConsent = (values: MarketingFormValuesInterface): void => {
         setIsSubmitting(true);
 
-        createPurpose(
+        const attributeElements: NewElementBindingInterface[] = (values.attributes ?? []).map(
+            (attr: Claim): NewElementBindingInterface => ({
+                description: attr.description,
+                displayName: attr.displayName,
+                name: attr.claimURI
+            })
+        );
+
+        createMarketingPurpose(
             values.name?.trim() ?? "",
-            values.policyUrl?.trim() ?? "",
             values.description,
-            values.mandatory,
-            values.promptOnLogin
+            attributeElements.length > 0 ? attributeElements : undefined
         )
             .then((created: PurposeDTOInterface): void => {
                 dispatch(addAlert({
-                    description: t("consents:notifications.create.success.description"),
+                    description: t("consents:marketingConsents.notifications.create.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("consents:notifications.create.success.message")
+                    message: t("consents:marketingConsents.notifications.create.success.message")
                 }));
                 history.replace(
-                    AppConstants.getPaths().get("POLICY_CONSENTS_EDIT").replace(":id", created.id)
+                    AppConstants.getPaths().get("MARKETING_CONSENTS_EDIT").replace(":id", created.id)
                 );
             })
             .catch((error: IdentityAppsApiException): void => {
@@ -308,22 +264,26 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
 
                 switch (status) {
                     case 409:
-                        description = t("consents:notifications.create.error.conflict.description");
-                        message = t("consents:notifications.create.error.conflict.message");
+                        description = t("consents:marketingConsents.notifications.create.error.conflict.description");
+                        message = t("consents:marketingConsents.notifications.create.error.conflict.message");
 
                         break;
                     case 404:
-                        description = t("consents:notifications.create.error.notFound.description");
-                        message = t("consents:notifications.create.error.notFound.message");
+                        description = t("consents:marketingConsents.notifications.create.error.notFound.description");
+                        message = t("consents:marketingConsents.notifications.create.error.notFound.message");
 
                         break;
                     default:
                         if (status >= 500) {
-                            description = t("consents:notifications.create.error.serverError.description");
-                            message = t("consents:notifications.create.error.serverError.message");
+                            description = t(
+                                "consents:marketingConsents.notifications.create.error.serverError.description"
+                            );
+                            message = t(
+                                "consents:marketingConsents.notifications.create.error.serverError.message"
+                            );
                         } else {
-                            description = t("consents:notifications.create.error.description");
-                            message = t("consents:notifications.create.error.message");
+                            description = t("consents:marketingConsents.notifications.create.error.description");
+                            message = t("consents:marketingConsents.notifications.create.error.message");
                         }
                 }
 
@@ -339,28 +299,32 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
     };
 
     /**
-     * Creates a new purpose version with the updated policy URL, promoted as latest in a single call.
-     *
-     * @param values - Form values containing the new policy URL and description.
+     * Creates a new version of the marketing consent.
      */
-    const updatePolicyInfo = (values: PolicyFormValuesInterface): void => {
+    const updateMarketingConsent = (values: MarketingFormValuesInterface): void => {
         setIsSubmitting(true);
 
         const nextLabel: string = generateNextVersionLabel(consent.version ?? "1");
 
-        createPurposeVersion(
+        const attributeElements: NewElementBindingInterface[] = (values.attributes ?? []).map(
+            (attr: Claim): NewElementBindingInterface => ({
+                description: attr.description,
+                displayName: attr.displayName,
+                name: attr.claimURI
+            })
+        );
+
+        createMarketingPurposeVersion(
             purposeId,
             nextLabel,
             values.description,
-            values.policyUrl,
-            values.mandatory,
-            String(modalPromptOnLogin)
+            attributeElements.length > 0 ? attributeElements : undefined
         )
             .then((): void => {
                 dispatch(addAlert({
-                    description: t("consents:notifications.updatePolicy.success.description"),
+                    description: t("consents:marketingConsents.notifications.update.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("consents:notifications.updatePolicy.success.message")
+                    message: t("consents:marketingConsents.notifications.update.success.message")
                 }));
                 mutateConsent();
                 mutateVersions();
@@ -372,22 +336,30 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
 
                 switch (status) {
                     case 404:
-                        description = t("consents:notifications.updatePolicy.error.notFound.description");
-                        message = t("consents:notifications.updatePolicy.error.notFound.message");
+                        description = t(
+                            "consents:marketingConsents.notifications.update.error.notFound.description"
+                        );
+                        message = t("consents:marketingConsents.notifications.update.error.notFound.message");
 
                         break;
                     case 409:
-                        description = t("consents:notifications.updatePolicy.error.conflict.description");
-                        message = t("consents:notifications.updatePolicy.error.conflict.message");
+                        description = t(
+                            "consents:marketingConsents.notifications.update.error.conflict.description"
+                        );
+                        message = t("consents:marketingConsents.notifications.update.error.conflict.message");
 
                         break;
                     default:
                         if (status >= 500) {
-                            description = t("consents:notifications.updatePolicy.error.serverError.description");
-                            message = t("consents:notifications.updatePolicy.error.serverError.message");
+                            description = t(
+                                "consents:marketingConsents.notifications.update.error.serverError.description"
+                            );
+                            message = t(
+                                "consents:marketingConsents.notifications.update.error.serverError.message"
+                            );
                         } else {
-                            description = t("consents:notifications.updatePolicy.error.description");
-                            message = t("consents:notifications.updatePolicy.error.message");
+                            description = t("consents:marketingConsents.notifications.update.error.description");
+                            message = t("consents:marketingConsents.notifications.update.error.message");
                         }
                 }
 
@@ -402,12 +374,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
             });
     };
 
-    const isLoading: boolean = !isCreateMode && (isPolicyInfoLoading || isBrandingLoading || isVersionsLoading);
-    const registrationFlowBuilderPath: string = AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER");
-
-    const handleRegFlowBuilderClick = (): void => {
-        history.push(registrationFlowBuilderPath);
-    };
+    const isLoading: boolean = !isCreateMode && (isConsentInfoLoading || isVersionsLoading || isClaimsLoading);
 
     return (
         <>
@@ -443,25 +410,30 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                     isLoading ? <ContentLoader /> : (
                         <FinalForm
                             key={ isCreateMode ? "create" : consent?.version }
-                            onSubmit={ (values: PolicyFormValuesInterface) => {
+                            onSubmit={ (values: MarketingFormValuesInterface) => {
                                 if (isCreateMode) {
-                                    createNewPurpose(values);
+                                    createNewMarketingConsent(values);
                                 } else {
                                     pendingValues.current = values;
-                                    setModalPromptOnLogin(values.promptOnLogin === "true");
                                     setShowVersionWarningModal(true);
                                 }
                             } }
-                            validate={ isCreateMode ? validateCreateForm : undefined }
                             initialValues={ initialValues }
                             render={ ({
                                 handleSubmit: _handleSubmit,
                                 values: _values
-                            }: FormRenderProps & { values: PolicyFormValuesInterface }) => {
+                            }: FormRenderProps & { values: MarketingFormValuesInterface }) => {
                                 const isUnchanged: boolean = !isCreateMode && (
-                                    (_values?.policyUrl ?? "") === (initialValues?.policyUrl ?? "") &&
-                                    (_values?.description ?? "") === (initialValues?.description ?? "") &&
-                                    (_values?.mandatory ?? false) === (initialValues?.mandatory ?? false)
+                                    (_values?.description ?? "") === (initialValues?.description ?? "")
+                                    && JSON.stringify(
+                                        [ ...(_values?.attributes ?? []) ]
+                                            .map((a: Claim): string => a.claimURI)
+                                            .sort()
+                                    ) === JSON.stringify(
+                                        [ ...(initialValues?.attributes ?? []) ]
+                                            .map((a: Claim): string => a.claimURI)
+                                            .sort()
+                                    )
                                 );
 
                                 return (
@@ -482,8 +454,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                             >
                                                 {
                                                     !isCreateMode
-                                                    && !isPolicyInfoLoading
-                                                    && !isBrandingLoading
+                                                    && !isConsentInfoLoading
                                                     && !isVersionsLoading
                                                     && consent?.version !== undefined
                                                     && (
@@ -498,9 +469,14 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                         <Box>
                                                             <FinalFormField
                                                                 name="name"
-                                                                label={ t("consents:form.name.label") }
+                                                                label={
+                                                                    t("consents:marketingConsents.form.name.label")
+                                                                }
                                                                 placeholder={
-                                                                    t("consents:form.name.placeholder")
+                                                                    t(
+                                                                        "consents:marketingConsents" +
+                                                                        ".form.name.placeholder"
+                                                                    )
                                                                 }
                                                                 required
                                                                 type="text"
@@ -510,39 +486,13 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                         </Box>
                                                     ) }
                                                     <Box>
-                                                        <FinalFormField
-                                                            name="policyUrl"
-                                                            label={ t("consents:form.policyUrl.label") }
-                                                            type="text"
-                                                            component={ TextFieldAdapter }
-                                                            required
-                                                            placeholder={
+                                                        <InputLabel>
+                                                            {
                                                                 t(
-                                                                    "extensions:develop.branding.forms" +
-                                                                    ".advance.links.fields" +
-                                                                    ".privacyPolicyURL.placeholder"
+                                                                    "consents:marketingConsents" +
+                                                                    ".form.description.label"
                                                                 )
                                                             }
-                                                            validate={ isCreateMode
-                                                                ? undefined
-                                                                : (value: string) =>
-                                                                    validateTemplatableURL(
-                                                                        value,
-                                                                        t(
-                                                                            "extensions:develop.branding" +
-                                                                            ".forms.advance.links.fields" +
-                                                                            ".common.validations.invalid"
-                                                                        )
-                                                                    )
-                                                            }
-                                                        />
-                                                        <Hint>
-                                                            { t("consents:form.policyUrl.hint") }
-                                                        </Hint>
-                                                    </Box>
-                                                    <Box>
-                                                        <InputLabel>
-                                                            { t("consents:form.description.label") }
                                                         </InputLabel>
                                                         <Field
                                                             name="description"
@@ -557,7 +507,6 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                                     <ConsentDescriptionEditor
                                                                         value={ i18nMatch ? "" : (input.value ?? "") }
                                                                         onChange={ input.onChange }
-                                                                        policyUrl={ _values?.policyUrl }
                                                                         policyName={
                                                                             isCreateMode
                                                                                 ? _values?.name
@@ -573,100 +522,101 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                                                 );
                                                                             }
                                                                         }
-                                                                        variant="policy"
+                                                                        variant="marketing"
                                                                     />
                                                                 );
                                                             } }
                                                         />
                                                     </Box>
-                                                    <Field
-                                                        name="mandatory"
-                                                        subscription={ { value: true } }
-                                                        render={ (
-                                                            { input }: { input: FieldInputProps<boolean> }
-                                                        ) => (
-                                                            <Box>
-                                                                <FormControlLabel
-                                                                    control={ (
-                                                                        <Switch
-                                                                            name={ input.name }
-                                                                            checked={ input.value ?? false }
-                                                                            onChange={ ( e:
-                                                                                React.ChangeEvent<HTMLInputElement>
-                                                                            ) => {
-                                                                                input.onChange(e.target.checked);
-                                                                            } }
-                                                                        />
-                                                                    ) }
-                                                                    label={ t("consents:form.mandatory.label") }
-                                                                    sx={ { mr: 0 } }
-                                                                />
-                                                                <Hint>
-                                                                    { t("consents:form.mandatory.hint") }
-                                                                </Hint>
-                                                            </Box>
-                                                        ) }
-                                                    />
                                                     <Box>
-                                                        { !isCreateMode && consent?.promptOnLogin === "true" && (
-                                                            <Message
-                                                                type="info"
-                                                                content={ t("consents:form.promptOnLogin.activeHint") }
-                                                            />
-                                                        ) }
-                                                        { !isCreateMode && (
-                                                            <Message
-                                                                type="info"
-                                                                content={ (
-                                                                    <Trans
-                                                                        i18nKey=
-                                                                            "consents:form.mandatory.linkHint"
-                                                                    >
-                                                                        <Link
-                                                                            onClick={
-                                                                                handleRegFlowBuilderClick
-                                                                            }
-                                                                            sx={ { cursor: "pointer" } }
-                                                                        >
-                                                                            this link
-                                                                        </Link>
-                                                                    </Trans>
-                                                                ) }
-                                                            />
-                                                        ) }
-                                                    </Box>
-                                                    { isCreateMode && (
                                                         <Field
-                                                            name="promptOnLogin"
+                                                            name="attributes"
                                                             subscription={ { value: true } }
                                                             render={ (
-                                                                { input }: { input: FieldInputProps<string> }
-                                                            ) => (
-                                                                <Box>
-                                                                    <FormControlLabel
-                                                                        control={ (
-                                                                            <Switch
-                                                                                name={ input.name }
-                                                                                checked={ input.value === "true" }
-                                                                                onChange={ ( e:
-                                                                                    React.ChangeEvent<HTMLInputElement>
-                                                                                ) => {
-                                                                                    input.onChange(
-                                                                                        String(e.target.checked)
-                                                                                    );
-                                                                                } }
-                                                                            />
-                                                                        ) }
-                                                                        label={ t("consents:form.promptOnLogin.label") }
-                                                                        sx={ { mr: 0 } }
+                                                                { input }: {
+                                                                    input: FieldInputProps<Claim[]>
+                                                                }
+                                                            ) => {
+                                                                const selectedAttrs: Claim[] =
+                                                                    Array.isArray(input.value)
+                                                                        ? input.value
+                                                                        : [];
+
+                                                                const renderInput = (
+                                                                    params: AutocompleteRenderInputParams
+                                                                ): ReactElement => (
+                                                                    <TextField
+                                                                        { ...params }
+                                                                        placeholder={
+                                                                            selectedAttrs.length === 0
+                                                                                ? t(
+                                                                                    "consents:registrationFlow" +
+                                                                                    ".addAttribute"
+                                                                                )
+                                                                                : ""
+                                                                        }
                                                                     />
-                                                                    <Hint>
-                                                                        { t("consents:form.promptOnLogin.hint") }
-                                                                    </Hint>
-                                                                </Box>
-                                                            ) }
+                                                                );
+
+                                                                return (
+                                                                    <>
+                                                                        <InputLabel
+                                                                            sx={ {
+                                                                                color: "text.secondary",
+                                                                                mb: 0.5
+                                                                            } }
+                                                                        >
+                                                                            { t(
+                                                                                "consents:registrationFlow" +
+                                                                                ".attributes"
+                                                                            ) }
+                                                                        </InputLabel>
+                                                                        <Autocomplete
+                                                                            multiple
+                                                                            loading={ isClaimsLoading }
+                                                                            options={ claims ?? [] }
+                                                                            value={ selectedAttrs }
+                                                                            getOptionLabel={
+                                                                                (option: Claim): string =>
+                                                                                    option.displayName
+                                                                            }
+                                                                            isOptionEqualToValue={
+                                                                                (
+                                                                                    o: Claim,
+                                                                                    v: Claim
+                                                                                ): boolean =>
+                                                                                    o.claimURI === v.claimURI
+                                                                            }
+                                                                            onChange={
+                                                                                (
+                                                                                    _: SyntheticEvent,
+                                                                                    selected: Claim[]
+                                                                                ): void => {
+                                                                                    input.onChange(selected);
+                                                                                }
+                                                                            }
+                                                                            renderInput={ renderInput }
+                                                                        />
+                                                                    </>
+                                                                );
+                                                            } }
                                                         />
-                                                    ) }
+                                                    </Box>
+                                                    <Message
+                                                        type="info"
+                                                        content={ (
+                                                            <Trans
+                                                                i18nKey="consents:form.mandatory.linkHint"
+                                                            >
+                                                                <Link
+                                                                    onClick={ handleRegFlowBuilderClick }
+                                                                    sx={ { cursor: "pointer" } }
+                                                                >
+                                                                    this link
+                                                                </Link>
+                                                            </Trans>
+                                                        ) }
+                                                    />
                                                 </Box>
                                             </Grid>
                                             { /* Preview column */ }
@@ -678,10 +628,12 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                 flexDirection={ "column" }
                                                 sx={ { borderBottom: "1px solid", borderColor: "divider" } }
                                             >
-                                                <PolicyConsentPreview
-                                                    componentId="policy-consent-preview"
+                                                <MarketingConsentPreview
+                                                    componentId="marketing-consent-preview"
+                                                    attributes={ (_values?.attributes ?? []).map(
+                                                        (a: Claim): string => a.displayName
+                                                    ) }
                                                     description={ _values?.description ?? "" }
-                                                    mandatory={ _values?.mandatory ?? false }
                                                     policyName={ isCreateMode ? _values?.name : consent?.name }
                                                 />
                                             </Grid>
@@ -689,7 +641,10 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                 {
                                                     !isCreateMode && (
                                                         <Hint>
-                                                            { t("consents:form.policyUrl.versionHint") }
+                                                            { t(
+                                                                "consents:marketingConsents" +
+                                                                ".form.createNewVersion"
+                                                            ) }
                                                         </Hint>
                                                     )
                                                 }
@@ -701,7 +656,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                     >
                                                         { isCreateMode
                                                             ? t("common:create")
-                                                            : t("consents:form.createNewVersion")
+                                                            : t("consents:marketingConsents.form.createNewVersion")
                                                         }
                                                     </PrimaryButton>
                                                 ) }
@@ -723,30 +678,16 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                 onSecondaryActionClick={ () => setShowVersionWarningModal(false) }
                 onPrimaryActionClick={ () => {
                     setShowVersionWarningModal(false);
-                    updatePolicyInfo(pendingValues.current);
+                    updateMarketingConsent(pendingValues.current);
                 } }
                 closeOnDimmerClick={ false }
                 primaryActionLoading={ isSubmitting }
             >
                 <ConfirmationModal.Header>
-                    { t("consents:form.versionModal.createNewVersion") }
+                    { t("consents:marketingConsents.form.versionModal.createNewVersion") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Content>
-                    { t("consents:form.versionModal.promptDescription") }
-                    <Box sx={ { mt: 2 } }>
-                        <FormControlLabel
-                            control={ (
-                                <Checkbox
-                                    checked={ modalPromptOnLogin }
-                                    onChange={ (e: React.ChangeEvent<HTMLInputElement>) => {
-                                        setModalPromptOnLogin(e.target.checked);
-                                    } }
-                                />
-                            ) }
-                            label={ t("consents:form.versionModal.promptAtLogin") }
-                            sx={ { mr: 0 } }
-                        />
-                    </Box>
+                    { t("consents:marketingConsents.form.versionModal.description") }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         </>

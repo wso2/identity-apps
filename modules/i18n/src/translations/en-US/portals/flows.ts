@@ -59,6 +59,12 @@ export const flows: flowsNS = {
                 },
                 placeholder: "Enter rich text content here..."
             },
+            marketingConsent: {
+                emptyState: "No purposes configured"
+            },
+            policyConsent: {
+                emptyState: "No policies configured"
+            },
             textPropertyField: {
                 i18nCard: {
                     chip: {
@@ -279,6 +285,11 @@ export const flows: flowsNS = {
                     general: "Required fields are not properly configured for the phone number field with ID <1>{{id}}</1>.",
                     identifier: "Phone number field must be mapped to an attribute for data collection.",
                     label: "Phone number field must have a label to be displayed to users."
+                },
+                marketingConsent: {
+                    general: "Required fields are not properly configured for the marketing consent.",
+                    purposeAttributesRequired: "Purpose \"{{purposeName}}\" must have at least one attribute selected.",
+                    purposesRequired: "At least one purpose must be added."
                 },
                 policyConsent: {
                     general: "Required fields are not properly configured for the policy consent.",

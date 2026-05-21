@@ -19,6 +19,155 @@
 import { ConsentsNS } from "../../../models";
 
 export const consents: ConsentsNS = {
+    marketingConsents: {
+        form: {
+            createNewVersion: "Create New Version",
+            description: {
+                label: "Description",
+                labelRoleHint: "Leave empty to use the default."
+            },
+            name: {
+                error: {
+                    duplicateName: "A marketing consent with this name already exists. Please use a different name."
+                },
+                label: "Name",
+                placeholder: "Newsletter Subscription"
+            },
+            versionModal: {
+                createNewVersion: "Create New Version?",
+                description: "This will create a new version of the marketing consent."
+            }
+        },
+        list: {
+            emptyPlaceholder: {
+                addConsent: "New Marketing Consent",
+                subtitle: "There are no marketing consents available at the moment"
+            },
+            emptySearchPlaceholder: {
+                action: "Clear search",
+                subtitle: "No marketing consents found for the search query.",
+                title: "No results found"
+            }
+        },
+        notifications: {
+            create: {
+                error: {
+                    conflict: {
+                        description: "A marketing consent with this name already exists. Please use a different name.",
+                        message: "Conflict"
+                    },
+                    description: "Failed to create marketing consent. Please try again.",
+                    message: "Create Failed",
+                    notFound: {
+                        description: "The requested marketing consent was not found.",
+                        message: "Not Found"
+                    },
+                    serverError: {
+                        description: "A server error occurred while creating the marketing consent. Please try again later.",
+                        message: "Server Error"
+                    }
+                },
+                success: {
+                    description: "Marketing consent created successfully.",
+                    message: "Marketing Consent Created"
+                }
+            },
+            delete: {
+                error: {
+                    conflict: {
+                        description: "This marketing consent cannot be deleted because it is in use or is protected.",
+                        message: "Cannot Delete"
+                    },
+                    description: "Failed to delete marketing consent. Please try again.",
+                    message: "Delete Failed",
+                    notFound: {
+                        description: "The marketing consent you are trying to delete was not found.",
+                        message: "Not Found"
+                    },
+                    serverError: {
+                        description: "A server error occurred while deleting the marketing consent. Please try again later.",
+                        message: "Server Error"
+                    }
+                },
+                success: {
+                    description: "Marketing consent deleted successfully.",
+                    message: "Marketing Consent Deleted"
+                }
+            },
+            update: {
+                error: {
+                    conflict: {
+                        description: "This version already exists or conflicts with another version.",
+                        message: "Version Conflict"
+                    },
+                    description: "Marketing consent update failed. Please try again.",
+                    message: "Update Failed",
+                    notFound: {
+                        description: "The marketing consent or version you are trying to update was not found.",
+                        message: "Not Found"
+                    },
+                    serverError: {
+                        description: "A server error occurred while updating the marketing consent. Please try again later.",
+                        message: "Server Error"
+                    }
+                },
+                success: {
+                    description: "Marketing consent updated successfully.",
+                    message: "Update Successful"
+                }
+            }
+        },
+        pages: {
+            edit: {
+                backButton: "Back to Marketing Consents",
+                dangerZone: {
+                    actionTitle: "Delete Marketing Consent",
+                    header: "Delete Marketing Consent",
+                    subheader: "Once you delete a marketing consent, there is no going back. Please be certain."
+                },
+                deleteConfirmation: {
+                    assertionHint: "I confirm that I want to delete this marketing consent.",
+                    content: "You can delete this marketing consent only if no users have given consent to it.",
+                    header: "Are you sure?",
+                    message: "This action is irreversible and will permanently delete the marketing consent.",
+                    primaryAction: "Confirm",
+                    secondaryAction: "Cancel"
+                },
+                title: "Edit Marketing Consent"
+            },
+            list: {
+                actions: {
+                    addConsent: "New Marketing Consent"
+                },
+                backButton: "Go back to login & registration",
+                deleteConfirmation: {
+                    assertionHint: "I confirm that I want to delete this marketing consent.",
+                    content: "You can delete this marketing consent only if no users have given consent to it.",
+                    header: "Are you sure?",
+                    message: "This action is irreversible and will permanently delete the marketing consent.",
+                    primaryAction: "Confirm",
+                    secondaryAction: "Cancel"
+                },
+                description: "Configure and manage marketing consents.",
+                heading: "Marketing Consents",
+                search: {
+                    placeholder: "Search marketing consents by name"
+                },
+                title: "Marketing Consents"
+            },
+            new: {
+                backButton: "Back to Marketing Consents",
+                title: "Create Marketing Consent"
+            }
+        },
+        preview: {
+            allowButton: "Continue",
+            denyButton: "Decline",
+            emptyDescription: "Write a consent name to preview.",
+            exampleDescription: "I agree to receive information and commerical offers.",
+            pageTitle: "Marketing Consent Review"
+        }
+    },
     form: {
         createNewVersion: "Create New Version",
         description: {
@@ -70,7 +219,19 @@ export const consents: ConsentsNS = {
         }
     },
     registrationFlow: {
+        addAttribute: "Add Attribute",
+        addPurpose: "Add Purpose",
+        attributeDisplayName: "Display Name",
+        attributeName: "Attribute Name",
+        attributes: "User Attributes",
+        noMarketing: "No marketing consents available. Create them from Marketing Consents.",
         noPolicies: "No policies available. Create policies from Policy Consents.",
+        purposeDescription: "Description",
+        purposeLabel: "Purpose {{index}}",
+        purposeName: "Purpose Name",
+        removeAttribute: "Remove attribute",
+        removePurpose: "Remove purpose",
+        selectMarketing: "Marketing Consent",
         selectPolicies: "Select Policies:"
     },
     notifications: {
@@ -172,7 +333,7 @@ export const consents: ConsentsNS = {
                 secondaryAction: "Cancel"
             },
             backButton: "Go back to login & registration",
-            description: "Manage and configure policy consents.",
+            description: "Configure and manage policy consents.",
             heading: "Policy Consents",
             search: {
                 placeholder: "Search policies by name"
@@ -235,9 +396,8 @@ export const consents: ConsentsNS = {
                 }
             },
             preview: {
-                allowButton: "Confirm and Continue",
-                appLoginMessage: "This will be the UI you see when you log in to an application.",
-                consentHeader: "Please review and accept the following policies to proceed.",
+                allowButton: "Continue",
+                consentHeader: "Please review and accept the following to proceed.",
                 denyButton: "Decline",
                 emptyDescription: "Write a policy name to preview.",
                 exampleDescription: "I have read and agree to the <0>{{policyName}}</0>.",

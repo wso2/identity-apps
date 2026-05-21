@@ -311,6 +311,9 @@ export class AppConstants {
             [ "POLICY_CONSENTS", `${ AppConstants.getDeveloperViewBasePath() }/policy-consents` ],
             [ "POLICY_CONSENTS_NEW", `${ AppConstants.getDeveloperViewBasePath() }/policy-consents/new` ],
             [ "POLICY_CONSENTS_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/policy-consents/:id` ],
+            [ "MARKETING_CONSENTS", `${ AppConstants.getDeveloperViewBasePath() }/marketing-consents` ],
+            [ "MARKETING_CONSENTS_NEW", `${ AppConstants.getDeveloperViewBasePath() }/marketing-consents/new` ],
+            [ "MARKETING_CONSENTS_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/marketing-consents/:id` ],
             [ "CUSTOMIZE", `${ AppConstants.getMainViewBasePath() }/customize` ],
             [ "DEVELOPER_OVERVIEW", `${ AppConstants.getDeveloperViewBasePath() }/overview` ],
             [

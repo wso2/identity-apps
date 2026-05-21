@@ -17,8 +17,21 @@
  */
 
 /**
- * Represents a policy reference stored in the flow API payload.
+ * Represents a user attribute that can be selected under a purpose.
  */
-export interface PolicyConfigItemInterface {
+export interface PurposeAttributeInterface {
+    displayName?: string;
+    id: string;
+    name: string;
+}
+
+/**
+ * Represents a single purpose (marketing or policy).
+ * `description` may be a plain string or an i18n map keyed by locale (e.g. `{ "en-US": "...", "fr-FR": "..." }`).
+ */
+export interface PurposeInterface {
+    attributes: PurposeAttributeInterface[];
+    description?: string | Record<string, string>;
+    name?: string;
     purposeId: string;
 }

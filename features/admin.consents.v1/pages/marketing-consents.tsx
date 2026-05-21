@@ -41,28 +41,30 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { PolicyConsentsList } from "../components/policy-consents-list";
+import { MarketingConsentsList } from "../components/marketing-consents-list";
 
 /**
- * Props interface for the Policy Consents page component.
+ * Props interface for the Marketing Consents page component.
  */
-type PolicyConsentsPageProps = IdentifiableComponentInterface;
+type MarketingConsentsPageProps = IdentifiableComponentInterface;
 
 /**
- * Policy Consents page.
+ * Marketing Consents page.
  *
  * @param props - Props injected to the component.
- * @returns Policy Consents page component.
+ * @returns Marketing Consents page component.
  */
-const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: PolicyConsentsPageProps): ReactElement => {
+const MarketingConsentsPage: FunctionComponent<MarketingConsentsPageProps> = (
+    props: MarketingConsentsPageProps
+): ReactElement => {
     const {
-        ["data-componentid"]: componentId = "policy-consents-page"
+        ["data-componentid"]: componentId = "marketing-consents-page"
     } = props;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+    const marketingConsentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
     );
 
@@ -71,9 +73,7 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingConsent, setDeletingConsent ] = useState<ConsentListItemInterface | null>(null);
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
-
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
-
     const [ after, setAfter ] = useState<string>(undefined);
     const [ before, setBefore ] = useState<string>(undefined);
     const [ pageHistory, setPageHistory ] = useState<string[]>([]);
@@ -87,8 +87,8 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
         after,
         before,
         filter: searchQuery
-            ? `${searchQuery} and type eq Policy`
-            : "type eq Policy",
+            ? `${searchQuery} and type eq Marketing`
+            : "type eq Marketing",
         limit: listItemLimit
     });
 
@@ -206,9 +206,9 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
         deletePurpose(deletingConsent.id)
             .then((): void => {
                 dispatch(addAlert({
-                    description: t("consents:notifications.delete.success.description"),
+                    description: t("consents:marketingConsents.notifications.delete.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("consents:notifications.delete.success.message")
+                    message: t("consents:marketingConsents.notifications.delete.success.message")
                 }));
                 mutateConsents();
             })
@@ -219,22 +219,30 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
 
                 switch (status) {
                     case 404:
-                        description = t("consents:notifications.delete.error.notFound.description");
-                        message = t("consents:notifications.delete.error.notFound.message");
+                        description = t(
+                            "consents:marketingConsents.notifications.delete.error.notFound.description"
+                        );
+                        message = t("consents:marketingConsents.notifications.delete.error.notFound.message");
 
                         break;
                     case 409:
-                        description = t("consents:notifications.delete.error.conflict.description");
-                        message = t("consents:notifications.delete.error.conflict.message");
+                        description = t(
+                            "consents:marketingConsents.notifications.delete.error.conflict.description"
+                        );
+                        message = t("consents:marketingConsents.notifications.delete.error.conflict.message");
 
                         break;
                     default:
                         if (status >= 500) {
-                            description = t("consents:notifications.delete.error.serverError.description");
-                            message = t("consents:notifications.delete.error.serverError.message");
+                            description = t(
+                                "consents:marketingConsents.notifications.delete.error.serverError.description"
+                            );
+                            message = t(
+                                "consents:marketingConsents.notifications.delete.error.serverError.message"
+                            );
                         } else {
-                            description = t("consents:notifications.delete.error.description");
-                            message = t("consents:notifications.delete.error.message");
+                            description = t("consents:marketingConsents.notifications.delete.error.description");
+                            message = t("consents:marketingConsents.notifications.delete.error.message");
                         }
                 }
 
@@ -253,27 +261,27 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
 
     return (
         <PageLayout
-            pageTitle={ t("consents:pages.list.title") }
-            title={ t("consents:pages.list.heading") }
-            description={ t("consents:pages.list.description") }
+            pageTitle={ t("consents:marketingConsents.pages.list.title") }
+            title={ t("consents:marketingConsents.pages.list.heading") }
+            description={ t("consents:marketingConsents.pages.list.description") }
             data-componentid={ `${componentId}-layout` }
             backButton={ {
                 onClick: () => {
                     history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
                 },
-                text: t("consents:pages.list.backButton")
+                text: t("consents:marketingConsents.pages.list.backButton")
             } }
             action={ (
                 (consents?.length ?? 0) > 0 ? (
-                    <Show when={ consentsFeatureConfig?.scopes?.create }>
+                    <Show when={ marketingConsentsFeatureConfig?.scopes?.create }>
                         <PrimaryButton
                             onClick={ (): void => {
-                                history.push(AppConstants.getPaths().get("POLICY_CONSENTS_NEW"));
+                                history.push(AppConstants.getPaths().get("MARKETING_CONSENTS_NEW"));
                             } }
                             data-componentid={ `${componentId}-add-button` }
                         >
                             <Icon name="add" />
-                            { t("consents:pages.list.actions.addPolicy") }
+                            { t("consents:marketingConsents.pages.list.actions.addConsent") }
                         </PrimaryButton>
                     </Show>
                 ) : null
@@ -291,7 +299,7 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                             }
                         ] }
                         filterAttributePlaceholder={ t("common:name") }
-                        placeholder={ t("consents:pages.list.search.placeholder") }
+                        placeholder={ t("consents:marketingConsents.pages.list.search.placeholder") }
                         defaultSearchAttribute={ "name" }
                         defaultSearchOperator={ "co" }
                         triggerClearQuery={ triggerClearQuery }
@@ -306,7 +314,9 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                 showPagination={ true }
                 showTopActionPanel={ true }
                 totalPages={ virtualTotalPages }
-                totalListSize={ (activePage - 1) * listItemLimit + (consents?.length ?? 0) + (hasNextPage ? 1 : 0) }
+                totalListSize={
+                    (activePage - 1) * listItemLimit + (consents?.length ?? 0) + (hasNextPage ? 1 : 0)
+                }
                 isLoading={ isConsentsLoading }
                 paginationOptions={ {
                     disableNextButton: !hasNextPage,
@@ -314,7 +324,7 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                 } }
                 data-componentid={ `${ componentId }-list-layout` }
             >
-                <PolicyConsentsList
+                <MarketingConsentsList
                     list={ consents }
                     isLoading={ isConsentsLoading }
                     searchQuery={ searchQuery }
@@ -326,10 +336,10 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                         setPageHistory([]);
                     } }
                     onAddConsentClick={ (): void => {
-                        history.push(AppConstants.getPaths().get("POLICY_CONSENTS_NEW"));
+                        history.push(AppConstants.getPaths().get("MARKETING_CONSENTS_NEW"));
                     } }
                     onEditConsentClick={ (consent: ConsentListItemInterface) => {
-                        history.push(AppConstants.getPaths().get("POLICY_CONSENTS_EDIT")
+                        history.push(AppConstants.getPaths().get("MARKETING_CONSENTS_EDIT")
                             .replace(":id", consent.id));
                     } }
                     onDeleteConsentClick={ (consent: ConsentListItemInterface) => {
@@ -345,10 +355,16 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                         onClose={ () => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showDeleteConfirmationModal }
-                        assertionHint={ t("consents:pages.list.deleteConfirmation.assertionHint") }
+                        assertionHint={
+                            t("consents:marketingConsents.pages.list.deleteConfirmation.assertionHint")
+                        }
                         assertionType="checkbox"
-                        primaryAction={ t("consents:pages.list.deleteConfirmation.primaryAction") }
-                        secondaryAction={ t("consents:pages.list.deleteConfirmation.secondaryAction") }
+                        primaryAction={
+                            t("consents:marketingConsents.pages.list.deleteConfirmation.primaryAction")
+                        }
+                        secondaryAction={
+                            t("consents:marketingConsents.pages.list.deleteConfirmation.secondaryAction")
+                        }
                         onSecondaryActionClick={ () => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ () => handleDeleteConsent() }
                         data-componentid={ `${ componentId }-delete-confirmation-modal` }
@@ -358,19 +374,19 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                         <ConfirmationModal.Header
                             data-componentid={ `${ componentId }-delete-confirmation-modal-header` }
                         >
-                            { t("consents:pages.list.deleteConfirmation.header") }
+                            { t("consents:marketingConsents.pages.list.deleteConfirmation.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             negative
                             data-componentid={ `${ componentId }-delete-confirmation-modal-message` }
                         >
-                            { t("consents:pages.list.deleteConfirmation.message") }
+                            { t("consents:marketingConsents.pages.list.deleteConfirmation.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-componentid={ `${ componentId }-delete-confirmation-modal-content` }
                         >
-                            { t("consents:pages.list.deleteConfirmation.content") }
+                            { t("consents:marketingConsents.pages.list.deleteConfirmation.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )
@@ -379,4 +395,4 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
     );
 };
 
-export default PolicyConsentsPage;
+export default MarketingConsentsPage;

@@ -610,6 +610,46 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         },
         {
+            category: "extensions:manage.sidePanel.categories.userManagement",
+            children: [
+                {
+                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/marketing-consent-new")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "marketing-consents-new",
+                    name: "Marketing Consent New",
+                    path: AppConstants.getPaths().get("MARKETING_CONSENTS_NEW"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/marketing-consent-edit")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "marketing-consents-edit",
+                    name: "Marketing Consent Edit",
+                    path: AppConstants.getPaths().get("MARKETING_CONSENTS_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("@wso2is/admin.consents.v1/pages/marketing-consents")),
+            exact: true,
+            icon: {
+                icon: getSidePanelIcons().consents
+            },
+            id: "marketingConsents",
+            name: "extensions:develop.sidePanel.marketingConsents",
+            order: 8,
+            path: AppConstants.getPaths().get("MARKETING_CONSENTS"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
             category: "console:develop.features.sidePanel.categories.application",
             children: [
                 {

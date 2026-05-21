@@ -360,6 +360,19 @@ export class GovernanceConnectorUtils {
                         name: "policyConsents",
                         route: AppConstants.getPaths().get("POLICY_CONSENTS"),
                         testId: "policy-consents-card"
+                    },
+                    {
+                        description: I18n.instance.t("governanceConnectors:connectorCategories" +
+                            ".consentManagement.connectors.marketingConsents.description"),
+                        friendlyName: I18n.instance.t("governanceConnectors:connectorCategories" +
+                            ".consentManagement.connectors.marketingConsents.friendlyName"),
+                        header: I18n.instance.t("governanceConnectors:connectorCategories" +
+                            ".consentManagement.connectors.marketingConsents.header"),
+                        id: ServerConfigurationsConstants.MARKETING_CONSENTS_CONNECTOR_ID,
+                        isCustom: false,
+                        name: "marketingConsents",
+                        route: AppConstants.getPaths().get("MARKETING_CONSENTS"),
+                        testId: "marketing-consents-card"
                     }
                 ],
                 displayOrder: 1,

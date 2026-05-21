@@ -31,8 +31,8 @@ import parse from "html-react-parser";
 import React, { CSSProperties, FunctionComponent, ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import useValidatePolicyConsent from "../../../../hooks/use-validate-policy-consent";
-import { PolicyConfigItemInterface } from "../../../../models/policies";
+import useValidatePurposes from "../../../../hooks/use-validate-purposes";
+import { PurposeInterface } from "../../../../models/purpose";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 
 /**
@@ -44,6 +44,15 @@ const CONSENT_DESCRIPTION_STYLE: CSSProperties = {
     fontSize: "13px",
     margin: "0.5em 0"
 };
+
+const EmptyState: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    border: `1px dashed ${theme.palette.divider}`,
+    borderRadius: theme.shape.borderRadius,
+    color: theme.palette.text.secondary,
+    fontSize: "13px",
+    padding: theme.spacing(2),
+    textAlign: "center"
+}));
 
 const CheckboxRow: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     alignItems: "flex-start",
@@ -94,7 +103,7 @@ const RichTextLabel: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => (
 const PolicyConsentAdapter: FunctionComponent<PolicyConsentAdapterPropsInterface> = ({
     resource
 }: PolicyConsentAdapterPropsInterface): ReactElement => {
-    const { i18n } = useTranslation();
+    const { i18n, t } = useTranslation();
 
     const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
@@ -102,25 +111,29 @@ const PolicyConsentAdapter: FunctionComponent<PolicyConsentAdapterPropsInterface
 
     const hasConsentsReadPermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.read);
 
-    const { mappedData: allPolicies, isLoading: isAllPoliciesLoading } = useGetPurposes(
+    const { mappedData: allPurposes, isLoading: isAllPurposesLoading } = useGetPurposes(
         hasConsentsReadPermission ? { filter: "type eq Policy", limit: 50 } : null
     );
 
-    const selectedPolicies: PolicyConfigItemInterface[] = useMemo((): PolicyConfigItemInterface[] => {
-        return resource.config?.policies ?? [];
-    }, [ resource.config?.policies ]);
+    const selectedPolicies: PurposeInterface[] = useMemo((): PurposeInterface[] => {
+        return resource.config?.purposes ?? [];
+    }, [ resource.config?.purposes ]);
 
     const selectedPurposeIds: string[] = useMemo((): string[] => {
         if (!hasConsentsReadPermission) {
             return [];
         }
 
-        return selectedPolicies.map((p: PolicyConfigItemInterface): string => p.purposeId);
+        return selectedPolicies.map((p: PurposeInterface): string => p.purposeId);
     }, [ selectedPolicies, hasConsentsReadPermission ]);
 
-    const { data: selectedPolicyDetails, error: policyDetailsFetchError, isLoading: isPolicyDetailsLoading } = useGetPurposesByIds(selectedPurposeIds);
+    const { data: selectedPolicyDetails, isLoading: isPolicyDetailsLoading } = useGetPurposesByIds(selectedPurposeIds);
 
-    useValidatePolicyConsent(resource, selectedPolicies, allPolicies);
+    useValidatePurposes(resource, selectedPolicies, allPurposes, {
+        messageKeyPrefix: "policyConsent",
+        type: "policy",
+        validateAvailability: true
+    });
 
     return (
         <Box>
@@ -132,7 +145,7 @@ const PolicyConsentAdapter: FunctionComponent<PolicyConsentAdapterPropsInterface
                 </div>
             ) }
             <Box sx={ { display: "flex", flexDirection: "column" } }>
-                { isAllPoliciesLoading || isPolicyDetailsLoading ? (
+                { isAllPurposesLoading || isPolicyDetailsLoading ? (
                     <CircularProgress size={ 24 } />
                 ) : selectedPolicyDetails && selectedPolicyDetails.length > 0 ? (
                     selectedPolicyDetails.map((policy: ConsentInterface): ReactElement => {
@@ -204,7 +217,9 @@ const PolicyConsentAdapter: FunctionComponent<PolicyConsentAdapterPropsInterface
                             </CheckboxRow>
                         );
                     })
-                ) : null }
+                ) : (
+                    <EmptyState>{ t("flows:core.elements.policyConsent.emptyState") }</EmptyState>
+                ) }
             </Box>
         </Box>
     );

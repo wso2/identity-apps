@@ -442,6 +442,7 @@ export class ServerConfigurationsConstants {
     public static readonly PASSWORD_RECOVERY: string = "password-recovery";
     public static readonly USERNAME_RECOVERY: string = "username-recovery";
     public static readonly POLICY_CONSENTS_CONNECTOR_ID: string = "policyConsents";
+    public static readonly MARKETING_CONSENTS_CONNECTOR_ID: string = "marketingConsents";
 
     /**
      * User Onboarding Catergory Constants.

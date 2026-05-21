@@ -2671,10 +2671,6 @@ export const console: ConsoleNS = {
                 subTitle: "Create and manage your applications and configure sign-in.",
                 title: "Applications"
             },
-            consents: {
-                description: "Manage and configure user consents.",
-                title: "Consents"
-            },
             applicationsEdit: {
                 backButton: "Go back to Applications",
                 subTitle: null,

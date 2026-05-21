@@ -88,5 +88,69 @@
                 "next": ""
             }
         }
+    },
+    {
+        "resourceType": "STEP",
+        "category": "INTERFACE",
+        "type": "VIEW",
+        "variant": "MARKETING_CONSENT",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Marketing Consent View",
+            "image": "assets/images/icons/email-down.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {},
+        "data": {
+            "components": [
+                {
+                    "id": "{{ID}}",
+                    "category": "DISPLAY",
+                    "type": "TYPOGRAPHY",
+                    "variant": "H3",
+                    "config": {
+                        "text": "Marketing Consent Review"
+                    }
+                },
+                {
+                    "id": "{{ID}}",
+                    "category": "DISPLAY",
+                    "type": "RICH_TEXT",
+                    "config": {
+                        "text": "<p class=\"rich-text-paragraph\"><span class=\"rich-text-pre-wrap\">Please review and accept the following to proceed.</span></p>"
+                    }
+                },
+                {
+                    "id": "{{ID}}",
+                    "category": "BLOCK",
+                    "type": "FORM",
+                    "config": {},
+                    "components": [
+                        {
+                            "id": "{{ID}}",
+                            "category": "FIELD",
+                            "type": "MARKETING",
+                            "config": {
+                                "purposes": []
+                            }
+                        },
+                        {
+                            "id": "{{ID}}",
+                            "category": "ACTION",
+                            "type": "BUTTON",
+                            "variant": "PRIMARY",
+                            "config": {
+                                "type": "submit",
+                                "text": "Continue"
+                            },
+                            "action": {
+                                "type": "NEXT"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
     }
 ]

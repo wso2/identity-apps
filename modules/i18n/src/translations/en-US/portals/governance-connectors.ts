@@ -749,8 +749,13 @@ export const governanceConnectors: governanceConnectorsNS = {
         consentManagement: {
             categoryTitle: "Consent Management",
             connectors: {
+                marketingConsents: {
+                    description: "Configure and manage marketing consents.",
+                    friendlyName: "Marketing Consents",
+                    header: "Marketing Consents"
+                },
                 policyConsents: {
-                    description: "Manage and configure user policy consents.",
+                    description: "Configure and manage policy consents.",
                     friendlyName: "Policy Consents",
                     header: "Policy Consents"
                 }

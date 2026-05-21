@@ -17,6 +17,155 @@
  */
 
 export interface ConsentsNS {
+    marketingConsents: {
+        form: {
+            createNewVersion: string;
+            description: {
+                label: string;
+                labelRoleHint: string;
+            };
+            name: {
+                label: string;
+                placeholder: string;
+                error: {
+                    duplicateName: string;
+                };
+            };
+            versionModal: {
+                createNewVersion: string;
+                description: string;
+            };
+        };
+        list: {
+            emptyPlaceholder: {
+                addConsent: string;
+                subtitle: string;
+            };
+            emptySearchPlaceholder: {
+                action: string;
+                subtitle: string;
+                title: string;
+            };
+        };
+        notifications: {
+            create: {
+                error: {
+                    conflict: {
+                        description: string;
+                        message: string;
+                    };
+                    description: string;
+                    message: string;
+                    notFound: {
+                        description: string;
+                        message: string;
+                    };
+                    serverError: {
+                        description: string;
+                        message: string;
+                    };
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+            delete: {
+                error: {
+                    conflict: {
+                        description: string;
+                        message: string;
+                    };
+                    description: string;
+                    message: string;
+                    notFound: {
+                        description: string;
+                        message: string;
+                    };
+                    serverError: {
+                        description: string;
+                        message: string;
+                    };
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+            update: {
+                error: {
+                    conflict: {
+                        description: string;
+                        message: string;
+                    };
+                    description: string;
+                    message: string;
+                    notFound: {
+                        description: string;
+                        message: string;
+                    };
+                    serverError: {
+                        description: string;
+                        message: string;
+                    };
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        pages: {
+            edit: {
+                backButton: string;
+                dangerZone: {
+                    actionTitle: string;
+                    header: string;
+                    subheader: string;
+                };
+                deleteConfirmation: {
+                    assertionHint: string;
+                    content: string;
+                    header: string;
+                    message: string;
+                    primaryAction: string;
+                    secondaryAction: string;
+                };
+                title: string;
+            };
+            list: {
+                actions: {
+                    addConsent: string;
+                };
+                deleteConfirmation: {
+                    assertionHint: string;
+                    header: string;
+                    message: string;
+                    content: string;
+                    primaryAction: string;
+                    secondaryAction: string;
+                };
+                backButton: string;
+                description: string;
+                heading: string;
+                search: {
+                    placeholder: string;
+                };
+                title: string;
+            };
+            new: {
+                backButton: string;
+                title: string;
+            };
+        };
+        preview: {
+            allowButton: string;
+            denyButton: string;
+            emptyDescription: string;
+            exampleDescription: string;
+            pageTitle: string;
+        };
+    };
     form: {
         createNewVersion: string;
         description: {
@@ -66,7 +215,19 @@ export interface ConsentsNS {
         };
     };
     registrationFlow: {
+        addAttribute: string;
+        addPurpose: string;
+        attributeDisplayName: string;
+        attributeName: string;
+        attributes: string;
+        noMarketing: string;
         noPolicies: string;
+        purposeDescription: string;
+        purposeLabel: string;
+        purposeName: string;
+        removeAttribute: string;
+        removePurpose: string;
+        selectMarketing: string;
         selectPolicies: string;
     };
     notifications: {
@@ -231,7 +392,6 @@ export interface ConsentsNS {
             };
             preview: {
                 allowButton: string;
-                appLoginMessage: string;
                 consentHeader: string;
                 denyButton: string;
                 emptyDescription: string;

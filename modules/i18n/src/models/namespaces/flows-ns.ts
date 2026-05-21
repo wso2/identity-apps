@@ -67,6 +67,12 @@ export interface flowsNS {
                 };
                 placeholder: string;
             };
+            marketingConsent: {
+                emptyState: string;
+            };
+            policyConsent: {
+                emptyState: string;
+            };
             textPropertyField: {
                 i18nCard: {
                     chip: {
@@ -291,6 +297,11 @@ export interface flowsNS {
                     general: string;
                     text: string;
                     variant: string;
+                };
+                marketingConsent: {
+                    general: string;
+                    purposeAttributesRequired: string;
+                    purposesRequired: string;
                 };
                 policyConsent: {
                     general: string;
