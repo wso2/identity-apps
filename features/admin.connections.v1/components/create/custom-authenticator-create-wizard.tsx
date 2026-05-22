@@ -20,7 +20,6 @@ import Backdrop from "@mui/material/Backdrop";
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Divider from "@oxygen-ui/react/Divider";
-import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { EndpointConfigFormPropertyInterface } from "@wso2is/admin.actions.v1/models/actions";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
@@ -137,8 +136,6 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
     );
     const [ selectedTemplateId, setSelectedTemplateId ] = useState<string>(null);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ showPrimarySecret, setShowPrimarySecret ] = useState<boolean>(false);
-    const [ showSecondarySecret, setShowSecondarySecret ] = useState<boolean>(false);
     const [ endpointAuthType, setEndpointAuthType ] = useState<EndpointAuthenticationType>(null);
     const [ isHttpEndpointUri, setIsHttpEndpointUri ] = useState<boolean>(false);
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
@@ -229,20 +226,6 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
         history.push(AppConstants.getPaths().get("IDP"));
     };
 
-    const renderInputAdornmentOfSecret = (showSecret: boolean, onClick: () => void): ReactElement => (
-        <InputAdornment position="end">
-            <Icon
-                link={ true }
-                className="list-icon reset-field-to-default-adornment"
-                size="small"
-                color="grey"
-                name={ !showSecret ? "eye" : "eye slash" }
-                data-componentid={ `${componentId}-endpoint-authentication-property-secret-view-button` }
-                onClick={ onClick }
-            />
-        </InputAdornment>
-    );
-
     const renderDimmerOverlay = (): ReactNode => {
         return <Backdrop open={ true }>{ !isFeatureLocked && t("common:featureAvailable") }</Backdrop>;
     };
@@ -292,12 +275,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                                     "authenticationTypeDropdown.authProperties.username.placeholder"
                             ) }
                             inputType="password"
-                            type={ showPrimarySecret ? "text" : "password" }
-                            InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(showPrimarySecret, () =>
-                                    setShowPrimarySecret(!showPrimarySecret)
-                                )
-                            } }
+                            type="password"
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
@@ -317,12 +295,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                             ) }
                             name="passwordAuthProperty"
                             inputType="password"
-                            type={ showSecondarySecret ? "text" : "password" }
-                            InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(showSecondarySecret, () =>
-                                    setShowSecondarySecret(!showSecondarySecret)
-                                )
-                            } }
+                            type="password"
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
@@ -339,12 +312,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                             className="addon-field-wrapper"
                             name="accessTokenAuthProperty"
                             inputType="password"
-                            type={ showPrimarySecret ? "text" : "password" }
-                            InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(showPrimarySecret, () =>
-                                    setShowPrimarySecret(!showPrimarySecret)
-                                )
-                            } }
+                            type="password"
                             label={ t(
                                 "customAuthenticator:fields.createWizard.configurationsStep." +
                                     "authenticationTypeDropdown.authProperties.accessToken.label"
@@ -389,12 +357,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                             className="addon-field-wrapper"
                             name="valueAuthProperty"
                             inputType="password"
-                            type={ showSecondarySecret ? "text" : "password" }
-                            InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(showSecondarySecret, () =>
-                                    setShowSecondarySecret(!showSecondarySecret)
-                                )
-                            } }
+                            type="password"
                             label={ t(
                                 "customAuthenticator:fields.createWizard.configurationsStep." +
                                     "authenticationTypeDropdown.authProperties.value.label"
@@ -419,12 +382,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                             className="addon-field-wrapper"
                             name="clientIdAuthProperty"
                             inputType="password"
-                            type={ showPrimarySecret ? "text" : "password" }
-                            InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(showPrimarySecret, () =>
-                                    setShowPrimarySecret(!showPrimarySecret)
-                                )
-                            } }
+                            type="password"
                             label={ t(
                                 "actions:fields.authentication.types.clientCredential.properties.clientId.label"
                             ) }
@@ -442,12 +400,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                             className="addon-field-wrapper"
                             name="clientSecretAuthProperty"
                             inputType="password"
-                            type={ showSecondarySecret ? "text" : "password" }
-                            InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(showSecondarySecret, () =>
-                                    setShowSecondarySecret(!showSecondarySecret)
-                                )
-                            } }
+                            type="password"
                             label={ t(
                                 "actions:fields.authentication.types.clientCredential.properties.clientSecret.label"
                             ) }
