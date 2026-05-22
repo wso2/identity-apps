@@ -272,7 +272,11 @@ export const FeatureCarousel = () => {
             featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_SERVICE,
             id: CUSTOMER_DATA_SERVICE_FEATURE_ID,
             illustration: <Box className="customer-data-service-box">
-                <CustomerDataServiceIllustration />
+                <img
+                    alt="Customer data service"
+                    data-componentid="customer-data-service-illustration"
+                    src={ CustomerDataServiceIllustration }
+                />
             </Box>,
             isEnabled: isCDSEnabledForOrganization,
             isEnabledStatusLoading: isCDSConfigFetchRequestLoading,
