@@ -22,6 +22,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { DropdownChild, Field, Form, composeValidators } from "@wso2is/form";
@@ -164,6 +165,10 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
     );
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const currentOrganizationId: string = useSelector((state: AppState) => state.organization.organization.id);
+
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
     const { t } = useTranslation();
 
     const [ formValues, setFormValues ] = useState<SamlPropertiesInterface>({} as SamlPropertiesInterface);
@@ -242,7 +247,11 @@ export const SamlAuthenticatorSettingsForm: FunctionComponent<SamlSettingsFormPr
         { key: 25, text: "Custom Authentication Context Class", value: "Custom Authentication Context Class" }
     ];
 
-    const authorizedRedirectURL: string = config?.deployment?.customServerHost + "/commonauth";
+    const authorizedRedirectURL: string = isSubOrganization() &&
+        config?.deployment?.organizations?.connections?.useTenantQualifiedOrgPatternCommonauth
+        ? `${config?.deployment?.serverOrigin}/t/${config?.deployment?.tenant}` +
+          `/${config?.deployment?.organizationPrefix}/${currentOrganizationId}/commonauth`
+        : `${config?.deployment?.customServerHost}/commonauth`;
 
     /**
      * ISAuthnReqSigned, IsLogoutReqSigned these two fields states will be used by other

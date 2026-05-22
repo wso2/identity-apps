@@ -30,9 +30,10 @@ import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reduce
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, IdentifiableComponentInterface,
-    HttpErrorResponseDataInterface
+import { AlertLevels, HttpErrorResponseDataInterface,
+    IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
@@ -163,6 +164,9 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
     const [ isUserInputIdpNameAlreadyTaken, setIsUserInputIdpNameAlreadyTaken ] = useState<boolean>(undefined);
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const currentOrganizationId: string = useSelector((state: AppState) => state.organization.organization.id);
+
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -298,7 +302,14 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 { "key": "ClientSecret", "value": values?.clientSecret?.toString() },
                 { "key": "OAuth2AuthzEPUrl", "value": values?.authorizationEndpointUrl?.toString() },
                 { "key": "OAuth2TokenEPUrl", "value": values?.tokenEndpointUrl?.toString() },
-                { "key": "callbackUrl", "value": config?.deployment?.customServerHost + "/commonauth" }
+                {
+                    "key": "callbackUrl",
+                    "value": isSubOrganization() &&
+                        config?.deployment?.organizations?.connections?.useTenantQualifiedOrgPatternCommonauth
+                        ? `${config?.deployment?.serverOrigin}/t/${config?.deployment?.tenant}` +
+                          `/${config?.deployment?.organizationPrefix}/${currentOrganizationId}/commonauth`
+                        : `${config?.deployment?.customServerHost}/commonauth`
+                }
             ];
             // Certificates: bind the JWKS URL if exists otherwise pem
             identityProvider[ "certificate" ][ "jwksUri" ] = values.jwks_endpoint ?? EMPTY_STRING;

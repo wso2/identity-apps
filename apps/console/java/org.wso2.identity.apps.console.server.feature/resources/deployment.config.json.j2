@@ -82,6 +82,11 @@
     "i18nResourcePath": "{{ console.i18n_resource_path }}",
     "loginCallbackPath": "{{ console.login_callback_path }}",
     "logoutCallbackPath": "{{ console.logout_callback_path }}",
+    "organizations": {
+        "connections": {
+            "useTenantQualifiedOrgPatternCommonauth": {{ console.organizations.connections.use_tenant_qualified_org_pattern_commonauth | default(false) }}
+        }
+    },
     {% if console.proxy_context_path is defined %}
     "proxyContextPath": "{{ console.proxy_context_path }}",
     {% endif %}

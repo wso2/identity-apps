@@ -266,6 +266,7 @@ export const AppUtils: any = (function() {
                 organizationName: this.getOrganizationName(),
                 organizationPrefix: this.getOrganizationPrefix(),
                 organizationType: this.getOrganizationType(),
+                organizations: _config.organizations,
                 productVersionConfig: _config.ui.productVersionConfig,
                 proxyContextPath: this.getProxyContextPath(),
                 regionSelectionEnabled: _config.regionSelectionEnabled,
