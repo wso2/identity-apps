@@ -1,5 +1,16 @@
 # @wso2is/admin.core.v1
 
+## 2.57.11
+
+### Patch Changes
+
+- [#10315](https://github.com/wso2/identity-apps/pull/10315) [`ac975d561432967173e01ca6242e27bf2259c455`](https://github.com/wso2/identity-apps/commit/ac975d561432967173e01ca6242e27bf2259c455) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add sub organiation adaptive auth governance support
+
+- Updated dependencies [[`ac975d561432967173e01ca6242e27bf2259c455`](https://github.com/wso2/identity-apps/commit/ac975d561432967173e01ca6242e27bf2259c455), [`99e9a4d928211d9616b48d7a03bed71331968f6c`](https://github.com/wso2/identity-apps/commit/99e9a4d928211d9616b48d7a03bed71331968f6c)]:
+  - @wso2is/admin.applications.v1@2.42.30
+  - @wso2is/i18n@2.41.3
+  - @wso2is/common.consents.v1@1.0.1
+
 ## 2.57.10
 
 ### Patch Changes
