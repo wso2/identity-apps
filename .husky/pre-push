@@ -1,0 +1,182 @@
+#!/usr/bin/env sh
+
+# Pre-push hook to remind developers to add changesets
+# This hook checks if a changeset file exists for the current branch
+# and prompts the developer to create one if missing.
+
+# =============================================================================
+# Configuration
+# =============================================================================
+
+# Base branches that don't require changesets (next first as per .changeset/config.json)
+BASE_BRANCHES="next main master"
+
+# =============================================================================
+# Helper Functions
+# =============================================================================
+
+# Check if a branch name is a base branch
+is_base_branch() {
+    branch_name="$1"
+    for base in $BASE_BRANCHES; do
+        if [ "$branch_name" = "$base" ]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+# =============================================================================
+# Main Logic
+# =============================================================================
+
+# Determine whether to skip based on remote refs being pushed
+# Git passes lines on stdin: <local ref> <local sha> <remote ref> <remote sha>
+SKIP_CHANGESET_CHECK=0
+while read -r local_ref local_sha remote_ref remote_sha; do
+    # Extract branch name from refs/heads/<branch>
+    remote_branch="${remote_ref#refs/heads/}"
+    if is_base_branch "$remote_branch"; then
+        SKIP_CHANGESET_CHECK=1
+    fi
+done
+
+if [ "$SKIP_CHANGESET_CHECK" -eq 1 ]; then
+    exit 0
+fi
+
+# Find the merge base to compare against
+BASE_BRANCH=""
+for base in $BASE_BRANCHES; do
+    if git rev-parse --verify "origin/$base" >/dev/null 2>&1; then
+        BASE_BRANCH="origin/$base"
+        break
+    fi
+done
+
+# Check if only exempt files are being pushed (docs, README, config files, scripts, .github)
+# Changesets are NOT required for these file types
+if [ -n "$BASE_BRANCH" ]; then
+    MERGE_BASE=$(git merge-base HEAD "$BASE_BRANCH" 2>/dev/null)
+    if [ -n "$MERGE_BASE" ]; then
+        # Get list of changed files
+        CHANGED_FILES=$(git diff --name-only "$MERGE_BASE"..HEAD 2>/dev/null)
+
+        # Check if all changed files are exempt
+        ALL_EXEMPT=1
+        for file in $CHANGED_FILES; do
+            case "$file" in
+                docs/*|scripts/*|.github/*|.changeset/*|.husky/*)
+                    # These directories are exempt
+                    ;;
+                *.md|*.json|*.yaml|*.yml|*.xml|.eslintrc*|.prettierrc*|.editorconfig|.gitignore|.npmrc)
+                    # Config files - only exempt if at root level (no slash in path)
+                    case "$file" in
+                        */*)
+                            # Has a directory, not root level - not exempt
+                            ALL_EXEMPT=0
+                            ;;
+                    esac
+                    ;;
+                *)
+                    # Non-exempt file found
+                    ALL_EXEMPT=0
+                    ;;
+            esac
+        done
+
+        if [ "$ALL_EXEMPT" -eq 1 ] && [ -n "$CHANGED_FILES" ]; then
+            # All files are exempt, skip changeset check
+            exit 0
+        fi
+    fi
+fi
+
+# Check if this branch introduces a changeset compared to base branch
+if [ -n "$BASE_BRANCH" ] && [ -n "$MERGE_BASE" ]; then
+    # Check for new changeset files in this branch
+    BRANCH_CHANGESETS=$(git diff --name-only "$MERGE_BASE"..HEAD -- '.changeset/*.md' 2>/dev/null | grep -v README.md | wc -l)
+    if [ "$BRANCH_CHANGESETS" -gt 0 ]; then
+        exit 0
+    fi
+else
+    # Fallback: count changeset files in working tree (excluding README.md)
+    CHANGESET_COUNT=$(find .changeset -maxdepth 1 -name "*.md" ! -name "README.md" 2>/dev/null | wc -l)
+    if [ "$CHANGESET_COUNT" -gt 0 ]; then
+        exit 0
+    fi
+fi
+
+# Store current changeset count before prompting
+BEFORE_CHANGESET_COUNT=$(find .changeset -maxdepth 1 -name "*.md" ! -name "README.md" 2>/dev/null | wc -l)
+
+# No changeset found - check if this is an interactive terminal
+if [ -r /dev/tty ]; then
+    # Interactive terminal - prompt the user
+    echo ""
+    echo "=========================================="
+    echo "  No changeset found for this branch!"
+    echo "=========================================="
+    echo ""
+    echo "Changesets are required to track version updates for packages."
+    echo "They help automate the release process by documenting what changed."
+    echo ""
+    printf "Would you like to create a changeset now? [Y/n] (press Enter for Yes) "
+    read -r REPLY < /dev/tty
+
+    # Default to Yes if user just presses Enter
+    if [ -z "$REPLY" ] || [ "$REPLY" = "y" ] || [ "$REPLY" = "Y" ] || [ "$REPLY" = "yes" ] || [ "$REPLY" = "Yes" ]; then
+        echo ""
+        echo "Running 'pnpm changeset'..."
+        echo ""
+        pnpm changeset < /dev/tty
+
+        # Check if a NEW changeset was created by comparing counts
+        AFTER_CHANGESET_COUNT=$(find .changeset -maxdepth 1 -name "*.md" ! -name "README.md" 2>/dev/null | wc -l)
+
+        if [ "$AFTER_CHANGESET_COUNT" -gt "$BEFORE_CHANGESET_COUNT" ]; then
+            echo ""
+            echo "Changeset created!"
+            echo ""
+            echo "Please commit the changeset and push again:"
+            echo "    git add .changeset/*.md"
+            echo "    git commit -m \"Add changeset\""
+            echo "    git push"
+            echo ""
+            exit 1
+        else
+            echo ""
+            echo "No changeset was created. Push aborted."
+            echo "Run 'pnpm changeset' manually to create one."
+            exit 1
+        fi
+    else
+        echo ""
+        echo "Skipping changeset creation."
+        echo ""
+        printf "Push anyway without a changeset? [y/N] (press Enter for No) "
+        read -r FORCE_REPLY < /dev/tty
+
+        if [ "$FORCE_REPLY" = "y" ] || [ "$FORCE_REPLY" = "Y" ] || [ "$FORCE_REPLY" = "yes" ] || [ "$FORCE_REPLY" = "Yes" ]; then
+            echo "Continuing without changeset..."
+            exit 0
+        else
+            echo "Push aborted. Run 'pnpm changeset' to create a changeset."
+            exit 1
+        fi
+    fi
+else
+    # Non-interactive (GUI tools) - block and require changeset
+    # Output to stderr so GUI tools display it
+    echo "" >&2
+    echo "PUSH BLOCKED: Missing changeset!" >&2
+    echo "" >&2
+    echo "To fix this, run in your terminal:" >&2
+    echo "" >&2
+    echo "    pnpm changeset" >&2
+    echo "" >&2
+    echo "Then commit the changeset and push again." >&2
+    echo "To skip this check, use: git push --no-verify" >&2
+    echo "" >&2
+    exit 1
+fi
