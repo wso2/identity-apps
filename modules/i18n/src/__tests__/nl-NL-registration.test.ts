@@ -1,5 +1,6 @@
 import * as translations from "../translations";
 import { NL_NL } from "../translations/nl-NL";
+import { LocaleBundle } from "../models";
 
 describe("Dutch (Netherlands) locale - registration, metadata validation, and barrel export", () => {
     it("NL_NL export exists and has correct meta", () => {
@@ -11,7 +12,9 @@ describe("Dutch (Netherlands) locale - registration, metadata validation, and ba
     });
 
     it("nl-NL is re-exported from the translation barrel", () => {
-        const codes = Object.values(translations).map((bundle: any) => bundle.meta?.code);
+        const codes: (string | undefined)[] = Object.values(translations).map(
+            (bundle: LocaleBundle) => bundle.meta?.code
+        );
         expect(codes).toContain("nl-NL");
     });
 });
