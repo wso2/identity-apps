@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 4.2.2
+
+### Patch Changes
+
+- [#10313](https://github.com/wso2/identity-apps/pull/10313) [`99e9a4d928211d9616b48d7a03bed71331968f6c`](https://github.com/wso2/identity-apps/commit/99e9a4d928211d9616b48d7a03bed71331968f6c) Thanks [@hwupathum](https://github.com/hwupathum)! - Fix UI issues in policy consent UI
+
+- Updated dependencies [[`ac975d561432967173e01ca6242e27bf2259c455`](https://github.com/wso2/identity-apps/commit/ac975d561432967173e01ca6242e27bf2259c455), [`99e9a4d928211d9616b48d7a03bed71331968f6c`](https://github.com/wso2/identity-apps/commit/99e9a4d928211d9616b48d7a03bed71331968f6c)]:
+  - @wso2is/i18n@2.41.3
+
 ## 4.2.1
 
 ### Patch Changes
