@@ -133,3 +133,4 @@ identity-apps-core/apps/*/src/main/webapp/js/react-ui-core.min.js
 apps/console/src/extensions/i18n/tmp/**
 .nx
 .pnpm-store/
+COPILOT_NL_TESTING.md
