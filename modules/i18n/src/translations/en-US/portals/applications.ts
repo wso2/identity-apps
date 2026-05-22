@@ -914,8 +914,8 @@ export const applications: ApplicationsNS = {
                                         plusIcon: "Add to the script"
                                     }
                                 },
-                                subOrgInfoBanner: "Only root organization shared users are allowed to " +
-                                    "update conditional authentication script."
+                                subOrgInfoBanner: "Only shared users from the root organization can " +
+                                    "update this script."
                             },
                             stepBased: {
                                 actions: {
