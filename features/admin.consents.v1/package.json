@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.consents.v1",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "WSO2 Identity Server Console Consents Feature",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -18,7 +18,7 @@
         "@wso2is/common.consents.v1": "workspace:^",
         "@wso2is/core": "^2.12.7",
         "@wso2is/forms": "workspace:^",
-        "@wso2is/i18n": "^2.41.2",
+        "@wso2is/i18n": "^2.41.3",
         "@wso2is/react-components": "^2.9.25",
         "lodash-es": "^4.17.21",
         "html-react-parser": "^2.0.0",
