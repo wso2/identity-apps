@@ -30,9 +30,9 @@ export interface FapiConfigAPIResponseInterface {
 }
 
 /**
- * Request body interface for PATCH /api/server/v1/configs/fapi
+ * Request body interface for PUT /api/server/v1/configs/fapi
  */
-export interface FapiConfigPatchRequestInterface {
+export interface FapiConfigPutRequestInterface {
     enabled: boolean;
     supportedProfiles: FapiProfile[];
 }

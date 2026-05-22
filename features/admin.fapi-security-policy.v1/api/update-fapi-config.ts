@@ -24,20 +24,20 @@ import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { FapiSecurityPolicyConstants } from "../constants/fapi-security-policy-constants";
 import {
     FapiConfigAPIResponseInterface,
-    FapiConfigPatchRequestInterface
+    FapiConfigPutRequestInterface
 } from "../models/fapi-security-policy";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Update the FAPI configuration via PATCH /api/server/v1/configs/fapi.
+ * Update the FAPI configuration via PUT /api/server/v1/configs/fapi.
  *
  * @param config - The updated FAPI configuration to send.
  * @returns A promise resolving to the updated FAPI configuration.
  */
 export const updateFapiConfig = (
-    config: FapiConfigPatchRequestInterface
+    config: FapiConfigPutRequestInterface
 ): Promise<FapiConfigAPIResponseInterface> => {
     const requestConfig: AxiosRequestConfig = {
         data: config,
@@ -45,7 +45,7 @@ export const updateFapiConfig = (
             "Accept": "application/json",
             "Content-Type": "application/json"
         },
-        method: HttpMethods.PATCH,
+        method: HttpMethods.PUT,
         url: store.getState().config.endpoints.fapiConfigurations
     };
 

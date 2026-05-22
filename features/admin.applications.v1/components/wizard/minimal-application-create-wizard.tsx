@@ -1215,7 +1215,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                 <Box display="flex" alignItems="center" mb={ 1 }>
                                     <Box flex={ 1 }>
                                         <FapiEnforcementSettings
-                                            data-componentid={ `${ testId }-fapi-enforcement-settings` }
+                                            data-componentid={ `${ componentId }-fapi-enforcement-settings` }
                                             enableFapiEnforcement={ isFapiEnabled }
                                             selectedProfile={ selectedFapiProfile }
                                             supportedProfiles={ serverSupportedFapiProfiles }

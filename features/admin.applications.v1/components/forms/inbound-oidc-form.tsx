@@ -2283,38 +2283,28 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     const profileLabel: string = t(
                                         `fapiSecurityPolicy:form.profiles.options.${labelKey}.label`
                                     );
-                                    const isUnsupported: boolean =
-                                        isSelectedFapiProfileUnsupported
-                                        && selectedFapiProfile === value;
+                                    const isUnsupportedProfile: boolean = isSelectedFapiProfileUnsupported && 
+                                        selectedFapiProfile === value;
 
                                     const radioLabel: ReactElement = (
                                         <label>
                                             { profileLabel }
-                                            { /* Info icon — matches field.tsx radio hint behaviour */ }
-                                            <Icon
-                                                name="info circle"
-                                                size="small"
-                                                color="grey"
-                                                className="ml-1"
-                                            />
-                                            { /* Warning icon — shown only when the profile is no longer
-                                                 supported by the organization */ }
-                                            { isUnsupported && (
-                                                <Popup
-                                                    content={ t(
-                                                        "applications:forms.inboundOIDC.sections" +
-                                                        ".fapiProfile.unsupportedProfile",
-                                                        { profile: profileLabel }
-                                                    ) }
-                                                    trigger={
-                                                        <Icon
-                                                            name="warning sign"
-                                                            color="yellow"
-                                                            className="ml-1"
-                                                        />
-                                                    }
-                                                />
-                                            ) }
+                                            {
+                                                isUnsupportedProfile ? (
+                                                    <Icon
+                                                        name="warning sign"
+                                                        color="yellow"
+                                                        className="ml-1"
+                                                    />
+                                                ) : (
+                                                    <Icon
+                                                        name="info circle"
+                                                        size="small"
+                                                        color="grey"
+                                                        className="ml-1"
+                                                    />
+                                                )
+                                            }
                                         </label>
                                     );
 
@@ -2337,9 +2327,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     return (
                                         <Popup
                                             key={ value }
-                                            content={ t(
-                                                `fapiSecurityPolicy:form.profiles.options.${labelKey}.hint`
-                                            ) }
+                                            content={
+                                                isUnsupportedProfile
+                                                    ? t(
+                                                        "applications:forms.inboundOIDC.sections.fapiProfile.unsupportedProfile",
+                                                        { profile: profileLabel }
+                                                    )
+                                                    : t(
+                                                        `fapiSecurityPolicy:form.profiles.options.${ labelKey }.hint`
+                                                    )
+                                            }
                                             trigger={ radioField }
                                         />
                                     );

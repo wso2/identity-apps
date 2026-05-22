@@ -95,11 +95,16 @@ const FapiEnforcementSettings: FunctionComponent<FapiEnforcementSettingsInterfac
                     alignItems={ { xs: "flex-start", sm: "center" } }
                     gap={ 2 }
                 >
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography
+                        id={ `${ componentId }-profile-label` }
+                        variant="body2"
+                        color="text.secondary"
+                    >
                         { resolvedProfileLabel }
                     </Typography>
                     <FormControl size="small">
                         <Select
+                            aria-labelledby={ `${ componentId }-profile-label` }
                             value={ selectedProfile ?? "" }
                             displayEmpty
                             onChange={ (event: SelectChangeEvent<FapiProfile>): void =>

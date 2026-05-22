@@ -51,11 +51,11 @@ export const fapiSecurityPolicy: FapiSecurityPolicyNS = {
             options: {
                 fapi1Advanced: {
                     hint: "Advanced protection for secure data sharing and API access.",
-                    label: "FAPI 1 Advanced"
+                    label: "FAPI 1.0 Advanced"
                 },
                 fapi2Security: {
                     hint: "Enhanced protection for mission-critical APIs and sensitive data.",
-                    label: "FAPI 2 Security"
+                    label: "FAPI 2.0 Security"
                 }
             },
             validations: {
