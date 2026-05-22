@@ -45,9 +45,8 @@ export const fapiSecurityPolicy: FapiSecurityPolicyNS = {
             }
         },
         profiles: {
-            description: "Select the FAPI security profiles available organization-wide. " +
-                "At least one profile must be enabled. " +
-                "Applications can then be registered using any of the enabled profiles.",
+            description: "Select organization-wide FAPI security profiles. " +
+                "Enable at least one profile. Applications can be registered with any enabled profile.",
             heading: "Supported FAPI Profiles",
             options: {
                 fapi1Advanced: {
@@ -66,24 +65,22 @@ export const fapiSecurityPolicy: FapiSecurityPolicyNS = {
     },
     constraints: {
         grantTypes: {
-            hint: "Some grant types are restricted by the active FAPI profile. " +
-                "This setting is locked and cannot be modified."
+            hint: "This grant type is not permitted by the active FAPI profile.",
+        },
+        tokenBindingType: {
+            hint: "This token binding type is not permitted by the active FAPI profile."
         },
         pkce: {
-            hint: "PKCE with the S256 code challenge method is required by the active FAPI profile. " +
-                "This setting is locked and cannot be modified."
+            hint: "PKCE with the S256 code challenge method is required by the active FAPI profile."
         },
         pvtKeyJwt: {
-            hint: "Private key JWT reuse is not permitted by the active FAPI profile. " +
-                "This setting is locked and cannot be modified."
+            hint: "Private key JWT reuse is not permitted by the active FAPI profile."
         },
         par: {
-            hint: "Pushed Authorization Requests (PAR) are required by the active FAPI profile. " +
-                "This setting is locked and cannot be modified."
+            hint: "Pushed Authorization Requests are required by the active FAPI profile."
         },
         validateBinding: {
-            hint: "Token binding validation is required by the active FAPI profile. " +
-                "This setting is locked and cannot be modified."
+            hint: "Token binding validation is required by the active FAPI profile."
         }
     },
     notifications: {

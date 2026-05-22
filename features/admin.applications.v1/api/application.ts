@@ -1104,7 +1104,7 @@ export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfi
                 userEndpoint: response.data.userinfo_endpoint,
                 webFingerEndpoint: response.data.webfinger_endpoint,
                 wellKnownEndpoint: state.config.deployment.tenantContext?.enableTenantQualifiedUrls === false ?
-                    requestConfig.url : `${ response.data.token_endpoint }/.well-known/openid-configuration`
+                    requestConfig.url : `${ response.data.issuer }/.well-known/openid-configuration`
             };
 
             return Promise.resolve(oidcConfigs);

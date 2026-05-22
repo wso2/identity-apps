@@ -65,6 +65,9 @@ export interface FapiSecurityPolicyNS {
         grantTypes: {
             hint: string;
         };
+        tokenBindingType: {
+            hint: string;
+        };
         pkce: {
             hint: string;
         };
