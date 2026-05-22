@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
 import isEqual from "lodash-es/isEqual";
 import React, {
@@ -27,15 +26,11 @@ import React, {
     ReactElement,
     RefAttributes,
     forwardRef,
-    useEffect,
     useImperativeHandle,
-    useRef,
-    useState
+    useRef
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
-import { useGetApprovalWorkflows } from "../../api/use-get-approval-workflows";
+import { getApprovalWorkflows } from "../../api/approval-workflow";
 import { APPROVAL_WORKFLOW_VALIDATION_REGEX_PATTERNS } from "../../constants/approval-workflow-constants";
 import { GeneralDetailsFormValuesInterface } from "../../models/ui";
 import "./general-approval-workflow-details-form.scss";
@@ -93,49 +88,61 @@ const GeneralApprovalWorkflowDetailsForm: ForwardRefExoticComponent<RefAttribute
         ): ReactElement => {
             const triggerFormSubmit: MutableRefObject<() => void> = useRef<(() => void) | null>(null);
             const currentValuesRef: any = useRef(null);
+            const formApiRef: MutableRefObject<any> = useRef<any>(null);
 
-            const dispatch: Dispatch = useDispatch();
             const { t } = useTranslation([ "approvalWorkflows" ]);
 
-            const [ filterQuery, setFilterQuery ] = useState<string>("");
-
-            const {
-                data: workflowResponse,
-                error: workflowsError
-            } = useGetApprovalWorkflows(null, null, filterQuery, true);
+            const nameExistsErrorRef: MutableRefObject<string | null> = useRef<string | null>(null);
+            const checkedNameRef: MutableRefObject<string | null> = useRef<string | null>(null);
 
             // Expose triggerSubmit to the parent via the ref
             useImperativeHandle(ref, () => ({
                 isFormEdited: () => {
                     return !isEqual(initialValues, currentValuesRef.current);
                 },
-                triggerSubmit: () => {
+                triggerSubmit: async () => {
+                    const currentName: string = currentValuesRef.current?.name;
+
+                    nameExistsErrorRef.current = null;
+                    checkedNameRef.current = null;
+
+                    if (currentName) {
+                        try {
+                            const response: { workflows?: { id: string; name: string }[] } =
+                                await getApprovalWorkflows(currentName);
+                            const nameExists: boolean =
+                                response?.workflows?.some((workflow: { id: string; name: string }) => {
+                                    return (
+                                        workflow.name === currentName &&
+                                        (approvalWorkflowId ? approvalWorkflowId !== workflow.id : true)
+                                    );
+                                }) ?? false;
+
+                            if (nameExists) {
+                                nameExistsErrorRef.current = t(
+                                    "approvalWorkflows:forms.general.name.validationErrorMessages" +
+                                    ".alreadyExistsErrorMessage"
+                                );
+                                checkedNameRef.current = currentName;
+                                // Force FinalForm to re-run validateForm (which reads the refs)
+                                // by briefly changing the value. React batches both DOM updates
+                                // so only the final state (with the error) is rendered.
+                                formApiRef.current?.change("name", "");
+                                formApiRef.current?.change("name", currentName);
+                                formApiRef.current?.blur("name");
+
+                                return;
+                            }
+                        } catch (_error: unknown) {
+                            // Silently fail — do not block submission on a lookup error.
+                        }
+                    }
+
                     if (triggerFormSubmit.current) {
                         triggerFormSubmit.current();
                     }
                 }
             }));
-
-            useEffect(() => {
-                if (workflowsError) {
-                    dispatch(
-                        addAlert({
-                            description:
-                            workflowsError?.response?.data?.description ??
-                            workflowsError?.response?.data?.detail ??
-                            t(
-                                "approvalWorkflows:notifications.fetchApprovalWorkflows.genericError.description"
-                            ),
-                            level: AlertLevels.ERROR,
-                            message:
-                            workflowsError?.response?.data?.message ??
-                            t(
-                                "approvalWorkflows:notifications.fetchApprovalWorkflows.genericError.message"
-                            )
-                        })
-                    );
-                }
-            }, [ workflowsError ]);
 
             const validateForm = (
                 values: GeneralDetailsFormValuesInterface
@@ -173,19 +180,12 @@ const GeneralApprovalWorkflowDetailsForm: ForwardRefExoticComponent<RefAttribute
                             { invalidString }
                         );
                     }
-                    setFilterQuery(values?.name);
-                    const nameExists: boolean =
-                    workflowResponse?.workflows?.some((workflow: { id: string; name: string }) => {
-                        return (
-                            workflow.name === values.name &&
-                            (approvalWorkflowId ? approvalWorkflowId !== workflow.id : true)
-                        );
-                    }) ?? false;
 
-                    if (nameExists) {
-                        error.name = t(
-                            "approvalWorkflows:forms.general.name.validationErrorMessages.alreadyExistsErrorMessage"
-                        );
+                    if (
+                        values?.name === checkedNameRef.current &&
+                        nameExistsErrorRef.current
+                    ) {
+                        error.name = nameExistsErrorRef.current;
                     }
                 }
 
@@ -217,9 +217,10 @@ const GeneralApprovalWorkflowDetailsForm: ForwardRefExoticComponent<RefAttribute
                     } }
                     validate={ validateForm }
                     initialValues={ initialValues }
-                    render={ ({ handleSubmit, values }: FormRenderProps) => {
+                    render={ ({ handleSubmit, values, form }: FormRenderProps) => {
                         triggerFormSubmit.current = handleSubmit;
                         currentValuesRef.current = values;
+                        formApiRef.current = form;
 
                         return (
                             <form onSubmit={ handleSubmit } className="general-workflow-model-details-form">

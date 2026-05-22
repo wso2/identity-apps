@@ -22,7 +22,7 @@ import { HttpMethods,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { ApprovalWorkflowPayload } from "../models/approval-workflows";
+import { ApprovalWorkflowPayload, WorkflowListResponseInterface } from "../models/approval-workflows";
 
 /**
  * Get an axios instance.
@@ -106,6 +106,32 @@ export const updateApprovalWorkflow = (id: string, data: ApprovalWorkflowPayload
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
             }
 
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            return Promise.reject(error?.response?.data);
+        });
+};
+
+/**
+ * Fetches approval workflows with an optional filter.
+ *
+ * @param filter - Filter string to narrow results (e.g. by name).
+ * @returns A promise resolving to the workflow list response.
+ */
+export const getApprovalWorkflows = (filter?: string): Promise<WorkflowListResponseInterface> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        params: { filter },
+        url: store.getState()?.config?.endpoints?.workflows
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response.data);
         })
         .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {

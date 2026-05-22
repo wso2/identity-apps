@@ -243,12 +243,10 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                         typeof email === "object" && email !== null && (email as any).primary === true
                 )?.value;
 
-                if (isMultipleEmailAndMobileNumberEnabled && isEmpty(emailAddresses)) {
-                    if (primaryEmail) {
-                        (
-                            initialValues[systemSchema] as Record<string, unknown>
-                        )[emailAddressesField] = [ primaryEmail ];
-                    }
+                if (isMultipleEmailAndMobileNumberEnabled && primaryEmail && !emailAddresses.includes(primaryEmail)) {
+                    (
+                        initialValues[systemSchema] as Record<string, unknown>
+                    )[emailAddressesField] = [ primaryEmail, ...emailAddresses ];
                 }
 
                 if (isMultipleEmailAndMobileNumberEnabled && isEmailVerificationEnabled) {
@@ -283,12 +281,10 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                         (phone as { type: string; value: string }).type === "mobile"
                 )?.value;
 
-                if (isMultipleEmailAndMobileNumberEnabled && isEmpty(mobileNumbers)) {
-                    if (primaryMobile) {
-                        (
-                            initialValues[systemSchema] as Record<string, unknown>
-                        )[mobileNumbersField] = [ primaryMobile ];
-                    }
+                if (isMultipleEmailAndMobileNumberEnabled && primaryMobile && !mobileNumbers.includes(primaryMobile)) {
+                    (
+                        initialValues[systemSchema] as Record<string, unknown>
+                    )[mobileNumbersField] = [ primaryMobile, ...mobileNumbers ];
                 }
 
                 if (isMultipleEmailAndMobileNumberEnabled && isMobileVerificationEnabled) {
