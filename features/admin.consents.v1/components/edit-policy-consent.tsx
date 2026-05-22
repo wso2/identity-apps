@@ -73,7 +73,7 @@ interface PolicyFormValuesInterface {
     mandatory: boolean;
     name?: string;
     policyUrl: string;
-    promptOnLogin: boolean;
+    promptOnLogin: string;
 }
 
 interface PolicyFormErrorsInterface {
@@ -178,7 +178,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                     mandatory: false,
                     name: "",
                     policyUrl: "",
-                    promptOnLogin: false
+                    promptOnLogin: "false"
                 };
             }
 
@@ -190,7 +190,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                 description: consent.description ?? "",
                 mandatory: consent.mandatory ?? false,
                 policyUrl: consent.policyUrl ?? brandingPolicyUrl,
-                promptOnLogin: consent.promptOnLogin ?? false
+                promptOnLogin: consent.promptOnLogin ?? "false"
             };
         }, [ isCreateMode, consent, brandingPolicyUrl ]);
 
@@ -354,7 +354,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
             values.description,
             values.policyUrl,
             values.mandatory,
-            modalPromptOnLogin
+            String(modalPromptOnLogin)
         )
             .then((): void => {
                 dispatch(addAlert({
@@ -446,7 +446,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                     createNewPurpose(values);
                                 } else {
                                     pendingValues.current = values;
-                                    setModalPromptOnLogin(values.promptOnLogin);
+                                    setModalPromptOnLogin(values.promptOnLogin === "true");
                                     setShowVersionWarningModal(true);
                                 }
                             } }
@@ -603,7 +603,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                         ) }
                                                     />
                                                     <Box>
-                                                        { !isCreateMode && consent?.promptOnLogin && (
+                                                        { !isCreateMode && consent?.promptOnLogin === "true" && (
                                                             <Message
                                                                 type="info"
                                                                 content={ t("consents:form.promptOnLogin.activeHint") }
@@ -635,18 +635,20 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                             name="promptOnLogin"
                                                             subscription={ { value: true } }
                                                             render={ (
-                                                                { input }: { input: FieldInputProps<boolean> }
+                                                                { input }: { input: FieldInputProps<string> }
                                                             ) => (
                                                                 <Box>
                                                                     <FormControlLabel
                                                                         control={ (
                                                                             <Switch
                                                                                 name={ input.name }
-                                                                                checked={ input.value ?? false }
+                                                                                checked={ input.value === "true" }
                                                                                 onChange={ ( e:
                                                                                     React.ChangeEvent<HTMLInputElement>
                                                                                 ) => {
-                                                                                    input.onChange(e.target.checked);
+                                                                                    input.onChange(
+                                                                                        String(e.target.checked)
+                                                                                    );
                                                                                 } }
                                                                             />
                                                                         ) }

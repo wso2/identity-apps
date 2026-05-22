@@ -109,7 +109,6 @@ const ConsentExtendedProperties: FunctionComponent<ConsentExtendedPropertiesProp
 
     return (
         <Stack data-componentid={ componentId } spacing={ 1 }>
-            <Typography variant="subtitle2">{ t("consents:registrationFlow.selectPolicies") }</Typography>
             <Autocomplete
                 multiple
                 options={ allPolicies }
@@ -123,7 +122,7 @@ const ConsentExtendedProperties: FunctionComponent<ConsentExtendedPropertiesProp
                 renderInput={ (params: AutocompleteRenderInputParams): ReactElement => (
                     <TextField
                         { ...params }
-                        label={ t("consents:registrationFlow.policiesLabelOptional") }
+                        label={ t("consents:registrationFlow.selectPolicies") }
                         placeholder={ selectedPolicyOptions.length === 0
                             ? t("consents:registrationFlow.selectPolicies") : "" }
                     />

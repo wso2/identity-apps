@@ -19,7 +19,7 @@
 import DOMPurify from "dompurify";
 import parse from "html-react-parser";
 import PropTypes from "prop-types";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Checkbox } from "semantic-ui-react";
 import { useTranslations } from "../../hooks/use-translations";
 import { i18nLink, resolveElementText } from "../../utils/i18n-utils";

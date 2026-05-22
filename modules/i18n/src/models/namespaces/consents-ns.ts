@@ -59,11 +59,14 @@ export interface ConsentsNS {
             addPolicy: string;
             subtitle: string;
         };
+        emptySearchPlaceholder: {
+            action: string;
+            subtitle: string;
+            title: string;
+        };
     };
     registrationFlow: {
         noPolicies: string;
-        policiesLabel: string;
-        policiesLabelOptional: string;
         selectPolicies: string;
     };
     notifications: {
