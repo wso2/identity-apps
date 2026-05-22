@@ -214,7 +214,7 @@
                     <i aria-hidden="true" class="warning circle icon"></i>
                     <div class="message-content">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "dont.have.app.download.google.authenticator")%>
-                        <a href="https://www.apple.com/us/search/totp?src=globalnav">App Store</a>
+                        <a href="https://apps.apple.com/us/iphone/search?term=totp">App Store</a>
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%>
                         <a href="https://play.google.com/store/search?q=totp">Google Play</a>
                     </div>
