@@ -956,6 +956,9 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                         authenticationSteps={ steps }
                         isDefaultScript={ isDefaultScript }
                         onAdaptiveScriptReset={ () => setIsDefaultScript(true) }
+                        showSubOrgAdaptiveAuthInfoBanner={
+                            shouldCheckOrgGovernance && isAdaptiveAuthAllowed === true
+                        }
                         data-componentid={ `${ componentId }-script-based-flow` }
                     />
                 )
