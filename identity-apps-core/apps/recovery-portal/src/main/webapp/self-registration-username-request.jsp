@@ -810,6 +810,8 @@
                                     data-testid="self-register-page-username-input"
                                     autocomplete="off"
                                     required
+                                    onblur="showAlphanumericUsernameValidationStatus()"
+                                    oninput="hideAlphanumericUsernameValidationStatus()"
                                 />
                                 <i aria-hidden="true" class="user outline icon"></i>
                             </div>
@@ -852,6 +854,8 @@
                                     data-testid="self-register-page-username-input"
                                     autocomplete="off"
                                     <%if (emailPII.getRequired() || !isAlphanumericUsernameEnabled || isSelfRegistrationLockOnCreationEnabled) {%> required <%}%>
+                                    onblur="showUsernameValidationStatus()"
+                                    oninput="hideUsernameValidationStatus()"
                                 />
                                 <i aria-hidden="true" class="envelope outline icon"></i>
                             </div>
@@ -1095,7 +1099,7 @@
                                             String claimErrorMsg = claimName + "_error";
                                             String claimErrorMsgText = claimName + "_error_text";
                                 %>
-                                    <div  id= "<%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claimFieldID)%>"
+                                    <div id="<% if (StringUtils.equals(claim.getUri(), IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM)) { %>mobile_field<% } else { %><%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claimFieldID)%><% } %>"
                                         <% if (claim.getRequired()) { %> class="field form-group required" <%} else {%> class="field"<%}%>  >
                                         <label class="control-label">
                                             <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claim.getDisplayName())%>
@@ -1174,29 +1178,32 @@
                                     <% } else { %>
                                             <input type="text" name="<%= Encode.forHtmlAttribute(claimURI) %>"
                                                 class="form-control"
-                                                onblur="showFieldValidationStatus(this)"
-                                                oninput="hideFieldValidationStatus(this)"
-                                                <% if (claim.getValidationRegex() != null) { %>
+                                                <% if (StringUtils.equals(claim.getUri(), IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM)) { %>
+                                                    onblur="showMobileNumberValidationStatus()"
+                                                    oninput="hideMobileNumberValidationStatus()"
+                                                    id="mobileNumber"
+                                                <% } else { %>
+                                                    onblur="showFieldValidationStatus(this)"
+                                                    oninput="hideFieldValidationStatus(this)"
+                                                <% } %>
+                                                <% if (claim.getValidationRegex() != null && !StringUtils.equals(claim.getUri(), IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM)) { %>
                                                 pattern="<%= Encode.forHtmlContent(claim.getValidationRegex()) %>"
                                                 <% } %>
                                                 <% if (claim.getRequired()) { %>
                                                     required
                                                 <% } %>
-                                                <% if (StringUtils.equals(claim.getUri(), "http://wso2.org/claims/mobile")) { %>
-                                                    id="mobileNumber"
-                                            <% }%>
                                                 placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter")%> <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claim.getDisplayName())%>"
                                                 <% if(skipSignUpEnableCheck && StringUtils.isNotEmpty(claimValue)) {%>
                                                 value="<%= Encode.forHtmlAttribute(claimValue)%>" disabled<%}%>
                                             />
                                     <% } %>
-                                    <div class="mt-1" id="<%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claimErrorMsg)%>" hidden="hidden">
+                                    <div class="mt-1" id="<% if (StringUtils.equals(claim.getUri(), IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM)) { %>mobile_error<% } else { %><%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claimErrorMsg)%><% } %>" hidden="hidden">
                                         <div class="ui grid">
                                             <div class="one wide column">
                                                 <i class="red exclamation circle icon"></i>
                                             </div>
                                             <div class="fourteen wide column validation-error-message"
-                                            id="<%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claimErrorMsgText)%>"></div>
+                                            id="<% if (StringUtils.equals(claim.getUri(), IdentityManagementEndpointConstants.ClaimURIs.MOBILE_CLAIM)) { %>mobile_error_text<% } else { %><%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claimErrorMsgText)%><% } %>"></div>
                                         </div>
                                     </div>
                                     </div>
@@ -3165,8 +3172,10 @@
             var mobile_field = $("#mobile_field");
 
             if (mobileNumber != null && mobileNumber.value != null && mobileNumber.value.trim() !== ""){
-                var mobilePattern = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})?[-. )]*(\d{3})?[-. ]*(\d{4,6})(?: *x(\d+))?\s*$/;
-                if (!mobilePattern.test(mobileNumber.value)) {
+                // E.164 format: + followed by 10-15 digits.
+                var mobilePattern = /^\+[1-9]\d{9,14}$/;
+                var trimmedMobileNumber = mobileNumber.value.trim();
+                if (!mobilePattern.test(trimmedMobileNumber)) {
                     mobile_error_msg_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "mobile.number.format.error")%>")
                     mobile_error_msg.show();
                     mobile_field.addClass("error");
