@@ -1,7 +1,7 @@
 import * as translations from "../translations";
 import { NL_NL } from "../translations/nl-NL";
 
-describe("nl-NL locale registration", () => {
+describe("Dutch (Netherlands) locale - registration, metadata validation, and barrel export", () => {
     it("NL_NL export exists and has correct meta", () => {
         expect(NL_NL).toBeDefined();
         expect(NL_NL.meta.code).toBe("nl-NL");
