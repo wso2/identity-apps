@@ -23,6 +23,7 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
+import { WorkflowResourceListResponse } from "../models/workflow-resources";
 
 /**
  * Hook to get workflow resources, with SCIM-aware base URL resolution.
@@ -34,7 +35,7 @@ import { HttpMethods } from "@wso2is/core/models";
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetWorkflowResources = <Data = unknown, Error = RequestErrorInterface>(
+const useGetWorkflowResources = <Data = WorkflowResourceListResponse, Error = RequestErrorInterface>(
     endpointPath: string,
     shouldFetch: boolean
 ): RequestResultInterface<Data, Error> => {

@@ -26,10 +26,7 @@ import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
-import {
-    ApplicationListInterface,
-    ApplicationListItemInterface
-} from "@wso2is/admin.applications.v1/models/application";
+import { ApplicationListItemInterface } from "@wso2is/admin.applications.v1/models/application";
 import useRequest from "@wso2is/admin.core.v1/hooks/use-request";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
@@ -50,6 +47,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import useGetWorkflowResources from "../../hooks/use-get-workflow-resources";
+import { WorkflowApplicationListInterface } from "../../models/workflow-resources";
 
 /**
  * Application option for the autocomplete dropdown.
@@ -152,7 +150,7 @@ const RoleAudienceValueSelector: FunctionComponent<RoleAudienceValueSelectorProp
     const {
         data: applicationListData,
         isLoading: isApplicationListLoading
-    } = useGetWorkflowResources<ApplicationListInterface>(activeApplicationsUrl, shouldFetchApps);
+    } = useGetWorkflowResources<WorkflowApplicationListInterface>(activeApplicationsUrl, shouldFetchApps);
 
     const hasMoreItems: boolean =
         (applicationListData?.totalResults ?? 0) > (applicationListData?.count ?? 0);
