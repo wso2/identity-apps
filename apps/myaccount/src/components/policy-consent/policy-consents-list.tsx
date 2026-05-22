@@ -199,7 +199,6 @@ export const PolicyConsentList: FunctionComponent<PolicyConsentListPropsInterfac
                                 >
                                     <Grid padded>
                                         <Grid.Row columns={1}>
-
                                             <Grid.Column width={16}>
                                                 <DangerZoneGroup
                                                     sectionHeader={t("common:dangerZone")}
