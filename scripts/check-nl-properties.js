@@ -29,6 +29,7 @@ const files = [
 const langFiles = [
     "identity-apps-core/apps/authentication-portal/src/main/resources/LanguageOptions.properties",
     "identity-apps-core/apps/recovery-portal/src/main/resources/LanguageOptions.properties",
+    "identity-apps-core/apps/recovery-portal/src/main/resources/LocaleOptions.properties",
     "identity-apps-core/apps/accounts/src/main/resources/LanguageOptions.properties",
     "identity-apps-core/apps/x509-certificate-authentication-portal/src/main/resources/LanguageOptions.properties"
 ];
@@ -47,8 +48,8 @@ files.forEach((file) => {
 });
 
 langFiles.forEach((file) => {
-    const content = fs.readFileSync(path.resolve(file), "utf8");
-    const hasNl = content.includes("lang.switch.nl_NL");
+    const resolvedPath = path.resolve(file);
+    const hasNl = fs.existsSync(resolvedPath) && fs.readFileSync(resolvedPath, "utf8").includes("lang.switch.nl_NL");
     console.log(`${hasNl ? "✓" : "✗"} ${file.split("/").slice(-2).join("/")} has nl_NL entry`);
     if (hasNl) {
         passed++;
