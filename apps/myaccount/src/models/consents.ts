@@ -159,16 +159,6 @@ export interface PIICategoryWithStatus extends PIICategory {
 type PIICategoryStatus = "accepted" | "denied";
 
 /**
- * PIICategory Model
- */
-const creatPIICategory = (): PIICategory => ({
-    piiCategoryDisplayName: "",
-    piiCategoryId: 0,
-    piiCategoryName: "",
-    validity: ""
-});
-
-/**
  * This model will be used map the payload of the
  * receipt update API request.
  */
@@ -219,62 +209,6 @@ interface UpdateReceiptPIICategoryInterface {
 export enum ConsentState {
     ACTIVE = "ACTIVE"
 }
-
-/**
- * Creates an empty consent receipt object. This can be used to initialize
- * a consent receipt in the state.
- * @returns an empty consent receipt object.
- */
-const createEmptyConsentReceipt = (): ConsentReceiptInterface => ({
-    collectionMethod: "",
-    jurisdiction: "",
-    language: "",
-    policyUrl: "",
-    services: [
-        {
-            purposes: [
-                {
-                    consentType: "",
-                    piiCategory: [
-                        {
-                            piiCategoryDisplayName: "",
-                            piiCategoryId: 0,
-                            piiCategoryName: "",
-                            validity: ""
-                        }
-                    ],
-                    primaryPurpose: false,
-                    purpose: "",
-                    purposeId: 0,
-                    termination: "",
-                    thirdPartyDisclosure: false,
-                    thirdPartyName: ""
-                }
-            ],
-            service: "",
-            serviceDescription: "",
-            serviceDisplayName: "",
-            tenantDomain: ""
-        }
-    ],
-    version: ""
-});
-
-/**
- * Creates an empty consent object. This can be used to initialize
- * a consent in the state.
- * @returns an empty consent object.
- */
-const createEmptyConsent = (): ConsentInterface => ({
-    consentReceipt: createEmptyConsentReceipt(),
-    consentReceiptID: "",
-    language: "",
-    piiPrincipalId: "",
-    spDescription: "",
-    spDisplayName: "",
-    state: ConsentState.ACTIVE,
-    tenantDomain: ""
-});
 
 /**
  * Summary of a user consent record returned from GET /consents list.

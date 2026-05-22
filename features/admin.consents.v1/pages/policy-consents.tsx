@@ -72,6 +72,8 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
     const [ deletingConsent, setDeletingConsent ] = useState<ConsentListItemInterface | null>(null);
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
 
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
+
     const [ after, setAfter ] = useState<string>(undefined);
     const [ before, setBefore ] = useState<string>(undefined);
     const [ pageHistory, setPageHistory ] = useState<string[]>([]);
@@ -290,6 +292,7 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                         placeholder={ t("consents:pages.list.search.placeholder") }
                         defaultSearchAttribute={ "name" }
                         defaultSearchOperator={ "co" }
+                        triggerClearQuery={ triggerClearQuery }
                         data-componentid={ `${ componentId }-list-advanced-search` }
                     />
                 ) }
@@ -312,6 +315,14 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                 <PolicyConsentsList
                     list={ consents }
                     isLoading={ isConsentsLoading }
+                    searchQuery={ searchQuery }
+                    onSearchQueryClear={ (): void => {
+                        setSearchQuery(null);
+                        setTriggerClearQuery(!triggerClearQuery);
+                        setAfter(undefined);
+                        setBefore(undefined);
+                        setPageHistory([]);
+                    } }
                     onAddConsentClick={ (): void => {
                         history.push(AppConstants.getPaths().get("POLICY_CONSENTS_NEW"));
                     } }

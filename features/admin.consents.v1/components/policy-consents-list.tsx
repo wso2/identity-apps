@@ -29,6 +29,7 @@ import {
     AppAvatar,
     DataTable,
     EmptyPlaceholder,
+    LinkButton,
     PrimaryButton,
     TableActionsInterface,
     TableColumnInterface
@@ -66,6 +67,14 @@ interface PolicyConsentsListProps extends IdentifiableComponentInterface {
      * Callback for when a consent is clicked for deletion.
      */
     onDeleteConsentClick: (consent: ConsentListItemInterface) => void;
+    /**
+     * Callback to clear the active search query.
+     */
+    onSearchQueryClear?: () => void;
+    /**
+     * Active search query. When set and the list is empty, shows an empty search result placeholder.
+     */
+    searchQuery?: string;
 }
 
 /**
@@ -84,6 +93,8 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
         onAddConsentClick,
         onEditConsentClick,
         onDeleteConsentClick,
+        onSearchQueryClear,
+        searchQuery,
         ["data-componentid"]: componentId
     } = props;
 
@@ -191,6 +202,28 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
      */
     const showPlaceholders = (): ReactElement | null => {
         if (!list || list?.length === 0) {
+            if (searchQuery) {
+                return (
+                    <EmptyPlaceholder
+                        action={ (
+                            <LinkButton
+                                data-componentid={ `${componentId}-empty-search-placeholder-clear-button` }
+                                onClick={ onSearchQueryClear }
+                            >
+                                { t("consents:list.emptySearchPlaceholder.action") }
+                            </LinkButton>
+                        ) }
+                        image={ getEmptyPlaceholderIllustrations().emptySearch }
+                        imageSize="tiny"
+                        title={ t("consents:list.emptySearchPlaceholder.title") }
+                        subtitle={ [
+                            t("consents:list.emptySearchPlaceholder.subtitle")
+                        ] }
+                        data-componentid={ `${componentId}-empty-search-placeholder` }
+                    />
+                );
+            }
+
             return (
                 <EmptyPlaceholder
                     className="list-placeholder mr-0"
