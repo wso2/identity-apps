@@ -845,3 +845,17 @@ export interface FIDOConfigsInterface extends FIDOConnectorConfigsInterface{
      */
     name: string;
 }
+
+/**
+ * Interface for push device management configuration.
+ */
+export interface PushDeviceMgtConfigInterface {
+    /**
+     * Whether multiple device enrollment is enabled.
+     */
+    enableMultipleDeviceEnrollment: boolean;
+    /**
+     * Maximum number of devices a user can enroll.
+     */
+    maximumDeviceLimit: number;
+}

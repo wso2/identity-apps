@@ -21,15 +21,20 @@ import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/consta
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/forms";
-import { Code, Link } from "@wso2is/react-components";
+import { FormSpy } from "react-final-form";
+import { Code, Link, Heading } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isBoolean from "lodash-es/isBoolean";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Icon, Label, Message } from "semantic-ui-react";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import { Divider, Icon, Label, Message } from "semantic-ui-react";
+import { useGetPushDeviceMgtConfig, updatePushDeviceMgtConfig } from "../../../api/push-device-mgt-configs";
 import {
     CommonAuthenticatorFormFieldInterface,
     CommonAuthenticatorFormFieldMetaInterface,
@@ -37,7 +42,8 @@ import {
     CommonAuthenticatorFormMetaInterface,
     CommonAuthenticatorFormPropertyInterface,
     CommonPluggableComponentMetaPropertyInterface,
-    CommonPluggableComponentPropertyInterface
+    CommonPluggableComponentPropertyInterface,
+    PushDeviceMgtConfigInterface
 } from "../../../models";
 
 /**
@@ -100,6 +106,14 @@ interface PushAuthenticatorFormInitialValuesInterface {
      * Resend notification max attempts.
      */
     PUSH_ResendNotificationMaxAttempts: number;
+    /**
+     * Enable multiple device enrollment.
+     */
+    PUSH_EnableMultipleDeviceEnrollment: boolean;
+    /**
+     * Maximum device limit for multiple device enrollment.
+     */
+    PUSH_MaximumDeviceLimit: number;
 }
 
 /**
@@ -122,6 +136,14 @@ interface PushAuthenticatorFormFieldsInterface {
      * Resend notification max attempts.
      */
     PUSH_ResendNotificationMaxAttempts: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Enable multiple device enrollment.
+     */
+    PUSH_EnableMultipleDeviceEnrollment: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Maximum device limit for multiple device enrollment.
+     */
+    PUSH_MaximumDeviceLimit: CommonAuthenticatorFormFieldInterface;
 }
 
 /**
@@ -144,6 +166,14 @@ interface PushAuthenticatorFormErrorValidationsInterface {
      * Resend notification max attempts.
      */
     PUSH_ResendNotificationMaxAttempts: string;
+    /**
+     * Enable multiple device enrollment.
+     */
+    PUSH_EnableMultipleDeviceEnrollment: string;
+    /**
+     * Maximum device limit for multiple device enrollment.
+     */
+    PUSH_MaximumDeviceLimit: string;
 }
 
 const FORM_ID: string = "push-authenticator-form";
@@ -157,56 +187,64 @@ const FORM_ID: string = "push-authenticator-form";
 export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormPropsInterface> = (
     props: PushAuthenticatorFormPropsInterface
 ): ReactElement => {
-
     const {
         metadata,
         initialValues: originalInitialValues,
         onSubmit,
         readOnly,
-        isSubmitting,
         ["data-testid"]: testId
     } = props;
 
     const { t } = useTranslation();
     const { isSubOrganization } = useGetCurrentOrganizationType();
+    const dispatch: Dispatch = useDispatch();
 
     // This can be used when `meta` support is there.
-    const [ , setFormFields ] = useState<PushAuthenticatorFormFieldsInterface>(undefined);
-    const [ initialValues, setInitialValues ] = useState<PushAuthenticatorFormInitialValuesInterface>(undefined);
+    const [, setFormFields] = useState<PushAuthenticatorFormFieldsInterface>(undefined);
+    const [initialValues, setInitialValues] = useState<PushAuthenticatorFormInitialValuesInterface>(undefined);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [isMultipleDeviceEnrollmentEnabled, setIsMultipleDeviceEnrollmentEnabled] = useState<boolean>(false);
+    const formChangeRef: MutableRefObject<((name: string, value: unknown) => void) | null> =
+        useRef<((name: string, value: unknown) => void) | null>(null);
 
     const isReadOnly: boolean = isSubOrganization() || readOnly;
+
+    const {
+        data: pushDeviceMgtConfig,
+        isLoading: isPushDeviceMgtConfigLoading
+    } = useGetPushDeviceMgtConfig(!isSubOrganization());
 
     /**
      * Flattens and resolved form initial values and field metadata.
      */
     useEffect(() => {
-
-        if (isEmpty(originalInitialValues?.properties)) {
+        if (isEmpty(originalInitialValues?.properties) || isPushDeviceMgtConfigLoading) {
             return;
         }
 
-        const {
-            resolvedFormFields,
-            resolvedInitialValues
-        } = resolveFormFields();
+        const { resolvedFormFields, resolvedInitialValues } = resolveFormFields();
 
         setFormFields(resolvedFormFields);
         setInitialValues(resolvedInitialValues);
-    }, [ originalInitialValues ]);
+        setIsMultipleDeviceEnrollmentEnabled(
+            pushDeviceMgtConfig?.enableMultipleDeviceEnrollment ?? false
+        );
+    }, [originalInitialValues, pushDeviceMgtConfig, isPushDeviceMgtConfigLoading]);
 
     const resolveFormFields = () => {
         let resolvedFormFields: PushAuthenticatorFormFieldsInterface = null;
         let resolvedInitialValues: PushAuthenticatorFormInitialValuesInterface = null;
 
         originalInitialValues.properties.forEach((value: CommonAuthenticatorFormPropertyInterface) => {
-            const meta: CommonAuthenticatorFormFieldMetaInterface = metadata?.properties
-                .find((meta: CommonPluggableComponentMetaPropertyInterface) => meta.key === value.key);
+            const meta: CommonAuthenticatorFormFieldMetaInterface = metadata?.properties.find(
+                (meta: CommonPluggableComponentMetaPropertyInterface) => meta.key === value.key
+            );
 
             const moderatedName: string = value.name.replace(/\./g, "_");
 
             // Converting resend time from seconds to minutes.
             if (moderatedName === LocalAuthenticatorConstants.MODERATED_PUSH_RESEND_NOTIFICATION_TIME_KEY) {
-                const resendTimeInMinutes: number = Math.round(parseInt(value.value,10) / 60);
+                const resendTimeInMinutes: number = Math.round(parseInt(value.value, 10) / 60);
 
                 resolvedInitialValues = {
                     ...resolvedInitialValues,
@@ -224,20 +262,37 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
                     ...resolvedFormFields,
                     [moderatedName]: {
                         meta,
-                        value: (value.value === "true" || value.value === "false")
-                            ? JSON.parse(value.value)
-                            : value.value
+                        value: value.value === "true" || value.value === "false" ? JSON.parse(value.value) : value.value
                     }
                 };
 
                 resolvedInitialValues = {
                     ...resolvedInitialValues,
-                    [moderatedName]: (value.value === "true" || value.value === "false")
-                        ? JSON.parse(value.value)
-                        : value.value
+                    [moderatedName]:
+                        value.value === "true" || value.value === "false" ? JSON.parse(value.value) : value.value
                 };
             }
         });
+
+        // Merge push device management config values fetched from the dedicated endpoint.
+        if (pushDeviceMgtConfig) {
+            resolvedFormFields = {
+                ...resolvedFormFields,
+                PUSH_EnableMultipleDeviceEnrollment: {
+                    meta: null as unknown as CommonPluggableComponentMetaPropertyInterface,
+                    value: pushDeviceMgtConfig.enableMultipleDeviceEnrollment.toString()
+                },
+                PUSH_MaximumDeviceLimit: {
+                    meta: null as unknown as CommonPluggableComponentMetaPropertyInterface,
+                    value: pushDeviceMgtConfig.maximumDeviceLimit.toString()
+                }
+            };
+            resolvedInitialValues = {
+                ...resolvedInitialValues,
+                PUSH_EnableMultipleDeviceEnrollment: pushDeviceMgtConfig.enableMultipleDeviceEnrollment,
+                PUSH_MaximumDeviceLimit: pushDeviceMgtConfig.maximumDeviceLimit
+            };
+        }
 
         return {
             resolvedFormFields,
@@ -247,35 +302,44 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
 
     /**
      * Prepare form values for submitting.
+     * Splits device management fields out to be sent to the dedicated endpoint,
+     * and returns the remaining authenticator properties.
      *
      * @param values - Form values.
-     * @returns Sanitized form values.
+     * @returns Sanitized form values for the authenticator endpoint.
      */
-    const getUpdatedConfigurations = (values: PushAuthenticatorFormInitialValuesInterface)
-        : CommonAuthenticatorFormInitialValuesInterface => {
-
+    const getUpdatedConfigurations = (
+        values: PushAuthenticatorFormInitialValuesInterface
+    ): CommonAuthenticatorFormInitialValuesInterface => {
         const properties: CommonPluggableComponentPropertyInterface[] = [];
 
-        for (const [ name, value ] of Object.entries(values)) {
-            if (name != undefined) {
-                const moderatedName: string = name.replace(/_/g, ".");
+        const deviceMgtPropertyKeys: Set<string> = new Set([
+            "PUSH_EnableMultipleDeviceEnrollment",
+            "PUSH_MaximumDeviceLimit"
+        ]);
 
-                if (name === LocalAuthenticatorConstants.MODERATED_PUSH_RESEND_NOTIFICATION_TIME_KEY) {
-                    const timeInSeconds: number = value * 60;
+        for (const [name, value] of Object.entries(values)) {
+            if (name == undefined || deviceMgtPropertyKeys.has(name)) {
+                continue;
+            }
 
-                    properties.push({
-                        name: moderatedName,
-                        value: timeInSeconds.toString()
-                    });
+            const moderatedName: string = name.replace(/_/g, ".");
 
-                    continue;
-                }
+            if (name === LocalAuthenticatorConstants.MODERATED_PUSH_RESEND_NOTIFICATION_TIME_KEY) {
+                const timeInSeconds: number = value * 60;
 
                 properties.push({
                     name: moderatedName,
-                    value: isBoolean(value) ? value.toString() : value
+                    value: timeInSeconds.toString()
                 });
+
+                continue;
             }
+
+            properties.push({
+                name: moderatedName,
+                value: isBoolean(value) ? value.toString() : value
+            });
         }
 
         return {
@@ -285,53 +349,143 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
     };
 
     /**
+     * Extracts push device management config from the form values.
+     *
+     * @param values - Form values.
+     * @returns Push device management configuration.
+     */
+    const getUpdatedPushDeviceMgtConfig = (
+        values: PushAuthenticatorFormInitialValuesInterface
+    ): PushDeviceMgtConfigInterface => {
+        return {
+            enableMultipleDeviceEnrollment: values.PUSH_EnableMultipleDeviceEnrollment,
+            maximumDeviceLimit: values.PUSH_EnableMultipleDeviceEnrollment
+                ? Number(values.PUSH_MaximumDeviceLimit)
+                : 1
+        };
+    };
+
+    /**
+     * Handles the form submit by calling both the authenticator settings endpoint
+     * and the push device management configuration endpoint.
+     *
+     * @param values - Form values.
+     */
+    const handleFormSubmit = (values: PushAuthenticatorFormInitialValuesInterface): void => {
+        setIsSubmitting(true);
+
+        const deviceMgtConfig: PushDeviceMgtConfigInterface = getUpdatedPushDeviceMgtConfig(values);
+        const authenticatorConfig: CommonAuthenticatorFormInitialValuesInterface = getUpdatedConfigurations(values);
+
+        updatePushDeviceMgtConfig(deviceMgtConfig)
+            .then(() => {
+                onSubmit(authenticatorConfig);
+            })
+            .catch(() => {
+                dispatch(addAlert({
+                    description: t(
+                        "authenticationProvider:notifications.updatePushAuthenticator.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t("authenticationProvider:notifications.updatePushAuthenticator.genericError.message")
+                }));
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
+    };
+
+    /**
      * Validates the Form.
      *
      * @param values - Form Values.
      * @returns Form validation
      */
-    const validateForm = (values: PushAuthenticatorFormInitialValuesInterface):
-        PushAuthenticatorFormErrorValidationsInterface => {
-
+    const validateForm = (
+        values: PushAuthenticatorFormInitialValuesInterface
+    ): PushAuthenticatorFormErrorValidationsInterface => {
         const errors: PushAuthenticatorFormErrorValidationsInterface = {
             PUSH_EnableNumberChallenge: undefined,
             PUSH_EnableProgressiveEnrollment: undefined,
             PUSH_ResendNotificationMaxAttempts: undefined,
-            PUSH_ResendNotificationTime: undefined
+            PUSH_ResendNotificationTime: undefined,
+            PUSH_EnableMultipleDeviceEnrollment: undefined,
+            PUSH_MaximumDeviceLimit: undefined
         };
 
         if (!values.PUSH_ResendNotificationMaxAttempts) {
             // Check for required error.
-            errors.PUSH_ResendNotificationMaxAttempts = t("authenticationProvider:forms" +
-                ".authenticatorSettings.push.allowedResendAttemptsCount.validations.required");
-        } else if (!FormValidation.isInteger(values.PUSH_ResendNotificationMaxAttempts as unknown as number)) {
+            errors.PUSH_ResendNotificationMaxAttempts = t(
+                "authenticationProvider:forms" +
+                    ".authenticatorSettings.push.allowedResendAttemptsCount.validations.required"
+            );
+        } else if (!FormValidation.isInteger((values.PUSH_ResendNotificationMaxAttempts as unknown) as number)) {
             // Check for invalid input.
-            errors.PUSH_ResendNotificationMaxAttempts = t("authenticationProvider:forms" +
-                ".authenticatorSettings.push.allowedResendAttemptsCount.validations.invalid");
-        } else if (values.PUSH_ResendNotificationMaxAttempts < ConnectionUIConstants
-            .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE
-            || (values.PUSH_ResendNotificationMaxAttempts > ConnectionUIConstants
-                .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE)) {
+            errors.PUSH_ResendNotificationMaxAttempts = t(
+                "authenticationProvider:forms" +
+                    ".authenticatorSettings.push.allowedResendAttemptsCount.validations.invalid"
+            );
+        } else if (
+            values.PUSH_ResendNotificationMaxAttempts <
+                ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                    .ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE ||
+            values.PUSH_ResendNotificationMaxAttempts >
+                ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                    .ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE
+        ) {
             // Check for invalid range.
-            errors.PUSH_ResendNotificationMaxAttempts = t("authenticationProvider:forms" +
-                ".authenticatorSettings.push.allowedResendAttemptsCount.validations.range");
+            errors.PUSH_ResendNotificationMaxAttempts = t(
+                "authenticationProvider:forms" +
+                    ".authenticatorSettings.push.allowedResendAttemptsCount.validations.range"
+            );
+        }
+
+        if (values.PUSH_EnableMultipleDeviceEnrollment) {
+            if (!values.PUSH_MaximumDeviceLimit) {
+                errors.PUSH_MaximumDeviceLimit = t(
+                    "authenticationProvider:forms" +
+                        ".authenticatorSettings.push.maximumDeviceLimit.validations.required"
+                );
+            } else if (!FormValidation.isInteger((values.PUSH_MaximumDeviceLimit as unknown) as number)) {
+                errors.PUSH_MaximumDeviceLimit = t(
+                    "authenticationProvider:forms" +
+                        ".authenticatorSettings.push.maximumDeviceLimit.validations.invalid"
+                );
+            } else if (
+                values.PUSH_MaximumDeviceLimit <
+                    ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                        .MAXIMUM_DEVICE_LIMIT_MIN_VALUE ||
+                values.PUSH_MaximumDeviceLimit >
+                    ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                        .MAXIMUM_DEVICE_LIMIT_MAX_VALUE
+            ) {
+                errors.PUSH_MaximumDeviceLimit = t(
+                    "authenticationProvider:forms" +
+                        ".authenticatorSettings.push.maximumDeviceLimit.validations.range"
+                );
+            }
         }
 
         if (!values.PUSH_ResendNotificationTime) {
             // Check for required error.
-            errors.PUSH_ResendNotificationTime = t("authenticationProvider:forms" +
-                ".authenticatorSettings.push.resendInterval.validations.required");
-        } else if (!FormValidation.isInteger(values.PUSH_ResendNotificationTime as unknown as number)) {
+            errors.PUSH_ResendNotificationTime = t(
+                "authenticationProvider:forms" + ".authenticatorSettings.push.resendInterval.validations.required"
+            );
+        } else if (!FormValidation.isInteger((values.PUSH_ResendNotificationTime as unknown) as number)) {
             // Check for invalid input.
-            errors.PUSH_ResendNotificationTime = t("authenticationProvider:forms" +
-                ".authenticatorSettings.push.resendInterval.validations.invalid");
-        } else if (values.PUSH_ResendNotificationTime < ConnectionUIConstants
-            .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MIN_VALUE
-            || (values.PUSH_ResendNotificationTime > ConnectionUIConstants
-                .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MAX_VALUE)) {
+            errors.PUSH_ResendNotificationTime = t(
+                "authenticationProvider:forms" + ".authenticatorSettings.push.resendInterval.validations.invalid"
+            );
+        } else if (
+            values.PUSH_ResendNotificationTime <
+                ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MIN_VALUE ||
+            values.PUSH_ResendNotificationTime >
+                ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MAX_VALUE
+        ) {
             // Check for invalid range.
-            errors.PUSH_ResendNotificationTime = t("authenticationProvider:forms" +
-                ".authenticatorSettings.push.resendInterval.validations.range");
+            errors.PUSH_ResendNotificationTime = t(
+                "authenticationProvider:forms" + ".authenticatorSettings.push.resendInterval.validations.range"
+            );
         }
 
         return errors;
@@ -339,189 +493,232 @@ export const PushAuthenticatorForm: FunctionComponent<PushAuthenticatorFormProps
 
     return (
         <Form
-            id={ FORM_ID }
-            uncontrolledForm={ false }
-            onSubmit={ (values: Record<string, any>) =>{
-                onSubmit(getUpdatedConfigurations(values as PushAuthenticatorFormInitialValuesInterface));
-            } }
-            initialValues={ initialValues }
-            validate={ validateForm }
+            id={FORM_ID}
+            uncontrolledForm={false}
+            onSubmit={(values: Record<string, any>) => {
+                handleFormSubmit(values as PushAuthenticatorFormInitialValuesInterface);
+            }}
+            initialValues={initialValues}
+            validate={validateForm}
         >
-            {
-                !isSubOrganization() && (
-                    <Message info>
-                        <Icon name="info circle" />
-                        <Trans
-                            i18nKey={
-                                "authenticationProvider:forms.authenticatorSettings" +
-                                ".push.hint"
-                            }
+            <FormSpy subscription={{}}>
+                {({ form }: { form: { change: (name: string, value: unknown) => void } }) => {
+                    formChangeRef.current = form.change;
+
+                    return null;
+                }}
+            </FormSpy>
+            {!isSubOrganization() && (
+                <Message info>
+                    <Icon name="info circle" />
+                    <Trans i18nKey={"authenticationProvider:forms.authenticatorSettings" + ".push.hint"}>
+                        Ensure that an
+                        <Link
+                            external={false}
+                            onClick={() => {
+                                history.push(AppConstants.getPaths().get("PUSH_PROVIDER"));
+                            }}
                         >
-                            Ensure that an
-                            <Link
-                                external={ false }
-                                onClick={ () => {
-                                    history.push(
-                                        AppConstants.getPaths().get("PUSH_PROVIDER")
-                                    );
-                                } }
-                            > Push Provider
-                            </Link>
-                            &nbsp;is configured for the push notifications to be sent.
-                        </Trans>
-                    </Message>
-                )
-            }
+                            {" "}
+                            Push Provider
+                        </Link>
+                        &nbsp;is configured for the push notifications to be sent.
+                    </Trans>
+                </Message>
+            )}
             <Field.Checkbox
                 ariaLabel="Enable number challenge"
                 name="PUSH_EnableNumberChallenge"
-                label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
-                        ".push.enableNumberChallenge.label")
-                }
+                label={t("authenticationProvider:forms.authenticatorSettings" + ".push.enableNumberChallenge.label")}
                 hint={
-                    (<Trans
+                    <Trans
                         i18nKey={
-                            "authenticationProvider:forms.authenticatorSettings" +
-                            ".push.enableNumberChallenge.hint"
+                            "authenticationProvider:forms.authenticatorSettings" + ".push.enableNumberChallenge.hint"
                         }
                     >
                         Please check this checkbox to enable number challenge during authentication.
-                    </Trans>)
+                    </Trans>
                 }
-                readOnly={ isReadOnly }
-                width={ 16 }
-                data-testid={ `${ testId }-push-enable-number-challenge-checkbox` }
+                readOnly={isReadOnly}
+                width={16}
+                data-testid={`${testId}-push-enable-number-challenge-checkbox`}
             />
             <Field.Checkbox
                 ariaLabel="Enable progressive enrollment"
                 name="PUSH_EnableProgressiveEnrollment"
-                label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
-                        ".push.enableProgressiveEnrollment.label")
-                }
+                label={t(
+                    "authenticationProvider:forms.authenticatorSettings" + ".push.enableProgressiveEnrollment.label"
+                )}
                 hint={
-                    (<Trans
+                    <Trans
                         i18nKey={
                             "authenticationProvider:forms.authenticatorSettings" +
                             ".push.enableProgressiveEnrollment.hint"
                         }
                     >
                         Please check this checkbox to enable progressive enrollment.
-                    </Trans>)
+                    </Trans>
                 }
-                readOnly={ isReadOnly }
-                width={ 16 }
-                data-testid={ `${ testId }-push-enable-progressive-enrollment-checkbox` }
+                readOnly={isReadOnly}
+                width={16}
+                data-testid={`${testId}-push-enable-progressive-enrollment-checkbox`}
             />
+
             <Field.Input
                 ariaLabel="Push Notification Resend Interval"
                 inputType="number"
                 name="PUSH_ResendNotificationTime"
-                label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
-                        ".push.resendInterval.label")
-                }
+                label={t("authenticationProvider:forms.authenticatorSettings" + ".push.resendInterval.label")}
                 labelPosition="right"
-                placeholder={
-                    t("authenticationProvider:forms.authenticatorSettings" +
-                        ".push.resendInterval.placeholder")
-                }
+                placeholder={t(
+                    "authenticationProvider:forms.authenticatorSettings" + ".push.resendInterval.placeholder"
+                )}
                 hint={
-                    (<Trans
-                        i18nKey={
-                            "authenticationProvider:forms.authenticatorSettings" +
-                            ".push.resendInterval.hint"
-                        }
-                    >
+                    <Trans i18nKey={"authenticationProvider:forms.authenticatorSettings" + ".push.resendInterval.hint"}>
                         Please pich a value between <Code>1 minute</Code> & <Code>10 minutes</Code>.
-                    </Trans>)
+                    </Trans>
                 }
-                required={ true }
-                readOnly={ isReadOnly }
-                min={
-                    ConnectionUIConstants
-                        .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MIN_VALUE
-                }
+                required={true}
+                readOnly={isReadOnly}
+                min={ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MIN_VALUE}
                 maxLength={
-                    ConnectionUIConstants
-                        .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MAX_LENGTH
+                    ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MAX_LENGTH
                 }
                 minLength={
-                    ConnectionUIConstants
-                        .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MIN_LENGTH
+                    ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_INTERVAL_MIN_LENGTH
                 }
-                width={ 12 }
-                data-testid={ `${ testId }-push-resend-interval-input` }
+                width={12}
+                data-testid={`${testId}-push-resend-interval-input`}
             >
                 <input />
-                <Label>
-                    {
-                        t("authenticationProvider:forms.authenticatorSettings" +
-                            ".push.resendInterval.unit")
-                    }
-                </Label>
+                <Label>{t("authenticationProvider:forms.authenticatorSettings" + ".push.resendInterval.unit")}</Label>
             </Field.Input>
             <Field.Input
                 ariaLabel="Push Notification Resend Attempts"
                 inputType="number"
                 name="PUSH_ResendNotificationMaxAttempts"
-                label={
-                    t("authenticationProvider:forms.authenticatorSettings" +
-                        ".push.allowedResendAttemptsCount.label")
-                }
+                label={t(
+                    "authenticationProvider:forms.authenticatorSettings" + ".push.allowedResendAttemptsCount.label"
+                )}
                 labelPosition="right"
-                placeholder={
-                    t("authenticationProvider:forms.authenticatorSettings" +
-                        ".push.allowedResendAttemptsCount.placeholder")
-                }
+                placeholder={t(
+                    "authenticationProvider:forms.authenticatorSettings" +
+                        ".push.allowedResendAttemptsCount.placeholder"
+                )}
                 hint={
-                    (<Trans
+                    <Trans
                         i18nKey={
                             "authenticationProvider:forms.authenticatorSettings" +
                             ".push.allowedResendAttemptsCount.hint"
                         }
                     >
-                        Users will be limited to the specified resend attempt count when trying to resend the
-                         push notification.
-                    </Trans>)
+                        Users will be limited to the specified resend attempt count when trying to resend the push
+                        notification.
+                    </Trans>
                 }
-                required={ true }
-                readOnly={ isReadOnly }
+                required={true}
+                readOnly={isReadOnly}
                 min={
-                    ConnectionUIConstants
-                        .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE
+                    ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                        .ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE
                 }
                 maxLength={
-                    ConnectionUIConstants
-                        .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH
+                    ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                        .ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH
                 }
                 minLength={
-                    ConnectionUIConstants
-                        .PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH
+                    ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                        .ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH
                 }
-                width={ 12 }
-                data-testid={ `${ testId }-push-allowed-resend-attempts-input` }
+                width={12}
+                data-testid={`${testId}-push-allowed-resend-attempts-input`}
             >
                 <input />
                 <Label>
-                    {
-                        t("authenticationProvider:forms.authenticatorSettings" +
-                            ".push.allowedResendAttemptsCount.unit")
+                    {t("authenticationProvider:forms.authenticatorSettings" + ".push.allowedResendAttemptsCount.unit")}
+                </Label>
+            </Field.Input>
+
+            <Divider />
+
+            <Heading as="h4">{t("authenticationProvider:forms.authenticatorSettings" + ".push.deviceManagementSettings.label")}</Heading>
+
+            <Field.Checkbox
+                ariaLabel="Enable multiple device enrollment"
+                name="PUSH_EnableMultipleDeviceEnrollment"
+                label={t(
+                    "authenticationProvider:forms.authenticatorSettings" + ".push.enableMultipleDeviceEnrollment.label"
+                )}
+                hint={
+                    <Trans
+                        i18nKey={
+                            "authenticationProvider:forms.authenticatorSettings" +
+                            ".push.enableMultipleDeviceEnrollment.hint"
+                        }
+                    >
+                        Please check this checkbox to enable multiple device enrollment.
+                    </Trans>
+                }
+                readOnly={isReadOnly}
+                width={16}
+                listen={(value: boolean) => {
+                    setIsMultipleDeviceEnrollmentEnabled(value);
+                    if (!value) {
+                        formChangeRef.current?.("PUSH_MaximumDeviceLimit", 1);
                     }
+                }}
+                data-testid={`${testId}-push-enable-multiple-device-enrollment-checkbox`}
+            />
+            <Field.Input
+                ariaLabel="Maximum Device Limit For Multiple Device Enrollment"
+                inputType="number"
+                name="PUSH_MaximumDeviceLimit"
+                disabled={!isMultipleDeviceEnrollmentEnabled}
+                label={t("authenticationProvider:forms.authenticatorSettings" + ".push.maximumDeviceLimit.label")}
+                labelPosition="right"
+                placeholder={t(
+                    "authenticationProvider:forms.authenticatorSettings" + ".push.maximumDeviceLimit.placeholder"
+                )}
+                hint={
+                    <Trans
+                        i18nKey={"authenticationProvider:forms.authenticatorSettings" + ".push.maximumDeviceLimit.hint"}
+                    >
+                        Users will be limited to the specified device limit when multiple device enrollment is enabled.
+                    </Trans>
+                }
+                required={isMultipleDeviceEnrollmentEnabled}
+                readOnly={isReadOnly}
+                min={
+                    ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                        .MAXIMUM_DEVICE_LIMIT_MIN_VALUE
+                }
+                maxLength={
+                    ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                        .MAXIMUM_DEVICE_LIMIT_MAX_LENGTH
+                }
+                minLength={
+                    ConnectionUIConstants.PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                        .MAXIMUM_DEVICE_LIMIT_MIN_LENGTH
+                }
+                width={12}
+                data-testid={`${testId}-push-maximum-device-limit-input`}
+            >
+                <input />
+                <Label>
+                    {t("authenticationProvider:forms.authenticatorSettings" + ".push.maximumDeviceLimit.unit")}
                 </Label>
             </Field.Input>
             <Field.Button
-                form={ FORM_ID }
+                form={FORM_ID}
                 size="small"
                 buttonType="primary_btn"
                 ariaLabel="Push Authenticator update button"
                 name="update-button"
-                data-testid={ `${ testId }-submit-button` }
-                disabled={ isSubmitting }
-                loading={ isSubmitting }
-                label={ t("common:update") }
-                hidden={ isReadOnly }
+                data-testid={`${testId}-submit-button`}
+                disabled={isSubmitting}
+                loading={isSubmitting}
+                label={t("common:update")}
+                hidden={isReadOnly}
             />
         </Form>
     );

@@ -181,6 +181,10 @@ export class ConnectionUIConstants {
         RESEND_INTERVAL_MAX_VALUE: number;
         RESEND_INTERVAL_MIN_LENGTH: number;
         RESEND_INTERVAL_MIN_VALUE: number;
+        MAXIMUM_DEVICE_LIMIT_MIN_LENGTH: number;
+        MAXIMUM_DEVICE_LIMIT_MAX_LENGTH: number;
+        MAXIMUM_DEVICE_LIMIT_MIN_VALUE: number;
+        MAXIMUM_DEVICE_LIMIT_MAX_VALUE: number;
     } = {
             ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: 2,
             ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: 10,
@@ -189,7 +193,11 @@ export class ConnectionUIConstants {
             RESEND_INTERVAL_MAX_LENGTH: 2,
             RESEND_INTERVAL_MAX_VALUE: 10,
             RESEND_INTERVAL_MIN_LENGTH: 1,
-            RESEND_INTERVAL_MIN_VALUE: 1
+            RESEND_INTERVAL_MIN_VALUE: 1,
+            MAXIMUM_DEVICE_LIMIT_MAX_LENGTH: 2,
+            MAXIMUM_DEVICE_LIMIT_MAX_VALUE: 10,
+            MAXIMUM_DEVICE_LIMIT_MIN_LENGTH: 1,
+            MAXIMUM_DEVICE_LIMIT_MIN_VALUE: 1
         };
 
     /**

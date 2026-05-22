@@ -414,6 +414,27 @@ export interface AuthenticationProviderNS {
                         required: string;
                     };
                 };
+                enableMultipleDeviceEnrollment: {
+                    hint: string;
+                    label: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+                maximumDeviceLimit: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        required: string;
+                        invalid: string;
+                        range: string;
+                    };
+                    unit: string;
+                };
+                deviceManagementSettings: {
+                    label: string;
+                }
             };
             fido2: {
                 allowProgressiveEnrollment: {

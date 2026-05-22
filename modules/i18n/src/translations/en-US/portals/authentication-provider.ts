@@ -929,6 +929,27 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     validations: {
                         required: "Enablin push notification device progressive enrollment is required."
                     }
+                },
+                enableMultipleDeviceEnrollment: {
+                    hint: "When enabled, users can enroll multiple devices for push authentication.",
+                    label: "Enable multiple device enrollment",
+                    validations: {
+                        required: "Enable multiple device enrollment is a required field."
+                    }
+                },
+                maximumDeviceLimit: {
+                    hint: "The maximum device limit for users when multiple device enrollment is enabled.",
+                    label: "Maximum device limit",
+                    placeholder: "Enter maximum device limit.",
+                    validations: {
+                        required: "Maximum device limit is a required field.",
+                        invalid: "Maximum device limit should be an integer.",
+                        range: "Maximum device limit should be between 1 & 10."
+                    },
+                    unit: "devices"
+                },
+                deviceManagementSettings: {
+                    label: "Device management settings"
                 }
             },
             totp: {
