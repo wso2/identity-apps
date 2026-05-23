@@ -27,7 +27,7 @@ describe("nl-NL translation completeness", () => {
     const commonUsers = NL_NL.resources.portals.commonUsers as Record<string, unknown>;
     const enCommonUsers = EN_US.resources.portals.commonUsers as Record<string, unknown>;
 
-    const compareKeysRecursive = (expected: unknown, actual: unknown, namespace: string) => {
+    const compareKeysRecursive = (expected: unknown, actual: unknown, namespace: string): void => {
         const expectedIsObject = typeof expected === "object" && expected !== null;
         const actualIsObject = typeof actual === "object" && actual !== null;
 
