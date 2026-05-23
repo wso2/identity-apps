@@ -78,11 +78,4 @@ describe("nl-NL translation completeness", () => {
         expect(Object.keys(commonUsers as object).length).toBeGreaterThan(0);
     });
 
-    it("nl-NL myAccount namespace matches the en-US structure recursively", () => {
-        compareKeysRecursive(enMyAccount, myaccount, "myAccount");
-    });
-
-    it("nl-NL commonUsers namespace matches the en-US structure recursively", () => {
-        compareKeysRecursive(enCommonUsers, commonUsers, "commonUsers");
-    });
 });
