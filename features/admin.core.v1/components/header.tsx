@@ -84,6 +84,27 @@ import "./header.scss";
  */
 export type HeaderPropsInterface = HeaderProps & IdentifiableComponentInterface;
 
+interface LogoImagePropsInterface extends IdentifiableComponentInterface {
+    themeName: string;
+}
+
+const LogoImage: FunctionComponent<LogoImagePropsInterface> = React.memo(
+    ({ themeName }: LogoImagePropsInterface): ReactElement => {
+        const config = window["AppUtils"].getConfig();
+
+        const defaultLogoPath: string = config.ui.appLogo?.defaultLogoPath ?? config.ui.appLogoPath;
+
+        const basePath: string = StringUtils.removeSlashesFromPath(config.appBase);
+        const normalizedBasePath: string = basePath ? `${basePath}/` : "";
+
+        const themePath: string = `${config.clientOrigin}/${normalizedBasePath}libs/themes/${themeName}`;
+
+        const logoSrc: string = resolveAppLogoFilePath(defaultLogoPath, themePath);
+
+        return <Image src={ logoSrc } alt="logo" />;
+    }
+);
+
 /**
  * Implementation of the Reusable Header component.
  *
@@ -498,24 +519,6 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         return accountAppURL;
     };
 
-    const LOGO_IMAGE = () => {
-        return (
-            <Image
-                src={ resolveAppLogoFilePath(
-                    window["AppUtils"].getConfig().ui.appLogo?.defaultLogoPath ??
-                        window["AppUtils"].getConfig().ui.appLogoPath,
-                    `${window["AppUtils"].getConfig().clientOrigin}/` +
-                        `${
-                            StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBase) !== ""
-                                ? StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBase) + "/"
-                                : ""
-                        }libs/themes/` +
-                        config.ui.theme.name
-                ) }
-                alt="logo"
-            />
-        );
-    };
 
     const resolveEmail = (): string => {
 
@@ -580,8 +583,8 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 className="is-header"
                 brand={ {
                     logo: {
-                        desktop: <LOGO_IMAGE />,
-                        mobile: <LOGO_IMAGE />
+                        desktop: <LogoImage themeName={ config.ui.theme.name } />,
+                        mobile: <LogoImage themeName={ config.ui.theme.name } />
                     },
                     onClick: () =>
                         hasGettingStartedViewPermission &&
