@@ -200,17 +200,14 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                 identityAppsError.getErrorCode()) {
                     dispatch(showTierLimitReachedModal({
                         actionLabel: t(
-                            "idp:notifications." +
-                            "tierLimitReachedError.emptyPlaceholder.action"
+                            "idp:notifications.tierLimitReachedError.emptyPlaceholder.action"
                         ),
                         description: t(
-                            "idp:notifications." +
-                            "tierLimitReachedError.emptyPlaceholder.subtitles"
+                            "idp:notifications.tierLimitReachedError.emptyPlaceholder.subtitles"
                         ),
                         header: t("idp:notifications.tierLimitReachedError.heading"),
                         message: t(
-                            "idp:notifications." +
-                            "tierLimitReachedError.emptyPlaceholder.title"
+                            "idp:notifications.tierLimitReachedError.emptyPlaceholder.title"
                         )
                     }));
                     handleWizardClose();

@@ -534,17 +534,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     ApplicationManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
                     dispatch(showTierLimitReachedModal({
                         actionLabel: t(
-                            "applications:notifications." +
-                            "tierLimitReachedError.emptyPlaceholder.action"
+                            "applications:notifications.tierLimitReachedError.emptyPlaceholder.action"
                         ),
                         description: t(
-                            "applications:notifications." +
-                            "tierLimitReachedError.emptyPlaceholder.subtitles"
+                            "applications:notifications.tierLimitReachedError.emptyPlaceholder.subtitles"
                         ),
                         header: t("applications:notifications.tierLimitReachedError.heading"),
                         message: t(
-                            "applications:notifications." +
-                            "tierLimitReachedError.emptyPlaceholder.title"
+                            "applications:notifications.tierLimitReachedError.emptyPlaceholder.title"
                         )
                     }));
                     handleWizardClose();

@@ -196,7 +196,7 @@ const App = ({
     const theme: string = useSelector((state: AppState) => state?.config?.ui?.theme?.name);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const organizationType: string = useSelector((state: AppState) => state?.organization?.organizationType);
-    const tierLimitReachedModal: TierLimitModalReducerStateInterface =
+    const tierLimitReachErrorModalState: TierLimitModalReducerStateInterface =
         useSelector((state: AppState) => state?.tierLimitModal);
 
     const [ sessionTimedOut, setSessionTimedOut ] = useState<boolean>(false);
@@ -671,12 +671,8 @@ const App = ({
                                                 }
                                             />
                                             <TierLimitReachErrorModal
-                                                actionLabel={ tierLimitReachedModal?.actionLabel }
+                                                { ...tierLimitReachErrorModalState }
                                                 handleModalClose={ handleTierLimitReachedModalClose }
-                                                header={ tierLimitReachedModal?.header }
-                                                description={ tierLimitReachedModal?.description }
-                                                message={ tierLimitReachedModal?.message }
-                                                openModal={ tierLimitReachedModal?.open }
                                             />
                                             <UserStoresProvider>
                                                 <Base

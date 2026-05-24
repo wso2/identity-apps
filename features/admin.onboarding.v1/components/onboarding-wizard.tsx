@@ -466,8 +466,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
                 dispatch(showTierLimitReachedModal({
                     actionLabel: "View Plans",
                     description:
-                        "You have reached the maximum number of applications " +
-                        "allowed for your subscription tier.",
+                        "You have reached the maximum number of applications allowed for your subscription tier.",
                     header: "Application Limit Reached",
                     message: "Upgrade your plan to create more applications."
                 }));
