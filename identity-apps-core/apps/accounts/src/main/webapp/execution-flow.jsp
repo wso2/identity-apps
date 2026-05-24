@@ -427,18 +427,6 @@
                     }
                 };
 
-                if (flowData && flowData.type === "WEBAUTHN") {
-                    return createElement(
-                        "div",
-                        { className: "registration-content-container loaded" },
-                        createElement(
-                            PasskeyEnrollment, {
-                                passkeyError: flowError
-                            }
-                        )
-                    );
-                }
-
                 const AutoLoginForm = (data) => {
                     const formRef = React.useRef();
                     const handleSubmit = () => {
@@ -467,10 +455,25 @@
                     );
                 }
 
+                // An auto-login assertion means the flow has completed. Submit the auto-login form
+                // regardless of the previous step type, so a passkey (WEBAUTHN) step that completes
+                // the flow does not get re-rendered and stall the auto-login.
                 if (userAssertion) {
                     return createElement(
                         AutoLoginForm,
                         { userAssertion: userAssertion }
+                    );
+                }
+
+                if (flowData && flowData.type === "WEBAUTHN") {
+                    return createElement(
+                        "div",
+                        { className: "registration-content-container loaded" },
+                        createElement(
+                            PasskeyEnrollment, {
+                                passkeyError: flowError
+                            }
+                        )
                     );
                 }
 
