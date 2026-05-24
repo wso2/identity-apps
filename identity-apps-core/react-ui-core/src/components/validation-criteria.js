@@ -55,10 +55,8 @@ const getConditionValue = (rule, key) => {
     return rawValue;
 };
 
-export const useRuleLabel = (rule) => {
-    const { t } = useTranslation();
-    
-    // If the rule has a custom label, return it directly.
+export const getRuleLabel = (rule, t) => {
+
     if (rule.label) {
         return rule.label;
     }
@@ -155,12 +153,13 @@ const PolicyValidationStatus = ({ value, isValid }) => {
 };
 
 const ValidationCriteria = ({ validationConfig, errors = [], value = "" }) => {
+    const { t } = useTranslation("console");
+
     return (
         <div className="validation-criteria mt-1">
             { Array.isArray(validationConfig) && validationConfig.length > 0 && (
                 validationConfig.map((rule, ruleIndex) => {
-                    const label = useRuleLabel(rule);
-
+                    const label = getRuleLabel(rule, t)
                     if (!label) {
                         return null;
                     }
