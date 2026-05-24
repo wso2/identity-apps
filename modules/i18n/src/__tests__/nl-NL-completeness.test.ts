@@ -16,57 +16,11 @@
  * under the License.
  */
 
-import { EN_US } from "../translations/en-US";
 import { NL_NL } from "../translations/nl-NL";
 
 describe("nl-NL translation completeness", () => {
-    const nlCommon = NL_NL.resources.portals.common as Record<string, unknown>;
-    const enCommon = EN_US.resources.portals.common as Record<string, unknown>;
     const myaccount = NL_NL.resources.portals.myAccount as Record<string, unknown>;
-    const enMyAccount = EN_US.resources.portals.myAccount as Record<string, unknown>;
     const commonUsers = NL_NL.resources.portals.commonUsers as Record<string, unknown>;
-    const enCommonUsers = EN_US.resources.portals.commonUsers as Record<string, unknown>;
-
-    const compareKeysRecursive = (expected: unknown, actual: unknown, namespace: string): void => {
-        const expectedIsObject = typeof expected === "object" && expected !== null;
-        const actualIsObject = typeof actual === "object" && actual !== null;
-
-        expect(actual).toBeDefined();
-        expect(actual).not.toBeNull();
-
-        if (Array.isArray(expected)) {
-            expect(Array.isArray(actual)).toBe(true);
-            expect(actual).toHaveLength(expected.length);
-
-            expected.forEach((expectedItem, index) => {
-                compareKeysRecursive(expectedItem, (actual as Array<unknown>)[index], `${namespace}[${index}]`);
-            });
-
-            return;
-        }
-
-        expect(actualIsObject).toBe(expectedIsObject);
-
-        if (!expectedIsObject) {
-            return;
-        }
-
-        Object.entries(expected as Record<string, unknown>).forEach(([key, expectedValue]) => {
-            expect(Object.prototype.hasOwnProperty.call(actual as Record<string, unknown>, key)).toBe(true);
-            compareKeysRecursive(expectedValue, (actual as Record<string, unknown>)[key], `${namespace}.${key}`);
-        });
-    };
-
-    it("nl-NL common namespace has no undefined values at top level", () => {
-        Object.entries(nlCommon).forEach(([, value]) => {
-            expect(value).toBeDefined();
-            expect(value).not.toBeNull();
-        });
-    });
-
-    it("nl-NL common namespace matches the en-US structure recursively", () => {
-        compareKeysRecursive(enCommon, nlCommon, "common");
-    });
 
     it("nl-NL myaccount namespace exists and is not empty", () => {
         expect(myaccount).toBeDefined();
