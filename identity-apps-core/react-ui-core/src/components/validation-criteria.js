@@ -18,6 +18,7 @@
 
 import PropTypes from "prop-types";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 /**
  * A helper that looks up a condition in `rule.conditions` by key,
@@ -54,7 +55,9 @@ const getConditionValue = (rule, key) => {
     return rawValue;
 };
 
-export const getRuleLabel = (rule) => {
+export const useRuleLabel = (rule) => {
+    const { t } = useTranslation();
+    
     // If the rule has a custom label, return it directly.
     if (rule.label) {
         return rule.label;
@@ -71,75 +74,66 @@ export const getRuleLabel = (rule) => {
     switch (rule.name) {
         case "LengthValidator":
             if (minLen && maxLen) {
-                return `Must be between ${minLen} and ${maxLen} characters long.`;
+                return t("passwordPolicy.length.between", { minLen, maxLen });
             } else if (minLen) {
-                return `Must be at least ${minLen} characters long.`;
+                return t("passwordPolicy.length.min", { minLen });
             } else if (maxLen) {
-                return `Must be at most ${maxLen} characters long.`;
+                return t("passwordPolicy.length.max", { maxLen });
             }
-
-            return "Must be within the required length.";
+            return t("passwordPolicy.length.within");
 
         case "NumeralValidator":
             if (minLen) {
-                return `Must contain at least ${minLen} number(s).`;
+                return t("passwordPolicy.number.min", { minLen });
             }
-
-            return "Must contain the required number(s).";
+            return t("passwordPolicy.number.required");
 
         case "UpperCaseValidator":
             if (minLen) {
-                return `Must contain at least ${minLen} uppercase letter(s).`;
+                return t("passwordPolicy.uppercase.min", { minLen });
             }
-
-            return "Must contain uppercase letter(s).";
+            return t("passwordPolicy.uppercase.required");
 
         case "LowerCaseValidator":
             if (minLen) {
-                return `Must contain at least ${minLen} lowercase letter(s).`;
+                return t("passwordPolicy.lowercase.min", { minLen });
             }
-
-            return "Must contain lowercase letter(s).";
+            return t("passwordPolicy.lowercase.required");
 
         case "SpecialCharacterValidator":
             if (minLen && minLen > 0) {
-                return `Must contain at least ${minLen} special character(s).`;
+                return t("passwordPolicy.special.min", { minLen });
             }
-
             break;
+            
         case "ConfirmPasswordValidator":
             if (confirmPassword) {
-                return "Must match with the password.";
+                return t("passwordPolicy.confirm.match");
             }
-
             return null;
 
         case "EmailFormatValidator":
             if (isValidatorEnabled) {
-                return "Must use a valid email address.";
+                return t("passwordPolicy.email.valid");
             }
-
             return null;
 
         case "AlphanumericValidator":
             if (isValidatorEnabled) {
-                return "Must contain only alphanumeric characters.";
+                return t("passwordPolicy.alphanumeric.only");
             }
-
             return null;
 
         case "UniqueCharacterValidator":
             if (minUniqueChars) {
-                return `Must contain at least ${minUniqueChars} unique character(s).`;
+                return t("passwordPolicy.unique.min", { minUniqueChars });
             }
-
             return null;
 
         case "RepeatedCharacterValidator":
             if (maxRepeatedChars) {
-                return `Must not contain more than ${maxRepeatedChars} repeated character(s).`;
+                return t("passwordPolicy.repeated.max", { maxRepeatedChars });
             }
-
             return null;
 
         default:
@@ -165,7 +159,7 @@ const ValidationCriteria = ({ validationConfig, errors = [], value = "" }) => {
         <div className="validation-criteria mt-1">
             { Array.isArray(validationConfig) && validationConfig.length > 0 && (
                 validationConfig.map((rule, ruleIndex) => {
-                    const label = getRuleLabel(rule);
+                    const label = useRuleLabel(rule);
 
                     if (!label) {
                         return null;

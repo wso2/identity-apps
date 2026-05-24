@@ -8729,6 +8729,44 @@ export const console: ConsoleNS = {
                 },
                 title: "Page under construction"
             }
+        },
+                passwordPolicy: {
+            length: {
+                between: "Must be between {{minLen}} and {{maxLen}} characters long.",
+                min: "Must be at least {{minLen}} characters long.",
+                max: "Must be at most {{maxLen}} characters long.",
+                within: "Must be within the required length."
+            },
+            number: {
+                min: "Must contain at least {{minLen}} number(s).",
+                required: "Must contain the required number(s)."
+            },
+            uppercase: {
+                min: "Must contain at least {{minLen}} uppercase letter(s).",
+                required: "Must contain uppercase letter(s)."
+            },
+            lowercase: {
+                min: "Must contain at least {{minLen}} lowercase letter(s).",
+                required: "Must contain lowercase letter(s)."
+            },
+            special: {
+                min: "Must contain at least {{minLen}} special character(s)."
+            },
+            confirm: {
+                match: "Must match with the password."
+            },
+            email: {
+                valid: "Must use a valid email address."
+            },
+            alphanumeric: {
+                only: "Must contain only alphanumeric characters."
+            },
+            unique: {
+                min: "Must contain at least {{minUniqueChars}} unique character(s)."
+            },
+            repeated: {
+                max: "Must not contain more than {{maxRepeatedChars}} repeated character(s)."
+            }
         }
     }
 };
