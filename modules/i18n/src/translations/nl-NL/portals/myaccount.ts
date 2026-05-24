@@ -433,87 +433,6 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
-        "policyConsentManagement": {
-            "editConsent": {
-                "collectionMethod": "Verzamelmethode",
-                "dangerZones": {
-                    "revoke": {
-                        "actionTitle": "Intrekken",
-                        "header": "Toestemming intrekken",
-                        "subheader": "U zult opnieuw toestemming moeten geven om weer toegang te krijgen tot dit beleid."
-                    }
-                },
-                "description": "Beschrijving",
-                "piiCategoryHeading": "Beheer de toestemming voor het verzamelen en delen van uw persoonlijke gegevens met het beleid. Schakel de attributen uit die u wilt intrekken en bevestig vervolgens door op de knop Bijwerken te klikken om de wijzigingen op te slaan, of klik op de knop Intrekken om de toestemming voor alle attributen te verwijderen.",
-                "state": "Status",
-                "version": "Versie"
-            },
-            "modals": {
-                "consentRevokeModal": {
-                    "heading": "Weet u het zeker?",
-                    "message": "Deze bewerking is onomkeerbaar. Hiermee wordt de toestemming voor alle attributen definitief ingetrokken. Weet u zeker dat u wilt doorgaan?",
-                    "warning": "Houd er rekening mee dat u wordt omgeleid naar de pagina voor het verzamelen van toestemming"
-                }
-            },
-            "notifications": {
-                "consentReceiptFetch": {
-                    "error": {
-                        "description": "{{description}}",
-                        "message": "Er is iets misgegaan"
-                    },
-                    "genericError": {
-                        "description": "Kan geen informatie laden over het geselecteerde beleid",
-                        "message": "Er is iets misgegaan"
-                    },
-                    "success": {
-                        "description": "Bewijs van toestemming succesvol opgehaald",
-                        "message": "Ophalen geslaagd"
-                    }
-                },
-                "consentedAppsFetch": {
-                    "error": {
-                        "description": "{{description}}",
-                        "message": "Er is iets misgegaan"
-                    },
-                    "genericError": {
-                        "description": "Kan de lijst met geautoriseerde beleidsregels niet laden",
-                        "message": "Er is iets misgegaan"
-                    },
-                    "success": {
-                        "description": "Lijst met geautoriseerde beleidsregels succesvol opgehaald",
-                        "message": "Ophalen geslaagd"
-                    }
-                },
-                "revokeConsentedApp": {
-                    "error": {
-                        "description": "{{description}}",
-                        "message": "Fout bij het intrekken van toestemmingen"
-                    },
-                    "genericError": {
-                        "description": "Fout bij het intrekken van toestemmingen die aan het beleid zijn verleend",
-                        "message": "Er is iets misgegaan"
-                    },
-                    "success": {
-                        "description": "De aan het beleid verleende toestemming is succesvol ingetrokken",
-                        "message": "Toestemming succesvol ingetrokken"
-                    }
-                },
-                "updateConsentedClaims": {
-                    "error": {
-                        "description": "{{description}}",
-                        "message": "Er is iets misgegaan"
-                    },
-                    "genericError": {
-                        "description": "De met het beleid gedeelde attributen zijn niet bijgewerkt",
-                        "message": "Er is iets misgegaan"
-                    },
-                    "success": {
-                        "description": "De met het beleid gedeelde attributen zijn succesvol bijgewerkt",
-                        "message": "Gedeelde attributen succesvol bijgewerkt"
-                    }
-                }
-            }
-        },
         "cookieConsent": {
             "confirmButton": "Ik begrijp het",
             "content": "We gebruiken cookies om u de best mogelijke algemene ervaring te garanderen. Deze cookies worden gebruikt om een doorlopende sessie te onderhouden en tegelijkertijd vloeiende en gepersonaliseerde diensten te bieden. Voor meer informatie over hoe we cookies gebruiken, raadpleegt u ons <1>Cookiebeleid</1>."
@@ -1726,10 +1645,6 @@ export const myAccount: MyAccountNS = {
             "subTitle": "Ontdek en open uw toepassingen",
             "title": "Toepassingen"
         },
-        "consents": {
-            "subTitle": "Beheer uw toestemmingen voor toepassingen en beleidsregels",
-            "title": "Toestemmingen"
-        },
         "overview": {
             "subTitle": "Beheer uw persoonlijke gegevens, accountbeveiliging en privacy-instellingen",
             "title": "Welkom, {{firstName}}"
@@ -1827,18 +1742,6 @@ export const myAccount: MyAccountNS = {
             "placeholders": {
                 "emptyConsentList": {
                     "heading": "U heeft geen toestemmingen gegeven"
-                }
-            }
-        },
-        "policyConsentManagement": {
-            "actionTitles": {
-                "empty": "U heeft aan geen enkel beleid toestemming gegeven"
-            },
-            "description": "Bekijk de toestemmingen die u voor elk beleid heeft gegeven. Daarnaast kunt u één of meer ervan intrekken naar wens.",
-            "heading": "Mijn beleids-toestemmingen beheren",
-            "placeholders": {
-                "emptyConsentList": {
-                    "heading": "U heeft geen beleids-toestemmingen gegeven"
                 }
             }
         },
