@@ -16,11 +16,11 @@
  * under the License.
  */
 
+import { Theme, styled } from "@mui/material/styles";
 import OxygenAlert, { AlertProps } from "@oxygen-ui/react/Alert";
 import AppShell from "@oxygen-ui/react/AppShell";
 import Navbar, { NavbarItems } from "@oxygen-ui/react/Navbar";
 import Skeleton from "@oxygen-ui/react/Skeleton";
-import Snackbar from "@oxygen-ui/react/Snackbar";
 import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
 import AISparkleIcon from "@wso2is/admin.copilot.v1/components/ai-sparkle-icon";
@@ -65,6 +65,7 @@ import {
     GenericIcon,
     LinkButton
 } from "@wso2is/react-components";
+import DOMPurify from "dompurify";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
 import sortBy from "lodash-es/sortBy";
@@ -87,6 +88,36 @@ import { Action } from "reduce-reducers";
 import { ThunkDispatch } from "redux-thunk";
 import { getAppViewRoutes } from "../configs/routes";
 import "./dashboard-layout.scss";
+
+const ANNOUNCEMENT_STRIP_HEIGHT: number = 48;
+
+const AnnouncementStrip: typeof OxygenAlert = styled(OxygenAlert)(({ theme }: { theme: Theme }) => ({
+    "& .MuiAlert-action": {
+        marginRight: 0,
+        paddingTop: 0
+    },
+    "& .MuiAlert-message": {
+        "& a": {
+            color: "inherit",
+            fontWeight: 600,
+            textDecoration: "underline"
+        },
+        flexGrow: 1,
+        padding: `${ theme.spacing(0.5) } 0`,
+        textAlign: "center"
+    },
+    alignItems: "center",
+    borderRadius: 0,
+    boxShadow: "none",
+    left: 0,
+    minHeight: ANNOUNCEMENT_STRIP_HEIGHT,
+    padding: `${ theme.spacing(0.75) } ${ theme.spacing(2) }`,
+    position: "fixed",
+    right: 0,
+    top: 0,
+    width: "100%",
+    zIndex: 1400
+})) as typeof OxygenAlert;
 
 /**
  * Parent component for features inherited from Dashboard layout skeleton.
@@ -415,22 +446,35 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                 onAlertSystemInitialize={ handleAlertSystemInitialize }
                 withIcon={ true }
             />
-            { announcement ? (
-                <Snackbar
-                    open={ showAnnouncement }
-                    anchorOrigin={ { horizontal: "center", vertical: "top" } }
+            { announcement && showAnnouncement ? (
+                <AnnouncementStrip
+                    severity={ announcement.color as AlertProps[ "severity" ] }
+                    icon={ false }
                     onClose={ handleAnnouncementDismiss }
                 >
-                    <OxygenAlert
-                        severity={ announcement.color as AlertProps[ "severity" ] }
-                        onClose={ handleAnnouncementDismiss }
-                    >
-                        { announcement.message }
-                    </OxygenAlert>
-                </Snackbar>
+                    <span
+                        dangerouslySetInnerHTML={ {
+                            __html: DOMPurify.sanitize(announcement.message, {
+                                ADD_ATTR: [ "target", "rel" ],
+                                ALLOWED_ATTR: [ "href", "target", "rel" ],
+                                ALLOWED_TAGS: [ "b", "strong", "i", "em", "a", "br" ]
+                            })
+                        } }
+                    />
+                </AnnouncementStrip>
             ) : null }
             <AppShell
                 className="dashboard-layout"
+                sx={ announcement && showAnnouncement ? {
+                    "& .MuiAppBar-root.MuiAppBar-positionFixed, & .oxygen-header": {
+                        top: `${ ANNOUNCEMENT_STRIP_HEIGHT }px !important`
+                    },
+                    "--oxygen-customComponents-AppShell-properties-navBarTopPosition":
+                        "calc(var(--oxygen-customComponents-Header-properties-min-height, 56px)"
+                        + ` + ${ ANNOUNCEMENT_STRIP_HEIGHT }px)`,
+                    marginTop: `${ ANNOUNCEMENT_STRIP_HEIGHT }px`,
+                    minHeight: `calc(100vh - ${ ANNOUNCEMENT_STRIP_HEIGHT }px) !important`
+                } : undefined }
                 header={
                     (<Header
                         copilotToggle={ isCopilotFeatureEnabled && !isSubOrganization() ? {

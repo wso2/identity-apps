@@ -104,7 +104,7 @@
         }
 
         .greeting {
-            margin-bottom: 2.5em;
+            margin-bottom: 1em;
 
             .ui.placeholder {
                 .line {

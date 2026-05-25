@@ -527,6 +527,7 @@ export class Config {
             privacyPolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.privacyPolicyUrl,
             productName: window[ "AppUtils" ]?.getConfig()?.ui?.productName,
             productVersionConfig: window[ "AppUtils" ]?.getConfig()?.ui?.productVersionConfig,
+            rebrandingBanner: window[ "AppUtils" ]?.getConfig()?.ui?.rebrandingBanner,
             routes: window[ "AppUtils" ]?.getConfig()?.ui?.routes ?? {
                 organizationEnabledRoutes: AppConstants.ORGANIZATION_ENABLED_ROUTES
             },
