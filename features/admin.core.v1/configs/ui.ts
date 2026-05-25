@@ -36,6 +36,7 @@ import { ReactComponent as CertificateIcon } from "../../themes/default/assets/i
 import { ReactComponent as ClaimsIcon } from "../../themes/default/assets/images/icons/claims-icon.svg";
 import { ReactComponent as CodeForkIcon } from "../../themes/default/assets/images/icons/code-fork.svg";
 import { ReactComponent as ConnectionIcon } from "../../themes/default/assets/images/icons/connection.svg";
+import { ReactComponent as ConsentsIcon } from "../../themes/default/assets/images/icons/consents.svg";
 import ConsoleIcon from "../../themes/default/assets/images/icons/console-icon.svg";
 import { ReactComponent as CrossIcon } from "../../themes/default/assets/images/icons/cross-icon.svg";
 import { ReactComponent as DashboardIcon } from "../../themes/default/assets/images/icons/dashboard-icon.svg";
@@ -276,6 +277,7 @@ type GetSidePanelIconsInterface = {
     approvals: FunctionComponent | ReactNode,
     certificate: FunctionComponent | ReactNode,
     customerData : FunctionComponent | ReactNode,
+    consents: FunctionComponent | ReactNode,
     childIcon: FunctionComponent | ReactNode,
     claims: FunctionComponent | ReactNode,
     connections: FunctionComponent | ReactNode,
@@ -325,6 +327,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         applications: ApplicationsOutlineIcon,
         approvals: ApprovalsIcon,
         certificate: CertificateIcon,
+        consents: ConsentsIcon,
         childIcon: ArrowRight,
         claims: ClaimsIcon,
         connections: ConnectionIcon,

@@ -24,6 +24,7 @@ import { ClaimConfigurationInterface } from "./application";
 export interface ApplicationsResourceEndpointsInterface {
     applications: string;
     myAccountConfigMgt: string;
+    orgGovernanceEvaluate: string;
     requestPathAuthenticators: string;
     /**
      * Below route is to fetch the dcr configuration from server configurations api.
@@ -33,6 +34,15 @@ export interface ApplicationsResourceEndpointsInterface {
      * Below route is to fetch the group list as metadata from the application API.
      */
     groupMetadata: string;
+}
+
+/**
+ * Response interface for the org-governance capability evaluation endpoint.
+ */
+export interface OrgGovernanceEvaluateResponseInterface {
+    allowed: boolean;
+    capability: string;
+    resourceType: string;
 }
 
 export interface UpdateClaimConfiguration {

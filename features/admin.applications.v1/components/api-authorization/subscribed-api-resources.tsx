@@ -145,8 +145,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
     /**
      * Check if the place holders should be shown.
      */
-    const showPlaceHolders: boolean = allAPIResourcesListData?.length === 0 ||
-        subscribedAPIResourcesListData?.length === 0 ||
+    const showPlaceHolders: boolean = subscribedAPIResourcesListData?.length === 0 ||
         allAPIResourcesFetchRequestError != null ||
         subscribedAPIResourcesFetchRequestError !=  null ;
 

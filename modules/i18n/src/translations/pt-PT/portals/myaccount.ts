@@ -445,6 +445,57 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        policyConsentManagement: {
+            consentedOnLabel: "Ativo desde",
+            dangerZones: {
+                revoke: {
+                    actionTitle: "Revogar",
+                    header: "Revogar Consentimento de Política",
+                    subheader: "Esta ação revogará seu consentimento para esta política. Você pode ser solicitado a consentir novamente " +
+                        "na próxima vez que acessar o serviço."
+                }
+            },
+            modals: {
+                revokeModal: {
+                    heading: "Revogar consentimento para {{policyName}}",
+                    message: "Isso revogará seu consentimento para esta política. Você pode ser solicitado a consentir novamente " +
+                        "na próxima vez que acessar o serviço. Tem certeza de que deseja continuar?"
+                }
+            },
+            notifications: {
+                fetch: {
+                    error: {
+                        description: "Ocorreu um erro ao recuperar seus consentimentos de política.",
+                        message: "Falha na Recuperação"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao recuperar seus consentimentos de política.",
+                        message: "Falha na Recuperação"
+                    },
+                    success: {
+                        description: "Os consentimentos de política foram recuperados com sucesso.",
+                        message: "Recuperação bem-sucedida"
+                    }
+                },
+                revoke: {
+                    error: {
+                        description: "Ocorreu um erro ao revogar o consentimento da política.",
+                        message: "Falha na Revogação"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao revogar o consentimento da política.",
+                        message: "Falha na Revogação"
+                    },
+                    success: {
+                        description: "O consentimento da política foi revogado com sucesso.",
+                        message: "Consentimento Revogado"
+                    }
+                }
+            },
+            policyUrlLabel: "Ver Política",
+            versionLabel: "Versão {{version}}"
+        },
+        
         cookieConsent: {
             confirmButton: "Entendi",
             content: "Usamos cookies para garantir que você obtenha a melhor experiência geral. Esses cookies " +
@@ -1700,6 +1751,10 @@ export const myAccount: MyAccountNS = {
             subTitle: "Descubra e acesse seus aplicativos",
             title: "Applications"
         },
+        consents: {
+            subTitle: "Gerencie os consentimentos que forneceu para aplicativos e políticas aceitas",
+            title: "Consentimentos"
+        },
         overview: {
             subTitle: "Gerenciar suas informações pessoais, segurança da conta e configurações de privacidade",
             title: "Bem-vindo, {{firstName}}"
@@ -1801,6 +1856,15 @@ export const myAccount: MyAccountNS = {
             placeholders: {
                 emptyConsentList: {
                     heading: "Você não concedeu consentimento a nenhum aplicativo"
+                }
+            }
+        },
+        policyConsentManagement: {
+            description: "Revise as políticas que aceitou.",
+            heading: "Consentimentos de Política",
+            placeholders: {
+                emptyConsentList: {
+                    heading: "Você não aceitou nenhum consentimento de política"
                 }
             }
         },

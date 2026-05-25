@@ -913,7 +913,9 @@ export const applications: ApplicationsNS = {
                                             "be referenced in your scripts using the syntax <1>secrets.{secret name}</1>",
                                         plusIcon: "Add to the script"
                                     }
-                                }
+                                },
+                                subOrgInfoBanner: "Only shared users from the root organization can " +
+                                    "update this script."
                             },
                             stepBased: {
                                 actions: {

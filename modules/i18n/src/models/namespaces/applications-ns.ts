@@ -591,6 +591,7 @@ export interface ApplicationsNS {
                                         plusIcon: string;
                                     };
                                 };
+                                subOrgInfoBanner: string;
                             };
                             stepBased: {
                                 actions: {

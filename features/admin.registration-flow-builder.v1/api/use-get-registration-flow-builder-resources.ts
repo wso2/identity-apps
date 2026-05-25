@@ -25,6 +25,7 @@ import { Resources } from "@wso2is/admin.flow-builder-core.v1/models/resources";
 import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
+import elements from "../data/elements.json";
 import steps from "../data/steps.json";
 import templates from "../data/templates.json";
 import widgets from "../data/widgets.json";
@@ -59,6 +60,10 @@ const useGetRegistrationFlowBuilderResources = <Data = Resources, Error = Reques
 
         return {
             ...coreResources,
+            elements: [
+                ...coreResources?.elements,
+                ...elements
+            ],
             steps: [
                 ...coreResources?.steps,
                 ...steps

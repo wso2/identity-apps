@@ -571,7 +571,8 @@
                 "disabledFeatures": [
                     "applications.loginFlow.legacyEditor",
                     "applications.sharedAccess.status",
-                    "applications.sharedApp.adaptiveAuth"
+                    "applications.sharedApp.adaptiveAuth",
+                    "applications.adaptiveAuth.orgGovernance"
                 ],
                 "enabled": true,
                 "featureFlags": [
@@ -856,6 +857,30 @@
                     ],
                     "update": [
                         "internal_keystore_update"
+                    ]
+                }
+            },
+            "consents": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [
+                        "internal_consent_mgt_element_create",
+                        "internal_consent_mgt_purpose_create"
+                    ],
+                    "delete": [
+                        "internal_consent_mgt_element_delete",
+                        "internal_consent_mgt_purpose_delete"
+                    ],
+                    "feature": [
+                        "console:consents"
+                    ],
+                    "read": [
+                        "internal_consent_mgt_element_view",
+                        "internal_consent_mgt_purpose_view"
+                    ],
+                    "update": [
+                        "internal_consent_mgt_purpose_update"
                     ]
                 }
             },

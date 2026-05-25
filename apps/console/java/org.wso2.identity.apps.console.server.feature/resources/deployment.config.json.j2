@@ -651,6 +651,9 @@
                     {%- if authentication.adaptive.shared_applications.enable is not defined or authentication.adaptive.shared_applications.enable != true -%}
                         {%- set _ = disabled_features.append('"applications.sharedApp.adaptiveAuth"') -%}
                     {%- endif -%}
+                    {%- if authentication.adaptive.org_governance.enable is not defined or authentication.adaptive.org_governance.enable != true -%}
+                        {%- set _ = disabled_features.append('"applications.adaptiveAuth.orgGovernance"') -%}
+                    {%- endif -%}
                     {%- if operation_permission_enforcement.skip_enforce_authorized_api_update_permission is defined and operation_permission_enforcement.skip_enforce_authorized_api_update_permission == true -%}
                         {%- set _ = disabled_features.append('"applications.enforceAuthorizedAPIUpdatePermission"') -%}
                     {%- endif -%}
@@ -1021,6 +1024,37 @@
                         "read": [],
                         "update": [],
                         "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
+            {% if console.consents is defined %}
+            "consents": {
+                "disabledFeatures": [
+                    {% if console.consents.disabled_features is defined %}
+                    {% for feature in console.consents.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.consents.enabled is defined %} {{ console.consents.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.consents.scopes is defined %}
+                    {% for operation, scopes in console.consents.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "delete": [],
+                        "feature": [],
+                        "read": [],
+                        "update": []
                     {% endif %}
                 }
             },

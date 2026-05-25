@@ -53,7 +53,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { deleteBrandingPreference, updateBrandingPreference } from "../api/branding-preferences";
 import deleteAllCustomTextPreferences from "../api/delete-all-custom-text-preference";
-import useGetCustomTextPreferenceResolve from "../api/use-get-custom-text-preference-resolve";
+import useGetCustomTextPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-custom-text-preference-resolve";
 import { BrandingPreferenceTabs } from "../components/branding-preference-tabs";
 import { DesignFormValuesInterface } from "../components/design/design-form";
 import { BrandingModes, BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
