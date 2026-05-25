@@ -339,6 +339,13 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             privacyPolicyConfigs: null,
             productName: "",
             productVersionConfig: null,
+            rebrandingBanner: {
+                announcementUrl: "",
+                buttonText: "",
+                description: "",
+                enabled: false,
+                title: ""
+            },
             routes: {
                 organizationEnabledRoutes: undefined
             },

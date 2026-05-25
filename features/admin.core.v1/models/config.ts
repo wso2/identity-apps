@@ -751,6 +751,16 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
         url: string;
     };
     /**
+     * Rebranding announcement banner configurations.
+     */
+    rebrandingBanner: {
+        announcementUrl: string;
+        buttonText: string;
+        description: string;
+        enabled: boolean;
+        title: string;
+    };
+    /**
      * Flow execution configurations.
      */
     flowExecution: {

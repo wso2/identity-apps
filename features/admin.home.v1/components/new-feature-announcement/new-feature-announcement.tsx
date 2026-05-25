@@ -44,6 +44,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Message, Modal } from "semantic-ui-react";
 import AIAgentBox from "./ai-agent-box";
+import RebrandingAnnouncement from "./rebranding-announcement";
 import SurveyBox from "./survey-box";
 import { ReactComponent as PreviewFeaturesIcon } from "../../../themes/default/assets/images/icons/flask-icon.svg";
 import "./new-feature-announcement.scss";
@@ -92,7 +93,6 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                 ALLOWED_TAGS: [ "b" ] // Allow only bold.
             });
 
-            // eslint-disable-next-line react/no-danger
             return <span dangerouslySetInnerHTML={ { __html: sanitizedDescription } } />;
         }
 
@@ -202,7 +202,30 @@ export const FeatureCarousel = () => {
     const userSurveyButtonText: string = useSelector((state: AppState) =>
         state?.config?.ui?.userSurveyBanner?.buttonText);
 
+    const isRebrandingBannerEnabled: boolean = useSelector((state: AppState) =>
+        state?.config?.ui?.rebrandingBanner?.enabled);
+    const rebrandingBannerTitle: string = useSelector((state: AppState) =>
+        state?.config?.ui?.rebrandingBanner?.title);
+    const rebrandingBannerDescription: string = useSelector((state: AppState) =>
+        state?.config?.ui?.rebrandingBanner?.description);
+    const rebrandingBannerButtonText: string = useSelector((state: AppState) =>
+        state?.config?.ui?.rebrandingBanner?.buttonText);
+    const rebrandingBannerAnnouncementUrl: string = useSelector((state: AppState) =>
+        state?.config?.ui?.rebrandingBanner?.announcementUrl);
+
     const features: any = useMemo(() => [
+        isRebrandingBannerEnabled && {
+            announcementUrl: rebrandingBannerAnnouncementUrl,
+            buttonText: rebrandingBannerButtonText,
+            description: rebrandingBannerDescription,
+            id: "rebranding",
+            onTryOut: () => {
+                if (rebrandingBannerAnnouncementUrl) {
+                    window.open(rebrandingBannerAnnouncementUrl, "_blank", "noopener,noreferrer");
+                }
+            },
+            title: rebrandingBannerTitle
+        },
         isUserSurveyBannerEnabled && {
             buttonText: userSurveyButtonText,
             description: userSurveyDescription,
@@ -238,7 +261,9 @@ export const FeatureCarousel = () => {
         }
     ].filter(Boolean), [
         agentFeatureConfig,
-        isAgentManagementFeatureEnabledForOrganization
+        isAgentManagementFeatureEnabledForOrganization,
+        isRebrandingBannerEnabled,
+        isUserSurveyBannerEnabled
     ]);
 
     useEffect(() => {
@@ -288,16 +313,26 @@ export const FeatureCarousel = () => {
                         width: "100%"
                     } }
                 >
-                    <NewFeatureAnnouncement
-                        id={ features[currentIndex]?.id }
-                        title={ features[currentIndex]?.title }
-                        description={ features[currentIndex]?.description }
-                        illustration={ features[currentIndex]?.illustration }
-                        isEnabled={ features[currentIndex]?.isEnabled }
-                        isEnabledStatusLoading={ features[currentIndex]?.isEnabledStatusLoading }
-                        onTryOut={ features[currentIndex]?.onTryOut }
-                        buttonText={ features[currentIndex]?.buttonText }
-                    />
+                    { features[currentIndex]?.id === "rebranding" ? (
+                        <RebrandingAnnouncement
+                            title={ features[currentIndex]?.title }
+                            description={ features[currentIndex]?.description }
+                            buttonText={ features[currentIndex]?.buttonText }
+                            announcementUrl={ features[currentIndex]?.announcementUrl }
+                            onAnnouncementClick={ features[currentIndex]?.onTryOut }
+                        />
+                    ) : (
+                        <NewFeatureAnnouncement
+                            id={ features[currentIndex]?.id }
+                            title={ features[currentIndex]?.title }
+                            description={ features[currentIndex]?.description }
+                            illustration={ features[currentIndex]?.illustration }
+                            isEnabled={ features[currentIndex]?.isEnabled }
+                            isEnabledStatusLoading={ features[currentIndex]?.isEnabledStatusLoading }
+                            onTryOut={ features[currentIndex]?.onTryOut }
+                            buttonText={ features[currentIndex]?.buttonText }
+                        />
+                    ) }
                 </motion.div>
             </AnimatePresence>
 
