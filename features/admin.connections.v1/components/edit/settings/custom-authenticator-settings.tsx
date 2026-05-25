@@ -214,11 +214,12 @@ const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorSettings
      * Update custom local authenticator.
      *
      * @param values - Form values.
-     * @param authProperties - Endpoint authentication properties.
+     * @param authProperties - Endpoint authentication properties. When undefined, the existing
+     *                        authentication configuration is preserved (only the type is sent).
      */
     const handleUpdateCustomLocalAuthenticator = (
         values: EndpointConfigFormPropertyInterface,
-        authProperties: Partial<AuthenticationPropertiesInterface>
+        authProperties?: Partial<AuthenticationPropertiesInterface>
     ) => {
         const updatingValues: EndpointAuthenticationUpdateInterface = {
             description: connector.description,
@@ -226,10 +227,14 @@ const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorSettings
             endpoint: {
                 allowedHeaders: values?.allowedHeaders,
                 allowedParameters: values?.allowedParameters,
-                authentication: {
-                    properties: authProperties,
-                    type: values.authenticationType as EndpointAuthenticationType
-                },
+                authentication: authProperties
+                    ? {
+                        properties: authProperties,
+                        type: values.authenticationType as EndpointAuthenticationType
+                    }
+                    : {
+                        type: values.authenticationType as EndpointAuthenticationType
+                    },
                 uri: values?.endpointUri
             },
             image: connector.image,
@@ -257,12 +262,12 @@ const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorSettings
      * Update custom federated authenticator.
      *
      * @param values - Form values.
-     * @param changedFields - Changed fields.
-     * @param authProperties - Endpoint authentication properties.
+     * @param authProperties - Endpoint authentication properties. When undefined, the existing
+     *                        authentication configuration is preserved (only the type is sent).
      */
     const handleUpdateCustomFederatedAuthenticator = (
         values: EndpointConfigFormPropertyInterface,
-        authProperties: Partial<AuthenticationPropertiesInterface>
+        authProperties?: Partial<AuthenticationPropertiesInterface>
     ) => {
         const federatedAuthenticatorId: string =
             connector?.federatedAuthenticators?.authenticators[0]?.authenticatorId;
@@ -271,10 +276,14 @@ const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorSettings
             endpoint: {
                 allowedHeaders: values?.allowedHeaders,
                 allowedParameters: values?.allowedParameters,
-                authentication: {
-                    properties: authProperties,
-                    type: values.authenticationType as EndpointAuthenticationType
-                },
+                authentication: authProperties
+                    ? {
+                        properties: authProperties,
+                        type: values.authenticationType as EndpointAuthenticationType
+                    }
+                    : {
+                        type: values.authenticationType as EndpointAuthenticationType
+                    },
                 uri: values.endpointUri
             },
             isDefault: true,
@@ -302,54 +311,56 @@ const CustomAuthenticatorSettings: FunctionComponent<CustomAuthenticatorSettings
     const handleSubmit = (
         values: EndpointConfigFormPropertyInterface
     ) => {
-        const authProperties: Partial<AuthenticationPropertiesInterface> = {};
+        // Leave `authProperties` undefined when the auth section is untouched so the existing
+        // stored credentials are preserved instead of being wiped by an empty properties bag.
+        let authProperties: Partial<AuthenticationPropertiesInterface> | undefined;
 
-        if (!isEndpointAuthenticationUpdated) {
-            if (isCustomLocalAuthenticator) {
-                handleUpdateCustomLocalAuthenticator(values, authProperties);
+        if (isEndpointAuthenticationUpdated) {
+            switch (values.authenticationType) {
+                case AuthenticationType.BASIC:
+                    authProperties = {
+                        password: values.passwordAuthProperty,
+                        username: values.usernameAuthProperty
+                    };
 
-                return;
+                    break;
+                case AuthenticationType.BEARER:
+                    authProperties = {
+                        accessToken: values.accessTokenAuthProperty
+                    };
+
+                    break;
+                case AuthenticationType.API_KEY:
+                    authProperties = {
+                        header: values.headerAuthProperty,
+                        value: values.valueAuthProperty
+                    };
+
+                    break;
+                case AuthenticationType.CLIENT_CREDENTIAL:
+                    authProperties = {
+                        clientId: values.clientIdAuthProperty,
+                        clientSecret: values.clientSecretAuthProperty,
+                        scopes: values.scopesAuthProperty,
+                        tokenEndpoint: values.tokenEndpointAuthProperty
+                    };
+
+                    break;
+                case AuthenticationType.PASSWORD_CREDENTIAL:
+                    authProperties = {
+                        clientId: values.clientId_passwordCredentialAuthProperty,
+                        clientSecret: values.clientSecret_passwordCredentialAuthProperty,
+                        password: values.password_passwordCredentialAuthProperty,
+                        scopes: values.scopes_passwordCredentialAuthProperty,
+                        tokenEndpoint: values.tokenEndpoint_passwordCredentialAuthProperty,
+                        username: values.username_passwordCredentialAuthProperty
+                    };
+
+                    break;
+                case AuthenticationType.NONE:
+                default:
+                    break;
             }
-            handleUpdateCustomFederatedAuthenticator(values, authProperties);
-
-            return;
-        }
-
-        switch (values.authenticationType) {
-            case AuthenticationType.BASIC:
-                authProperties.username = values.usernameAuthProperty;
-                authProperties.password = values.passwordAuthProperty;
-
-                break;
-            case AuthenticationType.BEARER:
-                authProperties.accessToken = values.accessTokenAuthProperty;
-
-                break;
-            case AuthenticationType.API_KEY:
-                authProperties.header = values.headerAuthProperty;
-                authProperties.value = values.valueAuthProperty;
-
-                break;
-            case AuthenticationType.CLIENT_CREDENTIAL:
-                authProperties.clientId = values.clientIdAuthProperty;
-                authProperties.clientSecret = values.clientSecretAuthProperty;
-                authProperties.tokenEndpoint = values.tokenEndpointAuthProperty;
-                authProperties.scopes = values.scopesAuthProperty;
-
-                break;
-            case AuthenticationType.PASSWORD_CREDENTIAL:
-                authProperties.clientId = values.clientId_passwordCredentialAuthProperty;
-                authProperties.clientSecret = values.clientSecret_passwordCredentialAuthProperty;
-                authProperties.tokenEndpoint = values.tokenEndpoint_passwordCredentialAuthProperty;
-                authProperties.username = values.username_passwordCredentialAuthProperty;
-                authProperties.password = values.password_passwordCredentialAuthProperty;
-                authProperties.scopes = values.scopes_passwordCredentialAuthProperty;
-
-                break;
-            case AuthenticationType.NONE:
-                break;
-            default:
-                break;
         }
 
         if (isCustomLocalAuthenticator) {
