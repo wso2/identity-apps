@@ -179,6 +179,7 @@ interface RebrandingAnnouncementProps extends IdentifiableComponentInterface {
     title: string;
     description: string;
     buttonText: string;
+    announcementUrl: string;
     onAnnouncementClick: () => void;
 }
 
@@ -187,6 +188,7 @@ const RebrandingAnnouncement: FunctionComponent<RebrandingAnnouncementProps> = (
     title,
     description,
     buttonText,
+    announcementUrl,
     onAnnouncementClick
 }: RebrandingAnnouncementProps): ReactElement => {
     return (
@@ -204,18 +206,20 @@ const RebrandingAnnouncement: FunctionComponent<RebrandingAnnouncementProps> = (
                 <BrandLogo />
             </BrandArea>
 
-            <Actions>
-                <CtaButton
-                    variant="contained"
-                    onClick={ onAnnouncementClick }
-                    data-componentid={ `${ componentId }-cta` }
-                >
-                    <Box display="flex" alignItems="center" gap={ 1 }>
-                        { buttonText }
-                        <ArrowUpRightFromSquareIcon />
-                    </Box>
-                </CtaButton>
-            </Actions>
+            { announcementUrl ? (
+                <Actions>
+                    <CtaButton
+                        variant="contained"
+                        onClick={ onAnnouncementClick }
+                        data-componentid={ `${ componentId }-cta` }
+                    >
+                        <Box display="flex" alignItems="center" gap={ 1 }>
+                            { buttonText }
+                            <ArrowUpRightFromSquareIcon />
+                        </Box>
+                    </CtaButton>
+                </Actions>
+            ) : null }
         </BannerRoot>
     );
 };

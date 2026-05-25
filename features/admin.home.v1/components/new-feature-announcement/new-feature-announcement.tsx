@@ -215,6 +215,7 @@ export const FeatureCarousel = () => {
 
     const features: any = useMemo(() => [
         isRebrandingBannerEnabled && {
+            announcementUrl: rebrandingBannerAnnouncementUrl,
             buttonText: rebrandingBannerButtonText,
             description: rebrandingBannerDescription,
             id: "rebranding",
@@ -317,6 +318,7 @@ export const FeatureCarousel = () => {
                             title={ features[currentIndex]?.title }
                             description={ features[currentIndex]?.description }
                             buttonText={ features[currentIndex]?.buttonText }
+                            announcementUrl={ features[currentIndex]?.announcementUrl }
                             onAnnouncementClick={ features[currentIndex]?.onTryOut }
                         />
                     ) : (
