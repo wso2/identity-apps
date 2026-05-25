@@ -433,6 +433,54 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        "policyConsentManagement": {
+            "consentedOnLabel": "Actief vanaf",
+            "dangerZones": {
+                "revoke": {
+                    "actionTitle": "Intrekken",
+                    "header": "Beleidstoestemming intrekken",
+                    "subheader": "Deze actie trekt uw toestemming voor dit beleid in. Mogelijk wordt u gevraagd opnieuw toestemming te geven wanneer u de service de volgende keer gebruikt."
+                }
+            },
+            "modals": {
+                "revokeModal": {
+                    "heading": "Toestemming intrekken voor {{policyName}}",
+                    "message": "Hiermee trekt u uw toestemming voor dit beleid in. Mogelijk wordt u gevraagd opnieuw toestemming te geven wanneer u de service de volgende keer gebruikt. Weet u zeker dat u wilt doorgaan?"
+                }
+            },
+            "notifications": {
+                "fetch": {
+                    "error": {
+                        "description": "Er is een fout opgetreden bij het ophalen van uw beleidstoestemmingen.",
+                        "message": "Ophalen mislukt"
+                    },
+                    "genericError": {
+                        "description": "Er is een fout opgetreden bij het ophalen van uw beleidstoestemmingen.",
+                        "message": "Ophalen mislukt"
+                    },
+                    "success": {
+                        "description": "Uw beleidstoestemmingen zijn succesvol opgehaald.",
+                        "message": "Ophalen geslaagd"
+                    }
+                },
+                "revoke": {
+                    "error": {
+                        "description": "Er is een fout opgetreden bij het intrekken van de beleidstoestemming.",
+                        "message": "Intrekken mislukt"
+                    },
+                    "genericError": {
+                        "description": "Er is een fout opgetreden bij het intrekken van de beleidstoestemming.",
+                        "message": "Intrekken mislukt"
+                    },
+                    "success": {
+                        "description": "De beleidstoestemming is succesvol ingetrokken.",
+                        "message": "Toestemming ingetrokken"
+                    }
+                }
+            },
+            "policyUrlLabel": "Beleid bekijken",
+            "versionLabel": "Versie {{version}}"
+        },
         "cookieConsent": {
             "confirmButton": "Ik begrijp het",
             "content": "We gebruiken cookies om u de best mogelijke algemene ervaring te garanderen. Deze cookies worden gebruikt om een doorlopende sessie te onderhouden en tegelijkertijd vloeiende en gepersonaliseerde diensten te bieden. Voor meer informatie over hoe we cookies gebruiken, raadpleegt u ons <1>Cookiebeleid</1>."
@@ -1645,6 +1693,10 @@ export const myAccount: MyAccountNS = {
             "subTitle": "Ontdek en open uw toepassingen",
             "title": "Toepassingen"
         },
+        "consents": {
+            "subTitle": "Beheer de toestemmingen die u heeft gegeven voor toepassingen en geaccepteerde beleidsregels",
+            "title": "Toestemmingen"
+        },
         "overview": {
             "subTitle": "Beheer uw persoonlijke gegevens, accountbeveiliging en privacy-instellingen",
             "title": "Welkom, {{firstName}}"
@@ -1742,6 +1794,15 @@ export const myAccount: MyAccountNS = {
             "placeholders": {
                 "emptyConsentList": {
                     "heading": "U heeft geen toestemmingen gegeven"
+                }
+            }
+        },
+        "policyConsentManagement": {
+            "description": "Bekijk de beleidsregels die u heeft geaccepteerd.",
+            "heading": "Beleidstoestemmingen",
+            "placeholders": {
+                "emptyConsentList": {
+                    "heading": "U heeft geen beleidstoestemmingen geaccepteerd"
                 }
             }
         },
