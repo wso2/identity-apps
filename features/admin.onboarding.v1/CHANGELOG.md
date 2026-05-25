@@ -1,5 +1,41 @@
 # @wso2is/admin.onboarding.v1
 
+## 1.0.84
+
+### Patch Changes
+
+- [#10278](https://github.com/wso2/identity-apps/pull/10278) [`e72bf00d7c6bb6199611f72bd5d0f7a46d29451d`](https://github.com/wso2/identity-apps/commit/e72bf00d7c6bb6199611f72bd5d0f7a46d29451d) Thanks [@savindi7](https://github.com/savindi7)! - Update Onboarding Wizard header.
+
+## 1.0.83
+
+### Patch Changes
+
+- [#10219](https://github.com/wso2/identity-apps/pull/10219) [`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove duplicate exports
+
+- Updated dependencies [[`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c)]:
+  - @wso2is/admin.server-configurations.v1@2.38.51
+  - @wso2is/admin.applications.v1@2.42.24
+  - @wso2is/admin.connections.v1@2.37.4
+  - @wso2is/admin.roles.v2@2.27.381
+  - @wso2is/admin.users.v1@2.38.36
+  - @wso2is/admin.core.v1@2.57.6
+
+## 1.0.82
+
+### Patch Changes
+
+- [#10197](https://github.com/wso2/identity-apps/pull/10197) [`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dependencies
+
+- Updated dependencies [[`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423)]:
+  - @wso2is/admin.organizations.v1@2.28.4
+  - @wso2is/admin.applications.v1@2.42.23
+  - @wso2is/admin.connections.v1@2.37.2
+  - @wso2is/admin.extensions.v1@2.43.3
+  - @wso2is/admin.analytics.v1@0.0.6
+  - @wso2is/admin.branding.v1@2.32.167
+  - @wso2is/admin.core.v1@2.57.3
+  - @wso2is/admin.users.v1@2.38.35
+
 ## 1.0.81
 
 ### Patch Changes

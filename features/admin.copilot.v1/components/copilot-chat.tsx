@@ -39,6 +39,7 @@ import {
     StyledLoadMoreButton,
     StyledSuggestionButton
 } from "./copilot-styles";
+import { CHARS_PER_FRAME, MAX_INPUT_LENGTH, TYPING_SPEED_MS } from "../constants/copilot-chat-constants";
 import useCopilotPanel from "../hooks/use-copilot-panel";
 import { CopilotMessageInterface } from "../store/types/copilot-action-types";
 
@@ -167,7 +168,7 @@ const StyledBotMessageBubble: typeof Paper = styled(Paper)(({ theme }: { theme: 
 /**
  * Props interface for the CopilotChat component.
  */
-export interface CopilotChatProps extends IdentifiableComponentInterface {
+interface CopilotChatProps extends IdentifiableComponentInterface {
     /**
      * Additional CSS classes.
      */
@@ -281,7 +282,9 @@ interface ChatMessageProps {
     isLoading: boolean;
     componentId: string;
     onSendMessage: (msg: string) => void;
+    onAnimatedContentChange: () => void;
 }
+
 
 /**
  * Renders a single chat message. Wrapped in React.memo so that messages that
@@ -295,14 +298,94 @@ const ChatMessage: React.FunctionComponent<ChatMessageProps> = React.memo(
         isLastMessage,
         isLoading: loading,
         componentId,
-        onSendMessage
+        onSendMessage,
+        onAnimatedContentChange
     }: ChatMessageProps): ReactElement => {
         const { t } = useTranslation();
         const isUser: boolean = message.sender === "user";
         const isError: boolean = message.type === "error";
-        const renderedContent: string = message.type === "streaming"
-            ? normalizeStreamingMarkdown(message.content)
-            : message.content;
+        const isStreaming: boolean = message.type === "streaming";
+
+        // Keep raw content as the animation target; normalization happens per-frame at render.
+        const safeContent: string = message.content;
+
+        const [ displayedContent, setDisplayedContent ] = useState<string>(
+            isStreaming ? "" : safeContent
+        );
+        const safeContentRef: React.MutableRefObject<string> = useRef<string>(safeContent);
+        const animTimerRef: React.MutableRefObject<number | null> = useRef<number | null>(null);
+        // Tracks displayed length so tick can decide whether to re-arm without a stale closure.
+        const displayedContentLenRef: React.MutableRefObject<number> = useRef<number>(0);
+        // Stable ref to the tick function so both effects share the same implementation.
+        const tickRef: React.MutableRefObject<() => void> = useRef<() => void>(() => undefined);
+
+        // Sync raw target into ref on every new chunk.
+        useEffect(() => {
+            safeContentRef.current = safeContent;
+        }, [ safeContent ]);
+
+        // Keep displayedContentLenRef current so tick's re-arm check is accurate.
+        useEffect(() => {
+            displayedContentLenRef.current = displayedContent.length;
+        }, [ displayedContent ]);
+
+        // Define tick via ref so the restart effect can share the same function without
+        // capturing a stale closure. All state it needs is in refs.
+        tickRef.current = (): void => {
+            setDisplayedContent((prev: string) => {
+                const target: string = safeContentRef.current;
+
+                if (prev.length >= target.length) return prev;
+
+                return target.slice(0, prev.length + CHARS_PER_FRAME);
+            });
+            if (displayedContentLenRef.current < safeContentRef.current.length) {
+                animTimerRef.current = window.setTimeout(tickRef.current, TYPING_SPEED_MS);
+            } else {
+                // Caught up — stop spinning; restart effect will re-arm if more content arrives.
+                animTimerRef.current = null;
+            }
+        };
+
+        useEffect(() => {
+            if (!isStreaming) {
+                if (animTimerRef.current !== null) {
+                    clearTimeout(animTimerRef.current);
+                    animTimerRef.current = null;
+                }
+                setDisplayedContent(safeContent);
+
+                return;
+            }
+
+            animTimerRef.current = window.setTimeout(tickRef.current, TYPING_SPEED_MS);
+
+            return () => {
+                if (animTimerRef.current !== null) {
+                    clearTimeout(animTimerRef.current);
+                    animTimerRef.current = null;
+                }
+            };
+        }, [ isStreaming ]);
+
+        // When new streaming content arrives and the timer has stopped (caught up to a
+        // previous chunk), restart animation to consume the additional content.
+        useEffect(() => {
+            if (!isStreaming || animTimerRef.current !== null) return;
+            animTimerRef.current = window.setTimeout(tickRef.current, TYPING_SPEED_MS);
+        }, [ safeContent, isStreaming ]);
+
+        // Normalize only the visible slice so each frame is well-formed markdown,
+        // not a prefix of an already-normalized full string.
+        const renderedContent: string = isStreaming
+            ? normalizeStreamingMarkdown(displayedContent)
+            : displayedContent;
+
+        useEffect((): void => {
+            if (isStreaming && displayedContent) {
+                onAnimatedContentChange();
+            }
+        }, [ displayedContent, isStreaming, onAnimatedContentChange ]);
 
         if (isUser) {
             return (
@@ -452,7 +535,7 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
      */
     const handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {
-            setInputValue(event.target.value);
+            setInputValue(event.target.value.slice(0, MAX_INPUT_LENGTH));
         }, []);
 
     /**
@@ -505,6 +588,16 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
 
         return scrollHeight - scrollTop - clientHeight < threshold;
     }, []);
+
+    /**
+     * Called by the last ChatMessage on every typewriter tick so the parent
+     * can keep the viewport anchored to the bottom during streaming.
+     */
+    const handleAnimatedContentChange: () => void = useCallback((): void => {
+        if (isUserNearBottom()) {
+            throttledScrollToBottom();
+        }
+    }, [ isUserNearBottom, throttledScrollToBottom ]);
 
     /**
      * Scroll to bottom when messages change - only when the user is already
@@ -615,6 +708,7 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
                             isLoading={ isLoading }
                             componentId={ componentId }
                             onSendMessage={ sendMessage }
+                            onAnimatedContentChange={ handleAnimatedContentChange }
                         />
                     ))
                 ) }
@@ -648,6 +742,7 @@ const CopilotChat: React.FunctionComponent<CopilotChatProps> = (
                         onChange={ handleInputChange }
                         onKeyDown={ handleKeyDown }
                         disabled={ isLoading }
+                        inputProps={ { maxLength: MAX_INPUT_LENGTH } }
                         data-componentid={ `${componentId}-input` }
                     />
 

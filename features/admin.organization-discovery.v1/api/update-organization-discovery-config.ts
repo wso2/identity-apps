@@ -35,7 +35,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  *
  * @param properties - Data that needs to be updated.
  */
-export const updateOrganizationDiscoveryConfig = (
+const updateOrganizationDiscoveryConfig = (
     properties: OrganizationDiscoveryConfigInterface
 ): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {

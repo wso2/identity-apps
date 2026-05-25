@@ -94,7 +94,7 @@ export interface LanguageTextFieldProps {
 /**
  * Props interface of {@link I18nConfigurationCard}
  */
-export interface I18nConfigurationCardPropsInterface extends IdentifiableComponentInterface {
+interface I18nConfigurationCardPropsInterface extends IdentifiableComponentInterface {
     /**
      * Whether the card is open or not.
      */

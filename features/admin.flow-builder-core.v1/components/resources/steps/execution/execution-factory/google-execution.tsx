@@ -29,7 +29,7 @@ import { ExecutionMinimalPropsInterface } from "../execution-minimal";
 /**
  * Props interface of {@link GoogleExecution}.
  */
-export type GoogleExecutionPropsInterface = ExecutionMinimalPropsInterface
+type GoogleExecutionPropsInterface = ExecutionMinimalPropsInterface
     & IdentifiableComponentInterface;
 
 const GoogleExecution = ({

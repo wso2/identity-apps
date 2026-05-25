@@ -85,7 +85,7 @@ export const handleAuthenticationChangeCancel = (
  * @param t - Translation function to get localized strings
  * @returns The localized display name for the authentication type
  */
-export const resolveAuthTypeDisplayName = (
+const resolveAuthTypeDisplayName = (
     authType: string,
     t: (key: string) => string
 ): string => {

@@ -34,7 +34,7 @@ interface PageHeaderProps {
  * @param {PageHeaderProps} props - Props injected to the page header component.
  * @return {JSX.Element}
  */
-export const PageHeader: React.FunctionComponent<PageHeaderProps> = (props: PageHeaderProps): JSX.Element => {
+const PageHeader: React.FunctionComponent<PageHeaderProps> = (props: PageHeaderProps): JSX.Element => {
     const { title, description, titleTextAlign } = props;
     return (
         <>

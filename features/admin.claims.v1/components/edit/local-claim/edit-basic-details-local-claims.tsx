@@ -26,7 +26,7 @@ import TableHead from "@oxygen-ui/react/TableHead";
 import TableRow from "@oxygen-ui/react/TableRow";
 import { TrashIcon } from "@oxygen-ui/react-icons";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
+import useGetAllLocalClaims from "../../../api/use-get-all-local-claims";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useEnableLegacyFlows, { LegacyFlowType } from "@wso2is/admin.core.v1/hooks/use-enable-legacy-flows";
@@ -68,9 +68,9 @@ import {
 } from "@wso2is/core/models";
 import { Property } from "@wso2is/core/src/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
-import { DropDownItemInterface } from "@wso2is/form/src";
-import { DynamicField , KeyValue } from "@wso2is/forms";
+import { Field, Form } from "@wso2is/forms";
+import { DropDownItemInterface } from "@wso2is/forms";
+import { DynamicField , KeyValue } from "@wso2is/forms/legacy";
 import {
     ConfirmationModal,
     CopyInputField,

@@ -18,6 +18,7 @@
 
 /* eslint-disable sort-keys */
 
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import {
     PasswordExpiryEnforcementScope,
     ServerConfigurationsConstants

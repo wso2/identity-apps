@@ -54,7 +54,7 @@ import "./default-layout.scss";
 /**
  * Default page layout component Prop types.
  */
-export interface DefaultLayoutPropsInterface extends RouteComponentProps {
+interface DefaultLayoutPropsInterface extends RouteComponentProps {
     /**
      * Is layout fluid.
      */
@@ -68,7 +68,7 @@ export interface DefaultLayoutPropsInterface extends RouteComponentProps {
  *
  * @returns Dashboard Layout.
  */
-export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
+const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
     location
 }: DefaultLayoutPropsInterface): ReactElement => {
     const { t } = useTranslation();
@@ -90,6 +90,9 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
     const hasGettingStartedViewPermission: boolean = useRequiredScopes(gettingStartedFeatureConfig?.scopes?.feature);
 
     const { isVisible: isCopilotVisible, togglePanel: toggleCopilotPanel } = useCopilotPanel();
+    const isFirstLevelOrganization: boolean = useSelector(
+        (state: AppState) => state.organization.isFirstLevelOrganization
+    );
 
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getDefaultLayoutRoutes());
 
@@ -192,7 +195,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
             <AppShell
                 header={
                     (<Header
-                        copilotToggle={ featureConfig?.copilot?.enabled ? {
+                        copilotToggle={ featureConfig?.copilot?.enabled && isFirstLevelOrganization ? {
                             icon: <AISparkleIcon
                                 width={ 20 }
                                 height={ 20 }
@@ -244,7 +247,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
                     </Suspense>
                 </ErrorBoundary>
             </AppShell>
-            { featureConfig?.copilot?.enabled && (
+            { featureConfig?.copilot?.enabled && isFirstLevelOrganization && (
                 <ErrorBoundary
                     onChunkLoadError={ AppUtils.onChunkLoadError }
                     handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {

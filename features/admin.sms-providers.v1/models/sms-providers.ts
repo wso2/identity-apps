@@ -28,7 +28,7 @@ export interface SMSProviderAPIResponseInterface {
     properties: SMSProviderPropertiesInterface[];
 }
 
-export interface AuthenticationnInterface {
+interface AuthenticationnInterface {
     type: AuthType;
     properties?: {
         username?: string;
@@ -56,7 +56,7 @@ export interface SMSProviderPropertiesInterface {
     value: string;
 }
 
-export interface SMSProviderPropertiesObjectInterface {
+interface SMSProviderPropertiesObjectInterface {
     [key: string]: string;
 }
 

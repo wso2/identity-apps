@@ -78,7 +78,7 @@ import { ApplicationTemplateManagementUtils } from "../utils/application-templat
  *
  * Proptypes for the applications list component.
  */
-export interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInterface>,
+interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInterface>,
     LoadableComponentInterface, TestableComponentInterface, IdentifiableComponentInterface {
 
     /**

@@ -21,10 +21,16 @@ import StepContent from "@oxygen-ui/react/StepContent";
 import StepLabel from "@oxygen-ui/react/StepLabel";
 import Stepper from "@oxygen-ui/react/Stepper";
 import Typography from "@oxygen-ui/react/Typography";
-import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import {
+    FeatureAccessConfigInterface,
+    FeatureStatus,
+    useCheckFeatureStatus,
+    useRequiredScopes
+} from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { AlertLevels, IdentifiableComponentInterface,
     HttpErrorResponseDataInterface
@@ -33,7 +39,7 @@ import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
 import "./approval-workflow-create-page.scss";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -100,6 +106,19 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
     const hasApprovalWorkflowCreatePermission: boolean = useRequiredScopes(
         approvalWorkflowFeatureConfig?.scopes?.create
     );
+
+    const approvalWorkflowsFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["APPROVAL_WORKFLOWS_FEATURE_GATE"]
+    );
+
+    /**
+     * Redirects to the approval workflows list page if the feature is not enabled.
+     */
+    useEffect(() => {
+        if (approvalWorkflowsFeatureStatus && approvalWorkflowsFeatureStatus !== FeatureStatus.ENABLED) {
+            history.push(AppConstants.getPaths().get("APPROVAL_WORKFLOWS"));
+        }
+    }, [ approvalWorkflowsFeatureStatus ]);
 
     const [ approvalWorkflowFormData, setApprovalWorkflowFormData ] = useState<ApprovalWorkflowFormDataInterface>(null);
     const [ isApprovalWorkflowCreateRequestLoading, setIsApprovalWorkflowCreateRequestLoading ] = useState<boolean>(

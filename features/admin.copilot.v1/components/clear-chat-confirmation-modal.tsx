@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 /**
  * Props interface for the Clear Chat Confirmation Modal component.
  */
-export interface ClearChatConfirmationModalProps extends IdentifiableComponentInterface {
+interface ClearChatConfirmationModalProps extends IdentifiableComponentInterface {
     /**
      * Whether the modal is open.
      */

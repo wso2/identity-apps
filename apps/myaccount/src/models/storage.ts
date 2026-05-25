@@ -29,7 +29,7 @@ export interface StorageApplicationSettingsInterface {
 /**
  * Interface for the applications settings items.
  */
-export interface StorageApplicationSettingsItemsInterface {
+interface StorageApplicationSettingsItemsInterface {
     /**
      * Array of recent application ids.
      */

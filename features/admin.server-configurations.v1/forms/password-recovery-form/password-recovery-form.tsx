@@ -20,17 +20,17 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import {
     PasswordRecoveryFormConstants
-} from "@wso2is/admin.server-configurations.v1/constants/password-recovery-constants";
+} from "../../constants/password-recovery-constants";
 import {
     EmailRecoveryOption,
     PasswordRecoveryConfigurationFormPropsInterface,
     PasswordRecoveryFormErrorValidationsInterface,
     PasswordRecoveryFormUpdatableConfigsInterface,
     PasswordRecoveryFormValuesInterface
-} from "@wso2is/admin.server-configurations.v1/models/password-recovery";
+} from "../../models/password-recovery";
 import { CommonUtils } from "@wso2is/core/utils";
-import { Field, Form } from "@wso2is/form";
-import { RadioChild } from "@wso2is/forms";
+import { Field, Form } from "@wso2is/forms";
+import { RadioChild } from "@wso2is/forms/legacy";
 import { Heading, Hint, Link, Message } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";

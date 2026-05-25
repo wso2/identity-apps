@@ -19,8 +19,8 @@
 import "./webhook-channel-config-form.scss";
 import { Box, FormGroup, Grid, Typography } from "@mui/material";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FinalFormField } from "@wso2is/form/src";
-import CheckboxAdapter from "@wso2is/form/src/components/adapters/checkbox-field-adapter";
+import { FinalFormField } from "@wso2is/forms";
+import CheckboxAdapter from "@wso2is/forms/src/components/adapters/checkbox-field-adapter";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Icon } from "semantic-ui-react";

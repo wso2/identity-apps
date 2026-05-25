@@ -18,7 +18,7 @@
 
 import { BrandingPreferenceAPIResponseInterface } from "@wso2is/common.branding.v1/models";
 import cloneDeep from "lodash-es/cloneDeep";
-import { CustomTextPreferenceAPIResponseInterface } from "../models/custom-text-preference";
+import { CustomTextPreferenceAPIResponseInterface } from "@wso2is/common.branding.v1/models/custom-text-preference";
 
 /**
  * Utility class for Branding Preference migrations related operations.

@@ -102,6 +102,27 @@ export interface AuthenticationFlowNS {
             };
             header: string;
         };
+        sharedUserIdentifier: {
+            controls: {
+                optionRemoveTooltipContent: string;
+                optionSwitchTooltipContent: string;
+            };
+            form: {
+                actions: {
+                    primary: string;
+                };
+                fields: {
+                    rememberMe: {
+                        label: string;
+                    };
+                    username: {
+                        label: string;
+                        placeholder: string;
+                    };
+                };
+            };
+            header: string;
+        };
         push: {
             controls: {
                 optionRemoveTooltipContent: string;

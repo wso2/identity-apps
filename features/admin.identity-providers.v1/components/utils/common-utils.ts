@@ -23,7 +23,7 @@ import { AxiosError } from "axios";
 
 const CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE: string = "IDP-65004";
 
-export const handleIDPDeleteError = (error: AxiosError<HttpErrorResponseDataInterface>): void  => {
+const handleIDPDeleteError = (error: AxiosError<HttpErrorResponseDataInterface>): void  => {
     if (
         error.response &&
         error.response.data &&
@@ -73,7 +73,7 @@ export const handleIDPDeleteError = (error: AxiosError<HttpErrorResponseDataInte
     );
 };
 
-export const handleIDPUpdateError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
+const handleIDPUpdateError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -136,7 +136,7 @@ export const handleGetRoleListError = (error: AxiosError<HttpErrorResponseDataIn
     );
 };
 
-export const handleUpdateIDPRoleMappingsError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
+const handleUpdateIDPRoleMappingsError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -168,7 +168,7 @@ export const handleUpdateIDPRoleMappingsError = (error: AxiosError<HttpErrorResp
     );
 };
 
-export const handleGetFederatedAuthenticatorMetadataAPICallError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
+const handleGetFederatedAuthenticatorMetadataAPICallError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -203,7 +203,7 @@ export const handleGetFederatedAuthenticatorMetadataAPICallError = (error: Axios
     );
 };
 
-export const handleGetOutboundProvisioningConnectorMetadataError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
+const handleGetOutboundProvisioningConnectorMetadataError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
     if (error?.response?.data?.description) {
         store.dispatch(
             addAlert({
@@ -238,7 +238,7 @@ export const handleGetOutboundProvisioningConnectorMetadataError = (error: Axios
     );
 };
 
-export const handleUpdateOutboundProvisioningConnectorError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
+const handleUpdateOutboundProvisioningConnectorError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -274,7 +274,7 @@ export const handleUpdateOutboundProvisioningConnectorError = (error: AxiosError
     );
 };
 
-export const handleGetIDPTemplateListError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
+const handleGetIDPTemplateListError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -307,7 +307,7 @@ export const handleGetIDPTemplateListError = (error: AxiosError<HttpErrorRespons
     );
 };
 
-export const handleGetIDPTemplateAPICallError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
+const handleGetIDPTemplateAPICallError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -339,7 +339,7 @@ export const handleGetIDPTemplateAPICallError = (error: AxiosError<HttpErrorResp
     );
 };
 
-export const handleGetIDPListCallError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
+const handleGetIDPListCallError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
     if (error?.response?.data?.description) {
         store.dispatch(
             addAlert({

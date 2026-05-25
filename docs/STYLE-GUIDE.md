@@ -609,7 +609,7 @@ When migrating a component:
 
 ## Form Components
 
-Use the `@wso2is/form` library for form implementations. See [FORMS.md](./FORMS.md) for detailed form guidelines including:
+Use the `@wso2is/forms` library for form implementations. See [FORMS.md](./FORMS.md) for detailed form guidelines including:
 
 - Field types and validation
 - Form layout patterns

@@ -42,7 +42,7 @@ import {
 /**
  * Props interface for IntegrationAccordion component.
  */
-export interface IntegrationAccordionPropsInterface extends IdentifiableComponentInterface {
+interface IntegrationAccordionPropsInterface extends IdentifiableComponentInterface {
     /** Integration guide for the framework (used for AI prompt and hardcoded fallback) */
     guide?: FrameworkIntegrationGuideInterface;
     /** Configuration values */

@@ -25,7 +25,7 @@ import { getAppIconBackgrounds } from "../../configs";
 /**
  * Prop types for the App Avatar component.
  */
-export interface AppAvatarProps extends AvatarProps, TestableComponentInterface {
+interface AppAvatarProps extends AvatarProps, TestableComponentInterface {
     onCard?: boolean;
 }
 

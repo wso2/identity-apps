@@ -332,7 +332,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 
                     const createdEdges: Edge[] = incomers.flatMap(({ id: source }: { id: string }) =>
                         outgoers.map(({ id: target }: { id: string }) => {
-                            // Find the edge from incomer to the node being deleted
+                            // Find the edge from incomer to the node being deleted.
                             const edge: Edge = connectedEdges.find(
                                 (e: Edge) => e.source === source && e.target === node.id
                             );

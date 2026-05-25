@@ -17,7 +17,7 @@
  */
 
 import { ClaimInputFormat } from "@wso2is/core/models";
-import { Validation } from "@wso2is/forms";
+import { Validation } from "@wso2is/forms/legacy";
 import dayjs, { Dayjs } from "dayjs";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";

@@ -22,4 +22,4 @@ import { ConfigInterface } from "../models";
 /**
  * This creates a React context that will hold the application configuration
  */
-export const AppConfig: React.Context<ConfigInterface> = React.createContext<ConfigInterface>(null);
+const AppConfig: React.Context<ConfigInterface> = React.createContext<ConfigInterface>(null);

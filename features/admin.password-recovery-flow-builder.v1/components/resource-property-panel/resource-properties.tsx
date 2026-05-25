@@ -39,7 +39,7 @@ import PasswordRecoveryFlowBuilderConstants from "../../constants/password-recov
 /**
  * Props interface of {@link ResourceProperties}
  */
-export type ResourcePropertiesPropsInterface = CommonResourcePropertiesPropsInterface & IdentifiableComponentInterface;
+type ResourcePropertiesPropsInterface = CommonResourcePropertiesPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Factory to generate the property configurator for the given password recovery flow resource.

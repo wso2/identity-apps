@@ -37,7 +37,7 @@ import { UserStoreListItem, UserStoreProperty } from "../models/user-stores";
 /**
  * Props for the UserStoresProvider.
  */
-export type UserStoresProviderProps = PropsWithChildren;
+type UserStoresProviderProps = PropsWithChildren;
 
 /**
  * Provider for userstores.

@@ -30,7 +30,7 @@ type SamlIdPListItemOption = {
     value: string;
 };
 
-export const supportedSchemes: string[] = [
+const supportedSchemes: string[] = [
     "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
     "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress",
     "urn:oasis:names:tc:SAML:2.0:nameid-format:entity",
@@ -265,7 +265,7 @@ export const fastSearch = (
  *
  * @param value - Value to cast.
  */
-export const castToBool = (value: string): boolean => {
+const castToBool = (value: string): boolean => {
     if (!value) return false;
     if ("true" === value.toLowerCase()) return true;
     if ("false" === value.toLowerCase()) return false;
@@ -275,7 +275,7 @@ export const castToBool = (value: string): boolean => {
  * Test for boolean toString value.
  * @param value - Value to test.
  */
-export const booleanSentAsAStringValue = (value: any): boolean => {
+const booleanSentAsAStringValue = (value: any): boolean => {
     if (typeof value === "string") {
         return /true|false/g.test(value);
     }
@@ -283,14 +283,14 @@ export const booleanSentAsAStringValue = (value: any): boolean => {
     return false;
 };
 
-export type MinMaxLength = { max: number; min: number };
-export type FormErrors = { [ key: string ]: string };
+type MinMaxLength = { max: number; min: number };
+type FormErrors = { [ key: string ]: string };
 
 export const SERVICE_PROVIDER_ENTITY_ID_LENGTH: MinMaxLength = { max: 240, min: 3 };
 export const SSO_URL_LENGTH: MinMaxLength = { max: 2048, min: 10 };
 export const LOGOUT_URL_LENGTH: MinMaxLength = { max: 2048, min: 10 };
 export const IDENTITY_PROVIDER_ENTITY_ID_LENGTH: MinMaxLength = { max: 2048, min: 5 };
-export const IDENTITY_PROVIDER_NAME_LENGTH: MinMaxLength = { max: 120, min: 3 };
+const IDENTITY_PROVIDER_NAME_LENGTH: MinMaxLength = { max: 120, min: 3 };
 export const IDENTITY_PROVIDER_AUTHORIZED_REDIRECT_URL_LENGTH: MinMaxLength = { max: 2048, min: 10 };
 
 /**
@@ -302,7 +302,7 @@ export const IDENTITY_PROVIDER_AUTHORIZED_REDIRECT_URL_LENGTH: MinMaxLength = { 
  *
  * @param errors - Form errors object.
  */
-export const ifFieldsHave = (errors: FormErrors): boolean => {
+const ifFieldsHave = (errors: FormErrors): boolean => {
     return !Object.keys(errors).every((k: string) => !errors[ k ]);
 };
 

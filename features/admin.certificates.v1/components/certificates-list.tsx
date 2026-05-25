@@ -340,7 +340,11 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
             byteArray[ x ] = parseInt(hex.substr(x * 2, 2), 16);
         }
 
-        const blob : Blob = new Blob([ byteArray ], {
+        const byteArrayBuffer: ArrayBuffer = new ArrayBuffer(byteArray.byteLength);
+
+        new Uint8Array(byteArrayBuffer).set(byteArray);
+
+        const blob : Blob = new Blob([ byteArrayBuffer ], {
             type: "application/x-x509-ca-cert"
         });
 
@@ -723,7 +727,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                 onRowClick={
                     (e: SyntheticEvent, certificate: Certificate): void => {
                         handleCertificateView(certificate);
-                        onListItemClick && onListItemClick(e, certificate);
+                        onListItemClick?.(e, certificate);
                     }
                 }
                 placeholders={ showPlaceholders() }

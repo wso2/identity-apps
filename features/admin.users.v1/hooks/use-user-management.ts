@@ -22,7 +22,7 @@ import UserManagementContext, { UserManagementContextProps } from "../context/us
 /**
  * Interface for the return type of the `useUserManagement` hook.
  */
-export type UseUserManagementInterface = UserManagementContextProps;
+type UseUserManagementInterface = UserManagementContextProps;
 
 /**
  * Hook that provides access to the user management context.

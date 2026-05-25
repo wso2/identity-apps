@@ -29,7 +29,7 @@ import { INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants/role-constants
 import { RoleListInterface, RolesInterface, TestableComponentInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
-import { DynamicField, KeyValue } from "@wso2is/forms";
+import { DynamicField, KeyValue } from "@wso2is/forms/legacy";
 import { Heading, Hint } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -70,7 +70,7 @@ interface RoleMappingSettingsPropsInterface extends TestableComponentInterface {
  * @param props - Props injected to the component.
  * @returns Role mapping settings component.
  */
-export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInterface> = (
+const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInterface> = (
     props: RoleMappingSettingsPropsInterface
 ): ReactElement => {
 
@@ -126,7 +126,6 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                 });
         }
     }, [ initialRoleMappings ]);
-
 
     /**
      * Prepends `Internal/` to the role name if it does not have a domain prepended already.

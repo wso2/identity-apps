@@ -35,7 +35,7 @@ import RulesContext, { RulesContextInterface } from "../contexts/rules-context";
  * const { rulesInstance } = useRulesContext();
  * ```
  */
-export const useRulesContext = (): RulesContextInterface => {
+const useRulesContext = (): RulesContextInterface => {
     const context: RulesContextInterface = useContext(RulesContext);
 
     if (!context) {

@@ -22,7 +22,7 @@ import useConsoleSettings from "./use-console-settings";
 /**
  * Props interface of {@link useConsoleRoles}
  */
-export type UseConsoleRolesInterface = any;
+type UseConsoleRolesInterface = any;
 
 /**
  * Hook that provides access to the Console roles.

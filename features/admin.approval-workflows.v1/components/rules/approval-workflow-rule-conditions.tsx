@@ -20,7 +20,7 @@ import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Divider from "@oxygen-ui/react/Divider";
 import { PlusIcon } from "@oxygen-ui/react-icons";
-import { useRulesContext } from "@wso2is/admin.rules.v1/hooks/use-rules-context";
+import useRulesContext from "@wso2is/admin.rules.v1/hooks/use-rules-context";
 import {
     AdjoiningOperatorTypes,
     ConditionExpressionInterface,
@@ -41,7 +41,7 @@ import "./approval-workflow-rule-conditions.scss";
 /**
  * Props interface of {@link ApprovalWorkflowRuleConditions}
  */
-export interface ApprovalWorkflowRuleConditionsPropsInterface extends IdentifiableComponentInterface {
+interface ApprovalWorkflowRuleConditionsPropsInterface extends IdentifiableComponentInterface {
     readonly?: boolean;
     rule: RuleInterface;
     submissionAttempted?: boolean;

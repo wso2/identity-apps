@@ -298,7 +298,7 @@ export const useApplicationList = <Data = ApplicationListInterface, Error = Requ
     };
 };
 
-export const getApplicationsByIds = async (
+const getApplicationsByIds = async (
     ids: Set<string>
 ): Promise<AxiosResponse<ApplicationInterface>[]> => {
 
@@ -452,7 +452,7 @@ export const getAuthProtocolMetadata = <T>(protocol: string): Promise<T> => {
  *
  * @param id - Application ID
  */
-export const getOIDCData = (id: string): Promise<any> => {
+const getOIDCData = (id: string): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
@@ -520,7 +520,7 @@ export const getInboundProtocolConfig = (applicationId: string, inboundProtocolI
  *
  * @returns Response as a promise.
  */
-export const updateOIDCData = (id: string, OIDC: Record<string, unknown>): Promise<any> => {
+const updateOIDCData = (id: string, OIDC: Record<string, unknown>): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
         data: OIDC,
         headers: {
@@ -1128,7 +1128,7 @@ export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfi
  * @returns A URL in tenant perspective to call from an organization.
  * @throws IdentityAppsApiException
  */
-export const insertOrgIdToURL = (urlString: string, orgId: string) => {
+const insertOrgIdToURL = (urlString: string, orgId: string) => {
     const url: URL = new URL(urlString);
 
     const parts: string[] = url.pathname.split("/").filter(Boolean);
@@ -1197,7 +1197,7 @@ export const getSAMLApplicationConfigurations = (): Promise<SAMLApplicationConfi
  * @returns A promise containing the response.
  * @throws IdentityAppsApiException
  */
-export const getRequestPathAuthenticators = (): Promise<any> => {
+const getRequestPathAuthenticators = (): Promise<any> => {
 
     const requestConfig: AxiosRequestConfig = {
         headers: {
@@ -1242,7 +1242,7 @@ export const getRequestPathAuthenticators = (): Promise<any> => {
  * @returns Promise of response of the My Account status update request.
  * @throws IdentityAppsApiException
  */
-export const updateMyAccountStatus = (status: boolean): Promise<MyAccountPortalStatusInterface> => {
+const updateMyAccountStatus = (status: boolean): Promise<MyAccountPortalStatusInterface> => {
 
     const requestConfig: AxiosRequestConfig = {
         data: {

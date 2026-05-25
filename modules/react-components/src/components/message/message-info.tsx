@@ -72,6 +72,7 @@ export const MessageInfo: FunctionComponent<MessageInfoProps> = (props: MessageI
             header={ (
                 <Header as="h4">
                     <Header.Content>
+                        {/* @ts-expect-error TODO(typescript-upgrade) */}
                         <>
                             <Icon name="info circle"/>
                             { header }

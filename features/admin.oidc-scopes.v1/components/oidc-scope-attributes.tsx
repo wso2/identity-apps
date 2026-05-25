@@ -46,7 +46,7 @@ interface OIDCScopeAttributesPropsInterface extends TestableComponentInterface {
  *
  * @return {React.ReactElement}
  */
-export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInterface> = (
+const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInterface> = (
     props: OIDCScopeAttributesPropsInterface
 ): ReactElement => {
 
@@ -175,7 +175,6 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
         setCheckedUnassignedListItems([]);
         setIsSelectAssignedAllClaimsChecked(false);
     };
-
 
     /**
      * The following method handles the onChange event of the

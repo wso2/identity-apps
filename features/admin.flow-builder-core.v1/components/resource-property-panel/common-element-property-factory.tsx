@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,10 +20,12 @@ import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import CheckboxPropertyField from "./checkbox-property-field";
+import ChoiceOptionsPropertyField from "./choice-options-property-field";
 import RichTextWithTranslation from "./rich-text/rich-text-with-translation";
 import TextPropertyField from "./text-property-field";
 import FlowBuilderElementConstants from "../../constants/flow-builder-element-constants";
-import { ElementTypes } from "../../models/elements";
+import { FieldOption } from "../../models/base";
+import { ElementTypes, InputVariants } from "../../models/elements";
 import { Resource } from "../../models/resources";
 
 /**
@@ -69,6 +71,19 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
     onChange,
     ...rest
 }: CommonElementPropertyFactoryPropsInterface): ReactElement | null => {
+    if ((resource.type === ElementTypes.Choice ||
+        (resource.type === ElementTypes.Input && resource.variant === InputVariants.Choice)) &&
+        propertyKey === "options") {
+        return (
+            <ChoiceOptionsPropertyField
+                resource={ resource }
+                options={ (propertyValue as FieldOption[]) ?? [] }
+                onChange={ onChange }
+                data-componentid={ `${componentId}-${propertyKey}` }
+            />
+        );
+    }
+
     if (propertyKey === "text") {
         if (resource.type === ElementTypes.RichText) {
             return (

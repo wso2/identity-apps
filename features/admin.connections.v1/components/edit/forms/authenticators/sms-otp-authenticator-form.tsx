@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import { Code } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isBoolean from "lodash-es/isBoolean";
@@ -126,7 +126,7 @@ interface SMSOTPAuthenticatorFormFieldsInterface {
 /**
  * Proptypes for the SMS OTP Authenticator Form error messages.
  */
-export interface SMSOTPAuthenticatorFormErrorValidationsInterface {
+interface SMSOTPAuthenticatorFormErrorValidationsInterface {
     /**
      * SMS OTP expiry time field.
      */

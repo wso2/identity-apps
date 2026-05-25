@@ -295,7 +295,7 @@ export const getConnections = (
  *
  * @returns requested application details.
  */
-export const useGetApplicationDetails = <Data = ApplicationBasicInterface, Error = RequestErrorInterface>(
+const useGetApplicationDetails = <Data = ApplicationBasicInterface, Error = RequestErrorInterface>(
     id?: string
 ): RequestResultInterface<Data, Error> => {
 
@@ -328,7 +328,7 @@ export const useGetApplicationDetails = <Data = ApplicationBasicInterface, Error
  *
  * @returns requested connected apps.
  */
-export const useGetConnectionConnectedApps = <Data = ConnectedAppsInterface, Error = RequestErrorInterface>(
+const useGetConnectionConnectedApps = <Data = ConnectedAppsInterface, Error = RequestErrorInterface>(
     idpId: string
 ): RequestResultInterface<Data, Error> => {
 
@@ -426,7 +426,7 @@ export const useGetConnectionTemplate = <Data = ConnectionTemplateInterface, Err
  *
  * @returns Requested connections.
  */
-export const useGetConnectionTemplates = <Data = any, Error = RequestErrorInterface>(
+const useGetConnectionTemplates = <Data = any, Error = RequestErrorInterface>(
     limit?: number,
     offset?: number,
     filter?: string
@@ -595,7 +595,7 @@ export const getConnectionDetails = (id: string): Promise<any> => {
  *
  * @param id - Connection Id.
  */
-export const getCustomLocalAuthenticatorDetails = (id: string): Promise<any> => {
+const getCustomLocalAuthenticatorDetails = (id: string): Promise<any> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -761,7 +761,7 @@ export const getOutboundProvisioningConnector = (idpId: string, connectorId: str
  * @param idpId - ID of the Identity Provider.
  * @returns A promise containing the response.
  */
-export const updateOutboundProvisioningConnectors = <T = Record<string,unknown>>(
+const updateOutboundProvisioningConnectors = <T = Record<string,unknown>>(
     connectorList: T,
     idpId: string
 ): Promise<OutboundProvisioningConnectorListItemInterface> => {
@@ -992,7 +992,7 @@ export const getFederatedAuthenticatorDetails = (idpId: string, authenticatorId:
  * @param id - ID of the Federated Authenticator.
  * @returns A promise containing the response.
  */
-export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
+const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -1022,7 +1022,7 @@ export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
  * @param idpId - ID of the Identity Provider.
  * @returns A promise containing the response.
  */
-export const updateFederatedAuthenticators = (
+const updateFederatedAuthenticators = (
     authenticatorList: FederatedAuthenticatorListResponseInterface,
     idpId: string
 ): Promise<any> => {
@@ -1243,7 +1243,7 @@ export const updateImplicitAssociationConfig = (
  *
  * @returns  A promise containing the response.
  */
-export const useSMSNotificationSenders = <Data = NotificationSenderSMSInterface[], Error = RequestErrorInterface>():
+const useSMSNotificationSenders = <Data = NotificationSenderSMSInterface[], Error = RequestErrorInterface>():
     RequestResultInterface<Data, Error> => {
     const { resourceEndpoints } = useResourceEndpoints();
 

@@ -204,7 +204,7 @@ const responseToObject = (response: any): Record<string, any> => {
  *
  * @returns - a promise containing the response.
  */
-export const endFidoFlow = (clientResponse: string): Promise<any> => {
+const endFidoFlow = (clientResponse: string): Promise<any> => {
     const requestConfig: HttpRequestConfig = {
         data: clientResponse,
         headers: {

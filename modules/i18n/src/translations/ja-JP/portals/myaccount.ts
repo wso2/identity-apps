@@ -437,6 +437,55 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        "policyConsentManagement": {
+            "consentedOnLabel": "有効開始日",
+            "dangerZones": {
+                "revoke": {
+                    "actionTitle": "取り消す",
+                    "header": "ポリシー同意を取り消す",
+                    "subheader": "このアクションはこのポリシーに対するあなたの同意を取り消します。次回サービスにアクセスするときに、再度同意するよう求められる場合があります。"
+                }
+            },
+            "modals": {
+                "revokeModal": {
+                    "heading": "{{policyName}} の同意を取り消す",
+                    "message": "これはこのポリシーに対するあなたの同意を取り消します。次回サービスにアクセスするときに、再度同意するよう求められる場合があります。続行してよろしいですか？"
+                }
+            },
+            "notifications": {
+                "fetch": {
+                    "error": {
+                        "description": "ポリシー同意を取得中にエラーが発生しました。",
+                        "message": "取得に失敗しました"
+                    },
+                    "genericError": {
+                        "description": "ポリシー同意を取得中にエラーが発生しました。",
+                        "message": "取得に失敗しました"
+                    },
+                    "success": {
+                        "description": "",
+                        "message": ""
+                    }
+                },
+                "revoke": {
+                    "error": {
+                        "description": "ポリシー同意を取り消し中にエラーが発生しました。",
+                        "message": "取り消しに失敗しました"
+                    },
+                    "genericError": {
+                        "description": "ポリシー同意を取り消し中にエラーが発生しました。",
+                        "message": "取り消しに失敗しました"
+                    },
+                    "success": {
+                        "description": "ポリシー同意は正常に取り消されました。",
+                        "message": "同意が取り消されました"
+                    }
+                }
+            },
+            "policyUrlLabel": "ポリシーを表示",
+            "versionLabel": "バージョン {{version}}"
+        },
+        
         "cookieConsent": {
             "confirmButton": "わかった",
             "content": "Cookieを使用して、最高の全体的な体験を確実に得ることができます。これらのCookieは、スムーズでパーソナライズされたサービスを提供しながら、途切れない連続セッションを維持するために使用されます。Cookieの使用方法の詳細については、<1> Cookieポリシーを参照してください。"
@@ -1649,6 +1698,10 @@ export const myAccount: MyAccountNS = {
             "subTitle": "アプリケーションを発見してアクセスします",
             "title": "アプリケーション"
         },
+        "consents": {
+            "subTitle": "アプリケーションと受け入れられたポリシーに提供した同意を管理します",
+            "title": "同意"
+        },
         "overview": {
             "subTitle": "個人情報、アカウントセキュリティ、プライバシー設定を管理する",
             "title": "ようこそ、{{firstName}}"
@@ -1746,6 +1799,15 @@ export const myAccount: MyAccountNS = {
             "placeholders": {
                 "emptyConsentList": {
                     "heading": "お客様は、アプリケーションに同意を与えていません"
+                }
+            }
+        },
+        "policyConsentManagement": {
+            "description": "受け入れたポリシーを確認します。",
+            "heading": "ポリシー同意",
+            "placeholders": {
+                "emptyConsentList": {
+                    "heading": "ポリシーの同意を受け入れていません"
                 }
             }
         },

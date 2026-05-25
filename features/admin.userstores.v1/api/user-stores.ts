@@ -252,7 +252,7 @@ export const addUserStore = (data: UserStorePostData): Promise<any> => {
  *
  * @returns updated userstore.
  */
-export const updateUserStore = (id: string, data: UserStorePostData): Promise<any> => {
+const updateUserStore = (id: string, data: UserStorePostData): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {

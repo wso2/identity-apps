@@ -27,7 +27,7 @@ import OrganizationsContext from "../context/organizations-context";
 /**
  * Props interface for the Organizations Provider component.
  */
-export type OrganizationsProviderProps = PropsWithChildren;
+type OrganizationsProviderProps = PropsWithChildren;
 
 /**
  * Provider for the Organization related operations.

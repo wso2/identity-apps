@@ -27,7 +27,7 @@ import { IdentifiableComponentInterface,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { SearchUtils } from "@wso2is/core/utils";
-import { DropdownChild, Field, FormValue, Forms } from "@wso2is/forms";
+import { DropdownChild, Field, FormValue, Forms } from "@wso2is/forms/legacy";
 import {
     AdvancedSearch,
     AdvancedSearchPropsInterface,
@@ -741,4 +741,3 @@ AdvancedSearchWithMultipleFilters.defaultProps = {
     showResetButton: false
 };
 
-export default AdvancedSearchWithMultipleFilters;

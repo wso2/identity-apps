@@ -1,5 +1,30 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.10.172
+
+### Patch Changes
+
+- [#10286](https://github.com/wso2/identity-apps/pull/10286) [`ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0`](https://github.com/wso2/identity-apps/commit/ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0) Thanks [@hwupathum](https://github.com/hwupathum)! - Add consent management related features
+
+- Updated dependencies [[`ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0`](https://github.com/wso2/identity-apps/commit/ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0)]:
+  - @wso2is/common.consents.v1@1.0.0
+  - @wso2is/admin.core.v1@2.57.10
+  - @wso2is/admin.flow-builder-core.v1@0.10.214
+  - @wso2is/common.branding.v1@2.28.4
+
+## 0.10.171
+
+### Patch Changes
+
+- [#10219](https://github.com/wso2/identity-apps/pull/10219) [`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove duplicate exports
+
+- Updated dependencies [[`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.212
+  - @wso2is/admin.validation.v1@2.28.4
+  - @wso2is/admin.claims.v1@2.31.2
+  - @wso2is/admin.rules.v1@0.7.50
+  - @wso2is/admin.core.v1@2.57.6
+
 ## 0.10.170
 
 ### Patch Changes

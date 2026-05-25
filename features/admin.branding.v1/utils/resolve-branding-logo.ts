@@ -47,7 +47,7 @@ const AVATAR_IMAGES: Record<string, string> = {
  * @param url - Logo URL to check
  * @returns True if the URL matches the avatar pattern
  */
-export const isAvatarLogoUrl = (url: string): boolean => {
+const isAvatarLogoUrl = (url: string): boolean => {
     return AVATAR_PATH_PATTERN.test(url);
 };
 
@@ -57,7 +57,7 @@ export const isAvatarLogoUrl = (url: string): boolean => {
  * @param url - Logo URL
  * @returns Avatar name (lowercase) or empty string if not found
  */
-export const getAvatarNameFromUrl = (url: string): string => {
+const getAvatarNameFromUrl = (url: string): string => {
     const match: RegExpMatchArray | null = url.match(AVATAR_PATH_PATTERN);
 
     return match ? match[1] : "";

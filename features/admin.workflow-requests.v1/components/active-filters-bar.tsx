@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 import { Button, Icon } from "semantic-ui-react";
 import "./active-filters-bar.scss";
 
-export interface FilterTag {
+interface FilterTag {
     key: string;
     label: string;
     type: string;

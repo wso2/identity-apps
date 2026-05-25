@@ -97,10 +97,7 @@ export const validateActionEndpointFields = (
 
     switch (authenticationType) {
         case AuthenticationType.BASIC:
-            if (
-                isCreateFormState || isAuthenticationUpdateFormState || values?.usernameAuthProperty ||
-                    values?.passwordAuthProperty
-            ) {
+            if (isCreateFormState || isAuthenticationUpdateFormState) {
                 if (!values?.usernameAuthProperty) {
                     errors.usernameAuthProperty = I18n.instance.t(
                         "actions:fields.authentication.types.basic.properties.username.validations.empty"
@@ -125,9 +122,7 @@ export const validateActionEndpointFields = (
 
             break;
         case AuthenticationType.API_KEY:
-            if (isCreateFormState || isAuthenticationUpdateFormState || values?.headerAuthProperty ||
-                   values?.valueAuthProperty
-            ) {
+            if (isCreateFormState || isAuthenticationUpdateFormState) {
                 if (!values?.headerAuthProperty) {
                     errors.headerAuthProperty = I18n.instance.t(
                         "actions:fields.authentication.types.apiKey.properties.header.validations.empty"
@@ -141,6 +136,92 @@ export const validateActionEndpointFields = (
                 if (!values?.valueAuthProperty) {
                     errors.valueAuthProperty = I18n.instance.t(
                         "actions:fields.authentication.types.apiKey.properties.value.validations.empty"
+                    );
+                }
+            }
+
+            break;
+        case AuthenticationType.CLIENT_CREDENTIAL:
+            if (isCreateFormState || isAuthenticationUpdateFormState) {
+                if (!values?.tokenEndpointAuthProperty) {
+                    errors.tokenEndpointAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.clientCredential" +
+                        ".properties.tokenEndpoint.validations.empty"
+                    );
+                } else if (
+                    !FormValidation.url(values?.tokenEndpointAuthProperty, {
+                        domain: {
+                            allowUnicode: true,
+                            minDomainSegments: 1,
+                            tlds: false
+                        },
+                        scheme: [ "https", "http" ]
+                    })
+                ) {
+                    errors.tokenEndpointAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.clientCredential" +
+                        ".properties.tokenEndpoint.validations.invalidUrl"
+                    );
+                }
+                if (!values?.clientIdAuthProperty) {
+                    errors.clientIdAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.clientCredential" +
+                        ".properties.clientId.validations.empty"
+                    );
+                }
+                if (!values?.clientSecretAuthProperty) {
+                    errors.clientSecretAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.clientCredential" +
+                        ".properties.clientSecret.validations.empty"
+                    );
+                }
+            }
+
+            break;
+        case AuthenticationType.PASSWORD_CREDENTIAL:
+            if (isCreateFormState || isAuthenticationUpdateFormState) {
+                if (!values?.tokenEndpoint_passwordCredentialAuthProperty) {
+                    errors.tokenEndpoint_passwordCredentialAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.passwordCredential" +
+                        ".properties.tokenEndpoint.validations.empty"
+                    );
+                } else if (
+                    !FormValidation.url(values?.tokenEndpoint_passwordCredentialAuthProperty, {
+                        domain: {
+                            allowUnicode: true,
+                            minDomainSegments: 1,
+                            tlds: false
+                        },
+                        scheme: [ "https", "http" ]
+                    })
+                ) {
+                    errors.tokenEndpoint_passwordCredentialAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.passwordCredential" +
+                        ".properties.tokenEndpoint.validations.invalidUrl"
+                    );
+                }
+                if (!values?.clientId_passwordCredentialAuthProperty) {
+                    errors.clientId_passwordCredentialAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.passwordCredential" +
+                        ".properties.clientId.validations.empty"
+                    );
+                }
+                if (!values?.clientSecret_passwordCredentialAuthProperty) {
+                    errors.clientSecret_passwordCredentialAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.passwordCredential" +
+                        ".properties.clientSecret.validations.empty"
+                    );
+                }
+                if (!values?.username_passwordCredentialAuthProperty) {
+                    errors.username_passwordCredentialAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.passwordCredential" +
+                        ".properties.username.validations.empty"
+                    );
+                }
+                if (!values?.password_passwordCredentialAuthProperty) {
+                    errors.password_passwordCredentialAuthProperty = I18n.instance.t(
+                        "actions:fields.authentication.types.passwordCredential" +
+                        ".properties.password.validations.empty"
                     );
                 }
             }

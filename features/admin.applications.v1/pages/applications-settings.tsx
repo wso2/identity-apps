@@ -28,7 +28,7 @@ import { AlertLevels,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import {
     ContentLoader,
     CopyInputField,
@@ -60,7 +60,7 @@ const FORM_ID: string = "applications-settings";
  * @param props - Props injected to the component.
  * @returns Functional Component.
  */
-export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInterface> = (
+const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPropsInterface> = (
     props: ApplicationsSettingsPropsInterface
 ): ReactElement => {
 

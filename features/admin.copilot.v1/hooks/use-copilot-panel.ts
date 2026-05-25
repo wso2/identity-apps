@@ -43,7 +43,7 @@ type AppDispatch = ThunkDispatch<AppState, unknown, AnyAction>;
 /**
  * Interface for the copilot panel hook return value.
  */
-export interface UseCopilotPanelInterface {
+interface UseCopilotPanelInterface {
     /**
      * Whether the copilot panel is visible.
      */

@@ -25,8 +25,8 @@ import { AlertLevels,
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
-import { DynamicField, KeyValue } from "@wso2is/forms";
+import { Field, Form } from "@wso2is/forms";
+import { DynamicField, KeyValue } from "@wso2is/forms/legacy";
 import {
     AnimatedAvatar,
     ConfirmationModal,
@@ -261,8 +261,10 @@ const ProfileAttributeEditPage: FunctionComponent<RouteComponentProps<RouteParam
             const axiosErr: AxiosError<HttpErrorResponseDataInterface> = err as AxiosError<HttpErrorResponseDataInterface>;
 
             setModalAlert({
-                description: axiosErr?.message || t("customerDataService:profileAttributes.edit.notifications" +
-                    ".deleteAttribute.error.description"),
+                description: axiosErr?.response?.data?.description
+                    ?? axiosErr?.message
+                    ?? t("customerDataService:profileAttributes.edit.notifications" +
+                        ".deleteAttribute.error.description"),
                 level: AlertLevels.ERROR,
                 message: t("customerDataService:profileAttributes.edit.notifications" +
                     ".deleteAttribute.error.message")

@@ -89,7 +89,7 @@
         "sharedGlobals": ["{workspaceRoot}/babel.config.json"],
         "production": [
             "default",
-            "!{projectRoot}/.eslintrc.js",
+            "!{workspaceRoot}/eslint.config.js",
             "!{projectRoot}/.storybook/**/*",
             "!{projectRoot}/**/*.stories.@(js|jsx|ts|tsx|mdx)",
             "!{projectRoot}/tsconfig.storybook.json",

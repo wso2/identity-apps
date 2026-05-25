@@ -42,7 +42,7 @@ import "./rich-text-with-translation.scss";
 /**
  * Props interface for the RichTextWithTranslation component.
  */
-export interface RichTextWithTranslationProps extends IdentifiableComponentInterface {
+interface RichTextWithTranslationProps extends IdentifiableComponentInterface {
     /**
      * Options to customize the rich text editor toolbar.
      */

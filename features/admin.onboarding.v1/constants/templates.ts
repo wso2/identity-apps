@@ -32,7 +32,7 @@ import { ApplicationType, ApplicationTypeOptionInterface, FrameworkOptionInterfa
 /**
  * High-level application type configurations (browser, mobile, machine).
  */
-export const APPLICATION_TYPES: readonly {
+const APPLICATION_TYPES: readonly {
     iconKey: string;
     titleKey: string;
     type: ApplicationType;

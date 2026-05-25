@@ -90,7 +90,7 @@ import {
 } from "../../models/application";
 import "./share-application-form.scss";
 
-export interface ApplicationShareFormPropsInterface
+interface ApplicationShareFormPropsInterface
     extends IdentifiableComponentInterface {
     /**
      * Editing application.

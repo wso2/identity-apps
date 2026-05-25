@@ -347,7 +347,7 @@ export const resolveCustomAuthenticatorDisplayName = (
     }
 };
 
-export const getIdPCapabilityIcons = (): any => {
+const getIdPCapabilityIcons = (): any => {
     return {
         [SupportedServices.AUTHENTICATION]: ConnectionIcon,
         [SupportedServices.PROVISIONING]: ProvisionIcon
@@ -527,7 +527,7 @@ export const handleGetConnectionTemplateListError = (error: AxiosError<HttpError
 /**
  * Utility function to handle the error alert of the connection role mappings update request.
  */
-export const handleUpdateConnectionRoleMappingsError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
+const handleUpdateConnectionRoleMappingsError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -778,7 +778,7 @@ export const handleGetConnectionsMetaDataError = (error: AxiosError<HttpErrorRes
 /**
  * Utility function to handle the error alert of the authenticator tags GET request.
  */
-export const handleGetAuthenticatorTagsError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
+const handleGetAuthenticatorTagsError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
     if (error?.response?.data?.description) {
         store.dispatch(
             addAlert({

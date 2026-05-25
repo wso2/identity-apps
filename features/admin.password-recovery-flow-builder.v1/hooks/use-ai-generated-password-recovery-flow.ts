@@ -24,7 +24,7 @@ import { useContext } from "react";
 /**
  * Interface for the return type of the `useAIGeneratedPasswordRecoveryFlow` hook.
  */
-export type UseAIGeneratedPasswordRecoveryFlowInterface = AIGeneratedFlowContextProps;
+type UseAIGeneratedPasswordRecoveryFlowInterface = AIGeneratedFlowContextProps;
 
 /**
  * Hook that provides access to the ai generated flow context.

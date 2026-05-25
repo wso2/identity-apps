@@ -17,7 +17,7 @@
  */
 import { BrandingPreferenceInterface } from "@wso2is/common.branding.v1/models/branding-preferences";
 
-export interface GenerateBrandingAPIInterface {
+interface GenerateBrandingAPIInterface {
     /**
      * Website URL of the page to generate the branding preference from.
      */
@@ -66,14 +66,14 @@ export interface BrandingGenerationResultAPIResponseInterface {
     data: BrandingPreferenceInterface;
 }
 
-export interface RegenerateBrandingAPIInterface {
+interface RegenerateBrandingAPIInterface {
     /**
      * Website URL of the page to generate the branding preference from.
      */
     websiteUrl: string;
 }
 
-export interface RegenerateBrandingAPIResponseInterface {
+interface RegenerateBrandingAPIResponseInterface {
     /**
      * Generated branding preference.
      */

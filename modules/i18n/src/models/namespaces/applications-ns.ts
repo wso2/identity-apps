@@ -591,6 +591,7 @@ export interface ApplicationsNS {
                                         plusIcon: string;
                                     };
                                 };
+                                subOrgInfoBanner: string;
                             };
                             stepBased: {
                                 actions: {
@@ -630,6 +631,7 @@ export interface ApplicationsNS {
                                 backupCodesDisabledInFirstStep: string;
                                 authenticatorDisabled: string;
                                 firstFactorDisabled: string;
+                                sharedUserIdentifierFirstFactorDisabled: string;
                                 federatedSMSOTPConflictNote: {
                                     multipleIdps: string;
                                     singleIdp: string;
@@ -709,6 +711,8 @@ export interface ApplicationsNS {
                                     info: {
                                         totpWithIdentifierFirstEnabled: string;
                                         totpWithIdentifierFirstEnabledMessage: string;
+                                        totpWithSharedUserIdentifierEnabled: string;
+                                        totpWithSharedUserIdentifierEnabledMessage: string;
                                     };
                                 };
                                 usernameless: {
@@ -3026,6 +3030,14 @@ export interface ApplicationsNS {
             description: string;
         };
         updateIdentifierFirstInFirstStepError: {
+            message: string;
+            description: string;
+        };
+        updateOnlySharedUserIdentifierError: {
+            message: string;
+            description: string;
+        };
+        updateSharedUserIdentifierInFirstStepError: {
             message: string;
             description: string;
         };

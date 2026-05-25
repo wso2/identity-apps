@@ -20,11 +20,12 @@ import { CollisionPriority } from "@dnd-kit/abstract";
 import Badge from "@mui/material/Badge";
 import Box from "@oxygen-ui/react/Box";
 import Typography from "@oxygen-ui/react/Typography";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
-import { Element, ElementCategories } from "../../../../models/elements";
+import { Element, ElementCategories, ElementTypes } from "../../../../models/elements";
 import { EventTypes } from "../../../../models/extension";
 import PluginRegistry from "../../../../plugins/plugin-registry";
 import generateResourceId from "../../../../utils/generate-resource-id";
@@ -36,7 +37,7 @@ import "./form-adapter.scss";
 /**
  * Props interface of {@link FormAdapter}
  */
-export type FormAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type FormAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Form component.
@@ -48,7 +49,13 @@ const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
     resource,
     stepId
 }: FormAdapterPropsInterface): ReactElement => {
-    const shouldShowFormFieldsPlaceholder: boolean = !resource?.components?.some(
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
+    const visibleComponents: Element[] = (resource?.components ?? []).filter(
+        (component: Element) => !(component.type === ElementTypes.Policy && isSubOrganization())
+    );
+
+    const shouldShowFormFieldsPlaceholder: boolean = !visibleComponents.some(
         (element: Element) => element.category === ElementCategories.Field
     );
 
@@ -76,19 +83,21 @@ const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
                         <Typography variant="body2">DROP FORM COMPONENTS HERE</Typography>
                     </Box>
                 ) }
-                { (resource?.components as any)?.map((component: Element, index: number) => PluginRegistry
-                    .getInstance().executeSync(EventTypes.ON_NODE_ELEMENT_FILTER, component) && (
-                    <ReorderableElement
-                        key={ component.id }
-                        id={ component.id }
-                        index={ index }
-                        element={ component }
-                        className={ classNames("flow-builder-step-content-form-field") }
-                        group={ resource.id }
-                        type={ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID }
-                        accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
-                    />
-                )) }
+                { visibleComponents?.map((component: Element, index: number) => {
+                    return PluginRegistry
+                        .getInstance().executeSync(EventTypes.ON_NODE_ELEMENT_FILTER, component) && (
+                        <ReorderableElement
+                            key={ component.id }
+                            id={ component.id }
+                            index={ index }
+                            element={ component }
+                            className={ classNames("flow-builder-step-content-form-field") }
+                            group={ resource.id }
+                            type={ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID }
+                            accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
+                        />
+                    );
+                }) }
             </Droppable>
         </Badge>
     );

@@ -268,7 +268,7 @@ export interface JITProvisioningAccountLinkingAttributeMappingInterface {
 /**
  * Captures the properties of a provisioning configuration.
  */
-export interface ProvisioningInterface {
+interface ProvisioningInterface {
     jit?: JITProvisioningResponseInterface;
     outboundConnectors?: OutboundProvisioningConnectorsInterface;
 }
@@ -344,7 +344,7 @@ export interface ExternalEndpoint {
 /**
  * Captures the authentication properties of an external endpoint associated with the authenticator.
  */
-export interface ExternalEndpointAuthentication {
+interface ExternalEndpointAuthentication {
     type?: EndpointAuthenticationType;
     properties?: Partial<AuthenticationPropertiesInterface>
 }
@@ -432,7 +432,7 @@ export interface ApplicationBasicInterface {
 /**
  * Captures the application access types.
  */
-export enum ApplicationAccessTypes {
+enum ApplicationAccessTypes {
     READ = "READ",
     WRITE = "WRITE"
 }
@@ -440,7 +440,7 @@ export enum ApplicationAccessTypes {
 /**
  *  Captures application related configuration.
  */
-export interface AdvancedConfigurationsInterface {
+interface AdvancedConfigurationsInterface {
     saas?: boolean;
     discoverableByEndUsers?: boolean;
     certificate?: CertificateInterface;
@@ -455,7 +455,7 @@ export interface AdvancedConfigurationsInterface {
 /**
  * Captures the certificate details.
  */
-export interface CertificateInterface {
+interface CertificateInterface {
     value?: string;
     type?: CertificateTypeInterface;
 }
@@ -463,7 +463,7 @@ export interface CertificateInterface {
 /**
  *  Acceptable certificate types.
  */
-export enum CertificateTypeInterface {
+enum CertificateTypeInterface {
     NONE ="None",
     JWKS = "JWKS",
     PEM = "PEM"
@@ -472,7 +472,7 @@ export enum CertificateTypeInterface {
 /**
  * Interface for the additional sp properties.
  */
-export interface additionalSpProperty {
+interface additionalSpProperty {
     name: string;
     value: string;
     displayName?: string;
@@ -481,7 +481,7 @@ export interface additionalSpProperty {
 /**
  * Interface for the connection templates category view config.
  */
-export interface ConnectionTemplateCategoryViewConfigInterface {
+interface ConnectionTemplateCategoryViewConfigInterface {
     /**
      * Config for the UI tags displayed on templates.
      */
@@ -512,7 +512,7 @@ export interface ConnectionTemplateCategoryViewConfigInterface {
 /**
  *  Connection template list item response interface.
  */
-export interface ConnectionTemplateListItemInterface extends ConnectionTemplateItemInterface {
+interface ConnectionTemplateListItemInterface extends ConnectionTemplateItemInterface {
     services?: string[];
     content?: TemplateContentInterface;
     docLink?: string;
@@ -569,18 +569,18 @@ export interface ConnectionTemplateCategoryInterface {
     viewConfigs?: ConnectionTemplateCategoryViewConfigInterface;
 }
 
-export interface StrictTemplateContentInterface {
+interface StrictTemplateContentInterface {
     wizardHelp?: LazyExoticComponent<ComponentType<any>> | ReactElement | any;
 }
 
-export interface TemplateContentInterface extends StrictTemplateContentInterface {
+interface TemplateContentInterface extends StrictTemplateContentInterface {
     [ key: string ]: any;
 }
 
 /**
  * Connection supported services interface.
  */
-export interface SupportedServicesInterface {
+interface SupportedServicesInterface {
     name: string;
     displayName: string;
     logo: string;
@@ -610,7 +610,7 @@ export interface ConnectionTemplateInterface extends ConnectionTemplateItemInter
 /**
  *  Connection template list response interface.
  */
-export interface ConnectionTemplateListResponseInterface {
+interface ConnectionTemplateListResponseInterface {
     totalResults?: number;
     startIndex?: number;
     count?: number;
@@ -668,8 +668,7 @@ export enum AuthProtocolTypes {
     SAML = "saml",
     OIDC = "oidc",
     WS_FEDERATION = "passive-sts",
-    WS_TRUST = "ws-trust",
-    CUSTOM= "custom"
+    WS_TRUST = "ws-trust"
 }
 
 export interface TemplateConfigInterface<T = Record<string, unknown>> {
@@ -954,7 +953,7 @@ export enum EndpointAuthenticationType {
     BEARER = "BEARER",
 }
 
-export interface CustomAuthenticatorCreateWizardProps extends GenericConnectionCreateWizardPropsInterface,
+interface CustomAuthenticatorCreateWizardProps extends GenericConnectionCreateWizardPropsInterface,
     IdentifiableComponentInterface {}
 
 /**
@@ -978,7 +977,7 @@ export type FormErrors = { [key: string]: string };
 /**
  * Enum for the custom local authentication types.
  */
-export enum CustomLocalAuthenticationType {
+enum CustomLocalAuthenticationType {
     IDENTIFICATION = "IDENTIFICATION",
     VERIFICATION = "VERIFICATION"
 }

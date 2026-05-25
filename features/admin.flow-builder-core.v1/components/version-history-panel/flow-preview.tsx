@@ -26,7 +26,7 @@ import "@xyflow/react/dist/style.css";
 /**
  * Props interface of {@link FlowPreview}
  */
-export interface FlowPreviewPropsInterface extends IdentifiableComponentInterface {
+interface FlowPreviewPropsInterface extends IdentifiableComponentInterface {
     /**
      * Initial nodes to be rendered.
      */

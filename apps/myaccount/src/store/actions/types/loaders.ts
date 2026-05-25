@@ -29,7 +29,7 @@ export const SET_PROFILE_INFO_LOADER: ActionTypes = "SET_PROFILE_INFO_LOADER";
 /**
  * Type for loader action types
  */
-export type ActionTypes = "SET_PROFILE_SCHEMA_LOADER" | "SET_PROFILE_INFO_LOADER";
+type ActionTypes = "SET_PROFILE_SCHEMA_LOADER" | "SET_PROFILE_INFO_LOADER";
 
 /**
  * Loader action model

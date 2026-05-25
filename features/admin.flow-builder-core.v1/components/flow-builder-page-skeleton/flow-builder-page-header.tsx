@@ -42,7 +42,7 @@ import useValidationStatus from "../../hooks/use-validation-status";
 /**
  * Props interface of {@link FlowBuilderPageHeader}
  */
-export interface FlowBuilderPageHeaderProps extends IdentifiableComponentInterface, RouteProps {
+interface FlowBuilderPageHeaderProps extends IdentifiableComponentInterface, RouteProps {
     flowType: any;
     flowTypeDisplayName: string;
     isPublishing: boolean;

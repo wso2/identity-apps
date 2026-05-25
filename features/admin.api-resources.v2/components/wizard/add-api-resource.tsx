@@ -16,10 +16,12 @@
  * under the License.
  */
 
+import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FormValue, useTrigger } from "@wso2is/forms";
+import { FormValue, useTrigger } from "@wso2is/forms/legacy";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { flushSync } from "react-dom";
@@ -30,7 +32,7 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddAPIResourceAuthorization, AddAPIResourceBasic, AddAPIResourcePermissions } from "./add-api-resource-steps";
 import { createAPIResource } from "../../api";
 import { getAPIResourceWizardStepIcons } from "../../configs";
-import { APIResourceType } from "../../constants";
+import { APIResourceType, APIResourcesConstants } from "../../constants";
 import useApiResourcesPageContent from "../../hooks/use-api-resources-page-content";
 import {
     APIResourceInterface,
@@ -92,6 +94,7 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
         = useState<AddAPIResourceWizardStepsFormTypes>(AddAPIResourceWizardStepsFormTypes.BASIC_DETAILS);
     const [ isIdentifierValidationLoading, setIdentifierValidationLoading ] = useState<boolean>(false);
     const [ isPermissionValidationLoading, setPermissionValidationLoading ] = useState<boolean>(false);
+    const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
     /**
     * Handles the wizard form submission.
@@ -151,6 +154,8 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
     const handleCreateAPIResource = (requiresAuthorization: boolean): void => {
         setIsSubmitting(true);
 
+        let limitReached: boolean = false;
+
         const apiResourceBody: APIResourceInterface = {
             identifier: basicDetails.identifier,
             name: basicDetails.displayName,
@@ -180,7 +185,15 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
                     resourceEditPath?.replace(":id", apiResource.id).replace(":categoryId", APIResourceType.CUSTOM)
                 );
             })
-            .catch(() => {
+            .catch((error: IdentityAppsApiException) => {
+                if (error?.response?.status === 403
+                    && error?.code === APIResourcesConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
+                    limitReached = true;
+                    setOpenLimitReachedModal(true);
+
+                    return;
+                }
+
                 dispatch(addAlert<AlertInterface>({
                     description: t("extensions:develop.apiResource.notifications.addAPIResource" +
                         ".genericError.description", {
@@ -194,9 +207,10 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
                 }));
             })
             .finally(() => {
+                if (!limitReached) {
+                    closeWizard();
+                }
                 setIsSubmitting(false);
-
-                closeWizard();
             });
     };
 
@@ -254,6 +268,22 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
         (step: APIResourceWizardStepInterface) =>
             !createResourceWizard?.hiddenSteps?.includes(step.addAPIResourceWizardStepsFormType)
     ).filter(Boolean);
+
+    if (openLimitReachedModal) {
+        return (
+            <TierLimitReachErrorModal
+                actionLabel={ t("apiResources:notifications.tierLimitReachedError.emptyPlaceholder.action") }
+                handleModalClose={ () => {
+                    setOpenLimitReachedModal(false);
+                    closeWizard();
+                } }
+                header={ t("apiResources:notifications.tierLimitReachedError.heading") }
+                description={ t("apiResources:notifications.tierLimitReachedError.emptyPlaceholder.subtitles") }
+                message={ t("apiResources:notifications.tierLimitReachedError.emptyPlaceholder.title") }
+                openModal={ openLimitReachedModal }
+            />
+        );
+    }
 
     return (
         <Modal

@@ -18,11 +18,20 @@
 
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { useAPIResources } from "@wso2is/admin.api-resources.v2/api";
+import { APIResourceCategories, APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
+import { APIResourceInterface } from "@wso2is/admin.api-resources.v2/models";
+import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import {
+    AlertInterface,
+    AlertLevels,
+    IdentifiableComponentInterface,
+    LinkInterface,
+    SBACInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -42,7 +51,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Divider, Grid, Icon } from "semantic-ui-react";
+import { Divider, DropdownItemProps, Grid, Icon } from "semantic-ui-react";
 import { SubscribedAPIResources } from "./subscribed-api-resources";
 import { AuthorizeAPIResource } from "./wizard/authorize-api-resource";
 import {
@@ -50,7 +59,10 @@ import {
     removeAuthorizedAPI
 } from "../../api/api-authorization";
 import useSubscribedAPIResources from "../../api/use-subscribed-api-resources";
-import { ApplicationManagementConstants } from "../../constants/application-management";
+import {
+    ApplicationFeatureDictionaryKeys,
+    ApplicationManagementConstants
+} from "../../constants/application-management";
 import {
     AuthorizedAPIListItemInterface,
     AuthorizedPermissionListItemInterface
@@ -122,16 +134,20 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
     const [ isUpdateData, setIsUpdateData ] = useState<boolean>(false);
     const [ allAuthorizedScopes, setAllAuthorizedScopes ] = useState<AuthorizedPermissionListItemInterface[]>([]);
     const [ hideAuthorizeAPIResourceButton, setHideAuthorizeAPIResourceButton ] = useState<boolean>(true);
+    const [ apiCallNextAfterValue, setAPICallNextAfterValue ] = useState<string>(null);
+    const [ allAPIResources, setAllAPIResources ] = useState<APIResourceInterface[]>([]);
+    const [ allAPIResourcesDropdownOptions, setAllAPIResourcesDropdownOptions ] = useState<DropdownItemProps[]>([]);
+    const [ isAllAPIResourcesPreloadLoading, setIsAllAPIResourcesPreloadLoading ] = useState<boolean>(false);
 
     const path: string[] = history.location.pathname.split("/");
     const appId: string = path[path.length - 1].split("#")[0];
 
     const {
-        data: allAPIResourcesListData,
+        data: currentAPIResourcesListData,
         isLoading: isAllAPIResourcesListLoading,
         error: allAPIResourcesFetchRequestError,
         mutate: mutateAllAPIResourcesList
-    } = useAPIResources(null, null, null, !readOnly);
+    } = useAPIResources(apiCallNextAfterValue, null, null, !readOnly);
 
     const {
         data: subscribedAPIResourcesListData,
@@ -140,12 +156,23 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
         mutate: mutateSubscribedAPIResourcesList
     } = useSubscribedAPIResources(appId);
 
+    const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
+    const isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled: boolean = isFeatureEnabled(
+        applicationFeatureConfig,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get(
+            ApplicationFeatureDictionaryKeys.ApplicationEditEnforceAuthorizedAPIUpdatePermission)
+    );
+    const hasInternalAPIResourceAuthorizationPermission: boolean = useRequiredScopes(
+        applicationFeatureConfig?.subFeatures?.applicationInternalAPIAuthorization?.scopes?.update);
+    const hasBusinessAPIResourceAuthorizationPermission: boolean = useRequiredScopes(
+        applicationFeatureConfig?.subFeatures?.applicationBusinessAPIAuthorization?.scopes?.update);
+
     /**
      * Handles the is shown placeholders
      */
     const isShownPlaceholder: boolean = !!subscribedAPIResourcesFetchRequestError
         || !!allAPIResourcesFetchRequestError
-        || allAPIResourcesListData?.apiResources.length === 0;
+        || allAPIResources?.length === 0;
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching API resources.
@@ -153,6 +180,7 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
     useEffect(() => {
         if (!readOnly && (allAPIResourcesFetchRequestError || subscribedAPIResourcesFetchRequestError)) {
             setHideAuthorizeAPIResourceButton(true);
+            setIsAllAPIResourcesPreloadLoading(false);
             if (!isShownError) {
                 setIsShownError(true);
                 dispatch(addAlert<AlertInterface>({
@@ -174,10 +202,133 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
             !readOnly && (
                 isUpdateData ||
                 isAllAPIResourcesListLoading ||
+                isAllAPIResourcesPreloadLoading ||
                 isSubscribedAPIResourcesListLoading
             )
         );
-    }, [ isUpdateData, isAllAPIResourcesListLoading, isSubscribedAPIResourcesListLoading ]);
+    }, [
+        isUpdateData,
+        isAllAPIResourcesListLoading,
+        isAllAPIResourcesPreloadLoading,
+        isSubscribedAPIResourcesListLoading
+    ]);
+
+    /**
+     * Fetch and aggregate all API resources when the Authorization tab is mounted.
+     */
+    useEffect(() => {
+        if (readOnly) {
+            return;
+        }
+
+        if (!isAllAPIResourcesPreloadLoading) {
+            setIsAllAPIResourcesPreloadLoading(true);
+        }
+
+        if (currentAPIResourcesListData) {
+            const currentAPIResources: APIResourceInterface[] = currentAPIResourcesListData.apiResources ?? [];
+            const aggregatedAPIResources: APIResourceInterface[] = [
+                ...allAPIResources,
+                ...currentAPIResources.filter((apiResource: APIResourceInterface) =>
+                    !allAPIResources.some((currentAPIResource: APIResourceInterface) =>
+                        currentAPIResource.id === apiResource.id)
+                )
+            ];
+            let nextAfterValue: string = null;
+
+            currentAPIResourcesListData.links?.forEach((value: LinkInterface) => {
+                if (value.rel === APIResourcesConstants.NEXT_REL) {
+                    nextAfterValue = value.href.split(`${APIResourcesConstants.AFTER}=`)[1];
+                }
+            });
+
+            setAllAPIResources(aggregatedAPIResources);
+
+            if (nextAfterValue && nextAfterValue !== apiCallNextAfterValue) {
+                setAPICallNextAfterValue(nextAfterValue);
+            } else {
+                setIsAllAPIResourcesPreloadLoading(false);
+            }
+        }
+    }, [ currentAPIResourcesListData ]);
+
+    /**
+     * Prepare API resource dropdown options for the authorization wizard.
+     */
+    useEffect(() => {
+        const filteredDropdownItemOptions: DropdownItemProps[] = allAPIResources.reduce((
+            filtered: DropdownItemProps[],
+            apiResource: APIResourceInterface
+        ) => {
+            const isCurrentAPIResourceSubscribed: boolean = subscribedAPIResourcesListData?.length === 0
+                || !subscribedAPIResourcesListData?.some(
+                    (subscribedAPIResource: AuthorizedAPIListItemInterface) =>
+                        subscribedAPIResource.identifier === apiResource.identifier);
+
+            if (isCurrentAPIResourceSubscribed) {
+                let isOptionDisabled: boolean = false;
+
+                // If the feature to enforce API resource update permission is enabled,
+                // check if the user has the required permission to authorize the API resource.
+                if (isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled) {
+                    if (apiResource.type === APIResourceCategories.BUSINESS ||
+                        apiResource.type === APIResourceCategories.MCP) {
+                        // Disable business and MCP API resources if the user does not have the required permission.
+                        isOptionDisabled = !hasBusinessAPIResourceAuthorizationPermission;
+                    } else {
+                        // Disable internal API resources if the user does not have the required permission.
+                        isOptionDisabled = !hasInternalAPIResourceAuthorizationPermission;
+                    }
+                }
+
+                filtered.push({
+                    disabled: isOptionDisabled,
+                    identifier: apiResource?.identifier,
+                    key: apiResource.id,
+                    text: apiResource.name,
+                    type: apiResource.type,
+                    value: apiResource.id
+                });
+            }
+
+            return filtered;
+        }, []);
+
+        const filteredAPIResourceDropdownOptions: DropdownItemProps[] = filteredDropdownItemOptions.filter(
+            (item: DropdownItemProps) => {
+                // For Digital Wallet apps, show ONLY VC type resources.
+                if (isDigitalWallet) {
+                    return item?.type === APIResourceCategories.VC;
+                }
+
+                // When unified MCP capabilities is enabled: all apps can access MCP servers.
+                // When disabled: only MCP client apps can access MCP servers.
+                if (isUnifiedMcpCapabilitiesEnabled || isMCPClient) {
+                    return item?.type === APIResourceCategories.MCP ||
+                        item?.type === APIResourceCategories.TENANT ||
+                        item?.type === APIResourceCategories.ORGANIZATION ||
+                        item?.type === APIResourceCategories.BUSINESS;
+                }
+
+                return item?.type === APIResourceCategories.TENANT ||
+                    item?.type === APIResourceCategories.ORGANIZATION ||
+                    item?.type === APIResourceCategories.BUSINESS;
+            }
+        );
+
+        setAllAPIResourcesDropdownOptions(filteredAPIResourceDropdownOptions.sort(
+            (a: DropdownItemProps, b: DropdownItemProps) => APIResourceUtils.sortApiResourceTypes(a, b)
+        ));
+    }, [
+        allAPIResources,
+        subscribedAPIResourcesListData,
+        isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled,
+        hasBusinessAPIResourceAuthorizationPermission,
+        hasInternalAPIResourceAuthorizationPermission,
+        isDigitalWallet,
+        isUnifiedMcpCapabilitiesEnabled,
+        isMCPClient
+    ]);
 
     /**
      * Initalize the all authorized scopes.
@@ -199,13 +350,14 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
      */
     useEffect(() => {
         if (isUpdateData) {
+            setAllAPIResources([]);
+            setAllAPIResourcesDropdownOptions([]);
+            setAPICallNextAfterValue(null);
             mutateAllAPIResourcesList();
             mutateSubscribedAPIResourcesList();
             setIsUpdateData(false);
         }
     }, [ isUpdateData ]);
-
-    const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
 
     /**
      * Set hide authorize API resource button.
@@ -213,11 +365,11 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
     useEffect(() => {
         const isScopesAvailable: boolean = hasApplicationUpdatePermissions;
         const hideAuthorizeAPIResourceButton: boolean = !isScopesAvailable
-           || allAPIResourcesListData?.apiResources?.length === 0
+           || allAPIResources?.length === 0
            || subscribedAPIResourcesListData?.length === 0;
 
         setHideAuthorizeAPIResourceButton(hideAuthorizeAPIResourceButton);
-    }, [ featureConfig, allAPIResourcesListData, subscribedAPIResourcesListData ]);
+    }, [ featureConfig, allAPIResources, subscribedAPIResourcesListData ]);
 
     /**
      * Handles unsubscribe API resource.
@@ -309,7 +461,9 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
             })
             .finally(() => {
                 setIsUnsubscribeAPIResourceLoading(false);
-                callback && callback();
+                if (callback) {
+                    callback();
+                }
             });
     };
 
@@ -390,7 +544,7 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
                     appId={ appId }
                     templateId={ templateId }
                     originalTemplateId={ originalTemplateId }
-                    allAPIResourcesListData={ allAPIResourcesListData?.apiResources }
+                    allAPIResourcesListData={ allAPIResources }
                     allAPIResourcesFetchRequestError={ allAPIResourcesFetchRequestError }
                     allAuthorizedScopes={ allAuthorizedScopes }
                     subscribedAPIResourcesListData={ subscribedAPIResourcesListData }
@@ -456,7 +610,11 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
                     <AuthorizeAPIResource
                         templateId={ templateId }
                         originalTemplateId={ originalTemplateId }
-                        subscribedAPIResourcesListData={ subscribedAPIResourcesListData }
+                        allAPIResourcesListData={ allAPIResources }
+                        allAPIResourcesDropdownOptions={ allAPIResourcesDropdownOptions }
+                        isAPIResourcesListLoading={
+                            isAllAPIResourcesListLoading || isAllAPIResourcesPreloadLoading
+                        }
                         closeWizard={ (): void => setIsAuthorizeAPIResourceWizardOpen(false) }
                         handleCreateAPIResource= { handleCreateAPIResource } />
                 )

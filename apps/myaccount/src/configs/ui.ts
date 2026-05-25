@@ -49,6 +49,9 @@ import { ReactComponent as MonitorIcon } from "../themes/default/assets/images/i
 import { ReactComponent as MyAccountIcon } from "../themes/default/assets/images/icons/myaccount-icon.svg";
 import { ReactComponent as PackageIcon } from "../themes/default/assets/images/icons/package.svg";
 import {
+    ReactComponent as AccountPolicyIcon
+} from "../themes/default/assets/images/icons/account-policy-icon.svg";
+import {
     ReactComponent as PushAuthenticatorAppIcon
 } from "../themes/default/assets/images/icons/push-authenticator-app-icon.svg";
 import {
@@ -102,9 +105,10 @@ import DummyUser from "../themes/default/assets/images/user.png";
 
 export const UserImage: string = DummyUser;
 export const ConsentedAppIcon: React.FunctionComponent<React.SVGProps<SVGSVGElement>> = PackageIcon;
+export const PolicyConsentIcon: React.FunctionComponent<React.SVGProps<SVGSVGElement>> = AccountPolicyIcon;
 export const DefaultAppIcon: React.FunctionComponent<React.SVGProps<SVGSVGElement>> = CodeIcon;
 
-export const getSidePanelIcons = (): {
+const getSidePanelIcons = (): {
     account: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     apps: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     consent: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
@@ -273,7 +277,7 @@ export const AlertIcons = (): {
     };
 };
 
-export const AppSwitcherIcons = (): {
+const AppSwitcherIcons = (): {
     console: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
     myAccount: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
  } => {
@@ -283,10 +287,10 @@ export const AppSwitcherIcons = (): {
     };
 };
 
-export const getQRCodeScanIcon = (): React.FunctionComponent<React.SVGProps<SVGSVGElement>> => {
+const getQRCodeScanIcon = (): React.FunctionComponent<React.SVGProps<SVGSVGElement>> => {
     return QRCodeScanIcon;
 };
 
-export const getEnterCodeIcon = (): React.FunctionComponent<React.SVGProps<SVGSVGElement>> => {
+const getEnterCodeIcon = (): React.FunctionComponent<React.SVGProps<SVGSVGElement>> => {
     return EnterVerificationCodeIcon;
 };

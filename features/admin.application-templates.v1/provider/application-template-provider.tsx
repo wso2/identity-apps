@@ -30,7 +30,7 @@ import { ApplicationTemplateInterface } from "../models/templates";
 /**
  * Props interface for the Application template provider.
  */
-export interface ApplicationTemplateProviderProps {
+interface ApplicationTemplateProviderProps {
     /**
      * Listing data of the selected template.
      */

@@ -21,7 +21,7 @@ import Code from "@oxygen-ui/react/Code";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import PlaceholderComponent from "./placeholder-component";
+import PlaceholderComponent from "@wso2is/common.branding.v1/components/placeholder-component";
 import useRequiredFields, { RequiredFieldInterface } from "../../../../hooks/use-required-fields";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 import "./button-adapter.scss";
@@ -29,7 +29,7 @@ import "./button-adapter.scss";
 /**
  * Props interface of {@link ResendButtonAdapter}
  */
-export type ResendButtonAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type ResendButtonAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the ResendButton component.

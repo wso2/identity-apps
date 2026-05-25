@@ -39,7 +39,7 @@ export const setDeveloperVisibility = (visibility: boolean): SetDevelopVisibilit
  * @param {boolean} visibility - visibility state
  * @return {SetHelpPanelDocsContentURLActionInterface} An action of type `SET_MANAGE_VISIBILITY`
  */
-export const setManageVisibility = (visibility: boolean): SetManageVisibilityActionInterface => ({
+const setManageVisibility = (visibility: boolean): SetManageVisibilityActionInterface => ({
     payload: visibility,
     type: AccessControlActionType.SET_MANAGE_VISIBILITY
 });

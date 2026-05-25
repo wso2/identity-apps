@@ -28,7 +28,7 @@ import { WebhookConfigFormPropertyInterface } from "../models/webhooks";
  * @param t - Translation function.
  * @returns Error message or undefined if valid.
  */
-export const validateWebhookName = (name: string, t: TFunction): string | undefined => {
+const validateWebhookName = (name: string, t: TFunction): string | undefined => {
     if (!name?.trim()) {
         return t("webhooks:configForm.fields.name.validations.empty");
     }
@@ -47,7 +47,7 @@ export const validateWebhookName = (name: string, t: TFunction): string | undefi
  * @param t - Translation function.
  * @returns Error message or undefined if valid.
  */
-export const validateWebhookEndpoint = (endpoint: string, t: TFunction): string | undefined => {
+const validateWebhookEndpoint = (endpoint: string, t: TFunction): string | undefined => {
     if (!endpoint?.trim()) {
         return t("webhooks:configForm.fields.endpoint.validations.empty");
     }
@@ -76,7 +76,7 @@ export const validateWebhookEndpoint = (endpoint: string, t: TFunction): string 
  * @param t - Translation function.
  * @returns Error message or undefined if valid.
  */
-export const validateWebhookSecret = (secret: string, isCreateFormState: boolean, t: TFunction): string | undefined => {
+const validateWebhookSecret = (secret: string, isCreateFormState: boolean, t: TFunction): string | undefined => {
     // In create mode, secret is required
     if (isCreateFormState && !secret?.trim()) {
         return t("webhooks:configForm.fields.secret.validations.empty");
@@ -97,7 +97,7 @@ export const validateWebhookSecret = (secret: string, isCreateFormState: boolean
  * @param t - Translation function.
  * @returns Error message or undefined if valid.
  */
-export const validateWebhookChannels = (channels: Record<string, boolean>, t: TFunction): string | undefined => {
+const validateWebhookChannels = (channels: Record<string, boolean>, t: TFunction): string | undefined => {
     const hasSelectedChannel: boolean = Object.values(channels || {}).some(Boolean);
 
     if (!hasSelectedChannel) {

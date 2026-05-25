@@ -42,7 +42,6 @@ const relativeName = (scope: string, attributeName: string): string => {
 const rowId = (scope: SchemaListingScope, attributeName: string, attributeId?: string): string =>
     attributeId ? `${scope}:${attributeId}` : `${scope}:${attributeName}`;
 
-
 /**
  * Transform schema attributes to dropdown options for AdvancedSearch component.
  */
@@ -91,10 +90,10 @@ export const getPropertyScope = (propertyName: string): string => {
     return "Default";
 };
 
-export const getScopeLabel = (scope: SchemaListingScope): string =>
+const getScopeLabel = (scope: SchemaListingScope): string =>
     SCOPE_CONFIG[scope]?.label ?? scope;
 
-export const getScopeOrder = (scope: SchemaListingScope): number =>
+const getScopeOrder = (scope: SchemaListingScope): number =>
     SCOPE_CONFIG[scope]?.order ?? 999;
 
 export const stripScopePrefix = (scope: SchemaListingScope, attributeName: string): string => {
@@ -110,13 +109,13 @@ export const stripScopePrefix = (scope: SchemaListingScope, attributeName: strin
  * Replaces the previous `lastSegment` behaviour so that nested attributes
  * like `address.street` are shown in full rather than just `street`.
  */
-export const getDisplayNameFromAttributeName = (scope: SchemaListingScope, attributeName: string): string =>
+const getDisplayNameFromAttributeName = (scope: SchemaListingScope, attributeName: string): string =>
     relativeName(scope, attributeName) || attributeName;
 
 /**
  * Single-attribute convenience factory used by external callers.
  */
-export const toListingRow = (
+const toListingRow = (
     scope: SchemaListingScope,
     attr: { attribute_id?: string; attribute_name: string; application_identifier?: string; }
 ): ProfileSchemaListingRow => {

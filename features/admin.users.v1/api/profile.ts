@@ -151,7 +151,7 @@ export const getProfileInfo = (endpoint: string,
  * @returns  Updated profile info as a Promise.
  * @throws IdentityAppsApiException - If an error occurs while updating the profile info.
  */
-export const updateProfileInfo = (info: Record<string, unknown>): Promise<ProfileInfoInterface> => {
+const updateProfileInfo = (info: Record<string, unknown>): Promise<ProfileInfoInterface> => {
 
     const requestConfig: RequestConfigInterface = {
         data: info,
@@ -195,7 +195,7 @@ export const updateProfileInfo = (info: Record<string, unknown>): Promise<Profil
  * @returns Updated profile info as a Promise.
  * @throws IdentityAppsApiException - If an error occurs while updating the profile image URL.
  */
-export const updateProfileImageURL = (url: string): Promise<ProfileInfoInterface> => {
+const updateProfileImageURL = (url: string): Promise<ProfileInfoInterface> => {
     const data: Record<string, unknown> = {
         Operations: [
             {

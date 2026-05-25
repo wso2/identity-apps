@@ -1441,8 +1441,7 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                             data-componentid={ `${ componentId }-share-with-future-child-checkbox` }
                             checked={ shouldShareWithFutureChildOrgsMap[selectedOrgId] ??
                                 selectedOrganizationSharingPolicy ===
-                                ApplicationSharingPolicy.SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN ??
-                                false
+                                ApplicationSharingPolicy.SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN
                             }
                             onChange={ (_event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
                                 updateChildSharingPolicy(checked);

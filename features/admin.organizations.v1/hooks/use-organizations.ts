@@ -24,7 +24,7 @@ import OrganizationsContext, { OrganizationsContextProps } from "../context/orga
 /**
  * Interface for the return type of the UseOrganizations hook.
  */
-export interface UseOrganizationsInterface extends OrganizationsContextProps {
+interface UseOrganizationsInterface extends OrganizationsContextProps {
     /**
      * Set the organization id in the local storage.
      * @param orgId - Organization id.

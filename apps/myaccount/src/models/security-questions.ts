@@ -39,7 +39,7 @@ export interface ChallengesQuestionsInterface {
     questionSetId: string;
 }
 
-export interface ChallengesInterface {
+interface ChallengesInterface {
     questions: QuestionSetsInterface[];
     answers: AnswersInterface[];
     isEdit: boolean;

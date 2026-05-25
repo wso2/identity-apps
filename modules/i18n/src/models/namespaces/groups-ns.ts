@@ -145,6 +145,20 @@ export interface groupsNS {
                 description: string;
             };
         };
+        apiLimitReachedError: {
+            error: {
+                message: string;
+                description: string;
+            };
+        };
+        tierLimitReachedError: {
+            emptyPlaceholder: {
+                action: string;
+                title: string;
+                subtitles: string;
+            };
+            heading: string;
+        };
     };
     placeholders: {
         groupsError: {

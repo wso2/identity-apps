@@ -16,12 +16,12 @@
  * under the License.
  */
 
-export enum QuickStartModes {
+enum QuickStartModes {
     INTEGRATE = "INTEGRATE",
     SAMPLES = "SAMPLES"
 }
 
-export enum SupportedTechnologyTypes {
+enum SupportedTechnologyTypes {
     ANGULAR = "Angular",
     REACT = "React",
     JAVASCRIPT = "JavaScript"
@@ -38,7 +38,7 @@ export interface SDKMetaInterface {
     react: SDKMetaReactInterface;
 }
 
-export interface SDKMetaReactInterface {
+interface SDKMetaReactInterface {
     links: {
         reactClientConfig: string;
         routingOptions: string;
@@ -60,7 +60,7 @@ export interface SDKMetaReactInterface {
     };
 }
 
-export interface SDKMetaJavascriptInterface {
+interface SDKMetaJavascriptInterface {
     apis: string;
     artifact: string;
     cdn: string;

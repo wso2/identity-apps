@@ -30,7 +30,7 @@ import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
 import { SCIMConfigs, attributeConfig } from "@wso2is/admin.extensions.v1";
 import { AlertLevels, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { useTrigger } from "@wso2is/forms";
+import { useTrigger } from "@wso2is/forms/legacy";
 import { LinkButton, ListLayout, PrimaryButton, SecondaryButton } from "@wso2is/react-components";
 import kebabCase from "lodash-es/kebabCase";
 import React, { Dispatch, FunctionComponent, ReactElement, SetStateAction, useEffect, useMemo, useState } from "react";

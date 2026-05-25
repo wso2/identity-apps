@@ -27,7 +27,7 @@ import RulesProperties from "./nodes/rules-properties";
 /**
  * Props interface of {@link StepPropertyFactory}
  */
-export type StepPropertyFactoryPropsInterface = CommonStepPropertyFactoryPropsInterface;
+type StepPropertyFactoryPropsInterface = CommonStepPropertyFactoryPropsInterface;
 
 /**
  * Factory to generate the property configurator for the given resource.

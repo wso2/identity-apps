@@ -35,8 +35,6 @@ export enum ConsentTypes {
  * Enum for consent status.
  */
 export enum ConsentStatus {
-    ACCEPTED = "ACCEPTED",
-    DECLINED = "DECLINED",
     NOT_GIVEN = "NOT_GIVEN"
 }
 

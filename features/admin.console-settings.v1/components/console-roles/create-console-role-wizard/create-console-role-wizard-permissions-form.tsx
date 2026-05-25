@@ -75,7 +75,7 @@ import "./create-console-role-wizard-permissions-form.scss";
 /**
  * Prop types for the text customization fields component.
  */
-export interface CreateConsoleRoleWizardPermissionsFormProps extends IdentifiableComponentInterface {
+interface CreateConsoleRoleWizardPermissionsFormProps extends IdentifiableComponentInterface {
     /**
      * Should the accordion be expanded
      */

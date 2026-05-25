@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -90,6 +90,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             accountRecovery: "",
             actions: "",
             adminAdvisoryBanner: "",
+            agentCredentials: "",
+            agentSharing: "",
+            agents: "",
             apiRoot: "",
             applicationTemplate: "",
             applicationTemplateMetadata: "",
@@ -111,6 +114,8 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             certificates: "",
             claims: "",
             clientCertificates: "",
+            consentMgtElements: "",
+            consentMgtPurposes: "",
             copilot: "",
             createSecret: "",
             createSecretType: "",
@@ -147,6 +152,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             multiFactorAuthenticators: "",
             myAccountConfigMgt: "",
             oidcScopes: "",
+            orgGovernanceEvaluate: "",
             organizations: "",
             passiveStsConfigurations: "",
             passwordExpiry: "",

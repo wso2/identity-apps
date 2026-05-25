@@ -138,7 +138,7 @@ export const addCopilotMessage = (message: CopilotMessageInterface): AddCopilotM
  * @param update - The message update containing id and content.
  * @returns An action of type `UPDATE_COPILOT_MESSAGE`.
  */
-export const updateCopilotMessage = (
+const updateCopilotMessage = (
     update: {
         id: string;
         content: string;
@@ -156,7 +156,7 @@ export const updateCopilotMessage = (
  *
  * @returns An action of type `CLEAR_COPILOT_CHAT`.
  */
-export const clearCopilotChat = (): ClearCopilotChatActionInterface => ({
+const clearCopilotChat = (): ClearCopilotChatActionInterface => ({
     type: CopilotActionTypes.CLEAR_COPILOT_CHAT
 });
 
@@ -166,7 +166,7 @@ export const clearCopilotChat = (): ClearCopilotChatActionInterface => ({
  * @param message - The status message to display, or null to clear.
  * @returns An action of type `SET_COPILOT_STATUS_MESSAGE`.
  */
-export const setCopilotStatusMessage = (
+const setCopilotStatusMessage = (
     message: string | null
 ): SetCopilotStatusMessageActionInterface => ({
     payload: message,
@@ -219,7 +219,7 @@ export const clearCopilotChatWithApi = () => {
  * @param messages - The history messages.
  * @returns An action of type `SET_COPILOT_CHAT_HISTORY`.
  */
-export const setCopilotChatHistory = (messages: CopilotMessageInterface[]): SetCopilotChatHistoryActionInterface => ({
+const setCopilotChatHistory = (messages: CopilotMessageInterface[]): SetCopilotChatHistoryActionInterface => ({
     payload: messages,
     type: CopilotActionTypes.SET_COPILOT_CHAT_HISTORY
 });
@@ -230,7 +230,7 @@ export const setCopilotChatHistory = (messages: CopilotMessageInterface[]): SetC
  * @param payload - Pagination metadata.
  * @returns An action of type `SET_COPILOT_HISTORY_PAGINATION`.
  */
-export const setHistoryPagination = (
+const setHistoryPagination = (
     payload: HistoryPaginationPayloadInterface
 ): SetCopilotHistoryPaginationActionInterface => ({
     payload,
@@ -243,7 +243,7 @@ export const setHistoryPagination = (
  * @param messages - Older messages to prepend.
  * @returns An action of type `PREPEND_COPILOT_MESSAGES`.
  */
-export const prependCopilotMessages = (messages: CopilotMessageInterface[]): PrependCopilotMessagesActionInterface => ({
+const prependCopilotMessages = (messages: CopilotMessageInterface[]): PrependCopilotMessagesActionInterface => ({
     payload: messages,
     type: CopilotActionTypes.PREPEND_COPILOT_MESSAGES
 });
@@ -254,12 +254,10 @@ export const prependCopilotMessages = (messages: CopilotMessageInterface[]): Pre
  * @param isLoading - Whether a "load earlier" request is in progress.
  * @returns An action of type `SET_IS_LOADING_MORE_HISTORY`.
  */
-export const setIsLoadingMoreHistory = (isLoading: boolean): SetIsLoadingMoreHistoryActionInterface => ({
+const setIsLoadingMoreHistory = (isLoading: boolean): SetIsLoadingMoreHistoryActionInterface => ({
     payload: isLoading,
     type: CopilotActionTypes.SET_IS_LOADING_MORE_HISTORY
 });
-
-
 
 /**
  * Redux thunk action to fetch the most-recent page of chat history.

@@ -28,7 +28,7 @@ const LOCAL_IDP: string = LocalAuthenticatorConstants.LOCAL_IDP_IDENTIFIER;
 /**
  * Authenticator configuration for authentication sequence.
  */
-export interface AuthenticatorConfigInterface {
+interface AuthenticatorConfigInterface {
     idp: string;
     authenticator: string;
 }
@@ -36,7 +36,7 @@ export interface AuthenticatorConfigInterface {
 /**
  * Authentication step configuration.
  */
-export interface AuthenticationStepInterface {
+interface AuthenticationStepInterface {
     id: number;
     options: AuthenticatorConfigInterface[];
 }
@@ -44,7 +44,7 @@ export interface AuthenticationStepInterface {
 /**
  * Authentication sequence configuration.
  */
-export interface AuthenticationSequenceInterface {
+interface AuthenticationSequenceInterface {
     type: "DEFAULT" | "USER_DEFINED";
     steps: AuthenticationStepInterface[];
     subjectStepId?: number;
@@ -170,7 +170,7 @@ export const buildAuthSequence = (options: SignInOptionsConfigInterface): Authen
 /**
  * Returns a default auth sequence with BasicAuthenticator only.
  */
-export const getDefaultAuthSequence = (): AuthenticationSequenceInterface => {
+const getDefaultAuthSequence = (): AuthenticationSequenceInterface => {
     return {
         attributeStepId: 1,
         steps: [
@@ -192,7 +192,7 @@ export const getDefaultAuthSequence = (): AuthenticationSequenceInterface => {
 /**
  * Returns true if the sequence is a single-step BasicAuthenticator (default) config.
  */
-export const isDefaultAuthSequence = (sequence: AuthenticationSequenceInterface): boolean => {
+const isDefaultAuthSequence = (sequence: AuthenticationSequenceInterface): boolean => {
     if (sequence.type === "DEFAULT") {
         return true;
     }
@@ -215,7 +215,7 @@ export const isDefaultAuthSequence = (sequence: AuthenticationSequenceInterface)
 /**
  * Checks whether Step 2 has multiple alternatives (OR logic, not sequential MFA).
  */
-export const hasMultipleLoginMethods = (sequence: AuthenticationSequenceInterface): boolean => {
+const hasMultipleLoginMethods = (sequence: AuthenticationSequenceInterface): boolean => {
     if (sequence.steps.length < 2) {
         return false;
     }

@@ -59,7 +59,6 @@ export interface DropdownOptionsInterface {
     value: string;
 }
 
-
 interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     /**
      * Currently editing idp id.
@@ -126,7 +125,7 @@ interface AttributeSelectionPropsInterface extends TestableComponentInterface {
     isSaml: boolean;
 }
 
-export const LocalDialectURI: string = "http://wso2.org/claims";
+const LocalDialectURI: string = "http://wso2.org/claims";
 
 export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterface> = (
     props: AttributeSelectionPropsInterface
@@ -178,7 +177,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     // Selected role mapping.
     const [ roleMapping ] = useState<ConnectionRoleMappingInterface[]>(undefined);
     const [ isSubmissionLoading, setIsSubmissionLoading ] = useState<boolean>(false);
-
 
     /**
      * When IdP loads, this component is responsible for fetching the

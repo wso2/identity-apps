@@ -40,4 +40,4 @@ export interface SetGovernanceConnectorCategoryInterface {
 /**
  * Export action interfaces.
  */
-export type GovernanceConnectorActions = SetGovernanceConnectorCategoryInterface;
+type GovernanceConnectorActions = SetGovernanceConnectorCategoryInterface;

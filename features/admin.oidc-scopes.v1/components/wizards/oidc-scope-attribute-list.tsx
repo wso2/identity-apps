@@ -17,7 +17,7 @@
  */
 
 import { ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
-import { Forms } from "@wso2is/forms";
+import { Forms } from "@wso2is/forms/legacy";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -45,7 +45,7 @@ interface OIDCScopeAttributesListPropsInterface extends TestableComponentInterfa
  *
  * @return {React.ReactElement}
  */
-export const OIDCScopeAttributesList: FunctionComponent<OIDCScopeAttributesListPropsInterface> = (
+const OIDCScopeAttributesList: FunctionComponent<OIDCScopeAttributesListPropsInterface> = (
     props: OIDCScopeAttributesListPropsInterface
 ): ReactElement => {
 
@@ -125,7 +125,6 @@ export const OIDCScopeAttributesList: FunctionComponent<OIDCScopeAttributesListP
         setCheckedUnassignedListItems([]);
         setIsSelectAssignedAllClaimsChecked(false);
     };
-
 
     /**
      * The following method handles the onChange event of the

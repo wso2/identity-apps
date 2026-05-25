@@ -62,7 +62,7 @@ export const ModalWithSidePanel: FunctionComponent<ModalProps & ComponentsPropsI
  *
  * @return {ReactElement} The header.
  */
-export const ModalWithSidePanelHeader: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
+const ModalWithSidePanelHeader: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
     props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
     return (
@@ -79,7 +79,7 @@ export const ModalWithSidePanelHeader: FunctionComponent<PropsWithChildren<Compo
  *
  * @return {ReactElement} The content section.
  */
-export const ModalWithSidePanelContent: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
+const ModalWithSidePanelContent: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
     props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
     return <div className={ `modal-content ${ props?.className ?? "" }` }>{ props?.children }</div>;
@@ -92,7 +92,7 @@ export const ModalWithSidePanelContent: FunctionComponent<PropsWithChildren<Comp
  *
  * @return {ReactElement} The actions section.
  */
-export const ModalWithSidePanelActions: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
+const ModalWithSidePanelActions: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
     props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
     return (
@@ -109,7 +109,7 @@ export const ModalWithSidePanelActions: FunctionComponent<PropsWithChildren<Comp
  *
  * @return {ReactElement} The main panel.
  */
-export const ModalWithSidePanelMainPanel: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
+const ModalWithSidePanelMainPanel: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
     props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
     return <div className={ `main-panel ${ props?.className ?? "" }` }>{ props?.children }</div>;
@@ -122,7 +122,7 @@ export const ModalWithSidePanelMainPanel: FunctionComponent<PropsWithChildren<Co
  *
  * @return {ReactElement} The side panel.
  */
-export const ModalWithSidePanelSidePanel: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
+const ModalWithSidePanelSidePanel: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
     props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
     const [ sidePanelOpen, setSidePanelOpen ] = useState(true);

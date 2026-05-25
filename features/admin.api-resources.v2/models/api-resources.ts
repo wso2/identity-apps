@@ -24,8 +24,7 @@ import { FunctionComponent, SVGProps } from "react";
  */
 export enum ResourceServerType {
     API = "API",
-    MCP = "MCP",
-    NONE = "NONE"
+    MCP = "MCP"
 }
 
 /**
@@ -294,7 +293,7 @@ export interface APIResourceEndpointsInterface {
 /**
  * Interface to contain scope information
  */
-export interface ScopeInterface {
+interface ScopeInterface {
     id: string;
     displayName?: string;
     name?: string;

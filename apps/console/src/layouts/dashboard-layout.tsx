@@ -175,13 +175,14 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
         }
 
         if (initLoad.current) {
-            // Try to handle any un-expected routing issues. Returns a void if no issues are found.
-            RouteUtils.gracefullyHandleRouting(
-                filteredRoutes,
-                AppConstants.getAdminViewBasePath(),
-                location.pathname
-            );
-            initLoad.current = false;
+            if (!isOrganizationSwitchRequestLoading) {
+                RouteUtils.gracefullyHandleRouting(
+                    filteredRoutes,
+                    AppConstants.getAdminViewBasePath(),
+                    location.pathname
+                );
+                initLoad.current = false;
+            }
         }
 
         setSelectedRoute(
@@ -190,7 +191,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                 filteredRoutes
             )
         );
-    }, [ location.pathname, filteredRoutes ]);
+    }, [ location.pathname, filteredRoutes, isOrganizationSwitchRequestLoading ]);
 
     useEffect(() => {
         if (!isEmpty(profileInfo)) {
@@ -432,7 +433,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                 className="dashboard-layout"
                 header={
                     (<Header
-                        copilotToggle={ isCopilotFeatureEnabled ? {
+                        copilotToggle={ isCopilotFeatureEnabled && !isSubOrganization() ? {
                             icon: <AISparkleIcon
                                 width={ 20 }
                                 height={ 20 }
@@ -525,7 +526,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                         <Switch>{ resolveRoutes() as ReactNode[] }</Switch>
                     </Suspense>
                 </ErrorBoundary>
-                { isCopilotFeatureEnabled && (
+                { isCopilotFeatureEnabled && !isSubOrganization() && (
                     <ErrorBoundary
                         onChunkLoadError={ AppUtils.onChunkLoadError }
                         handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {

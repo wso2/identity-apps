@@ -24,7 +24,7 @@ import Draggable from "../dnd/draggable";
 /**
  * Props interface of {@link ResourcePanelDraggable}
  */
-export type ResourcePanelDraggablePropsInterface = ResourcePanelItemProps &
+type ResourcePanelDraggablePropsInterface = ResourcePanelItemProps &
     IdentifiableComponentInterface &
     Omit<HTMLAttributes<HTMLDivElement>, "resource">;
 

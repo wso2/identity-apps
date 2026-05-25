@@ -28,7 +28,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
-import { Form } from "@wso2is/form";
+import { Form } from "@wso2is/forms";
 import {
     ConfirmationModal,
     Popup,
@@ -51,7 +51,7 @@ import { CertificatePatchRequestInterface, ConnectionInterface } from "../../../
 /**
  * Props interface of {@link IdpCertificatesList}
  */
-export interface IdpCertificatesListProps extends IdentifiableComponentInterface {
+interface IdpCertificatesListProps extends IdentifiableComponentInterface {
     currentlyEditingIdP: ConnectionInterface;
     refreshIdP: (id: string) => void;
     isReadOnly: boolean;

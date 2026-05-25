@@ -111,6 +111,27 @@ export const authenticationFlow: AuthenticationFlowNS = {
             },
             header: "Sign in"
         },
+        sharedUserIdentifier: {
+            controls: {
+                optionRemoveTooltipContent: "Remove",
+                optionSwitchTooltipContent: "Switch to Username & Password"
+            },
+            form: {
+                actions: {
+                    primary: "Sign In"
+                },
+                fields: {
+                    rememberMe: {
+                        label: "Remember me on this computer"
+                    },
+                    username: {
+                        label: "Username",
+                        placeholder: "Enter your username"
+                    }
+                }
+            },
+            header: "Sign in"
+        },
         push: {
             controls: {
                 optionRemoveTooltipContent: "Remove"

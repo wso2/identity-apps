@@ -37,7 +37,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpReque
  * @returns Promise containing the response.
  * @throws Throws an IdentityAppsApiException if the request fails.
  */
-export const deleteWebhook = (webhookId: string): Promise<string> => {
+const deleteWebhook = (webhookId: string): Promise<string> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",

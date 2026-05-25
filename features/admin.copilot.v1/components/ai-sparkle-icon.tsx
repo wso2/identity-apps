@@ -41,7 +41,7 @@ const StyledAIIcon: typeof AIIcon = styled(AIIcon)(({ theme }: { theme: Theme })
 /**
  * Props interface for the AI Sparkle Icon component.
  */
-export interface AISparkleIconProps extends IdentifiableComponentInterface {
+interface AISparkleIconProps extends IdentifiableComponentInterface {
     /**
      * Width of the icon.
      */

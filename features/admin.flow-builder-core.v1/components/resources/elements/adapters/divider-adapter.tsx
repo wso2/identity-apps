@@ -28,7 +28,7 @@ import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 /**
  * Props interface of {@link DividerAdapter}
  */
-export type DividerAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type DividerAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Divider component.

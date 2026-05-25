@@ -43,7 +43,7 @@ import transformFlow from "../utils/transform-flow";
 /**
  * Props interface of {@link RegistrationFlowBuilderProvider}
  */
-export type RegistrationFlowBuilderProviderProps = PropsWithChildren<unknown>;
+type RegistrationFlowBuilderProviderProps = PropsWithChildren<unknown>;
 
 /**
  * This component provides registration flow builder related context to its children.

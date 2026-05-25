@@ -35,7 +35,7 @@ import {
 /**
  * Props interface for LogoSelector component.
  */
-export interface LogoSelectorPropsInterface extends IdentifiableComponentInterface {
+interface LogoSelectorPropsInterface extends IdentifiableComponentInterface {
     /** Currently selected logo URL */
     selectedLogoUrl?: string;
     /** Callback when a logo is selected */

@@ -61,7 +61,7 @@ import "./totp-authenticator.scss";
  * Also see {@link TOTPAuthenticator.defaultProps}
  */
 interface TOTPProps extends TestableComponentInterface {
-    onAlertFired: (alert: AlertInterface) => void;
+    onAlertFired: (_alert: AlertInterface) => void;
     isSuperTenantLogin: boolean;
     enabledAuthenticators: Array<string>;
     onEnabledAuthenticatorsUpdated: (updatedAuthenticators: Array<string>) => void;
@@ -665,7 +665,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                             application like Google Authenticator from
                             <a
                                 target="_blank"
-                                href="https://www.apple.com/us/search/totp?src=globalnav"
+                                href="https://apps.apple.com/us/iphone/search?term=totp"
                                 rel="noopener noreferrer"> App Store </a>
                             or
                             <a
@@ -919,7 +919,7 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
                     application like Google Authenticator from
                             <a
                                 target="_blank"
-                                href="https://www.apple.com/us/search/totp?src=globalnav"
+                                href="https://apps.apple.com/us/iphone/search?term=totp"
                                 rel="noopener noreferrer"> App Store </a>
                     or
                             <a

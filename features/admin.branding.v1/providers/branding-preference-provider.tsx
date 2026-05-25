@@ -33,7 +33,7 @@ import {
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FormState } from "@wso2is/form";
+import { FormState } from "@wso2is/forms";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
@@ -45,11 +45,15 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { updateBrandingPreference } from "../api/branding-preferences";
-import deleteCustomTextPreference from "../api/delete-custom-text-preference";
-import updateCustomTextPreference from "../api/update-custom-text-preference";
-import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-preference-fallbacks";
-import useGetCustomTextPreferenceMeta from "../api/use-get-custom-text-preference-meta";
-import useGetCustomTextPreferenceResolve from "../api/use-get-custom-text-preference-resolve";
+import deleteCustomTextPreference from "@wso2is/common.branding.v1/api/delete-custom-text-preference";
+import updateCustomTextPreference from "@wso2is/common.branding.v1/api/update-custom-text-preference";
+import useGetCustomTextPreferenceFallbacks from "@wso2is/common.branding.v1/api/use-get-custom-text-preference-fallbacks";
+import useGetCustomTextPreferenceMeta from "@wso2is/common.branding.v1/api/use-get-custom-text-preference-meta";
+import useGetCustomTextPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-custom-text-preference-resolve";
+import {
+    CustomTextPreferenceAPIResponseInterface,
+    CustomTextPreferenceInterface
+} from "@wso2is/common.branding.v1/models/custom-text-preference";
 import useGetCustomTextPreferenceScreenMeta from "../api/use-get-custom-text-preference-screen-meta";
 import { BrandingModes, BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
@@ -57,9 +61,7 @@ import BrandingPreferenceContext from "../context/branding-preference-context";
 import {
     BASE_DISPLAY_VARIATION,
     CustomTextConfigurationModes,
-    CustomTextInterface,
-    CustomTextPreferenceAPIResponseInterface,
-    CustomTextPreferenceInterface
+    CustomTextInterface
 } from "../models/custom-text-preference";
 import BrandingPreferenceMigrationClient from "../utils/branding-preference-migration-client";
 import { BrandingPreferenceUtils } from "../utils/branding-preference-utils";
@@ -68,7 +70,7 @@ import processCustomTextTemplateLiterals from "../utils/process-custom-text-temp
 /**
  * Props interface for the Branding preference provider.
  */
-export type BrandingPreferenceProviderProps = PropsWithChildren;
+type BrandingPreferenceProviderProps = PropsWithChildren;
 
 /**
  * React context provider for the branding preference context.

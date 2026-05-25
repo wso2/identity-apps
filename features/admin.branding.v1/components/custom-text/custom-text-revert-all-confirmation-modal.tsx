@@ -27,7 +27,7 @@ import useBrandingPreference from "../../hooks/use-branding-preference";
 /**
  * Proptypes for the custom text revert confirmation modal.
  */
-export interface CustomTextRevertConfirmationModalPropsInterface
+interface CustomTextRevertConfirmationModalPropsInterface
     extends Partial<ConfirmationModalPropsInterface>,
         IdentifiableComponentInterface {}
 

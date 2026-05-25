@@ -461,7 +461,8 @@ export const applicationConfig: ApplicationConfig = {
         [ "agent-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.CIBA_GRANT
+            ApplicationManagementConstants.CIBA_GRANT,
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
         ],
         [ "angular-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,

@@ -19,7 +19,7 @@
 import { useRequiredScopes } from "@wso2is/access-control";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FinalForm, FormRenderProps, MutableState, Tools } from "@wso2is/form";
+import { FinalForm, FormRenderProps, MutableState, Tools } from "@wso2is/forms";
 import {
     ContentLoader,
     PrimaryButton
@@ -40,7 +40,7 @@ import { DynamicFieldInterface, DynamicFormInterface, DynamicInputFieldTypes } f
 /**
  * Prop types of the `TemplateDynamicForm` component.
  */
-export interface TemplateDynamicFormPropsInterface extends IdentifiableComponentInterface {
+interface TemplateDynamicFormPropsInterface extends IdentifiableComponentInterface {
     /**
      * Custom validation functions for form validations.
      */

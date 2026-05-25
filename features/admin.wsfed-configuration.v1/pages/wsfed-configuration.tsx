@@ -24,7 +24,7 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form, FormPropsInterface } from "@wso2is/form";
+import { Field, Form, FormPropsInterface } from "@wso2is/forms";
 import { DangerZone, DangerZoneGroup, EmphasizedSegment, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -50,7 +50,7 @@ const FORM_ID: string = "wsfederation-configuration-form";
 /**
  * WSFederation Configuration page.
  */
-export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfigurationPageInterface> = (
+const WSFederationConfigurationPage: FunctionComponent<WSFederationConfigurationPageInterface> = (
     props: WSFederationConfigurationPageInterface
 ): ReactElement => {
     const { [ "data-componentid" ]: componentId } = props;

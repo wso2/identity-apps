@@ -21,7 +21,7 @@ import { Code, Popup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Table } from "semantic-ui-react";
 
-export interface SubjectAttributeListItemPropInterface extends TestableComponentInterface {
+interface SubjectAttributeListItemPropInterface extends TestableComponentInterface {
     key: string;
     displayName: string;
     localClaimDisplayName?: string;

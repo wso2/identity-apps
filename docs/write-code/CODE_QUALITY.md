@@ -166,24 +166,24 @@ export const MyComponent = () => {
 import { MyComponent } from "./MyComponent";
 ```
 
-## Use `react-final-form` and related imports from `@wso2is/form` when implementing new forms.
+## Use `react-final-form` and related imports from `@wso2is/forms` when implementing new forms.
 
-The in-house form builder in modules/forms has limitations in scalability, flexibility, and styling, which makes it unsuitable for complex use cases. Instead of 
-maintaining this outdated implementation, we are adopting [React Final Form](https://final-form.org/react/) as our standard for building forms. Customized wrappers for React Final Form components are available in the `wso2is/form` module and should be used for all new forms.
+The in-house form builder in `@wso2is/forms/legacy` has limitations in scalability, flexibility, and styling, which makes it unsuitable for complex use cases. Instead of 
+maintaining this outdated implementation, we are adopting [React Final Form](https://final-form.org/react/) as our standard for building forms. Customized wrappers for React Final Form components are available in the `@wso2is/forms` module (located in `modules/forms`) and should be used for all new forms.
 
 **Why:**
 - The in-house form builder is difficult to scale for all use cases, and styling inconsistencies and difficulties arise in certain scenarios.
 - React Final Form is a robust, widely-used library with better features and community support.
 
 **What to do:**
-Always use React Final Form and related components from `@wso2is/form` (located in `modules/form`) for implementing new forms.
+Always use React Final Form and related components from `@wso2is/forms` (located in `modules/forms`) for implementing new forms.
 
 **Example:**
 
 Recommended:
 
 ```javascript
-import { FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/form";
+import { FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/forms";
 
 const MyForm = () => (
   <FinalForm
@@ -211,7 +211,7 @@ const MyForm = () => (
 Avoid:
 
 ```javascript
-import { Forms, Input } from "@wso2is/forms";
+import { Forms, Input } from "@wso2is/forms/legacy";
 
 const MyForm = () => (
   <Forms
@@ -691,26 +691,40 @@ This PR implements a new onboarding wizard for application creation with improve
 - Updated form styling
 ```
 
-## Typescript Doc Comments
+## Refrain from using concatenation in dynamic imports
 
-We follow [TSDoc](https://tsdoc.org/) comments when writing doc comments. Also we use [eslint-plugin-tsdoc](https://tsdoc.org/pages/packages/eslint-plugin-tsdoc/) ESLint plugin to ensure the validity of the TS doc comments. Please make sure that you adhere to the specified rules.
+Dynamic imports should use static module paths so bundlers can resolve dependencies correctly and optimize code splitting. Concatenating strings or template literals in the `import()` argument can prevent build-time analysis and lead to larger bundles or runtime failures.
 
-### Examples
-TSDoc comment for a function that accepts two numbers and returns the average of those numbers.
->Note: The type of the parameters is not specified in TSDoc, because it is already expressed by the TypeScript language.
-```ts
-/**
- * Returns the average of two numbers.
- *
- * @param x - The first input number
- * @param y - The second input number
- * @returns The arithmetic mean of `x` and `y`
- * 
- */
-const getAverage = (x: number, y: number): number => {
-    return (x + y) / 2.0;
+**Why:**
+- Allows bundlers to statically analyze dynamic imports.
+- Prevents unintended inclusion of many modules in the bundle.
+- Improves build performance and reduces risk of module resolution errors.
+- Makes dynamic imports easier to audit and maintain.
+
+**What to do:**
+- Use static path segments in `import()` where possible.
+- Map dynamic values to explicit imports instead of concatenating strings.
+- Avoid constructing import paths with `+` or template literals.
+
+**Example:**
+
+Recommended:
+
+```js
+const pageImports = {
+  home: () => import("./pages/Home"),
+  about: () => import("./pages/About"),
+};
+
+function loadPage(pageName) {
+  return pageImports[pageName]?.() ?? Promise.reject(new Error("Unknown page"));
 }
-
 ```
 
-Refer [TSDoc](https://tsdoc.org/) for more information.
+Avoid:
+
+```js
+const pageName = "home";
+const pageImport = () => import(`./pages/${pageName}`);
+const concatenatedPageImport = () => import("./pages" + "/dynamic-connector.tsx");
+```

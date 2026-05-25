@@ -21,10 +21,12 @@ import Box from "@oxygen-ui/react/Box";
 import Drawer from "@oxygen-ui/react/Drawer";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import CopilotChat from "./copilot-chat";
 import CopilotHeader from "./copilot-header";
 import CopilotWelcome from "./copilot-welcome";
@@ -34,7 +36,7 @@ import { CopilotContentType } from "../store/types/copilot-action-types";
 /**
  * Props interface for the CopilotPanel component.
  */
-export interface CopilotPanelProps extends IdentifiableComponentInterface {
+interface CopilotPanelProps extends IdentifiableComponentInterface {
     /**
      * Additional CSS classes.
      */
@@ -63,6 +65,8 @@ const CopilotPanel: React.FunctionComponent<CopilotPanelProps> = (
     const { t } = useTranslation();
     const [ isExpanded, setIsExpanded ] = useState<boolean>(false);
 
+    const isAuthenticated: boolean = useSelector((state: AppState) => state.auth.isAuthenticated);
+
     const {
         isVisible,
         contentType,
@@ -76,10 +80,10 @@ const CopilotPanel: React.FunctionComponent<CopilotPanelProps> = (
      * Load chat history when panel becomes visible.
      */
     useEffect(() => {
-        if (isVisible) {
+        if (isVisible && isAuthenticated) {
             loadHistory();
         }
-    }, [ isVisible, loadHistory ]);
+    }, [ isVisible, isAuthenticated, loadHistory ]);
 
     /**
      * Handle panel close.

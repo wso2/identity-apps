@@ -31,8 +31,7 @@ import { UserInviteInterface } from "../models/user";
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
     AsgardeoSPAClient.getInstance());
 
-
-export const getInvitedUserList = (): Promise<any> => {
+const getInvitedUserList = (): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,

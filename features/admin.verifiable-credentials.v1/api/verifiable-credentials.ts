@@ -62,7 +62,6 @@ export const addVCTemplate = (
         });
 };
 
-
 /**
  * Update an existing VC template.
  *
@@ -146,7 +145,7 @@ export const generateVCCredentialOffer = (templateId: string): Promise<VCTemplat
  * @param templateId - The ID of the template.
  * @returns Promise with the updated template (offerId set to null).
  */
-export const revokeVCCredentialOffer = (templateId: string): Promise<VCTemplate> => {
+const revokeVCCredentialOffer = (templateId: string): Promise<VCTemplate> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Content-Type": "application/json"

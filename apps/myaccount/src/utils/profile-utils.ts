@@ -40,7 +40,7 @@ import { setProfileCompletion } from "../store/actions";
  * @param parentSchemaName - Name of the parent attribute.
  * @returns - Flattened array of schemas.
  */
-export const flattenSchemas = (schemas: ProfileSchema[], parentSchemaName?: string): ProfileSchema[] => {
+const flattenSchemas = (schemas: ProfileSchema[], parentSchemaName?: string): ProfileSchema[] => {
     const tempSchemas: ProfileSchema[] = [];
 
     schemas.forEach((schema: ProfileSchema) => {
@@ -76,7 +76,7 @@ export const flattenSchemas = (schemas: ProfileSchema[], parentSchemaName?: stri
  * @returns - `True` if the attribute is of type `MultiValue`.
  */
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const isMultiValuedProfileAttribute = (attribute: any): attribute is MultiValue => {
+const isMultiValuedProfileAttribute = (attribute: any): attribute is MultiValue => {
     return attribute.type !== undefined;
 };
 
@@ -88,7 +88,7 @@ export const isMultiValuedProfileAttribute = (attribute: any): attribute is Mult
  * @returns - Flattened profile info.
  */
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: string): any[] => {
+const flattenProfileInfo = (profileInfo: any, parentAttributeName?: string): any[] => {
     const tempProfile: Partial<BasicProfileInterface>[] = [];
     let mutatedProfileInfo: BasicProfileInterface = { ...profileInfo };
 

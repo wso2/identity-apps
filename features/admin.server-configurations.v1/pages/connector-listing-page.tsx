@@ -78,7 +78,7 @@ const LEGACY_ONLY_CONNECTOR_IDS: string[] = [
  * @param props - Props injected to the component.
  * @returns Governance connector listing page component.
  */
-export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterface> = (
+const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterface> = (
     props: ConnectorListingPageInterface
 ): ReactElement => {
     const { [ "data-testid" ]: testId = "governance-connectors-listing-page" } = props;
@@ -117,6 +117,9 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
             ...featureConfig?.internalNotificationSending?.scopes?.read ?? []
         ]
     );
+    const hasConsentsReadPermission: boolean = useRequiredScopes(
+        featureConfig?.consents?.scopes?.read
+    );
     const sessionManagementFeatureStatus: FeatureStatus = useCheckFeatureStatus(
         FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["LOGIN_AND_REGISTRATION_SESSION_MANAGEMENT"]);
 
@@ -146,6 +149,11 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
 
             const filteredConnectors: Array<any> = category.connectors.filter((connector: any) => {
                 if (serverConfigurationConfig.connectorsToHide.includes(connector.id)) {
+                    return false;
+                }
+
+                if (connector.id === ServerConfigurationsConstants.POLICY_CONSENTS_CONNECTOR_ID
+                    && (!featureConfig?.consents?.enabled || !hasConsentsReadPermission)) {
                     return false;
                 }
 
@@ -188,6 +196,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
         featureConfig,
         UIConfig,
         allowedScopes,
+        hasConsentsReadPermission,
         isLegacyInvitedUserRegistrationEnabled,
         isLegacyPasswordRecoveryEnabled,
         isLegacySelfRegistrationEnabled,

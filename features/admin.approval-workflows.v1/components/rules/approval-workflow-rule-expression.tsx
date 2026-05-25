@@ -27,7 +27,7 @@ import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import { MinusIcon, PlusIcon } from "@oxygen-ui/react-icons";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
-import { useRulesContext } from "@wso2is/admin.rules.v1/hooks/use-rules-context";
+import useRulesContext from "@wso2is/admin.rules.v1/hooks/use-rules-context";
 import {
     ConditionExpressionMetaInterface,
     ListDataInterface
@@ -70,7 +70,7 @@ interface FieldSelectionOptionInterface {
 /**
  * Props interface of {@link ApprovalWorkflowRuleExpression}
  */
-export interface ApprovalWorkflowRuleExpressionPropsInterface extends IdentifiableComponentInterface {
+interface ApprovalWorkflowRuleExpressionPropsInterface extends IdentifiableComponentInterface {
     expression: ConditionExpressionInterface;
     ruleId: string;
     conditionId: string;

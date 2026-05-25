@@ -51,7 +51,7 @@ import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterfa
     HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Forms } from "@wso2is/forms";
+import { Forms } from "@wso2is/forms/legacy";
 import {
     AnimatedAvatar,
     AppAvatar,
@@ -1126,6 +1126,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                         template={ applicationTemplate }
                         data-componentid={ componentId }
                         urlSearchParams={ urlSearchParams }
+                        applicationInboundConfigs={ applicationInboundConfigs }
                         getConfiguredInboundProtocolsList={ (list: string[]) => {
                             setInboundProtocolList(list);
                         } }

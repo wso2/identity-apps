@@ -36,7 +36,7 @@ import {
     FinalFormField,
     FormRenderProps,
     SelectFieldAdapter
-} from "@wso2is/form";
+} from "@wso2is/forms";
 import { DropdownChild } from "@wso2is/forms";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -240,6 +240,22 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                 case AuthenticationType.API_KEY:
                     authProperties.header = values.headerAuthProperty;
                     authProperties.value = values.valueAuthProperty;
+
+                    break;
+                case AuthenticationType.CLIENT_CREDENTIAL:
+                    authProperties.clientId = values.clientIdAuthProperty;
+                    authProperties.clientSecret = values.clientSecretAuthProperty;
+                    authProperties.tokenEndpoint = values.tokenEndpointAuthProperty;
+                    authProperties.scopes = values.scopesAuthProperty;
+
+                    break;
+                case AuthenticationType.PASSWORD_CREDENTIAL:
+                    authProperties.clientId = values.clientId_passwordCredentialAuthProperty;
+                    authProperties.clientSecret = values.clientSecret_passwordCredentialAuthProperty;
+                    authProperties.tokenEndpoint = values.tokenEndpoint_passwordCredentialAuthProperty;
+                    authProperties.username = values.username_passwordCredentialAuthProperty;
+                    authProperties.password = values.password_passwordCredentialAuthProperty;
+                    authProperties.scopes = values.scopes_passwordCredentialAuthProperty;
 
                     break;
                 case AuthenticationType.NONE:

@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.wso2.identity.apps</groupId>
         <artifactId>identity-apps-console</artifactId>
-        <version>4.1.4-SNAPSHOT</version>
+        <version>4.7.12-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -156,7 +156,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>pnpm run build (compile)</id>
+                        <id>pnpm run build:prod (compile)</id>
                         <goals>
                             <goal>exec</goal>
                         </goals>
@@ -164,7 +164,7 @@
                         <configuration>
                             <executable>pnpm</executable>
                             <arguments>
-                                <argument>build</argument>
+                                <argument>build:prod</argument>
                             </arguments>
                             <workingDirectory>${basedir}/../..</workingDirectory>
                         </configuration>
@@ -188,8 +188,28 @@
                         </goals>
                         <configuration>
                             <tasks>
+                                <property name="frontend.build.dir" value="${basedir}/../../build/console" />
+                                <available file="${frontend.build.dir}" type="dir" property="frontend.build.dir.exists" />
+                                <available file="${frontend.build.dir}/index.jsp" type="file" property="frontend.index.jsp.exists" />
+                                <available file="${frontend.build.dir}/home.jsp" type="file" property="frontend.home.jsp.exists" />
+                                <available file="${frontend.build.dir}/auth.jsp" type="file" property="frontend.auth.jsp.exists" />
+                                <available file="${frontend.build.dir}/deployment.config.json" type="file" property="frontend.deployment.config.exists" />
+                                <available file="${frontend.build.dir}/WEB-INF/web.xml" type="file" property="frontend.web.xml.exists" />
+                                <available file="${frontend.build.dir}/static/js" type="dir" property="frontend.static.js.exists" />
+                                <available file="${frontend.build.dir}/resources/i18n" type="dir" property="frontend.i18n.exists" />
+                                <available file="${frontend.build.dir}/libs/themes" type="dir" property="frontend.themes.exists" />
+                                <fail unless="frontend.build.dir.exists" message="Console frontend build output is missing at ${frontend.build.dir}. Run pnpm nx run console:build before packaging the WAR." />
+                                <fail unless="frontend.index.jsp.exists" message="Console frontend build output is incomplete: missing index.jsp in ${frontend.build.dir}." />
+                                <fail unless="frontend.home.jsp.exists" message="Console frontend build output is incomplete: missing home.jsp in ${frontend.build.dir}." />
+                                <fail unless="frontend.auth.jsp.exists" message="Console frontend build output is incomplete: missing auth.jsp in ${frontend.build.dir}." />
+                                <fail unless="frontend.deployment.config.exists" message="Console frontend build output is incomplete: missing deployment.config.json in ${frontend.build.dir}." />
+                                <fail unless="frontend.web.xml.exists" message="Console frontend build output is incomplete: missing WEB-INF/web.xml in ${frontend.build.dir}." />
+                                <fail unless="frontend.static.js.exists" message="Console frontend build output is incomplete: missing static/js assets in ${frontend.build.dir}." />
+                                <fail unless="frontend.i18n.exists" message="Console frontend build output is incomplete: missing resources/i18n assets in ${frontend.build.dir}." />
+                                <fail unless="frontend.themes.exists" message="Console frontend build output is incomplete: missing libs/themes assets in ${frontend.build.dir}." />
+                                <delete dir="${basedir}/src/main/webapp" />
                                 <copy todir="${basedir}/src/main/webapp/">
-                                    <fileset dir="${basedir}/../../build/console/" includes="**/*" />
+                                    <fileset dir="${frontend.build.dir}" includes="**/*" erroronmissingdir="true" />
                                 </copy>
                             </tasks>
                         </configuration>

@@ -88,7 +88,7 @@ import { generateRandomNames } from "../utils/random-name-generator";
 /**
  * Props for the onboarding wizard component.
  */
-export interface OnboardingWizardPropsInterface extends IdentifiableComponentInterface {
+interface OnboardingWizardPropsInterface extends IdentifiableComponentInterface {
     initialData?: OnboardingDataInterface;
     initialStep?: OnboardingStep;
     isFirstWizardRun?: boolean;

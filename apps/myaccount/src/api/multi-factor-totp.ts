@@ -43,7 +43,7 @@ enum PostTOTPActions {
 /**
  * This API is used to retrieve the QR code URL of the authenticated user.
  */
-export const getTotpQrCode = (): Promise<any> => {
+const getTotpQrCode = (): Promise<any> => {
     const requestConfig: HttpRequestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
@@ -213,7 +213,7 @@ export const deleteTOTP = (): Promise<any> => {
 /**
  * This API is used to retrieve the TOTP secret of the authenticated user.
  */
-export const getTOTPSecret = (): Promise<any> => {
+const getTOTPSecret = (): Promise<any> => {
     const requestConfig: HttpRequestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,

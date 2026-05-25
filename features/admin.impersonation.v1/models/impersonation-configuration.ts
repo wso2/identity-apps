@@ -26,7 +26,7 @@ export interface ImpersonationConfigFormValuesInterface {
 /**
  * The interface for Impersonation config form validations.
  */
-export interface ImpersonationConfigFormErrorValidationsInterface {
+interface ImpersonationConfigFormErrorValidationsInterface {
     enableEmailNotification?: string;
 }
 

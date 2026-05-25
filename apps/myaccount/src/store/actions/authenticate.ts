@@ -43,7 +43,7 @@ import { store } from "../index";
 /**
  * Dispatches an action of type `SET_SIGN_IN`.
  */
-export const setSignIn = (userInfo: AuthenticatedUserInfo): AuthAction => ({
+const setSignIn = (userInfo: AuthenticatedUserInfo): AuthAction => ({
     payload: userInfo,
     type: authenticateActionTypes.SET_SIGN_IN
 });
@@ -51,21 +51,21 @@ export const setSignIn = (userInfo: AuthenticatedUserInfo): AuthAction => ({
 /**
  * Dispatches an action of type `SET_SIGN_OUT`.
  */
-export const setSignOut = (): AuthAction => ({
+const setSignOut = (): AuthAction => ({
     type: authenticateActionTypes.SET_SIGN_OUT
 });
 
 /**
  * Dispatches an action of type `RESET_AUTHENTICATION`.
  */
-export const resetAuthentication = (): AuthAction => ({
+const resetAuthentication = (): AuthAction => ({
     type: authenticateActionTypes.RESET_AUTHENTICATION
 });
 
 /**
  * Dispatches an action of type `SET_PROFILE_INFO`.
  */
-export const setProfileInfo = (details: BasicProfileInterface): AuthAction => ({
+const setProfileInfo = (details: BasicProfileInterface): AuthAction => ({
     payload: details,
     type: authenticateActionTypes.SET_PROFILE_INFO
 });
@@ -73,7 +73,7 @@ export const setProfileInfo = (details: BasicProfileInterface): AuthAction => ({
 /**
  * Dispatches an action of type `SET_LOCAL_ACCOUNT_STATUS`.
  */
-export const setLocalAccountStatus = (hasLocalAccount: boolean): AuthAction => ({
+const setLocalAccountStatus = (hasLocalAccount: boolean): AuthAction => ({
     payload: hasLocalAccount,
     type: authenticateActionTypes.SET_LOCAL_ACCOUNT_STATUS
 });
@@ -82,7 +82,7 @@ export const setLocalAccountStatus = (hasLocalAccount: boolean): AuthAction => (
  * Dispatches an action of type `SET_SCHEMAS`
  * @param schemas - SCIM2 schemas
  */
-export const setScimSchemas = (schemas: ProfileSchema[]): AuthAction => ({
+const setScimSchemas = (schemas: ProfileSchema[]): AuthAction => ({
     payload: schemas,
     type: authenticateActionTypes.SET_SCHEMAS
 });
@@ -91,7 +91,7 @@ export const setScimSchemas = (schemas: ProfileSchema[]): AuthAction => ({
  * Dispatches an action of type `SET_INITIALIZED`
  * @param flag - Flag to indicate if the app is initialized
  */
-export const setInitialized = (flag: boolean): AuthAction => ({
+const setInitialized = (flag: boolean): AuthAction => ({
     payload: flag,
     type: authenticateActionTypes.SET_INITIALIZED
 });
@@ -100,7 +100,7 @@ export const setInitialized = (flag: boolean): AuthAction => ({
 /**
  * Get SCIM2 schemas
  */
-export const getScimSchemas = (
+const getScimSchemas = (
     profileInfo: BasicProfileInterface = null,
     isReadOnlyUser: boolean
 ) => (dispatch: Dispatch<AnyAction>): void => {

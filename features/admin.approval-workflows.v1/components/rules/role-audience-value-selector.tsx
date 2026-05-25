@@ -33,7 +33,7 @@ import {
 import useRequest from "@wso2is/admin.core.v1/hooks/use-request";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
-import { useRulesContext } from "@wso2is/admin.rules.v1/hooks/use-rules-context";
+import useRulesContext from "@wso2is/admin.rules.v1/hooks/use-rules-context";
 import { ExpressionFieldTypes } from "@wso2is/admin.rules.v1/models/rules";
 import { HttpMethods, IdentifiableComponentInterface } from "@wso2is/core/models";
 import debounce from "lodash-es/debounce";

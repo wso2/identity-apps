@@ -126,7 +126,7 @@ export const removeLinkedAccount = (id: string): Promise<void> => {
  *
  * @returns a Promise.
  */
-export const removeAllLinkedAccounts = (): Promise<void> => {
+const removeAllLinkedAccounts = (): Promise<void> => {
     const requestConfig: HttpRequestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState()?.config?.deployment

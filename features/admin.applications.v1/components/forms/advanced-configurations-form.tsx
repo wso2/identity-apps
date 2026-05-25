@@ -31,7 +31,7 @@ import {
     IdentifiableComponentInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
-import { Field, Form, FormPropsInterface } from "@wso2is/form";
+import { Field, Form, FormPropsInterface } from "@wso2is/forms";
 import { ConfirmationModal, DocumentationLink, GenericIcon, Heading, Hint, URLInput, useDocumentation  }
     from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";

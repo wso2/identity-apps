@@ -30,7 +30,7 @@ import {
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FinalForm, FinalFormField, FormRenderProps, FormSpy, FormState, TextFieldAdapter } from "@wso2is/form";
+import { FinalForm, FinalFormField, FormRenderProps, FormSpy, FormState, TextFieldAdapter } from "@wso2is/forms";
 import { GenericIcon, Hint } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import orderBy from "lodash-es/orderBy";
@@ -46,7 +46,7 @@ import replaceObjectKeySymbols from "../../utils/replace-object-key-symbols";
 /**
  * Prop types for the text customization fields component.
  */
-export interface CustomTextFieldsProps extends IdentifiableComponentInterface {
+interface CustomTextFieldsProps extends IdentifiableComponentInterface {
     onSubmit: (values: any) => void;
     fields: Record<string, string>;
     /**

@@ -80,7 +80,7 @@ export const reactSDKLoginButtonCode = (): string => {
     );
 };
 
-export const reactSDKLogoutButtonCode = (): string => {
+const reactSDKLogoutButtonCode = (): string => {
 
     return (
         "<button onClick={ () => signOut() }>Logout</button>"
@@ -120,7 +120,7 @@ export default App;`
     );
 };
 
-export const reactSDKIntegrationCode = (): string => {
+const reactSDKIntegrationCode = (): string => {
 
     return `import { useAuthContext } from "@asgardeo/auth-react";
 import React from "react";

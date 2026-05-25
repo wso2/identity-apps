@@ -21,7 +21,7 @@ import Select from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
 import MultiValuedTextField from "@wso2is/common.users.v1/components/multi-valued-text-field";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { FinalForm, FormRenderProps } from "@wso2is/form";
+import { FinalForm, FormRenderProps } from "@wso2is/forms";
 import { Button, Popup, useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement } from "react";

@@ -66,4 +66,3 @@ export const useGetRoleByIdV3 = <Data = any, Error = RequestErrorInterface>(
     };
 };
 
-export default useGetRoleByIdV3;

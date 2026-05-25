@@ -91,6 +91,12 @@ export const groups: groupsNS = {
         storeOptions: "Select User Store"
     },
     notifications: {
+        apiLimitReachedError: {
+            error: {
+                description: "You have reached the maximum number of groups allowed.",
+                message: "Failed to create the group"
+            }
+        },
         createGroup: {
             error: {
                 description: "{{description}}",
@@ -138,6 +144,16 @@ export const groups: groupsNS = {
                 description: "An error occurred while fetching groups.",
                 message: "Something went wrong"
             }
+        },
+        tierLimitReachedError: {
+            emptyPlaceholder: {
+                action: "View Plans",
+                subtitles: "You can contact the organization administrator or (if you are the " +
+                    "administrator) upgrade your subscription to increase the allowed limit.",
+                title: "You have reached the maximum number of groups allowed " +
+                    "for this organization."
+            },
+            heading: "You’ve reached the maximum limit for groups"
         },
         updateGroup: {
             error: {

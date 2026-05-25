@@ -26,7 +26,7 @@ import { SidePanelItem } from "./side-panel-item";
 /**
  * Side panel item group component Prop types.
  */
-export interface SidePanelItemGroupPropsInterface extends CommonSidePanelPropsInterface, IdentifiableComponentInterface,
+interface SidePanelItemGroupPropsInterface extends CommonSidePanelPropsInterface, IdentifiableComponentInterface,
     TestableComponentInterface {
 
     /**

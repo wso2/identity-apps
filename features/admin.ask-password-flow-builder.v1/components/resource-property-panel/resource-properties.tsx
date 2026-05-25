@@ -29,6 +29,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
 import ButtonExtendedProperties from "./extended-properties/button-extended-properties";
+import ConsentExtendedProperties from "./extended-properties/consent-extended-properties";
 import FieldExtendedProperties from "./extended-properties/field-extended-properties";
 import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
@@ -40,7 +41,7 @@ import AskPasswordFlowBuilderConstants from "../../constants/ask-password-flow-b
 /**
  * Props interface of {@link ResourceProperties}
  */
-export type ResourcePropertiesPropsInterface = CommonResourcePropertiesPropsInterface & IdentifiableComponentInterface;
+type ResourcePropertiesPropsInterface = CommonResourcePropertiesPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Factory to generate the property configurator for the given password recovery flow resource.
@@ -126,6 +127,20 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
 
             break;
         case ElementCategories.Field:
+            if (resource.type === ElementTypes.Policy) {
+                return (
+                    <>
+                        { renderElementId() }
+                        <ConsentExtendedProperties
+                            resource={ resource }
+                            onChange={ onChange }
+                            data-componentid="consent-extended-properties"
+                        />
+                        { renderElementPropertyFactory() }
+                    </>
+                );
+            }
+
             return (
                 <>
                     { renderElementId() }

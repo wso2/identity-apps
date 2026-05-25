@@ -1,0 +1,173 @@
+{
+    "$schema": "https://unpkg.com/knip@latest/schema.json",
+    "ignore": [
+        "identity-apps-core/**",
+        "apps/console/src/extensions/i18n/**",
+        "modules/i18n/src/**",
+        "features/admin.server-configurations.v1/dynamic-connector.tsx",
+        "features/admin.applications.v1/components/application-danger-zone.tsx",
+        "features/admin.extensions.v1/configs/components/application-general-tab-overide.tsx"
+    ],
+    "ignoreIssues": {
+        "features/common.branding.v1/models/branding-preferences.ts": ["enumMembers"],
+        "features/admin.identity-providers.v1/models/identity-provider.ts": ["enumMembers"],
+        "features/admin.applications.v1/models/application-inbound.ts": ["enumMembers"],
+        "features/admin.extensions.v1/configs/models/application.ts": ["enumMembers"],
+        "features/admin.flow-builder-core.v1/components/resource-property-panel/choice-options-property-field.tsx": ["types"],
+        "modules/core/src/models/http.ts": ["enumMembers"],
+        "modules/forms/src/components/adapters/file-picker-adapter.tsx": ["enumMembers"],
+        "features/admin.users.v1/components/guests/models/invite.ts": ["enumMembers"],
+        "features/admin.core.v1/public-api.ts": ["unresolved"],
+        "features/admin.extensions.v1/public-api.ts": ["unresolved"],
+        "features/admin.identity-providers.v1/public-api.ts": ["unresolved"],
+        "features/admin.identity-verification-providers.v1/public-api.ts": ["unresolved"],
+        "apps/console/jest.config.ts": ["unresolved"],
+        "apps/myaccount/jest.config.ts": ["unresolved"],
+        "modules/core/jest.config.ts": ["unresolved"],
+        "modules/forms/jest.config.ts": ["unresolved"],
+        "modules/i18n/jest.config.ts": ["unresolved"],
+        "modules/forms/src/legacy/dynamic-forms/components/adapters.tsx": ["exports", "types"],
+        "modules/forms/src/legacy/dynamic-forms/components/utils.tsx": ["exports", "types"],
+        "modules/forms/src/legacy/dynamic-forms/models/fields.ts": ["exports"],
+        "modules/forms/src/legacy/dynamic-forms/utils/validate.ts": ["exports"],
+        "modules/forms/src/legacy/index.ts": ["exports"],
+        "modules/forms/src/legacy/components/dynamic-field.tsx": ["types"],
+        "modules/forms/src/legacy/dynamic-forms/components/field-input.tsx": ["types"],
+        "modules/forms/src/legacy/dynamic-forms/components/field.tsx": ["types"],
+        "modules/forms/src/legacy/dynamic-forms/components/index.ts": ["types"],
+        "modules/forms/src/legacy/models/forms.ts": ["types"]
+    },
+    "ignoreBinaries": [
+        "prebuild",
+        "postbuild"
+    ],
+    "ignoreDependencies": [],
+    "workspaces": {
+        ".": {
+            "entry": [
+                "scripts/*.{js,ts}",
+                "babel.config.json"
+            ],
+            "project": [
+                "scripts/**/*.{js,ts}"
+            ],
+            "ignoreDependencies": [
+                "core-js",
+                "lodash",
+                "@svgr/rollup",
+                "@rollup/plugin-url",
+                "@babel/polyfill",
+                "worker-loader"
+            ]
+        },
+        "apps/console": {
+            "entry": [
+                "src/index.tsx",
+                "src/init/*.ts"
+            ],
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ],
+            "webpack": {
+                "config": []
+            },
+            "ignoreDependencies": [
+                "buffer"
+            ]
+        },
+        "apps/myaccount": {
+            "entry": [
+                "src/index.tsx",
+                "src/init/*.ts"
+            ],
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ],
+            "webpack": {
+                "config": []
+            },
+            "ignoreDependencies": [
+                "@wso2is/theme",
+                "buffer"
+            ]
+        },
+        "features": {
+            "project": [
+                "**/*.{ts,tsx}",
+                "!admin.*/**"
+            ],
+            "ignoreDependencies": [
+                "@wso2is/theme"
+            ]
+        },
+        "features/admin.extensions.v1": {
+            "project": [
+                "**/*.{ts,tsx}"
+            ],
+            "ignoreDependencies": [
+                "@wso2is/admin.feature-gate.v1"
+            ]
+        },
+        "features/admin.email-and-sms.v1": {
+            "project": [
+                "**/*.{ts,tsx}"
+            ],
+            "ignoreDependencies": [
+                "redux"
+            ]
+        },
+        "features/admin.*": {
+            "project": [
+                "**/*.{ts,tsx}"
+            ]
+        },
+        "modules/access-control": {
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ]
+        },
+        "modules/core": {
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ]
+        },
+        "modules/forms": {
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ]
+        },
+        "modules/i18n": {
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ]
+        },
+        "modules/react-components": {
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ]
+        },
+        "modules/theme": {
+            "entry": [
+                "src/index.{js,ts}"
+            ],
+            "project": [
+                "src/**/*.{js,ts}"
+            ],
+            "ignoreDependencies": [
+                "semantic-ui-css",
+                "semantic-ui-less",
+                "rc-tree"
+            ]
+        },
+        "modules/unit-testing": {
+            "project": [
+                "*.{ts,tsx}"
+            ]
+        },
+        "modules/validation": {
+            "project": [
+                "src/**/*.{ts,tsx}"
+            ]
+        }
+    }
+}

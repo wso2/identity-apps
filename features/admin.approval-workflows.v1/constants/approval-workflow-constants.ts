@@ -20,7 +20,7 @@ import {
     INITIATOR_CLAIMS_FIELD,USER_CLAIMS_FIELD
 } from "../utils/workflow-claim-utils";
 
-export class ApprovalWorkflowConstants {
+class ApprovalWorkflowConstants {
 
     private constructor() {}
     public static getPaths(): Map<string, string> {
@@ -45,7 +45,7 @@ export const APPROVAL_WORKFLOW_VALIDATION_REGEX_PATTERNS: ApprovalWorkflowValida
 /**
  * Approval workflow edit tabs
  */
-export enum ApprovalWorkflowEditTabIDs {
+enum ApprovalWorkflowEditTabIDs {
     GENERAL = "general",
     OPERATIONS = "workflow operations",
     CONFIGURATIONS = "approval steps",
@@ -126,4 +126,3 @@ export const OPERATION_FIELD_MAPPING: Record<string, string[]> = {
     ]
 };
 
-export default ApprovalWorkflowConstants;

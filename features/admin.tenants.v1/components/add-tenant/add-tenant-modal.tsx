@@ -41,7 +41,7 @@ import "./add-tenant-modal.scss";
 /**
  * Props interface of {@link AddTenantModal}
  */
-export type AddTenantModalProps = DialogProps & IdentifiableComponentInterface;
+type AddTenantModalProps = DialogProps & IdentifiableComponentInterface;
 
 /**
  * Modal to render the form to add a new tenant.

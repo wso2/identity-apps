@@ -23,7 +23,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Position } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import PlaceholderComponent from "./placeholder-component";
+import PlaceholderComponent from "@wso2is/common.branding.v1/components/placeholder-component";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import usePasswordExecutorValidation from "../../../../hooks/use-password-executor-validation";
 import useRequiredFields, { RequiredFieldInterface } from "../../../../hooks/use-required-fields";
@@ -34,7 +34,7 @@ import "./button-adapter.scss";
 /**
  * Props interface of {@link ButtonAdapter}
  */
-export type ButtonAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type ButtonAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Button component.

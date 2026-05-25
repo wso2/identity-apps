@@ -19,12 +19,12 @@
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { RolesInterface } from "@wso2is/core/models";
 
-export interface InviteValidationInterface {
+interface InviteValidationInterface {
     email: string;
     code: string;
 }
 
-export interface InviteValidationResponseInterface {
+interface InviteValidationResponseInterface {
     id?: string;
     email?: string;
     tenant?: string;
@@ -37,13 +37,13 @@ export interface InviteValidationResponseInterface {
  *
  * @readonly
  */
-export enum InviteValidationStatus {
+enum InviteValidationStatus {
     ACCEPTED = "ACCEPTED",
     EXPIRED = "EXPIRED",
     REJECTED = "REJECTED"
 }
 
-export interface InviteResourceEndpointsInterface {
+interface InviteResourceEndpointsInterface {
     userEndpoint: string;
     resendEndpoint: string;
     inviteEndpoint: string;

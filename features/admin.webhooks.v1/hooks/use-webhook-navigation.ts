@@ -19,7 +19,7 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { WebhookListItemInterface } from "../models/webhooks";
 
-export interface UseWebhookNavigationInterface {
+interface UseWebhookNavigationInterface {
     navigateToWebhookCreation: () => void;
     navigateToWebhookEdit: (webhookId: WebhookListItemInterface) => void;
     navigateToWebhookEditById: (webhookId: string) => void;

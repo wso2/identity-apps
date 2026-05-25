@@ -22,7 +22,7 @@ import AppSettingsContext, { AppSettingsContextProps } from "../contexts/app-set
 /**
  * Props interface of {@link UseAppSettings}
  */
-export type UseAppSettingsInterface = AppSettingsContextProps;
+type UseAppSettingsInterface = AppSettingsContextProps;
 
 /**
  * Hook that provides access to the local App settings context.

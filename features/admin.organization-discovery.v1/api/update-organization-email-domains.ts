@@ -37,7 +37,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * @param id - Organization id.
  * @param properties - Data that needs to be updated.
  */
-export const updateOrganizationDiscoveryAttributes = (
+const updateOrganizationDiscoveryAttributes = (
     id: string,
     properties: OrganizationDiscoveryAttributeDataInterface
 ): Promise<any> => {

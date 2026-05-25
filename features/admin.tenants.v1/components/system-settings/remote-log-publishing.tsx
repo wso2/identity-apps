@@ -29,7 +29,7 @@ import { LogType, RemoteLogPublishingConfigurationInterface } from "../../models
 /**
  * Props interface of {@link RemoteLogPublishing}
  */
-export type RemoteLogPublishingInterface = IdentifiableComponentInterface;
+type RemoteLogPublishingInterface = IdentifiableComponentInterface;
 
 /**
  * Component to hold the remote log publishing configurations.
@@ -37,7 +37,7 @@ export type RemoteLogPublishingInterface = IdentifiableComponentInterface;
  * @param props - Props injected to the component.
  * @returns Remote log publishing component.
  */
-export const RemoteLogPublishing: FC<RemoteLogPublishingInterface> = ({
+const RemoteLogPublishing: FC<RemoteLogPublishingInterface> = ({
     ["data-componentid"]: componentId = "remote-log-publishing"
 }: RemoteLogPublishingInterface): ReactElement => {
     const {

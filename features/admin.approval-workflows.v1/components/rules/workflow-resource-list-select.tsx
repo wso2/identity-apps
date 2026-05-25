@@ -21,7 +21,7 @@ import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { useRulesContext } from "@wso2is/admin.rules.v1/hooks/use-rules-context";
+import useRulesContext from "@wso2is/admin.rules.v1/hooks/use-rules-context";
 import { ConditionExpressionMetaInterface } from "@wso2is/admin.rules.v1/models/meta";
 import { ResourceInterface } from "@wso2is/admin.rules.v1/models/resource";
 import { ExpressionFieldTypes } from "@wso2is/admin.rules.v1/models/rules";
@@ -43,7 +43,7 @@ import { normalizeResourceResponse, processResourceItems } from "../../utils/res
 /**
  * Props interface of {@link WorkflowResourceListSelect}
  */
-export interface WorkflowResourceListSelectPropsInterface extends IdentifiableComponentInterface {
+interface WorkflowResourceListSelectPropsInterface extends IdentifiableComponentInterface {
     conditionId: string;
     expressionId: string;
     expressionValue: string;

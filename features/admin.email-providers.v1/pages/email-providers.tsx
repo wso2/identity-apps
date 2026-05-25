@@ -34,7 +34,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FinalForm, Form, FormPropsInterface, FormRenderProps } from "@wso2is/form";
+import { Field, FinalForm, Form, FormPropsInterface, FormRenderProps } from "@wso2is/forms";
 import {
     Code,
     ConfirmationModal,

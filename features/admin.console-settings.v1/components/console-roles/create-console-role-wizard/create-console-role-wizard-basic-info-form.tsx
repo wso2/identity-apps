@@ -19,14 +19,14 @@
 import Code from "@oxygen-ui/react/Code";
 import { RoleConstants } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Field, TextFieldAdapter } from "@wso2is/form";
+import { Field, TextFieldAdapter } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 
 /**
  * Prop types for the text customization fields component.
  */
-export type CreateConsoleRoleWizardBasicInfoFormProps = IdentifiableComponentInterface;
+type CreateConsoleRoleWizardBasicInfoFormProps = IdentifiableComponentInterface;
 
 /**
  * Text customization fields component.

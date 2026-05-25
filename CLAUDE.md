@@ -66,8 +66,7 @@ pnpm clean                        # Clean all build artifacts
 - `@wso2is/react-components` - Semantic UI-based component library
 - `@wso2is/theme` - Theming system
 - `@wso2is/i18n` - Internationalization (i18next)
-- `@wso2is/form` - Form handling (current — Oxygen UI / MUI field adapters)
-- `@wso2is/forms` - Form handling (legacy — Semantic UI, **do not use in new code**)
+- `@wso2is/forms` - Unified form library (Oxygen UI / MUI field adapters) in `modules/forms`
 
 ### Technology Stack
 
@@ -155,7 +154,7 @@ export const useMyHook = (): UseMyHookReturn => { ... };
 ### Components
 
 - Extend `IdentifiableComponentInterface` from `@wso2is/core/models` for component IDs
-- Form fields use `@wso2is/form` library (not `@wso2is/forms`, which is legacy Semantic UI)
+- Form fields use `@wso2is/forms` library (React Final Form wrappers). Legacy Semantic UI forms are available under `@wso2is/forms/legacy` but should not be used in new code.
 - All form inputs must have labels; use "(optional)" suffix for non-required fields
 - Memoize components with expensive render logic using `React.memo()`
 - Stabilize callbacks with `useCallback` and expensive computations with `useMemo`
@@ -475,9 +474,9 @@ Feature packages declare dependencies on other features in their `package.json`:
 ```
 
 - **`workspace:^`** — local monorepo feature (resolved by pnpm workspace)
-- **Semver version** (e.g., `^2.5.3`) — published package from the registry
+- **Semver version** (e.g., `^2.5.3`) — published package from the registry. If the referenced package is used across all feature modules, use the pnpm catalog to specify the version of that package for all feature modules in a single place. 
 
-When your feature imports from another feature, add it as a `workspace:^` dependency in your `package.json`. All features depend on `@wso2is/core` and `@wso2is/i18n` at minimum.
+When your feature imports from another feature, add it as a `workspace:^` dependency in your `package.json`.
 
 ## Prerequisites for Local Development
 

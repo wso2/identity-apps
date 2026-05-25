@@ -30,7 +30,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
-import { Field, Form, FormPropsInterface } from "@wso2is/form";
+import { Field, Form, FormPropsInterface } from "@wso2is/forms";
 import {
     DangerZone,
     DangerZoneGroup,
@@ -63,7 +63,7 @@ const FORM_ID: string = "saml2-config-form";
 /**
  * saml2 configuration page.
  */
-export const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInterface> = (
+const Saml2ConfigurationPage: FunctionComponent<Saml2ConfigurationPageInterface> = (
     props: Saml2ConfigurationPageInterface
 ): ReactElement => {
     const { [ "data-componentid" ]: componentId } = props;

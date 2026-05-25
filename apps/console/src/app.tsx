@@ -169,7 +169,7 @@ const Base = ({
  *
  * @returns App Root component.
  */
-export const App = ({
+const App = ({
     onAgentManagementEnableStatusChange,
     onCustomerDataServiceStatusChange
 }: AppComponentProps): ReactElement => {

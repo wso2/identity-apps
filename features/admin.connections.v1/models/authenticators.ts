@@ -110,14 +110,12 @@ export interface AuthenticatorExtensionsConfigInterface {
  */
 export enum AuthenticatorLabels {
     SOCIAL = "Social-Login",
-    FIRST_FACTOR = "First Factor",
     SECOND_FACTOR = "2FA",
     MULTI_FACTOR = "MFA",
     OIDC = "OIDC",
     SAML = "SAML",
     PASSWORDLESS = "Passwordless",
     HANDLERS = "Handlers",
-    USERNAMELESS = "Usernameless",
     PASSKEY = "Passkey",
     API_AUTHENTICATION = "APIAuth",
     CUSTOM = "Custom"

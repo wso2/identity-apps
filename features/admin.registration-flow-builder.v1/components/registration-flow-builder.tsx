@@ -24,7 +24,7 @@ import RegistrationFlowBuilderCore from "./registration-flow-builder-core";
 /**
  * Props interface of {@link RegistrationFlowBuilder}
  */
-export type RegistrationFlowBuilderPropsInterface = IdentifiableComponentInterface;
+type RegistrationFlowBuilderPropsInterface = IdentifiableComponentInterface;
 
 /**
  * Entry point for the registration flow builder decorated with the necessary providers.

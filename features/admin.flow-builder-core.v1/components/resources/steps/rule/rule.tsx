@@ -40,7 +40,7 @@ import "./rule.scss";
 /**
  * Props interface of {@link Rule}
  */
-export type RulePropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
+type RulePropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Representation of an empty step in the flow builder.
@@ -48,7 +48,7 @@ export type RulePropsInterface = CommonStepFactoryPropsInterface & IdentifiableC
  * @param props - Props injected to the component.
  * @returns Rule component.
  */
-export const Rule: FunctionComponent<RulePropsInterface> = ({
+const Rule: FunctionComponent<RulePropsInterface> = ({
     data,
     "data-componentid": componentId = "rule"
 }: RulePropsInterface): ReactElement => {

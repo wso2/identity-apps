@@ -37,6 +37,31 @@ function createFile(filePath, data, options, checkIfExists) {
 // eslint-disable-next-line no-console
 const log = console.log;
 
+function getI18nBundlePath() {
+
+    const i18nModulePackagePath = require.resolve("@wso2is/i18n/package.json");
+    const i18nModuleRoot = path.dirname(i18nModulePackagePath);
+    const i18nBundlePath = path.join(i18nModuleRoot, "dist", "bundle");
+
+    if (fs.existsSync(i18nBundlePath)) {
+        return i18nBundlePath;
+    }
+
+    const i18nModuleBuildScriptPath = path.join(i18nModuleRoot, "scripts", "post-build.js");
+    const i18nModuleTsConfigPath = path.join(i18nModuleRoot, "tsconfig.json");
+
+    if (fs.existsSync(i18nModuleBuildScriptPath) && fs.existsSync(i18nModuleTsConfigPath)) {
+        log("i18n bundle not found. Building @wso2is/i18n module...");
+        execSync("pnpm build", { cwd: i18nModuleRoot, stdio: "inherit" });
+    }
+
+    if (!fs.existsSync(i18nBundlePath)) {
+        throw new Error(`Could not locate @wso2is/i18n bundle at ${ i18nBundlePath }.`);
+    }
+
+    return i18nBundlePath;
+}
+
 log("Pre build script started.....");
 
 // Run the clean script.
@@ -47,7 +72,7 @@ execSync("pnpm copy:branding:i18n:defaults");
 
 // Path of the build directory.
 const distDirectory = path.join(__dirname, "..", "src", "extensions", "i18n", "dist", "src");
-const i18nNodeModulesDir = path.join(__dirname,"..", "node_modules", "@wso2is", "i18n", "dist", "bundle");
+const i18nBundlePath = getI18nBundlePath();
 
 log("Compiling i18N extensions...");
 
@@ -60,9 +85,9 @@ log("Completed compiling i18n extensions.");
 
 const i18NTempExtensionsPath = path.join(distDirectory, "resources");
 const i18nExtensions = require(i18NTempExtensionsPath);
-const files = fs.readdirSync(i18nNodeModulesDir);
+const files = fs.readdirSync(i18nBundlePath);
 const metaJsonFileName = files.filter(file => file.startsWith("meta"))[ 0 ];
-const metaFilePath = path.join(i18nNodeModulesDir, metaJsonFileName);
+const metaFilePath = path.join(i18nBundlePath, metaJsonFileName);
 const meta = require(metaFilePath);
 
 const namespaces = [];
@@ -77,7 +102,7 @@ for (const value of Object.values(i18nExtensions)) {
     const fileContent = JSON.stringify(value.extensions, undefined, 4);
     const hash = crypto.createHash("sha1").update(JSON.stringify(fileContent)).digest("hex");
     const fileName = `extensions.${ hash.substr(0, 8) }.json`;
-    const filePath = path.join(i18nNodeModulesDir, value.name, "portals", fileName);
+    const filePath = path.join(i18nBundlePath, value.name, "portals", fileName);
 
     createFile(filePath, fileContent, null, true);
 

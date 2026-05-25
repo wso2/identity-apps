@@ -70,7 +70,7 @@ export interface UsernamePasswordRecoveryFormUpdatableConfigsInterface {
 /**
  * Proptypes for the Username Recovery Form error messages.
  */
-export interface UsernameRecoveryFormErrorValidationsInterface {
+interface UsernameRecoveryFormErrorValidationsInterface {
     /**
      * Recovery link expiry time field.
      */

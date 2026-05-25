@@ -59,7 +59,7 @@ import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } fr
  * Props for the Governance connector configuration categories page.
  */
 
-export interface GovernanceConnectorCategoriesGridInterface extends
+interface GovernanceConnectorCategoriesGridInterface extends
     IdentifiableComponentInterface, LoadableComponentInterface {
         /**
          * Connector categories.
@@ -221,6 +221,10 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
             case ServerConfigurationsConstants.REGISTRATION_FLOW_BUILDER_CONNECTOR_ID:
                 return (
                     <ProgressFlowIcon className="icon" />
+                );
+            case "policyConsents":
+                return (
+                    <UserDocumentIcon className="icon" />
                 );
             default:
                 return <GearIcon className="icon" />;

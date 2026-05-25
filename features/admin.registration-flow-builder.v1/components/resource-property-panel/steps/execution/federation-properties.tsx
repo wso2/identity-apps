@@ -38,7 +38,7 @@ import "./federation-properties.scss";
 /**
  * Props interface of {@link FederationProperties}
  */
-export type FederationPropertiesPropsInterface = CommonResourcePropertiesPropsInterface &
+type FederationPropertiesPropsInterface = CommonResourcePropertiesPropsInterface &
     IdentifiableComponentInterface;
 
 const IDP_NAME_PLACEHOLDER: string = "{{IDP_NAME}}";

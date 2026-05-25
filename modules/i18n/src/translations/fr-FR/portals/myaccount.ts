@@ -450,6 +450,55 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        policyConsentManagement: {
+            consentedOnLabel: "Actif depuis",
+            dangerZones: {
+                revoke: {
+                    actionTitle: "Révoquer",
+                    header: "Révoquer le consentement de politique",
+                    subheader: "Cette action révoquera votre consentement pour cette politique. Vous pourrez être invité à donner à nouveau votre consentement la prochaine fois que vous accédez au service."
+                }
+            },
+            modals: {
+                revokeModal: {
+                    heading: "Révoquer le consentement pour {{policyName}}",
+                    message: "Cela révoquera votre consentement pour cette politique. Vous pourrez être invité à donner à nouveau votre consentement la prochaine fois que vous accédez au service. Êtes-vous sûr de vouloir continuer ?"
+                }
+            },
+            notifications: {
+                fetch: {
+                    error: {
+                        description: "Une erreur s'est produite lors de la récupération de vos consentements de politique.",
+                        message: "Échec de la récupération"
+                    },
+                    genericError: {
+                        description: "Une erreur s'est produite lors de la récupération de vos consentements de politique.",
+                        message: "Échec de la récupération"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
+                revoke: {
+                    error: {
+                        description: "Une erreur s'est produite lors de la révocation du consentement de politique.",
+                        message: "Échec de la révocation"
+                    },
+                    genericError: {
+                        description: "Une erreur s'est produite lors de la révocation du consentement de politique.",
+                        message: "Échec de la révocation"
+                    },
+                    success: {
+                        description: "Le consentement de politique a été révoqué avec succès.",
+                        message: "Consentement révoqué"
+                    }
+                }
+            },
+            policyUrlLabel: "Afficher la politique",
+            versionLabel: "Version {{version}}"
+        },
+        
         cookieConsent: {
             confirmButton: "J'ai compris",
             content: "Nous utilisons des cookies pour vous garantir la meilleure expérience globale. Ces cookies " +
@@ -1738,6 +1787,10 @@ export const myAccount: MyAccountNS = {
             subTitle: "Découvrez et accédez à vos applications",
             title: "Applications"
         },
+        consents: {
+            subTitle: "Gérez les consentements que vous avez fournis pour les applications et les politiques acceptées",
+            title: "Consentements"
+        },
         overview: {
             subTitle: "Gérez vos informations personnelles, la sécurité de votre compte et vos paramètres de " +
                 "confidentialité",
@@ -1844,6 +1897,15 @@ export const myAccount: MyAccountNS = {
             placeholders: {
                 emptyConsentList: {
                     heading: "Vous n'avez accordé aucun consentement"
+                }
+            }
+        },
+        policyConsentManagement: {
+            description: "Examinez les politiques que vous avez acceptées.",
+            heading: "Consentements de politique",
+            placeholders: {
+                emptyConsentList: {
+                    heading: "Vous n'avez accepté aucun consentement de politique"
                 }
             }
         },

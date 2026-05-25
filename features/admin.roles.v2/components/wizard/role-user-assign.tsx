@@ -23,7 +23,7 @@ import { OrganizationManagementConstants } from "@wso2is/admin.organizations.v1/
 import { getUsersList } from "@wso2is/admin.users.v1/api/users";
 import { UserBasicInterface, UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import { RolesMemberInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { Forms } from "@wso2is/forms";
+import { Forms } from "@wso2is/forms/legacy";
 import {
     Button,
     ContentLoader,

@@ -295,7 +295,7 @@ export const createOnboardingApplication = async (
  * @param templateId - Template ID
  * @returns True if redirect URLs are required
  */
-export const requiresRedirectUrls = (templateId?: string): boolean => {
+const requiresRedirectUrls = (templateId?: string): boolean => {
     return templateId !== ApplicationTemplateIdTypes.M2M_APPLICATION;
 };
 
@@ -305,6 +305,6 @@ export const requiresRedirectUrls = (templateId?: string): boolean => {
  * @param templateId - Template ID
  * @returns True if sign-in options are supported
  */
-export const supportsSignInOptions = (templateId?: string): boolean => {
+const supportsSignInOptions = (templateId?: string): boolean => {
     return templateId !== ApplicationTemplateIdTypes.M2M_APPLICATION;
 };

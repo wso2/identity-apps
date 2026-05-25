@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -29,6 +29,7 @@ import CheckboxAdapter from "./adapters/input/checkbox-adapter";
 import DefaultInputAdapter from "./adapters/input/default-input-adapter";
 import OTPInputAdapter from "./adapters/input/otp-input-adapter";
 import PhoneNumberInputAdapter from "./adapters/input/phone-number-input-adapter";
+import PolicyConsentAdapter from "./adapters/policy-consent-adapter";
 import ResendButtonAdapter from "./adapters/resend-button-adapter";
 import RichTextAdapter from "./adapters/rich-text-adapter";
 import TypographyAdapter from "./adapters/typography-adapter";
@@ -56,7 +57,7 @@ export interface CommonElementFactoryPropsInterface extends IdentifiableComponen
  * @param props - Props injected to the component.
  * @returns The CommonComponentFactory component.
  */
-export const CommonElementFactory: FunctionComponent<CommonElementFactoryPropsInterface> = ({
+const CommonElementFactory: FunctionComponent<CommonElementFactoryPropsInterface> = ({
     stepId,
     resource
 }: CommonElementFactoryPropsInterface & Node): ReactElement => {
@@ -75,6 +76,10 @@ export const CommonElementFactory: FunctionComponent<CommonElementFactoryPropsIn
     } else if (resource.type === ElementTypes.Input) {
         if (resource.variant === InputVariants.Checkbox) {
             return <CheckboxAdapter stepId={ stepId } resource={ resource } />;
+        }
+
+        if (resource.variant === InputVariants.Choice) {
+            return <ChoiceAdapter stepId={ stepId } resource={ resource } />;
         }
 
         if (resource.variant === InputVariants.Telephone) {
@@ -100,6 +105,8 @@ export const CommonElementFactory: FunctionComponent<CommonElementFactoryPropsIn
         return <ImageAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.Captcha) {
         return <CaptchaAdapter stepId={ stepId } resource={ resource } />;
+    } else if (resource.type === ElementTypes.Policy) {
+        return <PolicyConsentAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.Resend) {
         return <ResendButtonAdapter stepId={ stepId } resource={ resource } />;
     }

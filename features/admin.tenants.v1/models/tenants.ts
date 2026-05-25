@@ -52,14 +52,7 @@ export interface Tenant<T = TenantOwner> {
  * Ways to configure the password of a tenant.
  */
 export enum TenantStatus {
-    /**
-     * A valid password should be sent in the request body
-     */
-    INLINE_PASSWORD = "inline-password",
-    /**
-     * An email link will be sent to the given email address to set the password.
-     */
-    INVITE_VIA_EMAIL = "invite-via-email"
+    INLINE_PASSWORD = "inline-password"
 }
 
 /**

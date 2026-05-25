@@ -28,7 +28,7 @@ import {
 /**
  * Props interface for VisualEditorNotificationProvider.
  */
-export type VisualEditorNotificationProviderProps = IdentifiableComponentInterface;
+type VisualEditorNotificationProviderProps = IdentifiableComponentInterface;
 
 /**
  * Provider component for visual editor notifications.

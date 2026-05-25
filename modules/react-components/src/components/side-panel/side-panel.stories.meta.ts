@@ -207,7 +207,7 @@ export const ROUTES_WITH_CHILDREN: RouteInterface[] = [
     }
 ];
 
-export const SidePanelIcons = {
+const SidePanelIcons = {
     account: ControlsIcon,
     apps: AppIcon,
     childIcon: ArrowRight,

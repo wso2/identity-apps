@@ -56,7 +56,7 @@ type GovernanceConnectorWithRef = GovernanceConnectorInterface & ReferableCompon
  * @param props - Props injected to the component.
  * @returns Governance connectors page.
  */
-export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPageInterface> = (
+const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPageInterface> = (
     props: GovernanceConnectorsPageInterface
 ): ReactElement => {
     const { [ "data-testid" ]: testId } = props;

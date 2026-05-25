@@ -56,7 +56,7 @@ import useValidationHandlers from "../hooks/use-custom-validation-handlers";
 /**
  * Prop types of the `ApplicationCreateWizard` component.
  */
-export interface ApplicationCreateWizardPropsInterface extends ModalProps, IdentifiableComponentInterface {
+interface ApplicationCreateWizardPropsInterface extends ModalProps, IdentifiableComponentInterface {
     /**
      * Callback triggered when closing the application creation wizard.
      */

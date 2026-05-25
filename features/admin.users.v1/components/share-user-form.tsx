@@ -92,7 +92,7 @@ enum RoleSharingModes {
                     NONE = "NONE"
                 }
 
-export interface UserShareFormPropsInterface
+interface UserShareFormPropsInterface
     extends IdentifiableComponentInterface {
     /**
      * Editing user.

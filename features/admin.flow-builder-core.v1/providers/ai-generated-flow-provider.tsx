@@ -19,7 +19,7 @@
 import React, { PropsWithChildren, useState } from "react";
 import AIGeneratedFlowContext from "../context/ai-generated-flow-context";
 
-export type AIGeneratedFlowProviderProps = any;
+type AIGeneratedFlowProviderProps = any;
 
 /**
  * Provider for the AI generated flow context.

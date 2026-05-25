@@ -24,7 +24,7 @@ import ExtensionTemplatesContext, {
 /**
  * Interface for the return type of the `useExtensionTemplates` hook.
  */
-export type UseExtensionTemplatesInterface = ExtensionTemplatesContextProps;
+type UseExtensionTemplatesInterface = ExtensionTemplatesContextProps;
 
 /**
  * Hook that provides access to the extension templates context.

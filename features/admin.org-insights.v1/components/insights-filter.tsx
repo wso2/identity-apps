@@ -26,7 +26,7 @@ import {
     OrganizationListInterface
 } from "@wso2is/admin.organizations.v1/models/organizations";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { DropdownChild, Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { DropdownChild, Field, FormValue, Forms, Validation } from "@wso2is/forms/legacy";
 import { I18n } from "@wso2is/i18n";
 import { LinkButton, Popup, PrimaryButton } from "@wso2is/react-components";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";

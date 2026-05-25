@@ -163,6 +163,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
 
         if ([
             LocalAuthenticatorConstants.AUTHENTICATOR_IDS.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
+            LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SHARED_USER_IDENTIFIER_AUTHENTICATOR_ID,
             LocalAuthenticatorConstants.AUTHENTICATOR_IDS.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
             return SignInMethodUtils.isFirstFactorValid(currentStep, authenticationSteps);
         }
@@ -286,7 +287,14 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
             );
         } else if ([
             LocalAuthenticatorConstants.AUTHENTICATOR_IDS.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
+            LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SHARED_USER_IDENTIFIER_AUTHENTICATOR_ID,
             LocalAuthenticatorConstants.AUTHENTICATOR_IDS.BASIC_AUTHENTICATOR_ID ].includes(authenticator.id)) {
+            const messageKey: string =
+                authenticator.id === LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                    .SHARED_USER_IDENTIFIER_AUTHENTICATOR_ID
+                    ? "sharedUserIdentifierFirstFactorDisabled"
+                    : "firstFactorDisabled";
+
             return (
                 <Fragment>
                     { InfoLabel }
@@ -295,7 +303,7 @@ export const Authenticators: FunctionComponent<AuthenticatorsPropsInterface> = (
                             t(
                                 "applications:edit.sections" +
                                 ".signOnMethod.sections.authenticationFlow.sections.stepBased" +
-                                ".firstFactorDisabled"
+                                `.${ messageKey }`
                             )
                         }
                     </Text>

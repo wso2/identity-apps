@@ -46,7 +46,7 @@ import "./view.scss";
 /**
  * Props interface of {@link View}
  */
-export interface ViewPropsInterface
+interface ViewPropsInterface
     extends Pick<CommonStepFactoryPropsInterface, "data" | "resources">,
         Omit<HTMLAttributes<HTMLDivElement>, "resource">,
         IdentifiableComponentInterface {
@@ -92,7 +92,7 @@ export interface ViewPropsInterface
  * @param props - Props injected to the component.
  * @returns Step Node component.
  */
-export const View: FunctionComponent<ViewPropsInterface> = ({
+const View: FunctionComponent<ViewPropsInterface> = ({
     heading,
     droppableAllowedTypes,
     droppableRestrictedTypes,

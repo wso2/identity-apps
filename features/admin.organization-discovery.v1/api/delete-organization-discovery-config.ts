@@ -32,7 +32,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  *
  * TODO: Use `IdentityAppsApiException` and validate the return type.
  */
-export const deleteOrganizationDiscoveryConfig = (): Promise<string> => {
+const deleteOrganizationDiscoveryConfig = (): Promise<string> => {
     const config: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",

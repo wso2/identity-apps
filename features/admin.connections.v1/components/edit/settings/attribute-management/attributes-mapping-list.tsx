@@ -27,7 +27,7 @@ import {
     ConnectionCommonClaimMappingInterface
 } from "../../../../models/connection";
 
-export interface AttributeMappingListProps extends TestableComponentInterface {
+interface AttributeMappingListProps extends TestableComponentInterface {
     /**
      * This contains the mapped attributes list.
      */

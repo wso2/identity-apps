@@ -26,14 +26,14 @@ import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authenticati
 import useValidationStatus from "../../../../hooks/use-validation-status";
 import Notification, { NotificationType } from "../../../../models/notification";
 import { ExecutionStepViewTypes, ExecutionTypes, Step } from "../../../../models/steps";
-import { ValidationErrorBoundary } from "../../../validation-panel/validation-error-boundary";
+import ValidationErrorBoundary from "../../../validation-panel/validation-error-boundary";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 import View from "../view/view";
 
 /**
  * Props interface of {@link Execution}
  */
-export type ExecutionPropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
+type ExecutionPropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Execution Node component.
@@ -151,7 +151,6 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
             };
         }
     }, [ fullResource ]);
-
 
     /**
      * Resolves the execution name based on the type.

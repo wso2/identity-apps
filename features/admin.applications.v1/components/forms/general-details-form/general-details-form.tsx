@@ -46,8 +46,8 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
-import { Field, Form } from "@wso2is/form";
-import { RadioChild } from "@wso2is/forms";
+import { Field, Form } from "@wso2is/forms";
+import { RadioChild } from "@wso2is/forms/legacy";
 import {
     ContentLoader,
     DocumentationLink,
@@ -150,7 +150,7 @@ interface GeneralDetailsFormPopsInterface extends TestableComponentInterface, Id
 /**
  * Form values interface.
  */
-export interface GeneralDetailsFormValuesInterface {
+interface GeneralDetailsFormValuesInterface {
     /**
      * Application access URL.
      */
@@ -176,7 +176,7 @@ export interface GeneralDetailsFormValuesInterface {
 /**
  * Proptypes for the applications general details form error messages.
  */
-export interface GeneralDetailsFormErrorValidationsInterface {
+interface GeneralDetailsFormErrorValidationsInterface {
     /**
      *  Error message for the Application access URL.
      */

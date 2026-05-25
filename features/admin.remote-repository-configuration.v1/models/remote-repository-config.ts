@@ -80,7 +80,7 @@ export interface InterfaceEditDetails {
     remoteFetchName: string;
 }
 
-export interface InterfaceRemoteRevisionStatus {
+interface InterfaceRemoteRevisionStatus {
     itemName: string;
     deployedTime: string;
     deployedStatus: string;
@@ -95,7 +95,7 @@ export interface InterfaceRemoteRepoConfigDetails {
     configurationDeployer: InterfaceRemoteConfigDeployer;
 }
 
-export interface InterfaceRepositoryManagerDetails {
+interface InterfaceRepositoryManagerDetails {
     type: string;
     attributes: {
         accessToken?: string;
@@ -107,14 +107,14 @@ export interface InterfaceRepositoryManagerDetails {
     };
 }
 
-export interface InterfaceRemoteActionListner {
+interface InterfaceRemoteActionListner {
     type: string;
     attributes: {
         frequency?: number;
     };
 }
 
-export interface InterfaceRemoteConfigDeployer {
+interface InterfaceRemoteConfigDeployer {
     type: string;
     attributes: any;
 }

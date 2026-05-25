@@ -2481,6 +2481,7 @@ export const extensions: Extensions = {
         sidePanel: {
             apiResources: "API Resources",
             mcpServers: "MCP Servers",
+            consents: "Consents",
             branding: "Branding",
             stylesAndText: "Styles & Text",
             monitor: "Logs",

@@ -41,7 +41,7 @@ import { PushProviderTemplateFeatureStatus } from "../models/templates";
 /**
  * Props for the push provider card component.
  */
-export interface PushProviderCardPropsInterface extends IdentifiableComponentInterface {
+interface PushProviderCardPropsInterface extends IdentifiableComponentInterface {
     /**
      * Callback function triggered upon clicking on the push provider card.
      *

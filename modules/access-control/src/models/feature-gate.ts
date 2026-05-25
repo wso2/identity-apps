@@ -61,6 +61,9 @@ export enum FeatureTags {
 
 export interface FeatureGateInterface {
     console:  {
+        actions: {
+            status: FeatureStatus
+        },
         application: {
             signIn: {
                 adaptiveAuth : {
@@ -69,6 +72,9 @@ export interface FeatureGateInterface {
                 },
                 status: FeatureStatus
             },
+            status: FeatureStatus
+        },
+        approvalWorkflows: {
             status: FeatureStatus
         },
         branding: {
@@ -118,6 +124,9 @@ export interface FeatureGateInterface {
             remoteUserStores: {
                 status: FeatureStatus
             }
+        },
+        webhooks: {
+            status: FeatureStatus
         }
     }
 }

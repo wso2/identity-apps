@@ -19,7 +19,7 @@ import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { MouseEvent, useMemo, useState } from "react";
 import { DropdownProps, PaginationProps } from "semantic-ui-react";
 
-export interface UsePaginationInterface<T> {
+interface UsePaginationInterface<T> {
     currentPage: number;
     itemsPerPage: number;
     totalPages: number;

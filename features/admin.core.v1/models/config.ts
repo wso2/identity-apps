@@ -19,6 +19,7 @@
 import { ResponseMode, Storage } from "@asgardeo/auth-react";
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { ActionsResourceEndpointsInterface } from "@wso2is/admin.actions.v1/models/endpoints";
+import { AgentsResourceEndpointsInterface } from "@wso2is/admin.agents.v1/models/endpoints";
 import { ApplicationsTemplatesEndpointsInterface } from "@wso2is/admin.application-templates.v1/models/endpoints";
 import {
     ApplicationTemplateLoadingStrategies
@@ -51,6 +52,7 @@ import { TenantResourceEndpointsInterface } from "@wso2is/admin.tenants.v1/model
 import { UsersResourceEndpointsInterface } from "@wso2is/admin.users.v1/models/endpoints";
 import { UserstoreResourceEndpointsInterface } from "@wso2is/admin.userstores.v1/models/endpoints";
 import { ValidationServiceEndpointsInterface } from "@wso2is/admin.validation.v1/models";
+import { ConsentMgtResourceEndpointsInterface } from "@wso2is/common.consents.v1/models/endpoints";
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,
@@ -59,7 +61,7 @@ import {
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { WorkflowRequestsResourceEndpointsInterface } from "../../admin.workflow-requests.v1/configs/endpoints";
 
-export type ConfigInterface = CommonConfigInterface<
+type ConfigInterface = CommonConfigInterface<
     DeploymentConfigInterface,
     ServiceResourceEndpointsInterface,
     FeatureConfigInterface,
@@ -77,7 +79,7 @@ interface ConnectionConfigInterface extends FeatureAccessConfigInterface {
 /**
  * Extended feature config for onboarding with deployment-specific fields.
  */
-export interface OnboardingFeatureConfigInterface extends FeatureAccessConfigInterface {
+interface OnboardingFeatureConfigInterface extends FeatureAccessConfigInterface {
     /**
      * Cutoff date (YYYY-MM-DD) for determining whether a user is "new".
      * Users with SCIM2 meta.created on or after this date are considered new.
@@ -306,6 +308,10 @@ export interface FeatureConfigInterface {
      */
     ruleBasedPasswordExpiry?: FeatureAccessConfigInterface;
     /**
+     * Consent management feature.
+     */
+    consents?: FeatureAccessConfigInterface;
+    /**
      * Connection management feature.
      */
     connections?: ConnectionConfigInterface;
@@ -428,7 +434,7 @@ type GovernanceConnectorsFeatureConfig = Record<string, {
 /**
  * Interface representing the configuration for multi-tenancy.
  */
-export interface MultiTenancyConfigInterface {
+interface MultiTenancyConfigInterface {
     /**
      * Indicates if the dot extension is mandatory in the tenant domain.
      */
@@ -446,7 +452,7 @@ export interface MultiTenancyConfigInterface {
 /**
  * Interface for. Actions UI level configurations.
  */
-export interface ActionsUIConfigInterface {
+interface ActionsUIConfigInterface {
     types: {
         [ key: string ]: {
             version: {
@@ -828,7 +834,8 @@ interface IdentityProviderTemplateConfigInterface {
 /**
  * Service resource endpoints config.
  */
-export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpointsInterface,
+export interface ServiceResourceEndpointsInterface extends AgentsResourceEndpointsInterface,
+    ClaimResourceEndpointsInterface,
     CertificatesResourceEndpointsInterface,
     GroupsResourceEndpointsInterface,
     ServerConfigurationsResourceEndpointsInterface,
@@ -854,7 +861,8 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     WorkflowRequestsResourceEndpointsInterface,
     RulesEndpointsInterface,
     RemoteLoggingResourceEndpointsInterface,
-    FlowBuilderCoreResourceEndpointsInterface {
+    FlowBuilderCoreResourceEndpointsInterface,
+    ConsentMgtResourceEndpointsInterface {
 
     CORSOrigins: string;
     copilot: string;

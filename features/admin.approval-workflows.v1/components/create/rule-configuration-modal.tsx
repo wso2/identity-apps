@@ -26,7 +26,7 @@ import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
-import { useRulesContext } from "@wso2is/admin.rules.v1/hooks/use-rules-context";
+import useRulesContext from "@wso2is/admin.rules.v1/hooks/use-rules-context";
 import { ConditionExpressionMetaInterface } from "@wso2is/admin.rules.v1/models/meta";
 import {
     ConditionExpressionWithoutIdInterface,

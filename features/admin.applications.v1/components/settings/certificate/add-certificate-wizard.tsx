@@ -18,7 +18,7 @@
 import { AddCertificateFormComponent } from "@wso2is/admin.core.v1/components/add-certificate-form";
 import { getAddIDPCertificateWizardStepIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { useTrigger } from "@wso2is/forms";
+import { useTrigger } from "@wso2is/forms/legacy";
 import { Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";

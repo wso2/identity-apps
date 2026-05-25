@@ -18,6 +18,6 @@
 
 export * from "./history";
 export * from "./http-headers";
-export * from "./image";
+
 export * from "./user";
 export * from "./app-config-context";

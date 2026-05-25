@@ -21,7 +21,7 @@ import Pagination from "@mui/material/Pagination";
 import Typography from "@oxygen-ui/react/Typography";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FinalForm, FormRenderProps, MutableState, Tools } from "@wso2is/form";
+import { FinalForm, FormRenderProps, MutableState, Tools } from "@wso2is/forms";
 import {
     ContentLoader,
     Heading,
@@ -56,7 +56,7 @@ import "./resource-create-wizard.scss";
 /**
  * Prop types of the `ResourceCreateWizard` component.
  */
-export interface ResourceCreateWizardPropsInterface extends ModalProps, IdentifiableComponentInterface {
+interface ResourceCreateWizardPropsInterface extends ModalProps, IdentifiableComponentInterface {
     /**
      * Whether the resource creation wizard should be displayed.
      */

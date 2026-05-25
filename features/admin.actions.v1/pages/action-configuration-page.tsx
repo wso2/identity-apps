@@ -63,6 +63,8 @@ import { ActionsConstants } from "../constants/actions-constants";
 import { ActionVersionInfo, useActionVersioning } from "../hooks/use-action-versioning";
 import {
     ActionConfigFormPropertyInterface,
+    AuthenticationPropertiesInterface,
+    AuthenticationType,
     PreIssueIdTokenActionConfigFormPropertyInterface,
     PreIssueIdTokenActionResponseInterface,
     PreUpdatePasswordActionConfigFormPropertyInterface,
@@ -162,16 +164,47 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     const actionCommonInitialValues: ActionConfigFormPropertyInterface =
         useMemo(() => {
             if (action) {
-                return {
+                const authProperties: Partial<AuthenticationPropertiesInterface> =
+                    action?.endpoint?.authentication?.properties ?? {};
+                const authType: AuthenticationType = action?.endpoint?.authentication?.type;
+                const actionValues: ActionConfigFormPropertyInterface = {
                     allowedHeaders: action?.endpoint?.allowedHeaders,
                     allowedParameters: action?.endpoint?.allowedParameters,
-                    authenticationType: action?.endpoint?.authentication?.type?.toString(),
+                    authenticationType: authType?.toString(),
                     endpointUri: action?.endpoint?.uri,
                     id: action?.id,
                     name: action?.name,
                     rule: action?.rule
                 };
 
+                // Populating the non-secret values based on the authentication type.
+                switch (authType) {
+                    case AuthenticationType.BASIC:
+                        actionValues.usernameAuthProperty = authProperties?.username;
+
+                        break;
+                    case AuthenticationType.API_KEY:
+                        actionValues.headerAuthProperty = authProperties?.header;
+
+                        break;
+                    case AuthenticationType.CLIENT_CREDENTIAL:
+                        actionValues.clientIdAuthProperty = authProperties?.clientId;
+                        actionValues.scopesAuthProperty = authProperties?.scopes;
+                        actionValues.tokenEndpointAuthProperty = authProperties?.tokenEndpoint;
+
+                        break;
+                    case AuthenticationType.PASSWORD_CREDENTIAL:
+                        actionValues.clientId_passwordCredentialAuthProperty = authProperties?.clientId;
+                        actionValues.scopes_passwordCredentialAuthProperty = authProperties?.scopes;
+                        actionValues.tokenEndpoint_passwordCredentialAuthProperty = authProperties?.tokenEndpoint;
+                        actionValues.username_passwordCredentialAuthProperty = authProperties?.username;
+
+                        break;
+                    default:
+                        break;
+                }
+
+                return actionValues;
             } else {
                 return null;
             }

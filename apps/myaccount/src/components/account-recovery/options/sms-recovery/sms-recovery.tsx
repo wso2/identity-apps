@@ -18,7 +18,7 @@
 
 import { HttpErrorResponseDataInterface, IdentifiableComponentInterface
 } from "@wso2is/core/models";
-import { FinalForm, FinalFormField, FormRenderProps, FormValue, TextFieldAdapter } from "@wso2is/form";
+import { FinalForm, FinalFormField, FormRenderProps, FormValue, TextFieldAdapter } from "@wso2is/forms";
 import { Button, GenericIcon, Hint, PrimaryButton, SecondaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { AxiosError } from "axios";

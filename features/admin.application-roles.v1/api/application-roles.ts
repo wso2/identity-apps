@@ -93,7 +93,7 @@ export const getApplicationRolesList = (
  *
  * @returns A promise containing the response.
  */
-export const getAuthorizedAPIList = (appId: string):Promise<AuthorizedAPIListItemInterface[]> => {
+const getAuthorizedAPIList = (appId: string):Promise<AuthorizedAPIListItemInterface[]> => {
     const requestConfig: AxiosRequestConfig = {
         method: HttpMethods.GET,
         url: `${ store.getState().config.endpoints.authzEndpoint }/applications/${ appId }/authorized-apis`
@@ -116,7 +116,7 @@ export const getAuthorizedAPIList = (appId: string):Promise<AuthorizedAPIListIte
  *
  * @returns A promise containing the response.
  */
-export const createRole = (appId: string, payload: CreateRolePayloadInterface):Promise<any> => {
+const createRole = (appId: string, payload: CreateRolePayloadInterface):Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
         data: payload,
         method: HttpMethods.POST,
@@ -141,7 +141,7 @@ export const createRole = (appId: string, payload: CreateRolePayloadInterface):P
  *
  * @returns A promise containing the response.
  */
-export const updateRolePermissions = (
+const updateRolePermissions = (
     appId: string,
     roleName: string,
     payload: UpdateRolePayloadInterface
@@ -169,7 +169,7 @@ export const updateRolePermissions = (
  *
  * @returns A promise containing the response.
  */
-export const deleteRole = (appId: string, roleName: string):Promise<any> => {
+const deleteRole = (appId: string, roleName: string):Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
         method: HttpMethods.DELETE,
         url:  `${ store.getState().config.endpoints.authzEndpoint }/applications/${ appId }/roles/${ roleName }`
@@ -191,7 +191,7 @@ export const deleteRole = (appId: string, roleName: string):Promise<any> => {
  * @param orgId - The current organization id
  * @returns the shared application details of a sub organization
  */
-export const useSharedApplicationData = <Data = SharedApplicationAPIResponseInterface,
+const useSharedApplicationData = <Data = SharedApplicationAPIResponseInterface,
     Error = RequestErrorInterface> (
         appId: string,
         orgId: string
@@ -225,7 +225,7 @@ export const useSharedApplicationData = <Data = SharedApplicationAPIResponseInte
  * @param sharedApplications - The shared applications list
  * @returns the promise containing the response
  */
-export const createRoleInSharedApplications = (
+const createRoleInSharedApplications = (
     appId: string,
     roleName: string,
     sharedApplications: SharedApplicationDataInterface[]

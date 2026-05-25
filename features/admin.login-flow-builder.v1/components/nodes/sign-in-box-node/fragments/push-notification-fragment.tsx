@@ -27,7 +27,7 @@ import BasicSignInOptionControls from "./basic-sign-in-option-controls";
 /**
  * Proptypes for the Push Notification fragment component.
  */
-export interface PushNotificationFragmentPropsInterface extends IdentifiableComponentInterface {
+interface PushNotificationFragmentPropsInterface extends IdentifiableComponentInterface {
     /**
      * Callback to be fired when the option is removed.
      * @param event - Click event.

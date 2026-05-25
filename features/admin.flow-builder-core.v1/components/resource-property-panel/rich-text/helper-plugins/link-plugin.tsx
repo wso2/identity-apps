@@ -59,7 +59,7 @@ const LowPriority: CommandListenerPriority = 1;
 const HighPriority: CommandListenerPriority = 3;
 
 // Custom command for creating safe links.
-export const TOGGLE_SAFE_LINK_COMMAND: LexicalCommand<string> = createCommand("TOGGLE_SAFE_LINK_COMMAND");
+const TOGGLE_SAFE_LINK_COMMAND: LexicalCommand<string> = createCommand("TOGGLE_SAFE_LINK_COMMAND");
 
 // Predefined URL options
 interface PredefinedUrlOption {

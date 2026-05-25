@@ -16,12 +16,12 @@
  * under the License.
  */
 
-export type ProfileSchemaGroupedScope =
+type ProfileSchemaGroupedScope =
     | "identity_attributes"
     | "traits"
     | "application_data";
 
-export type ProfileSchemaFirstClassField =
+type ProfileSchemaFirstClassField =
     | "profile_id"
     | "user_id";
 
@@ -67,7 +67,7 @@ export interface ProfileSchemaAttribute {
     canonical_values?: CanonicalValues[];
 }
 
-export interface ProfileSchemaCoreAttribute {
+interface ProfileSchemaCoreAttribute {
     mutability: Mutability;
     value_type: ValueType;
 }

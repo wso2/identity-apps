@@ -21,7 +21,7 @@ import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ProfileSchemaInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Form, FormFieldMessage } from "@wso2is/form";
+import { Field, Form, FormFieldMessage } from "@wso2is/forms";
 import { ConfirmationModal, Text } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import get from "lodash-es/get";

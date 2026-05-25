@@ -32,7 +32,7 @@ import "./markdown-guide.scss";
 /**
  * Prop types of the `MarkdownGuide` component.
  */
-export interface MarkdownGuidePropsInterface extends IdentifiableComponentInterface {
+interface MarkdownGuidePropsInterface extends IdentifiableComponentInterface {
     /**
      * Data that can be templated in a Markdown script.
      */

@@ -29,7 +29,7 @@ import { ExecutionMinimalPropsInterface } from "../execution-minimal";
 /**
  * Props interface of {@link MicrosoftExecution}.
  */
-export type MicrosoftExecutionPropsInterface = ExecutionMinimalPropsInterface & IdentifiableComponentInterface;
+type MicrosoftExecutionPropsInterface = ExecutionMinimalPropsInterface & IdentifiableComponentInterface;
 
 const MicrosoftExecution = ({
     resource,

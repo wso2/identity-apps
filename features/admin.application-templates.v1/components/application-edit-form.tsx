@@ -56,7 +56,7 @@ import { ApplicationEditTabMetadataInterface } from "../models/templates";
 /**
  * Prop types of the `ApplicationEditForm` component.
  */
-export interface ApplicationEditFormPropsInterface extends IdentifiableComponentInterface {
+interface ApplicationEditFormPropsInterface extends IdentifiableComponentInterface {
     /**
      * The tab metadata to be used for the application edit form generation.
      */

@@ -24,7 +24,7 @@ import {  AppState  } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form, FormPropsInterface } from "@wso2is/form";
+import { Field, Form, FormPropsInterface } from "@wso2is/forms";
 import { ContentLoader, DangerZone, DangerZoneGroup, EmphasizedSegment, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -51,7 +51,7 @@ const FORM_ID: string = "impersonation-configuration-form";
 /**
  * Impersonation Configuration page.
  */
-export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConfigurationPageInterface> = (
+const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConfigurationPageInterface> = (
     props: ImpersonationConfigurationPageInterface
 ): ReactElement => {
     const { [ "data-componentid" ]: componentId } = props;

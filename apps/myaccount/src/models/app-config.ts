@@ -56,6 +56,10 @@ export interface FeatureConfigInterface {
      * Pending operation tasks feature.
      */
     operations?: FeatureAccessConfigInterface;
+    /**
+     * Consents management feature.
+     */
+    consents?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -124,13 +128,20 @@ export interface ServiceResourceEndpointsInterface {
      * from server configurations.
      * @see fetchHomeRealmIdentifiers to see the usages.
      */
+    /**
+     * Endpoints for the Consent Management v2.0 API.
+     */
+    consentMgtV2: {
+        consents: string;
+    };
+
     homeRealmIdentifiers: string;
 }
 
 /**
  * Authenticator app interface.
  */
-export interface AuthenticatorAppInterface {
+interface AuthenticatorAppInterface {
     link: string;
     name: string;
 }
@@ -236,7 +247,7 @@ export interface AppUtilsInterface {
     updateTenantQualifiedBaseName: (tenant: string) => void;
 }
 
-export interface InitialConfigInterface {
+interface InitialConfigInterface {
     consoleAppOrigin: string;
     contextPath: string;
     serverOrigin: string;

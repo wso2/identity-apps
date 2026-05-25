@@ -43,7 +43,7 @@ import { ApprovalSteps, ConfigurationsFormValuesInterface } from "../../models/u
 /**
  * Props for the configurations form component.
  */
-export interface ConfigurationsPropsInterface extends IdentifiableComponentInterface {
+interface ConfigurationsPropsInterface extends IdentifiableComponentInterface {
     /**
      * Whether the form is in read-only mode.
      */

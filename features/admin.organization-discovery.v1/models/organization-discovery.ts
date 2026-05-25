@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export interface OrganizationInterface {
+interface OrganizationInterface {
     id: string;
     name: string;
     ref: string;
@@ -48,7 +48,7 @@ export interface OrganizationLinkInterface {
     rel: string;
 }
 
-export interface OrganizationListInterface {
+interface OrganizationListInterface {
     links: OrganizationLinkInterface[];
     organizations: OrganizationInterface[];
 }
@@ -76,7 +76,7 @@ export interface OrganizationListWithDiscoveryInterface {
     organizations: OrganizationDiscoveryInterface[];
 }
 
-export interface OrganizationAttributesInterface {
+interface OrganizationAttributesInterface {
     key: string;
     value: string;
 }
@@ -86,7 +86,7 @@ export interface OrganizationDiscoveryConfigPropertyInterface {
     value: string;
 }
 
-export interface OrganizationDiscoveryAttributesInterface {
+interface OrganizationDiscoveryAttributesInterface {
     type: string;
     values: Array<string>;
 }
@@ -117,9 +117,5 @@ export interface OrganizationDiscoveryCheckResponseInterface {
  */
 export enum AutoCompleteReasonType {
     CREATE_OPTION = "createOption",
-    REMOVE_OPTION = "removeOption",
-    SELECT_OPTION = "selectOption",
-    CLEAR = "clear",
-    RESET = "reset",
-    BLUR = "blur"
+    REMOVE_OPTION = "removeOption"
 }

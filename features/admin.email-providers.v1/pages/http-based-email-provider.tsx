@@ -26,7 +26,7 @@ import {
     showAuthSecretsHint
 } from "@wso2is/admin.core.v1/helpers/external-api-authentication-helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FinalFormField, SelectFieldAdapter, TextFieldAdapter } from "@wso2is/form";
+import { FinalFormField, SelectFieldAdapter, TextFieldAdapter } from "@wso2is/forms";
 import {
     EmphasizedSegment,
     Heading,

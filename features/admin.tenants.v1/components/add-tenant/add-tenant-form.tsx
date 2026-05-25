@@ -39,7 +39,7 @@ import {
     TextFieldAdapter,
     Tools,
     composeValidators
-} from "@wso2is/form";
+} from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { FormState } from "final-form";
@@ -55,7 +55,7 @@ import "./add-tenant-form.scss";
 /**
  * Props interface of {@link AddTenantForm}
  */
-export interface AddTenantFormProps extends IdentifiableComponentInterface {
+interface AddTenantFormProps extends IdentifiableComponentInterface {
     /**
      * Callback to trigger when the form is submitted.
      * @param payload - Payload values.
@@ -63,11 +63,11 @@ export interface AddTenantFormProps extends IdentifiableComponentInterface {
     onSubmit?: (payload: AddTenantRequestPayload) => void;
 }
 
-export type AddTenantFormValues = Omit<Pick<Tenant, "domain" | "id">, "name" | "domain">
+type AddTenantFormValues = Omit<Pick<Tenant, "domain" | "id">, "name" | "domain">
     & { organizationHandle: string; organizationName: string }
     & Omit<TenantOwner, "additionalDetails" | "id">;
 
-export type AddTenantFormErrors = Partial<AddTenantFormValues>;
+type AddTenantFormErrors = Partial<AddTenantFormValues>;
 
 /**
  * Component to hold the form to add a tenant.

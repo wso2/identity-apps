@@ -110,6 +110,7 @@ import {
 import { AdaptiveScriptUtils } from "../../../../utils/adaptive-script-utils";
 import "./script-based-flow.scss";
 import ConditionalAuthPremiumBanner from "../../../banners/conditional-auth-premium-banner";
+import SubOrgAdaptiveAuthInfoBanner from "../../../banners/sub-org-adaptive-auth-info-banner";
 
 /**
  * Proptypes for the adaptive scripts component.
@@ -151,6 +152,11 @@ interface AdaptiveScriptsPropsInterface extends IdentifiableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Whether to show the sub-org adaptive auth info banner. Set by the parent when
+     * the org-governance capability check has resolved as allowed for a sub-org.
+     */
+    showSubOrgAdaptiveAuthInfoBanner?: boolean;
 
 }
 
@@ -173,6 +179,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         authenticationSteps,
         isDefaultScript,
         onAdaptiveScriptReset,
+        showSubOrgAdaptiveAuthInfoBanner,
         ["data-componentid"]: componentId
     } = props;
 
@@ -1355,6 +1362,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 </div>
                                 { renderConditionalAuthTour() }
                                 { conditionalAuthPremiumFeature && (<ConditionalAuthPremiumBanner />) }
+                                { !conditionalAuthPremiumFeature && showSubOrgAdaptiveAuthInfoBanner
+                                    && (<SubOrgAdaptiveAuthInfoBanner />) }
                             </>
                         ) }
                         hideChevron={ true }

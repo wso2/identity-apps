@@ -19,7 +19,7 @@
 import { ConditionExpressionsMetaDataInterface, RuleExecutionMetaDataInterface } from "./models/meta";
 import { RuleExecuteCollectionInterface, RuleInterface } from "./models/rules";
 
-export const sampleRuleExecuteInstance: RuleInterface = {
+const sampleRuleExecuteInstance: RuleInterface = {
     condition: "OR",
     execution: "totp",
     id: "e9a500d4-12dd-4b87-ad7c-9efdacf8a2a5",
@@ -83,7 +83,7 @@ export const sampleRuleExecuteInstances: RuleExecuteCollectionInterface = {
     ]
 };
 
-export const sampleApplicationList: any = {
+const sampleApplicationList: any = {
     applications: [
         {
             access: "READ",

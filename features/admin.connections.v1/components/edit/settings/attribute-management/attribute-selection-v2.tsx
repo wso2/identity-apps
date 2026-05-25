@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import { EmptyPlaceholder, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -32,7 +32,7 @@ import {
 /**
  * Properties of {@link AttributesSelectionV2}
  */
-export interface AttributesSelectionV2Props extends TestableComponentInterface {
+interface AttributesSelectionV2Props extends TestableComponentInterface {
     attributeList: Array<ConnectionClaimInterface>;
     mappedAttributesList: Array<ConnectionCommonClaimMappingInterface>;
     onAttributesSelected: (mappingsToBeAdded: ConnectionCommonClaimMappingInterface[]) => void;

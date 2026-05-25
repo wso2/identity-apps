@@ -45,7 +45,7 @@ export const useEndUserSession = (): () => Promise<boolean> => {
  *
  * @returns boolean
  */
-export const hasLoginPermission = (): boolean => {
+const hasLoginPermission = (): boolean => {
     const scopes: string = store.getState().authenticate.scope.split(" ");
 
     return scopes.includes(TokenConstants.LOGIN_SCOPE);
@@ -56,7 +56,7 @@ export const hasLoginPermission = (): boolean => {
  *
  * @returns boolean
  */
-export const hasScope = (scope: string): boolean => {
+const hasScope = (scope: string): boolean => {
     const scopes: string = store.getState().authenticationInformation.scope;
 
     return scopes.includes(scope);

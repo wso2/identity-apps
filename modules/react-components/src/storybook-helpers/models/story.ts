@@ -19,7 +19,7 @@
 /**
  * Interface for sub stories.
  */
-export interface SubStoryInterface {
+interface SubStoryInterface {
     /**
      * Title of the example.
      */

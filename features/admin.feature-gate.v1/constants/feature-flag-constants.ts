@@ -37,6 +37,7 @@ class FeatureFlagConstants {
         ACTIONS_TYPES_PRE_REGISTRATION: "actions.types.list.preRegistration",
         ACTIONS_TYPES_PRE_UPDATE_PASSWORD: "actions.types.list.preUpdatePassword",
         ACTIONS_TYPES_PRE_UPDATE_PROFILE: "actions.types.list.preUpdateProfile",
+        ACTIONS_FEATURE_GATE: "console.actions",
         AGENTS: "agents",
         AI_APPLICATION_LOGIN_FLOW_BANNER: "ai.application.loginFlow.banner",
         AI_BRANDING_BANNER: "ai.branding.banner",
@@ -47,6 +48,7 @@ class FeatureFlagConstants {
         APPLICATION_TEMPLATES: "applications.templates",
         APPROVALS: "approvals",
         APPROVAL_WORKFLOWS: "approvalWorkflows",
+        APPROVAL_WORKFLOWS_FEATURE_GATE: "console.approvalWorkflows",
         ATTRIBUTE_DIALECTS: "attributeDialects",
         BRANDING: "branding",
         BRANDING_STYLES_AND_TEXT_TITLE: "branding.stylesAndText.application.title",
@@ -83,6 +85,7 @@ class FeatureFlagConstants {
         USER_STORES_REMOTE_USER_STORES: "console.userStores.remoteUserStores",
         VERIFIABLE_CREDENTIALS: "verifiableCredentials",
         WEBHOOKS: "webhooks",
+        WEBHOOKS_FEATURE_GATE: "console.webhooks",
         WORKFLOW_INSTANCES: "workflowInstances"
     };
 }

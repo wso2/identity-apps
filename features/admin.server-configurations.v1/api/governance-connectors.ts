@@ -51,7 +51,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpReque
  *
  * @returns the governance connector categories.
  */
-export const useGovernanceConnectorCategories = <
+const useGovernanceConnectorCategories = <
     Data = GovernanceCategoryForOrgsInterface[],
     Error = RequestErrorInterface
 >
@@ -147,7 +147,7 @@ export const useGetGovernanceConnectorById = <
     };
 };
 
-export const getData = (url: string): Promise<any> => {
+const getData = (url: string): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -182,7 +182,7 @@ export const getData = (url: string): Promise<any> => {
         });
 };
 
-export const updateConfigurations = (data: UpdateGovernanceConnectorConfigInterface, url: string): Promise<any> => {
+const updateConfigurations = (data: UpdateGovernanceConnectorConfigInterface, url: string): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
         data,
         headers: {
@@ -324,7 +324,7 @@ export const getGovernanceConnectors = (categoryId: string): Promise<GovernanceC
  *
  * @returns a promise containing the response.
  */
-export const getServerConfigurations = (): Promise<any> => {
+const getServerConfigurations = (): Promise<any> => {
     return getData(store.getState().config.endpoints.serverConfigurations);
 };
 
@@ -335,7 +335,7 @@ export const getServerConfigurations = (): Promise<any> => {
  *
  * @returns a promise containing the response.
  */
-export const updateServerConfigurations = (data: UpdateGovernanceConnectorConfigInterface): Promise<any> => {
+const updateServerConfigurations = (data: UpdateGovernanceConnectorConfigInterface): Promise<any> => {
     return updateConfigurations(data, store.getState().config.endpoints.serverConfigurations);
 };
 

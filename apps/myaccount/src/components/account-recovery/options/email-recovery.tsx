@@ -19,7 +19,7 @@
 import { ProfileConstants } from "@wso2is/core/constants";
 import { HttpErrorResponseDataInterface, TestableComponentInterface
 } from "@wso2is/core/models";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms/legacy";
 import { GenericIcon, Hint, Popup } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { AxiosError } from "axios";

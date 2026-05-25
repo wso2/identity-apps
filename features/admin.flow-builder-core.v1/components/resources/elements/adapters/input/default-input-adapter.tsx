@@ -24,12 +24,12 @@ import { Trans, useTranslation } from "react-i18next";
 import useRequiredFields, { RequiredFieldInterface } from "../../../../../hooks/use-required-fields";
 import { CommonElementFactoryPropsInterface } from "../../common-element-factory";
 import Hint from "../../hint";
-import PlaceholderComponent from "../placeholder-component";
+import PlaceholderComponent from "@wso2is/common.branding.v1/components/placeholder-component";
 
 /**
  * Props interface of {@link DefaultInputAdapter}
  */
-export type DefaultInputAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type DefaultInputAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Fallback adapter for the inputs.
@@ -37,7 +37,7 @@ export type DefaultInputAdapterPropsInterface = IdentifiableComponentInterface &
  * @param props - Props injected to the component.
  * @returns The DefaultInputAdapter component.
  */
-export const DefaultInputAdapter: FunctionComponent<DefaultInputAdapterPropsInterface> = ({
+const DefaultInputAdapter: FunctionComponent<DefaultInputAdapterPropsInterface> = ({
     resource
 }: DefaultInputAdapterPropsInterface): ReactElement => {
     const { t } = useTranslation();

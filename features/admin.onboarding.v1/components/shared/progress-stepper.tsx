@@ -26,7 +26,7 @@ import { ProgressStepInterface } from "../../hooks/use-step-progress";
 /**
  * Props interface for ProgressStepper component.
  */
-export interface ProgressStepperPropsInterface extends IdentifiableComponentInterface {
+interface ProgressStepperPropsInterface extends IdentifiableComponentInterface {
     currentStepIndex: number;
     steps: ProgressStepInterface[];
     totalSteps: number;

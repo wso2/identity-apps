@@ -27,7 +27,7 @@ const ANIMATION_DURATION_MS: number = 250;
 /**
  * Transition phase for the step animation lifecycle.
  */
-export type TransitionPhase = "idle" | "exiting" | "entering";
+type TransitionPhase = "idle" | "exiting" | "entering";
 
 /**
  * Return type for the useStepTransition hook.

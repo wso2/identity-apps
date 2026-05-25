@@ -30,7 +30,7 @@ import {
     FinalFormField,
     FormRenderProps,
     TextFieldAdapter
-} from "@wso2is/form";
+} from "@wso2is/forms";
 import dayjs from "dayjs";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";

@@ -129,7 +129,7 @@ export const setOrganizationType = (orgType: OrganizationType): SetOrganizationT
     };
 };
 
-export const setSuperAdmin = (admin: string): SetSuperAdminTypeInterface => {
+const setSuperAdmin = (admin: string): SetSuperAdminTypeInterface => {
     return {
         payload: admin,
         type: OrganizationActionTypes.SET_SUPER_ADMIN

@@ -19,7 +19,7 @@
 /**
  * Application list model.
  */
-export interface ApplicationList {
+interface ApplicationList {
     /**
      * The total number of results matching the query.
      */
@@ -79,7 +79,7 @@ export interface Application {
 /**
  * Link model.
  */
-export interface Link {
+interface Link {
     /**
      * Path to the target resource.
      */

@@ -34,7 +34,7 @@ import {
     RadioGroupFieldAdapter,
     TextFieldAdapter,
     __DEPRECATED__SelectFieldAdapter
-} from "@wso2is/form";
+} from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";

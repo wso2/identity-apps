@@ -34,7 +34,7 @@ import {
     FeatureFlagsInterface,
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
-import { FormPropsInterface } from "@wso2is/form";
+import { FormPropsInterface } from "@wso2is/forms";
 import { Heading, Link, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";

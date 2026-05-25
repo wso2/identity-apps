@@ -143,7 +143,7 @@ export const createOrganizationRole = (organizationId: string, data: CreateRoleI
  * @param roleId - role id to update role details
  * @param roleData - Data that needs to be updated.
  */
-export const updateRole = (
+const updateRole = (
     organizationId: string,
     roleId: string,
     roleData: PatchOrganizationRoleDataInterface

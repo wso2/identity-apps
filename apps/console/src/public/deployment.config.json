@@ -466,6 +466,33 @@
                     "update": [
                        "internal_agent_mgt_update"
                     ]
+                },
+                "subFeatures": {
+                    "agentSharing": {
+                        "disabledFeatures": [],
+                        "enabled": false,
+                        "scopes": {
+                            "create": [
+                                    "internal_agent_share"
+                            ],
+                            "delete": [
+                                    "internal_agent_unshare"
+                            ],
+                            "read": [
+                                    "internal_agent_mgt_list",
+                                    "internal_agent_mgt_view",
+                                    "internal_agent_shared_access_view",
+                                    "internal_governance_view",
+                                    "internal_group_mgt_view",
+                                    "internal_organization_view",
+                                    "internal_role_mgt_view",
+                                    "internal_userstore_view"
+                            ],
+                            "update": [
+                                    "internal_agent_shared_access_update"
+                            ]
+                        }
+                    }
                 }
             },
             "ai": {
@@ -544,7 +571,8 @@
                 "disabledFeatures": [
                     "applications.loginFlow.legacyEditor",
                     "applications.sharedAccess.status",
-                    "applications.sharedApp.adaptiveAuth"
+                    "applications.sharedApp.adaptiveAuth",
+                    "applications.adaptiveAuth.orgGovernance"
                 ],
                 "enabled": true,
                 "featureFlags": [
@@ -829,6 +857,30 @@
                     ],
                     "update": [
                         "internal_keystore_update"
+                    ]
+                }
+            },
+            "consents": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [
+                        "internal_consent_mgt_element_create",
+                        "internal_consent_mgt_purpose_create"
+                    ],
+                    "delete": [
+                        "internal_consent_mgt_element_delete",
+                        "internal_consent_mgt_purpose_delete"
+                    ],
+                    "feature": [
+                        "console:consents"
+                    ],
+                    "read": [
+                        "internal_consent_mgt_element_view",
+                        "internal_consent_mgt_purpose_view"
+                    ],
+                    "update": [
+                        "internal_consent_mgt_purpose_update"
                     ]
                 }
             },
@@ -2201,6 +2253,7 @@
                 "groups": "v0.0.0",
                 "identityProviders": "v0.0.0",
                 "loginAndRegistration": "v1.0.0",
+                "mcpServers": "v0.0.0",
                 "oidcScopes": "v0.0.0",
                 "organizations": "v0.0.0",
                 "password-recovery": "v1.0.0",

@@ -66,11 +66,21 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
         [ "data-componentid"]: componentId
     } = props;
 
+    const resolveIcon = (icon?: FunctionComponent | ReactNode): ReactNode => {
+        if (typeof icon !== "function") {
+            return icon as ReactNode;
+        }
+
+        const IconComponent: React.FunctionComponent = icon as FunctionComponent;
+
+        return <IconComponent />;
+    };
+
     return (
 
         <Card
             data-componentid={ componentId }
-            position="relative"
+            sx={ { position: "relative" } }
             className={ `notification-channel ${!connectorEnabled && "disabled"}` }
             onClick={ onPrimaryActionClick }
         >
@@ -86,7 +96,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                                     backgroundColorRandomizer={ "notificationChannels" }
                                     className="notification-channel-icon-container"
                                 >
-                                    { icon }
+                                    { resolveIcon(icon) }
 
                                 </Avatar>
                             )

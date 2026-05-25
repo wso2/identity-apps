@@ -143,6 +143,10 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
      * URL Search params received to the parent edit page component.
      */
     urlSearchParams?: URLSearchParams;
+    /**
+     * OIDC inbound config fetched by the SWR hook on the parent page.
+     */
+    applicationInboundConfigs?: OIDCDataInterface;
 }
 
 /**
@@ -168,6 +172,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         template,
         readOnly,
         urlSearchParams,
+        applicationInboundConfigs,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -1357,18 +1362,20 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         const isOIDCConfigured: boolean = inboundProtocolList.includes(SupportedAuthProtocolTypes.OIDC);
 
+        const oidcConfig: OIDCDataInterface = applicationInboundConfigs ?? inboundProtocolConfig?.oidc;
+
         if (!isOIDCConfigured
-            || isEmpty(inboundProtocolConfig?.oidc)
-            || !inboundProtocolConfig.oidc.clientId
-            || !inboundProtocolConfig.oidc.clientSecret) {
+            || isEmpty(oidcConfig)
+            || !oidcConfig.clientId
+            || !oidcConfig.clientSecret) {
 
             return null;
         }
 
         const clientSecret: string = clientSecretHashDisclaimerModalInputs.clientSecret
-            || inboundProtocolConfig.oidc.clientSecret;
+            || oidcConfig.clientSecret;
         const clientId: string = clientSecretHashDisclaimerModalInputs.clientId
-            || inboundProtocolConfig.oidc.clientId;
+            || oidcConfig.clientId;
 
         return (
             <ConfirmationModal

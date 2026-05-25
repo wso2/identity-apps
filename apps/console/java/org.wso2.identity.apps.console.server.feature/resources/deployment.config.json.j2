@@ -335,7 +335,39 @@
                         "update": [],
                         "delete": []
                     {% endif %}
-                }
+                }{% if console.agents.sub_features is defined %},
+                "subFeatures": {
+                    {% for sub_feature_name, sub_feature in console.agents.sub_features.items() %}
+                    "{{ sub_feature_name }}": {
+                        "disabledFeatures": [
+                            {% if sub_feature.disabled_features is defined %}
+                            {% for disabled_feature in sub_feature.disabled_features %}
+                            "{{ disabled_feature }}"{{ "," if not loop.last }}
+                            {% endfor %}
+                            {% endif %}
+                        ],
+                        "enabled": {% if sub_feature.enabled is defined %} {{ sub_feature.enabled }},
+                        {% else %} true,
+                        {% endif %}
+                        "scopes": {
+                            {% if sub_feature.scopes is defined %}
+                            {% for operation, scopes in sub_feature.scopes.items() %}
+                            "{{ operation }}": [
+                                {% for scope in scopes %}
+                                    "{{ scope }}"{{ "," if not loop.last }}
+                                {% endfor %}
+                            ]{{ "," if not loop.last }}
+                            {% endfor %}
+                            {% else %}
+                                "create": [],
+                                "delete": [],
+                                "read": [],
+                                "update": []
+                            {% endif %}
+                        }
+                    }{{ "," if not loop.last }}
+                    {% endfor %}
+                }{% endif %}
             },
             {% endif %}
             {% if console.login_and_registration is defined %}
@@ -618,6 +650,9 @@
                     {%- set disabled_features = [] -%}
                     {%- if authentication.adaptive.shared_applications.enable is not defined or authentication.adaptive.shared_applications.enable != true -%}
                         {%- set _ = disabled_features.append('"applications.sharedApp.adaptiveAuth"') -%}
+                    {%- endif -%}
+                    {%- if authentication.adaptive.org_governance.enable is not defined or authentication.adaptive.org_governance.enable != true -%}
+                        {%- set _ = disabled_features.append('"applications.adaptiveAuth.orgGovernance"') -%}
                     {%- endif -%}
                     {%- if operation_permission_enforcement.skip_enforce_authorized_api_update_permission is defined and operation_permission_enforcement.skip_enforce_authorized_api_update_permission == true -%}
                         {%- set _ = disabled_features.append('"applications.enforceAuthorizedAPIUpdatePermission"') -%}
@@ -989,6 +1024,37 @@
                         "read": [],
                         "update": [],
                         "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
+            {% if console.consents is defined %}
+            "consents": {
+                "disabledFeatures": [
+                    {% if console.consents.disabled_features is defined %}
+                    {% for feature in console.consents.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.consents.enabled is defined %} {{ console.consents.enabled }},
+                {% else %} true,
+                {% endif %}
+                "scopes": {
+                    {% if console.consents.scopes is defined %}
+                    {% for operation, scopes in console.consents.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "delete": [],
+                        "feature": [],
+                        "read": [],
+                        "update": []
                     {% endif %}
                 }
             },
@@ -2642,7 +2708,7 @@
         "isClaimUniquenessValidationEnabled": {{ identity_mgt.user_claim_update.uniqueness.enable }},
         {% endif %}
         {% if oauth.hash_tokens_and_secrets is defined %}
-        "isClientSecretHashEnabled": {{ oauth.hash_tokens_and_secrets }},
+        "isClientSecretHashEnabled": {{ (oauth.hash_client_secret | default(false)) or (oauth.hash_tokens_and_secrets) }},
         {% endif %}
         {% if authentication.endpoint.enable_custom_claim_mappings is defined %}
         "isCustomClaimMappingEnabled": {{ authentication.endpoint.enable_custom_claim_mappings }},

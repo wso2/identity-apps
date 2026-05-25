@@ -31,7 +31,7 @@ import { StepOptionActionsDataInterface } from "../../../../models/visual-editor
 /**
  * Proptypes for the Password Reset Enforcer fragment component.
  */
-export interface PasswordResetEnforcerFragmentPropsInterface extends IdentifiableComponentInterface {
+interface PasswordResetEnforcerFragmentPropsInterface extends IdentifiableComponentInterface {
     /**
      * Callback to be fired when the option is removed.
      * @param event - Click event.

@@ -24,7 +24,7 @@ import useBrandingPreference from "../../../../../hooks/use-branding-preference"
 /**
  * Proptypes for the password-recovery fragment of login screen skeleton.
  */
-export type PasswordRecoveryEmailOTPFragmentInterface = IdentifiableComponentInterface;
+type PasswordRecoveryEmailOTPFragmentInterface = IdentifiableComponentInterface;
 
 /**
  * Password recovery fragment component for the branding preview of Password Recovery box.
