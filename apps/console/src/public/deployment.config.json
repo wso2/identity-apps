@@ -2297,6 +2297,13 @@
             "enabled": false,
             "title": "Shape the Future of Identity Server!",
             "url": "https://docs.google.com/forms/d/e/1FAIpQLSe6Dr_8QmHQmPI1zj07aYVSDPzNbay7Ss3SMsEBTCCaXLPnUw/viewform"
+        },
+        "rebrandingBanner": {
+            "announcementUrl": "",
+            "buttonText": "",
+            "description": "",
+            "enabled": false,
+            "title": ""
         }
     }
 }
