@@ -1,5 +1,11 @@
 # @wso2is/admin.core.v1
 
+## 2.57.12
+
+### Patch Changes
+
+- [#10322](https://github.com/wso2/identity-apps/pull/10322) [`e995e67e2fead93f01fcf16a5f1c35378222d7a7`](https://github.com/wso2/identity-apps/commit/e995e67e2fead93f01fcf16a5f1c35378222d7a7) Thanks [@savindi7](https://github.com/savindi7)! - Add announcement banner.
+
 ## 2.57.11
 
 ### Patch Changes
