@@ -514,6 +514,9 @@ importers:
       dayjs:
         specifier: ^1.11.18
         version: 1.11.20
+      dompurify:
+        specifier: ^3.0.9
+        version: 3.4.1
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
