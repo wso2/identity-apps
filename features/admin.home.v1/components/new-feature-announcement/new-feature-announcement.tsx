@@ -45,7 +45,7 @@ import { useSelector } from "react-redux";
 import { Grid, Modal } from "semantic-ui-react";
 import AIAgentBox from "./ai-agent-box";
 import RebrandingAnnouncement from "./rebranding-announcement";
-import CustomerDataServiceIllustration from "./customer-data-service-illustration";
+import CustomerDataServiceIllustration from "./cds-illustration.png";
 import SurveyBox from "./survey-box";
 import { ReactComponent as PreviewFeaturesIcon } from "../../../themes/default/assets/images/icons/flask-icon.svg";
 import "./new-feature-announcement.scss";
