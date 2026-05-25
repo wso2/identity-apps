@@ -49,6 +49,9 @@ import { ReactComponent as MonitorIcon } from "../themes/default/assets/images/i
 import { ReactComponent as MyAccountIcon } from "../themes/default/assets/images/icons/myaccount-icon.svg";
 import { ReactComponent as PackageIcon } from "../themes/default/assets/images/icons/package.svg";
 import {
+    ReactComponent as AccountPolicyIcon
+} from "../themes/default/assets/images/icons/account-policy-icon.svg";
+import {
     ReactComponent as PushAuthenticatorAppIcon
 } from "../themes/default/assets/images/icons/push-authenticator-app-icon.svg";
 import {
@@ -102,6 +105,7 @@ import DummyUser from "../themes/default/assets/images/user.png";
 
 export const UserImage: string = DummyUser;
 export const ConsentedAppIcon: React.FunctionComponent<React.SVGProps<SVGSVGElement>> = PackageIcon;
+export const PolicyConsentIcon: React.FunctionComponent<React.SVGProps<SVGSVGElement>> = AccountPolicyIcon;
 export const DefaultAppIcon: React.FunctionComponent<React.SVGProps<SVGSVGElement>> = CodeIcon;
 
 const getSidePanelIcons = (): {

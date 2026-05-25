@@ -243,7 +243,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             );
         }
 
-        if (orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled) {
+        if (orgType === OrganizationType.SUBORGANIZATION && !isAdaptiveAuthAvailable) {
             sequence.script = "";
         }
 
@@ -330,7 +330,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         newSequence: AuthenticationSequenceInterface,
         isRevertFlow?: boolean
     ): void => {
-        if (orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled) {
+        if (orgType === OrganizationType.SUBORGANIZATION && !isAdaptiveAuthAvailable) {
             // Update the modified script state in the context.
             updateAuthenticationSequence({
                 ...newSequence,

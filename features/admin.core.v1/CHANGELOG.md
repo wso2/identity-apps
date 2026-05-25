@@ -1,5 +1,43 @@
 # @wso2is/admin.core.v1
 
+## 2.57.11
+
+### Patch Changes
+
+- [#10315](https://github.com/wso2/identity-apps/pull/10315) [`ac975d561432967173e01ca6242e27bf2259c455`](https://github.com/wso2/identity-apps/commit/ac975d561432967173e01ca6242e27bf2259c455) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add sub organiation adaptive auth governance support
+
+- Updated dependencies [[`ac975d561432967173e01ca6242e27bf2259c455`](https://github.com/wso2/identity-apps/commit/ac975d561432967173e01ca6242e27bf2259c455), [`99e9a4d928211d9616b48d7a03bed71331968f6c`](https://github.com/wso2/identity-apps/commit/99e9a4d928211d9616b48d7a03bed71331968f6c)]:
+  - @wso2is/admin.applications.v1@2.42.30
+  - @wso2is/i18n@2.41.3
+  - @wso2is/common.consents.v1@1.0.1
+
+## 2.57.10
+
+### Patch Changes
+
+- [#10286](https://github.com/wso2/identity-apps/pull/10286) [`ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0`](https://github.com/wso2/identity-apps/commit/ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0) Thanks [@hwupathum](https://github.com/hwupathum)! - Add consent management related features
+
+- Updated dependencies [[`e09c6c1b68f7d5759e6be9fe4350888a732dba09`](https://github.com/wso2/identity-apps/commit/e09c6c1b68f7d5759e6be9fe4350888a732dba09), [`ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0`](https://github.com/wso2/identity-apps/commit/ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0)]:
+  - @wso2is/admin.users.v1@2.38.40
+  - @wso2is/common.consents.v1@1.0.0
+  - @wso2is/admin.branding.v1@2.32.168
+  - @wso2is/admin.extensions.v1@2.43.8
+  - @wso2is/admin.flow-builder-core.v1@0.10.214
+  - @wso2is/admin.registration-flow-builder.v1@0.10.172
+  - @wso2is/admin.server-configurations.v1@2.38.52
+  - @wso2is/i18n@2.41.2
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.213
+
+## 2.57.9
+
+### Patch Changes
+
+- [#10272](https://github.com/wso2/identity-apps/pull/10272) [`80f84ddeb8e4a73882f889b48660824ad364e30f`](https://github.com/wso2/identity-apps/commit/80f84ddeb8e4a73882f889b48660824ad364e30f) Thanks [@savindi7](https://github.com/savindi7)! - Update Branding logos.
+
+- Updated dependencies [[`80f84ddeb8e4a73882f889b48660824ad364e30f`](https://github.com/wso2/identity-apps/commit/80f84ddeb8e4a73882f889b48660824ad364e30f)]:
+  - @wso2is/admin.extensions.v1@2.43.7
+  - @wso2is/admin.tenants.v1@2.29.29
+
 ## 2.57.8
 
 ### Patch Changes

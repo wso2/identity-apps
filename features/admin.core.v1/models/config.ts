@@ -52,6 +52,7 @@ import { TenantResourceEndpointsInterface } from "@wso2is/admin.tenants.v1/model
 import { UsersResourceEndpointsInterface } from "@wso2is/admin.users.v1/models/endpoints";
 import { UserstoreResourceEndpointsInterface } from "@wso2is/admin.userstores.v1/models/endpoints";
 import { ValidationServiceEndpointsInterface } from "@wso2is/admin.validation.v1/models";
+import { ConsentMgtResourceEndpointsInterface } from "@wso2is/common.consents.v1/models/endpoints";
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,
@@ -306,6 +307,10 @@ export interface FeatureConfigInterface {
      * Rule based password expiry feature
      */
     ruleBasedPasswordExpiry?: FeatureAccessConfigInterface;
+    /**
+     * Consent management feature.
+     */
+    consents?: FeatureAccessConfigInterface;
     /**
      * Connection management feature.
      */
@@ -884,7 +889,8 @@ export interface ServiceResourceEndpointsInterface extends AgentsResourceEndpoin
     WorkflowRequestsResourceEndpointsInterface,
     RulesEndpointsInterface,
     RemoteLoggingResourceEndpointsInterface,
-    FlowBuilderCoreResourceEndpointsInterface {
+    FlowBuilderCoreResourceEndpointsInterface,
+    ConsentMgtResourceEndpointsInterface {
 
     CORSOrigins: string;
     copilot: string;

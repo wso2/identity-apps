@@ -56,6 +56,10 @@ export interface FeatureConfigInterface {
      * Pending operation tasks feature.
      */
     operations?: FeatureAccessConfigInterface;
+    /**
+     * Consents management feature.
+     */
+    consents?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -124,6 +128,13 @@ export interface ServiceResourceEndpointsInterface {
      * from server configurations.
      * @see fetchHomeRealmIdentifiers to see the usages.
      */
+    /**
+     * Endpoints for the Consent Management v2.0 API.
+     */
+    consentMgtV2: {
+        consents: string;
+    };
+
     homeRealmIdentifiers: string;
 }
 

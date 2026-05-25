@@ -789,6 +789,16 @@ export interface governanceConnectorsNS {
                 };
             };
         };
+        consentManagement: {
+            categoryTitle: string;
+            connectors: {
+                policyConsents: {
+                    description: string;
+                    friendlyName: string;
+                    header: string;
+                };
+            };
+        };
         sessionManagement: {
             description: string;
         };

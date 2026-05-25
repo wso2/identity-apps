@@ -416,6 +416,11 @@ export class I18nModuleConstants {
     public static readonly FLOWS_NAMESPACE: string = "flows";
 
     /**
+     * Consents namespace.
+     */
+    public static readonly CONSENTS_NAMESPACE: string = "consents";
+
+    /**
      * Constant representing the text direction handling attribute.
      */
     public static readonly TEXT_DIRECTION_ATTRIBUTE: string = "dir";

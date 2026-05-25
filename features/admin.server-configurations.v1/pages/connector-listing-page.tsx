@@ -117,6 +117,9 @@ const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterface> = (
             ...featureConfig?.internalNotificationSending?.scopes?.read ?? []
         ]
     );
+    const hasConsentsReadPermission: boolean = useRequiredScopes(
+        featureConfig?.consents?.scopes?.read
+    );
     const sessionManagementFeatureStatus: FeatureStatus = useCheckFeatureStatus(
         FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["LOGIN_AND_REGISTRATION_SESSION_MANAGEMENT"]);
 
@@ -146,6 +149,11 @@ const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterface> = (
 
             const filteredConnectors: Array<any> = category.connectors.filter((connector: any) => {
                 if (serverConfigurationConfig.connectorsToHide.includes(connector.id)) {
+                    return false;
+                }
+
+                if (connector.id === ServerConfigurationsConstants.POLICY_CONSENTS_CONNECTOR_ID
+                    && (!featureConfig?.consents?.enabled || !hasConsentsReadPermission)) {
                     return false;
                 }
 
@@ -188,6 +196,7 @@ const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterface> = (
         featureConfig,
         UIConfig,
         allowedScopes,
+        hasConsentsReadPermission,
         isLegacyInvitedUserRegistrationEnabled,
         isLegacyPasswordRecoveryEnabled,
         isLegacySelfRegistrationEnabled,

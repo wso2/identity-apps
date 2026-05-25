@@ -50,6 +50,7 @@ export enum ElementTypes {
     Input = "INPUT",
     Button = "BUTTON",
     Captcha = "CAPTCHA",
+    Policy = "POLICY",
     Divider = "DIVIDER",
     Choice = "CHOICE",
     Image = "IMAGE",

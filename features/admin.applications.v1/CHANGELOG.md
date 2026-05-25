@@ -1,5 +1,34 @@
 # @wso2is/admin.applications.v1
 
+## 2.42.30
+
+### Patch Changes
+
+- [#10315](https://github.com/wso2/identity-apps/pull/10315) [`ac975d561432967173e01ca6242e27bf2259c455`](https://github.com/wso2/identity-apps/commit/ac975d561432967173e01ca6242e27bf2259c455) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add sub organiation adaptive auth governance support
+
+- Updated dependencies [[`ac975d561432967173e01ca6242e27bf2259c455`](https://github.com/wso2/identity-apps/commit/ac975d561432967173e01ca6242e27bf2259c455), [`99e9a4d928211d9616b48d7a03bed71331968f6c`](https://github.com/wso2/identity-apps/commit/99e9a4d928211d9616b48d7a03bed71331968f6c)]:
+  - @wso2is/admin.core.v1@2.57.11
+  - @wso2is/admin.login-flow-builder.v1@2.29.13
+  - @wso2is/i18n@2.41.3
+
+## 2.42.29
+
+### Patch Changes
+
+- [#10300](https://github.com/wso2/identity-apps/pull/10300) [`188876f6235b1f0e81c285187feabe92309ddfbd`](https://github.com/wso2/identity-apps/commit/188876f6235b1f0e81c285187feabe92309ddfbd) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Fix issue when not loading the authorized API resources when only view permissions are assigned to the logged in user
+
+- Updated dependencies [[`93332f8b7d0731cbb8c435f5d991e616cade7ffb`](https://github.com/wso2/identity-apps/commit/93332f8b7d0731cbb8c435f5d991e616cade7ffb)]:
+  - @wso2is/admin.users.v1@2.38.39
+
+## 2.42.28
+
+### Patch Changes
+
+- [#10275](https://github.com/wso2/identity-apps/pull/10275) [`1b282113955a70809c1beb686757845a894bc512`](https://github.com/wso2/identity-apps/commit/1b282113955a70809c1beb686757845a894bc512) Thanks [@Malith-19](https://github.com/Malith-19)! - Update the refresh token extend expiry time description.
+
+- Updated dependencies [[`1b282113955a70809c1beb686757845a894bc512`](https://github.com/wso2/identity-apps/commit/1b282113955a70809c1beb686757845a894bc512)]:
+  - @wso2is/i18n@2.41.1
+
 ## 2.42.27
 
 ### Patch Changes

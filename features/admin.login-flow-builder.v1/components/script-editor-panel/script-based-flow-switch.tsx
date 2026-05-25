@@ -26,8 +26,13 @@ import Switch from "@oxygen-ui/react/Switch";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { DiamondIcon } from "@oxygen-ui/react-icons";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import ConditionalAuthPremiumBanner
     from "@wso2is/admin.applications.v1/components/banners/conditional-auth-premium-banner";
+import SubOrgAdaptiveAuthInfoBanner
+    from "@wso2is/admin.applications.v1/components/banners/sub-org-adaptive-auth-info-banner";
+import useEvaluateAdaptiveAuthCapability
+    from "@wso2is/admin.applications.v1/hooks/use-evaluate-adaptive-auth-capability";
 import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useFeatureGate, { UseFeatureGateInterface } from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
@@ -35,6 +40,7 @@ import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature
 import { LOGIN_FLOW_AI_FEATURE_TAG } from "@wso2is/admin.login-flow.ai.v1/constants/login-flow-ai-constants";
 import useAILoginFlow from "@wso2is/admin.login-flow.ai.v1/hooks/use-ai-login-flow";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
     PropsWithChildren,
@@ -47,6 +53,10 @@ import { useSelector } from "react-redux";
 import { Icon } from "semantic-ui-react";
 import AdaptiveScriptResetConfirmationModal from "./adaptive-script-reset-confirmation-modal";
 import ScriptEditorPanel from "./script-editor-panel";
+import {
+    ADAPTIVE_AUTH_ORG_GOVERNANCE_FEATURE_ID,
+    SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID
+} from "../../constants/editor-constants";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import "./script-based-flow-switch.scss";
 
@@ -87,7 +97,26 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
     const applicationDisabledFeatures: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.features?.applications?.disabledFeatures);
 
+    const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.applications);
+
     const { conditionalAuthPremiumFeature }: UseFeatureGateInterface = useFeatureGate();
+
+    const sharedAppAdaptiveAuthEnabled: boolean = isFeatureEnabled(applicationsFeatureConfig,
+        SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID);
+    const isAdaptiveAuthOrgGovernanceEnabled: boolean = isFeatureEnabled(applicationsFeatureConfig,
+        ADAPTIVE_AUTH_ORG_GOVERNANCE_FEATURE_ID);
+    const isInSubOrgWithoutSharedApp: boolean = isSubOrganization() && !sharedAppAdaptiveAuthEnabled;
+    const shouldCheckOrgGovernance: boolean =
+        isInSubOrgWithoutSharedApp && isAdaptiveAuthOrgGovernanceEnabled;
+    const {
+        isAdaptiveAuthAllowed,
+        isCheckLoading: isAdaptiveAuthCapabilityCheckPending
+    } = useEvaluateAdaptiveAuthCapability(shouldCheckOrgGovernance);
+    const showSubOrgAdaptiveAuthInfoBanner: boolean = shouldCheckOrgGovernance
+        && !isAdaptiveAuthCapabilityCheckPending
+        && isAdaptiveAuthAllowed === true
+        && !conditionalAuthPremiumFeature;
 
     /**
      * This useEffect is responsible for deciding whether
@@ -203,6 +232,7 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
                                 </Grid>
                             </Grid>
                             { conditionalAuthPremiumFeature && (<ConditionalAuthPremiumBanner />) }
+                            { showSubOrgAdaptiveAuthInfoBanner && (<SubOrgAdaptiveAuthInfoBanner />) }
                         </Box>
                     </AccordionSummary>
                     <AccordionDetails className="script-based-flow-switch-accordion-details">

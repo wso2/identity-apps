@@ -1031,7 +1031,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             (
                                                 !isReadOnly &&
                                                 !isReadOnlyUserStore &&
-                                                user.userName !== adminUsername
+                                                (getUserNameWithoutDomain(user.userName) !== adminUsername
+                                                    || isUserCurrentLoggedInUser)
                                             ) ? (
                                                     <Show when={ featureConfig?.users?.scopes?.update }>
                                                         { isSetPassword ? (
@@ -1136,7 +1137,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                                 />
                                             )
                                         }
-                                        { !isUserCurrentLoggedInUser && (
+                                        { !isUserCurrentLoggedInUser &&
+                                            getUserNameWithoutDomain(user.userName) !== adminUsername && (
                                             <DangerZone
                                                 data-testid={ `${ testId }-danger-zone` }
                                                 actionTitle={ t("user:editUser.dangerZoneGroup." +

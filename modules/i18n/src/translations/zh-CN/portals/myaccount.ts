@@ -437,6 +437,55 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        "policyConsentManagement": {
+            "consentedOnLabel": "活跃自",
+            "dangerZones": {
+                "revoke": {
+                    "actionTitle": "撤销",
+                    "header": "撤销政策同意",
+                    "subheader": "此操作将撤销您对此政策的同意。下次您访问该服务时，可能会要求您重新同意。"
+                }
+            },
+            "modals": {
+                "revokeModal": {
+                    "heading": "撤销对 {{policyName}} 的同意",
+                    "message": "这将撤销您对此政策的同意。下次您访问该服务时，可能会要求您重新同意。您确定要继续吗？"
+                }
+            },
+            "notifications": {
+                "fetch": {
+                    "error": {
+                        "description": "检索您的政策同意时出错。",
+                        "message": "检索失败"
+                    },
+                    "genericError": {
+                        "description": "检索您的政策同意时出错。",
+                        "message": "检索失败"
+                    },
+                    "success": {
+                        "description": "",
+                        "message": ""
+                    }
+                },
+                "revoke": {
+                    "error": {
+                        "description": "撤销政策同意时出错。",
+                        "message": "撤销失败"
+                    },
+                    "genericError": {
+                        "description": "撤销政策同意时出错。",
+                        "message": "撤销失败"
+                    },
+                    "success": {
+                        "description": "政策同意已成功撤销。",
+                        "message": "同意已撤销"
+                    }
+                }
+            },
+            "policyUrlLabel": "查看政策",
+            "versionLabel": "版本 {{version}}"
+        },
+        
         "cookieConsent": {
             "confirmButton": "知道了",
             "content": "我们使用cookie来确保您获得最佳的整体体验。这些cookie用于在提供流畅和个性化的服务的同时保持不间断的连续会话。要了解有关我们如何使用cookie的更多信息，请参阅我们的<1> cookie策略。"
@@ -1650,6 +1699,10 @@ export const myAccount: MyAccountNS = {
             "subTitle": "发现并访问您的应用程序",
             "title": "申请"
         },
+        "consents": {
+            "subTitle": "管理您为应用程序和已接受的政策提供的同意",
+            "title": "同意"
+        },
         "overview": {
             "subTitle": "管理您的个人信息，帐户安全和隐私设置",
             "title": "欢迎，{{firstName}}"
@@ -1747,6 +1800,15 @@ export const myAccount: MyAccountNS = {
             "placeholders": {
                 "emptyConsentList": {
                     "heading": "您尚未同意任何申请"
+                }
+            }
+        },
+        "policyConsentManagement": {
+            "description": "查看您已接受的政策。",
+            "heading": "政策同意",
+            "placeholders": {
+                "emptyConsentList": {
+                    "heading": "您尚未接受任何政策同意"
                 }
             }
         },

@@ -159,16 +159,6 @@ export interface PIICategoryWithStatus extends PIICategory {
 type PIICategoryStatus = "accepted" | "denied";
 
 /**
- * PIICategory Model
- */
-const creatPIICategory = (): PIICategory => ({
-    piiCategoryDisplayName: "",
-    piiCategoryId: 0,
-    piiCategoryName: "",
-    validity: ""
-});
-
-/**
  * This model will be used map the payload of the
  * receipt update API request.
  */
@@ -221,57 +211,76 @@ export enum ConsentState {
 }
 
 /**
- * Creates an empty consent receipt object. This can be used to initialize
- * a consent receipt in the state.
- * @returns an empty consent receipt object.
+ * Summary of a user consent record returned from GET /consents list.
  */
-const createEmptyConsentReceipt = (): ConsentReceiptInterface => ({
-    collectionMethod: "",
-    jurisdiction: "",
-    language: "",
-    policyUrl: "",
-    services: [
-        {
-            purposes: [
-                {
-                    consentType: "",
-                    piiCategory: [
-                        {
-                            piiCategoryDisplayName: "",
-                            piiCategoryId: 0,
-                            piiCategoryName: "",
-                            validity: ""
-                        }
-                    ],
-                    primaryPurpose: false,
-                    purpose: "",
-                    purposeId: 0,
-                    termination: "",
-                    thirdPartyDisclosure: false,
-                    thirdPartyName: ""
-                }
-            ],
-            service: "",
-            serviceDescription: "",
-            serviceDisplayName: "",
-            tenantDomain: ""
-        }
-    ],
-    version: ""
-});
+export interface PolicyConsentSummaryInterface {
+    id: string;
+    serviceId: string;
+    state: string;
+    subjectId: string;
+    timestamp: number;
+    validityTime: number | null;
+}
 
 /**
- * Creates an empty consent object. This can be used to initialize
- * a consent in the state.
- * @returns an empty consent object.
+ * Paginated list response for user consent records.
  */
-const createEmptyConsent = (): ConsentInterface => ({
-    consentReceipt: createEmptyConsentReceipt(),
-    consentReceiptID: "",
-    language: "",
-    piiPrincipalId: "",
-    spDescription: "",
-    spDisplayName: "",
-    state: ConsentState.ACTIVE,
-    tenantDomain: ""
-});
+export interface PolicyConsentListResponseInterface {
+    Consents: PolicyConsentSummaryInterface[];
+    links?: Array<{ rel: "next" | "previous"; href: string }>;
+    totalResults: number;
+}
+
+/**
+ * A data element within a consented purpose.
+ */
+interface ConsentedElementInterface {
+    displayName: string;
+    id: string;
+    name: string;
+}
+
+/**
+ * A purpose within a full user consent record.
+ */
+export interface ConsentedPurposeInterface {
+    elements: ConsentedElementInterface[];
+    id: string;
+    name: string;
+    properties?: {
+        policyUrl?: string;
+        promptOnLogin?: string;
+    };
+    purposeVersionId: string;
+    version: string | null;
+}
+
+/**
+ * Full user consent record returned from GET /consents/{consentId}.
+ */
+export interface PolicyConsentDetailInterface {
+    id: string;
+    language: string;
+    properties?: Record<string, string>;
+    purposes: ConsentedPurposeInterface[];
+    serviceId: string;
+    state: string;
+    subjectId: string;
+    timestamp: number;
+    validityTime: number | null;
+}
+
+/**
+ * UI-level flat item representing a single policy a user has consented to.
+ */
+export interface PolicyConsentItemInterface {
+    consentId: string;
+    policyUrl: string | null;
+    purposeId: string;
+    purposeName: string;
+    purposeVersionId: string;
+    state: string;
+    timestamp: number;
+    version: string | null;
+}
+

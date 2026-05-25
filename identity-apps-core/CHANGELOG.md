@@ -1,5 +1,76 @@
 # @wso2is/identity-apps-core
 
+## 5.1.0
+
+### Minor Changes
+
+- [#10304](https://github.com/wso2/identity-apps/pull/10304) [`6ef23019c6c3d04ebcb9bbe5379075bce65ca30f`](https://github.com/wso2/identity-apps/commit/6ef23019c6c3d04ebcb9bbe5379075bce65ca30f) Thanks [@Shazaanashraff](https://github.com/Shazaanashraff)! - Add Dutch (nl-NL) language translations for the authentication portal, recovery portal, accounts portal, x509 certificate authentication portal, console and myaccount
+
+## 5.0.31
+
+### Patch Changes
+
+- [#10317](https://github.com/wso2/identity-apps/pull/10317) [`77e6e9244500674b29d03af82abfacad43b117c4`](https://github.com/wso2/identity-apps/commit/77e6e9244500674b29d03af82abfacad43b117c4) Thanks [@Malith-19](https://github.com/Malith-19)! - Update the apple totp app link.
+
+## 5.0.30
+
+### Patch Changes
+
+- [#10313](https://github.com/wso2/identity-apps/pull/10313) [`99e9a4d928211d9616b48d7a03bed71331968f6c`](https://github.com/wso2/identity-apps/commit/99e9a4d928211d9616b48d7a03bed71331968f6c) Thanks [@hwupathum](https://github.com/hwupathum)! - Fix UI issues in policy consent UI
+
+## 5.0.29
+
+### Patch Changes
+
+- [#10310](https://github.com/wso2/identity-apps/pull/10310) [`7896791d2fcc274ed6624582b88aeecffef38773`](https://github.com/wso2/identity-apps/commit/7896791d2fcc274ed6624582b88aeecffef38773) Thanks [@hwupathum](https://github.com/hwupathum)! - Add policy consent management related UIs
+
+## 5.0.28
+
+### Patch Changes
+
+- [#10286](https://github.com/wso2/identity-apps/pull/10286) [`ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0`](https://github.com/wso2/identity-apps/commit/ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0) Thanks [@hwupathum](https://github.com/hwupathum)! - Add consent management related features
+
+- Updated dependencies [[`ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0`](https://github.com/wso2/identity-apps/commit/ae1042b0dc0214dd9a5fbddb9d1b05194cb814c0)]:
+  - @wso2is/common.branding.v1@2.28.4
+
+## 5.0.27
+
+### Patch Changes
+
+- [#10301](https://github.com/wso2/identity-apps/pull/10301) [`c227585e5afd4eb06948113e987671db958c7dbf`](https://github.com/wso2/identity-apps/commit/c227585e5afd4eb06948113e987671db958c7dbf) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix hardcoded English terms and conditions text in self-registration federated flow by replacing with i18n key lookup
+
+* [#10302](https://github.com/wso2/identity-apps/pull/10302) [`e149e68a3ffc41a1b47ab932d828d3f9044703d5`](https://github.com/wso2/identity-apps/commit/e149e68a3ffc41a1b47ab932d828d3f9044703d5) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix tenant domain field incorrectly shown as mandatory input on username recovery error
+
+## 5.0.26
+
+### Patch Changes
+
+- [#10297](https://github.com/wso2/identity-apps/pull/10297) [`c4f86e4adf5f3cb9c47024a4fc6d60ad83241ad7`](https://github.com/wso2/identity-apps/commit/c4f86e4adf5f3cb9c47024a4fc6d60ad83241ad7) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix console maven release build
+
+## 5.0.25
+
+### Patch Changes
+
+- [#10295](https://github.com/wso2/identity-apps/pull/10295) [`30700a694dbf0be23a13c5f7b28ccfba7d6c4449`](https://github.com/wso2/identity-apps/commit/30700a694dbf0be23a13c5f7b28ccfba7d6c4449) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Close silent failure points of the release workflow
+
+## 5.0.24
+
+### Patch Changes
+
+- [#10285](https://github.com/wso2/identity-apps/pull/10285) [`86edd97f85adc0496cc78ec2a8c8d1db7c434006`](https://github.com/wso2/identity-apps/commit/86edd97f85adc0496cc78ec2a8c8d1db7c434006) Thanks [@savindi7](https://github.com/savindi7)! - Add Changeset for revert branding PR changes.
+
+- Updated dependencies [[`86edd97f85adc0496cc78ec2a8c8d1db7c434006`](https://github.com/wso2/identity-apps/commit/86edd97f85adc0496cc78ec2a8c8d1db7c434006)]:
+  - @wso2is/theme@2.10.3
+
+## 5.0.23
+
+### Patch Changes
+
+- [#10272](https://github.com/wso2/identity-apps/pull/10272) [`80f84ddeb8e4a73882f889b48660824ad364e30f`](https://github.com/wso2/identity-apps/commit/80f84ddeb8e4a73882f889b48660824ad364e30f) Thanks [@savindi7](https://github.com/savindi7)! - Update Branding logos.
+
+- Updated dependencies [[`80f84ddeb8e4a73882f889b48660824ad364e30f`](https://github.com/wso2/identity-apps/commit/80f84ddeb8e4a73882f889b48660824ad364e30f)]:
+  - @wso2is/theme@2.10.2
+
 ## 5.0.22
 
 ### Patch Changes

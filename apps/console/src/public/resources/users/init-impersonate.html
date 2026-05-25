@@ -38,6 +38,7 @@
                         const code_challenge = params.get("codeChallenge");
                         const client_id = params.get("clientId");
                         const orgId = params.get("orgId");
+                        const isSubOrganization = params.get("isSubOrganization");
                         const authorization_endpoint = sessionStorage.getItem("authorization_endpoint");
                         window.location.href = authorization_endpoint
                             + "?client_id=" + client_id +
@@ -48,7 +49,7 @@
                             "&requested_subject=" + userId +
                             "&nonce=" + getNonce() +
                             "&code_challenge=" + code_challenge +
-                            (orgId != "undefined" ? ("&fidp=OrganizationSSO" + "&orgId=" + orgId) : "") +
+                            (isSubOrganization === "true" ? ("&fidp=OrganizationSSO" + "&orgId=" + orgId) : "") +
                             "&code_challenge_method=S256";
                     }
                 } else {

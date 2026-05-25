@@ -27,7 +27,7 @@ import { Trans, useTranslation } from "react-i18next";
 import useRequiredFields, { RequiredFieldInterface } from "../../../../../hooks/use-required-fields";
 import { CommonElementFactoryPropsInterface } from "../../common-element-factory";
 import Hint from "../../hint";
-import PlaceholderComponent from "../placeholder-component";
+import PlaceholderComponent from "@wso2is/common.branding.v1/components/placeholder-component";
 
 /**
  * Props interface of {@link OTPInputAdapter}
