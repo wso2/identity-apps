@@ -140,12 +140,11 @@ CustomAuthenticatorGeneralDetailsFormPopsInterface> = ({
             // requires the authentication object on every update and rejects
             // a payload that includes the non-confidential auth properties
             // without their corresponding confidentials (which the API never
-            // returns). Preserve the existing auth type and send an empty
-            // properties bag so the server keeps the stored credentials.
+            // returns). Preserve the existing auth type so the server keeps
+            // the stored credentials.
             const sanitizedEndpoint: ExternalEndpoint = {
                 ...existingEndpoint,
                 authentication: {
-                    properties: {},
                     type: existingEndpoint?.authentication?.type
                 }
             };
