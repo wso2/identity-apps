@@ -2008,12 +2008,12 @@ export const extensions: Extensions = {
                             heading: "Customize the flow"
                         },
                         selectApplication: {
-                            content: "Choose the <1>application</1> for which you want to set up Github login.",
+                            content: "Choose the <1>application</1> for which you want to set up GitHub login.",
                             heading: "Select Application"
                         },
                         selectDefaultConfig: {
-                            content: "Go to <1>Login Flow</1> tab and click on the <3>Add Sign In Option</3> button inside the login box. And select a Github connection.",
-                            heading: "Add a <1>Github</1> connection"
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Add Sign In Option</3> button inside the login box. And select a GitHub connection.",
+                            heading: "Add a <1>GitHub</1> connection"
                         }
                     }
                 }
