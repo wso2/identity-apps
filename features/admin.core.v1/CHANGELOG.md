@@ -1,5 +1,11 @@
 # @wso2is/admin.core.v1
 
+## 2.57.13
+
+### Patch Changes
+
+- [#10327](https://github.com/wso2/identity-apps/pull/10327) [`6712c726c88c207d1a1b885b3bd987a2c8b01132`](https://github.com/wso2/identity-apps/commit/6712c726c88c207d1a1b885b3bd987a2c8b01132) Thanks [@savindi7](https://github.com/savindi7)! - Improvements to announcements UI.
+
 ## 2.57.12
 
 ### Patch Changes
