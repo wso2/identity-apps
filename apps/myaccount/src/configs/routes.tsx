@@ -16,12 +16,18 @@
  * under the License.
  */
 
-import { DocumentCheckIcon, HomeIcon, ShieldCheckIcon, TilesIcon, UserDocumentIcon } from "@oxygen-ui/react-icons";
+import {
+    DocumentCheckIcon,
+    HomeIcon,
+    ReceiptIcon,
+    ShieldCheckIcon,
+    TilesIcon,
+    UserDocumentIcon
+} from "@oxygen-ui/react-icons";
 import { RouteInterface } from "@wso2is/core/models";
 import React,{ FunctionComponent, lazy } from "react";
 import { AppConstants } from "../constants";
 import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } from "../layouts";
-import { PolicyConsentIcon } from "./ui";
 
 /**
  * Get default page layout routes.
@@ -163,7 +169,7 @@ export const getDashboardLayoutRoutes = (): RouteInterface[] => {
         {
             component: lazy(() => import("../pages/consents")),
             exact: true,
-            icon: <PolicyConsentIcon />,
+            icon: <ReceiptIcon fill="black" />,
             id: "consents",
             name: "common:consents",
             path: AppConstants.getPaths().get("CONSENTS"),

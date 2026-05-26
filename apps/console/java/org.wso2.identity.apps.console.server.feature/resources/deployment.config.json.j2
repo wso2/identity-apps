@@ -1038,7 +1038,7 @@
                     {% endif %}
                 ],
                 "enabled": {% if console.consents.enabled is defined %} {{ console.consents.enabled }},
-                {% else %} true,
+                {% else %} false,
                 {% endif %}
                 "scopes": {
                     {% if console.consents.scopes is defined %}

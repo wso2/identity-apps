@@ -217,6 +217,9 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
             } else if (route.path === AppConstants.getPaths().get("APPROVALS")
                 && !isApprovalsTabEnabled(profileDetails?.profileInfo?.userName)) {
                 return false;
+            } else if (route.path === AppConstants.getPaths().get("CONSENTS")
+                && !config?.ui?.features?.consents?.enabled) {
+                return false;
             }
 
             return route;
