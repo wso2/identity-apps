@@ -81,4 +81,4 @@ export * from "./verifiable-credentials";
 export * from "./customer-data-service";
 export * from "./flow-extension";
 export * from "./consents";
-export * from "./in-flow-extension";
+export * from "./flow-extension";

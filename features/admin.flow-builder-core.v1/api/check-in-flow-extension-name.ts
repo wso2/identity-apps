@@ -21,22 +21,22 @@ import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request"
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosResponse } from "axios";
-import { InFlowExtensionNameCheckResponseInterface } from "../models/in-flow-extension";
+import { FlowExtensionNameCheckResponseInterface } from "../models/flow-extension";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Check if an In-Flow Extension name is available.
+ * Check if an Flow Extension name is available.
  *
  * @param name - The name to check.
  * @param excludeId - Optional extension ID to exclude (for rename uniqueness checks).
  * @returns Promise resolving to the name availability response.
  */
-const checkInFlowExtensionName = (
+const checkFlowExtensionName = (
     name: string,
     excludeId?: string
-): Promise<InFlowExtensionNameCheckResponseInterface> => {
+): Promise<FlowExtensionNameCheckResponseInterface> => {
 
     const requestConfig: RequestConfigInterface = {
         data: { name, ...(excludeId && { excludeId }) },
@@ -45,13 +45,13 @@ const checkInFlowExtensionName = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${ store.getState().config.endpoints.inFlowExtensions }/check-name`
+        url: `${ store.getState().config.endpoints.flowExtension }/check-name`
     };
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) =>
-            Promise.resolve(response.data as InFlowExtensionNameCheckResponseInterface)
+            Promise.resolve(response.data as FlowExtensionNameCheckResponseInterface)
         );
 };
 
-export default checkInFlowExtensionName;
+export default checkFlowExtensionName;
