@@ -222,18 +222,24 @@ const RebrandingAnnouncement: FunctionComponent<RebrandingAnnouncementProps> = (
             <BlobThree />
 
             <ContentArea>
-                <BannerTitle
-                    variant="h3"
-                    dangerouslySetInnerHTML={ { __html: sanitizeInline(title) } }
-                />
-                <BannerDescription
-                    variant="body2"
-                    dangerouslySetInnerHTML={ { __html: sanitizeInline(description) } }
-                />
-                <BannerSubDescription
-                    variant="body2"
-                    dangerouslySetInnerHTML={ { __html: sanitizeInline(subDescription) } }
-                />
+                { title ? (
+                    <BannerTitle
+                        variant="h3"
+                        dangerouslySetInnerHTML={ { __html: sanitizeInline(title) } }
+                    />
+                ) : null }
+                { description ? (
+                    <BannerDescription
+                        variant="body2"
+                        dangerouslySetInnerHTML={ { __html: sanitizeInline(description) } }
+                    />
+                ) : null }
+                { subDescription ? (
+                    <BannerSubDescription
+                        variant="body2"
+                        dangerouslySetInnerHTML={ { __html: sanitizeInline(subDescription) } }
+                    />
+                ) : null }
             </ContentArea>
 
             <BrandArea data-componentid={ `${ componentId }-brand` }>
