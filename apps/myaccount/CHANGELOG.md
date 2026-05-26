@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 4.3.1
+
+### Patch Changes
+
+- [#10323](https://github.com/wso2/identity-apps/pull/10323) [`b455f6cf1c5235a326b3e64c24abd93c460ac3d3`](https://github.com/wso2/identity-apps/commit/b455f6cf1c5235a326b3e64c24abd93c460ac3d3) Thanks [@hwupathum](https://github.com/hwupathum)! - Fix consents UI configs
+
+- Updated dependencies [[`8137a2c71bf3875adc38bfa40a4d0791789974d1`](https://github.com/wso2/identity-apps/commit/8137a2c71bf3875adc38bfa40a4d0791789974d1)]:
+  - @wso2is/i18n@2.42.1
+
 ## 4.3.0
 
 ### Minor Changes
