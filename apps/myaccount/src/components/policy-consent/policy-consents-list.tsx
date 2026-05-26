@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List } from "semantic-ui-react";
 import { toSentenceCase } from "../../utils";
-import { PolicyConsentIcon } from "../../configs";
+import { ShieldSquareCheckIcon } from "@oxygen-ui/react-icons";
 import { EditSection } from "../shared";
 
 /**
@@ -66,7 +66,7 @@ export const PolicyConsentList: FunctionComponent<PolicyConsentListPropsInterfac
                                 <Grid.Column className="first-column">
                                     <List.Content verticalAlign="middle">
                                         <GenericIcon
-                                            icon={PolicyConsentIcon}
+                                            icon={ShieldSquareCheckIcon}
                                             size="micro"
                                             bordered
                                             defaultIcon
