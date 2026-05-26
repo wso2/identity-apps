@@ -208,6 +208,8 @@ export const FeatureCarousel = () => {
         state?.config?.ui?.rebrandingBanner?.title);
     const rebrandingBannerDescription: string = useSelector((state: AppState) =>
         state?.config?.ui?.rebrandingBanner?.description);
+    const rebrandingBannerSubDescription: string = useSelector((state: AppState) =>
+        state?.config?.ui?.rebrandingBanner?.subDescription);
     const rebrandingBannerButtonText: string = useSelector((state: AppState) =>
         state?.config?.ui?.rebrandingBanner?.buttonText);
     const rebrandingBannerAnnouncementUrl: string = useSelector((state: AppState) =>
@@ -224,6 +226,7 @@ export const FeatureCarousel = () => {
                     window.open(rebrandingBannerAnnouncementUrl, "_blank", "noopener,noreferrer");
                 }
             },
+            subDescription: rebrandingBannerSubDescription,
             title: rebrandingBannerTitle
         },
         isUserSurveyBannerEnabled && {
@@ -317,6 +320,7 @@ export const FeatureCarousel = () => {
                         <RebrandingAnnouncement
                             title={ features[currentIndex]?.title }
                             description={ features[currentIndex]?.description }
+                            subDescription={ features[currentIndex]?.subDescription }
                             buttonText={ features[currentIndex]?.buttonText }
                             announcementUrl={ features[currentIndex]?.announcementUrl }
                             onAnnouncementClick={ features[currentIndex]?.onTryOut }
