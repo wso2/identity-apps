@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.home.v1",
-    "version": "1.7.192",
+    "version": "1.7.193",
     "description": "Feature and utilities for the WSO2 Identity Server Admin Home",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -33,7 +33,7 @@
         "@oxygen-ui/react": "catalog:",
         "@wso2is/access-control": "^3.5.6",
         "@wso2is/admin.applications.v1": "^2.42.23",
-        "@wso2is/admin.core.v1": "^2.57.12",
+        "@wso2is/admin.core.v1": "^2.57.13",
         "@wso2is/admin.extensions.v1": "^2.43.3",
         "@wso2is/admin.feature-gate.v1": "^1.9.6",
         "@wso2is/admin.onboarding.v1": "workspace:^",
