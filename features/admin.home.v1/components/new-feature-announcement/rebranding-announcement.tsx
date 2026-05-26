@@ -23,8 +23,22 @@ import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
 import { ArrowUpRightFromSquareIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import DOMPurify from "dompurify";
 import React, { FunctionComponent, ReactElement } from "react";
 import { ReactComponent as WSO2IdentityPlatformLogo } from "../../assets/images/wso2-identity-platform-full-colour.svg";
+
+const ALLOWED_INLINE_TAGS: string[] = [ "b", "strong", "i", "em", "br" ];
+
+const sanitizeInline = (value: string): string => {
+    if (!value) {
+        return "";
+    }
+
+    return DOMPurify.sanitize(value, {
+        ALLOWED_ATTR: [],
+        ALLOWED_TAGS: ALLOWED_INLINE_TAGS
+    });
+};
 
 const STRIP_GRADIENT_START: string = "#EC5161";
 const STRIP_GRADIENT_END: string = "#F87643";
@@ -125,6 +139,14 @@ const BannerDescription: typeof Typography = styled(Typography)(({ theme }: { th
     maxWidth: 760
 }));
 
+const BannerSubDescription: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
+    color: alpha(theme.palette.common.white, 0.78),
+    fontSize: 14,
+    lineHeight: 1.5,
+    marginTop: theme.spacing(0.5),
+    maxWidth: 760
+}));
+
 const Actions: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     alignItems: "center",
     display: "flex",
@@ -178,6 +200,7 @@ const BrandLogo: typeof WSO2IdentityPlatformLogo = styled(WSO2IdentityPlatformLo
 interface RebrandingAnnouncementProps extends IdentifiableComponentInterface {
     title: string;
     description: string;
+    subDescription: string;
     buttonText: string;
     announcementUrl: string;
     onAnnouncementClick: () => void;
@@ -187,6 +210,7 @@ const RebrandingAnnouncement: FunctionComponent<RebrandingAnnouncementProps> = (
     "data-componentid": componentId = "rebranding-announcement",
     title,
     description,
+    subDescription,
     buttonText,
     announcementUrl,
     onAnnouncementClick
@@ -198,8 +222,18 @@ const RebrandingAnnouncement: FunctionComponent<RebrandingAnnouncementProps> = (
             <BlobThree />
 
             <ContentArea>
-                <BannerTitle variant="h3">{ title }</BannerTitle>
-                <BannerDescription variant="body2">{ description }</BannerDescription>
+                <BannerTitle
+                    variant="h3"
+                    dangerouslySetInnerHTML={ { __html: sanitizeInline(title) } }
+                />
+                <BannerDescription
+                    variant="body2"
+                    dangerouslySetInnerHTML={ { __html: sanitizeInline(description) } }
+                />
+                <BannerSubDescription
+                    variant="body2"
+                    dangerouslySetInnerHTML={ { __html: sanitizeInline(subDescription) } }
+                />
             </ContentArea>
 
             <BrandArea data-componentid={ `${ componentId }-brand` }>

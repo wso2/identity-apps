@@ -347,6 +347,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 buttonText: "",
                 description: "",
                 enabled: false,
+                subDescription: "",
                 title: ""
             },
             routes: {

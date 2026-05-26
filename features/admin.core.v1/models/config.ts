@@ -758,6 +758,7 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
         buttonText: string;
         description: string;
         enabled: boolean;
+        subDescription: string;
         title: string;
     };
     /**
