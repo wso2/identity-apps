@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 4.9.1
+
+### Patch Changes
+
+- [#10327](https://github.com/wso2/identity-apps/pull/10327) [`6712c726c88c207d1a1b885b3bd987a2c8b01132`](https://github.com/wso2/identity-apps/commit/6712c726c88c207d1a1b885b3bd987a2c8b01132) Thanks [@savindi7](https://github.com/savindi7)! - Improvements to announcements UI.
+
+- Updated dependencies [[`6712c726c88c207d1a1b885b3bd987a2c8b01132`](https://github.com/wso2/identity-apps/commit/6712c726c88c207d1a1b885b3bd987a2c8b01132)]:
+  - @wso2is/admin.core.v1@2.57.13
+  - @wso2is/admin.home.v1@1.7.193
+
 ## 4.9.0
 
 ### Minor Changes
