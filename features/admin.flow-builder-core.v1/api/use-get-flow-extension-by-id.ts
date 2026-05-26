@@ -23,17 +23,17 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { InFlowExtensionResponseInterface } from "../models/in-flow-extension";
+import { FlowExtensionResponseInterface } from "../models/flow-extension";
 
 /**
- * Hook to retrieve a single In-Flow Extension by ID from the flow management API.
+ * Hook to retrieve a single Flow Extension by ID from the flow management API.
  *
- * @param extensionId - ID of the In-Flow Extension to fetch.
+ * @param extensionId - ID of the Flow Extension to fetch.
  * @param shouldFetch - Suspend fetching when false.
  * @returns SWR response with `data`, `error`, `isLoading`, `isValidating`, `mutate`.
  */
-const useGetInFlowExtensionById = <
-    Data = InFlowExtensionResponseInterface,
+const useGetFlowExtensionById = <
+    Data = FlowExtensionResponseInterface,
     Error = RequestErrorInterface
 >(
     extensionId: string | undefined,
@@ -46,7 +46,7 @@ const useGetInFlowExtensionById = <
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.inFlowExtensions }/${ extensionId }`
+        url: `${ store.getState().config.endpoints.flowExtension }/${ extensionId }`
     };
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
@@ -63,4 +63,4 @@ const useGetInFlowExtensionById = <
     };
 };
 
-export default useGetInFlowExtensionById;
+export default useGetFlowExtensionById;

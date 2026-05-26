@@ -121,7 +121,7 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
     );
 
     const shouldFetchTemplate: boolean = type !== null
-        && type !== CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IN_FLOW_EXTENSION
+        && type !== CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FLOW_EXTENSION
         && type !== "custom-authenticator"
         && type !== "enterprise-protocols";
 

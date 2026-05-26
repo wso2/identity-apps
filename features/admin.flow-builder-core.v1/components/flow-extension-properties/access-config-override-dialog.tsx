@@ -29,15 +29,15 @@ import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import {
     AccessConfigInterface,
-    InFlowExtensionResponseInterface,
-    InFlowExtensionUpdateRequestInterface
-} from "../../models/in-flow-extension";
-import updateInFlowExtension from "../../api/update-in-flow-extension";
+    FlowExtensionResponseInterface,
+    FlowExtensionUpdateRequestInterface
+} from "../../models/flow-extension";
+import updateFlowExtension from "../../api/update-flow-extension";
 import {
     FlowContextTree,
     AccessConfigOutput,
     EncryptionOutput,
-    InFlowExtensionContextTreeResponse
+    FlowExtensionContextTreeResponse
 } from "@wso2is/common.ui.shared-access.v1/components/flow-context-tree";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -45,14 +45,14 @@ import React, { FunctionComponent, ReactElement, useCallback, useMemo, useRef, u
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import useInFlowExtensionContextTree from "../../api/use-in-flow-extension-context-tree";
+import useFlowExtensionContextTree from "../../api/use-flow-extension-context-tree";
 
 /**
  * Props interface of {@link AccessConfigOverrideDialog}
  */
 interface AccessConfigOverrideDialogPropsInterface extends IdentifiableComponentInterface {
     actionId: string;
-    actionResponse?: InFlowExtensionResponseInterface;
+    actionResponse?: FlowExtensionResponseInterface;
     isActionLoading?: boolean;
     mutateAction?: () => void;
     flowType: string;
@@ -61,7 +61,7 @@ interface AccessConfigOverrideDialogPropsInterface extends IdentifiableComponent
 }
 
 /**
- * Dialog for configuring per-flow-type access config overrides for an in-flow extension action.
+ * Dialog for configuring per-flow-type access config overrides for an flow extension action.
  * Provides Reset, Save, and Cancel controls.
  *
  * @param props - Props injected to the component.
@@ -98,7 +98,7 @@ const AccessConfigOverrideDialog: FunctionComponent<AccessConfigOverrideDialogPr
         data: contextTreeData,
         error: contextTreeError,
         isLoading: isContextTreeLoading
-    } = useInFlowExtensionContextTree<InFlowExtensionContextTreeResponse>(flowType, open);
+    } = useFlowExtensionContextTree<FlowExtensionContextTreeResponse>(flowType, open);
 
     const effectiveAccessConfig: AccessConfigInterface | undefined = useMemo(() => {
         if (overrideAccessConfig) {
@@ -153,7 +153,7 @@ const AccessConfigOverrideDialog: FunctionComponent<AccessConfigOverrideDialogPr
         setIsSaving(true);
 
         try {
-            const updateBody: InFlowExtensionUpdateRequestInterface = {
+            const updateBody: FlowExtensionUpdateRequestInterface = {
                 flowTypeOverrides: {
                     [flowType]: accessConfigRef.current
                 }
@@ -163,7 +163,7 @@ const AccessConfigOverrideDialog: FunctionComponent<AccessConfigOverrideDialogPr
                 updateBody.encryption = encryptionRef.current;
             }
 
-            await updateInFlowExtension(actionId, updateBody);
+            await updateFlowExtension(actionId, updateBody);
 
             dispatch(
                 addAlert({
@@ -212,7 +212,7 @@ const AccessConfigOverrideDialog: FunctionComponent<AccessConfigOverrideDialogPr
                 ) : contextTreeError || !contextTreeData ? (
                     <Stack alignItems="center" py={ 4 }>
                         <Typography color="error" variant="body2">
-                            Failed to load the In-Flow Extension context tree for this
+                            Failed to load the Flow Extension context tree for this
                             flow. Refresh and retry; check that the flow-management API
                             is reachable.
                         </Typography>
@@ -220,7 +220,7 @@ const AccessConfigOverrideDialog: FunctionComponent<AccessConfigOverrideDialogPr
                 ) : (
                     <Stack gap={ 2 } pt={ 1 }>
                         <Typography variant="body2" color="text.secondary">
-                            Configure which data is exposed to and modifiable by the in-flow extension
+                            Configure which data is exposed to and modifiable by the flow extension
                             for the { flowType?.toLowerCase()?.replace("_", " ") } flow.
                             This sets the flow-type-specific override for the access configuration.
                         </Typography>

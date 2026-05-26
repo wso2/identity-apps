@@ -21,12 +21,12 @@ import Box from "@oxygen-ui/react/Box";
 import Divider from "@oxygen-ui/react/Divider";
 import Typography from "@oxygen-ui/react/Typography";
 import ActionEndpointConfigForm from "@wso2is/admin.actions.v1/components/action-endpoint-config-form";
-import checkInFlowExtensionName from "@wso2is/admin.flow-builder-core.v1/api/check-in-flow-extension-name";
-import createInFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/create-in-flow-extension";
+import checkFlowExtensionName from "@wso2is/admin.flow-builder-core.v1/api/check-flow-extension-name";
+import createFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/create-flow-extension";
 import {
-    InFlowExtensionCreateRequestInterface,
-    InFlowExtensionResponseInterface
-} from "@wso2is/admin.flow-builder-core.v1/models/in-flow-extension";
+    FlowExtensionCreateRequestInterface,
+    FlowExtensionResponseInterface
+} from "@wso2is/admin.flow-builder-core.v1/models/flow-extension";
 import {
     AuthenticationType,
     EndpointConfigFormPropertyInterface
@@ -71,10 +71,10 @@ import {
     ConnectionTemplateInterface,
     GenericConnectionCreateWizardPropsInterface,
     WizardStepInterface,
-    WizardStepsInFlowExtension
+    WizardStepsFlowExtension
 } from "../../models/connection";
 
-interface InFlowExtensionCreateWizardPropsInterface
+interface FlowExtensionCreateWizardPropsInterface
     extends GenericConnectionCreateWizardPropsInterface,
     IdentifiableComponentInterface {
     "data-componentid"?: string;
@@ -86,20 +86,20 @@ interface InFlowExtensionCreateWizardPropsInterface
 
 const ACTION_NAME_REGEX: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9 _-]{0,254}$/;
 
-interface InFlowExtensionWizardFormValues extends EndpointConfigFormPropertyInterface {
+interface FlowExtensionWizardFormValues extends EndpointConfigFormPropertyInterface {
     name: string;
     description?: string;
 }
 
 /**
- * In-Flow Extension create wizard component.
+ * Flow Extension create wizard component.
  */
-const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizardPropsInterface> = ({
+const FlowExtensionCreateWizard: FunctionComponent<FlowExtensionCreateWizardPropsInterface> = ({
     title,
     subTitle,
     onWizardClose,
-    "data-componentid": componentId = "in-flow-extension"
-}: InFlowExtensionCreateWizardPropsInterface): ReactElement => {
+    "data-componentid": componentId = "flow-extension"
+}: FlowExtensionCreateWizardPropsInterface): ReactElement => {
 
     const wizardRef: MutableRefObject<any> = useRef(null);
     const [alert, setAlert, alertComponent] = useWizardAlert();
@@ -157,7 +157,7 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
         }
         setIsCheckingName(true);
         nameCheckTimer.current = setTimeout(() => {
-            checkInFlowExtensionName(name)
+            checkFlowExtensionName(name)
                 .then((response) => {
                     setIsNameTaken(!response.available);
                     setNextShouldBeDisabled(!response.available);
@@ -175,15 +175,15 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
         return [
             {
                 icon: getConnectionWizardStepIcons().general,
-                name: WizardStepsInFlowExtension.GENERAL_SETTINGS,
+                name: WizardStepsFlowExtension.GENERAL_SETTINGS,
                 submitCallback: null,
-                title: t("inFlowExtension:createWizard.steps.generalSettings.title")
+                title: t("flowExtension:createWizard.steps.generalSettings.title")
             },
             {
                 icon: getConnectionWizardStepIcons().authenticatorSettings,
-                name: WizardStepsInFlowExtension.ENDPOINT_CONFIG,
+                name: WizardStepsFlowExtension.ENDPOINT_CONFIG,
                 submitCallback: null,
-                title: t("inFlowExtension:createWizard.steps.endpointConfig.title")
+                title: t("flowExtension:createWizard.steps.endpointConfig.title")
             }
         ] as WizardStepInterface[];
     };
@@ -198,13 +198,13 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
         const errors: Partial<{ name: string; description: string }> = {};
 
         if (!values?.name || !ACTION_NAME_REGEX.test(values.name)) {
-            errors.name = t("inFlowExtension:createWizard.steps.generalSettings.name.validations.invalid");
+            errors.name = t("flowExtension:createWizard.steps.generalSettings.name.validations.invalid");
         } else if (isNameTaken) {
-            errors.name = t("inFlowExtension:createWizard.steps.generalSettings.name.validations.duplicate");
+            errors.name = t("flowExtension:createWizard.steps.generalSettings.name.validations.duplicate");
         }
 
         if (values?.description && values.description.length > 255) {
-            errors.description = t("inFlowExtension:createWizard.steps.generalSettings.description.validations.maxLength");
+            errors.description = t("flowExtension:createWizard.steps.generalSettings.description.validations.maxLength");
         }
 
         if (!hasValidationErrors(errors) && !isCheckingName) {
@@ -251,19 +251,19 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
             setAlert({
                 description: error.response.data.description,
                 level: AlertLevels.ERROR,
-                message: t("inFlowExtension:notifications.createError.message")
+                message: t("flowExtension:notifications.createError.message")
             });
         } else {
             setAlert({
-                description: t("inFlowExtension:notifications.createGenericError.description"),
+                description: t("flowExtension:notifications.createGenericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("inFlowExtension:notifications.createGenericError.message")
+                message: t("flowExtension:notifications.createGenericError.message")
             });
         }
         setTimeout(() => setAlert(undefined), ConnectionUIConstants.WIZARD_ERROR_CLEAR_TIMEOUT);
     };
 
-    const handleFormSubmit = (values: InFlowExtensionWizardFormValues): void => {
+    const handleFormSubmit = (values: FlowExtensionWizardFormValues): void => {
         const authProperties: Record<string, string> = {};
 
         switch (endpointAuthType) {
@@ -297,7 +297,7 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
         const resolvedEncryption: { certificate: string } | undefined =
             certPEMRef.current ? { certificate: certPEMRef.current } : undefined;
 
-        const actionBody: InFlowExtensionCreateRequestInterface = {
+        const actionBody: FlowExtensionCreateRequestInterface = {
             description: values.description?.toString() || "",
             encryption: resolvedEncryption,
             endpoint: {
@@ -311,19 +311,19 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
         };
 
         setIsSubmitting(true);
-        createInFlowExtension(actionBody)
-            .then((response: InFlowExtensionResponseInterface) => {
+        createFlowExtension(actionBody)
+            .then((response: FlowExtensionResponseInterface) => {
                 dispatch(
                     addAlert({
-                        description: t("inFlowExtension:notifications.createSuccess.description"),
+                        description: t("flowExtension:notifications.createSuccess.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("inFlowExtension:notifications.createSuccess.message")
+                        message: t("flowExtension:notifications.createSuccess.message")
                     })
                 );
 
                 // Navigate to the edit page so the user can configure access config.
                 const editPath: string = AppConstants.getPaths()
-                    .get("IN_FLOW_EXTENSION_EDIT")
+                    .get("FLOW_EXTENSION_EDIT")
                     .replace(":id", response.id);
 
                 history.push(editPath + "#tab=access-configuration");
@@ -357,21 +357,21 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
                 ariaLabel="name"
                 inputType="text"
                 name="name"
-                label={t("inFlowExtension:createWizard.steps.generalSettings.name.label")}
-                placeholder={t("inFlowExtension:createWizard.steps.generalSettings.name.placeholder")}
+                label={t("flowExtension:createWizard.steps.generalSettings.name.label")}
+                placeholder={t("flowExtension:createWizard.steps.generalSettings.name.placeholder")}
                 required={true}
                 maxLength={255}
                 minLength={1}
                 data-componentid={`${componentId}-create-wizard-name`}
                 width={15}
             />
-            <Hint>{t("inFlowExtension:createWizard.steps.generalSettings.name.hint")}</Hint>
+            <Hint>{t("flowExtension:createWizard.steps.generalSettings.name.hint")}</Hint>
             <Field.Input
                 ariaLabel="description"
                 inputType="text"
                 name="description"
-                label={t("inFlowExtension:createWizard.steps.generalSettings.description.label")}
-                placeholder={t("inFlowExtension:createWizard.steps.generalSettings.description.placeholder")}
+                label={t("flowExtension:createWizard.steps.generalSettings.description.label")}
+                placeholder={t("flowExtension:createWizard.steps.generalSettings.description.placeholder")}
                 required={false}
                 maxLength={255}
                 minLength={0}
@@ -389,7 +389,7 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
                 isReadOnly={false}
                 showHeadersAndParams={false}
                 showAllowedParameters={false}
-                authenticationTypes={ConnectionUIConstants.IN_FLOW_EXTENSION_AUTH_TYPES}
+                authenticationTypes={ConnectionUIConstants.FLOW_EXTENSION_AUTH_TYPES}
                 onAuthenticationTypeChange={(type: AuthenticationType) => {
                     setEndpointAuthType(type);
                 }}
@@ -397,10 +397,10 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
             />
             <Divider className="divider-container" sx={{ mb: "20px", mt: "20px" }} />
             <Heading className="heading-container" as="h5">
-                {t("inFlowExtension:createWizard.steps.endpointConfig.certificate.title")}
+                {t("flowExtension:createWizard.steps.endpointConfig.certificate.title")}
             </Heading>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                {t("inFlowExtension:createWizard.steps.endpointConfig.certificate.hint")}
+                {t("flowExtension:createWizard.steps.endpointConfig.certificate.hint")}
             </Typography>
             { certificatePEM && (
                 <Alert
@@ -416,7 +416,7 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
                     }
                     data-componentid={`${componentId}-certificate-status`}
                 >
-                    <Trans i18nKey="inFlowExtension:createWizard.steps.endpointConfig.certificate.uploaded">
+                    <Trans i18nKey="flowExtension:createWizard.steps.endpointConfig.certificate.uploaded">
                         Certificate uploaded successfully. You can re‑upload to replace it or clear it.
                     </Trans>
                 </Alert>
@@ -451,7 +451,7 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
                 >
                     <div className="display-flex">
                         <GenericIcon
-                            icon={AuthenticatorMeta.getInFlowExtensionIcon()}
+                            icon={AuthenticatorMeta.getFlowExtensionIcon()}
                             size="x30"
                             transparent
                             spaced="right"
@@ -567,4 +567,4 @@ const InFlowExtensionCreateWizard: FunctionComponent<InFlowExtensionCreateWizard
     );
 };
 
-export default InFlowExtensionCreateWizard;
+export default FlowExtensionCreateWizard;

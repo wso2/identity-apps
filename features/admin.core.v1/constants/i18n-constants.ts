@@ -343,10 +343,10 @@ export class I18nConstants {
         I18nModuleConstants.CUSTOMER_DATA_SERVICE_NAMESPACE;
 
     /**
-     * In-Flow Extension namespace.
+     * Flow Extension namespace.
      */
-    public static readonly IN_FLOW_EXTENSION_NAMESPACE: string =
-        I18nModuleConstants.IN_FLOW_EXTENSION_NAMESPACE;
+    public static readonly FLOW_EXTENSION_NAMESPACE: string =
+        I18nModuleConstants.FLOW_EXTENSION_NAMESPACE;
 
     /**
      * Locations of the I18n namespaces.
@@ -414,7 +414,7 @@ export class I18nConstants {
         [ I18nConstants.COMMON_USERS_NAMESPACE, "portals" ],
         [ I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE, "portals" ],
         [ I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE, "portals" ],
-        [ I18nConstants.IN_FLOW_EXTENSION_NAMESPACE, "portals" ]
+        [ I18nConstants.FLOW_EXTENSION_NAMESPACE, "portals" ]
     ]);
 
     /**

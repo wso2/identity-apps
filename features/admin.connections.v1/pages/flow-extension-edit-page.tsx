@@ -17,8 +17,8 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import useGetInFlowExtensionById from "@wso2is/admin.flow-builder-core.v1/api/use-get-in-flow-extension-by-id";
-import { InFlowExtensionResponseInterface } from "@wso2is/admin.flow-builder-core.v1/models/in-flow-extension";
+import useGetFlowExtensionById from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-extension-by-id";
+import { FlowExtensionResponseInterface } from "@wso2is/admin.flow-builder-core.v1/models/flow-extension";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
@@ -41,20 +41,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { TabProps } from "semantic-ui-react";
-import { InFlowExtensionAccessConfigSettings } from
-    "../components/edit/settings/in-flow-extension-access-config-settings";
-import { InFlowExtensionCustomErrors } from
-    "../components/edit/settings/in-flow-extension-custom-errors";
-import { InFlowExtensionEndpointSettings } from "../components/edit/settings/in-flow-extension-endpoint-settings";
-import { InFlowExtensionGeneralSettings } from "../components/edit/settings/in-flow-extension-general-settings";
+import { FlowExtensionAccessConfigSettings } from
+    "../components/edit/settings/flow-extension-access-config-settings";
+import { FlowExtensionCustomErrors } from
+    "../components/edit/settings/flow-extension-custom-errors";
+import { FlowExtensionEndpointSettings } from "../components/edit/settings/flow-extension-endpoint-settings";
+import { FlowExtensionGeneralSettings } from "../components/edit/settings/flow-extension-general-settings";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 
-type InFlowExtensionEditPagePropsInterface = IdentifiableComponentInterface & RouteComponentProps;
+type FlowExtensionEditPagePropsInterface = IdentifiableComponentInterface & RouteComponentProps;
 
-const InFlowExtensionEditPage: FunctionComponent<InFlowExtensionEditPagePropsInterface> = ({
+const FlowExtensionEditPage: FunctionComponent<FlowExtensionEditPagePropsInterface> = ({
     location,
-    ["data-componentid"]: componentId = "in-flow-extension-edit-page"
-}: InFlowExtensionEditPagePropsInterface): ReactElement => {
+    ["data-componentid"]: componentId = "flow-extension-edit-page"
+}: FlowExtensionEditPagePropsInterface): ReactElement => {
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -64,7 +64,7 @@ const InFlowExtensionEditPage: FunctionComponent<InFlowExtensionEditPagePropsInt
         (state: AppState) => state.config.ui.features?.actions);
     const isReadOnly: boolean = !useRequiredScopes(featureConfig?.identityProviders?.scopes?.update);
     const isCustomErrorsEnabled: boolean = isFeatureEnabled(
-        actionsFeatureConfig, "actions.types.list.inFlowExtension.customErrors");
+        actionsFeatureConfig, "actions.types.list.flowExtension.customErrors");
 
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(0);
 
@@ -81,15 +81,15 @@ const InFlowExtensionEditPage: FunctionComponent<InFlowExtensionEditPagePropsInt
         error: actionFetchError,
         isLoading: isActionLoading,
         mutate: mutateAction
-    } = useGetInFlowExtensionById<InFlowExtensionResponseInterface>(actionId);
+    } = useGetFlowExtensionById<FlowExtensionResponseInterface>(actionId);
 
     useEffect(() => {
         if (actionFetchError) {
             dispatch(addAlert({
                 description: actionFetchError?.response?.data?.description
-                    ?? t("inFlowExtension:notifications.fetchError.description"),
+                    ?? t("flowExtension:notifications.fetchError.description"),
                 level: AlertLevels.ERROR,
-                message: t("inFlowExtension:notifications.fetchError.message")
+                message: t("flowExtension:notifications.fetchError.message")
             }));
         }
     }, [ actionFetchError ]);
@@ -118,7 +118,7 @@ const InFlowExtensionEditPage: FunctionComponent<InFlowExtensionEditPagePropsInt
                 <AppAvatar
                     hoverable={ false }
                     name={ action.name }
-                    image={ action.iconUrl || AuthenticatorMeta.getInFlowExtensionIcon() }
+                    image={ action.iconUrl || AuthenticatorMeta.getFlowExtensionIcon() }
                     size="tiny"
                 />
             );
@@ -136,7 +136,7 @@ const InFlowExtensionEditPage: FunctionComponent<InFlowExtensionEditPagePropsInt
 
     const GeneralSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
-            <InFlowExtensionGeneralSettings
+            <FlowExtensionGeneralSettings
                 action={ action }
                 isLoading={ isActionLoading }
                 isReadOnly={ isReadOnly }
@@ -150,7 +150,7 @@ const InFlowExtensionEditPage: FunctionComponent<InFlowExtensionEditPagePropsInt
 
     const EndpointSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
-            <InFlowExtensionEndpointSettings
+            <FlowExtensionEndpointSettings
                 action={ action }
                 isLoading={ isActionLoading }
                 isReadOnly={ isReadOnly }
@@ -163,7 +163,7 @@ const InFlowExtensionEditPage: FunctionComponent<InFlowExtensionEditPagePropsInt
 
     const AccessConfigTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
-            <InFlowExtensionAccessConfigSettings
+            <FlowExtensionAccessConfigSettings
                 action={ action }
                 isLoading={ isActionLoading }
                 isReadOnly={ isReadOnly }
@@ -176,7 +176,7 @@ const InFlowExtensionEditPage: FunctionComponent<InFlowExtensionEditPagePropsInt
 
     const CustomErrorsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
-            <InFlowExtensionCustomErrors
+            <FlowExtensionCustomErrors
                 action={ action }
                 isLoading={ isActionLoading }
                 isReadOnly={ isReadOnly }
@@ -220,7 +220,7 @@ const InFlowExtensionEditPage: FunctionComponent<InFlowExtensionEditPagePropsInt
 
     return (
         <TabPageLayout
-            pageTitle="Edit In-Flow Extension"
+            pageTitle="Edit Flow Extension"
             isLoading={ isActionLoading }
             loadingStateOptions={ {
                 count: 5,
@@ -256,4 +256,4 @@ const InFlowExtensionEditPage: FunctionComponent<InFlowExtensionEditPagePropsInt
     );
 };
 
-export default InFlowExtensionEditPage;
+export default FlowExtensionEditPage;

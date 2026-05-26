@@ -3,13 +3,13 @@
     "description": "Extend authentication flows with external services.",
     "enabled": true,
     "displayOrder": 13,
-    "id": "in-flow-extension",
+    "id": "flow-extension",
     "docLink": "",
-    "image": "assets/images/logos/in-flow-extension.svg",
-    "name": "In-Flow Extension",
+    "image": "assets/images/logos/flow-extension.svg",
+    "name": "Flow Extension",
     "services": [],
     "disabled": false,
     "type": "DEFAULT",
     "tags": [ "Custom" ],
-    "templateId": "in-flow-extension"
+    "templateId": "flow-extension"
 }

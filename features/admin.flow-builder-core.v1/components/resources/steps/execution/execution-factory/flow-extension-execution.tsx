@@ -24,35 +24,35 @@ import React, { ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useAuthenticationFlowBuilderCore
     from "../../../../../hooks/use-authentication-flow-builder-core-context";
-import { InFlowExtensionConnectionInterface } from "../../../../../models/metadata";
+import { FlowExtensionConnectionInterface } from "../../../../../models/metadata";
 import { ExecutionMinimalPropsInterface } from "../execution-minimal";
 
-const DEFAULT_ICON: string = "assets/images/icons/in-flow-extension.svg";
+const DEFAULT_ICON: string = "assets/images/icons/flow-extension.svg";
 
 /**
- * Props interface of {@link InFlowExtensionExecution}.
+ * Props interface of {@link FlowExtensionExecution}.
  */
-type InFlowExtensionExecutionPropsInterface = ExecutionMinimalPropsInterface
+type FlowExtensionExecutionPropsInterface = ExecutionMinimalPropsInterface
     & IdentifiableComponentInterface;
 
-const InFlowExtensionExecution = ({
+const FlowExtensionExecution = ({
     resource,
-    "data-componentid": componentId = "in-flow-extension-execution"
-}: InFlowExtensionExecutionPropsInterface): ReactElement => {
+    "data-componentid": componentId = "flow-extension-execution"
+}: FlowExtensionExecutionPropsInterface): ReactElement => {
     const { t } = useTranslation();
     const { metadata } = useAuthenticationFlowBuilderCore();
 
-    const selectedConnection: InFlowExtensionConnectionInterface | null = useMemo(() => {
+    const selectedConnection: FlowExtensionConnectionInterface | null = useMemo(() => {
         const actionId: string = resource?.data?.action?.executor?.meta?.actionId;
 
-        if (!actionId || !metadata?.inflowExtensionConnections?.length) {
+        if (!actionId || !metadata?.flowExtensionConnections?.length) {
             return null;
         }
 
-        return metadata.inflowExtensionConnections.find(
-            (c: InFlowExtensionConnectionInterface) => c.actionId === actionId
+        return metadata.flowExtensionConnections.find(
+            (c: FlowExtensionConnectionInterface) => c.actionId === actionId
         ) || null;
-    }, [ resource?.data?.action?.executor?.meta?.actionId, metadata?.inflowExtensionConnections ]);
+    }, [ resource?.data?.action?.executor?.meta?.actionId, metadata?.flowExtensionConnections ]);
 
     const iconSrc: string = selectedConnection?.iconUrl
         || loadStaticResource(DEFAULT_ICON);
@@ -60,14 +60,14 @@ const InFlowExtensionExecution = ({
     const isDefaultIcon: boolean = !selectedConnection?.iconUrl;
 
     const displayName: string = selectedConnection?.name
-        || t("flows:core.executions.names.inFlowExtension", { defaultValue: "In-Flow Extension" });
+        || t("flows:core.executions.names.flowExtension", { defaultValue: "Flow Extension" });
 
     return (
         <Box
             display="flex"
             gap={ 1 }
             data-componentid={ componentId }
-            className="flow-builder-execution in-flow-extension"
+            className="flow-builder-execution flow-extension"
         >
             <img
                 src={ iconSrc }
@@ -82,4 +82,4 @@ const InFlowExtensionExecution = ({
     );
 };
 
-export default InFlowExtensionExecution;
+export default FlowExtensionExecution;

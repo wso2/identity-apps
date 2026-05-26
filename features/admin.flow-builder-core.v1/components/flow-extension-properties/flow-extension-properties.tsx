@@ -28,8 +28,8 @@ import Link from "@oxygen-ui/react/Link";
 import Stack from "@oxygen-ui/react/Stack";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
-import useGetInFlowExtensionById from "../../api/use-get-in-flow-extension-by-id";
-import { InFlowExtensionResponseInterface } from "../../models/in-flow-extension";
+import useGetFlowExtensionById from "../../api/use-get-flow-extension-by-id";
+import { FlowExtensionResponseInterface } from "../../models/flow-extension";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -42,35 +42,35 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import useAuthenticationFlowBuilderCore
     from "../../hooks/use-authentication-flow-builder-core-context";
-import { InFlowExtensionConnectionInterface } from "../../models/metadata";
+import { FlowExtensionConnectionInterface } from "../../models/metadata";
 import {
     CommonResourcePropertiesPropsInterface
 } from "../resource-property-panel/resource-properties";
 import AccessConfigOverrideDialog from "./access-config-override-dialog";
 
-const DEFAULT_ICON: string = "assets/images/icons/in-flow-extension.svg";
+const DEFAULT_ICON: string = "assets/images/icons/flow-extension.svg";
 
 /**
- * Props interface of {@link InFlowExtensionProperties}
+ * Props interface of {@link FlowExtensionProperties}
  */
-interface InFlowExtensionPropertiesPropsInterface extends CommonResourcePropertiesPropsInterface,
+interface FlowExtensionPropertiesPropsInterface extends CommonResourcePropertiesPropsInterface,
     IdentifiableComponentInterface {
     flowType: string;
 }
 
 /**
- * In-Flow Extension properties component for the flow builder.
- * Shows a dropdown to select an in-flow extension action, connection details, and access config button.
+ * Flow Extension properties component for the flow builder.
+ * Shows a dropdown to select an flow extension action, connection details, and access config button.
  *
  * @param props - Props injected to the component.
- * @returns InFlowExtensionProperties component.
+ * @returns FlowExtensionProperties component.
  */
-const InFlowExtensionProperties: FunctionComponent<InFlowExtensionPropertiesPropsInterface> = ({
+const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInterface> = ({
     resource,
     flowType,
-    ["data-componentid"]: componentId = "in-flow-extension-properties",
+    ["data-componentid"]: componentId = "flow-extension-properties",
     onChange
-}: InFlowExtensionPropertiesPropsInterface): ReactElement => {
+}: FlowExtensionPropertiesPropsInterface): ReactElement => {
     const { t } = useTranslation();
 
     const [ isAccessConfigDialogOpen, setIsAccessConfigDialogOpen ] = useState<boolean>(false);
@@ -79,16 +79,16 @@ const InFlowExtensionProperties: FunctionComponent<InFlowExtensionPropertiesProp
     const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features?.actions);
     const isFlowLevelOverridesEnabled: boolean = isFeatureEnabled(
-        actionsFeatureConfig, "actions.types.list.inFlowExtension.flowLevelOverrides");
+        actionsFeatureConfig, "actions.types.list.flowExtension.flowLevelOverrides");
 
     const { metadata, isFlowMetadataLoading } = useAuthenticationFlowBuilderCore();
     const { getNodes } = useReactFlow();
 
-    const connections: InFlowExtensionConnectionInterface[] = useMemo(() => {
-        const allConnections: InFlowExtensionConnectionInterface[] =
-            metadata?.inflowExtensionConnections ?? [];
+    const connections: FlowExtensionConnectionInterface[] = useMemo(() => {
+        const allConnections: FlowExtensionConnectionInterface[] =
+            metadata?.flowExtensionConnections ?? [];
 
-        // Filter out connections already used by other in-flow extension nodes.
+        // Filter out connections already used by other flow extension nodes.
         const nodes: Node[] = getNodes();
         const usedActionIds: Set<string> = new Set(
             nodes
@@ -99,11 +99,11 @@ const InFlowExtensionProperties: FunctionComponent<InFlowExtensionPropertiesProp
         );
 
         return allConnections.filter(
-            (c: InFlowExtensionConnectionInterface) => !usedActionIds.has(c.actionId)
+            (c: FlowExtensionConnectionInterface) => !usedActionIds.has(c.actionId)
         );
-    }, [ metadata?.inflowExtensionConnections, getNodes, resource?.id ]);
+    }, [ metadata?.flowExtensionConnections, getNodes, resource?.id ]);
 
-    const selectedConnection: InFlowExtensionConnectionInterface | null = useMemo(() => {
+    const selectedConnection: FlowExtensionConnectionInterface | null = useMemo(() => {
         const actionId: string = resource?.data?.action?.executor?.meta?.actionId;
 
         if (!actionId || !connections?.length) {
@@ -111,7 +111,7 @@ const InFlowExtensionProperties: FunctionComponent<InFlowExtensionPropertiesProp
         }
 
         return connections.find(
-            (connection: InFlowExtensionConnectionInterface) => connection.actionId === actionId
+            (connection: FlowExtensionConnectionInterface) => connection.actionId === actionId
         ) || null;
     }, [ connections, resource?.data?.action?.executor?.meta?.actionId ]);
 
@@ -119,12 +119,12 @@ const InFlowExtensionProperties: FunctionComponent<InFlowExtensionPropertiesProp
         data: actionResponse,
         isLoading: isActionLoading,
         mutate: mutateAction
-    } = useGetInFlowExtensionById<InFlowExtensionResponseInterface>(
+    } = useGetFlowExtensionById<FlowExtensionResponseInterface>(
         selectedConnection?.actionId
     );
 
     const handleConnectionChange = useCallback((_: ChangeEvent<HTMLInputElement>,
-        connection: InFlowExtensionConnectionInterface | null) => {
+        connection: FlowExtensionConnectionInterface | null) => {
         if (connection) {
             onChange("action.executor.meta.actionId", connection.actionId, resource);
         } else {
@@ -142,7 +142,7 @@ const InFlowExtensionProperties: FunctionComponent<InFlowExtensionPropertiesProp
 
     const handleNavigateToConnectionAccessConfig = (): void => {
         setIsNavConfirmOpen(false);
-        const editPath: string = AppConstants.getPaths().get("IN_FLOW_EXTENSION_EDIT")
+        const editPath: string = AppConstants.getPaths().get("FLOW_EXTENSION_EDIT")
             .replace(":id", selectedConnection.actionId);
 
         history.push(`${editPath}#tab=access-configuration`);
@@ -165,13 +165,13 @@ const InFlowExtensionProperties: FunctionComponent<InFlowExtensionPropertiesProp
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
             <Typography variant="body2">
-                Select an in-flow extension to link with this flow step.
+                Select an flow extension to link with this flow step.
             </Typography>
             <Autocomplete
                 disablePortal
                 key={ resource.id }
                 options={ connections }
-                getOptionLabel={ (connection: InFlowExtensionConnectionInterface) => connection.name }
+                getOptionLabel={ (connection: FlowExtensionConnectionInterface) => connection.name }
                 loading={ isFlowMetadataLoading }
                 fullWidth
                 renderInput={ (params: AutocompleteRenderInputParams) => (
@@ -183,7 +183,7 @@ const InFlowExtensionProperties: FunctionComponent<InFlowExtensionPropertiesProp
                     />
                 ) }
                 renderOption={ (props: React.HTMLAttributes<HTMLLIElement>,
-                    connection: InFlowExtensionConnectionInterface) => (
+                    connection: FlowExtensionConnectionInterface) => (
                     <li { ...props } key={ connection.actionId }>
                         <Stack direction="row" spacing={ 1 } alignItems="center">
                             { renderConnectionIcon(connection.iconUrl, 20) }
@@ -194,8 +194,8 @@ const InFlowExtensionProperties: FunctionComponent<InFlowExtensionPropertiesProp
                 value={ selectedConnection }
                 onChange={ handleConnectionChange }
                 isOptionEqualToValue={
-                    (option: InFlowExtensionConnectionInterface,
-                        value: InFlowExtensionConnectionInterface) =>
+                    (option: FlowExtensionConnectionInterface,
+                        value: FlowExtensionConnectionInterface) =>
                         option.actionId === value.actionId
                 }
             />
@@ -213,8 +213,8 @@ const InFlowExtensionProperties: FunctionComponent<InFlowExtensionPropertiesProp
             ) }
             { !isFlowMetadataLoading && !connections?.length && (
                 <Alert severity="warning" data-componentid={ `${componentId}-no-actions-warning` }>
-                    No active in-flow extensions available. Please create an
-                    <Link component="button" onClick={ handleCreateConnection }> in-flow extension </Link>
+                    No active flow extension available. Please create an
+                    <Link component="button" onClick={ handleCreateConnection }> flow extension </Link>
                     to link with this flow.
                 </Alert>
             ) }
@@ -262,4 +262,4 @@ const InFlowExtensionProperties: FunctionComponent<InFlowExtensionPropertiesProp
     );
 };
 
-export default InFlowExtensionProperties;
+export default FlowExtensionProperties;

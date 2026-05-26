@@ -17,21 +17,21 @@
  */
 
 /**
- * The i18n key prefix for inflow extension error messages.
+ * The i18n key prefix for flow extension error messages.
  */
-const INFLOW_EXTENSION_KEY_PREFIX: string = "inflow.extension.";
+const FLOW_EXTENSION_KEY_PREFIX: string = "flow.extension.";
 
 /**
- * The branding screen name for inflow extension custom text.
+ * The branding screen name for flow extension custom text.
  */
-export const INFLOW_EXTENSION_SCREEN: string = "inflow-extension";
+export const FLOW_EXTENSION_SCREEN: string = "flow-extension";
 
 /**
  * Sanitize a connection name to be used as a segment in i18n keys.
  * Converts to lowercase, replaces non-alphanumeric characters with dots,
  * collapses consecutive dots, and trims leading/trailing dots.
  *
- * This mirrors the Java `InFlowExtensionExecutor.sanitizeConnectionName()`.
+ * This mirrors the Java `FlowExtensionExecutor.sanitizeConnectionName()`.
  *
  * @param name - The display name of the connection.
  * @returns The sanitized dot-separated lowercase name.
@@ -53,11 +53,11 @@ const sanitizeConnectionName = (name: string | null | undefined): string => {
  * Build the full i18n key prefix for a specific connection.
  *
  * @param connectionName - The display name of the connection.
- * @returns The prefix string, e.g. "inflow.extension.risk.assessment.extension."
+ * @returns The prefix string, e.g. "flow.extension.risk.assessment.extension."
  */
 export const getConnectionKeyPrefix = (connectionName: string): string => {
 
     const sanitized: string = sanitizeConnectionName(connectionName);
 
-    return `${INFLOW_EXTENSION_KEY_PREFIX}${sanitized}.`;
+    return `${FLOW_EXTENSION_KEY_PREFIX}${sanitized}.`;
 };

@@ -47,7 +47,7 @@ class AskPasswordFlowBuilderConstants {
         ExecutionTypes.PasskeyEnrollment,
         ExecutionTypes.ConfirmationCode,
         ExecutionTypes.MagicLinkExecutor,
-        ExecutionTypes.InFlowExtension
+        ExecutionTypes.FlowExtension
     ];
 }
 

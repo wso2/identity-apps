@@ -222,15 +222,15 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "In-Flow Extension View",
-            "image": "assets/images/icons/in-flow-extension.svg",
+            "label": "Flow Extension View",
+            "image": "assets/images/icons/flow-extension.svg",
             "showOnResourcePanel": true
         },
         "data": {
             "action": {
                 "type": "EXECUTOR",
                 "executor": {
-                    "name": "InFlowExtensionExecutor",
+                    "name": "FlowExtensionExecutor",
                     "meta": {
                         "actionId": ""
                     }

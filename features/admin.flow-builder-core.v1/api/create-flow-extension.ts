@@ -23,22 +23,22 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpErrorResponseDataInterface, HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import {
-    InFlowExtensionCreateRequestInterface,
-    InFlowExtensionResponseInterface
-} from "../models/in-flow-extension";
+    FlowExtensionCreateRequestInterface,
+    FlowExtensionResponseInterface
+} from "../models/flow-extension";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Create a new In-Flow Extension via the flow management API.
+ * Create a new Flow Extension via the flow management API.
  *
  * @param body - Create request body.
- * @returns Promise resolving to the created In-Flow Extension.
+ * @returns Promise resolving to the created Flow Extension.
  */
-const createInFlowExtension = (
-    body: InFlowExtensionCreateRequestInterface
-): Promise<InFlowExtensionResponseInterface> => {
+const createFlowExtension = (
+    body: FlowExtensionCreateRequestInterface
+): Promise<FlowExtensionResponseInterface> => {
 
     const requestConfig: RequestConfigInterface = {
         data: body,
@@ -47,14 +47,14 @@ const createInFlowExtension = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.inFlowExtensions
+        url: store.getState().config.endpoints.flowExtension
     };
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 201) {
                 throw new IdentityAppsApiException(
-                    "Invalid status code received when creating In-Flow Extension.",
+                    "Invalid status code received when creating Flow Extension.",
                     null,
                     response.status,
                     response.request,
@@ -63,7 +63,7 @@ const createInFlowExtension = (
                 );
             }
 
-            return Promise.resolve(response.data as InFlowExtensionResponseInterface);
+            return Promise.resolve(response.data as FlowExtensionResponseInterface);
         })
         .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
@@ -77,4 +77,4 @@ const createInFlowExtension = (
         });
 };
 
-export default createInFlowExtension;
+export default createFlowExtension;

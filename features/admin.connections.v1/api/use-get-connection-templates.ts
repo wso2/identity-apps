@@ -59,9 +59,9 @@ export const useGetConnectionTemplates = <Data = ConnectionTemplateInterface[], 
     const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features?.actions);
     const { isSubOrganization } = useGetCurrentOrganizationType();
-    const inFlowExtensionFeatureKey: string = isSubOrganization()
-        ? "actions.types.org.list.inFlowExtension"
-        : "actions.types.list.inFlowExtension";
+    const flowExtensionFeatureKey: string = isSubOrganization()
+        ? "actions.types.org.list.flowExtension"
+        : "actions.types.list.flowExtension";
     const isOutboundProvisioningConnectionV2Enabled: boolean = isFeatureEnabled(
         UIConfig?.features?.identityProviders,
         CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
@@ -101,10 +101,10 @@ export const useGetConnectionTemplates = <Data = ConnectionTemplateInterface[], 
             ...(UIConfig?.hiddenConnectionTemplates || [])
         ];
 
-        // Hide In-Flow Extension template when the feature is disabled.
-        if (!isFeatureEnabled(actionsFeatureConfig, inFlowExtensionFeatureKey)) {
+        // Hide Flow Extension template when the feature is disabled.
+        if (!isFeatureEnabled(actionsFeatureConfig, flowExtensionFeatureKey)) {
             hiddenConnectionTemplateIds.push(
-                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IN_FLOW_EXTENSION
+                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FLOW_EXTENSION
             );
         }
 

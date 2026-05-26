@@ -176,15 +176,15 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
                 return t("flows:core.executions.names.confirmationCode");
             case ExecutionTypes.MagicLinkExecutor:
                 return t("flows:core.executions.names.magicLink");
-            case ExecutionTypes.InFlowExtension: {
+            case ExecutionTypes.FlowExtension: {
                 const actionId: string = (data?.action as any)?.executor?.meta?.actionId;
-                const connection = actionId && metadata?.inflowExtensionConnections?.find(
+                const connection = actionId && metadata?.flowExtensionConnections?.find(
                     (c: any) => c.actionId === actionId
                 );
 
                 return connection?.name
-                    || t("flows:core.executions.names.inFlowExtension",
-                        { defaultValue: "In-Flow Extension" });
+                    || t("flows:core.executions.names.flowExtension",
+                        { defaultValue: "Flow Extension" });
             }
             default:
                 return t("flows:core.executions.names.default");

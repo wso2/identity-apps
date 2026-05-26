@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import useGetInFlowExtensions from "@wso2is/admin.flow-builder-core.v1/api/use-get-in-flow-extensions";
+import useGetFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-extension";
 import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -81,10 +81,10 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
     const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features?.actions);
     const { isSubOrganization } = useGetCurrentOrganizationType();
-    const inFlowExtensionFeatureKey: string = isSubOrganization()
-        ? "actions.types.org.list.inFlowExtension"
-        : "actions.types.list.inFlowExtension";
-    const isInFlowExtensionEnabled: boolean = isFeatureEnabled(actionsFeatureConfig, inFlowExtensionFeatureKey);
+    const flowExtensionFeatureKey: string = isSubOrganization()
+        ? "actions.types.org.list.flowExtension"
+        : "actions.types.list.flowExtension";
+    const isFlowExtensionEnabled: boolean = isFeatureEnabled(actionsFeatureConfig, flowExtensionFeatureKey);
 
     const {
         data: fetchedAuthenticatorsList,
@@ -120,17 +120,17 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
     );
 
     const {
-        data: fetchedInFlowExtensions,
-        isLoading: isInFlowExtensionsFetchRequestLoading,
-        isValidating: isInFlowExtensionsFetchRequestValidating,
-        error: inFlowExtensionsFetchRequestError,
-        mutate: mutateInFlowExtensionsFetchRequest
-    } = useGetInFlowExtensions(isInFlowExtensionEnabled && shouldFetchAuthenticators && offset === 0);
+        data: fetchedFlowExtension,
+        isLoading: isFlowExtensionFetchRequestLoading,
+        isValidating: isFlowExtensionFetchRequestValidating,
+        error: flowExtensionFetchRequestError,
+        mutate: mutateFlowExtensionFetchRequest
+    } = useGetFlowExtension(isFlowExtensionEnabled && shouldFetchAuthenticators && offset === 0);
 
     const combinedData: ConnectionInterface[] = [];
 
     if (!isAuthenticatorsFetchRequestLoading && !isIdVPListFetchRequestLoading
-        && !isInFlowExtensionsFetchRequestLoading) {
+        && !isFlowExtensionFetchRequestLoading) {
 
         // Add Local Authenticators to the beginning of the list.
         for (const authenticator of fetchedAuthenticatorsList) {
@@ -191,16 +191,16 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
             }
         }
 
-        // Add In-Flow Extensions to the list.
-        if (fetchedInFlowExtensions?.length) {
-            for (const extension of fetchedInFlowExtensions) {
+        // Add Flow Extension to the list.
+        if (fetchedFlowExtension?.length) {
+            for (const extension of fetchedFlowExtension) {
                 combinedData.push({
                     description: extension.description,
                     id: extension.id,
-                    image: extension.iconUrl || AuthenticatorMeta.getInFlowExtensionIcon(),
+                    image: extension.iconUrl || AuthenticatorMeta.getFlowExtensionIcon(),
                     name: extension.name,
                     tags: [ "Custom" ],
-                    type: "IN_FLOW_EXTENSION" as ConnectionTypes
+                    type: "FLOW_EXTENSION" as ConnectionTypes
                 } as ConnectionInterface);
             }
         }
@@ -210,17 +210,17 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
         data: combinedData as Data,
         error: authenticatorsFetchRequestError as AxiosError<Error>
             || idVPListFetchRequestError as AxiosError<Error>
-            || inFlowExtensionsFetchRequestError as AxiosError<Error>,
+            || flowExtensionFetchRequestError as AxiosError<Error>,
         isLoading: isAuthenticatorsFetchRequestLoading
             || isIdVPListFetchRequestLoading
-            || isInFlowExtensionsFetchRequestLoading,
+            || isFlowExtensionFetchRequestLoading,
         isValidating: isAuthenticatorsFetchRequestValidating
             || isIdVPListFetchRequestValidating
-            || isInFlowExtensionsFetchRequestValidating,
+            || isFlowExtensionFetchRequestValidating,
         mutate: () => {
             mutateAuthenticatorsFetchRequest();
             mutateIdVPListFetchRequest();
-            mutateInFlowExtensionsFetchRequest();
+            mutateFlowExtensionFetchRequest();
         }
     };
 };

@@ -34,8 +34,8 @@ import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
 import FlowCompletionProperties from "./steps/end/flow-completion-properties";
 import FederationProperties from "./steps/execution/federation-properties";
-import InFlowExtensionProperties
-    from "@wso2is/admin.flow-builder-core.v1/components/in-flow-extension-properties/in-flow-extension-properties";
+import FlowExtensionProperties
+    from "@wso2is/admin.flow-builder-core.v1/components/flow-extension-properties/flow-extension-properties";
 import { ExecutionTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import PasswordRecoveryFlowBuilderConstants from "../../constants/password-recovery-flow-builder-constants";
@@ -168,14 +168,14 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
 
             break;
         case StepCategories.Workflow:
-            if (resource?.data?.action?.executor?.name === ExecutionTypes.InFlowExtension) {
+            if (resource?.data?.action?.executor?.name === ExecutionTypes.FlowExtension) {
                 return (
                     <>
                         { renderElementId() }
-                        <InFlowExtensionProperties
+                        <FlowExtensionProperties
                             resource={ resource }
                             flowType={ FlowTypes.PASSWORD_RECOVERY }
-                            data-componentid="in-flow-extension-properties"
+                            data-componentid="flow-extension-properties"
                             onChange={ onChange }
                         />
                         { renderElementPropertyFactory() }

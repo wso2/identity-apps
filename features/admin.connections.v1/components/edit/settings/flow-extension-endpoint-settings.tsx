@@ -22,11 +22,11 @@ import Button from "@oxygen-ui/react/Button";
 import Divider from "@oxygen-ui/react/Divider";
 import Typography from "@oxygen-ui/react/Typography";
 import ActionEndpointConfigForm from "@wso2is/admin.actions.v1/components/action-endpoint-config-form";
-import updateInFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/update-in-flow-extension";
+import updateFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/update-flow-extension";
 import {
-    InFlowExtensionResponseInterface,
-    InFlowExtensionUpdateRequestInterface
-} from "@wso2is/admin.flow-builder-core.v1/models/in-flow-extension";
+    FlowExtensionResponseInterface,
+    FlowExtensionUpdateRequestInterface
+} from "@wso2is/admin.flow-builder-core.v1/models/flow-extension";
 import {
     AuthenticationType,
     EndpointConfigFormPropertyInterface
@@ -65,23 +65,23 @@ const areStringSetsEqual = (a: string[] | undefined, b: string[] | undefined): b
     return true;
 };
 
-interface InFlowExtensionEndpointSettingsPropsInterface extends IdentifiableComponentInterface {
+interface FlowExtensionEndpointSettingsPropsInterface extends IdentifiableComponentInterface {
     "data-componentid"?: string;
-    action: InFlowExtensionResponseInterface;
+    action: FlowExtensionResponseInterface;
     isLoading: boolean;
     isReadOnly: boolean;
     onUpdate: () => void;
     loader: () => ReactElement;
 }
 
-export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionEndpointSettingsPropsInterface> = ({
+export const FlowExtensionEndpointSettings: FunctionComponent<FlowExtensionEndpointSettingsPropsInterface> = ({
     action,
     isLoading,
     isReadOnly,
     onUpdate,
     loader: Loader,
-    ["data-componentid"]: componentId = "in-flow-extension-endpoint-settings"
-}: InFlowExtensionEndpointSettingsPropsInterface): ReactElement => {
+    ["data-componentid"]: componentId = "flow-extension-endpoint-settings"
+}: FlowExtensionEndpointSettingsPropsInterface): ReactElement => {
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -128,7 +128,7 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
     };
 
     const handleSubmit = (values: EndpointConfigFormPropertyInterface): void => {
-        const updateBody: InFlowExtensionUpdateRequestInterface = {};
+        const updateBody: FlowExtensionUpdateRequestInterface = {};
 
         const isUriChanged: boolean = values.endpointUri !== action.endpoint?.uri;
         const isHeadersChanged: boolean = !areStringSetsEqual(
@@ -136,7 +136,7 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
 
         // Only include endpoint in update when URI, auth, or headers changed.
         if (isUriChanged || isEndpointAuthenticationUpdated || isHeadersChanged) {
-            const endpointPatch: Partial<InFlowExtensionUpdateRequestInterface["endpoint"]> = {};
+            const endpointPatch: Partial<FlowExtensionUpdateRequestInterface["endpoint"]> = {};
 
             if (isUriChanged || isEndpointAuthenticationUpdated) {
                 const authProperties: Partial<AuthenticationPropertiesInterface> = {};
@@ -196,7 +196,7 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
             return;
         }
 
-        updateInFlowExtension(action.id, updateBody)
+        updateFlowExtension(action.id, updateBody)
             .then(() => {
                 dispatch(addAlert({
                     description: t("authenticationProvider:notifications.updateIDP.success.description"),
@@ -232,7 +232,7 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
     }
 
     return (
-        <Box className="in-flow-extension-endpoint-settings-tab">
+        <Box className="flow-extension-endpoint-settings-tab">
             <FinalForm
                 onSubmit={ handleSubmit }
                 initialValues={ initialValues }
@@ -252,7 +252,7 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
                                 isReadOnly={ isReadOnly }
                                 showHeadersAndParams={ true }
                                 showAllowedParameters={ false }
-                                authenticationTypes={ ConnectionUIConstants.IN_FLOW_EXTENSION_AUTH_TYPES }
+                                authenticationTypes={ ConnectionUIConstants.FLOW_EXTENSION_AUTH_TYPES }
                                 onAuthenticationTypeChange={ (
                                     authenticationType: AuthenticationType,
                                     isAuthenticationUpdated: boolean
@@ -263,10 +263,10 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
                             />
                             <Divider sx={ { my: 3 } } />
                             <Heading as="h5">
-                                { t("inFlowExtension:createWizard.steps.endpointConfig.certificate.title") }
+                                { t("flowExtension:createWizard.steps.endpointConfig.certificate.title") }
                             </Heading>
                             <Typography variant="body2" color="text.secondary" sx={ { mb: 2 } }>
-                                { t("inFlowExtension:createWizard.steps.endpointConfig.certificate.hint") }
+                                { t("flowExtension:createWizard.steps.endpointConfig.certificate.hint") }
                             </Typography>
                             { (hasCertificate || certificatePEM) && (
                                 <Alert
@@ -289,7 +289,7 @@ export const InFlowExtensionEndpointSettings: FunctionComponent<InFlowExtensionE
                                     data-componentid={ `${componentId}-certificate-status` }
                                 >
                                     <Trans
-                                        i18nKey={ "inFlowExtension:createWizard.steps.endpointConfig" +
+                                        i18nKey={ "flowExtension:createWizard.steps.endpointConfig" +
                                             ".certificate.uploaded" }
                                     >
                                         Certificate configured. You can re-upload to replace it or clear it.

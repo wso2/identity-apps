@@ -57,7 +57,7 @@ interface ActionEndpointConfigFormInterface extends IdentifiableComponentInterfa
     /**
      * Specifies whether the allowed parameters field should be shown within the
      * headers-and-parameters section. Defaults to true. Set to false for action types
-     * (e.g. In-Flow Extension) where query parameter forwarding is not supported.
+     * (e.g. Flow Extension) where query parameter forwarding is not supported.
      */
     showAllowedParameters?: boolean;
     /**

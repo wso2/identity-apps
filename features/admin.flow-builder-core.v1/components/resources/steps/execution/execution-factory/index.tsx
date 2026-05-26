@@ -25,7 +25,7 @@ import AppleExecution from "./apple-execution";
 import FacebookExecution from "./facebook-execution";
 import GithubExecution from "./github-execution";
 import GoogleExecution from "./google-execution";
-import InFlowExtensionExecution from "./in-flow-extension-execution";
+import FlowExtensionExecution from "./flow-extension-execution";
 import MicrosoftExecution from "./microsoft-execution";
 import { ExecutionTypes } from "../../../../../models/steps";
 import "./execution-factory.scss";
@@ -122,9 +122,9 @@ const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
         );
     }
 
-    if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.InFlowExtension) {
+    if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.FlowExtension) {
         return (
-            <InFlowExtensionExecution resource={ resource } />
+            <FlowExtensionExecution resource={ resource } />
         );
     }
 

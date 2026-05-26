@@ -957,7 +957,7 @@ export interface AuthenticationTypeDropdownOption {
 export enum ConnectionTypes {
     CONNECTION = "connections",
     IDVP = "identity-verification-providers",
-    IN_FLOW_EXTENSION = "IN_FLOW_EXTENSION"
+    FLOW_EXTENSION = "FLOW_EXTENSION"
 }
 
 /**
@@ -986,16 +986,16 @@ export interface WizardStepInterface {
     icon: any;
     title: string;
     submitCallback: any;
-    name: WizardStepsCustomAuth | WizardStepsInFlowExtension;
+    name: WizardStepsCustomAuth | WizardStepsFlowExtension;
 }
 
 export type AvailableCustomAuthenticators = "external" | "internal" | "two-factor";
 export type FormErrors = { [key: string]: string };
 
 /**
- * Enum for the steps of the in-flow extension create wizard.
+ * Enum for the steps of the flow extension create wizard.
  */
-export enum WizardStepsInFlowExtension {
+export enum WizardStepsFlowExtension {
     GENERAL_SETTINGS = "General Settings",
     ENDPOINT_CONFIG = "Endpoint Configuration"
 }

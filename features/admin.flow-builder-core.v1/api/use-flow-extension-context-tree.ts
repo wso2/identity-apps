@@ -22,13 +22,13 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
-import { InFlowExtensionContextTreeResponse } from "@wso2is/common.ui.shared-access.v1/components/flow-context-tree";
+import { FlowExtensionContextTreeResponse } from "@wso2is/common.ui.shared-access.v1/components/flow-context-tree";
 import { HttpMethods } from "@wso2is/core/models";
 
 /**
- * Hook to retrieve the controlled In-Flow Extension context tree for a given flow type.
+ * Hook to retrieve the controlled Flow Extension context tree for a given flow type.
  *
- * Calls `GET /api/server/v1/flow/in-flow-extension/context-tree[?flowType=...]`. When
+ * Calls `GET /api/server/v1/flow/flow-extension/context-tree[?flowType=...]`. When
  * `flowType` is omitted (e.g., the connection-level access-config editor that isn't
  * scoped to a specific flow), the server returns the default tree.
  *
@@ -36,15 +36,15 @@ import { HttpMethods } from "@wso2is/core/models";
  * @param shouldFetch Suspend fetching when false (e.g., until prerequisites are ready).
  * @returns SWR response with `data`, `error`, `isLoading`, `isValidating`, `mutate`.
  */
-const useInFlowExtensionContextTree = <
-    Data = InFlowExtensionContextTreeResponse,
+const useFlowExtensionContextTree = <
+    Data = FlowExtensionContextTreeResponse,
     Error = RequestErrorInterface
 >(
     flowType?: string | null,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
-    const baseUrl: string = store.getState().config.endpoints.inFlowExtensionContextTree;
+    const baseUrl: string = store.getState().config.endpoints.flowExtensionContextTree;
     // Trim/normalise — empty strings should be treated as "no flow type".
     const trimmedFlowType: string | null = flowType && flowType.trim() !== ""
         ? flowType.trim()
@@ -75,4 +75,4 @@ const useInFlowExtensionContextTree = <
     };
 };
 
-export default useInFlowExtensionContextTree;
+export default useFlowExtensionContextTree;

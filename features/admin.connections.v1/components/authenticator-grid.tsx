@@ -67,7 +67,7 @@ import {
     getConnectedApps,
     getConnectedAppsOfAuthenticator
 } from "../api/connections";
-import deleteInFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/delete-in-flow-extension";
+import deleteFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/delete-flow-extension";
 import { getConnectionIcons } from "../configs/ui";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
@@ -213,9 +213,9 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
                 break;
 
-            case ConnectionTypes.IN_FLOW_EXTENSION:
+            case ConnectionTypes.FLOW_EXTENSION:
                 history.push(
-                    AppConstants.getPaths().get("IN_FLOW_EXTENSION_EDIT").replace(":id", id)
+                    AppConstants.getPaths().get("FLOW_EXTENSION_EDIT").replace(":id", id)
                 );
 
                 break;
@@ -265,8 +265,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             return;
         }
 
-        // In-flow extensions are managed via the flow management API; skip connected apps check.
-        if (connectionType === ConnectionTypes.IN_FLOW_EXTENSION) {
+        // Flow extension are managed via the flow management API; skip connected apps check.
+        if (connectionType === ConnectionTypes.FLOW_EXTENSION) {
             setDeletingIDP(authenticators.find(
                 (idp: ConnectionInterface | AuthenticatorInterface) => idp.id === idpId)
             );
@@ -397,8 +397,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
         setIsDeletionLoading(true);
 
-        if (connectionType === ConnectionTypes.IN_FLOW_EXTENSION) {
-            deleteInFlowExtension(id)
+        if (connectionType === ConnectionTypes.FLOW_EXTENSION) {
+            deleteFlowExtension(id)
                 .then(() => {
                     dispatch(addAlert({
                         description: t("authenticationProvider:" +
@@ -535,7 +535,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             return hasIdVPDeletePermission;
         }
 
-        if (authenticator.type === ConnectionTypes.IN_FLOW_EXTENSION) {
+        if (authenticator.type === ConnectionTypes.FLOW_EXTENSION) {
             return hasConnectionDeletePermission;
         }
 
@@ -567,8 +567,8 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                 : getConnectionIcons().default;
         }
 
-        if (connection.type === ConnectionTypes.IN_FLOW_EXTENSION) {
-            return connection?.image || AuthenticatorMeta.getInFlowExtensionIcon();
+        if (connection.type === ConnectionTypes.FLOW_EXTENSION) {
+            return connection?.image || AuthenticatorMeta.getFlowExtensionIcon();
         }
 
         if ((connection?.type === AuthenticatorTypes.FEDERATED || isIdP) && !isOrganizationSSOIDP) {
@@ -591,7 +591,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     };
 
     const resolveAuthenticatorDescription = (authenticator: ConnectionInterface, isIdP: boolean): string => {
-        if (authenticator.type === ConnectionTypes.IN_FLOW_EXTENSION) {
+        if (authenticator.type === ConnectionTypes.FLOW_EXTENSION) {
             return authenticator.description || "";
         }
 

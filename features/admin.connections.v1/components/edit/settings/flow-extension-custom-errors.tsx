@@ -33,7 +33,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { CheckIcon, CopyIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import deleteCustomTextPreference from "@wso2is/admin.branding.v1/api/delete-custom-text-preference";
 import updateCustomTextPreference from "@wso2is/admin.branding.v1/api/update-custom-text-preference";
-import { InFlowExtensionResponseInterface } from "@wso2is/admin.flow-builder-core.v1/models/in-flow-extension";
+import { FlowExtensionResponseInterface } from "@wso2is/admin.flow-builder-core.v1/models/flow-extension";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -53,21 +53,21 @@ import React, {
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import useInflowExtensionTranslations, {
+import useFlowExtensionTranslations, {
     TranslationEntry
-} from "../../../api/use-inflow-extension-translations";
+} from "../../../api/use-flow-extension-translations";
 import {
-    INFLOW_EXTENSION_SCREEN,
+    FLOW_EXTENSION_SCREEN,
     getConnectionKeyPrefix
-} from "../../../utils/inflow-extension-utils";
-import "./in-flow-extension-custom-errors.scss";
+} from "../../../utils/flow-extension-utils";
+import "./flow-extension-custom-errors.scss";
 
 /**
- * Props interface for `InFlowExtensionCustomErrors` component.
+ * Props interface for `FlowExtensionCustomErrors` component.
  */
-interface InFlowExtensionCustomErrorsPropsInterface extends IdentifiableComponentInterface {
+interface FlowExtensionCustomErrorsPropsInterface extends IdentifiableComponentInterface {
     "data-componentid"?: string;
-    action: InFlowExtensionResponseInterface;
+    action: FlowExtensionResponseInterface;
     isLoading: boolean;
     isReadOnly: boolean;
     loader: () => ReactElement;
@@ -128,7 +128,7 @@ const ExpandedEntryForm: FunctionComponent<ExpandedEntryFormProps> = ({
         >
             {/* Error key input */}
             <TextField
-                label={ t("inFlowExtension:customErrors.form.keyLabel", { defaultValue: "Error Key" }) }
+                label={ t("flowExtension:customErrors.form.keyLabel", { defaultValue: "Error Key" }) }
                 value={ editState.shortKey }
                 onChange={ (e) => onKeyChange(e.target.value) }
                 InputProps={ {
@@ -155,7 +155,7 @@ const ExpandedEntryForm: FunctionComponent<ExpandedEntryFormProps> = ({
             {/* Locale dropdown */}
             <TextField
                 select
-                label={ t("inFlowExtension:customErrors.form.localeLabel", { defaultValue: "Locale" }) }
+                label={ t("flowExtension:customErrors.form.localeLabel", { defaultValue: "Locale" }) }
                 value={ editState.selectedLocale }
                 onChange={ (e) => onLocaleChange(e.target.value) }
                 fullWidth
@@ -192,12 +192,12 @@ const ExpandedEntryForm: FunctionComponent<ExpandedEntryFormProps> = ({
                 color="text.secondary"
                 sx={ { mt: 0.5, mb: 0.5, display: "block" } }
             >
-                { t("inFlowExtension:customErrors.form.translationLabel", { defaultValue: "Translation" }) }
+                { t("flowExtension:customErrors.form.translationLabel", { defaultValue: "Translation" }) }
             </Typography>
             <TextField
                 value={ currentValue }
                 onChange={ (e) => onTranslationChange(e.target.value) }
-                placeholder={ t("inFlowExtension:customErrors.form.translationPlaceholder", {
+                placeholder={ t("flowExtension:customErrors.form.translationPlaceholder", {
                     defaultValue: "Enter error message for this locale..."
                 }) }
                 multiline
@@ -207,7 +207,7 @@ const ExpandedEntryForm: FunctionComponent<ExpandedEntryFormProps> = ({
                 disabled={ isSaving }
                 className="inflow-error-locale-textfield"
                 helperText={ currentLocaleMeta
-                    ? t("inFlowExtension:customErrors.form.translationHelper", {
+                    ? t("flowExtension:customErrors.form.translationHelper", {
                         defaultValue: `Shown to users whose locale is ${currentLocaleMeta.name}.`,
                         locale: currentLocaleMeta.name
                     })
@@ -219,7 +219,7 @@ const ExpandedEntryForm: FunctionComponent<ExpandedEntryFormProps> = ({
             { configuredLocales.length > 0 && (
                 <Box sx={ { mt: 1.5 } }>
                     <Typography variant="caption" color="text.secondary">
-                        { t("inFlowExtension:customErrors.form.configuredLocales",
+                        { t("flowExtension:customErrors.form.configuredLocales",
                             { defaultValue: "Configured locales:" }) }
                     </Typography>
                     <Box className="inflow-error-configured-chips">
@@ -436,16 +436,16 @@ const EntryCard: FunctionComponent<EntryCardProps> = ({
 // ---------------------------------------------------------------------------
 
 /**
- * Custom errors tab for in-flow extensions.
+ * Custom errors tab for flow extension.
  * Allows admins to manage locale-specific error messages for a connection.
  */
-export const InFlowExtensionCustomErrors: FunctionComponent<InFlowExtensionCustomErrorsPropsInterface> = ({
+export const FlowExtensionCustomErrors: FunctionComponent<FlowExtensionCustomErrorsPropsInterface> = ({
     action,
     isLoading: externalLoading,
     isReadOnly,
     loader: Loader,
-    ["data-componentid"]: componentId = "in-flow-extension-custom-errors"
-}: InFlowExtensionCustomErrorsPropsInterface): ReactElement => {
+    ["data-componentid"]: componentId = "flow-extension-custom-errors"
+}: FlowExtensionCustomErrorsPropsInterface): ReactElement => {
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -459,7 +459,7 @@ export const InFlowExtensionCustomErrors: FunctionComponent<InFlowExtensionCusto
         supportedLocales,
         isLoading: translationsLoading,
         refetch
-    } = useInflowExtensionTranslations(keyPrefix, !!action && !externalLoading);
+    } = useFlowExtensionTranslations(keyPrefix, !!action && !externalLoading);
 
     const {
         data: brandingPreferenceData,
@@ -579,14 +579,14 @@ export const InFlowExtensionCustomErrors: FunctionComponent<InFlowExtensionCusto
 
                 if (Object.keys(currentMap).length === 0) {
                     if (wasConfigured) {
-                        await deleteCustomTextPreference(tenantDomain, INFLOW_EXTENSION_SCREEN, locale);
+                        await deleteCustomTextPreference(tenantDomain, FLOW_EXTENSION_SCREEN, locale);
                     }
                 } else {
                     await updateCustomTextPreference(
                         wasConfigured,
                         { text: currentMap },
                         tenantDomain,
-                        INFLOW_EXTENSION_SCREEN,
+                        FLOW_EXTENSION_SCREEN,
                         locale
                     );
                 }
@@ -595,18 +595,18 @@ export const InFlowExtensionCustomErrors: FunctionComponent<InFlowExtensionCusto
             await refetch();
             handleCancel();
             dispatch(addAlert({
-                description: t("inFlowExtension:customErrors.notifications.save.success.description",
+                description: t("flowExtension:customErrors.notifications.save.success.description",
                     { defaultValue: "Translation saved successfully." }),
                 level: AlertLevels.SUCCESS,
-                message: t("inFlowExtension:customErrors.notifications.save.success.message",
+                message: t("flowExtension:customErrors.notifications.save.success.message",
                     { defaultValue: "Translation Saved" })
             }));
         } catch {
             dispatch(addAlert({
-                description: t("inFlowExtension:customErrors.notifications.save.error.description",
+                description: t("flowExtension:customErrors.notifications.save.error.description",
                     { defaultValue: "Failed to save translation. Please try again." }),
                 level: AlertLevels.ERROR,
-                message: t("inFlowExtension:customErrors.notifications.save.error.message",
+                message: t("flowExtension:customErrors.notifications.save.error.message",
                     { defaultValue: "Save Failed" })
             }));
         } finally {
@@ -626,13 +626,13 @@ export const InFlowExtensionCustomErrors: FunctionComponent<InFlowExtensionCusto
                 const { [fullKey]: _removed, ...remaining } = textMap;
 
                 if (Object.keys(remaining).length === 0) {
-                    await deleteCustomTextPreference(tenantDomain, INFLOW_EXTENSION_SCREEN, locale);
+                    await deleteCustomTextPreference(tenantDomain, FLOW_EXTENSION_SCREEN, locale);
                 } else {
                     await updateCustomTextPreference(
                         true,
                         { text: remaining },
                         tenantDomain,
-                        INFLOW_EXTENSION_SCREEN,
+                        FLOW_EXTENSION_SCREEN,
                         locale
                     );
                 }
@@ -645,18 +645,18 @@ export const InFlowExtensionCustomErrors: FunctionComponent<InFlowExtensionCusto
                 setEditState(null);
             }
             dispatch(addAlert({
-                description: t("inFlowExtension:customErrors.notifications.delete.success.description",
+                description: t("flowExtension:customErrors.notifications.delete.success.description",
                     { defaultValue: "Translation deleted successfully." }),
                 level: AlertLevels.SUCCESS,
-                message: t("inFlowExtension:customErrors.notifications.delete.success.message",
+                message: t("flowExtension:customErrors.notifications.delete.success.message",
                     { defaultValue: "Translation Deleted" })
             }));
         } catch {
             dispatch(addAlert({
-                description: t("inFlowExtension:customErrors.notifications.delete.error.description",
+                description: t("flowExtension:customErrors.notifications.delete.error.description",
                     { defaultValue: "Failed to delete translation. Please try again." }),
                 level: AlertLevels.ERROR,
-                message: t("inFlowExtension:customErrors.notifications.delete.error.message",
+                message: t("flowExtension:customErrors.notifications.delete.error.message",
                     { defaultValue: "Delete Failed" })
             }));
         } finally {
@@ -675,7 +675,7 @@ export const InFlowExtensionCustomErrors: FunctionComponent<InFlowExtensionCusto
 
     return (
         <div
-            className="inflow-extension-custom-errors"
+            className="flow-extension-custom-errors"
             data-componentid={ componentId }
         >
             <Grid container spacing={ 3 }>
@@ -686,11 +686,11 @@ export const InFlowExtensionCustomErrors: FunctionComponent<InFlowExtensionCusto
                         {/* Header */}
                         <Box className="inflow-error-panel-header">
                             <Typography variant="h6">
-                                { t("inFlowExtension:customErrors.title",
+                                { t("flowExtension:customErrors.title",
                                     { defaultValue: "Custom Error Messages" }) }
                             </Typography>
                             <Typography variant="body2" color="text.secondary" sx={ { mt: 0.5 } }>
-                                { t("inFlowExtension:customErrors.description", {
+                                { t("flowExtension:customErrors.description", {
                                     defaultValue:
                                         "Define error messages this extension can return. " +
                                         "Click a card to edit, or add a new translation below."
@@ -702,7 +702,7 @@ export const InFlowExtensionCustomErrors: FunctionComponent<InFlowExtensionCusto
                         { !isBrandingEnabled && (
                             <Alert severity="warning" className="inflow-error-branding-warning">
                                 <Trans
-                                    i18nKey="inFlowExtension:customErrors.brandingDisabledWarning"
+                                    i18nKey="flowExtension:customErrors.brandingDisabledWarning"
                                     defaults={ "Enable <brandingLink>branding</brandingLink> to manage " +
                                         "custom error translations." }
                                     components={ {
@@ -722,7 +722,7 @@ export const InFlowExtensionCustomErrors: FunctionComponent<InFlowExtensionCusto
                         {/* No-locales warning */}
                         { !hasLocales && (
                             <Alert severity="warning">
-                                { t("inFlowExtension:customErrors.noLocalesWarning", {
+                                { t("flowExtension:customErrors.noLocalesWarning", {
                                     defaultValue:
                                         "No supported locales found. Check your branding configuration."
                                 }) }
@@ -735,7 +735,7 @@ export const InFlowExtensionCustomErrors: FunctionComponent<InFlowExtensionCusto
                                 inflow-error-entry-card--new">
                                 <Box className="inflow-error-entry-header">
                                     <Typography variant="subtitle2">
-                                        { t("inFlowExtension:customErrors.newEntry.heading",
+                                        { t("flowExtension:customErrors.newEntry.heading",
                                             { defaultValue: "New Translation" }) }
                                     </Typography>
                                 </Box>
@@ -781,7 +781,7 @@ export const InFlowExtensionCustomErrors: FunctionComponent<InFlowExtensionCusto
                             !isNewEntryOpen && (
                                 <Box className="inflow-error-empty-state">
                                     <Typography variant="body2" color="text.secondary">
-                                        { t("inFlowExtension:customErrors.emptyState", {
+                                        { t("flowExtension:customErrors.emptyState", {
                                             defaultValue:
                                                 "No custom error messages configured. Add translations to " +
                                                 "customize the error text your users see."
@@ -800,7 +800,7 @@ export const InFlowExtensionCustomErrors: FunctionComponent<InFlowExtensionCusto
                                 disabled={ isSaving || !hasLocales || !isBrandingEnabled || isNewEntryOpen }
                                 className="inflow-error-add-button"
                             >
-                                { t("inFlowExtension:customErrors.addButton",
+                                { t("flowExtension:customErrors.addButton",
                                     { defaultValue: "Add Translation" }) }
                             </Button>
                         ) }
@@ -814,29 +814,29 @@ export const InFlowExtensionCustomErrors: FunctionComponent<InFlowExtensionCusto
                     onClose={ () => setDeleteConfirmKey(null) }
                     type="negative"
                     open={ !!deleteConfirmKey }
-                    assertionHint={ t("inFlowExtension:customErrors.deleteConfirm.assertionHint",
+                    assertionHint={ t("flowExtension:customErrors.deleteConfirm.assertionHint",
                         { defaultValue: "Please confirm the action." }) }
                     assertionType="checkbox"
                     primaryAction={ t("common:delete") }
                     secondaryAction={ t("common:cancel") }
                     onSecondaryActionClick={ () => setDeleteConfirmKey(null) }
                     onPrimaryActionClick={ () => handleDelete(deleteConfirmKey) }
-                    data-componentid="inflow-extension-delete-confirmation-modal"
+                    data-componentid="flow-extension-delete-confirmation-modal"
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header>
-                        { t("inFlowExtension:customErrors.deleteConfirm.header",
+                        { t("flowExtension:customErrors.deleteConfirm.header",
                             { defaultValue: "Delete Translation?" }) }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message attached warning>
-                        { t("inFlowExtension:customErrors.deleteConfirm.message", {
+                        { t("flowExtension:customErrors.deleteConfirm.message", {
                             defaultValue:
                                 `This will delete all locale translations for key "${deleteConfirmKey}".`,
                             key: deleteConfirmKey
                         }) }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
-                        { t("inFlowExtension:customErrors.deleteConfirm.content",
+                        { t("flowExtension:customErrors.deleteConfirm.content",
                             { defaultValue: "This action cannot be undone." }) }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>

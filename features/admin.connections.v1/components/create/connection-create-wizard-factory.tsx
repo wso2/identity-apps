@@ -24,7 +24,7 @@ import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@w
 import React, { FC, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { AuthenticatorCreateWizardFactory } from "./authenticator-create-wizard-factory";
-import InFlowExtensionCreateWizard from "./in-flow-extension-create-wizard";
+import FlowExtensionCreateWizard from "./flow-extension-create-wizard";
 import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
 import {
     ConnectionTemplateInterface,
@@ -91,9 +91,9 @@ export const ConnectionCreateWizardFactory: FC<ConnectionCreateWizardFactoryProp
     const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features?.actions);
     const { isSubOrganization } = useGetCurrentOrganizationType();
-    const inFlowExtensionFeatureKey: string = isSubOrganization()
-        ? "actions.types.org.list.inFlowExtension"
-        : "actions.types.list.inFlowExtension";
+    const flowExtensionFeatureKey: string = isSubOrganization()
+        ? "actions.types.org.list.flowExtension"
+        : "actions.types.list.flowExtension";
 
     if (!isModalOpen) {
         return null;
@@ -109,15 +109,15 @@ export const ConnectionCreateWizardFactory: FC<ConnectionCreateWizardFactoryProp
     }
 
     // Match either by the enum type on the template OR by the template's id string.
-    // The backend may type the template as "DEFAULT" even though it's an in-flow extension,
+    // The backend may type the template as "DEFAULT" even though it's an flow extension,
     // so we fall back to checking the templateId string.
     if (
-        (connectionType === ConnectionTypes.IN_FLOW_EXTENSION ||
-        type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IN_FLOW_EXTENSION) &&
-        isFeatureEnabled(actionsFeatureConfig, inFlowExtensionFeatureKey)
+        (connectionType === ConnectionTypes.FLOW_EXTENSION ||
+        type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.FLOW_EXTENSION) &&
+        isFeatureEnabled(actionsFeatureConfig, flowExtensionFeatureKey)
     ) {
         return (
-            <InFlowExtensionCreateWizard
+            <FlowExtensionCreateWizard
                 title={ selectedTemplate?.name }
                 subTitle={ selectedTemplate?.description }
                 onWizardClose={ onWizardClose }

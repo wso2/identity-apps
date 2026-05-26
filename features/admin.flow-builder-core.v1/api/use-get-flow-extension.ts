@@ -23,16 +23,16 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { InFlowExtensionBasicResponseInterface } from "../models/in-flow-extension";
+import { FlowExtensionBasicResponseInterface } from "../models/flow-extension";
 
 /**
- * Hook to retrieve all In-Flow Extensions from the flow management API.
+ * Hook to retrieve all Flow Extension from the flow management API.
  *
  * @param shouldFetch - Suspend fetching when false.
  * @returns SWR response with `data`, `error`, `isLoading`, `isValidating`, `mutate`.
  */
-const useGetInFlowExtensions = <
-    Data = InFlowExtensionBasicResponseInterface[],
+const useGetFlowExtension = <
+    Data = FlowExtensionBasicResponseInterface[],
     Error = RequestErrorInterface
 >(
     shouldFetch: boolean = true
@@ -44,7 +44,7 @@ const useGetInFlowExtensions = <
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.inFlowExtensions
+        url: store.getState().config.endpoints.flowExtension
     };
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
@@ -61,4 +61,4 @@ const useGetInFlowExtensions = <
     };
 };
 
-export default useGetInFlowExtensions;
+export default useGetFlowExtension;

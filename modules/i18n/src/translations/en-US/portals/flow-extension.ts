@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { inFlowExtensionNS } from "../../../models";
+import { flowExtensionNS } from "../../../models";
 
-export const inFlowExtension: inFlowExtensionNS = {
+export const flowExtension: flowExtensionNS = {
     createWizard: {
         steps: {
             accessConfig: {
@@ -125,16 +125,16 @@ export const inFlowExtension: inFlowExtensionNS = {
             generalSettings: {
                 description: {
                     label: "Description",
-                    placeholder: "A brief description of the in-flow extension.",
+                    placeholder: "A brief description of the flow extension.",
                     validations: {
                         maxLength: "Description must not exceed 255 characters."
                     }
                 },
                 name: {
-                    hint: "A unique name for this in-flow extension. " +
+                    hint: "A unique name for this flow extension. " +
                         "Must be alphanumeric and can include spaces, hyphens, and underscores.",
                     label: "Name",
-                    placeholder: "My In-Flow Extension",
+                    placeholder: "My Flow Extension",
                     validations: {
                         duplicate: "An action with this name already exists. Please choose a different name.",
                         invalid: "Name must start with an alphanumeric character and can only " +
@@ -144,19 +144,19 @@ export const inFlowExtension: inFlowExtensionNS = {
                 title: "General Settings"
             }
         },
-        subTitle: "Create a new In-Flow Extension to customize the authentication flow.",
-        title: "Create In-Flow Extension"
+        subTitle: "Create a new Flow Extension to customize the authentication flow.",
+        title: "Create Flow Extension"
     },
     notifications: {
         createError: {
             message: "Create error"
         },
         createGenericError: {
-            description: "An error occurred while creating the in-flow extension.",
+            description: "An error occurred while creating the flow extension.",
             message: "Something went wrong"
         },
         createSuccess: {
-            description: "Successfully created the in-flow extension.",
+            description: "Successfully created the flow extension.",
             message: "Create successful"
         }
     }

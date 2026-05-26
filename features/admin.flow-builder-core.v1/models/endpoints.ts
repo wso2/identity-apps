@@ -29,12 +29,12 @@ export interface FlowBuilderCoreResourceEndpointsInterface {
      */
     flow: string;
     /**
-     * API to retrieve the controlled In-Flow Extension context tree
+     * API to retrieve the controlled Flow Extension context tree
      * (filtered by deployment.toml whitelist) for a given flow type.
      */
-    inFlowExtensionContextTree: string;
+    flowExtensionContextTree: string;
     /**
-     * API base URL for In-Flow Extension CRUD operations.
+     * API base URL for Flow Extension CRUD operations.
      */
-    inFlowExtensions: string;
+    flowExtension: string;
 }

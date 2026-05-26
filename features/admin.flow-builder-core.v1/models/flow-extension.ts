@@ -31,10 +31,10 @@ export type {
 } from "@wso2is/admin.actions.v1/models/actions";
 
 /**
- * Endpoint response shape returned by the In-Flow Extension API.
+ * Endpoint response shape returned by the Flow Extension API.
  * Defined locally because EndpointResponseInterface in admin.actions.v1 is not exported.
  */
-export interface InFlowExtensionEndpointResponseInterface {
+export interface FlowExtensionEndpointResponseInterface {
     uri: string;
     authentication: {
         type: string;
@@ -45,9 +45,9 @@ export interface InFlowExtensionEndpointResponseInterface {
 }
 
 /**
- * Endpoint configuration used in In-Flow Extension create/update requests.
+ * Endpoint configuration used in Flow Extension create/update requests.
  */
-export interface InFlowExtensionEndpointInterface {
+export interface FlowExtensionEndpointInterface {
     uri: string;
     authentication: {
         type: string;
@@ -57,39 +57,39 @@ export interface InFlowExtensionEndpointInterface {
 }
 
 /**
- * Request body for creating an In-Flow Extension.
+ * Request body for creating an Flow Extension.
  */
-export interface InFlowExtensionCreateRequestInterface {
+export interface FlowExtensionCreateRequestInterface {
     name: string;
     description?: string;
     iconUrl?: string;
-    endpoint: InFlowExtensionEndpointInterface;
+    endpoint: FlowExtensionEndpointInterface;
     accessConfig?: AccessConfigInterface;
     encryption?: EncryptionInterface;
 }
 
 /**
- * Request body for updating an In-Flow Extension (all fields optional).
+ * Request body for updating an Flow Extension (all fields optional).
  */
-export interface InFlowExtensionUpdateRequestInterface {
+export interface FlowExtensionUpdateRequestInterface {
     name?: string;
     description?: string;
     iconUrl?: string;
-    endpoint?: Partial<InFlowExtensionEndpointInterface>;
+    endpoint?: Partial<FlowExtensionEndpointInterface>;
     accessConfig?: AccessConfigInterface;
     encryption?: EncryptionInterface;
     flowTypeOverrides?: Record<string, AccessConfigInterface>;
 }
 
 /**
- * Full response for a single In-Flow Extension from the flow management API.
+ * Full response for a single Flow Extension from the flow management API.
  */
-export interface InFlowExtensionResponseInterface {
+export interface FlowExtensionResponseInterface {
     id: string;
     name: string;
     description?: string;
     iconUrl?: string;
-    endpoint: InFlowExtensionEndpointResponseInterface;
+    endpoint: FlowExtensionEndpointResponseInterface;
     accessConfig?: AccessConfigInterface;
     encryption?: EncryptionInterface;
     flowTypeOverrides?: Record<string, AccessConfigInterface>;
@@ -97,9 +97,9 @@ export interface InFlowExtensionResponseInterface {
 }
 
 /**
- * List item response for In-Flow Extensions.
+ * List item response for Flow Extension.
  */
-export interface InFlowExtensionBasicResponseInterface {
+export interface FlowExtensionBasicResponseInterface {
     id: string;
     name: string;
     description?: string;
@@ -107,16 +107,16 @@ export interface InFlowExtensionBasicResponseInterface {
 }
 
 /**
- * Request body for checking In-Flow Extension name availability.
+ * Request body for checking Flow Extension name availability.
  */
-export interface InFlowExtensionNameCheckRequestInterface {
+export interface FlowExtensionNameCheckRequestInterface {
     name: string;
     excludeId?: string;
 }
 
 /**
- * Response for In-Flow Extension name availability check.
+ * Response for Flow Extension name availability check.
  */
-export interface InFlowExtensionNameCheckResponseInterface {
+export interface FlowExtensionNameCheckResponseInterface {
     available: boolean;
 }

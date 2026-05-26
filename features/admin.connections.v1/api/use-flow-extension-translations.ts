@@ -29,7 +29,7 @@ import { AxiosError, AxiosRequestConfig } from "axios";
 import pick from "lodash-es/pick";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { INFLOW_EXTENSION_SCREEN } from "../utils/inflow-extension-utils";
+import { FLOW_EXTENSION_SCREEN } from "../utils/flow-extension-utils";
 
 /**
  * Represents a grouped translation entry with its translations across locales.
@@ -40,9 +40,9 @@ export interface TranslationEntry {
 }
 
 /**
- * Return type of the `useInflowExtensionTranslations` hook.
+ * Return type of the `useFlowExtensionTranslations` hook.
  */
-interface UseInflowExtensionTranslationsResult {
+interface UseFlowExtensionTranslationsResult {
     entries: TranslationEntry[];
     localeData: Record<string, Record<string, string>>;
     isConfiguredPerLocale: Record<string, boolean>;
@@ -101,16 +101,16 @@ const fetchCustomTextForLocale = async (
 
 /**
  * Hook that fetches custom text preferences for all supported locales
- * for the `inflow-extension` screen, filters by a given key prefix,
+ * for the `flow-extension` screen, filters by a given key prefix,
  * and groups them into `TranslationEntry` objects.
  *
- * @param keyPrefix - The key prefix to filter entries (e.g., "inflow.extension.my.connection.").
+ * @param keyPrefix - The key prefix to filter entries (e.g., "flow.extension.my.connection.").
  * @param enabled - Whether data fetching is enabled.
  */
-const useInflowExtensionTranslations = (
+const useFlowExtensionTranslations = (
     keyPrefix: string,
     enabled: boolean
-): UseInflowExtensionTranslationsResult => {
+): UseFlowExtensionTranslationsResult => {
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
     );
@@ -182,7 +182,7 @@ const useInflowExtensionTranslations = (
                     await fetchCustomTextForLocale(
                         endpointUrl,
                         tenantDomain,
-                        INFLOW_EXTENSION_SCREEN,
+                        FLOW_EXTENSION_SCREEN,
                         locale
                     );
 
@@ -252,4 +252,4 @@ const useInflowExtensionTranslations = (
     };
 };
 
-export default useInflowExtensionTranslations;
+export default useFlowExtensionTranslations;

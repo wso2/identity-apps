@@ -256,7 +256,7 @@ export interface ActionBasicResponseInterface extends ActionBaseResponseInterfac
      */
     links: LinkInterface[];
     /**
-     * Optional icon URL for the Action (e.g., In-Flow Extension).
+     * Optional icon URL for the Action (e.g., Flow Extension).
      */
     iconUrl?: string;
 }
@@ -631,7 +631,7 @@ export interface ContextPathInterface {
 }
 
 /**
- * Access config for In-Flow Extension actions.
+ * Access config for Flow Extension actions.
  */
 export interface AccessConfigInterface {
     expose: ContextPathInterface[];
@@ -639,7 +639,7 @@ export interface AccessConfigInterface {
 }
 
 /**
- * Encryption config for In-Flow Extension actions.
+ * Encryption config for Flow Extension actions.
  */
 export interface EncryptionInterface {
     certificate?: string;

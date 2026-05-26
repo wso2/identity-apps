@@ -19,21 +19,21 @@
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
-import updateInFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/update-in-flow-extension";
+import updateFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/update-flow-extension";
 import {
     AccessConfigInterface,
-    InFlowExtensionResponseInterface,
-    InFlowExtensionUpdateRequestInterface
-} from "@wso2is/admin.flow-builder-core.v1/models/in-flow-extension";
-import useInFlowExtensionContextTree
-    from "@wso2is/admin.flow-builder-core.v1/api/use-in-flow-extension-context-tree";
+    FlowExtensionResponseInterface,
+    FlowExtensionUpdateRequestInterface
+} from "@wso2is/admin.flow-builder-core.v1/models/flow-extension";
+import useFlowExtensionContextTree
+    from "@wso2is/admin.flow-builder-core.v1/api/use-flow-extension-context-tree";
 import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     AccessConfigOutput,
     EncryptionOutput,
     FlowContextTree,
-    InFlowExtensionContextTreeResponse,
+    FlowExtensionContextTreeResponse,
     InitialAccessConfig
 } from "@wso2is/common.ui.shared-access.v1/components/flow-context-tree";
 import { ConfirmationModal, EmphasizedSegment, LinkButton } from "@wso2is/react-components";
@@ -43,25 +43,25 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 
-interface InFlowExtensionAccessConfigSettingsPropsInterface extends IdentifiableComponentInterface {
+interface FlowExtensionAccessConfigSettingsPropsInterface extends IdentifiableComponentInterface {
     "data-componentid"?: string;
-    action: InFlowExtensionResponseInterface;
+    action: FlowExtensionResponseInterface;
     isLoading: boolean;
     isReadOnly: boolean;
     onUpdate: () => void;
     loader: () => ReactElement;
 }
 
-export const InFlowExtensionAccessConfigSettings: FunctionComponent<
-    InFlowExtensionAccessConfigSettingsPropsInterface
+export const FlowExtensionAccessConfigSettings: FunctionComponent<
+    FlowExtensionAccessConfigSettingsPropsInterface
 > = ({
     action,
     isLoading,
     isReadOnly,
     onUpdate,
     loader: Loader,
-    ["data-componentid"]: componentId = "in-flow-extension-access-config-settings"
-}: InFlowExtensionAccessConfigSettingsPropsInterface): ReactElement => {
+    ["data-componentid"]: componentId = "flow-extension-access-config-settings"
+}: FlowExtensionAccessConfigSettingsPropsInterface): ReactElement => {
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -73,7 +73,7 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
         data: contextTreeData,
         error: contextTreeError,
         isLoading: isContextTreeLoading
-    } = useInFlowExtensionContextTree<InFlowExtensionContextTreeResponse>();
+    } = useFlowExtensionContextTree<FlowExtensionContextTreeResponse>();
 
     const [ accessConfig, setAccessConfig ] = useState<AccessConfigInterface>({
         expose: [],
@@ -108,11 +108,11 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
     const handleUpdate = (): void => {
         setIsSubmitting(true);
 
-        const updateBody: InFlowExtensionUpdateRequestInterface = {
+        const updateBody: FlowExtensionUpdateRequestInterface = {
             accessConfig
         };
 
-        updateInFlowExtension(action.id, updateBody)
+        updateFlowExtension(action.id, updateBody)
             .then(() => {
                 dispatch(addAlert({
                     description: t("authenticationProvider:notifications.updateIDP.success.description"),
@@ -137,11 +137,11 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
     const handleReset = (): void => {
         setIsSubmitting(true);
 
-        const updateBody: InFlowExtensionUpdateRequestInterface = {
+        const updateBody: FlowExtensionUpdateRequestInterface = {
             accessConfig: { expose: [], modify: [] }
         };
 
-        updateInFlowExtension(action.id, updateBody)
+        updateFlowExtension(action.id, updateBody)
             .then(() => {
                 dispatch(addAlert({
                     description: "Access configuration has been reset successfully.",
@@ -174,14 +174,14 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
         // rather than falling back to a stale/static schema, which could let an admin save
         // an access config that references paths the deployment has switched off.
         return (
-            <Box className="in-flow-extension-access-config-tab">
+            <Box className="flow-extension-access-config-tab">
                 <EmphasizedSegment padded="very" data-componentid={ `${componentId}-section` }>
                     <Alert
                         severity="error"
                         sx={ { mb: 2 } }
                         data-componentid={ `${componentId}-tree-load-error` }
                     >
-                        Failed to load the In-Flow Extension context tree from the server.
+                        Failed to load the Flow Extension context tree from the server.
                         Refresh the page to retry. If the problem persists, ensure the
                         flow-management API is reachable and the deployment is up to date.
                     </Alert>
@@ -191,7 +191,7 @@ export const InFlowExtensionAccessConfigSettings: FunctionComponent<
     }
 
     return (
-        <Box className="in-flow-extension-access-config-tab">
+        <Box className="flow-extension-access-config-tab">
             <EmphasizedSegment
                 padded="very"
                 data-componentid={ `${componentId}-section` }

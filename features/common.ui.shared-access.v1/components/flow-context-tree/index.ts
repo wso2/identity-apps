@@ -20,6 +20,6 @@ export { default as FlowContextTree } from "./flow-context-tree";
 export type {
     AccessConfigOutput,
     EncryptionOutput,
-    InFlowExtensionContextTreeResponse,
+    FlowExtensionContextTreeResponse,
     InitialAccessConfig
 } from "./models";

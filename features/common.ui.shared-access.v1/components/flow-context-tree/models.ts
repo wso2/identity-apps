@@ -56,14 +56,14 @@ interface FlowContextMetadataResponse {
 }
 
 /**
- * Response shape for `GET /flow/in-flow-extension/context-tree`.
+ * Response shape for `GET /flow/flow-extension/context-tree`.
  *
  * The tree itself is filtered server-side by the deployment.toml whitelist —
  * disabled fields are omitted entirely. The two policy flags drive UI behaviour
  * that depends on the active flow type (REDIRECT op gating, MODIFY-on-read-only
  * claim permission).
  */
-export interface InFlowExtensionContextTreeResponse {
+export interface FlowExtensionContextTreeResponse {
     /** Echoed flow type, or null when the default tree was requested. */
     flowType?: string | null;
     /** Filtered context tree. Disabled fields are absent, not flagged. */
@@ -72,7 +72,7 @@ export interface InFlowExtensionContextTreeResponse {
     redirectionEnabled: boolean;
     /**
      * Whether the Console UI may permit MODIFY on read-only claims for this flow type.
-     * Hardcoded enumerative mapping in the engine — see InFlowExtensionContextTreeBuilder.
+     * Hardcoded enumerative mapping in the engine — see FlowExtensionContextTreeBuilder.
      */
     allowReadOnlyClaimsModification: boolean;
 }

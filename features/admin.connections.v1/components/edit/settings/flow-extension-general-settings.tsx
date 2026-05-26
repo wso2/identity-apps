@@ -17,13 +17,13 @@
  */
 
 import Divider from "@oxygen-ui/react/Divider";
-import checkInFlowExtensionName from "@wso2is/admin.flow-builder-core.v1/api/check-in-flow-extension-name";
-import deleteInFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/delete-in-flow-extension";
-import updateInFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/update-in-flow-extension";
+import checkFlowExtensionName from "@wso2is/admin.flow-builder-core.v1/api/check-flow-extension-name";
+import deleteFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/delete-flow-extension";
+import updateFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/update-flow-extension";
 import {
-    InFlowExtensionResponseInterface,
-    InFlowExtensionUpdateRequestInterface
-} from "@wso2is/admin.flow-builder-core.v1/models/in-flow-extension";
+    FlowExtensionResponseInterface,
+    FlowExtensionUpdateRequestInterface
+} from "@wso2is/admin.flow-builder-core.v1/models/flow-extension";
 import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/forms";
@@ -49,11 +49,11 @@ import { Dispatch } from "redux";
 import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 
 const ACTION_NAME_REGEX: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9 _-]{0,254}$/;
-const FORM_ID: string = "in-flow-extension-general-settings-form";
+const FORM_ID: string = "flow-extension-general-settings-form";
 
-interface InFlowExtensionGeneralSettingsPropsInterface extends IdentifiableComponentInterface {
+interface FlowExtensionGeneralSettingsPropsInterface extends IdentifiableComponentInterface {
     "data-componentid"?: string;
-    action: InFlowExtensionResponseInterface;
+    action: FlowExtensionResponseInterface;
     isLoading: boolean;
     isReadOnly: boolean;
     onDelete: () => void;
@@ -61,15 +61,15 @@ interface InFlowExtensionGeneralSettingsPropsInterface extends IdentifiableCompo
     loader: () => ReactElement;
 }
 
-export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGeneralSettingsPropsInterface> = ({
+export const FlowExtensionGeneralSettings: FunctionComponent<FlowExtensionGeneralSettingsPropsInterface> = ({
     action,
     isLoading,
     isReadOnly,
     onDelete,
     onUpdate,
     loader: Loader,
-    ["data-componentid"]: componentId = "in-flow-extension-general-settings"
-}: InFlowExtensionGeneralSettingsPropsInterface): ReactElement => {
+    ["data-componentid"]: componentId = "flow-extension-general-settings"
+}: FlowExtensionGeneralSettingsPropsInterface): ReactElement => {
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -101,7 +101,7 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
             return;
         }
         nameCheckTimer.current = setTimeout(() => {
-            checkInFlowExtensionName(name, action?.id)
+            checkFlowExtensionName(name, action?.id)
                 .then((response: { available: boolean }) => {
                     setIsNameTaken(!response.available);
                 })
@@ -125,14 +125,14 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
         const errors: Partial<{ name: string; description: string }> = {};
 
         if (!values?.name || !ACTION_NAME_REGEX.test(values.name)) {
-            errors.name = t("inFlowExtension:createWizard.steps.generalSettings.name.validations.invalid");
+            errors.name = t("flowExtension:createWizard.steps.generalSettings.name.validations.invalid");
         } else if (isNameTaken) {
-            errors.name = t("inFlowExtension:createWizard.steps.generalSettings.name.validations.duplicate");
+            errors.name = t("flowExtension:createWizard.steps.generalSettings.name.validations.duplicate");
         }
 
         if (values?.description && values.description.length > 255) {
             errors.description = t(
-                "inFlowExtension:createWizard.steps.generalSettings.description.validations.maxLength"
+                "flowExtension:createWizard.steps.generalSettings.description.validations.maxLength"
             );
         }
 
@@ -144,13 +144,13 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
     const handleFormSubmit = (values: { name: string; description?: string; image?: string }): void => {
         setIsSubmitting(true);
 
-        const updateBody: InFlowExtensionUpdateRequestInterface = {
+        const updateBody: FlowExtensionUpdateRequestInterface = {
             description: values.description?.toString() ?? "",
             iconUrl: values.image?.toString() ?? "",
             name: values.name?.toString()
         };
 
-        updateInFlowExtension(action.id, updateBody)
+        updateFlowExtension(action.id, updateBody)
             .then(() => {
                 dispatch(addAlert({
                     description: t("authenticationProvider:notifications.updateIDP.success.description"),
@@ -175,7 +175,7 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
     const handleDelete = (): void => {
         setIsDeleting(true);
 
-        deleteInFlowExtension(action.id)
+        deleteFlowExtension(action.id)
             .then(() => {
                 dispatch(addAlert({
                     description: t("authenticationProvider:notifications.deleteConnection.success.description"),
@@ -222,9 +222,9 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
                         ariaLabel="name"
                         inputType="text"
                         name="name"
-                        label={ t("inFlowExtension:createWizard.steps.generalSettings.name.label") }
+                        label={ t("flowExtension:createWizard.steps.generalSettings.name.label") }
                         placeholder={
-                            t("inFlowExtension:createWizard.steps.generalSettings.name.placeholder")
+                            t("flowExtension:createWizard.steps.generalSettings.name.placeholder")
                         }
                         required={ true }
                         maxLength={ 255 }
@@ -284,7 +284,7 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
                         actionTitle={ t("authenticationProvider:dangerZoneGroup.deleteIDP.actionTitle") }
                         header={ t("authenticationProvider:dangerZoneGroup.deleteIDP.header") }
                         subheader={
-                            "Deleting this in-flow extension may break flows that reference it. " +
+                            "Deleting this flow extension may break flows that reference it. " +
                             "This action is irreversible."
                         }
                         onActionClick={ (): void => setShowDeleteConfirmation(true) }
@@ -323,7 +323,7 @@ export const InFlowExtensionGeneralSettings: FunctionComponent<InFlowExtensionGe
                     <ConfirmationModal.Content
                         data-componentid={ `${componentId}-delete-confirmation-content` }
                     >
-                        Deleting this in-flow extension will break any flows that currently use it.
+                        Deleting this flow extension will break any flows that currently use it.
                         Please proceed with caution.
                     </ConfirmationModal.Content>
                 </ConfirmationModal>

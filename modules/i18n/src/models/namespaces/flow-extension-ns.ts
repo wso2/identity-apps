@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export interface inFlowExtensionNS {
+export interface flowExtensionNS {
     createWizard: {
         title: string;
         subTitle: string;

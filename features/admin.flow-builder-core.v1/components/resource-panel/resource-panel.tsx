@@ -154,8 +154,8 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
     const aiFeature: FeatureAccessConfigInterface = useSelector((state: any) => state?.config?.ui?.features?.ai);
     const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features?.actions);
-    const isInFlowExtensionEnabled: boolean = isFeatureEnabled(
-        actionsFeatureConfig, "actions.types.list.inFlowExtension");
+    const isFlowExtensionEnabled: boolean = isFeatureEnabled(
+        actionsFeatureConfig, "actions.types.list.flowExtension");
 
     const elements: Element[] = unfilteredElements.filter(
         (element: Element) => element.display?.showOnResourcePanel !== false
@@ -168,9 +168,9 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
             return false;
         }
 
-        // Hide InFlowExtension step when the feature is disabled.
-        if (!isInFlowExtensionEnabled
-            && (step.data as any)?.action?.executor?.name === ExecutionTypes.InFlowExtension) {
+        // Hide FlowExtension step when the feature is disabled.
+        if (!isFlowExtensionEnabled
+            && (step.data as any)?.action?.executor?.name === ExecutionTypes.FlowExtension) {
             return false;
         }
 

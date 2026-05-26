@@ -27,12 +27,12 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Delete an In-Flow Extension by ID via the flow management API.
+ * Delete an Flow Extension by ID via the flow management API.
  *
- * @param extensionId - ID of the In-Flow Extension to delete.
+ * @param extensionId - ID of the Flow Extension to delete.
  * @returns Promise that resolves on successful deletion.
  */
-const deleteInFlowExtension = (extensionId: string): Promise<void> => {
+const deleteFlowExtension = (extensionId: string): Promise<void> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -40,14 +40,14 @@ const deleteInFlowExtension = (extensionId: string): Promise<void> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${ store.getState().config.endpoints.inFlowExtensions }/${ extensionId }`
+        url: `${ store.getState().config.endpoints.flowExtension }/${ extensionId }`
     };
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 204) {
                 throw new IdentityAppsApiException(
-                    "Invalid status code received when deleting In-Flow Extension.",
+                    "Invalid status code received when deleting Flow Extension.",
                     null,
                     response.status,
                     response.request,
@@ -70,4 +70,4 @@ const deleteInFlowExtension = (extensionId: string): Promise<void> => {
         });
 };
 
-export default deleteInFlowExtension;
+export default deleteFlowExtension;

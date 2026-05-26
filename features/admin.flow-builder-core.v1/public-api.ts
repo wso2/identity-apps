@@ -18,15 +18,15 @@
 
 export { default as useGetFlowBuilderCoreResources } from "./api/use-get-flow-builder-core-resources";
 
-// In-Flow Extension API
-export { default as createInFlowExtension } from "./api/create-in-flow-extension";
-export { default as updateInFlowExtension } from "./api/update-in-flow-extension";
-export { default as deleteInFlowExtension } from "./api/delete-in-flow-extension";
-export { default as checkInFlowExtensionName } from "./api/check-in-flow-extension-name";
-export { default as useGetInFlowExtensionById } from "./api/use-get-in-flow-extension-by-id";
-export { default as useGetInFlowExtensions } from "./api/use-get-in-flow-extensions";
+// Flow Extension API
+export { default as createFlowExtension } from "./api/create-flow-extension";
+export { default as updateFlowExtension } from "./api/update-flow-extension";
+export { default as deleteFlowExtension } from "./api/delete-flow-extension";
+export { default as checkFlowExtensionName } from "./api/check-flow-extension-name";
+export { default as useGetFlowExtensionById } from "./api/use-get-flow-extension-by-id";
+export { default as useGetFlowExtension } from "./api/use-get-flow-extension";
 
-export * from "./models/in-flow-extension";
+export * from "./models/flow-extension";
 
 export * from "./models/base";
 export * from "./models/elements";

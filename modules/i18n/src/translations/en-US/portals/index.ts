@@ -79,4 +79,4 @@ export * from "./flows";
 export * from "./common-users";
 export * from "./verifiable-credentials";
 export * from "./customer-data-service";
-export * from "./in-flow-extension";
+export * from "./flow-extension";

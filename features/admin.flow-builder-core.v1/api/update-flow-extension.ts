@@ -23,24 +23,24 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpErrorResponseDataInterface, HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import {
-    InFlowExtensionResponseInterface,
-    InFlowExtensionUpdateRequestInterface
-} from "../models/in-flow-extension";
+    FlowExtensionResponseInterface,
+    FlowExtensionUpdateRequestInterface
+} from "../models/flow-extension";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Update an In-Flow Extension by ID via the flow management API.
+ * Update an Flow Extension by ID via the flow management API.
  *
- * @param extensionId - ID of the In-Flow Extension to update.
+ * @param extensionId - ID of the Flow Extension to update.
  * @param body - Update request body (all fields optional).
- * @returns Promise resolving to the updated In-Flow Extension.
+ * @returns Promise resolving to the updated Flow Extension.
  */
-const updateInFlowExtension = (
+const updateFlowExtension = (
     extensionId: string,
-    body: InFlowExtensionUpdateRequestInterface
-): Promise<InFlowExtensionResponseInterface> => {
+    body: FlowExtensionUpdateRequestInterface
+): Promise<FlowExtensionResponseInterface> => {
 
     const requestConfig: RequestConfigInterface = {
         data: body,
@@ -49,14 +49,14 @@ const updateInFlowExtension = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: `${ store.getState().config.endpoints.inFlowExtensions }/${ extensionId }`
+        url: `${ store.getState().config.endpoints.flowExtension }/${ extensionId }`
     };
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
-                    "Invalid status code received when updating In-Flow Extension.",
+                    "Invalid status code received when updating Flow Extension.",
                     null,
                     response.status,
                     response.request,
@@ -65,7 +65,7 @@ const updateInFlowExtension = (
                 );
             }
 
-            return Promise.resolve(response.data as InFlowExtensionResponseInterface);
+            return Promise.resolve(response.data as FlowExtensionResponseInterface);
         })
         .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
@@ -79,4 +79,4 @@ const updateInFlowExtension = (
         });
 };
 
-export default updateInFlowExtension;
+export default updateFlowExtension;

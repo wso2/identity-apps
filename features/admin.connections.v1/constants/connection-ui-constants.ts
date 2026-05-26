@@ -387,11 +387,11 @@ export class ConnectionUIConstants {
     public static readonly CONNECTION_TEMPLATE_GROUPS: {
         CUSTOM_AUTHENTICATOR: string;
         ENTERPRISE_PROTOCOLS: string;
-        IN_FLOW_EXTENSION: string;
+        FLOW_EXTENSION: string;
     } = {
             CUSTOM_AUTHENTICATOR: "custom-authenticator",
             ENTERPRISE_PROTOCOLS: "enterprise-protocols",
-            IN_FLOW_EXTENSION: "in-flow-extension"
+            FLOW_EXTENSION: "flow-extension"
         };
 
     public static readonly IMPLICIT_ACCOUNT_LINKING_ATTRIBUTES: string[] = [
@@ -459,11 +459,11 @@ export class ConnectionUIConstants {
     ];
 
     /**
-     * Authentication types available for In-Flow Extensions. Extends the standard
+     * Authentication types available for Flow Extension. Extends the standard
      * auth types with CLIENT_CREDENTIAL (OAuth2 client credentials). Typed to match
      * ActionEndpointConfigForm's authenticationTypes prop.
      */
-    public static readonly IN_FLOW_EXTENSION_AUTH_TYPES: ActionAuthenticationTypeDropdownOption[] = [
+    public static readonly FLOW_EXTENSION_AUTH_TYPES: ActionAuthenticationTypeDropdownOption[] = [
         {
             key: AuthenticationType.NONE,
             text: "actions:fields.authentication.types.none.name",
