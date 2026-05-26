@@ -924,6 +924,22 @@ export interface AuthenticationPropertiesInterface {
      * Value auth property.
      */
     value: string;
+    /**
+     * Client ID auth property (Client / Password credential).
+     */
+    clientId: string;
+    /**
+     * Client Secret auth property (Client / Password credential).
+     */
+    clientSecret: string;
+    /**
+     * Token endpoint auth property (Client / Password credential).
+     */
+    tokenEndpoint: string;
+    /**
+     * Scopes auth property (Client / Password credential).
+     */
+    scopes: string;
 }
 
 /**
@@ -951,6 +967,8 @@ export enum EndpointAuthenticationType {
     BASIC = "BASIC",
     API_KEY = "API_KEY",
     BEARER = "BEARER",
+    CLIENT_CREDENTIAL = "CLIENT_CREDENTIAL",
+    PASSWORD_CREDENTIAL = "PASSWORD_CREDENTIAL",
 }
 
 interface CustomAuthenticatorCreateWizardProps extends GenericConnectionCreateWizardPropsInterface,

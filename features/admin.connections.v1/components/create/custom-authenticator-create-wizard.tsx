@@ -20,7 +20,6 @@ import Backdrop from "@mui/material/Backdrop";
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Divider from "@oxygen-ui/react/Divider";
-import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { EndpointConfigFormPropertyInterface } from "@wso2is/admin.actions.v1/models/actions";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
@@ -73,6 +72,7 @@ import { CommonAuthenticatorConstants } from "../../constants/common-authenticat
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
 import { AuthenticatorMeta } from "../../meta/authenticator-meta";
 import {
+    AuthenticationPropertiesInterface,
     AuthenticationTypeDropdownOption,
     AvailableCustomAuthenticators,
     ConnectionInterface,
@@ -136,8 +136,6 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
     );
     const [ selectedTemplateId, setSelectedTemplateId ] = useState<string>(null);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ showPrimarySecret, setShowPrimarySecret ] = useState<boolean>(false);
-    const [ showSecondarySecret, setShowSecondarySecret ] = useState<boolean>(false);
     const [ endpointAuthType, setEndpointAuthType ] = useState<EndpointAuthenticationType>(null);
     const [ isHttpEndpointUri, setIsHttpEndpointUri ] = useState<boolean>(false);
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
@@ -228,20 +226,6 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
         history.push(AppConstants.getPaths().get("IDP"));
     };
 
-    const renderInputAdornmentOfSecret = (showSecret: boolean, onClick: () => void): ReactElement => (
-        <InputAdornment position="end">
-            <Icon
-                link={ true }
-                className="list-icon reset-field-to-default-adornment"
-                size="small"
-                color="grey"
-                name={ !showSecret ? "eye" : "eye slash" }
-                data-componentid={ `${componentId}-endpoint-authentication-property-secret-view-button` }
-                onClick={ onClick }
-            />
-        </InputAdornment>
-    );
-
     const renderDimmerOverlay = (): ReactNode => {
         return <Backdrop open={ true }>{ !isFeatureLocked && t("common:featureAvailable") }</Backdrop>;
     };
@@ -291,12 +275,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                                     "authenticationTypeDropdown.authProperties.username.placeholder"
                             ) }
                             inputType="password"
-                            type={ showPrimarySecret ? "text" : "password" }
-                            InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(showPrimarySecret, () =>
-                                    setShowPrimarySecret(!showPrimarySecret)
-                                )
-                            } }
+                            type="password"
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
@@ -316,12 +295,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                             ) }
                             name="passwordAuthProperty"
                             inputType="password"
-                            type={ showSecondarySecret ? "text" : "password" }
-                            InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(showSecondarySecret, () =>
-                                    setShowSecondarySecret(!showSecondarySecret)
-                                )
-                            } }
+                            type="password"
                             required={ true }
                             maxLength={ 100 }
                             minLength={ 0 }
@@ -338,12 +312,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                             className="addon-field-wrapper"
                             name="accessTokenAuthProperty"
                             inputType="password"
-                            type={ showPrimarySecret ? "text" : "password" }
-                            InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(showPrimarySecret, () =>
-                                    setShowPrimarySecret(!showPrimarySecret)
-                                )
-                            } }
+                            type="password"
                             label={ t(
                                 "customAuthenticator:fields.createWizard.configurationsStep." +
                                     "authenticationTypeDropdown.authProperties.accessToken.label"
@@ -388,12 +357,7 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                             className="addon-field-wrapper"
                             name="valueAuthProperty"
                             inputType="password"
-                            type={ showSecondarySecret ? "text" : "password" }
-                            InputProps={ {
-                                endAdornment: renderInputAdornmentOfSecret(showSecondarySecret, () =>
-                                    setShowSecondarySecret(!showSecondarySecret)
-                                )
-                            } }
+                            type="password"
                             label={ t(
                                 "customAuthenticator:fields.createWizard.configurationsStep." +
                                     "authenticationTypeDropdown.authProperties.value.label"
@@ -406,6 +370,203 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                             maxLength={ 100 }
                             minLength={ 0 }
                             data-componentid={ `${componentId}-endpoint-authentication-property-value` }
+                            width={ 15 }
+                        />
+                    </>
+                );
+            case EndpointAuthenticationType.CLIENT_CREDENTIAL:
+                return (
+                    <>
+                        <Field.Input
+                            ariaLabel="clientId"
+                            className="addon-field-wrapper"
+                            name="clientIdAuthProperty"
+                            inputType="password"
+                            type="password"
+                            label={ t(
+                                "actions:fields.authentication.types.clientCredential.properties.clientId.label"
+                            ) }
+                            placeholder={ t(
+                                "actions:fields.authentication.types.clientCredential.properties.clientId.placeholder"
+                            ) }
+                            required={ true }
+                            maxLength={ 1024 }
+                            minLength={ 0 }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-clientId` }
+                            width={ 15 }
+                        />
+                        <Field.Input
+                            ariaLabel="clientSecret"
+                            className="addon-field-wrapper"
+                            name="clientSecretAuthProperty"
+                            inputType="password"
+                            type="password"
+                            label={ t(
+                                "actions:fields.authentication.types.clientCredential.properties.clientSecret.label"
+                            ) }
+                            placeholder={ t(
+                                "actions:fields.authentication.types.clientCredential" +
+                                    ".properties.clientSecret.placeholder"
+                            ) }
+                            required={ true }
+                            maxLength={ 1024 }
+                            minLength={ 0 }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-clientSecret` }
+                            width={ 15 }
+                        />
+                        <Field.Input
+                            ariaLabel="tokenEndpoint"
+                            className="addon-field-wrapper"
+                            name="tokenEndpointAuthProperty"
+                            inputType="url"
+                            type="text"
+                            label={ t(
+                                "actions:fields.authentication.types.clientCredential.properties.tokenEndpoint.label"
+                            ) }
+                            placeholder={ t(
+                                "actions:fields.authentication.types.clientCredential" +
+                                    ".properties.tokenEndpoint.placeholder"
+                            ) }
+                            required={ true }
+                            maxLength={ 1024 }
+                            minLength={ 0 }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-tokenEndpoint` }
+                            width={ 15 }
+                        />
+                        <Field.Input
+                            ariaLabel="scopes"
+                            className="addon-field-wrapper"
+                            name="scopesAuthProperty"
+                            inputType="text"
+                            type="text"
+                            label={ t(
+                                "actions:fields.authentication.types.clientCredential.properties.scopes.label"
+                            ) }
+                            placeholder={ t(
+                                "actions:fields.authentication.types.clientCredential.properties.scopes.placeholder"
+                            ) }
+                            required={ false }
+                            maxLength={ 1024 }
+                            minLength={ 0 }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-scopes` }
+                            width={ 15 }
+                        />
+                    </>
+                );
+            case EndpointAuthenticationType.PASSWORD_CREDENTIAL:
+                return (
+                    <>
+                        <Field.Input
+                            ariaLabel="clientId"
+                            className="addon-field-wrapper"
+                            name="clientId_passwordCredentialAuthProperty"
+                            inputType="password"
+                            type="password"
+                            label={ t(
+                                "actions:fields.authentication.types.passwordCredential.properties.clientId.label"
+                            ) }
+                            placeholder={ t(
+                                "actions:fields.authentication.types.passwordCredential" +
+                                    ".properties.clientId.placeholder"
+                            ) }
+                            required={ true }
+                            maxLength={ 1024 }
+                            minLength={ 0 }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-clientId` }
+                            width={ 15 }
+                        />
+                        <Field.Input
+                            ariaLabel="clientSecret"
+                            className="addon-field-wrapper"
+                            name="clientSecret_passwordCredentialAuthProperty"
+                            inputType="password"
+                            type="password"
+                            label={ t(
+                                "actions:fields.authentication.types.passwordCredential.properties.clientSecret.label"
+                            ) }
+                            placeholder={ t(
+                                "actions:fields.authentication.types.passwordCredential" +
+                                    ".properties.clientSecret.placeholder"
+                            ) }
+                            required={ true }
+                            maxLength={ 1024 }
+                            minLength={ 0 }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-clientSecret` }
+                            width={ 15 }
+                        />
+                        <Field.Input
+                            ariaLabel="tokenEndpoint"
+                            className="addon-field-wrapper"
+                            name="tokenEndpoint_passwordCredentialAuthProperty"
+                            inputType="url"
+                            type="text"
+                            label={ t(
+                                "actions:fields.authentication.types.passwordCredential.properties.tokenEndpoint.label"
+                            ) }
+                            placeholder={ t(
+                                "actions:fields.authentication.types.passwordCredential" +
+                                    ".properties.tokenEndpoint.placeholder"
+                            ) }
+                            required={ true }
+                            maxLength={ 1024 }
+                            minLength={ 0 }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-tokenEndpoint` }
+                            width={ 15 }
+                        />
+                        <Field.Input
+                            ariaLabel="username"
+                            className="addon-field-wrapper"
+                            name="username_passwordCredentialAuthProperty"
+                            inputType="password"
+                            type="password"
+                            label={ t(
+                                "actions:fields.authentication.types.passwordCredential.properties.username.label"
+                            ) }
+                            placeholder={ t(
+                                "actions:fields.authentication.types.passwordCredential" +
+                                    ".properties.username.placeholder"
+                            ) }
+                            required={ true }
+                            maxLength={ 1024 }
+                            minLength={ 0 }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-username` }
+                            width={ 15 }
+                        />
+                        <Field.Input
+                            ariaLabel="password"
+                            className="addon-field-wrapper"
+                            name="password_passwordCredentialAuthProperty"
+                            inputType="password"
+                            type="password"
+                            label={ t(
+                                "actions:fields.authentication.types.passwordCredential.properties.password.label"
+                            ) }
+                            placeholder={ t(
+                                "actions:fields.authentication.types.passwordCredential" +
+                                    ".properties.password.placeholder"
+                            ) }
+                            required={ true }
+                            maxLength={ 1024 }
+                            minLength={ 0 }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-password` }
+                            width={ 15 }
+                        />
+                        <Field.Input
+                            ariaLabel="scopes"
+                            className="addon-field-wrapper"
+                            name="scopes_passwordCredentialAuthProperty"
+                            inputType="text"
+                            type="text"
+                            label={ t(
+                                "actions:fields.authentication.types.passwordCredential.properties.scopes.label"
+                            ) }
+                            placeholder={ t(
+                                "actions:fields.authentication.types.passwordCredential.properties.scopes.placeholder"
+                            ) }
+                            required={ false }
+                            maxLength={ 1024 }
+                            minLength={ 0 }
+                            data-componentid={ `${componentId}-endpoint-authentication-property-scopes` }
                             width={ 15 }
                         />
                     </>
@@ -529,6 +690,88 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
                                 "authenticationTypeDropdown.authProperties.value.validations.required"
                         );
                     }
+                }
+
+                break;
+            case EndpointAuthenticationType.CLIENT_CREDENTIAL:
+                if (!values?.clientIdAuthProperty) {
+                    errors.clientIdAuthProperty = t(
+                        "actions:fields.authentication.types.clientCredential" +
+                            ".properties.clientId.validations.empty"
+                    );
+                }
+                if (!values?.clientSecretAuthProperty) {
+                    errors.clientSecretAuthProperty = t(
+                        "actions:fields.authentication.types.clientCredential" +
+                            ".properties.clientSecret.validations.empty"
+                    );
+                }
+                if (!values?.tokenEndpointAuthProperty) {
+                    errors.tokenEndpointAuthProperty = t(
+                        "actions:fields.authentication.types.clientCredential" +
+                            ".properties.tokenEndpoint.validations.empty"
+                    );
+                } else if (
+                    !FormValidation.url(values?.tokenEndpointAuthProperty, {
+                        domain: {
+                            allowUnicode: true,
+                            minDomainSegments: 1,
+                            tlds: false
+                        },
+                        scheme: [ "https", "http" ]
+                    })
+                ) {
+                    errors.tokenEndpointAuthProperty = t(
+                        "actions:fields.authentication.types.clientCredential" +
+                            ".properties.tokenEndpoint.validations.invalidUrl"
+                    );
+                }
+
+                break;
+            case EndpointAuthenticationType.PASSWORD_CREDENTIAL:
+                if (!values?.clientId_passwordCredentialAuthProperty) {
+                    errors.clientId_passwordCredentialAuthProperty = t(
+                        "actions:fields.authentication.types.passwordCredential" +
+                            ".properties.clientId.validations.empty"
+                    );
+                }
+                if (!values?.clientSecret_passwordCredentialAuthProperty) {
+                    errors.clientSecret_passwordCredentialAuthProperty = t(
+                        "actions:fields.authentication.types.passwordCredential" +
+                            ".properties.clientSecret.validations.empty"
+                    );
+                }
+                if (!values?.tokenEndpoint_passwordCredentialAuthProperty) {
+                    errors.tokenEndpoint_passwordCredentialAuthProperty = t(
+                        "actions:fields.authentication.types.passwordCredential" +
+                            ".properties.tokenEndpoint.validations.empty"
+                    );
+                } else if (
+                    !FormValidation.url(values?.tokenEndpoint_passwordCredentialAuthProperty, {
+                        domain: {
+                            allowUnicode: true,
+                            minDomainSegments: 1,
+                            tlds: false
+                        },
+                        scheme: [ "https", "http" ]
+                    })
+                ) {
+                    errors.tokenEndpoint_passwordCredentialAuthProperty = t(
+                        "actions:fields.authentication.types.passwordCredential" +
+                            ".properties.tokenEndpoint.validations.invalidUrl"
+                    );
+                }
+                if (!values?.username_passwordCredentialAuthProperty) {
+                    errors.username_passwordCredentialAuthProperty = t(
+                        "actions:fields.authentication.types.passwordCredential" +
+                            ".properties.username.validations.empty"
+                    );
+                }
+                if (!values?.password_passwordCredentialAuthProperty) {
+                    errors.password_passwordCredentialAuthProperty = t(
+                        "actions:fields.authentication.types.passwordCredential" +
+                            ".properties.password.validations.empty"
+                    );
                 }
 
                 break;
@@ -698,6 +941,44 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
         const prefixedIdentifier: string = CustomAuthConstants.PREFIX + values?.identifier?.toString();
         const encodedPrefixedIdentifier: string = encodeString(prefixedIdentifier);
 
+        const authProperties: Partial<AuthenticationPropertiesInterface> = {};
+
+        switch (endpointAuthType) {
+            case EndpointAuthenticationType.BASIC:
+                authProperties.username = values?.usernameAuthProperty;
+                authProperties.password = values?.passwordAuthProperty;
+
+                break;
+            case EndpointAuthenticationType.BEARER:
+                authProperties.accessToken = values?.accessTokenAuthProperty;
+
+                break;
+            case EndpointAuthenticationType.API_KEY:
+                authProperties.header = values?.headerAuthProperty;
+                authProperties.value = values?.valueAuthProperty;
+
+                break;
+            case EndpointAuthenticationType.CLIENT_CREDENTIAL:
+                authProperties.clientId = values?.clientIdAuthProperty;
+                authProperties.clientSecret = values?.clientSecretAuthProperty;
+                authProperties.tokenEndpoint = values?.tokenEndpointAuthProperty;
+                authProperties.scopes = values?.scopesAuthProperty;
+
+                break;
+            case EndpointAuthenticationType.PASSWORD_CREDENTIAL:
+                authProperties.clientId = values?.clientId_passwordCredentialAuthProperty;
+                authProperties.clientSecret = values?.clientSecret_passwordCredentialAuthProperty;
+                authProperties.tokenEndpoint = values?.tokenEndpoint_passwordCredentialAuthProperty;
+                authProperties.username = values?.username_passwordCredentialAuthProperty;
+                authProperties.password = values?.password_passwordCredentialAuthProperty;
+                authProperties.scopes = values?.scopes_passwordCredentialAuthProperty;
+
+                break;
+            case EndpointAuthenticationType.NONE:
+            default:
+                break;
+        }
+
         if (selectedAuthenticator === CustomAuthConstants.EXTERNAL_AUTHENTICATOR) {
             const FIRST_ENTRY: number = 0;
 
@@ -716,14 +997,6 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
             identityProvider.federatedAuthenticators.authenticators[
                 FIRST_ENTRY
             ].endpoint.authentication.type = endpointAuthType;
-
-            const authProperties: any = {};
-
-            authProperties["username"] = values?.usernameAuthProperty;
-            authProperties["password"] = values?.passwordAuthProperty;
-            authProperties["accessToken"] = values?.accessTokenAuthProperty;
-            authProperties["header"] = values?.headerAuthProperty;
-            authProperties["value"] = values?.valueAuthProperty;
             identityProvider.federatedAuthenticators.authenticators[
                 FIRST_ENTRY
             ].endpoint.authentication.properties = authProperties;
@@ -740,14 +1013,6 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
 
             customAuthenticator.endpoint.authentication.type = endpointAuthType;
             customAuthenticator.endpoint.uri = values?.endpointUri.toString();
-
-            const authProperties: any = {};
-
-            authProperties["username"] = values?.usernameAuthProperty;
-            authProperties["password"] = values?.passwordAuthProperty;
-            authProperties["accessToken"] = values?.accessTokenAuthProperty;
-            authProperties["header"] = values?.headerAuthProperty;
-            authProperties["value"] = values?.valueAuthProperty;
             customAuthenticator.endpoint.authentication.properties = authProperties;
 
             setIsSubmitting(true);
