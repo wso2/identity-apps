@@ -359,7 +359,7 @@ importers:
         specifier: ^2.31.2
         version: link:../../features/admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.37.5
+        specifier: ^2.38.0
         version: link:../../features/admin.connections.v1
       '@wso2is/admin.consents.v1':
         specifier: workspace:^
@@ -500,7 +500,7 @@ importers:
         specifier: ^2.13.3
         version: link:../../modules/core
       '@wso2is/i18n':
-        specifier: ^2.42.0
+        specifier: ^2.42.1
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.2
@@ -672,7 +672,7 @@ importers:
         specifier: ^2.10.3
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.42.0
+        specifier: ^2.42.1
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.1
@@ -3355,7 +3355,7 @@ importers:
         specifier: ^2.3.27
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.39.4
+        specifier: ^2.42.1
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.0

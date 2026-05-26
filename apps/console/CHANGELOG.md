@@ -1,5 +1,19 @@
 # @wso2is/console
 
+## 4.9.0
+
+### Minor Changes
+
+- [#10314](https://github.com/wso2/identity-apps/pull/10314) [`7710d9d564aaf1ee7d598a6fa6cd472699f669ba`](https://github.com/wso2/identity-apps/commit/7710d9d564aaf1ee7d598a6fa6cd472699f669ba) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Provide Console UI support to configure OAuth Client Credentials and Password Credentials Based Authentication for Custom Authenticators
+
+### Patch Changes
+
+- [#10325](https://github.com/wso2/identity-apps/pull/10325) [`8137a2c71bf3875adc38bfa40a4d0791789974d1`](https://github.com/wso2/identity-apps/commit/8137a2c71bf3875adc38bfa40a4d0791789974d1) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Add missing QSG files for connections
+
+- Updated dependencies [[`7710d9d564aaf1ee7d598a6fa6cd472699f669ba`](https://github.com/wso2/identity-apps/commit/7710d9d564aaf1ee7d598a6fa6cd472699f669ba), [`8137a2c71bf3875adc38bfa40a4d0791789974d1`](https://github.com/wso2/identity-apps/commit/8137a2c71bf3875adc38bfa40a4d0791789974d1)]:
+  - @wso2is/admin.connections.v1@2.38.0
+  - @wso2is/i18n@2.42.1
+
 ## 4.8.1
 
 ### Patch Changes
