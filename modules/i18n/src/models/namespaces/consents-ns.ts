@@ -74,6 +74,7 @@ export interface ConsentsNS {
                     duplicateName: string;
                 };
             };
+            versionHint: string;
             versionModal: {
                 createNewVersion: string;
                 description: string;

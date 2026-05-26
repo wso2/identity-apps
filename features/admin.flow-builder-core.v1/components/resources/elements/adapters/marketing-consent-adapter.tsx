@@ -210,7 +210,7 @@ const MarketingConsentAdapter: FunctionComponent<MarketingConsentAdapterPropsInt
                                             { parse(sanitized) }
                                         </RichTextLabel>
                                     ) : detail?.name ? (
-                                        t("consents:marketingConsents.preview.exampleDescription")
+                                        t("consents:marketingConsents.preview.exampleDescription", { consentName: detail.name })
                                     ) : (
                                         <PlaceholderText>
                                             { t("consents:marketingConsents.preview.emptyDescription") }

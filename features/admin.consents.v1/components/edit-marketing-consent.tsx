@@ -641,10 +641,7 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
                                                 {
                                                     !isCreateMode && (
                                                         <Hint>
-                                                            { t(
-                                                                "consents:marketingConsents" +
-                                                                ".form.createNewVersion"
-                                                            ) }
+                                                            { t("consents:marketingConsents.form.versionHint") }
                                                         </Hint>
                                                     )
                                                 }

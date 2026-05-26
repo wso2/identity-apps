@@ -164,7 +164,7 @@ export const MarketingConsentPreview: FunctionComponent<MarketingConsentPreviewP
                                 { sanitized ? parse(sanitized)
                                     : i18nKeyMatch ? i18nKeyMatch[1]
                                         : policyName ? (
-                                            t("consents:marketingConsents.preview.exampleDescription")
+                                            t("consents:marketingConsents.preview.exampleDescription", { consentName: policyName })
                                         ) : (
                                             <PlaceholderText>
                                                 { t("consents:marketingConsents.preview.emptyDescription") }
@@ -203,9 +203,6 @@ export const MarketingConsentPreview: FunctionComponent<MarketingConsentPreviewP
 
                     <Button type="button" fullWidth variant="contained" sx={ { mb: 1 } }>
                         { t("common:continue") }
-                    </Button>
-                    <Button type="button" fullWidth variant="contained" color="secondary">
-                        { t("common:cancel") }
                     </Button>
                 </PreviewCard>
             </Box>

@@ -603,12 +603,12 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
     const policyPlaceholderI18nKey: string = "consents:policyConsents.wizard.create.preview.exampleDescription";
 
     const placeholderAriaText: string = variant === "marketing"
-        ? t(marketingPlaceholderI18nKey).replace(/<[^>]*>/g, "")
+        ? t(marketingPlaceholderI18nKey, { consentName: policyName }).replace(/<[^>]*>/g, "")
         : t(policyPlaceholderI18nKey, { policyName: exampleLinkText }).replace(/<[^>]*>/g, "");
 
     const placeholderContent: ReactElement = variant === "marketing" ? (
         <EditorPlaceholder>
-            { t(marketingPlaceholderI18nKey).replace(/<[^>]*>/g, "") }
+            { t(marketingPlaceholderI18nKey, { consentName: policyName }).replace(/<[^>]*>/g, "") }
         </EditorPlaceholder>
     ) : (
         <EditorPlaceholder>

@@ -184,7 +184,8 @@ const PolicyConsentAdapter: FunctionComponent<PolicyConsentAdapterPropsInterface
                                         ) : (
                                             <>
                                                 <Trans
-                                                    i18nKey="consents:wizard.create.preview.exampleDescription"
+                                                    // eslint-disable-next-line max-len
+                                                    i18nKey="consents:policyConsents.wizard.create.preview.exampleDescription"
                                                     values={ {
                                                         policyName: policy.name
                                                             || i18nLink(i18n.language, policy.policyUrl)

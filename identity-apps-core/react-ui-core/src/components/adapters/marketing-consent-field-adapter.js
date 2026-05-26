@@ -16,12 +16,31 @@
  * under the License.
  */
 
+import DOMPurify from "dompurify";
+import parse from "html-react-parser";
 import PropTypes from "prop-types";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Checkbox, Form } from "semantic-ui-react";
 import { useTranslations } from "../../hooks/use-translations";
-import { resolveElementText } from "../../utils/i18n-utils";
+import { i18nLink, resolveElementText } from "../../utils/i18n-utils";
 import "./rich-text-field-adapter.css";
+
+let isAfterSanitizeHookRegistered = false;
+
+const ensureAfterSanitizeAttributesHookRegistered = () => {
+    if (isAfterSanitizeHookRegistered) {
+        return;
+    }
+
+    DOMPurify.addHook("afterSanitizeAttributes", (node) => {
+        if (node.tagName === "A") {
+            node.setAttribute("target", "_blank");
+            node.setAttribute("rel", "noopener noreferrer");
+        }
+    });
+
+    isAfterSanitizeHookRegistered = true;
+};
 
 /**
  * Resolves a purpose description to the best matching string for the current locale.
@@ -104,7 +123,7 @@ const MarketingConsentFieldAdapter = ({ component, formStateHandler, fieldErrorH
     const { locale, translations } = useTranslations();
 
     const purposes = useMemo(
-        () => rawPurposes.filter((p) => p.attributes && p.attributes.length > 0),
+        () => rawPurposes.filter((p) => p.attributes !== undefined && p.attributes !== null),
         [ rawPurposes ]
     );
 
@@ -121,7 +140,7 @@ const MarketingConsentFieldAdapter = ({ component, formStateHandler, fieldErrorH
 
         purposes.forEach((purpose) => {
             initial[purpose.purposeId] = {};
-            purpose.attributes.forEach((attr) => {
+            (purpose.attributes || []).forEach((attr) => {
                 initial[purpose.purposeId][attr.id] =
                     checkedMap[purpose.purposeId]?.[attr.id] ?? false;
             });
@@ -163,20 +182,32 @@ const MarketingConsentFieldAdapter = ({ component, formStateHandler, fieldErrorH
         return null;
     }
 
+    ensureAfterSanitizeAttributesHookRegistered();
+
     return (
         <Form.Group grouped className="consent-field">
             { purposes.map((purpose) => {
                 const description = resolveDescription(purpose.description, locale, translations);
-                const attrIds = purpose.attributes.map((a) => a.id);
+                const attrIds = (purpose.attributes || []).map((a) => a.id);
                 const attrMap = checkedMap[purpose.purposeId] ?? {};
                 const allChecked = attrIds.length === 0
                     ? attrMap.__accepted ?? false
                     : attrIds.every((id) => attrMap[id]);
 
-                const fallbackDescription = (
-                    resolveElementText(translations, "{{consent.marketing.exampleDescription}}")
-                        || "I agree to receive information and commercial offers.");
-                const displayDescription = description || fallbackDescription;
+                const purposeName = resolveElementText(translations, purpose.name) || purpose.name || "";
+                const resolvedTemplate = resolveElementText(translations, "{{consent.marketing.exampleDescription}}")
+                    || "I agree to receive {consentName} communications.";
+                const fallbackDescription = resolvedTemplate.replace("{consentName}", purposeName);
+                const rawDescription = description || fallbackDescription;
+
+                const htmlWithLocalizedLinks = rawDescription.replace(
+                    /href="([^"]*)"/g,
+                    (_match, url) => `href="${ i18nLink(locale, url) }"`
+                );
+                const sanitizedHtml = DOMPurify.sanitize(htmlWithLocalizedLinks, {
+                    ADD_ATTR: [ "target", "rel" ],
+                    ALLOWED_TAGS: [ "p", "a", "strong", "em", "u", "br", "span", "h1", "h2", "h3", "h4", "h5" ]
+                });
 
                 return (
                     <div key={ purpose.purposeId }>
@@ -192,7 +223,10 @@ const MarketingConsentFieldAdapter = ({ component, formStateHandler, fieldErrorH
                                 htmlFor={ `marketing-consent-${ purpose.purposeId }` }
                                 style={ { fontSize: "0.875rem", lineHeight: 1.5, margin: 0, cursor: "pointer" } }
                             >
-                                { displayDescription }
+                                { sanitizedHtml
+                                    ? <span className="rich-text-paragraph">{ parse(sanitizedHtml) }</span>
+                                    : rawDescription
+                                }
                             </label>
                         </div>
                         { purpose.attributes.length > 0 && (

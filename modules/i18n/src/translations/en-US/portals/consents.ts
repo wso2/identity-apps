@@ -34,6 +34,7 @@ export const consents: ConsentsNS = {
                 label: "Name",
                 placeholder: "Newsletter Subscription"
             },
+            versionHint: "To create a new version, update the description above.",
             versionModal: {
                 createNewVersion: "Save as New Version?",
                 description: "A new version of this marketing consent will be saved."
@@ -155,7 +156,7 @@ export const consents: ConsentsNS = {
         preview: {
             consentHeader: "Please review and accept the following to continue.",
             emptyDescription: "Write a consent name to preview.",
-            exampleDescription: "I agree to receive information and commercial offers.",
+            exampleDescription: "I agree to receive {{consentName}} communications.",
             pageTitle: "Review Marketing Consent"
         }
     },
