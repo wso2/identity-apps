@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.42.1
+
+### Patch Changes
+
+- [#10325](https://github.com/wso2/identity-apps/pull/10325) [`8137a2c71bf3875adc38bfa40a4d0791789974d1`](https://github.com/wso2/identity-apps/commit/8137a2c71bf3875adc38bfa40a4d0791789974d1) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Add missing QSG files for connections
+
 ## 2.42.0
 
 ### Minor Changes
