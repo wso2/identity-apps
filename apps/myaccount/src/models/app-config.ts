@@ -149,7 +149,7 @@ interface AuthenticatorAppInterface {
 /**
  * Dev portal UI config interface.
  */
-export interface UIConfigInterface extends CommonUIConfigInterface {
+export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfigInterface> {
     /**
      * Copyright text for the footer.
      */
