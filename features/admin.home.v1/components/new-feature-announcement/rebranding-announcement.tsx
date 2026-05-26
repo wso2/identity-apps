@@ -215,6 +215,10 @@ const RebrandingAnnouncement: FunctionComponent<RebrandingAnnouncementProps> = (
     announcementUrl,
     onAnnouncementClick
 }: RebrandingAnnouncementProps): ReactElement => {
+    const sanitizedTitle: string = sanitizeInline(title);
+    const sanitizedDescription: string = sanitizeInline(description);
+    const sanitizedSubDescription: string = sanitizeInline(subDescription);
+
     return (
         <BannerRoot data-componentid={ componentId } elevation={ 0 }>
             <BlobOne />
@@ -222,22 +226,22 @@ const RebrandingAnnouncement: FunctionComponent<RebrandingAnnouncementProps> = (
             <BlobThree />
 
             <ContentArea>
-                { title ? (
+                { sanitizedTitle.trim().length > 0 ? (
                     <BannerTitle
                         variant="h3"
-                        dangerouslySetInnerHTML={ { __html: sanitizeInline(title) } }
+                        dangerouslySetInnerHTML={ { __html: sanitizedTitle } }
                     />
                 ) : null }
-                { description ? (
+                { sanitizedDescription.trim().length > 0 ? (
                     <BannerDescription
                         variant="body2"
-                        dangerouslySetInnerHTML={ { __html: sanitizeInline(description) } }
+                        dangerouslySetInnerHTML={ { __html: sanitizedDescription } }
                     />
                 ) : null }
-                { subDescription ? (
+                { sanitizedSubDescription.trim().length > 0 ? (
                     <BannerSubDescription
                         variant="body2"
-                        dangerouslySetInnerHTML={ { __html: sanitizeInline(subDescription) } }
+                        dangerouslySetInnerHTML={ { __html: sanitizedSubDescription } }
                     />
                 ) : null }
             </ContentArea>
