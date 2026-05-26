@@ -269,7 +269,7 @@ const MarketingConsentsPage: FunctionComponent<MarketingConsentsPageProps> = (
                 onClick: () => {
                     history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
                 },
-                text: t("consents:marketingConsents.pages.list.backButton")
+                text: t("governanceConnectors:goBackLoginAndRegistration")
             } }
             action={ (
                 (consents?.length ?? 0) > 0 ? (
@@ -356,14 +356,14 @@ const MarketingConsentsPage: FunctionComponent<MarketingConsentsPageProps> = (
                         type="negative"
                         open={ showDeleteConfirmationModal }
                         assertionHint={
-                            t("consents:marketingConsents.pages.list.deleteConfirmation.assertionHint")
+                            t("consents:marketingConsents.pages.deleteConfirmation.assertionHint")
                         }
                         assertionType="checkbox"
                         primaryAction={
-                            t("consents:marketingConsents.pages.list.deleteConfirmation.primaryAction")
+                            t("consents:marketingConsents.pages.deleteConfirmation.primaryAction")
                         }
                         secondaryAction={
-                            t("consents:marketingConsents.pages.list.deleteConfirmation.secondaryAction")
+                            t("consents:marketingConsents.pages.deleteConfirmation.secondaryAction")
                         }
                         onSecondaryActionClick={ () => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ () => handleDeleteConsent() }
@@ -374,19 +374,19 @@ const MarketingConsentsPage: FunctionComponent<MarketingConsentsPageProps> = (
                         <ConfirmationModal.Header
                             data-componentid={ `${ componentId }-delete-confirmation-modal-header` }
                         >
-                            { t("consents:marketingConsents.pages.list.deleteConfirmation.header") }
+                            { t("consents:marketingConsents.pages.deleteConfirmation.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             negative
                             data-componentid={ `${ componentId }-delete-confirmation-modal-message` }
                         >
-                            { t("consents:marketingConsents.pages.list.deleteConfirmation.message") }
+                            { t("consents:marketingConsents.pages.deleteConfirmation.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-componentid={ `${ componentId }-delete-confirmation-modal-content` }
                         >
-                            { t("consents:marketingConsents.pages.list.deleteConfirmation.content") }
+                            { t("consents:marketingConsents.pages.deleteConfirmation.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

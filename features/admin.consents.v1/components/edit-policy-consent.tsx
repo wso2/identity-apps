@@ -240,7 +240,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
 
                         resolve(
                             token === nameValidationTokenRef.current && !isAvailable
-                                ? t("consents:form.name.error.duplicateName")
+                                ? t("consents:policyConsents.form.name.error.duplicateName")
                                 : undefined
                         );
                     } catch {
@@ -293,9 +293,9 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
         )
             .then((created: PurposeDTOInterface): void => {
                 dispatch(addAlert({
-                    description: t("consents:notifications.create.success.description"),
+                    description: t("consents:policyConsents.notifications.create.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("consents:notifications.create.success.message")
+                    message: t("consents:policyConsents.notifications.create.success.message")
                 }));
                 history.replace(
                     AppConstants.getPaths().get("POLICY_CONSENTS_EDIT").replace(":id", created.id)
@@ -308,22 +308,22 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
 
                 switch (status) {
                     case 409:
-                        description = t("consents:notifications.create.error.conflict.description");
-                        message = t("consents:notifications.create.error.conflict.message");
+                        description = t("consents:policyConsents.notifications.create.error.conflict.description");
+                        message = t("consents:policyConsents.notifications.create.error.conflict.message");
 
                         break;
                     case 404:
-                        description = t("consents:notifications.create.error.notFound.description");
-                        message = t("consents:notifications.create.error.notFound.message");
+                        description = t("consents:policyConsents.notifications.create.error.notFound.description");
+                        message = t("consents:policyConsents.notifications.create.error.notFound.message");
 
                         break;
                     default:
                         if (status >= 500) {
-                            description = t("consents:notifications.create.error.serverError.description");
-                            message = t("consents:notifications.create.error.serverError.message");
+                            description = t("consents:policyConsents.notifications.create.error.serverError.description");
+                            message = t("consents:policyConsents.notifications.create.error.serverError.message");
                         } else {
-                            description = t("consents:notifications.create.error.description");
-                            message = t("consents:notifications.create.error.message");
+                            description = t("consents:policyConsents.notifications.create.error.description");
+                            message = t("consents:policyConsents.notifications.create.error.message");
                         }
                 }
 
@@ -358,9 +358,9 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
         )
             .then((): void => {
                 dispatch(addAlert({
-                    description: t("consents:notifications.updatePolicy.success.description"),
+                    description: t("consents:policyConsents.notifications.update.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("consents:notifications.updatePolicy.success.message")
+                    message: t("consents:policyConsents.notifications.update.success.message")
                 }));
                 mutateConsent();
                 mutateVersions();
@@ -372,22 +372,22 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
 
                 switch (status) {
                     case 404:
-                        description = t("consents:notifications.updatePolicy.error.notFound.description");
-                        message = t("consents:notifications.updatePolicy.error.notFound.message");
+                        description = t("consents:policyConsents.notifications.update.error.notFound.description");
+                        message = t("consents:policyConsents.notifications.update.error.notFound.message");
 
                         break;
                     case 409:
-                        description = t("consents:notifications.updatePolicy.error.conflict.description");
-                        message = t("consents:notifications.updatePolicy.error.conflict.message");
+                        description = t("consents:policyConsents.notifications.update.error.conflict.description");
+                        message = t("consents:policyConsents.notifications.update.error.conflict.message");
 
                         break;
                     default:
                         if (status >= 500) {
-                            description = t("consents:notifications.updatePolicy.error.serverError.description");
-                            message = t("consents:notifications.updatePolicy.error.serverError.message");
+                            description = t("consents:policyConsents.notifications.update.error.serverError.description");
+                            message = t("consents:policyConsents.notifications.update.error.serverError.message");
                         } else {
-                            description = t("consents:notifications.updatePolicy.error.description");
-                            message = t("consents:notifications.updatePolicy.error.message");
+                            description = t("consents:policyConsents.notifications.update.error.description");
+                            message = t("consents:policyConsents.notifications.update.error.message");
                         }
                 }
 
@@ -498,9 +498,9 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                         <Box>
                                                             <FinalFormField
                                                                 name="name"
-                                                                label={ t("consents:form.name.label") }
+                                                                label={ t("consents:policyConsents.form.name.label") }
                                                                 placeholder={
-                                                                    t("consents:form.name.placeholder")
+                                                                    t("consents:policyConsents.form.name.placeholder")
                                                                 }
                                                                 required
                                                                 type="text"
@@ -512,7 +512,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                     <Box>
                                                         <FinalFormField
                                                             name="policyUrl"
-                                                            label={ t("consents:form.policyUrl.label") }
+                                                            label={ t("consents:policyConsents.form.policyUrl.label") }
                                                             type="text"
                                                             component={ TextFieldAdapter }
                                                             required
@@ -537,12 +537,12 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                             }
                                                         />
                                                         <Hint>
-                                                            { t("consents:form.policyUrl.hint") }
+                                                            { t("consents:policyConsents.form.policyUrl.hint") }
                                                         </Hint>
                                                     </Box>
                                                     <Box>
                                                         <InputLabel>
-                                                            { t("consents:form.description.label") }
+                                                            { t("consents:policyConsents.form.description.label") }
                                                         </InputLabel>
                                                         <Field
                                                             name="description"
@@ -598,11 +598,11 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                                             } }
                                                                         />
                                                                     ) }
-                                                                    label={ t("consents:form.mandatory.label") }
+                                                                    label={ t("consents:policyConsents.form.mandatory.label") }
                                                                     sx={ { mr: 0 } }
                                                                 />
                                                                 <Hint>
-                                                                    { t("consents:form.mandatory.hint") }
+                                                                    { t("consents:policyConsents.form.mandatory.hint") }
                                                                 </Hint>
                                                             </Box>
                                                         ) }
@@ -611,7 +611,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                         { !isCreateMode && consent?.promptOnLogin === "true" && (
                                                             <Message
                                                                 type="info"
-                                                                content={ t("consents:form.promptOnLogin.activeHint") }
+                                                                content={ t("consents:policyConsents.form.promptOnLogin.activeHint") }
                                                             />
                                                         ) }
                                                         { !isCreateMode && (
@@ -620,7 +620,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                                 content={ (
                                                                     <Trans
                                                                         i18nKey=
-                                                                            "consents:form.mandatory.linkHint"
+                                                                            "consents:policyConsents.form.mandatory.linkHint"
                                                                     >
                                                                         <Link
                                                                             onClick={
@@ -657,11 +657,11 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                                                 } }
                                                                             />
                                                                         ) }
-                                                                        label={ t("consents:form.promptOnLogin.label") }
+                                                                        label={ t("consents:policyConsents.form.promptOnLogin.label") }
                                                                         sx={ { mr: 0 } }
                                                                     />
                                                                     <Hint>
-                                                                        { t("consents:form.promptOnLogin.hint") }
+                                                                        { t("consents:policyConsents.form.promptOnLogin.hint") }
                                                                     </Hint>
                                                                 </Box>
                                                             ) }
@@ -689,7 +689,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                 {
                                                     !isCreateMode && (
                                                         <Hint>
-                                                            { t("consents:form.policyUrl.versionHint") }
+                                                            { t("consents:policyConsents.form.policyUrl.versionHint") }
                                                         </Hint>
                                                     )
                                                 }
@@ -701,7 +701,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                     >
                                                         { isCreateMode
                                                             ? t("common:create")
-                                                            : t("consents:form.createNewVersion")
+                                                            : t("consents:policyConsents.form.createNewVersion")
                                                         }
                                                     </PrimaryButton>
                                                 ) }
@@ -729,10 +729,10 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                 primaryActionLoading={ isSubmitting }
             >
                 <ConfirmationModal.Header>
-                    { t("consents:form.versionModal.createNewVersion") }
+                    { t("consents:policyConsents.form.versionModal.createNewVersion") }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Content>
-                    { t("consents:form.versionModal.promptDescription") }
+                    { t("consents:policyConsents.form.versionModal.promptDescription") }
                     <Box sx={ { mt: 2 } }>
                         <FormControlLabel
                             control={ (
@@ -743,7 +743,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                     } }
                                 />
                             ) }
-                            label={ t("consents:form.versionModal.promptAtLogin") }
+                            label={ t("consents:policyConsents.form.versionModal.promptAtLogin") }
                             sx={ { mr: 0 } }
                         />
                     </Box>

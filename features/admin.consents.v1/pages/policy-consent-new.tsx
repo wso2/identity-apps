@@ -46,8 +46,8 @@ const PolicyConsentNewPage: FunctionComponent<PolicyConsentNewPageProps> = (
 
     return (
         <PageLayout
-            pageTitle={ t("consents:pages.new.title") }
-            title={ t("consents:pages.new.title") }
+            pageTitle={ t("consents:policyConsents.pages.new.title") }
+            title={ t("consents:policyConsents.pages.new.title") }
             titleTextAlign="left"
             bottomMargin={ false }
             data-componentid={ `${componentId}-layout` }
@@ -56,7 +56,7 @@ const PolicyConsentNewPage: FunctionComponent<PolicyConsentNewPageProps> = (
                 onClick: (): void => {
                     history.push(AppConstants.getPaths().get("POLICY_CONSENTS"));
                 },
-                text: t("consents:pages.new.backButton")
+                text: t("consents:policyConsents.pages.new.backButton")
             } }
         >
             <EditPolicyConsent

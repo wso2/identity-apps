@@ -41,7 +41,7 @@
                     "type": "TYPOGRAPHY",
                     "variant": "H3",
                     "config": {
-                        "text": "Marketing Consent Review"
+                        "text": "Review Marketing Consent"
                     }
                 },
                 {
@@ -49,7 +49,7 @@
                     "category": "DISPLAY",
                     "type": "RICH_TEXT",
                     "config": {
-                        "text": "<p class=\"rich-text-paragraph\"><span class=\"rich-text-pre-wrap\">Please review and accept the following to proceed.</span></p>"
+                        "text": "<p class=\"rich-text-paragraph\"><span class=\"rich-text-pre-wrap\">Please review and accept the following to continue.</span></p>"
                     }
                 },
                 {

@@ -24,8 +24,9 @@ export const consents: ConsentsNS = {
             createNewVersion: "Create New Version",
             description: {
                 label: "Description",
-                labelRoleHint: "Leave empty to use the default."
+                labelRoleHint: "Leave empty to use the default description."
             },
+            linkHint: "To include this consent in a registration flow, go to the <0>Registration Flow Builder</0>.",
             name: {
                 error: {
                     duplicateName: "A marketing consent with this name already exists. Please use a different name."
@@ -34,13 +35,13 @@ export const consents: ConsentsNS = {
                 placeholder: "Newsletter Subscription"
             },
             versionModal: {
-                createNewVersion: "Create New Version?",
-                description: "This will create a new version of the marketing consent."
+                createNewVersion: "Save as New Version?",
+                description: "A new version of this marketing consent will be saved."
             }
         },
         list: {
             emptyPlaceholder: {
-                addConsent: "New Marketing Consent",
+                addConsent: "New Consent",
                 subtitle: "There are no marketing consents available at the moment"
             },
             emptySearchPlaceholder: {
@@ -118,6 +119,14 @@ export const consents: ConsentsNS = {
             }
         },
         pages: {
+            deleteConfirmation: {
+                assertionHint: "I understand this action is permanent and cannot be undone.",
+                content: "This consent can only be deleted if no users have accepted it.",
+                header: "Delete marketing consent?",
+                message: "This will permanently delete the marketing consent. This cannot be undone.",
+                primaryAction: "Confirm",
+                secondaryAction: "Cancel"
+            },
             edit: {
                 backButton: "Back to Marketing Consents",
                 dangerZone: {
@@ -125,33 +134,16 @@ export const consents: ConsentsNS = {
                     header: "Delete Marketing Consent",
                     subheader: "Once you delete a marketing consent, there is no going back. Please be certain."
                 },
-                deleteConfirmation: {
-                    assertionHint: "I confirm that I want to delete this marketing consent.",
-                    content: "You can delete this marketing consent only if no users have given consent to it.",
-                    header: "Are you sure?",
-                    message: "This action is irreversible and will permanently delete the marketing consent.",
-                    primaryAction: "Confirm",
-                    secondaryAction: "Cancel"
-                },
                 title: "Edit Marketing Consent"
             },
             list: {
                 actions: {
-                    addConsent: "New Marketing Consent"
+                    addConsent: "New Consent"
                 },
-                backButton: "Go back to login & registration",
-                deleteConfirmation: {
-                    assertionHint: "I confirm that I want to delete this marketing consent.",
-                    content: "You can delete this marketing consent only if no users have given consent to it.",
-                    header: "Are you sure?",
-                    message: "This action is irreversible and will permanently delete the marketing consent.",
-                    primaryAction: "Confirm",
-                    secondaryAction: "Cancel"
-                },
-                description: "Configure and manage marketing consents.",
+                description: "Manage marketing consents for your organization.",
                 heading: "Marketing Consents",
                 search: {
-                    placeholder: "Search marketing consents by name"
+                    placeholder: "Search by name"
                 },
                 title: "Marketing Consents"
             },
@@ -161,61 +153,217 @@ export const consents: ConsentsNS = {
             }
         },
         preview: {
-            allowButton: "Continue",
-            denyButton: "Decline",
+            consentHeader: "Please review and accept the following to continue.",
             emptyDescription: "Write a consent name to preview.",
-            exampleDescription: "I agree to receive information and commerical offers.",
-            pageTitle: "Marketing Consent Review"
+            exampleDescription: "I agree to receive information and commercial offers.",
+            pageTitle: "Review Marketing Consent"
         }
     },
-    form: {
-        createNewVersion: "Create New Version",
-        description: {
-            label: "Description"
-        },
-        mandatory: {
-            hint: "Set during policy creation. When enabled, users will not be able to continue the flow without accepting this policy.",
-            label: "Mandatory",
-            linkHint: "To add to registration flow, navigate to <0>registration flow builder</0>."
-        },
-        name: {
-            error: {
-                duplicateName: "A policy with this name already exists. Please use a different name."
+    policyConsents: {
+        form: {
+            createNewVersion: "Create New Version",
+            description: {
+                label: "Description"
             },
-            label: "Name",
-            placeholder: "Privacy Policy"
+            mandatory: {
+                hint: "When enabled, users must accept this policy to proceed. This setting cannot be changed after creation.",
+                label: "Mandatory",
+                linkHint: "To include this consent in a registration flow, go to the <0>Registration Flow Builder</0>."
+            },
+            name: {
+                error: {
+                    duplicateName: "A policy with this name already exists. Please use a different name."
+                },
+                label: "Name",
+                placeholder: "Privacy Policy"
+            },
+            policyUrl: {
+                hint: "Enter the URL of the full policy document. Use {{lang}}, {{country}}, or {{locale}} as " +
+                    "placeholders to support multiple regions or languages.",
+                label: "Policy URL",
+                versionHint: "To create a new version, update the policy URL, description, or prompt settings above."
+            },
+            promptOnLogin: {
+                activeHint: "Users will be prompted to review and accept this policy during login.",
+                hint: "When enabled, users will be prompted to review and accept this policy at each login.",
+                label: "Prompt on Login"
+            },
+            versionDropdown: {
+                currentVersionLabel: "Version {{version}} (current)",
+                trigger: "Version {{version}}"
+            },
+            versionModal: {
+                createNewVersion: "Save as New Version?",
+                promptAtLogin: "Prompt users to accept at next login",
+                promptDescription: "Choose whether existing users should be prompted to review and accept this updated policy at their next login."
+            }
         },
-        policyUrl: {
-            hint: "Provide the URL where the full policy document can be accessed. " +
-                "You can use placeholders like {{lang}}, {{country}}, or {{locale}} " +
-                "to customize the URL for different regions or languages.",
-            label: "Policy URL",
-            versionHint: "To create a new version, update the policy URL, description, or prompt settings above."
+        list: {
+            emptyPlaceholder: {
+                addPolicy: "New Policy",
+                subtitle: "There are no policies available at the moment"
+            },
+            emptySearchPlaceholder: {
+                action: "Clear search",
+                subtitle: "No policies found for the search query.",
+                title: "No results found"
+            }
         },
-        promptOnLogin: {
-            activeHint: "Users will be prompted to review and accept this policy during login.",
-            hint: "When enabled, users will be prompted to review and accept this policy during login.",
-            label: "Prompt on Login"
+        notifications: {
+            create: {
+                error: {
+                    conflict: {
+                        description: "A policy with this name already exists. Please use a different name.",
+                        message: "Conflict"
+                    },
+                    description: "Failed to create policy. Please try again.",
+                    message: "Create Failed",
+                    notFound: {
+                        description: "The requested policy was not found.",
+                        message: "Not Found"
+                    },
+                    serverError: {
+                        description: "A server error occurred while creating the policy. Please try again later.",
+                        message: "Server Error"
+                    }
+                },
+                success: {
+                    description: "Policy created successfully.",
+                    message: "Policy Created"
+                }
+            },
+            delete: {
+                error: {
+                    conflict: {
+                        description: "This policy cannot be deleted because it is in use or is protected.",
+                        message: "Cannot Delete"
+                    },
+                    description: "Failed to delete policy. Please try again.",
+                    message: "Delete Failed",
+                    notFound: {
+                        description: "The policy you are trying to delete was not found.",
+                        message: "Not Found"
+                    },
+                    serverError: {
+                        description: "A server error occurred while deleting the policy. Please try again later.",
+                        message: "Server Error"
+                    }
+                },
+                success: {
+                    description: "Policy deleted successfully.",
+                    message: "Policy Deleted"
+                }
+            },
+            update: {
+                error: {
+                    conflict: {
+                        description: "This version already exists or conflicts with another version.",
+                        message: "Version Conflict"
+                    },
+                    description: "Policy update failed. Please try again.",
+                    message: "Update Failed",
+                    notFound: {
+                        description: "The consent or version you are trying to update was not found.",
+                        message: "Not Found"
+                    },
+                    serverError: {
+                        description: "A server error occurred while updating the policy. Please try again later.",
+                        message: "Server Error"
+                    }
+                },
+                success: {
+                    description: "Policy updated successfully.",
+                    message: "Update Successful"
+                }
+            }
         },
-        versionDropdown: {
-            currentVersionLabel: "Version {{version}} (current)",
-            trigger: "Version {{version}}"
+        pages: {
+            deleteConfirmation: {
+                assertionHint: "I understand this action is permanent and cannot be undone.",
+                content: "This policy can only be deleted if no users have accepted it.",
+                header: "Delete policy?",
+                message: "This will permanently delete the policy. This cannot be undone.",
+                primaryAction: "Confirm",
+                secondaryAction: "Cancel"
+            },
+            edit: {
+                backButton: "Back to Policies",
+                dangerZone: {
+                    actionTitle: "Delete Policy",
+                    header: "Delete Policy",
+                    subheader: "Once you delete a policy, there is no going back. Please be certain."
+                },
+                title: "Edit Policy"
+            },
+            list: {
+                actions: {
+                    addPolicy: "New Policy"
+                },
+                description: "Manage policy consents for your organization.",
+                heading: "Policy Consents",
+                search: {
+                    placeholder: "Search by policy name"
+                },
+                title: "Policy Consents"
+            },
+            new: {
+                backButton: "Back to Policies",
+                title: "Create Policy"
+            }
         },
-        versionModal: {
-            createNewVersion: "Create New Version?",
-            promptAtLogin: "Prompt users at next login",
-            promptDescription: "Choose whether users should be prompted to accept the updated policy."
-        }
-    },
-    list: {
-        emptyPlaceholder: {
-            addPolicy: "New Policy",
-            subtitle: "There are no policies available at the moment"
-        },
-        emptySearchPlaceholder: {
-            action: "Clear search",
-            subtitle: "No policies found for the search query.",
-            title: "No results found"
+        wizard: {
+            create: {
+                form: {
+                    description: {
+                        configureTranslation: "Configure translation",
+                        i18nCard: {
+                            brandingRequired: "Enable branding to configure translations.",
+                            createTitle: "Create Translation",
+                            deleteError: {
+                                description: "Failed to delete the translation. Please try again.",
+                                message: "Delete Failed"
+                            },
+                            deleteSuccess: {
+                                description: "Translation deleted successfully.",
+                                message: "Translation Deleted"
+                            },
+                            deleteTooltip: "Delete the translation for the selected key.",
+                            editTooltip: "Edit the translation text for the selected key.",
+                            i18nKey: "Translation Key",
+                            keyPlaceholder: "e.g. consent.description",
+                            language: "Language",
+                            newTooltip: "Create a new translation key for this description.",
+                            saveError: {
+                                description: "Failed to save the translation. Please try again.",
+                                message: "Save Failed"
+                            },
+                            saveSuccess: {
+                                description: "Translation saved successfully.",
+                                message: "Translation Saved"
+                            },
+                            selectKey: "Select a translation key",
+                            title: "Configure Translation",
+                            translationPlaceholder: "Enter the translated description text...",
+                            translationText: "Translation Text",
+                            updateTitle: "Update Translation"
+                        },
+                        insertPolicyLink: "Wrap selected text with the policy URL as a link",
+                        insertPolicyLinkInvalidUrl: "The Policy URL must be a valid HTTP or HTTPS URL.",
+                        insertPolicyLinkNoPolicyUrl: "Define a Policy URL above before inserting a link.",
+                        insertPolicyLinkNoSelection: "Select the words you want to link, then click.",
+                        insertPolicyLinkShort: "Policy Link",
+                        insertPolicyLinkTooltip: "Wraps the selected text with your Policy URL as a hyperlink.",
+                        labelRoleHint: "Leave empty to use the default description. " +
+                            "Select text and click \"Policy Link\" to hyperlink it to the policy URL."
+                    }
+                },
+                preview: {
+                    consentHeader: "Please review and accept the following to continue.",
+                    emptyDescription: "Enter a policy name above to see a preview.",
+                    exampleDescription: "I have read and agree to the <0>{{policyName}}</0>.",
+                    pageTitle: "Review and Accept Policies"
+                }
+            }
         }
     },
     registrationFlow: {
@@ -234,175 +382,8 @@ export const consents: ConsentsNS = {
         selectMarketing: "Marketing Consent",
         selectPolicies: "Select Policies:"
     },
-    notifications: {
-        create: {
-            error: {
-                conflict: {
-                    description: "A policy with this name already exists. Please use a different name.",
-                    message: "Conflict"
-                },
-                description: "Failed to create policy. Please try again.",
-                message: "Create Failed",
-                notFound: {
-                    description: "The requested policy was not found.",
-                    message: "Policy Not Found"
-                },
-                serverError: {
-                    description: "A server error occurred while creating the policy. Please try again later.",
-                    message: "Server Error"
-                }
-            },
-            success: {
-                description: "Policy created successfully.",
-                message: "Policy Created"
-            }
-        },
-        delete: {
-            error: {
-                conflict: {
-                    description: "This policy cannot be deleted because it is in use or is protected.",
-                    message: "Cannot Delete"
-                },
-                description: "Failed to delete policy. Please try again.",
-                message: "Delete Failed",
-                notFound: {
-                    description: "The policy you are trying to delete was not found.",
-                    message: "Policy Not Found"
-                },
-                serverError: {
-                    description: "A server error occurred while deleting the policy. Please try again later.",
-                    message: "Server Error"
-                }
-            },
-            success: {
-                description: "Policy deleted successfully.",
-                message: "Policy Deleted"
-            }
-        },
-        updatePolicy: {
-            error: {
-                conflict: {
-                    description: "This version already exists or conflicts with another version.",
-                    message: "Version Conflict"
-                },
-                description: "Policy update failed. Please try again.",
-                message: "Update Failed",
-                notFound: {
-                    description: "The consent or version you are trying to update was not found.",
-                    message: "Not Found"
-                },
-                serverError: {
-                    description: "A server error occurred while updating the policy. Please try again later.",
-                    message: "Server Error"
-                }
-            },
-            success: {
-                description: "Policy updated successfully.",
-                message: "Update Successful"
-            }
-        }
-    },
-    pages: {
-        edit: {
-            backButton: "Back to Policies",
-            dangerZone: {
-                actionTitle: "Delete Policy",
-                header: "Delete Policy",
-                subheader: "Once you delete a policy, there is no going back. Please be certain."
-            },
-            deleteConfirmation: {
-                assertionHint: "I confirm that I want to delete this policy.",
-                content: "You can delete this policy only if no users have given consent to it.",
-                header: "Are you sure?",
-                message: "This action is irreversible and will permanently delete the policy.",
-                primaryAction: "Confirm",
-                secondaryAction: "Cancel"
-            },
-            title: "Edit Policy"
-        },
-        list: {
-            actions: {
-                addPolicy: "New Policy"
-            },
-            deleteConfirmation: {
-                assertionHint: "I confirm that I want to delete this policy.",
-                content: "You can delete this policy only if no users have given consent to it.",
-                header: "Are you sure?",
-                message: "This action is irreversible and will permanently delete the policy.",
-                primaryAction: "Confirm",
-                secondaryAction: "Cancel"
-            },
-            backButton: "Go back to login & registration",
-            description: "Configure and manage policy consents.",
-            heading: "Policy Consents",
-            search: {
-                placeholder: "Search policies by name"
-            },
-            title: "Policy Consents"
-        },
-        new: {
-            backButton: "Back to Policies",
-            title: "Create Policy"
-        }
-    },
     tabs: {
         content: { label: "Content" },
         preview: { label: "Preview" }
-    },
-    wizard: {
-        create: {
-            form: {
-                description: {
-                    configureTranslation: "Configure translation",
-                    i18nCard: {
-                        brandingRequired: "Enable branding to configure translations.",
-                        createTitle: "Create Translation",
-                        deleteError: {
-                            description: "Failed to delete the translation. Please try again.",
-                            message: "Delete Failed"
-                        },
-                        deleteSuccess: {
-                            description: "Translation deleted successfully.",
-                            message: "Translation Deleted"
-                        },
-                        deleteTooltip: "Delete the translation for the selected key.",
-                        editTooltip: "Edit the translation text for the selected key.",
-                        i18nKey: "Translation Key",
-                        keyPlaceholder: "e.g. consent.description",
-                        language: "Language",
-                        newTooltip: "Create a new translation key for this description.",
-                        saveError: {
-                            description: "Failed to save the translation. Please try again.",
-                            message: "Save Failed"
-                        },
-                        saveSuccess: {
-                            description: "Translation saved successfully.",
-                            message: "Translation Saved"
-                        },
-                        selectKey: "Select a translation key",
-                        title: "Configure Translation",
-                        translationPlaceholder: "Enter the translated description text...",
-                        translationText: "Translation Text",
-                        updateTitle: "Update Translation"
-                    },
-                    insertPolicyLink: "Wrap selected text with the policy URL as a link",
-                    insertPolicyLinkInvalidUrl: "The Policy URL must be a valid HTTP or HTTPS URL.",
-                    insertPolicyLinkNoPolicyUrl: "Define a Policy URL above before inserting a link.",
-                    insertPolicyLinkNoSelection: "Select the words you want to link, then click.",
-                    insertPolicyLinkShort: "Policy Link",
-                    insertPolicyLinkTooltip: "Wraps the selected text with your Policy URL as a hyperlink.",
-                    labelRoleHint: "Leave empty to use the default. " +
-                        "Select text and click \"Policy Link\" to wrap it with the policy URL."
-                }
-            },
-            preview: {
-                allowButton: "Continue",
-                consentHeader: "Please review and accept the following to proceed.",
-                denyButton: "Decline",
-                emptyDescription: "Write a policy name to preview.",
-                exampleDescription: "I have read and agree to the <0>{{policyName}}</0>.",
-                pageTitle: "Policy Review Required"
-            }
-        }
     }
 };

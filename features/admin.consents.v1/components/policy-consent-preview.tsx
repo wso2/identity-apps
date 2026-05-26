@@ -130,11 +130,11 @@ export const PolicyConsentPreview: FunctionComponent<PolicyConsentPreviewPropsIn
             >
                 <PreviewCard>
                     <Header as="h4" textAlign="center" style={ { marginBottom: 21 } }>
-                        { t("consents:wizard.create.preview.pageTitle") }
+                        { t("consents:policyConsents.wizard.create.preview.pageTitle") }
                     </Header>
 
                     <PreviewHeader>
-                        { t("consents:wizard.create.preview.consentHeader") }
+                        { t("consents:policyConsents.wizard.create.preview.consentHeader") }
                     </PreviewHeader>
 
                     <AttributeRow sx={ { alignItems: "center", mb: 1 } }>
@@ -177,7 +177,7 @@ export const PolicyConsentPreview: FunctionComponent<PolicyConsentPreviewPropsIn
                                 ) : policyName ? (
                                     <>
                                         <Trans
-                                            i18nKey="consents:wizard.create.preview.exampleDescription"
+                                            i18nKey="consents:policyConsents.wizard.create.preview.exampleDescription"
                                             values={ { policyName } }
                                             components={ [
                                                 <a className="rich-text-link" />
@@ -187,7 +187,7 @@ export const PolicyConsentPreview: FunctionComponent<PolicyConsentPreviewPropsIn
                                     </>
                                 ) : (
                                     <PlaceholderText>
-                                        { t("consents:wizard.create.preview.emptyDescription") }
+                                        { t("consents:policyConsents.wizard.create.preview.emptyDescription") }
                                     </PlaceholderText>
                                 ) }
                             </RichTextDescription>
@@ -200,7 +200,7 @@ export const PolicyConsentPreview: FunctionComponent<PolicyConsentPreviewPropsIn
                         variant="contained"
                         sx={ { mb: 1 } }
                     >
-                        { t("consents:wizard.create.preview.allowButton") }
+                        { t("common:continue") }
                     </Button>
                     <Button
                         type="button"
@@ -208,7 +208,7 @@ export const PolicyConsentPreview: FunctionComponent<PolicyConsentPreviewPropsIn
                         variant="contained"
                         color="secondary"
                     >
-                        { t("consents:wizard.create.preview.denyButton") }
+                        { t("common:cancel") }
                     </Button>
                 </PreviewCard>
             </Box>

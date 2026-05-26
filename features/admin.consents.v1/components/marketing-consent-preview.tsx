@@ -148,7 +148,7 @@ export const MarketingConsentPreview: FunctionComponent<MarketingConsentPreviewP
                     </Header>
 
                     <PreviewHeader>
-                        { t("consents:wizard.create.preview.consentHeader") }
+                        { t("consents:marketingConsents.preview.consentHeader") }
                     </PreviewHeader>
 
                     <CheckboxRow>
@@ -202,10 +202,10 @@ export const MarketingConsentPreview: FunctionComponent<MarketingConsentPreviewP
                     ) }
 
                     <Button type="button" fullWidth variant="contained" sx={ { mb: 1 } }>
-                        { t("consents:marketingConsents.preview.allowButton") }
+                        { t("common:continue") }
                     </Button>
                     <Button type="button" fullWidth variant="contained" color="secondary">
-                        { t("consents:marketingConsents.preview.denyButton") }
+                        { t("common:cancel") }
                     </Button>
                 </PreviewCard>
             </Box>

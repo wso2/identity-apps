@@ -447,7 +447,7 @@ export const myAccount: MyAccountNS = {
             }
         },
         policyConsentManagement: {
-            consentedOnLabel: "Active from",
+            consentedOnLabel: "Accepted on",
             dangerZones: {
                 revoke: {
                     actionTitle: "Revoke",
@@ -1753,7 +1753,7 @@ export const myAccount: MyAccountNS = {
             title: "Applications"
         },
         consents: {
-            subTitle: "Manage the consents you have provided for applications and accepted policies",
+            subTitle: "View and manage consents for applications and policies you have accepted",
             title: "Consents"
         },
         overview: {
@@ -1850,8 +1850,7 @@ export const myAccount: MyAccountNS = {
                 empty: "You have not granted consent to any application"
             },
             description:
-                "Review the consents you have provided for each application. " +
-                "Also, you can revoke one or many of them as required.",
+                "Review consents granted to each application and revoke them as needed.",
             heading: "Manage Consents",
             placeholders: {
                 emptyConsentList: {
@@ -1860,7 +1859,7 @@ export const myAccount: MyAccountNS = {
             }
         },
         policyConsentManagement: {
-            description: "Review the policies you have accepted.",
+            description: "ConseReview the policies you have agreed to.nts",
             heading: "Policy Consents",
             placeholders: {
                 emptyConsentList: {

@@ -404,16 +404,16 @@ const ConsentEditorToolbar: FunctionComponent<ConsentEditorToolbarPropsInterface
      */
     const policyLinkTooltip: () => string = (): string => {
         if (!policyUrl) {
-            return t("consents:wizard.create.form.description.insertPolicyLinkNoPolicyUrl");
+            return t("consents:policyConsents.wizard.create.form.description.insertPolicyLinkNoPolicyUrl");
         }
         if (!isValidPolicyUrl) {
-            return t("consents:wizard.create.form.description.insertPolicyLinkInvalidUrl");
+            return t("consents:policyConsents.wizard.create.form.description.insertPolicyLinkInvalidUrl");
         }
         if (!hasSelection) {
-            return t("consents:wizard.create.form.description.insertPolicyLinkNoSelection");
+            return t("consents:policyConsents.wizard.create.form.description.insertPolicyLinkNoSelection");
         }
 
-        return t("consents:wizard.create.form.description.insertPolicyLinkTooltip");
+        return t("consents:policyConsents.wizard.create.form.description.insertPolicyLinkTooltip");
     };
 
     return (
@@ -480,10 +480,10 @@ const ConsentEditorToolbar: FunctionComponent<ConsentEditorToolbarPropsInterface
                                     type="button"
                                     disabled={ disabled || !hasSelection || !isValidPolicyUrl }
                                     onClick={ handleInsertPolicyLink }
-                                    aria-label={ t("consents:wizard.create.form.description.insertPolicyLink") }
+                                    aria-label={ t("consents:policyConsents.wizard.create.form.description.insertPolicyLink") }
                                 >
                                     <OxygenLinkIcon />
-                                    { t("consents:wizard.create.form.description.insertPolicyLinkShort") }
+                                    { t("consents:policyConsents.wizard.create.form.description.insertPolicyLinkShort") }
                                 </ToolbarPolicyLinkButton>
                             </span>
                         </Tooltip>
@@ -596,11 +596,11 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
     const i18nButtonRef: RefObject<HTMLButtonElement> = useRef<HTMLButtonElement>(null);
 
     const exampleLinkText: string =
-        policyName || policyUrl || t("consents:form.name.placeholder");
+        policyName || policyUrl || t("consents:policyConsents.form.name.placeholder");
     const isValidPolicyUrl: boolean = !!policyUrl && URLUtils.isHttpsOrHttpUrl(policyUrl);
 
     const marketingPlaceholderI18nKey: string = "consents:marketingConsents.preview.exampleDescription";
-    const policyPlaceholderI18nKey: string = "consents:wizard.create.preview.exampleDescription";
+    const policyPlaceholderI18nKey: string = "consents:policyConsents.wizard.create.preview.exampleDescription";
 
     const placeholderAriaText: string = variant === "marketing"
         ? t(marketingPlaceholderI18nKey).replace(/<[^>]*>/g, "")
@@ -661,7 +661,7 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
                     ) }
                     { variant !== "marketing" && (
                         <Tooltip
-                            title={ t("consents:wizard.create.form.description.configureTranslation") }
+                            title={ t("consents:policyConsents.wizard.create.form.description.configureTranslation") }
                             placement="top"
                             arrow
                         >
@@ -671,7 +671,7 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
                                 disabled={ disabled }
                                 onClick={ () => setIsI18nCardOpen(!isI18nCardOpen) }
                                 aria-label={
-                                    t("consents:wizard.create.form.description.configureTranslation")
+                                    t("consents:policyConsents.wizard.create.form.description.configureTranslation")
                                 }
                                 aria-pressed={ isI18nCardOpen }
                             >
@@ -699,7 +699,7 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
             <Hint>
                 { t(variant === "marketing"
                     ? "consents:marketingConsents.form.description.labelRoleHint"
-                    : "consents:wizard.create.form.description.labelRoleHint")
+                    : "consents:policyConsents.wizard.create.form.description.labelRoleHint")
                 }
             </Hint>
         </EditorContainer>

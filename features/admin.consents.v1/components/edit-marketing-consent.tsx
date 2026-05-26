@@ -606,7 +606,7 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
                                                         type="info"
                                                         content={ (
                                                             <Trans
-                                                                i18nKey="consents:form.mandatory.linkHint"
+                                                                i18nKey="consents:marketingConsents.form.linkHint"
                                                             >
                                                                 <Link
                                                                     onClick={ handleRegFlowBuilderClick }

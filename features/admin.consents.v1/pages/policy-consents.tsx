@@ -206,9 +206,9 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
         deletePurpose(deletingConsent.id)
             .then((): void => {
                 dispatch(addAlert({
-                    description: t("consents:notifications.delete.success.description"),
+                    description: t("consents:policyConsents.notifications.delete.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("consents:notifications.delete.success.message")
+                    message: t("consents:policyConsents.notifications.delete.success.message")
                 }));
                 mutateConsents();
             })
@@ -219,22 +219,22 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
 
                 switch (status) {
                     case 404:
-                        description = t("consents:notifications.delete.error.notFound.description");
-                        message = t("consents:notifications.delete.error.notFound.message");
+                        description = t("consents:policyConsents.notifications.delete.error.notFound.description");
+                        message = t("consents:policyConsents.notifications.delete.error.notFound.message");
 
                         break;
                     case 409:
-                        description = t("consents:notifications.delete.error.conflict.description");
-                        message = t("consents:notifications.delete.error.conflict.message");
+                        description = t("consents:policyConsents.notifications.delete.error.conflict.description");
+                        message = t("consents:policyConsents.notifications.delete.error.conflict.message");
 
                         break;
                     default:
                         if (status >= 500) {
-                            description = t("consents:notifications.delete.error.serverError.description");
-                            message = t("consents:notifications.delete.error.serverError.message");
+                            description = t("consents:policyConsents.notifications.delete.error.serverError.description");
+                            message = t("consents:policyConsents.notifications.delete.error.serverError.message");
                         } else {
-                            description = t("consents:notifications.delete.error.description");
-                            message = t("consents:notifications.delete.error.message");
+                            description = t("consents:policyConsents.notifications.delete.error.description");
+                            message = t("consents:policyConsents.notifications.delete.error.message");
                         }
                 }
 
@@ -253,15 +253,15 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
 
     return (
         <PageLayout
-            pageTitle={ t("consents:pages.list.title") }
-            title={ t("consents:pages.list.heading") }
-            description={ t("consents:pages.list.description") }
+            pageTitle={ t("consents:policyConsents.pages.list.title") }
+            title={ t("consents:policyConsents.pages.list.heading") }
+            description={ t("consents:policyConsents.pages.list.description") }
             data-componentid={ `${componentId}-layout` }
             backButton={ {
                 onClick: () => {
                     history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
                 },
-                text: t("consents:pages.list.backButton")
+                text: t("governanceConnectors:goBackLoginAndRegistration")
             } }
             action={ (
                 (consents?.length ?? 0) > 0 ? (
@@ -273,7 +273,7 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                             data-componentid={ `${componentId}-add-button` }
                         >
                             <Icon name="add" />
-                            { t("consents:pages.list.actions.addPolicy") }
+                            { t("consents:policyConsents.pages.list.actions.addPolicy") }
                         </PrimaryButton>
                     </Show>
                 ) : null
@@ -291,7 +291,7 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                             }
                         ] }
                         filterAttributePlaceholder={ t("common:name") }
-                        placeholder={ t("consents:pages.list.search.placeholder") }
+                        placeholder={ t("consents:policyConsents.pages.list.search.placeholder") }
                         defaultSearchAttribute={ "name" }
                         defaultSearchOperator={ "co" }
                         triggerClearQuery={ triggerClearQuery }
@@ -345,10 +345,10 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                         onClose={ () => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showDeleteConfirmationModal }
-                        assertionHint={ t("consents:pages.list.deleteConfirmation.assertionHint") }
+                        assertionHint={ t("consents:policyConsents.pages.deleteConfirmation.assertionHint") }
                         assertionType="checkbox"
-                        primaryAction={ t("consents:pages.list.deleteConfirmation.primaryAction") }
-                        secondaryAction={ t("consents:pages.list.deleteConfirmation.secondaryAction") }
+                        primaryAction={ t("consents:policyConsents.pages.deleteConfirmation.primaryAction") }
+                        secondaryAction={ t("consents:policyConsents.pages.deleteConfirmation.secondaryAction") }
                         onSecondaryActionClick={ () => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ () => handleDeleteConsent() }
                         data-componentid={ `${ componentId }-delete-confirmation-modal` }
@@ -358,19 +358,19 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                         <ConfirmationModal.Header
                             data-componentid={ `${ componentId }-delete-confirmation-modal-header` }
                         >
-                            { t("consents:pages.list.deleteConfirmation.header") }
+                            { t("consents:policyConsents.pages.deleteConfirmation.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             negative
                             data-componentid={ `${ componentId }-delete-confirmation-modal-message` }
                         >
-                            { t("consents:pages.list.deleteConfirmation.message") }
+                            { t("consents:policyConsents.pages.deleteConfirmation.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-componentid={ `${ componentId }-delete-confirmation-modal-content` }
                         >
-                            { t("consents:pages.list.deleteConfirmation.content") }
+                            { t("consents:policyConsents.pages.deleteConfirmation.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

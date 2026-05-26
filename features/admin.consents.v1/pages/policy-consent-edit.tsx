@@ -80,9 +80,9 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
         deletePurpose(id)
             .then((): void => {
                 dispatch(addAlert({
-                    description: t("consents:notifications.delete.success.description"),
+                    description: t("consents:policyConsents.notifications.delete.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("consents:notifications.delete.success.message")
+                    message: t("consents:policyConsents.notifications.delete.success.message")
                 }));
                 handleBackButtonClick();
             })
@@ -93,22 +93,22 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
 
                 switch (status) {
                     case 404:
-                        description = t("consents:notifications.delete.error.notFound.description");
-                        message = t("consents:notifications.delete.error.notFound.message");
+                        description = t("consents:policyConsents.notifications.delete.error.notFound.description");
+                        message = t("consents:policyConsents.notifications.delete.error.notFound.message");
 
                         break;
                     case 409:
-                        description = t("consents:notifications.delete.error.conflict.description");
-                        message = t("consents:notifications.delete.error.conflict.message");
+                        description = t("consents:policyConsents.notifications.delete.error.conflict.description");
+                        message = t("consents:policyConsents.notifications.delete.error.conflict.message");
 
                         break;
                     default:
                         if (status >= 500) {
-                            description = t("consents:notifications.delete.error.serverError.description");
-                            message = t("consents:notifications.delete.error.serverError.message");
+                            description = t("consents:policyConsents.notifications.delete.error.serverError.description");
+                            message = t("consents:policyConsents.notifications.delete.error.serverError.message");
                         } else {
-                            description = t("consents:notifications.delete.error.description");
-                            message = t("consents:notifications.delete.error.message");
+                            description = t("consents:policyConsents.notifications.delete.error.description");
+                            message = t("consents:policyConsents.notifications.delete.error.message");
                         }
                 }
 
@@ -127,7 +127,7 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
 
     return (
         <PageLayout
-            pageTitle={ t("consents:pages.edit.title") }
+            pageTitle={ t("consents:policyConsents.pages.edit.title") }
             title={ consent?.displayName || "" }
             description={ undefined }
             image={ (
@@ -148,7 +148,7 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
             backButton={ {
                 "data-componentid": `${componentId}-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("consents:pages.edit.backButton")
+                text: t("consents:policyConsents.pages.edit.backButton")
             } }
         >
             { consent && (
@@ -159,9 +159,9 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
                             sectionHeader={ t("common:dangerZone") }
                         >
                             <DangerZone
-                                actionTitle={ t("consents:pages.edit.dangerZone.actionTitle") }
-                                header={ t("consents:pages.edit.dangerZone.header") }
-                                subheader={ t("consents:pages.edit.dangerZone.subheader") }
+                                actionTitle={ t("consents:policyConsents.pages.edit.dangerZone.actionTitle") }
+                                header={ t("consents:policyConsents.pages.edit.dangerZone.header") }
+                                subheader={ t("consents:policyConsents.pages.edit.dangerZone.subheader") }
                                 onActionClick={ () => setShowDeleteConfirmation(true) }
                             />
                         </DangerZoneGroup>
@@ -170,10 +170,10 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
                         onClose={ () => setShowDeleteConfirmation(false) }
                         type="negative"
                         open={ showDeleteConfirmation }
-                        assertionHint={ t("consents:pages.edit.deleteConfirmation.assertionHint") }
+                        assertionHint={ t("consents:policyConsents.pages.deleteConfirmation.assertionHint") }
                         assertionType="checkbox"
-                        primaryAction={ t("consents:pages.edit.deleteConfirmation.primaryAction") }
-                        secondaryAction={ t("consents:pages.edit.deleteConfirmation.secondaryAction") }
+                        primaryAction={ t("consents:policyConsents.pages.deleteConfirmation.primaryAction") }
+                        secondaryAction={ t("consents:policyConsents.pages.deleteConfirmation.secondaryAction") }
                         onSecondaryActionClick={ () => setShowDeleteConfirmation(false) }
                         onPrimaryActionClick={ () => handleDeleteConsent() }
                         data-componentid={ `${componentId}-delete-confirmation-modal` }
@@ -183,19 +183,19 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
                         <ConfirmationModal.Header
                             data-componentid={ `${componentId}-delete-confirmation-modal-header` }
                         >
-                            { t("consents:pages.edit.deleteConfirmation.header") }
+                            { t("consents:policyConsents.pages.deleteConfirmation.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             negative
                             data-componentid={ `${componentId}-delete-confirmation-modal-message` }
                         >
-                            { t("consents:pages.edit.deleteConfirmation.message") }
+                            { t("consents:policyConsents.pages.deleteConfirmation.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-componentid={ `${componentId}-delete-confirmation-modal-content` }
                         >
-                            { t("consents:pages.edit.deleteConfirmation.content") }
+                            { t("consents:policyConsents.pages.deleteConfirmation.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 </>

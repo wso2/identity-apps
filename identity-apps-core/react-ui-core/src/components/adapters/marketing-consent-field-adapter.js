@@ -175,7 +175,7 @@ const MarketingConsentFieldAdapter = ({ component, formStateHandler, fieldErrorH
 
                 const fallbackDescription = (
                     resolveElementText(translations, "{{consent.marketing.exampleDescription}}")
-                        || "I agree to receive information and commerical offers.");
+                        || "I agree to receive information and commercial offers.");
                 const displayDescription = description || fallbackDescription;
 
                 return (

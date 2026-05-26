@@ -16,6 +16,48 @@
  * under the License.
  */
 
+interface ConsentNotificationsNS {
+    create: {
+        error: {
+            conflict: { description: string; message: string };
+            description: string;
+            message: string;
+            notFound: { description: string; message: string };
+            serverError: { description: string; message: string };
+        };
+        success: { description: string; message: string };
+    };
+    delete: {
+        error: {
+            conflict: { description: string; message: string };
+            description: string;
+            message: string;
+            notFound: { description: string; message: string };
+            serverError: { description: string; message: string };
+        };
+        success: { description: string; message: string };
+    };
+    update: {
+        error: {
+            conflict: { description: string; message: string };
+            description: string;
+            message: string;
+            notFound: { description: string; message: string };
+            serverError: { description: string; message: string };
+        };
+        success: { description: string; message: string };
+    };
+}
+
+interface ConsentDeleteConfirmationNS {
+    assertionHint: string;
+    content: string;
+    header: string;
+    message: string;
+    primaryAction: string;
+    secondaryAction: string;
+}
+
 export interface ConsentsNS {
     marketingConsents: {
         form: {
@@ -24,6 +66,7 @@ export interface ConsentsNS {
                 label: string;
                 labelRoleHint: string;
             };
+            linkHint: string;
             name: {
                 label: string;
                 placeholder: string;
@@ -47,75 +90,9 @@ export interface ConsentsNS {
                 title: string;
             };
         };
-        notifications: {
-            create: {
-                error: {
-                    conflict: {
-                        description: string;
-                        message: string;
-                    };
-                    description: string;
-                    message: string;
-                    notFound: {
-                        description: string;
-                        message: string;
-                    };
-                    serverError: {
-                        description: string;
-                        message: string;
-                    };
-                };
-                success: {
-                    description: string;
-                    message: string;
-                };
-            };
-            delete: {
-                error: {
-                    conflict: {
-                        description: string;
-                        message: string;
-                    };
-                    description: string;
-                    message: string;
-                    notFound: {
-                        description: string;
-                        message: string;
-                    };
-                    serverError: {
-                        description: string;
-                        message: string;
-                    };
-                };
-                success: {
-                    description: string;
-                    message: string;
-                };
-            };
-            update: {
-                error: {
-                    conflict: {
-                        description: string;
-                        message: string;
-                    };
-                    description: string;
-                    message: string;
-                    notFound: {
-                        description: string;
-                        message: string;
-                    };
-                    serverError: {
-                        description: string;
-                        message: string;
-                    };
-                };
-                success: {
-                    description: string;
-                    message: string;
-                };
-            };
-        };
+        notifications: ConsentNotificationsNS;
         pages: {
+            deleteConfirmation: ConsentDeleteConfirmationNS;
             edit: {
                 backButton: string;
                 dangerZone: {
@@ -123,29 +100,12 @@ export interface ConsentsNS {
                     header: string;
                     subheader: string;
                 };
-                deleteConfirmation: {
-                    assertionHint: string;
-                    content: string;
-                    header: string;
-                    message: string;
-                    primaryAction: string;
-                    secondaryAction: string;
-                };
                 title: string;
             };
             list: {
                 actions: {
                     addConsent: string;
                 };
-                deleteConfirmation: {
-                    assertionHint: string;
-                    header: string;
-                    message: string;
-                    content: string;
-                    primaryAction: string;
-                    secondaryAction: string;
-                };
-                backButton: string;
                 description: string;
                 heading: string;
                 search: {
@@ -159,59 +119,129 @@ export interface ConsentsNS {
             };
         };
         preview: {
-            allowButton: string;
-            denyButton: string;
+            consentHeader: string;
             emptyDescription: string;
             exampleDescription: string;
             pageTitle: string;
         };
     };
-    form: {
-        createNewVersion: string;
-        description: {
-            label: string;
-        };
-        mandatory: {
-            label: string;
-            hint: string;
-            linkHint: string;
-        };
-        name: {
-            label: string;
-            placeholder: string;
-            error: {
-                duplicateName: string;
+    policyConsents: {
+        form: {
+            createNewVersion: string;
+            description: {
+                label: string;
+            };
+            mandatory: {
+                label: string;
+                hint: string;
+                linkHint: string;
+            };
+            name: {
+                label: string;
+                placeholder: string;
+                error: {
+                    duplicateName: string;
+                };
+            };
+            policyUrl: {
+                label: string;
+                hint: string;
+                versionHint: string;
+            };
+            promptOnLogin: {
+                label: string;
+                hint: string;
+                activeHint: string;
+            };
+            versionDropdown: {
+                trigger: string;
+                currentVersionLabel: string;
+            };
+            versionModal: {
+                createNewVersion: string;
+                promptAtLogin: string;
+                promptDescription: string;
             };
         };
-        policyUrl: {
-            label: string;
-            hint: string;
-            versionHint: string;
+        list: {
+            emptyPlaceholder: {
+                addPolicy: string;
+                subtitle: string;
+            };
+            emptySearchPlaceholder: {
+                action: string;
+                subtitle: string;
+                title: string;
+            };
         };
-        promptOnLogin: {
-            label: string;
-            hint: string;
-            activeHint: string;
+        notifications: ConsentNotificationsNS;
+        pages: {
+            deleteConfirmation: ConsentDeleteConfirmationNS;
+            edit: {
+                backButton: string;
+                dangerZone: {
+                    actionTitle: string;
+                    header: string;
+                    subheader: string;
+                };
+                title: string;
+            };
+            list: {
+                actions: {
+                    addPolicy: string;
+                };
+                description: string;
+                heading: string;
+                search: {
+                    placeholder: string;
+                };
+                title: string;
+            };
+            new: {
+                backButton: string;
+                title: string;
+            };
         };
-        versionDropdown: {
-            trigger: string;
-            currentVersionLabel: string;
-        };
-        versionModal: {
-            createNewVersion: string;
-            promptAtLogin: string;
-            promptDescription: string;
-        };
-    };
-    list: {
-        emptyPlaceholder: {
-            addPolicy: string;
-            subtitle: string;
-        };
-        emptySearchPlaceholder: {
-            action: string;
-            subtitle: string;
-            title: string;
+        wizard: {
+            create: {
+                form: {
+                    description: {
+                        configureTranslation: string;
+                        i18nCard: {
+                            brandingRequired: string;
+                            createTitle: string;
+                            deleteError: { description: string; message: string };
+                            deleteSuccess: { description: string; message: string };
+                            deleteTooltip: string;
+                            editTooltip: string;
+                            i18nKey: string;
+                            keyPlaceholder: string;
+                            language: string;
+                            newTooltip: string;
+                            saveError: { description: string; message: string };
+                            saveSuccess: { description: string; message: string };
+                            selectKey: string;
+                            title: string;
+                            translationPlaceholder: string;
+                            translationText: string;
+                            updateTitle: string;
+                        };
+                        insertPolicyLink: string;
+                        insertPolicyLinkInvalidUrl: string;
+                        insertPolicyLinkShort: string;
+                        insertPolicyLinkTooltip: string;
+                        insertPolicyLinkNoPolicyUrl: string;
+                        insertPolicyLinkNoSelection: string;
+                        labelRoleHint: string;
+                    };
+                };
+                preview: {
+                    consentHeader: string;
+                    emptyDescription: string;
+                    exampleDescription: string;
+                    pageTitle: string;
+                };
+            };
         };
     };
     registrationFlow: {
@@ -230,174 +260,8 @@ export interface ConsentsNS {
         selectMarketing: string;
         selectPolicies: string;
     };
-    notifications: {
-        create: {
-            error: {
-                conflict: {
-                    description: string;
-                    message: string;
-                };
-                description: string;
-                message: string;
-                notFound: {
-                    description: string;
-                    message: string;
-                };
-                serverError: {
-                    description: string;
-                    message: string;
-                };
-            };
-            success: {
-                description: string;
-                message: string;
-            };
-        };
-        delete: {
-            error: {
-                conflict: {
-                    description: string;
-                    message: string;
-                };
-                description: string;
-                message: string;
-                notFound: {
-                    description: string;
-                    message: string;
-                };
-                serverError: {
-                    description: string;
-                    message: string;
-                };
-            };
-            success: {
-                description: string;
-                message: string;
-            };
-        };
-        updatePolicy: {
-            error: {
-                conflict: {
-                    description: string;
-                    message: string;
-                };
-                description: string;
-                message: string;
-                notFound: {
-                    description: string;
-                    message: string;
-                };
-                serverError: {
-                    description: string;
-                    message: string;
-                };
-            };
-            success: {
-                description: string;
-                message: string;
-            };
-        };
-    };
-    pages: {
-        edit: {
-            backButton: string;
-            dangerZone: {
-                actionTitle: string;
-                header: string;
-                subheader: string;
-            };
-            deleteConfirmation: {
-                assertionHint: string;
-                content: string;
-                header: string;
-                message: string;
-                primaryAction: string;
-                secondaryAction: string;
-            };
-            title: string;
-        };
-        list: {
-            actions: {
-                addPolicy: string;
-            };
-            deleteConfirmation: {
-                assertionHint: string;
-                header: string;
-                message: string;
-                content: string;
-                primaryAction: string;
-                secondaryAction: string;
-            };
-            backButton: string;
-            description: string;
-            heading: string;
-            search: {
-                placeholder: string;
-            };
-            title: string;
-        };
-        new: {
-            backButton: string;
-            title: string;
-        };
-    };
     tabs: {
         content: { label: string };
         preview: { label: string };
-    };
-    wizard: {
-        create: {
-            form: {
-                description: {
-                    configureTranslation: string;
-                    i18nCard: {
-                        brandingRequired: string;
-                        createTitle: string;
-                        deleteError: {
-                            description: string;
-                            message: string;
-                        };
-                        deleteSuccess: {
-                            description: string;
-                            message: string;
-                        };
-                        deleteTooltip: string;
-                        editTooltip: string;
-                        i18nKey: string;
-                        keyPlaceholder: string;
-                        language: string;
-                        newTooltip: string;
-                        saveError: {
-                            description: string;
-                            message: string;
-                        };
-                        saveSuccess: {
-                            description: string;
-                            message: string;
-                        };
-                        selectKey: string;
-                        title: string;
-                        translationPlaceholder: string;
-                        translationText: string;
-                        updateTitle: string;
-                    };
-                    insertPolicyLink: string;
-                    insertPolicyLinkInvalidUrl: string;
-                    insertPolicyLinkShort: string;
-                    insertPolicyLinkTooltip: string;
-                    insertPolicyLinkNoPolicyUrl: string;
-                    insertPolicyLinkNoSelection: string;
-                    labelRoleHint: string;
-                };
-            };
-            preview: {
-                allowButton: string;
-                consentHeader: string;
-                denyButton: string;
-                emptyDescription: string;
-                exampleDescription: string;
-                pageTitle: string;
-            };
-        };
     };
 }
