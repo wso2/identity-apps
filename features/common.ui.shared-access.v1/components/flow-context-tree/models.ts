@@ -67,7 +67,7 @@ export interface FlowExtensionContextTreeResponse {
     /** Echoed flow type, or null when the default tree was requested. */
     flowType?: string | null;
     /** Filtered context tree. Disabled fields are absent, not flagged. */
-    contextTree: ContextTreeNodeMetadata[];
+    context: ContextTreeNodeMetadata[];
     /** Whether REDIRECT is advertised in `allowedOperations` for this flow type. */
     redirectionEnabled: boolean;
     /**

@@ -235,7 +235,7 @@ const AccessConfigOverrideDialog: FunctionComponent<AccessConfigOverrideDialogPr
                         ) }
                         <FlowContextTree
                             key={ resetKey }
-                            contextTree={ contextTreeData.contextTree }
+                            contextTree={ contextTreeData.context }
                             initialAccessConfig={ effectiveAccessConfig }
                             hasCertificate={ hasCertificate }
                             allowReadOnlyClaimsModification={ contextTreeData.allowReadOnlyClaimsModification }

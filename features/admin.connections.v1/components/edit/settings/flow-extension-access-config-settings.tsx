@@ -220,7 +220,7 @@ export const FlowExtensionAccessConfigSettings: FunctionComponent<
                 ) }
                 <FlowContextTree
                     key={ resetKey }
-                    contextTree={ contextTreeData.contextTree }
+                    contextTree={ contextTreeData.context }
                     onChange={ handleAccessConfigChange }
                     initialAccessConfig={ initialAccessConfig }
                     hasCertificate={ hasCertificate }
