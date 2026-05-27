@@ -53,7 +53,7 @@ export interface MetadataInterface {
     /**
      * List of active flow extension connections from metadata.
      */
-    inflowExtensionConnections?: FlowExtensionConnectionInterface[];
+    flowExtensionConnections?: FlowExtensionConnectionInterface[];
     /**
      * Is a Workflow engagement enabled?
      */

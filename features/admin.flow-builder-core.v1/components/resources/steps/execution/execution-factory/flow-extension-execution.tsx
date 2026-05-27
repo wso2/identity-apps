@@ -67,14 +67,14 @@ const FlowExtensionExecution = ({
     const selectedConnection: FlowExtensionConnectionInterface | null = useMemo(() => {
         const actionId: string = resource?.data?.action?.executor?.meta?.actionId;
 
-        if (!actionId || !metadata?.inflowExtensionConnections?.length) {
+        if (!actionId || !metadata?.flowExtensionConnections?.length) {
             return null;
         }
 
-        return metadata.inflowExtensionConnections.find(
+        return metadata.flowExtensionConnections.find(
             (c: FlowExtensionConnectionInterface) => c.actionId === actionId
         ) || null;
-    }, [ resource?.data?.action?.executor?.meta?.actionId, metadata?.inflowExtensionConnections ]);
+    }, [ resource?.data?.action?.executor?.meta?.actionId, metadata?.flowExtensionConnections ]);
 
     const iconSrc: string = selectedConnection?.iconUrl
         || loadStaticResource(DEFAULT_ICON);

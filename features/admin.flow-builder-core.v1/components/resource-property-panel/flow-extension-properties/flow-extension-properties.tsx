@@ -69,7 +69,7 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
 
     const connections: FlowExtensionConnectionInterface[] = useMemo(() => {
         const allConnections: FlowExtensionConnectionInterface[] =
-            metadata?.inflowExtensionConnections ?? [];
+            metadata?.flowExtensionConnections ?? [];
 
         // Filter out connections already used by other flow extension nodes.
         const nodes: Node[] = getNodes();
@@ -83,7 +83,7 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
         return allConnections.filter(
             (c: FlowExtensionConnectionInterface) => !usedActionIds.has(c.actionId)
         );
-    }, [ metadata?.inflowExtensionConnections, getNodes, resource?.id ]);
+    }, [ metadata?.flowExtensionConnections, getNodes, resource?.id ]);
 
     const selectedConnection: FlowExtensionConnectionInterface | null = useMemo(() => {
         const actionId: string = resource?.data?.action?.executor?.meta?.actionId;
