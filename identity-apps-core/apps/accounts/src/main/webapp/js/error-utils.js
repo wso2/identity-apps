@@ -19,12 +19,22 @@
 "use strict";
 
 /**
+ * Strips surrounding double curly braces from a string (e.g. "{{key}}" → "key").
+ *
+ * @param {string} s - The string to strip.
+ * @returns {string} The stripped string, or the original value if no braces are present.
+ */
+function stripBraces(s) {
+    return s && s.startsWith("{{") && s.endsWith("}}") ? s.slice(2, -2) : s;
+}
+
+/**
  * Returns the i18n keys for the given error code.
  *
  * @param {string} errorCode - The error code (e.g., "60001")
  * @returns {object} The i18n keys for the given error code.
  */
-function getI18nKeyForError(errorCode, flowType, errorMessage) {
+function getI18nKeyForError(errorCode, flowType, errorMessage, errorDescription) {
     switch (errorCode) {
         case "FE-60001":
 
@@ -40,7 +50,7 @@ function getI18nKeyForError(errorCode, flowType, errorMessage) {
                 description: "sign.up.error.username.not.provided.description",
                 portalUrlStatus: "true"
             };
-        
+
         case "FEE-60001":
         case "FE-60003":
 
@@ -49,9 +59,9 @@ function getI18nKeyForError(errorCode, flowType, errorMessage) {
                 description: "sign.up.error.username.already.exists.description",
                 portalUrlStatus: "true"
             };
-            
+
         case "FE-60004":
-            
+
             if( flowType === "USER_REGISTRATION") {
                 return {
                     message: "sign.up.flow.error.undefined.flow.id.message",
@@ -72,26 +82,26 @@ function getI18nKeyForError(errorCode, flowType, errorMessage) {
                 message: "orchestration.flow.error.undefined.flow.id.message",
                 description: "orchestration.flow.error.undefined.flow.id.description"
             };
-        
+
         case "FEE-60002":
         case "FE-60005":
 
             return {
-                message: "sign.up.error.invalid.username.message", 
+                message: "sign.up.error.invalid.username.message",
                 description: "sign.up.error.invalid.username.description",
                 portalUrlStatus: "true"
             };
 
         case "FE-60006":
 
-            if( flowType === "USER_REGISTRATION") { 
+            if( flowType === "USER_REGISTRATION") {
                 return {
                     message: "sign.up.error.failed.message",
                     description: "sign.up.error.failed.description",
                     portalUrlStatus: "true"
                 };
             } else if (flowType === "INVITED_USER_REGISTRATION") {
-                if (errorMessage.startsWith("Invalid Code")) {
+                if (errorDescription.startsWith("Invalid Code")) {
                     return {
                         message: "invited.user.registration.flow.error.invalid.code.message",
                         description: "invited.user.registration.flow.error.invalid.code.description"
@@ -108,13 +118,12 @@ function getI18nKeyForError(errorCode, flowType, errorMessage) {
                     description: "password.reset.failed.description",
                     portalUrlStatus: "true"
                 };
-            }        
+            }
             return {
                 message: "orchestration.flow.error.failed.message",
                 description: "orchestration.flow.error.failed.description",
                 portalUrlStatus: "true"
             };
-            
 
         case "FE-60007":
 
@@ -136,7 +145,7 @@ function getI18nKeyForError(errorCode, flowType, errorMessage) {
                     description: "password.reset.error.request.processing.failed.description",
                     portalUrlStatus: "true"
                 };
-            }   
+            }
             return {
                 message: "orchestration.flow.error.request.processing.failed.message",
                 description: "orchestration.flow.error.request.processing.failed.description",
@@ -152,7 +161,7 @@ function getI18nKeyForError(errorCode, flowType, errorMessage) {
             };
 
         case "FE-60009":
-            
+
             return {
                 message: "orchestration.flow.error.invalid.actionId.message",
                 description: "orchestration.flow.error.invalid.actionId.description"
@@ -175,7 +184,7 @@ function getI18nKeyForError(errorCode, flowType, errorMessage) {
             };
 
         case "FE-60101":
-    
+
             return {
                 message: "orchestration.flow.error.dynamic.portal.not.enabled.message",
                 description: "orchestration.flow.error.dynamic.portal.not.enabled.description",
@@ -183,7 +192,7 @@ function getI18nKeyForError(errorCode, flowType, errorMessage) {
             };
 
         case "FE-60102":
-        
+
             return {
                 message: "orchestration.flow.error.self.registration.not.enabled.message",
                 description: "orchestration.flow.error.self.registration.not.enabled.description",
@@ -191,20 +200,20 @@ function getI18nKeyForError(errorCode, flowType, errorMessage) {
             };
 
         case "FE-60103":
-        
+
             return {
                 message: "orchestration.flow.error.invalid.flowType.message",
                 description: "orchestration.flow.error.invalid.flowType.description"
             };
 
         case "FE-60104":
-        
+
             return {
                 message: "orchestration.flow.error.disabled.flow.message",
                 description: "orchestration.flow.error.disabled.flow.description",
                 portalUrlStatus: "true"
             };
-        
+
         case "FEE-60003":
         case "FE-60012":
 
@@ -213,6 +222,14 @@ function getI18nKeyForError(errorCode, flowType, errorMessage) {
                 description: "orchestration.flow.error.preUpdatePassword.action.failure.description",
                 portalUrlStatus: "true"
             };
+
+        case "FE-65033": {
+            return {
+                message: stripBraces(errorMessage) || "orchestration.flow.error.failed.message",
+                description: stripBraces(errorDescription) || "orchestration.flow.error.failed.description",
+                portalUrlStatus: "true"
+            };
+        }
 
         default:
 
