@@ -116,7 +116,10 @@ export const mapMetadataToState = (
         dynamicEntryType: node.dynamicEntryType ?? "",
         exposeEncrypted: false,
         exposed: false,
-        key: node.key,
+        // Path-derived key — backend metadata reuses bare names like "id" across
+        // siblings (user.id, organization.id, application.id). Using node.key
+        // verbatim makes updateNode match all of them at once.
+        key: `node:${normalisePath(node.path)}`,
         modify: false,
         modifyEncrypted: false,
         nodeType: node.nodeType,
@@ -385,7 +388,10 @@ export const mapMetadataToStateWithAccessConfig = (
                 dynamicEntryType: node.dynamicEntryType ?? "",
                 exposeEncrypted,
                 exposed,
-                key: node.key,
+                // Path-derived key — backend metadata reuses bare names like "id"
+                // across siblings, which caused updateNode to toggle every node
+                // sharing the same key at once.
+                key: `node:${np}`,
                 modify: directModify,
                 modifyEncrypted,
                 nodeType: node.nodeType,

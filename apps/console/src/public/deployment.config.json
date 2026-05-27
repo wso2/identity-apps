@@ -1219,7 +1219,12 @@
                     "identityProviders.saml.attributeConsumingServiceIndex"
                 ],
                 "enabled": true,
-                "featureFlags": [],
+                "featureFlags": [
+                    {
+                        "feature": "console.connections.templates.flowExtension",
+                        "flag": "EXPERIMENTAL"
+                    }
+                ],
                 "scopes": {
                     "create": [
                         "internal_idp_create"
