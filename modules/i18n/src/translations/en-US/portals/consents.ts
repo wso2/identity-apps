@@ -378,9 +378,7 @@ export const consents: ConsentsNS = {
         purposeDescription: "Description",
         purposeLabel: "Purpose {{index}}",
         purposeName: "Purpose Name",
-        removeAttribute: "Remove attribute",
-        removePurpose: "Remove purpose",
-        selectMarketing: "Marketing Consent",
+        selectMarketing: "Select Marketing:",
         selectPolicies: "Select Policies:"
     },
     tabs: {

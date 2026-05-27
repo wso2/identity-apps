@@ -256,8 +256,6 @@ export interface ConsentsNS {
         purposeDescription: string;
         purposeLabel: string;
         purposeName: string;
-        removeAttribute: string;
-        removePurpose: string;
         selectMarketing: string;
         selectPolicies: string;
     };
