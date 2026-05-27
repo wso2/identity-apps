@@ -180,8 +180,8 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
                                     i18nKey="flowExtension:properties.noConnectionsWarningWithSupport"
                                     values={ { productName } }
                                 >
-                                    No active flow extensions available. You can create a flow extension
-                                    connection using the { productName } APIs. Please contact
+                                    { "No active flow extensions available. You can create a flow extension" +
+                                        " connection using the ${ productName } APIs. Please contact" }
                                     <Link
                                         href={ supportURL }
                                         target="_blank"
@@ -190,7 +190,7 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
                                     >
                                         { productName } support
                                     </Link>
-                                    to get started.
+                                    { " to get started." }
                                 </Trans>
                             )
                             : t("flowExtension:properties.noConnectionsWarning", { productName })
