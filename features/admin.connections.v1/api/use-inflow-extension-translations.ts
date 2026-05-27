@@ -16,11 +16,10 @@
  * under the License.
  */
 
-import useGetCustomTextPreferenceMeta from "@wso2is/admin.branding.v1/api/use-get-custom-text-preference-meta";
-import { CustomTextPreferenceMeta } from "@wso2is/admin.branding.v1/models/custom-text-preference";
-import { AppState } from "@wso2is/admin.core.v1/store";
+import useGetCustomTextPreferenceMeta from "@wso2is/common.branding.v1/api/use-get-custom-text-preference-meta";
+import { CustomTextPreferenceMeta } from "@wso2is/common.branding.v1/models/custom-text-preference";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { store } from "@wso2is/admin.core.v1/store";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import { BrandingPreferenceTypes } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { HttpMethods } from "@wso2is/core/models";
