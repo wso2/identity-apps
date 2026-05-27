@@ -101,7 +101,7 @@ function getI18nKeyForError(errorCode, flowType, errorMessage, errorDescription)
                     portalUrlStatus: "true"
                 };
             } else if (flowType === "INVITED_USER_REGISTRATION") {
-                if (errorDescription.startsWith("Invalid Code")) {
+                if (errorDescription && errorDescription.startsWith("Invalid Code")) {
                     return {
                         message: "invited.user.registration.flow.error.invalid.code.message",
                         description: "invited.user.registration.flow.error.invalid.code.description"
