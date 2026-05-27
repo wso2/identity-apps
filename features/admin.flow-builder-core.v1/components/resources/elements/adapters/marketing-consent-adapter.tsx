@@ -160,7 +160,7 @@ const MarketingConsentAdapter: FunctionComponent<MarketingConsentAdapterPropsInt
     });
 
     return (
-        <Box>
+        <Box data-componentid={ resource.id ?? "marketing-consent-adapter" }>
             { purposes.length === 0 ? (
                 <EmptyState>{ t("flows:core.elements.marketingConsent.emptyState") }</EmptyState>
             ) : (

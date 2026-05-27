@@ -241,6 +241,7 @@ export interface ConsentsNS {
                     emptyDescription: string;
                     exampleDescription: string;
                     pageTitle: string;
+                    updatedPolicies: string;
                 };
             };
         };

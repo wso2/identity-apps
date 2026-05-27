@@ -216,7 +216,7 @@ const MarketingConsentFieldAdapter = ({ component, formStateHandler, fieldErrorH
                                 id={ `marketing-consent-${ purpose.purposeId }` }
                                 checked={ allChecked }
                                 size="small"
-                                sx={ { padding: 0 } }
+                                style={ { padding: 0 } }
                                 onChange={ (_e, data) => handleSelectAll(_e, data, purpose.purposeId, attrIds) }
                             />
                             <label
@@ -247,7 +247,7 @@ const MarketingConsentFieldAdapter = ({ component, formStateHandler, fieldErrorH
                                             name={ attr.id }
                                             checked={ attrMap[attr.id] || false }
                                             size="small"
-                                            sx={ { padding: 0 } }
+                                            style={ { padding: 0 } }
                                             onChange={ (_e, data) =>
                                                 handleAttributeChange(_e, data, purpose.purposeId, attr.id) }
                                         />

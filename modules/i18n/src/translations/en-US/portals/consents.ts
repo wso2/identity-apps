@@ -362,7 +362,8 @@ export const consents: ConsentsNS = {
                     consentHeader: "Please review and accept the following to continue.",
                     emptyDescription: "Enter a policy name above to see a preview.",
                     exampleDescription: "I have read and agree to the <0>{{policyName}}</0>.",
-                    pageTitle: "Review and Accept Policies"
+                    pageTitle: "Review and Accept Policies",
+                    updatedPolicies: "Updated policies"
                 }
             }
         }

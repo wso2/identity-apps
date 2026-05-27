@@ -675,7 +675,9 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
                 onSecondaryActionClick={ () => setShowVersionWarningModal(false) }
                 onPrimaryActionClick={ () => {
                     setShowVersionWarningModal(false);
-                    updateMarketingConsent(pendingValues.current);
+                    if (pendingValues.current) {
+                        updateMarketingConsent(pendingValues.current);
+                    }
                 } }
                 closeOnDimmerClick={ false }
                 primaryActionLoading={ isSubmitting }

@@ -1935,7 +1935,7 @@ export const myAccount: MyAccountNS = {
             }
         },
         policyConsentManagement: {
-            description: "ConseReview the policies you have agreed to.nts",
+            description: "Review the policies you have agreed to.",
             heading: "Policy Consents",
             placeholders: {
                 emptyConsentList: {

@@ -119,9 +119,10 @@ export const MarketingConsentPreview: FunctionComponent<MarketingConsentPreviewP
     const checkedForDisplay: boolean[] = displayAttributes.map(
         (_: string, index: number): boolean => checkedAttributes[index] ?? false
     );
-    const allAttributesChecked: boolean = checkedForDisplay.every((v: boolean): boolean => v);
+    const allAttributesChecked: boolean =
+        checkedForDisplay.length > 0 && checkedForDisplay.every((v: boolean): boolean => v);
     const someAttributesChecked: boolean =
-        checkedForDisplay.some((v: boolean): boolean => v) && !allAttributesChecked;
+        checkedForDisplay.length > 0 && checkedForDisplay.some((v: boolean): boolean => v) && !allAttributesChecked;
 
     const handleSelectAll = (): void => {
         setCheckedAttributes(displayAttributes.map((): boolean => !allAttributesChecked));

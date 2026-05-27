@@ -150,7 +150,7 @@ export const PolicyConsentPreview: FunctionComponent<PolicyConsentPreviewPropsIn
                             } }
                         />
                         <RichTextDescription>
-                            { "Updated policies" }
+                            { t("consents:policyConsents.wizard.create.preview.updatedPolicies") }
                         </RichTextDescription>
                     </AttributeRow>
                     <CheckboxRow sx={ { pl: 2.5 } }>

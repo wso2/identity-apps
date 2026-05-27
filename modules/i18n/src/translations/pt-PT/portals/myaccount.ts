@@ -454,7 +454,7 @@ export const myAccount: MyAccountNS = {
                     subheader: "Esta ação irá revogar o seu consentimento para esta comunicação de marketing."
                 }
             },
-            elementsHeading: "Gira o seu consentimento de comunicações de marketing. Desmarque os atributos que precisa de revogar e prima o botão atualizar para guardar as alterações ou prima o botão revogar para remover o consentimento de todos os atributos.",
+            elementsHeading: "Gerir o seu consentimento de comunicações de marketing. Desmarque os atributos que precisa de revogar e prima o botão atualizar para guardar as alterações ou prima o botão revogar para remover o consentimento de todos os atributos.",
             modals: {
                 revokeModal: {
                     heading: "Revogar consentimento para {{consentName}}",

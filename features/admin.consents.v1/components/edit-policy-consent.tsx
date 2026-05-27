@@ -723,7 +723,9 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                 onSecondaryActionClick={ () => setShowVersionWarningModal(false) }
                 onPrimaryActionClick={ () => {
                     setShowVersionWarningModal(false);
-                    updatePolicyInfo(pendingValues.current);
+                    if (pendingValues.current) {
+                        updatePolicyInfo(pendingValues.current);
+                    }
                 } }
                 closeOnDimmerClick={ false }
                 primaryActionLoading={ isSubmitting }

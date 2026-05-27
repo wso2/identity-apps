@@ -117,7 +117,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
     const [ dashboardLayoutRoutes, setDashboardLayoutRoutes ] = useState<RouteInterface[]>([]);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
-    const hasLocalAccount: string = useSelector((state: AppState) => state.authenticationInformation.hasLocalAccount);
+    const hasLocalAccount: boolean = useSelector((state: AppState) => state.authenticationInformation.hasLocalAccount);
 
     useEffect(() => {
         const localeCookie: string = CookieStorageUtils.getItem("ui_lang");

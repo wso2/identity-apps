@@ -22,10 +22,9 @@ import { useRequiredScopes } from "@wso2is/access-control";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
-import { PurposeInterface } from "@wso2is/admin.flow-builder-core.v1/models/purpose";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useCallback } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import ConsentExtendedProperties from "./consent-extended-properties";
@@ -55,18 +54,6 @@ const MarketingConsentExtendedProperties: FunctionComponent<MarketingConsentExte
 
     const hasConsentsReadPermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.read);
 
-    const handlePurposesChange: (_updated: PurposeInterface[]) => void = useCallback(
-        (updated: PurposeInterface[]): void => {
-            const cleaned: PurposeInterface[] = updated.map(
-                ({ attributes: _attributes, ...rest }: PurposeInterface): PurposeInterface =>
-                    rest as PurposeInterface
-            );
-
-            onChange("config.purposes", cleaned, resource);
-        },
-        [ onChange, resource ]
-    );
-
     if (!hasConsentsReadPermission) {
         return (
             <Stack data-componentid={ componentId }>
@@ -85,7 +72,6 @@ const MarketingConsentExtendedProperties: FunctionComponent<MarketingConsentExte
             filter="type eq Marketing"
             emptyMessageKey="consents:registrationFlow.noMarketing"
             selectLabelKey="consents:registrationFlow.selectMarketing"
-            onPurposesChange={ handlePurposesChange }
             preserveAttributes={ true }
         />
     );
