@@ -47,6 +47,9 @@
                 case HttpURLConnection.HTTP_CREATED:
                     out.print(responseObject.toString(2));
                     break;
+                case HttpURLConnection.HTTP_INTERNAL_ERROR:
+                    out.print("{\"error\": {\"code\": \"500\"}}");
+                    break;
                 default:
                     out.print("{\"error\": " + responseObject.toString(2) + "}");
                     break;
