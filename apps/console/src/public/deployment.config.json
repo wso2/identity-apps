@@ -394,8 +394,6 @@
             },
             "actions": {
                 "disabledFeatures": [
-                    "actions.types.list.inFlowExtension.customErrors",
-                    "actions.types.list.inFlowExtension.flowLevelOverrides",
                     "actions.types.list.preRegistration",
                     "actions.types.list.preUpdatePassword.headersAndParameters",
                     "actions.types.list.preUpdateProfile.headersAndParameters",
@@ -1143,8 +1141,7 @@
                     "feature": ["console:flows"],
                     "read": [],
                     "update": []
-                },
-                "showNoInFlowConnectionSupportMessage": true
+                }
             },
             "gettingStarted": {
                 "disabledFeatures": [],

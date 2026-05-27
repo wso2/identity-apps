@@ -350,13 +350,12 @@ export class I18nConstants {
     /**
      * In-Flow Extension namespace.
      */
-    public static readonly IN_FLOW_EXTENSION_NAMESPACE: string =
-        I18nModuleConstants.IN_FLOW_EXTENSION_NAMESPACE;
+    public static readonly FLOW_EXTENSION_NAMESPACE: string =
+        I18nModuleConstants.FLOW_EXTENSION_NAMESPACE;
 
     /**
      * Locations of the I18n namespaces.
      */
-
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
@@ -420,7 +419,7 @@ export class I18nConstants {
         [ I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE, "portals" ],
         [ I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE, "portals" ],
         [ I18nConstants.CONSENTS_NAMESPACE, "portals" ],
-        [ I18nConstants.IN_FLOW_EXTENSION_NAMESPACE, "portals" ]
+        [ I18nConstants.FLOW_EXTENSION_NAMESPACE, "portals" ]
     ]);
 
     /**
