@@ -223,13 +223,14 @@ function getI18nKeyForError(errorCode, flowType, errorMessage, errorDescription)
                 portalUrlStatus: "true"
             };
 
-        case "FE-65033": {
+        case "FE-65034":
+        case "FE-60017":
+
             return {
                 message: stripBraces(errorMessage) || "orchestration.flow.error.failed.message",
                 description: stripBraces(errorDescription) || "orchestration.flow.error.failed.description",
                 portalUrlStatus: "true"
             };
-        }
 
         default:
 
