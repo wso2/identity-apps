@@ -144,7 +144,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             guestsList: "",
             identityProviders: "",
             impersonationConfigurations: "",
-            flowExtensions: "",
             issuerUsageScope: "",
             localAuthenticators: "",
             localClaims: "",

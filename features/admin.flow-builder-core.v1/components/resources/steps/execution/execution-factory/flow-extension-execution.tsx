@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,18 +27,18 @@ import useAuthenticationFlowBuilderCore
 import { FlowExtensionConnectionInterface } from "../../../../../models/metadata";
 import { ExecutionMinimalPropsInterface } from "../execution-minimal";
 
-const DEFAULT_ICON: string = "assets/images/icons/in-flow-extension.svg";
+const DEFAULT_ICON: string = "assets/images/icons/flow-extension.svg";
 
 /**
- * Props interface of {@link InFlowExtensionExecution}.
+ * Props interface of {@link FlowExtensionExecution}.
  */
-type InFlowExtensionExecutionPropsInterface = ExecutionMinimalPropsInterface
+type FlowExtensionExecutionPropsInterface = ExecutionMinimalPropsInterface
     & IdentifiableComponentInterface;
 
-const InFlowExtensionExecution = ({
+const FlowExtensionExecution = ({
     resource,
-    "data-componentid": componentId = "in-flow-extension-execution"
-}: InFlowExtensionExecutionPropsInterface): ReactElement => {
+    "data-componentid": componentId = "flow-extension-execution"
+}: FlowExtensionExecutionPropsInterface): ReactElement => {
     const { t } = useTranslation();
     const { metadata } = useAuthenticationFlowBuilderCore();
 
@@ -59,15 +59,14 @@ const InFlowExtensionExecution = ({
 
     const isDefaultIcon: boolean = !selectedConnection?.iconUrl;
 
-    const displayName: string = selectedConnection?.name
-        || t("flows:core.executions.names.inFlowExtension", { defaultValue: "In-Flow Extension" });
+    const displayName: string = selectedConnection?.name || t("flows:core.executions.names.flowExtension");
 
     return (
         <Box
             display="flex"
             gap={ 1 }
             data-componentid={ componentId }
-            className="flow-builder-execution in-flow-extension"
+            className="flow-builder-execution flow-extension"
         >
             <img
                 src={ iconSrc }
@@ -82,4 +81,4 @@ const InFlowExtensionExecution = ({
     );
 };
 
-export default InFlowExtensionExecution;
+export default FlowExtensionExecution;

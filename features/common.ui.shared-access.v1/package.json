@@ -23,12 +23,9 @@
         "v1"
     ],
     "dependencies": {
-        "@monaco-editor/react": "^4.5.1",
         "@mui/x-tree-view": "^8.5.2",
         "@oxygen-ui/react": "catalog:",
-        "@oxygen-ui/react-icons": "^2.4.6",
         "@wso2is/admin.applications.v1": "^2.42.16",
-        "@wso2is/admin.claims.v1": "^2.30.0",
         "@wso2is/admin.console-settings.v1": "^2.26.38",
         "@wso2is/admin.core.v1": "^2.55.27",
         "@wso2is/admin.organizations.v1": "^2.28.2",

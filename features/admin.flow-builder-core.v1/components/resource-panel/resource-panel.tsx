@@ -27,8 +27,6 @@ import Typography from "@oxygen-ui/react/Typography";
 import { ChevronDownIcon } from "@oxygen-ui/react-icons";
 import AICard from "@wso2is/common.ai.v1/components/ai-card";
 import { useRequiredScopes } from "@wso2is/access-control";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import kebabCase from "lodash-es/kebabCase";
@@ -38,7 +36,7 @@ import ResourcePanelDraggable from "./resource-panel-draggable";
 import ResourcePanelStatic from "./resource-panel-static";
 import { Element, ElementTypes } from "../../models/elements";
 import { Resource, Resources } from "../../models/resources";
-import { ExecutionTypes, Step, StepTypes, ViewStepVariants } from "../../models/steps";
+import { Step, StepTypes, ViewStepVariants } from "../../models/steps";
 import { Template } from "../../models/templates";
 import { Widget } from "../../models/widget";
 import "./resource-panel.scss";
@@ -152,14 +150,10 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
         templates: unfilteredTemplates
     } = resources;
 
-    const aiFeature: FeatureAccessConfigInterface = useSelector((state: AppState) => state.config.ui.features?.ai);
+    const aiFeature: FeatureAccessConfigInterface = useSelector((state: any) => state?.config?.ui?.features?.ai);
     const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state.config.ui.features?.consents
+        (state: any) => state.config.ui.features?.consents
     );
-    const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state.config.ui.features?.actions);
-    const isInFlowExtensionEnabled: boolean = isFeatureEnabled(
-        actionsFeatureConfig, "actions.types.list.inFlowExtension");
 
     const hasConsentsReadPermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.read);
 
@@ -185,12 +179,6 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
 
         if (step.type === StepTypes.View && step.variant === ViewStepVariants.PolicyConsent
             && (!consentsFeatureConfig?.enabled || !hasConsentsReadPermission)) {
-            return false;
-        }
-
-        // Hide InFlowExtension step when the feature is disabled.
-        if (!isInFlowExtensionEnabled
-            && step.data?.action?.executor?.name === ExecutionTypes.InFlowExtension) {
             return false;
         }
 

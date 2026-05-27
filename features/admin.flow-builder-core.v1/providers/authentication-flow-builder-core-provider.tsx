@@ -489,16 +489,10 @@ const FlowContextWrapper = ({
     };
 
     const setLastInteractedResource = (resource: Resource): void => {
-        // For execution steps, always use the generic execution icon so the heading is consistent
-        // whether the node was just dropped (has step-specific icon) or re-clicked (resolved to default).
-        const headingImage: string = resource?.type === StepTypes.Execution
-            ? "assets/images/icons/play.svg"
-            : resource?.display?.image;
-
         // TODO: Internationalize this string and get from a mapping.
         setResourcePropertiesPanelHeading(
             <Stack direction="row" className="sub-title" gap={ 1 } alignItems="center">
-                <Avatar src={ loadStaticResource(headingImage) } variant="square" />
+                <Avatar src={ loadStaticResource(resource?.display?.image) } variant="square" />
                 <Typography variant="h6">
                     { resource?.display?.displayname
                         ? startCase(resource.display.displayname)

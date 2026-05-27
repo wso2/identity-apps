@@ -75,8 +75,8 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "In-Flow Extension",
-            "image": "assets/images/icons/in-flow-extension.svg",
+            "label": "Flow Extension",
+            "image": "assets/images/icons/flow-extension.svg",
             "showOnResourcePanel": true
         },
         "data": {

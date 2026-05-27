@@ -18,8 +18,6 @@
 
 export { default as useGetFlowBuilderCoreResources } from "./api/use-get-flow-builder-core-resources";
 
-export * from "./models/in-flow-extension";
-
 export * from "./models/base";
 export * from "./models/elements";
 export * from "./models/policies";

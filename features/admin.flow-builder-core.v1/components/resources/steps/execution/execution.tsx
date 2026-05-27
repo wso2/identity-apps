@@ -46,7 +46,7 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
     data,
     resources
 }: ExecutionPropsInterface): ReactElement => {
-    const { metadata, setLastInteractedResource, setLastInteractedStepId } = useAuthenticationFlowBuilderCore();
+    const { setLastInteractedResource, setLastInteractedStepId } = useAuthenticationFlowBuilderCore();
     const {
         addNotification, removeNotification, setOpenValidationPanel, setSelectedNotification
     } = useValidationStatus();
@@ -176,16 +176,6 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
                 return t("flows:core.executions.names.confirmationCode");
             case ExecutionTypes.MagicLinkExecutor:
                 return t("flows:core.executions.names.magicLink");
-            case ExecutionTypes.InFlowExtension: {
-                const actionId: string = (data?.action as any)?.executor?.meta?.actionId;
-                const connection = actionId && metadata?.inflowExtensionConnections?.find(
-                    (c: any) => c.actionId === actionId
-                );
-
-                return connection?.name
-                    || t("flows:core.executions.names.inFlowExtension",
-                        { defaultValue: "In-Flow Extension" });
-            }
             default:
                 return t("flows:core.executions.names.default");
         }
