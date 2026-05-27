@@ -421,7 +421,7 @@ export class I18nModuleConstants {
     public static readonly CONSENTS_NAMESPACE: string = "consents";
 
     /**
-     * In-Flow Extension namespace.
+     * Flow Extension namespace.
      */
     public static readonly FLOW_EXTENSION_NAMESPACE: string = "flowExtension";
 
