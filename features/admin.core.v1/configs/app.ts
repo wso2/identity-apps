@@ -423,8 +423,8 @@ export class Config {
                 UIConstants.ADMINISTRATOR_ROLE_DISPLAY_NAME,
             announcements: window[ "AppUtils" ]?.getConfig()?.ui?.announcements,
             apiResourceManagement: {
-                api_resource_block: window[ "AppUtils" ]?.getConfig()?.ui?.apiResourceManagement
-                    ?.api_resource_block ?? []
+                blockedAPIResources: window[ "AppUtils" ]?.getConfig()?.ui?.apiResourceManagement
+                    ?.blocked_api_resources ?? []
             },
             appCopyright: window[ "AppUtils" ]?.getConfig()?.ui?.appCopyright
                 .replace("${copyright}", "\u00A9")

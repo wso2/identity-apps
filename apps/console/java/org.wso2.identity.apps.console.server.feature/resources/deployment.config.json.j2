@@ -205,7 +205,7 @@
             }
         },
         "apiResourceManagement": {
-            "api_resource_block": {{ api_resource_block | default([], true) | tojson }}
+            "blocked_api_resources": {{ blocked_api_resources | default([], true) | tojson }}
         },
         "appCopyright": "{{ console.ui.app_copyright }}",
         "appTitle": "{{ console.ui.app_title }}",

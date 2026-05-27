@@ -25,22 +25,22 @@ import { useSelector } from "react-redux";
  * Hook that resolves the set of API resource IDs that are blocked for the current tenant.
  *
  * A resource is blocked when its ID is configured under
- * `apiResourceManagement.api_resource_block` and the current tenant is NOT listed in that
+ * `apiResourceManagement.blockedAPIResources` and the current tenant is NOT listed in that
  * entry's `allowed_tenants`. Entries with an empty/omitted `allowed_tenants` block all tenants.
  *
  * @returns Set of blocked API resource IDs for the current tenant.
  */
 const useBlockedAPIResourceIds = (): Set<string> => {
 
-    const apiResourceBlockEntries: APIResourceBlockEntryInterface[] = useSelector(
-        (state: AppState) => state?.config?.ui?.apiResourceManagement?.api_resource_block
+    const blockedAPIResourceEntries: APIResourceBlockEntryInterface[] = useSelector(
+        (state: AppState) => state?.config?.ui?.apiResourceManagement?.blockedAPIResources
     );
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
 
     return useMemo(() => {
         const ids: Set<string> = new Set<string>();
 
-        apiResourceBlockEntries?.forEach((entry: APIResourceBlockEntryInterface) => {
+        blockedAPIResourceEntries?.forEach((entry: APIResourceBlockEntryInterface) => {
             if (!entry?.api_id) {
                 return;
             }
@@ -51,7 +51,7 @@ const useBlockedAPIResourceIds = (): Set<string> => {
         });
 
         return ids;
-    }, [ apiResourceBlockEntries, tenantDomain ]);
+    }, [ blockedAPIResourceEntries, tenantDomain ]);
 };
 
 export default useBlockedAPIResourceIds;

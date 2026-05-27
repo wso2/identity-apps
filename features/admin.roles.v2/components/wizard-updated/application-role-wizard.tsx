@@ -113,21 +113,21 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
     );
 
-    const apiResourceBlockEntries: APIResourceBlockEntryInterface[] = useSelector(
-        (state: AppState) => state?.config?.ui?.apiResourceManagement?.api_resource_block
+    const blockedAPIResourceEntries: APIResourceBlockEntryInterface[] = useSelector(
+        (state: AppState) => state?.config?.ui?.apiResourceManagement?.blockedAPIResources
     );
 
     const blockedAPIResourceIds: Set<string> = useMemo(() => {
         const ids: Set<string> = new Set<string>();
 
-        apiResourceBlockEntries?.forEach((entry: APIResourceBlockEntryInterface) => {
+        blockedAPIResourceEntries?.forEach((entry: APIResourceBlockEntryInterface) => {
             if (entry?.api_id) {
                 ids.add(entry.api_id);
             }
         });
 
         return ids;
-    }, [ apiResourceBlockEntries ]);
+    }, [ blockedAPIResourceEntries ]);
 
     const createRoleFunction: (role: CreateRoleInterface) => Promise<AxiosResponse> =
         userRolesV3FeatureEnabled ? createRoleUsingV3Api : createRole;

@@ -104,21 +104,21 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
         const hasRolePermissionUpdatePermission: boolean = useRequiredScopes(
             userRolesFeatureConfig?.subFeatures?.rolePermissionAssignments?.scopes?.update);
 
-        const apiResourceBlockEntries: APIResourceBlockEntryInterface[] = useSelector(
-            (state: AppState) => state?.config?.ui?.apiResourceManagement?.api_resource_block
+        const blockedAPIResourceEntries: APIResourceBlockEntryInterface[] = useSelector(
+            (state: AppState) => state?.config?.ui?.apiResourceManagement?.blockedAPIResources
         );
 
         const blockedAPIResourceIds: Set<string> = useMemo(() => {
             const ids: Set<string> = new Set<string>();
 
-            apiResourceBlockEntries?.forEach((entry: APIResourceBlockEntryInterface) => {
+            blockedAPIResourceEntries?.forEach((entry: APIResourceBlockEntryInterface) => {
                 if (entry?.api_id) {
                     ids.add(entry.api_id);
                 }
             });
 
             return ids;
-        }, [ apiResourceBlockEntries ]);
+        }, [ blockedAPIResourceEntries ]);
 
         const [ previousRoleAudience, setPreviousRoleAudience ] = useState<RoleAudienceTypes>(undefined);
         const [ selectedAPIResources, setSelectedAPIResources ] = useState<APIResourceInterface[]>([]);

@@ -227,7 +227,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             },
             announcements: [],
             apiResourceManagement: {
-                api_resource_block: []
+                blockedAPIResources: []
             },
             appCopyright: "",
             appLogo: {

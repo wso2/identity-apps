@@ -325,7 +325,7 @@
         "administratorRoleDisplayName": "Administrator",
         "announcements": [],
         "apiResourceManagement": {
-            "api_resource_block": []
+            "blocked_api_resources": []
         },
         "appCopyright": "${copyright} ${year} WSO2 LLC.",
         "appFaviconPath": "/assets/images/branding/favicon.ico",
