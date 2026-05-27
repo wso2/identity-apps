@@ -37,6 +37,7 @@ import { FlowExtensionConnectionInterface } from "../../../models/metadata";
 import {
     CommonResourcePropertiesPropsInterface
 } from "../resource-properties";
+import "./flow-extension-properties.scss";
 
 const DEFAULT_ICON: string = "assets/images/icons/flow-extension.svg";
 
