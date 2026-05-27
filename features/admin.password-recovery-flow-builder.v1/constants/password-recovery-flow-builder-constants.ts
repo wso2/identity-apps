@@ -46,8 +46,7 @@ class PasswordRecoveryFlowBuilderConstants {
     public static readonly FEDERATION_CONFIG_SKIPPED_EXECUTORS: ExecutionTypes[] = [
         ExecutionTypes.PasskeyEnrollment,
         ExecutionTypes.ConfirmationCode,
-        ExecutionTypes.MagicLinkExecutor,
-        ExecutionTypes.InFlowExtension
+        ExecutionTypes.MagicLinkExecutor
     ];
 }
 
