@@ -569,10 +569,10 @@
             },
             "applications": {
                 "disabledFeatures": [
-                    "applications.adaptiveAuth.orgGovernance",
                     "applications.loginFlow.legacyEditor",
                     "applications.sharedAccess.status",
-                    "applications.sharedApp.adaptiveAuth"
+                    "applications.sharedApp.adaptiveAuth",
+                    "applications.adaptiveAuth.orgGovernance"
                 ],
                 "enabled": true,
                 "featureFlags": [

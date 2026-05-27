@@ -30,13 +30,13 @@ import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import useAuthenticationFlowBuilderCore
-    from "../../hooks/use-authentication-flow-builder-core-context";
-import { InFlowExtensionConnectionInterface } from "../../models/metadata";
+    from "../../../hooks/use-authentication-flow-builder-core-context";
+import { FlowExtensionConnectionInterface } from "../../../models/metadata";
 import {
     CommonResourcePropertiesPropsInterface
-} from "../resource-property-panel/resource-properties";
+} from "../resource-properties";
 
-const DEFAULT_ICON: string = "assets/images/icons/in-flow-extension.svg";
+const DEFAULT_ICON: string = "assets/images/icons/flow-extension.svg";
 
 /**
  * Props interface of {@link FlowExtensionProperties}
@@ -63,11 +63,11 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
     const { metadata, isFlowMetadataLoading } = useAuthenticationFlowBuilderCore();
     const { getNodes } = useReactFlow();
 
-    const connections: InFlowExtensionConnectionInterface[] = useMemo(() => {
-        const allConnections: InFlowExtensionConnectionInterface[] =
+    const connections: FlowExtensionConnectionInterface[] = useMemo(() => {
+        const allConnections: FlowExtensionConnectionInterface[] =
             metadata?.inflowExtensionConnections ?? [];
 
-        // Filter out connections already used by other in-flow extension nodes.
+        // Filter out connections already used by other flow extension nodes.
         const nodes: Node[] = getNodes();
         const usedActionIds: Set<string> = new Set(
             nodes
@@ -77,11 +77,11 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
         );
 
         return allConnections.filter(
-            (c: InFlowExtensionConnectionInterface) => !usedActionIds.has(c.actionId)
+            (c: FlowExtensionConnectionInterface) => !usedActionIds.has(c.actionId)
         );
     }, [ metadata?.inflowExtensionConnections, getNodes, resource?.id ]);
 
-    const selectedConnection: InFlowExtensionConnectionInterface | null = useMemo(() => {
+    const selectedConnection: FlowExtensionConnectionInterface | null = useMemo(() => {
         const actionId: string = resource?.data?.action?.executor?.meta?.actionId;
 
         if (!actionId || !connections?.length) {
@@ -89,12 +89,12 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
         }
 
         return connections.find(
-            (connection: InFlowExtensionConnectionInterface) => connection.actionId === actionId
+            (connection: FlowExtensionConnectionInterface) => connection.actionId === actionId
         ) || null;
     }, [ connections, resource?.data?.action?.executor?.meta?.actionId ]);
 
     const handleConnectionChange = (_: React.SyntheticEvent,
-        connection: InFlowExtensionConnectionInterface | null) => {
+        connection: FlowExtensionConnectionInterface | null) => {
         if (connection) {
             onChange("action.executor.meta.actionId", connection.actionId, resource);
         } else {
@@ -115,25 +115,25 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
             <Typography variant="body2">
-                { t("inFlowExtension:properties.description") }
+                { t("flowExtension:properties.description") }
             </Typography>
             <Autocomplete
                 disablePortal
                 key={ resource.id }
                 options={ connections }
-                getOptionLabel={ (connection: InFlowExtensionConnectionInterface) => connection.name }
+                getOptionLabel={ (connection: FlowExtensionConnectionInterface) => connection.name }
                 loading={ isFlowMetadataLoading }
                 fullWidth
                 renderInput={ (params: AutocompleteRenderInputParams) => (
                     <TextField
                         { ...params }
-                        label={ t("inFlowExtension:properties.connectionLabel") }
-                        placeholder={ t("inFlowExtension:properties.connectionPlaceholder") }
+                        label={ t("flowExtension:properties.connectionLabel") }
+                        placeholder={ t("flowExtension:properties.connectionPlaceholder") }
                         size="small"
                     />
                 ) }
                 renderOption={ (props: React.HTMLAttributes<HTMLLIElement>,
-                    connection: InFlowExtensionConnectionInterface) => (
+                    connection: FlowExtensionConnectionInterface) => (
                     <li { ...props } key={ connection.actionId }>
                         <Stack direction="row" spacing={ 1 } alignItems="center">
                             { renderConnectionIcon(connection.iconUrl, 20) }
@@ -144,8 +144,8 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
                 value={ selectedConnection }
                 onChange={ handleConnectionChange }
                 isOptionEqualToValue={
-                    (option: InFlowExtensionConnectionInterface,
-                        value: InFlowExtensionConnectionInterface) =>
+                    (option: FlowExtensionConnectionInterface,
+                        value: FlowExtensionConnectionInterface) =>
                         option.actionId === value.actionId
                 }
             />
@@ -155,7 +155,7 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
                         variant="body2"
                         sx={ { maxWidth: "100%", minWidth: 0, overflowWrap: "anywhere", wordBreak: "break-word" } }
                     >
-                        { t("inFlowExtension:properties.noConnectionsSupportWarning") }
+                        { t("flowExtension:properties.noConnectionsSupportWarning") }
                         {
                             supportURL
                                 ? (
@@ -165,12 +165,12 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
                                         rel="noopener noreferrer"
                                         sx={ { overflowWrap: "anywhere" } }
                                     >
-                                        { t("inFlowExtension:properties.noConnectionsSupportWarningLink") }
+                                        { t("flowExtension:properties.noConnectionsSupportWarningLink") }
                                     </Link>
                                 )
-                                : t("inFlowExtension:properties.noConnectionsSupportWarningLink")
+                                : t("flowExtension:properties.noConnectionsSupportWarningLink")
                         }
-                        { t("inFlowExtension:properties.noConnectionsSupportWarningSuffix") }
+                        { t("flowExtension:properties.noConnectionsSupportWarningSuffix") }
                     </Typography>
                 </Alert>
             ) }

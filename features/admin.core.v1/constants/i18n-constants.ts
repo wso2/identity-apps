@@ -348,7 +348,7 @@ export class I18nConstants {
     public static readonly CONSENTS_NAMESPACE: string = I18nModuleConstants.CONSENTS_NAMESPACE;
 
     /**
-     * In-Flow Extension namespace.
+     * Flow Extension namespace.
      */
     public static readonly FLOW_EXTENSION_NAMESPACE: string =
         I18nModuleConstants.FLOW_EXTENSION_NAMESPACE;

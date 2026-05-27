@@ -24,7 +24,7 @@ import React, { ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useAuthenticationFlowBuilderCore
     from "../../../../../hooks/use-authentication-flow-builder-core-context";
-import { InFlowExtensionConnectionInterface } from "../../../../../models/metadata";
+import { FlowExtensionConnectionInterface } from "../../../../../models/metadata";
 import { ExecutionMinimalPropsInterface } from "../execution-minimal";
 
 const DEFAULT_ICON: string = "assets/images/icons/in-flow-extension.svg";
@@ -42,7 +42,7 @@ const InFlowExtensionExecution = ({
     const { t } = useTranslation();
     const { metadata } = useAuthenticationFlowBuilderCore();
 
-    const selectedConnection: InFlowExtensionConnectionInterface | null = useMemo(() => {
+    const selectedConnection: FlowExtensionConnectionInterface | null = useMemo(() => {
         const actionId: string = resource?.data?.action?.executor?.meta?.actionId;
 
         if (!actionId || !metadata?.inflowExtensionConnections?.length) {
@@ -50,7 +50,7 @@ const InFlowExtensionExecution = ({
         }
 
         return metadata.inflowExtensionConnections.find(
-            (c: InFlowExtensionConnectionInterface) => c.actionId === actionId
+            (c: FlowExtensionConnectionInterface) => c.actionId === actionId
         ) || null;
     }, [ resource?.data?.action?.executor?.meta?.actionId, metadata?.inflowExtensionConnections ]);
 

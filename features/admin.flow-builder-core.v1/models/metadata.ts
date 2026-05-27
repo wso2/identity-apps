@@ -51,9 +51,9 @@ export interface MetadataInterface {
      */
     executorConnections: ExecutorConnectionInterface[];
     /**
-     * List of active in-flow extension connections from metadata.
+     * List of active flow extension connections from metadata.
      */
-    inflowExtensionConnections?: InFlowExtensionConnectionInterface[];
+    inflowExtensionConnections?: FlowExtensionConnectionInterface[];
     /**
      * Is a Workflow engagement enabled?
      */
@@ -115,9 +115,9 @@ export interface ExecutorConnectionInterface {
 }
 
 /**
- * Interface for in-flow extension connection info from flow metadata.
+ * Interface for flow extension connection info from flow metadata.
  */
-export interface InFlowExtensionConnectionInterface {
+export interface FlowExtensionConnectionInterface {
     /**
      * The action ID.
      */
