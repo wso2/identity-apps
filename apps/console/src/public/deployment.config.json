@@ -394,13 +394,13 @@
             },
             "actions": {
                 "disabledFeatures": [
+                    "actions.types.list.inFlowExtension.customErrors",
+                    "actions.types.list.inFlowExtension.flowLevelOverrides",
                     "actions.types.list.preRegistration",
                     "actions.types.list.preUpdatePassword.headersAndParameters",
                     "actions.types.list.preUpdateProfile.headersAndParameters",
                     "actions.types.org.list.preIssueAccessToken",
-                    "actions.types.org.list.preRegistration",
-                    "actions.types.list.inFlowExtension.customErrors",
-                    "actions.types.list.inFlowExtension.flowLevelOverrides"
+                    "actions.types.org.list.preRegistration"
                 ],
                 "enabled": true,
                 "featureFlags": [],
@@ -571,10 +571,10 @@
             },
             "applications": {
                 "disabledFeatures": [
+                    "applications.adaptiveAuth.orgGovernance",
                     "applications.loginFlow.legacyEditor",
                     "applications.sharedAccess.status",
-                    "applications.sharedApp.adaptiveAuth",
-                    "applications.adaptiveAuth.orgGovernance"
+                    "applications.sharedApp.adaptiveAuth"
                 ],
                 "enabled": true,
                 "featureFlags": [
@@ -1143,7 +1143,8 @@
                     "feature": ["console:flows"],
                     "read": [],
                     "update": []
-                }
+                },
+                "showNoInFlowConnectionSupportMessage": true
             },
             "gettingStarted": {
                 "disabledFeatures": [],

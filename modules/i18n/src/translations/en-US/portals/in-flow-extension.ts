@@ -19,133 +19,37 @@
 import { inFlowExtensionNS } from "../../../models";
 
 export const inFlowExtension: inFlowExtensionNS = {
-    createWizard: {
-        steps: {
-            accessConfig: {
-                encrypted: "Encrypted",
-                encryption: {
-                    heading: "Encryption Certificate",
-                    hint: "Provide a Base64-encoded PEM certificate used to encrypt sensitive " +
-                        "data before sending it to the extension endpoint."
-                },
-                expose: {
-                    add: "Add Path",
-                    heading: "Expose Paths",
-                    hint: "Define the paths that should be exposed from the authentication " +
-                        "flow to the extension endpoint."
-                },
-                operations: {
-                    addOperation: "Add Operation",
-                    addPath: "Add Path",
-                    heading: "Allowed Operations",
-                    hint: "Define the operations that the extension endpoint is allowed to " +
-                        "perform on the authentication flow.",
-                    types: {
-                        add: {
-                            description: "Paths the extension can add new values to.",
-                            heading: "ADD"
-                        },
-                        remove: {
-                            description: "Paths the extension can remove values from.",
-                            heading: "REMOVE"
-                        },
-                        replace: {
-                            description: "Paths the extension can replace existing values in.",
-                            heading: "REPLACE"
-                        }
-                    }
-                },
-                title: "Access Configuration"
-            },
-            endpointConfig: {
-                authProperties: {
-                    accessToken: {
-                        label: "Access Token",
-                        placeholder: "Access Token",
-                        validations: {
-                            required: "Access token is required."
-                        }
-                    },
-                    header: {
-                        label: "Header",
-                        placeholder: "Header",
-                        validations: {
-                            invalid: "Header must be a valid HTTP header name.",
-                            required: "Header is required."
-                        }
-                    },
-                    password: {
-                        label: "Password",
-                        placeholder: "Password",
-                        validations: {
-                            required: "Password is required."
-                        }
-                    },
-                    username: {
-                        label: "Username",
-                        placeholder: "Username",
-                        validations: {
-                            required: "Username is required."
-                        }
-                    },
-                    value: {
-                        label: "Value",
-                        placeholder: "Value",
-                        validations: {
-                            required: "Value is required."
-                        }
-                    }
-                },
-                authenticationType: {
-                    hint: "Once added, these secrets will not be displayed. " +
-                        "You will only be able to reset them.",
-                    label: "Authentication Scheme",
-                    placeholder: "Select Authentication Type",
-                    title: "Endpoint Authentication",
-                    validations: {
-                        required: "Authentication type is required."
-                    }
-                },
-                certificate: {
-                    hint: "Upload or paste the external service's PEM certificate. " +
-                        "This is used to encrypt sensitive data before sending it to the extension endpoint.",
-                    title: "Service Certificate"
-                },
-                endpoint: {
-                    hint: "The URL of the external endpoint that this extension will call.",
-                    label: "Endpoint URL",
-                    placeholder: "https://extension.example.com/handle",
-                    validations: {
-                        empty: "Endpoint URL is required.",
-                        general: "Please enter a valid URL."
-                    }
-                },
-                title: "Endpoint Configuration"
-            },
-            generalSettings: {
-                description: {
-                    label: "Description",
-                    placeholder: "A brief description of the in-flow extension.",
-                    validations: {
-                        maxLength: "Description must not exceed 255 characters."
-                    }
-                },
-                name: {
-                    hint: "A unique name for this in-flow extension. " +
-                        "Must be alphanumeric and can include spaces, hyphens, and underscores.",
-                    label: "Name",
-                    placeholder: "My In-Flow Extension",
-                    validations: {
-                        duplicate: "An action with this name already exists. Please choose a different name.",
-                        invalid: "Name must start with an alphanumeric character and can only " +
-                            "contain alphanumeric characters, spaces, hyphens, and underscores."
-                    }
-                },
-                title: "General Settings"
-            }
+    accessConfigOverrideDialog: {
+        actions: {
+            cancel: "Cancel",
+            reset: "Reset",
+            save: "Save",
+            saving: "Saving..."
         },
-        subTitle: "Create a new In-Flow Extension to customize the authentication flow.",
-        title: "Create In-Flow Extension"
+        contextTreeError: "Failed to load the In-Flow Extension context tree for this flow. " +
+            "Refresh and retry; check that the flow-management API is reachable.",
+        description: "Configure which data is exposed to and modifiable by the in-flow extension " +
+            "for the {{flowType}} flow. This sets the flow-type-specific override for the access configuration.",
+        noCertificateWarning: "No certificate configured. Encryption toggles are disabled. " +
+            "Add a certificate from the connection settings to enable encryption.",
+        resetDialog: {
+            description: "If clear all, every annotation done in the UI will be removed, and reset to the " +
+                "default will overwrite current state with default configuration from the connections. " +
+                "This action will not take effect unless you save the changes.",
+            options: {
+                clearAll: {
+                    description: "Remove all expose and modify paths for this flow type.",
+                    label: "Clear All"
+                },
+                resetToDefault: {
+                    description: "Restore the action's default access configuration.",
+                    label: "Reset to Default"
+                }
+            },
+            title: "Reset Access Configuration",
+            warningMessage: "This action will overwrite the current access configuration for this flow type."
+        },
+        title: "Configure Access"
     },
     notifications: {
         createError: {
@@ -158,6 +62,35 @@ export const inFlowExtension: inFlowExtensionNS = {
         createSuccess: {
             description: "Successfully created the in-flow extension.",
             message: "Create successful"
+        },
+        updateAccessConfigError: {
+            description: "An error occurred while updating the access configuration.",
+            message: "Update failed"
+        },
+        updateAccessConfigSuccess: {
+            description: "Access configuration updated successfully.",
+            message: "Access config updated"
         }
+    },
+    properties: {
+        connectionLabel: "Connection",
+        connectionPlaceholder: "Select a connection",
+        description: "Select an in-flow extension to link with this flow step.",
+        editAccessConfig: "Edit Access Configurations",
+        navConfirmDialog: {
+            actions: {
+                cancel: "Cancel",
+                continue: "Continue"
+            },
+            description: "You will be redirected to the connection setup page to edit the default " +
+                "access configuration. Any unsaved changes in the flow builder will be lost.",
+            title: "Navigate to Connection Settings?"
+        },
+        noConnectionsWarning: "No active in-flow extensions available. Please create an",
+        noConnectionsWarningLink: " in-flow extension ",
+        noConnectionsWarningSuffix: "to link with this flow.",
+        noConnectionsSupportWarning: "No active in-flow extensions available. Please contact ",
+        noConnectionsSupportWarningLink: "Asgardeo support",
+        noConnectionsSupportWarningSuffix: " to enable creating in-flow extensions."
     }
 };

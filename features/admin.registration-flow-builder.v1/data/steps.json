@@ -75,6 +75,30 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
+            "label": "In-Flow Extension",
+            "image": "assets/images/icons/in-flow-extension.svg",
+            "showOnResourcePanel": true
+        },
+        "data": {
+            "action": {
+                "type": "EXECUTOR",
+                "executor": {
+                    "name": "FlowExtensionExecutor",
+                    "meta": {
+                        "actionId": ""
+                    }
+                },
+                "next": ""
+            }
+        }
+    },
+    {
+        "resourceType": "STEP",
+        "category": "WORKFLOW",
+        "type": "EXECUTION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
             "label": "Passkey View",
             "image": "assets/images/icons/fingerprint.svg",
             "showOnResourcePanel": true

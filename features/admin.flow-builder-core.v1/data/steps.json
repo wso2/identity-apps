@@ -217,30 +217,6 @@
     },
     {
         "resourceType": "STEP",
-        "category": "WORKFLOW",
-        "type": "EXECUTION",
-        "version": "0.1.0",
-        "deprecated": false,
-        "display": {
-            "label": "In-Flow Extension View",
-            "image": "assets/images/icons/in-flow-extension.svg",
-            "showOnResourcePanel": true
-        },
-        "data": {
-            "action": {
-                "type": "EXECUTOR",
-                "executor": {
-                    "name": "InFlowExtensionExecutor",
-                    "meta": {
-                        "actionId": ""
-                    }
-                },
-                "next": ""
-            }
-        }
-    },
-    {
-        "resourceType": "STEP",
         "category": "INTERFACE",
         "type": "END",
         "version": "0.1.0",

@@ -17,127 +17,6 @@
  */
 
 export interface inFlowExtensionNS {
-    createWizard: {
-        title: string;
-        subTitle: string;
-        steps: {
-            generalSettings: {
-                title: string;
-                name: {
-                    label: string;
-                    placeholder: string;
-                    hint: string;
-                    validations: {
-                        duplicate: string;
-                        invalid: string;
-                    };
-                };
-                description: {
-                    label: string;
-                    placeholder: string;
-                    validations: {
-                        maxLength: string;
-                    };
-                };
-            };
-            endpointConfig: {
-                title: string;
-                endpoint: {
-                    label: string;
-                    placeholder: string;
-                    hint: string;
-                    validations: {
-                        empty: string;
-                        general: string;
-                    };
-                };
-                authenticationType: {
-                    title: string;
-                    label: string;
-                    placeholder: string;
-                    hint: string;
-                    validations: {
-                        required: string;
-                    };
-                };
-                authProperties: {
-                    username: {
-                        label: string;
-                        placeholder: string;
-                        validations: {
-                            required: string;
-                        };
-                    };
-                    password: {
-                        label: string;
-                        placeholder: string;
-                        validations: {
-                            required: string;
-                        };
-                    };
-                    accessToken: {
-                        label: string;
-                        placeholder: string;
-                        validations: {
-                            required: string;
-                        };
-                    };
-                    header: {
-                        label: string;
-                        placeholder: string;
-                        validations: {
-                            required: string;
-                            invalid: string;
-                        };
-                    };
-                    value: {
-                        label: string;
-                        placeholder: string;
-                        validations: {
-                            required: string;
-                        };
-                    };
-                };
-                certificate: {
-                    title: string;
-                    hint: string;
-                };
-            };
-            accessConfig: {
-                title: string;
-                expose: {
-                    heading: string;
-                    hint: string;
-                    add: string;
-                };
-                encrypted: string;
-                operations: {
-                    heading: string;
-                    hint: string;
-                    addPath: string;
-                    addOperation: string;
-                    types: {
-                        add: {
-                            heading: string;
-                            description: string;
-                        };
-                        replace: {
-                            heading: string;
-                            description: string;
-                        };
-                        remove: {
-                            heading: string;
-                            description: string;
-                        };
-                    };
-                };
-                encryption: {
-                    heading: string;
-                    hint: string;
-                };
-            };
-        };
-    };
     notifications: {
         createSuccess: {
             description: string;
@@ -149,6 +28,61 @@ export interface inFlowExtensionNS {
         createGenericError: {
             description: string;
             message: string;
+        };
+        updateAccessConfigSuccess: {
+            description: string;
+            message: string;
+        };
+        updateAccessConfigError: {
+            description: string;
+            message: string;
+        };
+    };
+    accessConfigOverrideDialog: {
+        title: string;
+        description: string;
+        contextTreeError: string;
+        noCertificateWarning: string;
+        actions: {
+            reset: string;
+            cancel: string;
+            save: string;
+            saving: string;
+        };
+        resetDialog: {
+            title: string;
+            warningMessage: string;
+            description: string;
+            options: {
+                clearAll: {
+                    label: string;
+                    description: string;
+                };
+                resetToDefault: {
+                    label: string;
+                    description: string;
+                };
+            };
+        };
+    };
+    properties: {
+        description: string;
+        connectionLabel: string;
+        connectionPlaceholder: string;
+        editAccessConfig: string;
+        noConnectionsWarning: string;
+        noConnectionsWarningLink: string;
+        noConnectionsWarningSuffix: string;
+        noConnectionsSupportWarning: string;
+        noConnectionsSupportWarningLink: string;
+        noConnectionsSupportWarningSuffix: string;
+        navConfirmDialog: {
+            title: string;
+            description: string;
+            actions: {
+                cancel: string;
+                continue: string;
+            };
         };
     };
 }

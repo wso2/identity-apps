@@ -88,6 +88,16 @@ interface OnboardingFeatureConfigInterface extends FeatureAccessConfigInterface 
 }
 
 /**
+ * Extended feature config for flow orchestration with deployment-specific fields.
+ */
+interface FlowsFeatureConfigInterface extends FeatureAccessConfigInterface {
+    /**
+     * Show the support message when in-flow connections are unavailable.
+     */
+    showNoInFlowConnectionSupportMessage?: boolean;
+}
+
+/**
  * Application configuration interface.
  */
 export interface FeatureConfigInterface {
@@ -150,7 +160,7 @@ export interface FeatureConfigInterface {
     /**
      * Flow orchestration feature.
      */
-    flows?: FeatureAccessConfigInterface;
+    flows?: FlowsFeatureConfigInterface;
     /**
      * Getting started feature.
      */

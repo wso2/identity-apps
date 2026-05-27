@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -58,6 +58,20 @@ interface InFlowExtensionPropertiesPropsInterface extends CommonResourceProperti
     flowType: string;
 }
 
+interface GetHelpConfigInterface {
+    /**
+     * URL of the help center.
+     */
+    helpCenterURL?: string;
+}
+
+interface ExtensionConfigInterface {
+    /**
+     * Help dropdown configurations.
+     */
+    getHelp?: GetHelpConfigInterface;
+}
+
 /**
  * In-Flow Extension properties component for the flow builder.
  * Shows a dropdown to select an in-flow extension action, connection details, and access config button.
@@ -78,8 +92,13 @@ const InFlowExtensionProperties: FunctionComponent<InFlowExtensionPropertiesProp
 
     const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features?.actions);
+    const showNoInFlowConnectionSupportMessage: boolean = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.flows?.showNoInFlowConnectionSupportMessage ?? false);
     const isFlowLevelOverridesEnabled: boolean = isFeatureEnabled(
         actionsFeatureConfig, "actions.types.list.inFlowExtension.flowLevelOverrides");
+    const supportURL: string = (
+        window["AppUtils"].getConfig().extensions as ExtensionConfigInterface
+    )?.getHelp?.helpCenterURL ?? "";
 
     const { metadata, isFlowMetadataLoading } = useAuthenticationFlowBuilderCore();
     const { getNodes } = useReactFlow();
@@ -92,9 +111,8 @@ const InFlowExtensionProperties: FunctionComponent<InFlowExtensionPropertiesProp
         const nodes: Node[] = getNodes();
         const usedActionIds: Set<string> = new Set(
             nodes
-                .filter((n: Node) => n.id !== resource?.id)
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                .map((n: Node) => (n.data as any)?.action?.executor?.meta?.actionId)
+                .filter((node: Node) => node.id !== resource?.id)
+                .map((node: Node) => (node.data as any)?.action?.executor?.meta?.actionId)
                 .filter(Boolean)
         );
 
@@ -165,7 +183,7 @@ const InFlowExtensionProperties: FunctionComponent<InFlowExtensionPropertiesProp
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
             <Typography variant="body2">
-                Select an in-flow extension to link with this flow step.
+                { t("inFlowExtension:properties.description") }
             </Typography>
             <Autocomplete
                 disablePortal
@@ -177,8 +195,8 @@ const InFlowExtensionProperties: FunctionComponent<InFlowExtensionPropertiesProp
                 renderInput={ (params: AutocompleteRenderInputParams) => (
                     <TextField
                         { ...params }
-                        label="Connection"
-                        placeholder="Select a connection"
+                        label={ t("inFlowExtension:properties.connectionLabel") }
+                        placeholder={ t("inFlowExtension:properties.connectionPlaceholder") }
                         size="small"
                     />
                 ) }
@@ -207,15 +225,47 @@ const InFlowExtensionProperties: FunctionComponent<InFlowExtensionPropertiesProp
                         onClick={ handleEditAccessConfig }
                         data-componentid={ `${componentId}-edit-access-config-btn` }
                     >
-                        Edit Access Configurations
+                        { t("inFlowExtension:properties.editAccessConfig") }
                     </Button>
                 </Box>
             ) }
-            { !isFlowMetadataLoading && !connections?.length && (
+            { showNoInFlowConnectionSupportMessage && !isFlowMetadataLoading && !connections?.length && (
                 <Alert severity="warning" data-componentid={ `${componentId}-no-actions-warning` }>
-                    No active in-flow extensions available. Please create an
-                    <Link component="button" onClick={ handleCreateConnection }> in-flow extension </Link>
-                    to link with this flow.
+                    <Typography
+                        variant="body2"
+                        sx={ { maxWidth: "100%", minWidth: 0, overflowWrap: "anywhere", wordBreak: "break-word" } }
+                    >
+                        { t("inFlowExtension:properties.noConnectionsSupportWarning") }
+                        {
+                            supportURL
+                                ? (
+                                    <Link
+                                        href={ supportURL }
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        sx={ { overflowWrap: "anywhere" } }
+                                    >
+                                        { t("inFlowExtension:properties.noConnectionsSupportWarningLink") }
+                                    </Link>
+                                )
+                                : t("inFlowExtension:properties.noConnectionsSupportWarningLink")
+                        }
+                        { t("inFlowExtension:properties.noConnectionsSupportWarningSuffix") }
+                    </Typography>
+                </Alert>
+            ) }
+            { !showNoInFlowConnectionSupportMessage && !isFlowMetadataLoading && !connections?.length && (
+                <Alert severity="warning" data-componentid={ `${componentId}-no-actions-warning` }>
+                    <Typography
+                        variant="body2"
+                        sx={ { maxWidth: "100%", minWidth: 0, overflowWrap: "anywhere", wordBreak: "break-word" } }
+                    >
+                        { t("inFlowExtension:properties.noConnectionsWarning") }
+                        <Link component="button" onClick={ handleCreateConnection }>
+                            { t("inFlowExtension:properties.noConnectionsWarningLink") }
+                        </Link>
+                        { t("inFlowExtension:properties.noConnectionsWarningSuffix") }
+                    </Typography>
                 </Alert>
             ) }
             { isFlowLevelOverridesEnabled && isAccessConfigDialogOpen && selectedConnection && (
@@ -235,11 +285,10 @@ const InFlowExtensionProperties: FunctionComponent<InFlowExtensionPropertiesProp
                 maxWidth="xs"
                 fullWidth
             >
-                <DialogTitle>Navigate to Connection Settings?</DialogTitle>
+                <DialogTitle>{ t("inFlowExtension:properties.navConfirmDialog.title") }</DialogTitle>
                 <DialogContent>
                     <Typography variant="body2">
-                        You will be redirected to the connection setup page to edit the default
-                        access configuration. Any unsaved changes in the flow builder will be lost.
+                        { t("inFlowExtension:properties.navConfirmDialog.description") }
                     </Typography>
                 </DialogContent>
                 <DialogActions>
@@ -247,14 +296,14 @@ const InFlowExtensionProperties: FunctionComponent<InFlowExtensionPropertiesProp
                         onClick={ () => setIsNavConfirmOpen(false) }
                         color="secondary"
                     >
-                        Cancel
+                        { t("inFlowExtension:properties.navConfirmDialog.actions.cancel") }
                     </Button>
                     <Button
                         onClick={ handleNavigateToConnectionAccessConfig }
                         variant="contained"
                         color="primary"
                     >
-                        Continue
+                        { t("inFlowExtension:properties.navConfirmDialog.actions.continue") }
                     </Button>
                 </DialogActions>
             </Dialog>
