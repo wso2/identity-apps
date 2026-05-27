@@ -795,7 +795,7 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
 /**
  * API resource management UI configurations.
  */
-export interface APIResourceManagementUIConfigInterface {
+interface APIResourceManagementUIConfigInterface {
     /**
      * Per-resource block entries. A resource is blocked for a tenant if it is listed here
      * and the tenant is not in the entry's `allowed_tenants` list.
