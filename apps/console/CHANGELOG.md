@@ -1,5 +1,39 @@
 # @wso2is/console
 
+## 4.9.1
+
+### Patch Changes
+
+- [#10327](https://github.com/wso2/identity-apps/pull/10327) [`6712c726c88c207d1a1b885b3bd987a2c8b01132`](https://github.com/wso2/identity-apps/commit/6712c726c88c207d1a1b885b3bd987a2c8b01132) Thanks [@savindi7](https://github.com/savindi7)! - Improvements to announcements UI.
+
+- Updated dependencies [[`6712c726c88c207d1a1b885b3bd987a2c8b01132`](https://github.com/wso2/identity-apps/commit/6712c726c88c207d1a1b885b3bd987a2c8b01132)]:
+  - @wso2is/admin.core.v1@2.57.13
+  - @wso2is/admin.home.v1@1.7.193
+
+## 4.9.0
+
+### Minor Changes
+
+- [#10314](https://github.com/wso2/identity-apps/pull/10314) [`7710d9d564aaf1ee7d598a6fa6cd472699f669ba`](https://github.com/wso2/identity-apps/commit/7710d9d564aaf1ee7d598a6fa6cd472699f669ba) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Provide Console UI support to configure OAuth Client Credentials and Password Credentials Based Authentication for Custom Authenticators
+
+### Patch Changes
+
+- [#10325](https://github.com/wso2/identity-apps/pull/10325) [`8137a2c71bf3875adc38bfa40a4d0791789974d1`](https://github.com/wso2/identity-apps/commit/8137a2c71bf3875adc38bfa40a4d0791789974d1) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Add missing QSG files for connections
+
+- Updated dependencies [[`7710d9d564aaf1ee7d598a6fa6cd472699f669ba`](https://github.com/wso2/identity-apps/commit/7710d9d564aaf1ee7d598a6fa6cd472699f669ba), [`8137a2c71bf3875adc38bfa40a4d0791789974d1`](https://github.com/wso2/identity-apps/commit/8137a2c71bf3875adc38bfa40a4d0791789974d1)]:
+  - @wso2is/admin.connections.v1@2.38.0
+  - @wso2is/i18n@2.42.1
+
+## 4.8.1
+
+### Patch Changes
+
+- [#10322](https://github.com/wso2/identity-apps/pull/10322) [`e995e67e2fead93f01fcf16a5f1c35378222d7a7`](https://github.com/wso2/identity-apps/commit/e995e67e2fead93f01fcf16a5f1c35378222d7a7) Thanks [@savindi7](https://github.com/savindi7)! - Add announcement banner.
+
+- Updated dependencies [[`e995e67e2fead93f01fcf16a5f1c35378222d7a7`](https://github.com/wso2/identity-apps/commit/e995e67e2fead93f01fcf16a5f1c35378222d7a7)]:
+  - @wso2is/admin.core.v1@2.57.12
+  - @wso2is/admin.home.v1@1.7.192
+
 ## 4.8.0
 
 ### Minor Changes

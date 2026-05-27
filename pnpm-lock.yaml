@@ -359,7 +359,7 @@ importers:
         specifier: ^2.31.2
         version: link:../../features/admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.37.5
+        specifier: ^2.38.0
         version: link:../../features/admin.connections.v1
       '@wso2is/admin.consents.v1':
         specifier: workspace:^
@@ -371,7 +371,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.copilot.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.11
+        specifier: ^2.57.13
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
         specifier: ^2.25.209
@@ -395,7 +395,7 @@ importers:
         specifier: ^2.27.129
         version: link:../../features/admin.groups.v1
       '@wso2is/admin.home.v1':
-        specifier: ^1.7.191
+        specifier: ^1.7.193
         version: link:../../features/admin.home.v1
       '@wso2is/admin.identity-verification-providers.v1':
         specifier: ^2.28.3
@@ -500,7 +500,7 @@ importers:
         specifier: ^2.13.3
         version: link:../../modules/core
       '@wso2is/i18n':
-        specifier: ^2.42.0
+        specifier: ^2.42.1
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.2
@@ -514,6 +514,9 @@ importers:
       dayjs:
         specifier: ^1.11.18
         version: 1.11.20
+      dompurify:
+        specifier: ^3.0.9
+        version: 3.4.1
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
@@ -669,7 +672,7 @@ importers:
         specifier: ^2.10.3
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.42.0
+        specifier: ^2.42.1
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.1
@@ -3352,7 +3355,7 @@ importers:
         specifier: ^2.3.27
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.39.4
+        specifier: ^2.42.1
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.0
@@ -5495,7 +5498,7 @@ importers:
         specifier: ^2.42.23
         version: link:../admin.applications.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.57.3
+        specifier: ^2.57.13
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.43.3
