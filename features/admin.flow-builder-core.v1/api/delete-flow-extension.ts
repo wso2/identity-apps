@@ -40,7 +40,7 @@ const deleteFlowExtension = (extensionId: string): Promise<void> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${ store.getState().config.endpoints.flowExtensionResource }/${ extensionId }`
+        url: `${ store.getState().config.endpoints.flowExtension }/${ extensionId }`
     };
 
     return httpClient(requestConfig)

@@ -28,7 +28,7 @@ import { HttpMethods } from "@wso2is/core/models";
 /**
  * Hook to retrieve the controlled Flow Extension context tree for a given flow type.
  *
- * Calls `GET /api/server/v1/flow/flow-extension/context-tree[?flowType=...]`. When
+ * Calls `GET /api/server/v1/flow/extension/meta[?flowType=...]`. When
  * `flowType` is omitted (e.g., the connection-level access-config editor that isn't
  * scoped to a specific flow), the server returns the default tree.
  *

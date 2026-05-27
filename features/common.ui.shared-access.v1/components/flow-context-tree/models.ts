@@ -56,7 +56,7 @@ interface FlowContextMetadataResponse {
 }
 
 /**
- * Response shape for `GET /flow/flow-extension/context-tree`.
+ * Response shape for `GET /flow/extension/meta`.
  *
  * The tree itself is filtered server-side by the deployment.toml whitelist —
  * disabled fields are omitted entirely. The two policy flags drive UI behaviour

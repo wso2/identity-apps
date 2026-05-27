@@ -24,6 +24,7 @@ import useRequest, {
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { FlowExtensionResponseInterface } from "../models/flow-extension";
+import { deserializeAccessConfig } from "../utils/access-config-path";
 
 /**
  * Hook to retrieve a single Flow Extension by ID from the flow management API.
@@ -46,7 +47,7 @@ const useGetFlowExtensionById = <
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.flowExtensionResource }/${ extensionId }`
+        url: `${ store.getState().config.endpoints.flowExtension }/${ extensionId }`
     };
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
@@ -54,8 +55,17 @@ const useGetFlowExtensionById = <
         { shouldRetryOnError: false }
     );
 
+    const transformed: Data | undefined = data
+        ? ({
+            ...(data as unknown as FlowExtensionResponseInterface),
+            accessConfig: deserializeAccessConfig(
+                (data as unknown as FlowExtensionResponseInterface).accessConfig
+            )
+        } as unknown as Data)
+        : data;
+
     return {
-        data,
+        data: transformed,
         error,
         isLoading,
         isValidating,

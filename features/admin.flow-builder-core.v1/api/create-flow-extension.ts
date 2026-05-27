@@ -26,6 +26,7 @@ import {
     FlowExtensionCreateRequestInterface,
     FlowExtensionResponseInterface
 } from "../models/flow-extension";
+import { serializeAccessConfig } from "../utils/access-config-path";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
@@ -40,8 +41,13 @@ const createFlowExtension = (
     body: FlowExtensionCreateRequestInterface
 ): Promise<FlowExtensionResponseInterface> => {
 
+    const payload: FlowExtensionCreateRequestInterface = {
+        ...body,
+        ...(body.accessConfig !== undefined && { accessConfig: serializeAccessConfig(body.accessConfig) })
+    };
+
     const requestConfig: RequestConfigInterface = {
-        data: body,
+        data: payload,
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"
