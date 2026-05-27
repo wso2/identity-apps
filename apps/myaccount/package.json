@@ -69,7 +69,6 @@
         "swr": "^2.0.0"
     },
     "devDependencies": {
-        "autoprefixer": "^10.4.13",
         "@types/history": "^4.7.3",
         "@types/jest": "^29.5.12",
         "@types/lodash-es": "^4.17.4",
