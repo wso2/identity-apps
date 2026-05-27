@@ -34,7 +34,7 @@ function stripBraces(s) {
  * @param {string} errorCode - The error code (e.g., "60001")
  * @returns {object} The i18n keys for the given error code.
  */
-function getI18nKeyForError(errorCode, flowType, errorMessage) {
+function getI18nKeyForError(errorCode, flowType, errorMessage, errorDescription) {
     switch (errorCode) {
         case "FE-60001":
 

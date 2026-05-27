@@ -104,9 +104,9 @@ export const flows: flowsNS = {
                 confirmationCode: "Confirmation Code",
                 default: "Execution",
                 facebook: "Facebook",
+                flowExtension: "Flow Extension",
                 github: "GitHub",
                 google: "Google",
-                inFlowExtension: "In-Flow Extension",
                 magicLink: "Magic Link",
                 microsoft: "Microsoft",
                 passkeyEnrollment: "Enroll Passkey"

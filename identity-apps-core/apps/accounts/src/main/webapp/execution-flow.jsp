@@ -304,7 +304,7 @@
 
                 useEffect(() => {
                     if (error && error.code) {
-                        const errorDetails = getI18nKeyForError(error.code, flowType, error.description);
+                        const errorDetails = getI18nKeyForError(error.code, flowType, error.message, error.description);
                         let portal_url = accountsPortalUrl + "/register";
                         if (flowType === "PASSWORD_RECOVERY") {
                             portal_url = accountsPortalUrl + "/recovery";
