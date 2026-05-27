@@ -106,17 +106,3 @@ export interface FlowExtensionBasicResponseInterface {
     iconUrl?: string;
 }
 
-/**
- * Request body for checking Flow Extension name availability.
- */
-export interface FlowExtensionNameCheckRequestInterface {
-    name: string;
-    excludeId?: string;
-}
-
-/**
- * Response for Flow Extension name availability check.
- */
-export interface FlowExtensionNameCheckResponseInterface {
-    available: boolean;
-}

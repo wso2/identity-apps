@@ -21,7 +21,6 @@ import Box from "@oxygen-ui/react/Box";
 import Divider from "@oxygen-ui/react/Divider";
 import Typography from "@oxygen-ui/react/Typography";
 import ActionEndpointConfigForm from "@wso2is/admin.actions.v1/components/action-endpoint-config-form";
-import checkFlowExtensionName from "@wso2is/admin.flow-builder-core.v1/api/check-flow-extension-name";
 import createFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/create-flow-extension";
 import {
     FlowExtensionCreateRequestInterface,
@@ -55,7 +54,6 @@ import React, {
     FunctionComponent,
     MutableRefObject,
     ReactElement,
-    useCallback,
     useEffect,
     useRef,
     useState
@@ -110,11 +108,6 @@ const FlowExtensionCreateWizard: FunctionComponent<FlowExtensionCreateWizardProp
     const [wizardSteps, setWizardSteps] = useState<WizardStepInterface[]>([]);
     const [currentWizardStep, setCurrentWizardStep] = useState<number>(0);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-    const [isNameTaken, setIsNameTaken] = useState<boolean>(false);
-    const [isCheckingName, setIsCheckingName] = useState<boolean>(false);
-    const nameCheckTimer: MutableRefObject<ReturnType<typeof setTimeout> | null> =
-        useRef<ReturnType<typeof setTimeout> | null>(null);
-    const lastCheckedName = useRef<string>("");
     const [endpointAuthType, setEndpointAuthType] = useState<AuthenticationType>(null);
     const [nextShouldBeDisabled, setNextShouldBeDisabled] = useState<boolean>(true);
 
@@ -140,38 +133,6 @@ const FlowExtensionCreateWizard: FunctionComponent<FlowExtensionCreateWizardProp
             setInitWizard(true);
         }
     }, [initWizard]);
-
-    /**
-     * Debounced action name availability check.
-     */
-    const debouncedCheckName = useCallback((name: string) => {
-        if (lastCheckedName.current === name) {
-            return;
-        }
-        if (nameCheckTimer.current) {
-            clearTimeout(nameCheckTimer.current);
-        }
-        lastCheckedName.current = name;
-        if (!name || !ACTION_NAME_REGEX.test(name)) {
-            setIsNameTaken(false);
-            setIsCheckingName(false);
-            return;
-        }
-        setIsCheckingName(true);
-        nameCheckTimer.current = setTimeout(() => {
-            checkFlowExtensionName(name)
-                .then((response) => {
-                    setIsNameTaken(!response.available);
-                    setNextShouldBeDisabled(!response.available);
-                })
-                .catch(() => {
-                    setIsNameTaken(false);
-                })
-                .finally(() => {
-                    setIsCheckingName(false);
-                });
-        }, 500);
-    }, []);
 
     const getWizardSteps = (): WizardStepInterface[] => {
         return [
@@ -201,21 +162,17 @@ const FlowExtensionCreateWizard: FunctionComponent<FlowExtensionCreateWizardProp
 
         if (!values?.name || !ACTION_NAME_REGEX.test(values.name)) {
             errors.name = t("flowExtension:createWizard.steps.generalSettings.name.validations.invalid");
-        } else if (isNameTaken) {
-            errors.name = t("flowExtension:createWizard.steps.generalSettings.name.validations.duplicate");
         }
 
         if (values?.description && values.description.length > 255) {
             errors.description = t("flowExtension:createWizard.steps.generalSettings.description.validations.maxLength");
         }
 
-        if (!hasValidationErrors(errors) && !isCheckingName) {
+        if (!hasValidationErrors(errors)) {
             setNextShouldBeDisabled(false);
         } else {
             setNextShouldBeDisabled(true);
         }
-
-        debouncedCheckName(values?.name);
 
         return errors;
     };

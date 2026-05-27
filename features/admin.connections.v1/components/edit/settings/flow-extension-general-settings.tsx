@@ -17,7 +17,6 @@
  */
 
 import Divider from "@oxygen-ui/react/Divider";
-import checkFlowExtensionName from "@wso2is/admin.flow-builder-core.v1/api/check-flow-extension-name";
 import deleteFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/delete-flow-extension";
 import updateFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/update-flow-extension";
 import {
@@ -36,11 +35,7 @@ import {
 import { AxiosError } from "axios";
 import React, {
     FunctionComponent,
-    MutableRefObject,
     ReactElement,
-    useCallback,
-    useEffect,
-    useRef,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -77,47 +72,6 @@ export const FlowExtensionGeneralSettings: FunctionComponent<FlowExtensionGenera
     const [ showDeleteConfirmation, setShowDeleteConfirmation ] = useState<boolean>(false);
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ isNameTaken, setIsNameTaken ] = useState<boolean>(false);
-    const nameCheckTimer: MutableRefObject<ReturnType<typeof setTimeout> | null> =
-        useRef<ReturnType<typeof setTimeout> | null>(null);
-    const lastCheckedName: MutableRefObject<string> = useRef<string>("");
-
-    const debouncedCheckName: (name: string) => void = useCallback((name: string) => {
-        if (name === action?.name) {
-            setIsNameTaken(false);
-
-            return;
-        }
-        if (lastCheckedName.current === name) {
-            return;
-        }
-        if (nameCheckTimer.current) {
-            clearTimeout(nameCheckTimer.current);
-        }
-        lastCheckedName.current = name;
-        if (!name || !ACTION_NAME_REGEX.test(name)) {
-            setIsNameTaken(false);
-
-            return;
-        }
-        nameCheckTimer.current = setTimeout(() => {
-            checkFlowExtensionName(name, action?.id)
-                .then((response: { available: boolean }) => {
-                    setIsNameTaken(!response.available);
-                })
-                .catch(() => {
-                    setIsNameTaken(false);
-                });
-        }, 500);
-    }, [ action?.name, action?.id ]);
-
-    useEffect(() => {
-        return () => {
-            if (nameCheckTimer.current) {
-                clearTimeout(nameCheckTimer.current);
-            }
-        };
-    }, []);
 
     const validateForm = (
         values: { name: string; description?: string }
@@ -126,8 +80,6 @@ export const FlowExtensionGeneralSettings: FunctionComponent<FlowExtensionGenera
 
         if (!values?.name || !ACTION_NAME_REGEX.test(values.name)) {
             errors.name = t("flowExtension:createWizard.steps.generalSettings.name.validations.invalid");
-        } else if (isNameTaken) {
-            errors.name = t("flowExtension:createWizard.steps.generalSettings.name.validations.duplicate");
         }
 
         if (values?.description && values.description.length > 255) {
@@ -135,8 +87,6 @@ export const FlowExtensionGeneralSettings: FunctionComponent<FlowExtensionGenera
                 "flowExtension:createWizard.steps.generalSettings.description.validations.maxLength"
             );
         }
-
-        debouncedCheckName(values?.name);
 
         return errors;
     };
