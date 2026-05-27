@@ -29,27 +29,8 @@ import parse from "html-react-parser";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useValidatePurposes from "../../../../hooks/use-validate-purposes";
-import { PurposeAttributeInterface, PurposeInterface } from "../../../../models/purpose";
+import { PurposeInterface } from "../../../../models/purpose";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
-
-/**
- * Backward compatibility alias for PurposeAttributeInterface.
- * @deprecated Use PurposeAttributeInterface from policies model instead.
- */
-export type MarketingAttributeInterface = PurposeAttributeInterface;
-
-/**
- * Re-export PurposeInterface for backward compatibility.
- * @deprecated Import from policies model instead.
- */
-export type { PurposeInterface };
-
-/**
- * Config shape stored on the marketing consent element resource.
- */
-export interface MarketingConsentConfigInterface {
-    purposes: PurposeInterface[];
-}
 
 /**
  * Props interface of {@link MarketingConsentAdapter}
@@ -135,8 +116,11 @@ const resolveDescription = (
     description: string | Record<string, string>,
     language: string
 ): string => {
-    if (!description || typeof description === "string") {
-        return description ?? "";
+    if (!description) {
+        return "";
+    }
+    if (typeof description === "string") {
+        return description;
     }
 
     return description[language]

@@ -23,9 +23,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
-import {
-    PurposeInterface
-} from "@wso2is/admin.flow-builder-core.v1/components/resources/elements/adapters/marketing-consent-adapter";
+import { PurposeInterface } from "@wso2is/admin.flow-builder-core.v1/models/purpose";
 import { ConsentListItemInterface, useGetPurposes } from "@wso2is/common.consents.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useMemo } from "react";

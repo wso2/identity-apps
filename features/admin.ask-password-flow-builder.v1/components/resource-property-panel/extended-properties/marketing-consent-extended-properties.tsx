@@ -22,9 +22,7 @@ import { useRequiredScopes } from "@wso2is/access-control";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
-import {
-    PurposeInterface
-} from "@wso2is/admin.flow-builder-core.v1/components/resources/elements/adapters/marketing-consent-adapter";
+import { PurposeInterface } from "@wso2is/admin.flow-builder-core.v1/models/purpose";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useCallback } from "react";
