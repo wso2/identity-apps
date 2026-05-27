@@ -60,7 +60,7 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
     const { t } = useTranslation();
 
     const supportURL: string = useSelector(
-        (state: AppState) => state.config.deployment.helpCenterURL
+        (state: AppState) => state?.config?.deployment?.extensions?.getHelp?.helpCenterURL
     ) ?? "";
     const productName: string = useSelector((state: AppState) => state.config.ui.productName);
 
