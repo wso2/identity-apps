@@ -29,7 +29,8 @@ export const getFlowBuilderCoreResourceEndpoints = (
     return {
         flow: `${ serverOrigin }/api/server/v1/flow`,
         flowMeta: `${ serverOrigin }/api/server/v1/flow/meta`,
-        flowExtensionContextTree: `${ serverOrigin }/api/server/v1/flow/flow-extension/context-tree`,
-        flowExtension: `${ serverOrigin }/api/server/v1/flow/flow-extension`
+        flowExtensionContextTree: `${ serverOrigin }/api/server/v1/flow/extension/meta`,
+        flowExtension: `${ serverOrigin }/api/server/v1/flow/extension`,
+        flowExtensionResource: `${ serverOrigin }/api/server/v1/flow/flow-extension`
     };
 };

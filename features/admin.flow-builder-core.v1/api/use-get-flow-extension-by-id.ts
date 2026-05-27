@@ -46,7 +46,7 @@ const useGetFlowExtensionById = <
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.flowExtension }/${ extensionId }`
+        url: `${ store.getState().config.endpoints.flowExtensionResource }/${ extensionId }`
     };
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(

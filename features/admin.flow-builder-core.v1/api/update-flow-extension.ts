@@ -49,7 +49,7 @@ const updateFlowExtension = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: `${ store.getState().config.endpoints.flowExtension }/${ extensionId }`
+        url: `${ store.getState().config.endpoints.flowExtensionResource }/${ extensionId }`
     };
 
     return httpClient(requestConfig)

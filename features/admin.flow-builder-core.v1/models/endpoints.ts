@@ -34,7 +34,12 @@ export interface FlowBuilderCoreResourceEndpointsInterface {
      */
     flowExtensionContextTree: string;
     /**
-     * API base URL for Flow Extension CRUD operations.
+     * API base URL for Flow Extension collection operations (create, list).
      */
     flowExtension: string;
+    /**
+     * API base URL for Flow Extension by-id operations (get, update, delete).
+     * Used as `${flowExtensionResource}/{extensionId}`.
+     */
+    flowExtensionResource: string;
 }

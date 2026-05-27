@@ -45,7 +45,7 @@ const checkFlowExtensionName = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${ store.getState().config.endpoints.flowExtension }/check-name`
+        url: `${ store.getState().config.endpoints.actions }/inFlowExtension/check-name`
     };
 
     return httpClient(requestConfig)
