@@ -152,7 +152,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
 
     const aiFeature: FeatureAccessConfigInterface = useSelector((state: any) => state?.config?.ui?.features?.ai);
     const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: any) => state.config.ui.features?.consents
+        (state: any) => state?.config?.ui?.features?.consents
     );
 
     const hasConsentsReadPermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.read);
