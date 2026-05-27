@@ -369,25 +369,18 @@ export const myAccount: MyAccountNS = {
                     revoke: {
                         actionTitle: "Révoquer",
                         header: "Révoquer le consentement",
-                        subheader: "Vous devrez à nouveau donner votre consentement pour accéder à nouveau à " +
-                            "cette application."
+                        subheader: "Vous devrez à nouveau donner votre consentement pour accéder à nouveau à cette application."
                     }
                 },
                 description: "Description",
-                piiCategoryHeading:
-                    "Gérez le consentement pour la collecte et le partage de vos informations personnelles " +
-                    "avec l'application. Décochez les attributs que vous souhaitez révoquer puis validez en " +
-                    "cliquant sur le bouton de Mettre à jour pour enregistrer les modifications ou cliquez " +
-                    "sur le bouton de Révoquer pour supprimer le consentement pour tous les attributs.",
+                piiCategoryHeading: "Gérez le consentement pour la collecte et le partage de vos informations personnelles avec l'application. Décochez les attributs que vous souhaitez révoquer puis validez en cliquant sur le bouton de Mettre à jour pour enregistrer les modifications ou cliquez sur le bouton de Révoquer pour supprimer le consentement pour tous les attributs.",
                 state: "État",
                 version: "Version"
             },
             modals: {
                 consentRevokeModal: {
                     heading: "Etes-vous sûr ?",
-                    message:
-                        "Cette opération est irréversible. Cela révoquera définitivement le consentement pour " +
-                        "tous les attributs. Êtes-vous sûr de vouloir continuer ?",
+                    message: "Cette opération est irréversible. Cela révoquera définitivement le consentement pour tous les attributs. Êtes-vous sûr de vouloir continuer ?",
                     warning: "Veuillez noter que vous serez redirigé vers la page de recueil de consentement"
                 }
             },
@@ -460,12 +453,6 @@ export const myAccount: MyAccountNS = {
                 }
             },
             elementsHeading: "Gérez votre consentement aux communications marketing. Décochez les attributs que vous devez révoquer et appuyez sur le bouton de mise à jour pour enregistrer les modifications ou appuyez sur le bouton de révocation pour supprimer le consentement pour tous les attributs.",
-            modals: {
-                revokeModal: {
-                    heading: "Révoquer le consentement pour {{consentName}}",
-                    message: "Cela révoquera votre consentement pour cette communication marketing. Êtes-vous sûr de vouloir continuer?"
-                }
-            },
             notifications: {
                 fetch: {
                     error: {
@@ -520,12 +507,6 @@ export const myAccount: MyAccountNS = {
                     actionTitle: "Révoquer",
                     header: "Révoquer le consentement de politique",
                     subheader: "Cette action révoquera votre consentement pour cette politique. Vous pourrez être invité à donner à nouveau votre consentement la prochaine fois que vous accédez au service."
-                }
-            },
-            modals: {
-                revokeModal: {
-                    heading: "Révoquer le consentement pour {{policyName}}",
-                    message: "Cela révoquera votre consentement pour cette politique. Vous pourrez être invité à donner à nouveau votre consentement la prochaine fois que vous accédez au service. Êtes-vous sûr de vouloir continuer ?"
                 }
             },
             notifications: {

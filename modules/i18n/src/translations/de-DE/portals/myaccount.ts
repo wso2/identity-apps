@@ -449,12 +449,6 @@ export const myAccount: MyAccountNS = {
                 }
             },
             "elementsHeading": "Verwalten Sie Ihre Marketingkommunikations-Einwilligung. Deaktivieren Sie die Attribute, die Sie widerrufen möchten, und klicken Sie auf die Schaltfläche „Aktualisieren“, um die Änderungen zu speichern, oder klicken Sie auf die Schaltfläche „Widerrufen“, um die Einwilligung für alle Attribute zu entfernen.",
-            "modals": {
-                "revokeModal": {
-                    "heading": "Einwilligung für {{consentName}} widerrufen",
-                    "message": "Dies widerruft Ihre Einwilligung für diese Marketingkommunikation. Möchten Sie fortfahren?"
-                }
-            },
             "notifications": {
                 "fetch": {
                     "error": {
@@ -509,12 +503,6 @@ export const myAccount: MyAccountNS = {
                     "actionTitle": "Widerrufen",
                     "header": "Richtlinienzustimmung widerrufen",
                     "subheader": "Diese Aktion widerruft Ihre Zustimmung zu dieser Richtlinie. Möglicherweise werden Sie beim nächsten Zugriff auf den Dienst aufgefordert, erneut zuzustimmen."
-                }
-            },
-            "modals": {
-                "revokeModal": {
-                    "heading": "Zustimmung für {{policyName}} widerrufen",
-                    "message": "Dies widerruft Ihre Zustimmung zu dieser Richtlinie. Möglicherweise werden Sie beim nächsten Zugriff auf den Dienst aufgefordert, erneut zuzustimmen. Möchten Sie fortfahren?"
                 }
             },
             "notifications": {

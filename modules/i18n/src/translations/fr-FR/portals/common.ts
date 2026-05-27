@@ -177,6 +177,7 @@ export const common: CommonNS = {
     completed: "Terminé",
     configure: "Configurer",
     confirm: "Confirmer",
+    consents: "Consentements",
     contains: "Contient",
     continue: "Continuer",
     copied: "Copié!",

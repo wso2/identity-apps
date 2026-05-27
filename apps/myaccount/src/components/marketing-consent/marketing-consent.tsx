@@ -300,11 +300,10 @@ export const MarketingConsent: FunctionComponent<MarketingConsentComponentProps>
                 onClose={ handleRevokeModalClose }
                 type="warning"
                 header={ t(
-                    "myAccount:components.marketingConsentManagement.modals.revokeModal.heading",
-                    { consentName: revokingItem?.purposeName ?? "" }
+                    "myAccount:components.marketingConsentManagement.dangerZones.revoke.header"
                 ) }
                 content={ t(
-                    "myAccount:components.marketingConsentManagement.modals.revokeModal.message"
+                    "myAccount:components.marketingConsentManagement.dangerZones.revoke.subheader"
                 ) }
             />
         );

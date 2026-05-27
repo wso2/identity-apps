@@ -447,12 +447,6 @@ export const myAccount: MyAccountNS = {
                 }
             },
             "elementsHeading": "マーケティングコミュニケーションの同意を管理します。取り消す必要がある属性のチェックを外し、更新ボタンを押して変更を保存するか、取り消しボタンを押してすべての属性の同意を削除してください。",
-            "modals": {
-                "revokeModal": {
-                    "heading": "{{consentName}}の同意を取り消す",
-                    "message": "このマーケティングコミュニケーションへの同意が取り消されます。続行してもよろしいですか？"
-                }
-            },
             "notifications": {
                 "fetch": {
                     "error": {
@@ -507,12 +501,6 @@ export const myAccount: MyAccountNS = {
                     "actionTitle": "取り消す",
                     "header": "ポリシー同意を取り消す",
                     "subheader": "このアクションはこのポリシーに対するあなたの同意を取り消します。次回サービスにアクセスするときに、再度同意するよう求められる場合があります。"
-                }
-            },
-            "modals": {
-                "revokeModal": {
-                    "heading": "{{policyName}} の同意を取り消す",
-                    "message": "これはこのポリシーに対するあなたの同意を取り消します。次回サービスにアクセスするときに、再度同意するよう求められる場合があります。続行してよろしいですか？"
                 }
             },
             "notifications": {

@@ -370,20 +370,14 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 description: "Description",
-                piiCategoryHeading:
-                    "Manage consent for the collection and sharing of your personal information " +
-                    "with the application. Uncheck the attributes that you need to revoke and press the update " +
-                    "button to save the changes or press the revoke button to remove the consent for all the " +
-                    "attributes.",
+                piiCategoryHeading: "Manage consent for the collection and sharing of your personal information with the application. Uncheck the attributes that you need to revoke and press the update button to save the changes or press the revoke button to remove the consent for all the attributes.",
                 state: "State",
                 version: "Version"
             },
             modals: {
                 consentRevokeModal: {
                     heading: "Are you sure?",
-                    message:
-                        "This operation is not reversible. This will permanently revoke consent for all the " +
-                        "attributes. Are you sure you want to proceed?",
+                    message: "This operation is not reversible. This will permanently revoke consent for all the attributes. Are you sure you want to proceed?",
                     warning: "Please note that you will be redirected to the login consent page"
                 }
             },
@@ -452,15 +446,7 @@ export const myAccount: MyAccountNS = {
                 revoke: {
                     actionTitle: "Revoke",
                     header: "Revoke Policy Consent",
-                    subheader: "This action will revoke your consent for this policy. You may be asked to re-consent " +
-                        "the next time you access the service."
-                }
-            },
-            modals: {
-                revokeModal: {
-                    heading: "Revoke consent for {{policyName}}",
-                    message: "This will revoke your consent for this policy. You may be asked to re-consent the " +
-                        "next time you access the service. Are you sure you want to continue?"
+                    subheader: "This action will revoke your consent for this policy. You may be asked to re-consent the next time you access the service."
                 }
             },
             notifications: {
@@ -498,22 +484,12 @@ export const myAccount: MyAccountNS = {
         },
         marketingConsentManagement: {
             consentedOnLabel: "Accepted on",
-            elementsHeading: "Manage your marketing communication consent. Uncheck the attributes that you need " +
-                "to revoke and press the update button to save the changes or press the revoke button to remove " +
-                "the consent for all the attributes.",
+            elementsHeading: "Manage your marketing communication consent. Uncheck the attributes that you need to revoke and press the update button to save the changes or press the revoke button to remove the consent for all the attributes.",
             dangerZones: {
                 revoke: {
                     actionTitle: "Revoke",
                     header: "Revoke Marketing Consent",
-                    subheader: "This action will revoke your consent for this marketing communication. " +
-                        " "
-                }
-            },
-            modals: {
-                revokeModal: {
-                    heading: "Revoke consent for {{consentName}}",
-                    message: "This will revoke your consent for this marketing communication. " +
-                        "Are you sure you want to continue?"
+                    subheader: "This action will revoke your consent for this marketing communication."
                 }
             },
             notifications: {

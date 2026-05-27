@@ -449,12 +449,6 @@ export const myAccount: MyAccountNS = {
                 }
             },
             "elementsHeading": "Administre su consentimiento de comunicaciones de marketing. Desmarque los atributos que necesita revocar y presione el botón actualizar para guardar los cambios o presione el botón revocar para eliminar el consentimiento de todos los atributos.",
-            "modals": {
-                "revokeModal": {
-                    "heading": "Revocar consentimiento para {{consentName}}",
-                    "message": "Esto revocará su consentimiento para esta comunicación de marketing. ¿Está seguro de que desea continuar?"
-                }
-            },
             "notifications": {
                 "fetch": {
                     "error": {
@@ -509,12 +503,6 @@ export const myAccount: MyAccountNS = {
                     "actionTitle": "Revocar",
                     "header": "Revocar consentimiento de política",
                     "subheader": "Esta acción revocará su consentimiento para esta política. Se le puede pedir que vuelva a consentir la próxima vez que acceda al servicio."
-                }
-            },
-            "modals": {
-                "revokeModal": {
-                    "heading": "Revocar consentimiento para {{policyName}}",
-                    "message": "Esto revocará su consentimiento para esta política. Se le puede pedir que vuelva a consentir la próxima vez que acceda al servicio. ¿Está seguro de que desea continuar?"
                 }
             },
             "notifications": {

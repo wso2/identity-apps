@@ -371,18 +371,14 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 description: "Descrição",
-                piiCategoryHeading: "Gerencie o consentimento para a coleta e o compartilhamento de suas informações " +
-                    "pessoais com o aplicativo. Desmarque os atributos que você precisa revogar e pressione o botão " +
-                    "atualizar para salvar as alterações ou pressione o botão revogar para remover o consentimento " +
-                    "para todos os atributos.",
+                piiCategoryHeading: "Gerencie o consentimento para a coleta e o compartilhamento de suas informações pessoais com o aplicativo. Desmarque os atributos que você precisa revogar e pressione o botão atualizar para salvar as alterações ou pressione o botão revogar para remover o consentimento para todos os atributos.",
                 state: "Estado",
                 version: "Versão"
             },
             modals: {
                 consentRevokeModal: {
                     heading: "Você tem certeza?",
-                    message: "Esta operação não é reversível. Isso revogará permanentemente o consentimento para " +
-                        "todos os atributos. Tem certeza de que deseja continuar?",
+                    message: "Esta operação não é reversível. Isso revogará permanentemente o consentimento para todos os atributos. Tem certeza de que deseja continuar?",
                     warning: "Observe que você será redirecionado para a página de consentimento de login"
                 }
             },
@@ -455,12 +451,6 @@ export const myAccount: MyAccountNS = {
                 }
             },
             elementsHeading: "Gerir o seu consentimento de comunicações de marketing. Desmarque os atributos que precisa de revogar e prima o botão atualizar para guardar as alterações ou prima o botão revogar para remover o consentimento de todos os atributos.",
-            modals: {
-                revokeModal: {
-                    heading: "Revogar consentimento para {{consentName}}",
-                    message: "Isto irá revogar o seu consentimento para esta comunicação de marketing. Tem a certeza de que pretende continuar?"
-                }
-            },
             notifications: {
                 fetch: {
                     error: {
@@ -514,15 +504,7 @@ export const myAccount: MyAccountNS = {
                 revoke: {
                     actionTitle: "Revogar",
                     header: "Revogar Consentimento de Política",
-                    subheader: "Esta ação revogará seu consentimento para esta política. Você pode ser solicitado a consentir novamente " +
-                        "na próxima vez que acessar o serviço."
-                }
-            },
-            modals: {
-                revokeModal: {
-                    heading: "Revogar consentimento para {{policyName}}",
-                    message: "Isso revogará seu consentimento para esta política. Você pode ser solicitado a consentir novamente " +
-                        "na próxima vez que acessar o serviço. Tem certeza de que deseja continuar?"
+                    subheader: "Esta ação revogará seu consentimento para esta política. Você pode ser solicitado a consentir novamente na próxima vez que acessar o serviço."
                 }
             },
             notifications: {

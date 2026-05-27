@@ -447,12 +447,6 @@ export const myAccount: MyAccountNS = {
                 }
             },
             "elementsHeading": "管理您的营销通信同意。取消勾选需要撤销的属性，然后按更新按钮保存更改，或按撤销按钮删除所有属性的同意。",
-            "modals": {
-                "revokeModal": {
-                    "heading": "撤销对 {{consentName}} 的同意",
-                    "message": "此操作将撤销您对此营销通信的同意。您确定要继续吗？"
-                }
-            },
             "notifications": {
                 "fetch": {
                     "error": {
@@ -507,12 +501,6 @@ export const myAccount: MyAccountNS = {
                     "actionTitle": "撤销",
                     "header": "撤销政策同意",
                     "subheader": "此操作将撤销您对此政策的同意。下次您访问该服务时，可能会要求您重新同意。"
-                }
-            },
-            "modals": {
-                "revokeModal": {
-                    "heading": "撤销对 {{policyName}} 的同意",
-                    "message": "这将撤销您对此政策的同意。下次您访问该服务时，可能会要求您重新同意。您确定要继续吗？"
                 }
             },
             "notifications": {

@@ -202,11 +202,10 @@ export const PolicyConsent: FunctionComponent<PolicyConsentComponentProps> = (
                 onClose={ handlePolicyRevokeModalClose }
                 type="warning"
                 header={ t(
-                    "myAccount:components.policyConsentManagement.modals.revokeModal.heading",
-                    { policyName: revokingPolicyItem?.purposeName ?? "" }
+                    "myAccount:components.policyConsentManagement.dangerZones.revoke.header"
                 ) }
                 content={ t(
-                    "myAccount:components.policyConsentManagement.modals.revokeModal.message"
+                    "myAccount:components.policyConsentManagement.dangerZones.revoke.subheader"
                 ) }
             />
         );

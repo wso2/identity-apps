@@ -389,12 +389,6 @@ export interface MyAccountNS {
                     subheader: string;
                 };
             };
-            modals: {
-                revokeModal: {
-                    heading: string;
-                    message: string;
-                };
-            };
             notifications: {
                 fetch: Notification;
                 revoke: Notification;
@@ -410,12 +404,6 @@ export interface MyAccountNS {
                     actionTitle: string;
                     header: string;
                     subheader: string;
-                };
-            };
-            modals: {
-                revokeModal: {
-                    heading: string;
-                    message: string;
                 };
             };
             notifications: {

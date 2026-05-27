@@ -179,8 +179,7 @@ export const consents: ConsentsNS = {
                 placeholder: "Privacy Policy"
             },
             policyUrl: {
-                hint: "Enter the URL of the full policy document. Use {{lang}}, {{country}}, or {{locale}} as " +
-                    "placeholders to support multiple regions or languages.",
+                hint: "Enter the URL of the full policy document. Use {{lang}}, {{country}}, or {{locale}} as placeholders to support multiple regions or languages.",
                 label: "Policy URL",
                 versionHint: "To create a new version, update the policy URL, description, or prompt settings above."
             },
@@ -354,8 +353,7 @@ export const consents: ConsentsNS = {
                         insertPolicyLinkNoSelection: "Select the words you want to link, then click.",
                         insertPolicyLinkShort: "Policy Link",
                         insertPolicyLinkTooltip: "Wraps the selected text with your Policy URL as a hyperlink.",
-                        labelRoleHint: "Leave empty to use the default description. " +
-                            "Select text and click \"Policy Link\" to hyperlink it to the policy URL."
+                        labelRoleHint: "Leave empty to use the default description. Select text and click \"Policy Link\" to hyperlink it to the policy URL."
                     }
                 },
                 preview: {

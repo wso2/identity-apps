@@ -176,6 +176,7 @@ export const common: CommonNS = {
     "completed": "完全的",
     "configure": "配置",
     "confirm": "确认",
+    "consents": "同意",
     "contains": "包含",
     "continue": "继续",
     "copied": "复制了",

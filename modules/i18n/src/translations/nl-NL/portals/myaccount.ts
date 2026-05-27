@@ -443,12 +443,6 @@ export const myAccount: MyAccountNS = {
                 }
             },
             "elementsHeading": "Beheer uw toestemming voor marketingcommunicatie. Schakel de attributen uit die u wilt intrekken en druk op de knop bijwerken om de wijzigingen op te slaan of druk op de knop intrekken om de toestemming voor alle attributen te verwijderen.",
-            "modals": {
-                "revokeModal": {
-                    "heading": "Toestemming intrekken voor {{consentName}}",
-                    "message": "Dit trekt uw toestemming voor deze marketingcommunicatie in. Weet u zeker dat u wilt doorgaan?"
-                }
-            },
             "notifications": {
                 "fetch": {
                     "error": {
@@ -503,12 +497,6 @@ export const myAccount: MyAccountNS = {
                     "actionTitle": "Intrekken",
                     "header": "Beleidstoestemming intrekken",
                     "subheader": "Deze actie trekt uw toestemming voor dit beleid in. Mogelijk wordt u gevraagd opnieuw toestemming te geven wanneer u de service de volgende keer gebruikt."
-                }
-            },
-            "modals": {
-                "revokeModal": {
-                    "heading": "Toestemming intrekken voor {{policyName}}",
-                    "message": "Hiermee trekt u uw toestemming voor dit beleid in. Mogelijk wordt u gevraagd opnieuw toestemming te geven wanneer u de service de volgende keer gebruikt. Weet u zeker dat u wilt doorgaan?"
                 }
             },
             "notifications": {
