@@ -21,8 +21,7 @@ export interface flowExtensionNS {
         description: string;
         connectionLabel: string;
         connectionPlaceholder: string;
-        noConnectionsSupportWarning: string;
-        noConnectionsSupportWarningLink: string;
-        noConnectionsSupportWarningSuffix: string;
+        noConnectionsWarning: string;
+        noConnectionsWarningWithSupport: string;
     };
 }

@@ -17,13 +17,16 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
+import Code from "@oxygen-ui/react/Code/Code";
 import Typography from "@oxygen-ui/react/Typography";
 import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ReactElement, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import useAuthenticationFlowBuilderCore
     from "../../../../../hooks/use-authentication-flow-builder-core-context";
+import useRequiredFields, { RequiredFieldInterface }
+    from "../../../../../hooks/use-required-fields";
 import { FlowExtensionConnectionInterface } from "../../../../../models/metadata";
 import { ExecutionMinimalPropsInterface } from "../execution-minimal";
 
@@ -41,6 +44,25 @@ const FlowExtensionExecution = ({
 }: FlowExtensionExecutionPropsInterface): ReactElement => {
     const { t } = useTranslation();
     const { metadata } = useAuthenticationFlowBuilderCore();
+
+    const generalMessage: ReactElement = useMemo(() => (
+        <Trans
+            i18nKey="flows:core.validation.fields.flowExtension.general"
+            values={ { id: resource?.id } }
+        >
+            Required fields are not properly configured for the flow extension with ID
+            <Code>{ resource?.id }</Code>.
+        </Trans>
+    ), [ resource?.id ]);
+
+    const fields: RequiredFieldInterface[] = useMemo(() => [
+        {
+            errorMessage: t("flows:core.validation.fields.flowExtension.actionId"),
+            name: "data.action.executor.meta.actionId"
+        }
+    ], []);
+
+    useRequiredFields(resource, generalMessage, fields);
 
     const selectedConnection: FlowExtensionConnectionInterface | null = useMemo(() => {
         const actionId: string = resource?.data?.action?.executor?.meta?.actionId;

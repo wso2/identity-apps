@@ -261,6 +261,10 @@ export const flows: flowsNS = {
                     general: "Required fields are not properly configured for the divider with ID <1>{{id}}</1>.",
                     variant: "Divider must have a variant defined for proper styling and orientation."
                 },
+                flowExtension: {
+                    actionId: "A flow extension connection is required and must be selected.",
+                    general: "Required fields are not properly configured for the flow extension with ID <1>{{id}}</1>."
+                },
                 image: {
                     general: "Required fields are not properly configured for the image with ID <1>{{id}}</1>.",
                     src: "Image must have a source URL to be displayed to users.",

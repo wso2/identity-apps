@@ -22,9 +22,8 @@ export const flowExtension: flowExtensionNS = {
     properties: {
         connectionLabel: "Connection",
         connectionPlaceholder: "Select a connection",
-        description: "Select an in-flow extension to link with this flow step.",
-        noConnectionsSupportWarning: "No active in-flow extensions available. Please contact ",
-        noConnectionsSupportWarningLink: "Asgardeo support",
-        noConnectionsSupportWarningSuffix: " to enable creating in-flow extensions."
+        description: "Select an flow extension to link with this flow step.",
+        noConnectionsWarning: "No active flow extensions available. You can create a flow extension connection using the {{productName}} APIs.",
+        noConnectionsWarningWithSupport: "No active flow extensions available. You can create a flow extension connection using the {{productName}} APIs. Please contact <1>{{productName}} support</1> to get started."
     }
 };

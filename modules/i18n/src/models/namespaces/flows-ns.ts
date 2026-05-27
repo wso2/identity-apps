@@ -298,6 +298,10 @@ export interface flowsNS {
                     noPoliciesAvailable: string;
                     policiesRequired: string;
                 };
+                flowExtension: {
+                    general: string;
+                    actionId: string;
+                };
             };
         };
         steps: {

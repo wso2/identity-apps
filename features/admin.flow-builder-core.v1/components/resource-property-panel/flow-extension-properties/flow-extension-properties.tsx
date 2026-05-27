@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FormHelperText } from "@mui/material";
 import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Link from "@oxygen-ui/react/Link";
@@ -27,10 +28,11 @@ import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node, useReactFlow } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import useAuthenticationFlowBuilderCore
     from "../../../hooks/use-authentication-flow-builder-core-context";
+import useValidationStatus from "../../../hooks/use-validation-status";
 import { FlowExtensionConnectionInterface } from "../../../models/metadata";
 import {
     CommonResourcePropertiesPropsInterface
@@ -59,8 +61,10 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
     const supportURL: string = useSelector(
         (state: AppState) => state.config.deployment.helpCenterURL
     ) ?? "";
+    const productName: string = useSelector((state: AppState) => state.config.ui.productName);
 
     const { metadata, isFlowMetadataLoading } = useAuthenticationFlowBuilderCore();
+    const { selectedNotification } = useValidationStatus();
     const { getNodes } = useReactFlow();
 
     const connections: FlowExtensionConnectionInterface[] = useMemo(() => {
@@ -92,6 +96,16 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
             (connection: FlowExtensionConnectionInterface) => connection.actionId === actionId
         ) || null;
     }, [ connections, resource?.data?.action?.executor?.meta?.actionId ]);
+
+    const errorMessage: string = useMemo(() => {
+        const key: string = `${resource?.id}_data.action.executor.meta.actionId`;
+
+        if (selectedNotification?.hasResourceFieldNotification(key)) {
+            return selectedNotification?.getResourceFieldNotification(key);
+        }
+
+        return "";
+    }, [ resource, selectedNotification ]);
 
     const handleConnectionChange = (_: React.SyntheticEvent,
         connection: FlowExtensionConnectionInterface | null) => {
@@ -130,6 +144,7 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
                         label={ t("flowExtension:properties.connectionLabel") }
                         placeholder={ t("flowExtension:properties.connectionPlaceholder") }
                         size="small"
+                        error={ !!errorMessage }
                     />
                 ) }
                 renderOption={ (props: React.HTMLAttributes<HTMLLIElement>,
@@ -149,28 +164,36 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
                         option.actionId === value.actionId
                 }
             />
+            { errorMessage && (
+                <FormHelperText error>{ errorMessage }</FormHelperText>
+            ) }
             { !isFlowMetadataLoading && !connections?.length && (
                 <Alert severity="warning" data-componentid={ `${componentId}-no-actions-warning` }>
                     <Typography
                         variant="body2"
                         sx={ { maxWidth: "100%", minWidth: 0, overflowWrap: "anywhere", wordBreak: "break-word" } }
                     >
-                        { t("flowExtension:properties.noConnectionsSupportWarning") }
-                        {
-                            supportURL
-                                ? (
+                        { supportURL
+                            ? (
+                                <Trans
+                                    i18nKey="flowExtension:properties.noConnectionsWarningWithSupport"
+                                    values={ { productName } }
+                                >
+                                    No active flow extensions available. You can create a flow extension
+                                    connection using the { productName } APIs. Please contact
                                     <Link
                                         href={ supportURL }
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         sx={ { overflowWrap: "anywhere" } }
                                     >
-                                        { t("flowExtension:properties.noConnectionsSupportWarningLink") }
+                                        { productName } support
                                     </Link>
-                                )
-                                : t("flowExtension:properties.noConnectionsSupportWarningLink")
+                                    to get started.
+                                </Trans>
+                            )
+                            : t("flowExtension:properties.noConnectionsWarning", { productName })
                         }
-                        { t("flowExtension:properties.noConnectionsSupportWarningSuffix") }
                     </Typography>
                 </Alert>
             ) }
