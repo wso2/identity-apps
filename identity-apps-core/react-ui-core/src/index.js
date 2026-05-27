@@ -24,7 +24,6 @@ export { default as Form } from "./components/form";
 export { default as ValidationCriteria } from "./components/validation-criteria";
 export { default as Field } from "./components/field";
 export { default as DynamicContent } from "./components/dynamic-content";
-export { default as DynamicError } from "./components/dynamic-error";
 export { default as PasskeyEnrollment } from "./components/passkey-enrollment";
 export { default as RadioFieldAdapter } from "./components/adapters/radio-field-adapter";
 
