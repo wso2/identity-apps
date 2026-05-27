@@ -35,10 +35,14 @@ import useValidationStatus from "@wso2is/admin.flow-builder-core.v1/hooks/use-va
 import { Element } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import isEqual from "lodash-es/isEqual";
-import omit from "lodash-es/omit";
-import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef } from "react";
 import useGetPasswordRecoveryFlowCoreActions from "../../../api/use-get-password-recovery-flow-builder-actions";
+import {
+    ActionGroupInterface,
+    ActionMetaConfigItemInterface,
+    ActionTypeInterface
+} from "../../../models/actions";
+import ActionMetaProperties from "./action-meta-properties";
 import "./button-extended-properties.scss";
 
 /**
@@ -63,6 +67,56 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
     const { selectedNotification } = useValidationStatus();
 
     /**
+     * Per-executor meta cache keyed by executor name.
+     * Populated from lastInteractedResource so that switching away from an executor
+     * and coming back restores its last configured meta without requiring an additional
+     * "save" step — matching the expected behaviour described in the flow builder spec.
+     */
+    const executorMetaCacheRef: React.MutableRefObject<Record<string, Record<string, string>>> =
+        useRef<Record<string, Record<string, string>>>({});
+
+    useEffect(() => {
+        const executorName: string | undefined =
+            (lastInteractedResource as Element)?.action?.executor?.name;
+        const meta: Record<string, string> | undefined =
+            (lastInteractedResource as Element)?.action?.executor?.meta;
+
+        // Only cache when there is actual meta — avoids clearing a previous entry
+        // when the user switches to an executor that carries no meta (e.g. PasswordProvisioningExecutor).
+        if (executorName && meta) {
+            executorMetaCacheRef.current[executorName] = meta;
+        }
+    }, [ lastInteractedResource ]);
+
+    /**
+     * Resolve the metaConfig for whichever action type is currently selected,
+     * or null when the selected action exposes no configurable meta options.
+     * Matched by executor name so that saved flows (which carry existing meta values)
+     * are handled correctly regardless of what is stored in executor.meta.
+     */
+    const selectedActionMetaConfig: ActionMetaConfigItemInterface[] | null = useMemo(() => {
+        const currentExecutorName: string | undefined =
+            (lastInteractedResource as Element)?.action?.executor?.name;
+
+        if (!currentExecutorName) {
+            return null;
+        }
+
+        for (const group of ((actions as unknown as ActionGroupInterface[]) ?? [])) {
+            for (const actionType of (group.types ?? [])) {
+                const templateExecutorName: string | undefined =
+                    (actionType.action?.executor as Record<string, string>)?.name;
+
+                if (templateExecutorName === currentExecutorName && actionType.metaConfig?.length > 0) {
+                    return actionType.metaConfig;
+                }
+            }
+        }
+
+        return null;
+    }, [ actions, lastInteractedResource ]);
+
+    /**
      * Get the error message for the identifier field.
      */
     const errorMessage: string = useMemo(() => {
@@ -79,62 +133,75 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
         <Stack className="button-extended-properties" gap={ 2 } data-componentid={ componentId }>
             <div>
                 <Typography className="button-extended-properties-heading">Type</Typography>
-                { actions?.map((action: Element & { types: Element[] }, index: number) => (
-                    <Box key={ index }>
-                        <Typography className="button-extended-properties-sub-heading" variant="body1">
-                            { action?.display?.label }
-                        </Typography>
-                        <Grid container spacing={ 1 }>
-                            { action.types?.map((actionType: Element, typeIndex: number) => (
-                                <Grid
-                                    key={ typeIndex }
-                                    xs={ 6 }
-                                    onClick={ () => {
-                                        onChange(
-                                            "action",
-                                            {
+                { (actions as unknown as ActionGroupInterface[])?.map(
+                    (action: ActionGroupInterface, index: number) => (
+                        <Box key={ index }>
+                            <Typography className="button-extended-properties-sub-heading" variant="body1">
+                                { action?.display?.label }
+                            </Typography>
+                            <Grid container spacing={ 1 }>
+                                { action.types?.map((actionType: ActionTypeInterface, typeIndex: number) => (
+                                    <Grid
+                                        key={ typeIndex }
+                                        xs={ 6 }
+                                        onClick={ () => {
+                                            const clickedExecutorName: string | undefined =
+                                                (actionType.action?.executor as Record<string, string>)?.name;
+
+                                            // Restore any previously configured meta for this executor
+                                            // so that switching away and coming back preserves state.
+                                            const restoredMeta: Record<string, string> | undefined =
+                                                clickedExecutorName
+                                                    ? executorMetaCacheRef.current[clickedExecutorName]
+                                                    : undefined;
+
+                                            const newAction: Record<string, unknown> = {
                                                 ...actionType.action,
+                                                executor: {
+                                                    ...(actionType.action?.executor as Record<string, unknown>),
+                                                    ...(restoredMeta ? { meta: restoredMeta } : {})
+                                                },
                                                 ...((resource as Element)?.action?.next
                                                     ? { next: (resource as Element)?.action?.next }
                                                     : {})
-                                            },
-                                            resource
-                                        );
+                                            };
 
-                                        setLastInteractedResource({
-                                            ...lastInteractedResource,
-                                            action: actionType.action
-                                        });
-                                    } }
-                                >
-                                    <Card
-                                        className={ classNames("extended-property action-type", {
-                                            error: !!errorMessage,
-                                            selected: isEqual(
-                                                omit((lastInteractedResource as Element)?.action, "next"),
-                                                actionType.action
-                                            )
-                                        }) }
-                                        variant="outlined"
+                                            onChange("action", newAction, resource);
+                                            setLastInteractedResource({
+                                                ...lastInteractedResource,
+                                                action: newAction
+                                            });
+                                        } }
                                     >
-                                        <CardContent>
-                                            <Box display="flex" flexDirection="row" gap={ 1 } alignItems="center">
-                                                <Avatar
-                                                    className="action-type-icon"
-                                                    src={ loadStaticResource(actionType?.display?.image) }
-                                                    variant="rounded"
-                                                />
-                                                <Typography variant="body2" className="action-type-name">
-                                                    { actionType?.display?.label }
-                                                </Typography>
-                                            </Box>
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                            )) }
-                        </Grid>
-                    </Box>
-                )) }
+                                        <Card
+                                            className={ classNames("extended-property action-type", {
+                                                error: !!errorMessage,
+                                                // Compare only on executor name so that the card
+                                                // stays selected regardless of what is in executor.meta.
+                                                selected: (lastInteractedResource as Element)
+                                                    ?.action?.executor?.name ===
+                                                    (actionType.action?.executor as Record<string, string>)?.name
+                                            }) }
+                                            variant="outlined"
+                                        >
+                                            <CardContent>
+                                                <Box display="flex" flexDirection="row" gap={ 1 } alignItems="center">
+                                                    <Avatar
+                                                        className="action-type-icon"
+                                                        src={ loadStaticResource(actionType?.display?.image) }
+                                                        variant="rounded"
+                                                    />
+                                                    <Typography variant="body2" className="action-type-name">
+                                                        { actionType?.display?.label }
+                                                    </Typography>
+                                                </Box>
+                                            </CardContent>
+                                        </Card>
+                                    </Grid>
+                                )) }
+                            </Grid>
+                        </Box>
+                    )) }
                 {
                     errorMessage && (
                         <FormHelperText error>
@@ -143,6 +210,14 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
                     )
                 }
             </div>
+            { selectedActionMetaConfig && (
+                <ActionMetaProperties
+                    metaConfig={ selectedActionMetaConfig }
+                    resource={ resource }
+                    onChange={ onChange }
+                    data-componentid={ `${componentId}-meta` }
+                />
+            ) }
             <Divider />
         </Stack>
     );

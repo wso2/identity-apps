@@ -213,7 +213,11 @@
                                             "action": {
                                                 "type": "EXECUTOR",
                                                 "executor": {
-                                                    "name": "UserResolveExecutor"
+                                                    "name": "UserResolveExecutor",
+                                                    "meta": {
+                                                        "notifyUserExistence": "false",
+                                                        "notifyUserAccountStatus": "false"
+                                                    }
                                                 },
                                                 "next": "{{EXECUTION_STEP_ID}}"
                                             }
@@ -456,7 +460,11 @@
                                             "action": {
                                                 "type": "EXECUTOR",
                                                 "executor": {
-                                                    "name": "UserResolveExecutor"
+                                                    "name": "UserResolveExecutor",
+                                                    "meta": {
+                                                        "notifyUserExistence": "false",
+                                                        "notifyUserAccountStatus": "false"
+                                                    }
                                                 },
                                                 "next": "{{NEXT_STEP_ID}}"
                                             }
@@ -741,7 +749,11 @@
                                             "action": {
                                                 "type": "EXECUTOR",
                                                 "executor": {
-                                                    "name": "UserResolveExecutor"
+                                                    "name": "UserResolveExecutor",
+                                                    "meta": {
+                                                        "notifyUserExistence": "false",
+                                                        "notifyUserAccountStatus": "false"
+                                                    }
                                                 },
                                                 "next": "{{NEXT_STEP_ID}}"
                                             }
@@ -1034,7 +1046,11 @@
                                             "action": {
                                                 "type": "EXECUTOR",
                                                 "executor": {
-                                                    "name": "UserResolveExecutor"
+                                                    "name": "UserResolveExecutor",
+                                                    "meta": {
+                                                        "notifyUserExistence": "false",
+                                                        "notifyUserAccountStatus": "false"
+                                                    }
                                                 },
                                                 "next": "{{CHANNEL_SELECTION_STEP_ID}}"
                                             }

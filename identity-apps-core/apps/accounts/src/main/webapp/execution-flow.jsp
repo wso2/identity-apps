@@ -322,12 +322,16 @@
                         window.location.href = errorPageURL;
                     }
 
-                    if (flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error) {
-                        setFlowError(flowData.data.additionalData.error);
-                        return;
+                    if (flowData && flowData.data && flowData.data.additionalData) {
+                        const additionalData = flowData.data.additionalData;
+                        if (additionalData.i18nKey || additionalData.error) {
+                            setFlowError(additionalData.i18nKey || additionalData.error);
+                            return;
+                        }
                     }
                     setFlowError(undefined);
-                }, [ error, flowType, flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error ]);
+                }, [ error, flowType, flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error,
+                    flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.i18nKey ]);
 
                 const handleInternalPrompt = (flowData) => {
                     let providedInputs = {};

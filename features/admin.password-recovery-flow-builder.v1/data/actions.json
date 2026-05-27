@@ -12,7 +12,22 @@
                     "label": "Resolve User",
                     "image": "assets/images/icons/magnifying-glass.svg",
                     "defaultVariant": "PRIMARY"
-                }
+                },
+                "metaConfig": [
+                    {
+                        "key": "notifyUserExistence",
+                        "label": "Notify User Existence",
+                        "description": "Notify the user indicating whether an account exists for the provided username.",
+                        "warning": "Enabling this option can result in user enumeration attacks. Use with caution."
+                    },
+                    {
+                        "key": "notifyUserAccountStatus",
+                        "label": "Notify User Account Status",
+                        "description": "Additionally notify the user if their account is locked, disabled or unverified.",
+                        "dependsOn": "notifyUserExistence",
+                        "disabledTooltip": "Enable \"Notify User Existence\" first. Account status inherently reveals that the user exists."
+                    }
+                ]
             },
             {
                 "action": {

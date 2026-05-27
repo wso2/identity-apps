@@ -62,7 +62,11 @@
                             "action": {
                                 "type": "EXECUTOR",
                                 "executor": {
-                                    "name": "UserResolveExecutor"
+                                    "name": "UserResolveExecutor",
+                                    "meta": {
+                                        "notifyUserExistence": "false",
+                                        "notifyUserAccountStatus": "false"
+                                    }
                                 },
                                 "next": "END"
                             }
