@@ -49,6 +49,8 @@ import {
 } from "../../../models/connection";
 import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 
+const SHOW_SERVICE_CERTIFICATE_SECTION: boolean = false;
+
 const areStringSetsEqual = (a: string[] | undefined, b: string[] | undefined): boolean => {
     const setA: Set<string> = new Set(a ?? []);
     const setB: Set<string> = new Set(b ?? []);
@@ -261,48 +263,52 @@ export const FlowExtensionEndpointSettings: FunctionComponent<FlowExtensionEndpo
                                     setIsEndpointAuthenticationUpdated(isAuthenticationUpdated);
                                 } }
                             />
-                            <Divider sx={ { my: 3 } } />
-                            <Heading as="h5">
-                                { t("flowExtension:createWizard.steps.endpointConfig.certificate.title") }
-                            </Heading>
-                            <Typography variant="body2" color="text.secondary" sx={ { mb: 2 } }>
-                                { t("flowExtension:createWizard.steps.endpointConfig.certificate.hint") }
-                            </Typography>
-                            { (hasCertificate || certificatePEM) && (
-                                <Alert
-                                    severity="success"
-                                    sx={ { alignItems: "center", mb: 2 } }
-                                    action={
-                                        <LinkButton
-                                            onClick={ () => {
-                                                setCertificatePEM("");
-                                                setHasCertificate(false);
-                                                setIsCertificateModified(true);
-                                                certificatePEMRef.current = "";
-                                                isCertificateModifiedRef.current = true;
-                                            } }
-                                            data-componentid={ `${componentId}-clear-certificate` }
+                            { SHOW_SERVICE_CERTIFICATE_SECTION && (
+                                <>
+                                    <Divider sx={ { my: 3 } } />
+                                    <Heading as="h5">
+                                        { t("flowExtension:createWizard.steps.endpointConfig.certificate.title") }
+                                    </Heading>
+                                    <Typography variant="body2" color="text.secondary" sx={ { mb: 2 } }>
+                                        { t("flowExtension:createWizard.steps.endpointConfig.certificate.hint") }
+                                    </Typography>
+                                    { (hasCertificate || certificatePEM) && (
+                                        <Alert
+                                            severity="success"
+                                            sx={ { alignItems: "center", mb: 2 } }
+                                            action={
+                                                <LinkButton
+                                                    onClick={ () => {
+                                                        setCertificatePEM("");
+                                                        setHasCertificate(false);
+                                                        setIsCertificateModified(true);
+                                                        certificatePEMRef.current = "";
+                                                        isCertificateModifiedRef.current = true;
+                                                    } }
+                                                    data-componentid={ `${componentId}-clear-certificate` }
+                                                >
+                                                    Clear
+                                                </LinkButton>
+                                            }
+                                            data-componentid={ `${componentId}-certificate-status` }
                                         >
-                                            Clear
-                                        </LinkButton>
-                                    }
-                                    data-componentid={ `${componentId}-certificate-status` }
-                                >
-                                    <Trans
-                                        i18nKey={ "flowExtension:createWizard.steps.endpointConfig" +
-                                            ".certificate.uploaded" }
-                                    >
-                                        Certificate configured. You can re-upload to replace it or clear it.
-                                    </Trans>
-                                </Alert>
+                                            <Trans
+                                                i18nKey={ "flowExtension:createWizard.steps.endpointConfig" +
+                                                    ".certificate.uploaded" }
+                                            >
+                                                Certificate configured. You can re-upload to replace it or clear it.
+                                            </Trans>
+                                        </Alert>
+                                    ) }
+                                    <AddCertificateFormComponent
+                                        triggerCertificateUpload={ triggerCertUpload }
+                                        triggerSubmit={ triggerCertSubmit }
+                                        onSubmit={ handleCertificateSubmit }
+                                        setShowFinishButton={ setUserHasStagedCert }
+                                        data-componentid={ `${componentId}-certificate-upload` }
+                                    />
+                                </>
                             ) }
-                            <AddCertificateFormComponent
-                                triggerCertificateUpload={ triggerCertUpload }
-                                triggerSubmit={ triggerCertSubmit }
-                                onSubmit={ handleCertificateSubmit }
-                                setShowFinishButton={ setUserHasStagedCert }
-                                data-componentid={ `${componentId}-certificate-upload` }
-                            />
                             { !isReadOnly && (
                                 <Button
                                     size="medium"

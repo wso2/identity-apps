@@ -61,6 +61,10 @@ const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
     import("@monaco-editor/react" /* webpackChunkName: "FCTMonacoEditor" */)
 );
 
+const SHOW_ENCRYPTION_SECTION: boolean = false;
+
+const SHOW_ACCESS_CONFIG_PAYLOAD: boolean = false;
+
 /**
  * Small lock SVG used in the encryption rows of the field-configuration panel.
  */
@@ -429,49 +433,53 @@ const FieldConfigPanel: FunctionComponent<FieldConfigPanelProps> = ({
                     </Box>
 
                     { /* ── Encryption section ── */ }
-                    <Typography
-                        variant="subtitle2"
-                        color="text.secondary"
-                        sx={ { display: "block", fontWeight: 600, mt: 2.5 } }
-                    >
-                        Encryption
-                    </Typography>
-                    <Box sx={ { display: "flex", flexDirection: "column", gap: 1.5, mt: 1 } }>
-                        <EncryptionCard
-                            title="Read encrypted"
-                            color="var(--tree-expose)"
-                            checked={ !!selectedNode.exposeEncrypted }
-                            disabled={ !canExposeOp || readOnly || !selectedNode.exposed || !hasCertificate }
-                            disabledReason={
-                                !canExposeOp
-                                    ? "Read is not allowed for this field."
-                                    : !selectedNode.exposed
-                                        ? "Mark this field as READ in the tree to enable encryption."
-                                        : !hasCertificate
-                                            ? "Add a certificate to enable encryption."
-                                            : "Read only."
-                            }
-                            enabledDescription="This field will be sent to the extension encrypted."
-                            onToggle={ () => onToggleExposeEncrypt(selectedNode.key) }
-                            data-componentid="field-config-panel-expose-enc"
-                        />
-                        <EncryptionCard
-                            title="Write encrypted"
-                            color="var(--tree-modify)"
-                            checked={ !!selectedNode.modifyEncrypted }
-                            disabled={ !canModifyOp || readOnly || !selectedNode.modify }
-                            disabledReason={
-                                !canModifyOp
-                                    ? "Write is not allowed for this field."
-                                    : !selectedNode.modify
-                                        ? "Mark this field as WRITE in the tree to enable encryption."
-                                        : "Read only."
-                            }
-                            enabledDescription="The extension will return this field's value encrypted."
-                            onToggle={ () => onToggleModifyEncrypt(selectedNode.key) }
-                            data-componentid="field-config-panel-modify-enc"
-                        />
-                    </Box>
+                    { SHOW_ENCRYPTION_SECTION && (
+                        <>
+                            <Typography
+                                variant="subtitle2"
+                                color="text.secondary"
+                                sx={ { display: "block", fontWeight: 600, mt: 2.5 } }
+                            >
+                                Encryption
+                            </Typography>
+                            <Box sx={ { display: "flex", flexDirection: "column", gap: 1.5, mt: 1 } }>
+                                <EncryptionCard
+                                    title="Read encrypted"
+                                    color="var(--tree-expose)"
+                                    checked={ !!selectedNode.exposeEncrypted }
+                                    disabled={ !canExposeOp || readOnly || !selectedNode.exposed || !hasCertificate }
+                                    disabledReason={
+                                        !canExposeOp
+                                            ? "Read is not allowed for this field."
+                                            : !selectedNode.exposed
+                                                ? "Mark this field as READ in the tree to enable encryption."
+                                                : !hasCertificate
+                                                    ? "Add a certificate to enable encryption."
+                                                    : "Read only."
+                                    }
+                                    enabledDescription="This field will be sent to the extension encrypted."
+                                    onToggle={ () => onToggleExposeEncrypt(selectedNode.key) }
+                                    data-componentid="field-config-panel-expose-enc"
+                                />
+                                <EncryptionCard
+                                    title="Write encrypted"
+                                    color="var(--tree-modify)"
+                                    checked={ !!selectedNode.modifyEncrypted }
+                                    disabled={ !canModifyOp || readOnly || !selectedNode.modify }
+                                    disabledReason={
+                                        !canModifyOp
+                                            ? "Write is not allowed for this field."
+                                            : !selectedNode.modify
+                                                ? "Mark this field as WRITE in the tree to enable encryption."
+                                                : "Read only."
+                                    }
+                                    enabledDescription="The extension will return this field's value encrypted."
+                                    onToggle={ () => onToggleModifyEncrypt(selectedNode.key) }
+                                    data-componentid="field-config-panel-modify-enc"
+                                />
+                            </Box>
+                        </>
+                    ) }
                 </>
             ) }
         </Box>
@@ -959,7 +967,9 @@ const FlowContextTree: FunctionComponent<FlowContextTreeProps> = ({
             </Box>
 
             { /* ── Bottom row: monaco editor full width ── */ }
-            <AccessConfigMonaco accessConfig={ builtConfig.accessConfig } />
+            { SHOW_ACCESS_CONFIG_PAYLOAD && (
+                <AccessConfigMonaco accessConfig={ builtConfig.accessConfig } />
+            ) }
 
             <AddEntryModal
                 open={ modal.open }

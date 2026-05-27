@@ -187,7 +187,7 @@ $chip-height: 19px;
 // Fixed min-height so switching between fields with different op shapes does
 // not change the panel size.
 .field-config-panel {
-    min-height: 280px;
+    min-height: 100px;
     display: flex;
     flex-direction: column;
 }

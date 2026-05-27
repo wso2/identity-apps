@@ -86,6 +86,8 @@ interface FlowExtensionCreateWizardPropsInterface
 
 const ACTION_NAME_REGEX: RegExp = /^[a-zA-Z0-9][a-zA-Z0-9 _-]{0,254}$/;
 
+const SHOW_SERVICE_CERTIFICATE_SECTION: boolean = false;
+
 interface FlowExtensionWizardFormValues extends EndpointConfigFormPropertyInterface {
     name: string;
     description?: string;
@@ -395,38 +397,42 @@ const FlowExtensionCreateWizard: FunctionComponent<FlowExtensionCreateWizardProp
                 }}
                 data-componentid={`${componentId}-endpoint-config-form`}
             />
-            <Divider className="divider-container" sx={{ mb: "20px", mt: "20px" }} />
-            <Heading className="heading-container" as="h5">
-                {t("flowExtension:createWizard.steps.endpointConfig.certificate.title")}
-            </Heading>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                {t("flowExtension:createWizard.steps.endpointConfig.certificate.hint")}
-            </Typography>
-            { certificatePEM && (
-                <Alert
-                    severity="success"
-                    sx={{ mb: 2 }}
-                    action={
-                        <LinkButton
-                            onClick={ () => { setCertificatePEM(""); certPEMRef.current = ""; } }
-                            data-componentid={ `${componentId}-clear-certificate` }
+            { SHOW_SERVICE_CERTIFICATE_SECTION && (
+                <>
+                    <Divider className="divider-container" sx={{ mb: "20px", mt: "20px" }} />
+                    <Heading className="heading-container" as="h5">
+                        {t("flowExtension:createWizard.steps.endpointConfig.certificate.title")}
+                    </Heading>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                        {t("flowExtension:createWizard.steps.endpointConfig.certificate.hint")}
+                    </Typography>
+                    { certificatePEM && (
+                        <Alert
+                            severity="success"
+                            sx={{ mb: 2 }}
+                            action={
+                                <LinkButton
+                                    onClick={ () => { setCertificatePEM(""); certPEMRef.current = ""; } }
+                                    data-componentid={ `${componentId}-clear-certificate` }
+                                >
+                                    Clear
+                                </LinkButton>
+                            }
+                            data-componentid={`${componentId}-certificate-status`}
                         >
-                            Clear
-                        </LinkButton>
-                    }
-                    data-componentid={`${componentId}-certificate-status`}
-                >
-                    <Trans i18nKey="flowExtension:createWizard.steps.endpointConfig.certificate.uploaded">
-                        Certificate uploaded successfully. You can re‑upload to replace it or clear it.
-                    </Trans>
-                </Alert>
+                            <Trans i18nKey="flowExtension:createWizard.steps.endpointConfig.certificate.uploaded">
+                                Certificate uploaded successfully. You can re‑upload to replace it or clear it.
+                            </Trans>
+                        </Alert>
+                    ) }
+                    <AddCertificateFormComponent
+                        triggerCertificateUpload={triggerCertUpload}
+                        triggerSubmit={triggerCertSubmit}
+                        onSubmit={handleCertificateSubmit}
+                        data-componentid={`${componentId}-certificate-upload`}
+                    />
+                </>
             ) }
-            <AddCertificateFormComponent
-                triggerCertificateUpload={triggerCertUpload}
-                triggerSubmit={triggerCertSubmit}
-                onSubmit={handleCertificateSubmit}
-                data-componentid={`${componentId}-certificate-upload`}
-            />
         </WizardPage>
     );
 

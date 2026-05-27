@@ -43,6 +43,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 
+const SHOW_ENCRYPTION_SECTION: boolean = false;
+
 interface FlowExtensionAccessConfigSettingsPropsInterface extends IdentifiableComponentInterface {
     "data-componentid"?: string;
     action: FlowExtensionResponseInterface;
@@ -196,7 +198,7 @@ export const FlowExtensionAccessConfigSettings: FunctionComponent<
                 padded="very"
                 data-componentid={ `${componentId}-section` }
             >
-                { !hasCertificate && (
+                { SHOW_ENCRYPTION_SECTION && !hasCertificate && (
                     <Alert
                         severity="warning"
                         sx={ { mb: 2 } }
