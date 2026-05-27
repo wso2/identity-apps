@@ -104,6 +104,7 @@ export const flows: flowsNS = {
                 confirmationCode: "Confirmation Code",
                 default: "Execution",
                 facebook: "Facebook",
+                flowExtension: "Flow Extension",
                 github: "GitHub",
                 google: "Google",
                 magicLink: "Magic Link",
@@ -259,6 +260,10 @@ export const flows: flowsNS = {
                 divider: {
                     general: "Required fields are not properly configured for the divider with ID <1>{{id}}</1>.",
                     variant: "Divider must have a variant defined for proper styling and orientation."
+                },
+                flowExtension: {
+                    actionId: "A flow extension connection is required and must be selected.",
+                    general: "Required fields are not properly configured for the flow extension with ID <1>{{id}}</1>."
                 },
                 image: {
                     general: "Required fields are not properly configured for the image with ID <1>{{id}}</1>.",
