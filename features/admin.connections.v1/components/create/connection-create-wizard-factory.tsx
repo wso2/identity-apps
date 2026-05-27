@@ -17,15 +17,9 @@
  */
 
 import IdVPCreationModal from "@wso2is/admin.identity-verification-providers.v1/components/create/idvp-creation-modal";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC, ReactElement } from "react";
-import { useSelector } from "react-redux";
 import { AuthenticatorCreateWizardFactory } from "./authenticator-create-wizard-factory";
-import InFlowExtensionCreateWizard from "./in-flow-extension-create-wizard";
-import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
 import {
     ConnectionTemplateInterface,
     ConnectionTypes,
@@ -88,54 +82,29 @@ export const ConnectionCreateWizardFactory: FC<ConnectionCreateWizardFactoryProp
     }: ConnectionCreateWizardFactoryPropsInterface
 ): ReactElement => {
 
-    const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state.config.ui.features?.actions);
-    const { isSubOrganization } = useGetCurrentOrganizationType();
-    const inFlowExtensionFeatureKey: string = isSubOrganization()
-        ? "actions.types.org.list.inFlowExtension"
-        : "actions.types.list.inFlowExtension";
-
     if (!isModalOpen) {
         return null;
     }
 
-    if (connectionType === ConnectionTypes.IDVP) {
-        return (
-            <IdVPCreationModal
-                selectedTemplate={ selectedTemplate }
-                onClose={ onWizardClose }
-            />
-        );
-    }
+    switch (connectionType) {
+        case ConnectionTypes.IDVP:
+            return (
+                <IdVPCreationModal
+                    selectedTemplate={ selectedTemplate }
+                    onClose={ onWizardClose }
+                />
+            );
 
-    // Match either by the enum type on the template OR by the template's id string.
-    // The backend may type the template as "DEFAULT" even though it's an in-flow extension,
-    // so we fall back to checking the templateId string.
-    if (
-        (connectionType === ConnectionTypes.IN_FLOW_EXTENSION ||
-        type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IN_FLOW_EXTENSION) &&
-        isFeatureEnabled(actionsFeatureConfig, inFlowExtensionFeatureKey)
-    ) {
-        return (
-            <InFlowExtensionCreateWizard
-                title={ selectedTemplate?.name }
-                subTitle={ selectedTemplate?.description }
-                onWizardClose={ onWizardClose }
-                template={ selectedTemplate as ConnectionTemplateInterface }
-                data-componentid={ selectedTemplate?.templateId }
-                { ...rest }
-            />
-        );
-    }
-
-    return (
-        <AuthenticatorCreateWizardFactory
-            isModalOpen={ isModalOpen }
-            handleModalVisibility={ handleModalVisibility }
-            type={ type }
-            selectedTemplate={ selectedTemplate }
-            onWizardClose={ onWizardClose }
-            { ...rest }
-        />
-    );
+        default:
+            return (
+                <AuthenticatorCreateWizardFactory
+                    isModalOpen={ isModalOpen }
+                    handleModalVisibility={ handleModalVisibility }
+                    type={ type }
+                    selectedTemplate={ selectedTemplate }
+                    onWizardClose={ onWizardClose }
+                    { ...rest }
+                />
+            );
+    };
 };

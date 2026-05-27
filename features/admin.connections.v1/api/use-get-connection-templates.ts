@@ -23,11 +23,8 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { FeatureAccessConfigInterface, HttpMethods } from "@wso2is/core/models";
-import { useSelector } from "react-redux";
+import { HttpMethods } from "@wso2is/core/models";
 import {
     CommonAuthenticatorConstants,
     ConnectionsFeatureDictionaryKeys
@@ -56,12 +53,6 @@ export const useGetConnectionTemplates = <Data = ConnectionTemplateInterface[], 
 
     const { resourceEndpoints } = useResourceEndpoints();
     const { UIConfig } = useUIConfig();
-    const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state.config.ui.features?.actions);
-    const { isSubOrganization } = useGetCurrentOrganizationType();
-    const inFlowExtensionFeatureKey: string = isSubOrganization()
-        ? "actions.types.org.list.inFlowExtension"
-        : "actions.types.list.inFlowExtension";
     const isOutboundProvisioningConnectionV2Enabled: boolean = isFeatureEnabled(
         UIConfig?.features?.identityProviders,
         CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
@@ -100,13 +91,6 @@ export const useGetConnectionTemplates = <Data = ConnectionTemplateInterface[], 
             CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.CUSTOM_AUTHENTICATOR,
             ...(UIConfig?.hiddenConnectionTemplates || [])
         ];
-
-        // Hide In-Flow Extension template when the feature is disabled.
-        if (!isFeatureEnabled(actionsFeatureConfig, inFlowExtensionFeatureKey)) {
-            hiddenConnectionTemplateIds.push(
-                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IN_FLOW_EXTENSION
-            );
-        }
 
         // Hide specific connection templates for login flow builder.
         if (isLoginFlow) {

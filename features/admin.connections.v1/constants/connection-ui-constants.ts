@@ -17,10 +17,6 @@
  */
 
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
-import { AuthenticationType } from "@wso2is/admin.actions.v1/models/actions";
-import {
-    AuthenticationTypeDropdownOption as ActionAuthenticationTypeDropdownOption
-} from "@wso2is/admin.actions.v1/models/actions";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import {
     AuthenticationTypeDropdownOption,
@@ -387,11 +383,9 @@ export class ConnectionUIConstants {
     public static readonly CONNECTION_TEMPLATE_GROUPS: {
         CUSTOM_AUTHENTICATOR: string;
         ENTERPRISE_PROTOCOLS: string;
-        IN_FLOW_EXTENSION: string;
     } = {
             CUSTOM_AUTHENTICATOR: "custom-authenticator",
-            ENTERPRISE_PROTOCOLS: "enterprise-protocols",
-            IN_FLOW_EXTENSION: "in-flow-extension"
+            ENTERPRISE_PROTOCOLS: "enterprise-protocols"
         };
 
     public static readonly IMPLICIT_ACCOUNT_LINKING_ATTRIBUTES: string[] = [
@@ -465,39 +459,6 @@ export class ConnectionUIConstants {
             key: EndpointAuthenticationType.PASSWORD_CREDENTIAL,
             text: "actions:fields.authentication.types.passwordCredential.name",
             value: EndpointAuthenticationType.PASSWORD_CREDENTIAL
-        }
-    ];
-
-    /**
-     * Authentication types available for In-Flow Extensions. Extends the standard
-     * auth types with CLIENT_CREDENTIAL (OAuth2 client credentials). Typed to match
-     * ActionEndpointConfigForm's authenticationTypes prop.
-     */
-    public static readonly IN_FLOW_EXTENSION_AUTH_TYPES: ActionAuthenticationTypeDropdownOption[] = [
-        {
-            key: AuthenticationType.NONE,
-            text: "actions:fields.authentication.types.none.name",
-            value: AuthenticationType.NONE
-        },
-        {
-            key: AuthenticationType.BASIC,
-            text: "actions:fields.authentication.types.basic.name",
-            value: AuthenticationType.BASIC
-        },
-        {
-            key: AuthenticationType.BEARER,
-            text: "actions:fields.authentication.types.bearer.name",
-            value: AuthenticationType.BEARER
-        },
-        {
-            key: AuthenticationType.API_KEY,
-            text: "actions:fields.authentication.types.apiKey.name",
-            value: AuthenticationType.API_KEY
-        },
-        {
-            key: AuthenticationType.CLIENT_CREDENTIAL,
-            text: "actions:fields.authentication.types.clientCredential.name",
-            value: AuthenticationType.CLIENT_CREDENTIAL
         }
     ];
 

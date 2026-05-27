@@ -120,19 +120,11 @@ export const AuthenticatorCreateWizardFactory: FC<AuthenticatorCreateWizardFacto
         true
     );
 
-    const shouldFetchTemplate: boolean = type !== null
-        && type !== CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.IN_FLOW_EXTENSION
-        && type !== "custom-authenticator"
-        && type !== "enterprise-protocols";
-
     const {
         data: connectionTemplate,
         isLoading: isConnectionTemplateFetchRequestLoading,
         error: connectionTemplateFetchRequestError
-    } = useGetConnectionTemplate(
-        type === "enterprise-protocols" ? "enterprise-idp" : type,
-        shouldFetchTemplate
-    );
+    } = useGetConnectionTemplate(type === "enterprise-protocols" ? "enterprise-idp" : type, type !== null);
 
     useEffect(() => {
         if (connectionsFetchRequestError) {

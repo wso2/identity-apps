@@ -290,15 +290,6 @@ export class AuthenticatorMeta {
     }
 
     /**
-     * Get In-Flow Extension icon.
-     *
-     * @returns In-Flow Extension Icon.
-     */
-    public static getInFlowExtensionIcon(): string {
-        return getConnectionIcons()?.inFlowExtension;
-    }
-
-    /**
      * Get Authenticator Type display name.
      *
      * @param authenticatorId - Authenticator ID.
