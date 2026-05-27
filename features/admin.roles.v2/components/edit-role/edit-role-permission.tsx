@@ -29,6 +29,7 @@ import { useAPIResources } from "@wso2is/admin.api-resources.v2/api";
 import { useGetAuthorizedAPIList } from "@wso2is/admin.api-resources.v2/api/useGetAuthorizedAPIList";
 import { APIResourceCategories, APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
 import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
+import { APIResourceBlockEntryInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -139,9 +140,21 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         userRolesFeatureConfig?.subFeatures?.rolePermissionAssignments?.scopes?.update
     );
 
-    const blockedAPIResources: string[] = useSelector(
-        (state: AppState) => state?.config?.ui?.apiResourceManagement?.rolePermissionAssignment?.blockedAPIResources
+    const apiResourceBlockEntries: APIResourceBlockEntryInterface[] = useSelector(
+        (state: AppState) => state?.config?.ui?.apiResourceManagement?.api_resource_block
     );
+
+    const blockedAPIResourceIds: Set<string> = useMemo(() => {
+        const ids: Set<string> = new Set<string>();
+
+        apiResourceBlockEntries?.forEach((entry: APIResourceBlockEntryInterface) => {
+            if (entry?.api_id) {
+                ids.add(entry.api_id);
+            }
+        });
+
+        return ids;
+    }, [ apiResourceBlockEntries ]);
 
     // If the enforce role operation permission feature is enabled,
     // only allow to edit the role if the user has the relevant permission.
@@ -206,7 +219,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
             // API resources list options when role audience is "application".
             authorizedAPIListForApplication?.map((api: AuthorizedAPIListItemInterface) => {
                 // Hide the blocked API resources.
-                if (blockedAPIResources?.length > 0 && blockedAPIResources.includes(api?.identifier)) {
+                if (blockedAPIResourceIds.has(api?.id)) {
                     return;
                 }
 
@@ -231,7 +244,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
             setAllAPIResourcesDropdownOptions(options);
         }
 
-    }, [ authorizedAPIListForApplication, selectedAPIResources, blockedAPIResources ]);
+    }, [ authorizedAPIListForApplication, selectedAPIResources, blockedAPIResourceIds ]);
 
     useEffect(() => {
         const options: DropdownItemProps[] = [];
@@ -240,7 +253,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
             // API resources list options when role audience is "organization".
             allAPIResourcesListData.map((api: APIResourceInterface) => {
                 // Hide the blocked API resources.
-                if (blockedAPIResources?.length > 0 && blockedAPIResources.includes(api?.identifier)) {
+                if (blockedAPIResourceIds.has(api?.id)) {
                     return;
                 }
 
@@ -267,7 +280,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
 
             setAllAPIResourcesDropdownOptions(filteredOptions);
         }
-    }, [ selectedAPIResources, blockedAPIResources ]);
+    }, [ selectedAPIResources, blockedAPIResourceIds ]);
 
     /**
      * Add API resource to the selected API resources list.
@@ -305,7 +318,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
             (currentAPIResourcesListData?.apiResources.reduce(function (filtered: DropdownItemProps[],
                 apiResource: APIResourceInterface) {
                 // Hide the blocked API resources.
-                if (blockedAPIResources?.length > 0 && blockedAPIResources.includes(apiResource?.identifier)) {
+                if (blockedAPIResourceIds.has(apiResource?.id)) {
                     return filtered;
                 }
 

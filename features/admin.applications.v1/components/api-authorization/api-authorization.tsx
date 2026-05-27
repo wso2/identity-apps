@@ -22,7 +22,7 @@ import { APIResourceCategories, APIResourcesConstants } from "@wso2is/admin.api-
 import { APIResourceInterface } from "@wso2is/admin.api-resources.v2/models";
 import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { APIResourceBlockEntryInterface, FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -46,6 +46,7 @@ import React, {
     FunctionComponent,
     ReactElement,
     useEffect,
+    useMemo,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -112,9 +113,21 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const applicationFeatureConfig: FeatureAccessConfigInterface = featureConfig?.applications;
-    const blockedAPIResources: string[] = useSelector(
-        (state: AppState) => state?.config?.ui?.apiResourceManagement?.applicationAPIAuthorization?.blockedAPIResources
+    const apiResourceBlockEntries: APIResourceBlockEntryInterface[] = useSelector(
+        (state: AppState) => state?.config?.ui?.apiResourceManagement?.api_resource_block
     );
+
+    const blockedAPIResourceIds: Set<string> = useMemo(() => {
+        const ids: Set<string> = new Set<string>();
+
+        apiResourceBlockEntries?.forEach((entry: APIResourceBlockEntryInterface) => {
+            if (entry?.api_id) {
+                ids.add(entry.api_id);
+            }
+        });
+
+        return ids;
+    }, [ apiResourceBlockEntries ]);
 
     const isUnifiedMcpCapabilitiesEnabled: boolean = isFeatureEnabled(
         applicationFeatureConfig,
@@ -264,7 +277,7 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
             apiResource: APIResourceInterface
         ) => {
             // Hide the blocked API resources.
-            if (blockedAPIResources?.length > 0 && blockedAPIResources.includes(apiResource?.identifier)) {
+            if (blockedAPIResourceIds.has(apiResource?.id)) {
                 return filtered;
             }
 
@@ -336,7 +349,7 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
         isDigitalWallet,
         isUnifiedMcpCapabilitiesEnabled,
         isMCPClient,
-        blockedAPIResources
+        blockedAPIResourceIds
     ]);
 
     /**

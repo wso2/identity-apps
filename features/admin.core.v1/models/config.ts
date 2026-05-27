@@ -786,23 +786,25 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
  */
 export interface APIResourceManagementUIConfigInterface {
     /**
-     * Configurations for the application API Authorization.
+     * Per-resource block entries. A resource is blocked for a tenant if it is listed here
+     * and the tenant is not in the entry's `allowed_tenants` list.
      */
-    applicationAPIAuthorization?: APIResourceBlockListConfigInterface;
-    /**
-     * Configurations for the role permission assignment.
-     */
-    rolePermissionAssignment?: APIResourceBlockListConfigInterface;
+    api_resource_block?: APIResourceBlockEntryInterface[];
 }
 
 /**
- * Blocklist configuration conataining the api resource identifiers.
+ * Single blocked API resource entry.
  */
-export interface APIResourceBlockListConfigInterface {
+export interface APIResourceBlockEntryInterface {
     /**
-     * API resource identifiers (e.g., "/api/server/v1/authenticators") to hide on the particular resource.
+     * Tenant domains for which the block does not apply. When empty or omitted, the block applies
+     * to all tenants.
      */
-    blockedAPIResources?: string[];
+    allowed_tenants?: string[];
+    /**
+     * API resource ID (UUID) of the resource to block.
+     */
+    api_id?: string;
 }
 
 /**

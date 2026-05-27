@@ -26,6 +26,7 @@ import { AuthorizedAPIListItemInterface } from "@wso2is/admin.applications.v1/mo
 import { ApplicationInterface, ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
 import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { APIResourceBlockEntryInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface,
     HttpErrorResponseDataInterface
@@ -41,6 +42,7 @@ import React, {
     ReactElement,
     SyntheticEvent,
     useEffect,
+    useMemo,
     useRef,
     useState
 } from "react";
@@ -111,9 +113,21 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
     );
 
-    const blockedAPIResources: string[] = useSelector(
-        (state: AppState) => state?.config?.ui?.apiResourceManagement?.rolePermissionAssignment?.blockedAPIResources
+    const apiResourceBlockEntries: APIResourceBlockEntryInterface[] = useSelector(
+        (state: AppState) => state?.config?.ui?.apiResourceManagement?.api_resource_block
     );
+
+    const blockedAPIResourceIds: Set<string> = useMemo(() => {
+        const ids: Set<string> = new Set<string>();
+
+        apiResourceBlockEntries?.forEach((entry: APIResourceBlockEntryInterface) => {
+            if (entry?.api_id) {
+                ids.add(entry.api_id);
+            }
+        });
+
+        return ids;
+    }, [ apiResourceBlockEntries ]);
 
     const createRoleFunction: (role: CreateRoleInterface) => Promise<AxiosResponse> =
         userRolesV3FeatureEnabled ? createRoleUsingV3Api : createRole;
@@ -146,7 +160,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
 
         subscribedAPIResourcesListData?.map((apiResource: AuthorizedAPIListItemInterface) => {
             // Hide the blocked API resources.
-            if (blockedAPIResources?.length > 0 && blockedAPIResources.includes(apiResource?.identifier)) {
+            if (blockedAPIResourceIds.has(apiResource?.id)) {
                 return;
             }
 
@@ -164,7 +178,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
             }
         });
         setAPIResourcesListOptions(options);
-    }, [ subscribedAPIResourcesListData, selectedAPIResources, blockedAPIResources ]);
+    }, [ subscribedAPIResourcesListData, selectedAPIResources, blockedAPIResourceIds ]);
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching API resources.

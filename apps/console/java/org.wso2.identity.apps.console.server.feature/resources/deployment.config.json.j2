@@ -205,12 +205,7 @@
             }
         },
         "apiResourceManagement": {
-            "applicationAPIAuthorization": {
-                "blockedAPIResources": {{ api_resource_management.application_api_authorization.blocked_api_resources | default([], true) | tojson }}
-            },
-            "rolePermissionAssignment": {
-                "blockedAPIResources": {{ api_resource_management.role_permission_assignment.blocked_api_resources | default([], true) | tojson }}
-            }
+            "api_resource_block": {{ api_resource_block | default([], true) | tojson }}
         },
         "appCopyright": "{{ console.ui.app_copyright }}",
         "appTitle": "{{ console.ui.app_title }}",

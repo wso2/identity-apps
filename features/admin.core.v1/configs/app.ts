@@ -423,14 +423,8 @@ export class Config {
                 UIConstants.ADMINISTRATOR_ROLE_DISPLAY_NAME,
             announcements: window[ "AppUtils" ]?.getConfig()?.ui?.announcements,
             apiResourceManagement: {
-                applicationAPIAuthorization: {
-                    blockedAPIResources: window[ "AppUtils" ]?.getConfig()?.ui?.apiResourceManagement
-                        ?.applicationAPIAuthorization?.blockedAPIResources ?? []
-                },
-                rolePermissionAssignment: {
-                    blockedAPIResources: window[ "AppUtils" ]?.getConfig()?.ui?.apiResourceManagement
-                        ?.rolePermissionAssignment?.blockedAPIResources ?? []
-                }
+                api_resource_block: window[ "AppUtils" ]?.getConfig()?.ui?.apiResourceManagement
+                    ?.api_resource_block ?? []
             },
             appCopyright: window[ "AppUtils" ]?.getConfig()?.ui?.appCopyright
                 .replace("${copyright}", "\u00A9")

@@ -49,6 +49,7 @@ import { APIResourcesList } from "../components";
 import { AddAPIResource } from "../components/wizard";
 import { APIResourceType, APIResourcesConstants } from "../constants";
 import useApiResourcesPageContent from "../hooks/use-api-resources-page-content";
+import useBlockedAPIResourceIds from "../hooks/use-blocked-api-resource-ids";
 import { APIResourceInterface, ResourceServerType } from "../models";
 import { APIResourceUtils } from "../utils/api-resource-utils";
 
@@ -102,6 +103,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const apiResourcesEndpoint: string = useSelector((state: AppState) => state?.config?.endpoints?.apiResources);
     const { organizationType } = useGetCurrentOrganizationType();
+    const blockedAPIResourceIds: Set<string> = useBlockedAPIResourceIds();
 
     const {
         data: apiResourcesListData,
@@ -126,8 +128,8 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
         }
 
         if (apiResourcesListData) {
-            const apiResourceList: APIResourceInterface[] = apiResourcesListData.apiResources.map(
-                (apiResource: APIResourceInterface) => apiResource);
+            const apiResourceList: APIResourceInterface[] = apiResourcesListData.apiResources.filter(
+                (apiResource: APIResourceInterface) => !blockedAPIResourceIds.has(apiResource?.id));
 
             setNextAfter(undefined);
             setNextBefore(undefined);
@@ -152,7 +154,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
 
             setAPIResourcesList(apiResourceList);
         }
-    }, [ apiResourcesListData ]);
+    }, [ apiResourcesListData, blockedAPIResourceIds ]);
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching the API resources list
