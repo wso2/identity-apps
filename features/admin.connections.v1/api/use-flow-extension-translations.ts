@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,12 +20,11 @@ import useGetCustomTextPreferenceMeta from "@wso2is/admin.branding.v1/api/use-ge
 import { CustomTextPreferenceMeta } from "@wso2is/admin.branding.v1/models/custom-text-preference";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { store } from "@wso2is/admin.core.v1/store";
-import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { BrandingPreferenceTypes } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { HttpMethods } from "@wso2is/core/models";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
-import { AxiosError, AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from "axios";
 import pick from "lodash-es/pick";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
@@ -88,13 +87,7 @@ const fetchCustomTextForLocale = async (
         }
 
         return { isConfigured: false, text: {} };
-    } catch (error) {
-        const axiosError: AxiosError = error as AxiosError;
-
-        if (axiosError.response?.status === 404) {
-            return { isConfigured: false, text: {} };
-        }
-
+    } catch (_error) {
         return { isConfigured: false, text: {} };
     }
 };
@@ -111,8 +104,22 @@ const useFlowExtensionTranslations = (
     keyPrefix: string,
     enabled: boolean
 ): UseFlowExtensionTranslationsResult => {
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
+    );
+    const brandingEndpoint: string = useSelector(
+        (state: AppState) => state.config.endpoints.brandingTextPreference
+    );
+    const brandingSubOrgEndpoint: string = useSelector(
+        (state: AppState) => state.config.endpoints.brandingTextPreferenceSubOrg
+    );
+    const tenantDomain: string = useSelector(
+        (state: AppState) => state.auth.tenantDomain
+    );
+    const subOrgId: string = useSelector(
+        (state: AppState) => state.organization.organization.id
     );
 
     const {
@@ -165,14 +172,11 @@ const useFlowExtensionTranslations = (
             return;
         }
 
-        const organizationType: string = store.getState()?.organization?.organizationType;
-        const endpointUrl: string = organizationType === OrganizationType.SUBORGANIZATION
-            ? `${store.getState().config.endpoints.brandingTextPreferenceSubOrg}/resolve`
-            : `${store.getState().config.endpoints.brandingTextPreference}/resolve`;
+        const endpointUrl: string = isSubOrganization()
+            ? `${brandingSubOrgEndpoint}/resolve`
+            : `${brandingEndpoint}/resolve`;
 
-        const tenantDomain: string = organizationType === OrganizationType.SUBORGANIZATION
-            ? store.getState()?.organization?.organization?.id
-            : store.getState()?.auth?.tenantDomain;
+        const resolvedTenantDomain: string = isSubOrganization() ? subOrgId : tenantDomain;
 
         setIsLoading(true);
 
@@ -181,7 +185,7 @@ const useFlowExtensionTranslations = (
                 const result: { text: Record<string, string>; isConfigured: boolean } =
                     await fetchCustomTextForLocale(
                         endpointUrl,
-                        tenantDomain,
+                        resolvedTenantDomain,
                         FLOW_EXTENSION_SCREEN,
                         locale
                     );
@@ -211,7 +215,8 @@ const useFlowExtensionTranslations = (
 
             setIsLoading(false);
         });
-    }, [ enabled, localeKeys, metaLoading, fetchCounter ]);
+    }, [ brandingEndpoint, brandingSubOrgEndpoint, enabled, fetchCounter, isSubOrganization,
+        localeKeys, metaLoading, subOrgId, tenantDomain ]);
 
     const entries: TranslationEntry[] = useMemo(() => {
         if (!keyPrefix) return [];
