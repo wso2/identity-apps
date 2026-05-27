@@ -128,7 +128,7 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
     );
 
     return (
-        <Stack gap={ 2 } data-componentid={ componentId }>
+        <Stack gap={ 2 } data-componentid={ componentId } className="flow-builder-execution-flow-extension-properties">
             <Typography variant="body2">
                 { t("flowExtension:properties.description") }
             </Typography>
