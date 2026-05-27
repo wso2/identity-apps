@@ -193,6 +193,9 @@ const MarketingConsentFieldAdapter = ({ component, formStateHandler, fieldErrorH
                 const allChecked = attrIds.length === 0
                     ? attrMap.__accepted ?? false
                     : attrIds.every((id) => attrMap[id]);
+                const isIndeterminate = attrIds.length > 0
+                    && !allChecked
+                    && attrIds.some((id) => attrMap[id]);
 
                 const purposeName = resolveElementText(translations, purpose.name) || purpose.name || "";
                 const resolvedTemplate = resolveElementText(translations, "{{consent.marketing.exampleDescription}}")
@@ -215,6 +218,7 @@ const MarketingConsentFieldAdapter = ({ component, formStateHandler, fieldErrorH
                             <Checkbox
                                 id={ `marketing-consent-${ purpose.purposeId }` }
                                 checked={ allChecked }
+                                indeterminate={ isIndeterminate }
                                 size="small"
                                 style={ { padding: 0 } }
                                 onChange={ (_e, data) => handleSelectAll(_e, data, purpose.purposeId, attrIds) }
