@@ -496,6 +496,73 @@ export const myAccount: MyAccountNS = {
             policyUrlLabel: "View Policy",
             versionLabel: "Version {{version}}"
         },
+        marketingConsentManagement: {
+            consentedOnLabel: "Accepted on",
+            elementsHeading: "Manage your marketing communication consent. Uncheck the attributes that you need " +
+                "to revoke and press the update button to save the changes or press the revoke button to remove " +
+                "the consent for all the attributes.",
+            dangerZones: {
+                revoke: {
+                    actionTitle: "Revoke",
+                    header: "Revoke Marketing Consent",
+                    subheader: "This action will revoke your consent for this marketing communication. " +
+                        " "
+                }
+            },
+            modals: {
+                revokeModal: {
+                    heading: "Revoke consent for {{consentName}}",
+                    message: "This will revoke your consent for this marketing communication. " +
+                        "Are you sure you want to continue?"
+                }
+            },
+            notifications: {
+                fetch: {
+                    error: {
+                        description: "An error occurred while retrieving your marketing consents.",
+                        message: "Retrieval Failed"
+                    },
+                    genericError: {
+                        description: "An error occurred while retrieving your marketing consents.",
+                        message: "Retrieval Failed"
+                    },
+                    success: {
+                        description: "Your marketing consents were retrieved successfully.",
+                        message: "Retrieval Successful"
+                    }
+                },
+                revoke: {
+                    error: {
+                        description: "An error occurred while revoking the marketing consent.",
+                        message: "Revoke Failed"
+                    },
+                    genericError: {
+                        description: "An error occurred while revoking the marketing consent.",
+                        message: "Revoke Failed"
+                    },
+                    success: {
+                        description: "The marketing consent has been revoked successfully.",
+                        message: "Consent Revoked"
+                    }
+                },
+                update: {
+                    error: {
+                        description: "An error occurred while updating the marketing consent.",
+                        message: "Update Failed"
+                    },
+                    genericError: {
+                        description: "An error occurred while updating the marketing consent.",
+                        message: "Update Failed"
+                    },
+                    success: {
+                        description: "Your marketing consent preferences have been updated successfully.",
+                        message: "Consent Updated"
+                    }
+                }
+            },
+            policyUrlLabel: "View Policy",
+            versionLabel: "Version {{version}}"
+        },
         cookieConsent: {
             confirmButton: "Got It",
             content: "We use cookies to ensure that you get the best overall experience. These cookies are used to " +
@@ -1855,6 +1922,15 @@ export const myAccount: MyAccountNS = {
             placeholders: {
                 emptyConsentList: {
                     heading: "You have not granted consent to any application"
+                }
+            }
+        },
+        marketingConsentManagement: {
+            description: "Review the marketing communications you have consented to.",
+            heading: "Marketing Consents",
+            placeholders: {
+                emptyConsentList: {
+                    heading: "You have not accepted any marketing consents"
                 }
             }
         },

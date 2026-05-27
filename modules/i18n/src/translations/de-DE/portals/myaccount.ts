@@ -439,6 +439,69 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        "marketingConsentManagement": {
+            "consentedOnLabel": "Akzeptiert am",
+            "dangerZones": {
+                "revoke": {
+                    "actionTitle": "Widerrufen",
+                    "header": "Marketingeinwilligung widerrufen",
+                    "subheader": "Diese Aktion widerruft Ihre Einwilligung für diese Marketingkommunikation."
+                }
+            },
+            "elementsHeading": "Verwalten Sie Ihre Marketingkommunikations-Einwilligung. Deaktivieren Sie die Attribute, die Sie widerrufen möchten, und klicken Sie auf die Schaltfläche „Aktualisieren“, um die Änderungen zu speichern, oder klicken Sie auf die Schaltfläche „Widerrufen“, um die Einwilligung für alle Attribute zu entfernen.",
+            "modals": {
+                "revokeModal": {
+                    "heading": "Einwilligung für {{consentName}} widerrufen",
+                    "message": "Dies widerruft Ihre Einwilligung für diese Marketingkommunikation. Möchten Sie fortfahren?"
+                }
+            },
+            "notifications": {
+                "fetch": {
+                    "error": {
+                        "description": "Beim Abrufen Ihrer Marketingeinwilligungen ist ein Fehler aufgetreten.",
+                        "message": "Abruf fehlgeschlagen"
+                    },
+                    "genericError": {
+                        "description": "Beim Abrufen Ihrer Marketingeinwilligungen ist ein Fehler aufgetreten.",
+                        "message": "Abruf fehlgeschlagen"
+                    },
+                    "success": {
+                        "description": "Ihre Marketingeinwilligungen wurden erfolgreich abgerufen.",
+                        "message": "Abruf erfolgreich"
+                    }
+                },
+                "revoke": {
+                    "error": {
+                        "description": "Beim Widerrufen der Marketingeinwilligung ist ein Fehler aufgetreten.",
+                        "message": "Widerruf fehlgeschlagen"
+                    },
+                    "genericError": {
+                        "description": "Beim Widerrufen der Marketingeinwilligung ist ein Fehler aufgetreten.",
+                        "message": "Widerruf fehlgeschlagen"
+                    },
+                    "success": {
+                        "description": "Die Marketingeinwilligung wurde erfolgreich widerrufen.",
+                        "message": "Einwilligung widerrufen"
+                    }
+                },
+                "update": {
+                    "error": {
+                        "description": "Beim Aktualisieren der Marketingeinwilligung ist ein Fehler aufgetreten.",
+                        "message": "Aktualisierung fehlgeschlagen"
+                    },
+                    "genericError": {
+                        "description": "Beim Aktualisieren der Marketingeinwilligung ist ein Fehler aufgetreten.",
+                        "message": "Aktualisierung fehlgeschlagen"
+                    },
+                    "success": {
+                        "description": "Ihre Marketingeinwilligungseinstellungen wurden erfolgreich aktualisiert.",
+                        "message": "Einwilligung aktualisiert"
+                    }
+                }
+            },
+            "policyUrlLabel": "Richtlinie anzeigen",
+            "versionLabel": "Version {{version}}"
+        },
         "policyConsentManagement": {
             "consentedOnLabel": "Aktiv seit",
             "dangerZones": {
@@ -1804,6 +1867,15 @@ export const myAccount: MyAccountNS = {
             "placeholders": {
                 "emptyConsentList": {
                     "heading": "Sie haben keiner Bewerbung zugestimmt"
+                }
+            }
+        },
+        "marketingConsentManagement": {
+            "description": "Überprüfen Sie die Marketingkommunikationen, denen Sie zugestimmt haben.",
+            "heading": "Marketingeinwilligungen",
+            "placeholders": {
+                "emptyConsentList": {
+                    "heading": "Sie haben keine Marketingeinwilligungen akzeptiert"
                 }
             }
         },

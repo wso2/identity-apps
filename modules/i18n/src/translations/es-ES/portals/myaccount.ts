@@ -439,6 +439,69 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        "marketingConsentManagement": {
+            "consentedOnLabel": "Aceptado el",
+            "dangerZones": {
+                "revoke": {
+                    "actionTitle": "Revocar",
+                    "header": "Revocar consentimiento de marketing",
+                    "subheader": "Esta acción revocará su consentimiento para esta comunicación de marketing."
+                }
+            },
+            "elementsHeading": "Administre su consentimiento de comunicaciones de marketing. Desmarque los atributos que necesita revocar y presione el botón actualizar para guardar los cambios o presione el botón revocar para eliminar el consentimiento de todos los atributos.",
+            "modals": {
+                "revokeModal": {
+                    "heading": "Revocar consentimiento para {{consentName}}",
+                    "message": "Esto revocará su consentimiento para esta comunicación de marketing. ¿Está seguro de que desea continuar?"
+                }
+            },
+            "notifications": {
+                "fetch": {
+                    "error": {
+                        "description": "Se produjo un error al recuperar sus consentimientos de marketing.",
+                        "message": "Recuperación fallida"
+                    },
+                    "genericError": {
+                        "description": "Se produjo un error al recuperar sus consentimientos de marketing.",
+                        "message": "Recuperación fallida"
+                    },
+                    "success": {
+                        "description": "Sus consentimientos de marketing se recuperaron correctamente.",
+                        "message": "Recuperación exitosa"
+                    }
+                },
+                "revoke": {
+                    "error": {
+                        "description": "Se produjo un error al revocar el consentimiento de marketing.",
+                        "message": "Revocación fallida"
+                    },
+                    "genericError": {
+                        "description": "Se produjo un error al revocar el consentimiento de marketing.",
+                        "message": "Revocación fallida"
+                    },
+                    "success": {
+                        "description": "El consentimiento de marketing se ha revocado correctamente.",
+                        "message": "Consentimiento revocado"
+                    }
+                },
+                "update": {
+                    "error": {
+                        "description": "Se produjo un error al actualizar el consentimiento de marketing.",
+                        "message": "Actualización fallida"
+                    },
+                    "genericError": {
+                        "description": "Se produjo un error al actualizar el consentimiento de marketing.",
+                        "message": "Actualización fallida"
+                    },
+                    "success": {
+                        "description": "Sus preferencias de consentimiento de marketing se han actualizado correctamente.",
+                        "message": "Consentimiento actualizado"
+                    }
+                }
+            },
+            "policyUrlLabel": "Ver política",
+            "versionLabel": "Versión {{version}}"
+        },
         "policyConsentManagement": {
             "consentedOnLabel": "Activo desde",
             "dangerZones": {
@@ -1803,6 +1866,15 @@ export const myAccount: MyAccountNS = {
             "placeholders": {
                 "emptyConsentList": {
                     "heading": "No ha dado su consentimiento a ninguna aplicación."
+                }
+            }
+        },
+        "marketingConsentManagement": {
+            "description": "Revise las comunicaciones de marketing a las que ha dado su consentimiento.",
+            "heading": "Consentimientos de marketing",
+            "placeholders": {
+                "emptyConsentList": {
+                    "heading": "No ha aceptado ningún consentimiento de marketing"
                 }
             }
         },

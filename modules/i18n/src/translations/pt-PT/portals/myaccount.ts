@@ -445,6 +445,69 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        marketingConsentManagement: {
+            consentedOnLabel: "Aceite em",
+            dangerZones: {
+                revoke: {
+                    actionTitle: "Revogar",
+                    header: "Revogar consentimento de marketing",
+                    subheader: "Esta ação irá revogar o seu consentimento para esta comunicação de marketing."
+                }
+            },
+            elementsHeading: "Gira o seu consentimento de comunicações de marketing. Desmarque os atributos que precisa de revogar e prima o botão atualizar para guardar as alterações ou prima o botão revogar para remover o consentimento de todos os atributos.",
+            modals: {
+                revokeModal: {
+                    heading: "Revogar consentimento para {{consentName}}",
+                    message: "Isto irá revogar o seu consentimento para esta comunicação de marketing. Tem a certeza de que pretende continuar?"
+                }
+            },
+            notifications: {
+                fetch: {
+                    error: {
+                        description: "Ocorreu um erro ao recuperar os seus consentimentos de marketing.",
+                        message: "Falha na recuperação"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao recuperar os seus consentimentos de marketing.",
+                        message: "Falha na recuperação"
+                    },
+                    success: {
+                        description: "Os seus consentimentos de marketing foram recuperados com sucesso.",
+                        message: "Recuperação bem-sucedida"
+                    }
+                },
+                revoke: {
+                    error: {
+                        description: "Ocorreu um erro ao revogar o consentimento de marketing.",
+                        message: "Falha na revogação"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao revogar o consentimento de marketing.",
+                        message: "Falha na revogação"
+                    },
+                    success: {
+                        description: "O consentimento de marketing foi revogado com sucesso.",
+                        message: "Consentimento revogado"
+                    }
+                },
+                update: {
+                    error: {
+                        description: "Ocorreu um erro ao atualizar o consentimento de marketing.",
+                        message: "Falha na atualização"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao atualizar o consentimento de marketing.",
+                        message: "Falha na atualização"
+                    },
+                    success: {
+                        description: "As suas preferências de consentimento de marketing foram atualizadas com sucesso.",
+                        message: "Consentimento atualizado"
+                    }
+                }
+            },
+            policyUrlLabel: "Ver política",
+            versionLabel: "Versão {{version}}"
+        },
         policyConsentManagement: {
             consentedOnLabel: "Ativo desde",
             dangerZones: {
@@ -1856,6 +1919,15 @@ export const myAccount: MyAccountNS = {
             placeholders: {
                 emptyConsentList: {
                     heading: "Você não concedeu consentimento a nenhum aplicativo"
+                }
+            }
+        },
+        marketingConsentManagement: {
+            description: "Reveja as comunicações de marketing para as quais deu o seu consentimento.",
+            heading: "Consentimentos de marketing",
+            placeholders: {
+                emptyConsentList: {
+                    heading: "Não aceitou nenhum consentimento de marketing"
                 }
             }
         },

@@ -450,6 +450,69 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        marketingConsentManagement: {
+            consentedOnLabel: "Accepté le",
+            dangerZones: {
+                revoke: {
+                    actionTitle: "Révoquer",
+                    header: "Révoquer le consentement marketing",
+                    subheader: "Cette action révoquera votre consentement pour cette communication marketing."
+                }
+            },
+            elementsHeading: "Gérez votre consentement aux communications marketing. Décochez les attributs que vous devez révoquer et appuyez sur le bouton de mise à jour pour enregistrer les modifications ou appuyez sur le bouton de révocation pour supprimer le consentement pour tous les attributs.",
+            modals: {
+                revokeModal: {
+                    heading: "Révoquer le consentement pour {{consentName}}",
+                    message: "Cela révoquera votre consentement pour cette communication marketing. Êtes-vous sûr de vouloir continuer?"
+                }
+            },
+            notifications: {
+                fetch: {
+                    error: {
+                        description: "Une erreur s'est produite lors de la récupération de vos consentements marketing.",
+                        message: "Échec de la récupération"
+                    },
+                    genericError: {
+                        description: "Une erreur s'est produite lors de la récupération de vos consentements marketing.",
+                        message: "Échec de la récupération"
+                    },
+                    success: {
+                        description: "Vos consentements marketing ont été récupérés avec succès.",
+                        message: "Récupération réussie"
+                    }
+                },
+                revoke: {
+                    error: {
+                        description: "Une erreur s'est produite lors de la révocation du consentement marketing.",
+                        message: "Échec de la révocation"
+                    },
+                    genericError: {
+                        description: "Une erreur s'est produite lors de la révocation du consentement marketing.",
+                        message: "Échec de la révocation"
+                    },
+                    success: {
+                        description: "Le consentement marketing a été révoqué avec succès.",
+                        message: "Consentement révoqué"
+                    }
+                },
+                update: {
+                    error: {
+                        description: "Une erreur s'est produite lors de la mise à jour du consentement marketing.",
+                        message: "Échec de la mise à jour"
+                    },
+                    genericError: {
+                        description: "Une erreur s'est produite lors de la mise à jour du consentement marketing.",
+                        message: "Échec de la mise à jour"
+                    },
+                    success: {
+                        description: "Vos préférences de consentement marketing ont été mises à jour avec succès.",
+                        message: "Consentement mis à jour"
+                    }
+                }
+            },
+            policyUrlLabel: "Voir la politique",
+            versionLabel: "Version {{version}}"
+        },
         policyConsentManagement: {
             consentedOnLabel: "Actif depuis",
             dangerZones: {
@@ -1897,6 +1960,15 @@ export const myAccount: MyAccountNS = {
             placeholders: {
                 emptyConsentList: {
                     heading: "Vous n'avez accordé aucun consentement"
+                }
+            }
+        },
+        marketingConsentManagement: {
+            description: "Examinez les communications marketing auxquelles vous avez consenti.",
+            heading: "Consentements marketing",
+            placeholders: {
+                emptyConsentList: {
+                    heading: "Vous n'avez accepté aucun consentement marketing"
                 }
             }
         },

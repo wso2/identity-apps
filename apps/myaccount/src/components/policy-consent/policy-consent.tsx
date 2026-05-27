@@ -88,21 +88,31 @@ export const PolicyConsent: FunctionComponent<PolicyConsentComponentProps> = (
                 )
             );
 
-            const items: PolicyConsentItemInterface[] = details.map(
-                (detail: PolicyConsentDetailInterface, index: number): PolicyConsentItemInterface => {
+            const policyDetails: PolicyConsentDetailInterface[] = details.filter(
+                (detail: PolicyConsentDetailInterface) =>
+                    detail.purposes?.some(
+                        (p: ConsentedPurposeInterface) => p.type === "Policy"
+                    )
+            );
+
+            const items: PolicyConsentItemInterface[] = policyDetails.map(
+                (detail: PolicyConsentDetailInterface): PolicyConsentItemInterface => {
+                    const matchingSummary: PolicyConsentSummaryInterface = summaries.find(
+                        (s: PolicyConsentSummaryInterface) => s.id === detail.id
+                    ) ?? summaries[0];
                     const purpose: ConsentedPurposeInterface | undefined =
                         Array.isArray(detail.purposes) && detail.purposes.length > 0
                             ? detail.purposes[0]
                             : undefined;
 
                     return {
-                        consentId: summaries[index].id,
+                        consentId: detail.id,
                         policyUrl: purpose?.properties?.policyUrl ?? null,
                         purposeId: purpose?.id ?? "",
                         purposeName: purpose?.name ?? "",
-                        purposeVersionId: purpose?.purposeVersionId ?? "",
+                        purposeVersionId: purpose?.versionId ?? purpose?.purposeVersionId ?? "",
                         state: detail.state,
-                        timestamp: summaries[index].timestamp,
+                        timestamp: matchingSummary.timestamp,
                         version: purpose?.version ?? null
                     };
                 }

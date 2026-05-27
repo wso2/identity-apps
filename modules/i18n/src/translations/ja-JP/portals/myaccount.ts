@@ -437,6 +437,69 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        "marketingConsentManagement": {
+            "consentedOnLabel": "承諾日",
+            "dangerZones": {
+                "revoke": {
+                    "actionTitle": "取り消す",
+                    "header": "マーケティング同意の取り消し",
+                    "subheader": "このアクションにより、このマーケティングコミュニケーションへの同意が取り消されます。"
+                }
+            },
+            "elementsHeading": "マーケティングコミュニケーションの同意を管理します。取り消す必要がある属性のチェックを外し、更新ボタンを押して変更を保存するか、取り消しボタンを押してすべての属性の同意を削除してください。",
+            "modals": {
+                "revokeModal": {
+                    "heading": "{{consentName}}の同意を取り消す",
+                    "message": "このマーケティングコミュニケーションへの同意が取り消されます。続行してもよろしいですか？"
+                }
+            },
+            "notifications": {
+                "fetch": {
+                    "error": {
+                        "description": "マーケティング同意の取得中にエラーが発生しました。",
+                        "message": "取得に失敗しました"
+                    },
+                    "genericError": {
+                        "description": "マーケティング同意の取得中にエラーが発生しました。",
+                        "message": "取得に失敗しました"
+                    },
+                    "success": {
+                        "description": "マーケティング同意が正常に取得されました。",
+                        "message": "取得成功"
+                    }
+                },
+                "revoke": {
+                    "error": {
+                        "description": "マーケティング同意の取り消し中にエラーが発生しました。",
+                        "message": "取り消しに失敗しました"
+                    },
+                    "genericError": {
+                        "description": "マーケティング同意の取り消し中にエラーが発生しました。",
+                        "message": "取り消しに失敗しました"
+                    },
+                    "success": {
+                        "description": "マーケティング同意が正常に取り消されました。",
+                        "message": "同意が取り消されました"
+                    }
+                },
+                "update": {
+                    "error": {
+                        "description": "マーケティング同意の更新中にエラーが発生しました。",
+                        "message": "更新に失敗しました"
+                    },
+                    "genericError": {
+                        "description": "マーケティング同意の更新中にエラーが発生しました。",
+                        "message": "更新に失敗しました"
+                    },
+                    "success": {
+                        "description": "マーケティング同意の設定が正常に更新されました。",
+                        "message": "同意が更新されました"
+                    }
+                }
+            },
+            "policyUrlLabel": "ポリシーを表示",
+            "versionLabel": "バージョン {{version}}"
+        },
         "policyConsentManagement": {
             "consentedOnLabel": "有効開始日",
             "dangerZones": {
@@ -1799,6 +1862,15 @@ export const myAccount: MyAccountNS = {
             "placeholders": {
                 "emptyConsentList": {
                     "heading": "お客様は、アプリケーションに同意を与えていません"
+                }
+            }
+        },
+        "marketingConsentManagement": {
+            "description": "同意したマーケティングコミュニケーションを確認します。",
+            "heading": "マーケティング同意",
+            "placeholders": {
+                "emptyConsentList": {
+                    "heading": "マーケティング同意をまだ承諾していません"
                 }
             }
         },

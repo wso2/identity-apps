@@ -371,6 +371,43 @@ export const getConsentById = (
 };
 
 /**
+ * Creates a new user consent record via the v2 consents API.
+ *
+ * @param consentsBaseUrl - Base URL for the v2 consents endpoint.
+ * @param body - Consent payload with serviceId, language, and purposes.
+ * @returns A promise containing the created consent detail.
+ */
+export const postConsent = (
+    consentsBaseUrl: string,
+    body: {
+        serviceId: string;
+        language: string;
+        purposes: Array<{
+            id: string;
+            elements: Array<{ id: string }>;
+        }>;
+    }
+): Promise<PolicyConsentDetailInterface> => {
+    const requestConfig: AxiosRequestConfig = {
+        data: body,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: "POST",
+        url: consentsBaseUrl
+    };
+
+    return httpClient(requestConfig)
+        .then((response: HttpResponse<PolicyConsentDetailInterface>) => {
+            return response.data;
+        })
+        .catch((error: HttpError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
  * Revokes a user consent record via the v2 consents API.
  *
  * @param consentsBaseUrl - Base URL for the v2 consents endpoint.

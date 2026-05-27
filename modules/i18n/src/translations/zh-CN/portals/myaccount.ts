@@ -437,6 +437,69 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        "marketingConsentManagement": {
+            "consentedOnLabel": "接受于",
+            "dangerZones": {
+                "revoke": {
+                    "actionTitle": "撤销",
+                    "header": "撤销营销同意",
+                    "subheader": "此操作将撤销您对此营销通信的同意。"
+                }
+            },
+            "elementsHeading": "管理您的营销通信同意。取消勾选需要撤销的属性，然后按更新按钮保存更改，或按撤销按钮删除所有属性的同意。",
+            "modals": {
+                "revokeModal": {
+                    "heading": "撤销对 {{consentName}} 的同意",
+                    "message": "此操作将撤销您对此营销通信的同意。您确定要继续吗？"
+                }
+            },
+            "notifications": {
+                "fetch": {
+                    "error": {
+                        "description": "检索您的营销同意时发生错误。",
+                        "message": "检索失败"
+                    },
+                    "genericError": {
+                        "description": "检索您的营销同意时发生错误。",
+                        "message": "检索失败"
+                    },
+                    "success": {
+                        "description": "您的营销同意已成功检索。",
+                        "message": "检索成功"
+                    }
+                },
+                "revoke": {
+                    "error": {
+                        "description": "撤销营销同意时发生错误。",
+                        "message": "撤销失败"
+                    },
+                    "genericError": {
+                        "description": "撤销营销同意时发生错误。",
+                        "message": "撤销失败"
+                    },
+                    "success": {
+                        "description": "营销同意已成功撤销。",
+                        "message": "同意已撤销"
+                    }
+                },
+                "update": {
+                    "error": {
+                        "description": "更新营销同意时发生错误。",
+                        "message": "更新失败"
+                    },
+                    "genericError": {
+                        "description": "更新营销同意时发生错误。",
+                        "message": "更新失败"
+                    },
+                    "success": {
+                        "description": "您的营销同意偏好已成功更新。",
+                        "message": "同意已更新"
+                    }
+                }
+            },
+            "policyUrlLabel": "查看政策",
+            "versionLabel": "版本 {{version}}"
+        },
         "policyConsentManagement": {
             "consentedOnLabel": "活跃自",
             "dangerZones": {
@@ -1800,6 +1863,15 @@ export const myAccount: MyAccountNS = {
             "placeholders": {
                 "emptyConsentList": {
                     "heading": "您尚未同意任何申请"
+                }
+            }
+        },
+        "marketingConsentManagement": {
+            "description": "查看您已同意的营销通信。",
+            "heading": "营销同意",
+            "placeholders": {
+                "emptyConsentList": {
+                    "heading": "您尚未接受任何营销同意"
                 }
             }
         },

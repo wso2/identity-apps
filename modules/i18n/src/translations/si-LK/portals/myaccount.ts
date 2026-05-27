@@ -446,6 +446,69 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        marketingConsentManagement: {
+            consentedOnLabel: "පිළිගත් දිනය",
+            dangerZones: {
+                revoke: {
+                    actionTitle: "අවලංගු කරන්න",
+                    header: "අලෙවිකරණ කැමැත්ත අවලංගු කරන්න",
+                    subheader: "මෙම ක්‍රියාව ඔබේ මෙම අලෙවිකරණ සන්නිවේදනයට ඇති කැමැත්ත අවලංගු කරනු ඇත."
+                }
+            },
+            elementsHeading: "ඔබේ අලෙවිකරණ සන්නිවේදන කැමැත්ත කළමනාකරණය කරන්න. ඔබ අවලංගු කළ යුතු ගුණාංග අවලංගු කර, වෙනස්කම් සුරැකීමට යාවත්කාලීන බොත්තම ඔබන්න, නැතහොත් සියලු ගුණාංග සඳහා කැමැත්ත ඉවත් කිරීමට අවලංගු කිරීමේ බොත්තම ඔබන්න.",
+            modals: {
+                revokeModal: {
+                    heading: "{{consentName}} සඳහා කැමැත්ත අවලංගු කරන්න",
+                    message: "මෙය ඔබේ මෙම අලෙවිකරණ සන්නිවේදනයට ඇති කැමැත්ත අවලංගු කරනු ඇත. ඔබට ඉදිරියට යාමට අවශ්‍ය බව විශ්වාසද?"
+                }
+            },
+            notifications: {
+                fetch: {
+                    error: {
+                        description: "ඔබේ අලෙවිකරණ කැමැත්ත ලබා ගැනීමේදී දෝෂයක් සිදු විය.",
+                        message: "ලබා ගැනීම අසාර්ථක විය"
+                    },
+                    genericError: {
+                        description: "ඔබේ අලෙවිකරණ කැමැත්ත ලබා ගැනීමේදී දෝෂයක් සිදු විය.",
+                        message: "ලබා ගැනීම අසාර්ථක විය"
+                    },
+                    success: {
+                        description: "ඔබේ අලෙවිකරණ කැමැත්ත සාර්ථකව ලබා ගන්නා ලදී.",
+                        message: "ලබා ගැනීම සාර්ථකයි"
+                    }
+                },
+                revoke: {
+                    error: {
+                        description: "අලෙවිකරණ කැමැත්ත අවලංගු කිරීමේදී දෝෂයක් සිදු විය.",
+                        message: "අවලංගු කිරීම අසාර්ථක විය"
+                    },
+                    genericError: {
+                        description: "අලෙවිකරණ කැමැත්ත අවලංගු කිරීමේදී දෝෂයක් සිදු විය.",
+                        message: "අවලංගු කිරීම අසාර්ථක විය"
+                    },
+                    success: {
+                        description: "අලෙවිකරණ කැමැත්ත සාර්ථකව අවලංගු කරන ලදී.",
+                        message: "කැමැත්ත අවලංගු කරන ලදී"
+                    }
+                },
+                update: {
+                    error: {
+                        description: "අලෙවිකරණ කැමැත්ත යාවත්කාලීන කිරීමේදී දෝෂයක් සිදු විය.",
+                        message: "යාවත්කාලීන කිරීම අසාර්ථක විය"
+                    },
+                    genericError: {
+                        description: "අලෙවිකරණ කැමැත්ත යාවත්කාලීන කිරීමේදී දෝෂයක් සිදු විය.",
+                        message: "යාවත්කාලීන කිරීම අසාර්ථක විය"
+                    },
+                    success: {
+                        description: "ඔබේ අලෙවිකරණ කැමැත්ත මනාපයන් සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                        message: "කැමැත්ත යාවත්කාලීන කරන ලදී"
+                    }
+                }
+            },
+            policyUrlLabel: "ප්‍රතිපත්තිය බලන්න",
+            versionLabel: "අනුවාදය {{version}}"
+        },
         policyConsentManagement: {
             consentedOnLabel: "සිට ක්‍රියාත්මකයි",
             dangerZones: {
@@ -1857,6 +1920,15 @@ export const myAccount: MyAccountNS = {
             placeholders: {
                 emptyConsentList: {
                     heading: "ඔබ කිසිදු යෙදුමක් අනුමත කර නැත"
+                }
+            }
+        },
+        marketingConsentManagement: {
+            description: "ඔබ කැමැත්ත ලබා දී ඇති අලෙවිකරණ සන්නිවේදන සමාලෝචනය කරන්න.",
+            heading: "අලෙවිකරණ කැමැත්ත",
+            placeholders: {
+                emptyConsentList: {
+                    heading: "ඔබ කිසිදු අලෙවිකරණ කැමැත්තකට කැමැත්ත දී නොමැත"
                 }
             }
         },

@@ -433,6 +433,69 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        "marketingConsentManagement": {
+            "consentedOnLabel": "Geaccepteerd op",
+            "dangerZones": {
+                "revoke": {
+                    "actionTitle": "Intrekken",
+                    "header": "Marketingtoestemming intrekken",
+                    "subheader": "Deze actie trekt uw toestemming voor deze marketingcommunicatie in."
+                }
+            },
+            "elementsHeading": "Beheer uw toestemming voor marketingcommunicatie. Schakel de attributen uit die u wilt intrekken en druk op de knop bijwerken om de wijzigingen op te slaan of druk op de knop intrekken om de toestemming voor alle attributen te verwijderen.",
+            "modals": {
+                "revokeModal": {
+                    "heading": "Toestemming intrekken voor {{consentName}}",
+                    "message": "Dit trekt uw toestemming voor deze marketingcommunicatie in. Weet u zeker dat u wilt doorgaan?"
+                }
+            },
+            "notifications": {
+                "fetch": {
+                    "error": {
+                        "description": "Er is een fout opgetreden bij het ophalen van uw marketingtoestemmingen.",
+                        "message": "Ophalen mislukt"
+                    },
+                    "genericError": {
+                        "description": "Er is een fout opgetreden bij het ophalen van uw marketingtoestemmingen.",
+                        "message": "Ophalen mislukt"
+                    },
+                    "success": {
+                        "description": "Uw marketingtoestemmingen zijn succesvol opgehaald.",
+                        "message": "Ophalen geslaagd"
+                    }
+                },
+                "revoke": {
+                    "error": {
+                        "description": "Er is een fout opgetreden bij het intrekken van de marketingtoestemming.",
+                        "message": "Intrekken mislukt"
+                    },
+                    "genericError": {
+                        "description": "Er is een fout opgetreden bij het intrekken van de marketingtoestemming.",
+                        "message": "Intrekken mislukt"
+                    },
+                    "success": {
+                        "description": "De marketingtoestemming is succesvol ingetrokken.",
+                        "message": "Toestemming ingetrokken"
+                    }
+                },
+                "update": {
+                    "error": {
+                        "description": "Er is een fout opgetreden bij het bijwerken van de marketingtoestemming.",
+                        "message": "Bijwerken mislukt"
+                    },
+                    "genericError": {
+                        "description": "Er is een fout opgetreden bij het bijwerken van de marketingtoestemming.",
+                        "message": "Bijwerken mislukt"
+                    },
+                    "success": {
+                        "description": "Uw voorkeuren voor marketingtoestemming zijn succesvol bijgewerkt.",
+                        "message": "Toestemming bijgewerkt"
+                    }
+                }
+            },
+            "policyUrlLabel": "Beleid bekijken",
+            "versionLabel": "Versie {{version}}"
+        },
         "policyConsentManagement": {
             "consentedOnLabel": "Actief vanaf",
             "dangerZones": {
@@ -1794,6 +1857,15 @@ export const myAccount: MyAccountNS = {
             "placeholders": {
                 "emptyConsentList": {
                     "heading": "U heeft geen toestemmingen gegeven"
+                }
+            }
+        },
+        "marketingConsentManagement": {
+            "description": "Bekijk de marketingcommunicaties waarvoor u toestemming heeft gegeven.",
+            "heading": "Marketingtoestemmingen",
+            "placeholders": {
+                "emptyConsentList": {
+                    "heading": "U heeft geen marketingtoestemmingen geaccepteerd"
                 }
             }
         },

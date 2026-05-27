@@ -379,6 +379,30 @@ export interface MyAccountNS {
                 updateConsentedClaims: Notification;
             };
         };
+        marketingConsentManagement: {
+            consentedOnLabel: string;
+            elementsHeading: string;
+            dangerZones: {
+                revoke: {
+                    actionTitle: string;
+                    header: string;
+                    subheader: string;
+                };
+            };
+            modals: {
+                revokeModal: {
+                    heading: string;
+                    message: string;
+                };
+            };
+            notifications: {
+                fetch: Notification;
+                revoke: Notification;
+                update: Notification;
+            };
+            policyUrlLabel: string;
+            versionLabel: string;
+        };
         policyConsentManagement: {
             consentedOnLabel: string;
             dangerZones: {
@@ -1119,6 +1143,15 @@ export interface MyAccountNS {
             actionTitles: {
                 empty: string;
             };
+            description: string;
+            heading: string;
+            placeholders: {
+                emptyConsentList: {
+                    heading: string;
+                };
+            };
+        };
+        marketingConsentManagement: {
             description: string;
             heading: string;
             placeholders: {
