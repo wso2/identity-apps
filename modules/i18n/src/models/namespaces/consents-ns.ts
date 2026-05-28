@@ -59,9 +59,8 @@ interface ConsentDeleteConfirmationNS {
 }
 
 export interface ConsentsNS {
-    marketingConsents: {
+    preferenceManagement: {
         form: {
-            createNewVersion: string;
             description: {
                 label: string;
                 labelRoleHint: string;
@@ -73,11 +72,6 @@ export interface ConsentsNS {
                 error: {
                     duplicateName: string;
                 };
-            };
-            versionHint: string;
-            versionModal: {
-                createNewVersion: string;
-                description: string;
             };
         };
         list: {
@@ -252,12 +246,12 @@ export interface ConsentsNS {
         attributeDisplayName: string;
         attributeName: string;
         attributes: string;
-        noMarketing: string;
+        noPreference: string;
         noPolicies: string;
         purposeDescription: string;
         purposeLabel: string;
         purposeName: string;
-        selectMarketing: string;
+        selectPreference: string;
         selectPolicies: string;
     };
     tabs: {

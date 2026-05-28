@@ -30,23 +30,23 @@ import { useSelector } from "react-redux";
 import ConsentExtendedProperties from "./consent-extended-properties";
 
 /**
- * Props interface of {@link MarketingConsentExtendedProperties}
+ * Props interface of {@link PreferenceManagementExtendedProperties}
  */
-type MarketingConsentExtendedPropertiesPropsInterface = CommonResourcePropertiesPropsInterface &
+type PreferenceManagementExtendedPropertiesPropsInterface = CommonResourcePropertiesPropsInterface &
     IdentifiableComponentInterface;
 
 /**
- * Extended properties for the marketing consent element.
- * Handles permission checks and attribute preservation for marketing purposes.
+ * Extended properties for the preference management element.
+ * Handles permission checks and attribute preservation for preference purposes.
  *
  * @param props - Props injected to the component.
- * @returns The MarketingConsentExtendedProperties component.
+ * @returns The PreferenceManagementExtendedProperties component.
  */
-const MarketingConsentExtendedProperties: FunctionComponent<MarketingConsentExtendedPropertiesPropsInterface> = ({
-    "data-componentid": componentId = "marketing-consent-extended-properties",
+const PreferenceManagementExtendedProperties: FunctionComponent<PreferenceManagementExtendedPropertiesPropsInterface> = ({
+    "data-componentid": componentId = "preference-management-extended-properties",
     resource,
     onChange
-}: MarketingConsentExtendedPropertiesPropsInterface): ReactElement => {
+}: PreferenceManagementExtendedPropertiesPropsInterface): ReactElement => {
     const { t } = useTranslation();
     const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
@@ -58,7 +58,7 @@ const MarketingConsentExtendedProperties: FunctionComponent<MarketingConsentExte
         return (
             <Stack data-componentid={ componentId }>
                 <Typography variant="caption" color="text.secondary">
-                    { t("consents:registrationFlow.noMarketing") }
+                    { t("consents:registrationFlow.noPreference") }
                 </Typography>
             </Stack>
         );
@@ -69,12 +69,12 @@ const MarketingConsentExtendedProperties: FunctionComponent<MarketingConsentExte
             data-componentid={ componentId }
             resource={ resource }
             onChange={ onChange }
-            filter="type eq Marketing"
-            emptyMessageKey="consents:registrationFlow.noMarketing"
-            selectLabelKey="consents:registrationFlow.selectMarketing"
+            filter="type eq Preference"
+            emptyMessageKey="consents:registrationFlow.noPreference"
+            selectLabelKey="consents:registrationFlow.selectPreference"
             preserveAttributes={ true }
         />
     );
 };
 
-export default MarketingConsentExtendedProperties;
+export default PreferenceManagementExtendedProperties;

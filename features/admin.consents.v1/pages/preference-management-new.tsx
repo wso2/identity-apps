@@ -22,48 +22,48 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { EditMarketingConsent } from "../components/edit-marketing-consent";
+import { EditPreferenceManagement } from "../components/edit-preference-management";
 
 /**
- * Props interface for the Marketing Consent new page component.
+ * Props interface for the Preference Management new page component.
  */
-type MarketingConsentNewPageProps = IdentifiableComponentInterface;
+type PreferenceManagementNewPageProps = IdentifiableComponentInterface;
 
 /**
- * Marketing Consent creation page.
+ * Preference Management creation page.
  *
  * @param props - Props injected to the component.
- * @returns Marketing Consent new page component.
+ * @returns Preference Management new page component.
  */
-const MarketingConsentNewPage: FunctionComponent<MarketingConsentNewPageProps> = (
-    props: MarketingConsentNewPageProps
+const PreferenceManagementNewPage: FunctionComponent<PreferenceManagementNewPageProps> = (
+    props: PreferenceManagementNewPageProps
 ): ReactElement => {
     const {
-        ["data-componentid"]: componentId = "marketing-consent-new-page"
+        ["data-componentid"]: componentId = "preference-management-new-page"
     } = props;
 
     const { t } = useTranslation();
 
     return (
         <PageLayout
-            pageTitle={ t("consents:marketingConsents.pages.new.title") }
-            title={ t("consents:marketingConsents.pages.new.title") }
+            pageTitle={ t("consents:preferenceManagement.pages.new.title") }
+            title={ t("consents:preferenceManagement.pages.new.title") }
             titleTextAlign="left"
             bottomMargin={ false }
             data-componentid={ `${componentId}-layout` }
             backButton={ {
                 "data-componentid": `${componentId}-page-back-button`,
                 onClick: (): void => {
-                    history.push(AppConstants.getPaths().get("MARKETING_CONSENTS"));
+                    history.push(AppConstants.getPaths().get("PREFERENCE_MANAGEMENT"));
                 },
-                text: t("consents:marketingConsents.pages.new.backButton")
+                text: t("consents:preferenceManagement.pages.new.backButton")
             } }
         >
-            <EditMarketingConsent
+            <EditPreferenceManagement
                 data-componentid={ componentId }
             />
         </PageLayout>
     );
 };
 
-export default MarketingConsentNewPage;
+export default PreferenceManagementNewPage;

@@ -51,7 +51,7 @@ export enum ElementTypes {
     Button = "BUTTON",
     Captcha = "CAPTCHA",
     Policy = "POLICY",
-    Marketing = "MARKETING",
+    Preference = "PREFERENCE",
     Divider = "DIVIDER",
     Choice = "CHOICE",
     Image = "IMAGE",

@@ -96,19 +96,19 @@ const AttributeRow: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     marginTop: theme.spacing(0.5)
 }));
 
-interface MarketingConsentPreviewPropsInterface {
+interface PreferenceManagementPreviewPropsInterface {
     componentId: string;
     attributes?: string[];
     description: string;
     policyName?: string;
 }
 
-export const MarketingConsentPreview: FunctionComponent<MarketingConsentPreviewPropsInterface> = ({
+export const PreferenceManagementPreview: FunctionComponent<PreferenceManagementPreviewPropsInterface> = ({
     componentId,
     attributes,
     description,
     policyName
-}: MarketingConsentPreviewPropsInterface): ReactElement => {
+}: PreferenceManagementPreviewPropsInterface): ReactElement => {
     const { t } = useTranslation();
 
     const hasRealAttributes: boolean = !!(attributes && attributes.length > 0);
@@ -145,11 +145,11 @@ export const MarketingConsentPreview: FunctionComponent<MarketingConsentPreviewP
             >
                 <PreviewCard>
                     <Header as="h4" textAlign="center" style={ { marginBottom: 21 } }>
-                        { t("consents:marketingConsents.preview.pageTitle") }
+                        { t("consents:preferenceManagement.preview.pageTitle") }
                     </Header>
 
                     <PreviewHeader>
-                        { t("consents:marketingConsents.preview.consentHeader") }
+                        { t("consents:preferenceManagement.preview.consentHeader") }
                     </PreviewHeader>
 
                     <CheckboxRow>
@@ -165,10 +165,10 @@ export const MarketingConsentPreview: FunctionComponent<MarketingConsentPreviewP
                                 { sanitized ? parse(sanitized)
                                     : i18nKeyMatch ? i18nKeyMatch[1]
                                         : policyName ? (
-                                            t("consents:marketingConsents.preview.exampleDescription", { consentName: policyName })
+                                            t("consents:preferenceManagement.preview.exampleDescription", { consentName: policyName })
                                         ) : (
                                             <PlaceholderText>
-                                                { t("consents:marketingConsents.preview.emptyDescription") }
+                                                { t("consents:preferenceManagement.preview.emptyDescription") }
                                             </PlaceholderText>
                                         ) }
                             </RichTextDescription>

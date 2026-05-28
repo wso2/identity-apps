@@ -41,30 +41,30 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { MarketingConsentsList } from "../components/marketing-consents-list";
+import { PreferenceManagementList } from "../components/preference-management-list";
 
 /**
- * Props interface for the Marketing Consents page component.
+ * Props interface for the Preference management page component.
  */
-type MarketingConsentsPageProps = IdentifiableComponentInterface;
+type PreferenceManagementPageProps = IdentifiableComponentInterface;
 
 /**
- * Marketing Consents page.
+ * Preference management page.
  *
  * @param props - Props injected to the component.
- * @returns Marketing Consents page component.
+ * @returns Preference management page component.
  */
-const MarketingConsentsPage: FunctionComponent<MarketingConsentsPageProps> = (
-    props: MarketingConsentsPageProps
+const PreferenceManagementPage: FunctionComponent<PreferenceManagementPageProps> = (
+    props: PreferenceManagementPageProps
 ): ReactElement => {
     const {
-        ["data-componentid"]: componentId = "marketing-consents-page"
+        ["data-componentid"]: componentId = "preference-management-page"
     } = props;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const marketingConsentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+    const preferenceManagementFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
     );
 
@@ -87,8 +87,8 @@ const MarketingConsentsPage: FunctionComponent<MarketingConsentsPageProps> = (
         after,
         before,
         filter: searchQuery
-            ? `${searchQuery} and type eq Marketing`
-            : "type eq Marketing",
+            ? `${searchQuery} and type eq Preference`
+            : "type eq Preference",
         limit: listItemLimit
     });
 
@@ -206,9 +206,9 @@ const MarketingConsentsPage: FunctionComponent<MarketingConsentsPageProps> = (
         deletePurpose(deletingConsent.id)
             .then((): void => {
                 dispatch(addAlert({
-                    description: t("consents:marketingConsents.notifications.delete.success.description"),
+                    description: t("consents:preferenceManagement.notifications.delete.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("consents:marketingConsents.notifications.delete.success.message")
+                    message: t("consents:preferenceManagement.notifications.delete.success.message")
                 }));
                 mutateConsents();
             })
@@ -220,29 +220,29 @@ const MarketingConsentsPage: FunctionComponent<MarketingConsentsPageProps> = (
                 switch (status) {
                     case 404:
                         description = t(
-                            "consents:marketingConsents.notifications.delete.error.notFound.description"
+                            "consents:preferenceManagement.notifications.delete.error.notFound.description"
                         );
-                        message = t("consents:marketingConsents.notifications.delete.error.notFound.message");
+                        message = t("consents:preferenceManagement.notifications.delete.error.notFound.message");
 
                         break;
                     case 409:
                         description = t(
-                            "consents:marketingConsents.notifications.delete.error.conflict.description"
+                            "consents:preferenceManagement.notifications.delete.error.conflict.description"
                         );
-                        message = t("consents:marketingConsents.notifications.delete.error.conflict.message");
+                        message = t("consents:preferenceManagement.notifications.delete.error.conflict.message");
 
                         break;
                     default:
                         if (status >= 500) {
                             description = t(
-                                "consents:marketingConsents.notifications.delete.error.serverError.description"
+                                "consents:preferenceManagement.notifications.delete.error.serverError.description"
                             );
                             message = t(
-                                "consents:marketingConsents.notifications.delete.error.serverError.message"
+                                "consents:preferenceManagement.notifications.delete.error.serverError.message"
                             );
                         } else {
-                            description = t("consents:marketingConsents.notifications.delete.error.description");
-                            message = t("consents:marketingConsents.notifications.delete.error.message");
+                            description = t("consents:preferenceManagement.notifications.delete.error.description");
+                            message = t("consents:preferenceManagement.notifications.delete.error.message");
                         }
                 }
 
@@ -261,9 +261,9 @@ const MarketingConsentsPage: FunctionComponent<MarketingConsentsPageProps> = (
 
     return (
         <PageLayout
-            pageTitle={ t("consents:marketingConsents.pages.list.title") }
-            title={ t("consents:marketingConsents.pages.list.heading") }
-            description={ t("consents:marketingConsents.pages.list.description") }
+            pageTitle={ t("consents:preferenceManagement.pages.list.title") }
+            title={ t("consents:preferenceManagement.pages.list.heading") }
+            description={ t("consents:preferenceManagement.pages.list.description") }
             data-componentid={ `${componentId}-layout` }
             backButton={ {
                 onClick: () => {
@@ -273,15 +273,15 @@ const MarketingConsentsPage: FunctionComponent<MarketingConsentsPageProps> = (
             } }
             action={ (
                 (consents?.length ?? 0) > 0 ? (
-                    <Show when={ marketingConsentsFeatureConfig?.scopes?.create }>
+                    <Show when={ preferenceManagementFeatureConfig?.scopes?.create }>
                         <PrimaryButton
                             onClick={ (): void => {
-                                history.push(AppConstants.getPaths().get("MARKETING_CONSENTS_NEW"));
+                                history.push(AppConstants.getPaths().get("PREFERENCE_MANAGEMENT_NEW"));
                             } }
                             data-componentid={ `${componentId}-add-button` }
                         >
                             <Icon name="add" />
-                            { t("consents:marketingConsents.pages.list.actions.addConsent") }
+                            { t("consents:preferenceManagement.pages.list.actions.addConsent") }
                         </PrimaryButton>
                     </Show>
                 ) : null
@@ -299,7 +299,7 @@ const MarketingConsentsPage: FunctionComponent<MarketingConsentsPageProps> = (
                             }
                         ] }
                         filterAttributePlaceholder={ t("common:name") }
-                        placeholder={ t("consents:marketingConsents.pages.list.search.placeholder") }
+                        placeholder={ t("consents:preferenceManagement.pages.list.search.placeholder") }
                         defaultSearchAttribute={ "name" }
                         defaultSearchOperator={ "co" }
                         triggerClearQuery={ triggerClearQuery }
@@ -324,7 +324,7 @@ const MarketingConsentsPage: FunctionComponent<MarketingConsentsPageProps> = (
                 } }
                 data-componentid={ `${ componentId }-list-layout` }
             >
-                <MarketingConsentsList
+                <PreferenceManagementList
                     list={ consents }
                     isLoading={ isConsentsLoading }
                     searchQuery={ searchQuery }
@@ -336,10 +336,10 @@ const MarketingConsentsPage: FunctionComponent<MarketingConsentsPageProps> = (
                         setPageHistory([]);
                     } }
                     onAddConsentClick={ (): void => {
-                        history.push(AppConstants.getPaths().get("MARKETING_CONSENTS_NEW"));
+                        history.push(AppConstants.getPaths().get("PREFERENCE_MANAGEMENT_NEW"));
                     } }
                     onEditConsentClick={ (consent: ConsentListItemInterface) => {
-                        history.push(AppConstants.getPaths().get("MARKETING_CONSENTS_EDIT")
+                        history.push(AppConstants.getPaths().get("PREFERENCE_MANAGEMENT_EDIT")
                             .replace(":id", consent.id));
                     } }
                     onDeleteConsentClick={ (consent: ConsentListItemInterface) => {
@@ -356,14 +356,14 @@ const MarketingConsentsPage: FunctionComponent<MarketingConsentsPageProps> = (
                         type="negative"
                         open={ showDeleteConfirmationModal }
                         assertionHint={
-                            t("consents:marketingConsents.pages.deleteConfirmation.assertionHint")
+                            t("consents:preferenceManagement.pages.deleteConfirmation.assertionHint")
                         }
                         assertionType="checkbox"
                         primaryAction={
-                            t("consents:marketingConsents.pages.deleteConfirmation.primaryAction")
+                            t("consents:preferenceManagement.pages.deleteConfirmation.primaryAction")
                         }
                         secondaryAction={
-                            t("consents:marketingConsents.pages.deleteConfirmation.secondaryAction")
+                            t("consents:preferenceManagement.pages.deleteConfirmation.secondaryAction")
                         }
                         onSecondaryActionClick={ () => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ () => handleDeleteConsent() }
@@ -374,19 +374,19 @@ const MarketingConsentsPage: FunctionComponent<MarketingConsentsPageProps> = (
                         <ConfirmationModal.Header
                             data-componentid={ `${ componentId }-delete-confirmation-modal-header` }
                         >
-                            { t("consents:marketingConsents.pages.deleteConfirmation.header") }
+                            { t("consents:preferenceManagement.pages.deleteConfirmation.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             negative
                             data-componentid={ `${ componentId }-delete-confirmation-modal-message` }
                         >
-                            { t("consents:marketingConsents.pages.deleteConfirmation.message") }
+                            { t("consents:preferenceManagement.pages.deleteConfirmation.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-componentid={ `${ componentId }-delete-confirmation-modal-content` }
                         >
-                            { t("consents:marketingConsents.pages.deleteConfirmation.content") }
+                            { t("consents:preferenceManagement.pages.deleteConfirmation.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )
@@ -395,4 +395,4 @@ const MarketingConsentsPage: FunctionComponent<MarketingConsentsPageProps> = (
     );
 };
 
-export default MarketingConsentsPage;
+export default PreferenceManagementPage;

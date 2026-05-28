@@ -379,7 +379,7 @@ export interface MyAccountNS {
                 updateConsentedClaims: Notification;
             };
         };
-        marketingConsentManagement: {
+        preferenceManagement: {
             consentedOnLabel: string;
             elementsHeading: string;
             dangerZones: {
@@ -1139,7 +1139,7 @@ export interface MyAccountNS {
                 };
             };
         };
-        marketingConsentManagement: {
+        preferenceManagement: {
             description: string;
             heading: string;
             placeholders: {

@@ -572,7 +572,7 @@ interface ConsentDescriptionEditorProps extends IdentifiableComponentInterface {
     /**
      * Controls which i18n hint text to show below the editor. Defaults to "policy".
      */
-    variant?: "policy" | "marketing";
+    variant?: "policy" | "preference";
 }
 
 /**
@@ -599,16 +599,16 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
         policyName || policyUrl || t("consents:policyConsents.form.name.placeholder");
     const isValidPolicyUrl: boolean = !!policyUrl && URLUtils.isHttpsOrHttpUrl(policyUrl);
 
-    const marketingPlaceholderI18nKey: string = "consents:marketingConsents.preview.exampleDescription";
+    const preferencePlaceholderI18nKey: string = "consents:preferenceManagement.preview.exampleDescription";
     const policyPlaceholderI18nKey: string = "consents:policyConsents.wizard.create.preview.exampleDescription";
 
-    const placeholderAriaText: string = variant === "marketing"
-        ? t(marketingPlaceholderI18nKey, { consentName: policyName }).replace(/<[^>]*>/g, "")
+    const placeholderAriaText: string = variant === "preference"
+        ? t(preferencePlaceholderI18nKey, { consentName: policyName }).replace(/<[^>]*>/g, "")
         : t(policyPlaceholderI18nKey, { policyName: exampleLinkText }).replace(/<[^>]*>/g, "");
 
-    const placeholderContent: ReactElement = variant === "marketing" ? (
+    const placeholderContent: ReactElement = variant === "preference" ? (
         <EditorPlaceholder>
-            { t(marketingPlaceholderI18nKey, { consentName: policyName }).replace(/<[^>]*>/g, "") }
+            { t(preferencePlaceholderI18nKey, { consentName: policyName }).replace(/<[^>]*>/g, "") }
         </EditorPlaceholder>
     ) : (
         <EditorPlaceholder>
@@ -659,7 +659,7 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
                             <PlaceholderComponent value={ `{{${i18nKey}}}` } />
                         </I18nKeyOverlay>
                     ) }
-                    { variant !== "marketing" && (
+                    { variant !== "preference" && (
                         <Tooltip
                             title={ t("consents:policyConsents.wizard.create.form.description.configureTranslation") }
                             placement="top"
@@ -681,7 +681,7 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
                     ) }
                 </EditorWrapperBox>
             </LexicalComposer>
-            { variant !== "marketing" && isI18nCardOpen && (
+            { variant !== "preference" && isI18nCardOpen && (
                 <ConsentI18nConfigurationCard
                     open={ isI18nCardOpen }
                     anchorEl={ i18nButtonRef.current }
@@ -697,8 +697,8 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
                 />
             ) }
             <Hint>
-                { t(variant === "marketing"
-                    ? "consents:marketingConsents.form.description.labelRoleHint"
+                { t(variant === "preference"
+                    ? "consents:preferenceManagement.form.description.labelRoleHint"
                     : "consents:policyConsents.wizard.create.form.description.labelRoleHint")
                 }
             </Hint>

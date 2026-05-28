@@ -437,7 +437,7 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
-        "marketingConsentManagement": {
+        "preferenceManagement": {
             "consentedOnLabel": "接受于",
             "dangerZones": {
                 "revoke": {
@@ -1854,7 +1854,7 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
-        "marketingConsentManagement": {
+        "preferenceManagement": {
             "description": "查看您已同意的营销通信。",
             "heading": "营销同意",
             "placeholders": {

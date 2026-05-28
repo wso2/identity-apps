@@ -613,39 +613,39 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             category: "extensions:manage.sidePanel.categories.userManagement",
             children: [
                 {
-                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/marketing-consent-new")),
+                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/preference-management-new")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
                     },
-                    id: "marketing-consents-new",
-                    name: "Marketing Consent New",
-                    path: AppConstants.getPaths().get("MARKETING_CONSENTS_NEW"),
+                    id: "preference-management-new",
+                    name: "Preference Management New",
+                    path: AppConstants.getPaths().get("PREFERENCE_MANAGEMENT_NEW"),
                     protected: true,
                     showOnSidePanel: false
                 },
                 {
-                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/marketing-consent-edit")),
+                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/preference-management-edit")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
                     },
-                    id: "marketing-consents-edit",
-                    name: "Marketing Consent Edit",
-                    path: AppConstants.getPaths().get("MARKETING_CONSENTS_EDIT"),
+                    id: "preference-management-edit",
+                    name: "Preference Management Edit",
+                    path: AppConstants.getPaths().get("PREFERENCE_MANAGEMENT_EDIT"),
                     protected: true,
                     showOnSidePanel: false
                 }
             ],
-            component: lazy(() => import("@wso2is/admin.consents.v1/pages/marketing-consents")),
+            component: lazy(() => import("@wso2is/admin.consents.v1/pages/preference-management")),
             exact: true,
             icon: {
                 icon: getSidePanelIcons().consents
             },
-            id: "marketingConsents",
-            name: "extensions:develop.sidePanel.marketingConsents",
+            id: "preferenceManagement",
+            name: "extensions:develop.sidePanel.preferenceManagement",
             order: 8,
-            path: AppConstants.getPaths().get("MARKETING_CONSENTS"),
+            path: AppConstants.getPaths().get("PREFERENCE_MANAGEMENT"),
             protected: true,
             showOnSidePanel: false
         },

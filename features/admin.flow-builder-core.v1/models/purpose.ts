@@ -26,7 +26,7 @@ export interface PurposeAttributeInterface {
 }
 
 /**
- * Represents a single purpose (marketing or policy).
+ * Represents a single purpose (preference or policy).
  * `description` may be a plain string or an i18n map keyed by locale (e.g. `{ "en-US": "...", "fr-FR": "..." }`).
  */
 export interface PurposeInterface {

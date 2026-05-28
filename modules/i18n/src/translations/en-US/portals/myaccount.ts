@@ -482,57 +482,57 @@ export const myAccount: MyAccountNS = {
             policyUrlLabel: "View Policy",
             versionLabel: "Version {{version}}"
         },
-        marketingConsentManagement: {
+        preferenceManagement: {
             consentedOnLabel: "Accepted on",
-            elementsHeading: "Manage your marketing communication consent. Uncheck the attributes that you need to revoke and press the update button to save the changes or press the revoke button to remove the consent for all the attributes.",
+            elementsHeading: "Manage your communication preferences. Uncheck the attributes that you need to revoke and press the update button to save the changes or press the revoke button to remove the consent for all the attributes.",
             dangerZones: {
                 revoke: {
                     actionTitle: "Revoke",
-                    header: "Revoke Marketing Consent",
-                    subheader: "This action will revoke your consent for this marketing communication."
+                    header: "Revoke Communication Preference",
+                    subheader: "This action will revoke your consent for this communication preference."
                 }
             },
             notifications: {
                 fetch: {
                     error: {
-                        description: "An error occurred while retrieving your marketing consents.",
+                        description: "An error occurred while retrieving your communication preferences.",
                         message: "Retrieval Failed"
                     },
                     genericError: {
-                        description: "An error occurred while retrieving your marketing consents.",
+                        description: "An error occurred while retrieving your communication preferences.",
                         message: "Retrieval Failed"
                     },
                     success: {
-                        description: "Your marketing consents were retrieved successfully.",
+                        description: "Your communication preferences were retrieved successfully.",
                         message: "Retrieval Successful"
                     }
                 },
                 revoke: {
                     error: {
-                        description: "An error occurred while revoking the marketing consent.",
+                        description: "An error occurred while revoking the communication preference.",
                         message: "Revoke Failed"
                     },
                     genericError: {
-                        description: "An error occurred while revoking the marketing consent.",
+                        description: "An error occurred while revoking the communication preference.",
                         message: "Revoke Failed"
                     },
                     success: {
-                        description: "The marketing consent has been revoked successfully.",
-                        message: "Consent Revoked"
+                        description: "The communication preference has been revoked successfully.",
+                        message: "Preference Revoked"
                     }
                 },
                 update: {
                     error: {
-                        description: "An error occurred while updating the marketing consent.",
+                        description: "An error occurred while updating the communication preference.",
                         message: "Update Failed"
                     },
                     genericError: {
-                        description: "An error occurred while updating the marketing consent.",
+                        description: "An error occurred while updating the communication preference.",
                         message: "Update Failed"
                     },
                     success: {
-                        description: "Your marketing consent preferences have been updated successfully.",
-                        message: "Consent Updated"
+                        description: "Your communication preferences have been updated successfully.",
+                        message: "Preferences Updated"
                     }
                 }
             },
@@ -1901,12 +1901,12 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
-        marketingConsentManagement: {
-            description: "Review the marketing communications you have consented to.",
-            heading: "Marketing Consents",
+        preferenceManagement: {
+            description: "Review and manage your communication preferences.",
+            heading: "Communication Preferences",
             placeholders: {
                 emptyConsentList: {
-                    heading: "You have not accepted any marketing consents"
+                    heading: "You have not set any communication preference"
                 }
             }
         },

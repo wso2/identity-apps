@@ -79,7 +79,7 @@ const resolveDescription = (description, locale, translations) => {
  * @param {string} purposeType
  * @param {{ current: string | null }} consentRef
  */
-const reportMarketingState = (checkedMap, formStateHandler, purposeType, consentRef) => {
+const reportPreferenceState = (checkedMap, formStateHandler, purposeType, consentRef) => {
     const purposes = Object.entries(checkedMap).map(([ purposeId, attrMap ]) => {
         const acceptedAttributes = Object.keys(attrMap)
             .filter((id) => id !== "__accepted" && attrMap[id]);
@@ -109,15 +109,15 @@ const reportMarketingState = (checkedMap, formStateHandler, purposeType, consent
     const serialized = JSON.stringify(merged);
 
     consentRef.current = serialized;
-    formStateHandler("marketing", serialized);
+    formStateHandler("preference", serialized);
 };
 
-const MarketingConsentFieldAdapter = ({ component, formStateHandler, fieldErrorHandler }) => {
+const PreferenceManagementFieldAdapter = ({ component, formStateHandler, fieldErrorHandler }) => {
 
     const {
-        identifier = "marketing_consent",
+        identifier = "preference_management",
         purposes: rawPurposes = [],
-        purposeType = "Marketing"
+        purposeType = "Preference"
     } = component.config;
 
     const { locale, translations } = useTranslations();
@@ -147,7 +147,7 @@ const MarketingConsentFieldAdapter = ({ component, formStateHandler, fieldErrorH
         });
 
         setCheckedMap(initial);
-        reportMarketingState(initial, formStateHandler, purposeType, consentRef);
+        reportPreferenceState(initial, formStateHandler, purposeType, consentRef);
         fieldErrorHandler(identifier, null);
     }, [ purposes ]);
 
@@ -158,7 +158,7 @@ const MarketingConsentFieldAdapter = ({ component, formStateHandler, fieldErrorH
         };
 
         setCheckedMap(updated);
-        reportMarketingState(updated, formStateHandler, purposeType, consentRef);
+        reportPreferenceState(updated, formStateHandler, purposeType, consentRef);
     };
 
     const handleSelectAll = (_e, data, purposeId, attrIds) => {
@@ -174,7 +174,7 @@ const MarketingConsentFieldAdapter = ({ component, formStateHandler, fieldErrorH
         const updated = { ...checkedMap, [purposeId]: updatedPurpose };
 
         setCheckedMap(updated);
-        reportMarketingState(updated, formStateHandler, purposeType, consentRef);
+        reportPreferenceState(updated, formStateHandler, purposeType, consentRef);
     };
 
 
@@ -198,7 +198,7 @@ const MarketingConsentFieldAdapter = ({ component, formStateHandler, fieldErrorH
                     && attrIds.some((id) => attrMap[id]);
 
                 const purposeName = resolveElementText(translations, purpose.name) || purpose.name || "";
-                const resolvedTemplate = resolveElementText(translations, "{{consent.marketing.exampleDescription}}")
+                const resolvedTemplate = resolveElementText(translations, "{{consent.preference.exampleDescription}}")
                     || "I agree to receive {consentName} communications.";
                 const fallbackDescription = resolvedTemplate.replace("{consentName}", purposeName);
                 const rawDescription = description || fallbackDescription;
@@ -216,7 +216,7 @@ const MarketingConsentFieldAdapter = ({ component, formStateHandler, fieldErrorH
                     <div key={ purpose.purposeId }>
                         <div style={ { alignItems: "center", display: "flex", gap: "8px", marginBottom: "12px" } }>
                             <Checkbox
-                                id={ `marketing-consent-${ purpose.purposeId }` }
+                                id={ `preference-management-${ purpose.purposeId }` }
                                 checked={ allChecked }
                                 indeterminate={ isIndeterminate }
                                 size="small"
@@ -224,7 +224,7 @@ const MarketingConsentFieldAdapter = ({ component, formStateHandler, fieldErrorH
                                 onChange={ (_e, data) => handleSelectAll(_e, data, purpose.purposeId, attrIds) }
                             />
                             <label
-                                htmlFor={ `marketing-consent-${ purpose.purposeId }` }
+                                htmlFor={ `preference-management-${ purpose.purposeId }` }
                                 style={ { fontSize: "0.875rem", lineHeight: 1.5, margin: 0, cursor: "pointer" } }
                             >
                                 { sanitizedHtml
@@ -247,7 +247,7 @@ const MarketingConsentFieldAdapter = ({ component, formStateHandler, fieldErrorH
                                         } }
                                     >
                                         <Checkbox
-                                            id={ `marketing-consent-${ purpose.purposeId }-${ attr.id }` }
+                                            id={ `preference-management-${ purpose.purposeId }-${ attr.id }` }
                                             name={ attr.id }
                                             checked={ attrMap[attr.id] || false }
                                             size="small"
@@ -256,7 +256,7 @@ const MarketingConsentFieldAdapter = ({ component, formStateHandler, fieldErrorH
                                                 handleAttributeChange(_e, data, purpose.purposeId, attr.id) }
                                         />
                                         <label
-                                            htmlFor={ `marketing-consent-${ purpose.purposeId }-${ attr.id }` }
+                                            htmlFor={ `preference-management-${ purpose.purposeId }-${ attr.id }` }
                                             style={ { fontSize: "0.8125rem", margin: 0, cursor: "pointer" } }
                                         >
                                             { attr.displayName ?? attr.name }
@@ -272,10 +272,10 @@ const MarketingConsentFieldAdapter = ({ component, formStateHandler, fieldErrorH
     );
 };
 
-MarketingConsentFieldAdapter.propTypes = {
+PreferenceManagementFieldAdapter.propTypes = {
     component: PropTypes.object.isRequired,
     fieldErrorHandler: PropTypes.func.isRequired,
     formStateHandler: PropTypes.func.isRequired
 };
 
-export default MarketingConsentFieldAdapter;
+export default PreferenceManagementFieldAdapter;

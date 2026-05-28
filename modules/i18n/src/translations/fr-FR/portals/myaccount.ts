@@ -443,56 +443,56 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
-        marketingConsentManagement: {
+        preferenceManagement: {
             consentedOnLabel: "Accepté le",
             dangerZones: {
                 revoke: {
                     actionTitle: "Révoquer",
-                    header: "Révoquer le consentement marketing",
-                    subheader: "Cette action révoquera votre consentement pour cette communication marketing."
+                    header: "Révoquer la préférence de communication",
+                    subheader: "Cette action supprimera votre préférence pour cette communication."
                 }
             },
-            elementsHeading: "Gérez votre consentement aux communications marketing. Décochez les attributs que vous devez révoquer et appuyez sur le bouton de mise à jour pour enregistrer les modifications ou appuyez sur le bouton de révocation pour supprimer le consentement pour tous les attributs.",
+            elementsHeading: "Mettez à jour vos préférences ci-dessous. Décochez les attributs auxquels vous souhaitez vous désabonner et appuyez sur le bouton de mise à jour pour enregistrer les modifications ou appuyez sur le bouton de révocation pour supprimer la préférence pour tous les attributs.",
             notifications: {
                 fetch: {
                     error: {
-                        description: "Une erreur s'est produite lors de la récupération de vos consentements marketing.",
+                        description: "Une erreur s'est produite lors de la récupération de vos préférences de communication.",
                         message: "Échec de la récupération"
                     },
                     genericError: {
-                        description: "Une erreur s'est produite lors de la récupération de vos consentements marketing.",
+                        description: "Une erreur s'est produite lors de la récupération de vos préférences de communication.",
                         message: "Échec de la récupération"
                     },
                     success: {
-                        description: "Vos consentements marketing ont été récupérés avec succès.",
+                        description: "Vos préférences de communication ont été récupérées avec succès.",
                         message: "Récupération réussie"
                     }
                 },
                 revoke: {
                     error: {
-                        description: "Une erreur s'est produite lors de la révocation du consentement marketing.",
+                        description: "Une erreur s'est produite lors de la révocation de la préférence de communication.",
                         message: "Échec de la révocation"
                     },
                     genericError: {
-                        description: "Une erreur s'est produite lors de la révocation du consentement marketing.",
+                        description: "Une erreur s'est produite lors de la révocation de la préférence de communication.",
                         message: "Échec de la révocation"
                     },
                     success: {
-                        description: "Le consentement marketing a été révoqué avec succès.",
+                        description: "La préférence de communication a été révoquée avec succès.",
                         message: "Consentement révoqué"
                     }
                 },
                 update: {
                     error: {
-                        description: "Une erreur s'est produite lors de la mise à jour du consentement marketing.",
+                        description: "Une erreur s'est produite lors de la mise à jour de la préférence de communication.",
                         message: "Échec de la mise à jour"
                     },
                     genericError: {
-                        description: "Une erreur s'est produite lors de la mise à jour du consentement marketing.",
+                        description: "Une erreur s'est produite lors de la mise à jour de la préférence de communication.",
                         message: "Échec de la mise à jour"
                     },
                     success: {
-                        description: "Vos préférences de consentement marketing ont été mises à jour avec succès.",
+                        description: "Vos préférences de communication ont été mises à jour avec succès.",
                         message: "Consentement mis à jour"
                     }
                 }
@@ -1944,12 +1944,12 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
-        marketingConsentManagement: {
-            description: "Examinez les communications marketing auxquelles vous avez consenti.",
-            heading: "Consentements marketing",
+        preferenceManagement: {
+            description: "Examinez et gérez vos préférences de communication.",
+            heading: "Préférences de communication",
             placeholders: {
                 emptyConsentList: {
-                    heading: "Vous n'avez accepté aucun consentement marketing"
+                    heading: "Vous n'avez défini aucune préférence de communication"
                 }
             }
         },

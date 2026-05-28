@@ -363,16 +363,16 @@ export class GovernanceConnectorUtils {
                     },
                     {
                         description: I18n.instance.t("governanceConnectors:connectorCategories" +
-                            ".consentManagement.connectors.marketingConsents.description"),
+                            ".consentManagement.connectors.preferenceManagement.description"),
                         friendlyName: I18n.instance.t("governanceConnectors:connectorCategories" +
-                            ".consentManagement.connectors.marketingConsents.friendlyName"),
+                            ".consentManagement.connectors.preferenceManagement.friendlyName"),
                         header: I18n.instance.t("governanceConnectors:connectorCategories" +
-                            ".consentManagement.connectors.marketingConsents.header"),
-                        id: ServerConfigurationsConstants.MARKETING_CONSENTS_CONNECTOR_ID,
+                            ".consentManagement.connectors.preferenceManagement.header"),
+                        id: ServerConfigurationsConstants.PREFERENCE_MANAGEMENT_CONNECTOR_ID,
                         isCustom: false,
-                        name: "marketingConsents",
-                        route: AppConstants.getPaths().get("MARKETING_CONSENTS"),
-                        testId: "marketing-consents-card"
+                        name: "preferenceManagement",
+                        route: AppConstants.getPaths().get("PREFERENCE_MANAGEMENT"),
+                        testId: "preference-management-card"
                     }
                 ],
                 displayOrder: 1,

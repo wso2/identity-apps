@@ -83,5 +83,5 @@ export enum ExecutionStepViewTypes {
 
 export enum ViewStepVariants {
     PolicyConsent = "POLICY_CONSENT",
-    MarketingConsent = "MARKETING_CONSENT"
+    PreferenceManagement = "PREFERENCE_MANAGEMENT"
 }

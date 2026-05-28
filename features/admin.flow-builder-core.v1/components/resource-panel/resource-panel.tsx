@@ -179,7 +179,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
 
         if (step.type === StepTypes.View
             && (step.variant === ViewStepVariants.PolicyConsent
-                || step.variant === ViewStepVariants.MarketingConsent)
+                || step.variant === ViewStepVariants.PreferenceManagement)
             && (!consentsFeatureConfig?.enabled || !hasConsentsReadPermission)) {
             return false;
         }

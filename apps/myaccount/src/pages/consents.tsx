@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteProps } from "react-router";
 import { Dispatch } from "redux";
-import { Consents, MarketingConsent, PolicyConsent } from "../components";
+import { Consents, PreferenceManagement, PolicyConsent } from "../components";
 import { AppConstants } from "../constants";
 import { AlertInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
@@ -64,7 +64,7 @@ const ConsentsPage: FunctionComponent<ConsentsPagePropsInterface> = (): ReactEle
                     AppConstants.FEATURE_DICTIONARY.get("SECURITY_CONSENTS")
                 ) && <Consents onAlertFired={ handleAlerts } /> }
                 <PolicyConsent onAlertFired={ handleAlerts } />
-                <MarketingConsent onAlertFired={ handleAlerts } />
+                <PreferenceManagement onAlertFired={ handleAlerts } />
             </Box>
         </PageLayout>
     );

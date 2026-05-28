@@ -33,9 +33,9 @@ import { PurposeInterface } from "../../../../models/purpose";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 
 /**
- * Props interface of {@link MarketingConsentAdapter}
+ * Props interface of {@link PreferenceManagementAdapter}
  */
-type MarketingConsentAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type PreferenceManagementAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 const PlaceholderText: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
     color: theme.palette.text.disabled,
@@ -130,15 +130,15 @@ const resolveDescription = (
 };
 
 /**
- * Adapter for the Marketing Consent element.
+ * Adapter for the Preference Management element.
  * Renders a config-driven preview of purposes, their i18n descriptions, and selectable user attributes.
  *
  * @param props - Props injected to the component.
- * @returns The MarketingConsentAdapter component.
+ * @returns The PreferenceManagementAdapter component.
  */
-const MarketingConsentAdapter: FunctionComponent<MarketingConsentAdapterPropsInterface> = ({
+const PreferenceManagementAdapter: FunctionComponent<PreferenceManagementAdapterPropsInterface> = ({
     resource
-}: MarketingConsentAdapterPropsInterface): ReactElement => {
+}: PreferenceManagementAdapterPropsInterface): ReactElement => {
     const { i18n, t } = useTranslation();
 
     const purposes: PurposeInterface[] = useMemo(
@@ -154,15 +154,15 @@ const MarketingConsentAdapter: FunctionComponent<MarketingConsentAdapterPropsInt
     const { data: purposeDetails } = useGetPurposesByIds(purposeIds);
 
     useValidatePurposes(resource, purposes, null, {
-        messageKeyPrefix: "marketingConsent",
-        type: "marketing",
+        messageKeyPrefix: "preferenceManagement",
+        type: "preference",
         validateAvailability: false
     });
 
     return (
-        <Box data-componentid={ resource.id ?? "marketing-consent-adapter" }>
+        <Box data-componentid={ resource.id ?? "preference-management-adapter" }>
             { purposes.length === 0 ? (
-                <EmptyState>{ t("flows:core.elements.marketingConsent.emptyState") }</EmptyState>
+                <EmptyState>{ t("flows:core.elements.preferenceManagement.emptyState") }</EmptyState>
             ) : (
                 purposes.map((purpose: PurposeInterface): ReactElement => {
                     const detail: ConsentInterface | undefined = purposeDetails?.find(
@@ -194,10 +194,10 @@ const MarketingConsentAdapter: FunctionComponent<MarketingConsentAdapterPropsInt
                                             { parse(sanitized) }
                                         </RichTextLabel>
                                     ) : detail?.name ? (
-                                        t("consents:marketingConsents.preview.exampleDescription", { consentName: detail.name })
+                                        t("consents:preferenceManagement.preview.exampleDescription", { consentName: detail.name })
                                     ) : (
                                         <PlaceholderText>
-                                            { t("consents:marketingConsents.preview.emptyDescription") }
+                                            { t("consents:preferenceManagement.preview.emptyDescription") }
                                         </PlaceholderText>
                                     ) }
                                 </FormLabel>
@@ -229,4 +229,4 @@ const MarketingConsentAdapter: FunctionComponent<MarketingConsentAdapterPropsInt
     );
 };
 
-export default MarketingConsentAdapter;
+export default PreferenceManagementAdapter;

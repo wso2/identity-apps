@@ -797,7 +797,7 @@ export interface governanceConnectorsNS {
                     friendlyName: string;
                     header: string;
                 };
-                marketingConsents: {
+                preferenceManagement: {
                     description: string;
                     friendlyName: string;
                     header: string;

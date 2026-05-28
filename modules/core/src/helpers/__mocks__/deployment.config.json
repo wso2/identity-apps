@@ -1321,7 +1321,7 @@
                 "governanceConnectors": "v0.0.0",
                 "groups": "v0.0.0",
                 "identityProviders": "v0.0.0",
-                "marketingConsents": "v0.0.0",
+                "preferenceManagement": "v0.0.0",
                 "organizations": "v0.0.0",
                 "roles": "v0.0.0",
                 "smsTemplates": "v0.0.0",

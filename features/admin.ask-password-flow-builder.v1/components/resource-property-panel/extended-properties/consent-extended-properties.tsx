@@ -43,7 +43,7 @@ interface ConsentExtendedPropertiesInterface extends CommonResourcePropertiesPro
 
 /**
  * Generic consent extended properties component.
- * Handles common logic for both marketing and policy consents.
+ * Handles common logic for both preference and policy consents.
  *
  * @param props - Props injected to the component.
  * @returns The ConsentExtendedProperties component.

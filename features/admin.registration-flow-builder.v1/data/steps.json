@@ -93,11 +93,11 @@
         "resourceType": "STEP",
         "category": "INTERFACE",
         "type": "VIEW",
-        "variant": "MARKETING_CONSENT",
+        "variant": "PREFERENCE_MANAGEMENT",
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "Marketing Consent View",
+            "label": "Preference Management View",
             "image": "assets/images/icons/email-down.svg",
             "showOnResourcePanel": true
         },
@@ -110,7 +110,7 @@
                     "type": "TYPOGRAPHY",
                     "variant": "H3",
                     "config": {
-                        "text": "Review Marketing Consent"
+                        "text": "Communication Preferences"
                     }
                 },
                 {
@@ -118,7 +118,7 @@
                     "category": "DISPLAY",
                     "type": "RICH_TEXT",
                     "config": {
-                        "text": "<p class=\"rich-text-paragraph\"><span class=\"rich-text-pre-wrap\">Please review and accept the following to continue.</span></p>"
+                        "text": "<p class=\"rich-text-paragraph\"><span class=\"rich-text-pre-wrap\">Please review your preferences  to proceed.</span></p>"
                     }
                 },
                 {
@@ -130,7 +130,7 @@
                         {
                             "id": "{{ID}}",
                             "category": "FIELD",
-                            "type": "MARKETING",
+                            "type": "PREFERENCE",
                             "config": {
                                 "purposes": []
                             }

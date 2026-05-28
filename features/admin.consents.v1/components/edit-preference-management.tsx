@@ -33,9 +33,8 @@ import {
     NewElementBindingInterface,
     PurposeDTOInterface,
     PurposeElementDTOInterface,
-    PurposeVersionSummaryDTOInterface,
-    createMarketingPurpose,
-    createMarketingPurposeVersion,
+    createPreferencePurpose,
+    createPreferencePurposeVersion,
     isPolicyNameAvailable,
     useGetPurpose,
     useGetPurposeVersions
@@ -44,10 +43,9 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ClaimsGetParams, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, TextFieldAdapter } from "@wso2is/forms";
-import { ConfirmationModal, ContentLoader, Hint, Message, PrimaryButton } from "@wso2is/react-components";
+import { ContentLoader, Message, PrimaryButton } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
-    MutableRefObject,
     type ReactElement,
     SyntheticEvent,
     useCallback,
@@ -60,14 +58,13 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { ConsentDescriptionEditor } from "./consent-description-editor";
-import { MarketingConsentPreview } from "./marketing-consent-preview";
-import { ConsentVersionDropdown } from "./consent-version-dropdown";
+import { PreferenceManagementPreview } from "./preference-management-preview";
 
-interface EditMarketingConsentProps extends IdentifiableComponentInterface {
+interface EditPreferenceManagementProps extends IdentifiableComponentInterface {
     purposeId?: string;
 }
 
-interface MarketingFormValuesInterface {
+interface PreferenceFormValuesInterface {
     attributes: Claim[];
     description: string;
     name?: string;
@@ -81,10 +78,6 @@ const CLAIMS_PARAMS: ClaimsGetParams = {
     offset: null,
     sort: null
 };
-
-interface MarketingFormErrorsInterface {
-    name?: string;
-}
 
 /**
  * Generates the next version label from the current label.
@@ -104,8 +97,8 @@ const generateNextVersionLabel = (currentLabel: string): string => {
     return `${ nextNumber }`;
 };
 
-export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> = (
-    props: EditMarketingConsentProps
+export const EditPreferenceManagement: FunctionComponent<EditPreferenceManagementProps> = (
+    props: EditPreferenceManagementProps
 ): ReactElement => {
     const { purposeId } = props;
 
@@ -114,11 +107,11 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const marketingConsentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+    const preferenceManagementFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
     );
-    const hasCreatePermission: boolean = useRequiredScopes(marketingConsentsFeatureConfig?.scopes?.create);
-    const hasUpdatePermission: boolean = useRequiredScopes(marketingConsentsFeatureConfig?.scopes?.update);
+    const hasCreatePermission: boolean = useRequiredScopes(preferenceManagementFeatureConfig?.scopes?.create);
+    const hasUpdatePermission: boolean = useRequiredScopes(preferenceManagementFeatureConfig?.scopes?.update);
 
     const {
         data: consent,
@@ -126,7 +119,6 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
         mutate: mutateConsent
     } = useGetPurpose(purposeId ?? "");
     const {
-        data: consentVersions,
         isLoading: isVersionsLoading,
         mutate: mutateVersions
     } = useGetPurposeVersions(purposeId ?? "");
@@ -136,13 +128,10 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
     } = useGetAllLocalClaims<Claim[]>(CLAIMS_PARAMS);
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ showVersionWarningModal, setShowVersionWarningModal ] = useState<boolean>(false);
-    const pendingValues: MutableRefObject<MarketingFormValuesInterface | null> =
-        useRef<MarketingFormValuesInterface | null>(null);
-    const nameValidationTokenRef: MutableRefObject<number> = useRef<number>(0);
+    const nameValidationTokenRef: React.MutableRefObject<number> = useRef<number>(0);
 
-    const initialValues: MarketingFormValuesInterface | null = useMemo(
-        (): MarketingFormValuesInterface | null => {
+    const initialValues: PreferenceFormValuesInterface | null = useMemo(
+        (): PreferenceFormValuesInterface | null => {
             if (isCreateMode) {
                 return {
                     attributes: [],
@@ -167,29 +156,8 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
             };
         }, [ isCreateMode, consent, claims ]);
 
-    const sortedConsentVersions: PurposeVersionSummaryDTOInterface[] = useMemo(
-        (): PurposeVersionSummaryDTOInterface[] => {
-            if (!consentVersions) {
-                return [];
-            }
-
-            return [ ...consentVersions ].sort(
-                (a: PurposeVersionSummaryDTOInterface, b: PurposeVersionSummaryDTOInterface): number => {
-                    const aVersionNumber: number = Number.parseInt(a.version, 10);
-                    const bVersionNumber: number = Number.parseInt(b.version, 10);
-                    const areBothNumeric: boolean = !Number.isNaN(aVersionNumber) && !Number.isNaN(bVersionNumber);
-
-                    if (areBothNumeric) {
-                        return bVersionNumber - aVersionNumber;
-                    }
-
-                    return b.version.localeCompare(a.version);
-                }
-            );
-        }, [ consentVersions ]);
-
     /**
-     * Debounced field-level async validator for the marketing consent name.
+     * Debounced field-level async validator for the preference management name.
      */
     const validateName: (_: string) => Promise<string | undefined> | string | undefined =
         useCallback((value: string): Promise<string | undefined> | string | undefined => {
@@ -212,7 +180,7 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
 
                         resolve(
                             token === nameValidationTokenRef.current && !isAvailable
-                                ? t("consents:marketingConsents.form.name.error.duplicateName")
+                                ? t("consents:preferenceManagement.form.name.error.duplicateName")
                                 : undefined
                         );
                     } catch {
@@ -229,9 +197,9 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
     };
 
     /**
-     * Creates a new marketing consent purpose.
+     * Creates a new preference management purpose.
      */
-    const createNewMarketingConsent = (values: MarketingFormValuesInterface): void => {
+    const createNewPreferenceManagement = (values: PreferenceFormValuesInterface): void => {
         setIsSubmitting(true);
 
         const attributeElements: NewElementBindingInterface[] = (values.attributes ?? []).map(
@@ -242,19 +210,19 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
             })
         );
 
-        createMarketingPurpose(
+        createPreferencePurpose(
             values.name?.trim() ?? "",
             values.description,
             attributeElements.length > 0 ? attributeElements : undefined
         )
             .then((created: PurposeDTOInterface): void => {
                 dispatch(addAlert({
-                    description: t("consents:marketingConsents.notifications.create.success.description"),
+                    description: t("consents:preferenceManagement.notifications.create.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("consents:marketingConsents.notifications.create.success.message")
+                    message: t("consents:preferenceManagement.notifications.create.success.message")
                 }));
                 history.replace(
-                    AppConstants.getPaths().get("MARKETING_CONSENTS_EDIT").replace(":id", created.id)
+                    AppConstants.getPaths().get("PREFERENCE_MANAGEMENT_EDIT").replace(":id", created.id)
                 );
             })
             .catch((error: IdentityAppsApiException): void => {
@@ -264,26 +232,26 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
 
                 switch (status) {
                     case 409:
-                        description = t("consents:marketingConsents.notifications.create.error.conflict.description");
-                        message = t("consents:marketingConsents.notifications.create.error.conflict.message");
+                        description = t("consents:preferenceManagement.notifications.create.error.conflict.description");
+                        message = t("consents:preferenceManagement.notifications.create.error.conflict.message");
 
                         break;
                     case 404:
-                        description = t("consents:marketingConsents.notifications.create.error.notFound.description");
-                        message = t("consents:marketingConsents.notifications.create.error.notFound.message");
+                        description = t("consents:preferenceManagement.notifications.create.error.notFound.description");
+                        message = t("consents:preferenceManagement.notifications.create.error.notFound.message");
 
                         break;
                     default:
                         if (status >= 500) {
                             description = t(
-                                "consents:marketingConsents.notifications.create.error.serverError.description"
+                                "consents:preferenceManagement.notifications.create.error.serverError.description"
                             );
                             message = t(
-                                "consents:marketingConsents.notifications.create.error.serverError.message"
+                                "consents:preferenceManagement.notifications.create.error.serverError.message"
                             );
                         } else {
-                            description = t("consents:marketingConsents.notifications.create.error.description");
-                            message = t("consents:marketingConsents.notifications.create.error.message");
+                            description = t("consents:preferenceManagement.notifications.create.error.description");
+                            message = t("consents:preferenceManagement.notifications.create.error.message");
                         }
                 }
 
@@ -299,9 +267,9 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
     };
 
     /**
-     * Creates a new version of the marketing consent.
+     * Creates a new version of the preference management.
      */
-    const updateMarketingConsent = (values: MarketingFormValuesInterface): void => {
+    const updatePreferenceManagement = (values: PreferenceFormValuesInterface): void => {
         setIsSubmitting(true);
 
         const nextLabel: string = generateNextVersionLabel(consent.version ?? "1");
@@ -314,7 +282,7 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
             })
         );
 
-        createMarketingPurposeVersion(
+        createPreferencePurposeVersion(
             purposeId,
             nextLabel,
             values.description,
@@ -322,9 +290,9 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
         )
             .then((): void => {
                 dispatch(addAlert({
-                    description: t("consents:marketingConsents.notifications.update.success.description"),
+                    description: t("consents:preferenceManagement.notifications.update.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("consents:marketingConsents.notifications.update.success.message")
+                    message: t("consents:preferenceManagement.notifications.update.success.message")
                 }));
                 mutateConsent();
                 mutateVersions();
@@ -337,29 +305,29 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
                 switch (status) {
                     case 404:
                         description = t(
-                            "consents:marketingConsents.notifications.update.error.notFound.description"
+                            "consents:preferenceManagement.notifications.update.error.notFound.description"
                         );
-                        message = t("consents:marketingConsents.notifications.update.error.notFound.message");
+                        message = t("consents:preferenceManagement.notifications.update.error.notFound.message");
 
                         break;
                     case 409:
                         description = t(
-                            "consents:marketingConsents.notifications.update.error.conflict.description"
+                            "consents:preferenceManagement.notifications.update.error.conflict.description"
                         );
-                        message = t("consents:marketingConsents.notifications.update.error.conflict.message");
+                        message = t("consents:preferenceManagement.notifications.update.error.conflict.message");
 
                         break;
                     default:
                         if (status >= 500) {
                             description = t(
-                                "consents:marketingConsents.notifications.update.error.serverError.description"
+                                "consents:preferenceManagement.notifications.update.error.serverError.description"
                             );
                             message = t(
-                                "consents:marketingConsents.notifications.update.error.serverError.message"
+                                "consents:preferenceManagement.notifications.update.error.serverError.message"
                             );
                         } else {
-                            description = t("consents:marketingConsents.notifications.update.error.description");
-                            message = t("consents:marketingConsents.notifications.update.error.message");
+                            description = t("consents:preferenceManagement.notifications.update.error.description");
+                            message = t("consents:preferenceManagement.notifications.update.error.message");
                         }
                 }
 
@@ -410,19 +378,18 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
                     isLoading ? <ContentLoader /> : (
                         <FinalForm
                             key={ isCreateMode ? "create" : consent?.version }
-                            onSubmit={ (values: MarketingFormValuesInterface) => {
+                            onSubmit={ (values: PreferenceFormValuesInterface) => {
                                 if (isCreateMode) {
-                                    createNewMarketingConsent(values);
+                                    createNewPreferenceManagement(values);
                                 } else {
-                                    pendingValues.current = values;
-                                    setShowVersionWarningModal(true);
+                                    updatePreferenceManagement(values);
                                 }
                             } }
                             initialValues={ initialValues }
                             render={ ({
                                 handleSubmit: _handleSubmit,
                                 values: _values
-                            }: FormRenderProps & { values: MarketingFormValuesInterface }) => {
+                            }: FormRenderProps & { values: PreferenceFormValuesInterface }) => {
                                 const isUnchanged: boolean = !isCreateMode && (
                                     (_values?.description ?? "") === (initialValues?.description ?? "")
                                     && JSON.stringify(
@@ -452,29 +419,17 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
                                                     borderRightColor: { md: "divider" }
                                                 } }
                                             >
-                                                {
-                                                    !isCreateMode
-                                                    && !isConsentInfoLoading
-                                                    && !isVersionsLoading
-                                                    && consent?.version !== undefined
-                                                    && (
-                                                        <ConsentVersionDropdown
-                                                            currentVersion={ consent.version }
-                                                            versions={ sortedConsentVersions }
-                                                        />
-                                                    )
-                                                }
                                                 <Box sx={ { display: "flex", flexDirection: "column", gap: 2 } }>
                                                     { isCreateMode && (
                                                         <Box>
                                                             <FinalFormField
                                                                 name="name"
                                                                 label={
-                                                                    t("consents:marketingConsents.form.name.label")
+                                                                    t("consents:preferenceManagement.form.name.label")
                                                                 }
                                                                 placeholder={
                                                                     t(
-                                                                        "consents:marketingConsents" +
+                                                                        "consents:preferenceManagement" +
                                                                         ".form.name.placeholder"
                                                                     )
                                                                 }
@@ -489,7 +444,7 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
                                                         <InputLabel>
                                                             {
                                                                 t(
-                                                                    "consents:marketingConsents" +
+                                                                    "consents:preferenceManagement" +
                                                                     ".form.description.label"
                                                                 )
                                                             }
@@ -522,7 +477,7 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
                                                                                 );
                                                                             }
                                                                         }
-                                                                        variant="marketing"
+                                                                        variant="preference"
                                                                     />
                                                                 );
                                                             } }
@@ -606,7 +561,7 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
                                                         type="info"
                                                         content={ (
                                                             <Trans
-                                                                i18nKey="consents:marketingConsents.form.linkHint"
+                                                                i18nKey="consents:preferenceManagement.form.linkHint"
                                                             >
                                                                 <Link
                                                                     onClick={ handleRegFlowBuilderClick }
@@ -628,8 +583,8 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
                                                 flexDirection={ "column" }
                                                 sx={ { borderBottom: "1px solid", borderColor: "divider" } }
                                             >
-                                                <MarketingConsentPreview
-                                                    componentId="marketing-consent-preview"
+                                                <PreferenceManagementPreview
+                                                    componentId="preference-management-preview"
                                                     attributes={ (_values?.attributes ?? []).map(
                                                         (a: Claim): string => a.displayName
                                                     ) }
@@ -638,13 +593,6 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
                                                 />
                                             </Grid>
                                             <Grid xs={ 12 } padding={ 2 }>
-                                                {
-                                                    !isCreateMode && (
-                                                        <Hint>
-                                                            { t("consents:marketingConsents.form.versionHint") }
-                                                        </Hint>
-                                                    )
-                                                }
                                                 { (isCreateMode ? hasCreatePermission : hasUpdatePermission) && (
                                                     <PrimaryButton
                                                         type="submit"
@@ -653,7 +601,7 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
                                                     >
                                                         { isCreateMode
                                                             ? t("common:create")
-                                                            : t("consents:marketingConsents.form.createNewVersion")
+                                                            : t("common:update")
                                                         }
                                                     </PrimaryButton>
                                                 ) }
@@ -666,29 +614,6 @@ export const EditMarketingConsent: FunctionComponent<EditMarketingConsentProps> 
                     )
                 }
             </Card>
-            <ConfirmationModal
-                onClose={ () => setShowVersionWarningModal(false) }
-                type="warning"
-                open={ showVersionWarningModal }
-                primaryAction={ t("common:confirm") }
-                secondaryAction={ t("common:cancel") }
-                onSecondaryActionClick={ () => setShowVersionWarningModal(false) }
-                onPrimaryActionClick={ () => {
-                    setShowVersionWarningModal(false);
-                    if (pendingValues.current) {
-                        updateMarketingConsent(pendingValues.current);
-                    }
-                } }
-                closeOnDimmerClick={ false }
-                primaryActionLoading={ isSubmitting }
-            >
-                <ConfirmationModal.Header>
-                    { t("consents:marketingConsents.form.versionModal.createNewVersion") }
-                </ConfirmationModal.Header>
-                <ConfirmationModal.Content>
-                    { t("consents:marketingConsents.form.versionModal.description") }
-                </ConfirmationModal.Content>
-            </ConfirmationModal>
         </>
     );
 };

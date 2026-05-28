@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export { MarketingConsent } from "./marketing-consent";
+export { PreferenceManagement } from "./preference-management";

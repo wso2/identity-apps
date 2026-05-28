@@ -441,7 +441,7 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
-        marketingConsentManagement: {
+        preferenceManagement: {
             consentedOnLabel: "පිළිගත් දිනය",
             dangerZones: {
                 revoke: {
@@ -1903,7 +1903,7 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
-        marketingConsentManagement: {
+        preferenceManagement: {
             description: "ඔබ කැමැත්ත ලබා දී ඇති අලෙවිකරණ සන්නිවේදන සමාලෝචනය කරන්න.",
             heading: "අලෙවිකරණ කැමැත්ත",
             placeholders: {

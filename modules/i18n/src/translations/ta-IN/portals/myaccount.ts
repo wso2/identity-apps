@@ -442,7 +442,7 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
-        marketingConsentManagement: {
+        preferenceManagement: {
             consentedOnLabel: "ஏற்றுக்கொண்ட தேதி",
             dangerZones: {
                 revoke: {
@@ -1920,7 +1920,7 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
-        marketingConsentManagement: {
+        preferenceManagement: {
             description: "நீங்கள் சம்மதமளித்த சந்தைப்படுத்தல் தகவல்தொடர்புகளை மதிப்பாய்வு செய்யவும்.",
             heading: "சந்தைப்படுத்தல் சம்மதங்கள்",
             placeholders: {

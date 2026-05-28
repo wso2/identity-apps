@@ -40,9 +40,9 @@ import { useSelector } from "react-redux";
 import { SemanticICONS } from "semantic-ui-react";
 
 /**
- * Props interface for the Marketing Consents list component.
+ * Props interface for the Preference management list component.
  */
-interface MarketingConsentsListProps extends IdentifiableComponentInterface {
+interface PreferenceManagementListProps extends IdentifiableComponentInterface {
     /**
      * Advanced search component.
      */
@@ -78,13 +78,13 @@ interface MarketingConsentsListProps extends IdentifiableComponentInterface {
 }
 
 /**
- * Marketing Consents list component.
+ * Preference management list component.
  *
  * @param props - Props injected to the component.
- * @returns Marketing Consents list component.
+ * @returns Preference management list component.
  */
-export const MarketingConsentsList: FunctionComponent<MarketingConsentsListProps> = (
-    props: MarketingConsentsListProps
+export const PreferenceManagementList: FunctionComponent<PreferenceManagementListProps> = (
+    props: PreferenceManagementListProps
 ): ReactElement => {
     const {
         advancedSearch,
@@ -100,13 +100,13 @@ export const MarketingConsentsList: FunctionComponent<MarketingConsentsListProps
 
     const { t } = useTranslation();
 
-    const marketingConsentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+    const preferenceManagementFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
     );
-    const hasCreatePermission: boolean = useRequiredScopes(marketingConsentsFeatureConfig?.scopes?.create);
-    const hasReadPermission: boolean = useRequiredScopes(marketingConsentsFeatureConfig?.scopes?.read);
-    const hasUpdatePermission: boolean = useRequiredScopes(marketingConsentsFeatureConfig?.scopes?.update);
-    const hasDeletePermission: boolean = useRequiredScopes(marketingConsentsFeatureConfig?.scopes?.delete);
+    const hasCreatePermission: boolean = useRequiredScopes(preferenceManagementFeatureConfig?.scopes?.create);
+    const hasReadPermission: boolean = useRequiredScopes(preferenceManagementFeatureConfig?.scopes?.read);
+    const hasUpdatePermission: boolean = useRequiredScopes(preferenceManagementFeatureConfig?.scopes?.update);
+    const hasDeletePermission: boolean = useRequiredScopes(preferenceManagementFeatureConfig?.scopes?.delete);
 
     /**
      * Resolves data table actions.
@@ -210,14 +210,14 @@ export const MarketingConsentsList: FunctionComponent<MarketingConsentsListProps
                                 data-componentid={ `${componentId}-empty-search-placeholder-clear-button` }
                                 onClick={ onSearchQueryClear }
                             >
-                                { t("consents:marketingConsents.list.emptySearchPlaceholder.action") }
+                                { t("consents:preferenceManagement.list.emptySearchPlaceholder.action") }
                             </LinkButton>
                         ) }
                         image={ getEmptyPlaceholderIllustrations().emptySearch }
                         imageSize="tiny"
-                        title={ t("consents:marketingConsents.list.emptySearchPlaceholder.title") }
+                        title={ t("consents:preferenceManagement.list.emptySearchPlaceholder.title") }
                         subtitle={ [
-                            t("consents:marketingConsents.list.emptySearchPlaceholder.subtitle")
+                            t("consents:preferenceManagement.list.emptySearchPlaceholder.subtitle")
                         ] }
                         data-componentid={ `${componentId}-empty-search-placeholder` }
                     />
@@ -233,13 +233,13 @@ export const MarketingConsentsList: FunctionComponent<MarketingConsentsListProps
                             onClick={ onAddConsentClick }
                         >
                             <PlusIcon />
-                            { t("consents:marketingConsents.list.emptyPlaceholder.addConsent") }
+                            { t("consents:preferenceManagement.list.emptyPlaceholder.addConsent") }
                         </PrimaryButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     subtitle={ [
-                        t("consents:marketingConsents.list.emptyPlaceholder.subtitle")
+                        t("consents:preferenceManagement.list.emptyPlaceholder.subtitle")
                     ] }
                     data-componentid={ `${componentId}-empty-placeholder` }
                 />

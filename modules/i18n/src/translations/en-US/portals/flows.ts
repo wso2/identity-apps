@@ -59,7 +59,7 @@ export const flows: flowsNS = {
                 },
                 placeholder: "Enter rich text content here..."
             },
-            marketingConsent: {
+            preferenceManagement: {
                 emptyState: "No purposes configured"
             },
             policyConsent: {
@@ -286,8 +286,8 @@ export const flows: flowsNS = {
                     identifier: "Phone number field must be mapped to an attribute for data collection.",
                     label: "Phone number field must have a label to be displayed to users."
                 },
-                marketingConsent: {
-                    general: "Required fields are not properly configured for the marketing consent.",
+                preferenceManagement: {
+                    general: "Required fields are not properly configured for the communication preference.",
                     purposeAttributesRequired: "Purpose \"{{purposeName}}\" must have at least one attribute selected.",
                     purposesRequired: "At least one purpose must be added."
                 },

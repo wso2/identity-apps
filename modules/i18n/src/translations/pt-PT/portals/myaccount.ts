@@ -441,56 +441,56 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
-        marketingConsentManagement: {
+        preferenceManagement: {
             consentedOnLabel: "Aceite em",
             dangerZones: {
                 revoke: {
                     actionTitle: "Revogar",
-                    header: "Revogar consentimento de marketing",
-                    subheader: "Esta ação irá revogar o seu consentimento para esta comunicação de marketing."
+                    header: "Revogar preferência de comunicação",
+                    subheader: "Esta ação irá remover a sua preferência para esta comunicação."
                 }
             },
-            elementsHeading: "Gerir o seu consentimento de comunicações de marketing. Desmarque os atributos que precisa de revogar e prima o botão atualizar para guardar as alterações ou prima o botão revogar para remover o consentimento de todos os atributos.",
+            elementsHeading: "Gira as suas preferências de comunicação abaixo. Desmarque os atributos que pretende revogar e prima o botão atualizar para guardar as alterações ou prima o botão revogar para remover a preferência de todos os atributos.",
             notifications: {
                 fetch: {
                     error: {
-                        description: "Ocorreu um erro ao recuperar os seus consentimentos de marketing.",
+                        description: "Ocorreu um erro ao recuperar as suas preferências de comunicação.",
                         message: "Falha na recuperação"
                     },
                     genericError: {
-                        description: "Ocorreu um erro ao recuperar os seus consentimentos de marketing.",
+                        description: "Ocorreu um erro ao recuperar as suas preferências de comunicação.",
                         message: "Falha na recuperação"
                     },
                     success: {
-                        description: "Os seus consentimentos de marketing foram recuperados com sucesso.",
+                        description: "As suas preferências de comunicação foram recuperadas com sucesso.",
                         message: "Recuperação bem-sucedida"
                     }
                 },
                 revoke: {
                     error: {
-                        description: "Ocorreu um erro ao revogar o consentimento de marketing.",
+                        description: "Ocorreu um erro ao revogar a preferência de comunicação.",
                         message: "Falha na revogação"
                     },
                     genericError: {
-                        description: "Ocorreu um erro ao revogar o consentimento de marketing.",
+                        description: "Ocorreu um erro ao revogar a preferência de comunicação.",
                         message: "Falha na revogação"
                     },
                     success: {
-                        description: "O consentimento de marketing foi revogado com sucesso.",
+                        description: "A preferência de comunicação foi revogada com sucesso.",
                         message: "Consentimento revogado"
                     }
                 },
                 update: {
                     error: {
-                        description: "Ocorreu um erro ao atualizar o consentimento de marketing.",
+                        description: "Ocorreu um erro ao atualizar a preferência de comunicação.",
                         message: "Falha na atualização"
                     },
                     genericError: {
-                        description: "Ocorreu um erro ao atualizar o consentimento de marketing.",
+                        description: "Ocorreu um erro ao atualizar a preferência de comunicação.",
                         message: "Falha na atualização"
                     },
                     success: {
-                        description: "As suas preferências de consentimento de marketing foram atualizadas com sucesso.",
+                        description: "As suas preferências de comunicação foram atualizadas com sucesso.",
                         message: "Consentimento atualizado"
                     }
                 }
@@ -1904,12 +1904,12 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
-        marketingConsentManagement: {
-            description: "Reveja as comunicações de marketing para as quais deu o seu consentimento.",
-            heading: "Consentimentos de marketing",
+        preferenceManagement: {
+            description: "Reveja e gira as suas preferências de comunicação.",
+            heading: "Preferências de comunicação",
             placeholders: {
                 emptyConsentList: {
-                    heading: "Não aceitou nenhum consentimento de marketing"
+                    heading: "Não aceitou nenhuma preferência de comunicação"
                 }
             }
         },

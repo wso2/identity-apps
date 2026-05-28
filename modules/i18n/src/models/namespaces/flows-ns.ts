@@ -67,7 +67,7 @@ export interface flowsNS {
                 };
                 placeholder: string;
             };
-            marketingConsent: {
+            preferenceManagement: {
                 emptyState: string;
             };
             policyConsent: {
@@ -298,7 +298,7 @@ export interface flowsNS {
                     text: string;
                     variant: string;
                 };
-                marketingConsent: {
+                preferenceManagement: {
                     general: string;
                     purposeAttributesRequired: string;
                     purposesRequired: string;

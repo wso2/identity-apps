@@ -34,26 +34,26 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { EditMarketingConsent } from "../components/edit-marketing-consent";
+import { EditPreferenceManagement } from "../components/edit-preference-management";
 
 /**
- * Props interface for the Marketing Consent edit page component.
+ * Props interface for the Preference Management edit page component.
  */
-interface MarketingConsentEditPageProps
+interface PreferenceManagementEditPageProps
     extends IdentifiableComponentInterface, RouteComponentProps<{ id: string }> { }
 
 /**
- * Marketing Consent edit page.
+ * Preference Management edit page.
  *
  * @param props - Props injected to the component.
- * @returns Marketing Consent edit page component.
+ * @returns Preference Management edit page component.
  */
-const MarketingConsentEditPage: FunctionComponent<MarketingConsentEditPageProps> = (
-    props: MarketingConsentEditPageProps
+const PreferenceManagementEditPage: FunctionComponent<PreferenceManagementEditPageProps> = (
+    props: PreferenceManagementEditPageProps
 ): ReactElement => {
     const {
         match,
-        ["data-componentid"]: componentId = "marketing-consent-edit-page"
+        ["data-componentid"]: componentId = "preference-management-edit-page"
     } = props;
 
     const id: string = match?.params?.id;
@@ -63,10 +63,10 @@ const MarketingConsentEditPage: FunctionComponent<MarketingConsentEditPageProps>
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const marketingConsentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+    const preferenceManagementFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
     );
-    const hasDeletePermission: boolean = useRequiredScopes(marketingConsentsFeatureConfig?.scopes?.delete);
+    const hasDeletePermission: boolean = useRequiredScopes(preferenceManagementFeatureConfig?.scopes?.delete);
 
     const [ showDeleteConfirmation, setShowDeleteConfirmation ] = React.useState<boolean>(false);
     const [ isDeleting, setIsDeleting ] = React.useState<boolean>(false);
@@ -81,9 +81,9 @@ const MarketingConsentEditPage: FunctionComponent<MarketingConsentEditPageProps>
         deletePurpose(id)
             .then((): void => {
                 dispatch(addAlert({
-                    description: t("consents:marketingConsents.notifications.delete.success.description"),
+                    description: t("consents:preferenceManagement.notifications.delete.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("consents:marketingConsents.notifications.delete.success.message")
+                    message: t("consents:preferenceManagement.notifications.delete.success.message")
                 }));
                 handleBackButtonClick();
             })
@@ -95,31 +95,31 @@ const MarketingConsentEditPage: FunctionComponent<MarketingConsentEditPageProps>
                 switch (status) {
                     case 404:
                         description = t(
-                            "consents:marketingConsents.notifications.delete.error.notFound.description"
+                            "consents:preferenceManagement.notifications.delete.error.notFound.description"
                         );
-                        message = t("consents:marketingConsents.notifications.delete.error.notFound.message");
+                        message = t("consents:preferenceManagement.notifications.delete.error.notFound.message");
 
                         break;
                     case 409:
                         description = t(
-                            "consents:marketingConsents.notifications.delete.error.conflict.description"
+                            "consents:preferenceManagement.notifications.delete.error.conflict.description"
                         );
-                        message = t("consents:marketingConsents.notifications.delete.error.conflict.message");
+                        message = t("consents:preferenceManagement.notifications.delete.error.conflict.message");
 
                         break;
                     default:
                         if (status >= 500) {
                             description = t(
-                                "consents:marketingConsents.notifications.delete.error.serverError.description"
+                                "consents:preferenceManagement.notifications.delete.error.serverError.description"
                             );
                             message = t(
-                                "consents:marketingConsents.notifications.delete.error.serverError.message"
+                                "consents:preferenceManagement.notifications.delete.error.serverError.message"
                             );
                         } else {
                             description = t(
-                                "consents:marketingConsents.notifications.delete.error.description"
+                                "consents:preferenceManagement.notifications.delete.error.description"
                             );
-                            message = t("consents:marketingConsents.notifications.delete.error.message");
+                            message = t("consents:preferenceManagement.notifications.delete.error.message");
                         }
                 }
 
@@ -137,7 +137,7 @@ const MarketingConsentEditPage: FunctionComponent<MarketingConsentEditPageProps>
 
     return (
         <PageLayout
-            pageTitle={ t("consents:marketingConsents.pages.edit.title") }
+            pageTitle={ t("consents:preferenceManagement.pages.edit.title") }
             title={ consent?.displayName || "" }
             description={ undefined }
             image={ (
@@ -158,23 +158,23 @@ const MarketingConsentEditPage: FunctionComponent<MarketingConsentEditPageProps>
             backButton={ {
                 "data-componentid": `${componentId}-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("consents:marketingConsents.pages.edit.backButton")
+                text: t("consents:preferenceManagement.pages.edit.backButton")
             } }
         >
             { consent && (
                 <>
-                    <EditMarketingConsent purposeId={ consent.id } />
+                    <EditPreferenceManagement purposeId={ consent.id } />
                     { hasDeletePermission && (
                         <DangerZoneGroup
                             sectionHeader={ t("common:dangerZone") }
                         >
                             <DangerZone
                                 actionTitle={
-                                    t("consents:marketingConsents.pages.edit.dangerZone.actionTitle")
+                                    t("consents:preferenceManagement.pages.edit.dangerZone.actionTitle")
                                 }
-                                header={ t("consents:marketingConsents.pages.edit.dangerZone.header") }
+                                header={ t("consents:preferenceManagement.pages.edit.dangerZone.header") }
                                 subheader={
-                                    t("consents:marketingConsents.pages.edit.dangerZone.subheader")
+                                    t("consents:preferenceManagement.pages.edit.dangerZone.subheader")
                                 }
                                 onActionClick={ () => setShowDeleteConfirmation(true) }
                             />
@@ -185,14 +185,14 @@ const MarketingConsentEditPage: FunctionComponent<MarketingConsentEditPageProps>
                         type="negative"
                         open={ showDeleteConfirmation }
                         assertionHint={
-                            t("consents:marketingConsents.pages.deleteConfirmation.assertionHint")
+                            t("consents:preferenceManagement.pages.deleteConfirmation.assertionHint")
                         }
                         assertionType="checkbox"
                         primaryAction={
-                            t("consents:marketingConsents.pages.deleteConfirmation.primaryAction")
+                            t("consents:preferenceManagement.pages.deleteConfirmation.primaryAction")
                         }
                         secondaryAction={
-                            t("consents:marketingConsents.pages.deleteConfirmation.secondaryAction")
+                            t("consents:preferenceManagement.pages.deleteConfirmation.secondaryAction")
                         }
                         onSecondaryActionClick={ () => setShowDeleteConfirmation(false) }
                         onPrimaryActionClick={ () => handleDeleteConsent() }
@@ -203,19 +203,19 @@ const MarketingConsentEditPage: FunctionComponent<MarketingConsentEditPageProps>
                         <ConfirmationModal.Header
                             data-componentid={ `${componentId}-delete-confirmation-modal-header` }
                         >
-                            { t("consents:marketingConsents.pages.deleteConfirmation.header") }
+                            { t("consents:preferenceManagement.pages.deleteConfirmation.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             negative
                             data-componentid={ `${componentId}-delete-confirmation-modal-message` }
                         >
-                            { t("consents:marketingConsents.pages.deleteConfirmation.message") }
+                            { t("consents:preferenceManagement.pages.deleteConfirmation.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-componentid={ `${componentId}-delete-confirmation-modal-content` }
                         >
-                            { t("consents:marketingConsents.pages.deleteConfirmation.content") }
+                            { t("consents:preferenceManagement.pages.deleteConfirmation.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 </>
@@ -224,4 +224,4 @@ const MarketingConsentEditPage: FunctionComponent<MarketingConsentEditPageProps>
     );
 };
 
-export default MarketingConsentEditPage;
+export default PreferenceManagementEditPage;

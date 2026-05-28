@@ -437,7 +437,7 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
-        "marketingConsentManagement": {
+        "preferenceManagement": {
             "consentedOnLabel": "承諾日",
             "dangerZones": {
                 "revoke": {
@@ -1853,7 +1853,7 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
-        "marketingConsentManagement": {
+        "preferenceManagement": {
             "description": "同意したマーケティングコミュニケーションを確認します。",
             "heading": "マーケティング同意",
             "placeholders": {

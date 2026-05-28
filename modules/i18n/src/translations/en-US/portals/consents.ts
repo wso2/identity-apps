@@ -19,35 +19,29 @@
 import { ConsentsNS } from "../../../models";
 
 export const consents: ConsentsNS = {
-    marketingConsents: {
+    preferenceManagement: {
         form: {
-            createNewVersion: "Create New Version",
             description: {
                 label: "Description",
                 labelRoleHint: "Leave empty to use the default description."
             },
-            linkHint: "To include this consent in a registration flow, go to the <0>Registration Flow Builder</0>.",
+            linkHint: "To include this preference in a registration flow, go to the <0>Registration Flow Builder</0>.",
             name: {
                 error: {
-                    duplicateName: "A marketing consent with this name already exists. Please use a different name."
+                    duplicateName: "A preference with this name already exists. Please use a different name."
                 },
                 label: "Name",
                 placeholder: "Newsletter Subscription"
-            },
-            versionHint: "To create a new version, update the description above.",
-            versionModal: {
-                createNewVersion: "Save as New Version?",
-                description: "A new version of this marketing consent will be saved."
             }
         },
         list: {
             emptyPlaceholder: {
-                addConsent: "New Consent",
-                subtitle: "There are no marketing consents available at the moment"
+                addConsent: "New Preference",
+                subtitle: "There are no preferences available at the moment"
             },
             emptySearchPlaceholder: {
                 action: "Clear search",
-                subtitle: "No marketing consents found for the search query.",
+                subtitle: "No preferences found for the search query.",
                 title: "No results found"
             }
         },
@@ -55,45 +49,45 @@ export const consents: ConsentsNS = {
             create: {
                 error: {
                     conflict: {
-                        description: "A marketing consent with this name already exists. Please use a different name.",
+                        description: "A preference with this name already exists. Please use a different name.",
                         message: "Conflict"
                     },
-                    description: "Failed to create marketing consent. Please try again.",
+                    description: "Failed to create preference. Please try again.",
                     message: "Create Failed",
                     notFound: {
-                        description: "The requested marketing consent was not found.",
+                        description: "The requested preference was not found.",
                         message: "Not Found"
                     },
                     serverError: {
-                        description: "A server error occurred while creating the marketing consent. Please try again later.",
+                        description: "A server error occurred while creating the preference. Please try again later.",
                         message: "Server Error"
                     }
                 },
                 success: {
-                    description: "Marketing consent created successfully.",
-                    message: "Marketing Consent Created"
+                    description: "Preference created successfully.",
+                    message: "Preference Created"
                 }
             },
             delete: {
                 error: {
                     conflict: {
-                        description: "This marketing consent cannot be deleted because it is in use or is protected.",
+                        description: "This preference cannot be deleted because it is in use or is protected.",
                         message: "Cannot Delete"
                     },
-                    description: "Failed to delete marketing consent. Please try again.",
+                    description: "Failed to delete preference. Please try again.",
                     message: "Delete Failed",
                     notFound: {
-                        description: "The marketing consent you are trying to delete was not found.",
+                        description: "The preference you are trying to delete was not found.",
                         message: "Not Found"
                     },
                     serverError: {
-                        description: "A server error occurred while deleting the marketing consent. Please try again later.",
+                        description: "A server error occurred while deleting the preference. Please try again later.",
                         message: "Server Error"
                     }
                 },
                 success: {
-                    description: "Marketing consent deleted successfully.",
-                    message: "Marketing Consent Deleted"
+                    description: "Preference deleted successfully.",
+                    message: "Preference Deleted"
                 }
             },
             update: {
@@ -102,19 +96,19 @@ export const consents: ConsentsNS = {
                         description: "This version already exists or conflicts with another version.",
                         message: "Version Conflict"
                     },
-                    description: "Marketing consent update failed. Please try again.",
+                    description: "Preference update failed. Please try again.",
                     message: "Update Failed",
                     notFound: {
-                        description: "The marketing consent or version you are trying to update was not found.",
+                        description: "The preference or version you are trying to update was not found.",
                         message: "Not Found"
                     },
                     serverError: {
-                        description: "A server error occurred while updating the marketing consent. Please try again later.",
+                        description: "A server error occurred while updating the preference. Please try again later.",
                         message: "Server Error"
                     }
                 },
                 success: {
-                    description: "Marketing consent updated successfully.",
+                    description: "Preference updated successfully.",
                     message: "Update Successful"
                 }
             }
@@ -122,42 +116,42 @@ export const consents: ConsentsNS = {
         pages: {
             deleteConfirmation: {
                 assertionHint: "I understand this action is permanent and cannot be undone.",
-                content: "This consent can only be deleted if no users have accepted it.",
-                header: "Delete marketing consent?",
-                message: "This will permanently delete the marketing consent. This cannot be undone.",
+                content: "This preference can only be deleted if no users have accepted it.",
+                header: "Delete preference?",
+                message: "This will permanently delete the preference. This cannot be undone.",
                 primaryAction: "Confirm",
                 secondaryAction: "Cancel"
             },
             edit: {
-                backButton: "Back to Marketing Consents",
+                backButton: "Back to Preference Management",
                 dangerZone: {
-                    actionTitle: "Delete Marketing Consent",
-                    header: "Delete Marketing Consent",
-                    subheader: "Once you delete a marketing consent, there is no going back. Please be certain."
+                    actionTitle: "Delete Preference",
+                    header: "Delete Preference",
+                    subheader: "Once you delete a preference, there is no going back. Please be certain."
                 },
-                title: "Edit Marketing Consent"
+                title: "Edit Preference"
             },
             list: {
                 actions: {
-                    addConsent: "New Consent"
+                    addConsent: "New Preference"
                 },
-                description: "Manage marketing consents for your organization.",
-                heading: "Marketing Consents",
+                description: "Manage communication preferences for your organization.",
+                heading: "Preference Management",
                 search: {
                     placeholder: "Search by name"
                 },
-                title: "Marketing Consents"
+                title: "Preference Management"
             },
             new: {
-                backButton: "Back to Marketing Consents",
-                title: "Create Marketing Consent"
+                backButton: "Back to Preference Management",
+                title: "Create Preference"
             }
         },
         preview: {
-            consentHeader: "Please review and accept the following to continue.",
+            consentHeader: "Please review your preferences  to proceed.",
             emptyDescription: "Write a consent name to preview.",
             exampleDescription: "I agree to receive {{consentName}} communications.",
-            pageTitle: "Review Marketing Consent"
+            pageTitle: "Communication Preferences"
         }
     },
     policyConsents: {
@@ -263,7 +257,7 @@ export const consents: ConsentsNS = {
                     description: "Policy update failed. Please try again.",
                     message: "Update Failed",
                     notFound: {
-                        description: "The consent or version you are trying to update was not found.",
+                        description: "The policy or version you are trying to update was not found.",
                         message: "Not Found"
                     },
                     serverError: {
@@ -372,12 +366,12 @@ export const consents: ConsentsNS = {
         attributeDisplayName: "Display Name",
         attributeName: "Attribute Name",
         attributes: "User Attributes",
-        noMarketing: "No marketing consents available. Create them from Marketing Consents.",
+        noPreference: "No preferences available. Create them from Preference Management.",
         noPolicies: "No policies available. Create policies from Policy Consents.",
         purposeDescription: "Description",
         purposeLabel: "Purpose {{index}}",
         purposeName: "Purpose Name",
-        selectMarketing: "Select Marketing:",
+        selectPreference: "Select Preferences:",
         selectPolicies: "Select Policies:"
     },
     tabs: {

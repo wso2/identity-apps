@@ -29,7 +29,7 @@ import { Resource } from "../models/resources";
  * Configuration for purpose validation.
  */
 interface ValidatePurposesConfigInterface {
-    /** Unique type identifier for the consent (e.g., "policy" or "marketing") */
+    /** Unique type identifier for the consent (e.g., "policy" or "preference") */
     type: string;
     /** Translation key prefix for validation messages */
     messageKeyPrefix: string;

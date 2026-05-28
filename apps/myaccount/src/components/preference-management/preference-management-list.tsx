@@ -23,31 +23,31 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Checkbox, Divider, Grid, Icon, List } from "semantic-ui-react";
 import {
-    MarketingConsentElementInterface,
-    MarketingConsentItemInterface
+    PreferenceManagementElementInterface,
+    PreferenceManagementItemInterface
 } from "../../models/consents";
 import { toSentenceCase } from "../../utils";
 import { EditSection } from "../shared";
 
 /**
- * Prop types for the marketing consent list component.
+ * Prop types for the preference management list component.
  */
-interface MarketingConsentListPropsInterface extends IdentifiableComponentInterface {
-    items: MarketingConsentItemInterface[];
+interface PreferenceManagementListPropsInterface extends IdentifiableComponentInterface {
+    items: PreferenceManagementItemInterface[];
     activeIndexes: number[];
     deselectedElements: Map<string, Set<string>>;
     onToggleDetail: (index: number) => void;
     onElementToggle: (consentId: string, elementId: string) => void;
     onUpdate: (consentId: string) => void;
-    onRevokeClick: (item: MarketingConsentItemInterface) => void;
+    onRevokeClick: (item: PreferenceManagementItemInterface) => void;
 }
 
 /**
- * Pure list component for marketing consents.
+ * Pure list component for preference management.
  * Data fetching and state are managed by the parent.
  */
-export const MarketingConsentList: FunctionComponent<MarketingConsentListPropsInterface> = (
-    props: MarketingConsentListPropsInterface
+export const PreferenceManagementList: FunctionComponent<PreferenceManagementListPropsInterface> = (
+    props: PreferenceManagementListPropsInterface
 ): ReactElement => {
 
     const {
@@ -70,24 +70,24 @@ export const MarketingConsentList: FunctionComponent<MarketingConsentListPropsIn
         return "";
     };
 
-    const isUpdatable: (item: MarketingConsentItemInterface) => boolean = (
-        item: MarketingConsentItemInterface
+    const isUpdatable: (item: PreferenceManagementItemInterface) => boolean = (
+        item: PreferenceManagementItemInterface
     ): boolean => {
         return (deselectedElements.get(item.consentId)?.size ?? 0) > 0;
     };
 
-    const visibleElements: (item: MarketingConsentItemInterface) => MarketingConsentElementInterface[] = (
-        item: MarketingConsentItemInterface
-    ): MarketingConsentElementInterface[] => {
+    const visibleElements: (item: PreferenceManagementItemInterface) => PreferenceManagementElementInterface[] = (
+        item: PreferenceManagementItemInterface
+    ): PreferenceManagementElementInterface[] => {
         return item.elements.filter(
-            (element: MarketingConsentElementInterface) => element.name !== "Marketing"
+            (element: PreferenceManagementElementInterface) => element.name !== "Preference"
         );
     };
 
     return (
         <List divided verticalAlign="middle" className="main-content-inner" data-componentid={ componentId }>
             {
-                items.length > 0 && items.map((item: MarketingConsentItemInterface, index: number) => (
+                items.length > 0 && items.map((item: PreferenceManagementItemInterface, index: number) => (
                     <List.Item className="inner-list-item" key={ item.consentId }>
                         <Grid padded>
                             <Grid.Row columns={ 2 }>
@@ -115,7 +115,7 @@ export const MarketingConsentList: FunctionComponent<MarketingConsentListPropsIn
                                                 { item.state === "ACTIVE"
                                                     ? `${t(
                                                         "myAccount:components" +
-                                                        ".marketingConsentManagement" +
+                                                        ".preferenceManagement" +
                                                         ".consentedOnLabel"
                                                     )} ${new Date(
                                                         item.timestamp
@@ -189,7 +189,7 @@ export const MarketingConsentList: FunctionComponent<MarketingConsentListPropsIn
                                                     <Grid.Column width={ 16 }>
                                                         <List.Description>
                                                             { t(
-                                                                "myAccount:components.marketingConsentManagement" +
+                                                                "myAccount:components.preferenceManagement" +
                                                                 ".elementsHeading"
                                                             ) }
                                                         </List.Description>
@@ -203,7 +203,7 @@ export const MarketingConsentList: FunctionComponent<MarketingConsentListPropsIn
                                                             relaxed="very"
                                                         >
                                                             { visibleElements(item).map(
-                                                                (element: MarketingConsentElementInterface) => (
+                                                                (element: PreferenceManagementElementInterface) => (
                                                                     <List.Item key={ element.id }>
                                                                         <List.Content>
                                                                             <List.Header>
@@ -259,17 +259,17 @@ export const MarketingConsentList: FunctionComponent<MarketingConsentListPropsIn
                                                     <DangerZone
                                                         actionTitle={ t(
                                                             "myAccount:components" +
-                                                            ".marketingConsentManagement" +
+                                                            ".preferenceManagement" +
                                                             ".dangerZones.revoke.actionTitle"
                                                         ) }
                                                         header={ t(
                                                             "myAccount:components" +
-                                                            ".marketingConsentManagement" +
+                                                            ".preferenceManagement" +
                                                             ".dangerZones.revoke.header"
                                                         ) }
                                                         subheader={ t(
                                                             "myAccount:components" +
-                                                            ".marketingConsentManagement" +
+                                                            ".preferenceManagement" +
                                                             ".dangerZones.revoke.subheader"
                                                         ) }
                                                         onActionClick={ () => onRevokeClick(item) }
@@ -292,6 +292,6 @@ export const MarketingConsentList: FunctionComponent<MarketingConsentListPropsIn
     );
 };
 
-MarketingConsentList.defaultProps = {
-    "data-componentid": "marketing-consent-list"
+PreferenceManagementList.defaultProps = {
+    "data-componentid": "preference-management-list"
 };

@@ -286,14 +286,14 @@ export interface PolicyConsentItemInterface {
     version: string | null;
 }
 
-export interface MarketingConsentElementInterface {
+export interface PreferenceManagementElementInterface {
     displayName: string;
     id: string;
     name: string;
 }
 
-export interface MarketingConsentItemInterface extends PolicyConsentItemInterface {
-    elements: MarketingConsentElementInterface[];
+export interface PreferenceManagementItemInterface extends PolicyConsentItemInterface {
+    elements: PreferenceManagementElementInterface[];
     language: string;
     purposeDescription?: string;
     serviceId: string;

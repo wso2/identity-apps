@@ -433,56 +433,56 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
-        "marketingConsentManagement": {
+        "preferenceManagement": {
             "consentedOnLabel": "Geaccepteerd op",
             "dangerZones": {
                 "revoke": {
                     "actionTitle": "Intrekken",
-                    "header": "Marketingtoestemming intrekken",
-                    "subheader": "Deze actie trekt uw toestemming voor deze marketingcommunicatie in."
+                    "header": "Communicatievoorkeur intrekken",
+                    "subheader": "Deze actie verwijdert uw voorkeur voor deze communicatie."
                 }
             },
-            "elementsHeading": "Beheer uw toestemming voor marketingcommunicatie. Schakel de attributen uit die u wilt intrekken en druk op de knop bijwerken om de wijzigingen op te slaan of druk op de knop intrekken om de toestemming voor alle attributen te verwijderen.",
+            "elementsHeading": "Beheer uw communicatievoorkeuren hieronder. Schakel de attributen uit die u wilt intrekken en druk op de knop bijwerken om de wijzigingen op te slaan of druk op de knop intrekken om de voorkeur voor alle attributen te verwijderen.",
             "notifications": {
                 "fetch": {
                     "error": {
-                        "description": "Er is een fout opgetreden bij het ophalen van uw marketingtoestemmingen.",
+                        "description": "Er is een fout opgetreden bij het ophalen van uw communicatievoorkeuren.",
                         "message": "Ophalen mislukt"
                     },
                     "genericError": {
-                        "description": "Er is een fout opgetreden bij het ophalen van uw marketingtoestemmingen.",
+                        "description": "Er is een fout opgetreden bij het ophalen van uw communicatievoorkeuren.",
                         "message": "Ophalen mislukt"
                     },
                     "success": {
-                        "description": "Uw marketingtoestemmingen zijn succesvol opgehaald.",
+                        "description": "Uw communicatievoorkeuren zijn succesvol opgehaald.",
                         "message": "Ophalen geslaagd"
                     }
                 },
                 "revoke": {
                     "error": {
-                        "description": "Er is een fout opgetreden bij het intrekken van de marketingtoestemming.",
+                        "description": "Er is een fout opgetreden bij het intrekken van de communicatievoorkeur.",
                         "message": "Intrekken mislukt"
                     },
                     "genericError": {
-                        "description": "Er is een fout opgetreden bij het intrekken van de marketingtoestemming.",
+                        "description": "Er is een fout opgetreden bij het intrekken van de communicatievoorkeur.",
                         "message": "Intrekken mislukt"
                     },
                     "success": {
-                        "description": "De marketingtoestemming is succesvol ingetrokken.",
+                        "description": "De communicatievoorkeur is succesvol ingetrokken.",
                         "message": "Toestemming ingetrokken"
                     }
                 },
                 "update": {
                     "error": {
-                        "description": "Er is een fout opgetreden bij het bijwerken van de marketingtoestemming.",
+                        "description": "Er is een fout opgetreden bij het bijwerken van de communicatievoorkeur.",
                         "message": "Bijwerken mislukt"
                     },
                     "genericError": {
-                        "description": "Er is een fout opgetreden bij het bijwerken van de marketingtoestemming.",
+                        "description": "Er is een fout opgetreden bij het bijwerken van de communicatievoorkeur.",
                         "message": "Bijwerken mislukt"
                     },
                     "success": {
-                        "description": "Uw voorkeuren voor marketingtoestemming zijn succesvol bijgewerkt.",
+                        "description": "Uw communicatievoorkeuren zijn succesvol bijgewerkt.",
                         "message": "Toestemming bijgewerkt"
                     }
                 }
@@ -1848,12 +1848,12 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
-        "marketingConsentManagement": {
-            "description": "Bekijk de marketingcommunicaties waarvoor u toestemming heeft gegeven.",
-            "heading": "Marketingtoestemmingen",
+        "preferenceManagement": {
+            "description": "Bekijk en beheer uw communicatievoorkeuren.",
+            "heading": "Communicatievoorkeuren",
             "placeholders": {
                 "emptyConsentList": {
-                    "heading": "U heeft geen marketingtoestemmingen geaccepteerd"
+                    "heading": "U heeft geen communicatievoorkeuren ingesteld"
                 }
             }
         },

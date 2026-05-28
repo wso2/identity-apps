@@ -11,4 +11,4 @@
 "@wso2is/i18n": patch
 ---
 
-Add marketing consent management UI
+Add preference management management UI

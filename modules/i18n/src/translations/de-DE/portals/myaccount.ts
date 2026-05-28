@@ -364,7 +364,7 @@ export const myAccount: MyAccountNS = {
                 "dangerZones": {
                     "revoke": {
                         "actionTitle": "Widerrufen",
-                        "header": "Einwilligung widerrufen",
+                        "header": "Präferenz widerrufen",
                         "subheader": "Sie müssen dieser Anwendung erneut zustimmen."
                     }
                 },
@@ -439,57 +439,57 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
-        "marketingConsentManagement": {
+        "preferenceManagement": {
             "consentedOnLabel": "Akzeptiert am",
             "dangerZones": {
                 "revoke": {
                     "actionTitle": "Widerrufen",
-                    "header": "Marketingeinwilligung widerrufen",
-                    "subheader": "Diese Aktion widerruft Ihre Einwilligung für diese Marketingkommunikation."
+                    "header": "Kommunikationspräferenz widerrufen",
+                    "subheader": "Diese Aktion entfernt Ihre Präferenz für diese Kommunikation."
                 }
             },
-            "elementsHeading": "Verwalten Sie Ihre Marketingkommunikations-Einwilligung. Deaktivieren Sie die Attribute, die Sie widerrufen möchten, und klicken Sie auf die Schaltfläche „Aktualisieren“, um die Änderungen zu speichern, oder klicken Sie auf die Schaltfläche „Widerrufen“, um die Einwilligung für alle Attribute zu entfernen.",
+            "elementsHeading": "Aktualisieren Sie Ihre Präferenzen unten. Deaktivieren Sie die Attribute, von denen Sie sich abmelden möchten, und klicken Sie auf „Aktualisieren“, um die Änderungen zu speichern, oder klicken Sie auf „Widerrufen“, um die Präferenz vollständig zu entfernen.",
             "notifications": {
                 "fetch": {
                     "error": {
-                        "description": "Beim Abrufen Ihrer Marketingeinwilligungen ist ein Fehler aufgetreten.",
+                        "description": "Beim Abrufen Ihrer Kommunikationspräferenzen ist ein Fehler aufgetreten.",
                         "message": "Abruf fehlgeschlagen"
                     },
                     "genericError": {
-                        "description": "Beim Abrufen Ihrer Marketingeinwilligungen ist ein Fehler aufgetreten.",
+                        "description": "Beim Abrufen Ihrer Kommunikationspräferenzen ist ein Fehler aufgetreten.",
                         "message": "Abruf fehlgeschlagen"
                     },
                     "success": {
-                        "description": "Ihre Marketingeinwilligungen wurden erfolgreich abgerufen.",
+                        "description": "Ihre Kommunikationspräferenzen wurden erfolgreich abgerufen.",
                         "message": "Abruf erfolgreich"
                     }
                 },
                 "revoke": {
                     "error": {
-                        "description": "Beim Widerrufen der Marketingeinwilligung ist ein Fehler aufgetreten.",
+                        "description": "Beim Widerrufen der Kommunikationspräferenz ist ein Fehler aufgetreten.",
                         "message": "Widerruf fehlgeschlagen"
                     },
                     "genericError": {
-                        "description": "Beim Widerrufen der Marketingeinwilligung ist ein Fehler aufgetreten.",
+                        "description": "Beim Widerrufen der Kommunikationspräferenz ist ein Fehler aufgetreten.",
                         "message": "Widerruf fehlgeschlagen"
                     },
                     "success": {
-                        "description": "Die Marketingeinwilligung wurde erfolgreich widerrufen.",
-                        "message": "Einwilligung widerrufen"
+                        "description": "Die Kommunikationspräferenz wurde erfolgreich widerrufen.",
+                        "message": "Präferenz widerrufen"
                     }
                 },
                 "update": {
                     "error": {
-                        "description": "Beim Aktualisieren der Marketingeinwilligung ist ein Fehler aufgetreten.",
+                        "description": "Beim Aktualisieren der Kommunikationspräferenz ist ein Fehler aufgetreten.",
                         "message": "Aktualisierung fehlgeschlagen"
                     },
                     "genericError": {
-                        "description": "Beim Aktualisieren der Marketingeinwilligung ist ein Fehler aufgetreten.",
+                        "description": "Beim Aktualisieren der Kommunikationspräferenz ist ein Fehler aufgetreten.",
                         "message": "Aktualisierung fehlgeschlagen"
                     },
                     "success": {
-                        "description": "Ihre Marketingeinwilligungseinstellungen wurden erfolgreich aktualisiert.",
-                        "message": "Einwilligung aktualisiert"
+                        "description": "Ihre Kommunikationspräferenzen wurden erfolgreich aktualisiert.",
+                        "message": "Präferenzen aktualisiert"
                     }
                 }
             },
@@ -1858,12 +1858,12 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
-        "marketingConsentManagement": {
-            "description": "Überprüfen Sie die Marketingkommunikationen, denen Sie zugestimmt haben.",
-            "heading": "Marketingeinwilligungen",
+        "preferenceManagement": {
+            "description": "Überprüfen Sie Ihre Kommunikationspräferenzen und verwalten Sie diese.",
+            "heading": "Kommunikationspräferenzen",
             "placeholders": {
                 "emptyConsentList": {
-                    "heading": "Sie haben keine Marketingeinwilligungen akzeptiert"
+                    "heading": "Sie haben keine Kommunikationspräferenzen festgelegt"
                 }
             }
         },

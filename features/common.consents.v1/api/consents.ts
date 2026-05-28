@@ -512,14 +512,14 @@ export const createPurposeVersion = async (
 };
 
 /**
- * Creates a new marketing consent purpose (no policy URL, mandatory, or promptOnLogin).
+ * Creates a new preference management purpose (no policy URL, mandatory, or promptOnLogin).
  *
- * @param name - Name of the marketing consent purpose.
+ * @param name - Name of the preference management purpose.
  * @param description - Optional description.
  * @param newElements - Optional inline elements (user attributes) to bind.
  * @returns A promise containing the created purpose DTO.
  */
-export const createMarketingPurpose = async (
+export const createPreferencePurpose = async (
     name: string,
     description?: string,
     newElements?: NewElementBindingInterface[]
@@ -537,7 +537,7 @@ export const createMarketingPurpose = async (
         description,
         elements: resolvedElements,
         name,
-        type: "Marketing",
+        type: "Preference",
         version: "1"
     };
 
@@ -555,7 +555,7 @@ export const createMarketingPurpose = async (
         .then((response: AxiosResponse<PurposeDTOInterface>) => {
             if (response.status !== 201) {
                 throw new IdentityAppsApiException(
-                    "Failed to create marketing purpose.",
+                    "Failed to create preference purpose.",
                     null,
                     response.status,
                     response.request,
@@ -579,7 +579,7 @@ export const createMarketingPurpose = async (
 };
 
 /**
- * Creates a new version for an existing marketing consent purpose.
+ * Creates a new version for an existing preference management purpose.
  *
  * @param purposeId - ID of the purpose.
  * @param versionLabel - Version label (e.g. "2").
@@ -587,7 +587,7 @@ export const createMarketingPurpose = async (
  * @param newElements - Optional inline elements (user attributes) to bind.
  * @returns A promise containing the created version DTO.
  */
-export const createMarketingPurposeVersion = async (
+export const createPreferencePurposeVersion = async (
     purposeId: string,
     versionLabel: string,
     description: string,
@@ -623,7 +623,7 @@ export const createMarketingPurposeVersion = async (
         .then((response: AxiosResponse<PurposeVersionDTOInterface>) => {
             if (response.status !== 201) {
                 throw new IdentityAppsApiException(
-                    "Failed to create marketing purpose version.",
+                    "Failed to create preference purpose version.",
                     null,
                     response.status,
                     response.request,

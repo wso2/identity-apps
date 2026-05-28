@@ -32,33 +32,33 @@ import {
 } from "../../models";
 import {
     ConsentedPurposeInterface,
-    MarketingConsentElementInterface,
-    MarketingConsentItemInterface,
+    PreferenceManagementElementInterface,
+    PreferenceManagementItemInterface,
     PolicyConsentDetailInterface,
     PolicyConsentListResponseInterface,
     PolicyConsentSummaryInterface
 } from "../../models/consents";
 import { AppState } from "../../store";
 import { ModalComponent, SettingsSection } from "../shared";
-import { MarketingConsentList } from "./marketing-consent-list";
+import { PreferenceManagementList } from "./preference-management-list";
 
 /**
- * Proptypes for the marketing consent component.
+ * Proptypes for the preference management component.
  */
-interface MarketingConsentComponentProps extends IdentifiableComponentInterface {
+interface PreferenceManagementComponentProps extends IdentifiableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
-export const MarketingConsent: FunctionComponent<MarketingConsentComponentProps> = (
-    props: MarketingConsentComponentProps
+export const PreferenceManagement: FunctionComponent<PreferenceManagementComponentProps> = (
+    props: PreferenceManagementComponentProps
 ): ReactElement => {
 
     const { onAlertFired, ["data-componentid"]: componentId } = props;
 
-    const [ consentItems, setConsentItems ] = useState<MarketingConsentItemInterface[]>([]);
+    const [ consentItems, setConsentItems ] = useState<PreferenceManagementItemInterface[]>([]);
     const [ activeIndexes, setActiveIndexes ] = useState<number[]>([]);
     const [ deselectedElements, setDeselectedElements ] = useState<Map<string, Set<string>>>(new Map());
-    const [ revokingItem, setRevokingItem ] = useState<MarketingConsentItemInterface | null>(null);
+    const [ revokingItem, setRevokingItem ] = useState<PreferenceManagementItemInterface | null>(null);
     const [ isRevokeModalVisible, setRevokeModalVisible ] = useState<boolean>(false);
     const [ isRevoking, setIsRevoking ] = useState<boolean>(false);
 
@@ -68,7 +68,7 @@ export const MarketingConsent: FunctionComponent<MarketingConsentComponentProps>
     );
     const { t } = useTranslation();
 
-    const loadMarketingConsents: () => Promise<void> = useCallback(async (): Promise<void> => {
+    const loadPreferenceManagement: () => Promise<void> = useCallback(async (): Promise<void> => {
         if (!userName || !consentsBaseUrl) {
             return;
         }
@@ -91,15 +91,15 @@ export const MarketingConsent: FunctionComponent<MarketingConsentComponentProps>
                 )
             );
 
-            const marketingDetails: PolicyConsentDetailInterface[] = details.filter(
+            const preferenceDetails: PolicyConsentDetailInterface[] = details.filter(
                 (detail: PolicyConsentDetailInterface) =>
                     detail.purposes?.some(
-                        (p: ConsentedPurposeInterface) => p.type === "Marketing"
+                        (p: ConsentedPurposeInterface) => p.type === "Preference"
                     )
             );
 
-            const items: MarketingConsentItemInterface[] = marketingDetails.map(
-                (detail: PolicyConsentDetailInterface): MarketingConsentItemInterface => {
+            const items: PreferenceManagementItemInterface[] = preferenceDetails.map(
+                (detail: PolicyConsentDetailInterface): PreferenceManagementItemInterface => {
                     const matchingSummary: PolicyConsentSummaryInterface = summaries.find(
                         (s: PolicyConsentSummaryInterface) => s.id === detail.id
                     ) ?? summaries[0];
@@ -128,24 +128,24 @@ export const MarketingConsent: FunctionComponent<MarketingConsentComponentProps>
             setConsentItems(items);
             // Reset deselected state on reload — all elements start as selected
             setDeselectedElements(new Map(items.map(
-                (item: MarketingConsentItemInterface) => [ item.consentId, new Set<string>() ]
+                (item: PreferenceManagementItemInterface) => [ item.consentId, new Set<string>() ]
             )));
         } catch {
             onAlertFired({
                 description: t(
-                    "myAccount:components.marketingConsentManagement.notifications.fetch.genericError.description"
+                    "myAccount:components.preferenceManagement.notifications.fetch.genericError.description"
                 ),
                 level: AlertLevels.ERROR,
                 message: t(
-                    "myAccount:components.marketingConsentManagement.notifications.fetch.genericError.message"
+                    "myAccount:components.preferenceManagement.notifications.fetch.genericError.message"
                 )
             });
         }
     }, [ userName, consentsBaseUrl, t, onAlertFired ]);
 
     useEffect(() => {
-        loadMarketingConsents();
-    }, [ loadMarketingConsents ]);
+        loadPreferenceManagement();
+    }, [ loadPreferenceManagement ]);
 
     const handleToggleDetail: (index: number) => void = (index: number): void => {
         setActiveIndexes((prev: number[]) =>
@@ -179,8 +179,8 @@ export const MarketingConsent: FunctionComponent<MarketingConsentComponentProps>
             return;
         }
 
-        const item: MarketingConsentItemInterface | undefined = consentItems.find(
-            (i: MarketingConsentItemInterface) => i.consentId === consentId
+        const item: PreferenceManagementItemInterface | undefined = consentItems.find(
+            (i: PreferenceManagementItemInterface) => i.consentId === consentId
         );
 
         if (!item) {
@@ -188,11 +188,11 @@ export const MarketingConsent: FunctionComponent<MarketingConsentComponentProps>
         }
 
         const deselected: Set<string> = deselectedElements.get(consentId) ?? new Set();
-        const visibleElements: MarketingConsentElementInterface[] = item.elements.filter(
-            (e: MarketingConsentElementInterface) => e.name !== "Marketing"
+        const visibleElements: PreferenceManagementElementInterface[] = item.elements.filter(
+            (e: PreferenceManagementElementInterface) => e.name !== "Preference"
         );
         const allDeselected: boolean = visibleElements.every(
-            (e: MarketingConsentElementInterface) => deselected.has(e.id)
+            (e: PreferenceManagementElementInterface) => deselected.has(e.id)
         );
 
         if (allDeselected) {
@@ -203,8 +203,8 @@ export const MarketingConsent: FunctionComponent<MarketingConsentComponentProps>
         }
 
         const remainingElements: Array<{ id: string }> = item.elements
-            .filter((e: MarketingConsentElementInterface) => !deselected.has(e.id))
-            .map((e: MarketingConsentElementInterface) => ({ id: e.id }));
+            .filter((e: PreferenceManagementElementInterface) => !deselected.has(e.id))
+            .map((e: PreferenceManagementElementInterface) => ({ id: e.id }));
 
         postConsent(consentsBaseUrl, {
             language: item.language,
@@ -217,30 +217,30 @@ export const MarketingConsent: FunctionComponent<MarketingConsentComponentProps>
             .then(async () => {
                 onAlertFired({
                     description: t(
-                        "myAccount:components.marketingConsentManagement.notifications.update.success.description"
+                        "myAccount:components.preferenceManagement.notifications.update.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "myAccount:components.marketingConsentManagement.notifications.update.success.message"
+                        "myAccount:components.preferenceManagement.notifications.update.success.message"
                     )
                 });
-                await loadMarketingConsents();
+                await loadPreferenceManagement();
             })
             .catch(() => {
                 onAlertFired({
                     description: t(
-                        "myAccount:components.marketingConsentManagement.notifications.update.genericError.description"
+                        "myAccount:components.preferenceManagement.notifications.update.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "myAccount:components.marketingConsentManagement.notifications.update.genericError.message"
+                        "myAccount:components.preferenceManagement.notifications.update.genericError.message"
                     )
                 });
             });
     };
 
-    const handleRevokeClick: (item: MarketingConsentItemInterface) => void = (
-        item: MarketingConsentItemInterface
+    const handleRevokeClick: (item: PreferenceManagementItemInterface) => void = (
+        item: PreferenceManagementItemInterface
     ): void => {
         setRevokingItem(item);
         setRevokeModalVisible(true);
@@ -261,26 +261,26 @@ export const MarketingConsent: FunctionComponent<MarketingConsentComponentProps>
             .then(async () => {
                 onAlertFired({
                     description: t(
-                        "myAccount:components.marketingConsentManagement.notifications.revoke.success.description"
+                        "myAccount:components.preferenceManagement.notifications.revoke.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "myAccount:components.marketingConsentManagement.notifications.revoke.success.message"
+                        "myAccount:components.preferenceManagement.notifications.revoke.success.message"
                     )
                 });
                 handleRevokeModalClose();
-                await loadMarketingConsents();
+                await loadPreferenceManagement();
                 setIsRevoking(false);
             })
             .catch(() => {
                 onAlertFired({
                     description: t(
-                        "myAccount:components.marketingConsentManagement.notifications" +
+                        "myAccount:components.preferenceManagement.notifications" +
                         ".revoke.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "myAccount:components.marketingConsentManagement.notifications.revoke.genericError.message"
+                        "myAccount:components.preferenceManagement.notifications.revoke.genericError.message"
                     )
                 });
                 setIsRevoking(false);
@@ -300,10 +300,10 @@ export const MarketingConsent: FunctionComponent<MarketingConsentComponentProps>
                 onClose={ handleRevokeModalClose }
                 type="warning"
                 header={ t(
-                    "myAccount:components.marketingConsentManagement.dangerZones.revoke.header"
+                    "myAccount:components.preferenceManagement.dangerZones.revoke.header"
                 ) }
                 content={ t(
-                    "myAccount:components.marketingConsentManagement.dangerZones.revoke.subheader"
+                    "myAccount:components.preferenceManagement.dangerZones.revoke.subheader"
                 ) }
             />
         );
@@ -313,18 +313,18 @@ export const MarketingConsent: FunctionComponent<MarketingConsentComponentProps>
         <>
             <SettingsSection
                 data-componentid={ `${componentId}-settings-section` }
-                description={ t("myAccount:sections.marketingConsentManagement.description") }
-                header={ t("myAccount:sections.marketingConsentManagement.heading") }
+                description={ t("myAccount:sections.preferenceManagement.description") }
+                header={ t("myAccount:sections.preferenceManagement.heading") }
                 placeholder={
                     !(consentItems && consentItems.length && consentItems.length > 0)
-                        ? t("myAccount:sections.marketingConsentManagement.placeholders.emptyConsentList.heading")
+                        ? t("myAccount:sections.preferenceManagement.placeholders.emptyConsentList.heading")
                         : null
                 }
                 showActionBar={
                     !(consentItems && consentItems.length && consentItems.length > 0)
                 }
             >
-                <MarketingConsentList
+                <PreferenceManagementList
                     data-componentid={ `${componentId}-list` }
                     items={ consentItems }
                     activeIndexes={ activeIndexes }
@@ -340,6 +340,6 @@ export const MarketingConsent: FunctionComponent<MarketingConsentComponentProps>
     );
 };
 
-MarketingConsent.defaultProps = {
-    "data-componentid": "marketing-consent"
+PreferenceManagement.defaultProps = {
+    "data-componentid": "preference-management"
 };
