@@ -27,12 +27,13 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node, useReactFlow } from "@xyflow/react";
+import cloneDeep from "lodash-es/cloneDeep";
+import set from "lodash-es/set";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import useAuthenticationFlowBuilderCore
     from "../../../hooks/use-authentication-flow-builder-core-context";
-import useValidationStatus from "../../../hooks/use-validation-status";
 import { FlowExtensionConnectionInterface } from "../../../models/metadata";
 import {
     CommonResourcePropertiesPropsInterface
@@ -64,9 +65,8 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
     ) ?? "";
     const productName: string = useSelector((state: AppState) => state.config.ui.productName);
 
-    const { metadata, isFlowMetadataLoading } = useAuthenticationFlowBuilderCore();
-    const { selectedNotification } = useValidationStatus();
-    const { getNodes } = useReactFlow();
+    const { metadata, isFlowMetadataLoading, setLastInteractedResource } = useAuthenticationFlowBuilderCore();
+    const { getNodes, updateNodeData } = useReactFlow();
 
     const connections: FlowExtensionConnectionInterface[] = useMemo(() => {
         const allConnections: FlowExtensionConnectionInterface[] =
@@ -99,22 +99,33 @@ const FlowExtensionProperties: FunctionComponent<FlowExtensionPropertiesPropsInt
     }, [ connections, resource?.data?.action?.executor?.meta?.actionId ]);
 
     const errorMessage: string = useMemo(() => {
-        const key: string = `${resource?.id}_data.action.executor.meta.actionId`;
+        const actionId: string | undefined = resource?.data?.action?.executor?.meta?.actionId;
 
-        if (selectedNotification?.hasResourceFieldNotification(key)) {
-            return selectedNotification?.getResourceFieldNotification(key);
+        if (!actionId) {
+            return t("flows:core.validation.fields.flowExtension.actionId");
         }
 
         return "";
-    }, [ resource, selectedNotification ]);
+    }, [ resource?.data?.action?.executor?.meta?.actionId, t ]);
 
     const handleConnectionChange = (_: React.SyntheticEvent,
         connection: FlowExtensionConnectionInterface | null) => {
-        if (connection) {
-            onChange("action.executor.meta.actionId", connection.actionId, resource);
-        } else {
-            onChange("action.executor.meta.actionId", "", resource);
-        }
+        const newActionId: string = connection ? connection.actionId : "";
+
+        updateNodeData(resource.id, (node: Node) => {
+            const data: Record<string, unknown> = (node?.data as Record<string, unknown>) || {};
+
+            set(data, "action.executor.meta.actionId", newActionId);
+
+            return { ...data };
+        });
+
+        const updatedResource: typeof resource = cloneDeep(resource);
+
+        set(updatedResource.data, "action.executor.meta.actionId", newActionId);
+        setLastInteractedResource(updatedResource);
+
+        onChange("action.executor.meta.actionId", newActionId, resource);
     };
 
     const renderConnectionIcon = (iconUrl?: string, size: number = 24): ReactElement => (
