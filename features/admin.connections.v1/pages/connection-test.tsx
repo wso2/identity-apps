@@ -142,6 +142,10 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
     const popupInterval: React.MutableRefObject<NodeJS.Timeout | null> = useRef<NodeJS.Timeout | null>(null);
     const fetchTimer: React.MutableRefObject<NodeJS.Timeout | null> = useRef<NodeJS.Timeout | null>(null);
 
+    const POLL_INTERVAL_MS: number = 2000;
+    const POLL_MAX_ATTEMPTS: number = 30;
+    const DEBUG_STATUS_INCOMPLETE: string = "SUCCESS_INCOMPLETE";
+
     /**
      * Clears cached test result for the current connection.
      */
@@ -203,12 +207,11 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
 
             setAutoRunTriggered(true);
             setDebugId(state.debugId);
+            setLoading(true);
 
-            // Fetch results after the authorization flow has had time to complete.
             fetchTimer.current = setTimeout(() => {
-                clearTimers();
-                fetchResult(state.debugId);
-            }, 30000);
+                pollForResult(state.debugId);
+            }, POLL_INTERVAL_MS);
         }
     }, [locationState, autoRunTriggered]);
 
@@ -248,6 +251,48 @@ const ConnectionTestPage: FunctionComponent<ConnectionTestPagePropsInterface> = 
 
             setError(t("authenticationProvider:notifications.getIDP.genericError.description"));
         } finally {
+            setLoading(false);
+        }
+    };
+
+    /**
+     * Polls the backend for test results, retrying while the session is still in progress.
+     * Used for the auto-run path where the popup was opened by a previous page and
+     * we have no direct reference to detect when it closes.
+     */
+    const pollForResult = async (sid: string, attempt: number = 0): Promise<void> => {
+        if (!sid) {
+            setError(t("authenticationProvider:notifications.getIDP.genericError.description"));
+            setLoading(false);
+
+            return;
+        }
+
+        try {
+            const response: AxiosResponse<ConnectionTestResultInterface> = await getConnectionTestResult<
+                ConnectionTestResultInterface
+            >(resourceEndpoints, sid);
+
+            if (response.data?.status === DEBUG_STATUS_INCOMPLETE && attempt < POLL_MAX_ATTEMPTS) {
+                fetchTimer.current = setTimeout(() => {
+                    pollForResult(sid, attempt + 1);
+                }, POLL_INTERVAL_MS);
+
+                return;
+            }
+
+            clearCachedResult();
+            setResult(response.data);
+            setIsStatusBannerVisible(true);
+            cacheResult(response.data);
+            setExpandedDiagnosticLogs([]);
+            setLoading(false);
+        } catch (fetchError) {
+            const errorMessage: string | undefined = resolveConnectionTestErrorMessage(fetchError);
+
+            setError(
+                errorMessage ?? t("authenticationProvider:notifications.getIDP.genericError.description")
+            );
             setLoading(false);
         }
     };
