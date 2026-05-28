@@ -37,6 +37,7 @@ import { PaginationProps } from "semantic-ui-react";
 import { useAPIResources } from "../api";
 import { APIResourcesList } from "../components";
 import { APIResourceCategories, APIResourceType, APIResourcesConstants } from "../constants";
+import useBlockedAPIResourceIds from "../hooks/use-blocked-api-resource-ids";
 import { APIResourceInterface } from "../models";
 
 /**
@@ -64,6 +65,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const blockedAPIResourceIds: Set<string> = useBlockedAPIResourceIds();
 
     const [ activePage, setActivePage ] = useState<number>(1);
     const [ isListUpdated, setListUpdated ] = useState<boolean>(false);
@@ -102,8 +104,8 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
         }
 
         if (apiResourcesListData) {
-            const apiResourceList: APIResourceInterface[] = apiResourcesListData.apiResources.map(
-                (apiResource: APIResourceInterface) => apiResource);
+            const apiResourceList: APIResourceInterface[] = apiResourcesListData.apiResources.filter(
+                (apiResource: APIResourceInterface) => !blockedAPIResourceIds.has(apiResource?.id));
 
             setNextAfter(undefined);
             setNextBefore(undefined);
@@ -128,7 +130,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
 
             setAPIResourcesList(apiResourceList);
         }
-    }, [ apiResourcesListData ]);
+    }, [ apiResourcesListData, blockedAPIResourceIds ]);
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching the API resources list
