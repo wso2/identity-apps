@@ -1,0 +1,408 @@
+/**
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import Box from "@oxygen-ui/react/Box";
+import Button from "@oxygen-ui/react/Button";
+import Checkbox from "@oxygen-ui/react/Checkbox";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
+import Divider from "@oxygen-ui/react/Divider";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
+import Paper from "@oxygen-ui/react/Paper";
+import TextField from "@oxygen-ui/react/TextField";
+import Typography from "@oxygen-ui/react/Typography";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { ContentLoader, PageLayout } from "@wso2is/react-components";
+import React, {
+    ChangeEvent,
+    FunctionComponent,
+    ReactElement,
+    useEffect,
+    useState
+} from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import { createMoesifPublisher } from "../api/create-moesif-publisher";
+import { deleteMoesifPublisher } from "../api/delete-moesif-publisher";
+import { getMoesifPublisher } from "../api/get-moesif-publisher";
+import { updateMoesifPublisher } from "../api/update-moesif-publisher";
+import {
+    MoesifEventPublisherKey,
+    MoesifPublisherInterface,
+    MoesifPublisherUpdateRequest
+} from "../models/moesif-analytics";
+
+const DEFAULT_PUBLISHER_ENABLEMENT: Record<string, boolean> = {
+    [MoesifEventPublisherKey.AUTHENTICATION]: false,
+    [MoesifEventPublisherKey.FLOW]: false,
+    [MoesifEventPublisherKey.ORG_SWITCH]: false,
+    [MoesifEventPublisherKey.REGISTRATION]: false,
+    [MoesifEventPublisherKey.SESSION]: false,
+    [MoesifEventPublisherKey.TOKEN]: false
+};
+
+const PUBLISHER_CONFIG: { key: MoesifEventPublisherKey; labelKey: string }[] = [
+    {
+        key: MoesifEventPublisherKey.AUTHENTICATION,
+        labelKey: "extensions:develop.moesifAnalytics.settingsPage.publishers.authentication"
+    },
+    {
+        key: MoesifEventPublisherKey.REGISTRATION,
+        labelKey: "extensions:develop.moesifAnalytics.settingsPage.publishers.registration"
+    },
+    {
+        key: MoesifEventPublisherKey.FLOW,
+        labelKey: "extensions:develop.moesifAnalytics.settingsPage.publishers.flow"
+    },
+    {
+        key: MoesifEventPublisherKey.ORG_SWITCH,
+        labelKey: "extensions:develop.moesifAnalytics.settingsPage.publishers.orgSwitch"
+    },
+    {
+        key: MoesifEventPublisherKey.TOKEN,
+        labelKey: "extensions:develop.moesifAnalytics.settingsPage.publishers.token"
+    },
+    {
+        key: MoesifEventPublisherKey.SESSION,
+        labelKey: "extensions:develop.moesifAnalytics.settingsPage.publishers.session"
+    }
+];
+
+/**
+ * Analytics settings page.
+ *
+ * Reachable as `/insights/settings`. Always renders the API key field, publisher
+ * enablement toggles, and (when a publisher already exists) a danger-zone delete action.
+ * When the host also exposes the Moesif dashboard, a back-button is shown so users can
+ * return to the dashboard view.
+ */
+const AnalyticsSettingsPage: FunctionComponent = (): ReactElement => {
+    const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
+
+    const hasDashboardMode: boolean = useSelector((state: AppState) => {
+        const extensions: Record<string, unknown> =
+            (state?.config?.deployment?.extensions as Record<string, unknown>) ?? {};
+        const analytics: Record<string, unknown> =
+            (extensions?.analytics as Record<string, unknown>) ?? {};
+        const moesif: Record<string, unknown> =
+            (analytics?.moesif as Record<string, unknown>) ?? {};
+
+        return !!(moesif?.dashboardEnabled) && !!(moesif?.embeddedPortalUrl);
+    });
+
+    const [ isLoading, setIsLoading ] = useState<boolean>(true);
+    const [ existingPublisher, setExistingPublisher ] = useState<MoesifPublisherInterface | null>(null);
+    const [ apiKey, setApiKey ] = useState<string>("");
+    const [ publisherEnablement, setPublisherEnablement ] =
+        useState<Record<string, boolean>>(DEFAULT_PUBLISHER_ENABLEMENT);
+    const [ isSaving, setIsSaving ] = useState<boolean>(false);
+    const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
+
+    useEffect(() => {
+        getMoesifPublisher()
+            .then((publisher: MoesifPublisherInterface | null) => {
+                if (publisher !== null) {
+                    setExistingPublisher(publisher);
+                    setPublisherEnablement({
+                        ...DEFAULT_PUBLISHER_ENABLEMENT,
+                        ...(publisher.eventPublisherEnablement ?? {})
+                    });
+                }
+            })
+            .catch(() => {
+                // Publisher not configured — leave defaults.
+            })
+            .finally(() => {
+                setIsLoading(false);
+            });
+    }, []);
+
+    const handleToggle = (key: string): void => {
+        setPublisherEnablement((prev: Record<string, boolean>) => ({
+            ...prev,
+            [key]: !prev[key]
+        }));
+    };
+
+    const handleSave = async (): Promise<void> => {
+        const trimmedApiKey: string = apiKey.trim();
+
+        if (!existingPublisher && !trimmedApiKey) {
+            return;
+        }
+
+        setIsSaving(true);
+
+        try {
+            let saved: MoesifPublisherInterface;
+
+            if (existingPublisher) {
+                const updateRequest: MoesifPublisherUpdateRequest = {
+                    eventPublisherEnablement: publisherEnablement
+                };
+
+                if (trimmedApiKey) {
+                    updateRequest.apiKeyValue = trimmedApiKey;
+                }
+
+                saved = await updateMoesifPublisher(updateRequest);
+            } else {
+                saved = await createMoesifPublisher({
+                    apiKeyValue: trimmedApiKey,
+                    eventPublisherEnablement: publisherEnablement
+                });
+            }
+
+            setExistingPublisher(saved);
+            setApiKey("");
+
+            dispatch(addAlert({
+                description: t(
+                    "extensions:develop.moesifAnalytics.collectorKeySettings" +
+                    ".notifications.updateSuccess.description"
+                ),
+                level: AlertLevels.SUCCESS,
+                message: t(
+                    "extensions:develop.moesifAnalytics.collectorKeySettings" +
+                    ".notifications.updateSuccess.message"
+                )
+            }));
+        } catch (_error: unknown) {
+            dispatch(addAlert({
+                description: t(
+                    "extensions:develop.moesifAnalytics.collectorKeySettings" +
+                    ".notifications.updateError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "extensions:develop.moesifAnalytics.collectorKeySettings" +
+                    ".notifications.updateError.message"
+                )
+            }));
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+    const handleDelete = async (): Promise<void> => {
+        if (!existingPublisher) {
+            return;
+        }
+
+        setIsDeleting(true);
+
+        try {
+            await deleteMoesifPublisher();
+
+            setExistingPublisher(null);
+            setApiKey("");
+            setPublisherEnablement(DEFAULT_PUBLISHER_ENABLEMENT);
+
+            dispatch(addAlert({
+                description: t(
+                    "extensions:develop.moesifAnalytics.publisherSettings" +
+                    ".notifications.deleteSuccess.description"
+                ),
+                level: AlertLevels.SUCCESS,
+                message: t(
+                    "extensions:develop.moesifAnalytics.publisherSettings" +
+                    ".notifications.deleteSuccess.message"
+                )
+            }));
+        } catch (_error: unknown) {
+            dispatch(addAlert({
+                description: t(
+                    "extensions:develop.moesifAnalytics.publisherSettings" +
+                    ".notifications.deleteError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "extensions:develop.moesifAnalytics.publisherSettings" +
+                    ".notifications.deleteError.message"
+                )
+            }));
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
+    const isBusy: boolean = isSaving || isDeleting;
+    const isSaveDisabled: boolean = isBusy || (!existingPublisher && !apiKey.trim());
+    const saveButtonLabel: string = existingPublisher
+        ? t("common:update")
+        : t("extensions:develop.moesifAnalytics.publisherSettings.enableButton");
+
+    return (
+        <PageLayout
+            data-componentid="analytics-settings-page"
+            pageTitle={ t("extensions:develop.moesifAnalytics.settingsPage.pageTitle") }
+            title={ t("extensions:develop.moesifAnalytics.settingsPage.title") }
+            description={ t("extensions:develop.moesifAnalytics.settingsPage.description") }
+            backButton={ hasDashboardMode
+                ? {
+                    onClick: () => history.push(AppConstants.getPaths().get("INSIGHTS")),
+                    text: t("insights:title")
+                }
+                : undefined
+            }
+        >
+            { isLoading ? (
+                <ContentLoader />
+            ) : (
+                <Paper
+                    data-componentid="analytics-settings-form-container"
+                    variant="outlined"
+                    sx={ { p: 4 } }
+                >
+                    <Typography variant="subtitle2" gutterBottom>
+                        { t("extensions:develop.moesifAnalytics.settingsPage.apiKeySection.heading") }
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={ { mb: 2 } }>
+                        { t(
+                            "extensions:develop.moesifAnalytics.settingsPage.apiKeySection.description"
+                        ) }
+                    </Typography>
+                    <TextField
+                        data-componentid="analytics-api-key-input"
+                        fullWidth
+                        required={ !existingPublisher }
+                        label={ t(
+                            "extensions:develop.moesifAnalytics.collectorKeySettings.keyField.label"
+                        ) }
+                        placeholder={
+                            existingPublisher
+                                ? t(
+                                    "extensions:develop.moesifAnalytics.settingsPage" +
+                                    ".apiKeySection.existingKeyHint"
+                                )
+                                : t(
+                                    "extensions:develop.moesifAnalytics.collectorKeySettings" +
+                                    ".keyField.placeholder"
+                                )
+                        }
+                        type="password"
+                        value={ apiKey }
+                        onChange={ (e: ChangeEvent<HTMLInputElement>) => setApiKey(e.target.value) }
+                        disabled={ isBusy }
+                        autoComplete="new-password"
+                    />
+
+                    <Divider sx={ { my: 3 } } />
+
+                    <Typography variant="subtitle2" gutterBottom>
+                        { t(
+                            "extensions:develop.moesifAnalytics.settingsPage.publishersSection.heading"
+                        ) }
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={ { mb: 1 } }>
+                        { t(
+                            "extensions:develop.moesifAnalytics.settingsPage.publishersSection.description"
+                        ) }
+                    </Typography>
+                    <Box sx={ { display: "flex", flexDirection: "column" } }>
+                        { PUBLISHER_CONFIG.map(({ key, labelKey }) => (
+                            <FormControlLabel
+                                key={ key }
+                                control={
+                                    <Checkbox
+                                        data-componentid={ `analytics-publisher-${ key }` }
+                                        checked={ !!publisherEnablement[key] }
+                                        onChange={ () => handleToggle(key) }
+                                        disabled={ isBusy }
+                                    />
+                                }
+                                label={ t(labelKey) }
+                            />
+                        )) }
+                    </Box>
+
+                    <Box sx={ { display: "flex", justifyContent: "flex-end", mt: 3 } }>
+                        <Button
+                            data-componentid="analytics-settings-save-btn"
+                            variant="contained"
+                            onClick={ handleSave }
+                            disabled={ isSaveDisabled }
+                            startIcon={ isSaving ? <CircularProgress size={ 16 } /> : null }
+                        >
+                            { saveButtonLabel }
+                        </Button>
+                    </Box>
+                </Paper>
+            ) }
+
+            { !isLoading && existingPublisher && (
+                <Paper
+                    data-componentid="analytics-settings-danger-zone"
+                    variant="outlined"
+                    sx={ {
+                        borderColor: "error.main",
+                        mt: 4,
+                        p: 4
+                    } }
+                >
+                    <Typography
+                        variant="subtitle1"
+                        color="error"
+                        gutterBottom
+                        fontWeight="medium"
+                    >
+                        { t(
+                            "extensions:develop.moesifAnalytics.publisherSettings.dangerZone.heading"
+                        ) }
+                    </Typography>
+                    <Box
+                        sx={ {
+                            alignItems: "center",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            gap: 2
+                        } }
+                    >
+                        <Typography variant="body2" color="text.secondary">
+                            { t(
+                                "extensions:develop.moesifAnalytics.publisherSettings" +
+                                ".dangerZone.description"
+                            ) }
+                        </Typography>
+                        <Button
+                            data-componentid="analytics-settings-delete-btn"
+                            onClick={ handleDelete }
+                            disabled={ isBusy }
+                            variant="outlined"
+                            color="error"
+                            startIcon={ isDeleting ? <CircularProgress size={ 14 } /> : null }
+                            sx={ { flexShrink: 0 } }
+                        >
+                            { t(
+                                "extensions:develop.moesifAnalytics.publisherSettings" +
+                                ".dangerZone.deleteButton"
+                            ) }
+                        </Button>
+                    </Box>
+                </Paper>
+            ) }
+        </PageLayout>
+    );
+};
+
+export default AnalyticsSettingsPage;

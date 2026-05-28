@@ -2345,6 +2345,88 @@ export interface Extensions {
             emailTemplates: string;
             organizationInfo: string;
         };
+        moesifAnalytics: {
+            loginPage: {
+                description: string;
+                heading: string;
+                sideNavLabel: string;
+                title: string;
+            };
+            registrationPage: {
+                description: string;
+                heading: string;
+                sideNavLabel: string;
+                title: string;
+            };
+            collectorKeySettings: {
+                cancelButton: string;
+                description: string;
+                keyField: {
+                    label: string;
+                    placeholder: string;
+                };
+                notifications: {
+                    updateError: {
+                        description: string;
+                        message: string;
+                    };
+                    updateSuccess: {
+                        description: string;
+                        message: string;
+                    };
+                };
+                saveButton: string;
+                settingsIconTooltip: string;
+                title: string;
+            };
+            settingsPage: {
+                title: string;
+                pageTitle: string;
+                description: string;
+                disableButton: string;
+                toggle: {
+                    label: string;
+                    description: string;
+                };
+                apiKeySection: {
+                    heading: string;
+                    description: string;
+                    existingKeyHint: string;
+                };
+                publishersSection: {
+                    heading: string;
+                    description: string;
+                };
+                publishers: {
+                    authentication: string;
+                    flow: string;
+                    orgSwitch: string;
+                    registration: string;
+                    session: string;
+                    token: string;
+                };
+            };
+            publisherSettings: {
+                createTitle: string;
+                updateTitle: string;
+                enableButton: string;
+                dangerZone: {
+                    heading: string;
+                    description: string;
+                    deleteButton: string;
+                };
+                notifications: {
+                    deleteSuccess: {
+                        description: string;
+                        message: string;
+                    };
+                    deleteError: {
+                        description: string;
+                        message: string;
+                    };
+                };
+            };
+        };
         eventPublishing: {
             eventsConfiguration: {
                 heading: string;

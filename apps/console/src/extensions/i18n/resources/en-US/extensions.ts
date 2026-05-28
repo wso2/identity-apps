@@ -2498,6 +2498,89 @@ export const extensions: Extensions = {
             emailTemplates: "Email Templates",
             organizationInfo: "Organization Info"
         },
+        moesifAnalytics: {
+            loginPage: {
+                description: "View login activity analytics powered by Moesif.",
+                heading: "Login Analytics",
+                sideNavLabel: "Login Analytics",
+                title: "Login Analytics"
+            },
+            registrationPage: {
+                description: "View registration activity analytics powered by Moesif.",
+                heading: "Registration Analytics",
+                sideNavLabel: "Registration Analytics",
+                title: "Registration Analytics"
+            },
+            collectorKeySettings: {
+                cancelButton: "Cancel",
+                description: "Configure the Moesif collector API key used to publish analytics events.",
+                keyField: {
+                    label: "Collector API Key",
+                    placeholder: "Enter the Moesif collector API key"
+                },
+                notifications: {
+                    updateError: {
+                        description: "An error occurred while updating the analytics configuration.",
+                        message: "Update failed"
+                    },
+                    updateSuccess: {
+                        description: "Analytics configuration updated successfully.",
+                        message: "Update successful"
+                    }
+                },
+                saveButton: "Save",
+                settingsIconTooltip: "Configure Analytics",
+                title: "Analytics Settings"
+            },
+            settingsPage: {
+                apiKeySection: {
+                    description: "Enter your Moesif collector API key to enable analytics event publishing.",
+                    existingKeyHint: "Leave blank to keep the existing key",
+                    heading: "Collector API Key"
+                },
+                description: "Configure analytics event publishing for this deployment.",
+                disableButton: "Disable",
+                pageTitle: "Analytics",
+                publishers: {
+                    authentication: "Authentication",
+                    flow: "Flow",
+                    orgSwitch: "Organization Switch",
+                    registration: "Registration",
+                    session: "Session",
+                    token: "Token"
+                },
+                publishersSection: {
+                    description: "Select which events should be published to Moesif.",
+                    heading: "Event Publishers"
+                },
+                title: "Analytics",
+                toggle: {
+                    description: "Enable analytics event publishing for this deployment.",
+                    label: "Analytics Dashboard"
+                }
+            },
+            publisherSettings: {
+                createTitle: "Configure Analytics",
+                dangerZone: {
+                    deleteButton: "Remove Configuration",
+                    description: "Removing the configuration will stop all analytics event publishing. " +
+                        "This action cannot be undone.",
+                    heading: "Danger Zone"
+                },
+                enableButton: "Enable",
+                notifications: {
+                    deleteError: {
+                        description: "Failed to remove the analytics configuration.",
+                        message: "Delete failed"
+                    },
+                    deleteSuccess: {
+                        description: "Analytics configuration has been removed successfully.",
+                        message: "Configuration removed"
+                    }
+                },
+                updateTitle: "Analytics Configuration"
+            }
+        },
         eventPublishing: {
             eventsConfiguration: {
                 heading: "Configure Events",

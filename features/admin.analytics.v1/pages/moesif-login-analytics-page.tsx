@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,14 +16,15 @@
  * under the License.
  */
 
+import React, { FunctionComponent, ReactElement } from "react";
+import { MoesifDashboardType } from "../models/moesif-analytics";
+import MoesifAnalyticsPage from "./moesif-analytics-page";
+
 /**
- * Interface for the Tenant Management feature resource endpoints.
+ * Entry point for the Moesif Login Analytics dashboard route.
  */
-export interface TenantResourceEndpointsInterface {
-    deploymentUnits: string;
-    tenantAssociationApi: string;
-    tenantManagementApi: string;
-    tenantMoesifDashboardInfo: string;
-    tenantSubscriptionApi: string;
-    tenants: string;
-}
+const MoesifLoginAnalyticsPage: FunctionComponent = (): ReactElement => (
+    <MoesifAnalyticsPage dashboardType={ MoesifDashboardType.LOGIN } />
+);
+
+export default MoesifLoginAnalyticsPage;

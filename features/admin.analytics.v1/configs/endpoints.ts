@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,14 +16,16 @@
  * under the License.
  */
 
+import { AnalyticsResourceEndpointsInterface } from "../models/endpoints";
+
 /**
- * Interface for the Tenant Management feature resource endpoints.
+ * Get the resource endpoints for the Analytics feature.
+ *
+ * @param serverHost - The IS server host (e.g. https://localhost:9443).
+ * @returns Analytics resource endpoints.
  */
-export interface TenantResourceEndpointsInterface {
-    deploymentUnits: string;
-    tenantAssociationApi: string;
-    tenantManagementApi: string;
-    tenantMoesifDashboardInfo: string;
-    tenantSubscriptionApi: string;
-    tenants: string;
-}
+export const getAnalyticsResourceEndpoints = (
+    serverHost: string
+): AnalyticsResourceEndpointsInterface => ({
+    moesifPublishers: `${ serverHost }/api/server/v1/moesif-publishers`
+});
