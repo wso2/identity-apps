@@ -1,5 +1,21 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.10.216
+
+### Patch Changes
+
+- [#10337](https://github.com/wso2/identity-apps/pull/10337) [`c8c969f9b91d34a4a08ff828f1da38aab7f1c918`](https://github.com/wso2/identity-apps/commit/c8c969f9b91d34a4a08ff828f1da38aab7f1c918) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue where the last dropped node ID is missing from the last accessed resource
+
+## 0.10.215
+
+### Patch Changes
+
+- [#10331](https://github.com/wso2/identity-apps/pull/10331) [`b0fbf72335c6dcb6790f62a6e7bcc3c8e2b7407a`](https://github.com/wso2/identity-apps/commit/b0fbf72335c6dcb6790f62a6e7bcc3c8e2b7407a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Introduce in flow extension configuration support to registration flow builder
+
+- Updated dependencies [[`b0fbf72335c6dcb6790f62a6e7bcc3c8e2b7407a`](https://github.com/wso2/identity-apps/commit/b0fbf72335c6dcb6790f62a6e7bcc3c8e2b7407a)]:
+  - @wso2is/admin.core.v1@2.57.14
+  - @wso2is/admin.registration-flow-builder.v1@0.10.173
+
 ## 0.10.214
 
 ### Patch Changes

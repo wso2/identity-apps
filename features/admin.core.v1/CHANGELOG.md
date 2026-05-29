@@ -1,5 +1,27 @@
 # @wso2is/admin.core.v1
 
+## 2.57.15
+
+### Patch Changes
+
+- [#10274](https://github.com/wso2/identity-apps/pull/10274) [`256daabddebaa032dc06c3a5e7822a84eec0bbd7`](https://github.com/wso2/identity-apps/commit/256daabddebaa032dc06c3a5e7822a84eec0bbd7) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Provide support to block API resources in application api authorization and role permission assignment
+
+- Updated dependencies [[`5a79196bc94dd161fb167420d63ff9f57831cd15`](https://github.com/wso2/identity-apps/commit/5a79196bc94dd161fb167420d63ff9f57831cd15), [`256daabddebaa032dc06c3a5e7822a84eec0bbd7`](https://github.com/wso2/identity-apps/commit/256daabddebaa032dc06c3a5e7822a84eec0bbd7)]:
+  - @wso2is/admin.api-resources.v2@2.26.11
+  - @wso2is/admin.applications.v1@2.42.31
+  - @wso2is/admin.roles.v2@2.27.383
+
+## 2.57.14
+
+### Patch Changes
+
+- [#10331](https://github.com/wso2/identity-apps/pull/10331) [`b0fbf72335c6dcb6790f62a6e7bcc3c8e2b7407a`](https://github.com/wso2/identity-apps/commit/b0fbf72335c6dcb6790f62a6e7bcc3c8e2b7407a) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Introduce in flow extension configuration support to registration flow builder
+
+- Updated dependencies [[`b0fbf72335c6dcb6790f62a6e7bcc3c8e2b7407a`](https://github.com/wso2/identity-apps/commit/b0fbf72335c6dcb6790f62a6e7bcc3c8e2b7407a)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.215
+  - @wso2is/admin.registration-flow-builder.v1@0.10.173
+  - @wso2is/i18n@2.42.2
+
 ## 2.57.13
 
 ### Patch Changes

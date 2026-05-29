@@ -159,7 +159,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 
         setNodes((nodes: Node[]) => [ ...nodes, generatedStep ]);
 
-        onResourceDropOnCanvas(generatedStep as Step, null);
+        onResourceDropOnCanvas(generatedStep as Step, generatedStep?.id ?? null);
     };
 
     const addToView = (event: any, sourceData: any, targetData: any): void => {

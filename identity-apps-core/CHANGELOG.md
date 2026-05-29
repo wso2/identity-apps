@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.1.1
+
+### Patch Changes
+
+- [#10333](https://github.com/wso2/identity-apps/pull/10333) [`c5cbc88e7319e2a210ac587f4e3c8c3216e173af`](https://github.com/wso2/identity-apps/commit/c5cbc88e7319e2a210ac587f4e3c8c3216e173af) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add runtime support for in-flow extensions
+
 ## 5.1.0
 
 ### Minor Changes

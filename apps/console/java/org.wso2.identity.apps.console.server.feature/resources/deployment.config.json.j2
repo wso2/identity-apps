@@ -204,6 +204,9 @@
                 {% endif %}
             }
         },
+        "apiResourceManagement": {
+            "blocked_api_resources": {{ blocked_api_resources | default([], true) | tojson }}
+        },
         "appCopyright": "{{ console.ui.app_copyright }}",
         "appTitle": "{{ console.ui.app_title }}",
         "appName": "{{ console.ui.app_name }}",
