@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.1.3
+
+### Patch Changes
+
+- [#10319](https://github.com/wso2/identity-apps/pull/10319) [`bae776def9f1c922b01fae3e7f0c23d187c510c7`](https://github.com/wso2/identity-apps/commit/bae776def9f1c922b01fae3e7f0c23d187c510c7) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Fix self-registration flow halting on the passkey screen when auto-login is enabled and a passkey (WEBAUTHN) step completes the flow
+
 ## 5.1.2
 
 ### Patch Changes
