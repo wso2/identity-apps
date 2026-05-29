@@ -90,6 +90,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             accountRecovery: "",
             actions: "",
             adminAdvisoryBanner: "",
+            agentCredentials: "",
+            agentSharing: "",
+            agents: "",
             apiRoot: "",
             applicationTemplate: "",
             applicationTemplateMetadata: "",
@@ -111,6 +114,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             certificates: "",
             claims: "",
             clientCertificates: "",
+            consentMgtElements: "",
+            consentMgtPurposes: "",
+            copilot: "",
             createSecret: "",
             createSecretType: "",
             customAuthenticators: "",
@@ -148,6 +154,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             multiFactorAuthenticators: "",
             myAccountConfigMgt: "",
             oidcScopes: "",
+            orgGovernanceEvaluate: "",
             organizations: "",
             passiveStsConfigurations: "",
             passwordExpiry: "",
@@ -174,6 +181,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             schemas: "",
             selfSignUp: "",
             serverConfigurations: "",
+            serverHost: "",
             serverSupportedSchemas: "",
             smsTemplates: "",
             tenantAssociationApi: "",
@@ -183,6 +191,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             updateSecret: "",
             updateSecretType: "",
             userSessions: "",
+            userSharingV2: "",
             userStores: "",
             users: "",
             usersOrganization: "",
@@ -219,6 +228,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 plannedRollOutDate: undefined
             },
             announcements: [],
+            apiResourceManagement: {
+                blockedAPIResources: []
+            },
             appCopyright: "",
             appLogo: {
                 defaultLogoPath: "",
@@ -238,8 +250,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             },
             enableCustomEmailTemplates: undefined,
             enableCustomSmsTemplates: undefined,
+            enableLegacyLocaleDropdown: undefined,
             enableLegacySessionBoundTokenBehaviour: false,
             enableOldUIForEmailProvider: undefined,
+            enabledFeatureOverridesInConsoleRolePermissions: [],
             features: {
                 applications: null,
                 approvals: null,
@@ -259,7 +273,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 users: null
             },
             flowExecution: {
-                enableLegacyFlows: true
+                enableLegacyFlows: true,
+                enableLegacyInvitedUserRegistrationFlow: true,
+                enableLegacyPasswordRecoveryFlow: true,
+                enableLegacySelfRegistrationFlow: true
             },
             googleOneTapEnabledTenants: [],
             gravatarConfig: {
@@ -269,7 +286,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             },
             hiddenAuthenticators: [],
             hiddenConnectionTemplates: [],
+            hiddenOutboundProvisioningConnectors: [],
             hiddenUserStores: [],
+            httpEmailProviderBodyMaxLength: undefined,
+            httpEmailProviderScopesMaxLength: undefined,
             i18nConfigs: null,
             identityProviderTemplates: {
                 apple: {
@@ -307,6 +327,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isLeftNavigationCategorized: undefined,
             isMarketingConsentBannerEnabled: undefined,
             isPasswordInputValidationEnabled: undefined,
+            isPasswordResetEnforcementScopeEnabled: undefined,
             isRequestPathAuthenticationEnabled: undefined,
             isSAASDeployment: undefined,
             isSignatureValidationCertificateAliasEnabled: undefined,
@@ -323,6 +344,14 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             privacyPolicyConfigs: null,
             productName: "",
             productVersionConfig: null,
+            rebrandingBanner: {
+                announcementUrl: "",
+                buttonText: "",
+                description: "",
+                enabled: false,
+                subDescription: "",
+                title: ""
+            },
             routes: {
                 organizationEnabledRoutes: undefined
             },

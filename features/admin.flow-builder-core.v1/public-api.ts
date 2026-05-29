@@ -20,6 +20,7 @@ export { default as useGetFlowBuilderCoreResources } from "./api/use-get-flow-bu
 
 export * from "./models/base";
 export * from "./models/elements";
+export * from "./models/purpose";
 export * from "./models/resources";
 export * from "./models/steps";
 export * from "./models/visual-flow";

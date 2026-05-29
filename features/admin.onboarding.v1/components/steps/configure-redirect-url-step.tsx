@@ -18,7 +18,6 @@
 
 import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
-import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
 import { PatternConstants } from "@wso2is/core/constants";
@@ -38,7 +37,7 @@ import {
     isKnownDefaultUrl
 } from "../../constants";
 import Hint from "../shared/hint";
-import { LeftColumn, TwoColumnLayout } from "../shared/onboarding-styles";
+import { LeftColumn, StyledTextField, TwoColumnLayout } from "../shared/onboarding-styles";
 import StepHeader from "../shared/step-header";
 
 /**
@@ -130,10 +129,10 @@ const isMobileTemplate: (templateId?: string) => boolean = (templateId?: string)
  */
 const getStepTitle: (templateId?: string) => string = (templateId?: string): string => {
     if (isMobileTemplate(templateId)) {
-        return "Where should users return after login?";
+        return "Where does your app receive users after sign-in?";
     }
 
-    return "Where should users return after login?";
+    return "Where does your app receive users after sign-in?";
 };
 
 /**
@@ -143,11 +142,12 @@ const getStepTitle: (templateId?: string) => string = (templateId?: string): str
  */
 const getStepSubtitle: (templateId?: string) => string = (templateId?: string): string => {
     if (isMobileTemplate(templateId)) {
-        return "Your app's Authorized Redirect URI — the custom scheme where users land after signing in.";
+        return "This is the URI where your app handles login and logout redirects. " +
+            "Asgardeo will only redirect users to authorized redirect URIs.";
     }
 
-    return "Your app's Authorized Redirect URL — where users land after signing in. " +
-        "Usually the URL you see in your browser when running locally.";
+    return "This is the URL where your app handles login and logout redirects. " +
+        "Asgardeo will only redirect users to authorized redirect URLs.";
 };
 
 /**
@@ -238,7 +238,7 @@ const ConfigureRedirectUrlStep: FunctionComponent<ConfigureRedirectUrlStepPropsI
 
                 <UrlInputContainer>
                     <Box>
-                        <TextField
+                        <StyledTextField
                             error={ !!validationError }
                             fullWidth
                             helperText={ validationError }
@@ -273,6 +273,16 @@ const ConfigureRedirectUrlStep: FunctionComponent<ConfigureRedirectUrlStepPropsI
                                 <li>Copy the URL from your browser&apos;s address bar</li>
                                 <li>Paste it here</li>
                             </Box>
+                            <Typography
+                                sx={ {
+                                    color: "text.secondary",
+                                    fontSize: "0.8125rem",
+                                    lineHeight: 1.6,
+                                    mt: 1
+                                } }
+                            >
+                                Examples: https://localhost:3000/auth, https://myapp.io/login
+                            </Typography>
                         </Hint>
                     ) }
                     { isMobile && (

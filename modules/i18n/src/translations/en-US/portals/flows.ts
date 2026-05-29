@@ -59,6 +59,12 @@ export const flows: flowsNS = {
                 },
                 placeholder: "Enter rich text content here..."
             },
+            preferenceManagement: {
+                emptyState: "No purposes configured"
+            },
+            policyConsent: {
+                emptyState: "No policies configured"
+            },
             textPropertyField: {
                 i18nCard: {
                     chip: {
@@ -104,6 +110,7 @@ export const flows: flowsNS = {
                 confirmationCode: "Confirmation Code",
                 default: "Execution",
                 facebook: "Facebook",
+                flowExtension: "Flow Extension",
                 github: "GitHub",
                 google: "Google",
                 magicLink: "Magic Link",
@@ -260,6 +267,10 @@ export const flows: flowsNS = {
                     general: "Required fields are not properly configured for the divider with ID <1>{{id}}</1>.",
                     variant: "Divider must have a variant defined for proper styling and orientation."
                 },
+                flowExtension: {
+                    actionId: "A flow extension connection is required and must be selected.",
+                    general: "Required fields are not properly configured for the flow extension with ID <1>{{id}}</1>."
+                },
                 image: {
                     general: "Required fields are not properly configured for the image with ID <1>{{id}}</1>.",
                     src: "Image must have a source URL to be displayed to users.",
@@ -279,6 +290,16 @@ export const flows: flowsNS = {
                     general: "Required fields are not properly configured for the phone number field with ID <1>{{id}}</1>.",
                     identifier: "Phone number field must be mapped to an attribute for data collection.",
                     label: "Phone number field must have a label to be displayed to users."
+                },
+                preferenceManagement: {
+                    general: "Required fields are not properly configured for the communication preference.",
+                    purposeAttributesRequired: "Purpose \"{{purposeName}}\" must have at least one attribute selected.",
+                    purposesRequired: "At least one purpose must be added."
+                },
+                policyConsent: {
+                    general: "Required fields are not properly configured for the policy consent.",
+                    noPoliciesAvailable: "No policies are available for selection.",
+                    policiesRequired: "At least one policy must be selected."
                 },
                 richText: {
                     general: "Required fields are not properly configured for the rich text with ID <1>{{id}}</1>.",

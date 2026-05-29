@@ -35,7 +35,7 @@ import "./text-property-field.scss";
 /**
  * Props interface of {@link TextPropertyField}
  */
-export interface TextPropertyFieldPropsInterface extends IdentifiableComponentInterface {
+interface TextPropertyFieldPropsInterface extends IdentifiableComponentInterface {
     /**
      * The resource associated with the property.
      */

@@ -27,7 +27,7 @@ import {
     State
 } from "../../models/application-inbound";
 
-export const OAuthProtocolTemplateItem: ApplicationTemplateListItemInterface = {
+const OAuthProtocolTemplateItem: ApplicationTemplateListItemInterface = {
     authenticationProtocol: "oidc",
     id: DefaultProtocolTemplate.OIDC,
     image: "oidc",

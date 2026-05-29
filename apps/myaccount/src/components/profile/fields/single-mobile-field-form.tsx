@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,21 +20,21 @@ import Button from "@oxygen-ui/react/Button";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { PatchOperationRequest } from "@wso2is/core/models";
 import { Popup, useMediaContext } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { Dispatch, FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Grid, Icon, List } from "semantic-ui-react";
 import EmptyValueField from "./empty-value-field";
 import TextFieldForm from "./text-field-form";
-import { AuthStateInterface } from "../../../models/auth";
-import { MultiValue, ProfilePatchOperationValue } from "../../../models/profile";
-import { SingleMobileFieldFormPropsInterface } from "../../../models/profile-ui";
-import { AppState } from "../../../store";
+import { ProfilePatchOperationValue } from "../../../models/profile";
+import { OTPVerificationChannel, SingleMobileFieldFormPropsInterface } from "../../../models/profile-ui";
 import { getProfileInformation } from "../../../store/actions/authenticate";
 import { setActiveForm } from "../../../store/actions/global";
 import { EditSection } from "../../shared/edit-section";
-import MobileUpdateWizardV2 from "../../shared/mobile-update-wizard-v2/mobile-update-wizard-v2";
+import EmailMobileUpdateModal from "../../shared/email-mobile-update-modal";
+import OTPVerificationModal from "../../shared/otp-verification-modal/otp-verification-modal";
 import "./field-form.scss";
 
 const SingleMobileFieldForm: FunctionComponent<SingleMobileFieldFormPropsInterface> = ({
@@ -57,9 +57,8 @@ const SingleMobileFieldForm: FunctionComponent<SingleMobileFieldFormPropsInterfa
     const { isMobileViewport } = useMediaContext();
     const dispatch: Dispatch<any> = useDispatch();
 
-    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
-
     const [ isMobileUpdateModalOpen, setIsMobileUpdateModalOpen ] = useState<boolean>(false);
+    const [ isOTPVerificationModalOpen, setIsOTPVerificationModalOpen ] = useState<boolean>(false);
 
     const renderFieldContent = (): ReactElement => {
         return (
@@ -71,27 +70,22 @@ const SingleMobileFieldForm: FunctionComponent<SingleMobileFieldFormPropsInterfa
         );
     };
 
-    const handleSingleMobileUpdate = (_: string, value: string): void => {
-        setIsProfileUpdating(true);
+    /**
+     * Start of Utility functions for Mobile verification with OTP flow.
+     */
 
+    const prepareMobileUpdateData = (value: string): PatchOperationRequest<ProfilePatchOperationValue> => {
         const data: PatchOperationRequest<ProfilePatchOperationValue> = {
             Operations: [],
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
-        const updatedMobileList: MultiValue[] = [];
-
-        for (const mobileNumber of profileDetails?.profileInfo?.phoneNumbers) {
-            if (mobileNumber.type !== "mobile") {
-                updatedMobileList.push(mobileNumber);
-            }
-        }
-        updatedMobileList.push({ type: "mobile", value });
-
         data.Operations.push({
-            op: "replace",
+            op: "add",
             value: {
-                [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: updatedMobileList
+                [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
+                    { type: "mobile", value: value ?? "" }
+                ]
             }
         });
 
@@ -104,11 +98,28 @@ const SingleMobileFieldForm: FunctionComponent<SingleMobileFieldFormPropsInterfa
             }
         });
 
-        triggerUpdate(data);
+        return data;
     };
 
-    const handleMobileUpdateModalClose = (isRevalidate: boolean = false) => {
+    const onMobileUpdateSuccess = (newValue: string, updatedData: Record<string, unknown>): void => {
+        const updatedPendingMobileNumber: string = (
+            updatedData?.[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA] as Record<string, unknown>)
+            ?.pendingMobileNumber as string;
+
         setIsMobileUpdateModalOpen(false);
+        if (updatedPendingMobileNumber && updatedPendingMobileNumber === newValue) {
+            // Navigate to the OTP verification step.
+            setIsOTPVerificationModalOpen(true);
+        }
+        if (isEmpty(newValue)) {
+            // Re-fetch the profile information.
+            dispatch(getProfileInformation(true));
+            dispatch(setActiveForm(null));
+        }
+    };
+
+    const handleOTPVerificationModalClose = (isRevalidate: boolean = false): void => {
+        setIsOTPVerificationModalOpen(false);
         setIsProfileUpdating(false);
 
         if (isRevalidate) {
@@ -116,6 +127,28 @@ const SingleMobileFieldForm: FunctionComponent<SingleMobileFieldFormPropsInterfa
             dispatch(getProfileInformation(true));
             dispatch(setActiveForm(null));
         }
+    };
+
+    const handleMobileInputValidation = (value: string): string | undefined => {
+        if (isRequired && !value) {
+            return t("myAccount:components.verificationOnUpdate.modal.sms.step1.validation.required");
+        }
+
+        if (value && !FormValidation.mobileNumber(value)) {
+            return t("myAccount:components.verificationOnUpdate.modal.sms.step1.validation.invalidFormat");
+        }
+    };
+
+    /**
+     * End of Utility functions for Mobile verification with OTP flow.
+     */
+
+    const handleSingleMobileUpdate = (_: string, value: string): void => {
+        setIsProfileUpdating(true);
+
+        const data: PatchOperationRequest<ProfilePatchOperationValue> = prepareMobileUpdateData(value);
+
+        triggerUpdate(data);
     };
 
     if (isActive) {
@@ -179,18 +212,28 @@ const SingleMobileFieldForm: FunctionComponent<SingleMobileFieldFormPropsInterfa
                         </Grid.Row>
                     </Grid>
 
-                    <MobileUpdateWizardV2
-                        initialValue={ initialValue }
+                    <EmailMobileUpdateModal
                         isOpen={ isMobileUpdateModalOpen }
-                        onClose={ handleMobileUpdateModalClose }
-                        onCancel={ () => {
+                        verificationChannel={ OTPVerificationChannel.SMS }
+                        onClose={ (shouldRevalidate?: boolean) => {
                             setIsMobileUpdateModalOpen(false);
-                            setIsProfileUpdating(false);
+                            if (shouldRevalidate) {
+                                setIsOTPVerificationModalOpen(true);
+                            }
                             onEditCancelClicked();
                         } }
+                        initialValue={ initialValue }
+                        isRequired={ isRequired }
+                        prepareUpdateData={ prepareMobileUpdateData }
+                        onUpdateSuccess={ onMobileUpdateSuccess }
+                        onValidate={ handleMobileInputValidation }
+                    />
+
+                    <OTPVerificationModal
+                        isOpen={ isOTPVerificationModalOpen }
+                        verificationChannel={ OTPVerificationChannel.SMS }
+                        onClose={ handleOTPVerificationModalClose }
                         isMultiValued={ false }
-                        isMobileRequired={ isRequired }
-                        data-testid={ `${testId}-mobile-verification-wizard` }
                     />
                 </EditSection>
             );

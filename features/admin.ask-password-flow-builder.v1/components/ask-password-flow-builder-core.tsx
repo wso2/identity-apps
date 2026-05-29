@@ -80,7 +80,7 @@ import useGenerateAskPasswordFlow, {
 /**
  * Props interface of {@link AskPasswordFlowBuilderCore}
  */
-export type AskPasswordFlowBuilderCorePropsInterface = IdentifiableComponentInterface;
+type AskPasswordFlowBuilderCorePropsInterface = IdentifiableComponentInterface;
 
 /**
  * Main component that wraps the `FlowBuilder` from the flow builder core.

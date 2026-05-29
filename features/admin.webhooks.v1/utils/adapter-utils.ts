@@ -21,7 +21,7 @@ import { AdapterMetadataInterface } from "../models/event-profile";
 /**
  * Enum for adapter types
  */
-export enum AdapterType {
+enum AdapterType {
     HTTP_PUBLISHER = "httppublisher",
     WEBSUB_HUB = "websubhub"
 }
@@ -29,7 +29,7 @@ export enum AdapterType {
 /**
  * Enum for adapter category types
  */
-export enum AdapterCategoryType {
+enum AdapterCategoryType {
     PUBLISHER = "Publisher",
     PUBLISHER_SUBSCRIBER = "PublisherSubscriber"
 }

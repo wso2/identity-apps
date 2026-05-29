@@ -97,7 +97,6 @@
     String COOKIE_NAME = "ui_lang";
     Locale browserLocale = request.getLocale();
     Locale userLocale = browserLocale;
-    String uiLocaleFromURL = request.getParameter("ui_locales");
     String localeFromCookie = null;
     String BUNDLE = "org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources";
 

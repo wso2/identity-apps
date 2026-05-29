@@ -81,7 +81,7 @@ import useGeneratePasswordRecoveryFlow, {
 /**
  * Props interface of {@link PasswordRecoveryFlowBuilderCore}
  */
-export type PasswordRecoveryFlowBuilderCorePropsInterface = IdentifiableComponentInterface;
+type PasswordRecoveryFlowBuilderCorePropsInterface = IdentifiableComponentInterface;
 
 /**
  * Main component that wraps the `FlowBuilder` from the flow builder core.

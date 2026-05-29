@@ -68,36 +68,7 @@ export enum HttpMethods {
  * @enum {string}
  */
 export enum AcceptHeaderValues {
-    /**
-     * Value for JSON type Accept header.
-     *
-     * @type {string}
-     */
-    APP_JSON = "application/json",
-    /**
-     * Value for XML type Accept header.
-     *
-     * @type {string}
-     */
-    APP_XML = "application/xml",
-    /**
-     * Value for javascript type Accept header.
-     *
-     * @type {string}
-     */
-    APP_JAVASCRIPT = "application/javascript",
-    /**
-     * Value for form type Accept header.
-     *
-     * @type {string}
-     */
-    APP_FORM = "application/x-www-form-urlencoded",
-    /**
-     * Value for SCIM type Accept header.
-     *
-     * @type {string}
-     */
-    APP_SCIM = "application/scim+json"
+    APP_JSON = "application/json"
 }
 
 /**
@@ -107,36 +78,7 @@ export enum AcceptHeaderValues {
  * @enum {string}
  */
 export enum ContentTypeHeaderValues {
-    /**
-     * Value for JSON type content type entity header.
-     *
-     * @type {string}
-     */
-    APP_JSON = "application/json",
-    /**
-     * Value for XML type content type entity header.
-     *
-     * @type {string}
-     */
-    APP_XML = "application/xml",
-    /**
-     * Value for javascript type content type entity header.
-     *
-     * @type {string}
-     */
-    APP_JAVASCRIPT = "application/javascript",
-    /**
-     * Value for form type content type entity header.
-     *
-     * @type {string}
-     */
-    APP_FORM = "application/x-www-form-urlencoded",
-    /**
-     * Value for SCIM type content type entity header.
-     *
-     * @type {string}
-     */
-    APP_SCIM = "application/scim+json"
+    APP_JSON = "application/json"
 }
 
 /**
@@ -147,4 +89,18 @@ export enum HttpCodes {
     CREATED = 201,
     OK = 200,
     NO_CONTENT = 204,
+}
+
+/**
+ * Schema of the error response body returned by Identity Server REST APIs.
+ * Used as the generic type parameter for AxiosError<HttpErrorResponseDataInterface>.
+ */
+export interface HttpErrorResponseDataInterface {
+    code?: string;
+    description?: string;
+    detail?: string;
+    message?: string;
+    scimType?: string;
+    status?: string;
+    traceId?: string;
 }

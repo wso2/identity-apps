@@ -25,6 +25,7 @@ import AppleExecution from "./apple-execution";
 import FacebookExecution from "./facebook-execution";
 import GithubExecution from "./github-execution";
 import GoogleExecution from "./google-execution";
+import FlowExtensionExecution from "./flow-extension-execution";
 import MicrosoftExecution from "./microsoft-execution";
 import { ExecutionTypes } from "../../../../../models/steps";
 import "./execution-factory.scss";
@@ -33,7 +34,7 @@ import { ExecutionMinimalPropsInterface } from "../execution-minimal";
 /**
  * Props interface of {@link CommonStepFactory}
  */
-export type ExecutionFactoryPropsInterface = ExecutionMinimalPropsInterface &
+type ExecutionFactoryPropsInterface = ExecutionMinimalPropsInterface &
     IdentifiableComponentInterface;
 
 /**
@@ -118,6 +119,12 @@ const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
                 <img src="https://www.svgrepo.com/show/468264/check-mark-square-2.svg" height="20"/>
                 <Typography variant="body1">{ t("flows:core.executions.names.confirmationCode") }</Typography>
             </Box>
+        );
+    }
+
+    if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.FlowExtension) {
+        return (
+            <FlowExtensionExecution resource={ resource } />
         );
     }
 

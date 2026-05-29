@@ -47,7 +47,7 @@ interface OutboundProvisioningConnectorFormFactoryInterface extends TestableComp
  * @param {OutboundProvisioningConnectorFormFactoryInterface} props - Props injected to the component.
  * @return {ReactElement}
  */
-export const OutboundProvisioningConnectorFormFactory: FunctionComponent<
+const OutboundProvisioningConnectorFormFactory: FunctionComponent<
     OutboundProvisioningConnectorFormFactoryInterface
 > = (
     props: OutboundProvisioningConnectorFormFactoryInterface

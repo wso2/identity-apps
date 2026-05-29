@@ -1,5 +1,43 @@
 # @wso2is/common.users.v1
 
+## 1.1.2
+
+### Patch Changes
+
+- [#10057](https://github.com/wso2/identity-apps/pull/10057) [`3f656293f585acc7d34a3288477e5ef4c43dcbf4`](https://github.com/wso2/identity-apps/commit/3f656293f585acc7d34a3288477e5ef4c43dcbf4) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix email verification issue
+
+## 1.1.1
+
+### Patch Changes
+
+- [#10046](https://github.com/wso2/identity-apps/pull/10046) [`ed27582ef2e9568fe568eb9a0db66924bb6d8a3a`](https://github.com/wso2/identity-apps/commit/ed27582ef2e9568fe568eb9a0db66924bb6d8a3a) Thanks [@github-actions](https://github.com/apps/github-actions)! - User management team UI fixes
+
+## 1.1.0
+
+### Minor Changes
+
+- [#9921](https://github.com/wso2/identity-apps/pull/9921) [`61cd356ee61eaf81e40f4a7118c1af7a66438361`](https://github.com/wso2/identity-apps/commit/61cd356ee61eaf81e40f4a7118c1af7a66438361) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Implement Email OTP verification on claim update
+
+### Patch Changes
+
+- Updated dependencies [[`61cd356ee61eaf81e40f4a7118c1af7a66438361`](https://github.com/wso2/identity-apps/commit/61cd356ee61eaf81e40f4a7118c1af7a66438361)]:
+  - @wso2is/form@2.10.2
+
+## 1.0.8
+
+### Patch Changes
+
+- [#9898](https://github.com/wso2/identity-apps/pull/9898) [`8ba669268e37c2c75809ba5cbbde403538540b0f`](https://github.com/wso2/identity-apps/commit/8ba669268e37c2c75809ba5cbbde403538540b0f) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Modify pendingEmails call to honour to complex attribute type
+
+## 1.0.7
+
+### Patch Changes
+
+- [#9875](https://github.com/wso2/identity-apps/pull/9875) [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - Revert Axios and SDK version bumps
+
+- Updated dependencies [[`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d)]:
+  - @wso2is/form@2.10.1
+
 ## 1.0.6
 
 ### Patch Changes

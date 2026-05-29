@@ -352,7 +352,7 @@ export const myAccount: MyAccountNS = {
             "modals": {
                 "confirmationModal": {
                     "heading": "确认",
-                    "message": "更改密码将导致当前会话的终止。您将必须使用新更改的密码登录。你想继续吗？"
+                    "message": "更新密码可能会使您从所有应用程序中退出登录。如果您已退出登录，请使用新密码重新登录。是否继续？"
                 }
             }
         },
@@ -437,6 +437,106 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        "preferenceManagement": {
+            "consentedOnLabel": "接受于",
+            "dangerZones": {
+                "revoke": {
+                    "actionTitle": "撤销",
+                    "header": "撤销营销同意",
+                    "subheader": "此操作将撤销您对此营销通信的同意。"
+                }
+            },
+            "elementsHeading": "管理您的营销通信同意。取消勾选需要撤销的属性，然后按更新按钮保存更改，或按撤销按钮删除所有属性的同意。",
+            "notifications": {
+                "fetch": {
+                    "error": {
+                        "description": "检索您的营销同意时发生错误。",
+                        "message": "检索失败"
+                    },
+                    "genericError": {
+                        "description": "检索您的营销同意时发生错误。",
+                        "message": "检索失败"
+                    },
+                    "success": {
+                        "description": "您的营销同意已成功检索。",
+                        "message": "检索成功"
+                    }
+                },
+                "revoke": {
+                    "error": {
+                        "description": "撤销营销同意时发生错误。",
+                        "message": "撤销失败"
+                    },
+                    "genericError": {
+                        "description": "撤销营销同意时发生错误。",
+                        "message": "撤销失败"
+                    },
+                    "success": {
+                        "description": "营销同意已成功撤销。",
+                        "message": "同意已撤销"
+                    }
+                },
+                "update": {
+                    "error": {
+                        "description": "更新营销同意时发生错误。",
+                        "message": "更新失败"
+                    },
+                    "genericError": {
+                        "description": "更新营销同意时发生错误。",
+                        "message": "更新失败"
+                    },
+                    "success": {
+                        "description": "您的营销同意偏好已成功更新。",
+                        "message": "同意已更新"
+                    }
+                }
+            },
+            "policyUrlLabel": "查看政策",
+            "versionLabel": "版本 {{version}}"
+        },
+        "policyConsentManagement": {
+            "consentedOnLabel": "活跃自",
+            "dangerZones": {
+                "revoke": {
+                    "actionTitle": "撤销",
+                    "header": "撤销政策同意",
+                    "subheader": "此操作将撤销您对此政策的同意。下次您访问该服务时，可能会要求您重新同意。"
+                }
+            },
+            "notifications": {
+                "fetch": {
+                    "error": {
+                        "description": "检索您的政策同意时出错。",
+                        "message": "检索失败"
+                    },
+                    "genericError": {
+                        "description": "检索您的政策同意时出错。",
+                        "message": "检索失败"
+                    },
+                    "success": {
+                        "description": "",
+                        "message": ""
+                    }
+                },
+                "revoke": {
+                    "error": {
+                        "description": "撤销政策同意时出错。",
+                        "message": "撤销失败"
+                    },
+                    "genericError": {
+                        "description": "撤销政策同意时出错。",
+                        "message": "撤销失败"
+                    },
+                    "success": {
+                        "description": "政策同意已成功撤销。",
+                        "message": "同意已撤销"
+                    }
+                }
+            },
+            "policyUrlLabel": "查看政策",
+            "versionLabel": "版本 {{version}}"
+        },
+        
         "cookieConsent": {
             "confirmButton": "知道了",
             "content": "我们使用cookie来确保您获得最佳的整体体验。这些cookie用于在提供流畅和个性化的服务的同时保持不间断的连续会话。要了解有关我们如何使用cookie的更多信息，请参阅我们的<1> cookie策略。"
@@ -1270,6 +1370,9 @@ export const myAccount: MyAccountNS = {
                     "content": "请确认电子邮件地址更新，以便将新电子邮件添加到您的个人资料中。",
                     "header": "确认待定！"
                 },
+                "emailVerification": {
+                    "content": "当启用双因素认证时，此电子邮件地址用于发送验证邮件；在用户名/密码恢复时，也用于发送恢复码。要更新此电子邮件地址，您需要输入发送到新邮箱的验证码以完成验证。如需继续，请点击更新。"
+                },
                 "mobileVerification": {
                     "content": "当启用第二个因子身份验证并在用户名/密码恢复时发送恢复代码时，该手机号码用于发送SMS OTP。要更新此数字，您必须通过输入发送到您的新号码的验证代码来验证新号码。如果您愿意，请单击更新。"
                 }
@@ -1507,6 +1610,67 @@ export const myAccount: MyAccountNS = {
             }
         },
         verificationOnUpdate: {
+            modal: {
+                common: {
+                    step2: {
+                        hint: "没有收到验证码？",
+                        resend: "重新发送",
+                        resendSuccess: "验证码重发请求已成功发送",
+                        validation: {
+                            otpRequired: "请输入验证码"
+                        },
+                        verificationFailure: "验证失败。请重试。"
+                    }
+                },
+                email: {
+                    step1: {
+                        content: {
+                            label: "请输入新的电子邮件地址"
+                        },
+                        heading: "验证您的电子邮件地址",
+                        validation: {
+                            invalidFormat: "请输入有效的电子邮件地址",
+                            required: "电子邮件地址为必填项"
+                        }
+                    },
+                    step2: {
+                        content: {
+                            label: "验证码已发送至您的电子邮件地址。请输入下方验证码以验证您的电子邮件地址。"
+                        },
+                        heading: "验证您的电子邮件地址"
+                    },
+                    step3: {
+                        content: "成功！您的电子邮件地址已成功验证。"
+                    }
+                },
+                notifications: {
+                    resendError: {
+                        description: "重发验证码时发生错误",
+                        message: "出现了问题"
+                    }
+                },
+                sms: {
+                    step1: {
+                        content: {
+                            label: "请输入新的手机号码"
+                        },
+                        heading: "验证您的手机号码",
+                        validation: {
+                            invalidFormat: "请输入有效的手机号码",
+                            required: "手机号码为必填项"
+                        }
+                    },
+                    step2: {
+                        content: {
+                            label: "验证码已发送至您的手机号码。请输入下方验证码以验证您的手机号码。"
+                        },
+                        heading: "验证您的手机号码"
+                    },
+                    step3: {
+                        content: "成功！您的手机号码已成功验证。"
+                    }
+                }
+            },
             preference: {
                 notifications: {
                     error: {
@@ -1585,6 +1749,10 @@ export const myAccount: MyAccountNS = {
         "applications": {
             "subTitle": "发现并访问您的应用程序",
             "title": "申请"
+        },
+        "consents": {
+            "subTitle": "管理您为应用程序和已接受的政策提供的同意",
+            "title": "同意"
         },
         "overview": {
             "subTitle": "管理您的个人信息，帐户安全和隐私设置",
@@ -1683,6 +1851,24 @@ export const myAccount: MyAccountNS = {
             "placeholders": {
                 "emptyConsentList": {
                     "heading": "您尚未同意任何申请"
+                }
+            }
+        },
+        "preferenceManagement": {
+            "description": "查看您已同意的营销通信。",
+            "heading": "营销同意",
+            "placeholders": {
+                "emptyConsentList": {
+                    "heading": "您尚未接受任何营销同意"
+                }
+            }
+        },
+        "policyConsentManagement": {
+            "description": "查看您已接受的政策。",
+            "heading": "政策同意",
+            "placeholders": {
+                "emptyConsentList": {
+                    "heading": "您尚未接受任何政策同意"
                 }
             }
         },

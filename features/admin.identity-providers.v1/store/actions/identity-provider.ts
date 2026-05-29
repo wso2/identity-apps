@@ -29,7 +29,7 @@ import { FederatedAuthenticatorListItemInterface, IdentityProviderTemplateItemIn
  * @param {FederatedAuthenticatorMetaInterface} meta - Inbound auth protocol meta.
  * @return {SetAvailableAuthenticatorsMetaInterface} An action of type `SET_AVAILABLE_AUTHENTICATOR_META`
  */
-export const setAvailableAuthenticatorsMeta = (
+const setAvailableAuthenticatorsMeta = (
     meta: FederatedAuthenticatorListItemInterface[]
 ): SetAvailableAuthenticatorsMetaInterface => ({
     payload: meta,
@@ -43,7 +43,7 @@ export const setAvailableAuthenticatorsMeta = (
  * @param {boolean} isGrouped - Specify whether templates are grouped or not. Default is false.
  * @return {SetApplicationTemplatesActionInterface}
  */
-export const setIdentityProviderTemplates = (
+const setIdentityProviderTemplates = (
     templates: IdentityProviderTemplateItemInterface[],
     isGrouped: boolean = false
 ): SetAvailableIDPTemplateInterface => ({

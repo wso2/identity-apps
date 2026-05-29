@@ -26,7 +26,9 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { PatchGroupDataInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods, ProfileInfoInterface } from "@wso2is/core/models";
+import { HttpMethods, ProfileInfoInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { UserManagementConstants } from "../constants";
 import { SCIMBulkEndpointInterface } from "../models/endpoints";
@@ -59,7 +61,6 @@ export const getUsersList = (
 ): Promise<UserListInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -78,7 +79,7 @@ export const getUsersList = (
         .then((response: AxiosResponse<UserListInterface>) => {
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -106,7 +107,6 @@ export const useUsersList = (
 ): RequestResultInterface<UserListInterface, RequestErrorInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -149,7 +149,6 @@ export const addUser = (data: UserDetailsInterface): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -160,7 +159,7 @@ export const addUser = (data: UserDetailsInterface): Promise<any> => {
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -185,7 +184,7 @@ export const addBulkUsers = (data: SCIMBulkEndpointInterface): Promise<any> => {
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -201,7 +200,6 @@ export const addBulkUsers = (data: SCIMBulkEndpointInterface): Promise<any> => {
 export const deleteUser = (userId: string): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/scim+json"
         },
         method: HttpMethods.DELETE,
@@ -212,7 +210,7 @@ export const deleteUser = (userId: string): Promise<any> => {
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -225,7 +223,7 @@ export const deleteUser = (userId: string): Promise<any> => {
  * @returns `Promise<any>` a promise containing the response.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const addUserRole = (data: PatchGroupDataInterface, groupId: string): Promise<any> => {
+const addUserRole = (data: PatchGroupDataInterface, groupId: string): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
@@ -239,7 +237,7 @@ export const addUserRole = (data: PatchGroupDataInterface, groupId: string): Pro
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -258,7 +256,6 @@ export const useUserDetails = <Data = ProfileInfoInterface, Error = RequestError
 
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -288,7 +285,6 @@ export const useUserDetails = <Data = ProfileInfoInterface, Error = RequestError
 export const getUserDetails = (id: string, attributes: string): Promise<ProfileInfoInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -302,7 +298,7 @@ export const getUserDetails = (id: string, attributes: string): Promise<ProfileI
         .then((response: AxiosResponse<ProfileInfoInterface>) => {
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -321,7 +317,6 @@ export const updateUserInfo = (userId: string, data: PatchRoleDataInterface): Pr
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
@@ -332,7 +327,7 @@ export const updateUserInfo = (userId: string, data: PatchRoleDataInterface): Pr
         .then((response: AxiosResponse<ProfileInfoInterface>) => {
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 UserManagementConstants.USER_INFO_UPDATE_ERROR,
                 error.stack,
@@ -354,7 +349,6 @@ export const getUserSessions = (userId: string): Promise<AxiosResponse<UserSessi
 
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -375,7 +369,7 @@ export const getUserSessions = (userId: string): Promise<AxiosResponse<UserSessi
 
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 UserManagementConstants.GET_USER_SESSIONS_REQUEST_ERROR,
                 error.stack,
@@ -398,7 +392,6 @@ export const terminateUserSession = (userId: string, sessionId: string): Promise
 
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
@@ -419,7 +412,7 @@ export const terminateUserSession = (userId: string, sessionId: string): Promise
 
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 UserManagementConstants.TERMINATE_USER_SESSION_REQUEST_ERROR,
                 error.stack,
@@ -441,7 +434,6 @@ export const terminateAllUserSessions = (userId: string): Promise<AxiosResponse>
 
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
@@ -462,7 +454,7 @@ export const terminateAllUserSessions = (userId: string): Promise<AxiosResponse>
 
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 UserManagementConstants.TERMINATE_ALL_USER_SESSIONS_ERROR,
                 error.stack,
@@ -507,9 +499,189 @@ export const resendCode = (data: ResendCodeRequestData): Promise<void> => {
 
             return Promise.resolve();
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 UserManagementConstants.RESEND_CODE_REQUEST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Share users with all organizations.
+ *
+ * @param data - The data to share users with all organizations.
+ * @returns A promise containing the response.
+ */
+export const shareUserWithAllOrganizations = (data: any): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data: {
+            policy: data.policy,
+            roleAssignment: data.roleAssignment,
+            userCriteria: {
+                userIds: [ data.userId ]
+            }
+        },
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${ store.getState().config.endpoints.userSharingV2 }/share-with-all`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            throw new IdentityAppsApiException(
+                UserManagementConstants.USER_SHARING_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Unshare users from all organizations.
+ *
+ * @param data - The data to unshare users from all organizations.
+ * @returns A promise containing the response.
+ */
+export const unShareUserWithAllOrganizations = (data: any): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data: {
+            userCriteria: {
+                userIds: [ data.userId ]
+            }
+        },
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${ store.getState().config.endpoints.userSharingV2 }/unshare-with-all`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            throw new IdentityAppsApiException(
+                UserManagementConstants.USER_UNSHARING_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Share users with selected organizations and roles.
+ *
+ * @param data - The data to share users with selected organizations.
+ * @returns A promise containing the response.
+ */
+export const shareUserWithSelectedOrganizationsAndRoles = (data: any): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data: {
+            organizations: data.organizations,
+            userCriteria: {
+                userIds: [ data.userId ]
+            }
+        },
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${ store.getState().config.endpoints.userSharingV2 }/share`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            throw new IdentityAppsApiException(
+                UserManagementConstants.USER_SHARING_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Unshare users from selected organizations.
+ *
+ * @param data - The data to unshare users from selected organizations.
+ * @returns A promise containing the response.
+ */
+export const unshareUserWithSelectedOrganizations = (data: any): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data: {
+            orgIds: data.orgIds,
+            userCriteria: {
+                userIds: [ data.userId ]
+            }
+        },
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${ store.getState().config.endpoints.userSharingV2 }/unshare`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            throw new IdentityAppsApiException(
+                UserManagementConstants.USER_UNSHARING_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Edit user roles of existing organizations (PATCH operation).
+ *
+ * @param data - The patch data for user role assignments.
+ * @returns A promise containing the response.
+ */
+export const editUserRolesOfExistingOrganizations = (data: any): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data: {
+            Operations: data.Operations,
+            userCriteria: {
+                userIds: [ data.userId ]
+            }
+        },
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: `${ store.getState().config.endpoints.userSharingV2 }/share`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            throw new IdentityAppsApiException(
+                UserManagementConstants.USER_SHARING_ERROR,
                 error.stack,
                 error.code,
                 error.request,

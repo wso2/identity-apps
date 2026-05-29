@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -38,7 +38,7 @@ import {
 } from "@oxygen-ui/react-icons";
 import { useThemeProvider } from "@wso2is/common.branding.v1/hooks/use-theme-provider";
 import { BrandingPreferenceURLInterface } from "@wso2is/common.branding.v1/models";
-import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
+import { isFeatureEnabled, resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     LinkedAccountInterface
@@ -80,6 +80,7 @@ import {
     handleAccountSwitching
 } from "../../store/actions";
 import { CommonUtils, refreshPage } from "../../utils";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 
 /**
  * Dashboard layout Prop types.
@@ -135,6 +136,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const config: ConfigReducerStateInterface = useSelector(
         (state: AppState) => state.config
     );
+    const personalInfoFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config?.ui?.features?.personalInfo);
     const showAppSwitchButtonConfig: boolean = useSelector(
         (state: AppState) => state.config.ui.showAppSwitchButton
     );
@@ -158,6 +161,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const { raw, theme } = useThemeProvider();
 
     const brandingPreferenceUrls: BrandingPreferenceURLInterface = raw?.preference?.urls;
+    const isLinkedAccountsFeatureEnabled: boolean = isFeatureEnabled(personalInfoFeatureConfig,
+        AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_LINKED_ACCOUNTS") as string);
 
     useEffect(() => {
         const localeCookie: string = CookieStorageUtils.getItem("ui_lang");
@@ -172,7 +177,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             dispatch((getProfileInformation() as unknown) as AnyAction);
         }
 
-        if (isEmpty(linkedAccounts)) {
+        if (isLinkedAccountsFeatureEnabled && isEmpty(linkedAccounts)) {
             dispatch((getProfileLinkedAccounts() as unknown) as AnyAction);
         }
     }, []);
@@ -582,7 +587,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 menuItems: [
                     commonConfig?.showOrganizationManagedBy && resolveOrganizationLabel(),
                     resolveConsoleAppSwitchMenuItem(),
-                    linkedAccounts.map((linkedAccount: LinkedAccountInterface) => (
+                    isLinkedAccountsFeatureEnabled && linkedAccounts.map((linkedAccount: LinkedAccountInterface) => (
                         <MenuItem
                             key={ linkedAccount.userId }
                             onClick={ () => handleLinkedAccountSwitch(linkedAccount) }>

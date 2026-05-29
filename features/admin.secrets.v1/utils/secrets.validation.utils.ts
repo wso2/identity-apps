@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FieldConstants } from "@wso2is/form";
+import { FieldConstants } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
 import { FormValidation } from "@wso2is/validation";
 
@@ -24,7 +24,7 @@ export const SECRET_NAME_LENGTH = { max: 64, min: 3 };
 export const SECRET_VALUE_LENGTH = { max: 1024 * 2, min: 1 };
 export const SECRET_DESCRIPTION_LENGTH = { max: 256, min: 0 };
 
-export type ValidationResult = string | undefined;
+type ValidationResult = string | undefined;
 
 export const secretNameValidator = (
     value: string,

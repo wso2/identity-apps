@@ -33,7 +33,9 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { RequestErrorInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -255,7 +257,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                     if (shouldUpdateSelectedRolesList) {
                         setSelectedRoles(rolesArray);
                     }
-                }).catch((error: AxiosError) => {
+                }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     if (error?.response?.data?.description) {
                         dispatch(addAlert({
                             description: error?.response?.data?.description ??
@@ -320,7 +322,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
 
                 onUpdate(appId);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,

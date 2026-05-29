@@ -52,3 +52,7 @@
     margin: 0.5em 0;
     font-size: 13px;
 }
+
+.rich-text-content li.consent-purpose-item::marker {
+    color: #FF7300;
+}

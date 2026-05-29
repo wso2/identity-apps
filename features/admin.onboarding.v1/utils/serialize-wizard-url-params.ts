@@ -25,9 +25,9 @@ import {
 import {
     OnboardingChoice,
     OnboardingDataInterface,
-    OnboardingStep,
-    SignInLoginMethodsConfigInterface
-} from "../models";
+    OnboardingStep
+} from "../models/onboarding";
+import { SignInLoginMethodsConfigInterface } from "../models/sign-in-options";
 
 /**
  * Serialize wizard state to URL search parameters.

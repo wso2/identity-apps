@@ -22,14 +22,14 @@ import {
     VALID_LOGIN_METHOD_IDS,
     WizardUrlParams
 } from "../constants";
+import { OnboardingBrandingConfigInterface } from "../models/branding";
 import {
-    OnboardingBrandingConfigInterface,
     OnboardingChoice,
     OnboardingDataInterface,
     OnboardingStep,
-    ParsedWizardUrlParamsInterface,
-    SignInLoginMethodsConfigInterface
-} from "../models";
+    ParsedWizardUrlParamsInterface
+} from "../models/onboarding";
+import { SignInLoginMethodsConfigInterface } from "../models/sign-in-options";
 
 /**
  * Parse wizard URL parameters from a search string.

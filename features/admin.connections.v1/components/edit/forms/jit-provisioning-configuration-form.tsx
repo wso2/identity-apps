@@ -24,11 +24,12 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
+import { AGENT_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { AlertLevels, Claim, TestableComponentInterface, UniquenessScope } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormValue, Forms, RadioChild } from "@wso2is/forms";
+import { Field, FormValue, Forms, RadioChild } from "@wso2is/forms/legacy";
 import {
     Code,
     DocumentationLink,
@@ -46,6 +47,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, DropdownItemProps, Grid, Header, Icon, Segment } from "semantic-ui-react";
+import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
 import {
     ConnectionInterface,
     JITProvisioningAccountLinkingAttributeMappingInterface,
@@ -67,6 +69,14 @@ interface JITProvisioningConfigurationFormPropsInterface extends TestableCompone
      * Specifies if the form is submitting.
      */
     isSubmitting?: boolean;
+    /**
+     * Home realm identifier value for direct login routing.
+     */
+    homeRealmIdentifier?: string;
+    /**
+     * Template ID of the connection.
+     */
+    templateId?: string;
 }
 
 enum JITProvisioningConstants {
@@ -75,6 +85,7 @@ enum JITProvisioningConstants {
     PROVISIONING_SCHEME_TYPE_KEY = "provisioningScheme",
     ASSOCIATE_LOCAL_USER = "associateLocalUser",
     ATTRIBUTE_SYNC_METHOD = "attributeSyncMethod",
+    IDP_GROUP_SYNC_METHOD = "idpGroupSyncMethod",
     SKIP_JIT_FOR_NO_RULE_MATCH = "skipJITForNoRuleMatch",
     FIRST_MATCH_RULE_FEDERATED_ATTRIBUTE = "firstMatchRuleFederatedAttribute",
     FIRST_MATCH_RULE_LOCAL_ATTRIBUTE = "firstMatchRuleLocalAttribute",
@@ -97,12 +108,19 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         onSubmit,
         isReadOnly,
         isSubmitting,
+        homeRealmIdentifier,
+        templateId,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
     const dispatch: Dispatch = useDispatch();
+
+    const showHomeRealmIdentifierField: boolean =
+        identityProviderConfig?.jitProvisioningSettings?.homeRealmIdentifierField?.show &&
+        !identityProviderConfig?.jitProvisioningSettings?.homeRealmIdentifierField?.excludedTemplateIds
+            ?.includes(templateId ?? "");
     const enableIdentityClaims: boolean = useSelector((state: AppState) => state?.config?.ui?.enableIdentityClaims);
     const {
         isLoading: isUserStoreListFetchRequestLoading,
@@ -151,7 +169,9 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                 const isReadOnly: boolean = isUserStoreReadOnly(store.name);
                 const isEnabled: boolean = store.enabled;
 
-                if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && !isReadOnly && isEnabled) {
+                if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName
+                    && store.name.toUpperCase() !== AGENT_USERSTORE
+                    && !isReadOnly && isEnabled) {
                     const storeOption: DropdownItemProps = {
                         key: index,
                         text: store.name,
@@ -300,6 +320,13 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
             attributeSyncMethod: values?.get(
                 JITProvisioningConstants.ATTRIBUTE_SYNC_METHOD
             ) ?? initialValues?.attributeSyncMethod,
+            homeRealmIdentifier: values.get("homeRealmIdentifier") ?? homeRealmIdentifier,
+            idpGroupSyncMethod: values.get(JITProvisioningConstants.IDP_GROUP_SYNC_METHOD) !== undefined
+                ? (values.get(JITProvisioningConstants.IDP_GROUP_SYNC_METHOD)
+                    ?.includes(JITProvisioningConstants.IDP_GROUP_SYNC_METHOD)
+                    ? ConnectionUIConstants.SUPPORTED_IDP_GROUP_SYNC_METHODS.OVERRIDE_ALL
+                    : ConnectionUIConstants.SUPPORTED_IDP_GROUP_SYNC_METHODS.MERGE_WITH_EXISTING)
+                : initialValues?.idpGroupSyncMethod,
             isEnabled: values.get(
                 JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY
             ).includes(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY) ?? initialValues?.isEnabled,
@@ -312,7 +339,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
             userstore: values.get(
                 JITProvisioningConstants.PROVISIONING_USER_STORE_DOMAIN_KEY
             ) ?? initialValues.userstore
-        } as JITProvisioningResponseInterface;
+        };
     };
 
     const supportedProvisioningSchemes: {
@@ -596,6 +623,41 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                             "forms.jitProvisioning.attributeSyncMethod.hint") }
                                     </Hint>
                                 </Fragment>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
+                {
+                    identityProviderConfig?.jitProvisioningSettings?.idpGroupSyncMethodField?.show &&
+                        isJITProvisioningEnabled && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                <Field
+                                    name={ JITProvisioningConstants.IDP_GROUP_SYNC_METHOD }
+                                    label={ t("authenticationProvider:" +
+                                        "forms.jitProvisioning.idpGroupSyncMethod.label") }
+                                    required={ false }
+                                    requiredErrorMessage=""
+                                    value={
+                                        initialValues?.idpGroupSyncMethod
+                                            === ConnectionUIConstants.SUPPORTED_IDP_GROUP_SYNC_METHODS.OVERRIDE_ALL
+                                            ? [ JITProvisioningConstants.IDP_GROUP_SYNC_METHOD ]
+                                            : []
+                                    }
+                                    type="checkbox"
+                                    children={ [ {
+                                        label: t("authenticationProvider:forms." +
+                                            "jitProvisioning.idpGroupSyncMethod.checkboxLabel"),
+                                        value: JITProvisioningConstants.IDP_GROUP_SYNC_METHOD
+                                    } ] }
+                                    disabled={ !isJITProvisioningEnabled }
+                                    data-componentid={ `${ testId }-idp-group-sync-method` }
+                                    readOnly={ isReadOnly }
+                                />
+                                <Hint>
+                                    { t("authenticationProvider:" +
+                                        "forms.jitProvisioning.idpGroupSyncMethod.hint") }
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
                     )
@@ -923,6 +985,45 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                         </>
                     )
                 }
+                { showHomeRealmIdentifierField && (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                            <Divider fitted />
+                        </Grid.Column>
+                    </Grid.Row>
+                ) }
+                { showHomeRealmIdentifierField && (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Field
+                                name="homeRealmIdentifier"
+                                label={ t("authenticationProvider:forms.jitProvisioning." +
+                                    "homeRealmIdentifier.label") }
+                                required={ false }
+                                placeholder={ t("authenticationProvider:forms.jitProvisioning." +
+                                    "homeRealmIdentifier.placeholder") }
+                                type="text"
+                                value={ homeRealmIdentifier }
+                                data-componentid={ `${ testId }-home-realm-identifier` }
+                                readOnly={ isReadOnly }
+                            />
+                            <Hint>
+                                <Trans
+                                    i18nKey={
+                                        "authenticationProvider:forms.jitProvisioning." +
+                                        "homeRealmIdentifier.hint"
+                                    }
+                                >
+                                    Specify an identifier for this connection. Applications can pass this
+                                    value as the <Code>fidp</Code> query parameter
+                                    (e.g., <Code>?fidp=external-idp-identifier</Code>)
+                                    in the authorization request URL to redirect users directly to this
+                                    connection, bypassing the multi-option login page.
+                                </Trans>
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                ) }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
                         <Show when={ featureConfig?.identityProviders?.scopes?.update }>

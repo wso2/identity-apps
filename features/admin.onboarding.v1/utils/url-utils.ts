@@ -24,7 +24,7 @@
  * @param value - String to hash
  * @returns Base-36 encoded hash string
  */
-export const hashForStorageKey = (value: string): string => {
+const hashForStorageKey = (value: string): string => {
     let hash: number = 5381;
 
     for (let i: number = 0; i < value.length; i++) {

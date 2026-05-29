@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,6 +18,9 @@
 
 // Pages
 export { default as OnboardingPage } from "./pages/onboarding-page";
+
+// Components
+export { default as OnboardingFab } from "./components/shared/onboarding-fab";
 
 // Hooks
 export { useOnboardingStatus } from "./hooks/use-onboarding-status";

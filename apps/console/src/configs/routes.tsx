@@ -34,6 +34,9 @@ import {
     UserGroupIcon,
     WebhookIcon
 } from "@oxygen-ui/react-icons";
+import {
+    ReactComponent as ProfileAttributesIcon
+} from "@wso2is/admin.cds.v1/assets/images/icons/cds-profile-attributes.svg";
 import { ReactComponent as ProfilesIcon } from "@wso2is/admin.cds.v1/assets/images/icons/cds-profiles.svg";
 import {
     ReactComponent as UnificationRuleIcon
@@ -323,8 +326,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 {
                     component: lazy(() =>
                         import(
-                            "@wso2is/admin.server-configurations.v1/" +
-                            "pages/connector-edit-page"
+                            "@wso2is/admin.server-configurations.v1/pages/connector-edit-page"
                         )
                     ),
                     exact: true,
@@ -345,8 +347,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 {
                     component: lazy(() =>
                         import(
-                            "@wso2is/admin.server-configurations.v1/" +
-                            "pages/connector-edit-page"
+                            "@wso2is/admin.server-configurations.v1/pages/connector-edit-page"
                         )
                     ),
                     exact: true,
@@ -569,6 +570,86 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
+            category: "extensions:manage.sidePanel.categories.userManagement",
+            children: [
+                {
+                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/policy-consent-new")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "consents-new",
+                    name: "Consent New",
+                    path: AppConstants.getPaths().get("POLICY_CONSENTS_NEW"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/policy-consent-edit")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "consents-edit",
+                    name: "Consent Edit",
+                    path: AppConstants.getPaths().get("POLICY_CONSENTS_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("@wso2is/admin.consents.v1/pages/policy-consents")),
+            exact: true,
+            icon: {
+                icon: getSidePanelIcons().consents
+            },
+            id: "consents",
+            name: "extensions:develop.sidePanel.consents",
+            order: 7,
+            path: AppConstants.getPaths().get("POLICY_CONSENTS"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
+            category: "extensions:manage.sidePanel.categories.userManagement",
+            children: [
+                {
+                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/preference-management-new")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "preference-management-new",
+                    name: "Preference Management New",
+                    path: AppConstants.getPaths().get("PREFERENCE_MANAGEMENT_NEW"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/preference-management-edit")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "preference-management-edit",
+                    name: "Preference Management Edit",
+                    path: AppConstants.getPaths().get("PREFERENCE_MANAGEMENT_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("@wso2is/admin.consents.v1/pages/preference-management")),
+            exact: true,
+            icon: {
+                icon: getSidePanelIcons().consents
+            },
+            id: "preferenceManagement",
+            name: "extensions:develop.sidePanel.preferenceManagement",
+            order: 8,
+            path: AppConstants.getPaths().get("PREFERENCE_MANAGEMENT"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
             category: "console:develop.features.sidePanel.categories.application",
             children: [
                 {
@@ -706,8 +787,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 },
                 {
-                    component: lazy(() => import("@wso2is/admin.claims.v1/pages/" +
-                        "attribute-verification-settings")),
+                    component: lazy(() => import("@wso2is/admin.claims.v1/pages/attribute-verification-settings")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
@@ -823,8 +903,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 }
             ],
             component: lazy(() => {
-                return import("@wso2is/admin.organization-discovery.v1/pages/" +
-                    "organization-discovery-domains-page");
+                return import("@wso2is/admin.organization-discovery.v1/pages/organization-discovery-domains-page");
             }),
             exact: true,
             icon: {
@@ -842,8 +921,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             component: lazy(() => import("@wso2is/admin.branding.v1/pages/branding")),
             exact: true,
             icon: {
-                icon: import("@wso2is/admin.extensions.v1/assets/images/icons/" +
-                    "paint-palette-and-brush-outline.svg")
+                icon: import("@wso2is/admin.extensions.v1/assets/images/icons/paint-palette-and-brush-outline.svg")
             },
             id: "branding",
             name: "extensions:develop.sidePanel.stylesAndText",
@@ -855,7 +933,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             category: "extensions:develop.sidePanel.categories.branding",
             component: lazy(() =>
-                import("@wso2is/admin.email-management.v1/" + "pages/email-customization")
+                import("@wso2is/admin.email-management.v1/pages/email-customization")
             ),
             exact: true,
             icon: { icon: <EnvelopeIcon fill="black" className="icon" /> },
@@ -886,7 +964,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             category: "extensions:develop.sidePanel.categories.branding",
             component: lazy(() =>
-                import("@wso2is/admin.email-and-sms.v1/" + "pages/email-and-sms")
+                import("@wso2is/admin.email-and-sms.v1/pages/email-and-sms")
             ),
             exact: true,
             icon: { icon: <EnvelopeGearIcon fill="black" className="icon" /> },
@@ -902,7 +980,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             category: "extensions:develop.sidePanel.categories.branding",
             component: lazy(() =>
-                import("@wso2is/admin.email-providers.v1" + "/pages/email-providers")
+                import("@wso2is/admin.email-providers.v1/pages/email-providers")
             ),
             exact: true,
             icon: {
@@ -918,7 +996,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             category: "extensions:develop.sidePanel.categories.smsProvider",
             component: lazy(() =>
-                import("@wso2is/admin.sms-providers.v1" + "/pages/sms-providers")
+                import("@wso2is/admin.sms-providers.v1/pages/sms-providers")
             ),
             exact: true,
             icon: {
@@ -953,8 +1031,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 {
                     component: lazy(() =>
                         import(
-                            "@wso2is/admin.server-configurations.v1/" +
-                            "pages/connector-edit-page"
+                            "@wso2is/admin.server-configurations.v1/pages/connector-edit-page"
                         )
                     ),
                     exact: true,
@@ -973,8 +1050,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 {
                     component: lazy(() =>
                         import(
-                            "@wso2is/admin.server-configurations.v1/" +
-                            "pages/connector-edit-page"
+                            "@wso2is/admin.server-configurations.v1/pages/connector-edit-page"
                         )
                     ),
                     exact: true,
@@ -994,8 +1070,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 {
                     component: lazy(() =>
                         import(
-                            "@wso2is/admin.server-configurations.v1/" +
-                            "pages/connector-edit-page"
+                            "@wso2is/admin.server-configurations.v1/pages/connector-edit-page"
                         )
                     ),
                     exact: true,
@@ -1130,8 +1205,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 {
                     component: lazy(() =>
                         import(
-                            "@wso2is/admin.server-configurations.v1/" +
-                            "pages/connector-edit-page"
+                            "@wso2is/admin.server-configurations.v1/pages/connector-edit-page"
                         )
                     ),
                     exact: true,
@@ -1365,8 +1439,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 {
                     component: lazy(() =>
                         import(
-                            "@wso2is/admin.approval-workflows.v1/pages/" +
-                            "approval-workflow-create-page"
+                            "@wso2is/admin.approval-workflows.v1/pages/approval-workflow-create-page"
                         )
                     ),
                     exact: true,
@@ -1466,8 +1539,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             children: [
                 {
-                    component: lazy(() => import("@wso2is/admin.console-settings.v1/pages/" +
-                        "console-roles-edit-page")),
+                    component: lazy(() => import("@wso2is/admin.console-settings.v1/pages/console-roles-edit-page")),
                     exact: false,
                     icon: { icon: getSidePanelIcons().childIcon },
                     id: "consoleRolesEdit",
@@ -1478,8 +1550,8 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 },
                 {
                     component: lazy(() => {
-                        return import("@wso2is/admin.console-settings.v1/pages/" +
-                            "console-administrator-edit-page");
+                        return import(
+                            "@wso2is/admin.console-settings.v1/pages/console-administrator-edit-page");
                     }),
                     exact: false,
                     icon: { icon: getSidePanelIcons().childIcon },
@@ -1729,12 +1801,55 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             category: "extensions:manage.sidePanel.categories.customerDataService",
             children: [
                 {
+                    component: lazy(() => import("@wso2is/admin.cds.v1/pages/profile-attribute-create-page")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "createProfileAttribute",
+                    name: "Create profile attribute",
+                    path: AppConstants.getPaths().get("PROFILE_ATTRIBUTE_CREATE"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.cds.v1/components/profile-attribute")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "UpdateProfileAttribute",
+                    name: "Update profile attribute",
+                    path: AppConstants.getPaths().get("PROFILE_ATTRIBUTE"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() =>
+                import("@wso2is/admin.cds.v1/pages/profile-attributes")
+            ),
+            exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_PROFILE_ATTRIBUTES,
+            icon: {
+                icon: <ProfileAttributesIcon className="icon" fill="black" />
+            },
+            id: "customerDataProfileAttributes",
+            name: "customerDataService:sidePanel.ProfileAttributes",
+            order: 33,
+            path: AppConstants.getPaths().get("PROFILE_ATTRIBUTES"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            category: "extensions:manage.sidePanel.categories.customerDataService",
+            children: [
+                {
                     component: lazy(() => import("@wso2is/admin.cds.v1/pages/unification-rule-create-page")),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
                     },
-                    id: "create unification rule",
+                    id: "createUnificationRule",
                     name: "Create Unification Rule",
                     path: AppConstants.getPaths().get("UNIFICATION_RULE_CREATE"),
                     protected: true,
@@ -1745,7 +1860,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 import("@wso2is/admin.cds.v1/pages/unification-rules")
             ),
             exact: true,
-            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_PROFILE_UNIFICATION_RULES,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_PROFILES_UNIFICATION_RULES,
             icon: {
                 icon: <UnificationRuleIcon className="icon" fill="black" />
             },
@@ -1773,8 +1888,9 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         },
         {
-            component: lazy(() => import("@wso2is/admin.server-configurations.v1/pages/" +
-                "governance-connectors")),
+            component: lazy(() => import(
+                "@wso2is/admin.server-configurations.v1/pages/governance-connectors")
+            ),
             exact: true,
             icon: null,
             id: "governanceConnectors",
@@ -1785,8 +1901,8 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         },
         {
-            component: lazy(() => import("@wso2is/admin.server-configurations.v1/pages/" +
-                "multi-attribute-login-edit")),
+            component: lazy(() => import(
+                "@wso2is/admin.server-configurations.v1/pages/multi-attribute-login-edit")),
             exact: true,
             icon: null,
             id: "multiAttributeLogin",

@@ -22,7 +22,9 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface, UIConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
-import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, SBACInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -179,7 +181,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                 setShowDeleteConfirmationModal(false);
                 onDelete();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 setIsDeletionInProgress(false);
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
@@ -221,7 +223,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
 
                 onUpdate(appId);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -274,7 +276,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                 setShowDisableConfirmationModal(false);
                 onUpdate(appId);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,

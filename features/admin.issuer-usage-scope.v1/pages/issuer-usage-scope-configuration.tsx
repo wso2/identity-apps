@@ -31,7 +31,7 @@ import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/mo
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
+import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/forms";
 import {
     EmphasizedSegment,
     Hint,

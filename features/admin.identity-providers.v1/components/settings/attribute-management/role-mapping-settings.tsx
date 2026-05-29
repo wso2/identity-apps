@@ -16,7 +16,6 @@
  * under the License.
  */
 
-
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { getOrganizationRoles } from "@wso2is/admin.organizations.v1/api";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -27,8 +26,10 @@ import {
 } from "@wso2is/admin.organizations.v1/models";
 import { getRolesList } from "@wso2is/admin.roles.v2/api/roles";
 import { INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants/role-constants";
-import { RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { DynamicField, KeyValue } from "@wso2is/forms";
+import { RoleListInterface, RolesInterface, TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
+import { DynamicField, KeyValue } from "@wso2is/forms/legacy";
 import { Heading, Hint } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -69,7 +70,7 @@ interface RoleMappingSettingsPropsInterface extends TestableComponentInterface {
  * @param props - Props injected to the component.
  * @returns Role mapping settings component.
  */
-export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInterface> = (
+const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInterface> = (
     props: RoleMappingSettingsPropsInterface
 ): ReactElement => {
 
@@ -115,7 +116,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                         setRoleList(allRole.Resources);
                     }
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     handleGetRoleListError(error);
                 });
         } else {
@@ -125,7 +126,6 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                 });
         }
     }, [ initialRoleMappings ]);
-
 
     /**
      * Prepends `Internal/` to the role name if it does not have a domain prepended already.

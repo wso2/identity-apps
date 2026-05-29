@@ -41,7 +41,7 @@ import {
     Property
 } from "@wso2is/core/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
-import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
+import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms/legacy";
 import { EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export enum RoleSharedAccessModes {
+enum RoleSharedAccessModes {
     DO_NOT_SHARE = "do-not-share",
     SHARE_ALL_ROLES_WITH_ALL_ORGS = "share-all-roles-with-all-orgs",
     SHARE_WITH_ALL_ORGS = "share-with-all-orgs",

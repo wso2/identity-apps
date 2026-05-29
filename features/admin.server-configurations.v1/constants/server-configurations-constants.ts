@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -318,6 +318,8 @@ export class ServerConfigurationsConstants {
     public static readonly PASSWORD_EXPIRY_SKIP_IF_NO_APPLICABLE_RULES: string =
         "passwordExpiry.skipIfNoApplicableRules";
 
+    public static readonly PASSWORD_EXPIRY_ENFORCEMENT_SCOPE: string = "passwordExpiry.enforcementScope";
+
     public static readonly PASSWORD_EXPIRY_RULES_PREFIX: string = "passwordExpiry.rule";
     public static readonly PASSWORD_HISTORY_ENABLE: string = "passwordHistory.enable";
     public static readonly PASSWORD_HISTORY_COUNT: string = "passwordHistory.count";
@@ -427,6 +429,7 @@ export class ServerConfigurationsConstants {
     public static readonly NOTIFICATION_SETTINGS_CATEGORY_ID: string = "notification-settings";
     public static readonly NOTIFICATION_SETTINGS_CONNECTOR_ID: string = "internal-notification-settings";
     public static readonly ACCOUNT_MANAGEMENT_CUSTOM_CATEGORY_ID: string = "account-management";
+    public static readonly CONSENT_MANAGEMENT_CATEGORY_ID: string = "policyManagement";
     public static readonly USER_ONBOARDING_CONNECTOR_CATEGORY_ID: string = "user-onboarding";
 
     /**
@@ -438,6 +441,8 @@ export class ServerConfigurationsConstants {
     public static readonly USERNAME_VALIDATION: string = "username-validation";
     public static readonly PASSWORD_RECOVERY: string = "password-recovery";
     public static readonly USERNAME_RECOVERY: string = "username-recovery";
+    public static readonly POLICY_CONSENTS_CONNECTOR_ID: string = "policyConsents";
+    public static readonly PREFERENCE_MANAGEMENT_CONNECTOR_ID: string = "preferenceManagement";
 
     /**
      * User Onboarding Catergory Constants.
@@ -477,4 +482,12 @@ export class ServerConfigurationsConstants {
     public static readonly SIFT_CONNECTOR_ID: string = "c2lmdC1jb25maWd1cmF0aW9u";
     public static readonly LOGIN_ATTEMPT_SECURITY: string = "login-attempt-security";
     public static readonly SIFT_CONNECTOR_API_KEY_PROPERTY: string = "__secret__.sift.api.key";
+}
+
+/**
+ * Enum for password expiry enforcement scope values.
+ */
+export enum PasswordExpiryEnforcementScope {
+    ORG_WIDE = "ORG_WIDE",
+    APP_WITH_ENFORCER = "APP_WITH_ENFORCER"
 }

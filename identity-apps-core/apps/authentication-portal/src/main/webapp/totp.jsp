@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2021-2026, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -34,6 +34,7 @@
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 <%@ include file="includes/localize.jsp" %>
 <jsp:directive.include file="includes/init-url.jsp"/>
+<%@ include file="util/authenticator-utils.jsp" %>
 
 <%
     // Add the totp screen to the list to retrieve text branding customizations.
@@ -42,33 +43,6 @@
 
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
-
-<%!
-    private boolean isMultiAuthAvailable(String multiOptionURI) {
-
-        boolean isMultiAuthAvailable = true;
-        if (multiOptionURI == null || multiOptionURI.equals("null")) {
-            isMultiAuthAvailable = false;
-        } else {
-            int authenticatorIndex = multiOptionURI.indexOf("authenticators=");
-            if (authenticatorIndex == -1) {
-                isMultiAuthAvailable = false;
-            } else {
-                String authenticators = multiOptionURI.substring(authenticatorIndex + 15);
-                int authLastIndex = authenticators.indexOf("&") != -1 ? authenticators.indexOf("&") : authenticators.length();
-                authenticators = authenticators.substring(0, authLastIndex);
-                List<String> authList = Arrays.asList(authenticators.split("%3B"));
-                if (authList.size() < 2) {
-                    isMultiAuthAvailable = false;
-                }
-                else if (authList.size() == 2 && authList.contains("backup-code-authenticator%3ALOCAL")) {
-                    isMultiAuthAvailable = false;
-                }
-            }
-        }
-        return isMultiAuthAvailable;
-    }
-%>
 
 <%
     request.getSession().invalidate();
@@ -142,23 +116,15 @@
         <![endif]-->
 
         <script>
-            // Handle form submission preventing double submission.
+            var isTOTPSubmitting = false;
+
+            // Handle form submission through a single guarded path.
             $(document).ready(function(){
-                $.fn.preventDoubleSubmission = function() {
-                    $(this).on('submit',function(e){
-                        var $form = $(this);
-                        if ($form.data('submitted') === true) {
-                            // Previously submitted - don't submit again.
-                            e.preventDefault();
-                            console.warn("Prevented a possible double submit event");
-                        } else {
-                            // Mark it so that the next submit can be ignored.
-                            $form.data('submitted', true);
-                        }
-                    });
-                    return this;
-                };
-                $('#totpForm').preventDoubleSubmission();
+                $('#totpForm').on('submit', function (e) {
+                    e.preventDefault();
+                    handleSubmit();
+                    return false;
+                });
             });
         </script>
         <script type="text/javascript">
@@ -329,9 +295,13 @@
                                 value='<%=Encode.forHtmlAttribute(request.getParameter("multiOptionURI"))%>' />
                             <div class="ui divider hidden"></div>
                             <div>
-                                <input type="submit" id="subButton" onclick="sub(); return false;"
-                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
-                                class="ui primary fluid large button" />
+                                <button
+                                    type="submit"
+                                    id="subButton"
+                                    class="ui primary fluid large button"
+                                >
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>
+                                </button>
                             </div>
 
                             <div class="text-center mt-1">
@@ -344,7 +314,7 @@
                                     String multiOptionURI = request.getParameter("multiOptionURI");
                                     if (multiOptionURI != null &&
                                         AuthenticationEndpointUtil.isValidMultiOptionURI(multiOptionURI) &&
-                                        isMultiAuthAvailable(multiOptionURI)) {
+                                        isMultiAuthAvailable(multiOptionURI, request.getParameter("authenticators"))) {
                                 %>
                                     <a class="ui primary basic button link-button" id="goBackLink"
                                         href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
@@ -401,7 +371,11 @@
                     }
                 }
             }
-            function sub() {
+            function handleSubmit() {
+                if (isTOTPSubmitting) {
+                    return false;
+                }
+
                 var pin1 = document.getElementById("pincode-1").value;
                 var pin2 = document.getElementById("pincode-2").value;
                 var pin3 = document.getElementById("pincode-3").value;
@@ -410,12 +384,18 @@
                 var pin6 = document.getElementById("pincode-6").value;
                 var token = pin1 + pin2 + pin3 + pin4 + pin5 + pin6;
                 document.getElementById('token').value = token;
-                if ( pin1 !=null &  pin2 !=null & pin3 !=null & pin5 !=null & pin6 !=null) {
+                var isValidToken = pin1 !== "" && pin2 !== "" && pin3 !== "" && pin4 !== "" && pin5 !== "" && pin6 !== "";
+                if (isValidToken) {
+                    isTOTPSubmitting = true;
+                    $('#subButton').attr('disabled', true);
+                    $('#subButton').addClass('loading');
                     trackEvent("authentication-portal-totp-click-continue", {
                         "tenant": insightsTenantIdentifier != "null" ? insightsTenantIdentifier : ""
                     });
                     document.getElementById("totpForm").submit();
                 }
+
+                return false;
             }
             // Handle paste events
             function handlePaste(e) {
@@ -429,11 +409,11 @@
                 const reg = new RegExp(/^\d+$/);
                 if (reg.test(value)) {
                     value = value.substring(0, 6);
-                    
+
                     for (let n = 0; n < value.length && n < 6; ++n) {
                         $("#pincode-" + (n+1)).val(value[n]);
                     }
-                    
+
                     if (value.length < 6) {
                         $("#pincode-" + (value.length + 1)).focus();
                     } else {
@@ -442,7 +422,7 @@
                     }
                 }
             }
-            
+
             // Add paste event listener to all input fields
             for (let i = 1; i <= 6; i++) {
                 document.getElementById('pincode-' + i).addEventListener('paste', handlePaste);

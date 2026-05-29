@@ -29,7 +29,7 @@ import { OnboardingComponentIds, PRESET_COLORS, isValidHexColor } from "../../co
 /**
  * Props interface for ColorPicker component.
  */
-export interface ColorPickerPropsInterface extends IdentifiableComponentInterface {
+interface ColorPickerPropsInterface extends IdentifiableComponentInterface {
     /** Current color value (hex) */
     color: string;
     /** Label for the color picker */

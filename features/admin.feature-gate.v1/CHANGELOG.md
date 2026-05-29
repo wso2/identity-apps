@@ -1,5 +1,76 @@
 # @wso2is/admin.feature-gate.v1
 
+## 1.9.7
+
+### Patch Changes
+
+- [#10203](https://github.com/wso2/identity-apps/pull/10203) [`4eb39168ef1c46f4c3d31013e09d5a3fbed15368`](https://github.com/wso2/identity-apps/commit/4eb39168ef1c46f4c3d31013e09d5a3fbed15368) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Feature gate webhooks, workflows, actions
+
+- Updated dependencies [[`4eb39168ef1c46f4c3d31013e09d5a3fbed15368`](https://github.com/wso2/identity-apps/commit/4eb39168ef1c46f4c3d31013e09d5a3fbed15368)]:
+  - @wso2is/access-control@3.5.8
+
+## 1.9.6
+
+### Patch Changes
+
+- [#10197](https://github.com/wso2/identity-apps/pull/10197) [`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dependencies
+
+- Updated dependencies [[`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423)]:
+  - @wso2is/admin.organizations.v1@2.28.4
+  - @wso2is/admin.core.v1@2.57.3
+
+## 1.9.5
+
+### Patch Changes
+
+- [#10113](https://github.com/wso2/identity-apps/pull/10113) [`dd01f38682fd189b94802e06b3473a312c1bf7b1`](https://github.com/wso2/identity-apps/commit/dd01f38682fd189b94802e06b3473a312c1bf7b1) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Feature gate console settings and connections
+
+- Updated dependencies [[`dd01f38682fd189b94802e06b3473a312c1bf7b1`](https://github.com/wso2/identity-apps/commit/dd01f38682fd189b94802e06b3473a312c1bf7b1)]:
+  - @wso2is/access-control@3.5.6
+  - @wso2is/admin.core.v1@2.55.29
+
+## 1.9.4
+
+### Patch Changes
+
+- [#10093](https://github.com/wso2/identity-apps/pull/10093) [`a27ac0c8a6d65ac6995b5a70db973a14b32fdcfe`](https://github.com/wso2/identity-apps/commit/a27ac0c8a6d65ac6995b5a70db973a14b32fdcfe) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Feature Gate email template customization
+
+- Updated dependencies [[`a27ac0c8a6d65ac6995b5a70db973a14b32fdcfe`](https://github.com/wso2/identity-apps/commit/a27ac0c8a6d65ac6995b5a70db973a14b32fdcfe)]:
+  - @wso2is/access-control@3.5.5
+  - @wso2is/admin.core.v1@2.55.27
+
+## 1.9.3
+
+### Patch Changes
+
+- [#10077](https://github.com/wso2/identity-apps/pull/10077) [`95c89b5e1111586c0cecd491f109d8aab83ad3ee`](https://github.com/wso2/identity-apps/commit/95c89b5e1111586c0cecd491f109d8aab83ad3ee) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add support to feature gate remote userstore and sms templates
+
+- Updated dependencies [[`95c89b5e1111586c0cecd491f109d8aab83ad3ee`](https://github.com/wso2/identity-apps/commit/95c89b5e1111586c0cecd491f109d8aab83ad3ee)]:
+  - @wso2is/access-control@3.5.4
+  - @wso2is/admin.core.v1@2.55.26
+
+## 1.9.2
+
+### Patch Changes
+
+- [#9875](https://github.com/wso2/identity-apps/pull/9875) [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - Revert Axios and SDK version bumps
+
+- Updated dependencies [[`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d)]:
+  - @wso2is/admin.organizations.v1@2.28.2
+  - @wso2is/admin.core.v1@2.55.3
+  - @wso2is/access-control@3.5.3
+  - @wso2is/core@2.12.10
+
+## 1.9.1
+
+### Patch Changes
+
+- [#9699](https://github.com/wso2/identity-apps/pull/9699) [`413d08d82b88fb248b45e6a6e6e668a84d7f6a19`](https://github.com/wso2/identity-apps/commit/413d08d82b88fb248b45e6a6e6e668a84d7f6a19) Thanks [@piraveena](https://github.com/piraveena)! - Add feature gate logic for OIDC front-channel logout
+
+- Updated dependencies [[`413d08d82b88fb248b45e6a6e6e668a84d7f6a19`](https://github.com/wso2/identity-apps/commit/413d08d82b88fb248b45e6a6e6e668a84d7f6a19)]:
+  - @wso2is/access-control@3.5.2
+  - @wso2is/admin.core.v1@2.54.14
+
 ## 1.9.0
 
 ### Minor Changes

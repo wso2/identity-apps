@@ -17,8 +17,10 @@
  */
 
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { TestableComponentInterface } from "@wso2is/core/models";
-import { DropdownChild, Field, Form } from "@wso2is/form";
+import { HttpErrorResponseDataInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
+import { DropdownChild, Field, Form } from "@wso2is/forms";
 import { Hint, Message } from "@wso2is/react-components";
 import { ContentLoader } from "@wso2is/react-components/src/components/loader/content-loader";
 import { AxiosError, AxiosResponse } from "axios";
@@ -56,7 +58,7 @@ interface AddTenantWizardFormPropsInterface extends TestableComponentInterface {
 /**
  * Interface to capture add tenant wizard form error messages.
  */
-export interface AddTenantWizardFormErrorValidationsInterface {
+interface AddTenantWizardFormErrorValidationsInterface {
     tenantName: string;
     deploymentUnitName?: string
 }
@@ -155,7 +157,7 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                     }
                     setCheckingTenantExistence(false);
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     if (error.response.status == 404) {
                         // Proceed if tenant does not exist.
                         setTenantDuplicate(false);
@@ -305,19 +307,17 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                                                 <li>
                                                     <>
                                                     contain more than{ " " }
-                                                        { {
-                                                            minLength:
+                                                        {
                                                             TenantManagementConstants
                                                                 .FORM_FIELD_CONSTRAINTS
                                                                 .TENANT_NAME_MIN_LENGTH
-                                                        } }
+                                                        }
                                                     and less than{ " " }
-                                                        { {
-                                                            maxLength:
+                                                        {
                                                             TenantManagementConstants
                                                                 .FORM_FIELD_CONSTRAINTS
                                                                 .TENANT_NAME_MAX_LENGTH
-                                                        } }
+                                                        }
                                                     characters
                                                     </>
                                                 </li>
@@ -359,19 +359,17 @@ export const AddTenantWizardForm: FunctionComponent<AddTenantWizardFormPropsInte
                                                 <li>
                                                     <>
                                                     contain more than{ " " }
-                                                        { {
-                                                            minLength:
+                                                        {
                                                             TenantManagementConstants
                                                                 .FORM_FIELD_CONSTRAINTS
                                                                 .TENANT_NAME_MIN_LENGTH
-                                                        } }
+                                                        }
                                                     and less than{ " " }
-                                                        { {
-                                                            maxLength:
+                                                        {
                                                             TenantManagementConstants
                                                                 .FORM_FIELD_CONSTRAINTS
                                                                 .TENANT_NAME_MAX_LENGTH
-                                                        } }
+                                                        }
                                                     characters
                                                     </>
                                                 </li>

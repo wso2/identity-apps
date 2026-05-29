@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
-import { Forms } from "@wso2is/forms";
+import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { Forms } from "@wso2is/forms/legacy";
 import { GenericIcon, Heading } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Card } from "semantic-ui-react";
 import {
@@ -30,7 +30,8 @@ import {
 /**
  * Interface for the outbound provisioning connectors props.
  */
-interface OutboundProvisioningConnectorsPropsInterface extends TestableComponentInterface {
+interface OutboundProvisioningConnectorsPropsInterface extends TestableComponentInterface,
+    IdentifiableComponentInterface {
     triggerSubmit: boolean;
     onSubmit: (values: any) => void;
     initialSelection: string;
@@ -46,7 +47,8 @@ export const OutboundProvisioningConnectors: FunctionComponent<OutboundProvision
         onSubmit,
         triggerSubmit,
         connectorList,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        [ "data-componentid" ]: componentId = "outbound-provisioning-connectors"
     } = props;
 
     const { t } = useTranslation();
@@ -63,6 +65,15 @@ export const OutboundProvisioningConnectors: FunctionComponent<OutboundProvision
         selectedConnector,
         setSelectedConnector
     ] = useState<OutboundProvisioningConnectorListItemInterface>(initialSelectedConnector);
+
+    /**
+     * Sync selectedConnector when initialSelectedConnector resolves asynchronously.
+     */
+    useEffect(() => {
+        if (initialSelectedConnector) {
+            setSelectedConnector(initialSelectedConnector);
+        }
+    }, [ initialSelectedConnector ]);
 
     /**
      * Handles inbound protocol selection.
@@ -110,6 +121,7 @@ export const OutboundProvisioningConnectors: FunctionComponent<OutboundProvision
                             }
                             size="small"
                             data-testid={ `${ testId }-connector-${ index }` }
+                            data-componentid={ `${ componentId }-connector-${ index }` }
                         >
                             <Card.Content className="p-4">
                                 <GenericIcon

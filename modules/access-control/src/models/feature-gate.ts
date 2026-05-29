@@ -61,6 +61,9 @@ export enum FeatureTags {
 
 export interface FeatureGateInterface {
     console:  {
+        actions: {
+            status: FeatureStatus
+        },
         application: {
             signIn: {
                 adaptiveAuth : {
@@ -71,6 +74,9 @@ export interface FeatureGateInterface {
             },
             status: FeatureStatus
         },
+        approvalWorkflows: {
+            status: FeatureStatus
+        },
         branding: {
             design: {
                 layout: {
@@ -79,6 +85,25 @@ export interface FeatureGateInterface {
                     }
                 }
             }
+        },
+        connections: {
+            templates: {
+                customAuthenticator: {
+                    status: FeatureStatus
+                },
+                enterprise: {
+                    status: FeatureStatus
+                },
+                idvp: {
+                    status: FeatureStatus
+                }
+            }
+        },
+        consoleSettings: {
+            status: FeatureStatus
+        },
+        emailTemplates: {
+            status: FeatureStatus
         },
         loginAndRegistration: {
             sessionManagement: {
@@ -91,6 +116,17 @@ export interface FeatureGateInterface {
         saasFeatures: {
             status: FeatureStatus
         },
-        status: FeatureStatus
+        smsTemplates: {
+            status: FeatureStatus
+        },
+        status: FeatureStatus,
+        userStores: {
+            remoteUserStores: {
+                status: FeatureStatus
+            }
+        },
+        webhooks: {
+            status: FeatureStatus
+        }
     }
 }

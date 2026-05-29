@@ -19,7 +19,7 @@
 import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Form } from "@wso2is/form";
+import { Form } from "@wso2is/forms";
 import {
     CertFileStrategy,
     ContentLoader,
@@ -40,7 +40,7 @@ import { ConnectionInterface } from "../../../../models/connection";
 /**
  * Props of {@link AddIdpCertificateModal}
  */
-export interface AddIdPCertificateModalV2Props extends IdentifiableComponentInterface {
+interface AddIdPCertificateModalV2Props extends IdentifiableComponentInterface {
     currentlyEditingIdP: ConnectionInterface;
     refreshIdP: (id: string) => void;
     isOpen: boolean;

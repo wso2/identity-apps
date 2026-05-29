@@ -16,13 +16,17 @@
  * under the License.
  */
 import { getConnections } from "@wso2is/admin.connections.v1/api/connections";
+import { getOutboundProvisioningConnectorsMetaData } from "@wso2is/admin.connections.v1/components/meta/connectors";
+import { OutboundProvisioningConnectorMetaDataInterface } from "@wso2is/admin.connections.v1/models/connection";
 import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components/authenticator-accordion";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import {
     IdentityProviderInterface,
     IdentityProviderListResponseInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -33,7 +37,7 @@ import {
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
@@ -49,7 +53,8 @@ import { OutboundProvisioningIdpCreateWizard } from "../../wizard/outbound-provi
 /**
  *  Provisioning Configurations for the Application.
  */
-interface OutboundProvisioningConfigurationPropsInterface extends TestableComponentInterface {
+interface OutboundProvisioningConfigurationPropsInterface extends TestableComponentInterface,
+    IdentifiableComponentInterface {
     /**
      * Editing application.
      */
@@ -72,6 +77,16 @@ interface OutboundProvisioningConfigurationPropsInterface extends TestableCompon
     defaultActiveIndexes?: number[];
 }
 
+const resolveOutboundConnectorIcon = (
+    connectorName: string | undefined
+): string | undefined => {
+    return getOutboundProvisioningConnectorsMetaData()
+        ?.find(
+            (meta: OutboundProvisioningConnectorMetaDataInterface) =>
+                meta?.name?.toLowerCase() === connectorName?.toLowerCase()
+        )?.icon;
+};
+
 /**
  * Provisioning configurations form component.
  *
@@ -88,7 +103,8 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
         onUpdate,
         readOnly,
         defaultActiveIndexes,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        [ "data-componentid" ]: componentId = "application-outbound-provisioning-configurations"
     } = props;
 
     const { t } = useTranslation();
@@ -135,7 +151,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
 
                 onUpdate(application.id);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -236,7 +252,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                 onUpdate(application.id);
                 setShowDeleteConfirmationModal(false);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
 
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(setAlert({
@@ -277,7 +293,8 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                                         <PrimaryButton
                                             floated="right"
                                             onClick={ () => setShowWizard(true) }
-                                            data-testid={ `${ testId }-new-idp-button` }
+                                            data-testid={ `${testId}-new-idp-button` }
+                                            data-componentid={ `${componentId}-new-idp-button` }
                                         >
                                             <Icon name="add"/>
                                             {
@@ -323,11 +340,22 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                                                                         idpList={ idpList }
                                                                         isEdit={ true }
                                                                         data-testid={ `${ testId }-form` }
+                                                                        data-componentid={ `${ componentId }-form` }
                                                                         isSubmitting={ isSubmitting }
+                                                                        readOnly={ readOnly }
                                                                     />
                                                                 ),
+                                                                icon: {
+                                                                    icon: resolveOutboundConnectorIcon(
+                                                                        provisioningIdp?.connector
+                                                                    ),
+                                                                    verticalAlign: "middle"
+                                                                },
                                                                 id: provisioningIdp?.idp,
-                                                                title: provisioningIdp?.idp
+                                                                title: provisioningIdp?.idp,
+                                                                titleOptions: {
+                                                                    flex: true
+                                                                }
                                                             }
                                                         ]
                                                     }
@@ -335,6 +363,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                                                     accordionIndex = { index }
                                                     handleAccordionOnClick = { handleAccordionOnClick }
                                                     data-testid={ `${ testId }-outbound-connector-accordion` }
+                                                    data-componentid={ `${ componentId }-outbound-connector-accordion` }
                                                 />
                                             );
                                         })
@@ -380,23 +409,11 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showDeleteConfirmationModal }
-                        assertion={ deletingIdp?.idp }
-                        assertionHint={ (
-                            <p>
-                                <Trans
-                                    i18nKey={
-                                        "applications:confirmations" +
-                                        ".deleteOutboundProvisioningIDP.assertionHint"
-                                    }
-                                    tOptions={ { name: deletingIdp?.idp } }
-                                >
-                                    Please type <strong>{ deletingIdp?.idp }</strong> to confirm.
-                                </Trans>
-                            </p>
-                        ) }
-                        assertionType="input"
-                        primaryAction="Confirm"
-                        secondaryAction="Cancel"
+                        assertionHint={ t("applications:confirmations" +
+                            ".deleteOutboundProvisioningIDP.assertionHint") }
+                        assertionType="checkbox"
+                        primaryAction={ t("common:confirm") }
+                        secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => {
                             setShowDeleteConfirmationModal(false);
                             setAlert(null);
@@ -405,10 +422,12 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                             (): void => handleProvisioningIDPDelete(deletingIdp)
                         }
                         data-testid={ `${ testId }-connector-delete-confirmation-modal` }
+                        data-componentid={ `${ componentId }-connector-delete-confirmation-modal` }
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header
                             data-testid={ `${ testId }-connector-delete-confirmation-modal-header` }
+                            data-componentid={ `${ componentId }-connector-delete-confirmation-modal-header` }
                         >
                             { t("applications:confirmations.deleteOutboundProvisioningIDP" +
                                 ".header") }
@@ -417,12 +436,14 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                             attached
                             negative
                             data-testid={ `${ testId }-connector-delete-confirmation-modal-message` }
+                            data-componentid={ `${ componentId }-connector-delete-confirmation-modal-message` }
                         >
                             { t("applications:confirmations.deleteOutboundProvisioningIDP" +
                                 ".message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-testid={ `${ testId }-connector-delete-confirmation-modal-content` }
+                            data-componentid={ `${ componentId }-connector-delete-confirmation-modal-content` }
                         >
                             <div className="modal-alert-wrapper"> { alert && alertComponent }</div>
                             { t("applications:confirmations.deleteOutboundProvisioningIDP" +
@@ -438,6 +459,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                         application={ application }
                         onUpdate={ onUpdate }
                         data-testid={ `${ testId }-idp-create-wizard` }
+                        data-componentid={ `${ componentId }-idp-create-wizard` }
                     />
                 )
             }

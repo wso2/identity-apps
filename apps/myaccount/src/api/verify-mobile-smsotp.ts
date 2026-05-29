@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 
 import { AsgardeoSPAClient, HttpError, HttpInstance, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
-import { MobileVerificationRecoveryScenario } from "../constants";
+import { OTPVerificationRecoveryScenario } from "../constants";
 import { HttpMethods, SMSOTPProperty } from "../models";
 import { store } from "../store";
 
@@ -30,6 +30,7 @@ const httpClient: HttpInstance = AsgardeoSPAClient.getInstance().httpRequest.bin
  * Validate the user-entered verification code.
  *
  * @param code - The verification code
+ * @deprecated - Use {@link validateOTPCode} instead.
  */
 export const validateSMSOTPCode = (code: string): Promise<any> => {
     const requestConfig: HttpRequestConfig = {
@@ -41,7 +42,7 @@ export const validateSMSOTPCode = (code: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.smsOtpValidate
+        url: store.getState().config.endpoints.otpCodeValidate
     };
 
     return httpClient(requestConfig)
@@ -59,9 +60,11 @@ export const validateSMSOTPCode = (code: string): Promise<any> => {
 
 /**
  * Resend SMS OTP verification code for the authenticated user.
+ *
+ * @deprecated - Use {@link resendOTPCode} instead.
  */
 export const resendSMSOTPCode = (
-    recoveryScenario: string = MobileVerificationRecoveryScenario.MOBILE_VERIFICATION_ON_UPDATE
+    recoveryScenario: string = OTPVerificationRecoveryScenario.MOBILE_VERIFICATION_ON_UPDATE
 ): Promise<any> => {
     const properties: SMSOTPProperty[] = [];
 

@@ -20,57 +20,22 @@ import useRequest, {
     RequestConfigInterface, RequestErrorInterface, RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError } from "axios";
 import { useMemo } from "react";
 import useSWR, { SWRConfiguration, SWRResponse } from "swr";
 
-import {
-    fetchProfileSchemaByScope,
-    searchSubAttributes
-} from "../api/profile-attributes";
+import { fetchProfileSchemaByScope } from "../api/profile-attributes";
 import type { SchemaListingScope } from "../models/profile-attribute-listing";
 import type {
     FilterAttributeOption,
     ProfileSchemaAttribute,
-    ProfileSchemaFullResponse,
     ProfileSchemaScope,
     ProfileSchemaScopeResponse
 } from "../models/profile-attributes";
 import { toAttributeDropdownOptions } from "../utils/profile-attribute-utils";
-
-/**
- * Hook: GET /profile-schema
- *
- * @param shouldFetch - Whether to fetch the data.
- * @returns SWR response with full profile schema.
- */
-export const useFullProfileSchema = <Data = ProfileSchemaFullResponse, Error = RequestErrorInterface>(
-    shouldFetch: boolean = true
-): RequestResultInterface<Data, Error> => {
-
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.cdsProfileSchema
-    };
-
-    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
-        shouldFetch ? requestConfig : null,
-        { shouldRetryOnError: false }
-    );
-
-    return {
-        data: data as Data,
-        error,
-        isLoading,
-        isValidating,
-        mutate
-    };
-};
 
 /**
  * SWR Hook: GET /profile-schema/`{scope}`
@@ -80,15 +45,15 @@ export const useFullProfileSchema = <Data = ProfileSchemaFullResponse, Error = R
  * @param config - SWR configuration options
  * @returns SWR response with schema attributes for the scope
  */
-export const useProfileSchemaByScope = (
+const useProfileSchemaByScope = (
     scope: ProfileSchemaScope | null,
     filter?: string,
-    config?: SWRConfiguration<ProfileSchemaScopeResponse, AxiosError>
-): SWRResponse<ProfileSchemaScopeResponse, AxiosError> => {
+    config?: SWRConfiguration<ProfileSchemaScopeResponse, AxiosError<HttpErrorResponseDataInterface>>
+): SWRResponse<ProfileSchemaScopeResponse, AxiosError<HttpErrorResponseDataInterface>> => {
     const key: ["profile-schema-scope", ProfileSchemaScope, string | undefined] | null =
         scope ? [ "profile-schema-scope", scope, filter ] : null;
 
-    return useSWR<ProfileSchemaScopeResponse, AxiosError>(
+    return useSWR<ProfileSchemaScopeResponse, AxiosError<HttpErrorResponseDataInterface>>(
         key,
         scope ? () => fetchProfileSchemaByScope(scope, filter) : null,
         config
@@ -135,29 +100,6 @@ export const useSchemaAttributeById = <Data = ProfileSchemaAttribute, Error = Re
 };
 
 /**
- * SWR Hook: Search sub-attributes
- *
- * @param scope - Schema scope
- * @param attributeName - Parent attribute name, or null to disable fetching
- * @param config - SWR configuration options
- * @returns SWR response with sub-attributes
- */
-export const useSubAttributes = (
-    scope: SchemaListingScope | null,
-    attributeName: string | null,
-    config?: SWRConfiguration<ProfileSchemaAttribute[], AxiosError>
-): SWRResponse<ProfileSchemaAttribute[], AxiosError> => {
-    const key: ["profile-schema-sub-attributes", SchemaListingScope, string] | null =
-        scope && attributeName ? [ "profile-schema-sub-attributes", scope, attributeName ] : null;
-
-    return useSWR<ProfileSchemaAttribute[], AxiosError>(
-        key,
-        scope && attributeName ? () => searchSubAttributes(scope, attributeName) : null,
-        config
-    );
-};
-
-/**
  * Combined Hook: Fetch schema by scope AND transform to dropdown options
  *
  * This is useful for search components that need both fetching + transformation
@@ -170,11 +112,11 @@ export const useSubAttributes = (
 export const useProfileSchemaDropdownOptions = (
     scope: ProfileSchemaScope | null,
     filter?: string,
-    config?: SWRConfiguration<ProfileSchemaScopeResponse, AxiosError>
-): SWRResponse<ProfileSchemaScopeResponse, AxiosError> & {
+    config?: SWRConfiguration<ProfileSchemaScopeResponse, AxiosError<HttpErrorResponseDataInterface>>
+): SWRResponse<ProfileSchemaScopeResponse, AxiosError<HttpErrorResponseDataInterface>> & {
     dropdownOptions: FilterAttributeOption[]
 } => {
-    const swrResponse: SWRResponse<ProfileSchemaScopeResponse, AxiosError> =
+    const swrResponse: SWRResponse<ProfileSchemaScopeResponse, AxiosError<HttpErrorResponseDataInterface>> =
         useProfileSchemaByScope(scope, filter, config);
 
     const dropdownOptions: FilterAttributeOption[] = useMemo(() => {
@@ -189,7 +131,7 @@ export const useProfileSchemaDropdownOptions = (
     };
 };
 
-export const useProfileSchemaDropdown = (
+const useProfileSchemaDropdown = (
     scope: ProfileSchemaScope | null,
     filter?: string
 ): RequestResultInterface<ProfileSchemaScopeResponse, RequestErrorInterface> & {

@@ -24,14 +24,16 @@
 # This script is used to release the packages in the release workflow.
 # -------------------------------------------------------------------------------------
 
+set -euo pipefail
+
 SCRIPT_LOCATION="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 
 # The packages to be released.
-PACKAGES=$1
+PACKAGES=${1:-}
 # The GitHub Action run number.
-GITHUB_RUN_NUMBER=$2
+GITHUB_RUN_NUMBER=${2:-}
 # Variable to determine whether the current release is a hotfix
-IS_HOTFIX=$3
+IS_HOTFIX=${3:-false}
 # The release branch name.
 RELEASE_BRANCH=release-action-$GITHUB_RUN_NUMBER
 
@@ -45,7 +47,7 @@ process_console_package() {
 
     if [ -z "$releaseVersion" ]; then
         echo "Please provide a release version as an argument."
-        return 0
+        return 1
     fi
 
     if [ "$IS_HOTFIX" = "true" ]; then
@@ -54,14 +56,14 @@ process_console_package() {
         search_tag=$releaseVersion-hotfix
         echo "Search Tag: $search_tag"
 
-        hotfix_count=$(git tag | grep $search_tag | wc -l)
+        hotfix_count=$(git tag --list "$search_tag*" | wc -l | tr -d ' ')
         echo "Hotfix count: $hotfix_count"
 
         next_hotfix_no=$((hotfix_count + 1))
         echo "Next Hotfix number: $next_hotfix_no"
 
         releaseVersion=$search_tag-$next_hotfix_no
-        echo "Hotfix release tag: $tag"
+        echo "Hotfix release tag: $releaseVersion"
     fi
 
     goToRootDirectory &&
@@ -87,7 +89,7 @@ process_myaccount_package() {
 
     if [ -z "$releaseVersion" ]; then
         echo "Please provide a release version as an argument."
-        return 0
+        return 1
     fi
 
     if [ "$IS_HOTFIX" = "true" ]; then
@@ -96,14 +98,14 @@ process_myaccount_package() {
         search_tag=$releaseVersion-hotfix
         echo "Search Tag: $search_tag"
 
-        hotfix_count=$(git tag | grep $search_tag | wc -l)
+        hotfix_count=$(git tag --list "$search_tag*" | wc -l | tr -d ' ')
         echo "Hotfix count: $hotfix_count"
 
         next_hotfix_no=$((hotfix_count + 1))
         echo "Next Hotfix number: $next_hotfix_no"
 
         releaseVersion=$search_tag-$next_hotfix_no
-        echo "Hotfix release tag: $tag"
+        echo "Hotfix release tag: $releaseVersion"
     fi
 
     goToRootDirectory &&
@@ -129,7 +131,7 @@ process_java_apps_package() {
 
     if [ -z "$releaseVersion" ]; then
         echo "Please provide a release version as an argument."
-        return 0
+        return 1
     fi
 
     if [ "$IS_HOTFIX" = "true" ]; then
@@ -138,14 +140,14 @@ process_java_apps_package() {
         search_tag=$releaseVersion-hotfix
         echo "Search Tag: $search_tag"
 
-        hotfix_count=$(git tag | grep $search_tag | wc -l)
+        hotfix_count=$(git tag --list "$search_tag*" | wc -l | tr -d ' ')
         echo "Hotfix count: $hotfix_count"
 
         next_hotfix_no=$((hotfix_count + 1))
         echo "Next Hotfix number: $next_hotfix_no"
 
         releaseVersion=$search_tag-$next_hotfix_no
-        echo "Hotfix release tag: $tag"
+        echo "Hotfix release tag: $releaseVersion"
     fi
 
     goToRootDirectory &&
@@ -199,14 +201,14 @@ delete_release_branch() {
     echo "Deleted remote branch: $releaseBranch"
 }
 
-if [ -z "$PACKAGES" ] || [ "$PACKAGES" = "[]" ]; then
+if [ -z "$PACKAGES" ] || [ "$PACKAGES" = "[]" ] || [ "$PACKAGES" = "null" ]; then
     echo "No packages to be released. Exiting..." &&
         exit 0
 fi
 
 if [ -z "$GITHUB_RUN_NUMBER" ]; then
     echo "No GitHub Action run number provided. Exiting..." &&
-        exit 0
+        exit 1
 fi
 
 echo "Releasing packages: $PACKAGES"

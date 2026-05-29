@@ -156,7 +156,7 @@ export const generatePassword = (
  * @param characterSet - Character set.
  * @returns char - Random string.
  */
-export const getCharacter = (generatedPassword: string, characterSet: string): string => {
+const getCharacter = (generatedPassword: string, characterSet: string): string => {
 
     let char: string = characterSet.charAt(generateRandomNumbers(characterSet.length));
 
@@ -174,7 +174,7 @@ export const getCharacter = (generatedPassword: string, characterSet: string): s
  * @param characterSet - Character set.
  * @returns char - Random string.
  */
-export const getUniqueCharacter = (generatedPassword: string, characterSet: string): string => {
+const getUniqueCharacter = (generatedPassword: string, characterSet: string): string => {
 
     let char: string = characterSet.charAt(generateRandomNumbers(characterSet.length));
 
@@ -243,7 +243,7 @@ export const getConfiguration = (configs: ValidationDataInterface[]): Validation
  * @param attribute - attribute name.
  * @returns the value of the validator configuration.
  */
-export const getConfig = (ruleSet: ValidationConfInterface[], validator: string, attribute: string): string => {
+const getConfig = (ruleSet: ValidationConfInterface[], validator: string, attribute: string): string => {
 
     const config: ValidationConfInterface[] = ruleSet?.filter((data: ValidationConfInterface) => {
         return data.validator === validator;

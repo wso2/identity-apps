@@ -1,5 +1,93 @@
 # @wso2is/admin.cds.v1
 
+## 1.6.5
+
+### Patch Changes
+
+- [#10263](https://github.com/wso2/identity-apps/pull/10263) [`cfeb2b7fea5af98845e44feec8035575e0abc6f2`](https://github.com/wso2/identity-apps/commit/cfeb2b7fea5af98845e44feec8035575e0abc6f2) Thanks [@KD23243](https://github.com/KD23243)! - Show server error description in delete attribute error modal
+
+- Updated dependencies [[`2de3739f867501a0d18a29253f5091e37432d2bd`](https://github.com/wso2/identity-apps/commit/2de3739f867501a0d18a29253f5091e37432d2bd), [`3b11c4f98352aa1584865ea84e096665a6f7d608`](https://github.com/wso2/identity-apps/commit/3b11c4f98352aa1584865ea84e096665a6f7d608)]:
+  - @wso2is/admin.core.v1@2.57.8
+  - @wso2is/admin.applications.v1@2.42.27
+
+## 1.6.4
+
+### Patch Changes
+
+- [#10219](https://github.com/wso2/identity-apps/pull/10219) [`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove duplicate exports
+
+- Updated dependencies [[`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c)]:
+  - @wso2is/admin.applications.v1@2.42.24
+  - @wso2is/admin.core.v1@2.57.6
+
+## 1.6.3
+
+### Patch Changes
+
+- [#10197](https://github.com/wso2/identity-apps/pull/10197) [`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dependencies
+
+- Updated dependencies [[`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423)]:
+  - @wso2is/admin.applications.v1@2.42.23
+  - @wso2is/admin.core.v1@2.57.3
+
+## 1.6.2
+
+### Patch Changes
+
+- [#9891](https://github.com/wso2/identity-apps/pull/9891) [`64e059c49d13c18c390d22644330c34276857a76`](https://github.com/wso2/identity-apps/commit/64e059c49d13c18c390d22644330c34276857a76) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Remove unified profiles and introduce display name
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.7
+  - @wso2is/admin.applications.v1@2.41.32
+
+## 1.6.1
+
+### Patch Changes
+
+- [#9875](https://github.com/wso2/identity-apps/pull/9875) [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - Revert Axios and SDK version bumps
+
+- Updated dependencies [[`c834b18928cdfc09710c5e7067668206d006e68a`](https://github.com/wso2/identity-apps/commit/c834b18928cdfc09710c5e7067668206d006e68a), [`877d726905edf898c33c615cd887f8ed0a071a0e`](https://github.com/wso2/identity-apps/commit/877d726905edf898c33c615cd887f8ed0a071a0e), [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d), [`b75bb804c799c0e795e8580d35eedb8993d0ecc4`](https://github.com/wso2/identity-apps/commit/b75bb804c799c0e795e8580d35eedb8993d0ecc4)]:
+  - @wso2is/admin.applications.v1@2.41.28
+  - @wso2is/admin.core.v1@2.55.3
+  - @wso2is/access-control@3.5.3
+  - @wso2is/core@2.12.10
+
+## 1.6.0
+
+### Minor Changes
+
+- [#9851](https://github.com/wso2/identity-apps/pull/9851) [`889ba146a770d03968eed6bd8ecdf9b2f41df5e4`](https://github.com/wso2/identity-apps/commit/889ba146a770d03968eed6bd8ecdf9b2f41df5e4) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - improve cds ux
+
+### Patch Changes
+
+- Updated dependencies [[`06f2828341ff02da1d328e9cb9c03a2c0038c324`](https://github.com/wso2/identity-apps/commit/06f2828341ff02da1d328e9cb9c03a2c0038c324), [`889ba146a770d03968eed6bd8ecdf9b2f41df5e4`](https://github.com/wso2/identity-apps/commit/889ba146a770d03968eed6bd8ecdf9b2f41df5e4)]:
+  - @wso2is/admin.applications.v1@2.41.25
+  - @wso2is/admin.core.v1@2.55.0
+
+## 1.5.0
+
+### Minor Changes
+
+- [#9691](https://github.com/wso2/identity-apps/pull/9691) [`379ee617965223d218f80b41c51b1125a672f7e9`](https://github.com/wso2/identity-apps/commit/379ee617965223d218f80b41c51b1125a672f7e9) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Fix cds enable
+
+### Patch Changes
+
+- Updated dependencies [[`7875b8053d9af4ca38138818bf15596946c83ebe`](https://github.com/wso2/identity-apps/commit/7875b8053d9af4ca38138818bf15596946c83ebe), [`89273a887431c2e7e2bf346bc166dea0667cfc45`](https://github.com/wso2/identity-apps/commit/89273a887431c2e7e2bf346bc166dea0667cfc45)]:
+  - @wso2is/admin.applications.v1@2.41.13
+  - @wso2is/admin.core.v1@2.54.7
+
+## 1.4.0
+
+### Minor Changes
+
+- [#9651](https://github.com/wso2/identity-apps/pull/9651) [`d034eb37fd3d1e9c16570d89bd01381303570be7`](https://github.com/wso2/identity-apps/commit/d034eb37fd3d1e9c16570d89bd01381303570be7) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Add profile attributes support for cds
+
+### Patch Changes
+
+- Updated dependencies [[`d034eb37fd3d1e9c16570d89bd01381303570be7`](https://github.com/wso2/identity-apps/commit/d034eb37fd3d1e9c16570d89bd01381303570be7), [`9c98499dd77a7ac7d4f30be22710342f4e000257`](https://github.com/wso2/identity-apps/commit/9c98499dd77a7ac7d4f30be22710342f4e000257)]:
+  - @wso2is/admin.core.v1@2.54.0
+  - @wso2is/admin.applications.v1@2.41.8
+
 ## 1.3.0
 
 ### Minor Changes

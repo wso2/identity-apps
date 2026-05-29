@@ -63,7 +63,7 @@ type AuthenticatorEditPagePropsInterface = IdentifiableComponentInterface & Rout
  *
  * @returns React element.
  */
-export const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPagePropsInterface> = ({
+const AuthenticatorEditPage: FunctionComponent<AuthenticatorEditPagePropsInterface> = ({
     location,
     "data-componentid": componentId = "authenticator-edit-page",
     "data-testid": testId = "authenticator-edit-page"

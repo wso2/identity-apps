@@ -19,9 +19,11 @@
 import { Show } from "@wso2is/access-control";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import React, { FC, Fragment, ReactElement, useEffect, useState } from "react";
@@ -32,7 +34,7 @@ import { patchSecret } from "../api/secret";
 import { SecretModel } from "../models/secret";
 import { SECRET_DESCRIPTION_LENGTH } from "../utils/secrets.validation.utils";
 
-export type SecretDescriptionFormProps = {
+type SecretDescriptionFormProps = {
     editingSecret: SecretModel;
 } & IdentifiableComponentInterface;
 
@@ -115,7 +117,7 @@ const SecretDescriptionForm: FC<SecretDescriptionFormProps> = (
                 level: AlertLevels.SUCCESS,
                 message: t("secrets:alerts.updatedSecret.message")
             }));
-        }).catch((error: AxiosError): void => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>): void => {
             if (error.response && error.response.data && error.response.data.description) {
                 dispatch(addAlert({
                     description: error.response.data.description,

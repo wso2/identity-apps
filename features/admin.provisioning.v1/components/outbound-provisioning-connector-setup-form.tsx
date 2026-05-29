@@ -25,7 +25,7 @@ import {
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { IdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Field, FormValue, Forms } from "@wso2is/forms";
+import { Field, FormValue, Forms } from "@wso2is/forms/legacy";
 import { Hint, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -51,6 +51,11 @@ interface OutboundProvisioningConnectorSetupFormPropsInterface extends Identifia
      * Specifies if the form is being submitted.
      */
     isSubmitting?: boolean;
+    /**
+     * Callback fired when the connector list loading state changes.
+     * Used by the wizard parent to disable the Finish button while connectors are loading.
+     */
+    onConnectorLoadingChange?: (isLoading: boolean) => void;
 }
 
 interface DropdownOptionsInterface {
@@ -79,6 +84,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
         isEdit,
         isReadOnly,
         isSubmitting,
+        onConnectorLoadingChange,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -90,8 +96,10 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
     const [ selectedIdp, setSelectedIdp ] = useState<string>();
     const [ isBlockingChecked, setIsBlockingChecked ] = useState<boolean>(initialValues?.blocking ?? false);
     const [ isRulesChecked, setIsRulesChecked ] = useState<boolean>(initialValues?.rules ?? false);
-    const [ isJITChecked, setIsJITChecked ] = useState<boolean>(initialValues?.jit);
+    const [ isJITChecked, setIsJITChecked ] = useState<boolean>(initialValues?.jit ?? false);
     const [ connector, setConnector ] = useState<string>(initialValues?.connector);
+
+    const isBlockingOutboundProvisioningEnabled: boolean = UIConfig?.enableBlockingOutboundProvisioning ?? false;
 
     useEffect(() => {
         if (!idpList) {
@@ -121,14 +129,16 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
             value: ""
         };
 
-        idpList.map((idp: IdentityProviderInterface, index: number) => {
-            idpOption = {
-                key: index,
-                text: idp.name,
-                value: idp.id
-            };
-            idpOptions.push(idpOption);
-        });
+        idpList
+            .filter((idp: IdentityProviderInterface) => idp.isEnabled !== false)
+            .map((idp: IdentityProviderInterface, index: number) => {
+                idpOption = {
+                    key: index,
+                    text: idp.name,
+                    value: idp.id
+                };
+                idpOptions.push(idpOption);
+            });
         setIdpListOptions(idpOptions);
     }, [ idpList ]);
 
@@ -147,6 +157,8 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
             value: ""
         };
 
+        onConnectorLoadingChange?.(true);
+
         getConnectionDetails(selectedIdp)
             .then((response: ConnectionInterface) => {
                 response.provisioning.outboundConnectors.connectors.map(
@@ -162,6 +174,12 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                         }
                     });
                 setConnectorListOptions(connectorOptions);
+                if (connectorOptions.length === 1) {
+                    setConnector(connectorOptions[0].value);
+                }
+            })
+            .finally(() => {
+                onConnectorLoadingChange?.(false);
             });
     }, [ selectedIdp ]);
 
@@ -231,33 +249,35 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                 }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } computer={ 10 }>
-                        <Field
-                            type="dropdown"
-                            label={
-                                t("applications:forms.outboundProvisioning.fields.connector" +
-                                    ".label")
-                            }
-                            placeholder={
-                                t("applications:forms.outboundProvisioning.fields.connector" +
-                                    ".placeholder")
-                            }
-                            name="connector"
-                            children={ connectorListOptions }
-                            requiredErrorMessage={
-                                t("applications:forms.outboundProvisioning.fields" +
-                                    ".connector.validations.empty")
-                            }
-                            readOnly={ isReadOnly }
-                            required={ true }
-                            value={ initialValues?.connector }
-                            listen={
-                                (values: Map<string, FormValue>) => {
-                                    setConnector(values.get("connector").toString());
+                        { connectorListOptions?.length > 1 && (
+                            <Field
+                                type="dropdown"
+                                label={
+                                    t("applications:forms.outboundProvisioning.fields.connector" +
+                                        ".label")
                                 }
-                            }
-                            data-componentid={ `${ componentId }-provisioning-connector-dropdown` }
-                        />
-                        { connectorListOptions?.length <= 0 && (
+                                placeholder={
+                                    t("applications:forms.outboundProvisioning.fields.connector" +
+                                        ".placeholder")
+                                }
+                                name="connector"
+                                children={ connectorListOptions }
+                                requiredErrorMessage={
+                                    t("applications:forms.outboundProvisioning.fields" +
+                                        ".connector.validations.empty")
+                                }
+                                readOnly={ connectorListOptions.length === 1 || isReadOnly }
+                                required={ true }
+                                value={ connector }
+                                listen={
+                                    (values: Map<string, FormValue>) => {
+                                        setConnector(values.get("connector").toString());
+                                    }
+                                }
+                                data-componentid={ `${ componentId }-provisioning-connector-dropdown` }
+                            />
+                        ) }
+                        { connectorListOptions?.length === 0 && (
                             <Hint icon="warning sign">
                                 {
                                     t("applications:edit.sections.provisioning." +
@@ -300,35 +320,36 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                         </Grid.Row>
                     )
                 }
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } computer={ 10 }>
-                        <Field
-                            name="blocking"
-                            required={ false }
-                            requiredErrorMessage=""
-                            type="checkbox"
-                            children={ [
-                                {
-                                    label: t("applications:forms.outboundProvisioning" +
-                                        ".fields.blocking.label"),
-                                    value: "blocking"
+                { isBlockingOutboundProvisioningEnabled && (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } computer={ 10 }>
+                            <Field
+                                name="blocking"
+                                required={ false }
+                                requiredErrorMessage=""
+                                type="checkbox"
+                                children={ [
+                                    {
+                                        label: t("applications:forms.outboundProvisioning" +
+                                            ".fields.blocking.label"),
+                                        value: "blocking"
+                                    }
+                                ] }
+                                readOnly={ isReadOnly }
+                                value={ initialValues?.blocking ? [ "blocking" ] : [] }
+                                listen={
+                                    (values: Map<string, FormValue>) => {
+                                        setIsBlockingChecked(values.get("blocking").includes("blocking"));
+                                    }
                                 }
-                            ] }
-                            readOnly={ isReadOnly }
-                            value={ initialValues?.blocking ? [ "blocking" ] : [] }
-                            listen={
-                                (values: Map<string, FormValue>) => {
-                                    setIsBlockingChecked(values.get("blocking").includes("blocking"));
-                                }
-                            }
-                            data-componentid={ `${ componentId }-blocking-checkbox` }
-                        />
-                        <Hint>
-                            { t("applications:forms.outboundProvisioning.fields.blocking" +
-                                ".hint") }
-                        </Hint>
-                    </Grid.Column>
-                </Grid.Row>
+                                data-componentid={ `${componentId}-blocking-checkbox` }
+                            />
+                            <Hint>
+                                { t("applications:forms.outboundProvisioning.fields.blocking" +
+                                    ".hint") }
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row> ) }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } computer={ 10 }>
                         <Field
@@ -350,6 +371,7 @@ export const OutboundProvisioningConnectorSetupForm: FunctionComponent<
                             }
                             readOnly={ isReadOnly }
                             data-testid={ `${ componentId }-jit-checkbox` }
+                            data-componentid={ `${componentId}-jit-checkbox` }
                         />
                         <Hint>
                             { t("applications:forms.outboundProvisioning.fields.jit.hint") }

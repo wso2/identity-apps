@@ -19,7 +19,9 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { OutboundProvisioningConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
 import { store } from "@wso2is/admin.core.v1/store";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 
 /**
@@ -50,7 +52,7 @@ export const updateResidentApplicationOutboundProvisioningList = (
             }
 
             return Promise.resolve(response);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };

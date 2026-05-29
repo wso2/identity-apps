@@ -17,4 +17,3 @@
  */
 
 export { WorkflowRequestsResourceEndpointsInterface } from "../models/endpoints";
-export { getWorkflowRequestsResourceEndpoints } from "../types/workflow-requests";

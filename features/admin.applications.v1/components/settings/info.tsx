@@ -170,6 +170,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
                                         </Heading>
                                         <Divider hidden/>
                                         <OIDCConfigurations
+                                            appId={ appId }
                                             oidcConfigurations={ oidcConfigurations }
                                             templateId={ templateId }
                                         />

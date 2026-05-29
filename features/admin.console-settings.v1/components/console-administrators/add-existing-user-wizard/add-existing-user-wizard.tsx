@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,17 +18,28 @@
 
 import { AutocompleteRenderGetTagProps } from "@oxygen-ui/react/Autocomplete";
 import Chip from "@oxygen-ui/react/Chip";
+import { ListItemProps } from "@oxygen-ui/react/ListItem";
 import Typography from "@oxygen-ui/react/Typography";
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, RolesInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AutocompleteFieldAdapter, FinalForm, FinalFormField, FormRenderProps } from "@wso2is/form";
+import { AutocompleteFieldAdapter, FinalForm, FinalFormField, FormRenderProps } from "@wso2is/forms";
 import { Heading, Hint, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
+import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, ReactNode, useMemo, useState } from "react";
+import React, {
+    FunctionComponent,
+    ReactElement,
+    SyntheticEvent,
+    useCallback,
+    useMemo,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -37,32 +48,20 @@ import { ConsoleAdministratorOnboardingConstants } from "../../../constants/cons
 import useBulkAssignAdministratorRoles from "../../../hooks/use-bulk-assign-user-roles";
 import useConsoleRoles from "../../../hooks/use-console-roles";
 import useProspectiveAdministrators from "../../../hooks/use-prospective-administrators";
+import {
+    AddExistingUserWizardFormErrorsInterface,
+    AddExistingUserWizardFormValuesInterface,
+    RoleOptionsInterface,
+    UserOptionsInterface
+} from "../../../models/administrators";
 import "./add-existing-user-wizard.scss";
 
 /**
  * Props interface of {@link AddExistingUserWizard}
  */
-export interface AddExistingUserWizardPropsInterface extends IdentifiableComponentInterface, ModalProps {
+interface AddExistingUserWizardPropsInterface extends IdentifiableComponentInterface, ModalProps {
     onSuccess?: () => void;
     selectedUserStore: string;
-}
-
-interface AddExistingUserWizardFormValuesInterface {
-    username: {
-        key: string;
-        label: ReactNode;
-        user: UserBasicInterface;
-    };
-    roles: {
-        key: string;
-        label: ReactNode;
-        role: RolesInterface;
-    }[];
-}
-
-interface AddExistingUserWizardFormErrorsInterface {
-    username: string;
-    roles: string;
 }
 
 /**
@@ -97,18 +96,19 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
     // Use the hook with filter based on input value
     const {
         prospectiveAdministrators,
+        isNextPageAvailable,
         isAdministratorsListFetchRequestLoading
     } = useProspectiveAdministrators(
         UserManagementConstants.ADD_EXISTING_USER_WIZARD_RETRIEVAL_COUNT,
         null,
-        usernameInputValue ? `userName co ${usernameInputValue}` : "",
+        usernameInputValue ? `userName co ${ usernameInputValue }` : "",
         null,
         selectedUserStore,
         UserManagementConstants.GROUPS_ATTRIBUTE,
         true
     );
 
-    const usernameAutocompleteOptions: AddExistingUserWizardFormValuesInterface["username"][] = useMemo(() => {
+    const usernameAutocompleteOptions: UserOptionsInterface[] = useMemo(() => {
         if (isEmpty(prospectiveAdministrators?.Resources)) {
             return [];
         }
@@ -120,7 +120,7 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
         }));
     }, [ prospectiveAdministrators ]);
 
-    const rolesAutocompleteOptions: AddExistingUserWizardFormValuesInterface["roles"] = useMemo(() => {
+    const rolesAutocompleteOptions: RoleOptionsInterface[] = useMemo(() => {
         if (isEmpty(consoleRoles?.Resources)) {
             return [];
         }
@@ -134,11 +134,19 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
         });
     }, [ consoleRoles ]);
 
+    /**
+     * Handles the search query for the users list.
+     */
+    const searchUsers: DebouncedFunc<(query: string) => void> =
+        useCallback(debounce((query: string) => {
+            setUsernameInputValue(!isEmpty(query) ? query : "");
+        }, 1000), []);
+
     const handleAddExitingUser = (values: AddExistingUserWizardFormValuesInterface): void => {
         assignAdministratorRoles(
             values?.username?.user,
-            values?.roles?.map((role: any) => role.role),
-            (error: AxiosError) => {
+            values?.roles?.map((role: RoleOptionsInterface) => role.role),
+            (error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (!error.response || error.response.status === 401) {
                     setAlert({
                         description: t("users:notifications.addUser.error.description"),
@@ -184,7 +192,7 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
             username: undefined
         };
 
-        if (!values.username) {
+        if (!values.username || !values.username.user) {
             errors.username = "Username is a required field";
         }
 
@@ -242,13 +250,38 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
                                     }
                                     placeholder="Select a user"
                                     component={ AutocompleteFieldAdapter }
-                                    options={ usernameAutocompleteOptions }
-                                    filterOptions={ (x: any) => x } // disables client-side filtering
+                                    options={ [
+                                        ...usernameAutocompleteOptions,
+                                        ...(isNextPageAvailable && !isEmpty(usernameAutocompleteOptions) ? [ {
+                                            key: ConsoleAdministratorOnboardingConstants.MORE_ITEMS,
+                                            label: t("consoleSettings:administrators.add.wizard.users.moreItemsMessage")
+                                        } ] : [])
+                                    ] }
+                                    filterOptions={ (users: UserOptionsInterface[]) => users }
                                     loading={ isAdministratorsListFetchRequestLoading }
                                     openOnFocus
-                                    inputValue={ usernameInputValue }
-                                    onInputChange={ (_event: any, value: string) => {
-                                        setUsernameInputValue(value);
+                                    onInputChange={ (_event: SyntheticEvent, value: string) => {
+                                        searchUsers(value);
+                                    } }
+                                    renderOption={ (props: ListItemProps, option: UserOptionsInterface) => {
+                                        if (option.key === ConsoleAdministratorOnboardingConstants.MORE_ITEMS) {
+                                            return (
+                                                <li
+                                                    { ...props }
+                                                    className="MuiAutocomplete-moreItemsAvailableMessage"
+                                                    key={ option.key }
+                                                    onClick={ undefined }
+                                                >
+                                                    { option.label }
+                                                </li>
+                                            );
+                                        }
+
+                                        return (
+                                            <li { ...props }>
+                                                { option.label }
+                                            </li>
+                                        );
                                     } }
                                 />
                                 <FinalFormField

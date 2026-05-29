@@ -32,7 +32,7 @@ export interface OrganizationInterface {
 /**
  * Interface to store data for the email object.
  */
-export interface EmailObject {
+interface EmailObject {
   type?: string;
   primary?: boolean;
   value: string;

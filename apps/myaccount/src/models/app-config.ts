@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -56,6 +56,10 @@ export interface FeatureConfigInterface {
      * Pending operation tasks feature.
      */
     operations?: FeatureAccessConfigInterface;
+    /**
+     * Consents management feature.
+     */
+    consents?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -80,12 +84,13 @@ export interface ServiceResourceEndpointsInterface {
     jwks: string;
     logout: string;
     me: string;
-    mfaEnabledAuthenticators: string
+    mfaEnabledAuthenticators: string;
+    passwordChange: string;
     preference: string;
     profileSchemas: string;
     push: string;
     sessions: string;
-    smsOtpValidate: string;
+    otpCodeValidate: string;
     token: string;
     totp: string;
     totpSecret: string;
@@ -123,13 +128,20 @@ export interface ServiceResourceEndpointsInterface {
      * from server configurations.
      * @see fetchHomeRealmIdentifiers to see the usages.
      */
+    /**
+     * Endpoints for the Consent Management v2.0 API.
+     */
+    consentMgtV2: {
+        consents: string;
+    };
+
     homeRealmIdentifiers: string;
 }
 
 /**
  * Authenticator app interface.
  */
-export interface AuthenticatorAppInterface {
+interface AuthenticatorAppInterface {
     link: string;
     name: string;
 }
@@ -137,7 +149,7 @@ export interface AuthenticatorAppInterface {
 /**
  * Dev portal UI config interface.
  */
-export interface UIConfigInterface extends CommonUIConfigInterface {
+export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfigInterface> {
     /**
      * Copyright text for the footer.
      */
@@ -235,7 +247,7 @@ export interface AppUtilsInterface {
     updateTenantQualifiedBaseName: (tenant: string) => void;
 }
 
-export interface InitialConfigInterface {
+interface InitialConfigInterface {
     consoleAppOrigin: string;
     contextPath: string;
     serverOrigin: string;

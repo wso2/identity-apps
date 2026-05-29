@@ -35,7 +35,7 @@ import { FlowsHistoryInterface } from "../../models/flows";
 /**
  * Props interface of {@link VersionHistoryPanel}
  */
-export type VersionHistoryPanelPropsInterface = DrawerProps &
+type VersionHistoryPanelPropsInterface = DrawerProps &
     IdentifiableComponentInterface &
     HTMLAttributes<HTMLDivElement>;
 

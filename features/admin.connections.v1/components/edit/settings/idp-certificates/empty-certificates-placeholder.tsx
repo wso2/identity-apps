@@ -35,7 +35,7 @@ const AUTH_PROV_PLACEHOLDER_EMPTY_I18N_KEY: string = "authenticationProvider:" +
 /**
  * Props interface of {@link EmptyCertificatesPlaceholder}
  */
-export interface EmptyCertificatesPlaceholderProps extends IdentifiableComponentInterface {
+interface EmptyCertificatesPlaceholderProps extends IdentifiableComponentInterface {
     onAddCertificateClicked: () => void;
 }
 

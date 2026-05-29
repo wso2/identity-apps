@@ -28,6 +28,7 @@ import {
     ChildRouteInterface,
     RouteInterface
 } from "@wso2is/core/models";
+
 import { initializeAlertSystem } from "@wso2is/core/store";
 import {
     RouteUtils as CommonRouteUtils,
@@ -66,7 +67,8 @@ import { Header, ProtectedRoute } from "../components";
 import { SystemNotificationAlert } from "../components/shared/system-notification-alert";
 import { getDashboardLayoutRoutes, getEmptyPlaceholderIllustrations } from "../configs";
 import { AppConstants, UIConstants } from "../constants";
-import { history, isApprovalsTabEnabled } from "../helpers";
+import { commonConfig } from "../extensions";
+import { history, isApprovalsTabEnabled, resolveUserstore } from "../helpers";
 import { Application, AuthStateInterface, ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
 import { toggleApplicationsPageVisibility } from "../store/actions";
@@ -75,7 +77,7 @@ import { AppUtils, CommonUtils as MyAccountCommonUtils, filterRoutes } from "../
 /**
  * Dashboard page layout component Prop types.
  */
-export interface DashboardLayoutPropsInterface {
+interface DashboardLayoutPropsInterface {
     /**
      * Is layout fluid.
      */
@@ -115,6 +117,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
     const [ dashboardLayoutRoutes, setDashboardLayoutRoutes ] = useState<RouteInterface[]>([]);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
+    const hasLocalAccount: boolean = useSelector((state: AppState) => state.authenticationInformation.hasLocalAccount);
 
     useEffect(() => {
         const localeCookie: string = CookieStorageUtils.getItem("ui_lang");
@@ -217,6 +220,16 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
             } else if (route.path === AppConstants.getPaths().get("APPROVALS")
                 && !isApprovalsTabEnabled(profileDetails?.profileInfo?.userName)) {
                 return false;
+            } else if (route.path === AppConstants.getPaths().get("CONSENTS")) {
+                const userstore: string = profileDetails?.profileInfo?.userName
+                    ? resolveUserstore(profileDetails.profileInfo.userName)
+                    : null;
+
+                if (!config?.ui?.features?.consents?.enabled
+                    || !hasLocalAccount
+                    || !commonConfig.utils.isManageConsentAllowedForUser(userstore)) {
+                    return false;
+                }
             }
 
             return route;

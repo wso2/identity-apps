@@ -32,7 +32,7 @@ import { Icon } from "semantic-ui-react";
 /**
  * Props interface of {@link AdminNotice}
  */
-export interface AdminNoticeProps extends IdentifiableComponentInterface {
+interface AdminNoticeProps extends IdentifiableComponentInterface {
 
     /**
      * Title of the notice.

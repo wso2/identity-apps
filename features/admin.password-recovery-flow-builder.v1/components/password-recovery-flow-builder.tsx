@@ -24,7 +24,7 @@ import PasswordRecoveryFlowBuilderCore from "./password-recovery-flow-builder-co
 /**
  * Props interface of {@link PasswordRecoveryFlowBuilder}
  */
-export type PasswordRecoveryFlowBuilderPropsInterface = IdentifiableComponentInterface;
+type PasswordRecoveryFlowBuilderPropsInterface = IdentifiableComponentInterface;
 
 /**
  * Entry point for the password recovery flow builder decorated with the necessary providers.

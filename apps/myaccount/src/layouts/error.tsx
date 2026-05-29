@@ -27,7 +27,7 @@ import { AppConstants } from "../constants";
 /**
  * Error layout Prop types.
  */
-export interface ErrorLayoutPropsInterface {
+interface ErrorLayoutPropsInterface {
     /**
      * Is layout fluid.
      */

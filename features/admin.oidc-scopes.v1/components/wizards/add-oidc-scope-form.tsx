@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Wizard, WizardPage } from "@wso2is/form";
+import { Field, Wizard, WizardPage } from "@wso2is/forms";
 import React, { FormEvent, FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useOIDCScopesList } from "../../api/oidc-scopes";

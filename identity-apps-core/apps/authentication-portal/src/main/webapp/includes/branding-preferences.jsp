@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,8 @@
 <%@ page import="java.util.HashMap" %>
 <%@ page import="org.json.JSONObject" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.wso2.carbon.base.ServerConfiguration" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityCoreConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.BrandingPreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.BrandingPreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
@@ -218,6 +220,7 @@
     String logoURL = "";
     String logoAlt = "";
     String faviconURL = "libs/themes/wso2is/assets/images/branding/favicon.ico";
+    String proxyContextPath = ServerConfiguration.getInstance().getFirstProperty(IdentityCoreConstants.PROXY_CONTEXT_PATH);
     String privacyPolicyURL = "/authenticationendpoint/privacy_policy.do";
     String termsOfUseURL = "https://wso2.com/terms-of-use/";
     String cookiePolicyURL = "/authenticationendpoint/cookie_policy.do";
@@ -239,6 +242,12 @@
     String htmlContent = null;
     String cssContent = null;
     String jsContent = null;
+
+    // Prefix proxy context path, if it is defined.
+    if (!StringUtils.isBlank(proxyContextPath)) {
+        privacyPolicyURL = "/" + proxyContextPath + privacyPolicyURL;
+        cookiePolicyURL = "/" + proxyContextPath + cookiePolicyURL;
+    }
 
     final String BRANDING_PREFERENCE_CACHE_KEY = "BrandingPreferenceCache";
     final String BRANDING_TEXT_PREFERENCE_CACHE_KEY = "BrandingTextPreferenceCache";
@@ -405,7 +414,7 @@
         if (overrideFallbackValues.containsKey(COOKIE_POLICY_URL_KEY)) {
             cookiePolicyURL = (String) overrideFallbackValues.get(COOKIE_POLICY_URL_KEY);
         }
-        
+
         if (overrideFallbackValues.containsKey(SELF_SIGN_UP_URL_KEY)) {
             selfSignUpOverrideURL = (String) overrideFallbackValues.get(SELF_SIGN_UP_URL_KEY);
         }
@@ -762,7 +771,7 @@
                             selfSignUpOverrideURL = selfSignUpURLInput;
                         }
                     }
-                    
+
                     if (brandingPreference.getJSONObject(URLS_KEY).has(PASSWORD_RECOVERY_URL_KEY)) {
                         String passwordRecoveryURLInput = brandingPreference.getJSONObject(URLS_KEY).getString(PASSWORD_RECOVERY_URL_KEY);
                         if (!StringUtils.isBlank(passwordRecoveryURLInput) && !passwordRecoveryURLInput.toLowerCase().contains("javascript:") &&

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -72,6 +72,7 @@ interface AssignEntityToRole {
             };
             actions: {
                 search: {
+                    moreItemsMessage: string;
                     placeholder: string;
                 };
                 assign: {
@@ -451,6 +452,12 @@ export interface rolesNS {
         };
     };
     notifications: {
+        apiLimitReachedError: {
+            error: {
+                message: string;
+                description: string;
+            };
+        };
         createRolePendingApproval: {
             success: {
                 description: string;
@@ -524,6 +531,14 @@ export interface rolesNS {
                 message: string;
                 description: string;
             };
+        };
+        tierLimitReachedError: {
+            emptyPlaceholder: {
+                action: string;
+                title: string;
+                subtitles: string;
+            };
+            heading: string;
         };
     };
 }

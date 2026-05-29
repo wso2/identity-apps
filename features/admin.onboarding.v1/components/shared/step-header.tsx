@@ -20,20 +20,20 @@ import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode } from "react";
 
 /**
  * Props interface for StepHeader component.
  */
-export interface StepHeaderPropsInterface extends IdentifiableComponentInterface {
+interface StepHeaderPropsInterface extends IdentifiableComponentInterface {
     /**
      * Optional subtitle/description text.
      */
-    subtitle?: string;
+    subtitle?: ReactNode;
     /**
-     * Main heading text.
+     * Main heading text. Accepts ReactNode to allow inline styled fragments.
      */
-    title: string;
+    title: ReactNode;
 }
 
 /**
@@ -52,7 +52,7 @@ const StepHeaderContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }
 const Title: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
     color: theme.palette.text.primary,
     fontSize: "28px",
-    fontWeight: 600,
+    fontWeight: 700,
     lineHeight: 1.3
 }));
 

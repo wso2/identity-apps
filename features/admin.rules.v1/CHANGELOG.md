@@ -1,5 +1,440 @@
 # @wso2is/admin.rules.v1
 
+## 0.7.50
+
+### Patch Changes
+
+- [#10219](https://github.com/wso2/identity-apps/pull/10219) [`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove duplicate exports
+
+- Updated dependencies [[`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c)]:
+  - @wso2is/admin.roles.v2@2.27.381
+  - @wso2is/admin.core.v1@2.57.6
+
+## 0.7.49
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.57.1
+  - @wso2is/admin.roles.v2@2.27.380
+
+## 0.7.48
+
+### Patch Changes
+
+- Updated dependencies [[`13a622370c3a3aaa07dadd0bec22ceb9ff486fea`](https://github.com/wso2/identity-apps/commit/13a622370c3a3aaa07dadd0bec22ceb9ff486fea)]:
+  - @wso2is/admin.extensions.v1@2.43.0
+  - @wso2is/admin.core.v1@2.57.0
+  - @wso2is/core@2.13.0
+  - @wso2is/admin.roles.v2@2.27.379
+
+## 0.7.47
+
+### Patch Changes
+
+- Updated dependencies [[`e12a7d52749596d3728c79b33ae7763e81b90e13`](https://github.com/wso2/identity-apps/commit/e12a7d52749596d3728c79b33ae7763e81b90e13)]:
+  - @wso2is/admin.extensions.v1@2.42.1
+  - @wso2is/admin.core.v1@2.56.1
+  - @wso2is/admin.roles.v2@2.27.378
+
+## 0.7.46
+
+### Patch Changes
+
+- Updated dependencies [[`793c5bde494bdde069a0fbc0b5311d279938ceb9`](https://github.com/wso2/identity-apps/commit/793c5bde494bdde069a0fbc0b5311d279938ceb9)]:
+  - @wso2is/admin.extensions.v1@2.42.0
+  - @wso2is/admin.core.v1@2.56.0
+  - @wso2is/admin.roles.v2@2.27.377
+
+## 0.7.45
+
+### Patch Changes
+
+- Updated dependencies [[`dd01f38682fd189b94802e06b3473a312c1bf7b1`](https://github.com/wso2/identity-apps/commit/dd01f38682fd189b94802e06b3473a312c1bf7b1)]:
+  - @wso2is/admin.extensions.v1@2.41.4
+  - @wso2is/admin.core.v1@2.55.29
+  - @wso2is/admin.roles.v2@2.27.376
+
+## 0.7.44
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.28
+  - @wso2is/admin.roles.v2@2.27.375
+
+## 0.7.43
+
+### Patch Changes
+
+- Updated dependencies [[`a27ac0c8a6d65ac6995b5a70db973a14b32fdcfe`](https://github.com/wso2/identity-apps/commit/a27ac0c8a6d65ac6995b5a70db973a14b32fdcfe), [`c308be01f69c5ffd4d0b057a59a3a6e42292759e`](https://github.com/wso2/identity-apps/commit/c308be01f69c5ffd4d0b057a59a3a6e42292759e)]:
+  - @wso2is/admin.extensions.v1@2.41.3
+  - @wso2is/admin.core.v1@2.55.27
+  - @wso2is/admin.roles.v2@2.27.374
+
+## 0.7.42
+
+### Patch Changes
+
+- Updated dependencies [[`95c89b5e1111586c0cecd491f109d8aab83ad3ee`](https://github.com/wso2/identity-apps/commit/95c89b5e1111586c0cecd491f109d8aab83ad3ee)]:
+  - @wso2is/admin.extensions.v1@2.41.2
+  - @wso2is/admin.core.v1@2.55.26
+  - @wso2is/admin.roles.v2@2.27.373
+
+## 0.7.41
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.25
+  - @wso2is/admin.roles.v2@2.27.372
+
+## 0.7.40
+
+### Patch Changes
+
+- Updated dependencies [[`6329078211fe3b24fef775b888f4d54a56eca0b2`](https://github.com/wso2/identity-apps/commit/6329078211fe3b24fef775b888f4d54a56eca0b2)]:
+  - @wso2is/admin.extensions.v1@2.41.1
+  - @wso2is/admin.core.v1@2.55.24
+  - @wso2is/admin.roles.v2@2.27.371
+
+## 0.7.39
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.23
+  - @wso2is/admin.roles.v2@2.27.370
+
+## 0.7.38
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.22
+  - @wso2is/admin.roles.v2@2.27.369
+
+## 0.7.37
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.21
+  - @wso2is/admin.roles.v2@2.27.368
+
+## 0.7.36
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.20
+  - @wso2is/admin.roles.v2@2.27.367
+
+## 0.7.35
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.19
+  - @wso2is/admin.roles.v2@2.27.366
+
+## 0.7.34
+
+### Patch Changes
+
+- Updated dependencies [[`bcb014a1f88998b61d27632549c6e1f7a2f69811`](https://github.com/wso2/identity-apps/commit/bcb014a1f88998b61d27632549c6e1f7a2f69811)]:
+  - @wso2is/core@2.12.13
+  - @wso2is/admin.core.v1@2.55.18
+  - @wso2is/admin.roles.v2@2.27.365
+
+## 0.7.33
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.17
+  - @wso2is/admin.roles.v2@2.27.364
+
+## 0.7.32
+
+### Patch Changes
+
+- Updated dependencies [[`5066889ff2e1a7d789c05218c822d1df271148da`](https://github.com/wso2/identity-apps/commit/5066889ff2e1a7d789c05218c822d1df271148da)]:
+  - @wso2is/admin.core.v1@2.55.16
+  - @wso2is/admin.roles.v2@2.27.363
+
+## 0.7.31
+
+### Patch Changes
+
+- Updated dependencies [[`61cd356ee61eaf81e40f4a7118c1af7a66438361`](https://github.com/wso2/identity-apps/commit/61cd356ee61eaf81e40f4a7118c1af7a66438361)]:
+  - @wso2is/core@2.12.11
+  - @wso2is/admin.core.v1@2.55.15
+  - @wso2is/admin.roles.v2@2.27.362
+
+## 0.7.30
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.14
+  - @wso2is/admin.roles.v2@2.27.361
+
+## 0.7.29
+
+### Patch Changes
+
+- Updated dependencies [[`6137b75af107167be60698614ceacb2bed1216df`](https://github.com/wso2/identity-apps/commit/6137b75af107167be60698614ceacb2bed1216df)]:
+  - @wso2is/admin.core.v1@2.55.13
+  - @wso2is/admin.roles.v2@2.27.360
+
+## 0.7.28
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.12
+  - @wso2is/admin.roles.v2@2.27.359
+
+## 0.7.27
+
+### Patch Changes
+
+- Updated dependencies [[`aa063b32848f472383119a186e27477258f45706`](https://github.com/wso2/identity-apps/commit/aa063b32848f472383119a186e27477258f45706), [`5ee1f0f630cd3d02964bc6e2bd73d4819b1888be`](https://github.com/wso2/identity-apps/commit/5ee1f0f630cd3d02964bc6e2bd73d4819b1888be)]:
+  - @wso2is/admin.core.v1@2.55.11
+  - @wso2is/admin.extensions.v1@2.41.0
+  - @wso2is/admin.roles.v2@2.27.358
+
+## 0.7.26
+
+### Patch Changes
+
+- Updated dependencies [[`cb2c85f94d7386f073e2bec84983ce4bda891a02`](https://github.com/wso2/identity-apps/commit/cb2c85f94d7386f073e2bec84983ce4bda891a02), [`9bcec65e59f18eab653c3762ac41d4e61c45e4e9`](https://github.com/wso2/identity-apps/commit/9bcec65e59f18eab653c3762ac41d4e61c45e4e9)]:
+  - @wso2is/admin.extensions.v1@2.40.31
+  - @wso2is/admin.core.v1@2.55.10
+  - @wso2is/admin.roles.v2@2.27.357
+
+## 0.7.25
+
+### Patch Changes
+
+- Updated dependencies [[`cde90233b006536715b6d13fb0354e335a7caceb`](https://github.com/wso2/identity-apps/commit/cde90233b006536715b6d13fb0354e335a7caceb)]:
+  - @wso2is/admin.roles.v2@2.27.356
+  - @wso2is/admin.core.v1@2.55.9
+
+## 0.7.24
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.8
+  - @wso2is/admin.roles.v2@2.27.355
+
+## 0.7.23
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.7
+  - @wso2is/admin.roles.v2@2.27.354
+
+## 0.7.22
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.6
+  - @wso2is/admin.roles.v2@2.27.353
+
+## 0.7.21
+
+### Patch Changes
+
+- [#9809](https://github.com/wso2/identity-apps/pull/9809) [`41126304808de0c2e09081771c18c77e2b3236a1`](https://github.com/wso2/identity-apps/commit/41126304808de0c2e09081771c18c77e2b3236a1) Thanks [@nishagii](https://github.com/nishagii)! - Move approval workflow rule handlings to workflow module from rule module
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.5
+  - @wso2is/admin.roles.v2@2.27.352
+
+## 0.7.20
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.4
+  - @wso2is/admin.roles.v2@2.27.351
+
+## 0.7.19
+
+### Patch Changes
+
+- [#9875](https://github.com/wso2/identity-apps/pull/9875) [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - Revert Axios and SDK version bumps
+
+- Updated dependencies [[`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d)]:
+  - @wso2is/admin.extensions.v1@2.40.30
+  - @wso2is/admin.roles.v2@2.27.350
+  - @wso2is/admin.core.v1@2.55.3
+  - @wso2is/core@2.12.10
+
+## 0.7.18
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.2
+  - @wso2is/admin.roles.v2@2.27.349
+
+## 0.7.17
+
+### Patch Changes
+
+- Updated dependencies [[`410f5901427656fae17dd31db77efe138f111b9f`](https://github.com/wso2/identity-apps/commit/410f5901427656fae17dd31db77efe138f111b9f)]:
+  - @wso2is/admin.core.v1@2.55.1
+  - @wso2is/admin.roles.v2@2.27.348
+
+## 0.7.16
+
+### Patch Changes
+
+- Updated dependencies [[`889ba146a770d03968eed6bd8ecdf9b2f41df5e4`](https://github.com/wso2/identity-apps/commit/889ba146a770d03968eed6bd8ecdf9b2f41df5e4)]:
+  - @wso2is/admin.core.v1@2.55.0
+  - @wso2is/admin.roles.v2@2.27.347
+
+## 0.7.15
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.32
+  - @wso2is/admin.roles.v2@2.27.346
+
+## 0.7.14
+
+### Patch Changes
+
+- Updated dependencies [[`2cad6ed902817e50e522628726732802503f5893`](https://github.com/wso2/identity-apps/commit/2cad6ed902817e50e522628726732802503f5893)]:
+  - @wso2is/admin.core.v1@2.54.31
+  - @wso2is/core@2.12.9
+  - @wso2is/admin.roles.v2@2.27.345
+
+## 0.7.13
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.30
+  - @wso2is/admin.roles.v2@2.27.344
+
+## 0.7.12
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.29
+  - @wso2is/admin.roles.v2@2.27.343
+
+## 0.7.11
+
+### Patch Changes
+
+- Updated dependencies [[`193f2c8597147db88fdb7ff21bf39bcadcbdab89`](https://github.com/wso2/identity-apps/commit/193f2c8597147db88fdb7ff21bf39bcadcbdab89)]:
+  - @wso2is/admin.extensions.v1@2.40.29
+  - @wso2is/admin.core.v1@2.54.28
+  - @wso2is/admin.roles.v2@2.27.342
+
+## 0.7.10
+
+### Patch Changes
+
+- Updated dependencies [[`d017740b584334c955953a9a8c99608040decd9c`](https://github.com/wso2/identity-apps/commit/d017740b584334c955953a9a8c99608040decd9c)]:
+  - @wso2is/admin.core.v1@2.54.27
+  - @wso2is/admin.roles.v2@2.27.341
+
+## 0.7.9
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.26
+  - @wso2is/admin.roles.v2@2.27.340
+
+## 0.7.8
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.25
+  - @wso2is/admin.roles.v2@2.27.339
+
+## 0.7.7
+
+### Patch Changes
+
+- Updated dependencies [[`6142c1c56cb418e81d34da5e937c9c37675f937c`](https://github.com/wso2/identity-apps/commit/6142c1c56cb418e81d34da5e937c9c37675f937c)]:
+  - @wso2is/admin.core.v1@2.54.24
+  - @wso2is/admin.roles.v2@2.27.338
+
+## 0.7.6
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.23
+  - @wso2is/admin.roles.v2@2.27.337
+
+## 0.7.5
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.22
+  - @wso2is/admin.roles.v2@2.27.336
+
+## 0.7.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.21
+  - @wso2is/admin.roles.v2@2.27.335
+
+## 0.7.3
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.20
+  - @wso2is/admin.roles.v2@2.27.334
+
+## 0.7.2
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.19
+  - @wso2is/admin.roles.v2@2.27.333
+
+## 0.7.1
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.18
+  - @wso2is/admin.roles.v2@2.27.332
+
+## 0.7.0
+
+### Minor Changes
+
+- [#9683](https://github.com/wso2/identity-apps/pull/9683) [`8f189290049855d403087514cbdc0b9ca2892ab8`](https://github.com/wso2/identity-apps/commit/8f189290049855d403087514cbdc0b9ca2892ab8) Thanks [@nishagii](https://github.com/nishagii)! - Add rule based engaging support for approval workflows
+
+### Patch Changes
+
+- Updated dependencies [[`98be11798211c36636778c925819b578d4fbeabd`](https://github.com/wso2/identity-apps/commit/98be11798211c36636778c925819b578d4fbeabd), [`8f189290049855d403087514cbdc0b9ca2892ab8`](https://github.com/wso2/identity-apps/commit/8f189290049855d403087514cbdc0b9ca2892ab8)]:
+  - @wso2is/admin.extensions.v1@2.40.28
+  - @wso2is/admin.core.v1@2.54.17
+  - @wso2is/admin.roles.v2@2.27.331
+
 ## 0.6.1
 
 ### Patch Changes

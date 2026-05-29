@@ -1025,6 +1025,20 @@ export interface AuthenticationProviderNS {
                 label: string;
                 infoMessage: string;
             };
+            idpGroupSyncMethod: {
+                hint: string;
+                label: string;
+                checkboxLabel: string;
+                children: {
+                    mergeWithExisting: string;
+                    overrideAll: string;
+                };
+            };
+            homeRealmIdentifier: {
+                hint: string;
+                label: string;
+                placeholder: string;
+            };
         };
         roleMapping: {
             heading: string;
@@ -1071,12 +1085,27 @@ export interface AuthenticationProviderNS {
                 content: string;
             };
         };
+        outboundProvisioningGroups: {
+            heading: string;
+            hint: string;
+            placeHolder: string;
+            label: string;
+            popup: {
+                content: string;
+            };
+        };
         certificateSection: {
             certificateEditSwitch: {
                 jwks: string;
                 pem: string;
+                samlMetadataUri: string;
             };
             noCertificateAlert: string;
+            samlMetadataUrl: {
+                hint: string;
+                label: string;
+                placeholder: string;
+            };
         };
     };
     helpPanel: {
@@ -1348,6 +1377,32 @@ export interface AuthenticationProviderNS {
             validation: {
                 name: string;
                 invalidName: string;
+            };
+            wizard: {
+                certificates: {
+                    heading: string;
+                    mode: {
+                        jwks: string;
+                        samlMetadataUri: string;
+                        pem: string;
+                    };
+                    jwksUrl: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    samlMetadataUri: {
+                        label: string;
+                        placeholder: string;
+                        hint: string;
+                    };
+                    pem: {
+                        hint: string;
+                        uploadButtonText: string;
+                        dropzoneText: string;
+                        pasteAreaPlaceholderText: string;
+                    };
+                };
             };
         };
         trustedTokenIssuer: {
@@ -1969,6 +2024,16 @@ export interface AuthenticationProviderNS {
                 description: string;
             };
         };
+        updateHomeRealmIdentifier: {
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
         updateOutboundProvisioningConnectors: {
             error: {
                 message: string;
@@ -2176,12 +2241,14 @@ export interface AuthenticationProviderNS {
             steps: {
                 connectorSelection: {
                     title: string;
+                    subTitle: string;
                     defaultSetup: {
                         title: string;
                         subTitle: string;
                     };
                 };
                 connectorConfiguration: {
+                    configureTitle: string;
                     title: string;
                 };
                 summary: {

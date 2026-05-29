@@ -24,7 +24,7 @@ import { Message, MessageProps } from "semantic-ui-react";
 /**
  * Proptypes for the confirmation modal message component.
  */
-export interface ConfirmationModalMessagePropsInterface extends MessageProps, IdentifiableComponentInterface,
+interface ConfirmationModalMessagePropsInterface extends MessageProps, IdentifiableComponentInterface,
     TestableComponentInterface {
 
     /**

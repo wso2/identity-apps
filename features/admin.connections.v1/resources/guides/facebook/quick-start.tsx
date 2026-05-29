@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,22 +18,17 @@
 
 import ApplicationSelectionModal from "@wso2is/admin.applications.v1/components/application-selection-modal";
 import {
-    ConnectionInterface,
-    ConnectionTemplateInterface
-} from "@wso2is/admin.connections.v1/models/connection";
-import {
     VerticalStepper,
     VerticalStepperStepInterface
-} from "@wso2is/admin.core.v1/components/vertical-stepper";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { TestableComponentInterface } from "@wso2is/core/models";
+} from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
+import {
+    IdentityProviderTemplateInterface
+} from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import Box from "@oxygen-ui/react/Box";
 import { GenericIcon, Heading, Link, PageHeader, Text } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { Grid } from "semantic-ui-react";
 import BuildLoginFlowStep01Illustration from "./assets/build-login-flow-01.png";
 import BuildLoginFlowStep02Illustration from "./assets/build-login-flow-02.png";
 import BuildLoginFlowStep03Illustration from "./assets/build-login-flow-03.png";
@@ -41,15 +36,11 @@ import BuildLoginFlowStep03Illustration from "./assets/build-login-flow-03.png";
 /**
  * Prop types of the component.
  */
-interface FacebookAuthenticatorQuickStartPropsInterface extends TestableComponentInterface {
-    /**
-     * Identity provider object.
-     */
-    identityProvider: ConnectionInterface;
+interface FacebookAuthenticatorQuickStartPropsInterface extends IdentifiableComponentInterface {
     /**
      * Identity provider template object.
      */
-    template: ConnectionTemplateInterface;
+    template: IdentityProviderTemplateInterface;
 }
 
 /**
@@ -64,20 +55,12 @@ const FacebookAuthenticatorQuickStart: FunctionComponent<FacebookAuthenticatorQu
 ): ReactElement => {
 
     const {
-        [ "data-testid" ]: testId
+        [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
 
     const [ showApplicationModal, setShowApplicationModal ] = useState<boolean>(false);
-
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
-
-    const isApplicationReadAccessAllowed: boolean = useMemo(() => (
-        hasRequiredScopes(
-            featureConfig?.applications, featureConfig?.applications?.scopes?.read, allowedScopes)
-    ), [ featureConfig, allowedScopes ]);
 
     /**
      * Vertical Stepper steps.
@@ -94,9 +77,8 @@ const FacebookAuthenticatorQuickStart: FunctionComponent<FacebookAuthenticatorQu
                                 "selectApplication.content"
                             }
                         >
-                            Choose the { isApplicationReadAccessAllowed ? (
-                                <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
-                                application </Link>) : "application" }
+                            Choose the <Link external={ false } onClick={ () => setShowApplicationModal(true) }>
+                            application </Link>
                             for which you want to set up Facebook login.
                         </Trans>
                     </Text>
@@ -112,13 +94,12 @@ const FacebookAuthenticatorQuickStart: FunctionComponent<FacebookAuthenticatorQu
                             i18nKey={ "extensions:develop.identityProviders.facebook.quickStart.steps." +
                             "selectDefaultConfig.content" }
                         >
-                            Go to <strong>Login Flow</strong> tab and click on the <strong>Add Sign In Option</strong>
-                            button inside the login box. And select a Facebook connection.
+                            Go to <strong>Login Flow</strong> tab and click on <strong>Start with default
+                            configuration</strong>.
                         </Trans>
                     </Text>
                     <GenericIcon inline transparent icon={ BuildLoginFlowStep01Illustration } size="huge"/>
                     <GenericIcon inline transparent icon={ BuildLoginFlowStep02Illustration } size="huge"/>
-                    <GenericIcon inline transparent icon={ BuildLoginFlowStep03Illustration } size="huge"/>
                 </>
             ),
             stepTitle: (
@@ -126,43 +107,55 @@ const FacebookAuthenticatorQuickStart: FunctionComponent<FacebookAuthenticatorQu
                     i18nKey={ "extensions:develop.identityProviders.facebook.quickStart.steps." +
                     "selectDefaultConfig.heading" }
                 >
-                    Add a <strong>Facebook</strong> connection
+                    Select <strong>Start with default configuration</strong>
                 </Trans>
             )
+        },
+        {
+            stepContent: (
+                <>
+                    <Text>
+                        <Trans
+                            i18nKey={ "extensions:develop.identityProviders.facebook.quickStart.steps." +
+                            "customizeFlow.content" }
+                        >
+                            Continue to configure the login flow as required.
+                        </Trans>
+                    </Text>
+                    <GenericIcon inline transparent icon={ BuildLoginFlowStep03Illustration } size="huge"/>
+                </>
+            ),
+            stepTitle: t("extensions:develop.identityProviders.facebook.quickStart.steps.customizeFlow.heading")
         }
     ];
 
     return (
         <>
-            <Grid data-testid={ testId } className="authenticator-quickstart-content">
-                <Grid.Row textAlign="left">
-                    <Grid.Column width={ 16 }>
-                        <PageHeader
-                            className="mb-2"
-                            title={ t("extensions:develop.identityProviders.facebook.quickStart.heading") }
-                            imageSpaced={ false }
-                            bottomMargin={ false }
-                        />
-                        <Heading subHeading as="h6">
-                            { t("extensions:develop.identityProviders.facebook.quickStart.subHeading") }
-                        </Heading>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row textAlign="left">
-                    <Grid.Column width={ 16 }>
-                        <VerticalStepper
-                            alwaysOpen
-                            isSidePanelOpen
-                            stepContent={ steps }
-                            isNextEnabled={ true }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+            <Box data-componentid={ componentId } className="authenticator-quickstart-content">
+                <Box textAlign="left">
+                    <PageHeader
+                        className="mb-2"
+                        title={ t("extensions:develop.identityProviders.facebook.quickStart.heading") }
+                        imageSpaced={ false }
+                        bottomMargin={ false }
+                    />
+                    <Heading subHeading as="h6">
+                        { t("extensions:develop.identityProviders.facebook.quickStart.subHeading") }
+                    </Heading>
+                </Box>
+                <Box mt={ 3 } textAlign="left">
+                    <VerticalStepper
+                        alwaysOpen
+                        isSidePanelOpen
+                        stepContent={ steps }
+                        isNextEnabled={ true }
+                    />
+                </Box>
+            </Box>
             {
                 showApplicationModal && (
                     <ApplicationSelectionModal
-                        data-testid={ `${ testId }-application-selection-modal` }
+                        data-componentid={ `${ componentId }-application-selection-modal` }
                         open={ showApplicationModal }
                         onClose={ () => setShowApplicationModal(false) }
                         heading={
@@ -182,7 +175,7 @@ const FacebookAuthenticatorQuickStart: FunctionComponent<FacebookAuthenticatorQu
  * Default props for the component
  */
 FacebookAuthenticatorQuickStart.defaultProps = {
-    "data-testid": "facebook-authenticator-quick-start"
+    "data-componentid": "facebook-authenticator-quick-start"
 };
 
 /**

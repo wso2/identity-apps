@@ -17,13 +17,12 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
-import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useRef } from "react";
 import { OnboardingComponentIds } from "../../constants";
 import { useNameValidation } from "../../hooks/use-onboarding-validation";
 import Hint from "../shared/hint";
-import { LeftColumn, TwoColumnLayout } from "../shared/onboarding-styles";
+import { LeftColumn, StyledTextField, TwoColumnLayout } from "../shared/onboarding-styles";
 import SelectableChip from "../shared/selectable-chip";
 import StepHeader from "../shared/step-header";
 
@@ -94,7 +93,7 @@ const NameApplicationStep: FunctionComponent<NameApplicationStepPropsInterface> 
                 />
 
                 <Box sx={ { display: "flex", flexDirection: "column", gap: 3, maxWidth: 600 } }>
-                    <TextField
+                    <StyledTextField
                         data-componentid={ `${componentId}-input` }
                         error={ hasError }
                         fullWidth

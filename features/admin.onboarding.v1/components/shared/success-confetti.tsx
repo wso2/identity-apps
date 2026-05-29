@@ -23,7 +23,7 @@ import React, { FunctionComponent, ReactElement, useMemo } from "react";
 /**
  * Props interface for SuccessConfetti component.
  */
-export interface SuccessConfettiPropsInterface extends IdentifiableComponentInterface {
+interface SuccessConfettiPropsInterface extends IdentifiableComponentInterface {
     /** Number of particles to generate */
     particleCount?: number;
     /** Primary color for particles */

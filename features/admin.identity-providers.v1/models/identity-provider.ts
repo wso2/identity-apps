@@ -64,7 +64,7 @@ export interface IdentityProviderInterface extends StrictIdentityProviderInterfa
     docLink?: string;
 }
 
-export interface IdentityProviderRolesInterface {
+interface IdentityProviderRolesInterface {
     mappings?: IdentityProviderRoleMappingInterface[];
     outboundProvisioningRoles?: string[];
 }
@@ -102,7 +102,7 @@ export interface IdentityProviderClaimInterface {
     displayName?: string;
 }
 
-export interface FederatedAuthenticatorMetaDataInterface {
+interface FederatedAuthenticatorMetaDataInterface {
     authenticatorId: string;
     description: string;
     icon: any;
@@ -132,7 +132,7 @@ export interface FederatedAuthenticatorWithMetaInterface {
     data?: FederatedAuthenticatorInterface;
 }
 
-export interface FederatedAuthenticatorListResponseInterface {
+interface FederatedAuthenticatorListResponseInterface {
     defaultAuthenticatorId?: string;
     authenticators?: FederatedAuthenticatorListItemInterface[];
 }
@@ -146,7 +146,7 @@ export interface FederatedAuthenticatorMetaInterface extends CommonPluggableComp
 /**
  * Captures the Identity provider details.
  */
-export interface IdentityProviderResponseInterface {
+interface IdentityProviderResponseInterface {
     id?: string;
     name?: string;
     image?: string;
@@ -227,12 +227,6 @@ export interface IdentityProviderTemplateListItemInterface extends IdentityProvi
  * @readonly
  */
 export enum SupportedAuthenticators {
-    NONE = "none",
-    APPLE = "AppleOIDCAuthenticator",
-    FACEBOOK = "FacebookAuthenticator",
-    GOOGLE = "GoogleOIDCAuthenticator",
-    TWITTER = "TwitterAuthenticator",
-    MICROSOFT= "MicrosoftAuthenticator",
     OIDC = "OpenIDConnectAuthenticator",
     SAML = "SAMLSSOAuthenticator"
 }
@@ -256,12 +250,12 @@ export enum SupportedJITProvisioningSchemes {
     PROMPT_USERNAME_PASSWORD_CONSENT = "PROMPT_USERNAME_PASSWORD_CONSENT"
 }
 
-export interface OutboundProvisioningConnectorsInterface {
+interface OutboundProvisioningConnectorsInterface {
     defaultConnectorId?: string;
     connectors?: OutboundProvisioningConnectorInterface[];
 }
 
-export interface OutboundProvisioningConnectorListItemInterface {
+interface OutboundProvisioningConnectorListItemInterface {
     connectorId?: string;
     name?: string;
     isEnabled?: boolean;
@@ -285,7 +279,7 @@ export interface OutboundProvisioningConnectorMetaInterface extends CommonPlugga
     rulesEnabled?: boolean;
 }
 
-export interface OutboundProvisioningConnectorWithMetaInterface {
+interface OutboundProvisioningConnectorWithMetaInterface {
     id?: string;
     meta?: FederatedAuthenticatorMetaInterface;
     data?: FederatedAuthenticatorInterface;
@@ -312,7 +306,7 @@ export interface CommonPluggableComponentInterface {
     properties?: CommonPluggableComponentPropertyInterface[];
 }
 
-export interface CommonPluggableComponentMetaInterface {
+interface CommonPluggableComponentMetaInterface {
     properties?: CommonPluggableComponentMetaPropertyInterface[];
 }
 
@@ -380,7 +374,7 @@ export enum AuthenticatorSettingsFormModes {
 /**
  * Identity provider supported services interface.
  */
-export interface SupportedServicesInterface {
+interface SupportedServicesInterface {
     name: string;
     displayName: string;
     /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -402,7 +396,7 @@ export enum SupportedServices {
  *
  * @readonly
  */
-export enum SupportedIdentityProviderTemplateCategories {
+enum SupportedIdentityProviderTemplateCategories {
     QUICK_START = "quick_start"
 }
 
@@ -419,7 +413,7 @@ export interface IdentityProviderReducerStateInterface {
 /**
  * Interface for the identity provider meta for the redux store.
  */
-export interface IdentityProviderMetaInterface {
+interface IdentityProviderMetaInterface {
     authenticators: FederatedAuthenticatorListItemInterface[];
 }
 
@@ -471,7 +465,7 @@ export interface LocalAuthenticatorInterface extends CommonPluggableComponentInt
 /**
  * Interface for Multi-factor Authenticators.
  */
-export type MultiFactorAuthenticatorInterface = GovernanceConnectorInterface;
+type MultiFactorAuthenticatorInterface = GovernanceConnectorInterface;
 
 /**
  * Generic interface for authenticators local/federated.
@@ -519,7 +513,7 @@ export interface GenericAuthenticatorInterface extends StrictGenericAuthenticato
 /**
  * Interface  for strict attributes for the generic authenticator.
  */
-export interface StrictGenericAuthenticatorInterface {
+interface StrictGenericAuthenticatorInterface {
     /**
      * ID of the local authenticator.
      */
@@ -537,7 +531,7 @@ export interface StrictGenericAuthenticatorInterface {
 /**
  * Connected apps response of IDP
  */
-export interface ConnectedAppsInterface {
+interface ConnectedAppsInterface {
     totalResults?: number;
     startIndex?: number;
     count?: number;
@@ -548,7 +542,7 @@ export interface ConnectedAppsInterface {
 /**
  * Connected app details of IDP
  */
-export interface ConnectedAppInterface extends ApplicationBasicInterface{
+interface ConnectedAppInterface extends ApplicationBasicInterface{
     appId?: string;
     self?: string;
 }
@@ -636,7 +630,7 @@ export enum AuthenticatorCategories {
  *
  * @readonly
  */
-export enum AuthProtocolTypes {
+enum AuthProtocolTypes {
     SAML = "saml",
     OIDC = "oidc",
     WS_FEDERATION = "passive-sts",
@@ -648,7 +642,6 @@ export enum AuthProtocolTypes {
  * Enum for IdP Tab types
  */
 export enum IdentityProviderTabTypes {
-    GENERAL = "General",
     SETTINGS ="settings",
     USER_ATTRIBUTES = "user-attributes",
     ADVANCED = "advanced",
@@ -700,7 +693,7 @@ export interface  TrustedTokenIssuerWizardStepInterface {
 /**
  * Interface for from values of the connection general details step
  */
-export interface GeneralDetailsFormValuesInterface {
+interface GeneralDetailsFormValuesInterface {
     /**
      * Alias of the connection
      */
@@ -730,7 +723,7 @@ export interface GeneralDetailsFormValuesInterface {
 /**
  * Interface to capture the certificate details for certificate PATCH request.
  */
-export interface CertificatePatchRequestInterface {
+interface CertificatePatchRequestInterface {
     /**
      * The operation to be performed.
      */

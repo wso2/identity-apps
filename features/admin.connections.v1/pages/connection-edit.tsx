@@ -31,7 +31,9 @@ import {
 import { ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
 import ExtensionTemplatesProvider from "@wso2is/admin.template-core.v1/provider/extension-templates-provider";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
@@ -345,7 +347,9 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             identityProviderTemplate?.id ===
                 CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATOR ||
             identityProviderTemplate?.id ===
-                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATOR
+            CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATOR ||
+            identityProviderTemplate?.id ===
+            CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OUTBOUND_PROVISIONING_CONNECTION
         ) {
             return;
         }
@@ -371,7 +375,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             .then((response: any) => {
                 setConnectionSettings(response);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 handleGetConnectionsMetaDataError(error);
             })
             .finally(() => {

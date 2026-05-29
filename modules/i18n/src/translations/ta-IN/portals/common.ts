@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -139,6 +139,9 @@ export const common: CommonNS = {
             selfRegistration: "சுய பதிவு",
             unassignedUsersDeleted: "ஒதுக்கப்படாத பயனர்/கள் நீக்கப்பட்டுள்ளன."
         },
+        search: {
+            placeholder: "கோரிக்கை ஐடி மூலம் தேடு"
+        },
         subTitle: "உங்கள் அங்கீகாரத்தைத் தேவைப்படும் செயல்பாட்டு பணிகளைப் பரிசீலிக்கவும்",
         title: "அனுமதிகள்"
     },
@@ -174,6 +177,7 @@ export const common: CommonNS = {
     completed: "பூரணப்படுத்தப்பட்டவை",
     configure: "கட்டமை",
     confirm: "உறுதிப்படுத்தவும்",
+    consents: "சம்மதங்கள்",
     contains: "கொண்டுள்ளது",
     continue: "தொடர்",
     copied: "நகலெடுக்கப்பட்டது!",
@@ -182,6 +186,7 @@ export const common: CommonNS = {
     createdOn: "உருவாக்கப்பட்ட தினம்",
     dangerZone: "ஆபத்து மண்டலம்",
     darkMode: "இருண்ட தீம்",
+    default: "இயல்புநிலை",
     delete: "அழி",
     deprecated: "இந்த கட்டமைப்பு பழமையானது மற்றும் எதிர்கால வெளியீட்டில் நீக்கப்படும்.",
     description: "விபரம்",

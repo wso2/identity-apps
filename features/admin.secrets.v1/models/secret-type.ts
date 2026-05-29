@@ -32,14 +32,14 @@ export interface SecretTypeModel {
     description: string;
 }
 
-export type CreateSecretTypeRequestModel = {
+type CreateSecretTypeRequestModel = {
     body: {
         name: string;
         description: string;
     }
 };
 
-export type UpdateSecretTypeRequestModel = {
+type UpdateSecretTypeRequestModel = {
     body: {
         description: string;
     },
@@ -48,20 +48,20 @@ export type UpdateSecretTypeRequestModel = {
     }
 };
 
-export type GetSecretTypeRequestModel = {
+type GetSecretTypeRequestModel = {
     params: {
         secretType: string;
     }
 };
 
-export type DeleteSecretTypeRequestModel = {
+type DeleteSecretTypeRequestModel = {
     params: {
         secretType: string;
     }
 };
 
-export type CreateSecretTypeResponseModel = SecretTypeModel;
+type CreateSecretTypeResponseModel = SecretTypeModel;
 
-export type GetSecretTypeResponseModel = SecretTypeModel;
+type GetSecretTypeResponseModel = SecretTypeModel;
 
-export type UpdateSecretTypeResponseModel = SecretTypeModel;
+type UpdateSecretTypeResponseModel = SecretTypeModel;

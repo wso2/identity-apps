@@ -27,7 +27,7 @@ import { Card, CardProps, Dimmer } from "semantic-ui-react";
 /**
  * Proptypes for the selection card component.
  */
-export interface ProtocolCardPropsInterface extends Omit<CardProps, "image">, TestableComponentInterface {
+interface ProtocolCardPropsInterface extends Omit<CardProps, "image">, TestableComponentInterface {
     /**
      * Is card disabled.
      */
@@ -67,7 +67,7 @@ export interface ProtocolCardPropsInterface extends Omit<CardProps, "image">, Te
 /**
  * Proptypes for Container Styles.
  */
-export interface ImageContainerStylesPropsInterface {
+interface ImageContainerStylesPropsInterface {
     opacity: number;
 }
 

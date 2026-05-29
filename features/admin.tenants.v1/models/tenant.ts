@@ -21,7 +21,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 /**
  * Interface to capture details of new tenant
  */
-export interface NewTenantInfo {
+interface NewTenantInfo {
     domain: string;
 }
 

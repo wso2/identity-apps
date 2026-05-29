@@ -1,5 +1,69 @@
 # @wso2is/admin.provisioning.v1
 
+## 2.25.210
+
+### Patch Changes
+
+- [#10197](https://github.com/wso2/identity-apps/pull/10197) [`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dependencies
+
+- Updated dependencies [[`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423)]:
+  - @wso2is/admin.identity-providers.v1@2.27.4
+  - @wso2is/admin.applications.v1@2.42.23
+  - @wso2is/admin.connections.v1@2.37.2
+  - @wso2is/admin.core.v1@2.57.3
+
+## 2.25.209
+
+### Patch Changes
+
+- [#9865](https://github.com/wso2/identity-apps/pull/9865) [`5a62bf34efb3c3ce8037c7aefb8dd2bb514148e6`](https://github.com/wso2/identity-apps/commit/5a62bf34efb3c3ce8037c7aefb8dd2bb514148e6) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Update outbound provisioning connector
+
+- Updated dependencies [[`4fafdda888701e42fb3bb19678a5ac5fb7711ff9`](https://github.com/wso2/identity-apps/commit/4fafdda888701e42fb3bb19678a5ac5fb7711ff9), [`51d4c127b2aae10e8dbf5d16800fbd20f562458b`](https://github.com/wso2/identity-apps/commit/51d4c127b2aae10e8dbf5d16800fbd20f562458b)]:
+  - @wso2is/admin.applications.v1@2.41.33
+  - @wso2is/admin.connections.v1@2.36.25
+  - @wso2is/i18n@2.37.9
+  - @wso2is/admin.core.v1@2.55.8
+
+## 2.25.208
+
+### Patch Changes
+
+- [#9875](https://github.com/wso2/identity-apps/pull/9875) [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - Revert Axios and SDK version bumps
+
+- Updated dependencies [[`c834b18928cdfc09710c5e7067668206d006e68a`](https://github.com/wso2/identity-apps/commit/c834b18928cdfc09710c5e7067668206d006e68a), [`877d726905edf898c33c615cd887f8ed0a071a0e`](https://github.com/wso2/identity-apps/commit/877d726905edf898c33c615cd887f8ed0a071a0e), [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d), [`b75bb804c799c0e795e8580d35eedb8993d0ecc4`](https://github.com/wso2/identity-apps/commit/b75bb804c799c0e795e8580d35eedb8993d0ecc4)]:
+  - @wso2is/admin.applications.v1@2.41.28
+  - @wso2is/i18n@2.37.5
+  - @wso2is/admin.identity-providers.v1@2.27.3
+  - @wso2is/admin.connections.v1@2.36.20
+  - @wso2is/admin.core.v1@2.55.3
+  - @wso2is/access-control@3.5.3
+  - @wso2is/theme@2.9.5
+  - @wso2is/core@2.12.10
+  - @wso2is/form@2.10.1
+
+## 2.25.207
+
+### Patch Changes
+
+- [#9701](https://github.com/wso2/identity-apps/pull/9701) [`7da789c6ba254f3e6e66c63ebceb7e7108b151a8`](https://github.com/wso2/identity-apps/commit/7da789c6ba254f3e6e66c63ebceb7e7108b151a8) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Address outbound provisioning blocking mode issue.
+
+- Updated dependencies [[`7da789c6ba254f3e6e66c63ebceb7e7108b151a8`](https://github.com/wso2/identity-apps/commit/7da789c6ba254f3e6e66c63ebceb7e7108b151a8)]:
+  - @wso2is/admin.applications.v1@2.41.15
+  - @wso2is/admin.core.v1@2.54.10
+  - @wso2is/admin.connections.v1@2.35.12
+
+## 2.25.206
+
+### Patch Changes
+
+- [#9589](https://github.com/wso2/identity-apps/pull/9589) [`9c98499dd77a7ac7d4f30be22710342f4e000257`](https://github.com/wso2/identity-apps/commit/9c98499dd77a7ac7d4f30be22710342f4e000257) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Revamp outbound provisioning.
+
+- Updated dependencies [[`d034eb37fd3d1e9c16570d89bd01381303570be7`](https://github.com/wso2/identity-apps/commit/d034eb37fd3d1e9c16570d89bd01381303570be7), [`9c98499dd77a7ac7d4f30be22710342f4e000257`](https://github.com/wso2/identity-apps/commit/9c98499dd77a7ac7d4f30be22710342f4e000257)]:
+  - @wso2is/admin.core.v1@2.54.0
+  - @wso2is/admin.applications.v1@2.41.8
+  - @wso2is/admin.connections.v1@2.35.2
+  - @wso2is/i18n@2.34.2
+
 ## 2.25.205
 
 ### Patch Changes

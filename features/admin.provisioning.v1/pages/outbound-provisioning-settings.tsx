@@ -18,7 +18,11 @@
 
 import { useRequiredScopes } from "@wso2is/access-control";
 import { OutboundProvisioningConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
-import { OutboundProvisioningConnectorInterface } from "@wso2is/admin.connections.v1/models/connection";
+import { getOutboundProvisioningConnectorsMetaData } from "@wso2is/admin.connections.v1/components/meta/connectors";
+import {
+    OutboundProvisioningConnectorInterface,
+    OutboundProvisioningConnectorMetaDataInterface
+} from "@wso2is/admin.connections.v1/models/connection";
 import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components/authenticator-accordion";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -35,6 +39,7 @@ import React, {
     MouseEvent,
     ReactElement,
     useEffect,
+    useMemo,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -48,6 +53,16 @@ import {
 import { OutboundProvisioningConnectorDeleteWizard } from "../components/outbound-provisioning-connector-delete-wizard";
 import { OutboundProvisioningConnectorSetupForm } from "../components/outbound-provisioning-connector-setup-form";
 import { OutboundProvisioningConnectorSetupWizard } from "../components/outbound-provisioning-connector-setup-wizard";
+
+const resolveOutboundConnectorIcon = (
+    connectorName: string | undefined
+): string | undefined => {
+    return getOutboundProvisioningConnectorsMetaData()
+        ?.find(
+            (meta: OutboundProvisioningConnectorMetaDataInterface) =>
+                meta?.name?.toLowerCase() === connectorName?.toLowerCase()
+        )?.icon;
+};
 
 /**
  * Props interface of {@link OutboundProvisioningSettingsPage}
@@ -96,6 +111,15 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
     } = useIdentityProviderList(null, null, null, "provisioning");
 
     /**
+     * Keep the accordion expanded if only one connector is present.
+     */
+    useEffect(() => {
+        if (residentProvisioningConfiguration?.provisioningConfigurations?.outboundProvisioningIdps?.length === 1) {
+            setAccordionActiveIndexes([ 0 ]);
+        }
+    }, [ residentProvisioningConfiguration ]);
+
+    /**
      * Filter the IDP list based on the configured, enabled outbound provisioning connectors count.
      */
     useEffect(() => {
@@ -126,6 +150,20 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
             }));
         }
     }, [ residentProvisioningConfigurationFetchError ]);
+
+    /**
+     * Filter out already-configured IDPs from the list available for new connector creation.
+     */
+    const availableIdpListForWizard: IdentityProviderInterface[] = useMemo(() => {
+        return filteredIdpList?.filter(
+            (idp: IdentityProviderInterface) =>
+                !residentProvisioningConfiguration?.provisioningConfigurations
+                    ?.outboundProvisioningIdps?.some(
+                        (configured: OutboundProvisioningConfigurationInterface) =>
+                            configured.idp === idp.name
+                    )
+        ) ?? [];
+    }, [ filteredIdpList, residentProvisioningConfiguration ]);
 
     /**
      * Handle back button click.
@@ -359,8 +397,17 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
                                                                         isEdit
                                                                     />
                                                                 ),
+                                                                icon: {
+                                                                    icon: resolveOutboundConnectorIcon(
+                                                                        provisioningIdp?.connector
+                                                                    ),
+                                                                    verticalAlign: "middle"
+                                                                },
                                                                 id: provisioningIdp?.idp,
-                                                                title: provisioningIdp?.idp
+                                                                title: provisioningIdp?.idp,
+                                                                titleOptions: {
+                                                                    flex: true
+                                                                }
                                                             }
                                                         ]
                                                     }
@@ -371,6 +418,9 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
                                                         `${ componentId }-${provisioningIdp.idp}-
                                                             outbound-connector-accordion`
                                                     }
+                                                    accordionContentStyle={ {
+                                                        backgroundColor: "var(--oxygen-palette-common-white)"
+                                                    } }
                                                 />
                                             );
                                         })
@@ -412,7 +462,7 @@ const OutboundProvisioningSettingsPage: FunctionComponent<OutboundProvisioningSe
                         values: OutboundProvisioningConfigurationInterface
                     ) => onConnectorAdded(values , false) }
                     isSubmitting={ isSubmitting }
-                    availableIdpList={ filteredIdpList }
+                    availableIdpList={ availableIdpListForWizard }
                 />
             ) }
 

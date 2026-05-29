@@ -49,7 +49,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
-import { CheckboxChild, Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms";
+import { CheckboxChild, Field, FormValue, Forms, RadioChild, Validation, useTrigger } from "@wso2is/forms/legacy";
 import {
     Code,
     ConfirmationModal,
@@ -115,6 +115,7 @@ import {
 } from "../../models/application";
 import {
     AllowedIssuerInterface,
+    CIBANotificationChannelInterface,
     GrantTypeInterface,
     GrantTypeMetaDataInterface,
     MetadataPropertyInterface,
@@ -278,6 +279,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ showHybridFlowEnableConfig, setHybridFlowEnableConfig ] = useState<boolean>(false);
     const [ showCallbackURLField, setShowCallbackURLField ] = useState<boolean>(undefined);
     const [ hideRefreshTokenGrantType, setHideRefreshTokenGrantType ] = useState<boolean>(false);
+    const [ isRenewRefreshTokenEnabled, setIsRenewRefreshTokenEnabled ] =
+        useState<boolean>(initialValues?.refreshToken?.renewRefreshToken ?? false);
     const [ selectedGrantTypes, setSelectedGrantTypes ] = useState<string[]>(undefined);
     const [ selectedHybridFlowResponseTypes, setSelectedHybridFlowResponseTypes ] = useState<string[]>([]);
     const [ isJWTAccessTokenTypeSelected, setJWTAccessTokenTypeSelected ] = useState<boolean>(false);
@@ -353,6 +356,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const requestObjectEncryptionMethod: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const subjectToken: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const applicationSubjectTokenExpiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const authReqExpiryTime: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const notificationChannels: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
+    const cibaSkipUserValidation: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const cibaAllowFederatedUsers: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
 
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
     const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
@@ -371,6 +378,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ isAppShared, setIsAppShared ] = useState<boolean>(false);
     const [ sharedOrganizationsList, setSharedOrganizationsList ] = useState<Array<OrganizationInterface>>(undefined);
     const [ enableHybridFlowResponseTypeField , setEnableHybridFlowResponseTypeField ] = useState<boolean>(undefined);
+    const [ showCibaFields, setShowCibaFields ] = useState<boolean>(false);
+    const [ isSkipUserValidationEnabled, setIsSkipUserValidationEnabled ] = useState<boolean>(
+        initialValues?.cibaAuthenticationRequest?.skipUserValidation ?? false
+    );
 
     const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
 
@@ -722,6 +733,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
     }, [ selectedGrantTypes, isGrantChanged ]);
 
+    useEffect(() => {
+        setShowCibaFields(
+            selectedGrantTypes?.includes(ApplicationManagementConstants.CIBA_GRANT) ?? false
+        );
+    }, [ selectedGrantTypes, isGrantChanged ]);
+
     /**
      * Check whether to enable refresh token grant type or not.
      */
@@ -745,6 +762,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         return selectedGrantTypes?.includes(("refresh_token")) && selectedGrantTypes?.length === 1;
 
     };
+
+    useEffect((): void => {
+        setIsRenewRefreshTokenEnabled(initialValues?.refreshToken?.renewRefreshToken ?? false);
+    }, [ initialValues?.refreshToken?.renewRefreshToken ]);
 
     /**
      * Check whether to enable validate token bindings.
@@ -809,6 +830,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         setIsSubjectTokenFeatureAvailable(isSubjectTokenFeatureEnabled ? initialValues?.subjectToken ?
             true : false : false);
     }, [ initialValues ]);
+
+    useEffect(() => {
+        setIsSkipUserValidationEnabled(
+            initialValues?.cibaAuthenticationRequest?.skipUserValidation ?? false
+        );
+    }, [ initialValues?.cibaAuthenticationRequest?.skipUserValidation ]);
 
     useEffect(() => {
         if (isGrantChanged) {
@@ -1333,6 +1360,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     return;
                 }
 
+                // Hide CIBA grant type for public clients.
+                // CIBA requires a backchannel and a confidential client secret,
+                // which public clients (SPA, mobile) cannot securely hold.
+                if (isPublicClient && name === ApplicationManagementConstants.CIBA_GRANT) {
+                    return;
+                }
+
                 /**
                  * Create the checkbox children object. hint is marked
                  * as optional because not all children have hint/description
@@ -1582,6 +1616,34 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     hybridFlow: {
                         enable: false,
                         responseType: null
+                    }
+                };
+            }
+
+            if (showCibaFields) {
+                const notificationChannels: string[] =
+                    values.get("cibaNotificationChannels") as unknown as string[] || [];
+
+                inboundConfigFormValues = {
+                    ...inboundConfigFormValues,
+                    cibaAuthenticationRequest: {
+                        allowFederatedUsers: values.get("cibaSkipUserValidation")?.length > 0
+                            && values.get("cibaAllowFederatedUsers")?.length > 0,
+                        authReqExpiryTime: values.get("authReqExpiryTime")
+                            ? parseInt(values.get("authReqExpiryTime") as string, 10)
+                            : undefined,
+                        notificationChannels: notificationChannels,
+                        skipUserValidation: values.get("cibaSkipUserValidation")?.length > 0
+                    }
+                };
+            } else {
+                inboundConfigFormValues = {
+                    ...inboundConfigFormValues,
+                    cibaAuthenticationRequest: {
+                        allowFederatedUsers: false,
+                        authReqExpiryTime: undefined,
+                        notificationChannels: [],
+                        skipUserValidation: false
                     }
                 };
             }
@@ -1899,6 +1961,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const handleClientAuthenticationChange = (publicClient: boolean):void => {
         if (publicClient) {
             setSelectedAuthMethod("");
+            setSelectedGrantTypes((prev: string[]) =>
+                prev?.filter((grant: string) => grant !== ApplicationManagementConstants.CIBA_GRANT)
+            );
         }
     };
 
@@ -2081,6 +2146,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const isClientAuthenticationSectionEnabled: boolean = (
         ApplicationTemplateIdTypes.CUSTOM_APPLICATION === template?.templateId
         || ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION === template?.templateId
+        || ApplicationTemplateIdTypes.AGENT_APPLICATION === template?.templateId
     ) && !isSystemApplication
       && !isDefaultApplication
       && (isPublicClientFieldEnabled || isClientAuthenticationMethodFieldEnabled);
@@ -2152,6 +2218,195 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             </Hint>
                         </Grid.Column>
                     </Grid.Row>
+                )
+            }
+
+            {
+                showCibaFields && (
+                    <>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 16 }>
+                                <Divider />
+                                <Divider hidden />
+                            </Grid.Column>
+                            <Grid.Column mobile={ 16 }>
+                                <Heading as="h4">
+                                    { t("applications:forms.inboundOIDC.fields.ciba.heading") }
+                                </Heading>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 }>
+                                <Field
+                                    ref={ authReqExpiryTime }
+                                    name="authReqExpiryTime"
+                                    label={
+                                        t("applications:forms.inboundOIDC.fields." +
+                                            "ciba.authReqExpiryTime.label")
+                                    }
+                                    required={ true }
+                                    requiredErrorMessage={
+                                        t("applications:forms.inboundOIDC.fields." +
+                                            "ciba.authReqExpiryTime.validations.empty")
+                                    }
+                                    type="number"
+                                    placeholder={
+                                        t("applications:forms.inboundOIDC.fields." +
+                                            "ciba.authReqExpiryTime.placeholder")
+                                    }
+                                    value={
+                                        initialValues?.cibaAuthenticationRequest?.authReqExpiryTime
+                                    }
+                                    readOnly={ readOnly }
+                                    min={ 1 }
+                                    validation={ async (value: FormValue, validation: Validation) => {
+                                        if (!isValidExpiryTime(value.toString())) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(
+                                                t("applications:forms.inboundOIDC.fields." +
+                                                    "ciba.authReqExpiryTime.validations.invalid")
+                                            );
+                                        }
+                                    } }
+                                    data-componentid={ `${ testId }-ciba-expiry-input` }
+                                />
+                                <Hint>
+                                    { t("applications:forms.inboundOIDC.fields." +
+                                        "ciba.authReqExpiryTime.hint") }
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <div
+                                    ref={ notificationChannels }
+                                    className="field"
+                                >
+                                    <label>
+                                        { t("applications:forms.inboundOIDC.fields." +
+                                            "ciba.notificationChannels.label") }
+                                    </label>
+                                    <Hint>
+                                        { t("applications:forms.inboundOIDC.fields." +
+                                            "ciba.notificationChannels.hint") }
+                                    </Hint>
+                                </div>
+                                <Field
+                                    name="cibaNotificationChannels"
+                                    type="checkbox"
+                                    required={ false }
+                                    value={
+                                        initialValues?.cibaAuthenticationRequest
+                                            ?.notificationChannels ?? []
+                                    }
+                                    readOnly={ readOnly }
+                                    data-componentid={
+                                        `${ testId }-ciba-notification-channels`
+                                    }
+                                    children={
+                                        [ ...(metadata?.cibaMetadata
+                                            ?.supportedNotificationChannels ?? []) ]
+                                            .sort(
+                                                (a: CIBANotificationChannelInterface,
+                                                    b: CIBANotificationChannelInterface
+                                                ): number =>
+                                                    a.name === "external" ? 1
+                                                        : b.name === "external" ? -1 : 0
+                                            )
+                                            ?.map(
+                                                (channel:
+                                                    CIBANotificationChannelInterface):
+                                                    CheckboxChild => ({
+                                                    label: channel.name === "external"
+                                                        ? t("applications:forms" +
+                                                            ".inboundOIDC.fields.ciba" +
+                                                            ".notificationChannels" +
+                                                            ".externalLabel")
+                                                        : channel.displayName,
+                                                    value: channel.name
+                                                })
+                                            ) ?? []
+                                    }
+                                />
+                                <Hint>
+                                    { t("applications:forms" +
+                                        ".inboundOIDC.fields.ciba" +
+                                        ".notificationChannels" +
+                                        ".externalHint",
+                                    { productName:
+                                        config.ui.productName }) }
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 }>
+                                <Field
+                                    ref={ cibaSkipUserValidation }
+                                    name="cibaSkipUserValidation"
+                                    required={ false }
+                                    type="checkbox"
+                                    value={
+                                        initialValues?.cibaAuthenticationRequest
+                                            ?.skipUserValidation
+                                            ? [ "cibaSkipUserValidation" ]
+                                            : []
+                                    }
+                                    listen={ (values: Map<string, FormValue>): void => {
+                                        const isEnabled: boolean =
+                                            values.get("cibaSkipUserValidation")?.length > 0;
+
+                                        setIsSkipUserValidationEnabled(isEnabled);
+                                    } }
+                                    children={ [
+                                        {
+                                            label: t("applications:forms.inboundOIDC.fields." +
+                                                "ciba.skipUserValidation.label"),
+                                            value: "cibaSkipUserValidation"
+                                        }
+                                    ] }
+                                    readOnly={ readOnly }
+                                    data-componentid={
+                                        `${ testId }-ciba-skip-user-validation-checkbox`
+                                    }
+                                />
+                                <Hint>
+                                    { t("applications:forms.inboundOIDC.fields." +
+                                        "ciba.skipUserValidation.hint") }
+                                </Hint>
+                                <div style={ { paddingLeft: "1.5rem" } }>
+                                    <Field
+                                        ref={ cibaAllowFederatedUsers }
+                                        name="cibaAllowFederatedUsers"
+                                        required={ false }
+                                        type="checkbox"
+                                        value={
+                                            isSkipUserValidationEnabled
+                                            && initialValues?.cibaAuthenticationRequest
+                                                ?.allowFederatedUsers
+                                                ? [ "cibaAllowFederatedUsers" ]
+                                                : []
+                                        }
+                                        disabled={ !isSkipUserValidationEnabled }
+                                        children={ [
+                                            {
+                                                label: t("applications:forms.inboundOIDC.fields." +
+                                                    "ciba.allowFederatedUsers.label"),
+                                                value: "cibaAllowFederatedUsers"
+                                            }
+                                        ] }
+                                        readOnly={ readOnly }
+                                        data-componentid={
+                                            `${ testId }-ciba-allow-federated-users-checkbox`
+                                        }
+                                    />
+                                    <Hint>
+                                        { t("applications:forms.inboundOIDC.fields." +
+                                            "ciba.allowFederatedUsers.hint") }
+                                    </Hint>
+                                </div>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </>
                 )
             }
             {
@@ -3501,6 +3756,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ? [ "refreshToken" ]
                                             : []
                                     }
+                                    listen={ (values: Map<string, FormValue>): void => {
+                                        setIsRenewRefreshTokenEnabled(
+                                            values.get("RefreshToken")?.length > 0
+                                        );
+                                    } }
                                     children={ [
                                         {
                                             label: t("applications:forms.inboundOIDC" +
@@ -3525,42 +3785,44 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Field
-                                    ref={ extendExpiryTime }
-                                    name="extendExpiryTime"
-                                    label=""
-                                    required={ false }
-                                    type="checkbox"
-                                    value={
-                                        initialValues?.refreshToken?.extendRenewedRefreshTokenExpiryTime
-                                            ? [ "extendExpiryTime" ]
-                                            : []
-                                    }
-                                    children={ [
-                                        {
-                                            label: t("applications:forms.inboundOIDC.sections.refreshToken."
-                                                + "fields.extendRenewedRefreshTokenExpiryTime.label"),
-                                            value: "extendExpiryTime"
+                        { isRenewRefreshTokenEnabled && (
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Field
+                                        ref={ extendExpiryTime }
+                                        name="extendExpiryTime"
+                                        label=""
+                                        required={ false }
+                                        type="checkbox"
+                                        value={
+                                            initialValues?.refreshToken?.extendRenewedRefreshTokenExpiryTime
+                                                ? [ "extendExpiryTime" ]
+                                                : []
                                         }
-                                    ] }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-extend-refresh-token-expiry-time-checkbox` }
-                                />
-                                <Hint>
-                                    <Trans
-                                        i18nKey={
-                                            "applications:forms.inboundOIDC.sections" +
-                                            ".refreshToken.fields.extendRenewedRefreshTokenExpiryTime.hint"
-                                        }
-                                    >
-                                        Select to ensure renewed refresh tokens retain the remaining validity period
-                                         from the original token instead of receiving a fresh expiry time.
-                                    </Trans>
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
+                                        children={ [
+                                            {
+                                                label: t("applications:forms.inboundOIDC.sections.refreshToken."
+                                                    + "fields.extendRenewedRefreshTokenExpiryTime.label"),
+                                                value: "extendExpiryTime"
+                                            }
+                                        ] }
+                                        readOnly={ readOnly }
+                                        data-testid={ `${ testId }-extend-refresh-token-expiry-time-checkbox` }
+                                    />
+                                    <Hint>
+                                        <Trans
+                                            i18nKey={
+                                                "applications:forms.inboundOIDC.sections" +
+                                                ".refreshToken.fields.extendRenewedRefreshTokenExpiryTime.hint"
+                                            }
+                                        >
+                                            Select to ensure renewed refresh tokens receive a fresh expiry time
+                                            instead of retaining the remaining validity period from the original token.
+                                        </Trans>
+                                    </Hint>
+                                </Grid.Column>
+                            </Grid.Row>
+                        ) }
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field

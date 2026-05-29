@@ -19,7 +19,7 @@
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs/common";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { SearchUtils } from "@wso2is/core/utils";
-import { DropdownChild, Field, FormValue, Forms } from "@wso2is/forms";
+import { DropdownChild, Field, FormValue, Forms } from "@wso2is/forms/legacy";
 import {
     AdvancedSearch,
     AdvancedSearchPropsInterface,
@@ -36,7 +36,7 @@ import { AdvanceSearchConstants } from "../constants/advance-search";
 /**
  * Prop types for the application search component.
  */
-export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableComponentInterface {
+interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableComponentInterface {
 
     /**
      * Children node form field passed from parent
@@ -155,7 +155,7 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
 /**
  * Interface for default filter condition options.
  */
-export interface DefaultFilterConditionOptionInterface {
+interface DefaultFilterConditionOptionInterface {
     text: string;
     value: string;
 }

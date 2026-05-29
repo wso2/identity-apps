@@ -31,7 +31,8 @@ import {
     AlertLevels,
     IdentifiableComponentInterface,
     RolesInterface,
-    TestableComponentInterface
+    TestableComponentInterface,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -276,7 +277,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                 setIsSubmitting(true);
 
                 await updateUsersForRoleFunction(roleId, roleData)
-                    .catch((error: AxiosError) => {
+                    .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                         if (!error.response || error.response.status === 401) {
                             setAlert({
                                 description: t(
@@ -384,7 +385,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                 }));
                 onUserUpdate();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (!error.response || error.response.status === 401) {
                     setAlert({
                         description: t(
@@ -448,7 +449,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                     closeWizard();
                     onInvitationSendSuccessful();
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     // Axios throws a generic `Network Error` for 401 status.
                     // As a temporary solution, a check to see if a response
                     // is available has be used.

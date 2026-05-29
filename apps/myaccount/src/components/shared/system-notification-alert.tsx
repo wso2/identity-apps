@@ -26,7 +26,7 @@ import { SystemNotificationAlertState } from "../../models";
 /**
  * SystemNotificationAlert component props.
  */
-export type SystemNotificationAlertProps = IdentifiableComponentInterface;
+type SystemNotificationAlertProps = IdentifiableComponentInterface;
 
 /**
  * System Notification Alert component.

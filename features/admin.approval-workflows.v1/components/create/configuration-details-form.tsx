@@ -22,7 +22,6 @@ import Fab from "@oxygen-ui/react/Fab";
 import { CheckIcon, PlusIcon } from "@oxygen-ui/react-icons";
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
-import { Hint } from "@wso2is/react-components";
 import React, {
     ForwardRefExoticComponent,
     ForwardedRef,
@@ -36,7 +35,6 @@ import React, {
     useState
 } from "react";
 import "./configuration-details-form.scss";
-import { useTranslation } from "react-i18next";
 import ApprovalStep from "./approval-step";
 import { ENTITY_TYPES, EntityType } from "../../constants/approval-workflow-constants";
 import { MultiStepApprovalTemplate } from "../../models/approval-workflows";
@@ -45,7 +43,7 @@ import { ApprovalSteps, ConfigurationsFormValuesInterface } from "../../models/u
 /**
  * Props for the configurations form component.
  */
-export interface ConfigurationsPropsInterface extends IdentifiableComponentInterface {
+interface ConfigurationsPropsInterface extends IdentifiableComponentInterface {
     /**
      * Whether the form is in read-only mode.
      */
@@ -93,13 +91,10 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                 onSubmit,
                 hasErrors,
                 initialValues,
-                isEditPage,
                 ["data-componentid"]: componentId = "workflow-model-configuration-details"
             }: ConfigurationsPropsInterface,
             ref: ForwardedRef<ConfigurationsFormRef>
         ): ReactElement => {
-
-            const { t } = useTranslation();
 
             const StraightArrow: React.FC<StraightArrowProps> = (props: StraightArrowProps) => {
                 const { length = 100, color = "#555", strokeWidth = 2 } = props;
@@ -312,12 +307,6 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                             )) }
                         </div>
                     </Box>
-                    { isEditPage && (<div className="approval-steps-hint">
-                        <Hint className="hint" compact>
-                            { t("approvalWorkflows:pageLayout.create.stepper.step3.hint") }
-                        </Hint>
-                    </div>) }
-
                 </>
             );
         }

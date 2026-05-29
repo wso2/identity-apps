@@ -21,6 +21,7 @@ import { Dispatch } from "redux";
 import { HttpRequestConfig } from "../../models";
 import { apiRequestEnd, apiRequestStart } from "../actions";
 import { API_REQUEST } from "../actions/types";
+import { HttpErrorResponseDataInterface } from "@wso2is/core/models";
 
 /**
  * Intercepts and handles actions of type `API_REQUEST`.
@@ -64,7 +65,7 @@ export const apiMiddleware = ({ dispatch }: {
                 type: onSuccess
             });
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             dispatch({
                 payload: error,
                 type: onError

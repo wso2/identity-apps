@@ -36,7 +36,7 @@ import { ApplicationTemplateCategories } from "../models/templates";
 /**
  * Props for the Application creation adapter component.
  */
-export interface ApplicationCreationAdapterPropsInterface extends IdentifiableComponentInterface {
+interface ApplicationCreationAdapterPropsInterface extends IdentifiableComponentInterface {
     /**
      * Template for rendering the application creation wizard.
      */

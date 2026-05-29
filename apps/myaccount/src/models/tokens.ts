@@ -19,10 +19,12 @@
 /**
  * Interface of the OAuth2/OIDC tokens.
  */
-export interface TokenInterface {
+interface TokenInterface {
     access_token: string;
     expires_in: string;
     id_token: string;
     issued_at: string;
     refresh_token: string;
 }
+
+export {};

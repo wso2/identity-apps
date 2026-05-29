@@ -24,7 +24,7 @@ import { SupportedLanguagesInterface } from "./language-switcher";
 /**
  * Proptypes for the language switcher dropdown component.
  */
-export interface LanguageSwitcherDropdownProps extends IdentifiableComponentInterface, TestableComponentInterface {
+interface LanguageSwitcherDropdownProps extends IdentifiableComponentInterface, TestableComponentInterface {
     /**
      * Language chanege callback.
      * @param event - Click event.

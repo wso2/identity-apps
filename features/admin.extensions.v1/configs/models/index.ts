@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,7 +20,6 @@ export * from "./attribute";
 export * from "./endpoints";
 export * from "./identity-providers";
 export * from "./application";
-export * from "./documentation";
 export * from "./group";
 export * from "./common";
 export * from "./userstores";

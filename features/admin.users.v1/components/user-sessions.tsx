@@ -28,7 +28,8 @@ import {
     AlertLevels,
     ProfileInfoInterface,
     SBACInterface,
-    TestableComponentInterface
+    TestableComponentInterface,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -154,7 +155,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
             .then((response: AxiosResponse<UserSessionsInterface>) => {
                 setUserSessions(response.data);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response
                     && error.response.data
                     && (error.response.data.description || error.response.data.detail)) {
@@ -538,7 +539,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                     )
                 }));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 // fetch the sessions if and only if the session termination fails.
                 fetchUserSessions(user.id);
                 if (error.response
@@ -593,7 +594,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                     )
                 }));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response
                     && error.response.data
                     && (error.response.data.description || error.response.data.detail)) {

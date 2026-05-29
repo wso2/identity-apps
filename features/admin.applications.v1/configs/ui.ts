@@ -331,7 +331,7 @@ export const getGeneralIcons = (): {
     };
 };
 
-export const getSignInMethodIllustrations = (): {
+const getSignInMethodIllustrations = (): {
     basicAuth: FunctionComponent<SVGProps<SVGSVGElement>>;
 } => {
 

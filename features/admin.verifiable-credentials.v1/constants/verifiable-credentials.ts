@@ -44,9 +44,14 @@ export class VerifiableCredentialsConstants {
     public static readonly VC_CLAIM_DIALECT_ID: string = "aHR0cDovL3dzbzIub3JnL3ZjL2NsYWlt";
 
     /**
-     * Default expiration time (1 year in seconds).
+     * Default expiration time (30 days in seconds).
      */
-    public static readonly DEFAULT_EXPIRES_IN: number = 31536000;
+    public static readonly DEFAULT_EXPIRES_IN: number = 2592000;
+
+    /**
+     * Number of seconds in a day.
+     */
+    public static readonly SECONDS_PER_DAY: number = 86400;
 
     /**
      * Pagination defaults.

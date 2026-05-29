@@ -79,16 +79,26 @@ export interface TenantContextProps {
      * Tenant list limit.
      */
     tenantListLimit: number;
+    /**
+     * Accumulated tenants for infinite scroll.
+     */
+    accumulatedTenants: Tenant[];
+    /**
+     * Flag to indicate if more tenants are being loaded.
+     */
+    isLoadingMore: boolean;
 }
 
 /**
  * Context object for managing the Tenant context.
  */
 const TenantContext: Context<TenantContextProps> = createContext<null | TenantContextProps>({
+    accumulatedTenants: [],
     deleteTenant: () => null,
     disableTenant: () => null,
     enableTenant: () => null,
     isInitialRenderingComplete: false,
+    isLoadingMore: false,
     isTenantListLoading: false,
     mutateTenantList: () => null,
     searchQuery: "",

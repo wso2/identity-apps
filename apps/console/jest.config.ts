@@ -43,8 +43,6 @@ module.exports = {
         "@wso2is/core/store": "<rootDir>/../../modules/core/dist/src/store",
         "@wso2is/core/utils": "<rootDir>/../../modules/core/dist/src/utils",
         "@wso2is/core/workers": "<rootDir>/../../modules/core/dist/src/workers",
-        "@wso2is/dynamic-forms":  "<rootDir>/../../modules/dynamic-forms/dist",
-        "@wso2is/form": "<rootDir>/../../modules/form/dist",
         "@wso2is/forms": "<rootDir>/../../modules/forms/dist",
         "@wso2is/react-components": "<rootDir>/../../modules/react-components/dist",
         "\\.(css|less|scss)$": "<rootDir>/test-configs/__mocks__/style-file.ts",
@@ -78,8 +76,7 @@ module.exports = {
         } ]
     },
     transformIgnorePatterns: [
-        "/node_modules/?(?!@wso2is)",
-        "/node_modules/(?!@oxygen-ui/react/)"
+        "/node_modules/(?!(\\.pnpm|@wso2is|@oxygen-ui\\/react|axios)\\/)"
     ],
     verbose: true
 };

@@ -32,17 +32,17 @@ export interface UserStoreType {
 /**
  * Type of user store type details.
  */
-export interface UserStoreTypeDetails extends UserStoreType {
+interface UserStoreTypeDetails extends UserStoreType {
     properties: UserStoreTypeProperties;
 }
 
-export interface UserStoreTypeProperties {
+interface UserStoreTypeProperties {
     Mandatory: UserStorePropertyMeta[];
     Optional: UserStorePropertyMeta[];
     Advanced: UserStorePropertyMeta[];
 }
 
-export interface UserStorePropertyMeta {
+interface UserStorePropertyMeta {
     name: string;
     defaultValue: string;
     description: string;
@@ -70,7 +70,7 @@ export interface UserStoreProperty {
     value: string;
 }
 
-export interface ClaimAttributeMapping {
+interface ClaimAttributeMapping {
     claimURI: string;
     mappedAttribute: string;
 }
@@ -157,7 +157,7 @@ export interface TestConnection {
 /**
  * Type of object return by Types list endpoint
  */
-export interface TypeResponse {
+interface TypeResponse {
     typeId: string;
     typeName: string;
     className: string;
@@ -236,7 +236,7 @@ export enum UserstorePropertiesCategories {
 /**
  * The type of object returned by the user store attributes endpoint.
  */
-export interface UserStoreAttributes {
+interface UserStoreAttributes {
     typeName: string;
     typeId: string;
     isLocal: boolean;
@@ -246,7 +246,7 @@ export interface UserStoreAttributes {
 /**
  * The type of attribute mappings.
  */
-export interface AttributeMappings {
+interface AttributeMappings {
     claimId: string;
     claimURI: string;
     mappedAttribute: string;

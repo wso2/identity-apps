@@ -18,7 +18,9 @@
 
 import { AsgardeoSPAClient, HttpInstance, HttpRequestConfig } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { MultiFactorAuthenticationConstants } from "../constants/mfa-constants";
 import { EnabledAuthenticatorsInterface } from "../models";
@@ -52,7 +54,7 @@ export const getEnabledAuthenticators = (): Promise<EnabledAuthenticatorsInterfa
                 return Promise.resolve(response.data as EnabledAuthenticatorsInterface);
             }
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 MultiFactorAuthenticationConstants.MFA_ENABLED_AUTHENTICATOR_RETREIVE_ERROR,
                 error.stack,
@@ -88,7 +90,7 @@ export const updateEnabledAuthenticators = (enabledAuthenticators: string): Prom
                 return Promise.resolve(response);
             }
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 MultiFactorAuthenticationConstants.MFA_ENABLED_AUTHENTICATOR_UPDATE_ERROR,
                 error.stack,

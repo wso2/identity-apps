@@ -25,7 +25,9 @@ import {
     BrandingPreferenceTypes
 } from "@wso2is/common.branding.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 
@@ -84,7 +86,7 @@ export const updateBrandingPreference = (
             }
 
             return Promise.resolve(response.data as BrandingPreferenceAPIResponseInterface);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 BrandingPreferencesConstants.ErrorMessages.BRANDING_PREFERENCE_UPDATE_ERROR.getErrorMessage(),
                 error.stack,
@@ -137,7 +139,7 @@ export const deleteBrandingPreference = (
             }
 
             return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 error.response?.data?.message ?? BrandingPreferencesConstants
                     .ErrorMessages.BRANDING_PREFERENCE_DELETE_ERROR.getErrorMessage(),

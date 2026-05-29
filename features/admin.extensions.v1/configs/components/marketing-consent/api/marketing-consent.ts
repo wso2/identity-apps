@@ -22,7 +22,9 @@ import useRequest, {
     RequestConfigInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { getMarketingConsentEndpoints } from "../configs";
 import { ConsentResponseInterface, ConsentTypes } from "../models";
@@ -69,7 +71,7 @@ export const useUserConsentList = <Data = ConsentResponseInterface[], Error = Ax
  *
  * @param isSubscribed - status of the consent (true - subscribed, false - declined).
  * @returns a Promise of response.
- * @throws an AxiosError.
+ * @throws an AxiosError<HttpErrorResponseDataInterface>.
  */
 export const updateUserConsent = (isSubscribed: boolean): Promise<AxiosResponse> => {
     const requestConfig: RequestConfigInterface = {
@@ -91,7 +93,7 @@ export const updateUserConsent = (isSubscribed: boolean): Promise<AxiosResponse>
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };

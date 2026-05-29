@@ -23,6 +23,8 @@ export * from "./consents";
 export * from "./linked-accounts";
 export * from "./multi-factor-authentication";
 export * from "./overview";
+export * from "./preference-management";
+export * from "./policy-consent";
 export * from "./profile";
 export * from "./shared";
 export * from "./user-sessions";

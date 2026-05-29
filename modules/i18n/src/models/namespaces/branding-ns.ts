@@ -256,6 +256,14 @@ export interface BrandingNS {
         title: string;
         termsAndConditions: string;
     };
+    customLayout: {
+        dangerModal: {
+            assertionHint: string;
+            heading: string;
+            message: string;
+            content: string;
+        };
+    };
     customPageEditor: {
         backButton: string;
         brandingNotConfiguredTooltip: string;

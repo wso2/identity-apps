@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FinalForm, FinalFormField, FormRenderProps, FormValue, TextFieldAdapter } from "@wso2is/form";
+import { HttpErrorResponseDataInterface, IdentifiableComponentInterface
+} from "@wso2is/core/models";
+import { FinalForm, FinalFormField, FormRenderProps, FormValue, TextFieldAdapter } from "@wso2is/forms";
 import { Button, GenericIcon, Hint, PrimaryButton, SecondaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { AxiosError } from "axios";
@@ -153,7 +154,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
                 dispatch(getProfileInformation());
                 dispatch(setActiveForm(null));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error?.response?.data?.detail) {
                     onAlertFired({
                         description: t(
@@ -270,7 +271,7 @@ export const SMSRecovery: React.FunctionComponent<SMSRecoveryProps> = (
                                 <List.Description >
                                     {
                                         mobile ?
-                                            t("myAccount:components.accountRecovery.SMSRecovery.descriptions.update",
+                                            t("myAccount:components.accountRecovery.SMSRecovery.descriptions.view",
                                                 { mobile: mobile ? maskMobile(mobile) : "" })
                                             : (
                                                 <Hint>

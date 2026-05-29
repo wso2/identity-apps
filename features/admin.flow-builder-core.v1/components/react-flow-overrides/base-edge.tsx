@@ -25,7 +25,7 @@ import "./base-edge.scss";
 /**
  * Props interface of {@link VisualFlow}
  */
-export interface BaseEdgePropsInterface extends EdgeProps, IdentifiableComponentInterface {}
+interface BaseEdgePropsInterface extends EdgeProps, IdentifiableComponentInterface {}
 
 /**
  * A customized version of the BaseEdge component.

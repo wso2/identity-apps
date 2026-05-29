@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,6 +25,7 @@ import {
     FieldHandlerTypes
 } from "../models/dynamic-fields";
 import disableProperty from "../utils/disable-property";
+import expandObjectFields from "../utils/expand-object-fields";
 import templatedProperty from "../utils/templated-property";
 import uniqueIDGenerator from "../utils/unique-id-generator";
 
@@ -101,6 +102,14 @@ const useSubmissionHandlers = (
                         values,
                         field?.name,
                         props?.propertyPath as string
+                    );
+
+                    break;
+                case CommonSubmissionHandlers.EXPAND_OBJECT_PROPERTY:
+                    expandObjectFields(
+                        values,
+                        field?.name,
+                        props?.delimiter as string
                     );
 
                     break;

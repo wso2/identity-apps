@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { RadioAdapterPropsInterface } from "@wso2is/form";
+import { RadioAdapterPropsInterface } from "@wso2is/forms";
 import React, { FormEvent, FunctionComponent, ReactElement, useState } from "react";
 import { Form } from "semantic-ui-react";
 import { LayoutSwatch } from "./layout-swatch";

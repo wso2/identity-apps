@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -163,6 +163,8 @@ export class ProfileConstants {
     public static readonly ENABLE_MOBILE_VERIFICATION: string = "UserClaimUpdate.MobileNumber.EnableVerification";
 
     public static readonly ENABLE_EMAIL_VERIFICATION: string = "UserClaimUpdate.Email.EnableVerification";
+
+    public static readonly ENABLE_EMAIL_VERIFICATION_WITH_OTP: string = "UserClaimUpdate.Email.EnableEmailOTP";
 
     // Self sign up
     public static readonly SELF_SIGN_UP_CONNECTOR: string = "self-sign-up";

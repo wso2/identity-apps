@@ -88,7 +88,6 @@ export enum IdVPEditTabContentType {
 export enum IdVPEditTabIDs {
     GUIDE = "setup-guide",
     GENERAL = "general",
-    SETTINGS = "settings",
     ATTRIBUTES = "attributes"
 }
 
@@ -162,7 +161,7 @@ export interface IdVPTemplateInterface {
     payload: IdentityVerificationProviderInterface;
 }
 
-export interface IdVPTemplateResponseInterface {
+interface IdVPTemplateResponseInterface {
     payload: {
         Name: string;
         Type?: string;

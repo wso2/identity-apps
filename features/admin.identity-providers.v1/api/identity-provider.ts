@@ -24,7 +24,9 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import {
     FederatedAuthenticatorMetaInterface,
@@ -91,7 +93,7 @@ export const useIdentityProviderList = <Data = IdentityProviderListResponseInter
  * @param authenticatorId - ID of the Federated Authenticator.
  * @returns A promise containing the response.
  */
-export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Promise<any> => {
+const getFederatedAuthenticatorMetadata = (authenticatorId: string): Promise<any> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -112,7 +114,7 @@ export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Prom
             }
 
             return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -126,7 +128,7 @@ export const getFederatedAuthenticatorMetadata = (authenticatorId: string): Prom
  *
  * @returns A promise containing the response.
  */
-export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
+const getIdentityProviderTemplateList = (limit?: number, offset?: number,
     filter?: string): Promise<IdentityProviderTemplateListResponseInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -157,7 +159,7 @@ export const getIdentityProviderTemplateList = (limit?: number, offset?: number,
             }
 
             return Promise.resolve(response.data as IdentityProviderTemplateListResponseInterface);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 ConnectionUIConstants.ERROR_MESSAGES.IDENTITY_PROVIDER_TEMPLATES_LIST_FETCH_ERROR,
                 error.stack,
@@ -199,7 +201,7 @@ export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]>
             }
 
             return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 ConnectionUIConstants.ERROR_MESSAGES.LOCAL_AUTHENTICATORS_FETCH_ERROR,
                 error.stack,

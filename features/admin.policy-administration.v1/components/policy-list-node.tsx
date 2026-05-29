@@ -36,7 +36,7 @@ import "./policy-list-node.scss";
 /**
  * Props interface of {@link PolicyListDraggableNode}
  */
-export interface PolicyListDraggableNodePropsInterface
+interface PolicyListDraggableNodePropsInterface
     extends IdentifiableComponentInterface,
         HTMLAttributes<HTMLDivElement> {
     /**

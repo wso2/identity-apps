@@ -117,8 +117,8 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
             },
             expiresIn: {
                 label: "Validity Period",
-                placeholder: "Enter validity period in seconds",
-                hint: "Enter the validity period in seconds."
+                placeholder: "Enter validity period in days",
+                hint: "Enter the validity period in days."
             },
             claims: {
                 label: "User Attributes",

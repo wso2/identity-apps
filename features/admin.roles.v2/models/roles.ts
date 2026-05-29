@@ -62,7 +62,7 @@ export interface CreateRolePermissionInterface {
     value: string;
 }
 
-export interface CreateRoleAudienceInterface {
+interface CreateRoleAudienceInterface {
     display?: string;
     value: string;
     type: string;
@@ -252,7 +252,7 @@ export interface SelectedPermissionsInterface {
 /**
  * Interface to capture options passed to the Autocomplete component in the role section.
  */
-export interface ChipOptionsInterface {
+interface ChipOptionsInterface {
     id?: string;
 }
 

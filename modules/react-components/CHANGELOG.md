@@ -1,5 +1,32 @@
 # @wso2is/react-components
 
+## 2.10.2
+
+### Patch Changes
+
+- [#10156](https://github.com/wso2/identity-apps/pull/10156) [`5e2cee30e0d0d16f071af34a399167452970dde0`](https://github.com/wso2/identity-apps/commit/5e2cee30e0d0d16f071af34a399167452970dde0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Migrate console app to vite
+
+## 2.10.1
+
+### Patch Changes
+
+- [#10130](https://github.com/wso2/identity-apps/pull/10130) [`8ffe97ffe949b7846fb511dea88ff4672faf7001`](https://github.com/wso2/identity-apps/commit/8ffe97ffe949b7846fb511dea88ff4672faf7001) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Migrate `identity-apps` to nx 21
+
+- Updated dependencies [[`737246c00a28b8582a5100e854550de03c18b0a3`](https://github.com/wso2/identity-apps/commit/737246c00a28b8582a5100e854550de03c18b0a3), [`8ffe97ffe949b7846fb511dea88ff4672faf7001`](https://github.com/wso2/identity-apps/commit/8ffe97ffe949b7846fb511dea88ff4672faf7001)]:
+  - @wso2is/theme@2.10.1
+  - @wso2is/core@2.13.1
+
+## 2.10.0
+
+### Minor Changes
+
+- [#10123](https://github.com/wso2/identity-apps/pull/10123) [`13a622370c3a3aaa07dadd0bec22ceb9ff486fea`](https://github.com/wso2/identity-apps/commit/13a622370c3a3aaa07dadd0bec22ceb9ff486fea) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Unify documentation extensions
+
+### Patch Changes
+
+- Updated dependencies [[`13a622370c3a3aaa07dadd0bec22ceb9ff486fea`](https://github.com/wso2/identity-apps/commit/13a622370c3a3aaa07dadd0bec22ceb9ff486fea)]:
+  - @wso2is/core@2.13.0
+
 ## 2.9.25
 
 ### Patch Changes

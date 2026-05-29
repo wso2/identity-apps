@@ -20,7 +20,9 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import TenantConstants from "../../constants/tenant-constants";
 import { AdminAdvisoryBannerConfigurationInterface } from "../../models/system-settings/admin-advisory";
@@ -73,7 +75,7 @@ const updateAdminAdvisoryBannerConfiguration = (
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 TenantConstants.ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR,
                 error.stack,

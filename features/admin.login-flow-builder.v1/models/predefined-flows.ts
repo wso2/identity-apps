@@ -34,6 +34,5 @@ export enum SocialIdPPlaceholders {
     Apple = "<APPLE_IDP>",
     Facebook = "<FACEBOOK_IDP>",
     Google = "<GOOGLE_IDP>",
-    Microsoft = "Microsoft",
     GitHub = "<GITHUB_IDP>"
 }

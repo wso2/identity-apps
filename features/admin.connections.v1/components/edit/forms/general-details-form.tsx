@@ -21,7 +21,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ImageUtils } from "@wso2is/core/utils";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
@@ -133,6 +133,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     const certificateOptionsForTemplate: {
         PEM: boolean;
         JWKS: boolean;
+        SAML_METADATA_URI: boolean;
     } = useMemo(() => {
         return getCertificateOptionsForTemplate(editingIDP?.templateId);
     }, []);
@@ -141,6 +142,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     const { t } = useTranslation();
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const isOutboundProvisioningConnection: boolean = templateType ===
+        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OUTBOUND_PROVISIONING_CONNECTION;
 
     /**
      * Check whether IDP name is already exist or not.
@@ -242,11 +245,16 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      */
     const shouldShowCertificates = (): boolean => {
 
+        if (isOutboundProvisioningConnection) {
+            return false;
+        }
+
         let showCertificate: boolean = true;
 
         if ((certificateOptionsForTemplate !== undefined
             && !certificateOptionsForTemplate.JWKS
-            && !certificateOptionsForTemplate.PEM)
+            && !certificateOptionsForTemplate.PEM
+            && !certificateOptionsForTemplate.SAML_METADATA_URI)
             || isIDPOrganizationSSO() || isIDPIproov()) {
             showCertificate = false;
         }
@@ -327,6 +335,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER ||
                             templateType === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE)
                             && !isIDPOrganizationSSO() && !isIDPIproov()
+                            && !isOutboundProvisioningConnection
                             && (
                                 <Field.Input
                                     ariaLabel="idpIssuerName"
@@ -367,6 +376,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             templateType === CommonAuthenticatorConstants
                                 .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER)
                             && !isIDPOrganizationSSO() && !isIDPIproov()
+                            && ! isOutboundProvisioningConnection
                             && (
                                 <Field.Input
                                     ariaLabel="alias"
@@ -416,7 +426,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             "generalDetails.description.hint") }
                         readOnly={ isReadOnly }
                     />
-                    { !hideIdPLogoEditField && (
+                    { !hideIdPLogoEditField && !isOutboundProvisioningConnection && (
                         <Field.Input
                             name="image"
                             ariaLabel="image"
@@ -464,6 +474,11 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             certificateOptionsForTemplate !== undefined
                                 ? certificateOptionsForTemplate.JWKS
                                 : !isSaml
+                        }
+                        isSamlMetadataURIEnabled={
+                            certificateOptionsForTemplate !== undefined
+                                ? certificateOptionsForTemplate.SAML_METADATA_URI
+                                : isSaml
                         }
                         templateType={ templateType }
                         isReadOnly={ isReadOnly }

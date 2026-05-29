@@ -16,11 +16,14 @@
  * under the License.
  */
 
+import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
+import FeatureLockedBanner from "@wso2is/admin.feature-gate.v1/components/feature-locked-banner";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { UserStoresList } from "@wso2is/admin.userstores.v1/components/user-stores-list";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
@@ -78,6 +81,11 @@ const RemoteUserStoresPage: FunctionComponent<RemoteUserStoresPagePropsInterface
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const systemReservedUserStores: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.systemReservedUserStores);
+
+    const remoteUserStoreFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["USER_STORES_REMOTE_USER_STORES"]
+    );
+    const isRemoteUserStoreCreateEnabled: boolean = remoteUserStoreFeatureStatus === FeatureStatus.ENABLED;
 
     const [ userStores, setUserStores ] = useState<UserStoreListItem[]>([]);
     const [ offset, setOffset ] = useState(0);
@@ -170,30 +178,38 @@ const RemoteUserStoresPage: FunctionComponent<RemoteUserStoresPagePropsInterface
             ) }
             data-testid={ `${ testId }-page-layout` }
         >
-            <ListLayout
-                currentListSize={ listItemLimit }
-                listItemLimit={ listItemLimit }
-                onPageChange={ handlePaginationChange }
-                leftActionPanel={ null }
-                showPagination={ false }
-                showTopActionPanel={ false }
-                totalPages={ 1 }
-                totalListSize={ filteredUserStores?.length }
-                isLoading={ isUserStoreListFetchRequestLoading || filteredUserStores === undefined }
-                data-testid={ `${ testId }-list-layout` }
-            >
-                <UserStoresList
-                    list={ paginate(filteredUserStores, listItemLimit, offset) }
-                    onEmptyListPlaceholderActionClick={ () =>
-                        history.push(RemoteUserStoreConstants.getPaths().get("REMOTE_USER_STORE_CREATE"))
-                    }
-                    onSearchQueryClear={ handleSearchQueryClear }
-                    searchQuery={ searchQuery }
-                    update={ () => mutateUserStoreListFetchRequest() }
-                    featureConfig={ featureConfig }
-                    data-testid={ `${ testId }-list` }
-                />
-            </ListLayout>
+            { !isRemoteUserStoreCreateEnabled
+                ? (
+                    <FeatureLockedBanner
+                        data-componentid={ `${ testId }-feature-locked-banner` }
+                        sx={ { marginTop: "-20px" } }
+                    />
+                ) : (
+                    <ListLayout
+                        currentListSize={ listItemLimit }
+                        listItemLimit={ listItemLimit }
+                        onPageChange={ handlePaginationChange }
+                        leftActionPanel={ null }
+                        showPagination={ false }
+                        showTopActionPanel={ false }
+                        totalPages={ 1 }
+                        totalListSize={ filteredUserStores?.length }
+                        isLoading={ isUserStoreListFetchRequestLoading || filteredUserStores === undefined }
+                        data-testid={ `${ testId }-list-layout` }
+                    >
+                        <UserStoresList
+                            list={ paginate(filteredUserStores, listItemLimit, offset) }
+                            onEmptyListPlaceholderActionClick={ () =>
+                                history.push(RemoteUserStoreConstants.getPaths().get("REMOTE_USER_STORE_CREATE"))
+                            }
+                            onSearchQueryClear={ handleSearchQueryClear }
+                            searchQuery={ searchQuery }
+                            update={ () => mutateUserStoreListFetchRequest() }
+                            featureConfig={ featureConfig }
+                            data-testid={ `${ testId }-list` }
+                        />
+                    </ListLayout>
+                ) }
         </PageLayout>
     );
 };

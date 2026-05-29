@@ -19,7 +19,7 @@
 import {
     LocalAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
-import { SignInOptionsConfigInterface } from "../models";
+import { SignInOptionsConfigInterface } from "../models/sign-in-options";
 
 const AuthNames: typeof LocalAuthenticatorConstants.AUTHENTICATOR_NAMES =
     LocalAuthenticatorConstants.AUTHENTICATOR_NAMES;
@@ -28,7 +28,7 @@ const LOCAL_IDP: string = LocalAuthenticatorConstants.LOCAL_IDP_IDENTIFIER;
 /**
  * Authenticator configuration for authentication sequence.
  */
-export interface AuthenticatorConfigInterface {
+interface AuthenticatorConfigInterface {
     idp: string;
     authenticator: string;
 }
@@ -36,7 +36,7 @@ export interface AuthenticatorConfigInterface {
 /**
  * Authentication step configuration.
  */
-export interface AuthenticationStepInterface {
+interface AuthenticationStepInterface {
     id: number;
     options: AuthenticatorConfigInterface[];
 }
@@ -44,7 +44,7 @@ export interface AuthenticationStepInterface {
 /**
  * Authentication sequence configuration.
  */
-export interface AuthenticationSequenceInterface {
+interface AuthenticationSequenceInterface {
     type: "DEFAULT" | "USER_DEFINED";
     steps: AuthenticationStepInterface[];
     subjectStepId?: number;
@@ -54,18 +54,30 @@ export interface AuthenticationSequenceInterface {
 /**
  * Builds an auth sequence from sign-in options.
  *
- * With password: Step 1 = BasicAuthenticator, Step 2 = other methods (optional).
+ * With password: Step 1 = BasicAuthenticator (+ FIDO if passkey enabled as first-factor alternative).
  * Without password: Step 1 = IdentifierExecutor, Step 2 = selected methods as alternatives.
+ * Other methods (magic link, email OTP, TOTP, push) go to Step 2 as alternatives.
  *
  * @throws Error if no login methods are selected or if IdentifierFirst is used without Step 2
  */
 export const buildAuthSequence = (options: SignInOptionsConfigInterface): AuthenticationSequenceInterface => {
     const { loginMethods } = options;
 
+    // Step 1 options — password and passkey are first-factor alternatives
+    const step1Options: AuthenticatorConfigInterface[] = [];
+
+    // Step 2 options — other methods that require identifier resolution first
     const step2Options: AuthenticatorConfigInterface[] = [];
 
+    if (loginMethods.password) {
+        step1Options.push({
+            authenticator: AuthNames.BASIC_AUTHENTICATOR_NAME,
+            idp: LOCAL_IDP
+        });
+    }
+
     if (loginMethods.passkey) {
-        step2Options.push({
+        step1Options.push({
             authenticator: AuthNames.FIDO_AUTHENTICATOR_NAME,
             idp: LOCAL_IDP
         });
@@ -99,26 +111,44 @@ export const buildAuthSequence = (options: SignInOptionsConfigInterface): Authen
         });
     }
 
-    const step1Authenticator: string = loginMethods.password
-        ? AuthNames.BASIC_AUTHENTICATOR_NAME
-        : AuthNames.IDENTIFIER_FIRST_AUTHENTICATOR_NAME;
+    // No password selected — use IdentifierFirst for Step 1
+    if (!loginMethods.password) {
+        const allStep2: AuthenticatorConfigInterface[] = [ ...step1Options, ...step2Options ];
 
-    // Validate: IdentifierFirst requires at least one Step 2 method
-    if (!loginMethods.password && step2Options.length === 0) {
-        throw new Error(
-            "Invalid authentication configuration: Identifier-first flow requires at least one authentication method"
-        );
+        // Validate: IdentifierFirst requires at least one Step 2 method
+        if (allStep2.length === 0) {
+            throw new Error(
+                "Invalid authentication configuration: "
+                + "Identifier-first flow requires at least one authentication method"
+            );
+        }
+
+        return {
+            attributeStepId: 1,
+            steps: [
+                {
+                    id: 1,
+                    options: [
+                        {
+                            authenticator: AuthNames.IDENTIFIER_FIRST_AUTHENTICATOR_NAME,
+                            idp: LOCAL_IDP
+                        }
+                    ]
+                },
+                {
+                    id: 2,
+                    options: allStep2
+                }
+            ],
+            subjectStepId: 1,
+            type: "USER_DEFINED"
+        };
     }
 
     const steps: AuthenticationStepInterface[] = [
         {
             id: 1,
-            options: [
-                {
-                    authenticator: step1Authenticator,
-                    idp: LOCAL_IDP
-                }
-            ]
+            options: step1Options
         }
     ];
 
@@ -140,7 +170,7 @@ export const buildAuthSequence = (options: SignInOptionsConfigInterface): Authen
 /**
  * Returns a default auth sequence with BasicAuthenticator only.
  */
-export const getDefaultAuthSequence = (): AuthenticationSequenceInterface => {
+const getDefaultAuthSequence = (): AuthenticationSequenceInterface => {
     return {
         attributeStepId: 1,
         steps: [
@@ -162,7 +192,7 @@ export const getDefaultAuthSequence = (): AuthenticationSequenceInterface => {
 /**
  * Returns true if the sequence is a single-step BasicAuthenticator (default) config.
  */
-export const isDefaultAuthSequence = (sequence: AuthenticationSequenceInterface): boolean => {
+const isDefaultAuthSequence = (sequence: AuthenticationSequenceInterface): boolean => {
     if (sequence.type === "DEFAULT") {
         return true;
     }
@@ -185,7 +215,7 @@ export const isDefaultAuthSequence = (sequence: AuthenticationSequenceInterface)
 /**
  * Checks whether Step 2 has multiple alternatives (OR logic, not sequential MFA).
  */
-export const hasMultipleLoginMethods = (sequence: AuthenticationSequenceInterface): boolean => {
+const hasMultipleLoginMethods = (sequence: AuthenticationSequenceInterface): boolean => {
     if (sequence.steps.length < 2) {
         return false;
     }

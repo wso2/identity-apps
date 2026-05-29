@@ -65,7 +65,12 @@ import { ApplicationSharingPolicy, RoleSharingModes } from "../../models/shared-
 /**
  * Props interface of {@link ConsoleSharedAccess}
  */
-type ConsoleSharedAccessPropsInterface = IdentifiableComponentInterface;
+interface ConsoleSharedAccessPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Whether the console settings feature is locked.
+     */
+    isFeatureLocked?: boolean;
+}
 
 /**
  *
@@ -76,7 +81,8 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
     props: ConsoleSharedAccessPropsInterface
 ): ReactElement => {
     const {
-        ["data-componentid"]: componentId = "console-shared-access"
+        ["data-componentid"]: componentId = "console-shared-access",
+        isFeatureLocked
     } = props;
 
     const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
@@ -89,7 +95,7 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
 
     const { consoleId } = useConsoleSettings();
 
-    const isReadOnly: boolean = !(useRequiredScopes(applicationsFeatureConfig?.scopes?.update));
+    const isReadOnly: boolean = !(useRequiredScopes(applicationsFeatureConfig?.scopes?.update)) || isFeatureLocked;
 
     const {
         consoleRoles: administratorRole,
@@ -559,6 +565,18 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
                                     selectedRoles,
                                     "displayName"
                                 ) }
+                                allRolesSharingMessage={
+                                    t("applications:edit.sections.sharedAccess.allApplicationRolesSharingMessage")
+                                }
+                                shareWithFutureChildOrgsLabel={
+                                    t("applications:edit.sections.sharedAccess.shareApplicationWithFutureChildOrgs")
+                                }
+                                sharingSettingsLabel={
+                                    t("applications:edit.sections.sharedAccess.sharingSettings")
+                                }
+                                assignedRolesLabel={
+                                    t("applications:edit.sections.sharedAccess.sharedRoles")
+                                }
                             />
                         </RadioGroup>
                     </FormControl>

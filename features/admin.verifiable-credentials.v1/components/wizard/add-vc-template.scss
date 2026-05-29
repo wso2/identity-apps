@@ -16,8 +16,15 @@
  * under the License.
  */
 
+.vc-template-create-form {
+    > .MuiFormHelperText-root + .oxygen-text-field,
+    > .MuiFormHelperText-root + .vc-wizard-attributes-section {
+        margin-top: 0.75rem;
+    }
+}
+
 .vc-wizard-attributes-section {
-    margin-top: 1rem;
+    margin-top: 0;
 }
 
 .vc-wizard-claims-dropdown {

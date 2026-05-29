@@ -116,7 +116,7 @@ export const getPasswordConfig = (validationConfig: ValidationDataInterface[]): 
  * @param attribute - attribute name.
  * @returns the value of the validator configuration.
  */
-export const getConfig = (ruleSet: ValidationConfInterface[], validator: string, attribute: string): string => {
+const getConfig = (ruleSet: ValidationConfInterface[], validator: string, attribute: string): string => {
 
     const config: ValidationConfInterface[] = ruleSet?.filter((data: ValidationConfInterface) => {
         return data.validator === validator;

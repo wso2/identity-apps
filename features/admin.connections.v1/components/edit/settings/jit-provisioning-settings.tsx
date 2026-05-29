@@ -23,7 +23,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { updateJITProvisioningConfigs } from "../../../api/connections";
+import { updateIdentityProviderDetails, updateJITProvisioningConfigs } from "../../../api/connections";
 import { JITProvisioningResponseInterface } from "../../../models/connection";
 import { JITProvisioningConfigurationsForm } from "../forms";
 
@@ -35,6 +35,14 @@ interface JITProvisioningSettingsInterface extends TestableComponentInterface {
      * Currently editing idp id.
      */
     idpId?: string;
+    /**
+     * Home realm identifier of the connection.
+     */
+    homeRealmIdentifier?: string;
+    /**
+     * Template ID of the connection.
+     */
+    templateId?: string;
     /**
      * Is the idp info request loading.
      */
@@ -68,6 +76,8 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
 
     const {
         idpId,
+        homeRealmIdentifier,
+        templateId,
         isLoading,
         jitProvisioningConfigurations,
         onUpdate,
@@ -85,27 +95,62 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
      * @param values - Form values.
      */
     const handleJITProvisioningConfigFormSubmit = (values: any): void => {
-        updateJITProvisioningConfigs(idpId, values)
+        const { homeRealmIdentifier: submittedHomeRealmIdentifier, ...jitConfig } = values;
+
+        const jitUpdate: Promise<void> = updateJITProvisioningConfigs(idpId!, jitConfig)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("authenticationProvider:" +
-                        "notifications.updateJITProvisioning." +
-                        "success.description"),
+                    description: t("authenticationProvider:notifications" +
+                        ".updateJITProvisioning.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("authenticationProvider:" +
-                        "notifications.updateJITProvisioning.success.message")
+                    message: t("authenticationProvider:notifications" +
+                        ".updateJITProvisioning.success.message")
                 }));
-                onUpdate(idpId);
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("authenticationProvider:notifications." +
-                        "updateJITProvisioning.genericError.description"),
+                    description: t("authenticationProvider:notifications" +
+                        ".updateJITProvisioning.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("authenticationProvider:notifications." +
-                        "updateJITProvisioning.genericError.message")
+                    message: t("authenticationProvider:notifications" +
+                        ".updateJITProvisioning.genericError.message")
                 }));
             });
+
+        const pendingCalls: Promise<void>[] = [ jitUpdate ];
+
+        const homeRealmIdentifierChanged: boolean =
+            submittedHomeRealmIdentifier != null &&
+            submittedHomeRealmIdentifier != undefined &&
+            submittedHomeRealmIdentifier.trim() !== homeRealmIdentifier;
+
+        if (homeRealmIdentifierChanged) {
+            const homeRealmUpdate: Promise<void> = updateIdentityProviderDetails(
+                { homeRealmIdentifier: submittedHomeRealmIdentifier.trim(), id: idpId! }
+            )
+                .then(() => {
+                    dispatch(addAlert({
+                        description: t("authenticationProvider:notifications" +
+                            ".updateHomeRealmIdentifier.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("authenticationProvider:notifications" +
+                            ".updateHomeRealmIdentifier.success.message")
+                    }));
+                })
+                .catch(() => {
+                    dispatch(addAlert({
+                        description: t("authenticationProvider:notifications" +
+                            ".updateHomeRealmIdentifier.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("authenticationProvider:notifications" +
+                            ".updateHomeRealmIdentifier.genericError.message")
+                    }));
+                });
+
+            pendingCalls.push(homeRealmUpdate);
+        }
+
+        Promise.allSettled(pendingCalls).then(() => onUpdate(idpId!));
     };
 
     return (
@@ -115,6 +160,8 @@ export const JITProvisioningSettings: FunctionComponent<JITProvisioningSettingsI
                     <JITProvisioningConfigurationsForm
                         idpId={ idpId }
                         initialValues={ jitProvisioningConfigurations }
+                        homeRealmIdentifier={ homeRealmIdentifier }
+                        templateId={ templateId }
                         onSubmit={ handleJITProvisioningConfigFormSubmit }
                         data-testid={ testId }
                         isReadOnly={ isReadOnly }

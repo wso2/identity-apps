@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -41,7 +41,7 @@ import React, { FormEvent, FunctionComponent, ReactElement, useCallback, useEffe
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Dropdown, DropdownProps, Grid, GridColumn, Modal } from "semantic-ui-react";
+import { Dropdown, DropdownProps, Grid, GridColumn, Modal, Table } from "semantic-ui-react";
 
 /**
  * Proptypes for the group users list component.
@@ -136,6 +136,9 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
         isForNonHumanUser
     );
 
+    const hasMoreUsers: boolean = isForNonHumanUser
+        ? agentList?.Resources?.length === UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT
+        : originalUserList?.Resources?.length === UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT;
     const entityList: UserBasicInterface[] = isForNonHumanUser ? agentList?.Resources : originalUserList?.Resources;
     const isEntityListLoading: boolean = isForNonHumanUser
         ? isAgentListLoading
@@ -388,6 +391,17 @@ export const AddRoleUserModal: FunctionComponent<AddRoleUserModalProps> = (
                                     );
                                 })
                             }
+                            { hasMoreUsers && !isEntityListLoading && (
+                                <Table.Row>
+                                    <Table.Cell
+                                        colSpan={ 2 }
+                                        className="transfer-list-more-items-message"
+                                    >
+                                        { t(isForNonHumanUser ? "roles:edit.agents.actions.search.moreItemsMessage":
+                                            "roles:edit.users.actions.search.moreItemsMessage") }
+                                    </Table.Cell>
+                                </Table.Row>
+                            ) }
                         </TransferList>
                     </TransferComponent>
                 </Grid>

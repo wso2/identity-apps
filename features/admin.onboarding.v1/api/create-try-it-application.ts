@@ -33,7 +33,8 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import { buildAuthSequence } from "./auth-sequence-builder";
-import { CreatedApplicationResultInterface, OnboardingDataInterface } from "../models";
+import { CreatedApplicationResultInterface } from "../models/application";
+import { OnboardingDataInterface } from "../models/onboarding";
 
 /**
  * Creates or reuses the Try It application for the Tour flow.

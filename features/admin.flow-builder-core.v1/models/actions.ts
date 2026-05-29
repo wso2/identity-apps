@@ -18,7 +18,7 @@
 
 import { BaseDisplay } from "./base";
 
-export interface Executor {
+interface Executor {
     name: string;
     meta: Record<string, unknown>;
 }

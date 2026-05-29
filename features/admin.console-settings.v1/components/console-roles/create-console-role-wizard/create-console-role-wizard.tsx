@@ -23,7 +23,7 @@ import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constan
 import { CreateRoleInterface, CreateRolePermissionInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalForm, FormRenderProps, FormSpy } from "@wso2is/form";
+import { FinalForm, FormRenderProps, FormSpy } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
@@ -37,11 +37,11 @@ import CreateConsoleRoleWizardPermissionsForm from "./create-console-role-wizard
 import { ConsoleRolesOnboardingConstants } from "../../../constants/console-roles-onboarding-constants";
 import useConsoleSettings from "../../../hooks/use-console-settings";
 
-export interface CreateConsoleRoleWizardPropsInterface extends IdentifiableComponentInterface, ModalProps {
+interface CreateConsoleRoleWizardPropsInterface extends IdentifiableComponentInterface, ModalProps {
     onClose: (e: MouseEvent<HTMLElement>, data: ModalProps) => void;
 }
 
-export type CreateConsoleRoleWizardFormValuesInterface = Partial<CreateRoleInterface>;
+type CreateConsoleRoleWizardFormValuesInterface = Partial<CreateRoleInterface>;
 
 /**
  * API resource wizard.

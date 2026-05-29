@@ -147,7 +147,7 @@
         </filter-class>
         <init-param>
             <param-name>patterns</param-name>
-            <param-value>{{ cache_filter.patterns | default('"text/html" ,"application/json" ,"plain/text"') }}</param-value>
+            <param-value>{{ cache_filter.patterns | default('"text/html.*" ,"application/json" ,"plain/text"') }}</param-value>
         </init-param>
         <init-param>
             <param-name>filterAction</param-name>
@@ -164,6 +164,8 @@
     <filter-mapping>
         <filter-name>ContentTypeBasedCachePreventionFilter</filter-name>
         <url-pattern>{{ cache_filter.url_pattern | default('*') }}</url-pattern>
+        <dispatcher>FORWARD</dispatcher>
+        <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
     <!-- *************** End of Cache Prevention Filter ********************** -->
 

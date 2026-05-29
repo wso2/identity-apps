@@ -21,11 +21,12 @@ import Box from "@oxygen-ui/react/Box";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useCallback } from "react";
 import { DEFAULT_BRANDING_CONFIG, OnboardingComponentIds } from "../../constants";
-import { OnboardingBrandingConfigInterface, SignInOptionsConfigInterface } from "../../models";
+import { OnboardingBrandingConfigInterface } from "../../models/branding";
+import { SignInOptionsConfigInterface } from "../../models/sign-in-options";
 import ColorPicker from "../shared/color-picker";
 import LoginBoxPreview from "../shared/login-box-preview";
 import LogoSelector from "../shared/logo-selector";
-import { LeftColumn, RightColumn, TwoColumnLayout } from "../shared/onboarding-styles";
+import { ConfigPanel, PreviewPanel, TwoColumnLayout } from "../shared/onboarding-styles";
 import StepHeader from "../shared/step-header";
 
 /**
@@ -36,6 +37,8 @@ interface DesignLoginStepPropsInterface extends IdentifiableComponentInterface {
     brandingConfig?: OnboardingBrandingConfigInterface;
     /** Callback when branding configuration changes */
     onBrandingConfigChange: (config: OnboardingBrandingConfigInterface) => void;
+    /** Whether self-registration is enabled (for preview) */
+    selfRegistrationEnabled?: boolean;
     /** Sign-in options for preview */
     signInOptions?: SignInOptionsConfigInterface;
 }
@@ -51,19 +54,6 @@ const DesignOptionsContainer: typeof Box = styled(Box)(({ theme }: { theme: Them
 }));
 
 /**
- * Preview column styling.
- */
-const PreviewColumn: typeof Box = styled(RightColumn)(({ theme }: { theme: Theme }) => ({
-    alignItems: "center",
-    backgroundColor: theme.palette.grey[50],
-    borderRadius: theme.shape.borderRadius * 2,
-    display: "flex",
-    justifyContent: "flex-start",
-    overflowY: "auto",
-    padding: theme.spacing(4)
-}));
-
-/**
  * Design login step component for onboarding.
  * Allows users to customize the appearance of their login page.
  */
@@ -73,6 +63,7 @@ const DesignLoginStep: FunctionComponent<DesignLoginStepPropsInterface> = (
     const {
         brandingConfig = DEFAULT_BRANDING_CONFIG,
         onBrandingConfigChange,
+        selfRegistrationEnabled = false,
         signInOptions,
         ["data-componentid"]: componentId = OnboardingComponentIds.DESIGN_LOGIN_STEP
     } = props;
@@ -94,7 +85,7 @@ const DesignLoginStep: FunctionComponent<DesignLoginStepPropsInterface> = (
 
     return (
         <TwoColumnLayout data-componentid={ componentId }>
-            <LeftColumn>
+            <ConfigPanel>
                 <StepHeader
                     data-componentid={ `${componentId}-header` }
                     title="Design your application's login"
@@ -116,15 +107,16 @@ const DesignLoginStep: FunctionComponent<DesignLoginStepPropsInterface> = (
                         showHint
                     />
                 </DesignOptionsContainer>
-            </LeftColumn>
+            </ConfigPanel>
 
-            <PreviewColumn>
+            <PreviewPanel>
                 <LoginBoxPreview
                     brandingConfig={ brandingConfig }
-                    signInOptions={ signInOptions }
                     data-componentid={ `${componentId}-preview` }
+                    selfRegistrationEnabled={ selfRegistrationEnabled }
+                    signInOptions={ signInOptions }
                 />
-            </PreviewColumn>
+            </PreviewPanel>
         </TwoColumnLayout>
     );
 };

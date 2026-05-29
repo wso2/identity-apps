@@ -27,12 +27,12 @@ import { Trans, useTranslation } from "react-i18next";
 import useRequiredFields, { RequiredFieldInterface } from "../../../../../hooks/use-required-fields";
 import { CommonElementFactoryPropsInterface } from "../../common-element-factory";
 import Hint from "../../hint";
-import PlaceholderComponent from "../placeholder-component";
+import PlaceholderComponent from "@wso2is/common.branding.v1/components/placeholder-component";
 
 /**
  * Props interface of {@link OTPInputAdapter}
  */
-export type OTPInputAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type OTPInputAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the OTP inputs.
@@ -40,7 +40,7 @@ export type OTPInputAdapterPropsInterface = IdentifiableComponentInterface & Com
  * @param props - Props injected to the component.
  * @returns The OTPInputAdapter component.
  */
-export const OTPInputAdapter: FunctionComponent<OTPInputAdapterPropsInterface> = ({
+const OTPInputAdapter: FunctionComponent<OTPInputAdapterPropsInterface> = ({
     resource
 }: OTPInputAdapterPropsInterface): ReactElement => {
     const { t } = useTranslation();

@@ -17,14 +17,14 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import useSWR, { BareFetcher, Revalidator, RevalidatorOptions, SWRConfiguration, SWRResponse } from "swr";
 import { FetcherResponse } from "swr/dist/_internal";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
-export type GetRequest = AxiosRequestConfig | null
+type GetRequest = AxiosRequestConfig | null
 
 /**
  * Request error interface.
@@ -97,7 +97,7 @@ export interface SWRConfig<Data = unknown, Error = unknown>
     fallbackData?: Data
 }
 
-export type BareFetcherInterface = BareFetcher;
+type BareFetcherInterface = BareFetcher;
 
 /**
  * Schema for the revalidator.
@@ -144,7 +144,7 @@ const useRequest = <Data = unknown, Error = unknown>(
             ..._config,
             fallbackData: fallbackData && {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                config: request!,
+                config: request! as InternalAxiosRequestConfig,
                 data: fallbackData,
                 headers: {},
                 status: 200,

@@ -1,5 +1,64 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.6.1
+
+### Patch Changes
+
+- [#9875](https://github.com/wso2/identity-apps/pull/9875) [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - Revert Axios and SDK version bumps
+
+- Updated dependencies [[`c834b18928cdfc09710c5e7067668206d006e68a`](https://github.com/wso2/identity-apps/commit/c834b18928cdfc09710c5e7067668206d006e68a), [`877d726905edf898c33c615cd887f8ed0a071a0e`](https://github.com/wso2/identity-apps/commit/877d726905edf898c33c615cd887f8ed0a071a0e), [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d), [`b75bb804c799c0e795e8580d35eedb8993d0ecc4`](https://github.com/wso2/identity-apps/commit/b75bb804c799c0e795e8580d35eedb8993d0ecc4)]:
+  - @wso2is/admin.applications.v1@2.41.28
+  - @wso2is/admin.organizations.v1@2.28.2
+  - @wso2is/admin.template-core.v1@1.6.1
+  - @wso2is/admin.feature-gate.v1@1.9.2
+  - @wso2is/admin.core.v1@2.55.3
+
+## 1.6.0
+
+### Minor Changes
+
+- [#9702](https://github.com/wso2/identity-apps/pull/9702) [`aa65d18c579561581a0a6b60003017d31d8f9c27`](https://github.com/wso2/identity-apps/commit/aa65d18c579561581a0a6b60003017d31d8f9c27) Thanks [@VihangaMunasinghe](https://github.com/VihangaMunasinghe)! - \* New Features
+
+  - Multi-provider support: The Push Providers page now loads all configured
+    providers (FCM, AmazonSNS) simultaneously. Users can switch between provider cards
+    without losing configurations.
+  - Default push provider toggle: Added a toggle to designate a default push
+    sender. It remains disabled until the push sender is configured.
+  - Default provider UI indicator: Provider cards now display a "Default"
+    chip label when marked as the default push sender.
+  - Reusable KeyValueMapField: Introduced a new component in @wso2is/form
+    for dynamic key-value pairs with dropdown support and read-only modes.
+
+  * API Updates:
+
+    - updatePushProvider and deletePushProvider now accept a providerName
+      parameter for specific endpoints.
+    - Added updateDefaultPushProviderConfig API function.
+    - Added useGetPushNotificationConfigs hook.
+
+  * UI Architecture
+
+    - Moved EmphasizedSegment out of the dynamic form to allow for custom
+      styling and layout flexibility.
+
+  * Localization (i18n)
+    - Added "Default" label translations across all 10 supported languages.
+
+### Patch Changes
+
+- Updated dependencies [[`aa65d18c579561581a0a6b60003017d31d8f9c27`](https://github.com/wso2/identity-apps/commit/aa65d18c579561581a0a6b60003017d31d8f9c27)]:
+  - @wso2is/admin.template-core.v1@1.6.0
+
+## 1.5.11
+
+### Patch Changes
+
+- [#9674](https://github.com/wso2/identity-apps/pull/9674) [`8bf98aba6e17b25d20231894e6f21e285a00c648`](https://github.com/wso2/identity-apps/commit/8bf98aba6e17b25d20231894e6f21e285a00c648) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Rename VC Client Application to Digital Wallet
+
+- Updated dependencies [[`8bf98aba6e17b25d20231894e6f21e285a00c648`](https://github.com/wso2/identity-apps/commit/8bf98aba6e17b25d20231894e6f21e285a00c648)]:
+  - @wso2is/admin.applications.v1@2.41.10
+  - @wso2is/admin.core.v1@2.54.2
+
 ## 1.5.10
 
 ### Patch Changes

@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { SearchUtils } from "@wso2is/core/utils";
-import { DropdownChild, Field, FormValue, Forms } from "@wso2is/forms";
+import { DropdownChild, Field, FormValue, Forms } from "@wso2is/forms/legacy";
 import { AdvancedSearch, AdvancedSearchPropsInterface, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -44,7 +44,7 @@ const FILTER_VALUES_FIELD_IDENTIFIER: string = "filterValues";
 /**
  * Prop types for the application search component.
  */
-export interface AdvancedSearchWithBasicFiltersPropsInterface extends
+interface AdvancedSearchWithBasicFiltersPropsInterface extends
     StrictAdvancedSearchWithBasicFiltersPropsInterface,
     TestableComponentInterface {
     [ key: string ]: any;
@@ -62,7 +62,7 @@ interface FilterAttributeOptionInterface {
 /**
  * Strict prop types for the application search component.
  */
-export interface StrictAdvancedSearchWithBasicFiltersPropsInterface extends TestableComponentInterface {
+interface StrictAdvancedSearchWithBasicFiltersPropsInterface extends TestableComponentInterface {
     /**
      * Default Search attribute. ex: "name"
      */

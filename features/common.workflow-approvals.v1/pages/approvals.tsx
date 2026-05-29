@@ -22,11 +22,12 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout } from "@wso2is/react-components";
-import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, KeyboardEvent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Dropdown, DropdownItemProps, DropdownProps, PaginationProps, SemanticCOLORS } from "semantic-ui-react";
+import { Dropdown, DropdownItemProps, DropdownProps, Icon, Input, PaginationProps,
+    SemanticCOLORS } from "semantic-ui-react";
 import { fetchPendingApprovals, updatePendingApprovalStatus } from "../api";
 import { ApprovalsList } from "../components";
 import { ApprovalStatus, ApprovalTaskListItemInterface } from "../models";
@@ -69,7 +70,48 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ offset, setOffset ] = useState(0);
     const [ filterStatus, setFilterStatus ] = useState<string>(ApprovalStatus.PENDING);
-    const [ searchResult, setSearchResult ] = useState<number>(undefined);
+    const [ filterOperationType, setFilterOperationType ] = useState<string>("ALL");
+    const [ searchInputValue, setSearchInputValue ] = useState<string>("");
+    const [ appliedRequestIdSearch, setAppliedRequestIdSearch ] = useState<string>("");
+    const [ searchResult, setSearchResult ] = useState<number | undefined>(undefined);
+
+    const OPERATION_TYPE_OPTIONS: DropdownItemProps[] = [
+        {
+            key: 0,
+            text: t("common:approvalsPage.operationTypes.all"),
+            value: "ALL"
+        },
+        {
+            key: 1,
+            text: t("common:approvalsPage.operationTypes.addUser"),
+            value: "ADD_USER"
+        },
+        {
+            key: 2,
+            text: t("common:approvalsPage.operationTypes.deleteUser"),
+            value: "DELETE_USER"
+        },
+        {
+            key: 3,
+            text: t("common:approvalsPage.operationTypes.addRole"),
+            value: "ADD_ROLE"
+        },
+        {
+            key: 4,
+            text: t("common:approvalsPage.operationTypes.deleteRole"),
+            value: "DELETE_ROLE"
+        },
+        {
+            key: 5,
+            text: t("common:approvalsPage.operationTypes.updateRolesOfUser"),
+            value: "UPDATE_ROLES_OF_USERS"
+        },
+        {
+            key: 6,
+            text: t("common:approvalsPage.operationTypes.selfRegisterUser"),
+            value: "SELF_REGISTER_USER"
+        }
+    ];
 
     const APPROVAL_OPTIONS: DropdownItemProps[] = [
         {
@@ -118,7 +160,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     useEffect(() => {
         setSearchResult(undefined);
         getApprovals(false);
-    }, [ filterStatus ]);
+    }, [ filterStatus, filterOperationType, appliedRequestIdSearch ]);
 
     /**
      * Fetches the list of pending approvals from the API.
@@ -141,7 +183,14 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
             statusArray.push(filterStatus);
         }
 
-        fetchPendingApprovals(null, null, statusArray, approvalsUrl)
+        fetchPendingApprovals(
+            null,
+            null,
+            statusArray,
+            approvalsUrl,
+            filterOperationType !== "ALL" ? filterOperationType : undefined,
+            appliedRequestIdSearch || undefined
+        )
             .then((response: ApprovalTaskListItemInterface[]) => {
                 if (!shallowUpdate) {
                     setApprovals(response);
@@ -271,6 +320,35 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
      */
     const handleFilterStatusChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setFilterStatus(data.value as string);
+        setOffset(0);
+    };
+
+    /**
+     * Handle the operation type filter change.
+     *
+     * @param event - event
+     * @param data - data
+     */
+    const handleOperationTypeFilterChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
+        setFilterOperationType(data.value as string);
+        setOffset(0);
+    };
+
+    /**
+     * Triggers the request ID search by applying the current input value.
+     */
+    const handleSearch = (): void => {
+        setAppliedRequestIdSearch(searchInputValue);
+        setOffset(0);
+    };
+
+    /**
+     * Clears the request ID search input and resets the filter.
+     */
+    const handleSearchClear = (): void => {
+        setSearchInputValue("");
+        setAppliedRequestIdSearch("");
+        setOffset(0);
     };
 
     /**
@@ -387,13 +465,61 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                 isLoading={ isApprovalListRequestLoading }
                 data-componentid={ `${ componentId }-list-layout` }
                 leftActionPanel={
-                    (<Dropdown
-                        data-componentid={ `${ componentId }-status-filter-dropdown` }
-                        selection
-                        options={ APPROVAL_OPTIONS }
-                        onChange={ handleFilterStatusChange }
-                        value={ filterStatus }
+                    (<Input
+                        fluid
+                        aria-label={ t("common:approvalsPage.search.placeholder") }
+                        data-componentid={ `${ componentId }-search-input` }
+                        icon={ (searchInputValue || appliedRequestIdSearch)
+                            ? (<Icon
+                                name="times"
+                                link
+                                role="button"
+                                tabIndex={ 0 }
+                                onClick={ handleSearchClear }
+                                onKeyDown={ (e: KeyboardEvent<HTMLElement>): void => {
+                                    if (e.key === "Enter" || e.key === " ") {
+                                        e.preventDefault();
+                                        handleSearchClear();
+                                    }
+                                } }
+                            />)
+                            : "search"
+                        }
+                        placeholder={ t("common:approvalsPage.search.placeholder") }
+                        value={ searchInputValue }
+                        onChange={ (e: React.ChangeEvent<HTMLInputElement>): void => {
+                            const value: string = e.target.value;
+
+                            setSearchInputValue(value);
+                            if (value === "") {
+                                setAppliedRequestIdSearch("");
+                                setOffset(0);
+                            }
+                        } }
+                        onKeyDown={ (e: KeyboardEvent<HTMLInputElement>): void => {
+                            if (e.key === "Enter") {
+                                handleSearch();
+                            }
+                        } }
                     />)
+                }
+                rightActionPanel={
+                    (<>
+                        <Dropdown
+                            data-componentid={ `${ componentId }-status-filter-dropdown` }
+                            selection
+                            options={ APPROVAL_OPTIONS }
+                            onChange={ handleFilterStatusChange }
+                            value={ filterStatus }
+                        />
+                        <Dropdown
+                            data-componentid={ `${ componentId }-operation-type-filter-dropdown` }
+                            selection
+                            options={ OPERATION_TYPE_OPTIONS }
+                            onChange={ handleOperationTypeFilterChange }
+                            value={ filterOperationType }
+                        />
+                    </>)
                 }
             >
                 <ApprovalsList

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -54,9 +54,9 @@ import {
     FormRenderProps,
     SelectFieldAdapter,
     TextFieldAdapter
-} from "@wso2is/form";
-import { FormSpy } from "@wso2is/form/src";
-import { FormValue } from "@wso2is/forms";
+} from "@wso2is/forms";
+import { FormSpy } from "@wso2is/forms";
+import { FormValue } from "@wso2is/forms/legacy";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     MutableRefObject,
@@ -901,7 +901,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
             if (isEmailRequired && isEmpty(value)) {
                 errorMessage = t("user:forms.addUserForm.inputs.email.validations.empty");
 
-            } else if (!SharedUserStoreUtils.validateInputAgainstRegEx(value, emailClaimRegex)) {
+            } else if (!isEmpty(value) && !SharedUserStoreUtils.validateInputAgainstRegEx(value, emailClaimRegex)) {
                 errorMessage = USERNAME_REGEX_VIOLATION_ERROR_MESSAGE;
             }
 

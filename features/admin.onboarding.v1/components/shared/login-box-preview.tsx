@@ -19,22 +19,25 @@
 import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import Divider from "@oxygen-ui/react/Divider";
 import Paper from "@oxygen-ui/react/Paper";
 import TextField from "@oxygen-ui/react/TextField";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { getConnectionIcons } from "@wso2is/admin.connections.v1/configs/ui";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, memo, useMemo } from "react";
-import { OnboardingComponentIds } from "../../constants";
+import { FIRST_FACTOR_METHOD_IDS, OnboardingComponentIds } from "../../constants";
 import { getAnimalNameFromUrl, getAvatarDisplayImage } from "../../constants/preset-logos";
-import { OnboardingBrandingConfigInterface, SignInOptionsConfigInterface } from "../../models";
+import { OnboardingBrandingConfigInterface } from "../../models/branding";
+import { SignInOptionsConfigInterface } from "../../models/sign-in-options";
 
 /**
  * Auth method display configuration interface.
  */
 interface AuthMethodDisplayConfigInterface {
     /** Icon - can be string path or React component */
-    icon: any;
+    icon: string | React.ComponentType<React.SVGProps<SVGSVGElement>>;
     /** Display label */
     label: string;
 }
@@ -73,84 +76,107 @@ const getAuthMethodConfig: () => Record<string, AuthMethodDisplayConfigInterface
 /**
  * Props interface for LoginBoxPreview component.
  */
-export interface LoginBoxPreviewPropsInterface extends IdentifiableComponentInterface {
+interface LoginBoxPreviewPropsInterface extends IdentifiableComponentInterface {
     /** Sign-in options configuration */
     signInOptions?: SignInOptionsConfigInterface;
     /** Branding configuration */
     brandingConfig?: OnboardingBrandingConfigInterface;
+    /** Whether self-registration is enabled */
+    selfRegistrationEnabled?: boolean;
     /** Scale factor for the preview */
     scale?: number;
 }
 
 /**
- * Outer container for centering and scaling.
+ * Browser-chrome frame that grounds the preview visually.
  */
-const PreviewWrapper: typeof Box = styled(Box)({
-    alignItems: "flex-start",
-    display: "flex",
-    justifyContent: "center",
-    margin: "auto 0",
-    width: "100%"
-});
-
-/**
- * Main preview container for the two-step flow.
- */
-const PreviewContainer: typeof Box = styled(Box)(() => ({
+const BrowserFrame: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    backgroundColor: theme.palette.background.paper,
+    border: `1px solid ${theme.palette.divider}`,
+    borderRadius: theme.shape.borderRadius * 2,
+    boxShadow: theme.shadows[1],
     display: "flex",
     flexDirection: "column",
-    maxWidth: 320,
-    transformOrigin: "top center",
+    overflow: "hidden",
     width: "100%"
 }));
 
 /**
- * Step container with relative positioning for label.
+ * Faux browser toolbar with window-control dots.
  */
-const StepContainer: typeof Box = styled(Box)({
-    position: "relative"
-});
-
-/**
- * Step label badge.
- */
-const StepLabel: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
-    backgroundColor: theme.palette.grey[200],
-    borderRadius: theme.shape.borderRadius,
-    color: theme.palette.text.secondary,
-    fontSize: "0.625rem",
-    fontWeight: 600,
-    left: theme.spacing(1.5),
-    padding: theme.spacing(0.25, 0.75),
-    position: "absolute",
-    top: -8,
-    zIndex: 1
+const BrowserToolbar: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    alignItems: "center",
+    borderBottom: `1px solid ${theme.palette.divider}`,
+    display: "flex",
+    gap: theme.spacing(0.75),
+    padding: theme.spacing(1, 1.5)
 }));
 
 /**
- * Step box (card) styling.
+ * Single toolbar dot (macOS-style window control).
  */
-const StepBox: typeof Paper = styled(Paper)(({ theme }: { theme: Theme }) => ({
+const ToolbarDot: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    backgroundColor: theme.palette.grey[300],
+    borderRadius: "50%",
+    height: 8,
+    width: 8
+}));
+
+/**
+ * Browser content area with subtle background.
+ */
+const BrowserContent: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    alignItems: "center",
+    backgroundColor: theme.palette.grey[50],
+    display: "flex",
+    flex: 1,
+    flexDirection: "column",
+    gap: theme.spacing(2),
+    justifyContent: "center",
+    minHeight: 480,
+    padding: theme.spacing(4, 3)
+}));
+
+/**
+ * Login card — the primary sign-in form.
+ */
+const LoginCard: typeof Paper = styled(Paper)(({ theme }: { theme: Theme }) => ({
     borderRadius: theme.shape.borderRadius * 1.5,
     display: "flex",
     flexDirection: "column",
     gap: theme.spacing(1.5),
-    padding: theme.spacing(2.5, 2)
+    maxWidth: 340,
+    padding: theme.spacing(3, 2.5),
+    width: "100%"
 }));
 
 /**
- * Connector between steps.
+ * Compact strip below the login card showing second-step verification methods.
  */
-const StepConnector: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
-    "& .connector-line": {
-        backgroundColor: theme.palette.divider,
-        height: "100%",
-        width: 2
-    },
+const Step2Strip: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     alignItems: "center",
+    backgroundColor: theme.palette.background.paper,
+    border: `1px solid ${theme.palette.divider}`,
+    borderRadius: theme.shape.borderRadius * 1.5,
     display: "flex",
-    height: 24,
-    justifyContent: "center"
+    gap: theme.spacing(1.5),
+    maxWidth: 340,
+    padding: theme.spacing(1.5, 2),
+    width: "100%"
+}));
+
+/**
+ * Small icon container for the step 2 strip.
+ */
+const Step2MethodIcon: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    alignItems: "center",
+    backgroundColor: theme.palette.grey[50],
+    border: `1px solid ${theme.palette.divider}`,
+    borderRadius: theme.shape.borderRadius,
+    display: "flex",
+    height: 28,
+    justifyContent: "center",
+    width: 28
 }));
 
 /**
@@ -177,24 +203,6 @@ const PrimaryButtonStyled: typeof Button = styled(Button)(() => ({
     fontSize: "0.75rem",
     fontWeight: 500,
     padding: "8px 16px",
-    pointerEvents: "none",
-    textTransform: "none"
-}));
-
-/**
- * Sign-in option button.
- */
-const SignInOptionButton: typeof Button = styled(Button)(({ theme }: { theme: Theme }) => ({
-    "& .MuiButton-startIcon": {
-        marginRight: theme.spacing(1)
-    },
-    backgroundColor: theme.palette.background.paper,
-    border: `1px solid ${theme.palette.divider}`,
-    borderRadius: theme.shape.borderRadius,
-    color: theme.palette.text.primary,
-    fontSize: "0.6875rem",
-    justifyContent: "flex-start",
-    padding: theme.spacing(0.75, 1.5),
     pointerEvents: "none",
     textTransform: "none"
 }));
@@ -251,7 +259,7 @@ const DEFAULT_BRANDING: OnboardingBrandingConfigInterface = {
 
 /**
  * Login box preview component.
- * Displays a two-step preview of the Identifier First login flow.
+ * Displays a unified single-card preview of the login experience.
  */
 const LoginBoxPreview: FunctionComponent<LoginBoxPreviewPropsInterface> = memo((
     props: LoginBoxPreviewPropsInterface
@@ -259,7 +267,8 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewPropsInterface> = memo((
     const {
         signInOptions = DEFAULT_PREVIEW_OPTIONS,
         brandingConfig = DEFAULT_BRANDING,
-        scale = 0.85,
+        selfRegistrationEnabled = false,
+        scale: _scale,
         ["data-componentid"]: componentId = OnboardingComponentIds.LOGIN_BOX_PREVIEW
     } = props;
 
@@ -268,67 +277,70 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewPropsInterface> = memo((
 
     const hasIdentifier: boolean = identifiers.username || identifiers.email || identifiers.mobile;
     const hasPassword: boolean = loginMethods.password;
+    const hasPasskey: boolean = loginMethods.passkey;
+    const hasMagicLink: boolean = loginMethods.magicLink;
     const hasAnyLoginMethod: boolean = loginMethods.password || loginMethods.passkey ||
         loginMethods.magicLink || loginMethods.emailOtp || loginMethods.totp ||
         loginMethods.pushNotification;
-
-    // Non-password methods go to Step 2 as alternatives
-    const hasNonPasswordMethods: boolean = loginMethods.passkey || loginMethods.magicLink ||
-        loginMethods.emailOtp || loginMethods.totp || loginMethods.pushNotification;
 
     const identifierLabel: string = useMemo(
         () => getIdentifierLabel(signInOptions),
         [ signInOptions ]
     );
 
-    // Get auth method config for icons
     const authMethodConfig: Record<string, AuthMethodDisplayConfigInterface> = useMemo(
         () => getAuthMethodConfig(),
         []
     );
 
-    /**
-     * Get selected login methods.
-     */
-    const selectedMethods: string[] = useMemo(() => {
+    // Second-step verification methods (exclude first-factor methods: password, passkey, magicLink)
+    const step2Methods: string[] = useMemo(() => {
         return Object.entries(loginMethods)
-            .filter(([ , enabled ]: [string, boolean]) => enabled)
+            .filter(([ key, enabled ]: [string, boolean]) =>
+                enabled && !FIRST_FACTOR_METHOD_IDS.includes(key)
+            )
             .map(([ key ]: [string, boolean]) => key);
     }, [ loginMethods ]);
 
     /**
      * Render icon for a method - handles both string paths and React components.
      */
-    const renderIcon: (icon: any) => ReactElement | null = (icon: any): ReactElement | null => {
-        if (!icon) return null;
+    const renderIcon: (
+        icon: AuthMethodDisplayConfigInterface["icon"] | undefined,
+        size?: number
+    ) => ReactElement | null =
+        (
+            icon: AuthMethodDisplayConfigInterface["icon"] | undefined,
+            size: number = 16
+        ): ReactElement | null => {
+            if (!icon) return null;
 
-        // If it's a string (image path), use img tag
-        if (typeof icon === "string") {
-            return <IconImage src={ icon } alt="" />;
-        }
+            if (typeof icon === "string") {
+                return <IconImage src={ icon } alt="" style={ { height: size, width: size } } />;
+            }
 
-        // If it's a React component (SVG), render it
-        if (typeof icon === "function" || typeof icon === "object") {
-            const IconComponent: any = icon;
+            const IconComponent: React.ComponentType<React.SVGProps<SVGSVGElement>> = icon;
 
             return (
-                <Box sx={ { display: "flex", height: 16, width: 16 } }>
+                <Box sx={ { display: "flex", height: size, width: size } }>
                     <IconComponent style={ { height: "100%", width: "100%" } } />
                 </Box>
             );
-        }
-
-        return null;
-    };
+        };
 
     return (
-        <PreviewWrapper data-componentid={ componentId }>
-            <PreviewContainer sx={ { transform: `scale(${scale})` } }>
+        <BrowserFrame data-componentid={ componentId }>
+            <BrowserToolbar>
+                <ToolbarDot />
+                <ToolbarDot />
+                <ToolbarDot />
+            </BrowserToolbar>
+            <BrowserContent>
                 { /* Empty state */ }
                 { !hasIdentifier && !hasAnyLoginMethod && (
                     <Typography
                         color="text.secondary"
-                        sx={ { fontStyle: "italic", textAlign: "center" } }
+                        sx={ { fontStyle: "italic", py: 6, textAlign: "center" } }
                     >
                         Select sign-in options to preview
                     </Typography>
@@ -338,7 +350,7 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewPropsInterface> = memo((
                 { hasIdentifier && !hasAnyLoginMethod && (
                     <Typography
                         color="error"
-                        sx={ { fontSize: "0.75rem", textAlign: "center" } }
+                        sx={ { fontSize: "0.75rem", py: 6, textAlign: "center" } }
                     >
                         Select at least one login method
                     </Typography>
@@ -347,104 +359,190 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewPropsInterface> = memo((
                 { !hasIdentifier && hasAnyLoginMethod && (
                     <Typography
                         color="error"
-                        sx={ { fontSize: "0.75rem", textAlign: "center" } }
+                        sx={ { fontSize: "0.75rem", py: 6, textAlign: "center" } }
                     >
                         Select at least one identifier
                     </Typography>
                 ) }
 
-                { /* Login flow preview */ }
+                { /* Login card (Step 1: identifier + password/passkey) */ }
                 { hasIdentifier && hasAnyLoginMethod && (
                     <>
-                        { /* Step 1: Identifier + Password (if selected) */ }
-                        <StepContainer>
-                            { hasNonPasswordMethods && <StepLabel>Step 1</StepLabel> }
-                            <StepBox variant="outlined">
-                                { /* Logo display when selected */ }
-                                { brandingConfig.logoUrl && (
-                                    <Box sx={ { display: "flex", justifyContent: "center", mb: 1 } }>
+                        <LoginCard variant="outlined">
+                            { brandingConfig.logoUrl && (() => {
+                                const animalName: string =
+                                    getAnimalNameFromUrl(brandingConfig.logoUrl);
+                                const logoSrc: string = animalName
+                                    ? getAvatarDisplayImage(animalName)
+                                    : brandingConfig.logoUrl;
+
+                                return (
+                                    <Box
+                                        sx={ {
+                                            display: "flex",
+                                            justifyContent: "center",
+                                            mb: 0.5
+                                        } }>
                                         <Box
                                             component="img"
-                                            src={ getAvatarDisplayImage(
-                                                getAnimalNameFromUrl(brandingConfig.logoUrl)
-                                            ) }
+                                            src={ logoSrc }
                                             alt="Application logo"
                                             sx={ {
-                                                height: 56,
-                                                objectFit: "cover",
-                                                width: 56
+                                                height: 48,
+                                                maxWidth: "100%",
+                                                objectFit: "contain",
+                                                width: 48
                                             } }
                                         />
                                     </Box>
-                                ) }
-                                { /* Sign in title */ }
-                                <Typography
-                                    sx={ { mb: 1, textAlign: "center" } }
-                                    variant="h6"
-                                >
-                                    Sign in
-                                </Typography>
+                                );
+                            })() }
+                            <Typography
+                                sx={ { mb: 0.5, textAlign: "center" } }
+                                variant="h6"
+                            >
+                                Sign in
+                            </Typography>
+                            <PreviewTextField
+                                fullWidth
+                                label={ identifierLabel }
+                                size="small"
+                                variant="outlined"
+                            />
+                            { hasPassword && (
                                 <PreviewTextField
                                     fullWidth
-                                    label={ identifierLabel }
+                                    label="Password"
                                     size="small"
+                                    type="password"
                                     variant="outlined"
                                 />
-                                { hasPassword && (
-                                    <PreviewTextField
-                                        fullWidth
-                                        label="Password"
-                                        size="small"
-                                        type="password"
-                                        variant="outlined"
-                                    />
-                                ) }
-                                <PrimaryButtonStyled
-                                    fullWidth
-                                    sx={ { backgroundColor: primaryColor, marginTop: 2 } }
+                            ) }
+                            <PrimaryButtonStyled
+                                fullWidth
+                                sx={ { backgroundColor: primaryColor, mt: 1 } }
+                            >
+                                { hasPassword ? "Sign In" : "Continue" }
+                            </PrimaryButtonStyled>
+                            { (hasPasskey || hasMagicLink) && (
+                                <>
+                                    <Divider sx={ { fontSize: "0.625rem" } }>OR</Divider>
+                                    { hasPasskey && (
+                                        <Button
+                                            fullWidth
+                                            startIcon={ renderIcon(authMethodConfig.passkey?.icon, 16) }
+                                            sx={ {
+                                                border: (t: Theme) =>
+                                                    `1px solid ${t.palette.divider}`,
+                                                borderRadius: 1,
+                                                color: "text.primary",
+                                                fontSize: "0.6875rem",
+                                                justifyContent: "flex-start",
+                                                pointerEvents: "none",
+                                                textTransform: "none"
+                                            } }
+                                            variant="outlined"
+                                        >
+                                            Sign In With Passkey
+                                        </Button>
+                                    ) }
+                                    { hasMagicLink && (
+                                        <Button
+                                            fullWidth
+                                            startIcon={
+                                                renderIcon(authMethodConfig.magicLink?.icon, 16) }
+                                            sx={ {
+                                                border: (t: Theme) =>
+                                                    `1px solid ${t.palette.divider}`,
+                                                borderRadius: 1,
+                                                color: "text.primary",
+                                                fontSize: "0.6875rem",
+                                                justifyContent: "flex-start",
+                                                pointerEvents: "none",
+                                                textTransform: "none"
+                                            } }
+                                            variant="outlined"
+                                        >
+                                            Sign In With Magic Link
+                                        </Button>
+                                    ) }
+                                </>
+                            ) }
+                            { selfRegistrationEnabled && (
+                                <Typography
+                                    sx={ {
+                                        color: "text.primary",
+                                        cursor: "default",
+                                        fontSize: "0.6875rem",
+                                        mt: 0.5,
+                                        pointerEvents: "none",
+                                        textAlign: "center"
+                                    } }
                                 >
-                                    { hasPassword ? "Sign In" : "Continue" }
-                                </PrimaryButtonStyled>
-                            </StepBox>
-                        </StepContainer>
+                                    Don&apos;t have an account?
+                                    { " " }
+                                    <Typography
+                                        component="span"
+                                        sx={ {
+                                            color: primaryColor,
+                                            fontSize: "0.6875rem"
+                                        } }
+                                    >
+                                        Register
+                                    </Typography>
+                                </Typography>
+                            ) }
+                        </LoginCard>
 
-                        { /* Connector + Step 2: Only shown if non-password methods selected */ }
-                        { hasNonPasswordMethods && (
-                            <>
-                                <StepConnector>
-                                    <div className="connector-line" />
-                                </StepConnector>
+                        { /* Step 2 verification strip */ }
+                        { step2Methods.length > 0 && (
+                            <Step2Strip>
+                                <Typography
+                                    sx={ {
+                                        color: "text.secondary",
+                                        fontSize: "0.6875rem",
+                                        fontWeight: 500,
+                                        whiteSpace: "nowrap"
+                                    } }
+                                >
+                                    Step 2
+                                </Typography>
+                                <Divider
+                                    flexItem
+                                    orientation="vertical"
+                                />
+                                <Box
+                                    sx={ {
+                                        display: "flex",
+                                        flexWrap: "wrap",
+                                        gap: 0.75
+                                    } }
+                                >
+                                    { step2Methods.map((methodKey: string) => {
+                                        const config: AuthMethodDisplayConfigInterface =
+                                            authMethodConfig[methodKey];
 
-                                <StepContainer>
-                                    <StepLabel>Step 2</StepLabel>
-                                    <StepBox variant="outlined">
-                                        { selectedMethods
-                                            .filter((methodKey: string) => methodKey !== "password")
-                                            .map((methodKey: string) => {
-                                                const config: AuthMethodDisplayConfigInterface =
-                                                    authMethodConfig[methodKey];
+                                        if (!config) return null;
 
-                                                if (!config) return null;
-
-                                                return (
-                                                    <SignInOptionButton
-                                                        fullWidth
-                                                        key={ methodKey }
-                                                        startIcon={ renderIcon(config.icon) }
-                                                        variant="outlined"
-                                                    >
-                                                        { config.label }
-                                                    </SignInOptionButton>
-                                                );
-                                            }) }
-                                    </StepBox>
-                                </StepContainer>
-                            </>
+                                        return (
+                                            <Tooltip
+                                                key={ methodKey }
+                                                placement="top"
+                                                title={ config.label }
+                                            >
+                                                <Step2MethodIcon>
+                                                    { renderIcon(config.icon, 14) }
+                                                </Step2MethodIcon>
+                                            </Tooltip>
+                                        );
+                                    }) }
+                                </Box>
+                            </Step2Strip>
                         ) }
                     </>
                 ) }
-            </PreviewContainer>
-        </PreviewWrapper>
+            </BrowserContent>
+        </BrowserFrame>
     );
 });
 

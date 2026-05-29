@@ -40,7 +40,11 @@ import { OrganizationFeatureDictionaryKeys, OrganizationType } from "@wso2is/adm
 import { OrganizationManagementConstants } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { AlertLevels,
+    HttpErrorResponseDataInterface,
+    IdentifiableComponentInterface,
+    SBACInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -73,7 +77,10 @@ import { ProvisioningSettings } from "./settings/provisioning/provisioning-setti
 import { SharedAccess } from "./settings/shared-access";
 import { SignOnMethods } from "./settings/sign-on-methods/sign-on-methods";
 import { disableApplication, getInboundProtocolConfig } from "../api/application";
-import { ApplicationManagementConstants } from "../constants/application-management";
+import {
+    ApplicationFeatureDictionaryKeys,
+    ApplicationManagementConstants
+} from "../constants/application-management";
 import CustomApplicationTemplate
     from "../data/application-templates/templates/custom-application/custom-application.json";
 import {
@@ -136,6 +143,10 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
      * URL Search params received to the parent edit page component.
      */
     urlSearchParams?: URLSearchParams;
+    /**
+     * OIDC inbound config fetched by the SWR hook on the parent page.
+     */
+    applicationInboundConfigs?: OIDCDataInterface;
 }
 
 /**
@@ -161,6 +172,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         template,
         readOnly,
         urlSearchParams,
+        applicationInboundConfigs,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -236,6 +248,22 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         OrganizationManagementConstants.FEATURE_DICTIONARY.get(
             OrganizationFeatureDictionaryKeys.OrganizationApplicationAdvancedSettings
         ));
+
+    const isTokenIssuerSelectionEnabled: boolean = isFeatureEnabled(
+        organizationFeatureConfig,
+        OrganizationManagementConstants.FEATURE_DICTIONARY.get(
+            OrganizationFeatureDictionaryKeys.OrganizationApplicationTokenIssuerSelection
+        ));
+
+    const isApplicationEditProvisioningSettingsEnabled: boolean = isFeatureEnabled(featureConfig?.applications,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"));
+
+    const isSubOrgApplicationOutboundProvisioningEnabled: boolean = isFeatureEnabled(featureConfig?.applications,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get(
+            ApplicationFeatureDictionaryKeys.SubOrgApplicationOutboundProvisioning));
+
+    const shouldShowProvisioningSettingsTab: boolean = isApplicationEditProvisioningSettingsEnabled && (
+        isSubOrganization() ? isSubOrgApplicationOutboundProvisioningEnabled : true );
 
     /**
      * Called when an application updates.
@@ -323,7 +351,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 });
 
             }))
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     if (error?.response?.status === 404) {
                         return;
                     }
@@ -423,7 +451,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 setShowDisableConfirmationModal(false);
                 onUpdate(application.id);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -665,7 +693,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     );
 
     const ProvisioningSettingsTabPane = (): ReactElement => (
-        applicationConfig.editApplication.showProvisioningSettings
+        shouldShowProvisioningSettingsTab
             ? (
                 < ResourceTab.Pane controlledSegmentation>
                     <ProvisioningSettings
@@ -878,10 +906,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                       render: SignOnMethodsTabPane
                   });
             }
-            if (applicationConfig.editApplication.showProvisioningSettings
-                && isFeatureEnabled(featureConfig?.applications,
-                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))
-                && !isSubOrganization()
+            if (shouldShowProvisioningSettingsTab
                 && !isM2MApplication
                 && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
                     application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
@@ -950,8 +975,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_INFO"))
-                 && !isSubOrganization()
-                 && !isMyAccount) {
+                 && !isFragmentApp
+                 && !isMyAccount
+                 && (isSubOrganization() ? isTokenIssuerSelectionEnabled : true)) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
@@ -1004,7 +1030,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 menuItem: t("applications:edit.sections.signOnMethod.tabName"),
                 render: SignOnMethodsTabPane
             },
-            applicationConfig.editApplication.showProvisioningSettings && {
+            shouldShowProvisioningSettingsTab && {
                 componentId: "provisioning",
                 "data-tabid": ApplicationTabIDs.PROVISIONING,
                 menuItem: t("applications:edit.sections.provisioning.tabName"),
@@ -1022,7 +1048,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 menuItem: t("applications:edit.sections.sharedAccess.tabName"),
                 render: SharedAccessTabPane
             },
-            {
+            ...(isSubOrganization() ? isTokenIssuerSelectionEnabled : true) && [ {
                 componentId: "info",
                 "data-tabid": ApplicationTabIDs.INFO,
                 menuItem: {
@@ -1030,7 +1056,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     icon: "info circle grey"
                 },
                 render: InfoTabPane
-            }
+            } ]
         ];
     };
 
@@ -1179,7 +1205,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     });
                     setAllowedOrigins(allowedCORSOrigins);
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     if (error?.response?.data?.description) {
                         dispatch(addAlert({
                             description: error.response.data.description,
@@ -1336,18 +1362,20 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         const isOIDCConfigured: boolean = inboundProtocolList.includes(SupportedAuthProtocolTypes.OIDC);
 
+        const oidcConfig: OIDCDataInterface = applicationInboundConfigs ?? inboundProtocolConfig?.oidc;
+
         if (!isOIDCConfigured
-            || isEmpty(inboundProtocolConfig?.oidc)
-            || !inboundProtocolConfig.oidc.clientId
-            || !inboundProtocolConfig.oidc.clientSecret) {
+            || isEmpty(oidcConfig)
+            || !oidcConfig.clientId
+            || !oidcConfig.clientSecret) {
 
             return null;
         }
 
         const clientSecret: string = clientSecretHashDisclaimerModalInputs.clientSecret
-            || inboundProtocolConfig.oidc.clientSecret;
+            || oidcConfig.clientSecret;
         const clientId: string = clientSecretHashDisclaimerModalInputs.clientId
-            || inboundProtocolConfig.oidc.clientId;
+            || oidcConfig.clientId;
 
         return (
             <ConfirmationModal

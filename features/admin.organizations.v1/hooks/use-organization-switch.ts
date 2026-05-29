@@ -23,7 +23,7 @@ import useOrganizations from "./use-organizations";
 /**
  * Interface for the return type of the `useOrganizationSwitch` hook.
  */
-export interface UseOrganizationSwitchInterface {
+interface UseOrganizationSwitchInterface {
     /**
      * Defines if the organization switch is loading.
      */

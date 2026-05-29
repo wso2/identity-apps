@@ -29,7 +29,10 @@ import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } f
  */
 export enum ApplicationFeatureDictionaryKeys {
     ApplicationEditEnforceAuthorizedAPIUpdatePermission = "APPLICATION_EDIT_ENFORCE_AUTHORIZED_API_UPDATE_PERMISSION",
-    ApplicationEditEnforceClientSecretPermission = "APPLICATION_EDIT_ENFORCE_CLIENT_SECRET_PERMISSION"
+    ApplicationEditEnforceClientSecretPermission = "APPLICATION_EDIT_ENFORCE_CLIENT_SECRET_PERMISSION",
+    ApplicationOutboundProvisioning = "APPLICATION_OUTBOUND_PROVISIONING",
+    SubOrgApplicationOutboundProvisioning = "SUB_ORG_APPLICATION_OUTBOUND_PROVISIONING",
+    ApplicationInboundProvisioning = "APPLICATION_INBOUND_PROVISIONING",
 }
 
 /**
@@ -104,7 +107,14 @@ export class ApplicationManagementConstants {
         .set(ApplicationFeatureDictionaryKeys.ApplicationEditEnforceAuthorizedAPIUpdatePermission,
             "applications.enforceAuthorizedAPIUpdatePermission")
         .set(ApplicationFeatureDictionaryKeys.ApplicationEditEnforceClientSecretPermission,
-            "applications.enforceClientSecretPermission");
+            "applications.enforceClientSecretPermission")
+        .set(ApplicationFeatureDictionaryKeys.ApplicationInboundProvisioning,
+            "applications.inboundProvisioning")
+        .set(ApplicationFeatureDictionaryKeys.ApplicationOutboundProvisioning,
+            "applications.outboundProvisioning")
+        .set(ApplicationFeatureDictionaryKeys.SubOrgApplicationOutboundProvisioning,
+            "applications.outboundProvisioning.subOrg")
+        .set("APPLICATION_UNIFIED_MCP_CAPABILITIES", "applications.unifiedMcpCapabilities");
 
     /**
      * Key for the URL search param for application state.
@@ -211,6 +221,7 @@ export class ApplicationManagementConstants {
     public static readonly CODE_IDTOKEN: string = "code id_token";
     public static readonly CODE_IDTOKEN_TOKEN: string = "code id_token token";
     public static readonly  HYBRID_FLOW_ENABLE_CONFIG:string = "enable-hybrid-flow";
+    public static readonly CIBA_GRANT: string = "urn:openid:params:grant-type:ciba";
     public static readonly HYBRID_FLOW_RESPONSE_TYPE: string = "hybridFlowResponseType";
 
     /**
@@ -228,7 +239,8 @@ export class ApplicationManagementConstants {
         this.IWA_NTLM,
         this.DEVICE_GRANT,
         this.OAUTH2_TOKEN_EXCHANGE,
-        this.ACCOUNT_SWITCH_GRANT
+        this.ACCOUNT_SWITCH_GRANT,
+        this.CIBA_GRANT
     ];
 
     /**
@@ -340,6 +352,9 @@ export class ApplicationManagementConstants {
     public static readonly IDENTIFIER_FIRST_AUTHENTICATOR_ID: string =
         LocalAuthenticatorConstants.LOCAL_IDP_IDENTIFIER + "-" + "SWRlbnRpZmllckV4ZWN1dG9y";
 
+    public static readonly SHARED_USER_IDENTIFIER_AUTHENTICATOR_ID: string =
+        LocalAuthenticatorConstants.LOCAL_IDP_IDENTIFIER + "-" + "U2hhcmVkVXNlcklkZW50aWZpZXJFeGVjdXRvcg";
+
     public static readonly MYACCOUNT_STATUS_UPDATE_ERROR: string = "An error occurred while updating " +
         "status of the My Account Portal.";
 
@@ -361,6 +376,7 @@ export class ApplicationManagementConstants {
     // Authenticators that are only handlers.
     public static readonly HANDLER_AUTHENTICATORS: string[] = [
         ApplicationManagementConstants.IDENTIFIER_FIRST_AUTHENTICATOR_ID,
+        ApplicationManagementConstants.SHARED_USER_IDENTIFIER_AUTHENTICATOR_ID,
         LocalAuthenticatorConstants.AUTHENTICATOR_IDS.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
     ];
 
@@ -371,6 +387,7 @@ export class ApplicationManagementConstants {
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID,
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME,
+        LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.SHARED_USER_IDENTIFIER_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.SMS_OTP_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID
     ];
@@ -630,7 +647,7 @@ export class ApplicationManagementConstants {
     public static readonly B2B_APPLICATION_SHARE: string = "B2B_APPLICATION_SHARE";
 }
 
-export enum ShareWithOrgStatus {
+enum ShareWithOrgStatus {
     TRUE,
     FALSE,
     UNDEFINED

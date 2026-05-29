@@ -21,7 +21,7 @@ import classNames from "classnames";
 import React, { FC, ReactElement, ReactNode } from "react";
 import { Button, Icon, SemanticICONS } from "semantic-ui-react";
 
-export type CardExpandedNavigationButtonProps = {
+type CardExpandedNavigationButtonProps = {
     text?: ReactNode;
     className?: string;
     icon?: SemanticICONS;

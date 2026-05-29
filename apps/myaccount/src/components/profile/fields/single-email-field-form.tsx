@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,20 +16,24 @@
  * under the License.
  */
 
+import Button from "@oxygen-ui/react/Button";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { PatchOperationRequest } from "@wso2is/core/models";
-import { Popup, useMediaContext } from "@wso2is/react-components";
+import { EditSection, Popup, useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { Dispatch, FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Grid, Icon, List } from "semantic-ui-react";
 import EmptyValueField from "./empty-value-field";
 import TextFieldForm from "./text-field-form";
 import { AuthStateInterface } from "../../../models/auth";
 import { MultiValue, ProfilePatchOperationValue } from "../../../models/profile";
-import { SingleEmailFieldFormPropsInterface } from "../../../models/profile-ui";
+import { OTPVerificationChannel, SingleEmailFieldFormPropsInterface } from "../../../models/profile-ui";
 import { AppState } from "../../../store";
+import { getProfileInformation, setActiveForm } from "../../../store/actions";
+import EmailMobileUpdateModal from "../../shared/email-mobile-update-modal";
+import OTPVerificationModal from "../../shared/otp-verification-modal/otp-verification-modal";
 import "./field-form.scss";
 
 /**
@@ -48,20 +52,25 @@ const SingleEmailFieldForm: FunctionComponent<SingleEmailFieldFormPropsInterface
     onEditClicked,
     onEditCancelClicked,
     isVerificationEnabled,
+    isVerificationWithOTPEnabled,
     triggerUpdate,
     setIsProfileUpdating,
     ["data-componentid"]: testId = "single-email-field-form"
 }: SingleEmailFieldFormPropsInterface): ReactElement => {
     const { t } = useTranslation();
     const { isMobileViewport } = useMediaContext();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
+
+    const [ isEmailUpdateModalOpen, setIsEmailUpdateModalOpen ] = useState(false);
+    const [ isOTPVerificationModalOpen, setIsOTPVerificationModalOpen ] = useState<boolean>(false);
 
     // If email verification is enabled and there is a verification pending email, it will be shown as the field value.
     // Else the primary email will be shown.
     let fieldValue: string = initialValue;
 
-    if (isVerificationEnabled) {
+    if (isVerificationEnabled && !isVerificationWithOTPEnabled) {
         fieldValue = pendingEmailAddress ?? initialValue;
     }
 
@@ -95,9 +104,11 @@ const SingleEmailFieldForm: FunctionComponent<SingleEmailFieldFormPropsInterface
         );
     };
 
-    const handleSingleEmailUpdate = (_: string, value: string): void => {
-        setIsProfileUpdating(true);
+    /**
+     * Start of Utility functions for Email verification with OTP flow.
+     */
 
+    const prepareSingleEmailUpdateData = (value: string): PatchOperationRequest<ProfilePatchOperationValue> => {
         const data: PatchOperationRequest<ProfilePatchOperationValue> = {
             Operations: [],
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
@@ -106,11 +117,13 @@ const SingleEmailFieldForm: FunctionComponent<SingleEmailFieldFormPropsInterface
         const updatedEmailsList: (string | MultiValue)[] = [];
 
         for (const emailAddress of profileDetails?.profileInfo?.emails) {
-            if (typeof emailAddress === "object") {
+            // Exclude the existing primary email from the update payload as it will be replaced by the new email.
+            if (typeof emailAddress === "object" && emailAddress.primary !== true) {
                 updatedEmailsList.push(emailAddress);
             }
         }
-        updatedEmailsList.push(value);
+        // Add the new email as primary email in the update payload.
+        value && updatedEmailsList.push(value);
 
         data.Operations.push({
             op: "replace",
@@ -128,10 +141,155 @@ const SingleEmailFieldForm: FunctionComponent<SingleEmailFieldFormPropsInterface
             }
         });
 
+        return data;
+    };
+
+    const onSingleEmailUpdateSuccess = (newValue: string, updatedData: Record<string, unknown>): void => {
+        const updatedPendingEmailAddresses: {value: string}[] = (
+            updatedData?.[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA] as Record<string, unknown>)
+            ?.pendingEmails as {value: string}[];
+
+        setIsEmailUpdateModalOpen(false);
+        if (updatedPendingEmailAddresses && updatedPendingEmailAddresses[0]?.value === newValue) {
+            // Navigate to the OTP verification step.
+            setIsOTPVerificationModalOpen(true);
+        }
+        if (isEmpty(newValue)) {
+            // Re-fetch the profile information.
+            dispatch(getProfileInformation(true));
+            dispatch(setActiveForm(null));
+        }
+    };
+
+    const handleOTPVerificationModalClose = (isRevalidate: boolean = false) => {
+        setIsOTPVerificationModalOpen(false);
+        setIsProfileUpdating(false);
+
+        if (isRevalidate) {
+            // Re-fetch the profile information.
+            dispatch(getProfileInformation(true));
+            dispatch(setActiveForm(null));
+        }
+    };
+
+    const handleEmailInputValidation = (value: string): string | undefined => {
+        if (isRequired && !value) {
+            return t("myAccount:components.verificationOnUpdate.modal.email.step1.validation.required");
+        }
+
+        if (value && !RegExp(schema.regEx).test(value)) {
+            return t("myAccount:components.verificationOnUpdate.modal.email.step1.validation.invalidFormat");
+        }
+    };
+
+    /**
+     * End of Utility functions for Email verification with OTP flow.
+     */
+
+    const handleSingleEmailUpdate = (_: string, value: string): void => {
+        setIsProfileUpdating(true);
+
+        const data: PatchOperationRequest<ProfilePatchOperationValue> = prepareSingleEmailUpdateData(value);
+
         triggerUpdate(data);
     };
 
     if (isActive) {
+        if (isVerificationEnabled && isVerificationWithOTPEnabled) {
+            return (
+                <EditSection data-componentid={ `${testId}-schema-email-editing-section` }>
+                    <p>{ t("myAccount:components.profile.messages.emailVerification.content") }</p>
+                    <Grid padded={ true }>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 6 } computer={ 4 } className="first-column">
+                                <List.Content>{ fieldLabel }</List.Content>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 8 } computer={ 10 }>
+                                <List.Content>
+                                    <List.Description className="with-max-length">
+                                        {
+                                            !isEmpty(initialValue)
+                                                ? initialValue
+                                                : (
+                                                    <a
+                                                        className="placeholder-text"
+                                                        tabIndex={ 0 }
+                                                        onClick={ () => setIsEmailUpdateModalOpen(true) }
+                                                        onKeyPress={ (
+                                                            { key }: React.KeyboardEvent<HTMLAnchorElement>
+                                                        ) => {
+                                                            if (key === "Enter") {
+                                                                setIsEmailUpdateModalOpen(true);
+                                                            }
+                                                        } }
+                                                        data-componentid={
+                                                            `${testId}-schema-email-editing-section-${
+                                                                schema.name.replace(".", "-")
+                                                            }-placeholder`
+                                                        }
+                                                    >
+                                                        { t("myAccount:components.profile.forms.generic." +
+                                                            "inputs.placeholder", {
+                                                            fieldName: fieldLabel.toLowerCase() })
+                                                        }
+                                                    </a>
+                                                )
+                                        }
+                                    </List.Description>
+                                </List.Content>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 8 } computer={ 2 }>
+                                <Button
+                                    variant="contained"
+                                    onClick={ () => setIsEmailUpdateModalOpen(true) }
+                                    data-componentid={ `${testId}-schema-email-editing-section-${
+                                        schema.name.replace(".", "-")}-update-button` }
+                                >
+                                    { t("common:update") }
+                                </Button>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 8 } computer={ 2 }>
+                                <Button
+                                    onClick={ onEditCancelClicked }
+                                    data-componentid={ `${testId}-schema-email-editing-section-${
+                                        schema.name.replace(".", "-")}-cancel-button` }
+                                >
+                                    { t("common:cancel") }
+                                </Button>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+
+                    <EmailMobileUpdateModal
+                        isOpen={ isEmailUpdateModalOpen }
+                        verificationChannel={ OTPVerificationChannel.EMAIL }
+                        onClose={ (shouldRevalidate?: boolean) => {
+                            setIsEmailUpdateModalOpen(false);
+                            if (shouldRevalidate) {
+                                setIsOTPVerificationModalOpen(true);
+                            }
+                            onEditCancelClicked();
+                        } }
+                        initialValue={ initialValue }
+                        isRequired={ isRequired }
+                        prepareUpdateData={ prepareSingleEmailUpdateData }
+                        onUpdateSuccess={ onSingleEmailUpdateSuccess }
+                        onValidate={ handleEmailInputValidation }
+                    />
+
+                    <OTPVerificationModal
+                        isOpen={ isOTPVerificationModalOpen }
+                        verificationChannel={ OTPVerificationChannel.EMAIL }
+                        onClose={ handleOTPVerificationModalClose }
+                        isMultiValued={ false }
+                    />
+
+                </EditSection>
+            );
+        }
+
         return (
             <TextFieldForm
                 fieldSchema={ schema }

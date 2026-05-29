@@ -19,6 +19,7 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1/store";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { HttpErrorResponseDataInterface } from "@wso2is/core/models";
 
 /**
  * Get an axios instance.
@@ -31,7 +32,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  *
  * TODO: Use `IdentityAppsApiException` and validate the return type.
  */
-export const deleteOrganizationDiscoveryConfig = (): Promise<string> => {
+const deleteOrganizationDiscoveryConfig = (): Promise<string> => {
     const config: AxiosRequestConfig = {
         headers: {
             Accept: "application/json",
@@ -49,7 +50,7 @@ export const deleteOrganizationDiscoveryConfig = (): Promise<string> => {
 
             return Promise.resolve(response?.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };

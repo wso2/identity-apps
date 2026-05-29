@@ -78,6 +78,7 @@
     private static final String IS_SAAS_APP = "isSaaSApp";
     private static final String BASIC_AUTHENTICATOR = "BasicAuthenticator";
     private static final String IDENTIFIER_EXECUTOR = "IdentifierExecutor";
+    private static final String SHARED_USER_IDENTIFIER_EXECUTOR = "SharedUserIdentifierExecutor";
     private static final String JWT_BASIC_AUTHENTICATOR = "JWTBasicAuthenticator";
     private static final String X509_CERTIFICATE_AUTHENTICATOR = "x509CertificateAuthenticator";
     private static final String GOOGLE_AUTHENTICATOR = "GoogleOIDCAuthenticator";
@@ -96,6 +97,7 @@
     private static final String EMAIL_OTP_AUTHENTICATOR = "email-otp-authenticator";
     private static final String TOTP_AUTHENTICATOR = "totp";
     private static final String PUSH_NOTIFICATION_AUTHENTICATOR = "push-notification-authenticator";
+    private static final String ORG_IDENTIFIER_HANDLER = "OrganizationIdentifierHandler";
     private static final String ENTERPRISE_LOGIN_KEY = "isEnterpriseLoginEnabled";
     private static final String ENTERPRISE_API_RELATIVE_PATH = "/api/asgardeo-enterprise-login/v1/business-user-login/";
     private static final String CUSTOM_LOCAL_AUTHENTICATOR_PREFIX = "custom-";
@@ -189,9 +191,9 @@
     List<String> registeredLocalAuthenticators = Arrays.asList(
         BACKUP_CODE_AUTHENTICATOR, TOTP_AUTHENTICATOR, EMAIL_OTP_AUTHENTICATOR,
         MAGIC_LINK_AUTHENTICATOR,SMS_OTP_AUTHENTICATOR,
-        IDENTIFIER_EXECUTOR,JWT_BASIC_AUTHENTICATOR,BASIC_AUTHENTICATOR,
+        IDENTIFIER_EXECUTOR,SHARED_USER_IDENTIFIER_EXECUTOR,JWT_BASIC_AUTHENTICATOR,BASIC_AUTHENTICATOR,
         IWA_AUTHENTICATOR,X509_CERTIFICATE_AUTHENTICATOR,FIDO_AUTHENTICATOR,
-        PUSH_NOTIFICATION_AUTHENTICATOR
+        PUSH_NOTIFICATION_AUTHENTICATOR, ORG_IDENTIFIER_HANDLER
    );
 
 
@@ -545,7 +547,8 @@
                 <div class="segment-form">
                     <%
                         if (localAuthenticatorNames.size() > 0) {
-                            if (localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR)) {
+                            if (localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR) ||
+                            localAuthenticatorNames.contains(SHARED_USER_IDENTIFIER_EXECUTOR)) {
                             hasLocalLoginOptions = true;
                     %>
                         <%@ include file="identifierauth.jsp" %>
@@ -589,7 +592,8 @@
                                 || (hasLocalLoginOptions && idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1)) {
                     %>
                     <% if (localAuthenticatorNames.contains(BASIC_AUTHENTICATOR) ||
-                            localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR)) { %>
+                            localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR) ||
+                            localAuthenticatorNames.contains(SHARED_USER_IDENTIFIER_EXECUTOR)) { %>
                     <div class="ui horizontal divider">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%>
                     </div>
@@ -709,7 +713,7 @@
                                                     <input type="button" class="ui button primary"
                                                         onClick="javascript: myFunction(
                                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
-                                                        '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>', 
+                                                        '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>',
                                                         'domainName')"
                                                         value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"go")%>"/>
                                                 </form>
@@ -1068,6 +1072,34 @@
                             <br>
                             <%
                                         }
+                                if (localAuthenticatorNames.contains("OrganizationIdentifierHandler")) {
+                            %>
+                                <div class="social-login blurring social-dimmer">
+                                <div class="field">
+                                        <button
+                                            type="button"
+                                            id="icon-<%=iconId%>"
+                                            class="ui button secondary"
+                                            data-testid="login-page-sign-in-with-organization-identifier-handler"
+                                            onclick="handleNoDomain(this,
+                                                    '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
+                                                    'OrganizationIdentifierHandler')"
+                                        >
+                                        <img
+                                            class="ui image"
+                                            src="libs/themes/default/assets/images/authenticators/organization-identifier-handler.svg"
+                                            alt="SSO Logo"
+                                            role="presentation">
+                                        <span>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
+                                            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "organization.identifier.handler")%>
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                            <br>
+                            <%
+                                        }
                                 for (String localAuthenticator : localAuthenticatorNames) {
                                     if (registeredLocalAuthenticators.contains(localAuthenticator)) {
                                         continue;
@@ -1272,7 +1304,8 @@
                         if (
                             !StringUtils.equals("CONSOLE",clientId)
                             && !StringUtils.equals("MY_ACCOUNT",clientId) && !hasLocalLoginOptions && hasFederatedOptions &&
-                            isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences
+                            ((isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences)
+                                || dynamicPortalSREnabled)
                         ) {
                                 urlParameters = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
                         %>

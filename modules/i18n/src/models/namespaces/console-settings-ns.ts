@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,11 @@ export interface ConsoleSettingsNS {
                 addExistingUser: string;
                 addExternalUser: string;
                 inviteParentUser: string;
+            };
+            wizard: {
+                users: {
+                    moreItemsMessage: string;
+                };
             };
         };
         edit: {
@@ -56,6 +61,101 @@ export interface ConsoleSettingsNS {
         permissionLevels: {
             edit: string;
             view: string;
+        };
+    };
+    enterpriseLogin: {
+        banner: {
+            action: string;
+            description: string;
+            title: string;
+        };
+        configured: {
+            connectionLabel: string;
+            description: string;
+            heading: string;
+            mappingsHeading: string;
+            noMappings: string;
+        };
+        confirmations: {
+            removeConfiguration: {
+                assertionHint: string;
+                content: string;
+                header: string;
+                message: string;
+                primaryAction: string;
+                secondaryAction: string;
+            };
+            removeMapping: {
+                content: string;
+                header: string;
+                primaryAction: string;
+                secondaryAction: string;
+            };
+        };
+        form: {
+            addMapping: string;
+            connectionLabel: string;
+            createGroup: string;
+            connectionPlaceholder: string;
+            idpGroupLabel: string;
+            idpGroupPlaceholder: string;
+            mappingDescription: string;
+            roleLabel: string;
+            rolePlaceholder: string;
+            sectionHeading: string;
+            sectionDescription: string;
+        };
+        learnMore: string;
+        notifications: {
+            createGroup: {
+                error: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+            deleteConfiguration: {
+                error: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+            fetchConfiguration: {
+                error: {
+                    description: string;
+                    message: string;
+                };
+            };
+            updateConfiguration: {
+                error: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        actions: {
+            configure: string;
+            remove: string;
+            save: string;
+            update: string;
+        };
+        tabLabel: string;
+        validations: {
+            atLeastOneMapping: string;
+            connectionRequired: string;
+            duplicateMapping: string;
+            incompleteMapping: string;
         };
     };
     sharedAccess: {

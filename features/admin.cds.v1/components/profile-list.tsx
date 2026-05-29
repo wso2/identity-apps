@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import Chip from "@oxygen-ui/react/Chip/Chip";
+import Chip from "@oxygen-ui/react/Chip";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels } from "@wso2is/core/models";
@@ -36,7 +36,6 @@ import React, {
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Header, SemanticICONS } from "semantic-ui-react";
-
 import { deleteCDSProfile } from "../api/profiles";
 import type { ProfileModel } from "../models/profiles";
 
@@ -103,7 +102,6 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
             render: (profile: ProfileModel): ReactNode => {
                 const userId:string = profile.user_id;
 
-                // Anonymous
                 if (!userId) {
                     return (
                         <Chip
@@ -116,35 +114,18 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                     );
                 }
 
-                return null;
-            },
-            textAlign: "center",
-            title: t("customerDataService:profiles.list.columns.user")
-        },
-        {
-            allowToggleVisibility: true,
-            dataIndex: "unified_profiles",
-            id: "unified_profiles",
-            key: "unified_profiles",
-            render: (profile: ProfileModel): ReactNode => {
-                const merged:Array<{ profile_id: string; reason: string }> = profile.merged_from;
-                const hasMerged:boolean = Array.isArray(merged) && merged.length > 0;
-
-                if (!hasMerged) {
-                    return null;
-                }
-
                 return (
                     <Chip
                         size="small"
+                        color="success"
                         variant="outlined"
-                        label={ t("customerDataService:profiles.list.chips.unified") }
-                        data-testid="unified-profile-chip"
+                        label={ t("customerDataService:profiles.list.chips.registered") }
+                        data-testid="registered-username-chip"
                     />
                 );
             },
             textAlign: "center",
-            title: t("customerDataService:profiles.list.columns.unifiedProfiles")
+            title: t("customerDataService:profiles.list.columns.user")
         },
         {
             allowToggleVisibility: false,

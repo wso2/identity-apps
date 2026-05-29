@@ -1,0 +1,39 @@
+{
+    "private": true,
+    "name": "@wso2is/admin.analytics.v1",
+    "version": "0.0.6",
+    "description": "Shared analytics provider for WSO2 Identity Server Console",
+    "author": "WSO2",
+    "license": "Apache-2.0",
+    "dependencies": {
+        "@asgardeo/auth-react": "^5.1.2",
+        "@wso2is/admin.core.v1": "^2.57.3",
+        "@wso2is/admin.tenants.v1": "workspace:^",
+        "@wso2is/core": "^2.12.13",
+        "moesif-browser-js": "^1.8.0",
+        "react-redux": "^7.2.9"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^25.0.7",
+        "@rollup/plugin-dynamic-import-vars": "^2.1.2",
+        "@rollup/plugin-image": "^3.0.3",
+        "@rollup/plugin-json": "^6.1.0",
+        "@rollup/plugin-node-resolve": "^15.2.3",
+        "@rollup/plugin-typescript": "^11.1.6",
+        "@types/node": "^13.9.2",
+        "@types/react": "^18.0.18",
+        "@types/react-dom": "^18.0.6",
+        "@types/react-redux": "^7.1.25",
+        "rollup": "^4.17.2",
+        "rollup-plugin-dts": "^6.1.1",
+        "rollup-plugin-polyfill-node": "^0.13.0",
+        "typescript": "^5.1.6"
+    },
+    "peerDependencies": {
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
+    },
+    "browserslist": [
+        "> 0.2%"
+    ]
+}

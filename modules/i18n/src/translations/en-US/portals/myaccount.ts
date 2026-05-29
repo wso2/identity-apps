@@ -354,9 +354,8 @@ export const myAccount: MyAccountNS = {
             modals: {
                 confirmationModal: {
                     heading: "Confirmation",
-                    message:
-                        "Changing the password will result in the termination of the current session. You will " +
-                        "have to login with the newly changed password. Do you wish to continue?"
+                    message: "Updating your password might sign you out of all applications. If you are signed out, " +
+                        "please log in again using your new password. Do you wish to continue?"
                 }
             }
         },
@@ -371,20 +370,14 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 description: "Description",
-                piiCategoryHeading:
-                    "Manage consent for the collection and sharing of your personal information " +
-                    "with the application. Uncheck the attributes that you need to revoke and press the update " +
-                    "button to save the changes or press the revoke button to remove the consent for all the " +
-                    "attributes.",
+                piiCategoryHeading: "Manage consent for the collection and sharing of your personal information with the application. Uncheck the attributes that you need to revoke and press the update button to save the changes or press the revoke button to remove the consent for all the attributes.",
                 state: "State",
                 version: "Version"
             },
             modals: {
                 consentRevokeModal: {
                     heading: "Are you sure?",
-                    message:
-                        "This operation is not reversible. This will permanently revoke consent for all the " +
-                        "attributes. Are you sure you want to proceed?",
+                    message: "This operation is not reversible. This will permanently revoke consent for all the attributes. Are you sure you want to proceed?",
                     warning: "Please note that you will be redirected to the login consent page"
                 }
             },
@@ -446,6 +439,105 @@ export const myAccount: MyAccountNS = {
                     }
                 }
             }
+        },
+        policyConsentManagement: {
+            consentedOnLabel: "Accepted on",
+            dangerZones: {
+                revoke: {
+                    actionTitle: "Revoke",
+                    header: "Revoke Policy Consent",
+                    subheader: "This action will revoke your consent for this policy. You may be asked to re-consent the next time you access the service."
+                }
+            },
+            notifications: {
+                fetch: {
+                    error: {
+                        description: "An error occurred while retrieving your policy consents.",
+                        message: "Retrieval Failed"
+                    },
+                    genericError: {
+                        description: "An error occurred while retrieving your policy consents.",
+                        message: "Retrieval Failed"
+                    },
+                    success: {
+                        description: "Your policy consents were retrieved successfully.",
+                        message: "Retrieval Successful"
+                    }
+                },
+                revoke: {
+                    error: {
+                        description: "An error occurred while revoking the policy consent.",
+                        message: "Revoke Failed"
+                    },
+                    genericError: {
+                        description: "An error occurred while revoking the policy consent.",
+                        message: "Revoke Failed"
+                    },
+                    success: {
+                        description: "The policy consent has been revoked successfully.",
+                        message: "Consent Revoked"
+                    }
+                }
+            },
+            policyUrlLabel: "View Policy",
+            versionLabel: "Version {{version}}"
+        },
+        preferenceManagement: {
+            consentedOnLabel: "Accepted on",
+            elementsHeading: "Manage your communication preferences. Uncheck the attributes that you need to revoke and press the update button to save the changes or press the revoke button to remove the consent for all the attributes.",
+            dangerZones: {
+                revoke: {
+                    actionTitle: "Revoke",
+                    header: "Revoke Communication Preference",
+                    subheader: "This action will revoke your consent for this communication preference."
+                }
+            },
+            notifications: {
+                fetch: {
+                    error: {
+                        description: "An error occurred while retrieving your communication preferences.",
+                        message: "Retrieval Failed"
+                    },
+                    genericError: {
+                        description: "An error occurred while retrieving your communication preferences.",
+                        message: "Retrieval Failed"
+                    },
+                    success: {
+                        description: "Your communication preferences were retrieved successfully.",
+                        message: "Retrieval Successful"
+                    }
+                },
+                revoke: {
+                    error: {
+                        description: "An error occurred while revoking the communication preference.",
+                        message: "Revoke Failed"
+                    },
+                    genericError: {
+                        description: "An error occurred while revoking the communication preference.",
+                        message: "Revoke Failed"
+                    },
+                    success: {
+                        description: "The communication preference has been revoked successfully.",
+                        message: "Preference Revoked"
+                    }
+                },
+                update: {
+                    error: {
+                        description: "An error occurred while updating the communication preference.",
+                        message: "Update Failed"
+                    },
+                    genericError: {
+                        description: "An error occurred while updating the communication preference.",
+                        message: "Update Failed"
+                    },
+                    success: {
+                        description: "Your communication preferences have been updated successfully.",
+                        message: "Preferences Updated"
+                    }
+                }
+            },
+            policyUrlLabel: "View Policy",
+            versionLabel: "Version {{version}}"
         },
         cookieConsent: {
             confirmButton: "Got It",
@@ -1306,6 +1398,11 @@ export const myAccount: MyAccountNS = {
                     content: "Please confirm the email address update in order to add the new email to your profile.",
                     header: "Confirmation pending!"
                 },
+                emailVerification: {
+                    content: "This email address is used for sending verification emails when second factor authentication " +
+                        "is enabled and for sending recovery codes in case of a username/password recovery. " +
+                        "To update this email, you have to verify the new email by entering the verification code sent to your new email. Click update if you wish to proceed."
+                },
                 mobileVerification: {
                     content: "This mobile number is used for sending SMS OTP when second factor authentication " +
                         "is enabled and for sending recovery codes in case of a username/password recovery. " +
@@ -1553,6 +1650,67 @@ export const myAccount: MyAccountNS = {
             }
         },
         verificationOnUpdate: {
+            modal: {
+                common: {
+                    step2: {
+                        hint: "Didn't receive a code?",
+                        resend: "Resend",
+                        resendSuccess: "Resend code request is sent successfully",
+                        validation: {
+                            otpRequired: "Enter the verification code"
+                        },
+                        verificationFailure: "Verification failed. Please try again."
+                    }
+                },
+                email: {
+                    step1: {
+                        content: {
+                            label: "Enter your new email address"
+                        },
+                        heading: "Verify Your Email Address",
+                        validation: {
+                            invalidFormat: "Please enter a valid email address",
+                            required: "Email address required"
+                        }
+                    },
+                    step2: {
+                        content: {
+                            label: "A verification code has been sent to your email. Please enter the code below to verify your email address."
+                        },
+                        heading: "Verify Your Email Address"
+                    },
+                    step3: {
+                        content: "Success! Your email address is successfully verified."
+                    }
+                },
+                notifications: {
+                    resendError: {
+                        description: "Error occurred while resending the verification code",
+                        message: "Something went wrong"
+                    }
+                },
+                sms: {
+                    step1: {
+                        content: {
+                            label: "Enter your new mobile number"
+                        },
+                        heading: "Verify Your Mobile Number",
+                        validation: {
+                            invalidFormat: "Please enter a valid mobile number",
+                            required: "Mobile number required"
+                        }
+                    },
+                    step2: {
+                        content: {
+                            label: "A verification code has been sent to your mobile number. Please enter the code below to verify your mobile number."
+                        },
+                        heading: "Verify Your Mobile Number"
+                    },
+                    step3: {
+                        content: "Success! Your mobile number is successfully verified."
+                    }
+                }
+            },
             preference: {
                 notifications: {
                     error: {
@@ -1636,6 +1794,10 @@ export const myAccount: MyAccountNS = {
         applications: {
             subTitle: "Discover and access your applications",
             title: "Applications"
+        },
+        consents: {
+            subTitle: "View and manage consents for applications and policies you have accepted",
+            title: "Consents"
         },
         overview: {
             subTitle: "Manage your personal information, account security, and privacy settings",
@@ -1731,12 +1893,29 @@ export const myAccount: MyAccountNS = {
                 empty: "You have not granted consent to any application"
             },
             description:
-                "Review the consents you have provided for each application. " +
-                "Also, you can revoke one or many of them as required.",
+                "Review consents granted to each application and revoke them as needed.",
             heading: "Manage Consents",
             placeholders: {
                 emptyConsentList: {
                     heading: "You have not granted consent to any application"
+                }
+            }
+        },
+        preferenceManagement: {
+            description: "Review and manage your communication preferences.",
+            heading: "Communication Preferences",
+            placeholders: {
+                emptyConsentList: {
+                    heading: "You have not set any communication preference"
+                }
+            }
+        },
+        policyConsentManagement: {
+            description: "Review the policies you have agreed to.",
+            heading: "Policy Consents",
+            placeholders: {
+                emptyConsentList: {
+                    heading: "You have not accepted any policy consents"
                 }
             }
         },

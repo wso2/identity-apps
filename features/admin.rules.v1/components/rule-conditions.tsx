@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -40,7 +40,7 @@ import React, { ChangeEvent, Dispatch, Fragment, FunctionComponent, HTMLAttribut
 import { Trans, useTranslation } from "react-i18next";
 import { DropdownProps } from "semantic-ui-react";
 import useGetResourceListOrResourceDetails from "../api/use-get-resource-list-or-resource-details";
-import { useRulesContext } from "../hooks/use-rules-context";
+import useRulesContext from "../hooks/use-rules-context";
 import {
     ConditionExpressionMetaInterface,
     ExpressionValueInterface,
@@ -132,7 +132,7 @@ interface RuleExpressionComponentProps extends IdentifiableComponentInterface {
 /**
  * Props interface of {@link RulesComponent}
  */
-export interface RulesComponentPropsInterface extends IdentifiableComponentInterface {
+interface RulesComponentPropsInterface extends IdentifiableComponentInterface {
     readonly?: boolean;
     rule: RuleInterface;
 }

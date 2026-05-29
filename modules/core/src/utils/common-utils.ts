@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,6 +22,7 @@ import dayjs, { Dayjs } from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
 import sortBy from "lodash-es/sortBy";
+import locales from "./locales.json";
 import { AnnouncementBannerInterface, ProductReleaseTypes } from "../models";
 
 dayjs.extend(duration);
@@ -224,6 +225,15 @@ export class CommonUtils {
         });
 
         return countryDropDown;
+    }
+
+    /**
+     * Get the list of locales to be added to the locale dropdown input field.
+     *
+     * @returns List of locale objects.
+     */
+    public static getLocaleList(): typeof locales {
+        return locales;
     }
 
     /**

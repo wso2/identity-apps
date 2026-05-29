@@ -15,17 +15,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { getConnections } from "@wso2is/admin.connections.v1/api/connections";
+import { useIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
 import {
     IdentityProviderInterface,
-    IdentityProviderListResponseInterface
+    OutboundProvisioningConnectorInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { useTrigger } from "@wso2is/forms";
+import { useTrigger } from "@wso2is/forms/legacy";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -38,7 +40,8 @@ import { ApplicationInterface, OutboundProvisioningConfigurationInterface } from
 /**
  * Interface for the outbound provisioning IDP create wizard props.
  */
-interface OutboundProvisioningIdpCreateWizardPropsInterface extends TestableComponentInterface {
+interface OutboundProvisioningIdpCreateWizardPropsInterface extends TestableComponentInterface,
+    IdentifiableComponentInterface {
     application: ApplicationInterface;
     closeWizard: () => void;
     currentStep?: number;
@@ -60,7 +63,8 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
             closeWizard,
             currentStep,
             onUpdate,
-            [ "data-testid" ]: testId
+            [ "data-testid" ]: testId,
+            [ "data-componentid" ]: componentId = "outbound-provisioning-idp-create-wizard"
         } = props;
 
         const { t } = useTranslation();
@@ -71,8 +75,15 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
 
         const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
         const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
-        const [ idpList, setIdpList ] = useState<IdentityProviderInterface[]>(undefined);
         const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+        const [ isConnectorListLoading, setIsConnectorListLoading ] = useState<boolean>(false);
+        const [ isIdpSelected, setIsIdpSelected ] = useState<boolean>(false);
+
+        const {
+            data: identityProviderList,
+            isLoading: isIdentityProviderListFetching,
+            error: identityProviderFetchError
+        } = useIdentityProviderList(null, null, null, "provisioning");
 
 
         /**
@@ -89,18 +100,41 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
         }, [ partiallyCompletedStep ]);
 
         /**
-     * Fetch the IDP list.
+     * Show error if something went wrong while fetching the IDP list.
      */
         useEffect(() => {
-            if (idpList) {
-                return;
+            if (!isIdentityProviderListFetching && identityProviderFetchError) {
+                dispatch(addAlert({
+                    description: identityProviderFetchError?.response?.data?.description
+                        ?? t("applications:notifications.updateApplication.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:notifications.updateApplication.genericError.message")
+                }));
+            }
+        }, [ identityProviderFetchError ]);
+
+        /**
+     * Filter the IDP list to only include IDPs with at least one enabled outbound provisioning
+     * connector, and exclude IDPs that are already configured.
+     */
+        const idpList: IdentityProviderInterface[] = useMemo(() => {
+            if (isIdentityProviderListFetching || identityProviderFetchError) {
+                return [];
             }
 
-            getConnections()
-                .then((response: IdentityProviderListResponseInterface) => {
-                    setIdpList(response.identityProviders);
-                });
-        }, []);
+            const alreadyConfiguredIdpNames: Set<string> = new Set(
+                application?.provisioningConfigurations?.outboundProvisioningIdps
+                    ?.map((configured: OutboundProvisioningConfigurationInterface) => configured.idp) ?? []
+            );
+
+            return identityProviderList?.identityProviders
+                ?.filter((idp: IdentityProviderInterface) =>
+                    !alreadyConfiguredIdpNames.has(idp.name) &&
+                    idp.provisioning?.outboundConnectors?.connectors?.some(
+                        (connector: OutboundProvisioningConnectorInterface) => connector.isEnabled
+                    )
+                ) ?? [];
+        }, [ identityProviderList, isIdentityProviderListFetching, identityProviderFetchError, application ]);
 
         const navigateToNext = () => {
             switch (currentWizardStep) {
@@ -127,7 +161,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
 
                     onUpdate(application.id);
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     if (error.response && error.response.data && error.response.data.description) {
                         dispatch(addAlert({
                             description: error.response.data.description,
@@ -155,7 +189,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
 
         const updateConfiguration = (values: any) => {
             const outboundConfigs: OutboundProvisioningConfigurationInterface[] =
-            application?.provisioningConfigurations?.outboundProvisioningIdps;
+            application?.provisioningConfigurations?.outboundProvisioningIdps ?? [];
 
             outboundConfigs.push(values);
 
@@ -171,7 +205,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
      */
         const handleWizardFormFinish = (values: any): void => {
         // Validate whether an IDP with the same connector already exists.
-            if (application?.provisioningConfigurations?.outboundProvisioningIdps.find(
+            if (application?.provisioningConfigurations?.outboundProvisioningIdps?.find(
                 (idp: OutboundProvisioningConfigurationInterface) =>
                     (idp.connector === values.connector) && (idp.idp === values.idp))
             ) {
@@ -206,7 +240,14 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                         } }
                         idpList={ idpList }
                         data-testid={ `${ testId }-form` }
+                        data-componentid={ `${ componentId }-form` }
                         isSubmitting={ isSubmitting }
+                        onConnectorLoadingChange={ (isLoading: boolean) => {
+                            setIsConnectorListLoading(isLoading);
+                            if (isLoading) {
+                                setIsIdpSelected(true);
+                            }
+                        } }
                     />
                 ),
                 icon: getApplicationWizardStepIcons().general,
@@ -223,6 +264,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                 size="small"
                 onClose={ closeWizard }
                 data-testid={ testId }
+                data-componentid={ componentId }
                 closeOnDimmerClick={ false }
                 closeOnEscape
             >
@@ -238,6 +280,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                     <Steps.Group
                         current={ currentWizardStep }
                         data-testid={ `${ testId }-steps` }
+                        data-componentid={ `${ componentId }-steps` }
                     >
                         { STEPS.map((
                             step: {
@@ -252,6 +295,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                                 icon={ step.icon }
                                 title={ step.title }
                                 data-testid={ `${ testId }-step-${ index }` }
+                                data-componentid={ `${ componentId }-step-${ index }` }
                             />
                         )) }
                     </Steps.Group>
@@ -267,6 +311,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                                     floated="left"
                                     onClick={ () => closeWizard() }
                                     data-testid={ `${ testId }-cancel-button` }
+                                    data-componentid={ `${ componentId }-cancel-button` }
                                 >
                                     { t("common:cancel") }
                                 </LinkButton>
@@ -277,6 +322,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                                         floated="right"
                                         onClick={ navigateToNext }
                                         data-testid={ `${ testId }-next-button` }
+                                        data-componentid={ `${ componentId }-next-button` }
                                     >
                                         { t("common:next") }
                                         <Icon name="arrow right"/>
@@ -287,8 +333,9 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                                         floated="right"
                                         onClick={ navigateToNext }
                                         data-testid={ `${ testId }-finish-button` }
-                                        loading={ isSubmitting }
-                                        disabled={ isSubmitting }
+                                        data-componentid={ `${ componentId }-finish-button` }
+                                        loading={ isSubmitting || isConnectorListLoading }
+                                        disabled={ isSubmitting || isConnectorListLoading || !isIdpSelected }
                                     >
                                         { t("common:finish") }
                                     </PrimaryButton>
@@ -298,6 +345,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                                         floated="right"
                                         onClick={ navigateToPrevious }
                                         data-testid={ `${ testId }-previous-button` }
+                                        data-componentid={ `${ componentId }-previous-button` }
                                     >
                                         <Icon name="arrow left"/>
                                         { t("common:previous") }

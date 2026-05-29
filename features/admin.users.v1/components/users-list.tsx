@@ -27,12 +27,15 @@ import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { useServerConfigs } from "@wso2is/admin.server-configurations.v1/api/server-config";
 import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
+    HttpErrorResponseDataInterface,
     LoadableComponentInterface,
+    ProfileInfoInterface,
     SBACInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
@@ -173,8 +176,12 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
     const [ loading, setLoading ] = useState(false);
 
-    const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
-    const isAuthUserPrivileged: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+    const { data: serverConfigs } = useServerConfigs();
+    const adminUsername: string = getUserNameWithoutDomain(
+        serverConfigs?.realmConfig?.adminUser ?? props.realmConfigs?.adminUser ?? ""
+    );
+
+    const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const isUpdatingSharedProfilesEnabled: boolean = !featureConfig?.users?.disabledFeatures?.includes(
         UserManagementConstants.FEATURE_DICTIONARY.get("USER_SHARED_PROFILES")
     );
@@ -218,7 +225,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     );
                 }
                 onUserDelete();
-            }).catch((error: AxiosError) => {
+            }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data) {
                     let errorDescription: string = t("users:notifications.deleteUser.genericError.description");
 
@@ -497,6 +504,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
                     || (!isUpdatingSharedProfilesEnabled && user[SCIMConfigs.scim.systemSchema]?.managedOrg)
+                    || (getUserNameWithoutDomain(user?.userName) === adminUsername
+                        && !UserManagementUtils.isAuthenticatedUser(profileInfo.userName, user?.userName))
                         ? "eye"
                         : "pencil alternate";
                 },
@@ -512,6 +521,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
                     || (!isUpdatingSharedProfilesEnabled && user[SCIMConfigs.scim.systemSchema]?.managedOrg)
+                    || (getUserNameWithoutDomain(user?.userName) === adminUsername
+                        && !UserManagementUtils.isAuthenticatedUser(profileInfo.userName, user?.userName))
                         ? t("common:view")
                         : t("common:edit");
                 },
@@ -538,7 +549,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
                     || !hasUsersDeletePermissions
                     || readOnlyUserStores?.includes(userStore.toString())
-                    || authenticatedUser === getUserNameWithoutDomain(user?.userName) && isAuthUserPrivileged;
+                    || UserManagementUtils.isAuthenticatedUser(profileInfo.userName, user?.userName)
+                    || getUserNameWithoutDomain(user?.userName) === adminUsername;
             },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, user: UserBasicInterface): void => {

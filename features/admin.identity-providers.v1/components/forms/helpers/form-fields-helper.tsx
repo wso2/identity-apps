@@ -24,7 +24,7 @@ import {
     FormValue,
     StrictRadioChild,
     Validation
-} from "@wso2is/forms";
+} from "@wso2is/forms/legacy";
 import { I18n } from "@wso2is/i18n";
 import { CopyInputField, GenericIcon, Hint, XMLFileStrategy } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -39,7 +39,7 @@ import {
 const AUTHORIZATION_REDIRECT_URL: string = "callbackUrl";
 const XML_FILE_PROCESSING_STRATEGY: XMLFileStrategy = new XMLFileStrategy();
 
-export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyInterface,
+const getConfidentialField = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     testId?: string): ReactElement => {
     return (
@@ -73,7 +73,7 @@ export const getConfidentialField = (eachProp: CommonPluggableComponentPropertyI
     );
 };
 
-export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInterface,
+const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     testId?: string,
     showField?: boolean): ReactElement => {
@@ -112,7 +112,7 @@ export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInter
     );
 };
 
-export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentPropertyInterface,
+const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     listen: (key: string, values: Map<string, FormValue>) => void,
     testId?: string,
@@ -153,7 +153,7 @@ export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentP
     );
 };
 
-export const getRadioButtonField = (eachProp: CommonPluggableComponentPropertyInterface,
+const getRadioButtonField = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     testId?: string): ReactElement => {
     return (
@@ -196,7 +196,7 @@ export const getRadioButtonField = (eachProp: CommonPluggableComponentPropertyIn
  * @param testId - data test id.
  * @returns User id in claims property field.
  */
-export const getUserIdClaimRadioButtonField = (
+const getUserIdClaimRadioButtonField = (
     eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     listen: (key: string, values: Map<string, FormValue>) => void,
@@ -240,7 +240,7 @@ export const getUserIdClaimRadioButtonField = (
     );
 };
 
-export const getRadioButtonFieldWithListener = (eachProp: CommonPluggableComponentPropertyInterface,
+const getRadioButtonFieldWithListener = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     listen: (key: string, values: Map<string, FormValue>) => void,
     testId?: string): ReactElement => {
@@ -279,7 +279,7 @@ export const getRadioButtonFieldWithListener = (eachProp: CommonPluggableCompone
     );
 };
 
-export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface,
+const getTextField = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     testId?: string,
     showField?: boolean): ReactElement => {
@@ -327,7 +327,7 @@ export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface
     );
 };
 
-export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
+const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     testId?: string,
     showField?: boolean): ReactElement => {
@@ -380,7 +380,7 @@ export const getURLField = (eachProp: CommonPluggableComponentPropertyInterface,
     );
 };
 
-export const getCopyInputField = (eachProp: CommonPluggableComponentPropertyInterface,
+const getCopyInputField = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     testId?: string): ReactElement => {
     return (
@@ -400,7 +400,7 @@ export const getCopyInputField = (eachProp: CommonPluggableComponentPropertyInte
     );
 };
 
-export const getScopesField = (eachProp: CommonPluggableComponentPropertyInterface,
+const getScopesField = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     testId?: string): ReactElement => {
 
@@ -439,7 +439,7 @@ export const getScopesField = (eachProp: CommonPluggableComponentPropertyInterfa
     );
 };
 
-export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyInterface,
+const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     testId?: string,
     showField?: boolean): ReactElement => {
@@ -480,7 +480,7 @@ export const getQueryParamsField = (eachProp: CommonPluggableComponentPropertyIn
     );
 };
 
-export const getTableField = (eachProp: CommonPluggableComponentPropertyInterface,
+const getTableField = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     testId?: string): ReactElement => {
     return (
@@ -557,7 +557,7 @@ export const getTableField = (eachProp: CommonPluggableComponentPropertyInterfac
     );
 };
 
-export const getDropDownField = (eachProp: CommonPluggableComponentPropertyInterface,
+const getDropDownField = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     testId?: string,
     showField?: boolean): ReactElement => {
@@ -590,7 +590,7 @@ export const getDropDownField = (eachProp: CommonPluggableComponentPropertyInter
     );
 };
 
-export const getDropDownFieldWithListener = (eachProp: CommonPluggableComponentPropertyInterface,
+const getDropDownFieldWithListener = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     listen: (key: string, values: Map<string, FormValue>) => void,
     testId?: string,
@@ -628,7 +628,7 @@ export const getDropDownFieldWithListener = (eachProp: CommonPluggableComponentP
     );
 };
 
-export const getFilePicker = (eachProp: CommonPluggableComponentPropertyInterface,
+const getFilePicker = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     testId?: string,
     showField?: boolean): ReactElement => {
@@ -710,8 +710,7 @@ export enum CommonConstants {
     FIELD_COMPONENT_SCOPES = "Scopes",
     QUERY_PARAMETERS_KEY = "commonAuthQueryParams",
     SCOPE_KEY = "scopes",
-    RADIO = "RADIO",
-    SELECTMODE = "SelectMode"
+    RADIO = "RADIO"
 }
 
 /**

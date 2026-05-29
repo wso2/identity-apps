@@ -19,15 +19,15 @@
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
-import { getUsersList } from "@wso2is/admin.users.v1/api/users";
-import { UserListInterface } from "@wso2is/admin.users.v1/models/user";
-import { getConfiguration, getUsernameConfiguration } from "@wso2is/admin.users.v1/utils";
+import { getUsersList } from "../../../api/users";
+import { UserListInterface } from "../../../models/user";
+import { getConfiguration, getUsernameConfiguration } from "../../../utils";
 import { useUserStoreRegEx } from "@wso2is/admin.userstores.v1/api/use-get-user-store-regex";
 import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { ProfileSchemaInterface } from "@wso2is/core/src/models";
-import { Field, FormValue, Forms, RadioChild, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, RadioChild, Validation } from "@wso2is/forms/legacy";
 import { Hint, PasswordValidation } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
@@ -48,7 +48,7 @@ export interface AddConsumerUserProps {
     initialValues: any;
     triggerSubmit: boolean;
     emailVerificationEnabled: boolean;
-    onSubmit: (values: any) => void;
+    onSubmit: (_values: any) => void;
     hiddenFields?: ("userName" | "firstName" | "lastName" | "password")[];
     requestedPasswordOption?: "ask-password" | "create-password";
 }

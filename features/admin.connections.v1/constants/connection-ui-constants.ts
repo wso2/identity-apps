@@ -342,6 +342,14 @@ export class ConnectionUIConstants {
             min: 0
         };
 
+    public static readonly SAML_METADATA_URI_LENGTH: {
+        min: number;
+        max: number;
+    } = {
+            max: 2048,
+            min: 0
+        };
+
     public static readonly GROUP_CLAIM_LENGTH: {
         min: number;
         max: number;
@@ -441,6 +449,16 @@ export class ConnectionUIConstants {
             key: EndpointAuthenticationType.API_KEY,
             text: "actions:fields.authentication.types.apiKey.name",
             value: EndpointAuthenticationType.API_KEY
+        },
+        {
+            key: EndpointAuthenticationType.CLIENT_CREDENTIAL,
+            text: "actions:fields.authentication.types.clientCredential.name",
+            value: EndpointAuthenticationType.CLIENT_CREDENTIAL
+        },
+        {
+            key: EndpointAuthenticationType.PASSWORD_CREDENTIAL,
+            text: "actions:fields.authentication.types.passwordCredential.name",
+            value: EndpointAuthenticationType.PASSWORD_CREDENTIAL
         }
     ];
 
@@ -453,4 +471,15 @@ export class ConnectionUIConstants {
      * Custom authenticator identifier prefix.
      */
     public static readonly CUSTOM_AUTHENTICATOR_IDENTIFIER_PREFIX: string = "custom-";
+
+    /**
+     * Supported IDP group sync methods.
+     */
+    public static readonly SUPPORTED_IDP_GROUP_SYNC_METHODS: {
+        MERGE_WITH_EXISTING: string;
+        OVERRIDE_ALL: string;
+    } = {
+            MERGE_WITH_EXISTING: "MERGE_WITH_EXISTING",
+            OVERRIDE_ALL: "OVERRIDE_ALL"
+        };
 }

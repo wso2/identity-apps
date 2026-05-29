@@ -282,11 +282,11 @@ export const applications: ApplicationsNS = {
             assertionHint: "Please confirm your action."
         },
         deleteOutboundProvisioningIDP: {
-            assertionHint: "Please type <1>{{ name }}</1> to confirm.",
-            content: "If you delete this outbound provisioning IDP, you will not be able to get it back. " +
-                "Please proceed with caution.",
+            assertionHint: "Please confirm your action.",
+            content: "If you remove this outbound provisioning connection, outbound provisioning will not be " +
+                "triggered from this application. Please proceed with caution.",
             header: "Are you sure?",
-            message: "This action is irreversible and will remove the IDP."
+            message: "This action is irreversible and will remove the provisioning connection."
         },
         deleteProtocol: {
             assertionHint: "Please type <1>{{ name }}</1> to confirm.",
@@ -613,11 +613,17 @@ export const applications: ApplicationsNS = {
                 allRolesSharingMessage: "All roles of the application will be shared with the organization.",
                 allRolesAndOrgsSharingMessage: "All roles of the application will be shared with all the organizations.",
                 allRolesAndOrgsNotSharingMessage: "No roles will be shared with any organization.",
+                allApplicationRolesSharingMessage: "All roles of the application will be shared and assigned.",
                 doNotShareRolesWithAllOrgs: "Do not share roles with all organizations.",
                 manageRoleSharing: "Manage role sharing",
+                shareApplicationWithFutureChildOrgs: "Share application and roles with future child organizations",
                 viewRoleSharing: "View shared roles",
                 noSharedOrgs: "This application is not shared with any organizations.",
                 noRolesAvailableForOrg: "No roles available for the selected organization.",
+                roleAudience: {
+                    application: "application/{{appName}}",
+                    organization: "organization"
+                },
                 searchAvailableRolesPlaceholder: "Search available roles",
                 orgNotSelectedForRoleSharing: "To share roles, please select the organization from the left panel.",
                 rolesSharedPartially: "Roles are selectively shared with this organization.",
@@ -783,6 +789,48 @@ export const applications: ApplicationsNS = {
                     partiallyCompleted: "Application sharing partially completed."
                 }
             },
+            enhancedOrganizationLogin: {
+                title: "Enable enhanced organization login",
+                description: "Enabling this switches the application to the enhanced organization login. " +
+                    "This change may require manual updates to your existing application setup " +
+                    "and configurations.",
+                hint: "Learn more about the enhanced organization login.",
+                confirmation: {
+                    header: "Are you sure?",
+                    message: "Changing the enhanced organization login mode will affect the current application. " +
+                        "Proceed with caution.",
+                    content: {
+                        0: "This change may require manual updates to your application setup " +
+                            "and configurations."
+                    }
+                },
+                notifications: {
+                    enable: {
+                        success: {
+                            message: "Enhanced organization login enabled.",
+                            description: "Enhanced organization login has been successfully enabled for " +
+                                "this application."
+                        },
+                        error: {
+                            message: "Failed to enable enhanced organization login.",
+                            description: "An error occurred while enabling enhanced organization login. " +
+                                "Please try again."
+                        }
+                    },
+                    disable: {
+                        success: {
+                            message: "Enhanced organization login disabled.",
+                            description: "Enhanced organization login has been successfully disabled for " +
+                                "this application."
+                        },
+                        error: {
+                            message: "Failed to disable enhanced organization login.",
+                            description: "An error occurred while disabling enhanced organization login. " +
+                                "Please try again."
+                        }
+                    }
+                }
+            },
             signOnMethod: {
                 sections: {
                     authenticationFlow: {
@@ -865,7 +913,9 @@ export const applications: ApplicationsNS = {
                                             "be referenced in your scripts using the syntax <1>secrets.{secret name}</1>",
                                         plusIcon: "Add to the script"
                                     }
-                                }
+                                },
+                                subOrgInfoBanner: "Only shared users from the root organization can " +
+                                    "update this script."
                             },
                             stepBased: {
                                 actions: {
@@ -931,6 +981,8 @@ export const applications: ApplicationsNS = {
                                     "providing client id & secret, to use with your applications.",
                                 firstFactorDisabled: "Identifier First authenticator and Username & " +
                                     "Password authenticator cannot be added to the same step.",
+                                sharedUserIdentifierFirstFactorDisabled: "Shared User Identifier authenticator and " +
+                                    "Username & Password authenticator cannot be added to the same step.",
                                 forms: {
                                     fields: {
                                         attributesFrom: {
@@ -1081,6 +1133,11 @@ export const applications: ApplicationsNS = {
                                         totpWithIdentifierFirstEnabled: "TOTP authenticator with Identifier First handler is configured.",
                                         totpWithIdentifierFirstEnabledMessage: "Configuring TOTP authenticator " +
                                         "with Identifier First handler is not recommended as <2>TOTP progressive enrollment</2> is " +
+                                        "enabled by default. You can disable TOTP progressive enrollment through " +
+                                        " <4> Conditional Authentication</4> script.",
+                                        totpWithSharedUserIdentifierEnabled: "TOTP authenticator with Shared User Identifier handler is configured.",
+                                        totpWithSharedUserIdentifierEnabledMessage: "Configuring TOTP authenticator " +
+                                        "with Shared User Identifier handler is not recommended as <2>TOTP progressive enrollment</2> is " +
                                         "enabled by default. You can disable TOTP progressive enrollment through " +
                                         " <4> Conditional Authentication</4> script."
                                     }
@@ -1757,6 +1814,42 @@ export const applications: ApplicationsNS = {
                             }
                         }
                     }
+                },
+                ciba: {
+                    authReqExpiryTime: {
+                        hint: "Specify the expiry time for the CIBA authentication request in seconds.",
+                        label: "CIBA Authentication Request Expiry Time",
+                        placeholder: "Enter expiry time",
+                        validations: {
+                            empty: "This is a required field.",
+                            invalid: "Please enter a valid positive integer."
+                        }
+                    },
+                    notificationChannels: {
+                        externalHint: "If the client includes " +
+                            "notification_channel=external in the request, " +
+                            "{{productName}} returns the notification details " +
+                            "in the response, enabling the client application " +
+                            "to deliver the notification through its own channel.",
+                        externalLabel: "External (Client Application Handles Delivery)",
+                        hint: "Select the notification delivery methods that " +
+                            "this client application is permitted to request.",
+                        label: "Allowed Notification Delivery Methods"
+                    },
+                    skipUserValidation: {
+                        hint: "When enabled, the server skips the validation that verifies the " +
+                            "resolved user from the login_hint matches the user who completes " +
+                            "the authentication.",
+                        label: "Skip user validation"
+                    },
+                    allowFederatedUsers: {
+                        hint: "Allow sending CIBA notifications to users not found in the local " +
+                            "user store. The notification is sent directly to the login_hint value, " +
+                            "using the notification channel to determine if it is an email or " +
+                            "phone number. Requires skip user validation to be enabled.",
+                        label: "Allow federated users"
+                    },
+                    heading: "Client Initiated Backchannel Authentication"
                 }
             },
             messages: {
@@ -2098,8 +2191,8 @@ export const applications: ApplicationsNS = {
                 refreshToken: {
                     fields: {
                         extendRenewedRefreshTokenExpiryTime: {
-                            hint: "Select to ensure renewed refresh tokens retain the remaining validity period from " +
-                                "the original token instead of receiving a fresh expiry time.",
+                            hint: "Select to ensure renewed refresh tokens receive a fresh expiry time " +
+                                "instead of retaining the remaining validity period from the original token.",
                             label: "Extend expiry time of renewed refresh tokens"
                         },
                         expiry: {
@@ -2604,10 +2697,10 @@ export const applications: ApplicationsNS = {
                     }
                 },
                 idp: {
-                    label: "Identity Provider",
-                    placeholder: "Select identity provider",
+                    label: "Provisioning Connection",
+                    placeholder: "Select provisioning connection",
                     validations: {
-                        empty: "It is mandatory to select an IDP."
+                        empty: "It is mandatory to select a provisioning connection."
                     }
                 },
                 jit: {
@@ -2721,6 +2814,7 @@ export const applications: ApplicationsNS = {
                     oidcConfigurations: {
                         labels: {
                             authorize: "Authorize",
+                            backchannelAuthentication: "Backchannel Authentication",
                             dynamicClientRegistration: "Dynamic Client Registration",
                             endSession: "Logout",
                             introspection: "Introspection",
@@ -3325,6 +3419,15 @@ export const applications: ApplicationsNS = {
             description: "The Identifier First authenticator requires multiple authentication steps in the sign-in flow.",
             message: "Update error"
         },
+        updateOnlySharedUserIdentifierError: {
+            description: "Shared User Identifier authenticator cannot be the only authenticator. "
+                + "It needs an additional step.",
+            message: "Update error"
+        },
+        updateSharedUserIdentifierInFirstStepError: {
+            description: "The Shared User Identifier authenticator requires multiple authentication steps in the sign-in flow.",
+            message: "Update error"
+        },
         updateOutboundProvisioning: {
             genericError: {
                 description: "The outbound provisioning IDP already exists.",
@@ -3515,10 +3618,10 @@ export const applications: ApplicationsNS = {
                 form: {
                     fields: {
                         connection: {
-                            label: "Connection",
-                            placeholder: "Select connection",
+                            label: "Provisioning Connection",
+                            placeholder: "Select provisioning connection",
                             validations: {
-                                empty: "It is mandatory to select connection."
+                                empty: "It is mandatory to select a provisioning connection."
                             }
                         }
                     }

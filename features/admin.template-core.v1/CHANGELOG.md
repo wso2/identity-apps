@@ -1,5 +1,55 @@
 # @wso2is/admin.template-core.v1
 
+## 1.6.2
+
+### Patch Changes
+
+- [#10113](https://github.com/wso2/identity-apps/pull/10113) [`dd01f38682fd189b94802e06b3473a312c1bf7b1`](https://github.com/wso2/identity-apps/commit/dd01f38682fd189b94802e06b3473a312c1bf7b1) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Feature gate console settings and connections
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.29
+
+## 1.6.1
+
+### Patch Changes
+
+- [#9875](https://github.com/wso2/identity-apps/pull/9875) [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - Revert Axios and SDK version bumps
+
+- Updated dependencies [[`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d)]:
+  - @wso2is/admin.core.v1@2.55.3
+  - @wso2is/core@2.12.10
+
+## 1.6.0
+
+### Minor Changes
+
+- [#9702](https://github.com/wso2/identity-apps/pull/9702) [`aa65d18c579561581a0a6b60003017d31d8f9c27`](https://github.com/wso2/identity-apps/commit/aa65d18c579561581a0a6b60003017d31d8f9c27) Thanks [@VihangaMunasinghe](https://github.com/VihangaMunasinghe)! - \* New Features
+
+  - Multi-provider support: The Push Providers page now loads all configured
+    providers (FCM, AmazonSNS) simultaneously. Users can switch between provider cards
+    without losing configurations.
+  - Default push provider toggle: Added a toggle to designate a default push
+    sender. It remains disabled until the push sender is configured.
+  - Default provider UI indicator: Provider cards now display a "Default"
+    chip label when marked as the default push sender.
+  - Reusable KeyValueMapField: Introduced a new component in @wso2is/form
+    for dynamic key-value pairs with dropdown support and read-only modes.
+
+  * API Updates:
+
+    - updatePushProvider and deletePushProvider now accept a providerName
+      parameter for specific endpoints.
+    - Added updateDefaultPushProviderConfig API function.
+    - Added useGetPushNotificationConfigs hook.
+
+  * UI Architecture
+
+    - Moved EmphasizedSegment out of the dynamic form to allow for custom
+      styling and layout flexibility.
+
+  * Localization (i18n)
+    - Added "Default" label translations across all 10 supported languages.
+
 ## 1.5.161
 
 ### Patch Changes

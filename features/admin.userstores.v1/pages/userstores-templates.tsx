@@ -20,7 +20,9 @@ import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, PageLayout, TemplateGrid } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -127,7 +129,7 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
         });
 
         const results: (void | UserstoreType)[] = await Promise.all(
-            typeRequests.map((response: Promise<UserstoreType>) => response.catch((error: AxiosError) => {
+            typeRequests.map((response: Promise<UserstoreType>) => response.catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 dispatch(addAlert({
                     description: t("userstores:notifications." +
                             "fetchUserstoreTemplates.genericError.description"),

@@ -90,7 +90,7 @@ import {
 } from "../../models/application";
 import "./share-application-form.scss";
 
-export interface ApplicationShareFormPropsInterface
+interface ApplicationShareFormPropsInterface
     extends IdentifiableComponentInterface {
     /**
      * Editing application.
@@ -1452,6 +1452,22 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                                 ) }
                                                                 clearAdvancedRoleSharing={ clearAdvancedRoleSharing }
                                                                 disableOrgSelection={ true }
+                                                                allRolesSharingMessage={
+                                                                    t("applications:edit.sections.sharedAccess." +
+                                                                    "allApplicationRolesSharingMessage")
+                                                                }
+                                                                shareWithFutureChildOrgsLabel={
+                                                                    t("applications:edit.sections.sharedAccess." +
+                                                                    "shareApplicationWithFutureChildOrgs")
+                                                                }
+                                                                sharingSettingsLabel={
+                                                                    t("applications:edit.sections.sharedAccess." +
+                                                                    "sharingSettings")
+                                                                }
+                                                                assignedRolesLabel={
+                                                                    t("applications:edit.sections.sharedAccess." +
+                                                                    "sharedRoles")
+                                                                }
                                                             />
                                                         </div>
                                                     )
@@ -1537,6 +1553,22 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                                                         setShouldShareWithFutureChildOrgsMap
                                                     }
                                                     disableOrgSelection={ false }
+                                                    allRolesSharingMessage={
+                                                        t("applications:edit.sections.sharedAccess." +
+                                                        "allApplicationRolesSharingMessage")
+                                                    }
+                                                    shareWithFutureChildOrgsLabel={
+                                                        t("applications:edit.sections.sharedAccess." +
+                                                        "shareApplicationWithFutureChildOrgs")
+                                                    }
+                                                    sharingSettingsLabel={
+                                                        t("applications:edit.sections.sharedAccess." +
+                                                        "sharingSettings")
+                                                    }
+                                                    assignedRolesLabel={
+                                                        t("applications:edit.sections.sharedAccess." +
+                                                        "sharedRoles")
+                                                    }
                                                 />
                                             </Grid>
                                         </motion.div>

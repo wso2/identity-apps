@@ -15,17 +15,17 @@
         <meta name="referrer" content="no-referrer" />
 
         <!-- Start of loading application configurations -->
-        <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>update.config.js"></script>
-        <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>config.js"></script>
+        <script type="text/javascript" src="<%= buildOptions.publicPath %>update.config.js"></script>
+        <script type="text/javascript" src="<%= buildOptions.publicPath %>config.js"></script>
         <!-- End of loading application configurations -->
 
-        <link href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/theme.<%= htmlWebpackPlugin.options.themeHash %>.min.css" rel="stylesheet" type="text/css"/>
-        <link rel="shortcut icon" href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/assets/images/branding/favicon.ico" />
+        <link href="<%= buildOptions.publicPath %>libs/themes/<%= buildOptions.theme %>/theme.<%= buildOptions.themeHash %>.min.css" rel="stylesheet" type="text/css"/>
+        <link rel="shortcut icon" href="<%= buildOptions.publicPath %>libs/themes/<%= buildOptions.theme %>/assets/images/branding/favicon.ico" />
 
-        <script src="<%= htmlWebpackPlugin.options.publicPath %>startup-config.js"></script>
+        <script src="<%= buildOptions.publicPath %>startup-config.js"></script>
 
         <script>
-            var contextPathGlobal = "<%= htmlWebpackPlugin.options.publicPath %>";
+            var contextPathGlobal = "<%= buildOptions.publicPath %>";
             var serverOriginGlobal = startupConfig.serverUrlGlobal;
             var proxyContextPathGlobal = startupConfig.proxyContextPathGlobal;
             var isSuperTenantRequiredInUrl = startupConfig.isSuperTenantRequiredInUrl;
@@ -42,7 +42,7 @@
         </script>
 
         <!-- Start of custom stylesheets -->
-        <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.publicPath %>extensions/stylesheet.css"/>
+        <link rel="stylesheet" type="text/css" href="<%= buildOptions.publicPath %>extensions/stylesheet.css"/>
         <!-- End of custom stylesheets -->
 
         <!-- Start of custom scripts added to the head -->
@@ -50,9 +50,9 @@
             id="head-script"
             defer
             type="text/javascript"
-            data-public-path="<%= htmlWebpackPlugin.options.publicPath %>"
+            data-public-path="<%= buildOptions.publicPath %>"
             data-name="head-extensions"
-            src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"
+            src="<%= buildOptions.publicPath %>extensions/head-script.js"
             data-page-id="home"
         ></script>
         <!-- End of custom scripts added to the head -->
@@ -66,7 +66,7 @@
         <!-- Start of custom scripts added to the body -->
 
         <!-- Temporarily commenting the extension scripts due to https://github.com/wso2/product-is/issues/19479#issuecomment-2003061880 -->
-        <!-- <script defer type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>extensions/body-script.js"></script> -->
+        <!-- <script defer type="text/javascript" src="<%= buildOptions.publicPath %>extensions/body-script.js"></script> -->
 
         <!-- End of custom scripts added to the body -->
     </body>

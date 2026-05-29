@@ -17,7 +17,7 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import useSWR, { SWRConfiguration, SWRResponse } from "swr";
 import { FetcherResponse } from "swr/dist/_internal";
 
@@ -25,7 +25,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
     .bind(AsgardeoSPAClient.getInstance());
 
-export type GetRequest = AxiosRequestConfig | null
+type GetRequest = AxiosRequestConfig | null
 
 /**
  * Request error interface.
@@ -85,7 +85,7 @@ export interface RequestErrorInterface {
     traceId: string;
 }
 
-export interface SWRConfig<Data = unknown, Error = unknown>
+interface SWRConfig<Data = unknown, Error = unknown>
     extends Omit<
         SWRConfiguration<AxiosResponse<Data>, AxiosError<Error>>,
         "fallbackData"
@@ -129,7 +129,7 @@ export const useRequest = <Data = unknown, Error = unknown>(
             ..._config,
             fallbackData: fallbackData && {
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                config: request!,
+                config: request! as InternalAxiosRequestConfig,
                 data: fallbackData,
                 headers: {},
                 status: 200,

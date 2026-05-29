@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { DropdownChild } from "@wso2is/forms";
+import { DropdownChild } from "@wso2is/forms/legacy";
 
 /**
  * Interface for the Insights data that is passed to Charts.
@@ -35,6 +35,7 @@ export enum ResourceType {
     LOGIN_FAILURE = "LOGIN_FAILURE",
     MONTHLY_ACTIVE_USERS = "MAU",
     USER_REGISTRATION = "USER_REGISTRATION",
+    M2M_AUTHENTICATION = "M2M",
 }
 
 /**
@@ -88,7 +89,7 @@ export interface ChartDataPoint {
 /**
  * Interface for the insights data for the current and last periods.
  */
-export interface InsightsForCurrentAndLastPeriods {
+interface InsightsForCurrentAndLastPeriods {
     usageRecordsForCurrentPeriod: InsightsResponseInterface;
     usageRecordsForLastPeriod: InsightsResponseInterface;
 }
@@ -105,16 +106,16 @@ export enum ActivityType {
     LOGIN = "Login",
     REGISTRATION = "Registration",
     USER_RECOVERY = "User Recovery",
+    M2M = "M2M",
 }
 
 export type FilterCondition = DropdownChild
 
-export type FilterAttribute = FilterCondition
+type FilterAttribute = FilterCondition
 
 export enum OrgInsightsFeature {
     COMPARE_WITH_LAST_PERIOD = "compareWithLastPeriod",
-    ADVANCED_INSIGHT_FILTERING = "advancedInsightFiltering",
-    REGISTRATION_INSIGHTS = "registrationInsights",
+    M2M_INSIGHTS = "m2mInsights",
 }
 
 export enum OnboardingMethodFilterValue {
@@ -139,6 +140,5 @@ export enum AuthenticatorFilterValue {
     OIDC = "OpenIDConnectAuthenticator",
     SAML = "SAMLSSOAuthenticator",
     HYPR = "HYPRAuthenticator",
-    IPROOV = "IproovAuthenticator",
-    ORGANIZATION_AUTHENTICATOR = "OrganizationAuthenticator"
+    IPROOV = "IproovAuthenticator"
 }

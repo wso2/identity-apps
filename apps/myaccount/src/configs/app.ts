@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -106,6 +106,9 @@ export class Config {
                     list: `${this.getDeploymentConfig()?.serverHost}/api/identity/consent-mgt/v1.0/consents/purposes`
                 }
             },
+            consentMgtV2: {
+                consents: `${this.getDeploymentConfig()?.serverHost}/api/identity/consent-mgt/v2.0/consents`
+            },
             federatedAssociations: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/federated-associations`,
             fidoEnd: `${this.getDeploymentConfig()?.serverHost}/api/users/v2/me/webauthn/finish-registration`,
             fidoMetaData: `${this.getDeploymentConfig()?.serverHost}/api/users/v2/me/webauthn`,
@@ -123,12 +126,13 @@ export class Config {
             logout: `${this.getDeploymentConfig()?.serverHost}/oidc/logout`,
             me: `${this.getDeploymentConfig()?.serverHost}/scim2/Me`,
             mfaEnabledAuthenticators: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/mfa/authenticators`,
+            otpCodeValidate: `${this.getDeploymentConfig()?.serverHost}/api/identity/user/v1.0/me/validate-code`,
+            passwordChange: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/change-password`,
             preference: `${this.getDeploymentConfig()?.serverHost}/api/server/v1/identity-governance/preferences`,
             profileSchemas: `${this.getDeploymentConfig()?.serverHost}/scim2/Schemas`,
             push: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/push`,
             revoke: `${this.getDeploymentConfig()?.serverHost}/oauth2/revoke`,
             sessions: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/sessions`,
-            smsOtpValidate: `${this.getDeploymentConfig()?.serverHost}/api/identity/user/v1.0/me/validate-code`,
             token: `${this.getDeploymentConfig()?.serverHost}/oauth2/token`,
             totp: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/totp`,
             totpSecret: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/totp/secret`,

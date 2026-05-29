@@ -1,5 +1,38 @@
 # @wso2is/common.workflow-approvals.v1
 
+## 1.0.15
+
+### Patch Changes
+
+- [#10015](https://github.com/wso2/identity-apps/pull/10015) [`05a402441d9e42c9b26045578ea7fe4201be8828`](https://github.com/wso2/identity-apps/commit/05a402441d9e42c9b26045578ea7fe4201be8828) Thanks [@github-actions](https://github.com/apps/github-actions)! - Approval task filtering by operation type and request ID UI
+
+- Updated dependencies [[`b609194419f35a004fa33f5a80f57ffe09d5e4a4`](https://github.com/wso2/identity-apps/commit/b609194419f35a004fa33f5a80f57ffe09d5e4a4), [`05a402441d9e42c9b26045578ea7fe4201be8828`](https://github.com/wso2/identity-apps/commit/05a402441d9e42c9b26045578ea7fe4201be8828)]:
+  - @wso2is/core@2.12.12
+  - @wso2is/i18n@2.38.3
+
+## 1.0.14
+
+### Patch Changes
+
+- [#9875](https://github.com/wso2/identity-apps/pull/9875) [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - Revert Axios and SDK version bumps
+
+- Updated dependencies [[`c834b18928cdfc09710c5e7067668206d006e68a`](https://github.com/wso2/identity-apps/commit/c834b18928cdfc09710c5e7067668206d006e68a), [`877d726905edf898c33c615cd887f8ed0a071a0e`](https://github.com/wso2/identity-apps/commit/877d726905edf898c33c615cd887f8ed0a071a0e), [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d)]:
+  - @wso2is/i18n@2.37.5
+  - @wso2is/admin.core.v1@2.55.3
+  - @wso2is/access-control@3.5.3
+  - @wso2is/theme@2.9.5
+  - @wso2is/core@2.12.10
+  - @wso2is/form@2.10.1
+
+## 1.0.13
+
+### Patch Changes
+
+- [#9357](https://github.com/wso2/identity-apps/pull/9357) [`07f6716b1fb74010d40790837f025f29195a1c0a`](https://github.com/wso2/identity-apps/commit/07f6716b1fb74010d40790837f025f29195a1c0a) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix CSS issue in Approvals Page in My Account app in dark theme
+
+- Updated dependencies [[`b4a65c9ddb89a02095eab1fb66192a810437d3ab`](https://github.com/wso2/identity-apps/commit/b4a65c9ddb89a02095eab1fb66192a810437d3ab)]:
+  - @wso2is/admin.core.v1@2.54.13
+
 ## 1.0.12
 
 ### Patch Changes

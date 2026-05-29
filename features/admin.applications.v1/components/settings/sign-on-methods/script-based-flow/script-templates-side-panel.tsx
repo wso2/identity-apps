@@ -37,7 +37,9 @@ import {
 import {
     GovernanceConnectorUtils
 } from "@wso2is/admin.server-configurations.v1/utils/governance-connector-utils";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ContentLoader,
@@ -201,7 +203,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                 .then((response: GovernanceConnectorInterface) => {
                     setConnector(response);
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     if (error?.response && error?.response?.data && error?.response?.data?.detail) {
                         dispatch(
                             addAlert({
@@ -285,7 +287,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                         })
                     );
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     if (error?.response && error?.response?.data && error?.response?.data?.detail) {
                         dispatch(
                             addAlert({

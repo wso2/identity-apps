@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,9 +23,10 @@ import {
     FilePickerAdapter,
     FinalFormField,
     FormApi,
+    KeyValueMapAdapter,
     TextFieldAdapter,
     __DEPRECATED__SelectFieldAdapter
-} from "@wso2is/form";
+} from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import ReactMarkdown from "react-markdown";
@@ -34,14 +35,15 @@ import {
     DynamicDropdownFieldInterface,
     DynamicFieldInterface,
     DynamicFilePickerFieldInterface,
-    DynamicInputFieldTypes
+    DynamicInputFieldTypes,
+    DynamicKeyValueMapFieldInterface
 } from "../models/dynamic-fields";
 import "./form-dynamic-field.scss";
 
 /**
  * Prop types for the dynamic input fields.
  */
-export interface FormDynamicFieldPropsInterface extends IdentifiableComponentInterface {
+interface FormDynamicFieldPropsInterface extends IdentifiableComponentInterface {
     /**
      * Field configs.
      */
@@ -54,6 +56,10 @@ export interface FormDynamicFieldPropsInterface extends IdentifiableComponentInt
      * Whether the form field is read only or not.
      */
     readOnly?: boolean;
+    /**
+     * Whether the form field is disabled or not.
+     */
+    disabled?: boolean;
 }
 
 /**
@@ -96,6 +102,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
     field,
     form: _form,
     readOnly,
+    disabled = false,
     ["data-componentid"]: componentId = "form-dynamic-field",
     ...rest
 }: PropsWithChildren<FormDynamicFieldPropsInterface>): ReactElement => {
@@ -115,7 +122,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         label={ field?.label }
                         placeholder={ field?.placeholder }
                         component={ CheckboxFieldAdapter }
-                        disabled={ readOnly || field?.readOnly }
+                        disabled={ disabled || readOnly || field?.readOnly }
                         required={ field?.required }
                         hint={
                             field?.helperText ? (
@@ -140,6 +147,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         label={ field?.label }
                         placeholder={ field?.placeholder }
                         component={ TextFieldAdapter }
+                        disabled={ disabled }
                         readOnly={ readOnly || field?.readOnly }
                         required={ field?.required }
                         helperText={
@@ -165,6 +173,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         label={ field?.label }
                         placeholder={ field?.placeholder }
                         component={ TextFieldAdapter }
+                        disabled={ disabled }
                         readOnly={ readOnly || field?.readOnly }
                         rows={ 3 }
                         multiline={ true }
@@ -197,6 +206,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                             label={ field?.label }
                             placeholder={ field?.placeholder }
                             component={ __DEPRECATED__SelectFieldAdapter }
+                            disabled={ disabled }
                             readOnly={ readOnly || field?.readOnly }
                             required={ field?.required }
                             options={ (field as DynamicDropdownFieldInterface)?.options }
@@ -232,6 +242,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         placeholderIcon={ getCertificateIllustrations().uploadPlaceholder }
                         selectedIcon={ <Icon name="file alternate" size="huge"/> }
                         component={ FilePickerAdapter }
+                        disabled={ disabled }
                         required={ field?.required }
                         helperText={
                             field?.helperText ? (
@@ -243,6 +254,35 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         onDelete={ (field as DynamicFilePickerFieldInterface)?.onDelete }
                     />
                 );
+            case DynamicInputFieldTypes.KEYVALUEMAP:
+                return (
+                    <FinalFormField
+                        fullWidth
+                        FormControlProps={ {
+                            margin: "dense"
+                        } }
+                        aria-label={ field?.["aria-label"] }
+                        data-componentid={ field?.dataComponentId }
+                        name={ field?.name }
+                        label={ field?.label }
+                        placeholder={ field?.placeholder }
+                        component={ KeyValueMapAdapter }
+                        disabled={ disabled }
+                        readOnly={ readOnly || field?.readOnly }
+                        required={ field?.required }
+                        valuetype={ (field as DynamicKeyValueMapFieldInterface)?.valueType }
+                        keyName={ (field as DynamicKeyValueMapFieldInterface)?.keyName }
+                        keyOptions={ (field as DynamicKeyValueMapFieldInterface)?.keyOptions }
+                        helperText={
+                            field?.helperText ? (
+                                <Hint compact>
+                                    { renderHelperText(field?.helperText) }
+                                </Hint>
+                            ) : null
+                        }
+                    />
+                );
+
             default:
                 return (
                     <FinalFormField
@@ -257,6 +297,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         label={ field?.label }
                         placeholder={ field?.placeholder }
                         component={ TextFieldAdapter }
+                        disabled={ disabled }
                         readOnly={ readOnly || field?.readOnly }
                         required={ field?.required }
                         helperText={

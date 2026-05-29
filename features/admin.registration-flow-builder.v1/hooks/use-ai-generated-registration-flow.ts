@@ -24,7 +24,7 @@ import { useContext } from "react";
 /**
  * Interface for the return type of the `useAIGeneratedRegistrationFlow` hook.
  */
-export type UseAIGeneratedRegistrationFlowInterface = AIGeneratedFlowContextProps;
+type UseAIGeneratedRegistrationFlowInterface = AIGeneratedFlowContextProps;
 
 /**
  * Hook that provides access to the ai generated flow context.

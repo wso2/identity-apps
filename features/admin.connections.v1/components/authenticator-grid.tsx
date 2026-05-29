@@ -34,7 +34,9 @@ import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature
 import {
     deleteIdentityVerificationProvider
 } from "@wso2is/admin.identity-verification-providers.v1/api/identity-verification-provider";
-import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, LoadableComponentInterface, TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -275,7 +277,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
         const results: ApplicationBasicInterface[] = await Promise.all(
             appRequests.map((response: Promise<any>) =>
-                response.catch((error: AxiosError & { description: string; message: string }) => {
+                response.catch((error: AxiosError<HttpErrorResponseDataInterface> & { description: string; message: string }) => {
                     dispatch(
                         addAlert({
                             description: error?.description || t("idp:connectedApps.genericError.description"),
@@ -316,7 +318,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                     loadConnectedAppDetails(response);
                 }
             })
-            .catch((error: AxiosError & { description: string; message: string }) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface> & { description: string; message: string }) => {
                 dispatch(addAlert({
                     description: error?.description
                         || t("idp:connectedApps.genericError.description"),
@@ -353,7 +355,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                     loadConnectedAppDetails(response);
                 }
             })
-            .catch((error: AxiosError & { description: string; message: string }) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface> & { description: string; message: string }) => {
                 dispatch(
                     addAlert({
                         description: error?.description || t("idp:connectedApps.genericError.description"),
@@ -397,7 +399,7 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                         "deleteConnection.success.message")
                 }));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 handleConnectionDeleteError(error);
             })
             .finally(() => {

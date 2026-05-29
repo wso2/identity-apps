@@ -20,7 +20,7 @@ import { useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Forms } from "@wso2is/forms";
+import { Forms } from "@wso2is/forms/legacy";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";

@@ -25,12 +25,12 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, ReactNode, memo } from "react";
 import { OnboardingComponentIds } from "../../constants";
-import { SignInOptionDefinitionInterface } from "../../models";
+import { SignInOptionDefinitionInterface } from "../../models/sign-in-options";
 
 /**
  * Props interface for SignInOptionToggle component.
  */
-export interface SignInOptionTogglePropsInterface extends IdentifiableComponentInterface {
+interface SignInOptionTogglePropsInterface extends IdentifiableComponentInterface {
     /** Sign-in option definition */
     option: SignInOptionDefinitionInterface;
     /** Whether the option is enabled */
@@ -54,16 +54,17 @@ const StyledFormControlLabel: React.FC<React.ComponentProps<typeof FormControlLa
             flex: 1
         },
         "&:hover": {
-            backgroundColor: "rgba(0, 0, 0, 0.03)"
+            backgroundColor: theme.palette.grey[50]
         },
-        alignItems: "flex-start",
+        alignItems: "center",
         backgroundColor: theme.palette.background.paper,
-        borderRadius: theme.shape.borderRadius,
+        border: `1px solid ${theme.palette.divider}`,
+        borderRadius: theme.shape.borderRadius * 1.5,
         display: "flex",
         justifyContent: "space-between",
         margin: 0,
-        padding: theme.spacing(0.7, 2),
-        transition: "background-color 150ms ease-out",
+        padding: theme.spacing(1.25, 2),
+        transition: "background-color 150ms ease-out, border-color 150ms ease-out",
         width: "100%"
     }));
 
@@ -87,9 +88,9 @@ const OptionLabelContent: FunctionComponent<OptionLabelContentProps> = ({
     description,
     icon
 }: OptionLabelContentProps): ReactElement => (
-    <Box sx={ { alignItems: "flex-start", display: "flex", gap: 1.5 } }>
+    <Box sx={ { alignItems: "center", display: "flex", gap: 1.5 } }>
         { icon && (
-            <Box sx={ { display: "flex", flexShrink: 0, height: 20, mt: 0.25, width: 20 } }>
+            <Box sx={ { display: "flex", flexShrink: 0, height: 20, width: 20 } }>
                 { typeof icon === "string"
                     ? <img alt="" src={ icon } style={ { height: "100%", width: "100%" } } />
                     : icon }

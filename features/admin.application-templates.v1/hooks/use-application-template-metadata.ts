@@ -24,7 +24,7 @@ import ApplicationTemplateMetadataContext, {
 /**
  * Interface for the return type of the `useApplicationTemplateMetadata` hook.
  */
-export type UseApplicationTemplateMetadataInterface = ApplicationTemplateMetadataContextProps;
+type UseApplicationTemplateMetadataInterface = ApplicationTemplateMetadataContextProps;
 
 /**
  * Hook that provides access to the application template metadata context.

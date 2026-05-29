@@ -26,22 +26,25 @@ import { useGetParentOrgUserInvites }
 import { InvitationsInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
 import { UserAccountTypes } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-management-utils";
-import { MultiValueAttributeInterface, RolesInterface } from "@wso2is/core/models";
+import { MultiValueAttributeInterface, RolesInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import useConsoleRoles from "./use-console-roles";
+import useConsoleSettings from "./use-console-settings";
 
 /**
  * Props interface of {@link UseAdministrators}
  */
-export interface UseAdministratorsInterface {
+interface UseAdministratorsInterface {
     /**
      * Error occurred while fetching admin users list.
      */
-    adminUserListFetchError: AxiosError;
+    adminUserListFetchError: AxiosError<HttpErrorResponseDataInterface>;
     /**
      * Administrators list.
      */
@@ -103,6 +106,26 @@ const useAdministrators = (
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
+    const { consoleId } = useConsoleSettings();
+
+    /**
+     * When an advanced filter is present, the role audience filter cannot be combined with it
+     * at the API level. In that case, pass the filter directly and apply client-side role
+     * filtering via `isAdminUser`. When no filter is provided, use the API-level role audience
+     * filter for efficiency.
+     */
+    const adminUsersFilter: string = useMemo(() => {
+        if (!consoleId) {
+            return null;
+        }
+
+        if (filter && filter !== "") {
+            return filter;
+        }
+
+        return `roles.audienceId eq ${consoleId}`;
+    }, [ consoleId, filter ]);
+
     const {
         data: originalAdminUserList,
         error: adminUserListFetchError,
@@ -111,11 +134,11 @@ const useAdministrators = (
     } = useUsersList(
         modifiedLimit,
         startIndex + 1,
-        filter === "" ? null : filter,
+        adminUsersFilter,
         attributes,
         domain,
         excludedAttributes,
-        shouldFetch
+        shouldFetch && !!consoleId
     );
 
     const {

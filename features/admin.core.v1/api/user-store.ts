@@ -17,7 +17,9 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { UserStoreDetails } from "../models/user-store";
 import { store } from "../store";
@@ -55,7 +57,7 @@ export const getPrimaryUserStore = (primaryUserstore: string): Promise<UserStore
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -86,7 +88,7 @@ export const getAUserStore = (id: string): Promise<any> => {
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error?.response?.data);
         });
 };

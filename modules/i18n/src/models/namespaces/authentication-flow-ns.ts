@@ -102,6 +102,27 @@ export interface AuthenticationFlowNS {
             };
             header: string;
         };
+        sharedUserIdentifier: {
+            controls: {
+                optionRemoveTooltipContent: string;
+                optionSwitchTooltipContent: string;
+            };
+            form: {
+                actions: {
+                    primary: string;
+                };
+                fields: {
+                    rememberMe: {
+                        label: string;
+                    };
+                    username: {
+                        label: string;
+                        placeholder: string;
+                    };
+                };
+            };
+            header: string;
+        };
         push: {
             controls: {
                 optionRemoveTooltipContent: string;
@@ -190,6 +211,28 @@ export interface AuthenticationFlowNS {
                     lastAccessedLabel: string;
                 };
                 help: string;
+            };
+            header: string;
+        };
+        passwordResetEnforcer: {
+            form: {
+                actionButton: string;
+                fields: {
+                    currentPassword: {
+                        label: string;
+                        placeholder: string;
+                    };
+                    newPassword: {
+                        label: string;
+                        placeholder: string;
+                    };
+                    repeatPassword: {
+                        label: string;
+                        placeholder: string;
+                    };
+                };
+                matchHint: string;
+                validationHints: string[];
             };
             header: string;
         };

@@ -20,7 +20,9 @@ import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -50,7 +52,7 @@ interface EnterpriseLoginEnabledConfigInterface {
  *
  * @returns Admin settings page.
  */
-export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = (
+const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = (
     props: AdminSettingsPageInterface
 ): ReactElement => {
 
@@ -142,7 +144,7 @@ export const AdminSettingsPage: FunctionComponent<AdminSettingsPageInterface> = 
                     message: t("extensions:manage.users.administratorSettings.success.message")
                 }));
 
-            }).catch((error: AxiosError) => {
+            }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail

@@ -1,5 +1,65 @@
 # @wso2is/core
 
+## 2.13.3
+
+### Patch Changes
+
+- [#10308](https://github.com/wso2/identity-apps/pull/10308) [`98543ddc65499bd5fb7671c4994a91fa001ed614`](https://github.com/wso2/identity-apps/commit/98543ddc65499bd5fb7671c4994a91fa001ed614) Thanks [@hwupathum](https://github.com/hwupathum)! - Add policy consent management related UIs
+
+## 2.13.2
+
+### Patch Changes
+
+- [#10186](https://github.com/wso2/identity-apps/pull/10186) [`515386ded3291fdd7810d3e17790431e67472785`](https://github.com/wso2/identity-apps/commit/515386ded3291fdd7810d3e17790431e67472785) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix mobile deep link regex
+
+## 2.13.1
+
+### Patch Changes
+
+- [#10130](https://github.com/wso2/identity-apps/pull/10130) [`8ffe97ffe949b7846fb511dea88ff4672faf7001`](https://github.com/wso2/identity-apps/commit/8ffe97ffe949b7846fb511dea88ff4672faf7001) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Migrate `identity-apps` to nx 21
+
+## 2.13.0
+
+### Minor Changes
+
+- [#10123](https://github.com/wso2/identity-apps/pull/10123) [`13a622370c3a3aaa07dadd0bec22ceb9ff486fea`](https://github.com/wso2/identity-apps/commit/13a622370c3a3aaa07dadd0bec22ceb9ff486fea) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Unify documentation extensions
+
+## 2.12.13
+
+### Patch Changes
+
+- [#10020](https://github.com/wso2/identity-apps/pull/10020) [`bcb014a1f88998b61d27632549c6e1f7a2f69811`](https://github.com/wso2/identity-apps/commit/bcb014a1f88998b61d27632549c6e1f7a2f69811) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update application versions and core module version to the next patch version
+
+## 2.12.12
+
+### Patch Changes
+
+- [#10017](https://github.com/wso2/identity-apps/pull/10017) [`b609194419f35a004fa33f5a80f57ffe09d5e4a4`](https://github.com/wso2/identity-apps/commit/b609194419f35a004fa33f5a80f57ffe09d5e4a4) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - Update core and console versions
+
+## 2.12.11
+
+### Patch Changes
+
+- [#9921](https://github.com/wso2/identity-apps/pull/9921) [`61cd356ee61eaf81e40f4a7118c1af7a66438361`](https://github.com/wso2/identity-apps/commit/61cd356ee61eaf81e40f4a7118c1af7a66438361) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Implement Email OTP verification on claim update
+
+## 2.12.10
+
+### Patch Changes
+
+- [#9875](https://github.com/wso2/identity-apps/pull/9875) [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - Revert Axios and SDK version bumps
+
+## 2.12.9
+
+### Patch Changes
+
+- [#9842](https://github.com/wso2/identity-apps/pull/9842) [`2cad6ed902817e50e522628726732802503f5893`](https://github.com/wso2/identity-apps/commit/2cad6ed902817e50e522628726732802503f5893) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix password reset scope configuration issue
+
+## 2.12.8
+
+### Patch Changes
+
+- [#9245](https://github.com/wso2/identity-apps/pull/9245) [`1d64e4c1973e5177906a6a15a0b85fd16d420e11`](https://github.com/wso2/identity-apps/commit/1d64e4c1973e5177906a6a15a0b85fd16d420e11) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Update locale dropdown in email and SMS template edit page to display all available locales
+
 ## 2.12.7
 
 ### Patch Changes

@@ -36,7 +36,7 @@ import "./form-adapter.scss";
 /**
  * Props interface of {@link FormAdapter}
  */
-export type FormAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type FormAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Form component.
@@ -48,7 +48,9 @@ const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
     resource,
     stepId
 }: FormAdapterPropsInterface): ReactElement => {
-    const shouldShowFormFieldsPlaceholder: boolean = !resource?.components?.some(
+    const visibleComponents: Element[] = resource?.components ?? [];
+
+    const shouldShowFormFieldsPlaceholder: boolean = !visibleComponents.some(
         (element: Element) => element.category === ElementCategories.Field
     );
 
@@ -76,19 +78,21 @@ const FormAdapter: FunctionComponent<FormAdapterPropsInterface> = ({
                         <Typography variant="body2">DROP FORM COMPONENTS HERE</Typography>
                     </Box>
                 ) }
-                { (resource?.components as any)?.map((component: Element, index: number) => PluginRegistry
-                    .getInstance().executeSync(EventTypes.ON_NODE_ELEMENT_FILTER, component) && (
-                    <ReorderableElement
-                        key={ component.id }
-                        id={ component.id }
-                        index={ index }
-                        element={ component }
-                        className={ classNames("flow-builder-step-content-form-field") }
-                        group={ resource.id }
-                        type={ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID }
-                        accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
-                    />
-                )) }
+                { visibleComponents?.map((component: Element, index: number) => {
+                    return PluginRegistry
+                        .getInstance().executeSync(EventTypes.ON_NODE_ELEMENT_FILTER, component) && (
+                        <ReorderableElement
+                            key={ component.id }
+                            id={ component.id }
+                            index={ index }
+                            element={ component }
+                            className={ classNames("flow-builder-step-content-form-field") }
+                            group={ resource.id }
+                            type={ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID }
+                            accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
+                        />
+                    );
+                }) }
             </Droppable>
         </Badge>
     );

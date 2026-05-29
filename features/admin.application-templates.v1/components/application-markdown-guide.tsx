@@ -41,7 +41,7 @@ import { ApplicationTemplateConstants } from "../constants/templates";
 /**
  * Prop types of the `ApplicationMarkdownGuide` component.
  */
-export interface ApplicationMarkdownGuidePropsInterface extends IdentifiableComponentInterface {
+interface ApplicationMarkdownGuidePropsInterface extends IdentifiableComponentInterface {
     /**
      * Current editing application data.
      */

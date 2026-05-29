@@ -239,6 +239,10 @@ export interface CommonUIConfigInterface<T = Record<string, unknown>> {
     */
     isPasswordInputValidationEnabled: boolean;
     /**
+     * Flag to check whether the password reset enforcement scope is enabled or not.
+     */
+    isPasswordResetEnforcementScopeEnabled?: boolean;
+    /**
      * Privacy Policy configs.
      */
     privacyPolicyConfigs: PrivacyPolicyConfigsInterface;

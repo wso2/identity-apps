@@ -21,7 +21,6 @@ import { UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { store } from "@wso2is/admin.core.v1/store";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { OperationValueInterface, ScimOperationsInterface } from "@wso2is/admin.roles.v2/models/roles";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import {
     ValidationConfInterface,
     ValidationDataInterface,
@@ -32,7 +31,7 @@ import { ProfileConstants } from "@wso2is/core/constants";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { ProfileInfoInterface, ProfileSchemaInterface, SharedProfileValueResolvingMethod } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
-import { DropdownChild } from "@wso2is/forms";
+import { DropdownChild } from "@wso2is/forms/legacy";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
@@ -60,9 +59,9 @@ export class UserManagementUtils {
     public static isAuthenticatedUser = (authenticatedUser: string, username: string): boolean => {
         let authenticatedUsername: string = authenticatedUser;
 
-        if (authenticatedUsername.split("@").length > 2) {
+        if (authenticatedUsername?.split("@").length > 2) {
             // If the username contains 2 @ symbols, it contains the tenant domain as well.
-            authenticatedUsername = authenticatedUser.split("@").slice(0,2).join("@");
+            authenticatedUsername = authenticatedUser?.split("@").slice(0,2).join("@");
         }
 
         return getUserNameWithoutDomain(username) === authenticatedUsername;
@@ -246,20 +245,13 @@ export const isMultipleEmailsAndMobileNumbersEnabled = (
     }
 
     const multipleEmailsAndMobileFeatureRelatedAttributes: string[] = [
-        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"),
-        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"),
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES"),
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS"),
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES"),
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS")
     ];
 
-    const domainName: string[] = profileInfo?.get("userName")?.toString().split("/");
-    const userStoreDomain: string = (domainName.length > 1
-        ? domainName[0]
-        : PRIMARY_USERSTORE)?.toUpperCase();
-
-    // Check each required attribute exists and domain is not excluded in the excluded user store list.
+    // Check each required attribute exists and its supportedByDefault is enabled.
     const attributeCheck: boolean = multipleEmailsAndMobileFeatureRelatedAttributes.every(
         (attribute: string) => {
             const schema: ProfileSchemaInterface = profileSchema?.find(
@@ -269,18 +261,19 @@ export const isMultipleEmailsAndMobileNumbersEnabled = (
                 return false;
             }
 
-            // The global supportedByDefault value is a string. Hence, it needs to be converted to a boolean.
-            const resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
+            // Resolve supportedByDefault: profile-level (console) takes precedence over global.
+            let resolveSupportedByDefaultValue: boolean =
+                schema?.supportedByDefault?.toLowerCase() === "true";
 
-            // Currently BE check if global supported by default is enabled for these attributes to enable the feature.
+            if (schema?.profiles?.console?.supportedByDefault !== undefined) {
+                resolveSupportedByDefaultValue = schema.profiles.console.supportedByDefault;
+            }
+
             if (!resolveSupportedByDefaultValue) {
                 return false;
             }
 
-            const excludedUserStores: string[] =
-                schema?.excludedUserStores?.split(",")?.map((store: string) => store?.trim().toUpperCase()) || [];
-
-            return !excludedUserStores.includes(userStoreDomain);
+            return true;
         });
 
     return attributeCheck;
@@ -294,19 +287,17 @@ export const isMultipleEmailsAndMobileNumbersEnabled = (
  */
 export const isMultipleEmailsAndMobileNumbersEnabledForUserStore = (
     profileSchema: ProfileSchemaInterface[],
-    userStoreDomain: string
+    _userStoreDomain: string
 ): boolean => {
 
     const multipleEmailsAndMobileFeatureRelatedAttributes: string[] = [
-        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"),
-        ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"),
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES"),
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS"),
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES"),
         ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS")
     ];
 
-    // Check each required attribute exists and domain is not excluded in the excluded user store list.
+    // Check each required attribute exists and its supportedByDefault is enabled.
     const attributeCheck: boolean = multipleEmailsAndMobileFeatureRelatedAttributes.every(
         (attribute: string) => {
             const schema: ProfileSchemaInterface = profileSchema?.find(
@@ -316,18 +307,19 @@ export const isMultipleEmailsAndMobileNumbersEnabledForUserStore = (
                 return false;
             }
 
-            // The global supportedByDefault value is a string. Hence, it needs to be converted to a boolean.
-            const resolveSupportedByDefaultValue: boolean = schema?.supportedByDefault?.toLowerCase() === "true";
+            // Resolve supportedByDefault: profile-level (console) takes precedence over global.
+            let resolveSupportedByDefaultValue: boolean =
+                schema?.supportedByDefault?.toLowerCase() === "true";
 
-            // Currently BE check if global supported by default is enabled for these attributes to enable the feature.
+            if (schema?.profiles?.console?.supportedByDefault !== undefined) {
+                resolveSupportedByDefaultValue = schema.profiles.console.supportedByDefault;
+            }
+
             if (!resolveSupportedByDefaultValue) {
                 return false;
             }
 
-            const excludedUserStores: string[] =
-                schema?.excludedUserStores?.split(",")?.map((store: string) => store?.trim().toUpperCase()) || [];
-
-            return !excludedUserStores.includes(userStoreDomain);
+            return true;
         });
 
     return attributeCheck;
@@ -365,7 +357,7 @@ const getValidationConfig = (
  * @param schemaKey - The attribute key to extract sub-attributes from.
  * @returns Array of sub-attributes (objects).
  */
-export const extractSubAttributes = (user: ProfileInfoInterface, schemaKey: string): Record<string, string>[] => {
+const extractSubAttributes = (user: ProfileInfoInterface, schemaKey: string): Record<string, string>[] => {
     return user && user[schemaKey]?.filter(
         (subAttribute: unknown) => typeof subAttribute === "object") || [];
 };
@@ -642,7 +634,7 @@ const deepMerge = <T extends JsonValue>(target: T, source: T): T => {
     return source;
 };
 
-export const groupByTopLevelKey = <T extends Record<string, JsonValue>>(inputArray: T[]): T => {
+const groupByTopLevelKey = <T extends Record<string, JsonValue>>(inputArray: T[]): T => {
     const grouped: Record<string, JsonValue> = {};
 
     for (const obj of inputArray) {
@@ -665,7 +657,7 @@ export const groupByTopLevelKey = <T extends Record<string, JsonValue>>(inputArr
  * @param prefix - The prefix for the keys (used for recursion).
  * @returns A map with dot-separated keys and their corresponding values.
  */
-export const flattenValues = (obj: Record<string, any>, prefix: string = ""): Map<string, string> => {
+const flattenValues = (obj: Record<string, any>, prefix: string = ""): Map<string, string> => {
     const map: Map<string, string> = new Map<string, string>();
 
     for (const key in obj) {
@@ -691,7 +683,7 @@ export const flattenValues = (obj: Record<string, any>, prefix: string = ""): Ma
  * @param schemaName - Schema name.
  * @returns Verification pending attribute value.
  */
-export const getVerificationPendingAttributeValue = (schemaName: string, user: ProfileInfoInterface): string | null => {
+const getVerificationPendingAttributeValue = (schemaName: string, user: ProfileInfoInterface): string | null => {
     if (schemaName === EMAIL_ATTRIBUTE || schemaName === EMAIL_ADDRESSES_ATTRIBUTE) {
         const pendingAttributes: Array<{value: string}> | undefined = user[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]
             ?.[ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_EMAILS")];

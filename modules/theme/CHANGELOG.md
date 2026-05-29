@@ -1,5 +1,53 @@
 # @wso2is/theme
 
+## 2.10.4
+
+### Patch Changes
+
+- [#10322](https://github.com/wso2/identity-apps/pull/10322) [`e995e67e2fead93f01fcf16a5f1c35378222d7a7`](https://github.com/wso2/identity-apps/commit/e995e67e2fead93f01fcf16a5f1c35378222d7a7) Thanks [@savindi7](https://github.com/savindi7)! - Add announcement banner.
+
+## 2.10.3
+
+### Patch Changes
+
+- [#10285](https://github.com/wso2/identity-apps/pull/10285) [`86edd97f85adc0496cc78ec2a8c8d1db7c434006`](https://github.com/wso2/identity-apps/commit/86edd97f85adc0496cc78ec2a8c8d1db7c434006) Thanks [@savindi7](https://github.com/savindi7)! - Add Changeset for revert branding PR changes.
+
+## 2.10.2
+
+### Patch Changes
+
+- [#10272](https://github.com/wso2/identity-apps/pull/10272) [`80f84ddeb8e4a73882f889b48660824ad364e30f`](https://github.com/wso2/identity-apps/commit/80f84ddeb8e4a73882f889b48660824ad364e30f) Thanks [@savindi7](https://github.com/savindi7)! - Update Branding logos.
+
+## 2.10.1
+
+### Patch Changes
+
+- [#10090](https://github.com/wso2/identity-apps/pull/10090) [`737246c00a28b8582a5100e854550de03c18b0a3`](https://github.com/wso2/identity-apps/commit/737246c00a28b8582a5100e854550de03c18b0a3) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix IDP logo icon inconsistency
+
+## 2.10.0
+
+### Minor Changes
+
+- [#10112](https://github.com/wso2/identity-apps/pull/10112) [`793c5bde494bdde069a0fbc0b5311d279938ceb9`](https://github.com/wso2/identity-apps/commit/793c5bde494bdde069a0fbc0b5311d279938ceb9) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - feat: add AI Copilot ("Ask AI") assistant to the Admin Console
+
+## 2.9.6
+
+### Patch Changes
+
+- [#10098](https://github.com/wso2/identity-apps/pull/10098) [`77852b794dd5b1c85fd82357e5157ad69d0be7fa`](https://github.com/wso2/identity-apps/commit/77852b794dd5b1c85fd82357e5157ad69d0be7fa) Thanks [@github-actions](https://github.com/apps/github-actions)! - Update logos in identity server portal UIs
+
+## 2.9.5
+
+### Patch Changes
+
+- [#9875](https://github.com/wso2/identity-apps/pull/9875) [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - Revert Axios and SDK version bumps
+
+## 2.9.4
+
+### Patch Changes
+
+- [#9716](https://github.com/wso2/identity-apps/pull/9716) [`d939b57796a1b27ca90b2011e71c9b7c167f08b3`](https://github.com/wso2/identity-apps/commit/d939b57796a1b27ca90b2011e71c9b7c167f08b3) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add org identifier handler related changes
+
 ## 2.9.3
 
 ### Patch Changes

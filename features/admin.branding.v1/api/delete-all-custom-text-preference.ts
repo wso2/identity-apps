@@ -19,10 +19,12 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
-import { CustomTextPreferenceAPIResponseInterface } from "../models/custom-text-preference";
+import { CustomTextPreferenceAPIResponseInterface } from "@wso2is/common.branding.v1/models/custom-text-preference";
 
 /**
  * Get an axios instance.
@@ -62,7 +64,7 @@ const deleteAllCustomTextPreferences = (): Promise<CustomTextPreferenceAPIRespon
             }
 
             return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 CustomTextPreferenceConstants.ErrorMessages.CUSTOM_TEXT_PREFERENCE_DELETE_ERROR.getErrorMessage(),
                 error.stack,

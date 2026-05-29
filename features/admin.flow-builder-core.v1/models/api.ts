@@ -19,39 +19,39 @@
 import { ActionTypes } from "./actions";
 import { Element } from "./elements";
 
-export interface Page {
+interface Page {
     id: string;
     nodes: string[];
 }
 
-export interface Flow {
+interface Flow {
     pages: Page[];
 }
 
-export interface ExecutorInfo {
+interface ExecutorInfo {
     name: string;
     meta: Record<string, unknown>;
 }
 
-export interface ActionInfo {
+interface ActionInfo {
     type: ActionTypes;
     executors: ExecutorInfo[]
 }
 
-export interface Action {
+interface Action {
     id: string;
     action: ActionInfo;
     next: string[];
 }
 
-export interface Node {
+interface Node {
     id: string;
     elements: string[];
     actions: Action[];
     data: Record<string, unknown>;
 }
 
-export interface Block {
+interface Block {
     id: string;
     elements: string[];
 }

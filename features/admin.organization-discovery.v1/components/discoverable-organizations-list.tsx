@@ -54,7 +54,7 @@ import {
 /**
  * Props interface of {@link DiscoverableOrganizationsList}
  */
-export interface DiscoverableOrganizationsListPropsInterface
+interface DiscoverableOrganizationsListPropsInterface
     extends LoadableComponentInterface,
     IdentifiableComponentInterface {
     /**

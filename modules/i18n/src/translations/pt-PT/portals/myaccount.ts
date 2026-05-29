@@ -354,8 +354,9 @@ export const myAccount: MyAccountNS = {
             modals: {
                 confirmationModal: {
                     heading: "Confirmação",
-                    message: "A alteração da senha resultará no encerramento da sessão atual. Você precisará fazer " +
-                        "o login com a senha recém-alterada. Você deseja continuar?"
+                    message: "A atualização da sua palavra-passe pode terminar a sessão em todas as aplicações. " +
+                        "Se a sessão for terminada, inicie sessão novamente com a nova palavra-passe. " +
+                        "Deseja continuar?"
                 }
             }
         },
@@ -370,18 +371,14 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 description: "Descrição",
-                piiCategoryHeading: "Gerencie o consentimento para a coleta e o compartilhamento de suas informações " +
-                    "pessoais com o aplicativo. Desmarque os atributos que você precisa revogar e pressione o botão " +
-                    "atualizar para salvar as alterações ou pressione o botão revogar para remover o consentimento " +
-                    "para todos os atributos.",
+                piiCategoryHeading: "Gerencie o consentimento para a coleta e o compartilhamento de suas informações pessoais com o aplicativo. Desmarque os atributos que você precisa revogar e pressione o botão atualizar para salvar as alterações ou pressione o botão revogar para remover o consentimento para todos os atributos.",
                 state: "Estado",
                 version: "Versão"
             },
             modals: {
                 consentRevokeModal: {
                     heading: "Você tem certeza?",
-                    message: "Esta operação não é reversível. Isso revogará permanentemente o consentimento para " +
-                        "todos os atributos. Tem certeza de que deseja continuar?",
+                    message: "Esta operação não é reversível. Isso revogará permanentemente o consentimento para todos os atributos. Tem certeza de que deseja continuar?",
                     warning: "Observe que você será redirecionado para a página de consentimento de login"
                 }
             },
@@ -393,7 +390,7 @@ export const myAccount: MyAccountNS = {
                     },
                     genericError: {
                         description: "Não foi possível carregar as informações no aplicativo selecionado",
-                        message: "Something went wrong"
+                        message: "Algo correu mal"
                     },
                     success: {
                         description: "Recuperado com sucesso o recibo de consentimento",
@@ -444,6 +441,106 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        preferenceManagement: {
+            consentedOnLabel: "Aceite em",
+            dangerZones: {
+                revoke: {
+                    actionTitle: "Revogar",
+                    header: "Revogar preferência de comunicação",
+                    subheader: "Esta ação irá remover a sua preferência para esta comunicação."
+                }
+            },
+            elementsHeading: "Gira as suas preferências de comunicação abaixo. Desmarque os atributos que pretende revogar e prima o botão atualizar para guardar as alterações ou prima o botão revogar para remover a preferência de todos os atributos.",
+            notifications: {
+                fetch: {
+                    error: {
+                        description: "Ocorreu um erro ao recuperar as suas preferências de comunicação.",
+                        message: "Falha na recuperação"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao recuperar as suas preferências de comunicação.",
+                        message: "Falha na recuperação"
+                    },
+                    success: {
+                        description: "As suas preferências de comunicação foram recuperadas com sucesso.",
+                        message: "Recuperação bem-sucedida"
+                    }
+                },
+                revoke: {
+                    error: {
+                        description: "Ocorreu um erro ao revogar a preferência de comunicação.",
+                        message: "Falha na revogação"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao revogar a preferência de comunicação.",
+                        message: "Falha na revogação"
+                    },
+                    success: {
+                        description: "A preferência de comunicação foi revogada com sucesso.",
+                        message: "Consentimento revogado"
+                    }
+                },
+                update: {
+                    error: {
+                        description: "Ocorreu um erro ao atualizar a preferência de comunicação.",
+                        message: "Falha na atualização"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao atualizar a preferência de comunicação.",
+                        message: "Falha na atualização"
+                    },
+                    success: {
+                        description: "As suas preferências de comunicação foram atualizadas com sucesso.",
+                        message: "Consentimento atualizado"
+                    }
+                }
+            },
+            policyUrlLabel: "Ver política",
+            versionLabel: "Versão {{version}}"
+        },
+        policyConsentManagement: {
+            consentedOnLabel: "Ativo desde",
+            dangerZones: {
+                revoke: {
+                    actionTitle: "Revogar",
+                    header: "Revogar Consentimento de Política",
+                    subheader: "Esta ação revogará seu consentimento para esta política. Você pode ser solicitado a consentir novamente na próxima vez que acessar o serviço."
+                }
+            },
+            notifications: {
+                fetch: {
+                    error: {
+                        description: "Ocorreu um erro ao recuperar seus consentimentos de política.",
+                        message: "Falha na Recuperação"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao recuperar seus consentimentos de política.",
+                        message: "Falha na Recuperação"
+                    },
+                    success: {
+                        description: "Os consentimentos de política foram recuperados com sucesso.",
+                        message: "Recuperação bem-sucedida"
+                    }
+                },
+                revoke: {
+                    error: {
+                        description: "Ocorreu um erro ao revogar o consentimento da política.",
+                        message: "Falha na Revogação"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao revogar o consentimento da política.",
+                        message: "Falha na Revogação"
+                    },
+                    success: {
+                        description: "O consentimento da política foi revogado com sucesso.",
+                        message: "Consentimento Revogado"
+                    }
+                }
+            },
+            policyUrlLabel: "Ver Política",
+            versionLabel: "Versão {{version}}"
+        },
+        
         cookieConsent: {
             confirmButton: "Entendi",
             content: "Usamos cookies para garantir que você obtenha a melhor experiência geral. Esses cookies " +
@@ -1304,6 +1401,9 @@ export const myAccount: MyAccountNS = {
                     content: "Please confirm the email address update in order to add the new email to your profile.",
                     header: "Confirmation pending!"
                 },
+                emailVerification: {
+                    content: "Este endereço de e-mail é usado para enviar e-mails de verificação quando a autenticação de segundo fator está ativada e para enviar códigos de recuperação no caso de recuperação de nome de utilizador/palavra-passe. Para atualizar este e-mail, tem de verificar o novo e-mail introduzindo o código de verificação enviado para o seu novo e-mail. Clique em atualizar se quiser continuar."
+                },
                 mobileVerification: {
                     content: "Este número de celular é usado para enviar SMS OTP quando a autenticação de segundo " +
                         "fator está habilitada e para enviar códigos de recuperação em caso de recuperação de nome " +
@@ -1551,6 +1651,67 @@ export const myAccount: MyAccountNS = {
             }
         },
         verificationOnUpdate: {
+            modal: {
+                common: {
+                    step2: {
+                        hint: "Não recebeu um código?",
+                        resend: "Reenviar",
+                        resendSuccess: "O pedido de reenvio do código foi enviado com sucesso",
+                        validation: {
+                            otpRequired: "Introduza o código de verificação"
+                        },
+                        verificationFailure: "A verificação falhou. Tente novamente."
+                    }
+                },
+                email: {
+                    step1: {
+                        content: {
+                            label: "Introduza o seu novo endereço de e-mail"
+                        },
+                        heading: "Verifique o seu endereço de e-mail",
+                        validation: {
+                            invalidFormat: "Introduza um endereço de e-mail válido",
+                            required: "Endereço de e-mail obrigatório"
+                        }
+                    },
+                    step2: {
+                        content: {
+                            label: "Foi enviado um código de verificação para o seu e-mail. Introduza o código abaixo para verificar o seu endereço de e-mail."
+                        },
+                        heading: "Verifique o seu endereço de e-mail"
+                    },
+                    step3: {
+                        content: "Sucesso! O seu endereço de e-mail foi verificado com sucesso."
+                    }
+                },
+                notifications: {
+                    resendError: {
+                        description: "Ocorreu um erro ao reenviar o código de verificação",
+                        message: "Algo correu mal"
+                    }
+                },
+                sms: {
+                    step1: {
+                        content: {
+                            label: "Introduza o seu novo número de telemóvel"
+                        },
+                        heading: "Verifique o seu número de telemóvel",
+                        validation: {
+                            invalidFormat: "Introduza um número de telemóvel válido",
+                            required: "Número de telemóvel obrigatório"
+                        }
+                    },
+                    step2: {
+                        content: {
+                            label: "Foi enviado um código de verificação para o seu número de telemóvel. Introduza o código abaixo para verificar o seu número de telemóvel."
+                        },
+                        heading: "Verifique o seu número de telemóvel"
+                    },
+                    step3: {
+                        content: "Sucesso! O seu número de telemóvel foi verificado com sucesso."
+                    }
+                }
+            },
             preference: {
                 notifications: {
                     error: {
@@ -1634,6 +1795,10 @@ export const myAccount: MyAccountNS = {
         applications: {
             subTitle: "Descubra e acesse seus aplicativos",
             title: "Applications"
+        },
+        consents: {
+            subTitle: "Gerencie os consentimentos que forneceu para aplicativos e políticas aceitas",
+            title: "Consentimentos"
         },
         overview: {
             subTitle: "Gerenciar suas informações pessoais, segurança da conta e configurações de privacidade",
@@ -1736,6 +1901,24 @@ export const myAccount: MyAccountNS = {
             placeholders: {
                 emptyConsentList: {
                     heading: "Você não concedeu consentimento a nenhum aplicativo"
+                }
+            }
+        },
+        preferenceManagement: {
+            description: "Reveja e gira as suas preferências de comunicação.",
+            heading: "Preferências de comunicação",
+            placeholders: {
+                emptyConsentList: {
+                    heading: "Não aceitou nenhuma preferência de comunicação"
+                }
+            }
+        },
+        policyConsentManagement: {
+            description: "Revise as políticas que aceitou.",
+            heading: "Consentimentos de Política",
+            placeholders: {
+                emptyConsentList: {
+                    heading: "Você não aceitou nenhum consentimento de política"
                 }
             }
         },

@@ -26,7 +26,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 /**
  * Props interface of {@link StepFactory}
  */
-export type StepFactoryPropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
+type StepFactoryPropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface;
 
 /**
  * Factory for creating steps.
@@ -35,7 +35,7 @@ export type StepFactoryPropsInterface = CommonStepFactoryPropsInterface & Identi
  * @param props - Props injected to the component.
  * @returns The StepFactory component.
  */
-export const StepFactory: FunctionComponent<StepFactoryPropsInterface> = ({
+const StepFactory: FunctionComponent<StepFactoryPropsInterface> = ({
     resourceId,
     resources,
     ...rest

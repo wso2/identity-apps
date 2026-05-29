@@ -23,6 +23,8 @@ import ButtonFieldAdapter from "./adapters/button-field-adapter";
 import CaptchaWidgetAdapter from "./adapters/captcha-widget-adapter";
 import ImageFieldAdapter from "./adapters/image-field-adapter";
 import InputFieldAdapter from "./adapters/input-field-adapter";
+import PreferenceManagementFieldAdapter from "./adapters/preference-management-field-adapter";
+import PolicyConsentFieldAdapter from "./adapters/policy-consent-field-adapter";
 import ResendButtonAdapter from "./adapters/resend-button-adapter";
 import RichTextAdapter from "./adapters/rich-text-field-adapter";
 import TypographyAdapter from "./adapters/typography-field-adapter";
@@ -67,6 +69,22 @@ const Field = ({
             return <CaptchaWidgetAdapter component={ component } ref={ recaptchaRef } />;
         case "IMAGE":
             return <ImageFieldAdapter component={ component } />;
+        case "POLICY":
+            return (
+                <PolicyConsentFieldAdapter
+                    component={ component }
+                    formStateHandler={ formStateHandler }
+                    fieldErrorHandler={ formFieldError }
+                />
+            );
+        case "PREFERENCE":
+            return (
+                <PreferenceManagementFieldAdapter
+                    component={ component }
+                    formStateHandler={ formStateHandler }
+                    fieldErrorHandler={ formFieldError }
+                />
+            );
         case "RESEND":
             return  <ResendButtonAdapter component={ component } handleButtonAction={ flowActionHandler } />;
         default:

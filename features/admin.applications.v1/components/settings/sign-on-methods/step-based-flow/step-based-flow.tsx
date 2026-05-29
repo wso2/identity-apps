@@ -524,7 +524,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                 === noOfSecondFactorsOnRightRequiringHandlers;
             const isDeletingOptionFirstFactor: boolean = [
                 ...ApplicationManagementConstants.FIRST_FACTOR_AUTHENTICATORS,
-                LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME
+                LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.IDENTIFIER_FIRST_AUTHENTICATOR_NAME,
+                LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.SHARED_USER_IDENTIFIER_AUTHENTICATOR_NAME
             ]
                 .includes(deletingOption.authenticator);
             const isDeletingOptionSecondFactorHandler: boolean = [
@@ -737,7 +738,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
     };
 
     /**
-     * Check if the options include the Identifier First as an authenticator.
+     * Check if the options include an Identifier First authenticator.
      *
      * @param options - Authenticator options.
      * @returns true or false - Options include Identifier First or not.
@@ -746,7 +747,9 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         options.some(
             (option: AuthenticatorInterface) =>
                 option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
-                    .IDENTIFIER_FIRST_AUTHENTICATOR_NAME
+                    .IDENTIFIER_FIRST_AUTHENTICATOR_NAME ||
+                option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .SHARED_USER_IDENTIFIER_AUTHENTICATOR_NAME
         );
 
     /**
@@ -820,21 +823,53 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             return false;
         }
 
+        // Don't allow shared user identifier being the only authenticator in the flow.
+        if (steps.length === 1
+            && steps[ 0 ].options.length === 1
+            && steps[ 0 ].options[ 0 ].authenticator
+                === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .SHARED_USER_IDENTIFIER_AUTHENTICATOR_NAME) {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "applications:notifications.updateOnlySharedUserIdentifierError" +
+                        ".description"
+                    ),
+                    level: AlertLevels.WARNING,
+                    message: t(
+                        "applications:notifications.updateOnlySharedUserIdentifierError" +
+                        ".message"
+                    )
+                })
+            );
+
+            return false;
+        }
+
         // Don't allow identifier first being with another authenticator in the 1FA flow.
         if (
             steps.length === 1
             && steps[0].options.length > 1
             && handleIdentifierFirstInStep(steps[0].options)
         ) {
+            const hasSharedUserIdentifier: boolean = steps[0].options.some(
+                (option: AuthenticatorInterface) =>
+                    option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                        .SHARED_USER_IDENTIFIER_AUTHENTICATOR_NAME
+            );
+            const errorKey: string = hasSharedUserIdentifier
+                ? "updateSharedUserIdentifierInFirstStepError"
+                : "updateIdentifierFirstInFirstStepError";
+
             dispatch(
                 addAlert({
                     description: t(
-                        "applications:notifications.updateIdentifierFirstInFirstStepError" +
+                        `applications:notifications.${errorKey}` +
                         ".description"
                     ),
                     level: AlertLevels.WARNING,
                     message: t(
-                        "applications:notifications.updateIdentifierFirstInFirstStepError" +
+                        `applications:notifications.${errorKey}` +
                         ".message"
                     )
                 })

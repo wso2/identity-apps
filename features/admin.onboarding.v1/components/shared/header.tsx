@@ -27,7 +27,7 @@ import { StringUtils } from "@wso2is/core/utils";
 import React from "react";
 import { useSelector } from "react-redux";
 
-export const Header = () => {
+const Header = () => {
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     return (

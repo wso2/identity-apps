@@ -27,7 +27,7 @@ import { BASE_DISPLAY_VARIATION } from "../models/custom-text-preference";
 /**
  * Prop types for the screen variation dropdown component.
  */
-export interface ScreenVariationDropdownPropsInterface extends IdentifiableComponentInterface {
+interface ScreenVariationDropdownPropsInterface extends IdentifiableComponentInterface {
     /**
      * Current selected screen type.
      */

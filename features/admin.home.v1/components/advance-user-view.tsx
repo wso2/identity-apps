@@ -52,6 +52,7 @@ import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/featur
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
+import FreeTrialBanner from "@wso2is/admin.subscription.v1/components/free-trial-banner";
 import { resolveUserDisplayName } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Popup, Text } from "@wso2is/react-components";
@@ -594,6 +595,8 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                     }
                 </Heading>
             </div>
+
+            <FreeTrialBanner />
 
             { isAdminNoticeEnabled && adminNoticeEnabled && (
                 <AdminNotice

@@ -28,6 +28,8 @@ export enum AuthenticationType {
     BASIC = "BASIC",
     API_KEY = "API_KEY",
     BEARER = "BEARER",
+    CLIENT_CREDENTIAL = "CLIENT_CREDENTIAL",
+    PASSWORD_CREDENTIAL = "PASSWORD_CREDENTIAL",
 }
 
 /**
@@ -197,12 +199,28 @@ export interface AuthenticationPropertiesInterface {
      * Value auth property.
      */
     value: string;
+    /**
+     * Client ID auth property (OAuth2 client credentials).
+     */
+    clientId: string;
+    /**
+     * Client Secret auth property (OAuth2 client credentials).
+     */
+    clientSecret: string;
+    /**
+     * Token endpoint auth property (OAuth2 client credentials).
+     */
+    tokenEndpoint: string;
+    /**
+     * Scopes auth property (OAuth2 client credentials).
+     */
+    scopes: string;
 }
 
 /**
  *  Action Base Response.
  */
-export interface ActionBaseResponseInterface {
+interface ActionBaseResponseInterface {
     /**
      * ID of the Action.
      */
@@ -277,7 +295,7 @@ export interface PreUpdateProfileActionResponseInterface extends ActionResponseI
 /**
  *  Password Sharing configuration.
  */
-export interface PasswordSharing {
+interface PasswordSharing {
     /**
      * Password Sharing format.
      */
@@ -291,7 +309,7 @@ export interface PasswordSharing {
 /**
  *  Endpoint Response.
  */
-export interface EndpointResponseInterface {
+interface EndpointResponseInterface {
     /**
      * External endpoint.
      */
@@ -311,7 +329,11 @@ export interface EndpointResponseInterface {
         /**
          * Authentication Type.
          */
-        type: AuthenticationType
+        type: AuthenticationType;
+        /**
+         * Non-confidential authentication properties returned from the server.
+         */
+        properties?: Partial<AuthenticationPropertiesInterface>;
     };
 }
 
@@ -368,7 +390,7 @@ export interface PreUpdateProfileActionUpdateInterface extends ActionUpdateInter
 /**
  *  Password Sharing Format in Update configuration
  */
-export interface PasswordSharingUpdate {
+interface PasswordSharingUpdate {
     /**
      * Password Sharing format.
      */
@@ -475,6 +497,50 @@ export interface EndpointConfigFormPropertyInterface {
      * Value property of apiKey authentication.
      */
     valueAuthProperty?: string;
+    /**
+     * Client ID property of OAuth2 client credentials authentication.
+     */
+    clientIdAuthProperty?: string;
+    /**
+     * Client Secret property of OAuth2 client credentials authentication.
+     */
+    clientSecretAuthProperty?: string;
+    /**
+     * Token Endpoint property of OAuth2 client credentials authentication.
+     */
+    tokenEndpointAuthProperty?: string;
+    /**
+     * Scopes property of OAuth2 client credentials authentication.
+     */
+    scopesAuthProperty?: string;
+    /**
+     * Client ID property of OAuth2 password grant authentication.
+     * Password-grant form fields are explicitly suffixed with the auth type
+     * to make their purpose obvious when read in isolation, and to keep
+     * each auth type in its own form-state slot (preventing cross-type
+     * leakage with BASIC / CLIENT_CREDENTIAL).
+     */
+    clientId_passwordCredentialAuthProperty?: string;
+    /**
+     * Client Secret property of OAuth2 password grant authentication.
+     */
+    clientSecret_passwordCredentialAuthProperty?: string;
+    /**
+     * Token Endpoint property of OAuth2 password grant authentication.
+     */
+    tokenEndpoint_passwordCredentialAuthProperty?: string;
+    /**
+     * Username property of OAuth2 password grant authentication.
+     */
+    username_passwordCredentialAuthProperty?: string;
+    /**
+     * Password property of OAuth2 password grant authentication.
+     */
+    password_passwordCredentialAuthProperty?: string;
+    /**
+     * Scopes property of OAuth2 password grant authentication.
+     */
+    scopes_passwordCredentialAuthProperty?: string;
     /**
      * Allowed request headers to be shared with the endpoint.
      */

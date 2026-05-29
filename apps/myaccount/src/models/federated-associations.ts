@@ -28,7 +28,7 @@ export interface FederatedAssociation {
 /**
  * Model of the IDP attribute in FederatedAssociation
  */
-export interface IdentityProvider {
+interface IdentityProvider {
     id: string;
     name: string;
     displayName: string;

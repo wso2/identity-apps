@@ -18,7 +18,9 @@
 
 import { AsgardeoSPAClient, HttpInstance, HttpRequestConfig } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { MultiFactorAuthenticationConstants } from "../constants/mfa-constants";
 import { BackupCodeInterface, BackupCodesCountInterface } from "../models";
@@ -50,7 +52,7 @@ export const generateBackupCodes = (): Promise<BackupCodeInterface> => {
 
             return Promise.resolve(response.data as BackupCodeInterface);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 MultiFactorAuthenticationConstants.MFA_BACKUP_CODE_INIT_ERROR,
                 error.stack,
@@ -82,7 +84,7 @@ export const deleteBackupCode = (): Promise<any> => {
 
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 MultiFactorAuthenticationConstants.MFA_BACKUP_CODE_DELETE_ERROR,
                 error.stack,
@@ -114,7 +116,7 @@ export const getRemainingBackupCodesCount = (): Promise<BackupCodesCountInterfac
 
             return Promise.resolve(response.data as BackupCodesCountInterface);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 MultiFactorAuthenticationConstants.MFA_BACKUP_CODE_RETRIEVE_ERROR,
                 error.stack,

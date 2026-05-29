@@ -22,6 +22,9 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import { ArrowLeftIcon } from "@oxygen-ui/react-icons";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
+import AISparkleIcon from "@wso2is/admin.copilot.v1/components/ai-sparkle-icon";
+import CopilotPanel from "@wso2is/admin.copilot.v1/components/copilot-panel";
+import useCopilotPanel from "@wso2is/admin.copilot.v1/hooks/use-copilot-panel";
 import Header from "@wso2is/admin.core.v1/components/header";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
@@ -51,7 +54,7 @@ import "./default-layout.scss";
 /**
  * Default page layout component Prop types.
  */
-export interface DefaultLayoutPropsInterface extends RouteComponentProps {
+interface DefaultLayoutPropsInterface extends RouteComponentProps {
     /**
      * Is layout fluid.
      */
@@ -65,7 +68,7 @@ export interface DefaultLayoutPropsInterface extends RouteComponentProps {
  *
  * @returns Dashboard Layout.
  */
-export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
+const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
     location
 }: DefaultLayoutPropsInterface): ReactElement => {
     const { t } = useTranslation();
@@ -85,6 +88,11 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
     );
 
     const hasGettingStartedViewPermission: boolean = useRequiredScopes(gettingStartedFeatureConfig?.scopes?.feature);
+
+    const { isVisible: isCopilotVisible, togglePanel: toggleCopilotPanel } = useCopilotPanel();
+    const isFirstLevelOrganization: boolean = useSelector(
+        (state: AppState) => state.organization.isFirstLevelOrganization
+    );
 
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getDefaultLayoutRoutes());
 
@@ -187,6 +195,15 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
             <AppShell
                 header={
                     (<Header
+                        copilotToggle={ featureConfig?.copilot?.enabled && isFirstLevelOrganization ? {
+                            icon: <AISparkleIcon
+                                width={ 20 }
+                                height={ 20 }
+                                data-componentid="header-copilot-menu-icon"
+                            />,
+                            isActive: isCopilotVisible,
+                            onClick: toggleCopilotPanel
+                        } : undefined }
                         onCollapsibleHamburgerClick={ () => {
                             hasGettingStartedViewPermission && history.push(appHomePath);
                         } }
@@ -230,6 +247,17 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
                     </Suspense>
                 </ErrorBoundary>
             </AppShell>
+            { featureConfig?.copilot?.enabled && isFirstLevelOrganization && (
+                <ErrorBoundary
+                    onChunkLoadError={ AppUtils.onChunkLoadError }
+                    handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {
+                        sessionStorage.setItem("auth_callback_url_console", appHomePath);
+                    } }
+                    fallback={ null }
+                >
+                    <CopilotPanel data-componentid="default-layout-copilot-panel" />
+                </ErrorBoundary>
+            ) }
         </>
     );
 };

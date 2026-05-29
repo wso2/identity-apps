@@ -24,7 +24,7 @@ import AskPasswordFlowBuilderCore from "./ask-password-flow-builder-core";
 /**
  * Props interface of {@link AskPasswordFlowBuilder}
  */
-export type AskPasswordFlowBuilderPropsInterface = IdentifiableComponentInterface;
+type AskPasswordFlowBuilderPropsInterface = IdentifiableComponentInterface;
 
 /**
  * Entry point for the password recovery flow builder decorated with the necessary providers.

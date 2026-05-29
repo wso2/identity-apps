@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { HttpResponse } from "@asgardeo/auth-react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -33,9 +34,8 @@ import Typography from "@oxygen-ui/react/Typography";
 import { PlusIcon } from "@oxygen-ui/react-icons";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { AlertLevels, PatchOperationRequest } from "@wso2is/core/models";
-import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
+import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/forms";
 import { Popup, Button as SemanticButton, useMediaContext } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { Dispatch, FunctionComponent, ReactElement, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -48,13 +48,12 @@ import { profileConfig as profileExtensionConfig } from "../../../extensions/con
 import { SCIMConfigs as SCIMExtensionConfigs } from "../../../extensions/configs/scim";
 import { AuthStateInterface } from "../../../models/auth";
 import { MultiValue, ProfilePatchOperationValue, ProfileSchema } from "../../../models/profile";
-import { MultiMobileFieldFormPropsInterface } from "../../../models/profile-ui";
+import { MultiMobileFieldFormPropsInterface, OTPVerificationChannel } from "../../../models/profile-ui";
 import { AppState } from "../../../store";
 import { getProfileInformation } from "../../../store/actions/authenticate";
 import { addAlert, setActiveForm } from "../../../store/actions/global";
 import { EditSection } from "../../shared/edit-section";
-import MobileUpdateWizardV2 from "../../shared/mobile-update-wizard-v2/mobile-update-wizard-v2";
-
+import OTPVerificationModal from "../../shared/otp-verification-modal/otp-verification-modal";
 import "./field-form.scss";
 
 interface SortedMobileNumber {
@@ -91,7 +90,8 @@ const MultiMobileFieldForm: FunctionComponent<MultiMobileFieldFormPropsInterface
     const mobileNumbersList: string[] = initialValue ?? [];
 
     const [ selectedMobileNumber, setSelectedMobileNumber ] = useState<SortedMobileNumber>();
-    const [ isMobileUpdateModalOpen, setIsMobileUpdateModalOpen ] = useState<boolean>(false);
+    const [ isOTPVerificationModalOpen, setIsOTPVerificationModalOpen ] = useState<boolean>(false);
+    const [ isOTPVerificationModalLoading, setIsOTPVerificationModalLoading ] = useState<boolean>(false);
 
     const primaryMobileSchema: ProfileSchema = useMemo(
         () =>
@@ -101,6 +101,9 @@ const MultiMobileFieldForm: FunctionComponent<MultiMobileFieldFormPropsInterface
             ),
         [ flattenedProfileSchema ]
     );
+
+    const resolvedPrimaryMobileSchemaRequiredValue: boolean =
+        primaryMobileSchema?.profiles?.endUser?.required ?? primaryMobileSchema?.required;
 
     // There can be situations where the primary mobile number is verified
     // but not added to the verified list.
@@ -281,7 +284,7 @@ const MultiMobileFieldForm: FunctionComponent<MultiMobileFieldFormPropsInterface
         return undefined;
     }, [ sortedMobileNumbersList ]);
 
-    const handleVerifyMobile = (mobileNumber: string): void => {
+    const handleVerifyMobile = async (mobileNumber: string): Promise<void> => {
         setIsProfileUpdating(true);
 
         const data: PatchOperationRequest<ProfilePatchOperationValue> = {
@@ -300,33 +303,29 @@ const MultiMobileFieldForm: FunctionComponent<MultiMobileFieldFormPropsInterface
             }
         });
 
-        updateProfileInfo(data as unknown as Record<string, unknown>)
-            .then((response: AxiosResponse) => {
-                if (response.status === 200) {
-                    dispatch(addAlert({
-                        description: t(
-                            "myAccount:components.profile.notifications.verifyMobile.success.description"
-                        ),
-                        level: AlertLevels.SUCCESS,
-                        message: t(
-                            "myAccount:components.profile.notifications.verifyMobile.success.message"
-                        )
-                    }));
+        setIsOTPVerificationModalOpen(true);
+        setIsOTPVerificationModalLoading(true);
 
-                    setIsMobileUpdateModalOpen(true);
-                }
-            })
-            .catch((error: any) => {
-                dispatch(addAlert({
-                    description: error?.detail ?? t(
-                        "myAccount:components.profile.notifications.verifyMobile.genericError.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: error?.message ?? t(
-                        "myAccount:components.profile.notifications.verifyMobile.genericError.message"
-                    )
-                }));
-            });
+        try {
+            const response: HttpResponse = await updateProfileInfo(data as unknown as Record<string, unknown>);
+
+            if (response.status !== 200) {
+                throw new Error(`An error occurred. The server returned ${response.status}`);
+            }
+        } catch (error) {
+            setIsOTPVerificationModalOpen(false);
+            dispatch(addAlert({
+                description: error?.detail ?? t(
+                    "myAccount:components.profile.notifications.verifyMobile.genericError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: error?.message ?? t(
+                    "myAccount:components.profile.notifications.verifyMobile.genericError.message"
+                )
+            }));
+        } finally {
+            setIsOTPVerificationModalLoading(false);
+        }
     };
 
     const handleMakeMobilePrimary = (mobileNumber: string): void => {
@@ -496,8 +495,8 @@ const MultiMobileFieldForm: FunctionComponent<MultiMobileFieldFormPropsInterface
         triggerUpdate(data, false);
     };
 
-    const handleMobileUpdateModalClose = (isRevalidate: boolean = false) => {
-        setIsMobileUpdateModalOpen(false);
+    const handleOTPVerificationModalClose = (isRevalidate: boolean = false) => {
+        setIsOTPVerificationModalOpen(false);
         setIsProfileUpdating(false);
 
         if (isRevalidate) {
@@ -618,7 +617,7 @@ const MultiMobileFieldForm: FunctionComponent<MultiMobileFieldFormPropsInterface
                                                 } }
                                                 disabled={ isLoading ||
                                                     (mobileNumber.isPrimary &&
-                                                        primaryMobileSchema?.required) ||
+                                                        resolvedPrimaryMobileSchemaRequiredValue) ||
                                                     (isRequired &&
                                                         sortedMobileNumbersList.length === 1) }
                                                 data-componentid={
@@ -736,22 +735,11 @@ const MultiMobileFieldForm: FunctionComponent<MultiMobileFieldFormPropsInterface
                     </Grid.Row>
                 </Grid>
 
-                <MobileUpdateWizardV2
-                    isOpen={ isMobileUpdateModalOpen }
-                    onClose={ handleMobileUpdateModalClose }
-                    onCancel={ (isRevalidate: boolean = false) => {
-                        setIsMobileUpdateModalOpen(false);
-                        setIsProfileUpdating(false);
-                        onEditCancelClicked();
-
-                        if (isRevalidate) {
-                            // Re-fetch the profile information.
-                            dispatch(getProfileInformation(true));
-                        }
-                    } }
-                    data-testid={ `${testId}-mobile-verification-wizard` }
-                    initialStep={ 1 }
-                    isMobileRequired={ isRequired }
+                <OTPVerificationModal
+                    isOpen={ isOTPVerificationModalOpen }
+                    verificationChannel={ OTPVerificationChannel.SMS }
+                    onClose={ handleOTPVerificationModalClose }
+                    isLoading={ isOTPVerificationModalLoading }
                     isMultiValued
                 />
 

@@ -1,5 +1,79 @@
 # @wso2is/admin.validation.v1
 
+## 2.28.4
+
+### Patch Changes
+
+- [#10219](https://github.com/wso2/identity-apps/pull/10219) [`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove duplicate exports
+
+- Updated dependencies [[`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c)]:
+  - @wso2is/admin.server-configurations.v1@2.38.51
+  - @wso2is/admin.roles.v2@2.27.381
+  - @wso2is/admin.users.v1@2.38.36
+  - @wso2is/admin.core.v1@2.57.6
+  - @wso2is/dynamic-forms@2.4.42
+  - @wso2is/forms@2.3.27
+
+## 2.28.3
+
+### Patch Changes
+
+- [#9875](https://github.com/wso2/identity-apps/pull/9875) [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - Revert Axios and SDK version bumps
+
+- Updated dependencies [[`c834b18928cdfc09710c5e7067668206d006e68a`](https://github.com/wso2/identity-apps/commit/c834b18928cdfc09710c5e7067668206d006e68a), [`877d726905edf898c33c615cd887f8ed0a071a0e`](https://github.com/wso2/identity-apps/commit/877d726905edf898c33c615cd887f8ed0a071a0e), [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d)]:
+  - @wso2is/admin.users.v1@2.38.3
+  - @wso2is/i18n@2.37.5
+  - @wso2is/admin.server-configurations.v1@2.38.19
+  - @wso2is/admin.organizations.v1@2.28.2
+  - @wso2is/admin.extensions.v1@2.40.30
+  - @wso2is/admin.roles.v2@2.27.350
+  - @wso2is/admin.core.v1@2.55.3
+  - @wso2is/access-control@3.5.3
+  - @wso2is/theme@2.9.5
+  - @wso2is/core@2.12.10
+  - @wso2is/form@2.10.1
+
+## 2.28.2
+
+### Patch Changes
+
+- [#9842](https://github.com/wso2/identity-apps/pull/9842) [`2cad6ed902817e50e522628726732802503f5893`](https://github.com/wso2/identity-apps/commit/2cad6ed902817e50e522628726732802503f5893) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix password reset scope configuration issue
+
+- Updated dependencies [[`2cad6ed902817e50e522628726732802503f5893`](https://github.com/wso2/identity-apps/commit/2cad6ed902817e50e522628726732802503f5893)]:
+  - @wso2is/admin.core.v1@2.54.31
+  - @wso2is/core@2.12.9
+  - @wso2is/admin.server-configurations.v1@2.38.14
+  - @wso2is/admin.users.v1@2.37.22
+  - @wso2is/admin.roles.v2@2.27.345
+
+## 2.28.1
+
+### Patch Changes
+
+- [#9755](https://github.com/wso2/identity-apps/pull/9755) [`c8422c3d21f61ab18de1240ec7bc3b3f6bfe5bfe`](https://github.com/wso2/identity-apps/commit/c8422c3d21f61ab18de1240ec7bc3b3f6bfe5bfe) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix password reset enforcement scope configuration issue
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.21
+  - @wso2is/admin.server-configurations.v1@2.38.4
+  - @wso2is/admin.users.v1@2.37.12
+  - @wso2is/admin.roles.v2@2.27.335
+
+## 2.28.0
+
+### Minor Changes
+
+- [#9707](https://github.com/wso2/identity-apps/pull/9707) [`98be11798211c36636778c925819b578d4fbeabd`](https://github.com/wso2/identity-apps/commit/98be11798211c36636778c925819b578d4fbeabd) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce password reset enforcement scope configuration
+
+### Patch Changes
+
+- Updated dependencies [[`98be11798211c36636778c925819b578d4fbeabd`](https://github.com/wso2/identity-apps/commit/98be11798211c36636778c925819b578d4fbeabd), [`3ebcd80a19cabc51a4ee840bafb0da213e0c97e1`](https://github.com/wso2/identity-apps/commit/3ebcd80a19cabc51a4ee840bafb0da213e0c97e1), [`8f189290049855d403087514cbdc0b9ca2892ab8`](https://github.com/wso2/identity-apps/commit/8f189290049855d403087514cbdc0b9ca2892ab8)]:
+  - @wso2is/admin.server-configurations.v1@2.38.0
+  - @wso2is/admin.extensions.v1@2.40.28
+  - @wso2is/i18n@2.34.11
+  - @wso2is/admin.core.v1@2.54.17
+  - @wso2is/admin.users.v1@2.37.8
+  - @wso2is/admin.roles.v2@2.27.331
+
 ## 2.27.149
 
 ### Patch Changes

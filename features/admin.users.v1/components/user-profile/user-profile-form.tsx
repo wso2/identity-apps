@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -41,7 +41,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ProfileUtils } from "@wso2is/core/utils";
-import { FinalForm, FinalFormField, FormApi, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
+import { FinalForm, FinalFormField, FormApi, FormRenderProps, TextFieldAdapter } from "@wso2is/forms";
 import dayjs from "dayjs";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
@@ -531,8 +531,22 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                         }
                     } else {
                         if (!schema.extended) {
-                            _flattenedInitialValues[schema.name] = preparedInitialValues[
-                                schemaNameParts[0]]?.[schemaNameParts[1]];
+                            const parentValues: unknown = preparedInitialValues[schemaNameParts[0]];
+
+                            if (Array.isArray(parentValues)) {
+                                // Complex multi-valued attribute: find the element whose `type` key
+                                // matches the sub-attribute name and return its `value`.
+                                _flattenedInitialValues[schema.name] = (
+                                    parentValues as Array<{ type: string; value: unknown }>
+                                ).find(
+                                    (item: { type: string; value: unknown }) =>
+                                        item.type === schemaNameParts[1]
+                                )?.value;
+                            } else {
+                                _flattenedInitialValues[schema.name] = (
+                                    parentValues as Record<string, unknown>
+                                )?.[schemaNameParts[1]];
+                            }
                         } else {
                             _flattenedInitialValues[encodedSchemaId][schema.name] = preparedInitialValues[
                                 schema.schemaId]?.[schemaNameParts[0]]?.[schemaNameParts[1]];
@@ -618,6 +632,24 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
     };
 
     /**
+     * Returns true if the given top-level attribute name corresponds to a complex,
+     * multi-valued schema (e.g. `photos`) that stores its sub-attributes as an
+     * array of `{ type, value }` objects in the SCIM payload.
+     *
+     * @param parentName - Top-level attribute name to test.
+     * @returns Whether the attribute is a complex multi-valued schema.
+     */
+    const isComplexMultiValuedAttribute = (parentName: string): boolean => {
+        return profileSchemas.some(
+            (schema: ProfileSchemaInterface) =>
+                schema.name === parentName &&
+                schema.multiValued === true &&
+                Array.isArray(schema.subAttributes) &&
+                schema.subAttributes.length > 0
+        );
+    };
+
+    /**
      * Handles form submission. Submits only the dirty fields.
      *
      * @param values - Form values.
@@ -663,7 +695,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                 // Phone numbers are submitted as an array of phone number objects:
                 //   [ { type: "mobile", value: "1234567890" }, { type: "work", value: "1234567890" }].
                 for (const [ type, value ] of Object.entries(
-                    values[fieldName] as Record<string, string>)) {
+                    (values[fieldName] ?? {}) as Record<string, string>)) {
                     if (type === "primary") {
                         patchValue.push(value);
                     } else {
@@ -687,7 +719,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                 // [{ type: "home", formatted: "123 Main St" }, { type: "work", formatted: "456 Business St" }].
                 // "formatted" property is added from UI.
                 for (const [ type, value ] of Object.entries(
-                    values[fieldName] as Record<string, string>)) {
+                    (values[fieldName] ?? {}) as Record<string, string>)) {
                     patchValue.push({
                         formatted: value,
                         type: type
@@ -721,6 +753,23 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                         });
                     }
                 }
+            } else if (isComplexMultiValuedAttribute(fieldName)) {
+                // Complex multi-valued attribute (e.g. `photos`): each sub-attribute is stored
+                // as { type: <subAttributeName>, value: <fieldValue> } in the SCIM payload.
+                const patchValue: Array<{ type: string; value: unknown }> = [];
+
+                for (const [ type, value ] of Object.entries(
+                    (values[fieldName] ?? {}) as Record<string, unknown>
+                )) {
+                    patchValue.push({ type, value });
+                }
+
+                data.Operations.push({
+                    op: "replace",
+                    value: {
+                        [fieldName]: patchValue
+                    } as unknown as PatchUserOperationValue
+                });
             } else {
                 // Replace back the __DOT__ with dots.
                 const decodedFieldName: string = fieldName.replace(/__DOT__/g, ".");
@@ -755,6 +804,24 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
 
                 // For each path, build and push a patch op:
                 attributePaths.forEach((path: string) => {
+                    // pendingEmails must be submitted as [{ type: "value", value: <pendingEmail> }].
+                    // The form stores it as a string[], so extract the first value.
+                    if (path === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_EMAILS")) {
+                        const pendingEmailValue: string =
+                            (get(values, `${fieldName}.${path}`, []) as string[])?.[0] ?? "";
+
+                        data.Operations.push({
+                            op: "replace",
+                            value: {
+                                [decodedFieldName]: {
+                                    [path]: [ { type: "value", value: pendingEmailValue } ]
+                                }
+                            } as unknown as PatchUserOperationValue
+                        });
+
+                        return;
+                    }
+
                     // Build the fullPath ex: "urn:scim:wso2:schema.country".
                     const fullPath: string = `${fieldName}.${path}`;
                     // Grab the value at that path from the form values.
@@ -820,6 +887,41 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
             });
     };
 
+    /**
+     * Resolves the effective supportedByDefault value for a schema,
+     * giving precedence to the console profile-level override.
+     */
+    const resolveConsoleSupportedByDefault = (targetSchema: ProfileSchemaInterface): boolean => {
+        let value: boolean = targetSchema?.supportedByDefault?.toLowerCase() === "true";
+
+        if (targetSchema?.profiles?.console?.supportedByDefault !== undefined) {
+            value = targetSchema.profiles.console.supportedByDefault;
+        }
+
+        return value;
+    };
+
+    /**
+     * Checks whether a multi-valued attribute (emailAddresses or mobileNumbers) is
+     * supported in the console profile, to decide whether to show it instead of the
+     * corresponding primary attribute (emails or mobile).
+     */
+    const isMultiValuedAttributeSupportedInConsole = (schemaName: string): boolean => {
+        if (!isMultipleEmailsAndMobileNumbersConfigEnabled) {
+            return false;
+        }
+
+        const targetSchema: ProfileSchemaInterface = flattenedProfileSchema.find(
+            (s: ProfileSchemaInterface) => s.name === schemaName
+        );
+
+        if (!targetSchema) {
+            return false;
+        }
+
+        return resolveConsoleSupportedByDefault(targetSchema);
+    };
+
     const isAttributeDisplayable = (schema: ProfileSchemaInterface): boolean => {
 
         if (HIDDEN_SCHEMA_NAMES.includes(schema.name)) {
@@ -832,17 +934,45 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
         }
 
         if (
-            (schema.schemaUri === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA_ATTRIBUTES.emailAddresses ||
-                schema.schemaUri === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA_ATTRIBUTES.mobileNumbers) &&
-            !isMultipleEmailAndMobileNumberEnabled
+            schema.schemaUri === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA_ATTRIBUTES.emailAddresses &&
+            (
+                !isMultipleEmailsAndMobileNumbersConfigEnabled ||
+                !isMultiValuedAttributeSupportedInConsole(
+                    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")
+                )
+            )
         ) {
             return false;
         }
 
         if (
-            (schema.schemaUri === ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.emails ||
-                schema.schemaUri === ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.mobile) &&
-            isMultipleEmailAndMobileNumberEnabled
+            schema.schemaUri === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA_ATTRIBUTES.mobileNumbers &&
+            (
+                !isMultipleEmailsAndMobileNumbersConfigEnabled ||
+                !isMultiValuedAttributeSupportedInConsole(
+                    ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")
+                )
+            )
+        ) {
+            return false;
+        }
+
+        // Hide primary emails if emailAddresses is supported in the console profile.
+        if (
+            schema.schemaUri === ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.emails &&
+            isMultiValuedAttributeSupportedInConsole(
+                ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")
+            )
+        ) {
+            return false;
+        }
+
+        // Hide primary mobile if mobileNumbers is supported in the console profile.
+        if (
+            schema.schemaUri === ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.mobile &&
+            isMultiValuedAttributeSupportedInConsole(
+                ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")
+            )
         ) {
             return false;
         }

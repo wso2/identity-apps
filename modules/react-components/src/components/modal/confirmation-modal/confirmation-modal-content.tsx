@@ -23,7 +23,7 @@ import { Modal, ModalContentProps } from "semantic-ui-react";
 /**
  * Confirmation modal content props.
  */
-export interface ConfirmationModalContentPropsInterface extends ModalContentProps, IdentifiableComponentInterface,
+interface ConfirmationModalContentPropsInterface extends ModalContentProps, IdentifiableComponentInterface,
     TestableComponentInterface { }
 
 /**

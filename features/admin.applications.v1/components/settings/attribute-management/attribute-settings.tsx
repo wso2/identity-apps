@@ -89,7 +89,7 @@ export interface ExtendedExternalClaimInterface extends ExternalClaim {
     requested?: boolean;
 }
 
-export interface AdvanceSettingsSubmissionInterface {
+interface AdvanceSettingsSubmissionInterface {
     subject: SubjectConfigInterface;
     role: RoleConfigInterface;
     oidc: OIDCDataInterface
@@ -135,7 +135,7 @@ interface AttributeSettingsPropsInterface extends SBACInterface<FeatureConfigInt
     inboundProtocolConfig: any;
 }
 
-export const getLocalDialectURI = (): string => {
+const getLocalDialectURI = (): string => {
 
     let localDialect: string = "http://wso2.org/claims";
 
@@ -151,9 +151,9 @@ export const getLocalDialectURI = (): string => {
     return localDialect;
 };
 
-export const DefaultSubjectAttribute: string = "http://wso2.org/claims/userid";
+const DefaultSubjectAttribute: string = "http://wso2.org/claims/userid";
 
-export const LocalDialectURI: string = "http://wso2.org/claims";
+const LocalDialectURI: string = "http://wso2.org/claims";
 
 /**
  * Attribute settings component.
@@ -970,7 +970,6 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
         }
     });
 
-
     /**
      * Get the final value of includeUserDomain
      *
@@ -1434,5 +1433,3 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
 AttributeSettings.defaultProps = {
     "data-componentid": "application-attribute-settings"
 };
-
-export default AttributeSettings;

@@ -19,22 +19,32 @@
 import {
     DropdownOptionsInterface
 } from "@wso2is/admin.applications.v1/components/settings/attribute-management/attribute-settings";
-import { getExternalClaims } from "@wso2is/admin.claims.v1/api";
+import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Claim } from "@wso2is/core/src/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import {
+    AlertLevels,
+    Claim,
+    IdentifiableComponentInterface,
+    UniquenessScope
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import { Hint, Message } from "@wso2is/react-components";
-import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { ConnectionUIConstants } from "../../../constants/connection-ui-constants";
+import { useDispatch, useSelector } from "react-redux";
 import { ImplicitAssociaionConfigInterface } from "../../../models/connection";
 import { SubjectAttributeListItem } from "../settings";
 
 const FORM_ID: string = "idp-implicit-association-form";
+
+const isClaimUniqueOrUsername = (claim: Claim): boolean => {
+    return (
+        claim.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI ||
+        claim.uniquenessScope === UniquenessScope.ACROSS_USERSTORES
+    );
+};
 
 interface TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -66,14 +76,75 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch<any> = useDispatch();
+    const enableIdentityClaims: boolean = useSelector((state: AppState) => state.config.ui?.enableIdentityClaims);
     const [ implicitAssociationEnabled, setImplicitAssociationEnabled ] = useState<boolean>(config.isEnabled);
-    const [ filteredClaimList, setFilteredClaimList ] = useState<DropdownOptionsInterface[]>([]);
     const [ primaryClaimList, setPrimaryClaimList ] = useState<DropdownOptionsInterface[]>([]);
     const [ secondaryClaimList, setSecondaryClaimList ] = useState<DropdownOptionsInterface[]>([]);
     const [ primaryLookupAttribute, setPrimaryLookupAttribute ] =
-        useState<string>(config.lookupAttribute.length > 0 ? config.lookupAttribute[0] : "");
+        useState<string>(config.lookupAttribute?.length > 0 ? config.lookupAttribute[0] : "");
     const [ secondaryLookupAttribute, setSecondaryLookupAttribute ] =
-        useState<string>(config.lookupAttribute.length > 1 ? config.lookupAttribute[1] : "");
+        useState<string>(config.lookupAttribute?.length > 1 ? config.lookupAttribute[1] : "");
+
+    const configuredLookupAttributes: Set<string> = useMemo(
+        () => new Set<string>(config.lookupAttribute?.filter(Boolean) || []),
+        [ config.lookupAttribute ]
+    );
+
+    const {
+        data: localClaims,
+        error: localClaimsError
+    } = useGetAllLocalClaims({
+        "exclude-identity-claims": !enableIdentityClaims,
+        filter: null,
+        limit: null,
+        offset: null,
+        sort: null
+    });
+
+    const allClaimsByURI: Map<string, Claim> = useMemo(() => {
+        if (!localClaims) return new Map<string, Claim>();
+
+        return new Map<string, Claim>(localClaims.map((claim: Claim) => [ claim.claimURI, claim ]));
+    }, [ localClaims ]);
+
+    const filteredClaimList: DropdownOptionsInterface[] = useMemo(() => {
+        if (!localClaims) {
+            return [];
+        }
+
+        const filteredAttributes: DropdownOptionsInterface[] = [];
+
+        localClaims.forEach((claim: Claim) => {
+            if (isClaimUniqueOrUsername(claim) || configuredLookupAttributes.has(claim.claimURI)) {
+                filteredAttributes.push({
+                    key: claim.id,
+                    text: <SubjectAttributeListItem
+                        key={ claim.id }
+                        displayName={ claim.displayName }
+                        claimURI={ claim.claimURI }
+                        value={ claim.claimURI }
+                    />,
+                    value: claim.claimURI
+                });
+            }
+        });
+
+        return filteredAttributes;
+    }, [ localClaims, configuredLookupAttributes ]);
+
+    const isPrimaryAttributeNonUnique: boolean = useMemo(() => {
+        if (!primaryLookupAttribute) return false;
+        const claim: Claim | undefined = allClaimsByURI.get(primaryLookupAttribute);
+
+        return claim ? !isClaimUniqueOrUsername(claim) : false;
+    }, [ primaryLookupAttribute, allClaimsByURI ]);
+
+    const isSecondaryAttributeNonUnique: boolean = useMemo(() => {
+        if (!secondaryLookupAttribute) return false;
+        const claim: Claim | undefined = allClaimsByURI.get(secondaryLookupAttribute);
+
+        return claim ? !isClaimUniqueOrUsername(claim) : false;
+    }, [ secondaryLookupAttribute, allClaimsByURI ]);
 
     /**
      * This function process the form values and returns the request body of the API call to update the
@@ -117,46 +188,26 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
     }, [ primaryLookupAttribute, secondaryLookupAttribute, filteredClaimList ]);
 
     useEffect(() => {
-        const filteredAttributes: DropdownOptionsInterface[] = [];
-
-        getExternalClaims(ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("LOCAL"))
-            .then(( response: Claim[] ) => {
-                response.forEach((claim: Claim) => {
-                    if (ConnectionUIConstants.IMPLICIT_ACCOUNT_LINKING_ATTRIBUTES.includes(claim.claimURI)) {
-                        filteredAttributes.push({
-                            key: claim.id,
-                            text: <SubjectAttributeListItem
-                                key={ claim.id }
-                                displayName={ claim.displayName }
-                                claimURI={ claim.claimURI }
-                                value={ claim.claimURI }
-                            />,
-                            value: claim.claimURI
-                        });
-                    }
-                });
-                setFilteredClaimList(filteredAttributes);
-            })
-            .catch((error: IdentityAppsApiException) => {
-                dispatch(
-                    addAlert({
-                        description:
-                            error?.response?.data?.description ||
-                            t(
-                                "claims:dialects.notifications." +
-                                "fetchADialect.genericError.description"
-                            ),
-                        level: AlertLevels.ERROR,
-                        message:
-                            error?.message ||
-                            t(
-                                "claims:dialects.notifications." +
-                                "fetchADialect.genericError.message"
-                            )
-                    })
-                );
-            });
-    }, []);
+        if (localClaimsError) {
+            dispatch(
+                addAlert({
+                    description:
+                        localClaimsError?.response?.data?.description ||
+                        t(
+                            "claims:dialects.notifications." +
+                            "fetchADialect.genericError.description"
+                        ),
+                    level: AlertLevels.ERROR,
+                    message:
+                        localClaimsError?.message ||
+                        t(
+                            "claims:dialects.notifications." +
+                            "fetchADialect.genericError.message"
+                        )
+                })
+            );
+        }
+    }, [ localClaimsError ]);
 
     const primaryAttributeChangeListener = (fieldValue: string): void => {
         setPrimaryLookupAttribute(fieldValue);
@@ -203,10 +254,20 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
                 placeholder={ t("idp:forms.advancedConfigs." +
                     "implicitAssociation.primaryAttribute.placeholder") }
                 enableReinitialize={ true }
-                hint={ (<Hint disabled={ !implicitAssociationEnabled }>
-                    { t("idp:forms.advancedConfigs." +
-                    "implicitAssociation.primaryAttribute.hint") }
-                </Hint>) }
+                hint={ (
+                    <>
+                        <Message
+                            type="warning"
+                            content={ t("idp:forms.advancedConfigs." +
+                            "implicitAssociation.nonUniqueClaimWarning") }
+                            hidden={ !isPrimaryAttributeNonUnique }
+                        />
+                        <Hint disabled={ !implicitAssociationEnabled }>
+                            { t("idp:forms.advancedConfigs." +
+                            "implicitAssociation.primaryAttribute.hint") }
+                        </Hint>
+                    </>
+                ) }
             />
             <Field.Dropdown
                 disabled={ !implicitAssociationEnabled || primaryLookupAttribute?.length === 0 }
@@ -225,10 +286,20 @@ FunctionComponent<TrustedTokenIssuerAdvanceConfigurationsFormPropsInterface> = (
                 placeholder={ t("idp:forms.advancedConfigs." +
                     "implicitAssociation.secondaryAttribute.placeholder") }
                 clearable={ true }
-                hint={ (<Hint disabled={ !implicitAssociationEnabled }>
-                    { t("idp:forms.advancedConfigs." +
-                    "implicitAssociation.secondaryAttribute.hint") }
-                </Hint>) }
+                hint={ (
+                    <>
+                        <Message
+                            type="warning"
+                            content={ t("idp:forms.advancedConfigs." +
+                            "implicitAssociation.nonUniqueClaimWarning") }
+                            hidden={ !isSecondaryAttributeNonUnique }
+                        />
+                        <Hint disabled={ !implicitAssociationEnabled }>
+                            { t("idp:forms.advancedConfigs." +
+                            "implicitAssociation.secondaryAttribute.hint") }
+                        </Hint>
+                    </>
+                ) }
             />
             <Message
                 type="warning"

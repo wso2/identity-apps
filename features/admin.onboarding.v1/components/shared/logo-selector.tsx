@@ -19,9 +19,11 @@
 import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import Tooltip from "@oxygen-ui/react/Tooltip";
+import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants/branding-preferences-constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, memo, useCallback, useEffect, useRef } from "react";
-import { SectionLabel } from "./onboarding-styles";
+import { URLUtils } from "@wso2is/core/utils";
+import React, { FunctionComponent, ReactElement, memo, useCallback, useEffect, useRef, useState } from "react";
+import { SectionLabel, StyledTextField } from "./onboarding-styles";
 import { OnboardingComponentIds } from "../../constants";
 import {
     AVATAR_NAMES,
@@ -33,7 +35,7 @@ import {
 /**
  * Props interface for LogoSelector component.
  */
-export interface LogoSelectorPropsInterface extends IdentifiableComponentInterface {
+interface LogoSelectorPropsInterface extends IdentifiableComponentInterface {
     /** Currently selected logo URL */
     selectedLogoUrl?: string;
     /** Callback when a logo is selected */
@@ -48,8 +50,7 @@ export interface LogoSelectorPropsInterface extends IdentifiableComponentInterfa
 const LogoSelectorContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
     flexDirection: "column",
-    gap: theme.spacing(1.5),
-    padding: theme.spacing(1)
+    gap: theme.spacing(1.5)
 }));
 
 /**
@@ -59,8 +60,10 @@ const LogoGrid: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     alignItems: "center",
     display: "flex",
     flexWrap: "wrap",
-    gap: theme.spacing(1.5)
+    gap: theme.spacing(1.5),
+    padding: theme.spacing(1)
 }));
+
 
 /**
  * Logo selector component using local animal avatar images.
@@ -95,7 +98,24 @@ const LogoSelector: FunctionComponent<LogoSelectorPropsInterface> = memo((
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // Local state for the custom URL input and validation
+    const [ customUrl, setCustomUrl ] = useState<string>("");
+    const [ urlError, setUrlError ] = useState<string>("");
+
+    // Check if the current selection is a custom URL (not a preset avatar)
+    const isCustomUrlSelected: boolean = !!selectedLogoUrl && !getAnimalNameFromUrl(selectedLogoUrl);
+
+    // Sync local input when an external custom URL is already selected
+    useEffect(() => {
+        if (isCustomUrlSelected && selectedLogoUrl) {
+            setCustomUrl(selectedLogoUrl);
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     const handleLogoSelect: (logoUrl: string) => void = useCallback((logoUrl: string): void => {
+        setCustomUrl("");
+        setUrlError("");
         onLogoSelect(logoUrl);
     }, [ onLogoSelect ]);
 
@@ -108,6 +128,47 @@ const LogoSelector: FunctionComponent<LogoSelectorPropsInterface> = memo((
         },
         [ handleLogoSelect ]
     );
+
+    const handleCustomUrlChange: (event: React.ChangeEvent<HTMLInputElement>) => void = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>): void => {
+            const value: string = event.target.value;
+
+            setCustomUrl(value);
+
+            if (urlError) {
+                setUrlError("");
+            }
+        },
+        [ urlError ]
+    );
+
+    const handleCustomUrlBlur: () => void = useCallback((): void => {
+        const trimmed: string = customUrl.trim();
+
+        if (!trimmed) {
+            setUrlError("");
+
+            return;
+        }
+
+        const { LOGO_URL_MIN_LENGTH, LOGO_URL_MAX_LENGTH } =
+            BrandingPreferencesConstants.DESIGN_FORM_FIELD_CONSTRAINTS;
+
+        if (trimmed.length < LOGO_URL_MIN_LENGTH || trimmed.length > LOGO_URL_MAX_LENGTH) {
+            setUrlError(`URL must be between ${LOGO_URL_MIN_LENGTH} and ${LOGO_URL_MAX_LENGTH} characters`);
+
+            return;
+        }
+
+        if (!URLUtils.isHttpsOrHttpUrl(trimmed)) {
+            setUrlError("Please enter a valid URL starting with https:// or http://");
+
+            return;
+        }
+
+        setUrlError("");
+        onLogoSelect(trimmed);
+    }, [ customUrl, onLogoSelect ]);
 
     return (
         <LogoSelectorContainer data-componentid={ componentId }>
@@ -168,6 +229,19 @@ const LogoSelector: FunctionComponent<LogoSelectorPropsInterface> = memo((
                     );
                 }) }
             </LogoGrid>
+            <StyledTextField
+                data-componentid={ `${componentId}-${OnboardingComponentIds.LOGO_URL_INPUT}` }
+                error={ !!urlError }
+                fullWidth
+                helperText={ urlError || undefined }
+                label="Or use your own logo URL"
+                onBlur={ handleCustomUrlBlur }
+                onChange={ handleCustomUrlChange }
+                placeholder="https://your-company.com/logo.png"
+                size="small"
+                sx={ { mt: 1 } }
+                value={ customUrl }
+            />
         </LogoSelectorContainer>
     );
 });

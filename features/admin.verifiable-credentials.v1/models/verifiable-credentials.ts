@@ -25,6 +25,15 @@ export interface PaginationLink {
 }
 
 /**
+ * Interface for a claim in a VC Template.
+ */
+export interface VCTemplateClaim {
+    name: string;
+    type: string;
+    claimUri: string;
+}
+
+/**
  * Interface for VC Template (full object).
  */
 export interface VCTemplate {
@@ -33,7 +42,7 @@ export interface VCTemplate {
     displayName: string;
     description?: string;
     format: string;
-    claims: string[];
+    claims: VCTemplateClaim[];
     expiresIn: number;
     offerId?: string | null;
 }
@@ -64,7 +73,7 @@ export interface VCTemplateCreationModel {
     displayName?: string;
     description?: string;
     format: string;
-    claims: string[];
+    claims: VCTemplateClaim[];
     expiresIn: number;
 }
 
@@ -75,6 +84,6 @@ export interface VCTemplateUpdateModel {
     displayName?: string;
     description?: string;
     format?: string;
-    claims?: string[];
+    claims?: VCTemplateClaim[];
     expiresIn?: number;
 }

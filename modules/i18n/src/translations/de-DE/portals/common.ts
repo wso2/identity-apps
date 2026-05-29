@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -136,8 +136,11 @@ export const common: CommonNS = {
         "propertyMessages": {
             "assignedUsersDeleted": "Die zugewiesenen Benutzer wurden gelöscht.",
             "roleDeleted": "Die Rolle wurde gelöscht.",
-            "selfRegistration": "Self Registration",
+            "selfRegistration": "Selbstregistrierung",
             "unassignedUsersDeleted": "Die nicht zugewiesenen Benutzer wurden gelöscht."
+        },
+        "search": {
+            "placeholder": "Nach Anforderungs-ID suchen"
         },
         "subTitle": "Überprüfen Sie die betrieblichen Aufgaben, die Ihre Genehmigung erfordern",
         "title": "Genehmigungen"
@@ -173,6 +176,7 @@ export const common: CommonNS = {
     "completed": "Abgeschlossen",
     "configure": "Konfigurieren",
     "confirm": "Bestätigen",
+    "consents": "Einwilligungen",
     "contains": "enthält",
     "continue": "Fortsetzen",
     "copied": "Kopiert!",
@@ -181,6 +185,7 @@ export const common: CommonNS = {
     "createdOn": " Angelegt am ",
     "dangerZone": "Gefahrenzone",
     "darkMode": "Dunkler Modus",
+    "default": "Standard",
     "delete": "Löschen",
     "deprecated": "Diese Konfiguration ist veraltet und wird in einer zukünftigen Version entfernt.",
     "description": "Beschreibung",

@@ -16,19 +16,21 @@
  * under the License.
  */
 
-import { SelectChangeEvent } from "@mui/material";
 import Card from "@oxygen-ui/react/Card";
 import Grid from "@oxygen-ui/react/Grid";
 import Typography from "@oxygen-ui/react/Typography";
-import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/branding-preference-provider";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureLockedBanner from "@wso2is/admin.feature-gate.v1/components/feature-locked-banner";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     AlertInterface,
     AlertLevels,
     FeatureAccessConfigInterface,
+    HttpErrorResponseDataInterface,
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -45,7 +47,7 @@ import useGetSmsTemplate from "../api/use-get-sms-template";
 import useGetSmsTemplatesList from "../api/use-get-sms-templates-list";
 import SMSCustomizationFooter from "../components/sms-customization-footer";
 import SMSCustomizationForm from "../components/sms-customization-form";
-import SMSCustomizationHeader from "../components/sms-customization-header";
+import SMSCustomizationHeader, { LocaleOption } from "../components/sms-customization-header";
 import SMSTemplatePreview from "../components/sms-template-preview";
 import { SMSTemplateConstants } from "../constants/sms-template-constants";
 import { SMSTemplate, SMSTemplateType } from "../models/sms-templates";
@@ -74,7 +76,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
     const [ selectedSmsTemplateId, setSelectedSmsTemplateId ] = useState<string>();
     const [ selectedSmsTemplateDescription, setSelectedSmsTemplateDescription ] = useState<string>();
     const [ selectedSmsTemplate, setSelectedSmsTemplate ] = useState<SMSTemplate>();
-    const [ error, setError ] = useState<AxiosError>();
+    const [ error, setError ] = useState<AxiosError<HttpErrorResponseDataInterface>>();
 
     const smsTemplates: Record<string, string>[] = useSelector(
         (state: AppState) => state.config.deployment.extensions.smsTemplates
@@ -93,7 +95,12 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
     const hasUpdatePermission: boolean = useRequiredScopes(smsFeatureConfig?.scopes?.update);
     const hasCreatePermission: boolean = useRequiredScopes(smsFeatureConfig?.scopes?.create);
 
-    const isReadOnly: boolean = !smsFeatureConfig.enabled || !hasUpdatePermission;
+    const smsTemplateFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["SMS_TEMPLATES_CUSTOMIZATION"]
+    );
+    const isSmsFeatureEnabled: boolean = smsTemplateFeatureStatus === FeatureStatus.ENABLED;
+
+    const isReadOnly: boolean = !smsFeatureConfig.enabled || !hasUpdatePermission || !isSmsFeatureEnabled;
     const hasSmsTemplateCreatePermissions: boolean = smsFeatureConfig.enabled && hasCreatePermission;
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
@@ -211,8 +218,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         }
     }, [ smsTemplateError, isSystemTemplate, isInheritedTemplate ]);
 
-    const handleTemplateIdChange = (event: SelectChangeEvent<string>): void => {
-        const templateId: string = event.target.value;
+    const handleTemplateIdChange = (templateId: string): void => {
 
         setShouldFetch(false);
         setIsTemplateNotAvailable(false);
@@ -232,15 +238,15 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         setIsTemplateNotAvailable(false);
     };
 
-    const handleLocaleChange = (event: SelectChangeEvent<string>): void => {
-        const locale: string = event.target.value;
+    const handleLocaleChange = (localeOption: LocaleOption | null): void => {
+        const safeLocale: string = (localeOption?.value as string) ?? selectedLocale;
 
         setShouldFetch(false);
         setCurrentSmsTemplate({ ...selectedSmsTemplate });
         setIsTemplateNotAvailable(true);
         setIsSystemTemplate(false);
         setIsInheritedTemplate(false);
-        setSelectedLocale(locale);
+        setSelectedLocale(safeLocale);
         setShouldFetch(true);
     };
 
@@ -377,9 +383,16 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                 bottomMargin={ false }
                 data-componentid={ componentId }
             >
+
+                { !isSmsFeatureEnabled && (
+                    <FeatureLockedBanner
+                        data-componentid={ `${componentId}-feature-locked-banner` }
+                    />
+                ) }
+
                 <SMSCustomizationHeader
-                    selectedSmsTemplateId={ selectedSmsTemplateId }
-                    selectedSmsTemplateDescription={ selectedSmsTemplateDescription }
+                    selectedSMSTemplateId={ selectedSmsTemplateId }
+                    selectedSMSTemplateDescription={ selectedSmsTemplateDescription }
                     selectedLocale={ selectedLocale }
                     smsTemplatesList={ availableSmsTemplatesList }
                     onTemplateSelected={ handleTemplateIdChange }
@@ -419,6 +432,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                             <Show when={ featureConfig?.smsTemplates?.scopes?.update }>
                                 { (!isTemplateNotAvailable || hasSmsTemplateCreatePermissions) && (
                                     <SMSCustomizationFooter
+                                        isSaveButtonDisabled={ !isSmsFeatureEnabled }
                                         isSaveButtonLoading={ isSmsTemplatesListLoading || isSmsTemplateLoading }
                                         onSaveButtonClick={ handleSubmit }
                                     />
@@ -428,7 +442,9 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                     </Grid>
                 </Card>
 
-                <Show when={ featureConfig?.smsTemplates?.scopes?.delete }>{ renderDangerZone() }</Show>
+                <Show when={ featureConfig?.smsTemplates?.scopes?.delete }>
+                    { isSmsFeatureEnabled && renderDangerZone() }
+                </Show>
             </PageLayout>
         </BrandingPreferenceProvider>
     );

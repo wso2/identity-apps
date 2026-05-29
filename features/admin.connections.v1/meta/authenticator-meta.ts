@@ -50,6 +50,9 @@ export class AuthenticatorMeta {
                 .IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Get users Identity first to " +
                 "control the authentication flow.",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .SHARED_USER_IDENTIFIER_AUTHENTICATOR_ID ]: "Identify shared users " +
+                "first to control the authentication flow.",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .FIDO_AUTHENTICATOR_ID ]: "Login users with passkey, FIDO security key " +
                 "or biometrics.",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
@@ -113,6 +116,8 @@ export class AuthenticatorMeta {
         const authenticatorLabels: string[] = get({
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: [ AuthenticatorLabels.HANDLERS ],
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .SHARED_USER_IDENTIFIER_AUTHENTICATOR_ID ]: [ AuthenticatorLabels.HANDLERS ],
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID ]: [
                 AuthenticatorLabels.PASSWORDLESS, AuthenticatorLabels.PASSKEY
             ],
@@ -244,6 +249,8 @@ export class AuthenticatorMeta {
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: getConnectionIcons()?.identifierFirst,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .SHARED_USER_IDENTIFIER_AUTHENTICATOR_ID ]: getConnectionIcons()?.identifierFirst,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .JWT_BASIC_AUTHENTICATOR_ID ]: getConnectionIcons()?.jwtBasic,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID ]: getConnectionIcons()?.fido,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
@@ -293,6 +300,7 @@ export class AuthenticatorMeta {
 
         return get({
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "Predefined",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SHARED_USER_IDENTIFIER_AUTHENTICATOR_ID ]: "Predefined",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID ]: "Predefined",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.MAGIC_LINK_AUTHENTICATOR_ID ]: "Predefined",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID ]: "Predefined",
@@ -342,6 +350,8 @@ export class AuthenticatorMeta {
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ]: "sms-otp",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID ]: "email-otp",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "identifier-first",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .SHARED_USER_IDENTIFIER_AUTHENTICATOR_ID ]: "shared-user-identifier",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: "push",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.OIDC_AUTHENTICATOR_ID ]: "enterprise-oidc",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.SAML_AUTHENTICATOR_ID ]: "enterprise-saml"

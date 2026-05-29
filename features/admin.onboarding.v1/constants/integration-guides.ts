@@ -292,7 +292,7 @@ passport.use(new AsgardeoStrategy({
  * Generic application types (mobile, SPA, oidc-web) show OIDC configuration values
  * or API-fetched guide content instead.
  */
-export const INTEGRATION_GUIDES: Record<string, FrameworkIntegrationGuideInterface> = {
+const INTEGRATION_GUIDES: Record<string, FrameworkIntegrationGuideInterface> = {
     [ApplicationTemplateIdTypes.ANGULAR_APPLICATION]: ANGULAR_INTEGRATION,
     [ApplicationTemplateIdTypes.EXPRESSJS_APPLICATION]: EXPRESS_INTEGRATION,
     [ApplicationTemplateIdTypes.NEXT_JS_APPLICATION]: NEXTJS_INTEGRATION,
@@ -409,7 +409,7 @@ ${docsUrl}`;
  * Appended to the deployment's `docSiteURL` so that different deployments
  * each resolve to their own documentation site automatically.
  */
-export const TEMPLATE_DOC_PATHS: Record<string, string> = {
+const TEMPLATE_DOC_PATHS: Record<string, string> = {
     [ApplicationTemplateIdTypes.ANGULAR_APPLICATION]: "/quick-starts/angular/",
     [ApplicationTemplateIdTypes.EXPRESSJS_APPLICATION]: "/quick-starts/expressjs/",
     [ApplicationTemplateIdTypes.M2M_APPLICATION]: "/guides/applications/register-machine-to-machine-app/",
@@ -441,7 +441,7 @@ export const getTemplateDocsUrl = (templateId?: string, docSiteURL?: string): st
 /**
  * M2M curl command template for getting access token.
  */
-export const M2M_CURL_TEMPLATE: string = `curl -X POST {baseUrl}/oauth2/token \\
+const M2M_CURL_TEMPLATE: string = `curl -X POST {baseUrl}/oauth2/token \\
   -H "Content-Type: application/x-www-form-urlencoded" \\
   -d "grant_type=client_credentials" \\
   -d "client_id={clientId}" \\
@@ -453,6 +453,6 @@ export const M2M_CURL_TEMPLATE: string = `curl -X POST {baseUrl}/oauth2/token \\
  * @param config - Integration configuration
  * @returns Curl command string
  */
-export const generateM2MCurlCommand = (config: IntegrationConfigInterface): string => {
+const generateM2MCurlCommand = (config: IntegrationConfigInterface): string => {
     return replaceCodePlaceholders(M2M_CURL_TEMPLATE, config);
 };

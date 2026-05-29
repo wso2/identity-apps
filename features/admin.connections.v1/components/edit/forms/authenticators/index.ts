@@ -24,5 +24,4 @@ export * from "./github-authenticator-form";
 export * from "./google-authenticator-form";
 export * from "./microsoft-authenticator-form";
 export * from "./sms-otp-authenticator-form";
-export * from "./push-authenticator-form";
 export * from "./totp-authenticator-form";

@@ -591,6 +591,7 @@ export interface ApplicationsNS {
                                         plusIcon: string;
                                     };
                                 };
+                                subOrgInfoBanner: string;
                             };
                             stepBased: {
                                 actions: {
@@ -630,6 +631,7 @@ export interface ApplicationsNS {
                                 backupCodesDisabledInFirstStep: string;
                                 authenticatorDisabled: string;
                                 firstFactorDisabled: string;
+                                sharedUserIdentifierFirstFactorDisabled: string;
                                 federatedSMSOTPConflictNote: {
                                     multipleIdps: string;
                                     singleIdp: string;
@@ -709,6 +711,8 @@ export interface ApplicationsNS {
                                     info: {
                                         totpWithIdentifierFirstEnabled: string;
                                         totpWithIdentifierFirstEnabledMessage: string;
+                                        totpWithSharedUserIdentifierEnabled: string;
+                                        totpWithSharedUserIdentifierEnabledMessage: string;
                                     };
                                 };
                                 usernameless: {
@@ -819,9 +823,11 @@ export interface ApplicationsNS {
                 shareSelectedApplication: string;
                 allRolesAndOrgsSharingMessage: string;
                 allRolesAndOrgsNotSharingMessage: string;
+                allApplicationRolesSharingMessage: string;
                 selectAnOrganizationToMangage: string;
                 allRolesSharingMessage: string;
                 doNotShareRolesWithAllOrgs: string;
+                shareApplicationWithFutureChildOrgs: string;
                 toManageOrganizationSelectLeftPanel: string;
                 subTitle: string;
                 tabName: string;
@@ -856,6 +862,10 @@ export interface ApplicationsNS {
                 rolesSharedPartially: string;
                 shareRoleSubsetWithSelectedOrgs: string;
                 shareRoleSubsetWithAllOrgs: string;
+                roleAudience: {
+                    application: string;
+                    organization: string;
+                };
                 searchAvailableRolesPlaceholder: string;
                 manageRoleSharing: string;
                 viewRoleSharing: string;
@@ -991,6 +1001,40 @@ export interface ApplicationsNS {
                     failed: string,
                     partiallyCompleted: string
                 }
+            };
+            enhancedOrganizationLogin: {
+                title: string;
+                description: string;
+                hint: string;
+                confirmation: {
+                    header: string;
+                    message: string;
+                    content: {
+                        0: string;
+                    };
+                };
+                notifications: {
+                    enable: {
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                    disable: {
+                        success: {
+                            message: string;
+                            description: string;
+                        };
+                        error: {
+                            message: string;
+                            description: string;
+                        };
+                    };
+                };
             };
             apiAuthorization: {
                 limitedAccessMessage: string;
@@ -1500,6 +1544,32 @@ export interface ApplicationsNS {
                             }
                         }
                     }
+                },
+                ciba: {
+                    authReqExpiryTime: {
+                        hint: string;
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                            invalid: string;
+                        };
+                    };
+                    notificationChannels: {
+                        externalHint: string;
+                        externalLabel: string;
+                        hint: string;
+                        label: string;
+                    };
+                    skipUserValidation: {
+                        hint: string;
+                        label: string;
+                    };
+                    allowFederatedUsers: {
+                        hint: string;
+                        label: string;
+                    };
+                    heading: string;
                 }
             };
             mobileApp: {
@@ -2355,6 +2425,7 @@ export interface ApplicationsNS {
                     oidcConfigurations: {
                         labels: {
                             authorize: string;
+                            backchannelAuthentication: string;
                             dynamicClientRegistration: string;
                             endSession: string;
                             introspection: string;
@@ -2959,6 +3030,14 @@ export interface ApplicationsNS {
             description: string;
         };
         updateIdentifierFirstInFirstStepError: {
+            message: string;
+            description: string;
+        };
+        updateOnlySharedUserIdentifierError: {
+            message: string;
+            description: string;
+        };
+        updateSharedUserIdentifierInFirstStepError: {
             message: string;
             description: string;
         };

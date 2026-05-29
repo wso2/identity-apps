@@ -19,7 +19,7 @@
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import debounce from "lodash-es/debounce";
 import { useEffect, useRef } from "react";
-import { OnboardingDataInterface, OnboardingStep } from "../models";
+import { OnboardingDataInterface, OnboardingStep } from "../models/onboarding";
 import { serializeWizardUrlParams } from "../utils/serialize-wizard-url-params";
 
 const URL_SYNC_DEBOUNCE_MS: number = 300;

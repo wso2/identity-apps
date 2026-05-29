@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { SignInOptionsConfigInterface, SignInOptionsValidationInterface } from "../models";
+import { SignInOptionsConfigInterface, SignInOptionsValidationInterface } from "../models/sign-in-options";
 
 /**
  * Validate sign-in options configuration.

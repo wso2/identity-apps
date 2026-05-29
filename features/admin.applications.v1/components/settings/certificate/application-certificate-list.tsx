@@ -22,7 +22,7 @@ import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { AlertLevels, CertificateValidity, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
-import { Forms } from "@wso2is/forms";
+import { Forms } from "@wso2is/forms/legacy";
 import {
     ConfirmationModal,
     EmptyPlaceholder,

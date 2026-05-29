@@ -20,6 +20,7 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
+import { AxiosResponse } from "axios";
 
 import { FetchProfilesParams, ProfileModel, ProfilesListResponse } from "../models/profiles";
 
@@ -48,7 +49,7 @@ export const fetchCDSProfiles = async (params: FetchProfilesParams = {}): Promis
         url: store.getState().config.endpoints.cdsProfiles
     };
 
-    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
+    const response: AxiosResponse<any> = await httpClient(requestConfig);
 
     return response.data as ProfilesListResponse;
 };
@@ -70,7 +71,7 @@ export const fetchCDSProfileDetails = async (profileId: string): Promise<Profile
         url: `${store.getState().config.endpoints.cdsProfiles}/${profileId}`
     };
 
-    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
+    const response: AxiosResponse<any> = await httpClient(requestConfig);
 
     return response.data as ProfileModel;
 };
@@ -88,7 +89,7 @@ export const deleteCDSProfile = async (profileId: string): Promise<void> => {
         url: `${store.getState().config.endpoints.cdsProfiles}/${profileId}`
     };
 
-    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
+    const response: AxiosResponse<any> = await httpClient(requestConfig);
 
     if (response.status !== 204 && response.status !== 200) {
         throw new Error(`Unexpected status code: ${response.status}`);

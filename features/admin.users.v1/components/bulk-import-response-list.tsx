@@ -24,7 +24,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
-import { DropdownChild } from "@wso2is/forms";
+import { DropdownChild } from "@wso2is/forms/legacy";
 import {
     DataTable,
     EmptyPlaceholder,

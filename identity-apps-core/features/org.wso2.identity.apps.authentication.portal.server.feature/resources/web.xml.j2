@@ -364,6 +364,7 @@
         {"name": "passivests_login.do", "jsp": "/login.jsp", "url": "/passivests_login.do"},
         {"name": "tenantlistrefresher.do", "jsp": "/tenant_refresh_endpoint.jsp", "url": "/tenantlistrefresher.do"},
         {"name": "consent.do", "jsp": "/consent.jsp", "url": "/consent.do"},
+        {"name": "policy_consent.do", "jsp": "/policy_consent.jsp", "url": "/policy_consent.do"},
         {"name": "cookie_policy.do", "jsp": "/cookie_policy.jsp", "url": "/cookie_policy.do"},
         {"name": "privacy_policy.do", "jsp": "/privacy_policy.jsp", "url": "/privacy_policy.do"},
         {"name": "authenticate.do", "jsp": "/authenticate.jsp", "url": "/authenticate.do"},
@@ -391,7 +392,8 @@
         {"name": "org_handle.do", "jsp": "/org_handle.jsp", "url": "/org_handle.do"},
         {"name": "org_discovery.do", "jsp": "/org_discovery.jsp", "url": "/org_discovery.do"},
         {"name": "select_org.do", "jsp": "/select_org.jsp", "url": "/select_org.do"},
-        {"name": "verify.do", "jsp": "/sms_otp_verify.jsp", "url": "/verify.do"}
+        {"name": "verify.do", "jsp": "/sms_otp_verify.jsp", "url": "/verify.do"},
+        {"name": "invalid_tenant_domain.do", "jsp": "/invalid_tenant_domain_response.jsp", "url": "/invalid_tenant_domain.do"}
     ] %}
     {% for servlet_item in default_servlets %}
         {% set key_name = servlet_item['name'] %}

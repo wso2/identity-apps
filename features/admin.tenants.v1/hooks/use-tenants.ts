@@ -22,7 +22,7 @@ import TenantContext, { TenantContextProps } from "../context/tenant-context";
 /**
  * Props interface of {@link useTenants}
  */
-export type useTenantsInterface = TenantContextProps;
+type useTenantsInterface = TenantContextProps;
 
 /**
  * Hook that provides access to the Tenant context.

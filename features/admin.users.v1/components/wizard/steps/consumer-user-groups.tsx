@@ -17,7 +17,7 @@
  */
 
 import { RolesInterface } from "@wso2is/core/models";
-import { Forms } from "@wso2is/forms";
+import { Forms } from "@wso2is/forms/legacy";
 import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
 import escapeRegExp from "lodash-es/escapeRegExp";
 import isEmpty from "lodash-es/isEmpty";

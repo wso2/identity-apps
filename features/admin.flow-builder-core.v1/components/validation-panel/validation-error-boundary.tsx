@@ -27,7 +27,7 @@ import "./validation-error-boundary.scss";
 /**
  * Props interface of {@link ValidationErrorBoundary}
  */
-export interface ValidationErrorBoundaryPropsInterface extends IdentifiableComponentInterface {
+interface ValidationErrorBoundaryPropsInterface extends IdentifiableComponentInterface {
     /**
      * The resource to check for validation errors.
      */
@@ -69,7 +69,7 @@ const ExclamationIcon = ({ size = 16 }: { size?: number }): ReactElement => (
  * @param props - Props injected to the component.
  * @returns ValidationErrorBoundary component.
  */
-export const ValidationErrorBoundary: FunctionComponent<PropsWithChildren<ValidationErrorBoundaryPropsInterface>> = ({
+const ValidationErrorBoundary: FunctionComponent<PropsWithChildren<ValidationErrorBoundaryPropsInterface>> = ({
     resource,
     children,
     disableErrorBoundaryOnHover = true,

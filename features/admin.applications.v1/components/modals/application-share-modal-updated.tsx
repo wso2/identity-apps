@@ -67,7 +67,7 @@ import {
 } from "../../models/application";
 import OrgSelectiveShareWithAllRoles from "../forms/org-selective-share-with-all-roles";
 
-export interface ApplicationShareModalPropsInterface
+interface ApplicationShareModalPropsInterface
     extends ModalProps,
     IdentifiableComponentInterface {
     /**

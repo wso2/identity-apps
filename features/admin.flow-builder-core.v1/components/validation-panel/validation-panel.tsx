@@ -36,7 +36,7 @@ import "./validation-panel.scss";
 /**
  * Props interface of {@link ValidationPanel}
  */
-export interface ValidationPanelPropsInterface extends IdentifiableComponentInterface {}
+interface ValidationPanelPropsInterface extends IdentifiableComponentInterface {}
 
 const ChevronsRight = ({ size = 16 }: { size: number }): ReactElement => (
     <svg

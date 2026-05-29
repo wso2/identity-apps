@@ -24,7 +24,7 @@ import { Trans, useTranslation } from "react-i18next";
 /**
  * Proptypes for the custom text revert confirmation modal.
  */
-export interface CustomTextUnsavedChangesConfirmationModalPropsInterface
+interface CustomTextUnsavedChangesConfirmationModalPropsInterface
     extends Partial<ConfirmationModalPropsInterface>,
         IdentifiableComponentInterface {}
 

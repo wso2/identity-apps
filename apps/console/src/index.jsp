@@ -7,13 +7,13 @@
 ~    You may not alter or remove any copyright or other notice from copies of this content."
 -->
 
-<%= htmlWebpackPlugin.options.contentType %>
-<%= htmlWebpackPlugin.options.serverConfiguration %>
-<%= htmlWebpackPlugin.options.proxyContextPathConstant %>
-<%= htmlWebpackPlugin.options.importUtil %>
-<%= htmlWebpackPlugin.options.importIdentityTenantUtil %>
-<%= htmlWebpackPlugin.options.importOwaspEncode %>
-<%= htmlWebpackPlugin.options.importIsSuperTenantRequiredInUrl %>
+<%= buildOptions.contentType %>
+<%= buildOptions.serverConfiguration %>
+<%= buildOptions.proxyContextPathConstant %>
+<%= buildOptions.importUtil %>
+<%= buildOptions.importIdentityTenantUtil %>
+<%= buildOptions.importOwaspEncode %>
+<%= buildOptions.importIsSuperTenantRequiredInUrl %>
 
 <script>
     var userAccessedPath = window.location.href;
@@ -21,15 +21,15 @@
 </script>
 
 <jsp:scriptlet>
-    <%= htmlWebpackPlugin.options.requestForwardSnippet %>
+    <%= buildOptions.requestForwardSnippet %>
 </jsp:scriptlet>
 
 <!DOCTYPE HTML>
 <html>
     <head>
         <!-- Start of loading application configurations -->
-        <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>update.config.js"></script>
-        <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>config.js"></script>
+        <script type="text/javascript" src="<%= buildOptions.publicPath %>update.config.js"></script>
+        <script type="text/javascript" src="<%= buildOptions.publicPath %>config.js"></script>
         <!-- End of loading application configurations -->
 
         <style>
@@ -140,30 +140,30 @@
             }
         </style>
         <script
-            src="/<%= htmlWebpackPlugin.options.basename ? htmlWebpackPlugin.options.basename + '/' : '' %>startup-config.js"
+            src="/<%= buildOptions.basename + '/' %>startup-config.js"
         ></script>
 
         <!-- Start of custom stylesheets -->
-        <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.publicPath %>extensions/stylesheet.css"/>
+        <link rel="stylesheet" type="text/css" href="<%= buildOptions.publicPath %>extensions/stylesheet.css"/>
         <!-- End of custom stylesheets -->
 
         <!-- Start of custom scripts added to the head -->
         <script
             id="head-script"
             type="text/javascript"
-            src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"
+            src="<%= buildOptions.publicPath %>extensions/head-script.js"
             data-page-id="preauth"
         ></script>
         <!-- End of custom scripts added to the head -->
     </head>
     <script>
 
-        var proxyContextPathGlobal = "<%= htmlWebpackPlugin.options.proxyContextPath %>";
+        var proxyContextPathGlobal = "<%= buildOptions.proxyContextPath %>";
         var proxyContextPathConsole = window.__WSO2_IS_RUNTIME_CONFIG__ ? window.__WSO2_IS_RUNTIME_CONFIG__.server.proxyContextPath : null;
         if (proxyContextPathConsole) {
             proxyContextPathGlobal = proxyContextPathConsole;
         }
-        var isSuperTenantRequiredInUrl = "<%= htmlWebpackPlugin.options.isSuperTenantRequiredInUrl %>";
+        var isSuperTenantRequiredInUrl = "<%= buildOptions.isSuperTenantRequiredInUrl %>";
         var userAccessedPath = window.location.href;
         var applicationDomain = window.location.origin;
 
@@ -171,15 +171,15 @@
         userTenant = userTenant ?  userTenant.split("?")[0] : null;
         var utype =  userAccessedPath.split("utype=")[1] ?  userAccessedPath.split("utype=")[1] : null;
 
-        var serverOrigin = "<%= htmlWebpackPlugin.options.serverUrl %>";
-        var authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>" != "null"
-            ? "<%= htmlWebpackPlugin.options.authorizationCode %>"
+        var serverOrigin = "<%= buildOptions.serverUrl %>";
+        var authorizationCode = "<%= buildOptions.authorizationCode %>" != "null"
+            ? "<%= buildOptions.authorizationCode %>"
             : null;
-        var authSessionState = "<%= htmlWebpackPlugin.options.sessionState %>" != "null"
-            ? "<%= htmlWebpackPlugin.options.sessionState %>"
+        var authSessionState = "<%= buildOptions.sessionState %>" != "null"
+            ? "<%= buildOptions.sessionState %>"
             : null;
-        var authIdPs = "<%= htmlWebpackPlugin.options.authenticatedIdPs %>" != "null"
-            ? "<%= htmlWebpackPlugin.options.authenticatedIdPs %>"
+        var authIdPs = "<%= buildOptions.authenticatedIdPs %>" != "null"
+            ? "<%= buildOptions.authenticatedIdPs %>"
             : null;
 
         function authenticateWithSDK() {
@@ -285,8 +285,8 @@
                  * @returns {string}
                  */
                 function resolveClientId() {
-                    var enableTenantQualifiedUrls = <%= htmlWebpackPlugin.options.isTenantQualifiedUrlsEnabled %>;
-                    var defaultClientId = "<%= htmlWebpackPlugin.options.clientID %>";
+                    var enableTenantQualifiedUrls = <%= buildOptions.isTenantQualifiedUrlsEnabled %>;
+                    var defaultClientId = "<%= buildOptions.clientID %>";
 
                     if (enableTenantQualifiedUrls === true || isSuperTenant()) {
                         return defaultClientId;
@@ -306,11 +306,11 @@
 
                     if (getTenantName() === startupConfig.superTenant && isSuperTenantRequiredInUrl !== "true") {
                         return applicationDomain.replace(/\/+$/, '') + contextPath
-                            + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
+                            + "<%= '/' + buildOptions.basename %>";
                     }
 
                     return applicationDomain.replace(/\/+$/, '') + contextPath + getTenantPath()
-                        + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
+                        + "<%= '/' + buildOptions.basename %>";
                 }
 
                 /**
@@ -428,7 +428,7 @@
     <script>
         if(!authorizationCode) {
             var authSPAJS = document.createElement("script");
-            var authScriptSrc = "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename + '/auth-spa-3.1.2.min.js' : '/auth-spa-3.1.2.min.js'%>";
+            var authScriptSrc = "<%= '/' + buildOptions.basename + '/auth-spa-3.1.2.min.js' %>";
 
             authSPAJS.setAttribute("src", authScriptSrc);
             authSPAJS.setAttribute("async", "false");
@@ -448,7 +448,7 @@
             </div>
         </div>
         <!-- Start of custom scripts added to the body -->
-        <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>extensions/body-script.js"></script>
+        <script type="text/javascript" src="<%= buildOptions.publicPath %>extensions/body-script.js"></script>
         <!-- End of custom scripts added to the body -->
     </body>
 </html>

@@ -1,5 +1,700 @@
 # @wso2is/admin.flows.v1
 
+## 1.0.180
+
+### Patch Changes
+
+- [#10197](https://github.com/wso2/identity-apps/pull/10197) [`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dependencies
+
+- Updated dependencies [[`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.211
+  - @wso2is/admin.feature-gate.v1@1.9.6
+  - @wso2is/admin.claims.v1@2.31.1
+  - @wso2is/admin.core.v1@2.57.3
+
+## 1.0.179
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.57.1
+  - @wso2is/admin.flow-builder-core.v1@0.10.210
+  - @wso2is/admin.server-configurations.v1@2.38.49
+  - @wso2is/admin.registration-flow-builder.v1@0.10.170
+
+## 1.0.178
+
+### Patch Changes
+
+- Updated dependencies [[`13a622370c3a3aaa07dadd0bec22ceb9ff486fea`](https://github.com/wso2/identity-apps/commit/13a622370c3a3aaa07dadd0bec22ceb9ff486fea)]:
+  - @wso2is/react-components@2.10.0
+  - @wso2is/admin.core.v1@2.57.0
+  - @wso2is/admin.flow-builder-core.v1@0.10.209
+  - @wso2is/admin.server-configurations.v1@2.38.48
+  - @wso2is/admin.registration-flow-builder.v1@0.10.169
+
+## 1.0.177
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.56.1
+  - @wso2is/admin.flow-builder-core.v1@0.10.208
+  - @wso2is/admin.server-configurations.v1@2.38.47
+  - @wso2is/admin.registration-flow-builder.v1@0.10.168
+
+## 1.0.176
+
+### Patch Changes
+
+- Updated dependencies [[`793c5bde494bdde069a0fbc0b5311d279938ceb9`](https://github.com/wso2/identity-apps/commit/793c5bde494bdde069a0fbc0b5311d279938ceb9)]:
+  - @wso2is/admin.core.v1@2.56.0
+  - @wso2is/admin.flow-builder-core.v1@0.10.207
+  - @wso2is/admin.server-configurations.v1@2.38.46
+  - @wso2is/admin.registration-flow-builder.v1@0.10.167
+
+## 1.0.175
+
+### Patch Changes
+
+- Updated dependencies [[`dd01f38682fd189b94802e06b3473a312c1bf7b1`](https://github.com/wso2/identity-apps/commit/dd01f38682fd189b94802e06b3473a312c1bf7b1)]:
+  - @wso2is/admin.feature-gate.v1@1.9.5
+  - @wso2is/admin.core.v1@2.55.29
+  - @wso2is/admin.flow-builder-core.v1@0.10.206
+  - @wso2is/admin.registration-flow-builder.v1@0.10.166
+  - @wso2is/admin.server-configurations.v1@2.38.45
+
+## 1.0.174
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.28
+  - @wso2is/admin.flow-builder-core.v1@0.10.205
+  - @wso2is/admin.server-configurations.v1@2.38.44
+  - @wso2is/admin.registration-flow-builder.v1@0.10.165
+
+## 1.0.173
+
+### Patch Changes
+
+- Updated dependencies [[`a27ac0c8a6d65ac6995b5a70db973a14b32fdcfe`](https://github.com/wso2/identity-apps/commit/a27ac0c8a6d65ac6995b5a70db973a14b32fdcfe)]:
+  - @wso2is/admin.feature-gate.v1@1.9.4
+  - @wso2is/admin.core.v1@2.55.27
+  - @wso2is/admin.flow-builder-core.v1@0.10.204
+  - @wso2is/admin.registration-flow-builder.v1@0.10.164
+  - @wso2is/admin.server-configurations.v1@2.38.43
+
+## 1.0.172
+
+### Patch Changes
+
+- Updated dependencies [[`95c89b5e1111586c0cecd491f109d8aab83ad3ee`](https://github.com/wso2/identity-apps/commit/95c89b5e1111586c0cecd491f109d8aab83ad3ee)]:
+  - @wso2is/admin.feature-gate.v1@1.9.3
+  - @wso2is/admin.core.v1@2.55.26
+  - @wso2is/admin.flow-builder-core.v1@0.10.203
+  - @wso2is/admin.registration-flow-builder.v1@0.10.163
+  - @wso2is/admin.server-configurations.v1@2.38.42
+
+## 1.0.171
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.25
+  - @wso2is/admin.flow-builder-core.v1@0.10.202
+  - @wso2is/admin.server-configurations.v1@2.38.41
+  - @wso2is/admin.registration-flow-builder.v1@0.10.162
+
+## 1.0.170
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.24
+  - @wso2is/admin.flow-builder-core.v1@0.10.201
+  - @wso2is/admin.server-configurations.v1@2.38.40
+  - @wso2is/admin.registration-flow-builder.v1@0.10.161
+
+## 1.0.169
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.23
+  - @wso2is/admin.flow-builder-core.v1@0.10.200
+  - @wso2is/admin.server-configurations.v1@2.38.39
+  - @wso2is/admin.registration-flow-builder.v1@0.10.160
+
+## 1.0.168
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.22
+  - @wso2is/admin.flow-builder-core.v1@0.10.199
+  - @wso2is/admin.server-configurations.v1@2.38.38
+  - @wso2is/admin.registration-flow-builder.v1@0.10.159
+
+## 1.0.167
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.21
+  - @wso2is/admin.flow-builder-core.v1@0.10.198
+  - @wso2is/admin.server-configurations.v1@2.38.37
+  - @wso2is/admin.registration-flow-builder.v1@0.10.158
+
+## 1.0.166
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.20
+  - @wso2is/admin.flow-builder-core.v1@0.10.197
+  - @wso2is/admin.server-configurations.v1@2.38.36
+  - @wso2is/admin.registration-flow-builder.v1@0.10.157
+
+## 1.0.165
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.19
+  - @wso2is/admin.flow-builder-core.v1@0.10.196
+  - @wso2is/admin.server-configurations.v1@2.38.35
+  - @wso2is/admin.registration-flow-builder.v1@0.10.156
+
+## 1.0.164
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.18
+  - @wso2is/admin.flow-builder-core.v1@0.10.195
+  - @wso2is/admin.server-configurations.v1@2.38.34
+  - @wso2is/admin.registration-flow-builder.v1@0.10.155
+
+## 1.0.163
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.17
+  - @wso2is/admin.flow-builder-core.v1@0.10.194
+  - @wso2is/admin.server-configurations.v1@2.38.33
+  - @wso2is/admin.registration-flow-builder.v1@0.10.154
+
+## 1.0.162
+
+### Patch Changes
+
+- Updated dependencies [[`5066889ff2e1a7d789c05218c822d1df271148da`](https://github.com/wso2/identity-apps/commit/5066889ff2e1a7d789c05218c822d1df271148da)]:
+  - @wso2is/admin.core.v1@2.55.16
+  - @wso2is/admin.flow-builder-core.v1@0.10.193
+  - @wso2is/admin.server-configurations.v1@2.38.32
+  - @wso2is/admin.registration-flow-builder.v1@0.10.153
+
+## 1.0.161
+
+### Patch Changes
+
+- Updated dependencies [[`61cd356ee61eaf81e40f4a7118c1af7a66438361`](https://github.com/wso2/identity-apps/commit/61cd356ee61eaf81e40f4a7118c1af7a66438361)]:
+  - @wso2is/admin.claims.v1@2.31.0
+  - @wso2is/admin.core.v1@2.55.15
+  - @wso2is/admin.flow-builder-core.v1@0.10.192
+  - @wso2is/admin.server-configurations.v1@2.38.31
+  - @wso2is/admin.registration-flow-builder.v1@0.10.152
+
+## 1.0.160
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.14
+  - @wso2is/admin.flow-builder-core.v1@0.10.191
+  - @wso2is/admin.server-configurations.v1@2.38.30
+  - @wso2is/admin.registration-flow-builder.v1@0.10.151
+
+## 1.0.159
+
+### Patch Changes
+
+- Updated dependencies [[`6137b75af107167be60698614ceacb2bed1216df`](https://github.com/wso2/identity-apps/commit/6137b75af107167be60698614ceacb2bed1216df)]:
+  - @wso2is/admin.core.v1@2.55.13
+  - @wso2is/admin.flow-builder-core.v1@0.10.190
+  - @wso2is/admin.server-configurations.v1@2.38.29
+  - @wso2is/admin.registration-flow-builder.v1@0.10.150
+
+## 1.0.158
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.12
+  - @wso2is/admin.flow-builder-core.v1@0.10.189
+  - @wso2is/admin.server-configurations.v1@2.38.28
+  - @wso2is/admin.registration-flow-builder.v1@0.10.149
+
+## 1.0.157
+
+### Patch Changes
+
+- Updated dependencies [[`aa063b32848f472383119a186e27477258f45706`](https://github.com/wso2/identity-apps/commit/aa063b32848f472383119a186e27477258f45706)]:
+  - @wso2is/admin.core.v1@2.55.11
+  - @wso2is/admin.flow-builder-core.v1@0.10.188
+  - @wso2is/admin.server-configurations.v1@2.38.27
+  - @wso2is/admin.registration-flow-builder.v1@0.10.148
+
+## 1.0.156
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.flow-builder-core.v1@0.10.187
+  - @wso2is/admin.core.v1@2.55.10
+  - @wso2is/admin.server-configurations.v1@2.38.26
+  - @wso2is/admin.registration-flow-builder.v1@0.10.147
+
+## 1.0.155
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.9
+  - @wso2is/admin.flow-builder-core.v1@0.10.186
+  - @wso2is/admin.server-configurations.v1@2.38.25
+  - @wso2is/admin.registration-flow-builder.v1@0.10.146
+
+## 1.0.154
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.8
+  - @wso2is/admin.flow-builder-core.v1@0.10.185
+  - @wso2is/admin.server-configurations.v1@2.38.24
+  - @wso2is/admin.registration-flow-builder.v1@0.10.145
+
+## 1.0.153
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.7
+  - @wso2is/admin.flow-builder-core.v1@0.10.184
+  - @wso2is/admin.server-configurations.v1@2.38.23
+  - @wso2is/admin.registration-flow-builder.v1@0.10.144
+
+## 1.0.152
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.6
+  - @wso2is/admin.flow-builder-core.v1@0.10.183
+  - @wso2is/admin.server-configurations.v1@2.38.22
+  - @wso2is/admin.registration-flow-builder.v1@0.10.143
+
+## 1.0.151
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.5
+  - @wso2is/admin.flow-builder-core.v1@0.10.182
+  - @wso2is/admin.server-configurations.v1@2.38.21
+  - @wso2is/admin.registration-flow-builder.v1@0.10.142
+
+## 1.0.150
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.4
+  - @wso2is/admin.flow-builder-core.v1@0.10.181
+  - @wso2is/admin.server-configurations.v1@2.38.20
+  - @wso2is/admin.registration-flow-builder.v1@0.10.141
+
+## 1.0.149
+
+### Patch Changes
+
+- [#9875](https://github.com/wso2/identity-apps/pull/9875) [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - Revert Axios and SDK version bumps
+
+- Updated dependencies [[`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.10.140
+  - @wso2is/admin.server-configurations.v1@2.38.19
+  - @wso2is/admin.flow-builder-core.v1@0.10.180
+  - @wso2is/admin.feature-gate.v1@1.9.2
+  - @wso2is/admin.claims.v1@2.30.6
+  - @wso2is/admin.core.v1@2.55.3
+
+## 1.0.148
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.55.2
+  - @wso2is/admin.flow-builder-core.v1@0.10.179
+  - @wso2is/admin.server-configurations.v1@2.38.18
+  - @wso2is/admin.registration-flow-builder.v1@0.10.139
+
+## 1.0.147
+
+### Patch Changes
+
+- Updated dependencies [[`410f5901427656fae17dd31db77efe138f111b9f`](https://github.com/wso2/identity-apps/commit/410f5901427656fae17dd31db77efe138f111b9f)]:
+  - @wso2is/admin.core.v1@2.55.1
+  - @wso2is/admin.flow-builder-core.v1@0.10.178
+  - @wso2is/admin.server-configurations.v1@2.38.17
+  - @wso2is/admin.registration-flow-builder.v1@0.10.138
+
+## 1.0.146
+
+### Patch Changes
+
+- Updated dependencies [[`889ba146a770d03968eed6bd8ecdf9b2f41df5e4`](https://github.com/wso2/identity-apps/commit/889ba146a770d03968eed6bd8ecdf9b2f41df5e4)]:
+  - @wso2is/admin.core.v1@2.55.0
+  - @wso2is/admin.flow-builder-core.v1@0.10.177
+  - @wso2is/admin.server-configurations.v1@2.38.16
+  - @wso2is/admin.registration-flow-builder.v1@0.10.137
+
+## 1.0.145
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.32
+  - @wso2is/admin.flow-builder-core.v1@0.10.176
+  - @wso2is/admin.server-configurations.v1@2.38.15
+  - @wso2is/admin.registration-flow-builder.v1@0.10.136
+
+## 1.0.144
+
+### Patch Changes
+
+- Updated dependencies [[`2cad6ed902817e50e522628726732802503f5893`](https://github.com/wso2/identity-apps/commit/2cad6ed902817e50e522628726732802503f5893)]:
+  - @wso2is/admin.core.v1@2.54.31
+  - @wso2is/admin.registration-flow-builder.v1@0.10.135
+  - @wso2is/admin.flow-builder-core.v1@0.10.175
+  - @wso2is/admin.server-configurations.v1@2.38.14
+
+## 1.0.143
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.30
+  - @wso2is/admin.flow-builder-core.v1@0.10.174
+  - @wso2is/admin.server-configurations.v1@2.38.13
+  - @wso2is/admin.registration-flow-builder.v1@0.10.134
+
+## 1.0.142
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.29
+  - @wso2is/admin.flow-builder-core.v1@0.10.173
+  - @wso2is/admin.server-configurations.v1@2.38.12
+  - @wso2is/admin.registration-flow-builder.v1@0.10.133
+
+## 1.0.141
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.28
+  - @wso2is/admin.flow-builder-core.v1@0.10.172
+  - @wso2is/admin.server-configurations.v1@2.38.11
+  - @wso2is/admin.registration-flow-builder.v1@0.10.132
+
+## 1.0.140
+
+### Patch Changes
+
+- Updated dependencies [[`d017740b584334c955953a9a8c99608040decd9c`](https://github.com/wso2/identity-apps/commit/d017740b584334c955953a9a8c99608040decd9c)]:
+  - @wso2is/admin.server-configurations.v1@2.38.10
+  - @wso2is/admin.claims.v1@2.30.5
+  - @wso2is/admin.core.v1@2.54.27
+  - @wso2is/admin.flow-builder-core.v1@0.10.171
+  - @wso2is/admin.registration-flow-builder.v1@0.10.131
+
+## 1.0.139
+
+### Patch Changes
+
+- Updated dependencies [[`c1fabf4ef861da56adba0ed0fc10aa65638471fc`](https://github.com/wso2/identity-apps/commit/c1fabf4ef861da56adba0ed0fc10aa65638471fc)]:
+  - @wso2is/admin.claims.v1@2.30.4
+  - @wso2is/admin.core.v1@2.54.26
+  - @wso2is/admin.flow-builder-core.v1@0.10.170
+  - @wso2is/admin.server-configurations.v1@2.38.9
+  - @wso2is/admin.registration-flow-builder.v1@0.10.130
+
+## 1.0.138
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.25
+  - @wso2is/admin.flow-builder-core.v1@0.10.169
+  - @wso2is/admin.server-configurations.v1@2.38.8
+  - @wso2is/admin.registration-flow-builder.v1@0.10.129
+
+## 1.0.137
+
+### Patch Changes
+
+- Updated dependencies [[`6142c1c56cb418e81d34da5e937c9c37675f937c`](https://github.com/wso2/identity-apps/commit/6142c1c56cb418e81d34da5e937c9c37675f937c)]:
+  - @wso2is/admin.core.v1@2.54.24
+  - @wso2is/admin.flow-builder-core.v1@0.10.168
+  - @wso2is/admin.server-configurations.v1@2.38.7
+  - @wso2is/admin.registration-flow-builder.v1@0.10.128
+
+## 1.0.136
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.23
+  - @wso2is/admin.flow-builder-core.v1@0.10.167
+  - @wso2is/admin.server-configurations.v1@2.38.6
+  - @wso2is/admin.registration-flow-builder.v1@0.10.127
+
+## 1.0.135
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.22
+  - @wso2is/admin.flow-builder-core.v1@0.10.166
+  - @wso2is/admin.server-configurations.v1@2.38.5
+  - @wso2is/admin.registration-flow-builder.v1@0.10.126
+
+## 1.0.134
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.registration-flow-builder.v1@0.10.125
+  - @wso2is/admin.flow-builder-core.v1@0.10.165
+  - @wso2is/admin.core.v1@2.54.21
+  - @wso2is/admin.server-configurations.v1@2.38.4
+
+## 1.0.133
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.20
+  - @wso2is/admin.flow-builder-core.v1@0.10.164
+  - @wso2is/admin.server-configurations.v1@2.38.3
+  - @wso2is/admin.registration-flow-builder.v1@0.10.124
+
+## 1.0.132
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.19
+  - @wso2is/admin.flow-builder-core.v1@0.10.163
+  - @wso2is/admin.server-configurations.v1@2.38.2
+  - @wso2is/admin.registration-flow-builder.v1@0.10.123
+
+## 1.0.131
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.18
+  - @wso2is/admin.flow-builder-core.v1@0.10.162
+  - @wso2is/admin.server-configurations.v1@2.38.1
+  - @wso2is/admin.registration-flow-builder.v1@0.10.122
+
+## 1.0.130
+
+### Patch Changes
+
+- Updated dependencies [[`98be11798211c36636778c925819b578d4fbeabd`](https://github.com/wso2/identity-apps/commit/98be11798211c36636778c925819b578d4fbeabd), [`8f189290049855d403087514cbdc0b9ca2892ab8`](https://github.com/wso2/identity-apps/commit/8f189290049855d403087514cbdc0b9ca2892ab8)]:
+  - @wso2is/admin.server-configurations.v1@2.38.0
+  - @wso2is/admin.core.v1@2.54.17
+  - @wso2is/admin.registration-flow-builder.v1@0.10.121
+  - @wso2is/admin.flow-builder-core.v1@0.10.161
+
+## 1.0.129
+
+### Patch Changes
+
+- Updated dependencies [[`37f1eae32f0b30c5a060432e41fe5e13285aef01`](https://github.com/wso2/identity-apps/commit/37f1eae32f0b30c5a060432e41fe5e13285aef01)]:
+  - @wso2is/admin.core.v1@2.54.16
+  - @wso2is/admin.flow-builder-core.v1@0.10.160
+  - @wso2is/admin.server-configurations.v1@2.37.27
+  - @wso2is/admin.registration-flow-builder.v1@0.10.120
+
+## 1.0.128
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.15
+  - @wso2is/admin.flow-builder-core.v1@0.10.159
+  - @wso2is/admin.server-configurations.v1@2.37.26
+  - @wso2is/admin.registration-flow-builder.v1@0.10.119
+
+## 1.0.127
+
+### Patch Changes
+
+- Updated dependencies [[`413d08d82b88fb248b45e6a6e6e668a84d7f6a19`](https://github.com/wso2/identity-apps/commit/413d08d82b88fb248b45e6a6e6e668a84d7f6a19)]:
+  - @wso2is/admin.feature-gate.v1@1.9.1
+  - @wso2is/admin.core.v1@2.54.14
+  - @wso2is/admin.flow-builder-core.v1@0.10.158
+  - @wso2is/admin.registration-flow-builder.v1@0.10.118
+  - @wso2is/admin.server-configurations.v1@2.37.24
+
+## 1.0.126
+
+### Patch Changes
+
+- Updated dependencies [[`b4a65c9ddb89a02095eab1fb66192a810437d3ab`](https://github.com/wso2/identity-apps/commit/b4a65c9ddb89a02095eab1fb66192a810437d3ab)]:
+  - @wso2is/admin.core.v1@2.54.13
+  - @wso2is/admin.flow-builder-core.v1@0.10.157
+  - @wso2is/admin.registration-flow-builder.v1@0.10.117
+  - @wso2is/admin.server-configurations.v1@2.37.23
+
+## 1.0.125
+
+### Patch Changes
+
+- Updated dependencies [[`fbfab599240cdb46d3508c5817c3aba05157f860`](https://github.com/wso2/identity-apps/commit/fbfab599240cdb46d3508c5817c3aba05157f860)]:
+  - @wso2is/admin.core.v1@2.54.12
+  - @wso2is/admin.flow-builder-core.v1@0.10.156
+  - @wso2is/admin.server-configurations.v1@2.37.22
+  - @wso2is/admin.registration-flow-builder.v1@0.10.116
+
+## 1.0.124
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.11
+  - @wso2is/admin.flow-builder-core.v1@0.10.155
+  - @wso2is/admin.server-configurations.v1@2.37.21
+  - @wso2is/admin.registration-flow-builder.v1@0.10.115
+
+## 1.0.123
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.10
+  - @wso2is/admin.flow-builder-core.v1@0.10.154
+  - @wso2is/admin.server-configurations.v1@2.37.20
+  - @wso2is/admin.registration-flow-builder.v1@0.10.114
+
+## 1.0.122
+
+### Patch Changes
+
+- Updated dependencies [[`6f37a9068f902c2020fdcd22d06caa0f76eecf90`](https://github.com/wso2/identity-apps/commit/6f37a9068f902c2020fdcd22d06caa0f76eecf90)]:
+  - @wso2is/admin.core.v1@2.54.9
+  - @wso2is/admin.flow-builder-core.v1@0.10.153
+  - @wso2is/admin.server-configurations.v1@2.37.19
+  - @wso2is/admin.registration-flow-builder.v1@0.10.113
+
+## 1.0.121
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.8
+  - @wso2is/admin.flow-builder-core.v1@0.10.152
+  - @wso2is/admin.server-configurations.v1@2.37.18
+  - @wso2is/admin.registration-flow-builder.v1@0.10.112
+
+## 1.0.120
+
+### Patch Changes
+
+- Updated dependencies [[`89273a887431c2e7e2bf346bc166dea0667cfc45`](https://github.com/wso2/identity-apps/commit/89273a887431c2e7e2bf346bc166dea0667cfc45)]:
+  - @wso2is/admin.core.v1@2.54.7
+  - @wso2is/admin.flow-builder-core.v1@0.10.151
+  - @wso2is/admin.server-configurations.v1@2.37.17
+  - @wso2is/admin.registration-flow-builder.v1@0.10.111
+
+## 1.0.119
+
+### Patch Changes
+
+- Updated dependencies [[`11f78e74d83aa13af412513cf1010ab92f9989ad`](https://github.com/wso2/identity-apps/commit/11f78e74d83aa13af412513cf1010ab92f9989ad)]:
+  - @wso2is/admin.server-configurations.v1@2.37.16
+  - @wso2is/admin.claims.v1@2.30.2
+  - @wso2is/admin.core.v1@2.54.6
+  - @wso2is/admin.flow-builder-core.v1@0.10.150
+  - @wso2is/admin.registration-flow-builder.v1@0.10.110
+
+## 1.0.118
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.5
+  - @wso2is/admin.flow-builder-core.v1@0.10.149
+  - @wso2is/admin.server-configurations.v1@2.37.15
+  - @wso2is/admin.registration-flow-builder.v1@0.10.109
+
+## 1.0.117
+
+### Patch Changes
+
+- Updated dependencies [[`1d64e4c1973e5177906a6a15a0b85fd16d420e11`](https://github.com/wso2/identity-apps/commit/1d64e4c1973e5177906a6a15a0b85fd16d420e11)]:
+  - @wso2is/admin.core.v1@2.54.4
+  - @wso2is/admin.flow-builder-core.v1@0.10.148
+  - @wso2is/admin.server-configurations.v1@2.37.14
+  - @wso2is/admin.registration-flow-builder.v1@0.10.108
+
+## 1.0.116
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.3
+  - @wso2is/admin.flow-builder-core.v1@0.10.147
+  - @wso2is/admin.server-configurations.v1@2.37.13
+  - @wso2is/admin.registration-flow-builder.v1@0.10.107
+
+## 1.0.115
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.54.2
+  - @wso2is/admin.flow-builder-core.v1@0.10.146
+  - @wso2is/admin.server-configurations.v1@2.37.12
+  - @wso2is/admin.registration-flow-builder.v1@0.10.106
+
+## 1.0.114
+
+### Patch Changes
+
+- Updated dependencies [[`a4db7d691345f8849a92e26e9fb904dfc7d7bcef`](https://github.com/wso2/identity-apps/commit/a4db7d691345f8849a92e26e9fb904dfc7d7bcef)]:
+  - @wso2is/admin.core.v1@2.54.1
+  - @wso2is/admin.flow-builder-core.v1@0.10.145
+  - @wso2is/admin.server-configurations.v1@2.37.11
+  - @wso2is/admin.registration-flow-builder.v1@0.10.105
+
+## 1.0.113
+
+### Patch Changes
+
+- Updated dependencies [[`d034eb37fd3d1e9c16570d89bd01381303570be7`](https://github.com/wso2/identity-apps/commit/d034eb37fd3d1e9c16570d89bd01381303570be7), [`9c98499dd77a7ac7d4f30be22710342f4e000257`](https://github.com/wso2/identity-apps/commit/9c98499dd77a7ac7d4f30be22710342f4e000257)]:
+  - @wso2is/admin.core.v1@2.54.0
+  - @wso2is/admin.server-configurations.v1@2.37.10
+  - @wso2is/admin.flow-builder-core.v1@0.10.144
+  - @wso2is/admin.registration-flow-builder.v1@0.10.104
+
 ## 1.0.112
 
 ### Patch Changes

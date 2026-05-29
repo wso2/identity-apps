@@ -352,7 +352,9 @@ export const myAccount: MyAccountNS = {
             modals: {
                 confirmationModal: {
                     heading: "Confirmação",
-                    message: "A alteração da senha resultará no encerramento da sessão atual. Você precisará fazer o login com a senha recém-alterada. Você deseja continuar?"
+                    message: "A atualização da sua senha pode desconectar você de todos os aplicativos. " +
+                        "Se você for desconectado, faça login novamente usando sua nova senha. " +
+                        "Deseja continuar?"
                 }
             }
         },
@@ -367,10 +369,7 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 description: "Descrição",
-                piiCategoryHeading: "Gerencie o consentimento para a coleta e o compartilhamento de suas informações " +
-                    "pessoais com o aplicativo. Desmarque os atributos que você precisa revogar e pressione o botão " +
-                    "atualizar para salvar as alterações ou pressione o botão revogar para remover o consentimento " +
-                    "para todos os atributos.",
+                piiCategoryHeading: "Gerencie o consentimento para a coleta e o compartilhamento de suas informações pessoais com o aplicativo. Desmarque os atributos que você precisa revogar e pressione o botão atualizar para salvar as alterações ou pressione o botão revogar para remover o consentimento para todos os atributos.",
                 state: "Estado",
                 version: "Versão"
             },
@@ -440,6 +439,106 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        preferenceManagement: {
+            consentedOnLabel: "Aceito em",
+            dangerZones: {
+                revoke: {
+                    actionTitle: "Revogar",
+                    header: "Revogar preferência de comunicação",
+                    subheader: "Esta ação removerá sua preferência para esta comunicação."
+                }
+            },
+            elementsHeading: "Gerencie suas preferências de comunicação abaixo. Desmarque os atributos que você precisa revogar e pressione o botão atualizar para salvar as alterações ou pressione o botão revogar para remover a preferência de todos os atributos.",
+            notifications: {
+                fetch: {
+                    error: {
+                        description: "Ocorreu um erro ao recuperar suas preferências de comunicação.",
+                        message: "Falha na recuperação"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao recuperar suas preferências de comunicação.",
+                        message: "Falha na recuperação"
+                    },
+                    success: {
+                        description: "Suas preferências de comunicação foram recuperadas com sucesso.",
+                        message: "Recuperação bem-sucedida"
+                    }
+                },
+                revoke: {
+                    error: {
+                        description: "Ocorreu um erro ao revogar a preferência de comunicação.",
+                        message: "Falha na revogação"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao revogar a preferência de comunicação.",
+                        message: "Falha na revogação"
+                    },
+                    success: {
+                        description: "A preferência de comunicação foi revogada com sucesso.",
+                        message: "Preferência de comunicação revogada"
+                    }
+                },
+                update: {
+                    error: {
+                        description: "Ocorreu um erro ao atualizar a preferência de comunicação.",
+                        message: "Falha na atualização"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao atualizar a preferência de comunicação.",
+                        message: "Falha na atualização"
+                    },
+                    success: {
+                        description: "Suas preferências de comunicação foram atualizadas com sucesso.",
+                        message: "Preferência de comunicação atualizada"
+                    }
+                }
+            },
+            policyUrlLabel: "Ver política",
+            versionLabel: "Versão {{version}}"
+        },
+        policyConsentManagement: {
+            consentedOnLabel: "Ativo desde",
+            dangerZones: {
+                revoke: {
+                    actionTitle: "Revogar",
+                    header: "Revogar Consentimento de Política",
+                    subheader: "Esta ação revogará seu consentimento para esta política. Você pode ser solicitado a consentir novamente na próxima vez que acessar o serviço."
+                }
+            },
+            notifications: {
+                fetch: {
+                    error: {
+                        description: "Ocorreu um erro ao recuperar seus consentimentos de política.",
+                        message: "Falha na Recuperação"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao recuperar seus consentimentos de política.",
+                        message: "Falha na Recuperação"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
+                revoke: {
+                    error: {
+                        description: "Ocorreu um erro ao revogar o consentimento da política.",
+                        message: "Falha na Revogação"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao revogar o consentimento da política.",
+                        message: "Falha na Revogação"
+                    },
+                    success: {
+                        description: "O consentimento da política foi revogado com sucesso.",
+                        message: "Consentimento Revogado"
+                    }
+                }
+            },
+            policyUrlLabel: "Ver Política",
+            versionLabel: "Versão {{version}}"
+        },
+        
         cookieConsent: {
             confirmButton: "Entendi",
             content: "Usamos cookies para garantir que você obtenha a melhor experiência geral. Esses cookies são usados ​​para manter uma sessão contínua ininterrupta, enquanto fornecendo serviços estáveis e personalizados. Para aprender mais sobre como utilizamos cookies, consulte nossa <1>Política de Cookies</1>."
@@ -1273,6 +1372,9 @@ export const myAccount: MyAccountNS = {
                     content: "Por favor, confirme a atualização do endereço de e-mail para adicionar o novo e-mail ao seu perfil.",
                     header: "Confirmação pendente!"
                 },
+                emailVerification: {
+                    content: "Este endereço de e-mail é usado para enviar e-mails de verificação quando a autenticação de segundo fator está habilitada e para enviar códigos de recuperação em caso de recuperação de nome de usuário/senha. Para atualizar este e-mail, você precisa verificar o novo e-mail inserindo o código de verificação enviado para o seu novo e-mail. Clique em atualizar se desejar continuar."
+                },
                 mobileVerification: {
                     content: "Este número de celular é usado para enviar OTPs de SMS quando a autenticação de segundo fator estiver habilitada e para enviar códigos de recuperação em caso de recuperação de nome de usuário/senha. Para atualizar este número, você deve verificar o novo número inserindo o código de verificação enviado para seu novo número. Clique em atualizar se desejar prosseguir."
                 }
@@ -1512,6 +1614,67 @@ export const myAccount: MyAccountNS = {
             }
         },
         verificationOnUpdate: {
+            modal: {
+                common: {
+                    step2: {
+                        hint: "Não recebeu um código?",
+                        resend: "Reenviar",
+                        resendSuccess: "A solicitação de reenvio do código foi enviada com sucesso",
+                        validation: {
+                            otpRequired: "Digite o código de verificação"
+                        },
+                        verificationFailure: "A verificação falhou. Tente novamente."
+                    }
+                },
+                email: {
+                    step1: {
+                        content: {
+                            label: "Digite seu novo endereço de e-mail"
+                        },
+                        heading: "Verifique seu endereço de e-mail",
+                        validation: {
+                            invalidFormat: "Digite um endereço de e-mail válido",
+                            required: "Endereço de e-mail obrigatório"
+                        }
+                    },
+                    step2: {
+                        content: {
+                            label: "Um código de verificação foi enviado para o seu e-mail. Digite o código abaixo para verificar seu endereço de e-mail."
+                        },
+                        heading: "Verifique seu endereço de e-mail"
+                    },
+                    step3: {
+                        content: "Sucesso! Seu endereço de e-mail foi verificado com sucesso."
+                    }
+                },
+                notifications: {
+                    resendError: {
+                        description: "Ocorreu um erro ao reenviar o código de verificação",
+                        message: "Algo deu errado"
+                    }
+                },
+                sms: {
+                    step1: {
+                        content: {
+                            label: "Digite seu novo número de celular"
+                        },
+                        heading: "Verifique seu número de celular",
+                        validation: {
+                            invalidFormat: "Digite um número de celular válido",
+                            required: "Número de celular obrigatório"
+                        }
+                    },
+                    step2: {
+                        content: {
+                            label: "Um código de verificação foi enviado para o seu número de celular. Digite o código abaixo para verificar seu número de celular."
+                        },
+                        heading: "Verifique seu número de celular"
+                    },
+                    step3: {
+                        content: "Sucesso! Seu número de celular foi verificado com sucesso."
+                    }
+                }
+            },
             preference: {
                 notifications: {
                     error: {
@@ -1590,6 +1753,10 @@ export const myAccount: MyAccountNS = {
         applications: {
             subTitle: "Descubra e acesse suas aplicações",
             title: "Aplicações"
+        },
+        consents: {
+            subTitle: "Gerencie os consentimentos que forneceu para aplicativos e políticas aceitas",
+            title: "Consentimentos"
         },
         overview: {
             subTitle: "Gerencie suas informações pessoais, segurança da conta e configurações de privacidade",
@@ -1688,6 +1855,24 @@ export const myAccount: MyAccountNS = {
             placeholders: {
                 emptyConsentList: {
                     heading: "Você não concedeu consentimento a nenhum aplicativo"
+                }
+            }
+        },
+        preferenceManagement: {
+            description: "Revise e gerencie suas preferências de comunicação.",
+            heading: "Preferências de comunicação",
+            placeholders: {
+                emptyConsentList: {
+                    heading: "Você não aceitou nenhuma preferência de comunicação"
+                }
+            }
+        },
+        policyConsentManagement: {
+            description: "Revise as políticas que você aceitou.",
+            heading: "Consentimentos de Política",
+            placeholders: {
+                emptyConsentList: {
+                    heading: "Você não aceitou nenhum consentimento de política"
                 }
             }
         },

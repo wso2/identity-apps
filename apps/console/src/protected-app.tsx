@@ -23,6 +23,7 @@ import {
     SecureApp,
     useAuthContext
 } from "@asgardeo/auth-react";
+import MoesifAnalyticsProvider from "@wso2is/admin.analytics.v1/providers/moesif-analytics-provider";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
 import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
 import { Config } from "@wso2is/admin.core.v1/configs/app";
@@ -431,14 +432,16 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         >
             <I18nextProvider i18n={ I18n.instance }>
                 <SubscriptionProvider tierName={ tenantTier?.tierName ?? TenantTier.FREE }>
-                    { renderApp && routesFiltered ? (<App
-                        onAgentManagementEnableStatusChange={ (status: boolean) => {
-                            setIsAgentManagementEnabledForOrg(status);
-                        } }
-                        onCustomerDataServiceStatusChange={ (status: boolean) => {
-                            setIsCustomerDataServiceEnabledForOrg(status);
-                        } }
-                    />) : <PreLoader /> }
+                    <MoesifAnalyticsProvider>
+                        { renderApp && routesFiltered ? (<App
+                            onAgentManagementEnableStatusChange={ (status: boolean) => {
+                                setIsAgentManagementEnabledForOrg(status);
+                            } }
+                            onCustomerDataServiceStatusChange={ (status: boolean) => {
+                                setIsCustomerDataServiceEnabledForOrg(status);
+                            } }
+                        />) : <PreLoader /> }
+                    </MoesifAnalyticsProvider>
                 </SubscriptionProvider>
             </I18nextProvider>
         </SecureApp>

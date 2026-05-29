@@ -22,7 +22,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, FormValue, Forms } from "@wso2is/forms";
+import { Field, FormValue, Forms } from "@wso2is/forms/legacy";
 import { Code, DocumentationLink, Hint, Message, useDocumentation } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -63,7 +63,7 @@ enum JITProvisioningConstants {
  * @param props - Props injected to the component.
  * @returns
  */
-export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisioningConfigurationFormPropsInterface> = (
+const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisioningConfigurationFormPropsInterface> = (
     props: JITProvisioningConfigurationFormPropsInterface
 ): ReactElement => {
 

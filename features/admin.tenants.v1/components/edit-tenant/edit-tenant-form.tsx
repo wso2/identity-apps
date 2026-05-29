@@ -41,7 +41,7 @@ import {
     MutableState,
     TextFieldAdapter,
     Tools
-} from "@wso2is/form";
+} from "@wso2is/forms";
 import { PasswordValidation } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
@@ -58,7 +58,7 @@ import "./edit-tenant-form.scss";
 /**
  * Props interface of {@link EditTenantForm}
  */
-export type EditTenantFormProps = IdentifiableComponentInterface & {
+type EditTenantFormProps = IdentifiableComponentInterface & {
     /**
      * Tenant object.
      */
@@ -69,11 +69,11 @@ export type EditTenantFormProps = IdentifiableComponentInterface & {
     onSubmit?: () => void;
 };
 
-export type EditTenantFormValues = Omit<Pick<Tenant, "domain" | "id">, "name" | "domain">
+type EditTenantFormValues = Omit<Pick<Tenant, "domain" | "id">, "name" | "domain">
     & { organizationHandle: string; organizationName: string }
     & Omit<TenantOwner, "additionalDetails" | "id">;
 
-export type EditTenantFormErrors = Partial<EditTenantFormValues>;
+type EditTenantFormErrors = Partial<EditTenantFormValues>;
 
 /**
  * Component to hold the tenant details edit/update form.

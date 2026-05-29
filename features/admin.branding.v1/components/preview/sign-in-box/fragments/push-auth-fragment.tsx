@@ -24,7 +24,7 @@ import useBrandingPreference from "../../../../hooks/use-branding-preference";
 /**
  * Proptypes for the push authentication fragment of login screen skeleton.
  */
-export type PushAuthFragmentInterface = IdentifiableComponentInterface;
+type PushAuthFragmentInterface = IdentifiableComponentInterface;
 
 /**
  * PushAuthFragment fragment component for the branding preview of Sign In box.

@@ -33,6 +33,7 @@ export interface UsersResourceEndpointsInterface {
     guests: string;
     guestsList: string;
     resendCode: string;
+    userSharingV2: string;
 }
 
 /**
@@ -62,5 +63,61 @@ export interface SCIMBulkEndpointInterface {
     failOnErrors: number;
     schemas: string[];
     Operations: SCIMBulkOperation[];
+}
+
+/**
+ * Interface for role with audience information.
+ */
+export interface RoleInterface {
+    displayName: string;
+    audience: {
+        display: string;
+        type: string;
+    };
+}
+
+/**
+ * Interface for shared organization information.
+ */
+export interface SharedOrganizationInterface {
+    orgId: string;
+    orgName: string;
+    sharedUserId: string;
+    sharedType: string;
+    sharingMode?: {
+        policy: string;
+        roleAssignment?: {
+            mode: string;
+            roles?: Array<RoleInterface>;
+        };
+    };
+    roles?: Array<RoleInterface>;
+}
+
+/**
+ * Interface for the user shared organizations response.
+ */
+export interface UserSharedOrganizationsResponse {
+    /**
+     * Pagination links.
+     */
+    links?: Array<{
+        href: string;
+        rel: string;
+    }>;
+    /**
+     * Sharing mode configuration.
+     */
+    sharingMode?: {
+        policy: string;
+        roleAssignment?: {
+            mode: string;
+            roles?: Array<RoleInterface>;
+        };
+    };
+    /**
+     * List of organizations where the user has shared access.
+     */
+    organizations?: Array<SharedOrganizationInterface>;
 }
 

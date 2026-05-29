@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,11 +24,15 @@ import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resou
 import useSubscribedAPIResources from "@wso2is/admin.applications.v1/api/use-subscribed-api-resources";
 import { AuthorizedAPIListItemInterface } from "@wso2is/admin.applications.v1/models/api-authorization";
 import { ApplicationInterface, ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
+import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { APIResourceBlockEntryInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form, FormPropsInterface } from "@wso2is/form";
+import { Field, Form, FormPropsInterface } from "@wso2is/forms";
 import { Code, ContentLoader, EmphasizedSegment, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import startCase from "lodash-es/startCase";
@@ -38,6 +42,7 @@ import React, {
     ReactElement,
     SyntheticEvent,
     useEffect,
+    useMemo,
     useRef,
     useState
 } from "react";
@@ -97,6 +102,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
     const [ selectedApplication, setSelectedApplication ] = useState<DropdownItemProps[]>([]);
     const [ isFormError, setIsFormError ] = useState<boolean>(false);
     const [ roleNameSearchQuery, setRoleNameSearchQuery ] = useState<string>(undefined);
+    const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
 
     const path: string[] = history.location.pathname.split("/");
     const appId: string = path[path.length - 1].split("#")[0];
@@ -106,6 +112,22 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
     const userRolesV3FeatureEnabled: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
     );
+
+    const blockedAPIResourceEntries: APIResourceBlockEntryInterface[] = useSelector(
+        (state: AppState) => state?.config?.ui?.apiResourceManagement?.blockedAPIResources
+    );
+
+    const blockedAPIResourceIds: Set<string> = useMemo(() => {
+        const ids: Set<string> = new Set<string>();
+
+        blockedAPIResourceEntries?.forEach((entry: APIResourceBlockEntryInterface) => {
+            if (entry?.api_id) {
+                ids.add(entry.api_id);
+            }
+        });
+
+        return ids;
+    }, [ blockedAPIResourceEntries ]);
 
     const createRoleFunction: (role: CreateRoleInterface) => Promise<AxiosResponse> =
         userRolesV3FeatureEnabled ? createRoleUsingV3Api : createRole;
@@ -137,6 +159,11 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
         const options: DropdownItemProps[] = [];
 
         subscribedAPIResourcesListData?.map((apiResource: AuthorizedAPIListItemInterface) => {
+            // Hide the blocked API resources.
+            if (blockedAPIResourceIds.has(apiResource?.id)) {
+                return;
+            }
+
             const isNotSelected: boolean = !selectedAPIResources
                 ?.find((selectedAPIResource: APIResourceInterface) => selectedAPIResource?.id === apiResource?.id);
 
@@ -151,7 +178,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
             }
         });
         setAPIResourcesListOptions(options);
-    }, [ subscribedAPIResourcesListData, selectedAPIResources ]);
+    }, [ subscribedAPIResourcesListData, selectedAPIResources, blockedAPIResourceIds ]);
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching API resources.
@@ -234,6 +261,8 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
     const addRole = ( role: CreateRoleInterface): void => {
         setIsSubmitting(true);
 
+        let limitReached: boolean = false;
+
         const selectedPermissionsList: CreateRolePermissionInterface[] = selectedPermissions?.flatMap(
             (permission: SelectedPermissionsInterface) => (
                 permission?.scopes?.map((scope: ScopeInterface) => ({ value: scope?.name })) || []
@@ -270,7 +299,16 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                     }));
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+                if (error?.response?.status === 403
+                    && error?.response?.data?.code
+                        === RoleConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {
+                    limitReached = true;
+                    setOpenLimitReachedModal(true);
+
+                    return;
+                }
+
                 if (!error.response || error.response.status === 401) {
                     dispatch(addAlert({
                         description: t("roles:notifications.createRole.error" +
@@ -297,7 +335,9 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
             })
             .finally(() => {
                 setIsSubmitting(false);
-                closeWizard();
+                if (!limitReached) {
+                    closeWizard();
+                }
             });
     };
 
@@ -337,6 +377,22 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
 
         return errors;
     };
+
+    if (openLimitReachedModal) {
+        return (
+            <TierLimitReachErrorModal
+                actionLabel={ t("roles:notifications.tierLimitReachedError.emptyPlaceholder.action") }
+                handleModalClose={ () => {
+                    setOpenLimitReachedModal(false);
+                    closeWizard();
+                } }
+                header={ t("roles:notifications.tierLimitReachedError.heading") }
+                description={ t("roles:notifications.tierLimitReachedError.emptyPlaceholder.subtitles") }
+                message={ t("roles:notifications.tierLimitReachedError.emptyPlaceholder.title") }
+                openModal={ openLimitReachedModal }
+            />
+        );
+    }
 
     return (
         <Modal

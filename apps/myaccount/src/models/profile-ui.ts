@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 
 import { IdentifiableComponentInterface, PatchOperationRequest, ProfileSchemaInterface } from "@wso2is/core/models";
-import { FormValue, Validation } from "@wso2is/forms";
+import { FormValue, Validation } from "@wso2is/forms/legacy";
 import { ProfilePatchOperationValue } from "./profile";
 
 /**
@@ -79,6 +79,10 @@ export interface ProfileFieldFormRendererPropsInterface<T> extends IdentifiableC
      */
     isEmailVerificationEnabled: boolean;
     /**
+     * Whether the email verification with OTP is enabled or not.
+     */
+    isEmailVerificationWithOTPEnabled: boolean;
+    /**
      * Whether mobile number verification is enabled or not.
      */
     isMobileVerificationEnabled: boolean;
@@ -96,12 +100,13 @@ export interface ProfileFieldFormRendererPropsInterface<T> extends IdentifiableC
     formId: string;
 }
 
-export interface ProfileFieldFormPropsInterface<T>
+interface ProfileFieldFormPropsInterface<T>
     extends Omit<
         ProfileFieldFormRendererPropsInterface<T>,
         | "triggerUpdate"
         | "profileInfo"
         | "isEmailVerificationEnabled"
+        | "isEmailVerificationWithOTPEnabled"
         | "isMobileVerificationEnabled"
         | "flattenedProfileSchema"
         | "flattenedProfileData"
@@ -158,6 +163,10 @@ export interface SingleEmailFieldFormPropsInterface
      */
     isVerificationEnabled: boolean;
     /**
+     * Whether the email verification with OTP is enabled or not.
+     */
+    isVerificationWithOTPEnabled: boolean;
+    /**
      * Verification pending email address.
      */
     pendingEmailAddress: string;
@@ -176,6 +185,10 @@ export interface MultiEmailFieldFormPropsInterface extends
      * Whether the verification is enabled or not.
      */
     isVerificationEnabled: boolean;
+    /**
+     * Whether the email verification with OTP is enabled or not.
+     */
+    isVerificationWithOTPEnabled: boolean;
     /**
      * Primary email address.
      */
@@ -251,7 +264,7 @@ export interface SwitchFieldFormPropsInterface
         "isActive" | "isRequired" | "profileInfo" | "onEditClicked" | "onEditCancelClicked"
     > {}
 
-export interface DOBFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string> {}
+interface DOBFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string> {}
 
 export interface DropdownFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string | string[]> {
     /**
@@ -284,3 +297,8 @@ export interface DatePickerFieldFormPropsInterface extends ProfileFieldFormProps
      */
     onValidate?: (value: string) => string | undefined;
 }
+
+export enum OTPVerificationChannel {
+    SMS = "SMS",
+    EMAIL = "EMAIL"
+};

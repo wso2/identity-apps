@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -66,7 +66,8 @@ class VisualFlowConstants {
         WidgetTypes.MicrosoftFederation,
         WidgetTypes.GithubFederation,
         WidgetTypes.PasskeyEnrollment,
-        WidgetTypes.MagicLink
+        WidgetTypes.MagicLink,
+        ElementTypes.Policy
     ];
 
     public static readonly FLOW_BUILDER_FLOW_COMPLETION_VIEW_ALLOWED_RESOURCE_TYPES: string[] = [
@@ -77,13 +78,15 @@ class VisualFlowConstants {
     ];
 
     public static readonly FLOW_BUILDER_FORM_ALLOWED_RESOURCE_TYPES: string[] = [
+        ElementTypes.Choice,
         ElementTypes.Input,
         ElementTypes.Button,
         ElementTypes.Typography,
         ElementTypes.RichText,
         ElementTypes.Divider,
         ElementTypes.Image,
-        ElementTypes.Resend
+        ElementTypes.Resend,
+        ElementTypes.Policy
     ];
 
     public static readonly FLOW_BUILDER_STATIC_CONTENT_ALLOWED_RESOURCE_TYPES: string[] = [

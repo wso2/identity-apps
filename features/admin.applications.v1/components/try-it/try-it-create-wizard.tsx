@@ -21,7 +21,9 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { getUserDetails } from "@wso2is/admin.users.v1/api/users";
 import { AddConsumerUserWizard } from "@wso2is/admin.users.v1/components/wizard/add-consumer-user-wizard";
-import { AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, ProfileInfoInterface, TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ContentLoader,
@@ -328,7 +330,7 @@ const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
                 }
                 //TODO handle error
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
 
                 if (error.response.status === 403 &&
                     error?.response?.data?.code ===

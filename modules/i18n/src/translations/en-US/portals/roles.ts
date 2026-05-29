@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -207,6 +207,7 @@ export const roles: rolesNS = {
                     placeholder: "Restore agents"
                 },
                 search: {
+                    moreItemsMessage: "Only the recent agents are listed. Type to search for others ...",
                     placeholder: "Search agents"
                 }
             },
@@ -387,6 +388,7 @@ export const roles: rolesNS = {
                     placeholder: "Restore users"
                 },
                 search: {
+                    moreItemsMessage: "Only the recent users are listed. Type to search for others ...",
                     placeholder: "Search users"
                 }
             },
@@ -517,6 +519,12 @@ export const roles: rolesNS = {
         }
     },
     notifications: {
+        apiLimitReachedError: {
+            error: {
+                description: "You have reached the maximum number of roles allowed.",
+                message: "Failed to create the role"
+            }
+        },
         createPermission: {
             error: {
                 description: "{{description}}",
@@ -576,6 +584,16 @@ export const roles: rolesNS = {
                 description: "An error occurred while retrieving roles.",
                 message: "Something went wrong"
             }
+        },
+        tierLimitReachedError: {
+            emptyPlaceholder: {
+                action: "View Plans",
+                subtitles: "You can contact the organization administrator or (if you are the " +
+                    "administrator) upgrade your subscription to increase the allowed limit.",
+                title: "You have reached the maximum number of roles allowed " +
+                    "for this organization."
+            },
+            heading: "You've reached the maximum limit for roles"
         },
         updateRole: {
             error: {

@@ -23,7 +23,9 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import {
     ApplicationRoleGroupsAPIResponseInterface,
@@ -79,7 +81,7 @@ export const getApplicationRolesList = (
         .then((response: AxiosResponse) => {
             return Promise.resolve(response.data as ApplicationRolesResponseInterface);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -91,7 +93,7 @@ export const getApplicationRolesList = (
  *
  * @returns A promise containing the response.
  */
-export const getAuthorizedAPIList = (appId: string):Promise<AuthorizedAPIListItemInterface[]> => {
+const getAuthorizedAPIList = (appId: string):Promise<AuthorizedAPIListItemInterface[]> => {
     const requestConfig: AxiosRequestConfig = {
         method: HttpMethods.GET,
         url: `${ store.getState().config.endpoints.authzEndpoint }/applications/${ appId }/authorized-apis`
@@ -101,7 +103,7 @@ export const getAuthorizedAPIList = (appId: string):Promise<AuthorizedAPIListIte
         .then((response: AxiosResponse) => {
             return Promise.resolve(response.data as AuthorizedAPIListItemInterface[]);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -114,7 +116,7 @@ export const getAuthorizedAPIList = (appId: string):Promise<AuthorizedAPIListIte
  *
  * @returns A promise containing the response.
  */
-export const createRole = (appId: string, payload: CreateRolePayloadInterface):Promise<any> => {
+const createRole = (appId: string, payload: CreateRolePayloadInterface):Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
         data: payload,
         method: HttpMethods.POST,
@@ -125,7 +127,7 @@ export const createRole = (appId: string, payload: CreateRolePayloadInterface):P
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -139,7 +141,7 @@ export const createRole = (appId: string, payload: CreateRolePayloadInterface):P
  *
  * @returns A promise containing the response.
  */
-export const updateRolePermissions = (
+const updateRolePermissions = (
     appId: string,
     roleName: string,
     payload: UpdateRolePayloadInterface
@@ -154,7 +156,7 @@ export const updateRolePermissions = (
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -167,7 +169,7 @@ export const updateRolePermissions = (
  *
  * @returns A promise containing the response.
  */
-export const deleteRole = (appId: string, roleName: string):Promise<any> => {
+const deleteRole = (appId: string, roleName: string):Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
         method: HttpMethods.DELETE,
         url:  `${ store.getState().config.endpoints.authzEndpoint }/applications/${ appId }/roles/${ roleName }`
@@ -177,7 +179,7 @@ export const deleteRole = (appId: string, roleName: string):Promise<any> => {
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -189,7 +191,7 @@ export const deleteRole = (appId: string, roleName: string):Promise<any> => {
  * @param orgId - The current organization id
  * @returns the shared application details of a sub organization
  */
-export const useSharedApplicationData = <Data = SharedApplicationAPIResponseInterface,
+const useSharedApplicationData = <Data = SharedApplicationAPIResponseInterface,
     Error = RequestErrorInterface> (
         appId: string,
         orgId: string
@@ -223,7 +225,7 @@ export const useSharedApplicationData = <Data = SharedApplicationAPIResponseInte
  * @param sharedApplications - The shared applications list
  * @returns the promise containing the response
  */
-export const createRoleInSharedApplications = (
+const createRoleInSharedApplications = (
     appId: string,
     roleName: string,
     sharedApplications: SharedApplicationDataInterface[]
@@ -244,7 +246,7 @@ export const createRoleInSharedApplications = (
         .then((response: AxiosResponse) => {
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -343,7 +345,7 @@ export const updateApplicationRoleMappedGroups = (
         .then((response: AxiosResponse) => {
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -413,7 +415,7 @@ export const updateIdentityProviderAssignedGroups = (
         .then((response: AxiosResponse) => {
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -460,7 +462,7 @@ export const getAllApplicationRolesList = ():Promise<ApplicationRoleInterface[]>
         .then((response: AxiosResponse) => {
             return Promise.resolve(response.data.app_roles as ApplicationRoleInterface[]);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };

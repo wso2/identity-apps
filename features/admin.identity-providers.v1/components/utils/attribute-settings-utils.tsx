@@ -33,15 +33,15 @@ import {
     IdentityProviderProvisioningClaimInterface
 } from "../../models";
 
-export interface DropdownOptionsInterface {
+interface DropdownOptionsInterface {
     key: string;
     text: string;
     value: string;
 }
 
-export const LocalDialectURIL: string = "http://wso2.org/claims";
+const LocalDialectURIL: string = "http://wso2.org/claims";
 
-export const getLocalDialectURI = (): string => {
+const getLocalDialectURI = (): string => {
 
     let localDialect: string = "http://wso2.org/claims";
 
@@ -64,11 +64,11 @@ export const getLocalDialectURI = (): string => {
  * Given a local claim it will test whether it
  * contains `identity` in the claim attribute.
  */
-export const isLocalIdentityClaim = (claim: string): boolean => {
+const isLocalIdentityClaim = (claim: string): boolean => {
     return /identity/.test(claim);
 };
 
-export const createDropdownOption = (selectedClaimsWithMapping: IdentityProviderCommonClaimMappingInterface[],
+const createDropdownOption = (selectedClaimsWithMapping: IdentityProviderCommonClaimMappingInterface[],
     availableLocalClaims: IdentityProviderClaimInterface[]):
     DropdownOptionsInterface[] => {
     return isEmpty(selectedClaimsWithMapping) ?
@@ -94,7 +94,7 @@ export const createDropdownOption = (selectedClaimsWithMapping: IdentityProvider
         );
 };
 
-export const buildProvisioningClaimList = (claimMappings: IdentityProviderCommonClaimMappingInterface[],
+const buildProvisioningClaimList = (claimMappings: IdentityProviderCommonClaimMappingInterface[],
     availableLocalClaims: IdentityProviderClaimInterface[]): IdentityProviderClaimInterface[] => {
 
     return isEmpty(claimMappings)
@@ -111,7 +111,7 @@ export const buildProvisioningClaimList = (claimMappings: IdentityProviderCommon
             });
 };
 
-export const isClaimExistsInIdPClaims = (mapping: IdentityProviderCommonClaimMappingInterface,
+const isClaimExistsInIdPClaims = (mapping: IdentityProviderCommonClaimMappingInterface,
     selectedClaimsWithMapping: IdentityProviderCommonClaimMappingInterface[]): boolean => {
     // Mapped value of the selectedClaim is non-other than IdP's claim uri.
     return find(selectedClaimsWithMapping,
@@ -119,7 +119,7 @@ export const isClaimExistsInIdPClaims = (mapping: IdentityProviderCommonClaimMap
             element.mappedValue === mapping.claim.uri) !== undefined;
 };
 
-export const updateAvailableLocalClaims = (
+const updateAvailableLocalClaims = (
     setAvailableLocalClaims: Dispatch<SetStateAction<IdentityProviderClaimInterface[]>>
 ): void => {
     getAllLocalClaims(null)
@@ -137,7 +137,7 @@ export const updateAvailableLocalClaims = (
         });
 };
 
-export const initSelectedClaimMappings = (
+const initSelectedClaimMappings = (
     initialClaims: IdentityProviderClaimsInterface,
     setSelectedClaimsWithMapping: Dispatch<SetStateAction<IdentityProviderCommonClaimMappingInterface[]>>
 ): void => {
@@ -151,7 +151,7 @@ export const initSelectedClaimMappings = (
     );
 };
 
-export const initSelectedProvisioningClaimsWithDefaultValues = (
+const initSelectedProvisioningClaimsWithDefaultValues = (
     initialClaims: IdentityProviderClaimsInterface,
     setSelectedProvisioningClaimsWithDefaultValue:
         Dispatch<SetStateAction<IdentityProviderCommonClaimMappingInterface[]>>
@@ -170,7 +170,7 @@ export const initSelectedProvisioningClaimsWithDefaultValues = (
     );
 };
 
-export const initSubjectAndRoleURIs = (
+const initSubjectAndRoleURIs = (
     initialClaims: IdentityProviderClaimsInterface,
     setSubjectClaimUri: Dispatch<SetStateAction<string>>,
     setRoleClaimUri: Dispatch<SetStateAction<string>>
@@ -179,7 +179,7 @@ export const initSubjectAndRoleURIs = (
     setRoleClaimUri(initialClaims?.roleClaim?.uri);
 };
 
-export const handleGetAllLocalClaimsError = (error: IdentityAppsApiException): void => {
+const handleGetAllLocalClaimsError = (error: IdentityAppsApiException): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(addAlert({
             description: I18n.instance.t("authenticationProvider:" +

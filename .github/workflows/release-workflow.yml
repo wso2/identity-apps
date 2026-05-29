@@ -29,7 +29,8 @@ on:
 
 # Prevent multiple concurrent runs of this workflow. New runs will be queued.
 concurrency:
-    group: release
+    # This creates a unique group for every branch.
+    group: ${{ github.workflow }}-${{ github.ref_name }}
     cancel-in-progress: false
 
 env:
@@ -48,8 +49,8 @@ jobs:
             matrix:
                 node-version: [lts/*]
                 maven-version: [3.8.6]
-                java-version: [11]
-                pnpm-version: [8.7.4]
+                java-version: [21]
+                pnpm-version: [10.33.0]
         steps:
             - name: ⬇️ Checkout
               id: checkout
@@ -70,7 +71,7 @@ jobs:
               with:
                   node-version: ${{ matrix.node-version }}
 
-            - name: ☕ Set up JDK 11
+            - name: ☕ Set up JDK 21
               id: jdk-setup
               uses: actions/setup-java@v3
               with:

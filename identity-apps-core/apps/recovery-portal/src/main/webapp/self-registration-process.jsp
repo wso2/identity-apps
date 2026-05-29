@@ -41,6 +41,7 @@
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.Base64" %>
@@ -66,6 +67,9 @@
 
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
+
+<%-- Resolve request headers --%>
+<jsp:directive.include file="request-header-resolver.jsp"/>
 
 <%
     Log log = LogFactory.getLog(this.getClass());
@@ -93,7 +97,7 @@
     boolean allowchangeusername = Boolean.parseBoolean(request.getParameter("allowchangeusername"));
     String userLocaleForClaim = request.getHeader("Accept-Language");
     String username = Encode.forJava(request.getParameter("username"));
-    String password = request.getParameter("password");
+    char[] password = request.getParameter("password") != null ? request.getParameter("password").toCharArray() : null;
     String sessionDataKey = request.getParameter("sessionDataKey");
     String sp = Encode.forJava(request.getParameter("sp"));
     String spId = "";
@@ -304,7 +308,7 @@
         }
     }
 
-    if (StringUtils.isBlank(password)) {
+    if (isBlankPassword(password)) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                 "Password.cannot.be.empty"));
@@ -416,6 +420,9 @@
             requestHeaders.put("g-recaptcha-response", request.getParameter("g-recaptcha-response"));
         }
 
+        // Add client IP and user agent to the request headers.
+        addNetworkRequestHeaders(requestHeaders, request);
+
         SelfRegisterApi selfRegisterApi = new SelfRegisterApi();
         String responseContent = selfRegisterApi.mePostCall(selfUserRegistrationRequest, requestHeaders);
         if (IdentityManagementEndpointConstants.PENDING_APPROVAL.equals(responseContent)) {
@@ -512,6 +519,27 @@
             }
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
+    } finally {
+        if (password != null) {
+            Arrays.fill(password, '\u0000');
+        }
+    }
+%>
+
+<%!
+    private boolean isBlankPassword(char[] password) {
+
+        if (password == null || password.length == 0) {
+            return true;
+        }
+
+        for (char c : password) {
+            if (!Character.isWhitespace(c)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 %>
 

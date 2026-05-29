@@ -50,7 +50,7 @@ export interface LocaleMeta {
     /**
      * Set of available namespaces
      */
-    namespaces: string[];
+    namespaces?: string[];
     /**
      * Set of namespace paths.
      */

@@ -23,7 +23,7 @@ import ResourcePanelItem, { ResourcePanelItemProps } from "./resource-panel-item
 /**
  * Props interface of {@link ResourcePanelStatic}
  */
-export type ResourcePanelStaticPropsInterface = ResourcePanelItemProps &
+type ResourcePanelStaticPropsInterface = ResourcePanelItemProps &
     IdentifiableComponentInterface &
     Omit<HTMLAttributes<HTMLDivElement>, "resource">;
 

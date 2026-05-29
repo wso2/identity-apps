@@ -1,5 +1,16 @@
 # @wso2is/admin.sms-providers.v1
 
+## 2.25.211
+
+### Patch Changes
+
+- [#10131](https://github.com/wso2/identity-apps/pull/10131) [`e12a7d52749596d3728c79b33ae7763e81b90e13`](https://github.com/wso2/identity-apps/commit/e12a7d52749596d3728c79b33ae7763e81b90e13) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove redundant sms provider extension
+
+- Updated dependencies [[`e12a7d52749596d3728c79b33ae7763e81b90e13`](https://github.com/wso2/identity-apps/commit/e12a7d52749596d3728c79b33ae7763e81b90e13)]:
+  - @wso2is/admin.extensions.v1@2.42.1
+  - @wso2is/admin.core.v1@2.56.1
+  - @wso2is/admin.connections.v1@2.36.48
+
 ## 2.25.210
 
 ### Patch Changes

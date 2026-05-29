@@ -94,6 +94,105 @@ export const user: userNS = {
                 part2: "in the format YYYY-MM-DD"
             }
         },
+        sections: {
+            shareUser: {
+                addAsyncSharingNotification: {
+                    description: "User sharing process has started. You will be notified once the process is complete.",
+                    message: "User sharing in progress"
+                },
+                getSharedOrganizations: {
+                    genericError: {
+                        description: "An error occurred while fetching shared organizations.",
+                        message: "Error occurred while fetching shared organizations"
+                    }
+                }
+            },
+            sharedAccess: {
+                allRolesAndOrgsSharingMessage: "All roles will be assigned to all existing and future organizations.",
+                allUserRolesSharingMessage: "All roles of the user in the current organization will be assigned.",
+                assignedRolesLabel: "Policy Roles",
+                commonRoleSharingHint: "Configure the set of roles that will be assigned to the shared user in all existing and future organizations.",
+                commonRoleSharingLabel: "Assigned roles",
+                currentlyAssignedRolesLabel: "Currently Assigned Roles",
+                doNotShareUser: "Do not share user with any organization",
+                individualRoleSharingHint: "Configure role assignment for specific organizations individually.",
+                individualRoleSharingLabel: "Individually assigned roles",
+                noRolesAndOrgsSharingMessage: "No roles will be assigned to the shared user in all existing and future organizations.",
+                nonResidentUserPlaceholder: {
+                    description: "User sharing is only applicable to users managed by this organization. " +
+                        "This user is managed by a parent organization, so sharing configurations " +
+                        "are not applicable here."
+                },
+                notifications: {
+                    fetchOrganizations: {
+                        genericError: {
+                            description: "An error occurred while fetching organizations.",
+                            message: "Error occurred while fetching organizations"
+                        }
+                    },
+                    fetchUserRoles: {
+                        genericError: {
+                            description: "An error occurred while fetching user roles.",
+                            message: "Error occurred while fetching user roles"
+                        }
+                    },
+                    noOrganizationsSelected: {
+                        description: "Please select at least one organization to share the user with.",
+                        message: "No organizations selected"
+                    },
+                    share: {
+                        error: {
+                            description: "An error occurred while sharing user. {{error}}",
+                            message: "Error occurred while sharing user"
+                        },
+                        success: {
+                            description: "User shared with all organizations successfully.",
+                            message: "Shared successfully"
+                        }
+                    },
+                    unshare: {
+                        error: {
+                            description: "An error occurred while unsharing user. {{error}}",
+                            message: "Error occurred while unsharing user"
+                        },
+                        success: {
+                            description: "User unshared successfully.",
+                            message: "Unshared successfully"
+                        }
+                    }
+                },
+                roleAudience: {
+                    application: "application/{{appName}}",
+                    organization: "organization"
+                },
+                roleAvailabilityInfo: "Only roles that are already available in the child organizations will be assigned to the shared user.",
+                searchAvailableRolesPlaceholder: "Search available roles",
+                shareAllRoles: "Assign all roles",
+                shareAllUser: "Share user with all organizations",
+                shareRoleSubsetWithAllOrgs: "Assign only a subset of roles to the user in all organizations",
+                shareSelectedRoles: "Assign selected roles",
+                shareSelectedUser: "Share user with selected organizations",
+                shareTypeSwitchModal: {
+                    description: "Choose how you want to proceed:",
+                    header: "Switch to selective sharing",
+                    message: "You are about to switch from sharing with all organizations to selective sharing.",
+                    preserveStateLabel1: "Preserve current sharing",
+                    preserveStateLabel2: "Keep user shared with existing organizations and switch to selective mode.",
+                    resetToDefaultLabel1: "Reset to default",
+                    resetToDefaultLabel2: "Unshare user from all organizations and start fresh with selective sharing."
+                },
+                shareUserWithFutureChildOrgs: "Share user with the selected roles accross future child organizations",
+                sharingSettingsLabel: "Role assignment settings for",
+                showShareAllWarningModal: {
+                    assertionHint: "Please confirm your action.",
+                    description: "This will share the user with selected roles across ALL existing and future organizations. This action will affect all current and future organizations in your system.",
+                    header: "Share with all organizations",
+                    message: "You are about to share this user, along with their assigned roles, across all organizations."
+                },
+                subTitle: "Configure how this user should be shared across organizations",
+                title: "Sharing Policy"
+            }
+        },
         userActionZoneGroup: {
             impersonateUserZone: {
                 actionTitle: "Impersonate User",

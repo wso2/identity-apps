@@ -20,11 +20,19 @@ import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
-import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import {
+    FeatureAccessConfigInterface,
+    FeatureStatus,
+    useCheckFeatureStatus,
+    useRequiredScopes
+} from "@wso2is/access-control";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import {
     ConfirmationModal,
     DangerZone,
@@ -97,6 +105,16 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
     const hasWebhookUpdatePermissions: boolean = useRequiredScopes(webhooksFeatureConfig?.scopes?.update);
     const hasWebhookCreatePermissions: boolean = useRequiredScopes(webhooksFeatureConfig?.scopes?.create);
     const hasWebhookDeletePermissions: boolean = useRequiredScopes(webhooksFeatureConfig?.scopes?.delete);
+
+    const webhooksFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["WEBHOOKS_FEATURE_GATE"]
+    );
+
+    useEffect(() => {
+        if (webhooksFeatureStatus && webhooksFeatureStatus !== FeatureStatus.ENABLED) {
+            navigateToWebhooksList();
+        }
+    }, [ webhooksFeatureStatus, navigateToWebhooksList ]);
 
     // Extract webhook ID from URL
     const webhookId: string = useMemo(() => {
@@ -316,7 +334,7 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
                         handleSuccess("createWebhook");
                         navigateToWebhookEditById(response.id);
                     })
-                    .catch((error: AxiosError) => {
+                    .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                         handleError(error, "createWebhook");
                     })
                     .finally(() => {
@@ -347,7 +365,7 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
                         handleSuccess("updateWebhook");
                         mutateWebhook();
                     })
-                    .catch((error: AxiosError) => {
+                    .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                         handleError(error, "updateWebhook");
                     })
                     .finally(() => {
@@ -386,7 +404,7 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
                         handleSuccess("updateWebhookStatus", { status: newStatus ? "active" : "inactive" });
                         mutateWebhook();
                     })
-                    .catch((error: AxiosError) => {
+                    .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                         setIsActive(!newStatus);
                         handleError(error, "updateWebhookStatus");
                     })
@@ -412,7 +430,7 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
                 handleSuccess("retryWebhookState", { requestType });
                 mutateWebhook();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 handleError(error, "retryWebhookState");
             })
             .finally(() => {
@@ -429,7 +447,7 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
                 handleSuccess("deleteWebhook");
                 navigateToWebhooksList();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 handleError(error, "deleteWebhook");
             })
             .finally(() => {

@@ -25,7 +25,8 @@ import {
     AlertLevels,
     RoleGroupsInterface,
     RolesInterface,
-    TestableComponentInterface
+    TestableComponentInterface,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
@@ -367,7 +368,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                 handleCloseAddNewGroupModal();
                 onRoleUpdate(role.id);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error?.response?.status === 404) {
                     return;
                 }

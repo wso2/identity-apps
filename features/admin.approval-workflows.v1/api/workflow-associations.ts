@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,9 +19,11 @@
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { WorkflowAssociationPayload } from "../models/workflow-associations";
+import { WorkflowAssociationListItemInterface, WorkflowAssociationPayload } from "../models/workflow-associations";
 
 /**
  * Get an axios instance.
@@ -51,7 +53,7 @@ export const addWorkflowAssociation = (data: WorkflowAssociationPayload): Promis
         .then((response: AxiosResponse) => {
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -76,8 +78,38 @@ export const deleteWorkflowAssociationById = (id: string): Promise<any> => {
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
+        });
+};
+
+/**
+ * Update a workflow association with a given workflow association ID.
+ *
+ * @param id - Id of the workflow association which needs to be updated.
+ * @param data - The data used to update the workflow association.
+ * @returns A promise that resolves to the updated workflow association.
+ */
+export const updateWorkflowAssociationById = (
+    id: string,
+    data: WorkflowAssociationPayload
+): Promise<WorkflowAssociationListItemInterface> => {
+    const requestConfig: RequestConfigInterface = {
+        data,
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: store.getState()?.config?.endpoints?.workflowAssociations + "/" + id
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<WorkflowAssociationListItemInterface>) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
+            return Promise.reject(error?.response?.data as WorkflowAssociationListItemInterface | unknown);
         });
 };
 

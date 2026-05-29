@@ -185,12 +185,13 @@
         "type": "INPUT",
         "version": "0.1.0",
         "deprecated": false,
+        "variant": "CHOICE",
         "display": {
-            "label": "Choice",
+            "label": "Radio Button",
+            "displayName": "Choice",
             "image": "assets/images/icons/boolean.svg",
-            "showOnResourcePanel": false
+            "showOnResourcePanel": true
         },
-        "variant": "DROPDOWN",
         "config": {
             "hint": "",
             "label": "Choice",
@@ -206,11 +207,6 @@
                     "label": "Option 2",
                     "key": "option2",
                     "value": "option2"
-                },
-                {
-                    "label": "Option 3",
-                    "key": "option3",
-                    "value": "option3"
                 }
             ]
         }

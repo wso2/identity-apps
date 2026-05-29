@@ -728,7 +728,8 @@
                         <%
                             if (StringUtils.isNotBlank(termsOfUseURL) && StringUtils.isNotBlank(privacyPolicyURL)) {
                         %>
-                        <p class="mt-2 mb-0 left privacy">When you continue, you are agreeing to our
+                        <p class="mt-2 mb-0 left privacy">
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "when.you.continue.you.are.agreeing")%>
                             <a href="<%= StringEscapeUtils.escapeHtml4(termsOfUseURL) %>" target="_blank"
                             data-testid="registration-form-tos-link"
                             rel="noopener noreferrer">
@@ -744,7 +745,8 @@
                         <%
                             } else if (StringUtils.isNotBlank(termsOfUseURL)) {
                         %>
-                        <p class="mt-2 mb-0 left privacy">When you continue, you are agreeing to our
+                        <p class="mt-2 mb-0 left privacy">
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "when.you.continue.you.are.agreeing")%>
                             <a href="<%= StringEscapeUtils.escapeHtml4(termsOfUseURL) %>" target="_blank"
                                 data-testid="registration-form-tos-link" rel="noopener noreferrer"
                             >
@@ -754,7 +756,8 @@
                         <%
                             } else if (StringUtils.isNotBlank(privacyPolicyURL)) {
                         %>
-                        <p class="mt-2 mb-0 left privacy">When you continue, you are agreeing to our
+                        <p class="mt-2 mb-0 left privacy">
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "when.you.continue.you.are.agreeing")%>
                             <a href="<%= StringEscapeUtils.escapeHtml4(privacyPolicyURL) %>" target="_blank"
                                 data-testid="registration-form-privacy-link" rel="noopener noreferrer"
                             >

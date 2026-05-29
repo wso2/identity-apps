@@ -26,9 +26,10 @@ import TableHead from "@oxygen-ui/react/TableHead";
 import TableRow from "@oxygen-ui/react/TableRow";
 import { TrashIcon } from "@oxygen-ui/react-icons";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
+import useGetAllLocalClaims from "../../../api/use-get-all-local-claims";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import useEnableLegacyFlows, { LegacyFlowType } from "@wso2is/admin.core.v1/hooks/use-enable-legacy-flows";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -62,13 +63,14 @@ import {
     ProfileSchemaInterface,
     SharedProfileValueResolvingMethod,
     TestableComponentInterface,
-    UniquenessScope
+    UniquenessScope,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { Property } from "@wso2is/core/src/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
-import { DropDownItemInterface } from "@wso2is/form/src";
-import { DynamicField , KeyValue } from "@wso2is/forms";
+import { Field, Form } from "@wso2is/forms";
+import { DropDownItemInterface } from "@wso2is/forms";
+import { DynamicField , KeyValue } from "@wso2is/forms/legacy";
 import {
     ConfirmationModal,
     CopyInputField,
@@ -226,7 +228,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const { UIConfig } = useUIConfig();
 
-    const enableLegacyFlows: boolean = UIConfig?.flowExecution?.enableLegacyFlows ?? true;
+    const isLegacyRegistrationFlowEnabled: boolean = useEnableLegacyFlows(LegacyFlowType.SELF_REGISTRATION);
 
     const isAgentAttribute: boolean = useMemo(() => {
         const agentAttributeProperty: Property = claim?.properties?.find(
@@ -487,7 +489,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             .then((response: GovernanceConnectorInterface) => {
                 setConnector(response);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error?.response?.data?.detail) {
                     dispatch(
                         addAlert({
@@ -813,7 +815,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             (isEndUserRequired || !!values.endUserSupportedByDefault)
                             : claim?.profiles?.endUser?.supportedByDefault
                     },
-                    ...(enableLegacyFlows && {
+                    ...(isLegacyRegistrationFlowEnabled && {
                         selfRegistration: {
                             readOnly: values?.selfRegistrationReadOnly !== undefined
                                 ? !!values.selfRegistrationReadOnly
@@ -963,7 +965,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         }
                     />
                 </TableCell>
-                { enableLegacyFlows && (
+                { isLegacyRegistrationFlowEnabled && (
                     <TableCell align="center">
                         <Field.Checkbox
                             ariaLabel="Display by default in self-registration"
@@ -1153,7 +1155,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         }
                     />
                 </TableCell>
-                { enableLegacyFlows && (
+                { isLegacyRegistrationFlowEnabled && (
                     <TableCell align="center">
                         <Field.Checkbox
                             ariaLabel="Required in self-registration"
@@ -1219,7 +1221,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         } }
                     />
                 </TableCell>
-                { enableLegacyFlows && (
+                { isLegacyRegistrationFlowEnabled && (
                     <TableCell align="center">
                         <Tooltip
                             trigger={ (
@@ -1841,7 +1843,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                                 <TableCell align="center">
                                                     { t("claims:local.forms.profiles.endUserProfile") }
                                                 </TableCell>
-                                                { enableLegacyFlows && (
+                                                { isLegacyRegistrationFlowEnabled && (
                                                     <TableCell align="center">
                                                         { t("claims:local.forms.profiles.selfRegistration") }
                                                     </TableCell>

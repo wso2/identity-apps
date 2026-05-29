@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,6 +19,8 @@
 import { useRequiredScopes } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1";
+import { brandingConfig } from "@wso2is/admin.extensions.v1/configs/branding";
+import { BrandingCustomLayoutContentInterface } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
     FunctionComponent,
@@ -29,6 +31,12 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Icon, Segment } from "semantic-ui-react";
+import {
+    DEFAULT_LAYOUT_CSS_CONTENT,
+    DEFAULT_LAYOUT_CSS_CONTENT_WITH_POLICY_PAGES,
+    DEFAULT_LAYOUT_HTML_CONTENT,
+    DEFAULT_LAYOUT_JS_CONTENT
+} from "./data/default-content";
 import { EditorViewTabs } from "./editor-view";
 import useBrandingPreference from "../../hooks/use-branding-preference";
 import { StickyTabPaneActionPanel } from "../sticky-tab-pane-action-panel";
@@ -61,13 +69,28 @@ export const CustomPageEditor: FunctionComponent<CustomPageEditorInterface> = ({
      */
     useEffect(() => {
 
-        if (!brandingPreference?.preference?.layout?.content) {
+        if (!brandingPreference?.preference) {
             return;
         }
 
-        setHtml(brandingPreference.preference.layout.content?.html ?? "");
-        setCss(brandingPreference.preference.layout.content?.css ?? "");
-        setJs(brandingPreference.preference.layout.content?.js ?? "");
+        const content: BrandingCustomLayoutContentInterface | undefined =
+            brandingPreference.preference.layout?.content;
+
+        const isCustomContentConfigured: boolean = !!(content?.html || content?.css || content?.js);
+
+        if (isCustomContentConfigured) {
+            setHtml(content?.html ?? "");
+            setCss(content?.css ?? "");
+            setJs(content?.js ?? "");
+        } else {
+            setHtml(DEFAULT_LAYOUT_HTML_CONTENT);
+            setCss(
+                brandingConfig.usePolicyPagesInDefaultCustomContent
+                    ? DEFAULT_LAYOUT_CSS_CONTENT_WITH_POLICY_PAGES
+                    : DEFAULT_LAYOUT_CSS_CONTENT
+            );
+            setJs(DEFAULT_LAYOUT_JS_CONTENT);
+        }
     }, [ brandingPreference ]);
 
     /**

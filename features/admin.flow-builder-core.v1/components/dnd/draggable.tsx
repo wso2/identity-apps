@@ -25,7 +25,7 @@ import React, { CSSProperties, FC, PropsWithChildren, ReactElement } from "react
 /**
  * Props interface of {@link Draggable}
  */
-export interface DraggableProps extends UseDraggableInput, IdentifiableComponentInterface {
+interface DraggableProps extends UseDraggableInput, IdentifiableComponentInterface {
     /**
      * Set of types that the draggable can be dropped into.
      */

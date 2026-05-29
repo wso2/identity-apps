@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,78 +16,46 @@
  * under the License.
  */
 
+import { AsgardeoSPAClient, HttpError, HttpInstance, HttpRequestConfig, HttpResponse } from "@asgardeo/auth-react";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { ProfileConstants } from "../constants";
 import { HttpMethods } from "../models";
 import { store } from "../store";
 
 /**
- * Updates the user's password.
+ * Get an axios instance.
+ */
+const httpClient: HttpInstance = AsgardeoSPAClient.getInstance().httpRequest.bind(
+    AsgardeoSPAClient.getInstance()
+);
+
+/**
+ * Updates the signed-in user's password.
  *
- * @remarks
- * We're currently using basic auth to validate the current password. If the password is
- * different, the server responds with a status code `401`. The callbacks handle 401 errors and
- * terminates the session. To bypass the callbacks disable the handler when the client is initialized.
- * TODO: Remove this once the API supports current password validation.
- * See https://github.com/wso2/product-is/issues/10014 for progress.
+ * Sends a `POST` request to the password change endpoint with the current and new passwords.
  *
  * @param currentPassword - currently registered password.
  * @param newPassword - newly assigned password.
- * @param isSubOrgUser - Whether the user belongs to a sub-organization.
- * @param userOrganizationHandle - The user's organization Handle.
  *
- * @returns axiosResponse - a promise containing the response.
+ * @returns A promise that resolves with the HTTP response when the request succeeds with status `204`.
  */
-export const updatePassword = (currentPassword: string, newPassword: string, isSubOrgUser: boolean = false,
-    userOrganizationHandle: string = null): Promise<AxiosResponse> => {
+export const updatePassword = (currentPassword: string, newPassword: string): Promise<HttpResponse<unknown>> => {
 
-    // If the `httpRequest` method from SDK is used for the request, it causes the 401 to be handled by
-    // the callbacks set fot the application which will log the user out. Hence, axios will be used
-    // for now to send the request since bearer token is not used for authorization we can get away with axios.
-    // TODO: Implement a method in `AsgardeoSPAClient` http module to disable/enable the handler.
-    // See https://github.com/asgardio/asgardio-js-oidc-sdk/issues/45 for progress.
-    // httpRequest.disableHandler();
-
-    const username: string = [
-        store.getState().authenticationInformation?.profileInfo.userName,
-        "@",
-        userOrganizationHandle
-    ].join("");
-    // In case the password contains non-ascii characters, converting to valid ascii format.
-    const encoder: TextEncoder = new TextEncoder();
-    const encodedPassword: string = String.fromCharCode(...encoder.encode(currentPassword));
-    const url: string = store.getState().config.endpoints.me;
-    let updatedUrl: string = url;
-
-    if (isSubOrgUser) {
-        updatedUrl = url.replace(/\/t\/[^/]+\//, `/t/${userOrganizationHandle}/`);
-    }
-
-    const requestConfig: AxiosRequestConfig = {
+    const requestConfig: HttpRequestConfig = {
         data: {
-            Operations: [
-                {
-                    op: "add",
-                    value: {
-                        password: newPassword
-                    }
-                }
-            ],
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+            currentPassword: currentPassword,
+            newPassword: newPassword
         },
         headers: {
-            "Authorization": `Basic ${btoa(username + ":" + encodedPassword)}`,
             "Content-Type": "application/json"
         },
-        method: HttpMethods.PATCH,
-        url: updatedUrl,
-        withCredentials: true
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.passwordChange
     };
 
-    return axios.request(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
+    return httpClient(requestConfig)
+        .then((response: HttpResponse) => {
+            if (response.status !== 204) {
                 throw new IdentityAppsApiException(
                     ProfileConstants.CHANGE_PASSWORD_INVALID_STATUS_CODE_ERROR,
                     null,
@@ -99,7 +67,7 @@ export const updatePassword = (currentPassword: string, newPassword: string, isS
 
             return Promise.resolve(response);
         })
-        .catch((error: any) => {
+        .catch((error: HttpError) => {
             throw new IdentityAppsApiException(
                 ProfileConstants.CHANGE_PASSWORD_ERROR,
                 error.stack,

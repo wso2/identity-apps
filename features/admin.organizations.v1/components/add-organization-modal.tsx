@@ -23,7 +23,7 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import { Heading, Hint, LinkButton, Message, PrimaryButton, Text } from "@wso2is/react-components";
 import debounce from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
@@ -203,7 +203,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
             return false;
         }
 
-        // 2. First character must be an alphabet.
+        // 2. First character must be an alphanumeric character.
         if (!orgHandle.match(OrganizationManagementConstants.ORG_HANDLE_FIELD_CONSTRAINTS.ORG_HANDLE_FIRST_ALPHABET)) {
             setOrgHandleError(t("organizations:forms.addOrganization.orgHandle.validation.invalidFirstCharacter"));
 
@@ -631,7 +631,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                             <Grid.Row className="p-0">
                                                 { renderOrgHandleAlphabetValidationIcon() }
                                                 <Text muted size={ 12 }>
-                                                    Must begin with an alphabet character
+                                                    Must begin with an alphanumeric character
                                                 </Text>
                                             </Grid.Row>
                                             <Grid.Row className="p-0">
@@ -643,7 +643,8 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                             <Grid.Row className="p-0">
                                                 { renderOrgHandleAlphanumericValidationIcon() }
                                                 <Text muted size={ 12 }>
-                                                    Only consist of lowercase alphanumerics
+                                                    Only consist of lowercase alphanumerics,
+                                                    periods (.), hyphens (-), and underscores (_)
                                                     { isOrgHandleDotExtensionMandatory && (
                                                         <> (Must be in the format of <strong>abc.com</strong>)</>
                                                     ) }

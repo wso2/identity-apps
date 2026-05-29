@@ -24,17 +24,22 @@ import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Grid from "@oxygen-ui/react/Grid";
 import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
+import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/modal-with-side-panel";
 import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
+import FeatureLockedBanner from "@wso2is/admin.feature-gate.v1/components/feature-locked-banner";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, HttpErrorResponseDataInterface,
+    IdentifiableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { URLUtils } from "@wso2is/core/utils";
-import { Field, Wizard2, WizardPage, composeValidators } from "@wso2is/form";
+import { Field, Wizard2, WizardPage, composeValidators } from "@wso2is/forms";
 import {
     CertFileStrategy,
     ContentLoader,
@@ -119,7 +124,7 @@ interface WizardStepInterface {
 
 type AvailableProtocols = "oidc" | "saml";
 type SamlConfigurationMode = "file" | "manual";
-type CertificateInputType = "jwks" | "pem";
+type CertificateInputType = "jwks" | "pem" | "metadata";
 type MinMax = { min: number; max: number };
 type FormErrors = { [ key: string ]: string };
 
@@ -154,6 +159,12 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
     const [ pastedPEMContent, setPastedPEMContent ] = useState<string>(null);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
+    const enterpriseConnectionFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CONNECTIONS_ENTERPRISE
+    );
+    const isFeatureLocked: boolean = enterpriseConnectionFeatureStatus !== undefined
+        && enterpriseConnectionFeatureStatus !== FeatureStatus.ENABLED;
+
     // Dynamic UI state
     const [ nextShouldBeDisabled, setNextShouldBeDisabled ] = useState<boolean>(true);
 
@@ -181,7 +192,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
     }, [ initWizard ]);
 
     useEffect(() => {
-        setSelectedCertInputType(selectedProtocol === "oidc" ? "jwks" : "pem");
+        setSelectedCertInputType(selectedProtocol === "oidc" ? "jwks" : "metadata");
 
         const templateId: string = selectedProtocol === "saml"
             ? "enterprise-saml-idp"
@@ -333,6 +344,8 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                     { key: "IsSLORequestAccepted", value: "false" }
                 ];
             }
+            // Certificates: bind the metadata URI if exists otherwise pem.
+            identityProvider[ "certificate" ][ "samlMetadataUri" ] = values.saml_metadata_url ?? EMPTY_STRING;
             identityProvider[ "certificate" ][ "certificates" ] = [ pemString ? btoa(pemString) : EMPTY_STRING ];
 
         }
@@ -371,7 +384,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 }
                 onIDPCreate();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
 
                 if (error.response.status === 403 &&
@@ -466,6 +479,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                 minLength={ IDP_NAME_LENGTH.min }
                 required={ true }
                 width={ 15 }
+                disabled={ isFeatureLocked }
                 format = { (values: any) => {
                     return values.toString().trimStart();
                 } }
@@ -515,7 +529,9 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                                 width: "auto"
                             } }
                             contentTopBorder={ false }
+                            renderDisabledItemsAsGrayscale={ false }
                             showTooltips={ true }
+                            disabled={ isFeatureLocked }
                             data-componentid={ `${ componentId }-form-wizard-oidc-selection-card` }
                         />
                         <SelectionCard
@@ -534,8 +550,8 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                                 width: "auto"
                             } }
                             showTooltips={ true }
-                            disabled={ false }
-                            overlay={ renderDimmerOverlay() }
+                            disabled={ isFeatureLocked }
+                            overlay={ !isFeatureLocked && renderDimmerOverlay() }
                             contentTopBorder={ false }
                             renderDisabledItemsAsGrayscale={ false }
                             overlayOpacity={ 0.6 }
@@ -757,54 +773,107 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                     setNextShouldBeDisabled(ifFieldsHave(errors));
                 }
 
+                if (selectedProtocol === "saml" && selectedCertInputType === "metadata") {
+                    if (values.saml_metadata_url?.length > 0) {
+                        errors.saml_metadata_url = composeValidators(
+                            length(SAML_METADATA_URL_LENGTH),
+                            checkValueIsLoopBackCall,
+                            isUrl
+                        )(values.saml_metadata_url);
+                    }
+                    setNextShouldBeDisabled(ifFieldsHave(errors));
+                }
+
                 return errors;
             } }>
             <Grid container spacing={ { md: 3, xs: 2 } } columns={ { md: 12, sm: 8, xs: 4 } }>
                 <Grid xs={ 2 } sm={ 4 } md={ 12 }>
-                    <p><b>Mode of certificate configuration</b></p>
-                    { (selectedProtocol === "oidc") && (
-                        <FormControl>
-                            <RadioGroup
-                                row
-                                name="certificate-type"
-                                onChange={ (event: ChangeEvent<HTMLInputElement>) =>
-                                    setSelectedCertInputType((event.target as HTMLInputElement).value as any) }
-                                value={ selectedCertInputType }
-                            >
+                    <p><b>{ t("authenticationProvider:templates.enterprise.wizard" +
+                        ".certificates.heading") }</b></p>
+                    <FormControl>
+                        <RadioGroup
+                            row
+                            name="certificate-type"
+                            onChange={ (event: ChangeEvent<HTMLInputElement>) =>
+                                setSelectedCertInputType(
+                                    (event.target as HTMLInputElement).value as CertificateInputType
+                                ) }
+                            value={ selectedCertInputType }
+                        >
+                            { selectedProtocol === "oidc" && (
                                 <FormControlLabel
                                     control={ <Radio /> }
-                                    label="JWKS endpoint"
+                                    label={ t("authenticationProvider:templates.enterprise" +
+                                        ".wizard.certificates.mode.jwks") }
                                     value="jwks"
                                 />
+                            ) }
+                            { selectedProtocol === "saml" && (
                                 <FormControlLabel
                                     control={ <Radio /> }
-                                    label="Use PEM certificate"
-                                    value="pem"
+                                    label={ t("authenticationProvider:templates.enterprise" +
+                                        ".wizard.certificates.mode.samlMetadataUri") }
+                                    value="metadata"
                                 />
-                            </RadioGroup>
-                        </FormControl>
-                    ) }
+                            ) }
+                            <FormControlLabel
+                                control={ <Radio /> }
+                                label={ t("authenticationProvider:templates.enterprise" +
+                                    ".wizard.certificates.mode.pem") }
+                                value="pem"
+                            />
+                        </RadioGroup>
+                    </FormControl>
                 </Grid>
             </Grid>
             <Divider hidden/>
             { (selectedProtocol === "oidc" && selectedCertInputType === "jwks") && (
                 <>
                     <Field.Input
-                        ariaLabel="JWKS endpoint URL"
+                        ariaLabel={ t("authenticationProvider:templates.enterprise" +
+                            ".wizard.certificates.jwksUrl.label") }
                         inputType="url"
                         name="jwks_endpoint"
-                        label="JWKS endpoint URL"
+                        label={ t("authenticationProvider:templates.enterprise" +
+                            ".wizard.certificates.jwksUrl.label") }
                         required={ false }
                         maxLength={ JWKS_URL_LENGTH.max }
                         minLength={ JWKS_URL_LENGTH.min }
                         width={ 15 }
                         initialValue={ EMPTY_STRING }
-                        placeholder="Enter JWKS endpoint URL"
+                        placeholder={ t("authenticationProvider:templates.enterprise" +
+                            ".wizard.certificates.jwksUrl.placeholder") }
                         data-componentid={ `${ componentId }-form-wizard-oidc-jwks-endpoint-url` }
                     />
                     <Hint>
-                        { config.ui.productName } will use this URL to obtain keys to verify the signed
-                        responses from your external IdP
+                        { t("authenticationProvider:templates.enterprise" +
+                            ".wizard.certificates.jwksUrl.hint",
+                        { productName: config.ui.productName }) }
+                    </Hint>
+                </>
+            ) }
+            { (selectedProtocol === "saml" && selectedCertInputType === "metadata") && (
+                <>
+                    <Field.Input
+                        ariaLabel={ t("authenticationProvider:templates.enterprise" +
+                            ".wizard.certificates.samlMetadataUri.label") }
+                        inputType="url"
+                        name="saml_metadata_url"
+                        label={ t("authenticationProvider:templates.enterprise" +
+                            ".wizard.certificates.samlMetadataUri.label") }
+                        required={ false }
+                        maxLength={ SAML_METADATA_URL_LENGTH.max }
+                        minLength={ SAML_METADATA_URL_LENGTH.min }
+                        width={ 15 }
+                        initialValue={ EMPTY_STRING }
+                        placeholder={ t("authenticationProvider:templates.enterprise" +
+                            ".wizard.certificates.samlMetadataUri.placeholder") }
+                        data-componentid={ `${ componentId }-form-wizard-saml-metadata-uri` }
+                    />
+                    <Hint>
+                        { t("authenticationProvider:templates.enterprise" +
+                            ".wizard.certificates.samlMetadataUri.hint",
+                        { productName: config.ui.productName }) }
                     </Hint>
                 </>
             ) }
@@ -832,16 +901,20 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                                 !result.valid
                             );
                         } }
-                        uploadButtonText="Upload Certificate File"
-                        dropzoneText="Drag and drop a certificate file here."
-                        pasteAreaPlaceholderText="Paste IdP certificate in PEM format."
+                        uploadButtonText={ t("authenticationProvider:templates.enterprise" +
+                            ".wizard.certificates.pem.uploadButtonText") }
+                        dropzoneText={ t("authenticationProvider:templates.enterprise" +
+                            ".wizard.certificates.pem.dropzoneText") }
+                        pasteAreaPlaceholderText={ t("authenticationProvider:templates.enterprise" +
+                            ".wizard.certificates.pem.pasteAreaPlaceholderText") }
                         icon={ getCertificateIllustrations().uploadPlaceholder }
                         placeholderIcon={ <ArticleOutlinedIcon /> }
                         data-componentid={ `${ componentId }-form-wizard-${ selectedProtocol }-pem-certificate` }
                     />
                     <Hint>
-                        { config.ui.productName } will use this certificate to verify the signed
-                        responses from your external IdP.
+                        { t("authenticationProvider:templates.enterprise" +
+                            ".wizard.certificates.pem.hint",
+                        { productName: config.ui.productName }) }
                     </Hint>
                 </>
             ) }
@@ -990,6 +1063,12 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                         className="content-container"
                         data-componentid={ `${ componentId }-modal-content-2` }>
                         { alert && alertComponent }
+                        { isFeatureLocked && (
+                            <FeatureLockedBanner
+                                data-componentid={ `${componentId}-feature-locked-banner` }
+                                sx={ { marginBottom: 2 } }
+                            />
+                        ) }
                         <Wizard2
                             ref={ wizardRef }
                             initialValues={ initialValues }
@@ -1021,7 +1100,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                                 { /*Check whether we have more steps*/ }
                                 { currentWizardStep < wizardSteps.length - 1 && (
                                     <PrimaryButton
-                                        disabled={ nextShouldBeDisabled }
+                                        disabled={ nextShouldBeDisabled || isFeatureLocked }
                                         floated="right"
                                         onClick={ () => {
                                             wizardRef.current.gotoNextPage();
@@ -1038,7 +1117,7 @@ export const EnterpriseConnectionCreateWizard: FC<EnterpriseConnectionCreateWiza
                                     // element. This is because we pass a callback to
                                     // onSubmit which triggers a dedicated handler.
                                     <PrimaryButton
-                                        disabled={ nextShouldBeDisabled || isSubmitting }
+                                        disabled={ nextShouldBeDisabled || isSubmitting || isFeatureLocked }
                                         type="submit"
                                         floated="right"
                                         onClick={ () => {
@@ -1084,6 +1163,7 @@ const SP_EID_LENGTH: MinMax = { max: 240, min: 3 };
 const SSO_URL_LENGTH: MinMax = { max: 2048, min: 10 };
 const IDP_EID_LENGTH: MinMax = { max: 2048, min: 5 };
 const JWKS_URL_LENGTH: MinMax = { max: 2048, min: 0 };
+const SAML_METADATA_URL_LENGTH: MinMax = { max: 2048, min: 0 };
 
 // General constants
 const EMPTY_STRING: string = "";

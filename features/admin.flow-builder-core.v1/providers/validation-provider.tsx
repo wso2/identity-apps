@@ -23,7 +23,7 @@ import Notification, { NotificationType } from "../models/notification";
 /**
  * Props interface of ValidationProvider.
  */
-export interface ValidationProviderProps {
+interface ValidationProviderProps {
     /**
      * Validation configuration settings.
      */

@@ -19,7 +19,7 @@
 /*
  * Application roles constants.
  */
-export class ApplicationRolesConstants {
+class ApplicationRolesConstants {
 
     /**
      * Application role name regex pattern.

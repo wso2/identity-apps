@@ -37,7 +37,7 @@ import ValidationErrorBoundary from "../../../validation-panel/validation-error-
 /**
  * Props interface of {@link ReorderableElement}
  */
-export interface ReorderableComponentPropsInterface
+interface ReorderableComponentPropsInterface
     extends IdentifiableComponentInterface,
         Omit<SortableProps, "element">,
         Omit<BoxProps, "children" | "id"> {
@@ -49,6 +49,10 @@ export interface ReorderableComponentPropsInterface
      * Additional props needed for the draggable functionality.
      */
     draggableProps?: Partial<GetDragItemProps>;
+    /**
+     * When true, hides the edit button and disables double-click to open the property panel.
+     */
+    disableEdit?: boolean;
 }
 
 const PencilIcon = ({ width = 16, height = 16 }: SVGProps<SVGSVGElement>): ReactElement => (
@@ -87,10 +91,11 @@ const GridDotsVerticalIcon = ({ width = 16, height = 16 }: SVGProps<SVGSVGElemen
  * @param props - Props injected to the component.
  * @returns ReorderableElement component.
  */
-export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInterface> = ({
+const ReorderableElement: FunctionComponent<ReorderableComponentPropsInterface> = ({
     id,
     element,
     className,
+    disableEdit = false,
     "data-componentid": componentId = "sortable-component",
     ...rest
 }: ReorderableComponentPropsInterface): ReactElement => {
@@ -148,18 +153,20 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
                     alignItems="center"
                     className={ classNames("reorderable-component", className) }
                     data-componentid={ `${componentId}-${element.type}` }
-                    onDoubleClick={ handlePropertyPanelOpen }
+                    onDoubleClick={ disableEdit ? undefined : handlePropertyPanelOpen }
                 >
                     <Box className="flow-builder-dnd-actions">
                         <Handle label="Drag" cursor="grab" ref={ handleRef }>
                             <GridDotsVerticalIcon />
                         </Handle>
-                        <Handle
-                            label="Edit"
-                            onClick={ handlePropertyPanelOpen }
-                        >
-                            <PencilIcon />
-                        </Handle>
+                        { !disableEdit && (
+                            <Handle
+                                label="Edit"
+                                onClick={ handlePropertyPanelOpen }
+                            >
+                                <PencilIcon />
+                            </Handle>
+                        ) }
                         <Handle
                             label="Delete"
                             onClick={ handleElementDelete }

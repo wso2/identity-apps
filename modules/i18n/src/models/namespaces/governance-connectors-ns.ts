@@ -739,6 +739,11 @@ export interface governanceConnectorsNS {
                         userClaimUpdateEmailEnableVerification: {
                             hint: string;
                             label: string;
+                            recoveryMethods: {
+                                emailLink: string;
+                                emailOTP: string;
+                                label: string;
+                            }
                         };
                         userClaimUpdateEmailVerificationCodeExpiryTime: {
                             hint: string;
@@ -781,6 +786,21 @@ export interface governanceConnectorsNS {
                             label: string;
                         };
                     };
+                };
+            };
+        };
+        consentManagement: {
+            categoryTitle: string;
+            connectors: {
+                policyConsents: {
+                    description: string;
+                    friendlyName: string;
+                    header: string;
+                };
+                preferenceManagement: {
+                    description: string;
+                    friendlyName: string;
+                    header: string;
                 };
             };
         };

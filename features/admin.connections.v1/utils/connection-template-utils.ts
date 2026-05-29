@@ -217,11 +217,14 @@ export class ConnectionTemplateManagementUtils {
     }
 }
 
-export const getCertificateOptionsForTemplate = (templateId: string): { JWKS: boolean; PEM: boolean } | undefined => {
+export const getCertificateOptionsForTemplate = (
+    templateId: string
+): { JWKS: boolean; PEM: boolean; SAML_METADATA_URI: boolean } | undefined => {
     if (templateId === SIWEIdPTemplate.templateId) {
         return {
             JWKS: false,
-            PEM: false
+            PEM: false,
+            SAML_METADATA_URI: false
         };
     }
 

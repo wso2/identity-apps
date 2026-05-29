@@ -1,5 +1,73 @@
 # @wso2is/admin.tenants.v1
 
+## 2.29.29
+
+### Patch Changes
+
+- [#10272](https://github.com/wso2/identity-apps/pull/10272) [`80f84ddeb8e4a73882f889b48660824ad364e30f`](https://github.com/wso2/identity-apps/commit/80f84ddeb8e4a73882f889b48660824ad364e30f) Thanks [@savindi7](https://github.com/savindi7)! - Update Branding logos.
+
+- Updated dependencies [[`80f84ddeb8e4a73882f889b48660824ad364e30f`](https://github.com/wso2/identity-apps/commit/80f84ddeb8e4a73882f889b48660824ad364e30f)]:
+  - @wso2is/admin.core.v1@2.57.9
+  - @wso2is/admin.extensions.v1@2.43.7
+
+## 2.29.28
+
+### Patch Changes
+
+- [#10219](https://github.com/wso2/identity-apps/pull/10219) [`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove duplicate exports
+
+- Updated dependencies [[`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c)]:
+  - @wso2is/admin.validation.v1@2.28.4
+  - @wso2is/admin.users.v1@2.38.36
+  - @wso2is/admin.core.v1@2.57.6
+  - @wso2is/dynamic-forms@2.4.42
+  - @wso2is/forms@2.3.27
+
+## 2.29.27
+
+### Patch Changes
+
+- [#9969](https://github.com/wso2/identity-apps/pull/9969) [`05091041be686c64db9914e3d3287a834cd26945`](https://github.com/wso2/identity-apps/commit/05091041be686c64db9914e3d3287a834cd26945) Thanks [@github-actions](https://github.com/apps/github-actions)! - Move trial activation logic from admin.tenants.v1 to admin.subscription.v1
+
+- Updated dependencies []:
+  - @wso2is/admin.users.v1@2.38.14
+  - @wso2is/admin.core.v1@2.55.14
+
+## 2.29.26
+
+### Patch Changes
+
+- [#9949](https://github.com/wso2/identity-apps/pull/9949) [`6137b75af107167be60698614ceacb2bed1216df`](https://github.com/wso2/identity-apps/commit/6137b75af107167be60698614ceacb2bed1216df) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add trial activation mechanism
+
+- Updated dependencies [[`6137b75af107167be60698614ceacb2bed1216df`](https://github.com/wso2/identity-apps/commit/6137b75af107167be60698614ceacb2bed1216df)]:
+  - @wso2is/admin.core.v1@2.55.13
+  - @wso2is/admin.users.v1@2.38.13
+
+## 2.29.25
+
+### Patch Changes
+
+- [#9875](https://github.com/wso2/identity-apps/pull/9875) [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - Revert Axios and SDK version bumps
+
+- Updated dependencies [[`c834b18928cdfc09710c5e7067668206d006e68a`](https://github.com/wso2/identity-apps/commit/c834b18928cdfc09710c5e7067668206d006e68a), [`877d726905edf898c33c615cd887f8ed0a071a0e`](https://github.com/wso2/identity-apps/commit/877d726905edf898c33c615cd887f8ed0a071a0e), [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d)]:
+  - @wso2is/admin.users.v1@2.38.3
+  - @wso2is/i18n@2.37.5
+  - @wso2is/admin.organizations.v1@2.28.2
+  - @wso2is/admin.feature-gate.v1@1.9.2
+  - @wso2is/admin.extensions.v1@2.40.30
+  - @wso2is/admin.validation.v1@2.28.3
+  - @wso2is/admin.core.v1@2.55.3
+  - @wso2is/access-control@3.5.3
+  - @wso2is/theme@2.9.5
+  - @wso2is/core@2.12.10
+  - @wso2is/form@2.10.1
+
+## 2.29.24
+
+### Patch Changes
+
+- [#9681](https://github.com/wso2/identity-apps/pull/9681) [`93e8e87cccec91029508eb10cbd91c2ba78f46f6`](https://github.com/wso2/identity-apps/commit/93e8e87cccec91029508eb10cbd91c2ba78f46f6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix infinite scrolling of root tenant list in Console
+
 ## 2.29.23
 
 ### Patch Changes

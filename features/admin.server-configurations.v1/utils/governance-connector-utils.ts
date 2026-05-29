@@ -184,7 +184,6 @@ export class GovernanceConnectorUtils {
     public static getCombinedPredefinedConnectorCategories(): Array<any> {
 
         return this.getPredefinedConnectorCategories().map((category: any) => {
-
             const additionalConnectors: any = serverConfigurationConfig.getConnectorCategoryExtension()
                 .find((el: any) => el.id === category.id);
 
@@ -346,6 +345,40 @@ export class GovernanceConnectorUtils {
                 displayOrder: 1,
                 id: "user-onboarding",
                 title: "User Onboarding"
+            },
+            {
+                connectors: [
+                    {
+                        description: I18n.instance.t("governanceConnectors:connectorCategories" +
+                            ".consentManagement.connectors.policyConsents.description"),
+                        friendlyName: I18n.instance.t("governanceConnectors:connectorCategories" +
+                            ".consentManagement.connectors.policyConsents.friendlyName"),
+                        header: I18n.instance.t("governanceConnectors:connectorCategories" +
+                            ".consentManagement.connectors.policyConsents.header"),
+                        id: ServerConfigurationsConstants.POLICY_CONSENTS_CONNECTOR_ID,
+                        isCustom: false,
+                        name: "policyConsents",
+                        route: AppConstants.getPaths().get("POLICY_CONSENTS"),
+                        testId: "policy-consents-card"
+                    },
+                    {
+                        description: I18n.instance.t("governanceConnectors:connectorCategories" +
+                            ".consentManagement.connectors.preferenceManagement.description"),
+                        friendlyName: I18n.instance.t("governanceConnectors:connectorCategories" +
+                            ".consentManagement.connectors.preferenceManagement.friendlyName"),
+                        header: I18n.instance.t("governanceConnectors:connectorCategories" +
+                            ".consentManagement.connectors.preferenceManagement.header"),
+                        id: ServerConfigurationsConstants.PREFERENCE_MANAGEMENT_CONNECTOR_ID,
+                        isCustom: false,
+                        name: "preferenceManagement",
+                        route: AppConstants.getPaths().get("PREFERENCE_MANAGEMENT"),
+                        testId: "preference-management-card"
+                    }
+                ],
+                displayOrder: 1,
+                id: ServerConfigurationsConstants.CONSENT_MANAGEMENT_CATEGORY_ID,
+                title: I18n.instance.t("governanceConnectors:connectorCategories" +
+                    ".consentManagement.categoryTitle")
             },
             {
                 connectors: [

@@ -30,6 +30,22 @@ export interface ApiResourcesNS {
             message: string;
         };
     };
+    notifications: {
+        apiLimitReachedError: {
+            error: {
+                description: string;
+                message: string;
+            };
+        };
+        tierLimitReachedError: {
+            emptyPlaceholder: {
+                action: string;
+                subtitles: string;
+                title: string;
+            };
+            heading: string;
+        };
+    };
     tabs: {
         scopes: {
             button: string;

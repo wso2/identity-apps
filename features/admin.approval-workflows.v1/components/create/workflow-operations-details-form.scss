@@ -2,7 +2,6 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 6px;
     margin-top: 10px;
     margin-bottom: 15px;
 }
@@ -30,5 +29,21 @@
     .operations-autocomplete-input {
         margin-bottom: 10px;
     }
+}
 
+.operations-table-container {
+    margin-top: 16px;
+    margin-bottom: 24px;
+
+    .ui.table thead th {
+        background-color: #fff !important;
+    }
+
+    .operation-rules-actions {
+        button {
+            padding: 4px 12px;
+            min-height: 32px;
+            height: 32px;
+        }
+    }
 }

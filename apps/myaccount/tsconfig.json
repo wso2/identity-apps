@@ -5,7 +5,9 @@
         "declarationDir": "dist/types",
         "lib": [ "ESNext", "DOM", "DOM.Iterable", "ScriptHost" ],
         "outDir": "dist/src",
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "skipDefaultLibCheck": true,
+        "types": [ "node", "vite/client", "jest", "@testing-library/jest-dom" ]
     },
     "exclude": [
         "build",
@@ -16,6 +18,7 @@
         "scripts",
         "**/test-configs/*",
         "jest.config.ts",
+        "webpack.config.ts",
         "**/tests/*",
         "**/__tests__/*",
         "**/__mocks__/*",

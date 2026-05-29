@@ -27,10 +27,12 @@ import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import { RuleExecuteCollectionWithoutIdInterface, RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { RulesProvider } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import {
     FinalForm,
-    FormRenderProps } from "@wso2is/form";
+    FormRenderProps } from "@wso2is/forms";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import pickBy from "lodash-es/pickBy";
@@ -111,7 +113,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
     const { t } = useTranslation();
 
     const handleSuccess: (operation: string) => void = useHandleSuccess();
-    const handleError: (error: AxiosError, operation: string) => void = useHandleError();
+    const handleError: (error: AxiosError<HttpErrorResponseDataInterface>, operation: string) => void = useHandleError();
 
     const showRuleComponent: boolean = isFeatureEnabled(
         actionsFeatureConfig, ActionsConstants.FEATURE_DICTIONARY.get("PRE_UPDATE_PROFILE_RULE"));
@@ -229,6 +231,22 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     authProperties.value = values.valueAuthProperty;
 
                     break;
+                case AuthenticationType.CLIENT_CREDENTIAL:
+                    authProperties.clientId = values.clientIdAuthProperty;
+                    authProperties.clientSecret = values.clientSecretAuthProperty;
+                    authProperties.tokenEndpoint = values.tokenEndpointAuthProperty;
+                    authProperties.scopes = values.scopesAuthProperty;
+
+                    break;
+                case AuthenticationType.PASSWORD_CREDENTIAL:
+                    authProperties.clientId = values.clientId_passwordCredentialAuthProperty;
+                    authProperties.clientSecret = values.clientSecret_passwordCredentialAuthProperty;
+                    authProperties.tokenEndpoint = values.tokenEndpoint_passwordCredentialAuthProperty;
+                    authProperties.username = values.username_passwordCredentialAuthProperty;
+                    authProperties.password = values.password_passwordCredentialAuthProperty;
+                    authProperties.scopes = values.scopes_passwordCredentialAuthProperty;
+
+                    break;
                 case AuthenticationType.NONE:
                     break;
                 default:
@@ -256,7 +274,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     handleSuccess(ActionsConstants.CREATE);
                     mutateActions();
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     handleError(error, ActionsConstants.CREATE);
                 })
                 .finally(() => {
@@ -283,7 +301,7 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     setIsAuthenticationUpdateFormState(false);
                     mutateAction();
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     handleError(error, ActionsConstants.UPDATE);
                 })
                 .finally(() => {

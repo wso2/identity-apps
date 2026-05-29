@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,16 +25,16 @@ import React, { FunctionComponent, ReactElement, ReactNode, memo, useCallback } 
 /**
  * Props for selectable card component.
  */
-export interface SelectableCardPropsInterface extends IdentifiableComponentInterface {
+interface SelectableCardPropsInterface extends IdentifiableComponentInterface {
     isSelected: boolean;
     onClick: () => void;
     icon: ReactNode;
     title: string;
     description?: string;
-    variant?: "default" | "compact";
+    variant?: "default" | "compact" | "large";
 }
 
-type CardVariant = "default" | "compact";
+type CardVariant = "default" | "compact" | "large";
 
 interface StyledCardProps {
     isSelected?: boolean;
@@ -42,78 +42,80 @@ interface StyledCardProps {
 }
 
 /**
- * Styled card container with variant support.
- * - default: horizontal layout with icon background, left accent border when selected
+ * Styled card container.
+ * - default: vertical layout with prominent icon, hover elevation, selection checkmark
  * - compact: smaller horizontal layout for grid display
  */
 const StyledCard: any = styled(Box, {
     shouldForwardProp: (prop: string) => prop !== "isSelected" && prop !== "variant"
-})<StyledCardProps>(({ theme, isSelected, variant = "default" }: StyledCardProps & { theme: Theme }) => ({
-    "&:focus-visible": {
-        outline: `2px solid ${theme.palette.primary.main}`,
-        outlineOffset: 2
-    },
-    "&:hover": {
+})<StyledCardProps>(({ theme, isSelected, variant = "default" }: StyledCardProps & { theme: Theme }) => {
+    const isCompact: boolean = variant === "compact";
+
+    return {
+        "&:focus-visible": {
+            outline: `2px solid ${theme.palette.primary.main}`,
+            outlineOffset: 2
+        },
+        "&:hover": {
+            ...(!isSelected && {
+                boxShadow: theme.shadows[3],
+                transform: "translateY(-1px)"
+            })
+        },
+        alignItems: isCompact ? "center" : "flex-start",
         backgroundColor: isSelected
-            ? alpha(theme.palette.primary.main, 0.08)
-            : alpha(theme.palette.action.hover, 0.04)
-    },
-    alignItems: "center",
-    backgroundColor: isSelected
-        ? alpha(theme.palette.primary.main, 0.08)
-        : theme.palette.background.paper,
-    border: `1px solid ${isSelected ? "transparent" : theme.palette.divider}`,
-    borderRadius: theme.shape.borderRadius * 1.5,
-    boxShadow: isSelected ? `inset 4px 0 0 0 ${theme.palette.primary.main}` : "none",
-    cursor: "pointer",
-    display: "flex",
-    flexDirection: "row",
-    transition: "all 0.2s ease-in-out",
-    ...(variant === "compact" ? {
-        gap: theme.spacing(1.5),
-        padding: theme.spacing(2, 2.5)
-    } : {
-        gap: theme.spacing(2),
-        padding: theme.spacing(2, 2.5)
-    })
-}));
+            ? alpha(theme.palette.primary.main, 0.06)
+            : theme.palette.background.paper,
+        border: isSelected
+            ? `1.5px solid ${theme.palette.primary.main}`
+            : `1.5px solid ${theme.palette.divider}`,
+        borderRadius: theme.shape.borderRadius * 2,
+        cursor: "pointer",
+        display: "flex",
+        flexDirection: isCompact ? "row" : "row",
+        gap: isCompact ? theme.spacing(1.5) : theme.spacing(2.5),
+        padding: isCompact
+            ? theme.spacing(2, 2.5)
+            : theme.spacing(2.5, 3),
+        position: "relative",
+        transition: "all 0.2s ease-in-out"
+    };
+});
 
 interface IconContainerProps {
     variant?: CardVariant;
 }
 
 /**
- * Icon container - adjusts size based on variant.
+ * Icon container with primary-tinted background.
  */
 const IconContainer: any = styled(Box, {
     shouldForwardProp: (prop: string) => prop !== "variant"
-})<IconContainerProps>(({ theme, variant = "default" }: IconContainerProps & { theme: Theme }) => ({
-    "& img, & svg": {
-        height: variant === "compact" ? 32 : 28,
-        width: variant === "compact" ? 32 : 28
-    },
-    alignItems: "center",
-    display: "flex",
-    flexShrink: 0,
-    justifyContent: "center",
-    ...(variant === "compact" ? {
-        height: 40,
-        width: 40
-    } : {
-        backgroundColor: theme.palette.background.default,
-        borderRadius: theme.shape.borderRadius,
-        height: 48,
-        width: 48
-    })
-}));
+})<IconContainerProps>(({ variant = "default" }: IconContainerProps & { theme: Theme }) => {
+    const isLarge: boolean = variant === "large";
+
+    return {
+        "& img, & svg": {
+            height: isLarge ? 44 : 32,
+            width: isLarge ? 44 : 32
+        },
+        alignItems: "center",
+        display: "flex",
+        flexShrink: 0,
+        height: isLarge ? 44 : 40,
+        justifyContent: "center",
+        width: isLarge ? 44 : 40
+    };
+});
 
 /**
  * Text content container.
  */
 const ContentContainer: any = styled(Box)({
     display: "flex",
+    flex: 1,
     flexDirection: "column",
-    gap: 2
+    gap: 4
 });
 
 interface CardTitleProps {
@@ -121,12 +123,13 @@ interface CardTitleProps {
 }
 
 /**
- * Card title - adjusts based on variant.
+ * Card title.
  */
 const CardTitle: any = styled(Typography, {
     shouldForwardProp: (prop: string) => prop !== "cardVariant"
 })<CardTitleProps>(({ theme }: CardTitleProps & { theme: Theme }) => ({
     color: theme.palette.text.primary,
+    fontSize: "1rem",
     fontWeight: 600,
     lineHeight: 1.4
 }));
@@ -143,7 +146,7 @@ const CardDescription: any = styled(Typography)(({ theme }: { theme: Theme }) =>
 /**
  * Reusable selectable card component for onboarding choices.
  * Supports two variants:
- * - "default": Full card with icon, title, and optional description
+ * - "default": Card with icon, title, description, and selection checkmark
  * - "compact": Smaller card with icon and title only (for framework selection grid)
  */
 const SelectableCard: FunctionComponent<SelectableCardPropsInterface> = memo((
@@ -190,7 +193,7 @@ const SelectableCard: FunctionComponent<SelectableCardPropsInterface> = memo((
                 <CardTitle cardVariant={ variant }>
                     { title }
                 </CardTitle>
-                { variant === "default" && description && (
+                { variant !== "compact" && description && (
                     <CardDescription>
                         { description }
                     </CardDescription>

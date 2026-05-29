@@ -18,7 +18,9 @@
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1/store";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { OrganizationDiscoveryAttributeDataInterface } from "../models/organization-discovery";
 
@@ -35,7 +37,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * @param id - Organization id.
  * @param properties - Data that needs to be updated.
  */
-export const updateOrganizationDiscoveryAttributes = (
+const updateOrganizationDiscoveryAttributes = (
     id: string,
     properties: OrganizationDiscoveryAttributeDataInterface
 ): Promise<any> => {
@@ -55,7 +57,7 @@ export const updateOrganizationDiscoveryAttributes = (
             }
 
             return Promise.resolve(response?.data);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error?.response?.data);
         });
 };

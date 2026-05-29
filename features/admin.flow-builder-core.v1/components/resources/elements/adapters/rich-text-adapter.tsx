@@ -22,7 +22,7 @@ import DOMPurify from "dompurify";
 import parse from "html-react-parser";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import PlaceholderComponent from "./placeholder-component";
+import PlaceholderComponent from "@wso2is/common.branding.v1/components/placeholder-component";
 import useRequiredFields, { RequiredFieldInterface } from "../../../../hooks/use-required-fields";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 import "./rich-text-adapter.scss";
@@ -41,7 +41,7 @@ DOMPurify.addHook("afterSanitizeAttributes", (node: Element) => {
 /**
  * Props interface of {@link RichTextAdapter}
  */
-export type RichTextAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type RichTextAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Rich Text component.

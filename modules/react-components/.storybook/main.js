@@ -26,30 +26,15 @@ const UN_MINIFIED_THEME_STYLESHEET_NAME = "theme.css";
 const MINIFIED_THEME_STYLESHEET_NAME = "theme.min.css";
 
 module.exports = {
-    addons: [
-        "@storybook/addon-links",
-        "@storybook/addon-actions",
-        "@storybook/addon-viewport",
-        {
-            name: "@storybook/addon-docs",
-            options: {
-                babelOptions: {},
-                configureJSX: true,
-                sourceLoaderOptions: null,
-                transcludeMarkdown: true
-            }
-        },
-        "@storybook/addon-controls",
-        "@storybook/addon-backgrounds",
-        "@storybook/addon-toolbars",
-        "@storybook/addon-measure",
-        "@storybook/addon-outline",
-        "@nx/react/plugins/storybook",
-        "@storybook/addon-essentials"
-    ],
-    docs: {
-        autodocs: true
-    },
+    addons: [ "@storybook/addon-links", {
+        name: "@storybook/addon-docs",
+        options: {
+            babelOptions: {},
+            configureJSX: true,
+            sourceLoaderOptions: null,
+            transcludeMarkdown: true
+        }
+    }, "@nx/react/plugins/storybook" ],
     framework: {
         name: "@storybook/react-webpack5",
         options: {}

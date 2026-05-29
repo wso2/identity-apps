@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AxiosError } from "axios";
 import { useTranslation } from "react-i18next";
@@ -49,7 +51,7 @@ export const useHandleError = () => {
     const dispatch: Dispatch<any> = useDispatch();
     const { t } = useTranslation();
 
-    return (error: AxiosError, operation: string): void => {
+    return (error: AxiosError<HttpErrorResponseDataInterface>, operation: string): void => {
         if (error.response?.data?.description) {
             dispatch(
                 addAlert({

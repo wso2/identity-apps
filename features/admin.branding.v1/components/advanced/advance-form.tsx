@@ -22,7 +22,7 @@ import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { BrandingPreferenceInterface } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
-import { Field, Form, FormPropsInterface } from "@wso2is/form";
+import { Field, Form, FormPropsInterface } from "@wso2is/forms";
 import { Heading } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, MutableRefObject, ReactElement, Ref, forwardRef, useEffect, useState } from "react";

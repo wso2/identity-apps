@@ -21,7 +21,7 @@ import Typography, { TypographyProps } from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import PlaceholderComponent from "./placeholder-component";
+import PlaceholderComponent from "@wso2is/common.branding.v1/components/placeholder-component";
 import useRequiredFields, { RequiredFieldInterface } from "../../../../hooks/use-required-fields";
 import { TypographyVariants } from "../../../../models/elements";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
@@ -29,7 +29,7 @@ import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 /**
  * Props interface of {@link TypographyAdapter}
  */
-export type TypographyAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
+type TypographyAdapterPropsInterface = IdentifiableComponentInterface & CommonElementFactoryPropsInterface;
 
 /**
  * Adapter for the Typography component.

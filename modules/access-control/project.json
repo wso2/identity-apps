@@ -14,7 +14,6 @@
             "executor": "nx:run-commands",
             "outputs": ["{workspaceRoot}/modules/access-control/dist"],
             "options": {
-                "tsconfig": "modules/access-control/tsconfig.json",
                 "command": "pnpm build",
                 "cwd": "modules/access-control"
             }

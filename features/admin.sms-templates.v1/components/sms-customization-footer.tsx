@@ -23,6 +23,11 @@ import { useTranslation } from "react-i18next";
 
 interface SMSCustomizationFooterProps extends IdentifiableComponentInterface {
     /**
+     * Is the save button disabled?
+     */
+    isSaveButtonDisabled?: boolean;
+
+    /**
      * Is content loading? So Save button should also depict it's loading
      */
     isSaveButtonLoading: boolean;
@@ -47,6 +52,7 @@ const SMSCustomizationFooter: FunctionComponent<SMSCustomizationFooterProps> = (
 ): ReactElement => {
     const {
         ["data-componentid"]: componentId = "sms-customization-footer",
+        isSaveButtonDisabled = false,
         isSaveButtonLoading,
         onSaveButtonClick
     } = props;
@@ -55,6 +61,7 @@ const SMSCustomizationFooter: FunctionComponent<SMSCustomizationFooterProps> = (
 
     return (
         <Button
+            disabled={ isSaveButtonDisabled }
             size="small"
             variant="contained"
             loading={ isSaveButtonLoading }

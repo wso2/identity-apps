@@ -7,18 +7,18 @@
 ~    You may not alter or remove any copyright or other notice from copies of this content."
 -->
 
-<%= htmlWebpackPlugin.options.serverConfiguration %>
-<%= htmlWebpackPlugin.options.proxyContextPathConstant %>
-<%= htmlWebpackPlugin.options.importUtil %>
-<%= htmlWebpackPlugin.options.importTenantPrefix %>
-<%= htmlWebpackPlugin.options.importSuperTenantConstant %>
-<%= htmlWebpackPlugin.options.importStringUtils %>
-<%= htmlWebpackPlugin.options.getOrganizationManagementAvailability %>
-<%= htmlWebpackPlugin.options.getAdaptiveAuthenticationAvailability %>
+<%= buildOptions.serverConfiguration %>
+<%= buildOptions.proxyContextPathConstant %>
+<%= buildOptions.importUtil %>
+<%= buildOptions.importTenantPrefix %>
+<%= buildOptions.importSuperTenantConstant %>
+<%= buildOptions.importStringUtils %>
+<%= buildOptions.getOrganizationManagementAvailability %>
+<%= buildOptions.getAdaptiveAuthenticationAvailability %>
 
-<%= htmlWebpackPlugin.options.cookieproEnabledFlag %>
-<%= htmlWebpackPlugin.options.cookieproInitialScriptTypeCheck %>
-<%= htmlWebpackPlugin.options.cookieproDomainScriptId %>
+<%= buildOptions.cookieproEnabledFlag %>
+<%= buildOptions.cookieproInitialScriptTypeCheck %>
+<%= buildOptions.cookieproDomainScriptId %>
 
 <jsp:scriptlet>
     session.setAttribute("authCode",request.getParameter("code"));
@@ -29,22 +29,22 @@
 <!DOCTYPE HTML>
 <html>
     <head>
-        <%= htmlWebpackPlugin.options.contentType %>
+        <%= buildOptions.contentType %>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
         <meta name="referrer" content="no-referrer" />
 
         <!-- Start of loading application configurations -->
-        <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>update.config.js"></script>
-        <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>config.js"></script>
+        <script type="text/javascript" src="<%= buildOptions.publicPath %>update.config.js"></script>
+        <script type="text/javascript" src="<%= buildOptions.publicPath %>config.js"></script>
         <!-- End of loading application configurations -->
 
-        <link href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/theme.<%= htmlWebpackPlugin.options.themeHash %>.min.css" rel="stylesheet" type="text/css"/>
-        <link rel="shortcut icon" href="<%= htmlWebpackPlugin.options.publicPath %>libs/themes/<%= htmlWebpackPlugin.options.theme %>/assets/images/branding/favicon.ico" />
+        <link href="<%= buildOptions.publicPath %>libs/themes/<%= buildOptions.theme %>/theme.<%= buildOptions.themeHash %>.min.css" rel="stylesheet" type="text/css"/>
+        <link rel="shortcut icon" href="<%= buildOptions.publicPath %>libs/themes/<%= buildOptions.theme %>/assets/images/branding/favicon.ico" />
 
-        <%= htmlWebpackPlugin.options.cookieproEnabledCheck %>
+        <%= buildOptions.cookieproEnabledCheck %>
              <!-- CookiePro Cookies Consent Notice start for asgardeo.io -->
-            <script src="https://cookie-cdn.cookiepro.com/scripttemplates/otSDKStub.js"  type="text/javascript" charset="UTF-8" data-domain-script="<%=htmlWebpackPlugin.options.cookieproDomainScriptIdVar%>" ></script>
+            <script src="https://cookie-cdn.cookiepro.com/scripttemplates/otSDKStub.js"  type="text/javascript" charset="UTF-8" data-domain-script="<%=buildOptions.cookieproDomainScriptIdVar%>" ></script>
             <script type="text/javascript">
                 function OptanonWrapper() {
                     // Get initial OnetrustActiveGroups ids
@@ -148,15 +148,15 @@
                     }
                 }
             </script>
-        <%= htmlWebpackPlugin.options.cookieproEnabledCheckEnd %>
+        <%= buildOptions.cookieproEnabledCheckEnd %>
         <script>
-            var contextPathGlobal = "<%= htmlWebpackPlugin.options.publicPath %>";
-            var serverOriginGlobal = "<%= htmlWebpackPlugin.options.serverUrl %>";
-            var proxyContextPathGlobal = "<%= htmlWebpackPlugin.options.proxyContextPath %>";
-            var superTenantGlobal = "<%= htmlWebpackPlugin.options.superTenantConstant %>";
-            var tenantPrefixGlobal = "<%= htmlWebpackPlugin.options.tenantPrefix %>";
-            var isAdaptiveAuthenticationAvailable = JSON.parse("<%= htmlWebpackPlugin.options.isAdaptiveAuthenticationAvailable %>");
-            var isOrganizationManagementEnabled = "<%= htmlWebpackPlugin.options.isOrganizationManagementEnabled %>" === "true";
+            var contextPathGlobal = "<%= buildOptions.publicPath %>";
+            var serverOriginGlobal = "<%= buildOptions.serverUrl %>";
+            var proxyContextPathGlobal = "<%= buildOptions.proxyContextPath %>";
+            var superTenantGlobal = "<%= buildOptions.superTenantConstant %>";
+            var tenantPrefixGlobal = "<%= buildOptions.tenantPrefix %>";
+            var isAdaptiveAuthenticationAvailable = JSON.parse("<%= buildOptions.isAdaptiveAuthenticationAvailable %>");
+            var isOrganizationManagementEnabled = "<%= buildOptions.isOrganizationManagementEnabled %>" === "true";
         </script>
 
         <script>
@@ -173,14 +173,14 @@
         </script>
 
         <!-- Start of custom stylesheets -->
-        <link rel="stylesheet" type="text/css" href="<%= htmlWebpackPlugin.options.publicPath %>extensions/stylesheet.css"/>
+        <link rel="stylesheet" type="text/css" href="<%= buildOptions.publicPath %>extensions/stylesheet.css"/>
         <!-- End of custom stylesheets -->
 
         <!-- Start of custom scripts added to the head -->
         <script
             id="head-script"
             type="text/javascript"
-            src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"
+            src="<%= buildOptions.publicPath %>extensions/head-script.js"
             data-page-id="home"
         ></script>
         <!-- End of custom scripts added to the head -->
@@ -192,7 +192,7 @@
         <div id="root"></div>
 
         <!-- Start of custom scripts added to the body -->
-        <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>extensions/body-script.js"></script>
+        <script type="text/javascript" src="<%= buildOptions.publicPath %>extensions/body-script.js"></script>
         <!-- End of custom scripts added to the body -->
     </body>
 </html>

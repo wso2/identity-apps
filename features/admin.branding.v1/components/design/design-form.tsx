@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,9 +28,10 @@ import {
 } from "@wso2is/common.branding.v1/models";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form, FormPropsInterface } from "@wso2is/form";
+import { Field, Form, FormPropsInterface } from "@wso2is/forms";
 import {
     Code,
+    ConfirmationModal,
     GenericIcon,
     Heading,
     ImagePreview,
@@ -197,9 +198,12 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
      * Layout design extensions name for the current layout.
      */
     const [ layoutDesignExtensionsName, setLayoutDesignExtensionsName ] = useState<string>(null);
+    const [ showCustomLayoutDangerModal, setShowCustomLayoutDangerModal ] = useState<boolean>(false);
+    const [ pendingSubmitValues, setPendingSubmitValues ] = useState<DesignFormValuesInterface>(null);
 
     const {
-        brandingMode
+        brandingMode,
+        preference: brandingPreference
     } = useBrandingPreference();
 
     const {
@@ -375,9 +379,22 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
                     message: t("extensions:develop.branding.notifications.fetch.customLayoutNotFound.message")
                 }));
             }
-        } else {
-            onSubmit(_values);
+
+            return;
         }
+
+        const hasInlineHtmlContent: boolean =
+            !!(brandingPreference?.preference?.layout?.content?.html);
+
+        if (!commonConfig?.checkCustomLayoutExistanceBeforeEnabling
+                && _values?.layout?.activeLayout === PredefinedLayouts.CUSTOM && !hasInlineHtmlContent) {
+            setPendingSubmitValues(_values);
+            setShowCustomLayoutDangerModal(true);
+
+            return;
+        }
+
+        onSubmit(_values);
     };
 
     /**
@@ -3162,6 +3179,59 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
                     </SegmentedAccordion.Content>
                 </React.Fragment>
             </SegmentedAccordion>
+            { showCustomLayoutDangerModal && (
+                <ConfirmationModal
+                    onClose={ () => {
+                        setShowCustomLayoutDangerModal(false);
+                        setPendingSubmitValues(null);
+                    } }
+                    type="negative"
+                    assertionHint={ t("branding:customLayout.dangerModal.assertionHint") }
+                    assertionType="checkbox"
+                    primaryAction={ t("common:confirm") }
+                    secondaryAction={ t("common:cancel") }
+                    onSecondaryActionClick={ () => {
+                        setShowCustomLayoutDangerModal(false);
+                        setPendingSubmitValues(null);
+                    } }
+                    onPrimaryActionClick={ () => {
+                        setShowCustomLayoutDangerModal(false);
+                        onSubmit(pendingSubmitValues);
+                        setPendingSubmitValues(null);
+                    } }
+                    data-componentid={ `${componentId}-custom-layout-danger-modal` }
+                    closeOnDimmerClick={ false }
+                    open={ showCustomLayoutDangerModal }
+                >
+                    <ConfirmationModal.Header
+                        data-componentid={ `${componentId}-custom-layout-danger-modal-header` }
+                    >
+                        { t("branding:customLayout.dangerModal.heading") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message
+                        attached
+                        negative
+                        data-componentid={ `${componentId}-custom-layout-danger-modal-message` }
+                    >
+                        { t("branding:customLayout.dangerModal.message") }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content
+                        data-componentid={ `${componentId}-custom-layout-danger-modal-content` }
+                    >
+                        <Trans
+                            i18nKey="branding:customLayout.dangerModal.content"
+                            tOptions={ { tenant: tenantDomain } }
+                        >
+                            The custom layout option relies on layout templates deployed at the server level under
+                            <Code>{ `extensions/layouts/custom/${tenantDomain}` }</Code>. If no such files
+                            exist for this organization, all login pages will fail to render. Ensure your
+                            layout files are deployed before saving. Refer to the official documentation
+                            for more details: <i>Customizations &gt; Customize branding &gt; Customize layouts &gt;
+                            By updating server files</i>.
+                        </Trans>
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            ) }
         </Form>
     );
 });

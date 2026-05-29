@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -139,6 +139,9 @@ export const common: CommonNS = {
             selfRegistration: "ස්වයං ලියාපදිංචිය",
             unassignedUsersDeleted: "පවරා නොමැති පරිශීලකයන් මකා දමා ඇත."
         },
+        search: {
+            placeholder: "ඉල්ලීමේ හැඳුනුම්පතෙන් සොයන්න"
+        },
         subTitle: "අනුමැතිය අවශ්‍ය මෙහෙයුම් කාර්යයන් සමාලෝචනය කරන්න",
         title: "අනුමත කිරීම්"
     },
@@ -173,6 +176,7 @@ export const common: CommonNS = {
     completed: "සම්පුර්ණ කරන ලද",
     configure: "වින්\u200Dයාස කරන්න",
     confirm: "තහවුරු කරන්න",
+    consents: "එකඟතාවයන්",
     contains: "අඩංගු වේ",
     continue: "පවත්වාගෙන යන්න",
     copied: "පිටපත් කළා!",
@@ -181,6 +185,7 @@ export const common: CommonNS = {
     createdOn: "නිර්මාණය කරන ලද්දේ",
     dangerZone: "අන්තරා කලාපය",
     darkMode: "අඳුරු තේමාව",
+    default: "පෙරනිමි",
     delete: "මකන්න",
     deprecated: "මෙම වින්‍යාසය අහෝසි කර ඇති අතර අනාගත නිකුතුවකින් ඉවත් කෙරෙනු ඇත.",
     description: "විස්තරය",

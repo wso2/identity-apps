@@ -941,10 +941,18 @@ export const authenticationProvider:AuthenticationProviderNS = {
         certificateSection: {
             certificateEditSwitch: {
                 jwks: "Use JWKS Endpoint",
-                pem: "Provide Certificates"
+                pem: "Provide Certificates",
+                samlMetadataUri: "Use SAML Metadata Endpoint"
             },
             noCertificateAlert: "There are no certificates available for this trusted token issuer. " +
-                "Therefore {{productName}} will no longer be able to validate tokens issued from this issuer."
+                "Therefore {{productName}} will no longer be able to validate tokens issued from this issuer.",
+            samlMetadataUrl: {
+                hint: "The SAML metadata URL must point to a valid XML metadata document that contains " +
+                    "the IdP's public certificate. {{productName}} will use this URL to obtain the " +
+                    "certificate to verify response signing and logout request signing from your external IdP.",
+                label: "SAML Metadata URL",
+                placeholder: "https://{ saml-provider-url }/saml/metadata"
+            }
         },
         common: {
             customProperties: "Custom Properties",
@@ -1072,6 +1080,23 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 label: "Skip user provisioning when no local account is found",
                 infoMessage: "If a matching local account is not found, a new account will be created by default. " +
                     "This configuration allows you to override this behavior."
+            },
+            idpGroupSyncMethod: {
+                children: {
+                    mergeWithExisting: "Merge With Existing",
+                    overrideAll: "Override all"
+                },
+                checkboxLabel: "Override existing roles with external IDP group roles",
+                hint: "When enabled, existing roles will be replaced with new external IDP group roles during each login.",
+                label: "IDP group role synchronization method"
+            },
+            homeRealmIdentifier: {
+                hint: "Specify an identifier for this connection. Applications can pass this value " +
+                    "as the <1>fidp</1> query parameter (e.g., <3>?fidp=external-idp-identifier</3>) in the " +
+                    "authorization request URL to redirect users directly to this connection, " +
+                    "bypassing the multi-option login page.",
+                label: "Home Realm Identifier",
+                placeholder: "e.g. external-idp-identifier"
             }
         },
         outboundConnectorAccordion: {
@@ -1091,6 +1116,15 @@ export const authenticationProvider:AuthenticationProviderNS = {
             placeHolder: "Select Role",
             popup: {
                 content: "Add Role"
+            }
+        },
+        outboundProvisioningGroups: {
+            heading: "Outbound Provisioning Groups",
+            hint: "Select groups to automatically provision users when they are added, and deprovision them when they are removed.",
+            label: "Group",
+            placeHolder: "Select Group",
+            popup: {
+                content: "Add Group"
             }
         },
         roleMapping: {
@@ -1691,11 +1725,11 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 message: "Update Error"
             },
             genericError: {
-                description: "An error occurred while updating outbound provisioning role configurations.",
+                description: "An error occurred while updating outbound provisioning group configurations.",
                 message: "Update Error"
             },
             success: {
-                description: "Successfully updated outbound provisioning role configurations.",
+                description: "Successfully updated outbound provisioning group configurations.",
                 message: "Update successful"
             }
         },
@@ -1710,6 +1744,16 @@ export const authenticationProvider:AuthenticationProviderNS = {
             },
             success: {
                 description: "Successfully updated the JIT provisioning configurations.",
+                message: "Update successful"
+            }
+        },
+        updateHomeRealmIdentifier: {
+            genericError: {
+                description: "An error occurred while updating the home realm identifier.",
+                message: "Update Error"
+            },
+            success: {
+                description: "Successfully updated the home realm identifier.",
                 message: "Update successful"
             }
         },
@@ -1881,6 +1925,35 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 invalidName: "{{idpName}} is not a valid name. It should not contain any other" +
                     " alphanumerics except for periods (.), dashes (-), underscores (_) and spaces.",
                 name: "Identity verification provider name is not valid"
+            },
+            wizard: {
+                certificates: {
+                    heading: "Mode of certificate configuration",
+                    jwksUrl: {
+                        hint: "{{productName}} will use this URL to obtain keys to verify the" +
+                            " signed responses from your external IdP.",
+                        label: "JWKS endpoint URL",
+                        placeholder: "Enter JWKS endpoint URL"
+                    },
+                    mode: {
+                        jwks: "JWKS endpoint",
+                        pem: "Use PEM certificate",
+                        samlMetadataUri: "Metadata URI"
+                    },
+                    pem: {
+                        dropzoneText: "Drag and drop a certificate file here.",
+                        hint: "{{productName}} will use this certificate to verify the signed" +
+                            " responses from your external IdP.",
+                        pasteAreaPlaceholderText: "Paste IdP certificate in PEM format.",
+                        uploadButtonText: "Upload Certificate File"
+                    },
+                    samlMetadataUri: {
+                        hint: "{{productName}} will use this URI to obtain the certificate to" +
+                            " verify the signed responses from your external IdP.",
+                        label: "SAML metadata URI",
+                        placeholder: "Enter SAML metadata URI"
+                    }
+                }
             }
         },
         expert: {
@@ -2264,6 +2337,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
             header: "Fill the basic information about the provisioning connector.",
             steps: {
                 connectorConfiguration: {
+                    configureTitle: "Configure {{connectorName}} Connector",
                     title: "Connector Details"
                 },
                 connectorSelection: {
@@ -2271,6 +2345,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
                         subTitle: "Select the type of the new outbound provisioning connector",
                         title: "Connector Types"
                     },
+                    subTitle: "Select an outbound provisioning connection type.",
                     title: "Connector selection"
                 },
                 summary: {

@@ -20,7 +20,9 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { IssuerUsageScopeConfigConstants } from "../constants/issuer-usage-scope-configuration";
 import { IssuerUsageScopeConfigAPIResponseInterface } from "../models/issuer-usage-scope-configuration";
@@ -64,7 +66,7 @@ export const updateIssuerUsageScopeConfig = (
             }
 
             return Promise.resolve(response.data as IssuerUsageScopeConfigAPIResponseInterface);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             const errorConstant: IdentityAppsError = IssuerUsageScopeConfigConstants.ErrorMessages
                 .ISSUER_USAGE_SCOPE_CONFIG_UPDATE_ERROR_CODE;
 

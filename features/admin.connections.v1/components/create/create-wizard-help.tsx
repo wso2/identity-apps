@@ -66,7 +66,7 @@ interface WizardHelpInterface {
 /**
  * Prop types of the component.
  */
-export interface CreateConnectionWizardHelpPropsInterface extends TestableComponentInterface {
+interface CreateConnectionWizardHelpPropsInterface extends TestableComponentInterface {
     /**
      * Wizard help content.
      */

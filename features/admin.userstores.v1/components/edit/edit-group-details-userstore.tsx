@@ -20,7 +20,7 @@ import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormValue, Forms } from "@wso2is/forms";
+import { Field, FormValue, Forms } from "@wso2is/forms/legacy";
 import { EmphasizedSegment, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";

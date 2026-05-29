@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -139,6 +139,9 @@ export const common: CommonNS = {
             selfRegistration: "自己登録",
             unassignedUsersDeleted: "割り当てられていないユーザー/sは削除されています。"
         },
+        search: {
+            placeholder: "リクエストIDで検索"
+        },
         "subTitle": "承認を必要とする運用タスクを確認します",
         "title": "承認"
     },
@@ -173,6 +176,7 @@ export const common: CommonNS = {
     "completed": "完了しました",
     "configure": "構成、設定",
     "confirm": "確認する",
+    "consents": "同意",
     "contains": "含む",
     "continue": "続く",
     "copied": "コピーしました",
@@ -181,6 +185,7 @@ export const common: CommonNS = {
     "createdOn": "に作成されました",
     "dangerZone": "危険区域",
     "darkMode": "ダークモード",
+    "default": "デフォルト",
     "delete": "消去",
     "deprecated": "この構成は非推奨であり、今後のリリースで削除される予定です。",
     "description": "説明",

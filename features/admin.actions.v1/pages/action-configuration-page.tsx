@@ -21,7 +21,9 @@ import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/a
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -60,7 +62,10 @@ import PreUpdateProfileActionConfigForm from "../components/pre-update-profile-a
 import { ActionsConstants } from "../constants/actions-constants";
 import { ActionVersionInfo, useActionVersioning } from "../hooks/use-action-versioning";
 import {
-    ActionConfigFormPropertyInterface, PreUpdatePasswordActionConfigFormPropertyInterface,
+    ActionConfigFormPropertyInterface,
+    AuthenticationPropertiesInterface,
+    AuthenticationType,
+    PreUpdatePasswordActionConfigFormPropertyInterface,
     PreUpdatePasswordActionResponseInterface,
     PreUpdateProfileActionConfigFormPropertyInterface,
     PreUpdateProfileActionResponseInterface
@@ -91,7 +96,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     const { getLink } = useDocumentation();
 
     const handleSuccess: (operation: string) => void = useHandleSuccess();
-    const handleError: (error: AxiosError, operation: string) => void = useHandleError();
+    const handleError: (error: AxiosError<HttpErrorResponseDataInterface>, operation: string) => void = useHandleError();
 
     const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
     const hasActionCreatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.create);
@@ -154,16 +159,47 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     const actionCommonInitialValues: ActionConfigFormPropertyInterface =
         useMemo(() => {
             if (action) {
-                return {
+                const authProperties: Partial<AuthenticationPropertiesInterface> =
+                    action?.endpoint?.authentication?.properties ?? {};
+                const authType: AuthenticationType = action?.endpoint?.authentication?.type;
+                const actionValues: ActionConfigFormPropertyInterface = {
                     allowedHeaders: action?.endpoint?.allowedHeaders,
                     allowedParameters: action?.endpoint?.allowedParameters,
-                    authenticationType: action?.endpoint?.authentication?.type?.toString(),
+                    authenticationType: authType?.toString(),
                     endpointUri: action?.endpoint?.uri,
                     id: action?.id,
                     name: action?.name,
                     rule: action?.rule
                 };
 
+                // Populating the non-secret values based on the authentication type.
+                switch (authType) {
+                    case AuthenticationType.BASIC:
+                        actionValues.usernameAuthProperty = authProperties?.username;
+
+                        break;
+                    case AuthenticationType.API_KEY:
+                        actionValues.headerAuthProperty = authProperties?.header;
+
+                        break;
+                    case AuthenticationType.CLIENT_CREDENTIAL:
+                        actionValues.clientIdAuthProperty = authProperties?.clientId;
+                        actionValues.scopesAuthProperty = authProperties?.scopes;
+                        actionValues.tokenEndpointAuthProperty = authProperties?.tokenEndpoint;
+
+                        break;
+                    case AuthenticationType.PASSWORD_CREDENTIAL:
+                        actionValues.clientId_passwordCredentialAuthProperty = authProperties?.clientId;
+                        actionValues.scopes_passwordCredentialAuthProperty = authProperties?.scopes;
+                        actionValues.tokenEndpoint_passwordCredentialAuthProperty = authProperties?.tokenEndpoint;
+                        actionValues.username_passwordCredentialAuthProperty = authProperties?.username;
+
+                        break;
+                    default:
+                        break;
+                }
+
+                return actionValues;
             } else {
                 return null;
             }
@@ -384,7 +420,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 .then(() => {
                     handleSuccess(toggleOperation);
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     handleError(error, toggleOperation);
                 })
                 .finally(() => {
@@ -419,7 +455,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 mutateActions();
                 history.push(AppConstants.getPaths().get("ACTIONS"));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 handleError(error, ActionsConstants.DELETE);
             })
             .finally(() => {

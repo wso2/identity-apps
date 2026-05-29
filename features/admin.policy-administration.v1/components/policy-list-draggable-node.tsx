@@ -35,7 +35,7 @@ import { PolicyInterface } from "../models/policies";
 /**
  * Props interface of {@link PolicyListDraggableNode}
  */
-export interface PolicyListDraggableNodePropsInterface
+interface PolicyListDraggableNodePropsInterface
     extends IdentifiableComponentInterface,
         HTMLAttributes<HTMLDivElement> {
     /**

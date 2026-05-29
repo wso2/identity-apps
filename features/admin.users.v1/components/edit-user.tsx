@@ -16,6 +16,11 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import { ProfileListItem } from "@wso2is/admin.cds.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -27,7 +32,7 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
-    FeatureAccessConfigInterface,
+    HttpErrorResponseDataInterface,
     IdentifiableComponentInterface,
     ProfileInfoInterface
 } from "@wso2is/core/models";
@@ -39,6 +44,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, TabProps } from "semantic-ui-react";
+import { ShareUserForm } from "./share-user-form";
 import { UserGroupsList } from "./user-groups-edit";
 import { UserProfile } from "./user-profile";
 import { UserRolesList } from "./user-roles-list";
@@ -54,7 +60,7 @@ interface EditUserPropsInterface extends IdentifiableComponentInterface {
     /**
      * Handle user update callback.
      */
-    handleUserUpdate: (userId: string) => void;
+    handleUserUpdate: (_userId: string) => void;
     /**
      * Password reset connector properties
      */
@@ -71,6 +77,15 @@ interface EditUserPropsInterface extends IdentifiableComponentInterface {
      * Whether the user store is read-only.
      */
     isReadOnlyUserStore?: boolean;
+    /**
+     * Whether to include the Console Administrator role in the role sharing dropdowns.
+     * Should only be true in the console settings administrator edit view.
+     */
+    enableConsoleAdminRole?: boolean;
+    /**
+     * Linked CDS profile for this user, if any.
+     */
+    linkedCDSProfile?: ProfileListItem;
 }
 
 /**
@@ -88,7 +103,9 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         connectorProperties,
         isLoading,
         isReadOnly = false,
-        isReadOnlyUserStore = false
+        isReadOnlyUserStore = false,
+        enableConsoleAdminRole = false,
+        linkedCDSProfile
     } = props;
 
     const { t } = useTranslation();
@@ -114,6 +131,13 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const isUserGroupsEnabled: boolean = isFeatureEnabled(
         usersFeatureConfig,
         UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UserGroups)
+    );
+    const isSharedAccessEnabled: boolean = usersFeatureConfig?.subFeatures?.userSharingV2?.enabled ?? false;
+    const hasSharedAccessReadPermission: boolean = useRequiredScopes(
+        usersFeatureConfig?.subFeatures?.userSharingV2?.scopes?.read
+    );
+    const hasSharedAccessUpdatePermission: boolean = useRequiredScopes(
+        usersFeatureConfig?.subFeatures?.userSharingV2?.scopes?.update
     );
 
     useEffect(() => {
@@ -154,7 +178,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                     setIsSelectedSuperAdmin(true);
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
 
                 setHideTermination(true);
 
@@ -205,6 +229,26 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             menuItem: t("users:editUser.tab.menuItems.0"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
+                    { linkedCDSProfile && (
+                        <Alert
+                            severity="info"
+                            sx={ { mb: 2 } }
+                            data-componentid="cds-linked-profile-banner"
+                        >
+                            { t("customerDataService:profiles.linkedUser.info") }
+                            { " " }
+                            <a
+                                role="button"
+                                style={ { cursor: "pointer", textDecoration: "underline" } }
+                                onClick={ (): void => history.push(
+                                    AppConstants.getPaths().get("PROFILE")?.replace(
+                                        ":id", linkedCDSProfile.profile_id)
+                                ) }
+                            >
+                                { t("customerDataService:profiles.linkedUser.action") }
+                            </a>
+                        </Alert>
+                    ) }
                     <UserProfile
                         adminUsername={ adminUsername }
                         onAlertFired={ handleAlerts }
@@ -280,10 +324,28 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             }
         );
 
+        if (isSharedAccessEnabled && hasSharedAccessReadPermission && !isUserManagedByParentOrg) {
+            _panes.push({
+                menuItem: t("users:editUser.tab.menuItems.4"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <ShareUserForm
+                            user={ user }
+                            readOnly={ !hasSharedAccessUpdatePermission }
+                            enableConsoleAdminRole={ enableConsoleAdminRole }
+                        />
+                    </ResourceTab.Pane>
+                )
+            });
+        }
+
         return _panes;
     }, [
         user,
         isUserGroupsEnabled,
+        isSharedAccessEnabled,
+        hasSharedAccessReadPermission,
+        hasSharedAccessUpdatePermission,
         connectorProperties,
         isSuperAdminIdentifierFetchRequestLoading,
         hideTermination,
@@ -292,7 +354,9 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         isReadOnly,
         isUserStoresLoading,
         isReadOnlyUserStore,
-        isUserManagedByParentOrg
+        isUserManagedByParentOrg,
+        enableConsoleAdminRole,
+        linkedCDSProfile
     ]);
 
     return (

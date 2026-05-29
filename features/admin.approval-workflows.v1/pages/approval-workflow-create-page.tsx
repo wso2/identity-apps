@@ -21,16 +21,25 @@ import StepContent from "@oxygen-ui/react/StepContent";
 import StepLabel from "@oxygen-ui/react/StepLabel";
 import Stepper from "@oxygen-ui/react/Stepper";
 import Typography from "@oxygen-ui/react/Typography";
-import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import {
+    FeatureAccessConfigInterface,
+    FeatureStatus,
+    useCheckFeatureStatus,
+    useRequiredScopes
+} from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
+import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
+import { AlertLevels, IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
 import "./approval-workflow-create-page.scss";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -40,6 +49,9 @@ import ConfigurationsForm, { ConfigurationsFormRef } from "../components/create/
 import GeneralApprovalWorkflowDetailsForm, {
     GeneralApprovalWorkflowDetailsFormRef
 } from "../components/create/general-approval-workflow-details-form";
+import NotificationDetailsForm, {
+    NotificationDetailsFormRef
+} from "../components/create/notification-details-form";
 import WorkflowOperationsDetailsForm, {
     WorkflowOperationsDetailsFormRef
 } from "../components/create/workflow-operations-details-form";
@@ -51,6 +63,7 @@ import {
     ConfigurationsFormValuesInterface,
     DropdownPropsInterface,
     GeneralDetailsFormValuesInterface,
+    NotificationDetailsFormValuesInterface,
     WorkflowOperationsDetailsFormValuesInterface
 } from "../models/ui";
 import { WorkflowAssociationPayload } from "../models/workflow-associations";
@@ -81,6 +94,9 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
     const workflowOperationsDetailsFormRef: MutableRefObject<WorkflowOperationsDetailsFormRef> = useRef<
         WorkflowOperationsDetailsFormRef
     >(null);
+    const notificationDetailsFormRef: MutableRefObject<NotificationDetailsFormRef> = useRef<
+        NotificationDetailsFormRef
+    >(null);
     const configurationsFormRef: MutableRefObject<ConfigurationsFormRef> = useRef<ConfigurationsFormRef>(null);
 
     //Set relevant scopes
@@ -91,12 +107,26 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
         approvalWorkflowFeatureConfig?.scopes?.create
     );
 
+    const approvalWorkflowsFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["APPROVAL_WORKFLOWS_FEATURE_GATE"]
+    );
+
+    /**
+     * Redirects to the approval workflows list page if the feature is not enabled.
+     */
+    useEffect(() => {
+        if (approvalWorkflowsFeatureStatus && approvalWorkflowsFeatureStatus !== FeatureStatus.ENABLED) {
+            history.push(AppConstants.getPaths().get("APPROVAL_WORKFLOWS"));
+        }
+    }, [ approvalWorkflowsFeatureStatus ]);
+
     const [ approvalWorkflowFormData, setApprovalWorkflowFormData ] = useState<ApprovalWorkflowFormDataInterface>(null);
     const [ isApprovalWorkflowCreateRequestLoading, setIsApprovalWorkflowCreateRequestLoading ] = useState<boolean>(
         false
     );
     const [ activeStep, setActiveStep ] = useState<number>(0);
     const [ hasErrors, setHasErrors ] = useState<boolean>(false);
+    const [ notificationData, setNotificationData ] = useState<NotificationDetailsFormValuesInterface | null>(null);
 
     /**
      * Handles the general details form submission.
@@ -118,10 +148,78 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
         setApprovalWorkflowFormData((prevData: ApprovalWorkflowFormDataInterface) => {
             return {
                 ...prevData,
-                workflowOperationsDetails: values
+                workflowOperationsDetails: {
+                    ...values,
+                    operationRules: prevData?.workflowOperationsDetails?.operationRules
+                }
             };
         });
         setActiveStep(2);
+    };
+
+    /**
+     * Handles the notification details form submission.
+     * Handles rule configuration updates for operations.
+     * @param operationValue - The operation identifier.
+     * @param rule - The configured rule.
+     */
+    const handleRuleUpdate = (operationValue: string, rule: RuleWithoutIdInterface | null) => {
+        setApprovalWorkflowFormData((prevData: ApprovalWorkflowFormDataInterface) => {
+            const updatedOperationRules: Record<string, RuleWithoutIdInterface> = {
+                ...prevData?.workflowOperationsDetails?.operationRules,
+                [operationValue]: rule
+            };
+
+            return {
+                ...prevData,
+                workflowOperationsDetails: {
+                    ...prevData?.workflowOperationsDetails,
+                    operationRules: updatedOperationRules
+                }
+            };
+        });
+    };
+
+    /**
+     * Handles the step details form submission.
+     * @param values - Step 04 form values.
+     */
+    const onNotificationDetailsFormSubmit = (values: NotificationDetailsFormValuesInterface) => {
+        setNotificationData(values);
+        setApprovalWorkflowFormData((prevData: ApprovalWorkflowFormDataInterface) => ({
+            ...prevData,
+            notificationDetails: values
+        }));
+
+        const workflowTemplate: WorkflowTemplate = {
+            name: "MultiStepApprovalTemplate",
+            notificationsForApprovers: values?.notificationsForApprovers,
+            steps: approvalWorkflowFormData.configurations.approvalSteps.map(
+                (step: ApprovalSteps, index: number) => ({
+                    options: [
+                        {
+                            entity: "roles",
+                            values: step.roles
+                        },
+                        {
+                            entity: "users",
+                            values: step.users
+                        }
+                    ].filter((option: OptionDetails) => option.values.length > 0),
+                    step: index + 1
+                })
+            )
+        };
+
+        const approvalWorkflowPayload: ApprovalWorkflowPayload = {
+            description: approvalWorkflowFormData.generalDetails.description,
+            engine: WORKFLOW_ENGINE,
+            name: approvalWorkflowFormData.generalDetails.name,
+            notificationsForInitiator: values?.notificationsForInitiator,
+            template: workflowTemplate
+        };
+
+        handleApprovalWorkflowRegistration(approvalWorkflowPayload);
     };
 
     /**
@@ -145,31 +243,7 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
             configurations: values
         }));
 
-        const workflowTemplate: WorkflowTemplate = {
-            name: "MultiStepApprovalTemplate",
-            steps: values.approvalSteps.map((step: ApprovalSteps, index: number) => ({
-                options: [
-                    {
-                        entity: "roles",
-                        values: step.roles
-                    },
-                    {
-                        entity: "users",
-                        values: step.users
-                    }
-                ].filter((option: OptionDetails) => option.values.length > 0),
-                step: index + 1
-            }))
-        };
-
-        const approvalWorkflowPayload: ApprovalWorkflowPayload = {
-            description: approvalWorkflowFormData.generalDetails.description,
-            engine: WORKFLOW_ENGINE,
-            name: approvalWorkflowFormData.generalDetails.name,
-            template: workflowTemplate
-        };
-
-        handleApprovalWorkflowRegistration(approvalWorkflowPayload);
+        setActiveStep(3);
     };
 
     /**
@@ -184,7 +258,7 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
             .then((response: any) => {
                 return Promise.resolve(response);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 return Promise.reject(error);
             });
     };
@@ -202,11 +276,19 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                 try {
                     const associationPayloads: WorkflowAssociationPayload[] =
                         approvalWorkflowFormData.workflowOperationsDetails.matchedOperations.map(
-                            (operation: DropdownPropsInterface) => ({
-                                associationName: `Association for ${operation.value ?? operation.value}`,
-                                operation: operation.value,
-                                workflowId: response.id
-                            })
+                            (operation: DropdownPropsInterface) => {
+                                const rule: RuleWithoutIdInterface =
+                                    approvalWorkflowFormData.workflowOperationsDetails.operationRules?.[
+                                        operation.value
+                                    ];
+
+                                return {
+                                    associationName: `Association for ${operation.value ?? operation.value}`,
+                                    operation: operation.value,
+                                    workflowId: response.id,
+                                    ...(rule && rule.rules && rule.rules.length > 0 ? { rule } : {})
+                                };
+                            }
                         );
 
                     // Wait for all associations to complete
@@ -336,6 +418,10 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                                 isReadOnly={ !hasApprovalWorkflowCreatePermission }
                                 initialValues={ approvalWorkflowFormData?.workflowOperationsDetails ?? {} }
                                 onSubmit={ onWorkflowOperationsDetailsFormSubmit }
+                                operationRules={
+                                    approvalWorkflowFormData?.workflowOperationsDetails?.operationRules ?? {}
+                                }
+                                onRuleUpdate={ handleRuleUpdate }
                                 data-componentid={ `${componentId}-workflow-operations-details-form` }
                             />
                             <div
@@ -378,11 +464,11 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                                 </Typography>)
                             }
                         >
-                            <Typography variant="h4" data-componentid={ `${componentId}-step-2-title` }>
+                            <Typography variant="h4" data-componentid={ `${componentId}-step-3-title` }>
                                 { t("approvalWorkflows:pageLayout.create.stepper.step3.title") }
                             </Typography>
                         </StepLabel>
-                        <StepContent data-componentid={ `${componentId}-step-2-content` }>
+                        <StepContent data-componentid={ `${componentId}-step-3-content` }>
                             <ConfigurationsForm
                                 ref={ configurationsFormRef }
                                 isReadOnly={ !hasApprovalWorkflowCreatePermission }
@@ -390,6 +476,58 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                                 hasErrors={ hasErrors }
                                 onSubmit={ onConfigurationDetailsFormSubmit }
                                 data-componentid={ `${componentId}-configurations-form` }
+                            />
+                            <div
+                                className="step-actions-container"
+                                data-componentid={ `${componentId}-step-actions-container` }
+                            >
+                                <Button
+                                    variant="outlined"
+                                    disabled={
+                                        !hasApprovalWorkflowCreatePermission || isApprovalWorkflowCreateRequestLoading
+                                    }
+                                    onClick={ () => {
+                                        setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
+                                    } }
+                                    data-componentid={ `${componentId}-previous-button` }
+                                >
+                                    { t("common:previous") }
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    disabled={ null }
+                                    onClick={ () => {
+                                        if (configurationsFormRef?.current?.triggerSubmit)
+                                            configurationsFormRef.current.triggerSubmit();
+                                    } }
+                                    loading={ isApprovalWorkflowCreateRequestLoading }
+                                    data-componentid={ `${componentId}-next-button` }
+                                >
+                                    { t("common:next") }
+                                </Button>
+                            </div>
+                        </StepContent>
+                    </Step>
+
+                    <Step data-componentid={ `${componentId}-step-4` }>
+                        <StepLabel
+                            optional={
+                                (<Typography variant="body2" data-componentid={ `${componentId}-step-4-description` }>
+                                    { t("approvalWorkflows:pageLayout.create.stepper.step4.description") }
+                                </Typography>)
+                            }
+                        >
+                            <Typography variant="h4" data-componentid={ `${componentId}-step-4-title` }>
+                                { t("approvalWorkflows:pageLayout.create.stepper.step4.title") }
+                            </Typography>
+                        </StepLabel>
+                        <StepContent data-componentid={ `${componentId}-step-4-content` }>
+                            <NotificationDetailsForm
+                                ref={ notificationDetailsFormRef }
+                                isReadOnly={ !hasApprovalWorkflowCreatePermission }
+                                initialValues={ notificationData }
+                                onSubmit={ onNotificationDetailsFormSubmit }
+                                data-componentid={ `${componentId}-notification-details-form` }
                             />
                             <div
                                 className="step-actions-container"
@@ -412,8 +550,8 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                                     variant="contained"
                                     disabled={ null }
                                     onClick={ () => {
-                                        if (configurationsFormRef?.current?.triggerSubmit)
-                                            configurationsFormRef.current.triggerSubmit();
+                                        if (notificationDetailsFormRef?.current?.triggerSubmit)
+                                            notificationDetailsFormRef.current.triggerSubmit();
                                     } }
                                     loading={ isApprovalWorkflowCreateRequestLoading }
                                     data-componentid={ `${componentId}-finish-button` }

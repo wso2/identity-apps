@@ -90,8 +90,17 @@ const prepareInitialValues = (
                 : [];
 
             const emails: unknown[] = Array.isArray(value) ? (value as unknown[]) : [];
-            const primaryEmail: string = emails.find(
-                (email: unknown): email is string => typeof email === "string");
+            // If the primary email is retrieved as
+            // `["primaryEmail", { type: "work", value: "workEmail" }]`.
+            let primaryEmail: string = emails.find((email: unknown): email is string => typeof email === "string");
+
+            if (!primaryEmail) {
+                // If the primary email is retrieved as
+                // `[{ value: "primaryEmail", primary: true }, { value: "workEmail", type: "work" }]`.
+                primaryEmail = emails.find((email: unknown) => typeof email === "object" &&
+                    email !== null &&
+                    email["primary"] === true)?.["value"] as string;
+            }
 
             if (isMultipleEmailAndMobileNumberEnabled && isEmpty(emailAddresses)) {
                 if (primaryEmail) {
@@ -410,8 +419,22 @@ export const getFlattenedInitialValues = (
                     }
                 } else {
                     if (!schema.extended) {
-                        _flattenedInitialValues[schema.name] = preparedInitialValues[
-                            schemaNameParts[0]]?.[schemaNameParts[1]];
+                        const parentValues: unknown = preparedInitialValues[schemaNameParts[0]];
+
+                        if (Array.isArray(parentValues)) {
+                            // Complex multi-valued attribute: find the element whose `type` key
+                            // matches the sub-attribute name and return its `value`.
+                            _flattenedInitialValues[schema.name] = (
+                                parentValues as Array<{ type: string; value: unknown }>
+                            ).find(
+                                (item: { type: string; value: unknown }) =>
+                                    item.type === schemaNameParts[1]
+                            )?.value;
+                        } else {
+                            _flattenedInitialValues[schema.name] = (
+                                parentValues as Record<string, unknown>
+                            )?.[schemaNameParts[1]];
+                        }
                     } else {
                         if (schema.schemaId === ProfileConstants.SCIM2_CORE_SCHEMA) {
                             /**

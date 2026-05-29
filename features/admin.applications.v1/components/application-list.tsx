@@ -39,7 +39,8 @@ import {
     IdentifiableComponentInterface,
     LoadableComponentInterface,
     SBACInterface,
-    TestableComponentInterface
+    TestableComponentInterface,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -77,7 +78,7 @@ import { ApplicationTemplateManagementUtils } from "../utils/application-templat
  *
  * Proptypes for the applications list component.
  */
-export interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInterface>,
+interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInterface>,
     LoadableComponentInterface, TestableComponentInterface, IdentifiableComponentInterface {
 
     /**
@@ -281,7 +282,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 setShowDeleteConfirmationModal(false);
                 onApplicationDelete();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(setAlert({
                         description: error.response.data.description,

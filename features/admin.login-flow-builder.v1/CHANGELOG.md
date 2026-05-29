@@ -1,5 +1,130 @@
 # @wso2is/admin.login-flow-builder.v1
 
+## 2.29.13
+
+### Patch Changes
+
+- [#10315](https://github.com/wso2/identity-apps/pull/10315) [`ac975d561432967173e01ca6242e27bf2259c455`](https://github.com/wso2/identity-apps/commit/ac975d561432967173e01ca6242e27bf2259c455) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add sub organiation adaptive auth governance support
+
+- Updated dependencies [[`ac975d561432967173e01ca6242e27bf2259c455`](https://github.com/wso2/identity-apps/commit/ac975d561432967173e01ca6242e27bf2259c455)]:
+  - @wso2is/admin.applications.v1@2.42.30
+  - @wso2is/admin.core.v1@2.57.11
+
+## 2.29.12
+
+### Patch Changes
+
+- [#10108](https://github.com/wso2/identity-apps/pull/10108) [`89e10f134c1fbdd4308a877bcc8ba27be975d323`](https://github.com/wso2/identity-apps/commit/89e10f134c1fbdd4308a877bcc8ba27be975d323) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add UI improvements for shared user identifier.
+
+- Updated dependencies [[`89e10f134c1fbdd4308a877bcc8ba27be975d323`](https://github.com/wso2/identity-apps/commit/89e10f134c1fbdd4308a877bcc8ba27be975d323)]:
+  - @wso2is/admin.identity-providers.v1@2.27.5
+  - @wso2is/admin.applications.v1@2.42.25
+  - @wso2is/admin.connections.v1@2.37.6
+
+## 2.29.11
+
+### Patch Changes
+
+- [#10219](https://github.com/wso2/identity-apps/pull/10219) [`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove duplicate exports
+
+- Updated dependencies [[`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c)]:
+  - @wso2is/admin.server-configurations.v1@2.38.51
+  - @wso2is/admin.applications.v1@2.42.24
+  - @wso2is/admin.connections.v1@2.37.4
+  - @wso2is/admin.core.v1@2.57.6
+
+## 2.29.10
+
+### Patch Changes
+
+- [#10197](https://github.com/wso2/identity-apps/pull/10197) [`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dependencies
+
+- Updated dependencies [[`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423)]:
+  - @wso2is/admin.identity-providers.v1@2.27.4
+  - @wso2is/admin.login-flow.ai.v1@2.28.1
+  - @wso2is/admin.organizations.v1@2.28.4
+  - @wso2is/admin.applications.v1@2.42.23
+  - @wso2is/admin.feature-gate.v1@1.9.6
+  - @wso2is/admin.connections.v1@2.37.2
+  - @wso2is/admin.extensions.v1@2.43.3
+  - @wso2is/admin.core.v1@2.57.3
+
+## 2.29.9
+
+### Patch Changes
+
+- [#10178](https://github.com/wso2/identity-apps/pull/10178) [`a8356777febf9d45381c27119bdac239531c7f21`](https://github.com/wso2/identity-apps/commit/a8356777febf9d45381c27119bdac239531c7f21) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix the issue where the updated script is not displayed after it is modified.
+
+## 2.29.8
+
+### Patch Changes
+
+- Updated dependencies [[`dd01f38682fd189b94802e06b3473a312c1bf7b1`](https://github.com/wso2/identity-apps/commit/dd01f38682fd189b94802e06b3473a312c1bf7b1)]:
+  - @wso2is/admin.feature-gate.v1@1.9.5
+  - @wso2is/admin.connections.v1@2.36.46
+  - @wso2is/admin.extensions.v1@2.41.4
+  - @wso2is/admin.login-flow.ai.v1@2.27.113
+  - @wso2is/admin.applications.v1@2.42.18
+  - @wso2is/admin.core.v1@2.55.29
+  - @wso2is/admin.server-configurations.v1@2.38.45
+
+## 2.29.7
+
+### Patch Changes
+
+- Updated dependencies [[`a27ac0c8a6d65ac6995b5a70db973a14b32fdcfe`](https://github.com/wso2/identity-apps/commit/a27ac0c8a6d65ac6995b5a70db973a14b32fdcfe), [`c308be01f69c5ffd4d0b057a59a3a6e42292759e`](https://github.com/wso2/identity-apps/commit/c308be01f69c5ffd4d0b057a59a3a6e42292759e)]:
+  - @wso2is/admin.feature-gate.v1@1.9.4
+  - @wso2is/admin.extensions.v1@2.41.3
+  - @wso2is/admin.connections.v1@2.36.44
+  - @wso2is/admin.applications.v1@2.42.16
+  - @wso2is/admin.login-flow.ai.v1@2.27.112
+  - @wso2is/admin.core.v1@2.55.27
+  - @wso2is/admin.server-configurations.v1@2.38.43
+
+## 2.29.6
+
+### Patch Changes
+
+- Updated dependencies [[`95c89b5e1111586c0cecd491f109d8aab83ad3ee`](https://github.com/wso2/identity-apps/commit/95c89b5e1111586c0cecd491f109d8aab83ad3ee)]:
+  - @wso2is/admin.feature-gate.v1@1.9.3
+  - @wso2is/admin.extensions.v1@2.41.2
+  - @wso2is/admin.login-flow.ai.v1@2.27.111
+  - @wso2is/admin.core.v1@2.55.26
+  - @wso2is/admin.server-configurations.v1@2.38.42
+  - @wso2is/admin.applications.v1@2.42.15
+  - @wso2is/admin.connections.v1@2.36.43
+
+## 2.29.5
+
+### Patch Changes
+
+- [#9875](https://github.com/wso2/identity-apps/pull/9875) [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - Revert Axios and SDK version bumps
+
+- Updated dependencies [[`c834b18928cdfc09710c5e7067668206d006e68a`](https://github.com/wso2/identity-apps/commit/c834b18928cdfc09710c5e7067668206d006e68a), [`877d726905edf898c33c615cd887f8ed0a071a0e`](https://github.com/wso2/identity-apps/commit/877d726905edf898c33c615cd887f8ed0a071a0e), [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d), [`b75bb804c799c0e795e8580d35eedb8993d0ecc4`](https://github.com/wso2/identity-apps/commit/b75bb804c799c0e795e8580d35eedb8993d0ecc4)]:
+  - @wso2is/admin.applications.v1@2.41.28
+  - @wso2is/admin.server-configurations.v1@2.38.19
+  - @wso2is/admin.identity-providers.v1@2.27.3
+  - @wso2is/admin.login-flow.ai.v1@2.27.110
+  - @wso2is/admin.organizations.v1@2.28.2
+  - @wso2is/admin.feature-gate.v1@1.9.2
+  - @wso2is/admin.connections.v1@2.36.20
+  - @wso2is/admin.extensions.v1@2.40.30
+  - @wso2is/admin.core.v1@2.55.3
+  - @wso2is/core@2.12.10
+
+## 2.29.4
+
+### Patch Changes
+
+- Updated dependencies [[`413d08d82b88fb248b45e6a6e6e668a84d7f6a19`](https://github.com/wso2/identity-apps/commit/413d08d82b88fb248b45e6a6e6e668a84d7f6a19)]:
+  - @wso2is/admin.applications.v1@2.41.17
+  - @wso2is/admin.extensions.v1@2.40.27
+  - @wso2is/admin.feature-gate.v1@1.9.1
+  - @wso2is/admin.login-flow.ai.v1@2.27.109
+  - @wso2is/admin.core.v1@2.54.14
+  - @wso2is/admin.server-configurations.v1@2.37.24
+  - @wso2is/admin.connections.v1@2.35.18
+
 ## 2.29.3
 
 ### Patch Changes

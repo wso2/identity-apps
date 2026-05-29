@@ -33,10 +33,11 @@ import {
     AlertInterface,
     AlertLevels,
     FeatureAccessConfigInterface,
-    IdentifiableComponentInterface
+    IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Forms, useTrigger } from "@wso2is/forms";
+import { Field, Forms, useTrigger } from "@wso2is/forms/legacy";
 import {
     ConfirmationModal,
     DangerZone,
@@ -66,7 +67,7 @@ import "./remote-logging-config-form.scss";
 /**
  * Props interface of {@link RemoteLoggingConfigForm}
  */
-export interface RemoteLoggingConfigFormProps extends IdentifiableComponentInterface {
+interface RemoteLoggingConfigFormProps extends IdentifiableComponentInterface {
     /**
      * Log type such as `AUDIT`, `DEBUG`, etc.
      */
@@ -605,7 +606,7 @@ export const RemoteLoggingConfigForm = ({
                     })
                 );
             })
-            .catch((_err: AxiosError) => {
+            .catch((_err: AxiosError<HttpErrorResponseDataInterface>) => {
                 dispatch(
                     addAlert<AlertInterface>({
                         description: t(
@@ -644,7 +645,7 @@ export const RemoteLoggingConfigForm = ({
                     })
                 );
             })
-            .catch((_err: AxiosError) => {
+            .catch((_err: AxiosError<HttpErrorResponseDataInterface>) => {
                 dispatch(
                     addAlert<AlertInterface>({
                         description: t(
@@ -833,4 +834,3 @@ export const RemoteLoggingConfigForm = ({
     );
 };
 
-export default RemoteLoggingConfigForm;

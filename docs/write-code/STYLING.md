@@ -1,7 +1,7 @@
 # Styling
 
 ## Forms
-Always use the new [@wso2is/form](../../modules/form) module when developing forms.
+Always use the new [@wso2is/forms](../../modules/forms) module when developing forms.
 
 Read the documentation [here](../FORMS.md).
 

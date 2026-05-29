@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -92,6 +92,11 @@ const isOrganizationApplicationInboundAuthCodeEnabled: boolean = isFeatureEnable
 const isFrontChannelLogoutEnabled: boolean = isFeatureEnabled(
     featureConfig?.applications,
     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_FRONT_CHANNEL_LOGOUT")
+);
+
+const isUnifiedMcpCapabilitiesEnabled: boolean = isFeatureEnabled(
+    featureConfig?.applications,
+    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_UNIFIED_MCP_CAPABILITIES")
 );
 
 /**
@@ -219,18 +224,39 @@ export const applicationConfig: ApplicationConfig = {
 
             const onApplicationUpdate: () => void = props?.onApplicationUpdate as () => void;
 
+            const isMCPClientApp: boolean = application?.originalTemplateId ===
+                ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION;
+            const isDigitalWalletApp: boolean = application?.originalTemplateId ===
+                ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION;
+
             const tabExtensions: ResourceTabPaneInterface[] = [];
 
             // Enable the API authorization tab for supported templates when the api resources config is enabled.
+            // When unified MCP capabilities is enabled, all apps show "Authorization" tab
+            // When disabled, only MCP client and Digital Wallet show "Authorization", others show "API Authorization"
             if (
                 apiResourceFeatureEnabled && !application?.advancedConfigurations?.fragment &&
                 (
-                    application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
-                    || application?.templateId === MobileAppTemplate?.id
-                    || application?.templateId === OIDCWebAppTemplate?.id
-                    || application?.templateId === SinglePageAppTemplate?.id
-                    || application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
-                    || application?.templateId === ApplicationTemplateIdTypes.VC_CLIENT_APPLICATION
+                    (isUnifiedMcpCapabilitiesEnabled && (
+                        isMCPClientApp ||
+                        application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+                        || application?.templateId === MobileAppTemplate?.id
+                        || application?.templateId === OIDCWebAppTemplate?.id
+                        || application?.templateId === SinglePageAppTemplate?.id
+                        || application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
+                        || application?.templateId === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION
+                        || application?.templateId === ApplicationTemplateIdTypes.AGENT_APPLICATION
+                    )) ||
+                    (!isUnifiedMcpCapabilitiesEnabled && (
+                        isMCPClientApp ||
+                        application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
+                        || application?.templateId === MobileAppTemplate?.id
+                        || application?.templateId === OIDCWebAppTemplate?.id
+                        || application?.templateId === SinglePageAppTemplate?.id
+                        || application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
+                        || application?.templateId === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION
+                        || application?.templateId === ApplicationTemplateIdTypes.AGENT_APPLICATION
+                    ))
                 )
                 && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
             ) {
@@ -241,18 +267,13 @@ export const applicationConfig: ApplicationConfig = {
                         index: application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
                             ? M2M_API_AUTHORIZATION_INDEX + tabExtensions.length
                             : API_AUTHORIZATION_INDEX + tabExtensions.length,
-                        menuItem: application?.originalTemplateId === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
+                        menuItem: (isUnifiedMcpCapabilitiesEnabled || isMCPClientApp || isDigitalWalletApp)
                             ? I18n.instance.t(
                                 "extensions:develop.applications.edit.sections.resourceAuthorization.title"
                             )
-                            : (application?.originalTemplateId
-                                === ApplicationTemplateIdTypes.VC_CLIENT_APPLICATION)
-                                ? I18n.instance.t(
-                                    "extensions:develop.applications.edit.sections.resourceAuthorization.title"
-                                )
-                                : I18n.instance.t(
-                                    "extensions:develop.applications.edit.sections.apiAuthorization.title"
-                                ),
+                            : I18n.instance.t(
+                                "extensions:develop.applications.edit.sections.apiAuthorization.title"
+                            ),
                         render: () => (
                             <ResourceTab.Pane controlledSegmentation>
                                 <APIAuthorization
@@ -276,7 +297,8 @@ export const applicationConfig: ApplicationConfig = {
                     || application?.templateId === OIDCWebAppTemplate?.id
                     || application?.templateId === SinglePageAppTemplate?.id
                     || application?.templateId === SamlWebAppTemplate?.id
-                    || application?.templateId === ApplicationTemplateIdTypes.VC_CLIENT_APPLICATION)
+                    || application?.templateId === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION
+                    || application?.templateId === ApplicationTemplateIdTypes.AGENT_APPLICATION)
                 )
                 && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
             ) {
@@ -379,8 +401,10 @@ export const applicationConfig: ApplicationConfig = {
                     });
             }
 
-            // Hide danger zone for Enterprise IDP Login Applications.
-            return !(application.name.startsWith("WSO2_LOGIN_FOR_") || isEnterpriseLoginMgt === "true");
+            // Hide danger zone for Enterprise IDP Login Applications and Agent Applications.
+            return !(application.name.startsWith("WSO2_LOGIN_FOR_")
+                || isEnterpriseLoginMgt === "true"
+                || application?.templateId === ApplicationTemplateIdTypes.AGENT_APPLICATION);
         },
         showDeleteButton: (application: ApplicationInterface): boolean => {
             let isEnterpriseLoginMgt: string;
@@ -394,8 +418,10 @@ export const applicationConfig: ApplicationConfig = {
                     });
             }
 
-            // Hide delete button for Enterprise IDP Login Applications.
-            return !(application.name.startsWith("WSO2_LOGIN_FOR_") || isEnterpriseLoginMgt === "true");
+            // Hide delete button for Enterprise IDP Login Applications and Agent Applications.
+            return !(application.name.startsWith("WSO2_LOGIN_FOR_")
+                || isEnterpriseLoginMgt === "true"
+                || application?.templateId === ApplicationTemplateIdTypes.AGENT_APPLICATION);
         },
         showProvisioningSettings: true
     },
@@ -432,6 +458,18 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.IMPLICIT_GRANT,
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
         ],
+        [ "agent-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.CIBA_GRANT,
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
+        ],
+        [ "angular-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
+        ],
         // oidc traditional web app template
         [ "b9c5e11e-fc78-484b-9bec-015d247561b8" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
@@ -439,7 +477,8 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
-            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
+            ApplicationManagementConstants.CIBA_GRANT
         ],
         // oidc standard app template
         [ "custom-application" ]:
@@ -448,7 +487,8 @@ export const applicationConfig: ApplicationConfig = {
                 ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
                 ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
                 ApplicationManagementConstants.PASSWORD,
-                ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
+                ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+                ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
             ] : [
                 ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
                 ApplicationManagementConstants.PASSWORD,
@@ -464,15 +504,29 @@ export const applicationConfig: ApplicationConfig = {
                 ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
                 ApplicationManagementConstants.SAML2_BEARER,
                 ApplicationManagementConstants.JWT_BEARER,
-                ApplicationManagementConstants.IWA_NTLM
+                ApplicationManagementConstants.IWA_NTLM,
+                ApplicationManagementConstants.CIBA_GRANT
             ],
+        [ "digital-wallet-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT
+        ],
+        [ "expressjs-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
+        ],
         [ "m2m-application" ]: [
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
         ],
         [ "mcp-client-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+            ApplicationManagementConstants.CIBA_GRANT
         ],
         [ "mobile-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
@@ -489,7 +543,8 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.IMPLICIT_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
+            ApplicationManagementConstants.CIBA_GRANT
         ],
         [ "react-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
@@ -501,10 +556,6 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.PASSWORD,
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
-        ],
-        [ "vc-client-application" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT
         ]
     }),
     hiddenGrantTypes: [ ApplicationManagementConstants.ACCOUNT_SWITCH_GRANT ],
@@ -642,6 +693,7 @@ export const applicationConfig: ApplicationConfig = {
         }
     },
     templates:{
+        agent: true,
         custom: true,
         customProtocol: true,
         m2m: !featureConfig?.applications?.disabledFeatures?.includes("m2mTemplate"),

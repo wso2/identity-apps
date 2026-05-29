@@ -19,23 +19,39 @@
 import { Theme, styled } from "@mui/material/styles";
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
+import Divider from "@oxygen-ui/react/Divider";
+import Typography from "@oxygen-ui/react/Typography";
 import { getConnectionIcons } from "@wso2is/admin.connections.v1/configs/ui";
+import { RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import {
+    useGetGovernanceConnectorById
+} from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useCallback, useEffect, useMemo } from "react";
 import {
     DEFAULT_SIGN_IN_OPTIONS,
     LOGIN_METHOD_OPTIONS,
-    OnboardingComponentIds
+    MFA_METHOD_IDS,
+    OnboardingComponentIds,
+    PASSWORDLESS_METHOD_IDS,
+    PASSWORD_METHOD_IDS
 } from "../../constants";
+import { OnboardingBrandingConfigInterface } from "../../models/branding";
 import {
-    OnboardingBrandingConfigInterface,
     SignInOptionDefinitionInterface,
     SignInOptionsConfigInterface,
     SignInOptionsValidationInterface
-} from "../../models";
+} from "../../models/sign-in-options";
 import { validateSignInOptions } from "../../utils/sign-in-options-validator";
 import LoginBoxPreview from "../shared/login-box-preview";
-import { LeftColumn, RightColumn, SectionLabel, TwoColumnLayout } from "../shared/onboarding-styles";
+import { ConfigPanel, PreviewPanel, SectionLabel, TwoColumnLayout } from "../shared/onboarding-styles";
 import SignInOptionToggle from "../shared/sign-in-option-toggle";
 import StepHeader from "../shared/step-header";
 
@@ -49,7 +65,21 @@ interface SignInOptionsStepPropsInterface extends IdentifiableComponentInterface
     onSignInOptionsChange: (options: SignInOptionsConfigInterface) => void;
     /** Branding configuration for preview */
     brandingConfig?: OnboardingBrandingConfigInterface;
+    /** Whether user self-registration is enabled */
+    selfRegistrationEnabled?: boolean;
+    /** Callback when self-registration toggle changes */
+    onSelfRegistrationChange: (enabled: boolean) => void;
 }
+
+/**
+ * Self-registration option definition for the toggle component.
+ */
+const SELF_REGISTRATION_OPTION: SignInOptionDefinitionInterface = {
+    authenticatorConfig: { authenticator: "", idp: "" },
+    category: "identifier",
+    id: "selfRegistration",
+    label: "Allow user self-registration"
+};
 
 /**
  * Section container for grouping options.
@@ -57,8 +87,20 @@ interface SignInOptionsStepPropsInterface extends IdentifiableComponentInterface
 const OptionSection: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
     flexDirection: "column",
-    gap: theme.spacing(1)
+    gap: theme.spacing(1.5)
 }));
+
+/**
+ * Group label for categorizing options (e.g., "Passwordless", "MFA").
+ */
+const GroupLabel: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
+    color: theme.palette.text.secondary,
+    fontSize: "0.8125rem",
+    fontWeight: 600,
+    letterSpacing: "0.03em",
+    textTransform: "uppercase"
+}));
+
 
 /**
  * Scrollable container for login methods.
@@ -68,31 +110,24 @@ const OptionsContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) =
         width: 6
     },
     "&::-webkit-scrollbar-thumb": {
-        backgroundColor: theme.palette.grey[300],
-        borderRadius: 3
+        backgroundColor: "transparent",
+        borderRadius: 3,
+        transition: "background-color 200ms ease"
     },
     "&::-webkit-scrollbar-track": {
         backgroundColor: "transparent"
     },
+    "&:hover::-webkit-scrollbar-thumb": {
+        backgroundColor: theme.palette.grey[300]
+    },
     display: "flex",
     flex: 1,
     flexDirection: "column",
-    gap: theme.spacing(3),
+    gap: theme.spacing(2.5),
     overflowY: "auto",
-    paddingRight: theme.spacing(1)
-}));
-
-/**
- * Preview column styling.
- */
-const PreviewColumn: typeof Box = styled(RightColumn)(({ theme }: { theme: Theme }) => ({
-    alignItems: "center",
-    backgroundColor: theme.palette.grey[50],
-    borderRadius: theme.shape.borderRadius * 2,
-    display: "flex",
-    justifyContent: "flex-start",
-    overflowY: "auto",
-    padding: theme.spacing(4)
+    paddingBottom: theme.spacing(3),
+    paddingRight: theme.spacing(1),
+    scrollbarGutter: "stable"
 }));
 
 /**
@@ -106,8 +141,34 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepPropsInterface> = (
         signInOptions = DEFAULT_SIGN_IN_OPTIONS,
         onSignInOptionsChange,
         brandingConfig,
+        selfRegistrationEnabled,
+        onSelfRegistrationChange,
         ["data-componentid"]: componentId = OnboardingComponentIds.SIGN_IN_OPTIONS_STEP
     } = props;
+
+    // Fetch current org-wide self-registration setting
+    const {
+        data: selfSignUpConnector,
+        isLoading: isLoadingSelfReg
+    }: RequestResultInterface<GovernanceConnectorInterface> = useGetGovernanceConnectorById(
+        ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+        ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID,
+        true
+    );
+
+    // Initialize toggle from server state on first load only.
+    // The undefined check ensures returning to this step preserves the user's explicit choice.
+    useEffect(() => {
+        if (selfSignUpConnector && selfRegistrationEnabled === undefined) {
+            const enableProp: ConnectorPropertyInterface | undefined =
+                selfSignUpConnector.properties?.find(
+                    (prop: ConnectorPropertyInterface) =>
+                        prop.name === ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE
+                );
+
+            onSelfRegistrationChange(enableProp?.value === "true");
+        }
+    }, [ selfSignUpConnector, selfRegistrationEnabled, onSelfRegistrationChange ]);
 
     const handleLoginMethodToggle: (id: string, enabled: boolean) => void = useCallback(
         (id: string, enabled: boolean): void => {
@@ -119,6 +180,12 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepPropsInterface> = (
                 }
             });
         }, [ signInOptions, onSignInOptionsChange ]
+    );
+
+    const handleSelfRegistrationToggle: (enabled: boolean) => void = useCallback(
+        (enabled: boolean): void => {
+            onSelfRegistrationChange(enabled);
+        }, [ onSelfRegistrationChange ]
     );
 
     const validation: SignInOptionsValidationInterface = useMemo(
@@ -141,48 +208,126 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepPropsInterface> = (
 
     return (
         <TwoColumnLayout data-componentid={ componentId }>
-            <LeftColumn>
+            <ConfigPanel>
                 <StepHeader
                     data-componentid={ `${componentId}-header` }
-                    subtitle="Choose how your users will verify their identity."
                     title="How do you want users to sign in?"
                 />
-                <SectionLabel sx={ { marginBottom: 0 } }>
-                    Sign-in methods
-                </SectionLabel>
                 <OptionsContainer>
+                    { /* Password — standalone */ }
                     <OptionSection>
-                        { LOGIN_METHOD_OPTIONS.map((option: SignInOptionDefinitionInterface) => (
-                            <SignInOptionToggle
-                                icon={ loginMethodIcons[option.id] }
-                                isEnabled={
-                                    signInOptions.loginMethods[
-                                        option.id as keyof typeof signInOptions.loginMethods
-                                    ]
-                                }
-                                key={ option.id }
-                                onToggle={ (enabled: boolean) =>
-                                    handleLoginMethodToggle(option.id, enabled)
-                                }
-                                option={ option }
-                                data-componentid={ `${componentId}-login-method-${option.id}` }
-                            />
-                        )) }
+                        { LOGIN_METHOD_OPTIONS
+                            .filter((o: SignInOptionDefinitionInterface) => PASSWORD_METHOD_IDS.includes(o.id))
+                            .map((option: SignInOptionDefinitionInterface) => (
+                                <SignInOptionToggle
+                                    data-componentid={ `${componentId}-login-method-${option.id}` }
+                                    icon={ loginMethodIcons[option.id] }
+                                    isEnabled={
+                                        signInOptions.loginMethods[
+                                            option.id as keyof typeof signInOptions.loginMethods
+                                        ]
+                                    }
+                                    key={ option.id }
+                                    onToggle={ (enabled: boolean) =>
+                                        handleLoginMethodToggle(option.id, enabled)
+                                    }
+                                    option={ option }
+                                />
+                            )) }
                     </OptionSection>
+
+                    { /* Passwordless group */ }
+                    <OptionSection>
+                        <GroupLabel>Passwordless</GroupLabel>
+                        { LOGIN_METHOD_OPTIONS
+                            .filter((o: SignInOptionDefinitionInterface) => PASSWORDLESS_METHOD_IDS.includes(o.id))
+                            .map((option: SignInOptionDefinitionInterface) => (
+                                <SignInOptionToggle
+                                    data-componentid={ `${componentId}-login-method-${option.id}` }
+                                    icon={ loginMethodIcons[option.id] }
+                                    isEnabled={
+                                        signInOptions.loginMethods[
+                                            option.id as keyof typeof signInOptions.loginMethods
+                                        ]
+                                    }
+                                    key={ option.id }
+                                    onToggle={ (enabled: boolean) =>
+                                        handleLoginMethodToggle(option.id, enabled)
+                                    }
+                                    option={ option }
+                                />
+                            )) }
+                    </OptionSection>
+
+                    { /* MFA group */ }
+                    <OptionSection>
+                        <GroupLabel>Multi-Factor Authentication (MFA)</GroupLabel>
+                        { LOGIN_METHOD_OPTIONS
+                            .filter((o: SignInOptionDefinitionInterface) => MFA_METHOD_IDS.includes(o.id))
+                            .map((option: SignInOptionDefinitionInterface) => (
+                                <SignInOptionToggle
+                                    data-componentid={ `${componentId}-login-method-${option.id}` }
+                                    icon={ loginMethodIcons[option.id] }
+                                    isEnabled={
+                                        signInOptions.loginMethods[
+                                            option.id as keyof typeof signInOptions.loginMethods
+                                        ]
+                                    }
+                                    key={ option.id }
+                                    onToggle={ (enabled: boolean) =>
+                                        handleLoginMethodToggle(option.id, enabled)
+                                    }
+                                    option={ option }
+                                />
+                            )) }
+                    </OptionSection>
+
+                    { !validation.isValid && validation.errors.length > 0 && (
+                        <Alert severity="error">
+                            { validation.errors[0] }
+                        </Alert>
+                    ) }
+
+                    <Divider />
+
+                    { /* User registration section */ }
+                    <Box sx={ { display: "flex", flexDirection: "column", gap: 1.5 } }>
+                        <SectionLabel sx={ { fontWeight: 600, marginBottom: 0 } }>
+                            User registration
+                        </SectionLabel>
+                        <SignInOptionToggle
+                            data-componentid={
+                                `${componentId}-${OnboardingComponentIds.SELF_REGISTRATION_SECTION}`
+                            }
+                            disabled={ isLoadingSelfReg }
+                            isEnabled={ selfRegistrationEnabled ?? false }
+                            onToggle={ handleSelfRegistrationToggle }
+                            option={ SELF_REGISTRATION_OPTION }
+                        />
+                        <Typography
+                            data-componentid={
+                                `${componentId}-${OnboardingComponentIds.SELF_REGISTRATION_SECTION}-hint`
+                            }
+                            sx={ {
+                                color: "text.secondary",
+                                fontSize: "0.75rem",
+                                lineHeight: 1.5,
+                                px: 1
+                            } }
+                        >
+                            This is an organization-wide setting and will apply to all applications.
+                        </Typography>
+                    </Box>
                 </OptionsContainer>
-                { !validation.isValid && validation.errors.length > 0 && (
-                    <Alert severity="error" sx={ { marginBottom: 1 } }>
-                        { validation.errors[0] }
-                    </Alert>
-                ) }
-            </LeftColumn>
-            <PreviewColumn>
+            </ConfigPanel>
+            <PreviewPanel>
                 <LoginBoxPreview
                     brandingConfig={ brandingConfig }
-                    signInOptions={ signInOptions }
                     data-componentid={ `${componentId}-preview` }
+                    selfRegistrationEnabled={ selfRegistrationEnabled ?? false }
+                    signInOptions={ signInOptions }
                 />
-            </PreviewColumn>
+            </PreviewPanel>
         </TwoColumnLayout>
     );
 };

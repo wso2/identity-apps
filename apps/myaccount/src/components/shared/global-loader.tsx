@@ -36,7 +36,7 @@ interface GlobalLoaderProps extends TestableComponentInterface {
  * @param {GlobalLoaderProps} props - Props injected to the global loader component.
  * @return {JSX.Element}
  */
-export const GlobalLoader: FunctionComponent<GlobalLoaderProps> = (props: GlobalLoaderProps): JSX.Element => {
+const GlobalLoader: FunctionComponent<GlobalLoaderProps> = (props: GlobalLoaderProps): JSX.Element => {
 
     const { height, ["data-testid"]: testId } = props;
     const visibility = useSelector((state: AppState) => state.global.isGlobalLoaderVisible);

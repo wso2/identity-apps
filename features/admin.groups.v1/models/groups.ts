@@ -42,7 +42,7 @@ export interface CreateGroupMemberInterface {
 /**
  * Interface to get User information related to create group api
  */
-export interface CreateGroupUserInterface {
+interface CreateGroupUserInterface {
     id: string;
     userName?: string;
 }
@@ -69,13 +69,13 @@ export interface PatchGroupDataInterface {
     Operations: GroupSCIMOperationsInterface[];
 }
 
-export interface PatchBulkGroupDataInterface {
+interface PatchBulkGroupDataInterface {
     schemas: string[];
     Operations: PatchGroupOpInterface[];
     failOnErrors?: number;
 }
 
-export interface PatchGroupOpInterface {
+interface PatchGroupOpInterface {
     data: {
         Operations: (PatchGroupRemoveOpInterface | PatchGroupAddOpInterface)[];
     };
@@ -121,7 +121,7 @@ export interface GroupListInterface {
 /**
  * Interface to contain Group meta information
  */
-export interface GroupsMetaInterface {
+interface GroupsMetaInterface {
     created?: string;
     location: string;
     lastModified?: string;
@@ -136,7 +136,7 @@ export interface GroupsMemberInterface {
     $ref: string;
 }
 
-export interface GroupSCIMOperationsInterface {
+interface GroupSCIMOperationsInterface {
     op: string;
     value?: any;
     path?: string;
@@ -145,7 +145,7 @@ export interface GroupSCIMOperationsInterface {
 /**
  * Interface to contain data for SCIM update group members api request.
  */
-export interface GroupSCIMAddMemberInterface {
+interface GroupSCIMAddMemberInterface {
     members: CreateGroupMemberInterface[];
 }
 

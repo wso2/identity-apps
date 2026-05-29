@@ -19,7 +19,7 @@
 import {
     LocalAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
-import { SignInOptionDefinitionInterface, SignInOptionsConfigInterface } from "../models";
+import { SignInOptionDefinitionInterface, SignInOptionsConfigInterface } from "../models/sign-in-options";
 
 const AuthNames: typeof LocalAuthenticatorConstants.AUTHENTICATOR_NAMES =
     LocalAuthenticatorConstants.AUTHENTICATOR_NAMES;
@@ -49,7 +49,7 @@ export const DEFAULT_SIGN_IN_OPTIONS: SignInOptionsConfigInterface = {
  * Sign-in option definitions for identifier options.
  * Identifiers determine how users are recognized.
  */
-export const IDENTIFIER_OPTIONS: SignInOptionDefinitionInterface[] = [
+const IDENTIFIER_OPTIONS: SignInOptionDefinitionInterface[] = [
     {
         authenticatorConfig: {
             authenticator: AuthNames.BASIC_AUTHENTICATOR_NAME,
@@ -180,16 +180,28 @@ export const LOGIN_METHOD_OPTIONS: SignInOptionDefinitionInterface[] = [
 /**
  * All sign-in options combined.
  */
-export const ALL_SIGN_IN_OPTIONS: SignInOptionDefinitionInterface[] = [
+const ALL_SIGN_IN_OPTIONS: SignInOptionDefinitionInterface[] = [
     ...IDENTIFIER_OPTIONS,
     ...LOGIN_METHOD_OPTIONS
 ];
 
 /**
+ * Login method IDs grouped by category for UI rendering.
+ */
+export const PASSWORD_METHOD_IDS: string[] = [ "password" ];
+export const PASSWORDLESS_METHOD_IDS: string[] = [ "passkey", "magicLink" ];
+export const MFA_METHOD_IDS: string[] = [ "emailOtp", "totp", "pushNotification" ];
+
+/**
+ * First-factor method IDs (excluded from Step 2 strip in the login preview).
+ */
+export const FIRST_FACTOR_METHOD_IDS: string[] = [ "password", "passkey", "magicLink" ];
+
+/**
  * Validation rules for sign-in options.
  * Simplified for the Identifier First approach.
  */
-export const SignInOptionsValidationRules: Record<string, number> = {
+const SignInOptionsValidationRules: Record<string, number> = {
     /** Minimum one identifier required */
     MIN_IDENTIFIERS: 1,
     /** Minimum one login method required */

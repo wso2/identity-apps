@@ -105,4 +105,9 @@ export interface ExtendedFeatureResourceEndpointsInterface {
      * Email management API endpoint.
      */
     emailManagement: string;
+
+    /**
+     * Guest user ME claims API endpoint.
+     */
+    guestUserMeClaimsEndpoint: string;
 }

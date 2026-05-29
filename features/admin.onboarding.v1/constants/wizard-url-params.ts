@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { SignInLoginMethodsConfigInterface } from "../models";
+import { SignInLoginMethodsConfigInterface } from "../models/sign-in-options";
 
 /**
  * URL query parameter keys for the onboarding wizard.

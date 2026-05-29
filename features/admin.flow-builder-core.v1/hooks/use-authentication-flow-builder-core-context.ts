@@ -24,7 +24,7 @@ import AuthenticationFlowBuilderCoreContext, {
 /**
  * Props interface of {@link useAuthenticationFlowBuilderCore}
  */
-export type UseAuthenticationFlowBuilderCoreInterface = AuthenticationFlowBuilderCoreContextProps;
+type UseAuthenticationFlowBuilderCoreInterface = AuthenticationFlowBuilderCoreContextProps;
 
 /**
  * Hook that provides access to the Authentication Flow Builder Core context.

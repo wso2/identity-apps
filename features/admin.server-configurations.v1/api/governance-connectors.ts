@@ -25,7 +25,9 @@ import useRequest, {
 import { store } from "@wso2is/admin.core.v1/store";
 import { LocalAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
@@ -49,7 +51,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance().httpReque
  *
  * @returns the governance connector categories.
  */
-export const useGovernanceConnectorCategories = <
+const useGovernanceConnectorCategories = <
     Data = GovernanceCategoryForOrgsInterface[],
     Error = RequestErrorInterface
 >
@@ -145,7 +147,7 @@ export const useGetGovernanceConnectorById = <
     };
 };
 
-export const getData = (url: string): Promise<any> => {
+const getData = (url: string): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -169,7 +171,7 @@ export const getData = (url: string): Promise<any> => {
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 ServerConfigurationsConstants.CONFIGS_FETCH_REQUEST_ERROR,
                 error.stack,
@@ -180,7 +182,7 @@ export const getData = (url: string): Promise<any> => {
         });
 };
 
-export const updateConfigurations = (data: UpdateGovernanceConnectorConfigInterface, url: string): Promise<any> => {
+const updateConfigurations = (data: UpdateGovernanceConnectorConfigInterface, url: string): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
         data,
         headers: {
@@ -205,7 +207,7 @@ export const updateConfigurations = (data: UpdateGovernanceConnectorConfigInterf
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 ServerConfigurationsConstants.CONFIGS_UPDATE_REQUEST_ERROR,
                 error.stack,
@@ -293,7 +295,7 @@ export const revertGovernanceConnectorProperties = (
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 ServerConfigurationsConstants.CONFIGS_REVERT_REQUEST_ERROR,
                 error.stack,
@@ -322,7 +324,7 @@ export const getGovernanceConnectors = (categoryId: string): Promise<GovernanceC
  *
  * @returns a promise containing the response.
  */
-export const getServerConfigurations = (): Promise<any> => {
+const getServerConfigurations = (): Promise<any> => {
     return getData(store.getState().config.endpoints.serverConfigurations);
 };
 
@@ -333,7 +335,7 @@ export const getServerConfigurations = (): Promise<any> => {
  *
  * @returns a promise containing the response.
  */
-export const updateServerConfigurations = (data: UpdateGovernanceConnectorConfigInterface): Promise<any> => {
+const updateServerConfigurations = (data: UpdateGovernanceConnectorConfigInterface): Promise<any> => {
     return updateConfigurations(data, store.getState().config.endpoints.serverConfigurations);
 };
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,6 +27,7 @@ import { AgentsResourceEndpointsInterface } from "../models/endpoints";
 export const getAgentsResourceEndpoints = (serverHost: string): AgentsResourceEndpointsInterface => {
     return {
         agentCredentials: `${serverHost}/scim2/Agents/credentials`,
+        agentSharing: `${ serverHost }/api/server/v1/agents`,
         agents: `${serverHost}/scim2/Agents`
     };
 };

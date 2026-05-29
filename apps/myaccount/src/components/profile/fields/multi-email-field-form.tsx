@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -32,23 +32,29 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { PlusIcon } from "@oxygen-ui/react-icons";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { PatchOperationRequest } from "@wso2is/core/models";
-import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
+import { AlertLevels, PatchOperationRequest } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/forms";
 import { Popup, Button as SemanticButton, useMediaContext } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Icon, List } from "semantic-ui-react";
 import EmptyValueField from "./empty-value-field";
 import MultiValueDeleteConfirmationModal from "./multi-value-delete-confirmation-modal";
+import { updateProfileInfo } from "../../../api/profile";
 import { SCIMConfigs as SCIMExtensionConfigs } from "../../../extensions/configs/scim";
 import { AuthStateInterface } from "../../../models/auth";
 import { MultiValue, ProfilePatchOperationValue, ProfileSchema } from "../../../models/profile";
-import { MultiEmailFieldFormPropsInterface } from "../../../models/profile-ui";
+import { MultiEmailFieldFormPropsInterface, OTPVerificationChannel } from "../../../models/profile-ui";
 import { AppState } from "../../../store";
+import { setActiveForm } from "../../../store/actions";
+import { getProfileInformation } from "../../../store/actions/authenticate";
 import { EditSection } from "../../shared/edit-section";
-
+import OTPVerificationModal from "../../shared/otp-verification-modal/otp-verification-modal";
 import "./field-form.scss";
 
 interface SortedEmailAddress {
@@ -73,12 +79,14 @@ const MultiEmailFieldForm: FunctionComponent<MultiEmailFieldFormPropsInterface> 
     onEditClicked,
     onEditCancelClicked,
     isVerificationEnabled,
+    isVerificationWithOTPEnabled,
     triggerUpdate,
     setIsProfileUpdating,
     ["data-componentid"]: testId = "email-field-form"
 }: MultiEmailFieldFormPropsInterface): ReactElement => {
     const { t } = useTranslation();
     const { isMobileViewport } = useMediaContext();
+    const dispatch: Dispatch<any> = useDispatch();
 
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
 
@@ -86,6 +94,8 @@ const MultiEmailFieldForm: FunctionComponent<MultiEmailFieldFormPropsInterface> 
 
     // Track the selected email address for deleting.
     const [ selectedEmailAddress, setSelectedEmailAddress ] = useState<SortedEmailAddress>();
+    const [ isOTPVerificationModalOpen, setIsOTPVerificationModalOpen ] = useState<boolean>(false);
+    const [ isOTPVerificationModalLoading, setIsOTPVerificationModalLoading ] = useState<boolean>(false);
 
     const primaryEmailSchema: ProfileSchema = useMemo(
         () =>
@@ -294,7 +304,7 @@ const MultiEmailFieldForm: FunctionComponent<MultiEmailFieldFormPropsInterface> 
         return undefined;
     }, [ sortedEmailAddressesList ]);
 
-    const handleVerifyEmail = (emailAddress: string): void => {
+    const handleVerifyEmail = async (emailAddress: string) => {
         setIsProfileUpdating(true);
 
         const data: PatchOperationRequest<ProfilePatchOperationValue> = {
@@ -313,7 +323,35 @@ const MultiEmailFieldForm: FunctionComponent<MultiEmailFieldFormPropsInterface> 
             }
         });
 
-        triggerUpdate(data);
+        if (!isVerificationWithOTPEnabled) {
+            triggerUpdate(data);
+
+            return;
+        }
+
+        setIsOTPVerificationModalOpen(true);
+        setIsOTPVerificationModalLoading(true);
+
+        try {
+            const response: AxiosResponse = await updateProfileInfo(data as unknown as Record<string, unknown>);
+
+            if (response.status !== 200) {
+                throw new Error(`An error occurred. The server returned ${response.status}`);
+            }
+        } catch (error) {
+            setIsOTPVerificationModalOpen(false);
+            dispatch(addAlert({
+                description: error?.detail ?? t(
+                    "myAccount:components.profile.notifications.verifyMobile.genericError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: error?.message ?? t(
+                    "myAccount:components.profile.notifications.verifyMobile.genericError.message"
+                )
+            }));
+        } finally {
+            setIsOTPVerificationModalLoading(false);
+        }
     };
 
     const handleMakeEmailPrimary = (emailAddress: string): void => {
@@ -430,13 +468,22 @@ const MultiEmailFieldForm: FunctionComponent<MultiEmailFieldFormPropsInterface> 
             .filter((emailAddress: SortedEmailAddress) => emailAddress.value !== selectedEmailAddress.value)
             .map((emailAddress: SortedEmailAddress) => emailAddress.value);
 
+        const deleteSchemaValue: Record<string, unknown> = {
+            [schema.name]: updatedEmailAddressesList
+        };
+
+        // pendingEmails must be submitted as [{ type: "value", value: "" }] to clear it
+        // when the deleted address is the pending one.
+        if (!isEmpty(pendingEmailAddress) && selectedEmailAddress.value === pendingEmailAddress) {
+            deleteSchemaValue[ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_EMAILS")] =
+                [ { type: "value", value: "" } ];
+        }
+
         data.Operations.push({
             op: "replace",
             value: {
-                [schema.schemaId] : {
-                    [schema.name] : updatedEmailAddressesList
-                }
-            }
+                [schema.schemaId]: deleteSchemaValue
+            } as unknown as ProfilePatchOperationValue
         });
 
         if (selectedEmailAddress.isPrimary) {
@@ -476,6 +523,17 @@ const MultiEmailFieldForm: FunctionComponent<MultiEmailFieldFormPropsInterface> 
         }
 
         triggerUpdate(data, false);
+    };
+
+    const handleOTPVerificationModalClose = (isRevalidate: boolean = false) => {
+        setIsOTPVerificationModalOpen(false);
+        setIsProfileUpdating(false);
+
+        if (isRevalidate) {
+            // Re-fetch the profile information.
+            dispatch(getProfileInformation(true));
+            dispatch(setActiveForm(null));
+        }
     };
 
     const renderEmailAddressesTable = (): ReactElement => {
@@ -728,6 +786,14 @@ const MultiEmailFieldForm: FunctionComponent<MultiEmailFieldFormPropsInterface> 
                         data-componentid={ testId }
                     />
                 ) }
+
+                <OTPVerificationModal
+                    isOpen={ isOTPVerificationModalOpen }
+                    verificationChannel={ OTPVerificationChannel.EMAIL }
+                    onClose={ handleOTPVerificationModalClose }
+                    isLoading={ isOTPVerificationModalLoading }
+                    isMultiValued
+                />
             </EditSection>
         );
     }

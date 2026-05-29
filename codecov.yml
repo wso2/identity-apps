@@ -21,16 +21,16 @@
 # This workflow will run the codecov action on the repository.
 
 codecov:
-  require_ci_to_pass: yes
+  require_ci_to_pass: true
   notify:
-    wait_for_ci: yes
+    wait_for_ci: true
 
 coverage:
   status:
     project:
       default:
-        enabled: yes
-        threshold: null
+        enabled: true
+        threshold: "0%"
         target: auto
       core:
         target: auto
@@ -53,9 +53,9 @@ comment:
   layout:  "diff, flags, files"
   behavior: default
   require_changes: false  
-  require_base: yes
-  require_head: yes       
-  branches: null
+  require_base: true
+  require_head: true       
+  branches: []
 
 flags:
   '@wso2is/core':

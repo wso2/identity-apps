@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -56,7 +56,9 @@ import { GetSecretListResponse, SecretModel } from "@wso2is/admin.secrets.v1/mod
 import { UIConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface, StorageIdentityAppsSettingsInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
 import {
@@ -108,6 +110,7 @@ import {
 import { AdaptiveScriptUtils } from "../../../../utils/adaptive-script-utils";
 import "./script-based-flow.scss";
 import ConditionalAuthPremiumBanner from "../../../banners/conditional-auth-premium-banner";
+import SubOrgAdaptiveAuthInfoBanner from "../../../banners/sub-org-adaptive-auth-info-banner";
 
 /**
  * Proptypes for the adaptive scripts component.
@@ -149,6 +152,11 @@ interface AdaptiveScriptsPropsInterface extends IdentifiableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Whether to show the sub-org adaptive auth info banner. Set by the parent when
+     * the org-governance capability check has resolved as allowed for a sub-org.
+     */
+    showSubOrgAdaptiveAuthInfoBanner?: boolean;
 
 }
 
@@ -171,6 +179,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         authenticationSteps,
         isDefaultScript,
         onAdaptiveScriptReset,
+        showSubOrgAdaptiveAuthInfoBanner,
         ["data-componentid"]: componentId
     } = props;
 
@@ -262,7 +271,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             }).then((axiosResponse: AxiosResponse<GetSecretListResponse>) => {
                 setSecretList(axiosResponse.data);
                 setFilteredSecretList(axiosResponse.data);
-            }).catch((error: AxiosError) => {
+            }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data?.description,
@@ -565,7 +574,15 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     };
 
     const resetAdaptiveScriptTemplateToDefaultHandler = () => {
-        setSourceCode("");
+        if (!isScriptUpdatePermissionEnforced) {
+            const defaultScript: string[] = AdaptiveScriptUtils.generateScript(authenticationSteps + 1);
+
+            setSourceCode(defaultScript);
+            setInternalScript(defaultScript.join(ApplicationManagementConstants.LINE_BREAK));
+            setInternalStepCount(authenticationSteps);
+        } else {
+            setSourceCode("");
+        }
         setIsScriptFromTemplate(false);
         onAdaptiveScriptReset();
         onConditionalAuthenticationToggle(false);
@@ -1345,6 +1362,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 </div>
                                 { renderConditionalAuthTour() }
                                 { conditionalAuthPremiumFeature && (<ConditionalAuthPremiumBanner />) }
+                                { !conditionalAuthPremiumFeature && showSubOrgAdaptiveAuthInfoBanner
+                                    && (<SubOrgAdaptiveAuthInfoBanner />) }
                             </>
                         ) }
                         hideChevron={ true }

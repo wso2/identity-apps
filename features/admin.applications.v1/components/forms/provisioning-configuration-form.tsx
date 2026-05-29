@@ -19,10 +19,11 @@
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { AGENT_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Form } from "@wso2is/form";
+import { Field, Form } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -95,7 +96,9 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                 const isReadOnly: boolean = isUserStoreReadOnly(store.name);
                 const isEnabled: boolean = store.enabled;
 
-                if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName && !isReadOnly && isEnabled) {
+                if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName
+                    && store.name.toUpperCase() !== AGENT_USERSTORE
+                    && !isReadOnly && isEnabled) {
                     const storeOption: UserStoreItem = {
                         key: index,
                         text: store.name,

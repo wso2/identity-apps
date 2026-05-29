@@ -20,6 +20,9 @@ import { FeatureGateInterface, FeatureStatus } from "@wso2is/access-control";
 
 export const featureGateConfig: FeatureGateInterface  = {
     console:  {
+        actions: {
+            status: FeatureStatus.DEFAULT
+        },
         application: {
             signIn: {
                 adaptiveAuth : {
@@ -30,6 +33,9 @@ export const featureGateConfig: FeatureGateInterface  = {
             },
             status: FeatureStatus.DEFAULT
         },
+        approvalWorkflows: {
+            status: FeatureStatus.DEFAULT
+        },
         branding: {
             design: {
                 layout: {
@@ -38,6 +44,25 @@ export const featureGateConfig: FeatureGateInterface  = {
                     }
                 }
             }
+        },
+        connections: {
+            templates: {
+                customAuthenticator: {
+                    status: FeatureStatus.DEFAULT
+                },
+                enterprise: {
+                    status: FeatureStatus.DEFAULT
+                },
+                idvp: {
+                    status: FeatureStatus.DEFAULT
+                }
+            }
+        },
+        consoleSettings: {
+            status: FeatureStatus.DEFAULT
+        },
+        emailTemplates: {
+            status: FeatureStatus.DEFAULT
         },
         loginAndRegistration: {
             sessionManagement: {
@@ -50,6 +75,17 @@ export const featureGateConfig: FeatureGateInterface  = {
         saasFeatures: {
             status: FeatureStatus.DISABLED
         },
-        status: FeatureStatus.DEFAULT
+        smsTemplates: {
+            status: FeatureStatus.DEFAULT
+        },
+        status: FeatureStatus.DEFAULT,
+        userStores: {
+            remoteUserStores: {
+                status: FeatureStatus.DEFAULT
+            }
+        },
+        webhooks: {
+            status: FeatureStatus.DEFAULT
+        }
     }
 };

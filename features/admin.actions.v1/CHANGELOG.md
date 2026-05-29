@@ -1,5 +1,109 @@
 # @wso2is/admin.actions.v1
 
+## 1.17.0
+
+### Minor Changes
+
+- [#10265](https://github.com/wso2/identity-apps/pull/10265) [`bb7f3db51dd616c0a662db3a233730bbbc0c0b15`](https://github.com/wso2/identity-apps/commit/bb7f3db51dd616c0a662db3a233730bbbc0c0b15) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Provide Console UI support to configure OAuth2 Password Grant based Authentication for actions
+
+### Patch Changes
+
+- Updated dependencies [[`2de3739f867501a0d18a29253f5091e37432d2bd`](https://github.com/wso2/identity-apps/commit/2de3739f867501a0d18a29253f5091e37432d2bd), [`bb7f3db51dd616c0a662db3a233730bbbc0c0b15`](https://github.com/wso2/identity-apps/commit/bb7f3db51dd616c0a662db3a233730bbbc0c0b15)]:
+  - @wso2is/admin.core.v1@2.57.8
+  - @wso2is/i18n@2.41.0
+
+## 1.16.1
+
+### Patch Changes
+
+- [#10257](https://github.com/wso2/identity-apps/pull/10257) [`a590754c0ece0ba0c9acaa493fc16d1fae95c49c`](https://github.com/wso2/identity-apps/commit/a590754c0ece0ba0c9acaa493fc16d1fae95c49c) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Skip auth-property validation when actions auth flow is not in update mode
+
+- Updated dependencies [[`2a6285ee9794b66bcd3e3257c8290883270dc13f`](https://github.com/wso2/identity-apps/commit/2a6285ee9794b66bcd3e3257c8290883270dc13f)]:
+  - @wso2is/admin.core.v1@2.57.7
+
+## 1.16.0
+
+### Minor Changes
+
+- [#10230](https://github.com/wso2/identity-apps/pull/10230) [`bb0115f5684773bfd99ecdfdcf48aadd784dc902`](https://github.com/wso2/identity-apps/commit/bb0115f5684773bfd99ecdfdcf48aadd784dc902) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Provide Console UI support to configure OAuth2 client Credential based Authentication for actions
+
+### Patch Changes
+
+- Updated dependencies [[`bb0115f5684773bfd99ecdfdcf48aadd784dc902`](https://github.com/wso2/identity-apps/commit/bb0115f5684773bfd99ecdfdcf48aadd784dc902)]:
+  - @wso2is/i18n@2.40.0
+
+## 1.15.8
+
+### Patch Changes
+
+- [#10219](https://github.com/wso2/identity-apps/pull/10219) [`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove duplicate exports
+
+- Updated dependencies [[`783edc1aa96f58facf455b05d204b3bb066ba65c`](https://github.com/wso2/identity-apps/commit/783edc1aa96f58facf455b05d204b3bb066ba65c)]:
+  - @wso2is/admin.claims.v1@2.31.2
+  - @wso2is/admin.rules.v1@0.7.50
+  - @wso2is/admin.core.v1@2.57.6
+
+## 1.15.7
+
+### Patch Changes
+
+- [#10203](https://github.com/wso2/identity-apps/pull/10203) [`4eb39168ef1c46f4c3d31013e09d5a3fbed15368`](https://github.com/wso2/identity-apps/commit/4eb39168ef1c46f4c3d31013e09d5a3fbed15368) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Feature gate webhooks, workflows, actions
+
+- Updated dependencies [[`4eb39168ef1c46f4c3d31013e09d5a3fbed15368`](https://github.com/wso2/identity-apps/commit/4eb39168ef1c46f4c3d31013e09d5a3fbed15368)]:
+  - @wso2is/admin.feature-gate.v1@1.9.7
+  - @wso2is/access-control@3.5.8
+
+## 1.15.6
+
+### Patch Changes
+
+- [#10197](https://github.com/wso2/identity-apps/pull/10197) [`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dependencies
+
+- Updated dependencies [[`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423)]:
+  - @wso2is/admin.organizations.v1@2.28.4
+  - @wso2is/admin.feature-gate.v1@1.9.6
+  - @wso2is/admin.claims.v1@2.31.1
+  - @wso2is/admin.core.v1@2.57.3
+
+## 1.15.5
+
+### Patch Changes
+
+- Updated dependencies [[`793c5bde494bdde069a0fbc0b5311d279938ceb9`](https://github.com/wso2/identity-apps/commit/793c5bde494bdde069a0fbc0b5311d279938ceb9), [`3ab81080396569cab60e5e4b52d8715b54d9ef67`](https://github.com/wso2/identity-apps/commit/3ab81080396569cab60e5e4b52d8715b54d9ef67)]:
+  - @wso2is/admin.extensions.v1@2.42.0
+  - @wso2is/admin.core.v1@2.56.0
+  - @wso2is/i18n@2.39.0
+  - @wso2is/admin.organizations.v1@2.28.3
+  - @wso2is/admin.rules.v1@0.7.46
+
+## 1.15.4
+
+### Patch Changes
+
+- [#9875](https://github.com/wso2/identity-apps/pull/9875) [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - Revert Axios and SDK version bumps
+
+- Updated dependencies [[`c834b18928cdfc09710c5e7067668206d006e68a`](https://github.com/wso2/identity-apps/commit/c834b18928cdfc09710c5e7067668206d006e68a), [`877d726905edf898c33c615cd887f8ed0a071a0e`](https://github.com/wso2/identity-apps/commit/877d726905edf898c33c615cd887f8ed0a071a0e), [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d)]:
+  - @wso2is/i18n@2.37.5
+  - @wso2is/admin.organizations.v1@2.28.2
+  - @wso2is/admin.feature-gate.v1@1.9.2
+  - @wso2is/admin.extensions.v1@2.40.30
+  - @wso2is/admin.claims.v1@2.30.6
+  - @wso2is/admin.rules.v1@0.7.19
+  - @wso2is/admin.core.v1@2.55.3
+  - @wso2is/access-control@3.5.3
+  - @wso2is/core@2.12.10
+  - @wso2is/form@2.10.1
+
+## 1.15.3
+
+### Patch Changes
+
+- Updated dependencies [[`98be11798211c36636778c925819b578d4fbeabd`](https://github.com/wso2/identity-apps/commit/98be11798211c36636778c925819b578d4fbeabd), [`3ebcd80a19cabc51a4ee840bafb0da213e0c97e1`](https://github.com/wso2/identity-apps/commit/3ebcd80a19cabc51a4ee840bafb0da213e0c97e1), [`8f189290049855d403087514cbdc0b9ca2892ab8`](https://github.com/wso2/identity-apps/commit/8f189290049855d403087514cbdc0b9ca2892ab8)]:
+  - @wso2is/admin.extensions.v1@2.40.28
+  - @wso2is/i18n@2.34.11
+  - @wso2is/admin.rules.v1@0.7.0
+  - @wso2is/admin.core.v1@2.54.17
+
 ## 1.15.2
 
 ### Patch Changes

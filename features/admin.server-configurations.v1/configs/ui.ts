@@ -110,7 +110,7 @@ interface ConnectorCategoryIconsInterface {
     [key: string]: Icon | any;
 }
 
-export const getGovernanceConnectorIllustrations = () : GetGovernanceConnectorIllustrationsInterface => {
+const getGovernanceConnectorIllustrations = () : GetGovernanceConnectorIllustrationsInterface => {
 
     return {
         [ ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID ]: PasswordHistoryConnectorIllustration,
@@ -132,7 +132,7 @@ export const getGovernanceConnectorIllustrations = () : GetGovernanceConnectorIl
     };
 };
 
-export const getSettingsSectionIcons = (): GetSettingsSectionIconsInterface => {
+const getSettingsSectionIcons = (): GetSettingsSectionIconsInterface => {
 
     return {
         accountLock: WarningWithNumberIcon,
@@ -144,7 +144,7 @@ export const getSettingsSectionIcons = (): GetSettingsSectionIconsInterface => {
     };
 };
 
-export const getConnectorCategoryIcon = (): ConnectorCategoryIconsInterface => {
+const getConnectorCategoryIcon = (): ConnectorCategoryIconsInterface => {
     return {
         [ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID]: PadlockAsteriskIcon,
         [ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID]: UserPlusIcon,

@@ -82,7 +82,7 @@ import { RegistrationStaticStepTypes } from "../models/flow";
 /**
  * Props interface of {@link RegistrationFlowBuilderCore}
  */
-export type RegistrationFlowBuilderCorePropsInterface = IdentifiableComponentInterface;
+type RegistrationFlowBuilderCorePropsInterface = IdentifiableComponentInterface;
 
 /**
  * Main component that wraps the `FlowBuilder` from the flow builder core.

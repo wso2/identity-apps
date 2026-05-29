@@ -1,0 +1,35 @@
+.notification-details-form {
+    margin-top: 8px;
+
+    .notification-channels {
+        display: flex;
+        flex-direction: column;
+        gap: 3.5rem;
+        margin-top: 16px;
+
+        .notification-config {
+            h6 {
+                color: #666666;
+                margin: 0;
+                margin-bottom: 12px;
+            }
+
+            .sub-heading {
+                font-size: 0.875rem !important;
+                margin-bottom: 12px;
+            }
+
+            .fields {
+                .MuiFormControlLabel-root {
+                    margin-bottom: 0;
+                }
+            }
+
+            .hint-text {
+                margin-top: 8px;
+            }
+        }
+    }
+
+    margin-bottom: 24px;
+}

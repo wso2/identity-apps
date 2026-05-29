@@ -52,7 +52,7 @@ import "./application-templates-grid.scss";
 /**
  * Props for the Application templates grid page.
  */
-export interface ApplicationTemplateGridPropsInterface extends
+interface ApplicationTemplateGridPropsInterface extends
     IdentifiableComponentInterface, LoadableComponentInterface {
     /**
      * Callback to be fired when a template is selected.
@@ -194,9 +194,9 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
             removingApplicationTemplateIds.push(ApplicationTemplateConstants.CUSTOM_PROTOCOL_APPLICATION_TEMPLATE_ID);
         }
 
-        // Remove VC Client template if VC feature is not enabled.
+        // Remove Digital Wallet template if VC feature is not enabled.
         if (!isVcFeatureEnabled) {
-            removingApplicationTemplateIds.push(ApplicationTemplateConstants.VC_CLIENT_APPLICATION);
+            removingApplicationTemplateIds.push(ApplicationTemplateConstants.DIGITAL_WALLET_APPLICATION);
         }
 
         // Remove hidden application templates based on the UI config.

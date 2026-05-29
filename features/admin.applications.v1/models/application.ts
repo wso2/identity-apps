@@ -83,12 +83,13 @@ export interface ApplicationInterface extends ApplicationBasicInterface {
     authenticationSequence?: AuthenticationSequenceInterface;
     provisioningConfigurations?: ProvisioningConfigurationInterface;
     appRoleConfigurations?: IdpRoleMappingInterface[];
+    enhancedOrgAuthenticationEnabled?: boolean;
 }
 
 /**
  * Interface for Idp role mappings.
  */
-export interface IdpRoleMappingInterface {
+interface IdpRoleMappingInterface {
     idp: string;
     useAppRoleMappings: boolean;
 }
@@ -105,7 +106,7 @@ export interface InboundProtocolListItemInterface {
 /**
  *  Application Basic details for add wizard.
  */
-export interface ApplicationBasicWizard extends ApplicationBasicInterface {
+interface ApplicationBasicWizard extends ApplicationBasicInterface {
     imageUrl?: string;
     discoverableByEndUsers?: boolean;
 }
@@ -230,7 +231,7 @@ export interface CertificateInterface {
 /**
  *  Captures Attestation data related configuration.
  */
-export interface AttestationMetaDataInterface {
+interface AttestationMetaDataInterface {
     enableClientAttestation?: boolean;
     androidPackageName?: string;
     appleAppId?: string;
@@ -240,7 +241,7 @@ export interface AttestationMetaDataInterface {
 /**
  *  Captures trusted apps related configuration.
  */
-export interface TrustedAppConfigurationsInterface {
+interface TrustedAppConfigurationsInterface {
     isFIDOTrustedApp?: boolean;
     isConsentGranted?: boolean;
     androidPackageName?: string;
@@ -251,7 +252,7 @@ export interface TrustedAppConfigurationsInterface {
 /**
  *  Captures application advanced configuration related configuration.
  */
-export interface ApplicationAdvancedConfigurationsViewInterface {
+interface ApplicationAdvancedConfigurationsViewInterface {
     saas?: boolean;
     skipConsentLogin?: boolean;
     skipConsentLogout?: boolean;
@@ -435,7 +436,7 @@ export interface ApplicationTemplateCategoryInterface {
 /**
  * Interface for the application templates category view config.
  */
-export interface ApplicationTemplateCategoryViewConfigInterface {
+interface ApplicationTemplateCategoryViewConfigInterface {
     /**
      * Config for the UI tags displayed on templates.
      */
@@ -491,7 +492,7 @@ export interface ApplicationTemplateInterface extends ApplicationTemplateListIte
  *
  * @readonly
  */
-export enum SupportedApplicationTemplateCategories {
+enum SupportedApplicationTemplateCategories {
     QUICK_START = "quick_start"
 }
 
@@ -532,7 +533,7 @@ export enum ApplicationTemplateLoadingStrategies {
 /**
  *  Application template technology interface.
  */
-export interface ApplicationTemplateTechnology {
+interface ApplicationTemplateTechnology {
     name: string;
     displayName: string;
     logo: any;
@@ -638,7 +639,7 @@ export const emptyApplication = (): ApplicationInterface => ({
 /**
  * Inbound SCIM Provisioning configuration.
  */
-export interface InboundSCIMProvisioningConfigurationInterface {
+interface InboundSCIMProvisioningConfigurationInterface {
     proxyMode: boolean;
     provisioningUserstoreDomain?: string;
 }
@@ -703,6 +704,7 @@ export interface OIDCApplicationConfigurationInterface {
     dynamicClientRegistrationEndpoint?: string;
     mtlsTokenEndpoint?: string;
     mtlsPushedAuthorizationRequestEndpoint?: string;
+    cibaEndpoint?: string;
 }
 
 /**
@@ -804,7 +806,7 @@ export interface DiscoverableGroupInterface {
     groups: GroupMetadataInterface[];
 }
 
-export const emptyOIDCAppConfiguration = (): OIDCApplicationConfigurationInterface => ({
+const emptyOIDCAppConfiguration = (): OIDCApplicationConfigurationInterface => ({
     authorizeEndpoint: "",
     endSessionEndpoint: "",
     introspectionEndpoint: "",
@@ -846,9 +848,10 @@ export enum ApplicationTemplateIdTypes {
     SAML_WEB_APPLICATION = "saml-web-application",
     MOBILE_APPLICATION = "mobile-application",
     M2M_APPLICATION = "m2m-application",
+    AGENT_APPLICATION = "agent-application",
     CUSTOM_APPLICATION = "custom-application",
     MCP_CLIENT_APPLICATION = "mcp-client-application",
-    VC_CLIENT_APPLICATION = "vc-client-application",
+    DIGITAL_WALLET_APPLICATION = "digital-wallet-application",
     REACT_APPLICATION = "react-application",
     NEXT_JS_APPLICATION = "nextjs-application",
     ANGULAR_APPLICATION = "angular-application",
@@ -869,7 +872,7 @@ export enum ApplicationTemplateNames {
  *
  * @readonly
  */
-export enum DefaultTemplateGroupIds {
+enum DefaultTemplateGroupIds {
     WEB_APPLICATION = "web-application",
     DESKTOP_APPLICATION = "desktop",
     MOBILE_APPLICATION = "mobile"
@@ -941,7 +944,7 @@ export enum SubjectTypes {
 /**
  * Interface to contain role audiences information
  */
-export interface RoleAudiencesInterface {
+interface RoleAudiencesInterface {
     display: string;
     type: string;
 }
@@ -973,7 +976,7 @@ export interface UnshareApplicationWithAllOrganizationsDataInterface {
 /**
  * Interface for shared organization and roles.
  */
-export interface SharedOrganizationAndRolesInterface {
+interface SharedOrganizationAndRolesInterface {
     orgId: string;
     policy: string;
     roleSharing: {

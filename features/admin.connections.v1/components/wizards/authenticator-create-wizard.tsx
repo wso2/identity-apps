@@ -21,7 +21,7 @@ import { AuthenticatorSettings } from "@wso2is/admin.identity-providers.v1/compo
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { useTrigger } from "@wso2is/forms";
+import { useTrigger } from "@wso2is/forms/legacy";
 import {
     Code,
     EmptyPlaceholder,

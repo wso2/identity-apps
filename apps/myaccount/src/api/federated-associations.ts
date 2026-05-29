@@ -73,25 +73,3 @@ export const deleteFederatedAssociation = (id: string): Promise<void> => {
             return Promise.reject(error);
         });
 };
-
-/**
- * This removes all the federated associations
- */
-export const deleteAllFederatedAssociation = (): Promise<void> => {
-    const requestConfig: HttpRequestConfig = {
-        headers: {
-            "Access-Control-Allow-Origin": store.getState()?.config?.deployment?.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.DELETE,
-        url: store.getState().config.endpoints.federatedAssociations
-    };
-
-    return httpClient(requestConfig)
-        .then(() => {
-            return Promise.resolve();
-        })
-        .catch((error: HttpError) => {
-            return Promise.reject(error);
-        });
-};

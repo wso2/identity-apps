@@ -35,7 +35,7 @@ type MyAccountSettingsPageInterface = IdentifiableComponentInterface;
  * @param props - Props injected to the component.
  * @returns Governance connector listing page component.
  */
-export const ValidationConfigPage: FunctionComponent<MyAccountSettingsPageInterface> = (
+const ValidationConfigPage: FunctionComponent<MyAccountSettingsPageInterface> = (
     props: MyAccountSettingsPageInterface
 ): ReactElement => {
     const { [ "data-componentid" ]: componentId } = props;

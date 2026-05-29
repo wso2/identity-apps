@@ -187,15 +187,21 @@
         <jsp:include page="includes/footer.jsp"/>
         <% } %>
 
+        <div id="regexData" data-regex="<%=Encode.forHtmlAttribute(mobileRegex)%>" style="display:none;"></div>
+
         <script type="text/javascript">
             $(document).ready(function() {
                 $('#update').click(function() {
                     var mobileNumber = document.getElementById("MOBILE_NUMBER").value;
+                    var regexPattern = document.getElementById('regexData').dataset.regex;
+                    // decode HTML-encoded backslashes for use in RegExp constructor
+                    regexPattern = regexPattern.replace(/\\\\/g, "\\");
+                    var regexObj = new RegExp(regexPattern);
                     if (mobileNumber == "") {
                         document.getElementById('alertDiv').innerHTML
                             = '<div id="error-msg" class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "please.enter.mobile.number")%></div>'
                               +'<div class="ui divider hidden"></div>';
-                    } else if (<%=validateMobileNumberFormat%> && !(mobileNumber.match("<%=Encode.forJavaScript(mobileRegex)%>"))) {
+                    } else if (<%=validateMobileNumberFormat%> && !(regexObj.test(mobileNumber))) {
                        document.getElementById('alertDiv').innerHTML
                           = '<div id="error-msg" class="ui negative message"><%=Encode.forHtml(mobileRegexPolicyValidationErrorMessage)%></div>'
                             +'<div class="ui divider hidden"></div>';

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -68,13 +68,14 @@ export class ProfileConstants {
  * @readonly
  */
 export enum LocaleJoiningSymbol {
-    HYPHEN = "-",
-    UNDERSCORE = "_"
+    HYPHEN = "-"
 }
 
-export enum MobileVerificationRecoveryScenario {
+export enum OTPVerificationRecoveryScenario {
     MOBILE_VERIFICATION_ON_UPDATE = "MOBILE_VERIFICATION_ON_UPDATE",
-    MOBILE_VERIFICATION_ON_VERIFIED_LIST_UPDATE = "MOBILE_VERIFICATION_ON_VERIFIED_LIST_UPDATE"
+    MOBILE_VERIFICATION_ON_VERIFIED_LIST_UPDATE = "MOBILE_VERIFICATION_ON_VERIFIED_LIST_UPDATE",
+    EMAIL_OTP_VERIFICATION_ON_UPDATE = "EMAIL_OTP_VERIFICATION_ON_UPDATE",
+    EMAIL_OTP_VERIFICATION_ON_VERIFIED_LIST_UPDATE = "EMAIL_OTP_VERIFICATION_ON_VERIFIED_LIST_UPDATE"
 }
 
 /**

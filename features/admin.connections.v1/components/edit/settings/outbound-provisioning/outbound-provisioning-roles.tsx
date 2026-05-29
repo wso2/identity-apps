@@ -22,7 +22,9 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getRolesList } from "@wso2is/admin.roles.v2/api/roles";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
-import { AlertLevels, RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, RoleListInterface, RolesInterface, TestableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, Hint, Popup } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
@@ -45,7 +47,10 @@ interface OutboundProvisioningRolesPropsInterface extends TestableComponentInter
     onUpdate: (id: string) => void;
 }
 
-export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRolesPropsInterface> = (
+/**
+ * @deprecated Outbound provisioning now works with groups instead of roles.
+ */
+const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRolesPropsInterface> = (
     props: OutboundProvisioningRolesPropsInterface) => {
 
     const {
@@ -99,7 +104,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                     }));
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 handleGetRoleListError(error);
             });
         setSelectedRoles(idpRoles.outboundProvisioningRoles === undefined ? [] :
@@ -125,7 +130,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                 }
             ));
             onUpdate(idpId);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             handleUpdateIDPRoleMappingsError(error);
         }).finally(() => {
             setIsSubmitting(false);

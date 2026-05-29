@@ -17,7 +17,9 @@
  */
 
 import { Config } from "@wso2is/admin.core.v1/configs/app";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -88,7 +90,7 @@ export const VCTemplateOffer: FunctionComponent<VCTemplateOfferPropsInterface> =
                 onUpdate(template.id);
                 setShowRegenerateConfirmation(false);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 dispatch(addAlert({
                     description: error?.response?.data?.description
                         || t("verifiableCredentials:offer.notifications.generate.error.description"),

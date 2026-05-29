@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,6 +28,7 @@ import {
     ApplicationTemplateManagementUtils
 } from "@wso2is/admin.applications.v1/utils/application-template-management-utils";
 import { ConsoleSettingsModes } from "@wso2is/admin.console-settings.v1/models/ui";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
@@ -51,12 +52,14 @@ import {
     EmphasizedSegment,
     EmptyPlaceholder,
     Heading,
+    ListLayout,
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
 import React,
 {
     FunctionComponent,
+    MouseEvent,
     ReactElement,
     ReactNode,
     SyntheticEvent,
@@ -68,10 +71,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import {
     Divider,
+    DropdownProps,
     Header,
-    Icon,
-    Input,
     Label,
+    PaginationProps,
     SemanticICONS
 } from "semantic-ui-react";
 import { getConnectedApps, getConnectedAppsOfAuthenticator } from "../../../api/connections";
@@ -158,11 +161,19 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
 
     const [ connectedApps, setConnectedApps ] = useState<ConnectedAppInterface[]>();
-    const [ filterSelectedApps, setFilterSelectedApps ] = useState<ConnectedAppInterface[]>([]);
     const [ connectedAppsCount, setconnectedAppsCount ] = useState<number>(0);
     const [ isCustomLocalAuthenticator, setIsCustomLocalAuthenticator ] = useState<boolean>(undefined);
     const [ isAppsLoading, setIsAppsLoading ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
+    const [ listOffset, setListOffset ] = useState<number>(0);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+    /**
+     * Holds the full (unfiltered, unpaginated) list of apps fetched from the authenticator endpoint.
+     * Used for client-side filtering and pagination since that endpoint does not support query params.
+     */
+    const [ allAuthenticatorApps, setAllAuthenticatorApps ] = useState<ConnectedAppInterface[] | undefined>(
+        undefined
+    );
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
@@ -174,8 +185,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         setApplicationTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
     const {
-        templates: extensionApplicationTemplates,
-        isExtensionTemplatesRequestLoading: isExtensionApplicationTemplatesRequestLoading
+        templates: extensionApplicationTemplates
     } = useExtensionTemplates();
 
     /**
@@ -191,7 +201,8 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     }, [ editingIDP ]);
 
     /**
-     * This useEffect sets the fetched connected apps of the local authenticator to the state.
+     * Fetches ALL connected apps from the authenticator endpoint (which does not support
+     * server-side pagination or filtering) and stores them in `allAuthenticatorApps`.
      */
     useEffect(() => {
         if (isCustomLocalAuthenticator === undefined || !isCustomLocalAuthenticator) {
@@ -201,15 +212,13 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         setIsAppsLoading(true);
         getConnectedAppsOfAuthenticator(editingIDP.id)
             .then(async (response: ConnectedAppsInterface) => {
-                setconnectedAppsCount(response.count);
-
                 if (response.count > 0) {
 
                     const appRequests: Promise<any>[] = response.connectedApps.map((app: ConnectedAppInterface) => {
                         return getApplicationDetails(app.appId);
                     });
 
-                    const results: ApplicationBasicInterface[] = await Promise.all(
+                    const results: ConnectedAppInterface[] = await Promise.all(
                         appRequests.map((response: Promise<any>) => response.catch((error: IdentityAppsError) => {
                             dispatch(addAlert({
                                 description: error?.description
@@ -221,8 +230,9 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                         }))
                     );
 
-                    setConnectedApps(results);
-                    setFilterSelectedApps(results);
+                    setAllAuthenticatorApps(results);
+                } else {
+                    setAllAuthenticatorApps([]);
                 }
             })
             .catch((error: IdentityAppsError) => {
@@ -239,6 +249,51 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     }, [ isCustomLocalAuthenticator ]);
 
     /**
+     * Applies client-side filtering and pagination on `allAuthenticatorApps`.
+     */
+    useEffect(() => {
+        if (!isCustomLocalAuthenticator || allAuthenticatorApps === undefined) {
+            return;
+        }
+
+        // The AdvancedSearchWithBasicFilters emits a SCIM-like filter string (e.g. `name co "foo"`).
+        const filterMatch: RegExpMatchArray | null = searchQuery.match(/name\s+(co|sw|ew|eq)\s+"?([^"]+)"?/i);
+
+        if (!filterMatch) {
+            setconnectedAppsCount(allAuthenticatorApps.length);
+            setConnectedApps(allAuthenticatorApps.slice(listOffset, listOffset + listItemLimit));
+
+            return;
+        }
+
+        const operator: string = filterMatch[1].toLowerCase();
+        const searchTerm: string = filterMatch[2].trim();
+        const searchTermLower: string = searchTerm.toLowerCase();
+
+        const filtered: ConnectedAppInterface[] = allAuthenticatorApps.filter(
+            (app: ConnectedAppInterface) => {
+                const appNameLower: string = app.name?.toLowerCase() || "";
+
+                switch (operator) {
+                    case "co":
+                        return appNameLower.includes(searchTermLower);
+                    case "sw":
+                        return appNameLower.startsWith(searchTermLower);
+                    case "ew":
+                        return appNameLower.endsWith(searchTermLower);
+                    case "eq":
+                        return appNameLower === searchTermLower;
+                    default:
+                        return true;
+                }
+            }
+        );
+
+        setconnectedAppsCount(filtered.length);
+        setConnectedApps(filtered.slice(listOffset, listOffset + listItemLimit));
+    }, [ allAuthenticatorApps, searchQuery, listOffset, listItemLimit, isCustomLocalAuthenticator ]);
+
+    /**
      * This useEffect fetches the connected apps of the IDP and sets them to the state.
      */
     useEffect(() => {
@@ -247,9 +302,9 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         }
 
         setIsAppsLoading(true);
-        getConnectedApps(editingIDP.id)
+        getConnectedApps(editingIDP.id, listItemLimit, listOffset, searchQuery)
             .then(async (response: ConnectedAppsInterface) => {
-                setconnectedAppsCount(response.count);
+                setconnectedAppsCount(response.totalResults || response.count);
 
                 if (response.count > 0) {
 
@@ -270,7 +325,8 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
                     );
 
                     setConnectedApps(results);
-                    setFilterSelectedApps(results);
+                } else {
+                    setConnectedApps([]);
                 }
             })
             .catch((error: IdentityAppsError) => {
@@ -284,7 +340,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
             .finally(() => {
                 setIsAppsLoading(false);
             });
-    }, [ isCustomLocalAuthenticator ]);
+    }, [ isCustomLocalAuthenticator, listItemLimit, listOffset, searchQuery ]);
 
     /**
      * Fetch the application templates if list is not available in redux.
@@ -549,7 +605,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
      */
     const showPlaceholders = (): ReactElement => {
         // When the search returns empty.
-        if (filterSelectedApps.length === 0 && connectedAppsCount !== 0) {
+        if (searchQuery && connectedApps?.length === 0) {
             return (
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
@@ -564,7 +620,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
             );
         }
 
-        if (connectedAppsCount === 0) {
+        if (!searchQuery && connectedAppsCount === 0) {
             return (
                 <EmptyPlaceholder
                     className={ !isRenderedOnPortal ? "list-placeholder mr-0" : "" }
@@ -616,32 +672,43 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
     };
 
     /**
-     * Handle change event of the search input.
+     * Handles the application filter callback action.
      *
-     * @param event-change event.
+     * @param query - Search query.
      */
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const changeValue: string = event.target.value.trim();
-
-        setSearchQuery(changeValue);
-
-        if (changeValue.length > 0) {
-            searchFilter(changeValue);
-        } else {
-            setFilterSelectedApps(connectedApps);
-        }
+    const handleApplicationFilter = (query: string): void => {
+        setSearchQuery(query);
+        setListOffset(0);
     };
 
     /**
-     * Filter applications in the search.
+     * Handles the pagination change.
      *
-     * @param changevalue-search query.
+     * @param event - Mouse event.
+     * @param data - Pagination component data.
      */
-    const searchFilter = (changeValue: string) => {
-        const appNameFilter: ConnectedAppInterface[] = connectedApps.filter((item: ConnectedAppInterface) =>
-            item.name.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+    const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
+        setListOffset((data.activePage as number - 1) * listItemLimit);
+    };
 
-        setFilterSelectedApps(appNameFilter);
+    /**
+     * Handles per page dropdown change.
+     *
+     * @param event - Mouse event.
+     * @param data - Dropdown data.
+     */
+    const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>,
+        data: DropdownProps): void => {
+        setListItemLimit(data.value as number);
+    };
+
+    /**
+     * Checks if the `Next` page nav button should be shown.
+     *
+     * @returns `true` if `Next` page nav button should be shown.
+     */
+    const shouldShowNextPageNavigation = (): boolean => {
+        return connectedApps && (listOffset + connectedApps.length) < connectedAppsCount;
     };
 
     const resolveConnectorName = (): string => {
@@ -652,7 +719,7 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
         }
     };
 
-    if (isAppsLoading) {
+    if (isAppsLoading && !connectedApps) {
         return <Loader />;
     }
 
@@ -661,54 +728,79 @@ export const ConnectedApps: FunctionComponent<ConnectedAppsPropsInterface> = (
             <Heading as="h4">{ t("idp:connectedApps.header",
                 { idpName: resolveConnectorName() }) }</Heading>
             <Divider hidden />
-            { connectedApps && (
-                <Input
-                    icon={ <Icon name="search" /> }
-                    iconPosition="left"
-                    onChange={ handleChange }
-                    placeholder = { t("idp:connectedApps.placeholders.search") }
-                    floated="left"
-                    size="small"
-                    style={ { width: "250px" } }
-                    data-componentid={ `${ componentId }-searched` }
+            <ListLayout
+                advancedSearch={ (
+                    <AdvancedSearchWithBasicFilters
+                        onFilter={ handleApplicationFilter }
+                        filterAttributeOptions={ [
+                            {
+                                key: 0,
+                                text: t("common:name"),
+                                value: "name"
+                            }
+                        ] }
+                        filterAttributePlaceholder={
+                            t("applications:advancedSearch.form.inputs.filterAttribute.placeholder")
+                        }
+                        filterConditionsPlaceholder={
+                            t("applications:advancedSearch.form.inputs.filterCondition.placeholder")
+                        }
+                        filterValuePlaceholder={
+                            t("applications:advancedSearch.form.inputs.filterValue.placeholder")
+                        }
+                        placeholder={ t("idp:connectedApps.placeholders.search") }
+                        defaultSearchAttribute="name"
+                        defaultSearchOperator="co"
+                        data-componentid={ `${ componentId }-list-advanced-search` }
+                    />
+                ) }
+                currentListSize={ connectedApps?.length || 0 }
+                isLoading={ isLoading || isAppsLoading }
+                listItemLimit={ listItemLimit }
+                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                onPageChange={ handlePaginationChange }
+                showPagination={ true }
+                showTopActionPanel={
+                    isAppsLoading || !(!searchQuery && connectedAppsCount <= 0)
+                }
+                totalPages={ Math.ceil(connectedAppsCount / listItemLimit) }
+                totalListSize={ connectedAppsCount }
+                paginationOptions={ {
+                    disableNextButton: !shouldShowNextPageNavigation()
+                } }
+                data-componentid={ `${ componentId }-list-layout` }
+            >
+                <DataTable<ConnectedAppInterface>
+                    className="connected-applications-table"
+                    isLoading={ isLoading || isAppsLoading || isApplicationTemplateRequestLoading }
+                    loadingStateOptions={ {
+                        count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                        imageType: "square"
+                    } }
+                    actions={ !isSetStrongerAuth && resolveTableActions() }
+                    columns={ resolveTableColumns() }
+                    data={ connectedApps }
+                    onRowClick={ (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
+                        handleApplicationEdit(
+                            app.id,
+                            app.access,
+                            `#tab=${
+                                ApplicationTabIDs.SIGN_IN_METHODS
+                            }`,
+                            app.name
+                        );
+                        onListItemClick && onListItemClick(e, app);
+                    } }
+                    placeholders={ showPlaceholders() }
+                    selectable={ selection }
+                    showHeader={ applicationListConfig.enableTableHeaders }
+                    transparent={
+                        !(isLoading || isAppsLoading || isApplicationTemplateRequestLoading)
+                            && (showPlaceholders() !== null)
+                    }
+                    data-componentid={ `${ componentId }-data-table` }
                 />
-            ) }
-            <DataTable<ConnectedAppInterface>
-                className="connected-applications-table"
-                isLoading={
-                    isLoading
-                        || isApplicationTemplateRequestLoading
-                        || isExtensionApplicationTemplatesRequestLoading
-                }
-                loadingStateOptions={ {
-                    count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
-                    imageType: "square"
-                } }
-                actions={ !isSetStrongerAuth && resolveTableActions() }
-                columns={ resolveTableColumns() }
-                data={ filterSelectedApps }
-                onRowClick={ (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
-                    handleApplicationEdit(
-                        app.id,
-                        app.access,
-                        `#tab=${
-                            ApplicationTabIDs.SIGN_IN_METHODS
-                        }`,
-                        app.name
-                    );
-                    onListItemClick && onListItemClick(e, app);
-                } }
-                placeholders={ showPlaceholders() }
-                selectable={ selection }
-                showHeader={ applicationListConfig.enableTableHeaders }
-                transparent={
-                    !(isLoading
-                        || isApplicationTemplateRequestLoading
-                        || isExtensionApplicationTemplatesRequestLoading)
-                        && (showPlaceholders() !== null)
-                }
-                data-componentid={ `${ componentId }-data-table` }
-            />
+            </ListLayout>
         </EmphasizedSegment>
     );
 };

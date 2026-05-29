@@ -62,6 +62,14 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
 
     const dispatch: Dispatch<AnyAction> = useDispatch();
     const { t } = useTranslation();
+    const getPropertySuffix = (propertyName: string): string => {
+        if (propertyName?.startsWith("identity_attributes.")) return propertyName.replace("identity_attributes.", "");
+        if (propertyName?.startsWith("application_data.")) return propertyName.replace("application_data.", "");
+        if (propertyName?.startsWith("traits.")) return propertyName.replace("traits.", "");
+
+        return propertyName || "";
+    };
+
     const filteredRules: UnificationRuleModel[] = useMemo(() => {
         if (!searchQuery?.trim()) return rules;
 
@@ -95,14 +103,6 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
     const [ isSwapping, setIsSwapping ] = useState<boolean>(false);
     const [ isToggleInProgress, setIsToggleInProgress ] = useState<boolean>(false);
-
-    const getPropertySuffix = (propertyName: string): string => {
-        if (propertyName?.startsWith("identity_attributes.")) return propertyName.replace("identity_attributes.", "");
-        if (propertyName?.startsWith("application_data.")) return propertyName.replace("application_data.", "");
-        if (propertyName?.startsWith("traits.")) return propertyName.replace("traits.", "");
-
-        return propertyName || "";
-    };
 
     const canMoveUp = (rule: UnificationRuleModel): boolean => {
         const idx: number = sortedRules.findIndex((r: UnificationRuleModel) => r.rule_id === rule.rule_id);

@@ -42,3 +42,12 @@
         }
     }
 }
+
+.ui.table.approval-task-properties-table {
+    background: var(--asg-colors-background-surface-main);
+    border-color: var(--asg-colors-text-secondary);
+
+    td {
+        border-color: var(--asg-colors-text-secondary);
+    }
+}

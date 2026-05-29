@@ -19,7 +19,9 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { OrganizationDiscoveryConstants } from "../constants/organization-discovery-constants";
 
@@ -75,7 +77,7 @@ const addOrganizationEmailDomain = (
             }
 
             return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 OrganizationDiscoveryConstants.ErrorMessages.ORGANIZATION_DOMAIN_ASSIGN_ERROR.getErrorMessage(),
                 error.stack,

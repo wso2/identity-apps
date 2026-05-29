@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,6 +24,7 @@ import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
 import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { AppConfigProvider } from "@wso2is/admin.core.v1/providers/app-config-provider";
 import AppSettingsProvider from "@wso2is/admin.core.v1/providers/app-settings-provider";
+import CompatibilitySettingsProvider from "@wso2is/admin.core.v1/providers/compatibility-settings-provider";
 import GlobalVariablesProvider from "@wso2is/admin.core.v1/providers/global-variables-provider";
 import { store } from "@wso2is/admin.core.v1/store";
 import OrganizationsProvider from "@wso2is/admin.organizations.v1/providers/organizations-provider";
@@ -38,36 +39,43 @@ import Theme from "./theme";
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
+const CDN_URL_JSDELIVR_LOADER: string = "https://cdn.jsdelivr.net/npm/monaco-editor@0.36.1/min/vs/loader.js";
+const CDN_URL_JSDELIVR: string = "https://cdn.jsdelivr.net/npm/monaco-editor@0.36.1/min/vs";
+const CDN_URL_CDNJS: string = "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs";
+const MONACO_CDN_TIMEOUT_MS: number = 3000;
+
 /**
- * TODO: Use Monaco with the webpack plugin.
+ * TODO: Evaluate bundler-aware Monaco loading optimization.
  * {@link https://github.com/wso2-enterprise/asgardeo-product/issues/23937}
  *
  * Function to check the status of the Monaco CDN.
  * If the CDN is not available, the default CDN will be used.
  */
-const checkCDNStatus = async () => {
-    try {
-        const response: Response = await fetch("https://cdn.jsdelivr.net/npm/monaco-editor@0.36.1/min/vs/loader.js");
+const checkCDNStatus: () => Promise<void> = async (): Promise<void> => {
+    let selectedCDNBaseUrl: string = CDN_URL_CDNJS;
+    const controller: AbortController = new AbortController();
+    const timeoutId: ReturnType<typeof setTimeout> = setTimeout((): void => {
+        controller.abort();
+    }, MONACO_CDN_TIMEOUT_MS);
 
-        if (response.ok) {
-            loader.config({
-                paths: {
-                    vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.36.1/min/vs"
-                }
-            });
-        } else {
-            loader.config({
-                paths: {
-                    vs: "https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.36.1/min/vs"
-                }
-            });
-        }
-    } catch (error) {
-        // Use default CDN.
+    try {
+        const response: Response = await fetch(CDN_URL_JSDELIVR_LOADER, {
+            signal: controller.signal
+        });
+
+        selectedCDNBaseUrl = response.ok ? CDN_URL_JSDELIVR : CDN_URL_CDNJS;
+    } catch (error: unknown) {
+        // eslint-disable-next-line no-console
+        console.warn("Failed to load Monaco loader from jsdelivr. Falling back to cdnjs.", error);
+    } finally {
+        clearTimeout(timeoutId);
+        loader.config({
+            paths: {
+                vs: selectedCDNBaseUrl
+            }
+        });
     }
 };
-
-checkCDNStatus();
 
 /**
  * Render root component with configs.
@@ -110,7 +118,9 @@ const RootWithConfig = (): ReactElement => {
                             >
                                 <AppConfigProvider>
                                     <OrganizationsProvider>
-                                        <ProtectedApp />
+                                        <CompatibilitySettingsProvider>
+                                            <ProtectedApp />
+                                        </CompatibilitySettingsProvider>
                                     </OrganizationsProvider>
                                 </AppConfigProvider>
                             </AuthProvider>
@@ -124,7 +134,13 @@ const RootWithConfig = (): ReactElement => {
 
 const rootElement: HTMLElement = document.getElementById("root");
 
-// Moved back to the legacy mode due to unpredictable state update issue.
-// Tracked here: https://github.com/wso2/product-is/issues/14912
-// eslint-disable-next-line react/no-deprecated
-ReactDOM.render(<RootWithConfig />, rootElement);
+const renderApp: () => void = (): void => {
+    // Moved back to the legacy mode due to unpredictable state update issue.
+    // Tracked here: https://github.com/wso2/product-is/issues/14912
+    // eslint-disable-next-line react/no-deprecated
+    ReactDOM.render(<RootWithConfig />, rootElement);
+};
+
+void checkCDNStatus().then((): void => {
+    renderApp();
+});

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -29,14 +29,11 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
-import useGetFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-config";
-import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
 import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { AGENT_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
-import AIText from "@wso2is/common.ai.v1/components/ai-text";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Heading, PrimaryButton, Button as SemanticButton } from "@wso2is/react-components";
 import classNames from "classnames";
@@ -47,7 +44,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Message, Modal } from "semantic-ui-react";
 import AIAgentBox from "./ai-agent-box";
-import SignUpBox from "./sign-up-box";
+import RebrandingAnnouncement from "./rebranding-announcement";
 import SurveyBox from "./survey-box";
 import { ReactComponent as PreviewFeaturesIcon } from "../../../themes/default/assets/images/icons/flask-icon.svg";
 import "./new-feature-announcement.scss";
@@ -55,7 +52,7 @@ import "./new-feature-announcement.scss";
 /**
  * Props interface of {@link NewFeatureAnnouncement}
  */
-export interface NewFeatureAnnouncementProps extends IdentifiableComponentInterface {
+interface NewFeatureAnnouncementProps extends IdentifiableComponentInterface {
     id: string;
     title: ReactElement;
     description: ReactElement | string;
@@ -96,7 +93,6 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                 ALLOWED_TAGS: [ "b" ] // Allow only bold.
             });
 
-            // eslint-disable-next-line react/no-danger
             return <span dangerouslySetInnerHTML={ { __html: sanitizedDescription } } />;
         }
 
@@ -181,11 +177,6 @@ export const FeatureCarousel = () => {
     const supportEmail: string = useSelector((state: AppState) =>
         state.config.deployment.extensions?.supportEmail as string);
 
-    const {
-        data: registrationFlowConfigs,
-        isLoading: isRegistrationFlowConfigsLoading
-    } = useGetFlowConfig(FlowTypes.REGISTRATION);
-
     const agentFeatureConfig: FeatureAccessConfigInterface =
         useSelector((state: AppState) => state?.config?.ui?.features?.agents);
 
@@ -211,7 +202,33 @@ export const FeatureCarousel = () => {
     const userSurveyButtonText: string = useSelector((state: AppState) =>
         state?.config?.ui?.userSurveyBanner?.buttonText);
 
+    const isRebrandingBannerEnabled: boolean = useSelector((state: AppState) =>
+        state?.config?.ui?.rebrandingBanner?.enabled);
+    const rebrandingBannerTitle: string = useSelector((state: AppState) =>
+        state?.config?.ui?.rebrandingBanner?.title);
+    const rebrandingBannerDescription: string = useSelector((state: AppState) =>
+        state?.config?.ui?.rebrandingBanner?.description);
+    const rebrandingBannerSubDescription: string = useSelector((state: AppState) =>
+        state?.config?.ui?.rebrandingBanner?.subDescription);
+    const rebrandingBannerButtonText: string = useSelector((state: AppState) =>
+        state?.config?.ui?.rebrandingBanner?.buttonText);
+    const rebrandingBannerAnnouncementUrl: string = useSelector((state: AppState) =>
+        state?.config?.ui?.rebrandingBanner?.announcementUrl);
+
     const features: any = useMemo(() => [
+        isRebrandingBannerEnabled && {
+            announcementUrl: rebrandingBannerAnnouncementUrl,
+            buttonText: rebrandingBannerButtonText,
+            description: rebrandingBannerDescription,
+            id: "rebranding",
+            onTryOut: () => {
+                if (rebrandingBannerAnnouncementUrl) {
+                    window.open(rebrandingBannerAnnouncementUrl, "_blank", "noopener,noreferrer");
+                }
+            },
+            subDescription: rebrandingBannerSubDescription,
+            title: rebrandingBannerTitle
+        },
         isUserSurveyBannerEnabled && {
             buttonText: userSurveyButtonText,
             description: userSurveyDescription,
@@ -244,30 +261,12 @@ export const FeatureCarousel = () => {
                 }
             },
             title: "Identity for AI Agents "
-        },
-        {
-            description: (
-                <>
-                    Effortlessly design your user self-registration flows with the{ " " }
-                    new AI-powered visual designer <AIText />
-                </>
-            ),
-            id: "self-registration-orchestration",
-            illustration: <Box className="login-box">
-                <SignUpBox />
-            </Box>,
-            isEnabled: registrationFlowConfigs?.isEnabled,
-            isEnabledStatusLoading: isRegistrationFlowConfigsLoading,
-            onTryOut: () => {
-                history.push(AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER"));
-            },
-            title: "Design seamless self-registration experiences "
         }
     ].filter(Boolean), [
-        registrationFlowConfigs,
         agentFeatureConfig,
-        isRegistrationFlowConfigsLoading,
-        isAgentManagementFeatureEnabledForOrganization
+        isAgentManagementFeatureEnabledForOrganization,
+        isRebrandingBannerEnabled,
+        isUserSurveyBannerEnabled
     ]);
 
     useEffect(() => {
@@ -317,16 +316,27 @@ export const FeatureCarousel = () => {
                         width: "100%"
                     } }
                 >
-                    <NewFeatureAnnouncement
-                        id={ features[currentIndex]?.id }
-                        title={ features[currentIndex]?.title }
-                        description={ features[currentIndex]?.description }
-                        illustration={ features[currentIndex]?.illustration }
-                        isEnabled={ features[currentIndex]?.isEnabled }
-                        isEnabledStatusLoading={ features[currentIndex]?.isEnabledStatusLoading }
-                        onTryOut={ features[currentIndex]?.onTryOut }
-                        buttonText={ features[currentIndex]?.buttonText }
-                    />
+                    { features[currentIndex]?.id === "rebranding" ? (
+                        <RebrandingAnnouncement
+                            title={ features[currentIndex]?.title }
+                            description={ features[currentIndex]?.description }
+                            subDescription={ features[currentIndex]?.subDescription }
+                            buttonText={ features[currentIndex]?.buttonText }
+                            announcementUrl={ features[currentIndex]?.announcementUrl }
+                            onAnnouncementClick={ features[currentIndex]?.onTryOut }
+                        />
+                    ) : (
+                        <NewFeatureAnnouncement
+                            id={ features[currentIndex]?.id }
+                            title={ features[currentIndex]?.title }
+                            description={ features[currentIndex]?.description }
+                            illustration={ features[currentIndex]?.illustration }
+                            isEnabled={ features[currentIndex]?.isEnabled }
+                            isEnabledStatusLoading={ features[currentIndex]?.isEnabledStatusLoading }
+                            onTryOut={ features[currentIndex]?.onTryOut }
+                            buttonText={ features[currentIndex]?.buttonText }
+                        />
+                    ) }
                 </motion.div>
             </AnimatePresence>
 
@@ -512,4 +522,4 @@ export const FeatureCarousel = () => {
     );
 };
 
-export default NewFeatureAnnouncement;
+

@@ -1,5 +1,60 @@
 # @wso2is/admin.org-insights.v1
 
+## 2.26.4
+
+### Patch Changes
+
+- [#10197](https://github.com/wso2/identity-apps/pull/10197) [`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dependencies
+
+- Updated dependencies [[`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423)]:
+  - @wso2is/admin.organizations.v1@2.28.4
+  - @wso2is/admin.core.v1@2.57.3
+
+## 2.26.3
+
+### Patch Changes
+
+- Updated dependencies [[`793c5bde494bdde069a0fbc0b5311d279938ceb9`](https://github.com/wso2/identity-apps/commit/793c5bde494bdde069a0fbc0b5311d279938ceb9), [`3ab81080396569cab60e5e4b52d8715b54d9ef67`](https://github.com/wso2/identity-apps/commit/3ab81080396569cab60e5e4b52d8715b54d9ef67)]:
+  - @wso2is/admin.core.v1@2.56.0
+  - @wso2is/theme@2.10.0
+  - @wso2is/i18n@2.39.0
+  - @wso2is/admin.organizations.v1@2.28.3
+
+## 2.26.2
+
+### Patch Changes
+
+- [#9839](https://github.com/wso2/identity-apps/pull/9839) [`ebd9a2e1f1bce8f51c882338f936d49c52a35160`](https://github.com/wso2/identity-apps/commit/ebd9a2e1f1bce8f51c882338f936d49c52a35160) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Add autocomplete input for org search in insights
+
+- Updated dependencies [[`ebd9a2e1f1bce8f51c882338f936d49c52a35160`](https://github.com/wso2/identity-apps/commit/ebd9a2e1f1bce8f51c882338f936d49c52a35160)]:
+  - @wso2is/i18n@2.37.8
+
+## 2.26.1
+
+### Patch Changes
+
+- [#9875](https://github.com/wso2/identity-apps/pull/9875) [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - Revert Axios and SDK version bumps
+
+- Updated dependencies [[`c834b18928cdfc09710c5e7067668206d006e68a`](https://github.com/wso2/identity-apps/commit/c834b18928cdfc09710c5e7067668206d006e68a), [`877d726905edf898c33c615cd887f8ed0a071a0e`](https://github.com/wso2/identity-apps/commit/877d726905edf898c33c615cd887f8ed0a071a0e), [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d)]:
+  - @wso2is/i18n@2.37.5
+  - @wso2is/admin.core.v1@2.55.3
+  - @wso2is/access-control@3.5.3
+  - @wso2is/theme@2.9.5
+  - @wso2is/core@2.12.10
+  - @wso2is/form@2.10.1
+
+## 2.26.0
+
+### Minor Changes
+
+- [#9751](https://github.com/wso2/identity-apps/pull/9751) [`bb844d3b938f1c1432af84086c3df3b29f03047c`](https://github.com/wso2/identity-apps/commit/bb844d3b938f1c1432af84086c3df3b29f03047c) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Introduce M2M Insights
+
+### Patch Changes
+
+- Updated dependencies [[`bb844d3b938f1c1432af84086c3df3b29f03047c`](https://github.com/wso2/identity-apps/commit/bb844d3b938f1c1432af84086c3df3b29f03047c)]:
+  - @wso2is/i18n@2.37.0
+  - @wso2is/admin.core.v1@2.54.20
+
 ## 2.25.206
 
 ### Patch Changes

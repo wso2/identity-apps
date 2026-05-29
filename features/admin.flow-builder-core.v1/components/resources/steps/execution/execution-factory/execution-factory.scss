@@ -21,7 +21,8 @@
     &.apple,
     &.github,
     &.confirmation-code,
-    &.magic-link {
+    &.magic-link,
+    &.flow-extension {
         img {
             filter: invert(100%);
         }

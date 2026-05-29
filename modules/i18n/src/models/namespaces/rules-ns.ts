@@ -32,8 +32,10 @@ export interface rulesNS {
     fields: {
         autocomplete: {
             clearFilterActionText: string;
+            inputPlaceholderText: string;
             moreItemsMessage: string;
             placeholderText: string;
+            selectPlaceholderText: string;
         };
     };
     texts: {

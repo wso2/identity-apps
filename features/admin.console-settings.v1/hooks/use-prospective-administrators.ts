@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -31,7 +31,7 @@ import useConsoleRoles from "./use-console-roles";
 /**
  * Props interface of {@link UseAdministrators}
  */
-export interface UseProspectiveAdministratorsInterface {
+interface UseProspectiveAdministratorsInterface {
     /**
      * Prospective administrators list.
      */
@@ -101,11 +101,44 @@ const useProspectiveAdministrators = (
      * @returns Processed list of users.
      */
     const transformUserList = (usersList: UserListInterface): UserListInterface => {
+        /**
+         * Returns a moderated users list.
+         *
+         * @remarks There is no proper way to count the total entries in the userstore with LDAP.
+         *  So as a workaround, when
+         * fetching users, we request an extra entry to figure out if there is a next page.
+         * TODO: Remove this function and other related variables once there is a proper fix for LDAP pagination.
+         * @see {@link https://github.com/wso2/product-is/issues/7320}
+         *
+         * @param list - Users list retrieved from the API.
+         * @param requestedLimit - Requested item limit.
+         * @param popCount - Tempt count used which will be removed after figuring out if
+         *  next page is available.
+         * @returns moderated users list with proper pagination.
+         */
+        const moderateUsersList = (
+            list: UserListInterface,
+            requestedLimit: number,
+            popCount: number = 1
+        ): UserListInterface => {
+            const moderated: UserListInterface = list;
+
+            if (moderated.Resources?.length === requestedLimit) {
+                moderated.Resources?.splice(-1, popCount);
+                setIsNextPageAvailable(true);
+            } else {
+                setIsNextPageAvailable(false);
+            }
+
+            return moderated;
+        };
+
         if (!usersList) {
             return;
         }
 
-        const clonedUserList: UserListInterface = cloneDeep(usersList);
+        const clonedUserList: UserListInterface = moderateUsersList(
+            cloneDeep(usersList), modifiedLimit, TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET);
         const processedUserList: UserBasicInterface[] = [];
 
         /**
@@ -163,43 +196,11 @@ const useProspectiveAdministrators = (
             return resource;
         });
 
-        /**
-         * Returns a moderated users list.
-         *
-         * @remarks There is no proper way to count the total entries in the userstore with LDAP.
-         *  So as a workaround, when
-         * fetching users, we request an extra entry to figure out if there is a next page.
-         * TODO: Remove this function and other related variables once there is a proper fix for LDAP pagination.
-         * @see {@link https://github.com/wso2/product-is/issues/7320}
-         *
-         * @param list - Users list retrieved from the API.
-         * @param requestedLimit - Requested item limit.
-         * @param popCount - Tempt count used which will be removed after figuring out if
-         *  next page is available.
-         * @returns moderated users list with proper pagination.
-         */
-        const moderateUsersList = (
-            list: UserListInterface,
-            requestedLimit: number,
-            popCount: number = 1
-        ): UserListInterface => {
-            const moderated: UserListInterface = list;
-
-            if (moderated.Resources?.length === requestedLimit) {
-                moderated.Resources?.splice(-1, popCount);
-                setIsNextPageAvailable(true);
-            } else {
-                setIsNextPageAvailable(false);
-            }
-
-            return moderated;
-        };
-
         clonedUserList.Resources = processedUserList
             .concat(clonedUserList.Resources)
             .filter((user: UserBasicInterface) => user != null);
 
-        return moderateUsersList(clonedUserList, modifiedLimit, TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET);
+        return clonedUserList;
     };
 
     const prospectiveAdministrators: UserListInterface = useMemo(() => {

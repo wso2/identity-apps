@@ -20,7 +20,9 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { ActionsConstants } from "../constants/actions-constants";
 
@@ -37,7 +39,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * @param actionId - Id of the Action.
  * TODO: Use `IdentityAppsApiException` and validate the return type.
  */
-export const deleteAction = (actionType: string, actionId: string): Promise<string> => {
+const deleteAction = (actionType: string, actionId: string): Promise<string> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -63,7 +65,7 @@ export const deleteAction = (actionType: string, actionId: string): Promise<stri
 
             return Promise.resolve(response?.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             throw new IdentityAppsApiException(
                 error.message,
                 error.stack,

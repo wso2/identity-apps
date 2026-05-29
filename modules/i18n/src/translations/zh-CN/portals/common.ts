@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -139,6 +139,9 @@ export const common: CommonNS = {
             selfRegistration: "自助注册",
             unassignedUsersDeleted: "未分配的用户已被删除。"
         },
+        "search": {
+            "placeholder": "按请求 ID 搜索"
+        },
         "subTitle": "查看需要您批准的操作任务",
         "title": "批准"
     },
@@ -173,6 +176,7 @@ export const common: CommonNS = {
     "completed": "完全的",
     "configure": "配置",
     "confirm": "确认",
+    "consents": "同意",
     "contains": "包含",
     "continue": "继续",
     "copied": "复制了",
@@ -181,6 +185,7 @@ export const common: CommonNS = {
     "createdOn": "创建于",
     "dangerZone": "危险区",
     "darkMode": "黑暗模式",
+    "default": "默认",
     "delete": "删除",
     "deprecated": "此配置已弃用，并将在未来的版本中删除。",
     "description": "描述",

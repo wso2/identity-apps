@@ -40,7 +40,7 @@ import useFeatureGate, { UseFeatureGateInterface } from "@wso2is/admin.feature-g
 import useAILoginFlow from "@wso2is/admin.login-flow.ai.v1/hooks/use-ai-login-flow";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, HttpErrorResponseDataInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -243,7 +243,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             );
         }
 
-        if (orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled) {
+        if (orgType === OrganizationType.SUBORGANIZATION && !isAdaptiveAuthAvailable) {
             sequence.script = "";
         }
 
@@ -287,7 +287,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                         )
                     })
                 );
-            }).catch((error: AxiosError) => {
+            }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 const INVALID_SCRIPT_CODE: string = "APP-60001";
 
                 if (error?.response?.data?.code === INVALID_SCRIPT_CODE) {
@@ -330,7 +330,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         newSequence: AuthenticationSequenceInterface,
         isRevertFlow?: boolean
     ): void => {
-        if (orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled) {
+        if (orgType === OrganizationType.SUBORGANIZATION && !isAdaptiveAuthAvailable) {
             // Update the modified script state in the context.
             updateAuthenticationSequence({
                 ...newSequence,
@@ -373,18 +373,15 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             updateAdaptiveScript(applicationMetaData?.id, adaptiveScriptToUpdate, !isScriptUpdateReadOnly
                 && !conditionalAuthPremiumFeature)
                 .then(() => {
-                    updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload)
-                        .then(() => {
-                            dispatch(addAlert({
-                                description: t("applications:notifications.updateAuthenticationFlow" +
-                                    ".success.description"),
-                                level: AlertLevels.SUCCESS,
-                                message: t("applications:notifications.updateAuthenticationFlow.success.message")
-                            }));
-                        }).catch((error: AxiosError) => {
-                            handleUpdateAuthenticationFlowError(error);
-                        });
-                }).catch((error: AxiosError) => {
+                    return updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload);
+                }).then(() => {
+                    dispatch(addAlert({
+                        description: t("applications:notifications.updateAuthenticationFlow" +
+                            ".success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("applications:notifications.updateAuthenticationFlow.success.message")
+                    }));
+                }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                     handleUpdateAuthenticationFlowError(error);
                 }).finally(() => {
                     setAiGeneratedLoginFlow(undefined);
@@ -396,19 +393,16 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
 
         updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload)
             .then(() => {
-                updateAdaptiveScript(applicationMetaData?.id, adaptiveScriptToUpdate, !isScriptUpdateReadOnly
-                    && !conditionalAuthPremiumFeature)
-                    .then(() => {
-                        dispatch(addAlert({
-                            description: t("applications:notifications.updateAuthenticationFlow" +
-                                    ".success.description"),
-                            level: AlertLevels.SUCCESS,
-                            message: t("applications:notifications.updateAuthenticationFlow.success.message")
-                        }));
-                    }).catch((error: AxiosError) => {
-                        handleUpdateAuthenticationFlowError(error);
-                    });
-            }).catch((error: AxiosError) => {
+                return updateAdaptiveScript(applicationMetaData?.id, adaptiveScriptToUpdate,
+                    !isScriptUpdateReadOnly && !conditionalAuthPremiumFeature);
+            }).then(() => {
+                dispatch(addAlert({
+                    description: t("applications:notifications.updateAuthenticationFlow" +
+                            ".success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("applications:notifications.updateAuthenticationFlow.success.message")
+                }));
+            }).catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
                 handleUpdateAuthenticationFlowError(error);
             }).finally(() => {
                 setAiGeneratedLoginFlow(undefined);
@@ -416,7 +410,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             });
     };
 
-    const handleUpdateAuthenticationFlowError = (error: AxiosError): void => {
+    const handleUpdateAuthenticationFlowError = (error: AxiosError<HttpErrorResponseDataInterface>): void => {
         const INVALID_SCRIPT_CODE: string = "APP-60001";
 
         if (error?.response?.data?.code === INVALID_SCRIPT_CODE) {
@@ -481,21 +475,53 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             return false;
         }
 
+        // Don't allow shared user identifier being the only authenticator in the flow.
+        if ( steps.length === 1
+            && steps[ 0 ].options.length === 1
+            && steps[ 0 ].options[ 0 ].authenticator
+                === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .SHARED_USER_IDENTIFIER_AUTHENTICATOR_NAME) {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "applications:notifications.updateOnlySharedUserIdentifierError" +
+                        ".description"
+                    ),
+                    level: AlertLevels.WARNING,
+                    message: t(
+                        "applications:notifications.updateOnlySharedUserIdentifierError" +
+                        ".message"
+                    )
+                })
+            );
+
+            return false;
+        }
+
         // Don't allow identifier first being with another authenticator in the 1FA flow.
         if (
             steps.length === 1
             && steps[0].options.length > 1
             && handleIdentifierFirstInStep(steps[0].options)
         ) {
+            const hasSharedUserIdentifier: boolean = steps[0].options.some(
+                (option: AuthenticatorInterface) =>
+                    option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                        .SHARED_USER_IDENTIFIER_AUTHENTICATOR_NAME
+            );
+            const errorKey: string = hasSharedUserIdentifier
+                ? "updateSharedUserIdentifierInFirstStepError"
+                : "updateIdentifierFirstInFirstStepError";
+
             dispatch(
                 addAlert({
                     description: t(
-                        "applications:notifications.updateIdentifierFirstInFirstStepError" +
+                        `applications:notifications.${errorKey}` +
                         ".description"
                     ),
                     level: AlertLevels.WARNING,
                     message: t(
-                        "applications:notifications.updateIdentifierFirstInFirstStepError" +
+                        `applications:notifications.${errorKey}` +
                         ".message"
                     )
                 })
@@ -508,7 +534,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
     };
 
     /**
-     * Check if the options include the Identifier First as an authenticator.
+     * Check if the options include an Identifier First authenticator.
      *
      * @param options - Authenticator options.
      * @returns true or false - Options include Identifier First or not.
@@ -517,7 +543,9 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         options.some(
             (option: AuthenticatorInterface) =>
                 option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
-                    .IDENTIFIER_FIRST_AUTHENTICATOR_NAME
+                    .IDENTIFIER_FIRST_AUTHENTICATOR_NAME ||
+                option.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .SHARED_USER_IDENTIFIER_AUTHENTICATOR_NAME
         );
 
     return (

@@ -19,6 +19,7 @@
 import Button from "@oxygen-ui/react/Button";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
+import { ProfileListItem, useCDSConfig, useCDSProfiles } from "@wso2is/admin.cds.v1";
 import { getEmptyPlaceholderIllustrations, getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -27,6 +28,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { getIdPIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
+import { useServerConfigs } from "@wso2is/admin.server-configurations.v1/api/server-config";
 import { useGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
 import {
     ServerConfigurationsConstants
@@ -81,6 +83,8 @@ const UserEditPage = (): ReactElement => {
 
     const { mutateUserStoreList, isUserStoreReadOnly, readOnlyUserStoreNamesList } = useUserStores();
 
+    const { data: serverConfigs } = useServerConfigs();
+
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
 
@@ -126,6 +130,22 @@ const UserEditPage = (): ReactElement => {
     const user: ProfileInfoInterface = useMemo(() =>
         originalUserDetails || emptyProfileInfo(), [ originalUserDetails ]);
 
+    const isCDSFeatureEnabled: boolean = featureConfig?.customerDataService?.enabled ?? false;
+
+    const { data: cdsConfig } = useCDSConfig(isCDSFeatureEnabled);
+
+    const isCDSEnabledForOrg: boolean = isCDSFeatureEnabled && (cdsConfig?.cds_enabled ?? false);
+
+    const { data: cdsProfilesData } = useCDSProfiles(
+        isCDSEnabledForOrg && user?.id
+            ? { filter: `user_id eq ${user.id}`, page_size: 1 }
+            : null,
+        { shouldRetryOnError: false }
+    );
+
+    const linkedCDSProfile: ProfileListItem | undefined =
+        cdsProfilesData?.profiles?.length === 1 ? cdsProfilesData.profiles[0] : undefined;
+
     const isNameAvailable: boolean = user?.name?.familyName === undefined &&
         user?.name?.givenName === undefined;
 
@@ -148,7 +168,10 @@ const UserEditPage = (): ReactElement => {
         || isReadOnlyUserStore
         || user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
         || user[ SCIMConfigs.scim.systemSchema ]?.isReadOnlyUser === "true"
-        || (user[ SCIMConfigs.scim.systemSchema ]?.managedOrg && !isUpdatingSharedProfilesFeatureEnabled);
+        || (user[ SCIMConfigs.scim.systemSchema ]?.managedOrg && !isUpdatingSharedProfilesFeatureEnabled)
+        || (getUserNameWithoutDomain(user?.userName) === getUserNameWithoutDomain(
+            serverConfigs?.realmConfig?.adminUser ?? "")
+            && !UserManagementUtils.isAuthenticatedUser(profileInfo?.userName, user?.userName));
 
     /**
      * As there is a delay in updating user stores,
@@ -517,6 +540,7 @@ const UserEditPage = (): ReactElement => {
                     isLoading={ isUserDetailsFetchRequestLoading || isUserDetailsFetchRequestValidating }
                     isReadOnly={ isReadOnly }
                     isReadOnlyUserStore={ isReadOnlyUserStore }
+                    linkedCDSProfile={ linkedCDSProfile }
                 />
                 {
                     showEditAvatarModal && (

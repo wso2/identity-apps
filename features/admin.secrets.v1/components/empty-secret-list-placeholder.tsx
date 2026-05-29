@@ -33,7 +33,7 @@ import { FEATURE_BASE_PATH } from "../constants/secrets.common";
 /**
  * Props interface of {@link EmptySecretListPlaceholder}
  */
-export type EmptySecretListPlaceholderProps = {
+type EmptySecretListPlaceholderProps = {
     onAddNewSecret: () => void;
     resourceNotFound?: boolean;
 } & IdentifiableComponentInterface;

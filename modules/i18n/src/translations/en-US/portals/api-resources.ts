@@ -41,6 +41,23 @@ export const apiResources: ApiResourcesNS = {
                 "Please proceed with caution."
         }
     },
+    notifications: {
+        apiLimitReachedError: {
+            error: {
+                description: "Failed to create the resource because the create limit has been reached.",
+                message: "Create limit reached"
+            }
+        },
+        tierLimitReachedError: {
+            emptyPlaceholder: {
+                action: "View Plans",
+                subtitles: "You can contact the organization administrator or (if you are the " +
+                    "administrator) upgrade your subscription to increase the allowed limit.",
+                title: "You have reached the maximum number of API resources and MCP servers allowed for this organization."
+            },
+            heading: "You've reached the maximum limit"
+        }
+    },
     tabs: {
         scopes: {
             button: "Add Scope",

@@ -74,9 +74,67 @@ export interface MyAccountNS {
             resultsIndicator: string;
         };
         verificationOnUpdate: {
+            modal: {
+                email: {
+                    step1: {
+                        content: {
+                            label: string;
+                        };
+                        heading: string;
+                        validation: {
+                            invalidFormat: string;
+                            required: string;
+                        };
+                    };
+                    step2: {
+                        content: {
+                            label: string;
+                        };
+                        heading: string;
+                    };
+                    step3: {
+                        content: string;
+                    };
+                };
+                sms: {
+                    step1: {
+                        content: {
+                            label: string;
+                        };
+                        heading: string;
+                        validation: {
+                            invalidFormat: string;
+                            required: string;
+                        };
+                    };
+                    step2: {
+                        content: {
+                            label: string;
+                        };
+                        heading: string;
+                    };
+                    step3: {
+                        content: string;
+                    };
+                };
+                common: {
+                    step2: {
+                        verificationFailure: string;
+                        hint: string;
+                        resend: string;
+                        resendSuccess: string;
+                        validation: {
+                            otpRequired: string;
+                        };
+                    };
+                };
+                notifications: {
+                    resendError: NotificationItem;
+                };
+            };
             preference?: {
                 notifications?: Notification;
-            }
+            };
         }
         selfSignUp: {
             preference?: {
@@ -320,6 +378,40 @@ export interface MyAccountNS {
                 revokeConsentedApp: Notification;
                 updateConsentedClaims: Notification;
             };
+        };
+        preferenceManagement: {
+            consentedOnLabel: string;
+            elementsHeading: string;
+            dangerZones: {
+                revoke: {
+                    actionTitle: string;
+                    header: string;
+                    subheader: string;
+                };
+            };
+            notifications: {
+                fetch: Notification;
+                revoke: Notification;
+                update: Notification;
+            };
+            policyUrlLabel: string;
+            versionLabel: string;
+        };
+        policyConsentManagement: {
+            consentedOnLabel: string;
+            dangerZones: {
+                revoke: {
+                    actionTitle: string;
+                    header: string;
+                    subheader: string;
+                };
+            };
+            notifications: {
+                fetch: Notification;
+                revoke: Notification;
+            };
+            policyUrlLabel: string;
+            versionLabel: string;
         };
         footer: {
             copyright: string;
@@ -880,6 +972,9 @@ export interface MyAccountNS {
                 mobileVerification: {
                     content: string;
                 };
+                emailVerification: {
+                    content: string;
+                };
             };
             modals: {
                 customMultiAttributeDeleteConfirmation: {
@@ -995,6 +1090,7 @@ export interface MyAccountNS {
     };
     pages: {
         applications: Page;
+        consents: Page;
         overview: Page;
         personalInfo: Page;
         personalInfoWithoutLinkedAccounts: Page;
@@ -1035,6 +1131,24 @@ export interface MyAccountNS {
             actionTitles: {
                 empty: string;
             };
+            description: string;
+            heading: string;
+            placeholders: {
+                emptyConsentList: {
+                    heading: string;
+                };
+            };
+        };
+        preferenceManagement: {
+            description: string;
+            heading: string;
+            placeholders: {
+                emptyConsentList: {
+                    heading: string;
+                };
+            };
+        };
+        policyConsentManagement: {
             description: string;
             heading: string;
             placeholders: {

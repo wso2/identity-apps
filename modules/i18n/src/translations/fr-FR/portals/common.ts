@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -139,6 +139,9 @@ export const common: CommonNS = {
             selfRegistration: "Auto-enregistrement",
             unassignedUsersDeleted: "Les utilisateurs non assignés ont été supprimés."
         },
+        search: {
+            placeholder: "Rechercher par ID de demande"
+        },
         subTitle: "Examinez les tâches opérationnelles nécessitant votre approbation",
         title: "Approbations"
     },
@@ -174,6 +177,7 @@ export const common: CommonNS = {
     completed: "Terminé",
     configure: "Configurer",
     confirm: "Confirmer",
+    consents: "Consentements",
     contains: "Contient",
     continue: "Continuer",
     copied: "Copié!",
@@ -182,6 +186,7 @@ export const common: CommonNS = {
     createdOn: "Créé le",
     dangerZone: "Zone de danger",
     darkMode: "Mode sombre",
+    default: "Par défaut",
     delete: "Supprimer",
     deprecated: "Cette configuration est obsolète et sera supprimée dans une version future.",
     description: "Description",

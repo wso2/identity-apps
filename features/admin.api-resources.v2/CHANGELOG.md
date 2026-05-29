@@ -1,5 +1,43 @@
 # @wso2is/admin.api-resources.v2
 
+## 2.26.11
+
+### Patch Changes
+
+- [#10274](https://github.com/wso2/identity-apps/pull/10274) [`5a79196bc94dd161fb167420d63ff9f57831cd15`](https://github.com/wso2/identity-apps/commit/5a79196bc94dd161fb167420d63ff9f57831cd15) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Block listing set of api resource and list only for configured allowed tenants
+
+- Updated dependencies [[`256daabddebaa032dc06c3a5e7822a84eec0bbd7`](https://github.com/wso2/identity-apps/commit/256daabddebaa032dc06c3a5e7822a84eec0bbd7)]:
+  - @wso2is/admin.core.v1@2.57.15
+
+## 2.26.10
+
+### Patch Changes
+
+- [#10247](https://github.com/wso2/identity-apps/pull/10247) [`520a54257c26a2e7f006f3428639ac722fb301ed`](https://github.com/wso2/identity-apps/commit/520a54257c26a2e7f006f3428639ac722fb301ed) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add support for handling api resources tier limit reached
+
+## 2.26.9
+
+### Patch Changes
+
+- [#10197](https://github.com/wso2/identity-apps/pull/10197) [`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423) Thanks [@NotoriousTechWorker](https://github.com/NotoriousTechWorker)! - Remove unused dependencies
+
+- Updated dependencies [[`efdbe1f5d9b50bb492883db7f39c8b4c858c6423`](https://github.com/wso2/identity-apps/commit/efdbe1f5d9b50bb492883db7f39c8b4c858c6423)]:
+  - @wso2is/admin.organizations.v1@2.28.4
+  - @wso2is/admin.core.v1@2.57.3
+
+## 2.26.8
+
+### Patch Changes
+
+- [#9875](https://github.com/wso2/identity-apps/pull/9875) [`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d) Thanks [@RavindiFernando](https://github.com/RavindiFernando)! - Revert Axios and SDK version bumps
+
+- Updated dependencies [[`75dc24fe314a0c3e90fba9b52eb2974801bd464d`](https://github.com/wso2/identity-apps/commit/75dc24fe314a0c3e90fba9b52eb2974801bd464d)]:
+  - @wso2is/admin.organizations.v1@2.28.2
+  - @wso2is/admin.core.v1@2.55.3
+  - @wso2is/access-control@3.5.3
+  - @wso2is/core@2.12.10
+  - @wso2is/form@2.10.1
+
 ## 2.26.7
 
 ### Patch Changes

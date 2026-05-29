@@ -16,6 +16,7 @@
  * under the License.
  */
 
+export * from "./analytics";
 export * from "./component-ids";
 export * from "./default-redirect-urls";
 export * from "./integration-guides";

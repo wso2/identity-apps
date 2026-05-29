@@ -31,7 +31,7 @@ import {
 import { HttpMethods } from "@wso2is/core/models";
 import merge from "lodash-es/merge";
 import { BrandingConstraints } from "../constants/preset-logos";
-import { OnboardingBrandingConfigInterface } from "../models";
+import { OnboardingBrandingConfigInterface } from "../models/branding";
 
 /**
  * Default theme name used to load theme variables.

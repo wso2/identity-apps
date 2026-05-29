@@ -17,6 +17,6 @@
  */
 import { Region } from "../models/region";
 
-export const getDeploymentRegion: () => Region = () => {
+const getDeploymentRegion: () => Region = () => {
     return window[ "AppUtils" ].getConfig().extensions.deploymentRegion;
 };

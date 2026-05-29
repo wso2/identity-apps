@@ -18,7 +18,7 @@
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Form, composeValidators } from "@wso2is/form";
+import { Field, Form, composeValidators } from "@wso2is/forms";
 import { Code, FormInputLabel, FormSection } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -75,7 +75,7 @@ interface SamlSettingsFormPropsInterface extends TestableComponentInterface {
     isSubmitting?: boolean;
 }
 
-export interface SamlPropertiesInterface {
+interface SamlPropertiesInterface {
     AuthRedirectUrl?: string;
     DigestAlgorithm?: string;
     IdPEntityId?: string;

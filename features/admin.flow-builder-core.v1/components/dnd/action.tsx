@@ -31,7 +31,7 @@ import "./action.scss";
 /**
  * Props interface for the Action component.
  */
-export interface ActionProps extends HTMLAttributes<HTMLButtonElement>, IdentifiableComponentInterface {
+interface ActionProps extends HTMLAttributes<HTMLButtonElement>, IdentifiableComponentInterface {
     /**
      * Variant of the action button.
      */

@@ -204,6 +204,9 @@
                 {% endif %}
             }
         },
+        "apiResourceManagement": {
+            "blocked_api_resources": {{ blocked_api_resources | default([], true) | tojson }}
+        },
         "appCopyright": "{{ console.ui.app_copyright }}",
         "appTitle": "{{ console.ui.app_title }}",
         "appName": "{{ console.ui.app_name }}",
@@ -232,6 +235,9 @@
         ],
         {% if console.ui.show_app_switch_button is defined %}
         "showAppSwitchButton": {{ console.ui.show_app_switch_button }},
+        {% endif %}
+        {% if console.ui.show_doc_links is defined %}
+        "showDocLinks": {{ console.ui.show_doc_links }},
         {% endif %}
         {% if identity_mgt.user_claim_update.enable_multiple_emails_and_mobile_numbers is defined %}
         "isMultipleEmailsAndMobileNumbersEnabled": {{ identity_mgt.user_claim_update.enable_multiple_emails_and_mobile_numbers }},
@@ -332,7 +338,39 @@
                         "update": [],
                         "delete": []
                     {% endif %}
-                }
+                }{% if console.agents.sub_features is defined %},
+                "subFeatures": {
+                    {% for sub_feature_name, sub_feature in console.agents.sub_features.items() %}
+                    "{{ sub_feature_name }}": {
+                        "disabledFeatures": [
+                            {% if sub_feature.disabled_features is defined %}
+                            {% for disabled_feature in sub_feature.disabled_features %}
+                            "{{ disabled_feature }}"{{ "," if not loop.last }}
+                            {% endfor %}
+                            {% endif %}
+                        ],
+                        "enabled": {% if sub_feature.enabled is defined %} {{ sub_feature.enabled }},
+                        {% else %} true,
+                        {% endif %}
+                        "scopes": {
+                            {% if sub_feature.scopes is defined %}
+                            {% for operation, scopes in sub_feature.scopes.items() %}
+                            "{{ operation }}": [
+                                {% for scope in scopes %}
+                                    "{{ scope }}"{{ "," if not loop.last }}
+                                {% endfor %}
+                            ]{{ "," if not loop.last }}
+                            {% endfor %}
+                            {% else %}
+                                "create": [],
+                                "delete": [],
+                                "read": [],
+                                "update": []
+                            {% endif %}
+                        }
+                    }{{ "," if not loop.last }}
+                    {% endfor %}
+                }{% endif %}
             },
             {% endif %}
             {% if console.login_and_registration is defined %}
@@ -615,6 +653,9 @@
                     {%- set disabled_features = [] -%}
                     {%- if authentication.adaptive.shared_applications.enable is not defined or authentication.adaptive.shared_applications.enable != true -%}
                         {%- set _ = disabled_features.append('"applications.sharedApp.adaptiveAuth"') -%}
+                    {%- endif -%}
+                    {%- if authentication.adaptive.org_governance.enable is not defined or authentication.adaptive.org_governance.enable != true -%}
+                        {%- set _ = disabled_features.append('"applications.adaptiveAuth.orgGovernance"') -%}
                     {%- endif -%}
                     {%- if operation_permission_enforcement.skip_enforce_authorized_api_update_permission is defined and operation_permission_enforcement.skip_enforce_authorized_api_update_permission == true -%}
                         {%- set _ = disabled_features.append('"applications.enforceAuthorizedAPIUpdatePermission"') -%}
@@ -986,6 +1027,37 @@
                         "read": [],
                         "update": [],
                         "delete": []
+                    {% endif %}
+                }
+            },
+            {% endif %}
+            {% if console.consents is defined %}
+            "consents": {
+                "disabledFeatures": [
+                    {% if console.consents.disabled_features is defined %}
+                    {% for feature in console.consents.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {% if console.consents.enabled is defined %} {{ console.consents.enabled }},
+                {% else %} false,
+                {% endif %}
+                "scopes": {
+                    {% if console.consents.scopes is defined %}
+                    {% for operation, scopes in console.consents.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "delete": [],
+                        "feature": [],
+                        "read": [],
+                        "update": []
                     {% endif %}
                 }
             },
@@ -2018,6 +2090,7 @@
                 "enabled": {% if console.onboarding.enabled is defined %} {{ console.onboarding.enabled }},
                 {% else %} true,
                 {% endif %}
+                "featureDeployedDate": "{% if console.onboarding.feature_deployed_date is defined %}{{ console.onboarding.feature_deployed_date }}{% endif %}",
                 "scopes": {
                     {% if console.onboarding.scopes is defined %}
                     {% for operation, scopes in console.onboarding.scopes.items() %}
@@ -2360,7 +2433,39 @@
                         "update": [],
                         "delete": []
                     {% endif %}
-                }
+                }{% if console.users.sub_features is defined %},
+                "subFeatures": {
+                    {% for sub_feature_name, sub_feature in console.users.sub_features.items() %}
+                    "{{ sub_feature_name }}": {
+                        "disabledFeatures": [
+                            {% if sub_feature.disabled_features is defined %}
+                            {% for disabled_feature in sub_feature.disabled_features %}
+                            "{{ disabled_feature }}"{{ "," if not loop.last }}
+                            {% endfor %}
+                            {% endif %}
+                        ],
+                        "enabled": {% if sub_feature.enabled is defined %} {{ sub_feature.enabled }},
+                        {% else %} true,
+                        {% endif %}
+                        "scopes": {
+                            {% if sub_feature.scopes is defined %}
+                            {% for operation, scopes in sub_feature.scopes.items() %}
+                            "{{ operation }}": [
+                                {% for scope in scopes %}
+                                    "{{ scope }}"{{ "," if not loop.last }}
+                                {% endfor %}
+                            ]{{ "," if not loop.last }}
+                            {% endfor %}
+                            {% else %}
+                                "create": [],
+                                "delete": [],
+                                "read": [],
+                                "update": []
+                            {% endif %}
+                        }
+                    }{{ "," if not loop.last }}
+                    {% endfor %}
+                }{% endif %}
             },
             {% endif %}
             {% if console.user_stores is defined %}
@@ -2519,6 +2624,13 @@
                 {% endfor %}
             {% endif %}
         ],
+        "hiddenOutboundProvisioningConnectors": [
+            {% if console.ui.hidden_outbound_provisioning_connectors is defined %}
+                {% for value in console.ui.hidden_outbound_provisioning_connectors %}
+                "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
+            {% endif %}
+        ],
         "hiddenApplicationTemplates": [
             {% if console.ui.hiddenApplicationTemplates is defined %}
                 {% for value in console.ui.hiddenApplicationTemplates %}
@@ -2572,6 +2684,9 @@
             {% endfor %}
         },
         {% endif %}
+        {% if enhanced_organization_authentication_feature.enabled is defined %}
+        "isEnhancedOrganizationAuthenticationFeatureEnabled": {{ enhanced_organization_authentication_feature.enabled }},
+        {% endif %}
         {% if console.ui.is_feature_gate_enabled is defined %}
         "isFeatureGateEnabled": {{ console.ui.is_feature_gate_enabled }},
         {% endif %}
@@ -2596,7 +2711,7 @@
         "isClaimUniquenessValidationEnabled": {{ identity_mgt.user_claim_update.uniqueness.enable }},
         {% endif %}
         {% if oauth.hash_tokens_and_secrets is defined %}
-        "isClientSecretHashEnabled": {{ oauth.hash_tokens_and_secrets }},
+        "isClientSecretHashEnabled": {{ (oauth.hash_client_secret | default(false)) or (oauth.hash_tokens_and_secrets) }},
         {% endif %}
         {% if authentication.endpoint.enable_custom_claim_mappings is defined %}
         "isCustomClaimMappingEnabled": {{ authentication.endpoint.enable_custom_claim_mappings }},
@@ -2627,6 +2742,26 @@
         {% else %}
             "enableOldUIForEmailProvider": false,
         {% endif %}
+        {% if console.ui.http_email_provider_body_max_length is defined %}
+            "httpEmailProviderBodyMaxLength": {{ console.ui.http_email_provider_body_max_length }},
+        {% else %}
+            "httpEmailProviderBodyMaxLength": 1023,
+        {% endif %}
+        {% if console.ui.http_email_provider_scopes_max_length is defined %}
+            "httpEmailProviderScopesMaxLength": {{ console.ui.http_email_provider_scopes_max_length }},
+        {% else %}
+            "httpEmailProviderScopesMaxLength": 1023,
+        {% endif %}
+        {% if console.ui.enable_legacy_locale_dropdown is defined %}
+            "enableLegacyLocaleDropdown": {{ console.ui.enable_legacy_locale_dropdown }},
+        {% else %}
+            "enableLegacyLocaleDropdown": false,
+        {% endif %}
+        {% if console.ui.enable_blocking_outbound_provisioning is defined %}
+            "enableBlockingOutboundProvisioning": {{ console.ui.enable_blocking_outbound_provisioning }},
+        {% else %}
+            "enableBlockingOutboundProvisioning": false,
+        {% endif %}
         {% if console.ui.enable_custom_sms_templates is defined %}
             "enableCustomSmsTemplates": {{ console.ui.enable_custom_sms_templates }},
         {% else %}
@@ -2642,6 +2777,11 @@
         "isPasswordInputValidationEnabled": {{ event.default_listener.validation.enable }},
         {% else %}
         "isPasswordInputValidationEnabled": true,
+        {% endif %}
+        {% if console.ui.is_password_reset_enforcement_scope_enabled is defined %}
+        "isPasswordResetEnforcementScopeEnabled": {{ console.ui.is_password_reset_enforcement_scope_enabled }},
+        {% else %}
+        "isPasswordResetEnforcementScopeEnabled": false,
         {% endif %}
         "passwordPolicyConfigs": {
             {% if identity_mgt.password_policy.max_password_allowed_length is defined %}

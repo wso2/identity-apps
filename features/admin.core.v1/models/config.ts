@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,6 +19,7 @@
 import { ResponseMode, Storage } from "@asgardeo/auth-react";
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { ActionsResourceEndpointsInterface } from "@wso2is/admin.actions.v1/models/endpoints";
+import { AgentsResourceEndpointsInterface } from "@wso2is/admin.agents.v1/models/endpoints";
 import { ApplicationsTemplatesEndpointsInterface } from "@wso2is/admin.application-templates.v1/models/endpoints";
 import {
     ApplicationTemplateLoadingStrategies
@@ -51,6 +52,7 @@ import { TenantResourceEndpointsInterface } from "@wso2is/admin.tenants.v1/model
 import { UsersResourceEndpointsInterface } from "@wso2is/admin.users.v1/models/endpoints";
 import { UserstoreResourceEndpointsInterface } from "@wso2is/admin.userstores.v1/models/endpoints";
 import { ValidationServiceEndpointsInterface } from "@wso2is/admin.validation.v1/models";
+import { ConsentMgtResourceEndpointsInterface } from "@wso2is/common.consents.v1/models/endpoints";
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,
@@ -59,7 +61,7 @@ import {
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { WorkflowRequestsResourceEndpointsInterface } from "../../admin.workflow-requests.v1/configs/endpoints";
 
-export type ConfigInterface = CommonConfigInterface<
+type ConfigInterface = CommonConfigInterface<
     DeploymentConfigInterface,
     ServiceResourceEndpointsInterface,
     FeatureConfigInterface,
@@ -72,6 +74,17 @@ interface ConnectionConfigInterface extends FeatureAccessConfigInterface {
      * Connection templates.
      */
     templates?: Record<string, any>[];
+}
+
+/**
+ * Extended feature config for onboarding with deployment-specific fields.
+ */
+interface OnboardingFeatureConfigInterface extends FeatureAccessConfigInterface {
+    /**
+     * Cutoff date (YYYY-MM-DD) for determining whether a user is "new".
+     * Users with SCIM2 meta.created on or after this date are considered new.
+     */
+    featureDeployedDate?: string;
 }
 
 /**
@@ -127,6 +140,10 @@ export interface FeatureConfigInterface {
      */
     certificates?: FeatureAccessConfigInterface;
     /**
+     * Copilot AI assistant feature.
+     */
+    copilot?: FeatureAccessConfigInterface;
+    /**
      * Email providers feature.
      */
     emailProviders?: FeatureAccessConfigInterface;
@@ -141,7 +158,7 @@ export interface FeatureConfigInterface {
     /**
      * Onboarding wizard feature.
      */
-    onboarding?: FeatureAccessConfigInterface;
+    onboarding?: OnboardingFeatureConfigInterface;
     /**
      * SMS providers feature.
      */
@@ -247,6 +264,10 @@ export interface FeatureConfigInterface {
      */
     secretsManagement?: FeatureAccessConfigInterface;
     /**
+     * Tenant management feature.
+     */
+    tenants?: FeatureAccessConfigInterface;
+    /**
      * Try It feature
      */
     tryIt?: FeatureAccessConfigInterface;
@@ -287,6 +308,10 @@ export interface FeatureConfigInterface {
      */
     ruleBasedPasswordExpiry?: FeatureAccessConfigInterface;
     /**
+     * Consent management feature.
+     */
+    consents?: FeatureAccessConfigInterface;
+    /**
      * Connection management feature.
      */
     connections?: ConnectionConfigInterface;
@@ -310,6 +335,10 @@ export interface FeatureConfigInterface {
      * Customer Data feature.
      */
     customerData?: FeatureAccessConfigInterface;
+    /**
+     * Customer Data Service feature.
+     */
+    customerDataService?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -356,6 +385,23 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
 }
 
 /**
+ * Flow execution compatibility settings from the tenant/sub-org API.
+ */
+export interface FlowExecutionCompatibilityInterface {
+    enableLegacyFlows?: string;
+    enableLegacySelfRegistrationFlow?: string;
+    enableLegacyInvitedUserRegistrationFlow?: string;
+    enableLegacyPasswordRecoveryFlow?: string;
+}
+
+/**
+ * Tenant/sub-organization compatibility settings from /api/server/v1/configs/compatibility-settings.
+ */
+export interface CompatibilitySettingsInterface extends Record<string, unknown> {
+    flowExecution?: FlowExecutionCompatibilityInterface;
+}
+
+/**
  * Interface for defining settings and configs of an external app.
  */
 interface ExternalAppConfigInterface {
@@ -388,7 +434,7 @@ type GovernanceConnectorsFeatureConfig = Record<string, {
 /**
  * Interface representing the configuration for multi-tenancy.
  */
-export interface MultiTenancyConfigInterface {
+interface MultiTenancyConfigInterface {
     /**
      * Indicates if the dot extension is mandatory in the tenant domain.
      */
@@ -406,7 +452,7 @@ export interface MultiTenancyConfigInterface {
 /**
  * Interface for. Actions UI level configurations.
  */
-export interface ActionsUIConfigInterface {
+interface ActionsUIConfigInterface {
     types: {
         [ key: string ]: {
             version: {
@@ -446,6 +492,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     googleOneTapEnabledTenants?: string[];
     /**
+     * API resource management UI configurations.
+     */
+    apiResourceManagement?: APIResourceManagementUIConfigInterface;
+    /**
      * Set of authenticators to be hidden in application sign on methods.
      */
     hiddenAuthenticators?: string[];
@@ -465,6 +515,11 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Set of connections to be hidden.
      */
     hiddenConnectionTemplates?: string[];
+    /**
+     * Set of outbound provisioning connectors to be hidden.
+     * Use connector names (e.g., "googleapps", "salesforce", "scim").
+     */
+    hiddenOutboundProvisioningConnectors?: string[];
     /**
      * Set of application templates to be hidden.
      * Include the IDs of application templates.
@@ -490,6 +545,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Flag to check if the `OAuth.EnableClientSecretHash` is enabled in the `identity.xml`.
      */
     isClientSecretHashEnabled?: boolean;
+    /**
+     * Flag to check if the enhanced organization authentication feature is enabled.
+     */
+    isEnhancedOrganizationAuthenticationFeatureEnabled?: boolean;
     /**
      * Flag to check if the feature gate should be enabled.
      */
@@ -527,13 +586,40 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     enableOldUIForEmailProvider: boolean;
     /**
+     * Maximum character length for the OAuth scopes field in the HTTP-based email provider.
+     * Defaults to 1023 to match the default database column size. Configurable to support
+     * deployments with a different column length.
+     */
+    httpEmailProviderScopesMaxLength?: number;
+    /**
+     * Maximum character length for the body field in the HTTP-based email provider.
+     * Defaults to 1023. Configurable to support deployments with a different column length.
+     */
+    httpEmailProviderBodyMaxLength?: number;
+    /**
      * Enable/Disable custom email template feature
      */
     enableCustomEmailTemplates: boolean;
     /**
+     * Enable/Disable blocking outbound provisioning feature.
+     */
+    enableBlockingOutboundProvisioning?: boolean;
+    /**
      * Enable/Disable custom SMS template feature
      */
     enableCustomSmsTemplates: boolean;
+    /**
+     * Enable/Disable the legacy locale dropdown (using supported i18n languages from store)
+     * in email and SMS template edit pages. When true, the old dropdown is shown instead of
+     * the new autocomplete input that lists all locales.
+     */
+    enableLegacyLocaleDropdown?: boolean;
+    /**
+     * List of features to be enabled in console role permissions, even if the feature is disabled
+     * in the feature config. This is to allow certain features to be assignable in console roles,
+     * even if they are not generally available for use in the console.
+     */
+    enabledFeatureOverridesInConsoleRolePermissions?: string[];
     /**
      * Enable signature validation certificate alias.
      */
@@ -566,6 +652,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Show App Switch button in the Header.
      */
     showAppSwitchButton?: boolean;
+    /**
+     * Show documentation links throughout the console.
+     */
+    showDocLinks?: boolean;
     /**
      * Show Label for the features introduced with new authz runtime.
      */
@@ -665,10 +755,24 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
         url: string;
     };
     /**
+     * Rebranding announcement banner configurations.
+     */
+    rebrandingBanner: {
+        announcementUrl: string;
+        buttonText: string;
+        description: string;
+        enabled: boolean;
+        subDescription: string;
+        title: string;
+    };
+    /**
      * Flow execution configurations.
      */
     flowExecution: {
         enableLegacyFlows: boolean;
+        enableLegacySelfRegistrationFlow?: boolean;
+        enableLegacyInvitedUserRegistrationFlow?: boolean;
+        enableLegacyPasswordRecoveryFlow?: boolean;
     };
     /**
      * Enable legacy session bound token behaviour.
@@ -678,6 +782,40 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Disable email template feature for free tier tenants.
      */
     disableEmailTemplateForFreeTier: boolean;
+    /**
+     * Flag to check whether the password reset enforcer authenticator is enabled.
+     */
+    isPasswordResetEnforcerEnabled?: boolean;
+    /**
+     * Flag to check whether the password reset enforcement scope configuration is enabled.
+     */
+    isPasswordResetEnforcementScopeEnabled?: boolean;
+}
+
+/**
+ * API resource management UI configurations.
+ */
+interface APIResourceManagementUIConfigInterface {
+    /**
+     * Per-resource block entries. A resource is blocked for a tenant if it is listed here
+     * and the tenant is not in the entry's `allowed_tenants` list.
+     */
+    blockedAPIResources?: APIResourceBlockEntryInterface[];
+}
+
+/**
+ * Single blocked API resource entry.
+ */
+export interface APIResourceBlockEntryInterface {
+    /**
+     * Tenant domains for which the block does not apply. When empty or omitted, the block applies
+     * to all tenants.
+     */
+    allowed_tenants?: string[];
+    /**
+     * API resource ID (UUID) of the resource to block.
+     */
+    api_id?: string;
 }
 
 /**
@@ -737,7 +875,8 @@ interface IdentityProviderTemplateConfigInterface {
 /**
  * Service resource endpoints config.
  */
-export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpointsInterface,
+export interface ServiceResourceEndpointsInterface extends AgentsResourceEndpointsInterface,
+    ClaimResourceEndpointsInterface,
     CertificatesResourceEndpointsInterface,
     GroupsResourceEndpointsInterface,
     ServerConfigurationsResourceEndpointsInterface,
@@ -763,9 +902,11 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     WorkflowRequestsResourceEndpointsInterface,
     RulesEndpointsInterface,
     RemoteLoggingResourceEndpointsInterface,
-    FlowBuilderCoreResourceEndpointsInterface {
+    FlowBuilderCoreResourceEndpointsInterface,
+    ConsentMgtResourceEndpointsInterface {
 
     CORSOrigins: string;
+    copilot: string;
     // TODO: Remove this endpoint and use ID token to get the details
     me: string;
     saml2Meta: string;

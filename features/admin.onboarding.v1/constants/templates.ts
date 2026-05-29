@@ -27,12 +27,12 @@ import { ReactComponent as NextjsLogo } from "../assets/icons/nextjs.svg";
 import { ReactComponent as ReactLogo } from "../assets/icons/react.svg";
 import { ReactComponent as ServerLogo } from "../assets/icons/server.svg";
 import { ReactComponent as WebLogo } from "../assets/icons/web.svg";
-import { ApplicationType, ApplicationTypeOptionInterface, FrameworkOptionInterface } from "../models";
+import { ApplicationType, ApplicationTypeOptionInterface, FrameworkOptionInterface } from "../models/application";
 
 /**
  * High-level application type configurations (browser, mobile, machine).
  */
-export const APPLICATION_TYPES: readonly {
+const APPLICATION_TYPES: readonly {
     iconKey: string;
     titleKey: string;
     type: ApplicationType;

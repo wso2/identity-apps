@@ -16,7 +16,6 @@
  * under the License.
  */
 
-// eslint-disable-next-line no-unused-vars
 var startupConfig = {
     enableDefaultPreLoader: true,
     isSuperTenantRequiredInUrl: false,

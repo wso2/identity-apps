@@ -139,7 +139,7 @@
                     if ("true".equals(authenticationFailed)) {
                 %>
                     <p class="portal-tagline-description">
-                        <%=Encode.forHtmlContent(errorMessage)%>
+                        <%=errorMessage%>
                     </p>
                     <div class="ui divider hidden"></div>
                 <% } %>

@@ -34,7 +34,7 @@ import { BrandingGenerationStatusAPIResponseInterface } from "../models/branding
  *
  * @param operationId - A unique identifier for the branding generation operation status.
  */
-export const useGetAIBrandingGenerationStatus = (
+const useGetAIBrandingGenerationStatus = (
     operationId: string
 ): RequestResultInterface<BrandingGenerationStatusAPIResponseInterface, RequestErrorInterface> => {
 

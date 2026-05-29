@@ -17,7 +17,7 @@
  */
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import { getDialects } from "@wso2is/admin.claims.v1/api";
+import { getDialects } from "../api";
 import { getSidePanelIcons, getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -202,9 +202,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
 
                 setOidcAttributeMappings(oidc);
                 setScimAttributeMappings(scim);
-                if (isVcFeatureEnabled) {
-                    setVcAttributeMappings(vc);
-                }
+                setVcAttributeMappings(isVcFeatureEnabled && !isSubOrganization() ? vc : []);
                 setAxschemaAttributeMappings(axschema);
                 // TODO: Remove eiDAS temporally. Need to update it to version 2 and re-enable it.
                 setEidasAttributeMappings(null);
@@ -943,7 +941,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                                         color="grey"
                                                                         name={
                                                                             // Added as this cannot be avoided.
-                                                                            // eslint-disable-next-line max-len
+                                                                             
                                                                             hasAttributeDialectsUpdatePermissions
                                                                             && !isSubOrganization()
                                                                                 ? "pencil"

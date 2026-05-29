@@ -52,7 +52,7 @@ import {
 } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
-import { RadioChild } from "@wso2is/forms";
+import { RadioChild } from "@wso2is/forms/legacy";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -62,7 +62,7 @@ import useAskPasswordFlowBuilder from "../../../../hooks/use-ask-password-flow-b
 /**
  * Proptypes for the Ask Password Form props interface.
  */
-export interface AskPasswordConfigurationsPropsInterface extends IdentifiableComponentInterface {
+interface AskPasswordConfigurationsPropsInterface extends IdentifiableComponentInterface {
     /**
      * Connector's initial values.
      */
@@ -109,11 +109,11 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
     const [
         isInviteUserToSetPasswordEnabled,
         setIsInviteUserToSetPasswordEnabled
-    ]= useState<boolean>(false);
+    ] = useState<boolean>(false);
     const [ isUpperCaseEnabled, setIsUpperCaseEnabled ] = useState<boolean>(false);
     const [ isLowerCaseEnabled, setIsLowerCaseEnabled ] = useState<boolean>(false);
     const [ isNumericEnabled, setIsNumericEnabled ] = useState<boolean>(false);
-    const [ askPasswordOption, setAskPasswordOption ] = useState<string>(VerificationOption.EMAIL_LINK);
+    const [ askPasswordOption, setAskPasswordOption ] = useState<VerificationOption>(VerificationOption.EMAIL_LINK);
     const [ expiryTime, setExpiryTime ] = useState<string>("");
     const [ otpLength, setOtpLength ] = useState<string>("");
     const [ enableAccountLockOnCreation, setEnableAccountLockOnCreation ] = useState<boolean>(false);
@@ -239,12 +239,9 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
      * Handles form value changes.
      */
     useEffect(() => {
-
         setInvitedUserRegistrationConfig(updatedConfigs);
         setIsInvitedUserRegistrationConfigUpdated(true);
-    }, [
-        updatedConfigs
-    ]);
+    }, [ updatedConfigs ]);
 
     /**
      * Flattens and resolved form initial values and field metadata.

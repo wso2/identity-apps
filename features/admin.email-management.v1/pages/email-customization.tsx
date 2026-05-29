@@ -16,11 +16,12 @@
  * under the License.
  */
 
-import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/branding-preference-provider";
 import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import useGetFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-config";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -29,6 +30,7 @@ import {
     AlertInterface,
     AlertLevels,
     FeatureAccessConfigInterface,
+    HttpErrorResponseDataInterface,
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -54,8 +56,9 @@ import {
     useEmailTemplatesList
 } from "../api";
 import { EmailCustomizationForm, EmailTemplatePreview } from "../components";
+import EmailTemplateCustomizationPremiumBanner from "../components/banners/email-template-customization-premium-banner";
 import EmailCustomizationFooter from "../components/email-customization-footer";
-import EmailCustomizationHeader from "../components/email-customization-header";
+import EmailCustomizationHeader, { LocaleOption } from "../components/email-customization-header";
 import { EmailManagementConstants } from "../constants/email-management-constants";
 import { EmailTemplate, EmailTemplateType } from "../models";
 
@@ -84,7 +87,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
     const [ isTemplateNotAvailable, setIsTemplateNotAvailable ] = useState(false);
     const [ isSystemTemplate, setIsSystemTemplate ] = useState(false);
     const [ isInheritedTemplate, setIsInheritedTemplate ] = useState(false);
-    const [ error, setError ] = useState<AxiosError>();
+    const [ error, setError ] = useState<AxiosError<HttpErrorResponseDataInterface>>();
 
     const emailTemplates: Record<string, string>[] = useSelector(
         (state: AppState) => state.config.deployment.extensions.emailTemplates) as Record<string, string>[];
@@ -107,12 +110,17 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         emailTemplatesFeatureConfig?.scopes?.create
     );
 
+    const emailTemplateFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["EMAIL_TEMPLATES_CUSTOMIZATION"]
+    );
+    const isEmailFeatureEnabled: boolean = emailTemplateFeatureStatus === FeatureStatus.ENABLED;
+
     const isReadOnly: boolean = useMemo(() => {
         return !isFeatureEnabled(
             emailTemplatesFeatureConfig,
             EmailManagementConstants.FEATURE_DICTIONARY.get("EMAIL_TEMPLATES_UPDATE")
-        ) || !hasUsersUpdateEmailTemplatesPermissions;
-    }, [ emailTemplatesFeatureConfig, allowedScopes ]);
+        ) || !hasUsersUpdateEmailTemplatesPermissions || !isEmailFeatureEnabled;
+    }, [ emailTemplatesFeatureConfig, allowedScopes, isEmailFeatureEnabled ]);
 
     const hasEmailTemplateCreatePermissions: boolean = useMemo(() => {
         return isFeatureEnabled(
@@ -297,12 +305,14 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         setSelectedEmailTemplate({ ...selectedEmailTemplate, ...updatedTemplateAttributes });
     };
 
-    const handleLocaleChange = (locale: string) => {
+    const handleLocaleChange = (localeOption: LocaleOption | null | undefined): void => {
+        const safeLocale: string = (localeOption?.value as string) ?? selectedLocale;
+
         setCurrentEmailTemplate({ ...selectedEmailTemplate });
         setIsTemplateNotAvailable(false);
         setIsSystemTemplate(false);
         setIsInheritedTemplate(false);
-        setSelectedLocale(locale);
+        setSelectedLocale(safeLocale);
     };
 
     const handleSubmit = () => {
@@ -440,6 +450,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                         onSubmit={ handleSubmit }
                         onDeleteRequested={ handleDeleteRequest }
                         readOnly={ isReadOnly || (isTemplateNotAvailable && !hasEmailTemplateCreatePermissions) }
+                        isFeatureEnabled={ isEmailFeatureEnabled }
                     />
                 </ResourceTab.Pane>
             )
@@ -467,6 +478,9 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                 bottomMargin={ false }
                 data-componentid={ componentId }
             >
+                { !isEmailFeatureEnabled && (
+                    <EmailTemplateCustomizationPremiumBanner />
+                ) }
                 <EmailCustomizationHeader
                     selectedEmailTemplateId={ selectedEmailTemplateId }
                     selectedEmailTemplateDescription={ selectedEmailTemplateDescription }
@@ -494,6 +508,7 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
                             <EmailCustomizationFooter
                                 isSaveButtonLoading={ isEmailTemplatesListLoading || isEmailTemplateLoading }
                                 onSaveButtonClick={ handleSubmit }
+                                isSaveButtonDisabled={ !isEmailFeatureEnabled }
                             />
                         )
                     }

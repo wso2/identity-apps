@@ -21,7 +21,7 @@ import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import { CommonUtils } from "@wso2is/core/utils";
-import { FinalForm, FinalFormField, FormRenderProps, SelectFieldAdapter } from "@wso2is/form";
+import { FinalForm, FinalFormField, FormRenderProps, SelectFieldAdapter } from "@wso2is/forms";
 import { Button, Popup, useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useMemo } from "react";

@@ -36,4 +36,4 @@ export const AppMedia: any = createMedia({
     breakpoints: BREAKPOINTS
 });
 
-export const mediaStyle = AppMedia.createMediaStyle();
+const mediaStyle = AppMedia.createMediaStyle();

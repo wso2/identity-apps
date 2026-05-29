@@ -15,13 +15,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { Show } from "@wso2is/access-control";
+import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import { ReactComponent as CrossIcon } from "@wso2is/admin.core.v1/assets/icons/cross-icon.svg";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureLockedBanner from "@wso2is/admin.feature-gate.v1/components/feature-locked-banner";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, GenericIcon, ListLayout, PageLayout, Popup, PrimaryButton } from "@wso2is/react-components";
@@ -53,6 +55,11 @@ const ApprovalWorkflows: FunctionComponent<WorkflowsPageInterface> = (props: Wor
     const { t } = useTranslation([ "approvalWorkflows" ]);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const approvalWorkflowsFeatureStatus: FeatureStatus = useCheckFeatureStatus(
+        FeatureFlagConstants.FEATURE_FLAG_KEY_MAP["APPROVAL_WORKFLOWS_FEATURE_GATE"]
+    );
+    const isApprovalWorkflowsEnabled: boolean = approvalWorkflowsFeatureStatus === FeatureStatus.ENABLED;
 
     const [ approvalWorkflows, setApprovalWorkflows ] = useState<WorkflowListItemInterface[]>([]);
     const [ listOffset, setListOffset ] = useState(0);
@@ -203,6 +210,7 @@ const ApprovalWorkflows: FunctionComponent<WorkflowsPageInterface> = (props: Wor
         <PageLayout
             data-componentid={ `${componentId}-page-layout` }
             action={
+                isApprovalWorkflowsEnabled &&
                 !isWorkflowsListRequestLoading &&
                 approvalWorkflows?.length > 0 && (
                     <Show when={ featureConfig?.approvalWorkflows?.scopes?.create }>
@@ -220,7 +228,13 @@ const ApprovalWorkflows: FunctionComponent<WorkflowsPageInterface> = (props: Wor
             pageTitle={ t("pages:approvalWorkflows.title") }
             description={ t("pages:approvalWorkflows.subTitle") }
         >
-            <ListLayout
+            { !isApprovalWorkflowsEnabled ? (
+                <FeatureLockedBanner
+                    data-componentid={ `${componentId}-feature-locked-banner` }
+                    sx={ { marginTop: "-20px" } }
+                />
+            ) : (
+                <ListLayout
                 data-componentid={ `${componentId}-list-layout` }
                 currentListSize={ listItemLimit }
                 listItemLimit={ listItemLimit }
@@ -297,7 +311,8 @@ const ApprovalWorkflows: FunctionComponent<WorkflowsPageInterface> = (props: Wor
                         searchQuery={ searchQuery }
                     />
                 ) }
-            </ListLayout>
+                </ListLayout>
+            ) }
         </PageLayout>
     );
 };

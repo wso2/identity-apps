@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,11 +17,29 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { OIDCDataInterface } from "@wso2is/admin.applications.v1/models/application-inbound";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
-import { HttpMethods } from "@wso2is/core/models";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { HttpErrorResponseDataInterface, HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { AgentScimSchema } from "../models/agents";
+import { AGENT_SHARING_ERROR } from "../constants/agents";
+import {
+    AgentCriteriaInterface,
+    AgentScimSchema,
+    AgentSharingResponseInterface,
+    AgentType,
+    EditRolesRequestInterface,
+    ShareAgentWithAllOrganizationsDataInterface,
+    ShareAgentWithSelectedOrganizationsAndRolesDataInterface,
+    ShareOrganizationsAndRolesPatchDataInterface,
+    ShareSelectedRequestInterface,
+    ShareWithAllRequestInterface,
+    UnshareAgentWithAllOrganizationsDataInterface,
+    UnshareOrganizationsDataInterface,
+    UnshareSelectedRequestInterface,
+    UnshareWithAllRequestInterface
+} from "../models/agents";
 
 /**
  * Initialize an axios Http client.
@@ -51,7 +69,7 @@ export const addAgent = (data: AgentScimSchema): Promise<any> => {
         .then((response: AxiosResponse) => {
             return Promise.resolve(response?.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -77,7 +95,7 @@ export const updateAgent = (agentId: string, data: AgentScimSchema): Promise<any
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -102,7 +120,7 @@ export const deleteAgent = (agentId: string): Promise<AxiosResponse> => {
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -143,7 +161,7 @@ export const updateAgentLockStatus = (agentId: string, isLocked: boolean): Promi
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
         });
 };
@@ -182,7 +200,328 @@ export const updateAgentPassword = (agentId: string, newPassword: string): Promi
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(error);
+        });
+};
+
+/**
+ * Interface for agent application configuration update parameters.
+ */
+interface UpdateAgentApplicationConfigInterface {
+    agentType?: AgentType;
+    callbackUrl?: string;
+    cibaAuthReqExpiryTime?: number;
+    notificationChannels?: string[];
+}
+
+/**
+ * Updates the OAuth/OIDC configuration for a user-serving agent's application.
+ * This function updates the application's OIDC inbound protocol after the agent is created via SCIM.
+ *
+ * @param applicationId - The application ID (same as agent ID for user-serving agents).
+ * @param config - The OAuth configuration to update (grant types, callback URL, CIBA settings).
+ *
+ * @returns response.
+ */
+export const updateAgentApplicationConfiguration = async (
+    applicationId: string,
+    config: UpdateAgentApplicationConfigInterface
+): Promise<AxiosResponse> => {
+    try {
+        const getRequestConfig: RequestConfigInterface = {
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            method: HttpMethods.GET,
+            url: `${store.getState().config.endpoints.applications}/${applicationId}/inbound-protocols/oidc`
+        };
+
+        const existingOidcConfigResponse: AxiosResponse<OIDCDataInterface> =
+            (await httpClient(getRequestConfig)) as AxiosResponse<OIDCDataInterface>;
+        const existingOidcConfig: OIDCDataInterface = existingOidcConfigResponse.data;
+
+        const updatedOidcConfig: OIDCDataInterface = {
+            ...existingOidcConfig
+        };
+
+        if (config.agentType === AgentType.INTERACTIVE) {
+
+            updatedOidcConfig.grantTypes = [ "authorization_code", "refresh_token" ];
+
+            if (config.callbackUrl) {
+                updatedOidcConfig.callbackURLs = [ config.callbackUrl ];
+            }
+
+            if (updatedOidcConfig.cibaAuthenticationRequest) {
+                delete updatedOidcConfig.cibaAuthenticationRequest;
+            }
+        } else if (config.agentType === AgentType.BACKGROUND) {
+
+            updatedOidcConfig.grantTypes = [ "urn:openid:params:grant-type:ciba" ];
+
+            updatedOidcConfig.cibaAuthenticationRequest = {
+                ...existingOidcConfig.cibaAuthenticationRequest,
+                authReqExpiryTime: config.cibaAuthReqExpiryTime || 300
+            };
+
+            if (config.notificationChannels && config.notificationChannels.length > 0) {
+                updatedOidcConfig.cibaAuthenticationRequest.notificationChannels = config.notificationChannels;
+            }
+
+            updatedOidcConfig.callbackURLs = [];
+        }
+
+        const putRequestConfig: RequestConfigInterface = {
+            data: updatedOidcConfig,
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            method: HttpMethods.PUT,
+            url: `${store.getState().config.endpoints.applications}/${applicationId}/inbound-protocols/oidc`
+        };
+
+        return httpClient(putRequestConfig)
+            .then((response: AxiosResponse) => {
+                return Promise.resolve(response);
+            })
+            .catch((error: AxiosError) => {
+                return Promise.reject(error);
+            });
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
+
+/**
+ * Share agents with all organizations.
+ *
+ * @param data - The data to share agents with all organizations.
+ * @returns A promise containing the response.
+ */
+export const shareAgentsWithAllOrganizations = (
+    data: ShareAgentWithAllOrganizationsDataInterface
+): Promise<AgentSharingResponseInterface> => {
+    if (!data?.agentId || typeof data.agentId !== "string" || data.agentId.trim() === "") {
+        return Promise.reject(new IdentityAppsApiException(
+            "shareAgentsWithAllOrganizations: agentId is required and must be a non-empty string.",
+            null, null, null, null, null));
+    }
+
+    const agentCriteria: AgentCriteriaInterface = { agentIds: [ data.agentId ] };
+    const body: ShareWithAllRequestInterface = {
+        agentCriteria,
+        policy: data.policy,
+        roleAssignment: data.roleAssignment
+    };
+    const requestConfig: RequestConfigInterface = {
+        data: body,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${ store.getState().config.endpoints.agentSharing }/share-with-all`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<AgentSharingResponseInterface>) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                AGENT_SHARING_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Unshare agents from all organizations.
+ *
+ * @param data - The data to unshare agents from all organizations.
+ * @returns A promise containing the response.
+ */
+export const unShareAgentsWithAllOrganizations = (
+    data: UnshareAgentWithAllOrganizationsDataInterface
+): Promise<AgentSharingResponseInterface> => {
+    if (!data?.agentId || typeof data.agentId !== "string" || data.agentId.trim() === "") {
+        return Promise.reject(new IdentityAppsApiException(
+            "unShareAgentsWithAllOrganizations: agentId is required and must be a non-empty string.",
+            null, null, null, null, null));
+    }
+
+    const body: UnshareWithAllRequestInterface = {
+        agentCriteria: { agentIds: [ data.agentId ] }
+    };
+    const requestConfig: RequestConfigInterface = {
+        data: body,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${ store.getState().config.endpoints.agentSharing }/unshare-with-all`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<AgentSharingResponseInterface>) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                AGENT_SHARING_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Share agents with selected organizations and roles.
+ *
+ * @param data - The data to share agents with selected organizations.
+ * @returns A promise containing the response.
+ */
+export const shareAgentsWithSelectedOrganizationsAndRoles = (
+    data: ShareAgentWithSelectedOrganizationsAndRolesDataInterface
+): Promise<AgentSharingResponseInterface> => {
+    if (!data?.agentId || typeof data.agentId !== "string" || data.agentId.trim() === "") {
+        return Promise.reject(new IdentityAppsApiException(
+            "shareAgentsWithSelectedOrganizationsAndRoles: agentId is required and must be a non-empty string.",
+            null, null, null, null, null));
+    }
+    if (!Array.isArray(data.organizations) || data.organizations.length === 0) {
+        return Promise.reject(new IdentityAppsApiException(
+            "shareAgentsWithSelectedOrganizationsAndRoles: organizations must be a non-empty array.",
+            null, null, null, null, null));
+    }
+
+    const body: ShareSelectedRequestInterface = {
+        agentCriteria: { agentIds: [ data.agentId ] },
+        organizations: data.organizations
+    };
+    const requestConfig: RequestConfigInterface = {
+        data: body,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${ store.getState().config.endpoints.agentSharing }/share`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<AgentSharingResponseInterface>) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                AGENT_SHARING_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Unshare agents from selected organizations.
+ *
+ * @param data - The data to unshare agents from selected organizations.
+ * @returns A promise containing the response.
+ */
+export const unshareAgentWithSelectedOrganizations = (
+    data: UnshareOrganizationsDataInterface
+): Promise<AgentSharingResponseInterface> => {
+    if (!data?.agentId || typeof data.agentId !== "string" || data.agentId.trim() === "") {
+        return Promise.reject(new IdentityAppsApiException(
+            "unshareAgentWithSelectedOrganizations: agentId is required and must be a non-empty string.",
+            null, null, null, null, null));
+    }
+    if (!Array.isArray(data.orgIds) || data.orgIds.length === 0) {
+        return Promise.reject(new IdentityAppsApiException(
+            "unshareAgentWithSelectedOrganizations: orgIds must be a non-empty array.",
+            null, null, null, null, null));
+    }
+
+    const body: UnshareSelectedRequestInterface = {
+        agentCriteria: { agentIds: [ data.agentId ] },
+        orgIds: data.orgIds
+    };
+    const requestConfig: RequestConfigInterface = {
+        data: body,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: `${ store.getState().config.endpoints.agentSharing }/unshare`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<AgentSharingResponseInterface>) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                AGENT_SHARING_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Edit agent roles of existing organizations (PATCH operation).
+ *
+ * @param data - The patch data for agent role assignments.
+ * @returns A promise containing the response.
+ */
+export const editAgentRolesOfExistingOrganizations = (
+    data: ShareOrganizationsAndRolesPatchDataInterface
+): Promise<AgentSharingResponseInterface> => {
+    if (!data?.agentId || typeof data.agentId !== "string" || data.agentId.trim() === "") {
+        return Promise.reject(new IdentityAppsApiException(
+            "editAgentRolesOfExistingOrganizations: agentId is required and must be a non-empty string.",
+            null, null, null, null, null));
+    }
+    if (!Array.isArray(data.Operations) || data.Operations.length === 0) {
+        return Promise.reject(new IdentityAppsApiException(
+            "editAgentRolesOfExistingOrganizations: Operations must be a non-empty array.",
+            null, null, null, null, null));
+    }
+
+    const body: EditRolesRequestInterface = {
+        Operations: data.Operations,
+        agentCriteria: { agentIds: [ data.agentId ] }
+    };
+    const requestConfig: RequestConfigInterface = {
+        data: body,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: `${ store.getState().config.endpoints.agentSharing }/share`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<AgentSharingResponseInterface>) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                AGENT_SHARING_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };

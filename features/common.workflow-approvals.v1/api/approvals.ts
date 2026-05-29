@@ -39,13 +39,18 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * @param limit - Maximum number of records to return.
  * @param offset - Number of records to skip for pagination
  * @param statuses - Array of approval task statuses to filter tasks by their status.
+ * @param approvalsUrl - The URL to fetch the approvals from.
+ * @param operationType - Optional operation type to filter by (e.g. ADD_USER, DELETE_USER).
+ * @param workflowRequestId - Optional workflow request ID to filter by.
  * @returns A promise containing the response.
  */
 export const fetchPendingApprovals = (
     limit: number | null,
     offset: number | null,
     statuses: string[],
-    approvalsUrl: string
+    approvalsUrl: string,
+    operationType?: string,
+    workflowRequestId?: string
 ): Promise<ApprovalTaskListItemInterface[]> => {
     let requestConfig: HttpRequestConfig = {
         headers: {
@@ -54,8 +59,10 @@ export const fetchPendingApprovals = (
         },
         method: HttpMethods.GET,
         params: {
-            limit,
-            offset
+            ...(limit !== null && { limit }),
+            ...(offset !== null && { offset }),
+            ...(operationType && { operationType }),
+            ...(workflowRequestId && { filter: `workflowRequestId sw ${workflowRequestId}` })
         },
         url: approvalsUrl
     };
@@ -74,6 +81,12 @@ export const fetchPendingApprovals = (
         }
         if (offset !== null) {
             baseParamsObj.offset = offset.toString();
+        }
+        if (operationType) {
+            baseParamsObj.operationType = operationType;
+        }
+        if (workflowRequestId) {
+            baseParamsObj.filter = `workflowRequestId sw ${workflowRequestId}`;
         }
         const baseParams: string = new URLSearchParams(baseParamsObj).toString();
 

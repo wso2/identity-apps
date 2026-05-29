@@ -17,7 +17,9 @@
  */
 
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
-import { HttpMethods } from "@wso2is/core/models";
+import { HttpMethods,
+    HttpErrorResponseDataInterface
+} from "@wso2is/core/models";
 import { AxiosError } from "axios";
 import { store } from "../../admin.core.v1/store";
 
@@ -50,7 +52,7 @@ export const abortWorkflowInstance = (workflowInstanceId: string): Promise<void>
         .then(() => {
             return Promise.resolve();
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<HttpErrorResponseDataInterface>) => {
             return Promise.reject(`Failed to abort workflow instance - ${error}`);
         });
 };

@@ -20,20 +20,13 @@
 import { ServerConfigurationsConstants } from
     "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { DropdownChild } from "@wso2is/forms";
+import { DropdownChild } from "@wso2is/forms/legacy";
 
 /**
  * Keys used in feature dictionary.
  */
 export enum UserFeatureDictionaryKeys {
-    UserCreate = "USER_CREATE",
-    UserUpdate = "USER_UPDATE",
-    UserDelete = "USER_DELETE",
-    UserRead = "USER_READ",
     UserGroups = "USER_GROUPS",
-    UserRoles = "USER_ROLES",
-    UserSharedProfiles = "USER_SHARED_PROFILES",
-    UserImpersonation = "USER_IMPERSONATION",
     UserLegacyProfile = "USER_LEGACY_PROFILE",
     UserLegacyAddUser = "USER_LEGACY_ADD_USER",
     HideReadOnlyAttributesWhenEmpty = "HIDE_READ_ONLY_ATTRIBUTES_WHEN_EMPTY",
@@ -88,6 +81,7 @@ export class UserManagementConstants {
         .set("USER_GROUPS", "users.edit.groups")
         .set("USER_ROLES", "users.edit.roles")
         .set("USER_SHARED_PROFILES", "users.updateSharedProfiles")
+        .set("USER_SHARED_ACCESS", "users.sharedAccess")
         .set("USER_IMPERSONATION", "users.user.impersonation")
         .set(UserFeatureDictionaryKeys.HideReadOnlyAttributesWhenEmpty, "profile.hideReadonlyAttributesWhenEmpty")
         .set(UserFeatureDictionaryKeys.UserLegacyProfile, "users.profile.legacy")
@@ -116,6 +110,9 @@ export class UserManagementConstants {
 
     public static readonly RESEND_CODE_REQUEST_ERROR: string = "Error occured while resending the " +
         "verification link/code.";
+
+    public static readonly USER_SHARING_ERROR: string = "Error occurred while sharing the user.";
+    public static readonly USER_UNSHARING_ERROR: string = "Error occurred while unsharing the user.";
 
     public static readonly WSO2_LOCAL_CLAIM_DIALECT: string = "http://wso2.org/claims";
     public static readonly SCIM2_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:core:2.0:User";
@@ -252,27 +249,10 @@ export enum UserAccountTypesMain {
 
 /**
  * @readonly
- * @typeParam string - Types of attributes that cannot be bulk imported.
- */
-export enum BlockedBulkUserImportAttributes {
-    PASSWORD = "password",
-    ONETIME_PASSWORD = "oneTimePassword",
-    X509CERTIFICATES = "x509Certificates",
-    GTALK = "gtalk",
-    SKYPE = "skype",
-    ROLES = "roles"
-}
-
-/**
- * @readonly
  * @typeParam string - Types of attributes that should be handled manually.
  */
 export enum SpecialMultiValuedComplexAttributes {
-    Emails = "emails",
-    PhoneNumbers = "phoneNumbers",
-    Photos = "photos",
-    Addresses = "addresses",
-    Entitlements = "entitlements"
+    Emails = "emails"
 }
 
 /**
@@ -289,8 +269,7 @@ export enum RequiredBulkUserImportAttributes {
  * @typeParam string - User add option types.
  */
 export enum UserAddOptionTypes {
-    BULK_IMPORT = "bulk-import",
-    MANUAL_INPUT = "manual-input"
+    BULK_IMPORT = "bulk-import"
 }
 
 /**
@@ -347,10 +326,7 @@ export enum AskPasswordOptionTypes {
 export enum WizardStepsFormTypes {
     USER_MODE = "UserMode",
     BASIC_DETAILS = "BasicDetails",
-    INVITE_BASIC_DETAILS = "InviteBasicDetails",
-    ROLE_LIST= "RoleList",
     GROUP_LIST= "GroupList",
-    SUMMARY = "summary",
     USER_TYPE = "UserType",
     USER_SUMMARY = "UserSummary"
 }
@@ -382,9 +358,7 @@ export enum LocaleJoiningSymbol {
  * @readonly
  */
 export enum UserSharedType {
-    OWNER = "OWNER",
-    INVITED = "INVITED",
-    SHARED = "SHARED"
+    INVITED = "INVITED"
 }
 
 /**
@@ -397,7 +371,6 @@ export enum AccountLockedReason {
     PENDING_ADMIN_FORCED_USER_PASSWORD_RESET = "PENDING_ADMIN_FORCED_USER_PASSWORD_RESET",
     PENDING_EMAIL_VERIFICATION = "PENDING_EMAIL_VERIFICATION",
     PENDING_ASK_PASSWORD = "PENDING_ASK_PASSWORD",
-    IDLE_ACCOUNT = "IDLE_ACCOUNT",
     ADMIN_INITIATED = "ADMIN_INITIATED",
     MAX_ATTEMPTS_EXCEEDED = "MAX_ATTEMPTS_EXCEEDED"
 }
@@ -408,12 +381,7 @@ export enum AccountLockedReason {
  * @readonly
  */
 export enum AccountState {
-    LOCKED = "LOCKED",
-    PENDING_AP = "PENDING_AP",
-    PENDING_SR = "PENDING_SR",
-    PENDING_LR = "PENDING_LR",
-    DISABLED = "DISABLED",
-    UNLOCKED = "UNLOCKED"
+    PENDING_AP = "PENDING_AP"
 }
 
 /**
@@ -422,9 +390,6 @@ export enum AccountState {
  * @readonly
  */
 export enum RecoveryScenario {
-    NOTIFICATION_BASED_PW_RECOVERY = "NOTIFICATION_BASED_PW_RECOVERY",
-    QUESTION_BASED_PWD_RECOVERY = "QUESTION_BASED_PWD_RECOVERY",
-    USERNAME_RECOVERY = "USERNAME_RECOVERY",
     SELF_SIGN_UP = "SELF_SIGN_UP",
     ASK_PASSWORD = "ASK_PASSWORD",
     ASK_PASSWORD_VIA_EMAIL_OTP = "ASK_PASSWORD_VIA_EMAIL_OTP",
@@ -432,14 +397,6 @@ export enum RecoveryScenario {
     ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK = "ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK",
     ADMIN_FORCED_PASSWORD_RESET_VIA_OTP = "ADMIN_FORCED_PASSWORD_RESET_VIA_OTP",
     ADMIN_FORCED_PASSOWRD_RESET_VIA_SMS_OTP = "ADMIN_FORCED_PASSWORD_RESET_VIA_SMS_OTP",
-    EMAIL_VERIFICATION_ON_UPDATE = "EMAIL_VERIFICATION_ON_UPDATE",
-    EMAIL_VERIFICATION_ON_VERIFIED_LIST_UPDATE = "EMAIL_VERIFICATION_ON_VERIFIED_LIST_UPDATE",
-    MOBILE_VERIFICATION_ON_UPDATE = "MOBILE_VERIFICATION_ON_UPDATE",
-    MOBILE_VERIFICATION_ON_VERIFIED_LIST_UPDATE = "MOBILE_VERIFICATION_ON_VERIFIED_LIST_UPDATE",
-    LITE_SIGN_UP = "LITE_SIGN_UP",
-    TENANT_ADMIN_ASK_PASSWORD = "TENANT_ADMIN_ASK_PASSWORD",
-    PASSWORD_EXPIRY = "PASSWORD_EXPIRY",
-    ADMIN_INVITE_SET_PASSWORD_OFFLINE = "ADMIN_INVITE_SET_PASSWORD_OFFLINE",
     EMAIL_VERIFICATION = "EMAIL_VERIFICATION",
     EMAIL_VERIFICATION_OTP = "EMAIL_VERIFICATION_OTP"
 }
@@ -449,7 +406,7 @@ export enum RecoveryScenario {
  *
  * @readonly
  */
-export enum RecoveryOptionTypes {
+enum RecoveryOptionTypes {
     CODE = "code",
     LINK = "link"
 }
@@ -553,7 +510,7 @@ export const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.
 export const MOBILE_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
 export const EMAIL_ADDRESSES_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES");
 export const MOBILE_NUMBERS_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS");
-export const VERIFIED_MOBILE_NUMBERS_ATTRIBUTE: string =
+const VERIFIED_MOBILE_NUMBERS_ATTRIBUTE: string =
     ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS");
-export const VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE: string =
+const VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE: string =
     ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES");

@@ -12,5 +12,14 @@
                 margin-bottom: 2rem;
             }
         }
+
+        .MuiAutocomplete-listbox {
+            .MuiAutocomplete-moreItemsAvailableMessage {
+                color: #666666;
+                font-style: italic;
+                padding: 5px 15px 5px;
+                pointer-events: none;
+            }
+        }
     }
 }

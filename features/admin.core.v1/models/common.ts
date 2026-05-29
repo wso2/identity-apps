@@ -26,12 +26,12 @@ export interface AppComponentProps {
 /**
  * Organization model interfaces.
  */
-export interface OrganizationAttributesInterface {
+interface OrganizationAttributesInterface {
     key: string;
     value: string;
 }
 
-export interface OrganizationResponseInterface {
+interface OrganizationResponseInterface {
     id: string;
     name: string;
     description: string;
@@ -47,11 +47,11 @@ export interface OrganizationResponseInterface {
     attributes: OrganizationAttributesInterface[];
 }
 
-export type OrganizationRoleInterface = RolesInterface;
+type OrganizationRoleInterface = RolesInterface;
 
-export type OrganizationRoleListItemInterface = Omit<OrganizationRoleInterface, "users" | "permissions" | "groups">;
+type OrganizationRoleListItemInterface = Omit<OrganizationRoleInterface, "users" | "permissions" | "groups">;
 
-export type OrganizationRoleListResponseInterface = {
+type OrganizationRoleListResponseInterface = {
     totalResults: number;
     itemsPerPage: number;
     nextCursor: string;
@@ -62,17 +62,17 @@ export type OrganizationRoleListResponseInterface = {
 /**
  * Application model interfaces.
  */
-export enum ApplicationAccessTypes {
+enum ApplicationAccessTypes {
     READ = "READ",
     WRITE = "WRITE"
 }
 
-export enum ApplicationInboundTypes {
+enum ApplicationInboundTypes {
     CLIENTID = "Client ID",
     ISSUER = "Issuer"
 }
 
-export interface AdvancedConfigurationsInterface {
+interface AdvancedConfigurationsInterface {
     saas?: boolean;
     discoverableByEndUsers?: boolean;
     certificate?: CertificateInterface;
@@ -84,7 +84,7 @@ export interface AdvancedConfigurationsInterface {
     additionalSpProperties?: additionalSpProperty[]
 }
 
-export interface ApplicationBasicInterface {
+interface ApplicationBasicInterface {
     access?: ApplicationAccessTypes;
     id?: string;
     name: string;
@@ -98,12 +98,12 @@ export interface ApplicationBasicInterface {
     advancedConfigurations?: AdvancedConfigurationsInterface;
 }
 
-export interface ApplicationListItemInterface extends ApplicationBasicInterface {
+interface ApplicationListItemInterface extends ApplicationBasicInterface {
     image?: string;
     self?: string;
 }
 
-export interface ApplicationListInterface {
+interface ApplicationListInterface {
     /**
      * Number of results that match the listing operation.
      */
@@ -126,7 +126,7 @@ export interface ApplicationListInterface {
     links?: LinkInterface[];
 }
 
-export interface ApplicationTemplateListItemInterface {
+interface ApplicationTemplateListItemInterface {
     id: string;
     name: string;
     description?: string;
@@ -147,24 +147,24 @@ export interface ApplicationTemplateListItemInterface {
 /**
  * Captures name and id of the user store.
  */
-export interface SimpleUserStoreListItemInterface {
+interface SimpleUserStoreListItemInterface {
     id?: string;
     name: string;
 }
 
-export enum CertificateTypeInterface {
+enum CertificateTypeInterface {
     NONE ="None",
     JWKS = "JWKS",
     PEM = "PEM"
 }
 
-export interface additionalSpProperty {
+interface additionalSpProperty {
     name: string;
     value: string;
     displayName?: string;
 }
 
-export interface CertificateInterface {
+interface CertificateInterface {
     value?: string;
     type?: CertificateTypeInterface; // TODO  Check for upload option.
 }
@@ -172,7 +172,7 @@ export interface CertificateInterface {
 /**
  * Interface to contain Role meta information
  */
-export interface RolesMetaInterface {
+interface RolesMetaInterface {
     created: string;
     location: string;
     lastModified: string;
@@ -181,7 +181,7 @@ export interface RolesMetaInterface {
 /**
  * Interface to contain groups information of the role
  */
-export interface RoleGroupsInterface {
+interface RoleGroupsInterface {
     display: string;
     value: string;
     $ref: string;
@@ -190,7 +190,7 @@ export interface RoleGroupsInterface {
 /**
  * Interface to contain Role member information
  */
-export interface RolesMemberInterface {
+interface RolesMemberInterface {
     display: string;
     value: string;
     orgId: string;
@@ -201,7 +201,7 @@ export interface RolesMemberInterface {
 /**
  * Interface to contain top level role information
  */
-export interface RolesInterface {
+interface RolesInterface {
     displayName: string;
     id: string;
     meta: RolesMetaInterface;
@@ -213,7 +213,7 @@ export interface RolesInterface {
 /**
  * Interface to contain roles listing
  */
-export interface RoleListInterface {
+interface RoleListInterface {
     totalResults?: number;
     startIndex?: number;
     itemsPerPage?: number;
@@ -299,7 +299,7 @@ export interface AsyncOperationStatusUnitListInterface {
 /**
  * Interface representing a list of operation responses with links.
  */
-export interface AsyncOperationStatusListInterface {
+interface AsyncOperationStatusListInterface {
     links: AsyncOperationStatusLinkInterface[];
     operations: AsyncOperationStatusResponse[];
 }

@@ -27,7 +27,7 @@ export interface WSFederationConfigFormValuesInterface {
 /**
  * The interface for WSFederation config form validations.
  */
-export interface WSFederationConfigFormErrorValidationsInterface {
+interface WSFederationConfigFormErrorValidationsInterface {
     enableRequestSigning?: string;
 }
 
