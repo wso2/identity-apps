@@ -1,5 +1,16 @@
 # @wso2is/admin.ask-password-flow-builder.v1
 
+## 1.1.214
+
+### Patch Changes
+
+- [#10329](https://github.com/wso2/identity-apps/pull/10329) [`3b9b7c925601820a0105f0c016bb288cfda2f5b0`](https://github.com/wso2/identity-apps/commit/3b9b7c925601820a0105f0c016bb288cfda2f5b0) Thanks [@hwupathum](https://github.com/hwupathum)! - Add preference management management UI
+
+- Updated dependencies [[`3b9b7c925601820a0105f0c016bb288cfda2f5b0`](https://github.com/wso2/identity-apps/commit/3b9b7c925601820a0105f0c016bb288cfda2f5b0)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.217
+  - @wso2is/admin.server-configurations.v1@2.38.53
+  - @wso2is/common.consents.v1@1.0.2
+
 ## 1.1.213
 
 ### Patch Changes
