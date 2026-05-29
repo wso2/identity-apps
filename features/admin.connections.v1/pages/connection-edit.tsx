@@ -732,7 +732,6 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                 });
             } else {
                 authPopup?.close();
-                // Handle case where debug session data is incomplete
                 dispatch(
                     addAlert({
                         description: t("authenticationProvider:notifications.getIDP.genericError.description"),

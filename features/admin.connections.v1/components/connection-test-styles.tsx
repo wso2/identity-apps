@@ -20,14 +20,14 @@ import Box from "@oxygen-ui/react/Box";
 import Card from "@oxygen-ui/react/Card";
 import { Theme, styled } from "@mui/material/styles";
 
-export const StyledCodeBlockContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
+export const StyledCodeBlockContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     background: theme.palette.background.paper,
     border: `1px solid ${ theme.palette.divider }`,
     borderRadius: theme.shape.borderRadius,
     overflowX: "auto"
 }));
 
-export const StyledCodeBlock = styled(Box)(({ theme }: { theme: Theme }) => ({
+export const StyledCodeBlock: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     color: theme.palette.text.primary,
     fontFamily: "monospace",
     fontSize: 13,
@@ -37,30 +37,30 @@ export const StyledCodeBlock = styled(Box)(({ theme }: { theme: Theme }) => ({
     wordBreak: "break-word"
 }));
 
-export const StyledResultCard = styled(Card)(({ theme }: { theme: Theme }) => ({
+export const StyledResultCard: typeof Card = styled(Card)(({ theme }: { theme: Theme }) => ({
     backgroundColor: theme.palette.background.paper,
     borderRadius: theme.shape.borderRadius,
     padding: theme.spacing(3)
 }));
 
-export const StyledTableWrapper = styled(Box)(({ theme }: { theme: Theme }) => ({
+export const StyledTableWrapper: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     backgroundColor: theme.palette.background.paper,
     border: `1px solid ${ theme.palette.divider }`,
     borderRadius: theme.shape.borderRadius,
     overflow: "hidden"
 }));
 
-export const StyledTableHeaderRow = styled(Box)(({ theme }: { theme: Theme }) => ({
+export const StyledTableHeaderRow: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     backgroundColor: theme.palette.action.hover,
     borderBottom: `1px solid ${ theme.palette.divider }`
 }));
 
-export const StyledTableRow = styled(Box)(({ theme }: { theme: Theme }) => ({
+export const StyledTableRow: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     backgroundColor: theme.palette.background.paper,
     borderBottom: `1px solid ${ theme.palette.divider }`
 }));
 
-export const StyledHeaderCell = styled(Box)(({ theme }: { theme: Theme }) => ({
+export const StyledHeaderCell: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     borderRight: `1px solid ${ theme.palette.divider }`,
     fontSize: 15,
     fontWeight: 600,
@@ -68,18 +68,18 @@ export const StyledHeaderCell = styled(Box)(({ theme }: { theme: Theme }) => ({
     textAlign: "left"
 }));
 
-export const StyledMonoCell = styled(Box)(({ theme }: { theme: Theme }) => ({
+export const StyledMonoCell: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     borderRight: `1px solid ${ theme.palette.divider }`,
     fontFamily: "monospace",
     fontSize: 13,
     padding: theme.spacing(1)
 }));
 
-export const StyledValueCell = styled(StyledMonoCell)(({ theme }: { theme: Theme }) => ({
+export const StyledValueCell: typeof Box = styled(StyledMonoCell)(({ theme }: { theme: Theme }) => ({
     color: theme.palette.text.secondary
 }));
 
-export const StyledDiagnosticValueBlock = styled(Box)(({ theme }: { theme: Theme }) => ({
+export const StyledDiagnosticValueBlock: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     backgroundColor: theme.palette.action.hover,
     border: `1px solid ${ theme.palette.divider }`,
     borderRadius: theme.shape.borderRadius,
@@ -92,7 +92,7 @@ export const StyledDiagnosticValueBlock = styled(Box)(({ theme }: { theme: Theme
     wordBreak: "break-word"
 }));
 
-export const StyledDiagnosticsScroller = styled(Box)(({ theme }: { theme: Theme }) => ({
+export const StyledDiagnosticsScroller: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     maxHeight: theme.spacing(65),
     overflowY: "auto",
     scrollbarColor: `${ theme.palette.grey[400] } ${ theme.palette.action.hover }`,
@@ -111,11 +111,11 @@ export const StyledDiagnosticsScroller = styled(Box)(({ theme }: { theme: Theme 
     }
 }));
 
-export const StyledDiagnosticAccordionRow = styled(Box)(({ theme }: { theme: Theme }) => ({
+export const StyledDiagnosticAccordionRow: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     borderBottom: `1px solid ${ theme.palette.divider }`
 }));
 
-export const StyledDiagnosticAccordionTitle = styled(Box)(({ theme }: { theme: Theme }) => ({
+export const StyledDiagnosticAccordionTitle: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     alignItems: "center",
     cursor: "pointer",
     display: "flex",
@@ -124,7 +124,7 @@ export const StyledDiagnosticAccordionTitle = styled(Box)(({ theme }: { theme: T
     padding: theme.spacing(1.75, 1.5)
 }));
 
-export const StyledExpandedDetailsTable = styled(Box)(({ theme }: { theme: Theme }) => ({
+export const StyledExpandedDetailsTable: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     borderCollapse: "collapse",
     width: "100%",
     "& td": {
@@ -134,14 +134,14 @@ export const StyledExpandedDetailsTable = styled(Box)(({ theme }: { theme: Theme
     }
 }));
 
-export const StyledExpandedLabelCell = styled(Box)(({ theme }: { theme: Theme }) => ({
+export const StyledExpandedLabelCell: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     color: theme.palette.text.secondary,
     fontFamily: "monospace",
     fontSize: 12,
     width: 160
 }));
 
-export const StyledExpandedValueCell = styled(Box)(({ theme }: { theme: Theme }) => ({
+export const StyledExpandedValueCell: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     color: theme.palette.text.primary,
     fontSize: 13
 }));
