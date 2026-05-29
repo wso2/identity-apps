@@ -264,8 +264,7 @@ export const FeatureCarousel = () => {
             title: userSurveyTitle
         },
         {
-            description: "Power personalization, automation, and customer engagement " +
-                "with identity-aware customer data.",
+            description: "Manage customer profiles and identity-linked customer data from a single platform.",
             featureConfig: customerDataServiceFeatureConfig,
             featureFlags: customerDataServiceFeatureConfig?.featureFlags,
             featureName: "customerDataService",
@@ -290,7 +289,7 @@ export const FeatureCarousel = () => {
                 setSelectedPreviewFeatureToShow(CUSTOMER_DATA_SERVICE_FEATURE_ID);
                 setShowPreviewFeaturesModal(true);
             },
-            title: "Your Identity Platform, Now With Customer Intelligence."
+            title: "Customer Data Services for Asgardeo"
         },
         agentFeatureConfig?.enabled && {
             description: "Extend your identity management to autonomous agents and AI systems",
