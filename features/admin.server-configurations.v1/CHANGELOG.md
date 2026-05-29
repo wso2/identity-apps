@@ -1,5 +1,14 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.38.53
+
+### Patch Changes
+
+- [#10329](https://github.com/wso2/identity-apps/pull/10329) [`3b9b7c925601820a0105f0c016bb288cfda2f5b0`](https://github.com/wso2/identity-apps/commit/3b9b7c925601820a0105f0c016bb288cfda2f5b0) Thanks [@hwupathum](https://github.com/hwupathum)! - Add preference management management UI
+
+- Updated dependencies [[`3b9b7c925601820a0105f0c016bb288cfda2f5b0`](https://github.com/wso2/identity-apps/commit/3b9b7c925601820a0105f0c016bb288cfda2f5b0)]:
+  - @wso2is/i18n@2.42.3
+
 ## 2.38.52
 
 ### Patch Changes

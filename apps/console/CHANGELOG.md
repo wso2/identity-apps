@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 4.9.5
+
+### Patch Changes
+
+- [#10329](https://github.com/wso2/identity-apps/pull/10329) [`3b9b7c925601820a0105f0c016bb288cfda2f5b0`](https://github.com/wso2/identity-apps/commit/3b9b7c925601820a0105f0c016bb288cfda2f5b0) Thanks [@hwupathum](https://github.com/hwupathum)! - Add preference management management UI
+
+- Updated dependencies [[`3b9b7c925601820a0105f0c016bb288cfda2f5b0`](https://github.com/wso2/identity-apps/commit/3b9b7c925601820a0105f0c016bb288cfda2f5b0)]:
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.214
+  - @wso2is/admin.consents.v1@1.0.2
+  - @wso2is/admin.registration-flow-builder.v1@0.10.174
+  - @wso2is/admin.server-configurations.v1@2.38.53
+  - @wso2is/i18n@2.42.3
+
 ## 4.9.4
 
 ### Patch Changes
