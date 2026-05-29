@@ -86,7 +86,7 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
                     level: AlertLevels.SUCCESS,
                     message: t("consents:policyConsents.notifications.delete.success.message")
                 }));
-                history.push(AppConstants.getPaths().get("POLICY_CONSENTS"));
+                history.replace(AppConstants.getPaths().get("POLICY_CONSENTS"));
             })
             .catch((error: IdentityAppsApiException): void => {
                 const status: number = error?.response?.status;

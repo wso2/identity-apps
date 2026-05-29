@@ -87,7 +87,7 @@ const PreferenceManagementEditPage: FunctionComponent<PreferenceManagementEditPa
                     level: AlertLevels.SUCCESS,
                     message: t("consents:preferenceManagement.notifications.delete.success.message")
                 }));
-                history.push(AppConstants.getPaths().get("PREFERENCE_MANAGEMENT"));
+                history.replace(AppConstants.getPaths().get("PREFERENCE_MANAGEMENT"));
             })
             .catch((error: IdentityAppsApiException): void => {
                 const status: number = error?.response?.status;
