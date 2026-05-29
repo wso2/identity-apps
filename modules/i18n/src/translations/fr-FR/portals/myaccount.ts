@@ -479,7 +479,7 @@ export const myAccount: MyAccountNS = {
                     },
                     success: {
                         description: "La préférence de communication a été révoquée avec succès.",
-                        message: "Consentement révoqué"
+                        message: "Préférence de communication révoquée"
                     }
                 },
                 update: {
@@ -493,7 +493,7 @@ export const myAccount: MyAccountNS = {
                     },
                     success: {
                         description: "Vos préférences de communication ont été mises à jour avec succès.",
-                        message: "Consentement mis à jour"
+                        message: "Préférence de communication mise à jour"
                     }
                 }
             },

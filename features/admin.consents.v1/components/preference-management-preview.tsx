@@ -18,6 +18,7 @@
 
 import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import Button from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import FormLabel from "@oxygen-ui/react/FormLabel";
@@ -96,15 +97,14 @@ const AttributeRow: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     marginTop: theme.spacing(0.5)
 }));
 
-interface PreferenceManagementPreviewPropsInterface {
-    componentId: string;
+interface PreferenceManagementPreviewPropsInterface extends IdentifiableComponentInterface {
     attributes?: string[];
     description: string;
     policyName?: string;
 }
 
 export const PreferenceManagementPreview: FunctionComponent<PreferenceManagementPreviewPropsInterface> = ({
-    componentId,
+    "data-componentid": componentId = "preference-management-preview",
     attributes,
     description,
     policyName

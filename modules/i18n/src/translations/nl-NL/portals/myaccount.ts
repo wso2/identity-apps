@@ -469,7 +469,7 @@ export const myAccount: MyAccountNS = {
                     },
                     "success": {
                         "description": "De communicatievoorkeur is succesvol ingetrokken.",
-                        "message": "Toestemming ingetrokken"
+                        "message": "Communicatievoorkeur ingetrokken"
                     }
                 },
                 "update": {
@@ -483,7 +483,7 @@ export const myAccount: MyAccountNS = {
                     },
                     "success": {
                         "description": "Uw communicatievoorkeuren zijn succesvol bijgewerkt.",
-                        "message": "Toestemming bijgewerkt"
+                        "message": "Communicatievoorkeur bijgewerkt"
                     }
                 }
             },

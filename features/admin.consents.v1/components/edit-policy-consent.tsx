@@ -679,7 +679,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                 sx={ { borderBottom: "1px solid", borderColor: "divider" } }
                                             >
                                                 <PolicyConsentPreview
-                                                    componentId="policy-consent-preview"
+                                                    data-componentid="policy-consent-preview"
                                                     description={ _values?.description ?? "" }
                                                     mandatory={ _values?.mandatory ?? false }
                                                     policyName={ isCreateMode ? _values?.name : consent?.name }

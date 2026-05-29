@@ -18,6 +18,7 @@
 
 import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import Button from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import FormLabel from "@oxygen-ui/react/FormLabel";
@@ -96,15 +97,14 @@ const MandatoryMarker: FunctionComponent = (): ReactElement => (
     </Box>
 );
 
-interface PolicyConsentPreviewPropsInterface {
-    componentId: string;
+interface PolicyConsentPreviewPropsInterface extends IdentifiableComponentInterface {
     description: string;
     mandatory?: boolean;
     policyName?: string;
 }
 
 export const PolicyConsentPreview: FunctionComponent<PolicyConsentPreviewPropsInterface> = ({
-    componentId,
+    "data-componentid": componentId = "policy-consent-preview",
     description,
     mandatory = false,
     policyName

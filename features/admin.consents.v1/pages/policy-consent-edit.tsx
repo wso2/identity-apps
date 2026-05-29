@@ -17,6 +17,8 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { deletePurpose, useGetPurpose } from "@wso2is/common.consents.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -84,7 +86,7 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
                     level: AlertLevels.SUCCESS,
                     message: t("consents:policyConsents.notifications.delete.success.message")
                 }));
-                handleBackButtonClick();
+                history.push(AppConstants.getPaths().get("POLICY_CONSENTS"));
             })
             .catch((error: IdentityAppsApiException): void => {
                 const status: number = error?.response?.status;

@@ -584,7 +584,7 @@ export const EditPreferenceManagement: FunctionComponent<EditPreferenceManagemen
                                                 sx={ { borderBottom: "1px solid", borderColor: "divider" } }
                                             >
                                                 <PreferenceManagementPreview
-                                                    componentId="preference-management-preview"
+                                                    data-componentid="preference-management-preview"
                                                     attributes={ (_values?.attributes ?? []).map(
                                                         (a: Claim): string => a.displayName
                                                     ) }
