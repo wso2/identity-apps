@@ -46,6 +46,7 @@ import EmailOTPIcon from "../resources/assets/images/icons/email-solid.svg";
 import { ReactComponent as EnterpriseConnectionIcon
 } from "../resources/assets/images/icons/enterprise-icon.svg";
 import { ReactComponent as GearsIcon } from "../resources/assets/images/icons/gears-icon.svg";
+import FlowExtensionIcon from "../resources/assets/images/icons/flow-extension.svg";
 import MagicLinkIcon from "../resources/assets/images/icons/magic-link-icon.svg";
 import OIDCConnectionIcon from "../resources/assets/images/icons/oidc-connection-icon.png";
 import OrganizationSSOIcon from "../resources/assets/images/icons/organization-sso-icon.svg";
@@ -99,6 +100,7 @@ export const getConnectionIcons = (): any => {
         githubAuthenticator: GithubIdPIcon,
         google: GoogleLogo,
         googleOIDCAuthenticator: GoogleLogo,
+        flowExtension: FlowExtensionIcon,
         iwaKerberos: KerberosLogo,
         jwtBasic: JWTLogo,
         magicLink: MagicLinkIcon,

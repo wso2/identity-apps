@@ -67,6 +67,7 @@ import {
     getConnectedApps,
     getConnectedAppsOfAuthenticator
 } from "../api/connections";
+import deleteFlowExtension from "@wso2is/admin.flow-builder-core.v1/api/delete-flow-extension";
 import { getConnectionIcons } from "../configs/ui";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import {
@@ -212,6 +213,13 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
                 break;
 
+            case ConnectionTypes.FLOW_EXTENSION:
+                history.push(
+                    AppConstants.getPaths().get("FLOW_EXTENSION_EDIT").replace(":id", id)
+                );
+
+                break;
+
             case AuthenticatorCategories.LOCAL:
                 if (isCustom) {
                     history.push(AppConstants.getPaths().get("AUTH_EDIT").replace(":id", id));
@@ -249,6 +257,16 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
         // If the connection is an Identity Verification Provider, then skip checking for connected apps.
         if (connectionType === ConnectionTypes.IDVP) {
+            setDeletingIDP(authenticators.find(
+                (idp: ConnectionInterface | AuthenticatorInterface) => idp.id === idpId)
+            );
+            setShowDeleteConfirmationModal(true);
+
+            return;
+        }
+
+        // Flow extension are managed via the flow management API; skip connected apps check.
+        if (connectionType === ConnectionTypes.FLOW_EXTENSION) {
             setDeletingIDP(authenticators.find(
                 (idp: ConnectionInterface | AuthenticatorInterface) => idp.id === idpId)
             );
@@ -379,6 +397,30 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
 
         setIsDeletionLoading(true);
 
+        if (connectionType === ConnectionTypes.FLOW_EXTENSION) {
+            deleteFlowExtension(id)
+                .then(() => {
+                    dispatch(addAlert({
+                        description: t("authenticationProvider:" +
+                            "notifications.deleteConnection.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("authenticationProvider:notifications." +
+                            "deleteConnection.success.message")
+                    }));
+                })
+                .catch((error: AxiosError) => {
+                    handleConnectionDeleteError(error);
+                })
+                .finally(() => {
+                    setIsDeletionLoading(false);
+                    setShowDeleteConfirmationModal(false);
+                    setDeletingIDP(undefined);
+                    onConnectionUpdate();
+                });
+
+            return;
+        }
+
         let deleteAuthenticator: (id: string) => Promise<AxiosResponse>;
 
         if(connectionType === ConnectionTypes.IDVP) {
@@ -493,6 +535,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
             return hasIdVPDeletePermission;
         }
 
+        if (authenticator.type === ConnectionTypes.FLOW_EXTENSION) {
+            return hasConnectionDeletePermission;
+        }
+
         if (!hasConnectionDeletePermission) {
             return false;
         }
@@ -521,6 +567,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
                 : getConnectionIcons().default;
         }
 
+        if (connection.type === ConnectionTypes.FLOW_EXTENSION) {
+            return connection?.image || AuthenticatorMeta.getFlowExtensionIcon();
+        }
+
         if ((connection?.type === AuthenticatorTypes.FEDERATED || isIdP) && !isOrganizationSSOIDP) {
             return connection?.image
                 ? ConnectionsManagementUtils.resolveConnectionResourcePath(connectionResourcesUrl, connection.image)
@@ -541,6 +591,10 @@ export const AuthenticatorGrid: FunctionComponent<AuthenticatorGridPropsInterfac
     };
 
     const resolveAuthenticatorDescription = (authenticator: ConnectionInterface, isIdP: boolean): string => {
+        if (authenticator.type === ConnectionTypes.FLOW_EXTENSION) {
+            return authenticator.description || "";
+        }
+
         if (ConnectionsManagementUtils.IsCustomLocalAuthenticator(authenticator)) {
             return authenticator.description;
         }

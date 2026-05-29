@@ -117,6 +117,7 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
         onDelete,
         onEdit,
         isResourceComingSoon,
+        ribbon,
         resourceCategory,
         resourceDescription,
         resourceDocumentationLink,
@@ -152,7 +153,7 @@ export const ResourceGridCard: FunctionComponent<PropsWithChildren<ResourceGridC
     return (
         <InfoCard
             className={ classes }
-            ribbon={ isResourceComingSoon && comingSoonRibbonLabel }
+            ribbon={ ribbon ?? (isResourceComingSoon && comingSoonRibbonLabel) }
             header={ resourceName }
             subHeader={ resourceCategory }
             description={ resourceDescription }

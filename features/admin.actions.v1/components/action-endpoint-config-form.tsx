@@ -55,6 +55,12 @@ interface ActionEndpointConfigFormInterface extends IdentifiableComponentInterfa
      */
     showHeadersAndParams?: boolean;
     /**
+     * Specifies whether the allowed parameters field should be shown within the
+     * headers-and-parameters section. Defaults to true. Set to false for action types
+     * (e.g. Flow Extension) where query parameter forwarding is not supported.
+     */
+    showAllowedParameters?: boolean;
+    /**
      * Specifies whether the form is read-only.
      */
     isReadOnly: boolean;
@@ -80,6 +86,7 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
     isReadOnly,
     showHeadersAndParams,
     authenticationTypes = ActionsConstants.AUTH_TYPES,
+    showAllowedParameters = true,
     onAuthenticationTypeChange,
     ["data-componentid"]: _componentId = "action-endpoint-config-form"
 }: ActionEndpointConfigFormInterface): ReactElement => {
@@ -921,22 +928,24 @@ const ActionEndpointConfigForm: FunctionComponent<ActionEndpointConfigFormInterf
                 maxLength={ 100 }
                 minLength={ 0 }
             />
-            <FinalFormField
-                key="allowedParameters"
-                name="allowedParameters"
-                className="allowed-headers-and-params"
-                width={ 16 }
-                FormControlProps={ {
-                    margin: "dense"
-                } }
-                ariaLabel="allowedParameters"
-                required={ false }
-                data-componentid={ `${_componentId}-action-allowed-parameters` }
-                type="text"
-                component={ allowedParametersSection }
-                maxLength={ 100 }
-                minLength={ 0 }
-            />
+            { showAllowedParameters && (
+                <FinalFormField
+                    key="allowedParameters"
+                    name="allowedParameters"
+                    className="allowed-headers-and-params"
+                    width={ 16 }
+                    FormControlProps={ {
+                        margin: "dense"
+                    } }
+                    ariaLabel="allowedParameters"
+                    required={ false }
+                    data-componentid={ `${_componentId}-action-allowed-parameters` }
+                    type="text"
+                    component={ allowedParametersSection }
+                    maxLength={ 100 }
+                    minLength={ 0 }
+                />
+            ) }
         </>
     );
 

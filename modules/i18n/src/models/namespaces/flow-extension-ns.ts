@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,11 +17,138 @@
  */
 
 export interface flowExtensionNS {
-    properties: {
-        description: string;
-        connectionLabel: string;
-        connectionPlaceholder: string;
-        noConnectionsWarning: string;
-        noConnectionsWarningWithSupport: string;
+    createWizard: {
+        title: string;
+        subTitle: string;
+        steps: {
+            generalSettings: {
+                title: string;
+                name: {
+                    label: string;
+                    placeholder: string;
+                    hint: string;
+                    validations: {
+                        duplicate: string;
+                        invalid: string;
+                    };
+                };
+                description: {
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        maxLength: string;
+                    };
+                };
+            };
+            endpointConfig: {
+                title: string;
+                endpoint: {
+                    label: string;
+                    placeholder: string;
+                    hint: string;
+                    validations: {
+                        empty: string;
+                        general: string;
+                    };
+                };
+                authenticationType: {
+                    title: string;
+                    label: string;
+                    placeholder: string;
+                    hint: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+                authProperties: {
+                    username: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            required: string;
+                        };
+                    };
+                    password: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            required: string;
+                        };
+                    };
+                    accessToken: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            required: string;
+                        };
+                    };
+                    header: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            required: string;
+                            invalid: string;
+                        };
+                    };
+                    value: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            required: string;
+                        };
+                    };
+                };
+                certificate: {
+                    title: string;
+                    hint: string;
+                };
+            };
+            accessConfig: {
+                title: string;
+                expose: {
+                    heading: string;
+                    hint: string;
+                    add: string;
+                };
+                encrypted: string;
+                operations: {
+                    heading: string;
+                    hint: string;
+                    addPath: string;
+                    addOperation: string;
+                    types: {
+                        add: {
+                            heading: string;
+                            description: string;
+                        };
+                        replace: {
+                            heading: string;
+                            description: string;
+                        };
+                        remove: {
+                            heading: string;
+                            description: string;
+                        };
+                    };
+                };
+                encryption: {
+                    heading: string;
+                    hint: string;
+                };
+            };
+        };
+    };
+    notifications: {
+        createSuccess: {
+            description: string;
+            message: string;
+        };
+        createError: {
+            message: string;
+        };
+        createGenericError: {
+            description: string;
+            message: string;
+        };
     };
 }

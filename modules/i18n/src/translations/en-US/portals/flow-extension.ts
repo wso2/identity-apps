@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,11 +19,145 @@
 import { flowExtensionNS } from "../../../models";
 
 export const flowExtension: flowExtensionNS = {
-    properties: {
-        connectionLabel: "Connection",
-        connectionPlaceholder: "Select a connection",
-        description: "Select an flow extension to link with this flow step.",
-        noConnectionsWarning: "No active flow extensions available. You can create a flow extension connection using the {{productName}} APIs.",
-        noConnectionsWarningWithSupport: "No active flow extensions available. You can create a flow extension connection using the {{productName}} APIs. Please contact <1>{{productName}} support</1> to get started."
+    createWizard: {
+        steps: {
+            accessConfig: {
+                encrypted: "Encrypted",
+                encryption: {
+                    heading: "Encryption Certificate",
+                    hint: "Provide a Base64-encoded PEM certificate used to encrypt sensitive " +
+                        "data before sending it to the extension endpoint."
+                },
+                expose: {
+                    add: "Add Path",
+                    heading: "Expose Paths",
+                    hint: "Define the paths that should be exposed from the authentication " +
+                        "flow to the extension endpoint."
+                },
+                operations: {
+                    addOperation: "Add Operation",
+                    addPath: "Add Path",
+                    heading: "Allowed Operations",
+                    hint: "Define the operations that the extension endpoint is allowed to " +
+                        "perform on the authentication flow.",
+                    types: {
+                        add: {
+                            description: "Paths the extension can add new values to.",
+                            heading: "ADD"
+                        },
+                        remove: {
+                            description: "Paths the extension can remove values from.",
+                            heading: "REMOVE"
+                        },
+                        replace: {
+                            description: "Paths the extension can replace existing values in.",
+                            heading: "REPLACE"
+                        }
+                    }
+                },
+                title: "Access Configuration"
+            },
+            endpointConfig: {
+                authProperties: {
+                    accessToken: {
+                        label: "Access Token",
+                        placeholder: "Access Token",
+                        validations: {
+                            required: "Access token is required."
+                        }
+                    },
+                    header: {
+                        label: "Header",
+                        placeholder: "Header",
+                        validations: {
+                            invalid: "Header must be a valid HTTP header name.",
+                            required: "Header is required."
+                        }
+                    },
+                    password: {
+                        label: "Password",
+                        placeholder: "Password",
+                        validations: {
+                            required: "Password is required."
+                        }
+                    },
+                    username: {
+                        label: "Username",
+                        placeholder: "Username",
+                        validations: {
+                            required: "Username is required."
+                        }
+                    },
+                    value: {
+                        label: "Value",
+                        placeholder: "Value",
+                        validations: {
+                            required: "Value is required."
+                        }
+                    }
+                },
+                authenticationType: {
+                    hint: "Once added, these secrets will not be displayed. " +
+                        "You will only be able to reset them.",
+                    label: "Authentication Scheme",
+                    placeholder: "Select Authentication Type",
+                    title: "Endpoint Authentication",
+                    validations: {
+                        required: "Authentication type is required."
+                    }
+                },
+                certificate: {
+                    hint: "Upload or paste the external service's PEM certificate. " +
+                        "This is used to encrypt sensitive data before sending it to the extension endpoint.",
+                    title: "Service Certificate"
+                },
+                endpoint: {
+                    hint: "The URL of the external endpoint that this extension will call.",
+                    label: "Endpoint URL",
+                    placeholder: "https://extension.example.com/handle",
+                    validations: {
+                        empty: "Endpoint URL is required.",
+                        general: "Please enter a valid URL."
+                    }
+                },
+                title: "Endpoint Configuration"
+            },
+            generalSettings: {
+                description: {
+                    label: "Description",
+                    placeholder: "A brief description of the flow extension.",
+                    validations: {
+                        maxLength: "Description must not exceed 255 characters."
+                    }
+                },
+                name: {
+                    hint: "A unique name for this flow extension. " +
+                        "Must be alphanumeric and can include spaces, hyphens, and underscores.",
+                    label: "Name",
+                    placeholder: "My Flow Extension",
+                    validations: {
+                        duplicate: "An action with this name already exists. Please choose a different name.",
+                        invalid: "Name must start with an alphanumeric character and can only " +
+                            "contain alphanumeric characters, spaces, hyphens, and underscores."
+                    }
+                },
+                title: "General Settings"
+            }
+        },
+        subTitle: "Create a new Flow Extension to customize the authentication flow.",
+        title: "Create Flow Extension"
+    },
+    notifications: {
+        createError: {
+            message: "Create error"
+        },
+        createGenericError: {
+            description: "An error occurred while creating the flow extension.",
+            message: "Something went wrong"
+        },
+        createSuccess: {
+            description: "Successfully created the flow extension.",
+            message: "Create successful"
+        }
     }
 };

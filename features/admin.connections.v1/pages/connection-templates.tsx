@@ -29,11 +29,13 @@ import { RequestErrorInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import {
     useGetIdVPTemplateList
 } from "@wso2is/admin.identity-verification-providers.v1/api/use-get-idvp-template-list";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FeatureFlagsInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     DocumentationLink,
     EmptyPlaceholder,
@@ -95,6 +97,8 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
     const idVPFeatureConfig: FeatureAccessConfigInterface = UIConfig?.features?.identityVerificationProviders;
     const isIdVPFeatureEnabled: boolean = idVPFeatureConfig?.enabled;
     const hasIdVPCreatePermissions: boolean = useRequiredScopes(idVPFeatureConfig?.scopes?.create);
+    const identityProvidersFeatureFlags: FeatureFlagsInterface[] = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.identityProviders?.featureFlags);
 
     // External connection resources URL from the UI config.
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
@@ -423,6 +427,20 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                     "authenticationProviderTemplate.disabledHint.apple");
                             }
 
+                            const templateFeatureFlagKey: string = template.id === CommonAuthenticatorConstants
+                                .CONNECTION_TEMPLATE_IDS.FLOW_EXTENSION
+                                ? FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CONNECTIONS_FLOW_EXTENSION
+                                : null;
+                            const templateRibbon: ReactNode = templateFeatureFlagKey && !template.comingSoon
+                                ? (
+                                    <FeatureFlagLabel
+                                        featureFlags={ identityProvidersFeatureFlags }
+                                        featureKey={ templateFeatureFlagKey }
+                                        type="ribbon"
+                                    />
+                                )
+                                : undefined;
+
                             return (
                                 <ResourceGrid.Card
                                     key={ templateIndex }
@@ -433,6 +451,7 @@ const ConnectionTemplatesPage: FC<ConnectionTemplatePagePropsInterface> = (
                                     disabled={ isTemplateDisabled }
                                     disabledHint={ disabledHint }
                                     comingSoonRibbonLabel={ t(FeatureStatusLabel.COMING_SOON) }
+                                    ribbon={ templateRibbon }
                                     resourceDescription={
                                         template?.description
                                             ?.replaceAll("{{productName}}", productName)

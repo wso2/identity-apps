@@ -255,6 +255,10 @@ export interface ActionBasicResponseInterface extends ActionBaseResponseInterfac
      * Links of the Action.
      */
     links: LinkInterface[];
+    /**
+     * Optional icon URL for the Action (e.g., Flow Extension).
+     */
+    iconUrl?: string;
 }
 
 /**
@@ -615,4 +619,28 @@ export interface ActionTypeCardInterface {
      * Disabled status of the Action type.
      */
     disabled?: boolean
+}
+
+/**
+ * Expose entry in access config.
+ * Also used for modify entries (same structure: path + optional encryption flag).
+ */
+export interface ContextPathInterface {
+    path: string;
+    encrypted: boolean;
+}
+
+/**
+ * Access config for Flow Extension actions.
+ */
+export interface AccessConfigInterface {
+    expose: ContextPathInterface[];
+    modify: ContextPathInterface[];
+}
+
+/**
+ * Encryption config for Flow Extension actions.
+ */
+export interface EncryptionInterface {
+    certificate?: string;
 }
