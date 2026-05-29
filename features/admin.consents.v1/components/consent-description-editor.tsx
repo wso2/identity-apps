@@ -404,16 +404,16 @@ const ConsentEditorToolbar: FunctionComponent<ConsentEditorToolbarPropsInterface
      */
     const policyLinkTooltip: () => string = (): string => {
         if (!policyUrl) {
-            return t("consents:wizard.create.form.description.insertPolicyLinkNoPolicyUrl");
+            return t("consents:policyConsents.wizard.create.form.description.insertPolicyLinkNoPolicyUrl");
         }
         if (!isValidPolicyUrl) {
-            return t("consents:wizard.create.form.description.insertPolicyLinkInvalidUrl");
+            return t("consents:policyConsents.wizard.create.form.description.insertPolicyLinkInvalidUrl");
         }
         if (!hasSelection) {
-            return t("consents:wizard.create.form.description.insertPolicyLinkNoSelection");
+            return t("consents:policyConsents.wizard.create.form.description.insertPolicyLinkNoSelection");
         }
 
-        return t("consents:wizard.create.form.description.insertPolicyLinkTooltip");
+        return t("consents:policyConsents.wizard.create.form.description.insertPolicyLinkTooltip");
     };
 
     return (
@@ -480,10 +480,10 @@ const ConsentEditorToolbar: FunctionComponent<ConsentEditorToolbarPropsInterface
                                     type="button"
                                     disabled={ disabled || !hasSelection || !isValidPolicyUrl }
                                     onClick={ handleInsertPolicyLink }
-                                    aria-label={ t("consents:wizard.create.form.description.insertPolicyLink") }
+                                    aria-label={ t("consents:policyConsents.wizard.create.form.description.insertPolicyLink") }
                                 >
                                     <OxygenLinkIcon />
-                                    { t("consents:wizard.create.form.description.insertPolicyLinkShort") }
+                                    { t("consents:policyConsents.wizard.create.form.description.insertPolicyLinkShort") }
                                 </ToolbarPolicyLinkButton>
                             </span>
                         </Tooltip>
@@ -569,6 +569,10 @@ interface ConsentDescriptionEditorProps extends IdentifiableComponentInterface {
      * Called when the admin links or clears an i18n key via the translation configuration card.
      */
     onI18nKeyChange?: (key: string | null) => void;
+    /**
+     * Controls which i18n hint text to show below the editor. Defaults to "policy".
+     */
+    variant?: "policy" | "preference";
 }
 
 /**
@@ -584,15 +588,44 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
     disabled = false,
     hasError = false,
     i18nKey,
-    onI18nKeyChange
+    onI18nKeyChange,
+    variant = "policy"
 }: ConsentDescriptionEditorProps): ReactElement => {
     const { t } = useTranslation();
     const [ isI18nCardOpen, setIsI18nCardOpen ] = useState<boolean>(false);
     const i18nButtonRef: RefObject<HTMLButtonElement> = useRef<HTMLButtonElement>(null);
 
     const exampleLinkText: string =
-        policyName || policyUrl || t("consents:form.name.placeholder");
+        policyName || policyUrl || t("consents:policyConsents.form.name.placeholder");
     const isValidPolicyUrl: boolean = !!policyUrl && URLUtils.isHttpsOrHttpUrl(policyUrl);
+
+    const preferencePlaceholderI18nKey: string = "consents:preferenceManagement.preview.exampleDescription";
+    const policyPlaceholderI18nKey: string = "consents:policyConsents.wizard.create.preview.exampleDescription";
+
+    const placeholderAriaText: string = variant === "preference"
+        ? t(preferencePlaceholderI18nKey, { consentName: policyName }).replace(/<[^>]*>/g, "")
+        : t(policyPlaceholderI18nKey, { policyName: exampleLinkText }).replace(/<[^>]*>/g, "");
+
+    const placeholderContent: ReactElement = variant === "preference" ? (
+        <EditorPlaceholder>
+            { t(preferencePlaceholderI18nKey, { consentName: policyName }).replace(/<[^>]*>/g, "") }
+        </EditorPlaceholder>
+    ) : (
+        <EditorPlaceholder>
+            <Trans
+                i18nKey={ policyPlaceholderI18nKey }
+                values={ { policyName: exampleLinkText } }
+                components={ [
+                    <a
+                        href={ isValidPolicyUrl ? policyUrl : undefined }
+                        className="rich-text-link"
+                        target={ isValidPolicyUrl ? "_blank" : undefined }
+                        rel={ isValidPolicyUrl ? "noopener noreferrer" : undefined }
+                    />
+                ] }
+            />
+        </EditorPlaceholder>
+    );
 
     return (
         <EditorContainer data-componentid={ componentId } className="mt-2 mb-1">
@@ -608,26 +641,8 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
                     <RichTextPlugin
                         contentEditable={ (
                             <EditorContentEditable
-                                aria-placeholder={ t(
-                                    "consents:wizard.create.preview.exampleDescription",
-                                    { policyName: exampleLinkText }
-                                ).replace(/<[^>]*>/g, "") }
-                                placeholder={ i18nKey ? <></> : (
-                                    <EditorPlaceholder>
-                                        <Trans
-                                            i18nKey="consents:wizard.create.preview.exampleDescription"
-                                            values={ { policyName: exampleLinkText } }
-                                            components={ [
-                                                <a
-                                                    href={ isValidPolicyUrl ? policyUrl : undefined }
-                                                    className="rich-text-link"
-                                                    target={ isValidPolicyUrl ? "_blank" : undefined }
-                                                    rel={ isValidPolicyUrl ? "noopener noreferrer" : undefined }
-                                                />
-                                            ] }
-                                        />
-                                    </EditorPlaceholder>
-                                ) }
+                                aria-placeholder={ placeholderAriaText }
+                                placeholder={ i18nKey ? <></> : placeholderContent }
                             />
                         ) }
                         ErrorBoundary={ LexicalErrorBoundary }
@@ -644,25 +659,29 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
                             <PlaceholderComponent value={ `{{${i18nKey}}}` } />
                         </I18nKeyOverlay>
                     ) }
-                    <Tooltip
-                        title={ t("consents:wizard.create.form.description.configureTranslation") }
-                        placement="top"
-                        arrow
-                    >
-                        <I18nIconButton
-                            ref={ i18nButtonRef }
-                            size="small"
-                            disabled={ disabled }
-                            onClick={ () => setIsI18nCardOpen(!isI18nCardOpen) }
-                            aria-label={ t("consents:wizard.create.form.description.configureTranslation") }
-                            aria-pressed={ isI18nCardOpen }
+                    { variant !== "preference" && (
+                        <Tooltip
+                            title={ t("consents:policyConsents.wizard.create.form.description.configureTranslation") }
+                            placement="top"
+                            arrow
                         >
-                            <LanguageIcon size={ 13 } />
-                        </I18nIconButton>
-                    </Tooltip>
+                            <I18nIconButton
+                                ref={ i18nButtonRef }
+                                size="small"
+                                disabled={ disabled }
+                                onClick={ () => setIsI18nCardOpen(!isI18nCardOpen) }
+                                aria-label={
+                                    t("consents:policyConsents.wizard.create.form.description.configureTranslation")
+                                }
+                                aria-pressed={ isI18nCardOpen }
+                            >
+                                <LanguageIcon size={ 13 } />
+                            </I18nIconButton>
+                        </Tooltip>
+                    ) }
                 </EditorWrapperBox>
             </LexicalComposer>
-            { isI18nCardOpen && (
+            { variant !== "preference" && isI18nCardOpen && (
                 <ConsentI18nConfigurationCard
                     open={ isI18nCardOpen }
                     anchorEl={ i18nButtonRef.current }
@@ -678,7 +697,10 @@ export const ConsentDescriptionEditor: FunctionComponent<ConsentDescriptionEdito
                 />
             ) }
             <Hint>
-                { t("consents:wizard.create.form.description.labelRoleHint") }
+                { t(variant === "preference"
+                    ? "consents:preferenceManagement.form.description.labelRoleHint"
+                    : "consents:policyConsents.wizard.create.form.description.labelRoleHint")
+                }
             </Hint>
         </EditorContainer>
     );

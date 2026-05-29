@@ -121,6 +121,8 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             createSecretType: "",
             customAuthenticators: "",
             dcrConfiguration: "",
+            debug: "",
+            debugResult: "",
             deleteSecret: "",
             deleteSecretType: "",
             deploymentUnits: "",

@@ -151,6 +151,7 @@ export interface CreateElementRequestInterface {
  * Inline element to create and bind in a single request.
  */
 export interface NewElementBindingInterface {
+    description?: string;
     displayName?: string;
     mandatory?: boolean;
     name: string;
@@ -200,6 +201,7 @@ export interface SetLatestVersionRequestInterface {
 export interface ConsentInterface {
     description: string;
     displayName: string;
+    elements: PurposeElementDTOInterface[];
     id: string;
     mandatory?: boolean;
     name: string;

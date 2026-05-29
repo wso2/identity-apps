@@ -177,6 +177,7 @@ export const common: CommonNS = {
     completed: "பூரணப்படுத்தப்பட்டவை",
     configure: "கட்டமை",
     confirm: "உறுதிப்படுத்தவும்",
+    consents: "சம்மதங்கள்",
     contains: "கொண்டுள்ளது",
     continue: "தொடர்",
     copied: "நகலெடுக்கப்பட்டது!",

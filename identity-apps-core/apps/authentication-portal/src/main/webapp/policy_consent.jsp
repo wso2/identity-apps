@@ -307,12 +307,12 @@
                             <input type="button" class="ui primary fluid large button" id="approve"
                                 name="approve"
                                 onclick="javascript: approved(); return false;"
-                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.button.confirm")%>"/>
+                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>"/>
                         </div>
                         <div class="mt-3 align-center">
                             <input type="hidden" name="consent" id="consent" value="deny"/>
                             <input class="ui fluid large button secondary" type="reset"
-                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "policy.consent.button.decline")%>"
+                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "cancel")%>"
                                 onclick="javascript: deny(); return false;"/>
                         </div>
                     </div>

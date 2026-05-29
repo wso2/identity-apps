@@ -20,6 +20,7 @@ import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-
 import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -40,10 +41,11 @@ import {
     DocumentationLink,
     LabelWithPopup,
     Popup,
+    SecondaryButton,
     TabPageLayout,
     useDocumentation
 } from "@wso2is/react-components";
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import get from "lodash-es/get";
 import orderBy from "lodash-es/orderBy";
 import React, { Fragment, FunctionComponent, ReactElement, ReactNode, useEffect, useRef, useState } from "react";
@@ -51,8 +53,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { Label } from "semantic-ui-react";
+import { Icon, Label } from "semantic-ui-react";
 import { getLocalAuthenticator, getMultiFactorAuthenticatorDetails } from "../api/authenticators";
+import {
+    ConnectionTestSessionResponseInterface,
+    resolveConnectionTestErrorMessage,
+    startConnectionTestSession
+} from "../api/connection-test-api";
 import { getConnectionDetails, getConnectionMetaData, getConnectionTemplates } from "../api/connections";
 import { EditConnection } from "../components/edit/connection-edit";
 import { EditMultiFactorAuthenticator } from "../components/edit/edit-multi-factor-authenticator";
@@ -92,6 +99,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
 
     const { t } = useTranslation();
     const { UIConfig } = useUIConfig();
+    const { resourceEndpoints } = useResourceEndpoints();
     const setConnectionTemplates: (templates: Record<string, any>[]) => void = useSetConnectionTemplates();
 
     const idpDescElement: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
@@ -119,6 +127,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
     const [ isConnectorMetaDataFetchRequestLoading, setConnectorMetaDataFetchRequestLoading ] = useState<boolean>(
         undefined
     );
+    const [ isTestingConnection, setIsTestingConnection ] = useState<boolean>(false);
 
     const isReadOnly: boolean = !useRequiredScopes(featureConfig?.identityProviders?.scopes?.update);
     const hasApplicationTemplateViewPermissions: boolean = useRequiredScopes(applicationsFeatureConfig?.scopes?.read);
@@ -686,6 +695,66 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         );
     };
 
+    /**
+     * Handles the test connection button click event.
+     * Starts a debug session and redirects to the test page with the debug data.
+     */
+    const handleTestConnection = async (): Promise<void> => {
+        if (!connector?.id) {
+            dispatch(
+                addAlert({
+                    description: t("authenticationProvider:notifications.getIDP.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("authenticationProvider:notifications.getIDP.error.message")
+                })
+            );
+
+            return;
+        }
+
+        setIsTestingConnection(true);
+        const authPopup: Window | null = window.open("", "_blank");
+
+        try {
+            const response: AxiosResponse<ConnectionTestSessionResponseInterface> =
+                await startConnectionTestSession(resourceEndpoints, connector.id);
+
+            const authorizationUrl: string | undefined = response.data?.metadata?.authorizationUrl;
+            const debugId: string | undefined = response.data?.debugId;
+
+            if (debugId && authorizationUrl) {
+                authPopup?.location.assign(authorizationUrl);
+                history.push({
+                    pathname: AppConstants.getPaths().get("IDP_TEST").replace(":id", connector.id),
+                    state: {
+                        debugId
+                    }
+                });
+            } else {
+                authPopup?.close();
+                dispatch(
+                    addAlert({
+                        description: t("authenticationProvider:notifications.getIDP.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("authenticationProvider:notifications.getIDP.error.message")
+                    })
+                );
+            }
+        } catch (error: unknown) {
+            authPopup?.close();
+            dispatch(
+                addAlert({
+                    description: resolveConnectionTestErrorMessage(error)
+                        ?? t("authenticationProvider:notifications.getIDP.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("authenticationProvider:notifications.getIDP.genericError.message")
+                })
+            );
+        } finally {
+            setIsTestingConnection(false);
+        }
+    };
+
     return (
         <ExtensionTemplatesProvider
             shouldFetch={ hasApplicationTemplateViewPermissions }
@@ -700,6 +769,17 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                     imageType: "square"
                 } }
                 title={ resolveConnectorName(connector) }
+                action={ ConnectionsManagementUtils.isConnectorIdentityProvider(connector) ? (
+                    <SecondaryButton
+                        data-componentid="idp-test-connection-button"
+                        onClick={ handleTestConnection }
+                        loading={ isTestingConnection }
+                        disabled={ isTestingConnection }
+                    >
+                        <Icon name="flask"/>
+                        { t("authenticationProvider:connectionTest.button") }
+                    </SecondaryButton>
+                ) : null }
                 contentTopMargin={ true }
                 description={ resolveConnectorDescription(connector) }
                 image={ resolveConnectorImage(connector) }

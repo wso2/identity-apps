@@ -16,9 +16,4 @@
  * under the License.
  */
 
-/**
- * Represents a policy reference stored in the flow API payload.
- */
-export interface PolicyConfigItemInterface {
-    purposeId: string;
-}
+export { PreferenceManagement } from "./preference-management";

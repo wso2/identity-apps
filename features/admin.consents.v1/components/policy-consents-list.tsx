@@ -210,14 +210,14 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
                                 data-componentid={ `${componentId}-empty-search-placeholder-clear-button` }
                                 onClick={ onSearchQueryClear }
                             >
-                                { t("consents:list.emptySearchPlaceholder.action") }
+                                { t("consents:policyConsents.list.emptySearchPlaceholder.action") }
                             </LinkButton>
                         ) }
                         image={ getEmptyPlaceholderIllustrations().emptySearch }
                         imageSize="tiny"
-                        title={ t("consents:list.emptySearchPlaceholder.title") }
+                        title={ t("consents:policyConsents.list.emptySearchPlaceholder.title") }
                         subtitle={ [
-                            t("consents:list.emptySearchPlaceholder.subtitle")
+                            t("consents:policyConsents.list.emptySearchPlaceholder.subtitle")
                         ] }
                         data-componentid={ `${componentId}-empty-search-placeholder` }
                     />
@@ -233,13 +233,13 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
                             onClick={ onAddConsentClick }
                         >
                             <PlusIcon />
-                            { t("consents:list.emptyPlaceholder.addPolicy") }
+                            { t("consents:policyConsents.list.emptyPlaceholder.addPolicy") }
                         </PrimaryButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     subtitle={ [
-                        t("consents:list.emptyPlaceholder.subtitle")
+                        t("consents:policyConsents.list.emptyPlaceholder.subtitle")
                     ] }
                     data-componentid={ `${componentId}-empty-placeholder` }
                 />

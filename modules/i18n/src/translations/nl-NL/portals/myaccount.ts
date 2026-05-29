@@ -433,6 +433,63 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        "preferenceManagement": {
+            "consentedOnLabel": "Geaccepteerd op",
+            "dangerZones": {
+                "revoke": {
+                    "actionTitle": "Intrekken",
+                    "header": "Communicatievoorkeur intrekken",
+                    "subheader": "Deze actie verwijdert uw voorkeur voor deze communicatie."
+                }
+            },
+            "elementsHeading": "Beheer uw communicatievoorkeuren hieronder. Schakel de attributen uit die u wilt intrekken en druk op de knop bijwerken om de wijzigingen op te slaan of druk op de knop intrekken om de voorkeur voor alle attributen te verwijderen.",
+            "notifications": {
+                "fetch": {
+                    "error": {
+                        "description": "Er is een fout opgetreden bij het ophalen van uw communicatievoorkeuren.",
+                        "message": "Ophalen mislukt"
+                    },
+                    "genericError": {
+                        "description": "Er is een fout opgetreden bij het ophalen van uw communicatievoorkeuren.",
+                        "message": "Ophalen mislukt"
+                    },
+                    "success": {
+                        "description": "Uw communicatievoorkeuren zijn succesvol opgehaald.",
+                        "message": "Ophalen geslaagd"
+                    }
+                },
+                "revoke": {
+                    "error": {
+                        "description": "Er is een fout opgetreden bij het intrekken van de communicatievoorkeur.",
+                        "message": "Intrekken mislukt"
+                    },
+                    "genericError": {
+                        "description": "Er is een fout opgetreden bij het intrekken van de communicatievoorkeur.",
+                        "message": "Intrekken mislukt"
+                    },
+                    "success": {
+                        "description": "De communicatievoorkeur is succesvol ingetrokken.",
+                        "message": "Communicatievoorkeur ingetrokken"
+                    }
+                },
+                "update": {
+                    "error": {
+                        "description": "Er is een fout opgetreden bij het bijwerken van de communicatievoorkeur.",
+                        "message": "Bijwerken mislukt"
+                    },
+                    "genericError": {
+                        "description": "Er is een fout opgetreden bij het bijwerken van de communicatievoorkeur.",
+                        "message": "Bijwerken mislukt"
+                    },
+                    "success": {
+                        "description": "Uw communicatievoorkeuren zijn succesvol bijgewerkt.",
+                        "message": "Communicatievoorkeur bijgewerkt"
+                    }
+                }
+            },
+            "policyUrlLabel": "Beleid bekijken",
+            "versionLabel": "Versie {{version}}"
+        },
         "policyConsentManagement": {
             "consentedOnLabel": "Actief vanaf",
             "dangerZones": {
@@ -440,12 +497,6 @@ export const myAccount: MyAccountNS = {
                     "actionTitle": "Intrekken",
                     "header": "Beleidstoestemming intrekken",
                     "subheader": "Deze actie trekt uw toestemming voor dit beleid in. Mogelijk wordt u gevraagd opnieuw toestemming te geven wanneer u de service de volgende keer gebruikt."
-                }
-            },
-            "modals": {
-                "revokeModal": {
-                    "heading": "Toestemming intrekken voor {{policyName}}",
-                    "message": "Hiermee trekt u uw toestemming voor dit beleid in. Mogelijk wordt u gevraagd opnieuw toestemming te geven wanneer u de service de volgende keer gebruikt. Weet u zeker dat u wilt doorgaan?"
                 }
             },
             "notifications": {
@@ -1794,6 +1845,15 @@ export const myAccount: MyAccountNS = {
             "placeholders": {
                 "emptyConsentList": {
                     "heading": "U heeft geen toestemmingen gegeven"
+                }
+            }
+        },
+        "preferenceManagement": {
+            "description": "Bekijk en beheer uw communicatievoorkeuren.",
+            "heading": "Communicatievoorkeuren",
+            "placeholders": {
+                "emptyConsentList": {
+                    "heading": "U heeft geen communicatievoorkeuren ingesteld"
                 }
             }
         },

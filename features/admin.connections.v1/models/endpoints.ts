@@ -28,4 +28,6 @@ export interface ConnectionResourceEndpointsInterface {
     identityProviders: string;
     localAuthenticators: string;
     multiFactorAuthenticators: string;
+    debug: string;
+    debugResult: string;
 }

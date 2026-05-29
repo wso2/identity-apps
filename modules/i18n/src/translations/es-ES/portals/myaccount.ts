@@ -439,6 +439,63 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        "preferenceManagement": {
+            "consentedOnLabel": "Aceptado el",
+            "dangerZones": {
+                "revoke": {
+                    "actionTitle": "Revocar",
+                    "header": "Revocar preferencia de comunicación",
+                    "subheader": "Esta acción eliminará su preferencia para esta comunicación."
+                }
+            },
+            "elementsHeading": "Administre sus preferencias de comunicación a continuación. Desmarque los atributos que necesita revocar y presione el botón actualizar para guardar los cambios o presione el botón revocar para eliminar la preferencia de todos los atributos.",
+            "notifications": {
+                "fetch": {
+                    "error": {
+                        "description": "Se produjo un error al recuperar sus preferencias de comunicación.",
+                        "message": "Recuperación fallida"
+                    },
+                    "genericError": {
+                        "description": "Se produjo un error al recuperar sus preferencias de comunicación.",
+                        "message": "Recuperación fallida"
+                    },
+                    "success": {
+                        "description": "Sus preferencias de comunicación se recuperaron correctamente.",
+                        "message": "Recuperación exitosa"
+                    }
+                },
+                "revoke": {
+                    "error": {
+                        "description": "Se produjo un error al revocar la preferencia de comunicación.",
+                        "message": "Revocación fallida"
+                    },
+                    "genericError": {
+                        "description": "Se produjo un error al revocar la preferencia de comunicación.",
+                        "message": "Revocación fallida"
+                    },
+                    "success": {
+                        "description": "La preferencia de comunicación se ha revocado correctamente.",
+                        "message": "Preferencia revocada"
+                    }
+                },
+                "update": {
+                    "error": {
+                        "description": "Se produjo un error al actualizar la preferencia de comunicación.",
+                        "message": "Actualización fallida"
+                    },
+                    "genericError": {
+                        "description": "Se produjo un error al actualizar la preferencia de comunicación.",
+                        "message": "Actualización fallida"
+                    },
+                    "success": {
+                        "description": "Sus preferencias de comunicación se han actualizado correctamente.",
+                        "message": "Preferencia actualizada"
+                    }
+                }
+            },
+            "policyUrlLabel": "Ver política",
+            "versionLabel": "Versión {{version}}"
+        },
         "policyConsentManagement": {
             "consentedOnLabel": "Activo desde",
             "dangerZones": {
@@ -446,12 +503,6 @@ export const myAccount: MyAccountNS = {
                     "actionTitle": "Revocar",
                     "header": "Revocar consentimiento de política",
                     "subheader": "Esta acción revocará su consentimiento para esta política. Se le puede pedir que vuelva a consentir la próxima vez que acceda al servicio."
-                }
-            },
-            "modals": {
-                "revokeModal": {
-                    "heading": "Revocar consentimiento para {{policyName}}",
-                    "message": "Esto revocará su consentimiento para esta política. Se le puede pedir que vuelva a consentir la próxima vez que acceda al servicio. ¿Está seguro de que desea continuar?"
                 }
             },
             "notifications": {
@@ -1803,6 +1854,15 @@ export const myAccount: MyAccountNS = {
             "placeholders": {
                 "emptyConsentList": {
                     "heading": "No ha dado su consentimiento a ninguna aplicación."
+                }
+            }
+        },
+        "preferenceManagement": {
+            "description": "Revise las comunicaciones a las que ha dado su preferencia.",
+            "heading": "Preferencias de comunicación",
+            "placeholders": {
+                "emptyConsentList": {
+                    "heading": "No ha aceptado ninguna preferencia de comunicación"
                 }
             }
         },

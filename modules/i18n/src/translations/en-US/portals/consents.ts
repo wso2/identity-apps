@@ -19,230 +19,363 @@
 import { ConsentsNS } from "../../../models";
 
 export const consents: ConsentsNS = {
-    form: {
-        createNewVersion: "Create New Version",
-        description: {
-            label: "Description"
-        },
-        mandatory: {
-            hint: "Set during policy creation. When enabled, users will not be able to continue the flow without accepting this policy.",
-            label: "Mandatory",
-            linkHint: "To add to registration flow, navigate to <0>registration flow builder</0>."
-        },
-        name: {
-            error: {
-                duplicateName: "A policy with this name already exists. Please use a different name."
+    preferenceManagement: {
+        form: {
+            description: {
+                label: "Description",
+                labelRoleHint: "Leave empty to use the default description."
             },
-            label: "Name",
-            placeholder: "Privacy Policy"
+            linkHint: "To include this preference in a registration flow, go to the <0>Registration Flow Builder</0>.",
+            name: {
+                error: {
+                    duplicateName: "A preference with this name already exists. Please use a different name."
+                },
+                label: "Name",
+                placeholder: "Newsletter Subscription"
+            }
         },
-        policyUrl: {
-            hint: "Provide the URL where the full policy document can be accessed. " +
-                "You can use placeholders like {{lang}}, {{country}}, or {{locale}} " +
-                "to customize the URL for different regions or languages.",
-            label: "Policy URL",
-            versionHint: "To create a new version, update the policy URL, description, or prompt settings above."
+        list: {
+            emptyPlaceholder: {
+                addConsent: "New Preference",
+                subtitle: "There are no preferences available at the moment"
+            },
+            emptySearchPlaceholder: {
+                action: "Clear search",
+                subtitle: "No preferences found for the search query.",
+                title: "No results found"
+            }
         },
-        promptOnLogin: {
-            activeHint: "Users will be prompted to review and accept this policy during login.",
-            hint: "When enabled, users will be prompted to review and accept this policy during login.",
-            label: "Prompt on Login"
+        notifications: {
+            create: {
+                error: {
+                    conflict: {
+                        description: "A preference with this name already exists. Please use a different name.",
+                        message: "Conflict"
+                    },
+                    description: "Failed to create preference. Please try again.",
+                    message: "Create Failed",
+                    notFound: {
+                        description: "The requested preference was not found.",
+                        message: "Not Found"
+                    },
+                    serverError: {
+                        description: "A server error occurred while creating the preference. Please try again later.",
+                        message: "Server Error"
+                    }
+                },
+                success: {
+                    description: "Preference created successfully.",
+                    message: "Preference Created"
+                }
+            },
+            delete: {
+                error: {
+                    conflict: {
+                        description: "This preference cannot be deleted because it is in use or is protected.",
+                        message: "Cannot Delete"
+                    },
+                    description: "Failed to delete preference. Please try again.",
+                    message: "Delete Failed",
+                    notFound: {
+                        description: "The preference you are trying to delete was not found.",
+                        message: "Not Found"
+                    },
+                    serverError: {
+                        description: "A server error occurred while deleting the preference. Please try again later.",
+                        message: "Server Error"
+                    }
+                },
+                success: {
+                    description: "Preference deleted successfully.",
+                    message: "Preference Deleted"
+                }
+            },
+            update: {
+                error: {
+                    conflict: {
+                        description: "This version already exists or conflicts with another version.",
+                        message: "Version Conflict"
+                    },
+                    description: "Preference update failed. Please try again.",
+                    message: "Update Failed",
+                    notFound: {
+                        description: "The preference or version you are trying to update was not found.",
+                        message: "Not Found"
+                    },
+                    serverError: {
+                        description: "A server error occurred while updating the preference. Please try again later.",
+                        message: "Server Error"
+                    }
+                },
+                success: {
+                    description: "Preference updated successfully.",
+                    message: "Update Successful"
+                }
+            }
         },
-        versionDropdown: {
-            currentVersionLabel: "Version {{version}} (current)",
-            trigger: "Version {{version}}"
+        pages: {
+            deleteConfirmation: {
+                assertionHint: "I understand this action is permanent and cannot be undone.",
+                content: "This preference can only be deleted if no users have accepted it.",
+                header: "Delete preference?",
+                message: "This will permanently delete the preference. This cannot be undone.",
+                primaryAction: "Confirm",
+                secondaryAction: "Cancel"
+            },
+            edit: {
+                backButton: "Back to Preference Management",
+                dangerZone: {
+                    actionTitle: "Delete Preference",
+                    header: "Delete Preference",
+                    subheader: "Once you delete a preference, there is no going back. Please be certain."
+                },
+                title: "Edit Preference"
+            },
+            list: {
+                actions: {
+                    addConsent: "New Preference"
+                },
+                description: "Manage communication preferences for your organization.",
+                heading: "Preference Management",
+                search: {
+                    placeholder: "Search by name"
+                },
+                title: "Preference Management"
+            },
+            new: {
+                backButton: "Back to Preference Management",
+                title: "Create Preference"
+            }
         },
-        versionModal: {
-            createNewVersion: "Create New Version?",
-            promptAtLogin: "Prompt users at next login",
-            promptDescription: "Choose whether users should be prompted to accept the updated policy."
+        preview: {
+            consentHeader: "Please review your preferences  to proceed.",
+            emptyDescription: "Write a consent name to preview.",
+            exampleDescription: "I agree to receive {{consentName}} communications.",
+            pageTitle: "Communication Preferences"
         }
     },
-    list: {
-        emptyPlaceholder: {
-            addPolicy: "New Policy",
-            subtitle: "There are no policies available at the moment"
+    policyConsents: {
+        form: {
+            createNewVersion: "Create New Version",
+            description: {
+                label: "Description"
+            },
+            mandatory: {
+                hint: "When enabled, users must accept this policy to proceed. This setting cannot be changed after creation.",
+                label: "Mandatory",
+                linkHint: "To include this consent in a registration flow, go to the <0>Registration Flow Builder</0>."
+            },
+            name: {
+                error: {
+                    duplicateName: "A policy with this name already exists. Please use a different name."
+                },
+                label: "Name",
+                placeholder: "Privacy Policy"
+            },
+            policyUrl: {
+                hint: "Enter the URL of the full policy document. Use {{lang}}, {{country}}, or {{locale}} as placeholders to support multiple regions or languages.",
+                label: "Policy URL",
+                versionHint: "To create a new version, update the policy URL, description, or prompt settings above."
+            },
+            promptOnLogin: {
+                activeHint: "Users will be prompted to review and accept this policy during login.",
+                hint: "When enabled, users will be prompted to review and accept this policy at each login.",
+                label: "Prompt on Login"
+            },
+            versionDropdown: {
+                currentVersionLabel: "Version {{version}} (current)",
+                trigger: "Version {{version}}"
+            },
+            versionModal: {
+                createNewVersion: "Save as New Version?",
+                promptAtLogin: "Prompt users to accept at next login",
+                promptDescription: "Choose whether existing users should be prompted to review and accept this updated policy at their next login."
+            }
         },
-        emptySearchPlaceholder: {
-            action: "Clear search",
-            subtitle: "No policies found for the search query.",
-            title: "No results found"
+        list: {
+            emptyPlaceholder: {
+                addPolicy: "New Policy",
+                subtitle: "There are no policies available at the moment"
+            },
+            emptySearchPlaceholder: {
+                action: "Clear search",
+                subtitle: "No policies found for the search query.",
+                title: "No results found"
+            }
+        },
+        notifications: {
+            create: {
+                error: {
+                    conflict: {
+                        description: "A policy with this name already exists. Please use a different name.",
+                        message: "Conflict"
+                    },
+                    description: "Failed to create policy. Please try again.",
+                    message: "Create Failed",
+                    notFound: {
+                        description: "The requested policy was not found.",
+                        message: "Not Found"
+                    },
+                    serverError: {
+                        description: "A server error occurred while creating the policy. Please try again later.",
+                        message: "Server Error"
+                    }
+                },
+                success: {
+                    description: "Policy created successfully.",
+                    message: "Policy Created"
+                }
+            },
+            delete: {
+                error: {
+                    conflict: {
+                        description: "This policy cannot be deleted because it is in use or is protected.",
+                        message: "Cannot Delete"
+                    },
+                    description: "Failed to delete policy. Please try again.",
+                    message: "Delete Failed",
+                    notFound: {
+                        description: "The policy you are trying to delete was not found.",
+                        message: "Not Found"
+                    },
+                    serverError: {
+                        description: "A server error occurred while deleting the policy. Please try again later.",
+                        message: "Server Error"
+                    }
+                },
+                success: {
+                    description: "Policy deleted successfully.",
+                    message: "Policy Deleted"
+                }
+            },
+            update: {
+                error: {
+                    conflict: {
+                        description: "This version already exists or conflicts with another version.",
+                        message: "Version Conflict"
+                    },
+                    description: "Policy update failed. Please try again.",
+                    message: "Update Failed",
+                    notFound: {
+                        description: "The policy or version you are trying to update was not found.",
+                        message: "Not Found"
+                    },
+                    serverError: {
+                        description: "A server error occurred while updating the policy. Please try again later.",
+                        message: "Server Error"
+                    }
+                },
+                success: {
+                    description: "Policy updated successfully.",
+                    message: "Update Successful"
+                }
+            }
+        },
+        pages: {
+            deleteConfirmation: {
+                assertionHint: "I understand this action is permanent and cannot be undone.",
+                content: "This policy can only be deleted if no users have accepted it.",
+                header: "Delete policy?",
+                message: "This will permanently delete the policy. This cannot be undone.",
+                primaryAction: "Confirm",
+                secondaryAction: "Cancel"
+            },
+            edit: {
+                backButton: "Back to Policies",
+                dangerZone: {
+                    actionTitle: "Delete Policy",
+                    header: "Delete Policy",
+                    subheader: "Once you delete a policy, there is no going back. Please be certain."
+                },
+                title: "Edit Policy"
+            },
+            list: {
+                actions: {
+                    addPolicy: "New Policy"
+                },
+                description: "Manage policy consents for your organization.",
+                heading: "Policy Consents",
+                search: {
+                    placeholder: "Search by policy name"
+                },
+                title: "Policy Consents"
+            },
+            new: {
+                backButton: "Back to Policies",
+                title: "Create Policy"
+            }
+        },
+        wizard: {
+            create: {
+                form: {
+                    description: {
+                        configureTranslation: "Configure translation",
+                        i18nCard: {
+                            brandingRequired: "Enable branding to configure translations.",
+                            createTitle: "Create Translation",
+                            deleteError: {
+                                description: "Failed to delete the translation. Please try again.",
+                                message: "Delete Failed"
+                            },
+                            deleteSuccess: {
+                                description: "Translation deleted successfully.",
+                                message: "Translation Deleted"
+                            },
+                            deleteTooltip: "Delete the translation for the selected key.",
+                            editTooltip: "Edit the translation text for the selected key.",
+                            i18nKey: "Translation Key",
+                            keyPlaceholder: "e.g. consent.description",
+                            language: "Language",
+                            newTooltip: "Create a new translation key for this description.",
+                            saveError: {
+                                description: "Failed to save the translation. Please try again.",
+                                message: "Save Failed"
+                            },
+                            saveSuccess: {
+                                description: "Translation saved successfully.",
+                                message: "Translation Saved"
+                            },
+                            selectKey: "Select a translation key",
+                            title: "Configure Translation",
+                            translationPlaceholder: "Enter the translated description text...",
+                            translationText: "Translation Text",
+                            updateTitle: "Update Translation"
+                        },
+                        insertPolicyLink: "Wrap selected text with the policy URL as a link",
+                        insertPolicyLinkInvalidUrl: "The Policy URL must be a valid HTTP or HTTPS URL.",
+                        insertPolicyLinkNoPolicyUrl: "Define a Policy URL above before inserting a link.",
+                        insertPolicyLinkNoSelection: "Select the words you want to link, then click.",
+                        insertPolicyLinkShort: "Policy Link",
+                        insertPolicyLinkTooltip: "Wraps the selected text with your Policy URL as a hyperlink.",
+                        labelRoleHint: "Leave empty to use the default description. Select text and click \"Policy Link\" to hyperlink it to the policy URL."
+                    }
+                },
+                preview: {
+                    consentHeader: "Please review and accept the following to continue.",
+                    emptyDescription: "Enter a policy name above to see a preview.",
+                    exampleDescription: "I have read and agree to the <0>{{policyName}}</0>.",
+                    pageTitle: "Review and Accept Policies",
+                    updatedPolicies: "Updated policies"
+                }
+            }
         }
     },
     registrationFlow: {
+        addAttribute: "Add Attribute",
+        addPurpose: "Add Purpose",
+        attributeDisplayName: "Display Name",
+        attributeName: "Attribute Name",
+        attributes: "User Attributes",
+        noPreference: "No preferences available. Create them from Preference Management.",
         noPolicies: "No policies available. Create policies from Policy Consents.",
+        purposeDescription: "Description",
+        purposeLabel: "Purpose {{index}}",
+        purposeName: "Purpose Name",
+        selectPreference: "Select Preferences:",
         selectPolicies: "Select Policies:"
-    },
-    notifications: {
-        create: {
-            error: {
-                conflict: {
-                    description: "A policy with this name already exists. Please use a different name.",
-                    message: "Conflict"
-                },
-                description: "Failed to create policy. Please try again.",
-                message: "Create Failed",
-                notFound: {
-                    description: "The requested policy was not found.",
-                    message: "Policy Not Found"
-                },
-                serverError: {
-                    description: "A server error occurred while creating the policy. Please try again later.",
-                    message: "Server Error"
-                }
-            },
-            success: {
-                description: "Policy created successfully.",
-                message: "Policy Created"
-            }
-        },
-        delete: {
-            error: {
-                conflict: {
-                    description: "This policy cannot be deleted because it is in use or is protected.",
-                    message: "Cannot Delete"
-                },
-                description: "Failed to delete policy. Please try again.",
-                message: "Delete Failed",
-                notFound: {
-                    description: "The policy you are trying to delete was not found.",
-                    message: "Policy Not Found"
-                },
-                serverError: {
-                    description: "A server error occurred while deleting the policy. Please try again later.",
-                    message: "Server Error"
-                }
-            },
-            success: {
-                description: "Policy deleted successfully.",
-                message: "Policy Deleted"
-            }
-        },
-        updatePolicy: {
-            error: {
-                conflict: {
-                    description: "This version already exists or conflicts with another version.",
-                    message: "Version Conflict"
-                },
-                description: "Policy update failed. Please try again.",
-                message: "Update Failed",
-                notFound: {
-                    description: "The consent or version you are trying to update was not found.",
-                    message: "Not Found"
-                },
-                serverError: {
-                    description: "A server error occurred while updating the policy. Please try again later.",
-                    message: "Server Error"
-                }
-            },
-            success: {
-                description: "Policy updated successfully.",
-                message: "Update Successful"
-            }
-        }
-    },
-    pages: {
-        edit: {
-            backButton: "Back to Policies",
-            dangerZone: {
-                actionTitle: "Delete Policy",
-                header: "Delete Policy",
-                subheader: "Once you delete a policy, there is no going back. Please be certain."
-            },
-            deleteConfirmation: {
-                assertionHint: "I confirm that I want to delete this policy.",
-                content: "You can delete this policy only if no users have given consent to it.",
-                header: "Are you sure?",
-                message: "This action is irreversible and will permanently delete the policy.",
-                primaryAction: "Confirm",
-                secondaryAction: "Cancel"
-            },
-            title: "Edit Policy"
-        },
-        list: {
-            actions: {
-                addPolicy: "New Policy"
-            },
-            deleteConfirmation: {
-                assertionHint: "I confirm that I want to delete this policy.",
-                content: "You can delete this policy only if no users have given consent to it.",
-                header: "Are you sure?",
-                message: "This action is irreversible and will permanently delete the policy.",
-                primaryAction: "Confirm",
-                secondaryAction: "Cancel"
-            },
-            backButton: "Go back to login & registration",
-            description: "Manage and configure policy consents.",
-            heading: "Policy Consents",
-            search: {
-                placeholder: "Search policies by name"
-            },
-            title: "Policy Consents"
-        },
-        new: {
-            backButton: "Back to Policies",
-            title: "Create Policy"
-        }
     },
     tabs: {
         content: { label: "Content" },
         preview: { label: "Preview" }
-    },
-    wizard: {
-        create: {
-            form: {
-                description: {
-                    configureTranslation: "Configure translation",
-                    i18nCard: {
-                        brandingRequired: "Enable branding to configure translations.",
-                        createTitle: "Create Translation",
-                        deleteError: {
-                            description: "Failed to delete the translation. Please try again.",
-                            message: "Delete Failed"
-                        },
-                        deleteSuccess: {
-                            description: "Translation deleted successfully.",
-                            message: "Translation Deleted"
-                        },
-                        deleteTooltip: "Delete the translation for the selected key.",
-                        editTooltip: "Edit the translation text for the selected key.",
-                        i18nKey: "Translation Key",
-                        keyPlaceholder: "e.g. consent.description",
-                        language: "Language",
-                        newTooltip: "Create a new translation key for this description.",
-                        saveError: {
-                            description: "Failed to save the translation. Please try again.",
-                            message: "Save Failed"
-                        },
-                        saveSuccess: {
-                            description: "Translation saved successfully.",
-                            message: "Translation Saved"
-                        },
-                        selectKey: "Select a translation key",
-                        title: "Configure Translation",
-                        translationPlaceholder: "Enter the translated description text...",
-                        translationText: "Translation Text",
-                        updateTitle: "Update Translation"
-                    },
-                    insertPolicyLink: "Wrap selected text with the policy URL as a link",
-                    insertPolicyLinkInvalidUrl: "The Policy URL must be a valid HTTP or HTTPS URL.",
-                    insertPolicyLinkNoPolicyUrl: "Define a Policy URL above before inserting a link.",
-                    insertPolicyLinkNoSelection: "Select the words you want to link, then click.",
-                    insertPolicyLinkShort: "Policy Link",
-                    insertPolicyLinkTooltip: "Wraps the selected text with your Policy URL as a hyperlink.",
-                    labelRoleHint: "Leave empty to use the default. " +
-                        "Select text and click \"Policy Link\" to wrap it with the policy URL."
-                }
-            },
-            preview: {
-                allowButton: "Confirm and Continue",
-                appLoginMessage: "This will be the UI you see when you log in to an application.",
-                consentHeader: "Please review and accept the following policies to proceed.",
-                denyButton: "Decline",
-                emptyDescription: "Write a policy name to preview.",
-                exampleDescription: "I have read and agree to the <0>{{policyName}}</0>.",
-                pageTitle: "Policy Review Required"
-            }
-        }
     }
 };
