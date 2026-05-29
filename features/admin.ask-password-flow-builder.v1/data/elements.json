@@ -12,7 +12,7 @@
         },
         "config": {
             "description": "By continuing, you agree to the following policies.",
-            "policies": []
+            "purposes": []
         }
     }
 ]

@@ -31,7 +31,8 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
 import ButtonExtendedProperties from "./extended-properties/button-extended-properties";
-import ConsentExtendedProperties from "./extended-properties/consent-extended-properties";
+import PreferenceManagementExtendedProperties from "./extended-properties/preference-management-extended-properties";
+import PolicyConsentExtendedProperties from "./extended-properties/policy-consent-extended-properties";
 import FieldExtendedProperties from "./extended-properties/field-extended-properties";
 import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
@@ -132,10 +133,24 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                 return (
                     <>
                         { renderElementId() }
-                        <ConsentExtendedProperties
+                        <PolicyConsentExtendedProperties
                             resource={ resource }
                             onChange={ onChange }
-                            data-componentid="consent-extended-properties"
+                            data-componentid="policy-consent-extended-properties"
+                        />
+                        { renderElementPropertyFactory() }
+                    </>
+                );
+            }
+
+            if (resource.type === ElementTypes.Preference) {
+                return (
+                    <>
+                        { renderElementId() }
+                        <PreferenceManagementExtendedProperties
+                            resource={ resource }
+                            onChange={ onChange }
+                            data-componentid="preference-management-extended-properties"
                         />
                         { renderElementPropertyFactory() }
                     </>

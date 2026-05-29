@@ -23,6 +23,7 @@ import ButtonFieldAdapter from "./adapters/button-field-adapter";
 import CaptchaWidgetAdapter from "./adapters/captcha-widget-adapter";
 import ImageFieldAdapter from "./adapters/image-field-adapter";
 import InputFieldAdapter from "./adapters/input-field-adapter";
+import PreferenceManagementFieldAdapter from "./adapters/preference-management-field-adapter";
 import PolicyConsentFieldAdapter from "./adapters/policy-consent-field-adapter";
 import ResendButtonAdapter from "./adapters/resend-button-adapter";
 import RichTextAdapter from "./adapters/rich-text-field-adapter";
@@ -71,6 +72,14 @@ const Field = ({
         case "POLICY":
             return (
                 <PolicyConsentFieldAdapter
+                    component={ component }
+                    formStateHandler={ formStateHandler }
+                    fieldErrorHandler={ formFieldError }
+                />
+            );
+        case "PREFERENCE":
+            return (
+                <PreferenceManagementFieldAdapter
                     component={ component }
                     formStateHandler={ formStateHandler }
                     fieldErrorHandler={ formFieldError }

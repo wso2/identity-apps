@@ -364,7 +364,7 @@ export const myAccount: MyAccountNS = {
                 "dangerZones": {
                     "revoke": {
                         "actionTitle": "Widerrufen",
-                        "header": "Einwilligung widerrufen",
+                        "header": "Präferenz widerrufen",
                         "subheader": "Sie müssen dieser Anwendung erneut zustimmen."
                     }
                 },
@@ -439,6 +439,63 @@ export const myAccount: MyAccountNS = {
                 }
             }
         },
+        "preferenceManagement": {
+            "consentedOnLabel": "Akzeptiert am",
+            "dangerZones": {
+                "revoke": {
+                    "actionTitle": "Widerrufen",
+                    "header": "Kommunikationspräferenz widerrufen",
+                    "subheader": "Diese Aktion entfernt Ihre Präferenz für diese Kommunikation."
+                }
+            },
+            "elementsHeading": "Aktualisieren Sie Ihre Präferenzen unten. Deaktivieren Sie die Attribute, von denen Sie sich abmelden möchten, und klicken Sie auf „Aktualisieren“, um die Änderungen zu speichern, oder klicken Sie auf „Widerrufen“, um die Präferenz vollständig zu entfernen.",
+            "notifications": {
+                "fetch": {
+                    "error": {
+                        "description": "Beim Abrufen Ihrer Kommunikationspräferenzen ist ein Fehler aufgetreten.",
+                        "message": "Abruf fehlgeschlagen"
+                    },
+                    "genericError": {
+                        "description": "Beim Abrufen Ihrer Kommunikationspräferenzen ist ein Fehler aufgetreten.",
+                        "message": "Abruf fehlgeschlagen"
+                    },
+                    "success": {
+                        "description": "Ihre Kommunikationspräferenzen wurden erfolgreich abgerufen.",
+                        "message": "Abruf erfolgreich"
+                    }
+                },
+                "revoke": {
+                    "error": {
+                        "description": "Beim Widerrufen der Kommunikationspräferenz ist ein Fehler aufgetreten.",
+                        "message": "Widerruf fehlgeschlagen"
+                    },
+                    "genericError": {
+                        "description": "Beim Widerrufen der Kommunikationspräferenz ist ein Fehler aufgetreten.",
+                        "message": "Widerruf fehlgeschlagen"
+                    },
+                    "success": {
+                        "description": "Die Kommunikationspräferenz wurde erfolgreich widerrufen.",
+                        "message": "Präferenz widerrufen"
+                    }
+                },
+                "update": {
+                    "error": {
+                        "description": "Beim Aktualisieren der Kommunikationspräferenz ist ein Fehler aufgetreten.",
+                        "message": "Aktualisierung fehlgeschlagen"
+                    },
+                    "genericError": {
+                        "description": "Beim Aktualisieren der Kommunikationspräferenz ist ein Fehler aufgetreten.",
+                        "message": "Aktualisierung fehlgeschlagen"
+                    },
+                    "success": {
+                        "description": "Ihre Kommunikationspräferenzen wurden erfolgreich aktualisiert.",
+                        "message": "Präferenzen aktualisiert"
+                    }
+                }
+            },
+            "policyUrlLabel": "Richtlinie anzeigen",
+            "versionLabel": "Version {{version}}"
+        },
         "policyConsentManagement": {
             "consentedOnLabel": "Aktiv seit",
             "dangerZones": {
@@ -446,12 +503,6 @@ export const myAccount: MyAccountNS = {
                     "actionTitle": "Widerrufen",
                     "header": "Richtlinienzustimmung widerrufen",
                     "subheader": "Diese Aktion widerruft Ihre Zustimmung zu dieser Richtlinie. Möglicherweise werden Sie beim nächsten Zugriff auf den Dienst aufgefordert, erneut zuzustimmen."
-                }
-            },
-            "modals": {
-                "revokeModal": {
-                    "heading": "Zustimmung für {{policyName}} widerrufen",
-                    "message": "Dies widerruft Ihre Zustimmung zu dieser Richtlinie. Möglicherweise werden Sie beim nächsten Zugriff auf den Dienst aufgefordert, erneut zuzustimmen. Möchten Sie fortfahren?"
                 }
             },
             "notifications": {
@@ -1804,6 +1855,15 @@ export const myAccount: MyAccountNS = {
             "placeholders": {
                 "emptyConsentList": {
                     "heading": "Sie haben keiner Bewerbung zugestimmt"
+                }
+            }
+        },
+        "preferenceManagement": {
+            "description": "Überprüfen Sie Ihre Kommunikationspräferenzen und verwalten Sie diese.",
+            "heading": "Kommunikationspräferenzen",
+            "placeholders": {
+                "emptyConsentList": {
+                    "heading": "Sie haben keine Kommunikationspräferenzen festgelegt"
                 }
             }
         },

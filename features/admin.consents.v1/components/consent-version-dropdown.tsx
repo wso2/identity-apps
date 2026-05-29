@@ -82,7 +82,7 @@ export const ConsentVersionDropdown: FunctionComponent<ConsentVersionDropdownPro
                 variant="text"
                 endIcon={ <ChevronDownIcon /> }
             >
-                { t("consents:form.versionDropdown.trigger", { version: currentVersion }) }
+                { t("consents:policyConsents.form.versionDropdown.trigger", { version: currentVersion }) }
             </DropdownTrigger>
             <Menu
                 id="consent-version-menu"
@@ -111,10 +111,10 @@ export const ConsentVersionDropdown: FunctionComponent<ConsentVersionDropdownPro
                             >
                                 {
                                     version.version === currentVersion
-                                        ? t("consents:form.versionDropdown.currentVersionLabel", {
+                                        ? t("consents:policyConsents.form.versionDropdown.currentVersionLabel", {
                                             version: version.version
                                         })
-                                        : t("consents:form.versionDropdown.trigger", {
+                                        : t("consents:policyConsents.form.versionDropdown.trigger", {
                                             version: version.version
                                         })
                                 }

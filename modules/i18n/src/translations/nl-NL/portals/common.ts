@@ -177,6 +177,7 @@ export const common: CommonNS = {
     completed: "Voltooid",
     configure: "Configureren",
     confirm: "Bevestigen",
+    consents: "Toestemmingen",
     contains: "Bevat",
     continue: "Doorgaan",
     copied: "Gekopieerd!",

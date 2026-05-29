@@ -610,6 +610,46 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         },
         {
+            category: "extensions:manage.sidePanel.categories.userManagement",
+            children: [
+                {
+                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/preference-management-new")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "preference-management-new",
+                    name: "Preference Management New",
+                    path: AppConstants.getPaths().get("PREFERENCE_MANAGEMENT_NEW"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/preference-management-edit")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "preference-management-edit",
+                    name: "Preference Management Edit",
+                    path: AppConstants.getPaths().get("PREFERENCE_MANAGEMENT_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("@wso2is/admin.consents.v1/pages/preference-management")),
+            exact: true,
+            icon: {
+                icon: getSidePanelIcons().consents
+            },
+            id: "preferenceManagement",
+            name: "extensions:develop.sidePanel.preferenceManagement",
+            order: 8,
+            path: AppConstants.getPaths().get("PREFERENCE_MANAGEMENT"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
             category: "console:develop.features.sidePanel.categories.application",
             children: [
                 {

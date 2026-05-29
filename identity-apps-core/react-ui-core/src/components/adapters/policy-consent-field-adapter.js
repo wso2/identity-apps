@@ -53,8 +53,11 @@ const ensureAfterSanitizeAttributesHookRegistered = () => {
  * @param {{ current: string | null }} consentRef - Ref holding the current serialized consent JSON.
  */
 const reportPolicyState = (checkedMap, formStateHandler, purposeType, consentRef) => {
-    const accepted = Object.keys(checkedMap).filter((id) => checkedMap[id]);
-    const rejected = Object.keys(checkedMap).filter((id) => !checkedMap[id]);
+    const purposes = Object.entries(checkedMap).map(([ id, accepted ]) => ({
+        accepted,
+        attributes: [],
+        id
+    }));
 
     let existingConsent = {};
 
@@ -64,13 +67,13 @@ const reportPolicyState = (checkedMap, formStateHandler, purposeType, consentRef
         if (raw) {
             existingConsent = JSON.parse(raw);
         }
-    } catch {
+    } catch (e) {
         existingConsent = {};
     }
 
     const mergedConsent = {
         ...existingConsent,
-        [purposeType]: { accepted, rejected }
+        [purposeType]: { purposes }
     };
 
     const serialized = JSON.stringify(mergedConsent);
@@ -81,7 +84,7 @@ const reportPolicyState = (checkedMap, formStateHandler, purposeType, consentRef
 
 const PolicyConsentFieldAdapter = ({ component, formStateHandler, fieldErrorHandler }) => {
 
-    const { description, identifier = "consent_policy", policies: rawPolicies = [],
+    const { description, identifier = "consent_policy", purposes: rawPolicies = [],
         purposeType = "Policy" } = component.config;
     const { locale, translations } = useTranslations();
 
