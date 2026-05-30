@@ -127,6 +127,9 @@
         "modules/access-control": {
             "project": [
                 "src/**/*.{ts,tsx}"
+            ],
+            "ignoreDependencies": [
+                "@vitest/coverage-v8"
             ]
         },
         "modules/core": {
@@ -147,6 +150,9 @@
         "modules/react-components": {
             "project": [
                 "src/**/*.{ts,tsx}"
+            ],
+            "ignoreDependencies": [
+                "@vitest/coverage-v8"
             ]
         },
         "modules/theme": {
@@ -159,7 +165,8 @@
             "ignoreDependencies": [
                 "semantic-ui-css",
                 "semantic-ui-less",
-                "rc-tree"
+                "rc-tree",
+                "@vitest/coverage-v8"
             ]
         },
         "modules/unit-testing": {
@@ -170,6 +177,9 @@
         "modules/validation": {
             "project": [
                 "src/**/*.{ts,tsx}"
+            ],
+            "ignoreDependencies": [
+                "@vitest/coverage-v8"
             ]
         }
     }

@@ -37,6 +37,7 @@
         "@wso2is/core": "^2.13.1"
     },
     "devDependencies": {
+        "@vitest/coverage-v8": "^3.2.4",
         "@types/react": "^18.0.18",
         "eslint": "9.38.0",
         "rimraf": "^3.0.2",
