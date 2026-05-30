@@ -9,6 +9,7 @@
             "ESNext",
             "dom"
         ],
+        "baseUrl": ".",
         "module": "esnext",
         "moduleResolution": "node",
         "rootDir": ".",
