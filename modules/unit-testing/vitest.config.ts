@@ -18,7 +18,8 @@
 
 import path from "path";
 import { fileURLToPath } from "url";
-import { defineConfig, type UserConfig } from "vitest/config";
+import type { CoverageV8Options } from "vitest";
+import { type UserConfig, defineConfig } from "vitest/config";
 
 interface AliasInterface {
     find: string | RegExp;
@@ -27,6 +28,7 @@ interface AliasInterface {
 
 export interface IdentityAppsVitestConfigOptionsInterface {
     aliases?: AliasInterface[];
+    coverage?: CoverageV8Options;
     displayName: string;
     include?: string[];
     projectRoot: string;
@@ -81,7 +83,8 @@ const createCommonAliases = (projectRoot: string): AliasInterface[] => [
         replacement: `${ resolveWorkspacePath("modules/core/src") }/$1`
     },
     {
-        find: /^@wso2is\/core\/(api|configs|constants|errors|exceptions|helpers|hooks|models|store|utils|workers)\/(.*)$/,
+        find:
+        /^@wso2is\/core\/(api|configs|constants|errors|exceptions|helpers|hooks|models|store|utils|workers)\/(.*)$/,
         replacement: `${ resolveWorkspacePath("modules/core/src") }/$1/$2`
     },
     {
@@ -131,12 +134,15 @@ export const createIdentityAppsVitestConfig = (
         },
         test: {
             coverage: {
+                all: false,
                 provider: "v8",
                 reporter: [
+                    "json",
                     "text",
                     "lcov"
                 ],
-                reportsDirectory: path.resolve(options.projectRoot, "coverage")
+                reportsDirectory: path.resolve(options.projectRoot, "coverage"),
+                ...(options.coverage ?? {})
             },
             environment: "jsdom",
             environmentOptions: {
