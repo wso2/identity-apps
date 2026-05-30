@@ -172,6 +172,9 @@
         "modules/unit-testing": {
             "project": [
                 "*.{ts,tsx}"
+            ],
+            "ignoreDependencies": [
+                "redux-mock-store"
             ]
         },
         "modules/validation": {
