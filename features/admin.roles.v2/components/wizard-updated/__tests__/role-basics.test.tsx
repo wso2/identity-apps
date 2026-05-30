@@ -20,7 +20,7 @@ import { fireEvent, render, screen, within } from "@wso2is/unit-testing/utils";
 import React from "react";
 import { RoleBasics } from "../role-basics";
 
-jest.mock("@wso2is/admin.applications.v1/api/application", () => ({
+vi.mock("@wso2is/admin.applications.v1/api/application", () => ({
     useApplicationList: () => ({
         data: {
             applications: [

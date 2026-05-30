@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { commonConfig } from "@wso2is/admin.extensions.v1";
+import { commonConfig } from "@wso2is/admin.extensions.v1/configs/common";
 import {
     BrandingPreferenceInterface,
     PredefinedThemes,
@@ -235,7 +235,7 @@ export class BrandingPreferencesConstants {
             // This should be decided based on the subscription tier.
             // TODO: Properly resolve once subscription API is integrated in to the console.
             // Tracked Here: https://github.com/wso2-enterprise/asgardeo-product/issues/8625
-            removeDefaultBranding: commonConfig.enableDefaultBrandingPreviewSection
+            removeDefaultBranding: commonConfig?.enableDefaultBrandingPreviewSection ?? true
         },
         layout: {
             activeLayout: PredefinedLayouts.CENTERED,

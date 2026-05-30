@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import "@types/jest";
 
 /**
  * Class containing form field data constants.

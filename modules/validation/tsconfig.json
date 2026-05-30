@@ -6,7 +6,7 @@
         "declarationDir": "dist/types",
         "outDir": "dist/src",
         "rootDir": "src",
-        "types": [ "node", "jest" ]
+        "types": [ "node", "vitest/globals" ]
     },
     "exclude": [
         "coverage",
@@ -14,7 +14,7 @@
         "node_modules",
         "scripts",
         "test-configs",
-        "jest.config.ts",
+        "vitest.config.ts",
         "**/tests/*",
         "**/__tests__/*",
         "**/__mocks__/*",

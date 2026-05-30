@@ -12,7 +12,7 @@
         "node_modules",
         "scripts",
         "test-configs",
-        "jest.config.ts",
+        "vitest.config.ts",
         "**/tests/*",
         "**/__tests__/*",
         "**/__mocks__/*",
