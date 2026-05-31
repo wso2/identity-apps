@@ -7,7 +7,7 @@
         "outDir": "dist/src",
         "resolveJsonModule": true,
         "skipDefaultLibCheck": true,
-        "types": [ "node", "vite/client", "jest", "@testing-library/jest-dom" ]
+        "types": [ "node", "vite/client", "vitest/globals", "@testing-library/jest-dom" ]
     },
     "exclude": [
         "build",
@@ -17,7 +17,7 @@
         "node_modules",
         "scripts",
         "**/test-configs/*",
-        "jest.config.ts",
+        "vitest.config.ts",
         "webpack.config.ts",
         "**/tests/*",
         "**/__tests__/*",

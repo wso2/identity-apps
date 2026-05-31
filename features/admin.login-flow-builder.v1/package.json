@@ -52,7 +52,6 @@
         "@types/lodash-es": "^4.17.4",
         "@types/react": "^18.0.18",
         "@types/react-redux": "^7.1.25",
-        "@types/testing-library__jest-dom": "^5.14.3",
         "rollup": "^4.17.2",
         "rollup-plugin-dts": "^6.1.1",
         "rollup-plugin-polyfill-node": "^0.13.0",

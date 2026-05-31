@@ -21,7 +21,7 @@ import { fireEvent, render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import GoogleQuickStart from "../quick-start";
 
-jest.mock("@wso2is/access-control/src/hooks/use-required-scopes", () => ({
+vi.mock("@wso2is/access-control/src/hooks/use-required-scopes", () => ({
     useRequiredScopes: (_scopes: string[]) => true
 }));
 

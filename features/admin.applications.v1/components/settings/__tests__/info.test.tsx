@@ -16,7 +16,7 @@
  * under the License.
  */
 
-/* eslint-env jest */
+/* eslint-env vitest */
 
 import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";

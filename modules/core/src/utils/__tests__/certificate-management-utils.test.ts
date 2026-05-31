@@ -19,7 +19,7 @@
 import * as forge from "node-forge";
 import { CertificateManagementUtils } from "../certificate-management-utils";
 
-jest.mock("node-forge", () => ({
+vi.mock("node-forge", () => ({
     pki: {
         certificateFromPem: jest.fn()
     }
