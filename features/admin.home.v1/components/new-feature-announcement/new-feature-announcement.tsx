@@ -19,16 +19,17 @@
 import { IntegrationInstructions, ListAlt, ManageAccounts, Security } from "@mui/icons-material";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
-import Chip from "@oxygen-ui/react/Chip";
 import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronRightIcon } from "@oxygen-ui/react-icons";
-import { FeatureAccessConfigInterface } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, FeatureFlagsInterface } from "@wso2is/access-control";
+import { CDSConfig, useCDSConfig } from "@wso2is/admin.cds.v1";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
 import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { AGENT_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
@@ -40,11 +41,11 @@ import classNames from "classnames";
 import DOMPurify from "dompurify";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Grid, Message, Modal } from "semantic-ui-react";
+import { Grid, Modal } from "semantic-ui-react";
 import AIAgentBox from "./ai-agent-box";
 import RebrandingAnnouncement from "./rebranding-announcement";
+import CustomerDataServiceIllustration from "./cds-illustration.png";
 import SurveyBox from "./survey-box";
 import { ReactComponent as PreviewFeaturesIcon } from "../../../themes/default/assets/images/icons/flask-icon.svg";
 import "./new-feature-announcement.scss";
@@ -61,6 +62,10 @@ interface NewFeatureAnnouncementProps extends IdentifiableComponentInterface {
     onTryOut: any;
     illustration: any;
     buttonText: ReactElement;
+    featureFlags?: FeatureFlagsInterface[];
+    featureName?: string;
+    featureStatusKey?: string;
+    featureConfig?: FeatureAccessConfigInterface
 }
 
 /**
@@ -79,10 +84,12 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
     onTryOut,
     illustration,
     buttonText,
+    featureFlags,
+    featureStatusKey,
+    featureConfig,
+    featureName,
     ...rest
 }: NewFeatureAnnouncementProps): ReactElement => {
-    const { t } = useTranslation();
-
     const { setShowPreviewFeaturesModal, setSelectedPreviewFeatureToShow } = useFeatureGate();
 
     // Handle both string and ReactElement descriptions
@@ -111,10 +118,13 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                 <Box>
                     <Typography variant="h3">
                         { title }
-                        { id !== "agents" && id !== "user-survey" && (
-                            <Chip
-                                label={ t(FeatureStatusLabel.PREVIEW) }
-                                className="oxygen-menu-item-chip oxygen-chip-experimental"
+                        { featureStatusKey && (
+                            <FeatureFlagLabel
+                                featureFlags={ featureFlags }
+                                featureKey={ featureStatusKey }
+                                featureConfig={ featureConfig }
+                                featureName={ featureName }
+                                type="chip"
                             />
                         ) }
                     </Typography>
@@ -162,10 +172,12 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
 };
 
 const AUTO_SLIDE_INTERVAL: number = 5000;
+const SLIDE_TRANSITION_DURATION: number = 0.75;
+const CUSTOMER_DATA_SERVICE_FEATURE_ID: string = "customer-data-platform";
 
 export const FeatureCarousel = () => {
     const [ currentIndex, setCurrentIndex ] = useState(0);
-    const [ direction, setDirection ] = useState(1);
+    const { setShowPreviewFeaturesModal, setSelectedPreviewFeatureToShow } = useFeatureGate();
 
     const {
         isLoading: isUserStoresListFetchRequestLoading,
@@ -192,6 +204,16 @@ export const FeatureCarousel = () => {
 
         return false;
     }, [ isUserStoresListFetchRequestLoading, userStoresList ]);
+
+    const customerDataServiceFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state.config.ui.features?.customerDataService);
+    const isCDSFeatureEnabled: boolean = customerDataServiceFeatureConfig?.enabled ?? false;
+    const {
+        data: cdsConfig,
+        isLoading: isCDSConfigFetchRequestLoading
+    } = useCDSConfig<CDSConfig>(isCDSFeatureEnabled);
+    const isCDSEnabledForOrganization: boolean = isCDSFeatureEnabled && (cdsConfig?.cds_enabled ?? false);
+
 
     const isUserSurveyBannerEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.userSurveyBanner?.enabled);
@@ -241,8 +263,39 @@ export const FeatureCarousel = () => {
             },
             title: userSurveyTitle
         },
+        {
+            description: "Manage customer profiles and identity-linked customer data from a single platform.",
+            featureConfig: customerDataServiceFeatureConfig,
+            featureFlags: customerDataServiceFeatureConfig?.featureFlags,
+            featureName: "customerDataService",
+            featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_SERVICE,
+            id: CUSTOMER_DATA_SERVICE_FEATURE_ID,
+            illustration: <Box className="customer-data-service-box">
+                <img
+                    alt="Customer data service"
+                    data-componentid="customer-data-service-illustration"
+                    src={ CustomerDataServiceIllustration }
+                />
+            </Box>,
+            isEnabled: isCDSEnabledForOrganization,
+            isEnabledStatusLoading: isCDSConfigFetchRequestLoading,
+            onTryOut: () => {
+                if (isCDSEnabledForOrganization) {
+                    history.push(AppConstants.getPaths().get("PROFILES"));
+
+                    return;
+                }
+
+                setSelectedPreviewFeatureToShow(CUSTOMER_DATA_SERVICE_FEATURE_ID);
+                setShowPreviewFeaturesModal(true);
+            },
+            title: "Customer Data Services for Asgardeo"
+        },
         agentFeatureConfig?.enabled && {
             description: "Extend your identity management to autonomous agents and AI systems",
+            featureFlags: agentFeatureConfig?.featureFlags,
+            featureName: "agents",
+            featureStatusKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.AGENTS,
             id: "agents",
             illustration: <Box className="ai-agent-box">
                 <AIAgentBox />
@@ -260,18 +313,28 @@ export const FeatureCarousel = () => {
                     window.open(url, "_blank");
                 }
             },
-            title: "Identity for AI Agents "
+            title: "Identity for AI Agents"
         }
     ].filter(Boolean), [
         agentFeatureConfig,
         isAgentManagementFeatureEnabledForOrganization,
+        isCDSConfigFetchRequestLoading,
+        isCDSEnabledForOrganization,
+        customerDataServiceFeatureConfig,
         isRebrandingBannerEnabled,
-        isUserSurveyBannerEnabled
+        isUserSurveyBannerEnabled,
+        supportEmail,
+        setSelectedPreviewFeatureToShow,
+        setShowPreviewFeaturesModal,
+        tierName,
+        userSurveyButtonText,
+        userSurveyDescription,
+        userSurveyTitle,
+        userSurveyURL
     ]);
 
     useEffect(() => {
         const interval: any = setInterval(() => {
-            setDirection(1);
             setCurrentIndex((prev: number) => (prev + 1) % features.length);
         }, AUTO_SLIDE_INTERVAL);
 
@@ -280,13 +343,14 @@ export const FeatureCarousel = () => {
 
     const variants: any = {
         center: {
-            opacity: 1,
-            x: 0
+            x: "0%"
         },
-        enter: (direction: number) => ({
-            opacity: 0.5,
-            x: direction > 0 ? 300 : -300
-        })
+        enter: {
+            x: "100%"
+        },
+        exit: {
+            x: "-100%"
+        }
     };
 
     return (
@@ -298,17 +362,16 @@ export const FeatureCarousel = () => {
                 width: "100%"
             } }
         >
-            <AnimatePresence custom={ direction } mode="wait">
+            <AnimatePresence initial={ false } mode="sync">
                 <motion.div
                     key={ currentIndex }
-                    custom={ direction }
                     variants={ variants }
                     initial="enter"
                     animate="center"
                     exit="exit"
                     transition={ {
-                        opacity: { duration: 0.2 },
-                        x: { damping: 30,stiffness: 300, type: "spring" }
+                        duration: SLIDE_TRANSITION_DURATION,
+                        ease: [ 0.4, 0, 0.2, 1 ]
                     } }
                     style={ {
                         height: "100%",
@@ -335,6 +398,10 @@ export const FeatureCarousel = () => {
                             isEnabledStatusLoading={ features[currentIndex]?.isEnabledStatusLoading }
                             onTryOut={ features[currentIndex]?.onTryOut }
                             buttonText={ features[currentIndex]?.buttonText }
+                            featureFlags={ features[currentIndex]?.featureFlags }
+                            featureName={ features[currentIndex]?.featureName }
+                            featureStatusKey={ features[currentIndex]?.featureStatusKey }
+                            featureConfig={ features[currentIndex]?.featureConfig }
                         />
                     ) }
                 </motion.div>
@@ -357,24 +424,6 @@ export const FeatureCarousel = () => {
                         </Heading>
                     </Modal.Header>
                     <Modal.Content className="content-container" scrolling>
-
-                        { isAgentManagementFeatureEnabledForOrganization ? (
-                            <Message warning>
-                                This feature is experimental. Some functionality may be limited or subject to change.
-                            </Message>
-                        ): (
-                            <Message info>
-                                AI agent management is coming soon to your organization! Create a fresh organization
-                                { " " }for instant access, or <a
-                                    href={
-                                        tierName === TenantTier.FREE
-                                            ? "mailto:" + supportEmail
-                                            : window["AppUtils"].getConfig().extensions.getHelp.helpCenterURL
-                                    }>contact us</a> { " " }
-                                for early access.
-                            </Message>
-                        ) }
-
                         <Box display="flex" flexDirection="column" gap={ 3 } width="100%">
                             <Box display="flex" gap={ 3 }>
                                 <Paper
@@ -521,5 +570,3 @@ export const FeatureCarousel = () => {
         </div>
     );
 };
-
-
