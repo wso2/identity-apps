@@ -513,16 +513,14 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                                 APIResourceUtils.sortApiResourceTypes(a, b)
                             )
                         }
-                        noOptionsText={ (roleAudience === RoleAudienceTypes.APPLICATION
-
-                            ? isAuthorizedAPIListForApplicationLoading
-
-                            : iscurrentAPIResourcesListLoading)
-
-                            ? t("common:searching")
-
-                            : t("roles:addRoleWizard.forms.rolePermission.apiResource.hint.empty")
-
+                        noOptionsText={ 
+                            (roleAudience === RoleAudienceTypes.APPLICATION
+                                ? isAuthorizedAPIListForApplicationLoading
+                                : iscurrentAPIResourcesListLoading)
+                                ? t("common:searching")
+                                : roleAudience === RoleAudienceTypes.APPLICATION
+                                    ? t("roles:addRoleWizard.forms.rolePermission.apiResource.hint.empty")
+                                    : t("common:noResultsFound")
                         }
                         renderInput={ (params: AutocompleteRenderInputParams) => (
                             <TextField
