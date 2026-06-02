@@ -58,6 +58,14 @@ export interface FeatureAccessConfigInterface {
      * Feature flags for the feature.
      */
     featureFlags?: FeatureFlagsInterface[];
+    /**
+     * Maximum allowed graceful refresh token reuse count (applications feature only).
+     */
+    maxGracefulRefreshTokenReuseLimit?: number;
+    /**
+     * Maximum allowed graceful refresh token rotation validity period in seconds (applications feature only).
+     */
+    maxGracefulRefreshTokenRotationValidityPeriod?: number;
 }
 
 export interface DeprecatedFeatureInterface {

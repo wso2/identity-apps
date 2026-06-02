@@ -578,6 +578,8 @@
                     "applications.adaptiveAuth.orgGovernance"
                 ],
                 "enabled": true,
+                "maxGracefulRefreshTokenReuseLimit": 8,
+                "maxGracefulRefreshTokenRotationValidityPeriod": 120,
                 "featureFlags": [
                     {
                         "feature": "applications",

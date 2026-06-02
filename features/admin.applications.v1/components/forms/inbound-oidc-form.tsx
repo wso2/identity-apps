@@ -240,6 +240,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         state?.config?.ui?.features?.applications?.disabledFeatures);
     const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
         state?.config?.ui?.features?.applications);
+    const maxGracefulRefreshTokenReuseLimit: number = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.applications?.maxGracefulRefreshTokenReuseLimit ?? 5);
+    const maxGracefulRefreshTokenRotationValidityPeriod: number = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.applications?.maxGracefulRefreshTokenRotationValidityPeriod ?? 60);
     const organizationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
         state?.config?.ui?.features?.organizations);
     const isBackChannelLogoutEnabled: boolean = isFeatureEnabled(
@@ -281,6 +285,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ hideRefreshTokenGrantType, setHideRefreshTokenGrantType ] = useState<boolean>(false);
     const [ isRenewRefreshTokenEnabled, setIsRenewRefreshTokenEnabled ] =
         useState<boolean>(initialValues?.refreshToken?.renewRefreshToken ?? false);
+    const [ isGracefulRefreshTokenRotationEnabled, setIsGracefulRefreshTokenRotationEnabled ] =
+        useState<boolean>(initialValues?.refreshToken?.gracefulRefreshTokenRotationEnabled ?? false);
     const [ selectedGrantTypes, setSelectedGrantTypes ] = useState<string[]>(undefined);
     const [ selectedHybridFlowResponseTypes, setSelectedHybridFlowResponseTypes ] = useState<string[]>([]);
     const [ isJWTAccessTokenTypeSelected, setJWTAccessTokenTypeSelected ] = useState<boolean>(false);
@@ -334,6 +340,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const refreshToken: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const expiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const extendExpiryTime: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const gracefulRefreshTokenRotation: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const gracefulRefreshTokenRotationValidityPeriod: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const gracefulRefreshTokenReuseLimit: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const audience: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const encryption: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const algorithm: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
@@ -766,6 +775,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     useEffect((): void => {
         setIsRenewRefreshTokenEnabled(initialValues?.refreshToken?.renewRefreshToken ?? false);
     }, [ initialValues?.refreshToken?.renewRefreshToken ]);
+
+    useEffect((): void => {
+        setIsGracefulRefreshTokenRotationEnabled(
+            initialValues?.refreshToken?.gracefulRefreshTokenRotationEnabled ?? false
+        );
+    }, [ initialValues?.refreshToken?.gracefulRefreshTokenRotationEnabled ]);
 
     /**
      * Check whether to enable validate token bindings.
@@ -1540,13 +1555,27 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     frontChannelLogoutUrl: values.get("frontChannelLogoutUrl")
                 },
                 publicClient: !isMobileApplication ? values.get("supportPublicClients")?.length > 0 : true,
-                refreshToken: {
-                    expiryInSeconds: values.get("expiryInSeconds")
-                        ? parseInt(values.get("expiryInSeconds"), 10)
-                        : Number(metadata?.defaultRefreshTokenExpiryTime),
-                    extendRenewedRefreshTokenExpiryTime: values.get("extendExpiryTime")?.includes("extendExpiryTime"),
-                    renewRefreshToken: values.get("RefreshToken")?.length > 0
-                },
+                refreshToken: (() => {
+                    const isRenew: boolean = values.get("RefreshToken")?.length > 0;
+                    const isGraceful: boolean =
+                        isRenew && values.get("GracefulRefreshTokenRotation")?.length > 0;
+
+                    return {
+                        expiryInSeconds: values.get("expiryInSeconds")
+                            ? parseInt(values.get("expiryInSeconds"), 10)
+                            : Number(metadata?.defaultRefreshTokenExpiryTime),
+                        extendRenewedRefreshTokenExpiryTime:
+                            isRenew && values.get("extendExpiryTime")?.includes("extendExpiryTime"),
+                        gracefulRefreshTokenReuseLimit: isGraceful
+                            ? parseInt(values.get("gracefulRefreshTokenReuseLimit"), 10) || 0
+                            : 0,
+                        gracefulRefreshTokenRotationEnabled: isGraceful,
+                        gracefulRefreshTokenRotationValidityPeriod: isGraceful
+                            ? parseInt(values.get("gracefulRefreshTokenRotationValidityPeriod"), 10) || 0
+                            : 0,
+                        renewRefreshToken: isRenew
+                    };
+                })(),
                 scopeValidators: values.get("scopeValidator"),
                 subjectToken: {
                     applicationSubjectTokenExpiryInSeconds : values.get("applicationSubjectTokenExpiryInSeconds")
@@ -1807,13 +1836,27 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     : initialValues?.logout?.frontChannelLogoutUrl
             },
             publicClient: true,
-            refreshToken: {
-                expiryInSeconds: values.get("expiryInSeconds")
-                    ? parseInt(values.get("expiryInSeconds"), 10)
-                    : Number(metadata?.defaultRefreshTokenExpiryTime),
-                extendRenewedRefreshTokenExpiryTime: values.get("extendExpiryTime")?.includes("extendExpiryTime"),
-                renewRefreshToken: values.get("RefreshToken")?.length > 0
-            },
+            refreshToken: (() => {
+                const isRenew: boolean = values.get("RefreshToken")?.length > 0;
+                const isGraceful: boolean =
+                    isRenew && values.get("GracefulRefreshTokenRotation")?.length > 0;
+
+                return {
+                    expiryInSeconds: values.get("expiryInSeconds")
+                        ? parseInt(values.get("expiryInSeconds"), 10)
+                        : Number(metadata?.defaultRefreshTokenExpiryTime),
+                    extendRenewedRefreshTokenExpiryTime:
+                        isRenew && values.get("extendExpiryTime")?.includes("extendExpiryTime"),
+                    gracefulRefreshTokenReuseLimit: isGraceful
+                        ? parseInt(values.get("gracefulRefreshTokenReuseLimit"), 10) || 0
+                        : 0,
+                    gracefulRefreshTokenRotationEnabled: isGraceful,
+                    gracefulRefreshTokenRotationValidityPeriod: isGraceful
+                        ? parseInt(values.get("gracefulRefreshTokenRotationValidityPeriod"), 10) || 0
+                        : 0,
+                    renewRefreshToken: isRenew
+                };
+            })(),
             subjectToken: {
                 applicationSubjectTokenExpiryInSeconds : values.get("applicationSubjectTokenExpiryInSeconds")
                     ? parseInt(values.get("applicationSubjectTokenExpiryInSeconds"), 10)
@@ -2053,6 +2096,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 extendExpiryTime.current.scrollIntoView(options);
 
                 break;
+
+            case "gracefulRefreshTokenRotationValidityPeriod":
+                gracefulRefreshTokenRotationValidityPeriod.current.scrollIntoView(options);
+
+                break;
+
+            case "gracefulRefreshTokenReuseLimit":
+                gracefulRefreshTokenReuseLimit.current.scrollIntoView(options);
+
+                break;
             case "subjectToken":
                 subjectToken.current.scrollIntoView(options);
 
@@ -2123,6 +2176,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         const numberValue: number = Math.floor(Number(value.toString()));
 
         return (numberValue !== Infinity && String(numberValue) === value && numberValue > 0);
+    };
+
+    /**
+     * Check if a given value is a valid whole number (no decimals, no Infinity, not NaN).
+     *
+     * @param value - value as a string.
+     */
+    const isValidWholeNumber = (value: string): boolean => {
+        const numValue: number = Math.floor(Number(value));
+
+        return numValue !== Infinity && String(numValue) === value && !isNaN(numValue);
     };
 
     const isPublicClientFieldEnabled: boolean = !isSPAApplication
@@ -3785,44 +3849,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
-                        { isRenewRefreshTokenEnabled && (
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                    <Field
-                                        ref={ extendExpiryTime }
-                                        name="extendExpiryTime"
-                                        label=""
-                                        required={ false }
-                                        type="checkbox"
-                                        value={
-                                            initialValues?.refreshToken?.extendRenewedRefreshTokenExpiryTime
-                                                ? [ "extendExpiryTime" ]
-                                                : []
-                                        }
-                                        children={ [
-                                            {
-                                                label: t("applications:forms.inboundOIDC.sections.refreshToken."
-                                                    + "fields.extendRenewedRefreshTokenExpiryTime.label"),
-                                                value: "extendExpiryTime"
-                                            }
-                                        ] }
-                                        readOnly={ readOnly }
-                                        data-testid={ `${ testId }-extend-refresh-token-expiry-time-checkbox` }
-                                    />
-                                    <Hint>
-                                        <Trans
-                                            i18nKey={
-                                                "applications:forms.inboundOIDC.sections" +
-                                                ".refreshToken.fields.extendRenewedRefreshTokenExpiryTime.hint"
-                                            }
-                                        >
-                                            Select to ensure renewed refresh tokens receive a fresh expiry time
-                                            instead of retaining the remaining validity period from the original token.
-                                        </Trans>
-                                    </Hint>
-                                </Grid.Column>
-                            </Grid.Row>
-                        ) }
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
@@ -3871,6 +3897,238 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
+                        { isRenewRefreshTokenEnabled && (
+                            <>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Field
+                                            ref={ extendExpiryTime }
+                                            name="extendExpiryTime"
+                                            label=""
+                                            required={ false }
+                                            type="checkbox"
+                                            value={
+                                                initialValues?.refreshToken?.extendRenewedRefreshTokenExpiryTime
+                                                    ? [ "extendExpiryTime" ]
+                                                    : []
+                                            }
+                                            children={ [
+                                                {
+                                                    label: t("applications:forms.inboundOIDC.sections.refreshToken."
+                                                        + "fields.extendRenewedRefreshTokenExpiryTime.label"),
+                                                    value: "extendExpiryTime"
+                                                }
+                                            ] }
+                                            readOnly={ readOnly }
+                                            data-testid={ `${ testId }-extend-refresh-token-expiry-time-checkbox` }
+                                        />
+                                        <Hint>
+                                            <Trans
+                                                i18nKey={
+                                                    "applications:forms.inboundOIDC.sections" +
+                                                    ".refreshToken.fields.extendRenewedRefreshTokenExpiryTime.hint"
+                                                }
+                                            >
+                                                Select to ensure renewed refresh tokens receive a fresh expiry time
+                                                instead of retaining the remaining validity period from the original token.
+                                            </Trans>
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                        <Field
+                                            ref={ gracefulRefreshTokenRotation }
+                                            name="GracefulRefreshTokenRotation"
+                                            label=""
+                                            required={ false }
+                                            type="checkbox"
+                                            value={
+                                                initialValues?.refreshToken?.gracefulRefreshTokenRotationEnabled
+                                                    ? [ "gracefulRefreshTokenRotation" ]
+                                                    : []
+                                            }
+                                            listen={ (values: Map<string, FormValue>): void => {
+                                                setIsGracefulRefreshTokenRotationEnabled(
+                                                    values.get("GracefulRefreshTokenRotation")?.length > 0
+                                                );
+                                            } }
+                                            children={ [
+                                                {
+                                                    label: t("applications:forms.inboundOIDC.sections.refreshToken" +
+                                                        ".fields.gracefulRefreshTokenRotation.label"),
+                                                    value: "gracefulRefreshTokenRotation"
+                                                }
+                                            ] }
+                                            readOnly={ readOnly }
+                                            data-testid={ `${ testId }-graceful-refresh-token-rotation-checkbox` }
+                                        />
+                                        <Hint>
+                                            { t("applications:forms.inboundOIDC.sections.refreshToken" +
+                                                ".fields.gracefulRefreshTokenRotation.hint") }
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
+                                { isGracefulRefreshTokenRotationEnabled && (
+                                    <>
+                                        <Grid.Row columns={ 1 }>
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                                <Field
+                                                    ref={ gracefulRefreshTokenRotationValidityPeriod }
+                                                    name="gracefulRefreshTokenRotationValidityPeriod"
+                                                    label={
+                                                        t("applications:forms.inboundOIDC.sections.refreshToken" +
+                                                            ".fields.gracefulRefreshTokenRotationValidityPeriod.label")
+                                                    }
+                                                    required={ true }
+                                                    requiredErrorMessage={
+                                                        t("applications:forms.inboundOIDC.sections.refreshToken" +
+                                                            ".fields.gracefulRefreshTokenRotationValidityPeriod" +
+                                                            ".validations.empty")
+                                                    }
+                                                    placeholder={
+                                                        t("applications:forms.inboundOIDC.sections.refreshToken" +
+                                                            ".fields.gracefulRefreshTokenRotationValidityPeriod" +
+                                                            ".placeholder")
+                                                    }
+                                                    validation={
+                                                        async (value: FormValue, validation: Validation) => {
+                                                            const numValue: number =
+                                                                Math.floor(Number(value.toString()));
+
+                                                            if (!isValidWholeNumber(value.toString())) {
+                                                                validation.isValid = false;
+                                                                validation.errorMessages.push(
+                                                                    t("applications:forms.inboundOIDC.sections" +
+                                                                        ".refreshToken.fields" +
+                                                                        ".gracefulRefreshTokenRotationValidityPeriod" +
+                                                                        ".validations.invalid")
+                                                                );
+                                                            } else if (numValue < 0) {
+                                                                validation.isValid = false;
+                                                                validation.errorMessages.push(
+                                                                    t("applications:forms.inboundOIDC.sections" +
+                                                                        ".refreshToken.fields" +
+                                                                        ".gracefulRefreshTokenRotationValidityPeriod" +
+                                                                        ".validations.belowMin")
+                                                                );
+                                                            } else if (
+                                                                numValue > maxGracefulRefreshTokenRotationValidityPeriod
+                                                            ) {
+                                                                validation.isValid = false;
+                                                                validation.errorMessages.push(
+                                                                    t("applications:forms.inboundOIDC.sections" +
+                                                                        ".refreshToken.fields" +
+                                                                        ".gracefulRefreshTokenRotationValidityPeriod" +
+                                                                        ".validations.maxExceeded",
+                                                                    {
+                                                                        max: maxGracefulRefreshTokenRotationValidityPeriod
+                                                                    })
+                                                                );
+                                                            }
+                                                        }
+                                                    }
+                                                    value={
+                                                        initialValues?.refreshToken
+                                                            ?.gracefulRefreshTokenRotationValidityPeriod !== undefined
+                                                            ? initialValues.refreshToken
+                                                                .gracefulRefreshTokenRotationValidityPeriod.toString()
+                                                            : (metadata?.defaultGracefulRefreshTokenRotationValidityPeriod
+                                                                ?? "30")
+                                                    }
+                                                    type="number"
+                                                    readOnly={ readOnly }
+                                                    min={ 0 }
+                                                    max={ maxGracefulRefreshTokenRotationValidityPeriod }
+                                                    data-testid={
+                                                        `${ testId }-graceful-refresh-token-validity-period-input`
+                                                    }
+                                                />
+                                                <Hint>
+                                                    { t("applications:forms.inboundOIDC.sections.refreshToken" +
+                                                        ".fields.gracefulRefreshTokenRotationValidityPeriod.hint") }
+                                                </Hint>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                        <Grid.Row columns={ 1 }>
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                                <Field
+                                                    ref={ gracefulRefreshTokenReuseLimit }
+                                                    name="gracefulRefreshTokenReuseLimit"
+                                                    label={
+                                                        t("applications:forms.inboundOIDC.sections.refreshToken" +
+                                                            ".fields.gracefulRefreshTokenReuseLimit.label")
+                                                    }
+                                                    required={ true }
+                                                    requiredErrorMessage={
+                                                        t("applications:forms.inboundOIDC.sections.refreshToken" +
+                                                            ".fields.gracefulRefreshTokenReuseLimit" +
+                                                            ".validations.empty")
+                                                    }
+                                                    placeholder={
+                                                        t("applications:forms.inboundOIDC.sections.refreshToken" +
+                                                            ".fields.gracefulRefreshTokenReuseLimit.placeholder")
+                                                    }
+                                                    validation={
+                                                        async (value: FormValue, validation: Validation) => {
+                                                            const numValue: number =
+                                                                Math.floor(Number(value.toString()));
+
+                                                            if (!isValidWholeNumber(value.toString())) {
+                                                                validation.isValid = false;
+                                                                validation.errorMessages.push(
+                                                                    t("applications:forms.inboundOIDC.sections" +
+                                                                        ".refreshToken.fields" +
+                                                                        ".gracefulRefreshTokenReuseLimit" +
+                                                                        ".validations.invalid")
+                                                                );
+                                                            } else if (numValue < 1) {
+                                                                validation.isValid = false;
+                                                                validation.errorMessages.push(
+                                                                    t("applications:forms.inboundOIDC.sections" +
+                                                                        ".refreshToken.fields" +
+                                                                        ".gracefulRefreshTokenReuseLimit" +
+                                                                        ".validations.belowMin")
+                                                                );
+                                                            } else if (numValue > maxGracefulRefreshTokenReuseLimit) {
+                                                                validation.isValid = false;
+                                                                validation.errorMessages.push(
+                                                                    t("applications:forms.inboundOIDC.sections" +
+                                                                        ".refreshToken.fields" +
+                                                                        ".gracefulRefreshTokenReuseLimit" +
+                                                                        ".validations.maxExceeded",
+                                                                    {
+                                                                        max: maxGracefulRefreshTokenReuseLimit
+                                                                    })
+                                                                );
+                                                            }
+                                                        }
+                                                    }
+                                                    value={
+                                                        initialValues?.refreshToken
+                                                            ?.gracefulRefreshTokenReuseLimit !== undefined
+                                                            ? initialValues.refreshToken
+                                                                .gracefulRefreshTokenReuseLimit.toString()
+                                                            : (metadata?.defaultGracefulRefreshTokenReuseLimit ?? "3")
+                                                    }
+                                                    type="number"
+                                                    readOnly={ readOnly }
+                                                    min={ 1 }
+                                                    max={ maxGracefulRefreshTokenReuseLimit }
+                                                    data-testid={
+                                                        `${ testId }-graceful-refresh-token-reuse-limit-input`
+                                                    }
+                                                />
+                                                <Hint>
+                                                    { t("applications:forms.inboundOIDC.sections.refreshToken" +
+                                                        ".fields.gracefulRefreshTokenReuseLimit.hint") }
+                                                </Hint>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </>
+                                ) }
+                            </>
+                        ) }
                     </>
                 )
             }
