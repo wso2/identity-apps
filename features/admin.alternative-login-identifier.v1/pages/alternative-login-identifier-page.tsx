@@ -100,7 +100,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
     const [ isApplicationRedirect, setApplicationRedirect ] = useState<boolean>(false);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
     const [ availableClaims, setAvailableClaims ] = useState<ExtendedClaimInterface[]>([]);
-    const [ isLoading, setIsLoading ] = useState(false);
+    const [ isFetching, setIsFetching ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ initialFormValues, setInitialFormValues ] = useState<AlternativeLoginIdentifierFormInterface>(undefined);
     const availiableLoginIdentifierAttributes: string[] =
@@ -385,7 +385,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
             });
         }
         setIsSubmitting(true);
-        setIsLoading(true);
+        setIsFetching(true);
         updateGovernanceConnector(data, categoryId, connectorId)
             .then(() => {
                 if (checkedClaims.length > 0) {
@@ -399,7 +399,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
             })
             .finally(() => {
                 setIsSubmitting(false);
-                setIsLoading(false);
+                setIsFetching(false);
             });
     };
 
@@ -554,7 +554,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
     }, []);
 
     useEffect(() => {
-        if (isLoading) {
+        if (isFetching) {
             return;
         }
 
@@ -562,7 +562,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
     }, [
         availableClaims,
         connector,
-        isLoading
+        isFetching
     ]);
 
     /**
@@ -578,16 +578,16 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
      * Load multiattribute login and claim data.
      */
     useEffect(() => {
-        setIsLoading(true);
+        setIsFetching(true);
         getClaims();
         loadConnectorDetails();
-        setIsLoading(false);
+        setIsFetching(false);
     }, []);
 
     return (
         <>
             {
-                !isLoading && initialFormValues
+                !isFetching && initialFormValues
                     ? (
                         <PageLayout
                             pageTitle={ t("extensions:manage.accountLogin.alternativeLoginIdentifierPage.pageTitle") }

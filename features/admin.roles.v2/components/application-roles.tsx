@@ -110,7 +110,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     const { getLink } = useDocumentation();
     const { data: application } = useGetApplication(appId, !!appId);
 
-    const [ isLoading, setIsLoading ] = useState<boolean>(false);
+    const [ isRolesLoading, setIsRolesLoading ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ shouldUpdateRoleAudience, setShouldUpdateRoleAudience ] = useState<boolean>(false);
     const [ showSwitchAudienceWarning, setShowSwitchAudienceWarning ] = useState<boolean>(false);
@@ -239,7 +239,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
             });
         } else {
             // For legacy API, use direct API call
-            setIsLoading(true);
+            setIsRolesLoading(true);
             getApplicationRolesByAudience(roleAudience, appId, null, null, null,
                 "users,groups,permissions,associatedApplications")
                 .then((response: RolesV2ResponseInterface) => {
@@ -283,7 +283,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                     setRoleList([]);
                 })
                 .finally(() => {
-                    setIsLoading(false);
+                    setIsRolesLoading(false);
                 });
         }
     };
@@ -370,7 +370,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
     return (
         <>
             <EmphasizedSegment
-                loading={ userRolesV3FeatureEnabled ? isRolesV3Loading : isLoading }
+                loading={ userRolesV3FeatureEnabled ? isRolesV3Loading : isRolesLoading }
                 padded="very"
                 data-componentid={ componentId }
             >
@@ -482,7 +482,7 @@ export const ApplicationRoles: FunctionComponent<ApplicationRolesSettingsInterfa
                                     multiple
                                     disableCloseOnSelect
                                     readOnly={ readOnly }
-                                    loading={ userRolesV3FeatureEnabled ? isRolesV3Loading : isLoading }
+                                    loading={ userRolesV3FeatureEnabled ? isRolesV3Loading : isRolesLoading }
                                     options={ roleList }
                                     value={ selectedRoles ?? [] }
                                     data-componentid={ `${ componentId }-assigned-roles-list` }

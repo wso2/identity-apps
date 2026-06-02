@@ -81,7 +81,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ bodyError, setBodyError ] = useState<boolean>(false);
     const [ footerError, setFooterError ] = useState<boolean>(false);
-    const [ isLoading, setIsLoading ] = useState<boolean>(false);
+    const [ isSaving, setIsSaving ] = useState<boolean>(false);
 
     /**
      * This will load the locales to the dropdown.
@@ -146,7 +146,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
             subject: values.get("emailSubject").toString()
         };
 
-        setIsLoading(true);
+        setIsSaving(true);
 
         createLocaleTemplate(templateTypeId, templateDate)
             .then((response: AxiosResponse<EmailTemplateType>) => {
@@ -175,7 +175,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                 }));
             })
             .finally(() => {
-                setIsLoading(false);
+                setIsSaving(false);
             });
     };
 
@@ -194,7 +194,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
             subject: values.get("emailSubject").toString()
         };
 
-        setIsLoading(true);
+        setIsSaving(true);
 
         replaceLocaleTemplateContent(templateTypeId, templateId, templateDate)
             .then((response: AxiosResponse) => {
@@ -220,7 +220,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                 }));
             })
             .finally(() => {
-                setIsLoading(false);
+                setIsSaving(false);
             });
     };
 
@@ -389,8 +389,8 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                             primary
                             type="submit"
                             size="small"
-                            loading={ isLoading }
-                            disabled={ isLoading }
+                            loading={ isSaving }
+                            disabled={ isSaving }
                             className="form-button"
                             data-testid={ `${ testId }-submit-button` }
                         >

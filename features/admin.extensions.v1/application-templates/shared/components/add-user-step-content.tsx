@@ -54,12 +54,12 @@ export const AddUserStepContent: FunctionComponent<AddUserStepContentPropsInterf
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ addedUserList, setAddedUserList ] = useState<string[]>([]);
-    const [ isLoading, setIsLoading ] = useState(false);
+    const [ isUserFetchInProgress, setIsUserFetchInProgress ] = useState<boolean>(false);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const addNewUser = (id: string) => {
-        setIsLoading(true);
+        setIsUserFetchInProgress(true);
         getUserDetails(id, null)
             .then((response: ProfileInfoInterface) => {
                 if (response.emails && Array.isArray(response.emails) && response.emails.length > 0) {
@@ -77,7 +77,7 @@ export const AddUserStepContent: FunctionComponent<AddUserStepContentPropsInterf
                 // TODO add to notifications
             })
             .finally(() => {
-                setIsLoading(false);
+                setIsUserFetchInProgress(false);
             });
     };
 
@@ -121,7 +121,7 @@ export const AddUserStepContent: FunctionComponent<AddUserStepContentPropsInterf
                 </Button>
                 <List className="add-user-step-list">
                     {
-                        isLoading ? (
+                        isUserFetchInProgress ? (
                             <ContentLoader/>
                         ) :
                             addedUserList?.map((user: string, index: number) => {

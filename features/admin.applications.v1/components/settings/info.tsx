@@ -103,7 +103,7 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     const [ isOIDC, setIsOIDC ] = useState<boolean>(false);
     const [ isSAML, setIsSAML ] = useState<boolean>(false);
     const [ isWSFed, setIsWSFed ] = useState<boolean>(false);
-    const [ isLoading, setIsLoading ] = useState<boolean>(false);
+    const [ isConfigLoading, setIsConfigLoading ] = useState<boolean>(false);
     const mtlsEndpointsPresent: boolean = oidcConfigurations.mtlsTokenEndpoint !== undefined
         && templateId !== ApplicationManagementConstants.M2M_APP_TEMPLATE_ID;
 
@@ -116,11 +116,11 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
             inboundProtocols.map((protocol: InboundProtocolListItemInterface) => {
                 if (protocol.type == "oauth2") {
                     setIsOIDC(true);
-                    setIsLoading(isOIDCConfigLoading);
+                    setIsConfigLoading(isOIDCConfigLoading);
                 }
                 if (protocol.type == "samlsso") {
                     setIsSAML(true);
-                    setIsLoading(isSAMLConfigLoading);
+                    setIsConfigLoading(isSAMLConfigLoading);
                 }
                 if (protocol.type == "passivests") {
                     setIsWSFed(true);
@@ -136,10 +136,10 @@ export const Info: FunctionComponent<InfoPropsInterface> = (
     }, [ templateId ]);
 
     return (
-        !isLoading
+        !isConfigLoading
             ? (
                 <EmphasizedSegment
-                    loading={ isLoading }
+                    loading={ isConfigLoading }
                     padded="very"
                     data-componentid={ componentId }
                     data-testid={ componentId }

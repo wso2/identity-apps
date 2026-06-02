@@ -148,7 +148,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
     const [ formValues, setFormValues ] = useState<any>(undefined);
     const [ formDisplayData, setFormDisplayData ] = useState<any>(undefined);
     const [ isEmailVerificationEnabledInForm, setIsEmailVerificationEnabledInForm ] = useState<boolean>(false);
-    const [ isLoading, setIsLoading ] = useState<boolean>(false);
+    const [ isConnectorLoading, setIsConnectorLoading ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isFormInitialized, setIsFormInitialized ] = useState<boolean>(false);
 
@@ -172,11 +172,11 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
      * Load Attributes verification connector details on page load.
      */
     useEffect(() => {
-        setIsLoading(true);
+        setIsConnectorLoading(true);
 
         if (!connectorDetails) {
             InitializeConnectorData();
-            setIsLoading(false);
+            setIsConnectorLoading(false);
         }
     }, [ connectorDetails ]);
 
@@ -186,7 +186,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
     useEffect(() => {
         if (isFormInitialized) {
             updateConnector(formValues);
-            setIsLoading(false);
+            setIsConnectorLoading(false);
         }
 
         // Set default states of listener dependent fields.
@@ -237,7 +237,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                 }
             }).finally(() => {
                 setIsFormInitialized(true);
-                setIsLoading(false);
+                setIsConnectorLoading(false);
             });
     };
 
@@ -611,7 +611,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
             } }
         >
             <EmphasizedSegment className="very padded">
-                { !isLoading && formValues ? (
+                { !isConnectorLoading && formValues ? (
                     <FormContent />
                 ) : (
                     <ContentLoader />

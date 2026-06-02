@@ -58,14 +58,14 @@ const AddTenantModal: FunctionComponent<AddTenantModalProps> = ({
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
     const { mutateTenantList } = useTenants();
-    const [ isLoading, setIsLoading ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     /**
      * Handles the form submission.
      * @param payload - Form values.
      */
     const handleSubmit = (payload: AddTenantRequestPayload): void => {
-        setIsLoading(true);
+        setIsSubmitting(true);
 
         addTenant(payload)
             .then(() => {
@@ -90,7 +90,7 @@ const AddTenantModal: FunctionComponent<AddTenantModalProps> = ({
                 );
             })
             .finally(() => {
-                setIsLoading(false);
+                setIsSubmitting(false);
             });
     };
 
@@ -132,7 +132,7 @@ const AddTenantModal: FunctionComponent<AddTenantModalProps> = ({
                             variant="contained"
                             color="primary"
                             autoFocus
-                            disabled={ isLoading }
+                            disabled={ isSubmitting }
                             onClick={ () => {
                                 document
                                     .getElementById(TenantConstants.ADD_TENANT_FORM_ID)

@@ -62,7 +62,7 @@ const InternalNotificationSendingPage: FC<InternalNotificationSendingPageInterfa
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const [ isLoading, setIsLoading ] = useState<boolean>(false);
+    const [ isNotificationLoading, setIsNotificationLoading ] = useState<boolean>(false);
     const [
         isNotificationInternallyManaged,
         setIsNotificationInternallyManaged
@@ -73,7 +73,7 @@ const InternalNotificationSendingPage: FC<InternalNotificationSendingPageInterfa
     }, []);
 
     const getNotificationInternallyManaged = (): void => {
-        setIsLoading(true);
+        setIsNotificationLoading(true);
         Promise.all([
             getConnectorNotificationInternallyManaged(
                 ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
@@ -147,7 +147,7 @@ const InternalNotificationSendingPage: FC<InternalNotificationSendingPageInterfa
                     );
                 }
             }).finally(() => {
-                setIsLoading(false);
+                setIsNotificationLoading(false);
             });
     };
 
@@ -465,7 +465,7 @@ const InternalNotificationSendingPage: FC<InternalNotificationSendingPageInterfa
             bottomMargin={ false }
             contentTopMargin={ true }
             pageHeaderMaxWidth={ true }
-            isLoading={ isLoading }
+            isLoading={ isNotificationLoading }
         >
             <Grid container spacing={ 2 } direction="column">
                 <Grid xs={ 12 }>

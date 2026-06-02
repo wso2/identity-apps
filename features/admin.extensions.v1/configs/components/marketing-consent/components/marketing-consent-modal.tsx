@@ -66,7 +66,7 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
 
     const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);
 
-    const [ isLoading, setIsLoading ] = useState<boolean>(false);
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     /**
      * Handles updating user consent.
@@ -74,7 +74,7 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
      * @param isSubscribed - Is subscribed or declined.
      */
     const submitUserConsent = (isSubscribed: boolean): void => {
-        setIsLoading(true);
+        setIsSubmitting(true);
         updateUserConsent(isSubscribed)
             .then((response: AxiosResponse) => {
                 if (response?.status !== 200) {
@@ -96,7 +96,7 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
                 }));
             })
             .finally(() => {
-                setIsLoading(false);
+                setIsSubmitting(false);
             });
     };
 
@@ -164,7 +164,7 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
                                     <Button
                                         primary
                                         onClick={ handleSubscribeButtonClick }
-                                        disabled={ isLoading }
+                                        disabled={ isSubmitting }
                                         data-componentid={ `${componentId}-subscribe-btn` }
                                     >
                                         { t("console:common.marketingConsent.actions.subscribe") }
@@ -174,7 +174,7 @@ export const MarketingConsentModal: FunctionComponent<MarketingConsentModalPropT
                                         primary
                                         className="link-button"
                                         onClick={ handleCancelButtonClick }
-                                        disabled={ isLoading }
+                                        disabled={ isSubmitting }
                                         data-componentid={ `${componentId}-decline-btn` }
                                     >
                                         { t("console:common.marketingConsent.actions.decline") }

@@ -82,7 +82,7 @@ const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
     const [ showApplicationCreationScreen, setShowApplicationCreationScreen ] = useState<boolean>(false);
     const [ showApplicationRedirectionScreen, setShowApplicationRedirectionScreen ] = useState<boolean>(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const [ isLoading, setIsLoading ] = useState(false);
+    const [ isUserFetchInProgress, setIsUserFetchInProgress ] = useState<boolean>(false);
     const [ isUserAdded, setIsUserAdded ] = useState(false);
     const [ addedUserList, setAddedUserList ] = useState<string[]>([]);
     const [ openLimitReachedModal, setOpenLimitReachedModal ] = useState<boolean>(false);
@@ -93,7 +93,7 @@ const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
 
 
     const addNewUser = (id: string) => {
-        setIsLoading(true);
+        setIsUserFetchInProgress(true);
         getUserDetails(id, null)
             .then((response: ProfileInfoInterface) => {
                 const users: string[] = addedUserList;
@@ -110,7 +110,7 @@ const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
                 // TODO add to notifications
             })
             .finally(() => {
-                setIsLoading(false);
+                setIsUserFetchInProgress(false);
             });
     };
 
@@ -187,7 +187,7 @@ const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
                         </Grid.Row>
                         <Grid.Row className="row">
                             <Grid.Column stretched textAlign="center" width={ "16" }>
-                                { isLoading
+                                { isUserFetchInProgress
                                     ? (
                                         <ContentLoader/>
                                     )
@@ -195,7 +195,7 @@ const TryItCreateWizard: FunctionComponent<TryItCreateWizardPropsInterface> = (
                                         { isUserAdded ?
                                             ( <>
                                                 {
-                                                    isLoading ? (
+                                                    isUserFetchInProgress ? (
                                                         <ContentLoader/>
                                                     ) :
                                                         addedUserList?.map((user: string, index: number) => {

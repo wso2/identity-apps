@@ -101,7 +101,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
 
     const isDigitalWallet: boolean = originalTemplateId === "digital-wallet-application";
 
-    const [ isLoading, setIsLoading ] = useState<boolean>(false);
+    const [ isUpdatingScopes, setIsUpdatingScopes ] = useState<boolean>(false);
     const [ isUpdateButtonDisabled, setIsUpdateButtonDisabled ] = useState<boolean>(true);
     const [ dropdownOptions, setDropdownOptions ] = useState<DropdownItemProps[]>(null);
     const [ defaultDropdownValues, setDefaultDropdownValues ] = useState<string[]>(null);
@@ -116,7 +116,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
     /**
      * Check if the place holders should be shown.
      */
-    const showPlaceHolders: boolean = isLoading ||
+    const showPlaceHolders: boolean = isUpdatingScopes ||
         dropdownOptions === null ||
         defaultDropdownValues === null ||
         selectedScopes === null ;
@@ -188,7 +188,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
      */
     const updateScopesOfAPIResource = (): void => {
 
-        setIsLoading(true);
+        setIsUpdatingScopes(true);
         patchScopesOfAuthorizedAPI(appId, subscribedAPIResource?.id, addedScopesIdentifiers, removedScopesIdentifiers)
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
@@ -240,7 +240,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
                         ".sections.apiSubscriptions.notifications.patchScopes.genericError.message" )
                 }));
             })
-            .finally(() => setIsLoading(false));
+            .finally(() => setIsUpdatingScopes(false));
     };
 
     /**
@@ -251,7 +251,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
             selectedScopes === null ||
             dropdownOptions === null ||
             defaultDropdownValues === null ||
-            isLoading
+            isUpdatingScopes
         ) {
             return <ContentLoader inline="centered" active />;
         }
