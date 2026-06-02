@@ -30,7 +30,13 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ContentLoader, PageLayout } from "@wso2is/react-components";
+import {
+    ConfirmationModal,
+    ContentLoader,
+    DangerZone,
+    DangerZoneGroup,
+    PageLayout
+} from "@wso2is/react-components";
 import React, {
     ChangeEvent,
     FunctionComponent,
@@ -60,7 +66,12 @@ const DEFAULT_PUBLISHER_ENABLEMENT: Record<string, boolean> = {
     [MoesifEventPublisherKey.TOKEN]: false
 };
 
-const PUBLISHER_CONFIG: { key: MoesifEventPublisherKey; labelKey: string }[] = [
+interface PublisherConfigItem {
+    key: MoesifEventPublisherKey;
+    labelKey: string;
+}
+
+const PUBLISHER_CONFIG: PublisherConfigItem[] = [
     {
         key: MoesifEventPublisherKey.AUTHENTICATION,
         labelKey: "extensions:develop.moesifAnalytics.settingsPage.publishers.authentication"
@@ -117,6 +128,7 @@ const AnalyticsSettingsPage: FunctionComponent = (): ReactElement => {
         useState<Record<string, boolean>>(DEFAULT_PUBLISHER_ENABLEMENT);
     const [ isSaving, setIsSaving ] = useState<boolean>(false);
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
+    const [ showRevertConfirmationModal, setShowRevertConfirmationModal ] = useState<boolean>(false);
 
     useEffect(() => {
         getMoesifPublisher()
@@ -214,6 +226,7 @@ const AnalyticsSettingsPage: FunctionComponent = (): ReactElement => {
         try {
             await deleteMoesifPublisher();
 
+            setShowRevertConfirmationModal(false);
             setExistingPublisher(null);
             setApiKey("");
             setPublisherEnablement(DEFAULT_PUBLISHER_ENABLEMENT);
@@ -286,8 +299,8 @@ const AnalyticsSettingsPage: FunctionComponent = (): ReactElement => {
                         data-componentid="analytics-api-key-input"
                         fullWidth
                         required={ !existingPublisher }
-                        label={ t(
-                            "extensions:develop.moesifAnalytics.collectorKeySettings.keyField.label"
+                        aria-label={ t(
+                            "extensions:develop.moesifAnalytics.settingsPage.apiKeySection.heading"
                         ) }
                         placeholder={
                             existingPublisher
@@ -320,7 +333,7 @@ const AnalyticsSettingsPage: FunctionComponent = (): ReactElement => {
                         ) }
                     </Typography>
                     <Box sx={ { display: "flex", flexDirection: "column" } }>
-                        { PUBLISHER_CONFIG.map(({ key, labelKey }) => (
+                        { PUBLISHER_CONFIG.map(({ key, labelKey }: PublisherConfigItem) => (
                             <FormControlLabel
                                 key={ key }
                                 control={
@@ -351,55 +364,71 @@ const AnalyticsSettingsPage: FunctionComponent = (): ReactElement => {
             ) }
 
             { !isLoading && existingPublisher && (
-                <Paper
-                    data-componentid="analytics-settings-danger-zone"
-                    variant="outlined"
-                    sx={ {
-                        borderColor: "error.main",
-                        mt: 4,
-                        p: 4
-                    } }
+                <Box sx={ { mt: 4 } }>
+                    <DangerZoneGroup
+                        sectionHeader={ t(
+                            "extensions:develop.moesifAnalytics.publisherSettings.dangerZone.sectionHeader"
+                        ) }
+                    >
+                        <DangerZone
+                            data-componentid="analytics-settings-danger-zone"
+                            actionTitle={ t(
+                                "extensions:develop.moesifAnalytics.publisherSettings.dangerZone.deleteButton"
+                            ) }
+                            header={ t(
+                                "extensions:develop.moesifAnalytics.publisherSettings.dangerZone.heading"
+                            ) }
+                            subheader={ t(
+                                "extensions:develop.moesifAnalytics.publisherSettings.dangerZone.description"
+                            ) }
+                            isButtonDisabled={ isBusy }
+                            onActionClick={ (): void => setShowRevertConfirmationModal(true) }
+                        />
+                    </DangerZoneGroup>
+                </Box>
+            ) }
+
+            { existingPublisher && (
+                <ConfirmationModal
+                    data-componentid="analytics-settings-revert-confirmation-modal"
+                    onClose={ (): void => setShowRevertConfirmationModal(false) }
+                    type="negative"
+                    open={ showRevertConfirmationModal }
+                    assertionHint={ t(
+                        "extensions:develop.moesifAnalytics.publisherSettings.dangerZone.confirmation.assertionHint"
+                    ) }
+                    assertionType="checkbox"
+                    primaryAction={ t("common:confirm") }
+                    secondaryAction={ t("common:cancel") }
+                    onSecondaryActionClick={ (): void => setShowRevertConfirmationModal(false) }
+                    onPrimaryActionClick={ (): void => { handleDelete(); } }
+                    closeOnDimmerClick={ false }
+                    primaryActionLoading={ isDeleting }
                 >
-                    <Typography
-                        variant="subtitle1"
-                        color="error"
-                        gutterBottom
-                        fontWeight="medium"
+                    <ConfirmationModal.Header
+                        data-componentid="analytics-settings-revert-confirmation-modal-header"
                     >
                         { t(
-                            "extensions:develop.moesifAnalytics.publisherSettings.dangerZone.heading"
+                            "extensions:develop.moesifAnalytics.publisherSettings.dangerZone.confirmation.header"
                         ) }
-                    </Typography>
-                    <Box
-                        sx={ {
-                            alignItems: "center",
-                            display: "flex",
-                            justifyContent: "space-between",
-                            gap: 2
-                        } }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message
+                        attached
+                        negative
+                        data-componentid="analytics-settings-revert-confirmation-modal-message"
                     >
-                        <Typography variant="body2" color="text.secondary">
-                            { t(
-                                "extensions:develop.moesifAnalytics.publisherSettings" +
-                                ".dangerZone.description"
-                            ) }
-                        </Typography>
-                        <Button
-                            data-componentid="analytics-settings-delete-btn"
-                            onClick={ handleDelete }
-                            disabled={ isBusy }
-                            variant="outlined"
-                            color="error"
-                            startIcon={ isDeleting ? <CircularProgress size={ 14 } /> : null }
-                            sx={ { flexShrink: 0 } }
-                        >
-                            { t(
-                                "extensions:develop.moesifAnalytics.publisherSettings" +
-                                ".dangerZone.deleteButton"
-                            ) }
-                        </Button>
-                    </Box>
-                </Paper>
+                        { t(
+                            "extensions:develop.moesifAnalytics.publisherSettings.dangerZone.confirmation.message"
+                        ) }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content
+                        data-componentid="analytics-settings-revert-confirmation-modal-content"
+                    >
+                        { t(
+                            "extensions:develop.moesifAnalytics.publisherSettings.dangerZone.confirmation.content"
+                        ) }
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
             ) }
         </PageLayout>
     );

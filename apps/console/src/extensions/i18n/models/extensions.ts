@@ -2346,18 +2346,6 @@ export interface Extensions {
             organizationInfo: string;
         };
         moesifAnalytics: {
-            loginPage: {
-                description: string;
-                heading: string;
-                sideNavLabel: string;
-                title: string;
-            };
-            registrationPage: {
-                description: string;
-                heading: string;
-                sideNavLabel: string;
-                title: string;
-            };
             collectorKeySettings: {
                 cancelButton: string;
                 description: string;
@@ -2411,9 +2399,16 @@ export interface Extensions {
                 updateTitle: string;
                 enableButton: string;
                 dangerZone: {
+                    sectionHeader: string;
                     heading: string;
                     description: string;
                     deleteButton: string;
+                    confirmation: {
+                        header: string;
+                        message: string;
+                        content: string;
+                        assertionHint: string;
+                    };
                 };
                 notifications: {
                     deleteSuccess: {

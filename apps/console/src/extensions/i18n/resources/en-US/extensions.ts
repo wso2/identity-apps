@@ -2499,18 +2499,6 @@ export const extensions: Extensions = {
             organizationInfo: "Organization Info"
         },
         moesifAnalytics: {
-            loginPage: {
-                description: "View login activity analytics powered by Moesif.",
-                heading: "Login Analytics",
-                sideNavLabel: "Login Analytics",
-                title: "Login Analytics"
-            },
-            registrationPage: {
-                description: "View registration activity analytics powered by Moesif.",
-                heading: "Registration Analytics",
-                sideNavLabel: "Registration Analytics",
-                title: "Registration Analytics"
-            },
             collectorKeySettings: {
                 cancelButton: "Cancel",
                 description: "Configure the Moesif collector API key used to publish analytics events.",
@@ -2562,10 +2550,20 @@ export const extensions: Extensions = {
             publisherSettings: {
                 createTitle: "Configure Analytics",
                 dangerZone: {
+                    confirmation: {
+                        assertionHint: "Please confirm your action.",
+                        content: "Removing the configuration will stop all analytics event publishing and " +
+                            "delete the stored collector API key. You will need to configure it again to " +
+                            "resume publishing.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently remove the analytics " +
+                            "configuration."
+                    },
                     deleteButton: "Remove Configuration",
                     description: "Removing the configuration will stop all analytics event publishing. " +
                         "This action cannot be undone.",
-                    heading: "Danger Zone"
+                    heading: "Remove Analytics Configuration",
+                    sectionHeader: "Danger Zone"
                 },
                 enableButton: "Enable",
                 notifications: {
