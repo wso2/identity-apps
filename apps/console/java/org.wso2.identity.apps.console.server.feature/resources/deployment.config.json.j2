@@ -676,12 +676,8 @@
                 "enabled": {% if console.applications.enabled is defined %} {{ console.applications.enabled }},
                 {% else %} true,
                 {% endif %}
-                {% if oauth.graceful_refresh_token_rotation.maximum_reuse_limit is defined %}
-                "maxGracefulRefreshTokenReuseLimit": {{ oauth.graceful_refresh_token_rotation.maximum_reuse_limit }},
-                {% endif %}
-                {% if oauth.graceful_refresh_token_rotation.maximum_validity_period is defined %}
-                "maxGracefulRefreshTokenRotationValidityPeriod": {{ oauth.graceful_refresh_token_rotation.maximum_validity_period }},
-                {% endif %}
+                "maxGracefulRefreshTokenReuseLimit": {% if oauth.graceful_refresh_token_rotation.maximum_reuse_limit is defined %}{{ oauth.graceful_refresh_token_rotation.maximum_reuse_limit }}{% else %}5{% endif %},
+                "maxGracefulRefreshTokenRotationValidityPeriod": {% if oauth.graceful_refresh_token_rotation.maximum_validity_period is defined %}{{ oauth.graceful_refresh_token_rotation.maximum_validity_period }}{% else %}60{% endif %},
                 "featureFlags": [
                     {% if console.applications.feature_flags is defined %}
                     {% for flag in console.applications.feature_flags %}

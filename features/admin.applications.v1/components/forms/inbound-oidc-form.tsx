@@ -782,6 +782,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         );
     }, [ initialValues?.refreshToken?.gracefulRefreshTokenRotationEnabled ]);
 
+    useEffect((): void => {
+        if (!isRenewRefreshTokenEnabled) {
+            setIsGracefulRefreshTokenRotationEnabled(false);
+        }
+    }, [ isRenewRefreshTokenEnabled ]);
+
     /**
      * Check whether to enable validate token bindings.
      */
