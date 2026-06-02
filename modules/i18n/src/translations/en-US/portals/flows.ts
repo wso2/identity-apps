@@ -310,6 +310,10 @@ export const flows: flowsNS = {
                     text: "Typography must have text content to be displayed to users.",
                     variant: "Typography must have a variant defined for proper text styling."
                 }
+            },
+            userResolveExecutorFields: {
+                message: "Forms with a 'Resolve User' action can only contain a text input field mapped to Username.",
+                messageWithUserIdentifier: "Forms with a 'Resolve User' action can only contain text input fields mapped to Username or User Identifier."
             }
         },
         validationStatusLabels: {
