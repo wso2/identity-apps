@@ -20,7 +20,6 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { getAnalyticsResourceEndpoints } from "../configs/endpoints";
 import { MoesifDashboardInfoInterface } from "../models/moesif-analytics";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
@@ -29,7 +28,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 /**
  * Fetches Moesif dashboard info — token, org ID and app ID — from the IS server.
  *
- * @returns A promise resolving to { token, moesifOrgId, moesifAppId }.
+ * @returns A promise resolving to the token, Moesif org ID and Moesif app ID.
  * @throws IdentityAppsApiException on non-200 responses.
  */
 export const getMoesifDashboardInfo = async (): Promise<MoesifDashboardInfoInterface> => {

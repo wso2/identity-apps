@@ -138,7 +138,7 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframeProps> = (
     const sendTokenToIframe: () => void = useCallback((): void => {
         if (iframeRef.current && dashboardInfo?.token && embeddedOrigin) {
             iframeRef.current.contentWindow?.postMessage(
-                { type: EMBEDDED_POST_MESSAGE_TYPES.SET_TOKEN, token: dashboardInfo.token },
+                { token: dashboardInfo.token, type: EMBEDDED_POST_MESSAGE_TYPES.SET_TOKEN },
                 embeddedOrigin
             );
         }
@@ -151,14 +151,14 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframeProps> = (
         if (iframeRef.current && template && embeddedOrigin) {
             iframeRef.current.contentWindow?.postMessage(
                 {
-                    type: EMBEDDED_POST_MESSAGE_TYPES.CANVAS_INIT,
                     template,
                     theme: {
                         "brandColor": "#FB7B45",
-                        "brandTextColor": "#C13E00",
-                        "chartColors": ["#FB7B45", "#FF9A6F"],
-                        "navigation": { "type": "tabs", "showIcons": false }
-                    }
+                        "brandTextColor": "#FB7B45",
+                        "chartColors": [ "#FB7B45", "#406dde", "#32df7d", "#e5e644", "#e55b9b", "#8a5de8" ],
+                        "navigation": { "showIcons": false, "type": "tabs" }
+                    },
+                    type: EMBEDDED_POST_MESSAGE_TYPES.CANVAS_INIT
                 },
                 embeddedOrigin
             );
@@ -221,7 +221,7 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframeProps> = (
             return;
         }
 
-        const handleMessage: (event: MessageEvent) => void = (event: MessageEvent): void => {
+        const handleMessage = (event: MessageEvent): void => {
             if (event.origin !== embeddedOrigin) {
                 return;
             }

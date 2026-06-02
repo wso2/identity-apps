@@ -26,7 +26,7 @@ export interface MoesifPublisherInterface {
     name?: string;
     /**
      * Map of event publisher key to enabled flag
-     * (e.g. { "moesif-authentication-publisher": true, "moesif-registration-publisher": false }).
+     * (e.g. "moesif-authentication-publisher": true, "moesif-registration-publisher": false).
      */
     eventPublisherEnablement?: Record<string, boolean>;
 }
@@ -93,12 +93,4 @@ export enum MoesifEventPublisherKey {
     REGISTRATION = "moesif-registration-publisher",
     SESSION = "moesif-session-publisher",
     TOKEN = "moesif-token-issuance-publisher"
-}
-
-/**
- * Dashboard type enum for Moesif analytics tabs.
- */
-export enum MoesifDashboardType {
-    LOGIN = "login",
-    REGISTRATION = "registration"
 }

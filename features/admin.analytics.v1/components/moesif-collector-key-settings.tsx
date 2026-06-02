@@ -32,6 +32,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { getMoesifPublisher } from "../api/get-moesif-publisher";
 import { updateMoesifPublisher } from "../api/update-moesif-publisher";
+import { MoesifPublisherInterface } from "../models/moesif-analytics";
 
 /**
  * Props for the MoesifCollectorKeySettings component.
@@ -73,7 +74,7 @@ const MoesifCollectorKeySettings: FunctionComponent<MoesifCollectorKeySettingsPr
 
     useEffect(() => {
         if (open) {
-            getMoesifPublisher().then((publisher) => {
+            getMoesifPublisher().then((publisher: MoesifPublisherInterface | null) => {
                 setPublisherEnablement(publisher?.eventPublisherEnablement ?? {});
             }).catch(() => {
                 // Use defaults if fetch fails.
@@ -97,7 +98,8 @@ const MoesifCollectorKeySettings: FunctionComponent<MoesifCollectorKeySettingsPr
             dispatch(
                 addAlert({
                     description: t(
-                        "extensions:develop.moesifAnalytics.collectorKeySettings.notifications.updateSuccess.description"
+                        "extensions:develop.moesifAnalytics.collectorKeySettings.notifications." +
+                        "updateSuccess.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(

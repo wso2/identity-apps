@@ -20,7 +20,7 @@ export { default as MoesifAnalyticsProvider } from "./providers/moesif-analytics
 export { useMoesifAnalytics } from "./hooks/use-moesif-analytics";
 export type { MoesifAnalyticsContextInterface } from "./context/moesif-analytics-context";
 export { default as InsightsPage } from "./pages/insights-page";
-export { MoesifDashboardType, MoesifEventPublisherKey } from "./models/moesif-analytics";
+export { MoesifEventPublisherKey } from "./models/moesif-analytics";
 export type {
     MoesifPublisherInterface,
     MoesifPublisherCreateRequest,
