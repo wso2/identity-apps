@@ -14,7 +14,7 @@
         "@mui/material": "catalog:",
         "@mui/system": "catalog:",
         "@mui/utils": "^5.12.3",
-        "@asgardeo/auth-react": "catalog:",
+        "@asgardeo/auth-react": "^5.6.1",
         "@oxygen-ui/react": "catalog:",
         "@wso2is/core": "^2.12.10",
         "@wso2is/admin.core.v1": "^2.57.10",
