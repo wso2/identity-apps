@@ -412,9 +412,6 @@ importers:
       '@wso2is/admin.onboarding.v1':
         specifier: workspace:^
         version: link:../../features/admin.onboarding.v1
-      '@wso2is/admin.org-insights.v1':
-        specifier: ^2.26.4
-        version: link:../../features/admin.org-insights.v1
       '@wso2is/admin.organization-discovery.v1':
         specifier: ^2.25.210
         version: link:../../features/admin.organization-discovery.v1

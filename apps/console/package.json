@@ -80,7 +80,6 @@
         "@wso2is/admin.logs.v1": "^1.6.8",
         "@wso2is/admin.oidc-scopes.v1": "^2.26.3",
         "@wso2is/admin.onboarding.v1": "workspace:^",
-        "@wso2is/admin.org-insights.v1": "^2.26.4",
         "@wso2is/admin.organization-discovery.v1": "^2.25.210",
         "@wso2is/admin.organizations.v1": "^2.28.4",
         "@wso2is/admin.password-recovery-flow-builder.v1": "workspace:^",
