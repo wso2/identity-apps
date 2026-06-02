@@ -1514,9 +1514,15 @@ importers:
       '@oxygen-ui/react':
         specifier: 'catalog:'
         version: 2.4.6(43a10c969c8ffe9f55ba3c36a34c927d)
+      '@oxygen-ui/react-icons':
+        specifier: ^2.4.6
+        version: 2.4.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)
       '@wso2is/admin.core.v1':
         specifier: ^2.57.3
         version: link:../admin.core.v1
+      '@wso2is/admin.org-insights.v1':
+        specifier: workspace:^
+        version: link:../admin.org-insights.v1
       '@wso2is/admin.tenants.v1':
         specifier: workspace:^
         version: link:../admin.tenants.v1
