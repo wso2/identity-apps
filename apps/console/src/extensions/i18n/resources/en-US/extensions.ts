@@ -2544,7 +2544,7 @@ export const extensions: Extensions = {
                 title: "Analytics",
                 toggle: {
                     description: "Enable analytics event publishing for this deployment.",
-                    label: "Analytics Dashboard"
+                    label: "Analytic Events Publishing"
                 }
             },
             publisherSettings: {

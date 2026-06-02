@@ -57,7 +57,7 @@ const useInsightsFlags = (): InsightsFlagsInterface => useSelector((state: AppSt
     };
 });
 
-interface CloudInsightsPageProps {
+interface CloudInsightsPagePropsInterface {
     embeddingDomain: string;
     showSettingsIcon: boolean;
 }
@@ -66,8 +66,8 @@ interface CloudInsightsPageProps {
  * Cloud insights view — embedded Moesif Canvas dashboard. The gear icon to navigate to
  * the analytics settings page is only rendered when settings are enabled.
  */
-const CloudInsightsPage: FunctionComponent<CloudInsightsPageProps> = (
-    { embeddingDomain, showSettingsIcon }: CloudInsightsPageProps
+const CloudInsightsPage: FunctionComponent<CloudInsightsPagePropsInterface> = (
+    { embeddingDomain, showSettingsIcon }: CloudInsightsPagePropsInterface
 ): ReactElement => {
     const { t } = useTranslation();
 

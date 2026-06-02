@@ -58,7 +58,7 @@ const TOKEN_REFRESH_INTERVAL_MS: number = 50 * 60 * 1000;
 /**
  * Props for the MoesifCanvasIframe component.
  */
-interface MoesifCanvasIframeProps {
+interface MoesifCanvasIframePropsInterface {
     /**
      * Unique identifier for the component (for testing).
      */
@@ -84,8 +84,8 @@ interface MoesifCanvasIframeProps {
  * Steps 4 and 5 can arrive in either order. CANVAS_INIT is only sent after BOTH
  * ORG_LOAD_FINISHED AND CANVAS_READY are received, preventing dropped messages.
  */
-const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframeProps> = (
-    props: MoesifCanvasIframeProps
+const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = (
+    props: MoesifCanvasIframePropsInterface
 ): ReactElement => {
     const { "data-componentid": componentId = "moesif-canvas-iframe", embeddingDomain } = props;
 

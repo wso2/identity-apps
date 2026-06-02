@@ -37,7 +37,7 @@ import { MoesifPublisherInterface } from "../models/moesif-analytics";
 /**
  * Props for the MoesifCollectorKeySettings component.
  */
-interface MoesifCollectorKeySettingsProps {
+interface MoesifCollectorKeySettingsPropsInterface {
     /**
      * Unique identifier for the component (for testing).
      */
@@ -56,8 +56,8 @@ interface MoesifCollectorKeySettingsProps {
  * Dialog to configure the Moesif collector API key.
  * Only shown when `extensions.analytics.collectorKey.settingsEnabled` is `true`.
  */
-const MoesifCollectorKeySettings: FunctionComponent<MoesifCollectorKeySettingsProps> = (
-    props: MoesifCollectorKeySettingsProps
+const MoesifCollectorKeySettings: FunctionComponent<MoesifCollectorKeySettingsPropsInterface> = (
+    props: MoesifCollectorKeySettingsPropsInterface
 ): ReactElement => {
     const {
         "data-componentid": componentId = "moesif-collector-key-settings",

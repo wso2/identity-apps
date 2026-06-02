@@ -2131,14 +2131,14 @@
       },
       "view": "time",
       "funnel_query": {},
-      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=e76aa628&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[metrics][0][customName]=%20Total%20Succesfull%20Login&evt_ts[metrics][1][i]=641d37f2&evt_ts[metrics][1][metricName]=count%28distinct%28user_id%29%29&evt_ts[metrics][1][customName]=Total%20Unique%20Users&evt_ts[interval]=24h",
+      "urlQuery": "?evtcf[filtersGroups][0][filters][0][id]=f0&evtcf[filtersGroups][0][filters][0][field]=action_name.raw&evtcf[filtersGroups][0][filters][0][name]=&evtcf[filtersGroups][0][filters][0][op]=contains&evtcf[filtersGroups][0][filters][0][value][0]=User-Authentication&evtcf[filtersGroups][0][filters][1][id]=e76aa628&evtcf[filtersGroups][0][filters][1][field]=metadata.eventType.raw&evtcf[filtersGroups][0][filters][1][name]=&evtcf[filtersGroups][0][filters][1][op]=contains&evtcf[filtersGroups][0][filters][1][value][0]=overall&evt_ts[metrics][0][metricName]=sum%28events%29&evt_ts[metrics][0][customName]=%20Total%20Successful%20Login&evt_ts[metrics][1][i]=641d37f2&evt_ts[metrics][1][metricName]=count%28distinct%28user_id%29%29&evt_ts[metrics][1][customName]=Total%20Unique%20Users&evt_ts[interval]=24h",
       "analyticType": "entTmSrs",
       "chartType": "line",
       "settings": {
         "metrics": [
           {
             "metricName": "sum(events)",
-            "customName": " Total Succesfull Login"
+            "customName": " Total Successful Login"
           },
           {
             "i": "641d37f2",
