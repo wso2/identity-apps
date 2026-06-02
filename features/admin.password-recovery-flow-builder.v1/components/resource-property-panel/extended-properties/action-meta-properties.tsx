@@ -23,7 +23,6 @@ import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import Stack from "@oxygen-ui/react/Stack";
 import Tooltip from "@oxygen-ui/react/Tooltip";
-import Typography from "@oxygen-ui/react/Typography";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
@@ -33,7 +32,6 @@ import { Action, Element } from "@wso2is/admin.flow-builder-core.v1/models/eleme
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
 import { ActionMetaConfigItemInterface } from "../../../models/actions";
-import "./action-meta-properties.scss";
 
 /**
  * Props interface of {@link ActionMetaProperties}
@@ -88,7 +86,7 @@ const ActionMetaProperties: FunctionComponent<ActionMetaPropertiesPropsInterface
     };
 
     return (
-        <Stack className="action-meta-properties" gap={ 1 } data-componentid={ componentId }>
+        <Stack gap={ 1 } data-componentid={ componentId }>
             { metaConfig.map((item: ActionMetaConfigItemInterface): ReactElement => {
                 const isChecked: boolean = getMeta(item.key);
                 const isDisabled: boolean = item.dependsOn !== undefined ? !getMeta(item.dependsOn) : false;
@@ -128,13 +126,13 @@ const ActionMetaProperties: FunctionComponent<ActionMetaPropertiesPropsInterface
                         { item.description && (
                             <FormHelperText>{ item.description }</FormHelperText>
                         ) }
-                        { item.warning && (
+                        { item.notice && (
                             <Alert
-                                severity="warning"
-                                className="action-meta-warning"
-                                data-componentid={ `${componentId}-${item.key}-warning` }
+                                severity={ item.notice.type }
+                                sx={ { mt: 1 } }
+                                data-componentid={ `${componentId}-${item.key}-${item.notice.type}-notice` }
                             >
-                                { item.warning }
+                                { item.notice.text }
                             </Alert>
                         ) }
                     </Box>

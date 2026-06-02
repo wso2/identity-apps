@@ -18,7 +18,10 @@
                         "key": "notifyUserExistence",
                         "label": "Notify User Existence",
                         "description": "Notify the user indicating whether an account exists for the provided username.",
-                        "warning": "Enabling this option can result in user enumeration attacks. Use with caution."
+                        "notice": {
+                            "type": "warning",
+                            "text": "Enabling this option can result in user enumeration attacks. Use with caution."
+                        }
                     },
                     {
                         "key": "notifyUserAccountStatus",

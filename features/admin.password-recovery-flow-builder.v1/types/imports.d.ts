@@ -38,9 +38,3 @@ declare module "*.png" {
 }
 
 declare module "*.md";
-
-declare module "*.scss" {
-    const content: Record<string, string>;
-
-    export default content;
-}

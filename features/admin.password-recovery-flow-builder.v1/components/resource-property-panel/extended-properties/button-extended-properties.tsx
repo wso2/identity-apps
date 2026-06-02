@@ -35,7 +35,7 @@ import useValidationStatus from "@wso2is/admin.flow-builder-core.v1/hooks/use-va
 import { Element } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useRef } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import useGetPasswordRecoveryFlowCoreActions from "../../../api/use-get-password-recovery-flow-builder-actions";
 import {
     ActionGroupInterface,
@@ -65,28 +65,6 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
     const { data: actions } = useGetPasswordRecoveryFlowCoreActions();
     const { lastInteractedResource, setLastInteractedResource } = useAuthenticationFlowBuilderCore();
     const { selectedNotification } = useValidationStatus();
-
-    /**
-     * Per-executor meta cache keyed by executor name.
-     * Populated from lastInteractedResource so that switching away from an executor
-     * and coming back restores its last configured meta without requiring an additional
-     * "save" step — matching the expected behaviour described in the flow builder spec.
-     */
-    const executorMetaCacheRef: React.MutableRefObject<Record<string, Record<string, string>>> =
-        useRef<Record<string, Record<string, string>>>({});
-
-    useEffect(() => {
-        const executorName: string | undefined =
-            (lastInteractedResource as Element)?.action?.executor?.name;
-        const meta: Record<string, string> | undefined =
-            (lastInteractedResource as Element)?.action?.executor?.meta;
-
-        // Only cache when there is actual meta — avoids clearing a previous entry
-        // when the user switches to an executor that carries no meta (e.g. PasswordProvisioningExecutor).
-        if (executorName && meta) {
-            executorMetaCacheRef.current[executorName] = meta;
-        }
-    }, [ lastInteractedResource ]);
 
     /**
      * Resolve the metaConfig for whichever action type is currently selected,
@@ -147,20 +125,44 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
                                         onClick={ () => {
                                             const clickedExecutorName: string | undefined =
                                                 (actionType.action?.executor as Record<string, string>)?.name;
+                                            const currentExecutorName: string | undefined =
+                                                (resource as Element)?.action?.executor?.name;
+                                            const existingMeta: Record<string, string> | undefined =
+                                                (resource as Element)?.action?.executor?.meta;
 
-                                            // Restore any previously configured meta for this executor
-                                            // so that switching away and coming back preserves state.
-                                            const restoredMeta: Record<string, string> | undefined =
-                                                clickedExecutorName
-                                                    ? executorMetaCacheRef.current[clickedExecutorName]
-                                                    : undefined;
+                                            // Seed defaults from metaConfig so the published flow always
+                                            // carries the meta keys, even when no checkbox is ever toggled.
+                                            const defaultMeta: Record<string, string> =
+                                                (actionType.metaConfig ?? []).reduce(
+                                                    (
+                                                        acc: Record<string, string>,
+                                                        item: ActionMetaConfigItemInterface
+                                                    ) => {
+                                                        acc[item.key] = item.defaultValue ?? "false";
+
+                                                        return acc;
+                                                    },
+                                                    {}
+                                                );
+
+                                            // Re-selecting the already-selected executor keeps the user's
+                                            // config; a genuine type switch falls back to defaults.
+                                            const meta: Record<string, string> =
+                                                clickedExecutorName === currentExecutorName && existingMeta
+                                                    ? { ...defaultMeta, ...existingMeta }
+                                                    : defaultMeta;
 
                                             const newAction: Record<string, unknown> = {
                                                 ...actionType.action,
-                                                executor: {
-                                                    ...(actionType.action?.executor as Record<string, unknown>),
-                                                    ...(restoredMeta ? { meta: restoredMeta } : {})
-                                                },
+                                                ...(Object.keys(meta).length > 0
+                                                    ? {
+                                                        executor: {
+                                                            ...(actionType.action?.executor as
+                                                                Record<string, unknown>),
+                                                            meta
+                                                        }
+                                                    }
+                                                    : {}),
                                                 ...((resource as Element)?.action?.next
                                                     ? { next: (resource as Element)?.action?.next }
                                                     : {})

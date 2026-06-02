@@ -17,30 +17,36 @@
  */
 
 /**
+ * Severity of an action meta notice. Maps directly to the Oxygen UI Alert `severity` prop.
+ */
+type ActionMetaNoticeType = "info" | "warning";
+
+interface ActionMetaNoticeInterface {
+    type: ActionMetaNoticeType;
+    text: string;
+}
+
+/**
  * Describes a single configurable meta property for an action executor.
  * Add entries to `actions.json` to expose new checkboxes — no component changes required.
  */
 export interface ActionMetaConfigItemInterface {
-    /**
-     * The key written to `executor.meta` when the user toggles this option.
-     */
     key: string;
-    /**
-     * Display label shown next to the checkbox.
-     */
     label: string;
-    /**
-     * Short description rendered as helper text directly below the label.
-     */
     description?: string;
     /**
-     * Optional security or informational warning rendered below the description.
+     * Optional warning/informational notice rendered below the description.
      */
-    warning?: string;
+    notice?: ActionMetaNoticeInterface;
     /**
      * Tooltip shown when this item is disabled. Explains why it is disabled / how to enable it.
      */
     disabledTooltip?: string;
+    /**
+     * Default value written to `executor.meta` for this item when its action
+     * type is first selected. Defaults to "false" when omitted.
+     */
+    defaultValue?: string;
     /**
      * Key of another meta item that must be enabled for this item to be interactive.
      * When the referenced item is unchecked, this checkbox is disabled and auto-cleared.
