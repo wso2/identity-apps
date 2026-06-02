@@ -319,6 +319,7 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
             >
                 <AdvanceForm
                     ref={ formRef }
+                    brandingMode={ brandingMode }
                     onSubmit={ onSubmit }
                     initialValues={ {
                         urls: {

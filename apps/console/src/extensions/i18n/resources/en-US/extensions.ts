@@ -991,7 +991,8 @@ export const extensions: Extensions = {
                                 placeholder: "https://myapp.com/{{locale}}/terms-of-service"
                             }
                         },
-                        heading: "Links"
+                        heading: "Links",
+                        policyMgtMessage: "Policy URLs are managed in <1>Policy Management</1>."
                     }
                 },
                 design: {

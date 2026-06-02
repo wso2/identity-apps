@@ -18,6 +18,7 @@
 
 import Box from "@oxygen-ui/react/Box";
 import Card from "@oxygen-ui/react/Card";
+import Code from "@oxygen-ui/react/Code";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import InputLabel from "@oxygen-ui/react/InputLabel";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
@@ -29,8 +30,9 @@ import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { updateBrandingPreference } from "@wso2is/admin.branding.v1/api/branding-preferences";
 import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
-import { BrandingPreferenceTypes } from "@wso2is/common.branding.v1/models";
+import { BrandingPreferenceInterface, BrandingPreferenceTypes } from "@wso2is/common.branding.v1/models";
 import {
     PurposeDTOInterface,
     PurposeVersionSummaryDTOInterface,
@@ -65,6 +67,7 @@ import { PolicyConsentPreview } from "./policy-consent-preview";
 import { ConsentVersionDropdown } from "./consent-version-dropdown";
 
 interface EditPolicyConsentProps extends IdentifiableComponentInterface {
+    defaultName?: string;
     purposeId?: string;
 }
 
@@ -118,7 +121,7 @@ const validateTemplatableURL = (value: string, errorMessage: string): string | u
 export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
     props: EditPolicyConsentProps
 ): ReactElement => {
-    const { purposeId } = props;
+    const { purposeId, defaultName } = props;
 
     const isCreateMode: boolean = !purposeId;
 
@@ -127,6 +130,9 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
 
     const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
+    );
+    const serverOrigin: string = useSelector(
+        (state: AppState) => state?.config?.deployment?.serverOrigin ?? ""
     );
     const hasCreatePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.create);
     const hasUpdatePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.update);
@@ -144,7 +150,8 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
 
     const {
         data: brandingPreference,
-        isLoading: isBrandingLoading
+        isLoading: isBrandingLoading,
+        mutate: mutateBranding
     } = useGetBrandingPreferenceResolve(AppConstants.getTenant(), BrandingPreferenceTypes.ORG);
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -159,16 +166,21 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
             return "";
         }
 
-        if (consent?.name === "privacy_policy") {
-            return brandingPreference.preference.urls.privacyPolicyURL;
-        } else if (consent?.name === "terms_and_conditions") {
-            return brandingPreference.preference.urls.termsOfUseURL;
-        } else if (consent?.name === "cookie_policy") {
-            return brandingPreference.preference.urls.cookiePolicyURL;
+        const policyName: string | undefined = consent?.name ?? defaultName;
+
+        if (policyName === "Privacy Policy") {
+            return brandingPreference.preference.urls.privacyPolicyURL
+                || `${serverOrigin}/authenticationendpoint/privacy_policy.do`;
+        } else if (policyName === "Terms of Service") {
+            return brandingPreference.preference.urls.termsOfUseURL
+                || "https://wso2.com/terms-of-use/";
+        } else if (policyName === "Cookie Policy") {
+            return brandingPreference.preference.urls.cookiePolicyURL
+                || `${serverOrigin}/authenticationendpoint/cookie_policy.do`;
         }
 
         return "";
-    }, [ brandingPreference, consent ]);
+    }, [ brandingPreference, consent, defaultName, serverOrigin ]);
 
     const initialValues: PolicyFormValuesInterface | null = useMemo(
         (): PolicyFormValuesInterface | null => {
@@ -176,8 +188,8 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                 return {
                     description: "",
                     mandatory: false,
-                    name: "",
-                    policyUrl: "",
+                    name: defaultName ?? "",
+                    policyUrl: brandingPolicyUrl,
                     promptOnLogin: "false"
                 };
             }
@@ -192,7 +204,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                 policyUrl: consent.policyUrl ?? brandingPolicyUrl,
                 promptOnLogin: consent.promptOnLogin ?? "false"
             };
-        }, [ isCreateMode, consent, brandingPolicyUrl ]);
+        }, [ isCreateMode, consent, brandingPolicyUrl, defaultName ]);
 
     const sortedConsentVersions: PurposeVersionSummaryDTOInterface[] = useMemo(
         (): PurposeVersionSummaryDTOInterface[] => {
@@ -339,6 +351,57 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
     };
 
     /**
+     * Updates the branding preference URL for a default policy (Privacy Policy or Terms of Service).
+     */
+    const updateDefaultPolicyUrl = (values: PolicyFormValuesInterface): void => {
+        if (!brandingPreference) {
+            return;
+        }
+
+        const updatedUrls: BrandingPreferenceInterface["urls"] = { ...brandingPreference.preference.urls };
+
+        if (defaultName === "Privacy Policy") {
+            updatedUrls.privacyPolicyURL = values.policyUrl?.trim() ?? "";
+        } else if (defaultName === "Terms of Service") {
+            updatedUrls.termsOfUseURL = values.policyUrl?.trim() ?? "";
+        } else if (defaultName === "Cookie Policy") {
+            updatedUrls.cookiePolicyURL = values.policyUrl?.trim() ?? "";
+        }
+
+        const updatedPreference: BrandingPreferenceInterface = {
+            ...brandingPreference.preference,
+            urls: updatedUrls
+        };
+
+        setIsSubmitting(true);
+
+        updateBrandingPreference(
+            true,
+            AppConstants.getTenant(),
+            updatedPreference,
+            BrandingPreferenceTypes.ORG
+        )
+            .then((): void => {
+                dispatch(addAlert({
+                    description: t("consents:policyConsents.notifications.update.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("consents:policyConsents.notifications.update.success.message")
+                }));
+                mutateBranding();
+            })
+            .catch((): void => {
+                dispatch(addAlert({
+                    description: t("consents:policyConsents.notifications.update.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("consents:policyConsents.notifications.update.error.message")
+                }));
+            })
+            .finally((): void => {
+                setIsSubmitting(false);
+            });
+    };
+
+    /**
      * Creates a new purpose version with the updated policy URL, promoted as latest in a single call.
      *
      * @param values - Form values containing the new policy URL and description.
@@ -445,6 +508,9 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                             key={ isCreateMode ? "create" : consent?.version }
                             onSubmit={ (values: PolicyFormValuesInterface) => {
                                 if (isCreateMode) {
+                                    if (defaultName) {
+                                        updateDefaultPolicyUrl(values);
+                                    }
                                     createNewPurpose(values);
                                 } else {
                                     pendingValues.current = values;
@@ -494,7 +560,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                     )
                                                 }
                                                 <Box sx={ { display: "flex", flexDirection: "column", gap: 2 } }>
-                                                    { isCreateMode && (
+                                                    { isCreateMode && !defaultName && (
                                                         <Box>
                                                             <FinalFormField
                                                                 name="name"
@@ -537,7 +603,16 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                             }
                                                         />
                                                         <Hint>
-                                                            { t("consents:policyConsents.form.policyUrl.hint") }
+                                                            <Trans
+                                                                i18nKey="consents:policyConsents.form.policyUrl.hint"
+                                                            >
+                                                                Link to the full policy document. You can use
+                                                                placeholders like
+                                                                <Code>&#123;&#123;lang&#125;&#125;</Code>,
+                                                                <Code>&#123;&#123;country&#125;&#125;</Code>,
+                                                                or <Code>&#123;&#123;locale&#125;&#125;</Code>
+                                                                to customize the URL for different regions or languages.
+                                                            </Trans>
                                                         </Hint>
                                                     </Box>
                                                     <Box>

@@ -161,7 +161,7 @@ export const consents: ConsentsNS = {
                 label: "Description"
             },
             mandatory: {
-                hint: "When enabled, users must accept this policy to proceed. This setting cannot be changed after creation.",
+                hint: "When enabled, users must accept this policy to proceed.",
                 label: "Mandatory",
                 linkHint: "To include this consent in a registration flow, go to the <0>Registration Flow Builder</0>."
             },
@@ -173,7 +173,7 @@ export const consents: ConsentsNS = {
                 placeholder: "Privacy Policy"
             },
             policyUrl: {
-                hint: "Enter the URL of the full policy document. Use {{lang}}, {{country}}, or {{locale}} as placeholders to support multiple regions or languages.",
+                hint: "Link to the full policy document. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
                 label: "Policy URL",
                 versionHint: "To create a new version, update the policy URL, description, or prompt settings above."
             },
@@ -263,6 +263,12 @@ export const consents: ConsentsNS = {
                     serverError: {
                         description: "A server error occurred while updating the policy. Please try again later.",
                         message: "Server Error"
+                    }
+                },
+                brandingSync: {
+                    error: {
+                        description: "Policy version was created, but the branding URL could not be synced. Please update the branding settings manually.",
+                        message: "Branding Sync Failed"
                     }
                 },
                 success: {

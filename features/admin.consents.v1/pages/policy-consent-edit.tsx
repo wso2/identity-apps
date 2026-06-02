@@ -20,6 +20,8 @@ import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
+import { BrandingPreferenceTypes } from "@wso2is/common.branding.v1/models";
 import { deletePurpose, useGetPurpose } from "@wso2is/common.consents.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -31,12 +33,23 @@ import {
     DangerZoneGroup,
     PageLayout
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import Chip from "@oxygen-ui/react/Chip";
+import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { EditPolicyConsent } from "../components/edit-policy-consent";
+
+interface DefaultPolicySlugConfigInterface {
+    displayName: string;
+}
+
+const DEFAULT_POLICY_SLUG_MAP: Record<string, DefaultPolicySlugConfigInterface> = {
+    "cookie-policy": { displayName: "Cookie Policy" },
+    "privacy-policy": { displayName: "Privacy Policy" },
+    "terms-of-service": { displayName: "Terms of Service" }
+};
 
 /**
  * Props interface for the Policy Consent edit page component.
@@ -45,6 +58,8 @@ interface PolicyConsentEditPageProps extends IdentifiableComponentInterface, Rou
 
 /**
  * Policy Consent edit page.
+ * Also handles the 3 built-in default policies accessed via constant URL slugs
+ * (e.g. /policy-consents/privacy-policy).
  *
  * @param props - Props injected to the component.
  * @returns Policy Consent edit page component.
@@ -58,8 +73,8 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
     } = props;
 
     const id: string = match?.params?.id;
-
-    const { data: consent, isLoading: isConsentRequestLoading } = useGetPurpose(id);
+    const slugConfig: DefaultPolicySlugConfigInterface | undefined = DEFAULT_POLICY_SLUG_MAP[id];
+    const isDefaultPolicy: boolean = !!slugConfig;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -69,17 +84,42 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
     );
     const hasDeletePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.delete);
 
-    const [ showDeleteConfirmation, setShowDeleteConfirmation ] = React.useState<boolean>(false);
-    const [ isDeleting, setIsDeleting ] = React.useState<boolean>(false);
+    const [ showDeleteConfirmation, setShowDeleteConfirmation ] = useState<boolean>(false);
+    const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
+
+    const { data: consent, isLoading: isConsentLoading } = useGetPurpose(
+        isDefaultPolicy ? null : id
+    );
+
+    const { isLoading: isBrandingLoading } = useGetBrandingPreferenceResolve(
+        isDefaultPolicy ? AppConstants.getTenant() : null,
+        BrandingPreferenceTypes.ORG
+    );
+
+    const purposeId: string | undefined = useMemo((): string | undefined => {
+        return isDefaultPolicy ? undefined : consent?.id;
+    }, [ isDefaultPolicy, consent ]);
+
+    const displayName: string = isDefaultPolicy
+        ? slugConfig.displayName
+        : (consent?.displayName || "");
+
+    const isLoading: boolean = isDefaultPolicy ? isBrandingLoading : isConsentLoading;
+
+    const isReady: boolean = isDefaultPolicy ? !isBrandingLoading : !!consent;
 
     const handleBackButtonClick = (): void => {
         window.history.back();
     };
 
     const handleDeleteConsent = (): void => {
+        if (!purposeId) {
+            return;
+        }
+
         setIsDeleting(true);
 
-        deletePurpose(id)
+        deletePurpose(purposeId)
             .then((): void => {
                 dispatch(addAlert({
                     description: t("consents:policyConsents.notifications.delete.success.description"),
@@ -106,7 +146,9 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
                         break;
                     default:
                         if (status >= 500) {
-                            description = t("consents:policyConsents.notifications.delete.error.serverError.description");
+                            description = t(
+                                "consents:policyConsents.notifications.delete.error.serverError.description"
+                            );
                             message = t("consents:policyConsents.notifications.delete.error.serverError.message");
                         } else {
                             description = t("consents:policyConsents.notifications.delete.error.description");
@@ -126,15 +168,21 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
             });
     };
 
-
     return (
         <PageLayout
             pageTitle={ t("consents:policyConsents.pages.edit.title") }
-            title={ consent?.displayName || "" }
-            description={ undefined }
+            title={ displayName }
+            description={ isDefaultPolicy && (
+                <Chip
+                    label={ t("common:default") }
+                    size="medium"
+                    variant="filled"
+                    color="default"
+                />
+            ) }
             image={ (
                 <AnimatedAvatar
-                    name={ consent?.displayName }
+                    name={ displayName }
                     size="tiny"
                     floated="left"
                 />
@@ -146,17 +194,20 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
             titleTextAlign="left"
             bottomMargin={ false }
             data-componentid={ `${componentId}-layout` }
-            isLoading={ isConsentRequestLoading }
+            isLoading={ isLoading }
             backButton={ {
                 "data-componentid": `${componentId}-page-back-button`,
                 onClick: handleBackButtonClick,
                 text: t("consents:policyConsents.pages.edit.backButton")
             } }
         >
-            { consent && (
+            { isReady && (
                 <>
-                    <EditPolicyConsent purposeId={ consent.id } />
-                    { hasDeletePermission && (
+                    <EditPolicyConsent
+                        purposeId={ purposeId }
+                        defaultName={ slugConfig?.displayName }
+                    />
+                    { hasDeletePermission && purposeId && (
                         <DangerZoneGroup
                             sectionHeader={ t("common:dangerZone") }
                         >

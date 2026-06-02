@@ -166,7 +166,7 @@ export interface BrandingPreferenceContextProps {
     /**
      * Branding mode to enable/disable app-wise branding.
      */
-    brandingMode: string;
+    brandingMode: BrandingModes;
     /**
      * Sets the branding mode.
      */

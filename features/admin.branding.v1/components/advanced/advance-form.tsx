@@ -16,25 +16,34 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import Code from "@oxygen-ui/react/Code";
+import Link from "@oxygen-ui/react/Link";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-config";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { BrandingPreferenceInterface } from "@wso2is/common.branding.v1/models";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form, FormPropsInterface } from "@wso2is/forms";
 import { Heading } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, MutableRefObject, ReactElement, Ref, forwardRef, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Placeholder } from "semantic-ui-react";
-import { BrandingPreferencesConstants } from "../../constants/branding-preferences-constants";
+import { BrandingModes, BrandingPreferencesConstants } from "../../constants/branding-preferences-constants";
 import { BrandingURLPreferenceConstants } from "../../constants/url-preference-constants";
 
 /**
  * Interface for Branding Preference Advance Form props.
  */
 interface AdvanceFormPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Branding mode — organization or application.
+     */
+    brandingMode?: BrandingModes;
     /**
      * Broadcast realtime edited values to subscribers.
      * @param values - Form values.
@@ -85,6 +94,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
     ref: MutableRefObject<FormPropsInterface>): ReactElement => {
 
     const {
+        brandingMode,
         broadcastValues,
         initialValues,
         isLoading,
@@ -94,6 +104,13 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
     } = props;
 
     const { t } = useTranslation();
+
+    const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.consents
+    );
+
+    const hidePolicyUrls: boolean =
+        brandingMode === BrandingModes.ORGANIZATION && !!consentsFeatureConfig?.enabled;
 
     const [ privacyPolicyURL, setPrivacyPolicyURL ] = useState<string>(initialValues.urls.privacyPolicyURL);
     const [ termsOfUseURL, setTermsOfUseURL ] = useState<string>(initialValues.urls.termsOfUseURL);
@@ -181,93 +198,120 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
             <Heading as="h4">
                 { t("extensions:develop.branding.forms.advance.links.heading") }
             </Heading>
-            <Field.Input
-                ariaLabel="Branding preference privacy policy URL"
-                inputType="url"
-                name="urls.privacyPolicyURL"
-                label={ t("extensions:develop.branding.forms.advance.links.fields.privacyPolicyURL.label") }
-                placeholder={
-                    t("extensions:develop.branding.forms.advance.links.fields.privacyPolicyURL.placeholder")
-                }
-                hint={ (
-                    <Trans
-                        i18nKey="extensions:develop.branding.forms.advance.links.fields.privacyPolicyURL.hint"
-                    >
-                        Link to a statement or a legal document that states how your organization collects,
-                        handles, and processes the data of your customers and visitors. You can use placeholders like
-                        <Code>&#123;&#123;lang&#125;&#125;</Code>, <Code>&#123;&#123;country&#125;&#125;</Code>,
-                        or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
-                        regions or languages.
+            { hidePolicyUrls ? (
+                <Alert severity="info">
+                    <Trans i18nKey="extensions:develop.branding.forms.advance.links.policyMgtMessage">
+                        Policy URLs are managed in
+                        <Link
+                            href={ AppConstants.getPaths().get("POLICY_CONSENTS") }
+                            sx={ { cursor: "pointer", paddingLeft: 0.5 } }
+                        >
+                            Policy Management
+                        </Link>.
                     </Trans>
-                ) }
-                required={ false }
-                value={ initialValues.urls.privacyPolicyURL }
-                readOnly={ readOnly }
-                maxLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.PRIVACY_POLICY_URL_MAX_LENGTH }
-                minLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.PRIVACY_POLICY_URL_MIN_LENGTH }
-                listen={ (value: string) =>  setPrivacyPolicyURL(value) }
-                width={ 16 }
-                data-testid={ `${ componentId }-tos-url` }
-                validation={ validateTemplatableURLs }
-            />
-            <Field.Input
-                ariaLabel="Branding preference terms of service URL"
-                inputType="url"
-                name="urls.termsOfUseURL"
-                label={ t("extensions:develop.branding.forms.advance.links.fields.termsOfUseURL.label") }
-                placeholder={
-                    t("extensions:develop.branding.forms.advance.links.fields.termsOfUseURL.placeholder")
-                }
-                hint={ (
-                    <Trans
-                        i18nKey="extensions:develop.branding.forms.advance.links.fields.termsOfUseURL.hint"
-                    >
-                        Link to an agreement that your customers must agree to and abide by in order to use your
-                        organization&apos;s applications or other services. You can use placeholders like
-                        <Code>&#123;&#123;lang&#125;&#125;</Code>, <Code>&#123;&#123;country&#125;&#125;</Code>,
-                        or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
-                        regions or languages.
-                    </Trans>
-                ) }
-                required={ false }
-                value={ initialValues.urls.termsOfUseURL }
-                readOnly={ readOnly }
-                maxLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.TOS_URL_MAX_LENGTH }
-                minLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.TOS_URL_MIN_LENGTH }
-                listen={ (value: string) =>  setTermsOfUseURL(value) }
-                width={ 16 }
-                data-testid={ `${ componentId }-tos-url` }
-                validation={ validateTemplatableURLs }
-            />
-            <Field.Input
-                ariaLabel="Branding preference cookie policy URL"
-                inputType="url"
-                name="urls.cookiePolicyURL"
-                label={ t("extensions:develop.branding.forms.advance.links.fields.cookiePolicyURL.label") }
-                placeholder={
-                    t("extensions:develop.branding.forms.advance.links.fields.cookiePolicyURL.placeholder")
-                }
-                hint={ (
-                    <Trans
-                        i18nKey="extensions:develop.branding.forms.advance.links.fields.cookiePolicyURL.hint"
-                    >
-                        Link to a document or a webpage with detailed information on all cookies used by your
-                        applications and the purpose of each of them. You can use placeholders like
-                        <Code>&#123;&#123;lang&#125;&#125;</Code>, <Code>&#123;&#123;country&#125;&#125;</Code>,
-                        or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
-                        regions or languages.
-                    </Trans>
-                ) }
-                required={ false }
-                value={ initialValues.urls.cookiePolicyURL }
-                readOnly={ readOnly }
-                maxLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.COOKIE_POLICY_URL_MAX_LENGTH }
-                minLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.COOKIE_POLICY_URL_MIN_LENGTH }
-                listen={ (value: string) =>  setCookiePolicyURL(value) }
-                width={ 16 }
-                data-testid={ `${ componentId }-cookie-policy-url` }
-                validation={ validateTemplatableURLs }
-            />
+                </Alert>
+            ) : (
+                <>
+                    <Field.Input
+                        ariaLabel="Branding preference privacy policy URL"
+                        inputType="url"
+                        name="urls.privacyPolicyURL"
+                        label={ t("extensions:develop.branding.forms.advance.links.fields.privacyPolicyURL.label") }
+                        placeholder={
+                            t("extensions:develop.branding.forms.advance.links.fields.privacyPolicyURL.placeholder")
+                        }
+                        hint={ (
+                            <Trans
+                                i18nKey="extensions:develop.branding.forms.advance.links.fields.privacyPolicyURL.hint"
+                            >
+                                Link to a statement or a legal document that states how your organization collects,
+                                handles, and processes the data of your customers and visitors. You can use
+                                placeholders like <Code>&#123;&#123;lang&#125;&#125;</Code>,
+                                <Code>&#123;&#123;country&#125;&#125;</Code>,
+                                or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
+                                regions or languages.
+                            </Trans>
+                        ) }
+                        required={ false }
+                        value={ initialValues.urls.privacyPolicyURL }
+                        readOnly={ readOnly }
+                        maxLength={
+                            BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.PRIVACY_POLICY_URL_MAX_LENGTH
+                        }
+                        minLength={
+                            BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.PRIVACY_POLICY_URL_MIN_LENGTH
+                        }
+                        listen={ (value: string) => setPrivacyPolicyURL(value) }
+                        width={ 16 }
+                        data-testid={ `${ componentId }-privacy-policy-url` }
+                        validation={ validateTemplatableURLs }
+                    />
+                    <Field.Input
+                        ariaLabel="Branding preference terms of service URL"
+                        inputType="url"
+                        name="urls.termsOfUseURL"
+                        label={ t("extensions:develop.branding.forms.advance.links.fields.termsOfUseURL.label") }
+                        placeholder={
+                            t("extensions:develop.branding.forms.advance.links.fields.termsOfUseURL.placeholder")
+                        }
+                        hint={ (
+                            <Trans
+                                i18nKey="extensions:develop.branding.forms.advance.links.fields.termsOfUseURL.hint"
+                            >
+                                Link to an agreement that your customers must agree to and abide by in order to use
+                                your organization&apos;s applications or other services. You can use placeholders like
+                                <Code>&#123;&#123;lang&#125;&#125;</Code>,
+                                <Code>&#123;&#123;country&#125;&#125;</Code>,
+                                or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
+                                regions or languages.
+                            </Trans>
+                        ) }
+                        required={ false }
+                        value={ initialValues.urls.termsOfUseURL }
+                        readOnly={ readOnly }
+                        maxLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.TOS_URL_MAX_LENGTH }
+                        minLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.TOS_URL_MIN_LENGTH }
+                        listen={ (value: string) => setTermsOfUseURL(value) }
+                        width={ 16 }
+                        data-testid={ `${ componentId }-tos-url` }
+                        validation={ validateTemplatableURLs }
+                    />
+                    <Field.Input
+                        ariaLabel="Branding preference cookie policy URL"
+                        inputType="url"
+                        name="urls.cookiePolicyURL"
+                        label={ t("extensions:develop.branding.forms.advance.links.fields.cookiePolicyURL.label") }
+                        placeholder={
+                            t("extensions:develop.branding.forms.advance.links.fields.cookiePolicyURL.placeholder")
+                        }
+                        hint={ (
+                            <Trans
+                                i18nKey="extensions:develop.branding.forms.advance.links.fields.cookiePolicyURL.hint"
+                            >
+                                Link to a document or a webpage with detailed information on all cookies used by your
+                                applications and the purpose of each of them. You can use placeholders like
+                                <Code>&#123;&#123;lang&#125;&#125;</Code>,
+                                <Code>&#123;&#123;country&#125;&#125;</Code>,
+                                or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
+                                regions or languages.
+                            </Trans>
+                        ) }
+                        required={ false }
+                        value={ initialValues.urls.cookiePolicyURL }
+                        readOnly={ readOnly }
+                        maxLength={
+                            BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.COOKIE_POLICY_URL_MAX_LENGTH
+                        }
+                        minLength={
+                            BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.COOKIE_POLICY_URL_MIN_LENGTH
+                        }
+                        listen={ (value: string) => setCookiePolicyURL(value) }
+                        width={ 16 }
+                        data-testid={ `${ componentId }-cookie-policy-url` }
+                        validation={ validateTemplatableURLs }
+                    />
+                </>
+            ) }
             { (invitedUserRegistrationFlowConfig?.isEnabled || passwordRecoveryFlowConfig?.isEnabled) && ( <Field.Input
                 ariaLabel="Branding preference recovery portal URL"
                 inputType="url"

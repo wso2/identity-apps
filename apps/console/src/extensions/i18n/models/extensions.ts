@@ -936,6 +936,7 @@ export interface Extensions {
                             };
                         };
                         heading: string;
+                        policyMgtMessage: string;
                     };
                 };
                 design: {

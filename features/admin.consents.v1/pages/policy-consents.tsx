@@ -22,6 +22,11 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
+import {
+    BrandingPreferenceAPIResponseInterface,
+    BrandingPreferenceTypes
+} from "@wso2is/common.branding.v1/models";
 import {
     ConsentListItemInterface,
     deletePurpose,
@@ -41,7 +46,30 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { PolicyConsentsList } from "../components/policy-consents-list";
+import { PolicyConsentsList, PolicyConsentListItemInterface } from "../components/policy-consents-list";
+
+interface DefaultPolicyConfigInterface {
+    displayName: string;
+    getBrandingUrl: (pref: BrandingPreferenceAPIResponseInterface) => string;
+}
+
+const DEFAULT_POLICIES: DefaultPolicyConfigInterface[] = [
+    {
+        displayName: "Cookie Policy",
+        getBrandingUrl: (pref: BrandingPreferenceAPIResponseInterface): string =>
+            pref.preference.urls.cookiePolicyURL ?? ""
+    },
+    {
+        displayName: "Privacy Policy",
+        getBrandingUrl: (pref: BrandingPreferenceAPIResponseInterface): string =>
+            pref.preference.urls.privacyPolicyURL ?? ""
+    },
+    {
+        displayName: "Terms of Service",
+        getBrandingUrl: (pref: BrandingPreferenceAPIResponseInterface): string =>
+            pref.preference.urls.termsOfUseURL ?? ""
+    }
+];
 
 /**
  * Props interface for the Policy Consents page component.
@@ -79,6 +107,10 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
     const [ pageHistory, setPageHistory ] = useState<string[]>([]);
 
     const {
+        data: brandingPreference
+    } = useGetBrandingPreferenceResolve(AppConstants.getTenant(), BrandingPreferenceTypes.ORG);
+
+    const {
         data: consentResponse,
         mappedData: consents,
         isLoading: isConsentsLoading,
@@ -108,6 +140,29 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
             return undefined;
         }
     };
+
+    const displayList: PolicyConsentListItemInterface[] = useMemo((): PolicyConsentListItemInterface[] => {
+        const existingNames: Set<string> = new Set(
+            (consents ?? []).map((c: ConsentListItemInterface) => c.name)
+        );
+
+        const syntheticDefaults: PolicyConsentListItemInterface[] = DEFAULT_POLICIES
+            .filter((def: DefaultPolicyConfigInterface) => !existingNames.has(def.displayName))
+            .map((def: DefaultPolicyConfigInterface): PolicyConsentListItemInterface => ({
+                description: "",
+                displayName: def.displayName,
+                id: null,
+                isDefault: true,
+                name: def.displayName,
+                type: "Policy"
+            }));
+
+        const existingWithDefaults: PolicyConsentListItemInterface[] = (consents ?? []).map(
+            (c: ConsentListItemInterface): PolicyConsentListItemInterface => ({ ...c })
+        );
+
+        return [ ...syntheticDefaults, ...existingWithDefaults ];
+    }, [ consents, brandingPreference ]);
 
     const hasNextPage: boolean = useMemo((): boolean => {
         return !!consentResponse?.links?.find(l => l.rel === "next");
@@ -264,7 +319,7 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                 text: t("governanceConnectors:goBackLoginAndRegistration")
             } }
             action={ (
-                (consents?.length ?? 0) > 0 ? (
+                (displayList.length) > 0 ? (
                     <Show when={ consentsFeatureConfig?.scopes?.create }>
                         <PrimaryButton
                             onClick={ (): void => {
@@ -298,7 +353,7 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                         data-componentid={ `${ componentId }-list-advanced-search` }
                     />
                 ) }
-                currentListSize={ consents?.length ?? 0 }
+                currentListSize={ displayList.length }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
@@ -315,7 +370,7 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                 data-componentid={ `${ componentId }-list-layout` }
             >
                 <PolicyConsentsList
-                    list={ consents }
+                    list={ displayList }
                     isLoading={ isConsentsLoading }
                     searchQuery={ searchQuery }
                     onSearchQueryClear={ (): void => {
@@ -328,11 +383,21 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                     onAddConsentClick={ (): void => {
                         history.push(AppConstants.getPaths().get("POLICY_CONSENTS_NEW"));
                     } }
-                    onEditConsentClick={ (consent: ConsentListItemInterface) => {
-                        history.push(AppConstants.getPaths().get("POLICY_CONSENTS_EDIT")
-                            .replace(":id", consent.id));
+                    onEditConsentClick={ (consent: PolicyConsentListItemInterface) => {
+                        const defaultSlugMap: Record<string, string> = {
+                            "Cookie Policy": AppConstants.getPaths().get("POLICY_CONSENTS_COOKIE_POLICY"),
+                            "Privacy Policy": AppConstants.getPaths().get("POLICY_CONSENTS_PRIVACY_POLICY"),
+                            "Terms of Service": AppConstants.getPaths().get("POLICY_CONSENTS_TERMS_OF_SERVICE")
+                        };
+
+                        if (consent.isDefault) {
+                            history.push(defaultSlugMap[consent.name]);
+                        } else {
+                            history.push(AppConstants.getPaths().get("POLICY_CONSENTS_EDIT")
+                                .replace(":id", consent.id));
+                        }
                     } }
-                    onDeleteConsentClick={ (consent: ConsentListItemInterface) => {
+                    onDeleteConsentClick={ (consent: PolicyConsentListItemInterface) => {
                         setDeletingConsent(consent);
                         setShowDeleteConfirmationModal(true);
                     } }

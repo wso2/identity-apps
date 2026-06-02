@@ -17,6 +17,7 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
 import Typography from "@oxygen-ui/react/Typography";
 import { PlusIcon } from "@oxygen-ui/react-icons";
 import { useRequiredScopes } from "@wso2is/access-control";
@@ -39,6 +40,11 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { SemanticICONS } from "semantic-ui-react";
 
+export interface PolicyConsentListItemInterface extends ConsentListItemInterface {
+    displayName?: string;
+    isDefault?: boolean;
+}
+
 /**
  * Props interface for the Policy Consents list component.
  */
@@ -54,7 +60,7 @@ interface PolicyConsentsListProps extends IdentifiableComponentInterface {
     /**
      * Consent list.
      */
-    list: ConsentListItemInterface[];
+    list: PolicyConsentListItemInterface[];
     /**
      * Callback for when the add consent button is clicked.
      */
@@ -62,11 +68,11 @@ interface PolicyConsentsListProps extends IdentifiableComponentInterface {
     /**
      * Callback for when a consent is clicked for editing.
      */
-    onEditConsentClick: (consent: ConsentListItemInterface) => void;
+    onEditConsentClick: (consent: PolicyConsentListItemInterface) => void;
     /**
      * Callback for when a consent is clicked for deletion.
      */
-    onDeleteConsentClick: (consent: ConsentListItemInterface) => void;
+    onDeleteConsentClick: (consent: PolicyConsentListItemInterface) => void;
     /**
      * Callback to clear the active search query.
      */
@@ -98,6 +104,8 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
         ["data-componentid"]: componentId
     } = props;
 
+    type ListItem = PolicyConsentListItemInterface;
+
     const { t } = useTranslation();
 
     const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
@@ -117,27 +125,29 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
         return [
             {
                 "data-componentid": `${componentId}-item-view-button`,
-                hidden: (): boolean => hasUpdatePermission || !hasReadPermission,
+                hidden: (_item: ListItem): boolean =>
+                    hasUpdatePermission || !hasReadPermission,
                 icon: (): SemanticICONS => "eye",
-                onClick: (_e: SyntheticEvent, consent: ConsentListItemInterface): void =>
+                onClick: (_e: SyntheticEvent, consent: ListItem): void =>
                     onEditConsentClick(consent),
                 popupText: (): string => t("common:view"),
                 renderer: "semantic-icon"
             },
             {
                 "data-componentid": `${componentId}-item-edit-button`,
-                hidden: (): boolean => !hasUpdatePermission,
+                hidden: (_item: ListItem): boolean => !hasUpdatePermission,
                 icon: (): SemanticICONS => "pencil alternate",
-                onClick: (_e: SyntheticEvent, consent: ConsentListItemInterface): void =>
+                onClick: (_e: SyntheticEvent, consent: ListItem): void =>
                     onEditConsentClick(consent),
                 popupText: (): string => t("common:edit"),
                 renderer: "semantic-icon"
             },
             {
                 "data-componentid": `${componentId}-item-delete-button`,
-                hidden: (): boolean => !hasDeletePermission,
+                hidden: (item: ListItem): boolean =>
+                    !hasDeletePermission || item?.isDefault === true,
                 icon: (): SemanticICONS => "trash alternate",
-                onClick: (_e: SyntheticEvent, consent: ConsentListItemInterface): void =>
+                onClick: (_e: SyntheticEvent, consent: ListItem): void =>
                     onDeleteConsentClick(consent),
                 popupText: (): string => t("common:delete"),
                 renderer: "semantic-icon"
@@ -157,17 +167,20 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
                 dataIndex: "name",
                 id: "name",
                 key: "name",
-                render: (consent: ConsentListItemInterface): ReactNode => {
+                render: (consent: ListItem): ReactNode => {
+                    const label: string = consent.displayName ?? consent.name;
+
                     return (
                         <Box
                             alignItems="center"
                             display="flex"
+                            gap={ 1 }
                             data-componentid={ `${componentId}-item-heading` }
                         >
                             <AppAvatar
                                 image={ (
                                     <AnimatedAvatar
-                                        name={ consent.name }
+                                        name={ label }
                                         size="mini"
                                         data-componentid={ `${componentId}-item-display-name-avatar` }
                                     />
@@ -177,8 +190,16 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
                                 data-componentid={ `${componentId}-item-display-name` }
                             />
                             <Typography variant="body1">
-                                { consent.name }
+                                { label }
                             </Typography>
+                            { consent.isDefault && (
+                                <Chip
+                                    label={ t("common:default") }
+                                    size="medium"
+                                    variant="filled"
+                                    color="default"
+                                />
+                            ) }
                         </Box>
                     );
                 },
@@ -250,17 +271,15 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
     };
 
     return (
-        <DataTable<ConsentListItemInterface>
+        <DataTable<ListItem>
             className="consents-table"
             externalSearch={ advancedSearch }
             isLoading={ isLoading }
             actions={ resolveTableActions() }
             columns={ resolveTableColumns() }
             data={ list }
-            onRowClick={ (_e: SyntheticEvent, consent: ConsentListItemInterface): void => {
-                if (consent.id !== null) {
-                    onEditConsentClick(consent);
-                }
+            onRowClick={ (_e: SyntheticEvent, consent: ListItem): void => {
+                onEditConsentClick(consent);
             } }
             placeholders={ showPlaceholders() }
             selectable={ true }

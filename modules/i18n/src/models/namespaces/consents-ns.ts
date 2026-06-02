@@ -38,6 +38,9 @@ interface ConsentNotificationsNS {
         success: { description: string; message: string };
     };
     update: {
+        brandingSync?: {
+            error: { description: string; message: string };
+        };
         error: {
             conflict: { description: string; message: string };
             description: string;
