@@ -2232,7 +2232,7 @@ export const applications: ApplicationsNS = {
                             }
                         },
                         gracefulRefreshTokenReuseLimit: {
-                            hint: "Maximum number of times the previous refresh token may be used within the grace window.",
+                            hint: "Maximum number of times the previous refresh token may be used within the grace period.",
                             label: "Refresh token reuse limit",
                             placeholder: "Enter the refresh token reuse limit",
                             validations: {

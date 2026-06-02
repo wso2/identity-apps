@@ -3926,7 +3926,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 }
                                             ] }
                                             readOnly={ readOnly }
-                                            data-testid={ `${ testId }-extend-refresh-token-expiry-time-checkbox` }
+                                            data-componentid={ `${ testId }-extend-refresh-token-expiry-time-checkbox` }
                                         />
                                         <Hint>
                                             <Trans
@@ -3967,7 +3967,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                 }
                                             ] }
                                             readOnly={ readOnly }
-                                            data-testid={ `${ testId }-graceful-refresh-token-rotation-checkbox` }
+                                            data-componentid={ `${ testId }-graceful-refresh-token-rotation-checkbox` }
                                         />
                                         <Hint>
                                             { t("applications:forms.inboundOIDC.sections.refreshToken" +
@@ -4046,7 +4046,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                     readOnly={ readOnly }
                                                     min={ 0 }
                                                     max={ maxGracefulRefreshTokenRotationValidityPeriod }
-                                                    data-testid={
+                                                    data-componentid={
                                                         `${ testId }-graceful-refresh-token-validity-period-input`
                                                     }
                                                 />
@@ -4121,7 +4121,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                     readOnly={ readOnly }
                                                     min={ 1 }
                                                     max={ maxGracefulRefreshTokenReuseLimit }
-                                                    data-testid={
+                                                    data-componentid={
                                                         `${ testId }-graceful-refresh-token-reuse-limit-input`
                                                     }
                                                 />
