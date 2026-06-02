@@ -137,6 +137,7 @@ const PushProviderCard: FunctionComponent<PushProviderCardPropsInterface> = ({
                                 ResourceTypes.NOTIFICATION_PROVIDERS
                             )
                         }
+                        alt={ template?.name ?? "" }
                         loading="lazy"
                     />
                 </div>

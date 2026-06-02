@@ -82,7 +82,7 @@ const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
     if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.PasskeyEnrollment) {
         return (
             <Box display="flex" gap={ 1 } data-componentid={ componentId }>
-                <img src="https://www.svgrepo.com/show/246819/fingerprint.svg" height="20" />
+                <img src="https://www.svgrepo.com/show/246819/fingerprint.svg" height="20" alt="" />
                 <Typography variant="body1">{ t("flows:core.executions.names.passkeyEnrollment") }</Typography>
             </Box>
         );
@@ -96,7 +96,7 @@ const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
                 data-componentid={ componentId }
                 className="flow-builder-execution magic-link"
             >
-                <img src="https://www.svgrepo.com/show/524687/link.svg" height="20"/>
+                <img src="https://www.svgrepo.com/show/524687/link.svg" height="20" alt="" />
                 <Typography variant="body1">{ t("flows:core.executions.names.magicLink") }</Typography>
             </Box>
         );
@@ -116,7 +116,7 @@ const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
                 data-componentid={ componentId }
                 className="flow-builder-execution confirmation-code"
             >
-                <img src="https://www.svgrepo.com/show/468264/check-mark-square-2.svg" height="20"/>
+                <img src="https://www.svgrepo.com/show/468264/check-mark-square-2.svg" height="20" alt="" />
                 <Typography variant="body1">{ t("flows:core.executions.names.confirmationCode") }</Typography>
             </Box>
         );

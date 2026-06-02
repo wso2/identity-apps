@@ -181,6 +181,7 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
                                 ResourceTypes.APPLICATIONS
                             )
                         }
+                        alt={ template?.name ?? "" }
                         loading="lazy"
                     />
                 </div>

@@ -66,7 +66,7 @@ const GoogleExecution = ({
 
     return (
         <Box display="flex" gap={ 1 } data-componentid={ componentId }>
-            <img src={ loadStaticResource("assets/images/icons/google.svg") } height="20" />
+            <img src={ loadStaticResource("assets/images/icons/google.svg") } height="20" alt="" />
             <Typography variant="body1">{ t("flows:core.executions.names.google") }</Typography>
         </Box>
     );

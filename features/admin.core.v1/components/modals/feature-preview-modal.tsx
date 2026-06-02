@@ -161,6 +161,7 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
                             { selected?.image && (
                                 <img
                                     src={ selected.image }
+                                    alt={ selected?.name ?? "" }
                                     style={ { marginBottom: "20px", marginTop: "20px", width: "100%" } }
                                 />
                             ) }
