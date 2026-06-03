@@ -301,7 +301,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
             values.policyUrl?.trim() ?? "",
             values.description,
             values.mandatory,
-            values.promptOnLogin
+            String(modalPromptOnLogin)
         )
             .then((created: PurposeDTOInterface): void => {
                 dispatch(addAlert({
@@ -511,7 +511,9 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                     if (defaultName) {
                                         updateDefaultPolicyUrl(values);
                                     }
-                                    createNewPurpose(values);
+                                    pendingValues.current = values;
+                                    setModalPromptOnLogin(false);
+                                    setShowVersionWarningModal(true);
                                 } else {
                                     pendingValues.current = values;
                                     setModalPromptOnLogin(values.promptOnLogin === "true");
@@ -710,38 +712,6 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                             />
                                                         ) }
                                                     </Box>
-                                                    { isCreateMode && (
-                                                        <Field
-                                                            name="promptOnLogin"
-                                                            subscription={ { value: true } }
-                                                            render={ (
-                                                                { input }: { input: FieldInputProps<string> }
-                                                            ) => (
-                                                                <Box>
-                                                                    <FormControlLabel
-                                                                        control={ (
-                                                                            <Switch
-                                                                                name={ input.name }
-                                                                                checked={ input.value === "true" }
-                                                                                onChange={ ( e:
-                                                                                    React.ChangeEvent<HTMLInputElement>
-                                                                                ) => {
-                                                                                    input.onChange(
-                                                                                        String(e.target.checked)
-                                                                                    );
-                                                                                } }
-                                                                            />
-                                                                        ) }
-                                                                        label={ t("consents:policyConsents.form.promptOnLogin.label") }
-                                                                        sx={ { mr: 0 } }
-                                                                    />
-                                                                    <Hint>
-                                                                        { t("consents:policyConsents.form.promptOnLogin.hint") }
-                                                                    </Hint>
-                                                                </Box>
-                                                            ) }
-                                                        />
-                                                    ) }
                                                 </Box>
                                             </Grid>
                                             { /* Preview column */ }
@@ -799,17 +769,27 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                 onPrimaryActionClick={ () => {
                     setShowVersionWarningModal(false);
                     if (pendingValues.current) {
-                        updatePolicyInfo(pendingValues.current);
+                        if (isCreateMode) {
+                            createNewPurpose(pendingValues.current);
+                        } else {
+                            updatePolicyInfo(pendingValues.current);
+                        }
                     }
                 } }
                 closeOnDimmerClick={ false }
                 primaryActionLoading={ isSubmitting }
             >
                 <ConfirmationModal.Header>
-                    { t("consents:policyConsents.form.versionModal.createNewVersion") }
+                    { isCreateMode
+                        ? t("consents:policyConsents.form.createModal.header")
+                        : t("consents:policyConsents.form.versionModal.createNewVersion")
+                    }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Content>
-                    { t("consents:policyConsents.form.versionModal.promptDescription") }
+                    { isCreateMode
+                        ? t("consents:policyConsents.form.createModal.promptDescription")
+                        : t("consents:policyConsents.form.versionModal.promptDescription")
+                    }
                     <Box sx={ { mt: 2 } }>
                         <FormControlLabel
                             control={ (
@@ -820,7 +800,10 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                     } }
                                 />
                             ) }
-                            label={ t("consents:policyConsents.form.versionModal.promptAtLogin") }
+                            label={ isCreateMode
+                                ? t("consents:policyConsents.form.createModal.promptAtLogin")
+                                : t("consents:policyConsents.form.versionModal.promptAtLogin")
+                            }
                             sx={ { mr: 0 } }
                         />
                     </Box>

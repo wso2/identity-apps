@@ -186,6 +186,11 @@ export const consents: ConsentsNS = {
                 currentVersionLabel: "Version {{version}} (current)",
                 trigger: "Version {{version}}"
             },
+            createModal: {
+                header: "Create Policy?",
+                promptAtLogin: "Prompt users to accept at login",
+                promptDescription: "Choose whether users should be prompted to review and accept this policy at each login."
+            },
             versionModal: {
                 createNewVersion: "Save as New Version?",
                 promptAtLogin: "Prompt users to accept at next login",
