@@ -526,9 +526,6 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                         <FinalForm
                             key={ isCreateMode ? "create" : consent?.version }
                             onSubmit={ (values: PolicyFormValuesInterface) => {
-                                if (isDefault) {
-                                    updateDefaultPolicyUrl(values);
-                                }
                                 pendingValues.current = values;
                                 setModalPromptOnLogin(
                                     isCreateMode ? false : values.promptOnLogin === "true"
@@ -792,6 +789,9 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                 onPrimaryActionClick={ () => {
                     setShowVersionWarningModal(false);
                     if (pendingValues.current) {
+                        if (isDefault) {
+                            updateDefaultPolicyUrl(pendingValues.current);
+                        }
                         if (isCreateMode) {
                             createNewPurpose(pendingValues.current);
                         } else {
