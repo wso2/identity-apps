@@ -116,15 +116,10 @@
                     = '<div id="error-msg" class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.enter.code")%></div>'
                     +'<div class="ui divider hidden"></div>';
             } else {
-                if ($('#codeForm').data("submitted") === true) {
-                    console.warn("Prevented a possible double submit event");
-                } else {
-                    trackEvent("authentication-portal-email-otp-click-continue", {
-                        "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
-                    });
-                    $('#codeForm').data("submitted", true);
-                    $('#codeForm').submit();
-                }
+                trackEvent("authentication-portal-email-otp-click-continue", {
+                    "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
+                });
+                $('#codeForm').submit();
             }
         }
     </script>
@@ -319,6 +314,17 @@
     <script type="text/javascript">
 
         $(document).ready(function () {
+            // Guard at the form level so it catches both manual button clicks
+            // and autofill auto-submission, which bypasses the button click handler entirely.
+            $('#codeForm').on('submit', function(e) {
+                if ($(this).data("submitted") === true) {
+                    console.warn("Prevented a possible double submit event");
+                    e.preventDefault();
+                    return false;
+                }
+                $(this).data("submitted", true);
+            });
+
             $('#authenticate').click(function () {
                 <% if (!reCaptchaEnabled) { %>
                     submitForm();
