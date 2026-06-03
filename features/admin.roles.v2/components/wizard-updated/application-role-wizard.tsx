@@ -545,7 +545,7 @@ export const ApplicationRoleWizard: FunctionComponent<ApplicationRoleWizardProps
                                     onChange={ onAPIResourceSelected }
                                     noOptionsText={ isSubscribedAPIResourcesListLoading
                                         ? t("common:searching")
-                                        : t("roles:addRoleWizard.forms.rolePermission.apiResource.hint.empty")
+                                        : t("roles:addRoleWizard.forms.rolePermission.apiResource.hint.noApiResourcesAvailable")
                                     }
                                     key="apiResource"
                                     placeholder={ t("roles:addRoleWizard." +

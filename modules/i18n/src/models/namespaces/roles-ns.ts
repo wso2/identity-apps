@@ -155,6 +155,7 @@ export interface rolesNS {
                     label: string;
                     placeholder: string;
                     hint: {
+                        noApiResourcesAvailable: string;
                         empty: string;
                     };
                 };

@@ -105,6 +105,7 @@ export const roles: rolesNS = {
             rolePermission: {
                 apiResource: {
                     hint: {
+                        noApiResourcesAvailable: "There are no API resources authorized for the selected application.",
                         empty: "There are no API resources authorized for the selected application."
                     },
                     label: "Select API Resource",
