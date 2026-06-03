@@ -183,6 +183,9 @@
       "settings": {
         "hideLegend": true,
         "singleValueSettings": true,
+        "trendInidcator": {
+            "isIncreasementGreen": "true"
+        },
         "metrics": [
           {
             "metricName": "sum(events)",
@@ -277,6 +280,9 @@
       "settings": {
         "hideLegend": true,
         "singleValueSettings": true,
+        "trendInidcator": {
+            "isIncreasementGreen": "true"
+        },
         "metrics": [
           {
             "metricName": "count(event_id)",
@@ -366,6 +372,9 @@
       "settings": {
         "hideLegend": true,
         "singleValueSettings": true,
+        "trendInidcator": {
+            "isIncreasementGreen": "true"
+        },
         "metrics": [
           {
             "metricName": "sum(events)",
@@ -447,6 +456,9 @@
       "settings": {
         "hideLegend": true,
         "singleValueSettings": true,
+        "trendInidcator": {
+            "isIncreasementGreen": "true"
+        },
         "metrics": [
           {
             "metricName": "sum(events)",
@@ -502,6 +514,9 @@
       "settings": {
         "hideLegend": true,
         "singleValueSettings": true,
+        "trendInidcator": {
+            "isIncreasementGreen": "true"
+        },
         "metrics": [
           {
             "metricName": "sum(events)",
@@ -989,6 +1004,9 @@
       "settings": {
         "hideLegend": true,
         "singleValueSettings": true,
+        "trendInidcator": {
+            "isIncreasementGreen": "true"
+        },
         "metrics": [
           {
             "metricName": "sum(events)",
@@ -2192,6 +2210,9 @@
       "settings": {
         "hideLegend": true,
         "singleValueSettings": true,
+        "trendInidcator": {
+            "isIncreasementGreen": "true"
+        },
         "metrics": [
           {
             "metricName": "sum(events)",
@@ -2272,6 +2293,9 @@
       "settings": {
         "hideLegend": true,
         "singleValueSettings": true,
+        "trendInidcator": {
+            "isIncreasementGreen": "true"
+        },
         "metrics": [
           {
             "metricName": "sum(events)",
@@ -2635,6 +2659,9 @@
       "settings": {
         "hideLegend": true,
         "singleValueSettings": true,
+        "trendInidcator": {
+            "isIncreasementGreen": "true"
+        },
         "metrics": [
           {
             "metricName": "count(event_id)",
@@ -2723,6 +2750,9 @@
       "settings": {
         "hideLegend": true,
         "singleValueSettings": true,
+        "trendInidcator": {
+            "isIncreasementGreen": "true"
+        },
         "metrics": [
           {
             "metricName": "sum(events)",
