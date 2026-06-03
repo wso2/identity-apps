@@ -152,6 +152,10 @@ export interface FeatureConfigInterface {
      */
     flows?: FeatureAccessConfigInterface;
     /**
+     * Flow Extension feature.
+     */
+    flowExtension?: FeatureAccessConfigInterface;
+    /**
      * Getting started feature.
      */
     gettingStarted?: FeatureAccessConfigInterface;

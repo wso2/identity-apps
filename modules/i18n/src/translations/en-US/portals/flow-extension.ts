@@ -19,6 +19,45 @@
 import { flowExtensionNS } from "../../../models";
 
 export const flowExtension: flowExtensionNS = {
+    createWizard: {
+        steps: {
+            endpointConfig: {
+                title: "Endpoint Configuration"
+            },
+            generalSettings: {
+                description: {
+                    label: "Description",
+                    placeholder: "Enter a description for the flow extension.",
+                    validations: {
+                        maxLength: "The description cannot exceed 255 characters."
+                    }
+                },
+                name: {
+                    hint: "Enter a unique name to identify this flow extension.",
+                    label: "Name",
+                    placeholder: "Enter a name for the flow extension.",
+                    validations: {
+                        invalid: "Please enter a valid name. It must start with an alphanumeric character and"
+                            + " can contain letters, numbers, spaces, hyphens and underscores (max 255 characters)."
+                    }
+                },
+                title: "General Settings"
+            }
+        }
+    },
+    notifications: {
+        createError: {
+            message: "Flow Extension Creation Error"
+        },
+        createGenericError: {
+            description: "An error occurred while creating the flow extension.",
+            message: "Flow Extension Creation Error"
+        },
+        createSuccess: {
+            description: "Successfully created the flow extension.",
+            message: "Creation Successful"
+        }
+    },
     properties: {
         connectionLabel: "Connection",
         connectionPlaceholder: "Select a connection",

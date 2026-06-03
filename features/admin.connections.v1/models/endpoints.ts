@@ -25,6 +25,14 @@ export interface ConnectionResourceEndpointsInterface {
     customAuthenticators: string;
     extensions: string;
     fidoConfigs: string;
+    /**
+     * API base URL for Flow Extension CRUD operations.
+     */
+    flowExtension: string;
+    /**
+     * API to retrieve the Flow Extension context tree.
+     */
+    flowExtensionContextTree: string;
     identityProviders: string;
     localAuthenticators: string;
     multiFactorAuthenticators: string;

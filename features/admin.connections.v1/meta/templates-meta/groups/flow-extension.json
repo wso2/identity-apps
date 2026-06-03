@@ -1,0 +1,15 @@
+{
+    "category": "DEFAULT",
+    "description": "Extend authentication flows with external services.",
+    "enabled": true,
+    "displayOrder": 13,
+    "id": "flow-extension",
+    "docLink": "",
+    "image": "assets/images/logos/flow-extension.svg",
+    "name": "Flow Extension",
+    "services": [],
+    "disabled": false,
+    "type": "DEFAULT",
+    "tags": [ "Custom" ],
+    "templateId": "flow-extension"
+}
