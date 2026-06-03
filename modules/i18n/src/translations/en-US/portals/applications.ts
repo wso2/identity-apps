@@ -2213,6 +2213,35 @@ export const applications: ApplicationsNS = {
                             validations: {
                                 empty: "This is a required field."
                             }
+                        },
+                        gracefulRefreshTokenRotation: {
+                            hint: "When enabled, the previous refresh token remains valid for a grace period " +
+                                "after rotation, instead of being revoked immediately.",
+                            label: "Rotate refresh token gracefully"
+                        },
+                        gracefulRefreshTokenRotationValidityPeriod: {
+                            hint: "Time in seconds the previous refresh token remains usable after a new one is issued.",
+                            label: "Graceful rotation validity period",
+                            placeholder: "Enter the graceful rotation validity period",
+                            validations: {
+                                belowMin: "Value cannot be less than 0.",
+                                empty: "Please fill the graceful rotation validity period",
+                                invalid: "Graceful rotation validity period should be in seconds. " +
+                                    "Decimal points and negative numbers are not allowed.",
+                                maxExceeded: "Value cannot exceed the configured maximum of {{max}} seconds."
+                            }
+                        },
+                        gracefulRefreshTokenReuseLimit: {
+                            hint: "Maximum number of times the previous refresh token may be used within the grace period.",
+                            label: "Refresh token reuse limit",
+                            placeholder: "Enter the refresh token reuse limit",
+                            validations: {
+                                belowMin: "Value must be at least 1.",
+                                empty: "Please fill the refresh token reuse limit",
+                                invalid: "Refresh token reuse limit should be a whole number. " +
+                                    "Decimal points and negative numbers are not allowed.",
+                                maxExceeded: "Value cannot exceed the configured maximum of {{max}}."
+                            }
                         }
                     },
                     heading: "Refresh Token"
