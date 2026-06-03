@@ -54,6 +54,10 @@ interface PolicyConsentsListProps extends IdentifiableComponentInterface {
      */
     advancedSearch?: ReactNode;
     /**
+     * Whether branding is enabled. When false, default policies are read-only.
+     */
+    isBrandingEnabled?: boolean;
+    /**
      * Is the list loading.
      */
     isLoading?: boolean;
@@ -94,6 +98,7 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
 ): ReactElement => {
     const {
         advancedSearch,
+        isBrandingEnabled,
         isLoading,
         list,
         onAddConsentClick,
@@ -129,8 +134,13 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
         return [
             {
                 "data-componentid": `${componentId}-item-view-button`,
-                hidden: (item: ListItem): boolean =>
-                    isCrossTenant(item) ? !hasReadPermission : (hasUpdatePermission || !hasReadPermission),
+                hidden: (item: ListItem): boolean => {
+                    const isDefaultReadOnly: boolean = item.isDefault && !isBrandingEnabled;
+
+                    return isCrossTenant(item)
+                        ? !hasReadPermission
+                        : ((hasUpdatePermission && !isDefaultReadOnly) || !hasReadPermission);
+                },
                 icon: (): SemanticICONS => "eye",
                 onClick: (_e: SyntheticEvent, consent: ListItem): void =>
                     onEditConsentClick(consent),
@@ -139,7 +149,8 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
             },
             {
                 "data-componentid": `${componentId}-item-edit-button`,
-                hidden: (item: ListItem): boolean => !hasUpdatePermission || isCrossTenant(item),
+                hidden: (item: ListItem): boolean =>
+                    !hasUpdatePermission || isCrossTenant(item) || (item.isDefault && !isBrandingEnabled),
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (_e: SyntheticEvent, consent: ListItem): void =>
                     onEditConsentClick(consent),

@@ -193,6 +193,7 @@ export interface ConsentsNS {
                 actions: {
                     addPolicy: string;
                 };
+                brandingRequired: string;
                 description: string;
                 heading: string;
                 search: {

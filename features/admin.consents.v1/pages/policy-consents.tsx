@@ -38,11 +38,12 @@ import {
     PageLayout,
     PrimaryButton
 } from "@wso2is/react-components";
+import Link from "@oxygen-ui/react/Link";
 import React, { FunctionComponent, MouseEvent, ReactElement, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { DropdownProps, Icon, Message, PaginationProps } from "semantic-ui-react";
 import { PolicyConsentsList, PolicyConsentListItemInterface } from "../components/policy-consents-list";
 import {
     DEFAULT_POLICY_DISPLAY_NAMES,
@@ -87,6 +88,11 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
     const {
         data: brandingPreference
     } = useGetBrandingPreferenceResolve(AppConstants.getTenant(), BrandingPreferenceTypes.ORG);
+
+    const isBrandingEnabled: boolean = useMemo(
+        () => brandingPreference?.preference?.configs?.isBrandingEnabled ?? false,
+        [ brandingPreference ]
+    );
 
     const {
         data: consentResponse,
@@ -316,6 +322,16 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                 ) : null
             ) }
         >
+            { !isBrandingEnabled && (
+                <Message warning className="mb-5" data-componentid={ `${componentId}-branding-required-message` }>
+                    <Trans i18nKey="consents:policyConsents.pages.list.brandingRequired">
+                        Enable branding to update default policies.{ " " }
+                        <Link onClick={ (): void => history.push(AppConstants.getPaths().get("BRANDING")) }>
+                            Go to Branding
+                        </Link>
+                    </Trans>
+                </Message>
+            ) }
             <ListLayout
                 advancedSearch={ (
                     <AdvancedSearchWithBasicFilters
@@ -353,6 +369,7 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
             >
                 <PolicyConsentsList
                     list={ displayList }
+                    isBrandingEnabled={ isBrandingEnabled }
                     isLoading={ isConsentsLoading }
                     searchQuery={ searchQuery }
                     onSearchQueryClear={ (): void => {

@@ -467,6 +467,13 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
             });
     };
 
+    const isBrandingEnabled: boolean = useMemo(
+        (): boolean => brandingPreference?.preference?.configs?.isBrandingEnabled ?? false,
+        [ brandingPreference ]
+    );
+
+    const isEffectivelyReadOnly: boolean = readOnly || (isDefault && !isBrandingEnabled);
+
     const isLoading: boolean = !isCreateMode && (isPolicyInfoLoading || isBrandingLoading || isVersionsLoading);
     const registrationFlowBuilderPath: string = AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER");
 
@@ -476,6 +483,16 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
 
     return (
         <>
+            { isDefault && !isBrandingEnabled && (
+                <Message warning className="mb-5">
+                    <Trans i18nKey="consents:policyConsents.pages.list.brandingRequired">
+                        Enable branding to update default policies.{ " " }
+                        <Link onClick={ (): void => history.push(AppConstants.getPaths().get("BRANDING")) }>
+                            Go to Branding
+                        </Link>
+                    </Trans>
+                </Message>
+            ) }
             <Card className="p-0 mb-5">
                 <Grid container sx={ { display: { md: "flex", xs: "none" } } }>
                     <Grid
@@ -572,7 +589,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                                 type="text"
                                                                 component={ TextFieldAdapter }
                                                                 validate={ validateName }
-                                                                disabled={ readOnly }
+                                                                disabled={ isEffectivelyReadOnly }
                                                             />
                                                         </Box>
                                                     ) }
@@ -602,7 +619,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                                         )
                                                                     )
                                                             }
-                                                            disabled={ readOnly }
+                                                            disabled={ isEffectivelyReadOnly }
                                                         />
                                                         <Hint>
                                                             <Trans
@@ -651,7 +668,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                                             }
                                                                         }
                                                                         variant="policy"
-                                                                        disabled={ readOnly }
+                                                                        disabled={ isEffectivelyReadOnly }
                                                                     />
                                                                 );
                                                             } }
@@ -674,7 +691,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                                             ) => {
                                                                                 input.onChange(e.target.checked);
                                                                             } }
-                                                                            disabled={ readOnly }
+                                                                            disabled={ isEffectivelyReadOnly }
                                                                         />
                                                                     ) }
                                                                     label={ t("consents:policyConsents.form.mandatory.label") }
@@ -733,7 +750,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                 />
                                             </Grid>
                                             { (isCreateMode ? hasCreatePermission : hasUpdatePermission)
-                                                && !readOnly && (
+                                                && !isEffectivelyReadOnly && (
                                                 <Grid xs={ 12 } padding={ 2 }>
                                                     { !isCreateMode && (
                                                         <Hint>

@@ -304,6 +304,7 @@ export const consents: ConsentsNS = {
                 actions: {
                     addPolicy: "New Policy"
                 },
+                brandingRequired: "Enable branding to update default policies. <1>Go to Branding</1>",
                 description: "Manage policy consents for your organization.",
                 heading: "Policy Consents",
                 search: {
@@ -322,7 +323,7 @@ export const consents: ConsentsNS = {
                     description: {
                         configureTranslation: "Configure translation",
                         i18nCard: {
-                            brandingRequired: "Enable branding to configure translations.",
+                            brandingRequired: "Enable branding to update translations. <1>Go to Branding</1>",
                             createTitle: "Create Translation",
                             deleteError: {
                                 description: "Failed to delete the translation. Please try again.",
