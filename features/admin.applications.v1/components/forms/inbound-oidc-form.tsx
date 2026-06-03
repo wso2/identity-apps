@@ -241,9 +241,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
         state?.config?.ui?.features?.applications);
     const maxGracefulRefreshTokenReuseLimit: number = useSelector((state: AppState) =>
-        state?.config?.ui?.features?.applications?.maxGracefulRefreshTokenReuseLimit ?? 5);
+        state?.config?.ui?.features?.applications?.properties?.maxGracefulRefreshTokenReuseLimit as number);
     const maxGracefulRefreshTokenRotationValidityPeriod: number = useSelector((state: AppState) =>
-        state?.config?.ui?.features?.applications?.maxGracefulRefreshTokenRotationValidityPeriod ?? 60);
+        state?.config?.ui?.features?.applications?.properties?.maxGracefulRefreshTokenRotationValidityPeriod as number);
     const organizationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
         state?.config?.ui?.features?.organizations);
     const isBackChannelLogoutEnabled: boolean = isFeatureEnabled(
@@ -2190,9 +2190,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @param value - value as a string.
      */
     const isValidWholeNumber = (value: string): boolean => {
-        const numValue: number = Math.floor(Number(value));
-
-        return numValue !== Infinity && String(numValue) === value && !isNaN(numValue);
+        return /^\d+$/.test(value);
     };
 
     const isPublicClientFieldEnabled: boolean = !isSPAApplication
