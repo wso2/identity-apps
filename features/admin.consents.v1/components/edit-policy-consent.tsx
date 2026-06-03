@@ -651,7 +651,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                                             }
                                                                         }
                                                                         variant="policy"
-                                                                        readOnly={ readOnly }
+                                                                        disabled={ readOnly }
                                                                     />
                                                                 );
                                                             } }
