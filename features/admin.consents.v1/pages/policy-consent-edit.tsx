@@ -73,6 +73,7 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
     const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
     );
+    const currentTenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const hasDeletePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.delete);
 
     const [ showDeleteConfirmation, setShowDeleteConfirmation ] = useState<boolean>(false);
@@ -90,6 +91,14 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
     const purposeId: string | undefined = useMemo((): string | undefined => {
         return isDefaultPolicy ? undefined : consent?.id;
     }, [ isDefaultPolicy, consent ]);
+
+    const isCrossTenant: boolean = useMemo((): boolean => {
+        if (isDefaultPolicy || !consent?.tenantDomain) {
+            return false;
+        }
+
+        return consent.tenantDomain !== currentTenantDomain;
+    }, [ isDefaultPolicy, consent, currentTenantDomain ]);
 
     const displayName: string = isDefaultPolicy
         ? slugConfig
@@ -169,6 +178,9 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
                     size="medium"
                     variant="filled"
                     color="default"
+                    sx={ {
+                        fontSize: 11
+                    } }
                 />
             ) }
             image={ (
@@ -197,8 +209,9 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
                     <EditPolicyConsent
                         purposeId={ purposeId }
                         defaultName={ slugConfig }
+                        readOnly={ isCrossTenant }
                     />
-                    { hasDeletePermission && purposeId && (
+                    { hasDeletePermission && purposeId && !isCrossTenant && (
                         <DangerZoneGroup
                             sectionHeader={ t("common:dangerZone") }
                         >

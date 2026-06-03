@@ -103,10 +103,14 @@ export const PreferenceManagementList: FunctionComponent<PreferenceManagementLis
     const preferenceManagementFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
     );
+    const currentTenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const hasCreatePermission: boolean = useRequiredScopes(preferenceManagementFeatureConfig?.scopes?.create);
     const hasReadPermission: boolean = useRequiredScopes(preferenceManagementFeatureConfig?.scopes?.read);
     const hasUpdatePermission: boolean = useRequiredScopes(preferenceManagementFeatureConfig?.scopes?.update);
     const hasDeletePermission: boolean = useRequiredScopes(preferenceManagementFeatureConfig?.scopes?.delete);
+
+    const isCrossTenant = (item: ConsentListItemInterface): boolean =>
+        !!item.tenantDomain && item.tenantDomain !== currentTenantDomain;
 
     /**
      * Resolves data table actions.
@@ -117,7 +121,8 @@ export const PreferenceManagementList: FunctionComponent<PreferenceManagementLis
         return [
             {
                 "data-componentid": `${componentId}-item-view-button`,
-                hidden: (): boolean => hasUpdatePermission || !hasReadPermission,
+                hidden: (item: ConsentListItemInterface): boolean =>
+                    isCrossTenant(item) ? !hasReadPermission : (hasUpdatePermission || !hasReadPermission),
                 icon: (): SemanticICONS => "eye",
                 onClick: (_e: SyntheticEvent, consent: ConsentListItemInterface): void =>
                     onEditConsentClick(consent),
@@ -126,7 +131,7 @@ export const PreferenceManagementList: FunctionComponent<PreferenceManagementLis
             },
             {
                 "data-componentid": `${componentId}-item-edit-button`,
-                hidden: (): boolean => !hasUpdatePermission,
+                hidden: (item: ConsentListItemInterface): boolean => !hasUpdatePermission || isCrossTenant(item),
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (_e: SyntheticEvent, consent: ConsentListItemInterface): void =>
                     onEditConsentClick(consent),
@@ -135,7 +140,7 @@ export const PreferenceManagementList: FunctionComponent<PreferenceManagementLis
             },
             {
                 "data-componentid": `${componentId}-item-delete-button`,
-                hidden: (): boolean => !hasDeletePermission,
+                hidden: (item: ConsentListItemInterface): boolean => !hasDeletePermission || isCrossTenant(item),
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (_e: SyntheticEvent, consent: ConsentListItemInterface): void =>
                     onDeleteConsentClick(consent),

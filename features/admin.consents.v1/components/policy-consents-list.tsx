@@ -111,6 +111,7 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
     const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
     );
+    const currentTenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const hasCreatePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.create);
     const hasReadPermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.read);
     const hasUpdatePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.update);
@@ -121,12 +122,15 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
      *
      * @returns TableActionsInterface[]
      */
+    const isCrossTenant = (item: ListItem): boolean =>
+        !!item.tenantDomain && item.tenantDomain !== currentTenantDomain;
+
     const resolveTableActions = (): TableActionsInterface[] => {
         return [
             {
                 "data-componentid": `${componentId}-item-view-button`,
-                hidden: (_item: ListItem): boolean =>
-                    hasUpdatePermission || !hasReadPermission,
+                hidden: (item: ListItem): boolean =>
+                    isCrossTenant(item) ? !hasReadPermission : (hasUpdatePermission || !hasReadPermission),
                 icon: (): SemanticICONS => "eye",
                 onClick: (_e: SyntheticEvent, consent: ListItem): void =>
                     onEditConsentClick(consent),
@@ -135,7 +139,7 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
             },
             {
                 "data-componentid": `${componentId}-item-edit-button`,
-                hidden: (_item: ListItem): boolean => !hasUpdatePermission,
+                hidden: (item: ListItem): boolean => !hasUpdatePermission || isCrossTenant(item),
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (_e: SyntheticEvent, consent: ListItem): void =>
                     onEditConsentClick(consent),
@@ -145,7 +149,7 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
             {
                 "data-componentid": `${componentId}-item-delete-button`,
                 hidden: (item: ListItem): boolean =>
-                    !hasDeletePermission || item?.isDefault === true,
+                    !hasDeletePermission || item?.isDefault === true || isCrossTenant(item),
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (_e: SyntheticEvent, consent: ListItem): void =>
                     onDeleteConsentClick(consent),
@@ -198,6 +202,9 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
                                     size="medium"
                                     variant="filled"
                                     color="default"
+                                    sx = { {
+                                        fontSize: 9
+                                    } }
                                 />
                             ) }
                         </Box>

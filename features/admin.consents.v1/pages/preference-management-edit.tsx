@@ -31,7 +31,7 @@ import {
     DangerZoneGroup,
     PageLayout
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -68,7 +68,16 @@ const PreferenceManagementEditPage: FunctionComponent<PreferenceManagementEditPa
     const preferenceManagementFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
     );
+    const currentTenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const hasDeletePermission: boolean = useRequiredScopes(preferenceManagementFeatureConfig?.scopes?.delete);
+
+    const isCrossTenant: boolean = useMemo((): boolean => {
+        if (!consent?.tenantDomain) {
+            return false;
+        }
+
+        return consent.tenantDomain !== currentTenantDomain;
+    }, [ consent, currentTenantDomain ]);
 
     const [ showDeleteConfirmation, setShowDeleteConfirmation ] = React.useState<boolean>(false);
     const [ isDeleting, setIsDeleting ] = React.useState<boolean>(false);
@@ -165,8 +174,8 @@ const PreferenceManagementEditPage: FunctionComponent<PreferenceManagementEditPa
         >
             { consent && (
                 <>
-                    <EditPreferenceManagement purposeId={ consent.id } />
-                    { hasDeletePermission && (
+                    <EditPreferenceManagement purposeId={ consent.id } readOnly={ isCrossTenant } />
+                    { hasDeletePermission && !isCrossTenant && (
                         <DangerZoneGroup
                             sectionHeader={ t("common:dangerZone") }
                         >

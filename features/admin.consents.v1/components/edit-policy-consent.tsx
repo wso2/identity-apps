@@ -71,6 +71,7 @@ import { ConsentVersionDropdown } from "./consent-version-dropdown";
 interface EditPolicyConsentProps extends IdentifiableComponentInterface {
     defaultName?: string;
     purposeId?: string;
+    readOnly?: boolean;
 }
 
 interface PolicyFormValuesInterface {
@@ -123,7 +124,7 @@ const validateTemplatableURL = (value: string, errorMessage: string): string | u
 export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
     props: EditPolicyConsentProps
 ): ReactElement => {
-    const { purposeId, defaultName } = props;
+    const { purposeId, defaultName, readOnly = false } = props;
 
     const isCreateMode: boolean = !purposeId;
 
@@ -570,6 +571,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                                 type="text"
                                                                 component={ TextFieldAdapter }
                                                                 validate={ validateName }
+                                                                disabled={ readOnly }
                                                             />
                                                         </Box>
                                                     ) }
@@ -599,6 +601,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                                         )
                                                                     )
                                                             }
+                                                            disabled={ readOnly }
                                                         />
                                                         <Hint>
                                                             <Trans
@@ -647,6 +650,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                                             }
                                                                         }
                                                                         variant="policy"
+                                                                        readOnly={ readOnly }
                                                                     />
                                                                 );
                                                             } }
@@ -669,6 +673,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                                             ) => {
                                                                                 input.onChange(e.target.checked);
                                                                             } }
+                                                                            disabled={ readOnly }
                                                                         />
                                                                     ) }
                                                                     label={ t("consents:policyConsents.form.mandatory.label") }
@@ -726,27 +731,31 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                     policyName={ isCreateMode ? _values?.name : consent?.name }
                                                 />
                                             </Grid>
-                                            <Grid xs={ 12 } padding={ 2 }>
-                                                {
-                                                    !isCreateMode && (
+                                            { (isCreateMode ? hasCreatePermission : hasUpdatePermission)
+                                                && !readOnly && (
+                                                <Grid xs={ 12 } padding={ 2 }>
+                                                    { !isCreateMode && (
                                                         <Hint>
-                                                            { t("consents:policyConsents.form.policyUrl.versionHint") }
+                                                            { t(
+                                                                "consents:policyConsents.form" +
+                                                                ".policyUrl.versionHint"
+                                                            ) }
                                                         </Hint>
-                                                    )
-                                                }
-                                                { (isCreateMode ? hasCreatePermission : hasUpdatePermission) && (
+                                                    ) }
                                                     <PrimaryButton
                                                         type="submit"
                                                         loading={ isSubmitting }
-                                                        disabled={ isUnchanged || (isCreateMode && isBrandingLoading) }
+                                                        disabled={
+                                                            isUnchanged || (isCreateMode && isBrandingLoading)
+                                                        }
                                                     >
                                                         { isCreateMode
                                                             ? t("common:create")
                                                             : t("consents:policyConsents.form.createNewVersion")
                                                         }
                                                     </PrimaryButton>
-                                                ) }
-                                            </Grid>
+                                                </Grid>
+                                            ) }
                                         </Grid>
                                     </form>
                                 );
