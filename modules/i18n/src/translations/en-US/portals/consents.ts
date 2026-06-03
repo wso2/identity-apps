@@ -187,14 +187,14 @@ export const consents: ConsentsNS = {
                 trigger: "Version {{version}}"
             },
             createModal: {
-                header: "Create Policy?",
-                promptAtLogin: "Prompt users to accept at login",
-                promptDescription: "Choose whether users should be prompted to review and accept this policy at each login."
+                header: "Create Policy",
+                promptAtLogin: "Prompt users to accept at next login",
+                promptDescription: "Choose whether existing users should be prompted to review and accept this new policy at their next login. This setting cannot be changed later."
             },
             versionModal: {
-                createNewVersion: "Save as New Version?",
+                createNewVersion: "Save as New Version",
                 promptAtLogin: "Prompt users to accept at next login",
-                promptDescription: "Choose whether existing users should be prompted to review and accept this updated policy at their next login."
+                promptDescription: "Choose whether users should be prompted to review and accept this updated policy at their next login. Note: users who have not yet accepted a previously prompted version will still be prompted, regardless of this setting."
             }
         },
         list: {

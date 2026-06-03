@@ -45,10 +45,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Icon, Message, PaginationProps } from "semantic-ui-react";
 import { PolicyConsentsList, PolicyConsentListItemInterface } from "../components/policy-consents-list";
-import {
-    DEFAULT_POLICY_DISPLAY_NAMES,
-    DEFAULT_POLICY_PATH_MAP
-} from "../constants/default-policies";
+import { DEFAULT_POLICY_DISPLAY_NAMES, DEFAULT_POLICY_PATH_MAP } from "../constants/default-policies";
 
 /**
  * Props interface for the Policy Consents page component.
@@ -89,10 +86,7 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
         data: brandingPreference
     } = useGetBrandingPreferenceResolve(AppConstants.getTenant(), BrandingPreferenceTypes.ORG);
 
-    const isBrandingEnabled: boolean = useMemo(
-        () => brandingPreference?.preference?.configs?.isBrandingEnabled ?? false,
-        [ brandingPreference ]
-    );
+    const isBrandingEnabled: boolean = brandingPreference?.preference?.configs?.isBrandingEnabled ?? false;
 
     const {
         data: consentResponse,
@@ -150,23 +144,19 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
         );
 
         return [ ...syntheticDefaults, ...existingWithDefaults ];
-    }, [ consents, brandingPreference ]);
+    }, [ consents ]);
 
-    const hasNextPage: boolean = useMemo((): boolean => {
-        return !!consentResponse?.links?.find(l => l.rel === "next");
-    }, [ consentResponse ]);
+    const hasNextPage: boolean = !!consentResponse?.links?.find(
+        (l: { rel: string; href: string }) => l.rel === "next"
+    );
 
-    const hasPreviousPage: boolean = useMemo((): boolean => {
-        return pageHistory.length > 0 || !!consentResponse?.links?.find(l => l.rel === "previous");
-    }, [ consentResponse, pageHistory ]);
+    const hasPreviousPage: boolean = pageHistory.length > 0 || !!consentResponse?.links?.find(
+        (l: { rel: string; href: string }) => l.rel === "previous"
+    );
 
-    const activePage: number = useMemo((): number => {
-        return pageHistory.length + 1;
-    }, [ pageHistory ]);
+    const activePage: number = pageHistory.length + 1;
 
-    const virtualTotalPages: number = useMemo((): number => {
-        return activePage + (hasNextPage ? 1 : 0);
-    }, [ activePage, hasNextPage ]);
+    const virtualTotalPages: number = activePage + (hasNextPage ? 1 : 0);
 
     /**
      * Handles the search filter.

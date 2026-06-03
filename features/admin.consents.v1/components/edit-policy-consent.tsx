@@ -467,12 +467,10 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
             });
     };
 
-    const isBrandingEnabled: boolean = useMemo(
-        (): boolean => brandingPreference?.preference?.configs?.isBrandingEnabled ?? false,
-        [ brandingPreference ]
-    );
+    const isBrandingEnabled: boolean = !isBrandingLoading &&
+        (brandingPreference?.preference?.configs?.isBrandingEnabled ?? false);
 
-    const isEffectivelyReadOnly: boolean = readOnly || (isDefault && !isBrandingEnabled);
+    const isEffectivelyReadOnly: boolean = readOnly || (isDefault && !isBrandingLoading && !isBrandingEnabled);
 
     const isLoading: boolean = !isCreateMode && (isPolicyInfoLoading || isBrandingLoading || isVersionsLoading);
     const registrationFlowBuilderPath: string = AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER");
@@ -483,7 +481,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
 
     return (
         <>
-            { isDefault && !isBrandingEnabled && (
+            { isDefault && !isBrandingLoading && !isBrandingEnabled && (
                 <Message warning className="mb-5">
                     <Trans i18nKey="consents:policyConsents.pages.list.brandingRequired">
                         Enable branding to update default policies.{ " " }

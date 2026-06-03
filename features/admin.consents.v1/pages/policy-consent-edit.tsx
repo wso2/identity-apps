@@ -32,7 +32,7 @@ import {
     PageLayout
 } from "@wso2is/react-components";
 import Chip from "@oxygen-ui/react/Chip";
-import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -81,17 +81,9 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
         isDefaultPolicy ? null : id
     );
 
-    const purposeId: string | undefined = useMemo((): string | undefined => {
-        return isDefaultPolicy ? undefined : consent?.id;
-    }, [ isDefaultPolicy, consent ]);
+    const purposeId: string | undefined = isDefaultPolicy ? undefined : consent?.id;
 
-    const isCrossTenant: boolean = useMemo((): boolean => {
-        if (isDefaultPolicy || !consent?.tenantDomain) {
-            return false;
-        }
-
-        return consent.tenantDomain !== currentTenantDomain;
-    }, [ isDefaultPolicy, consent, currentTenantDomain ]);
+    const isCrossTenant: boolean = !!consent?.tenantDomain && consent.tenantDomain !== currentTenantDomain;
 
     const displayName: string = isDefaultPolicy
         ? defaultPolicyPath
