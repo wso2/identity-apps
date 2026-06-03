@@ -1,5 +1,15 @@
 # @wso2is/admin.applications.v1
 
+## 2.42.32
+
+### Patch Changes
+
+- [#10348](https://github.com/wso2/identity-apps/pull/10348) [`ccb2eabe8b5dd1e8cec9f1fc73ac4f1c0d5a8fc4`](https://github.com/wso2/identity-apps/commit/ccb2eabe8b5dd1e8cec9f1fc73ac4f1c0d5a8fc4) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Hide the conditional authentication when evaluate call returns error
+
+- Updated dependencies [[`2282759fcffa31ca2d3ec513f353aaed00700185`](https://github.com/wso2/identity-apps/commit/2282759fcffa31ca2d3ec513f353aaed00700185), [`ccb2eabe8b5dd1e8cec9f1fc73ac4f1c0d5a8fc4`](https://github.com/wso2/identity-apps/commit/ccb2eabe8b5dd1e8cec9f1fc73ac4f1c0d5a8fc4)]:
+  - @wso2is/i18n@2.42.4
+  - @wso2is/admin.login-flow-builder.v1@2.29.14
+
 ## 2.42.31
 
 ### Patch Changes

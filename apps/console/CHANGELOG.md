@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 4.9.7
+
+### Patch Changes
+
+- [#10350](https://github.com/wso2/identity-apps/pull/10350) [`2282759fcffa31ca2d3ec513f353aaed00700185`](https://github.com/wso2/identity-apps/commit/2282759fcffa31ca2d3ec513f353aaed00700185) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Add user_identifier to flow builder.
+
+- Updated dependencies [[`2282759fcffa31ca2d3ec513f353aaed00700185`](https://github.com/wso2/identity-apps/commit/2282759fcffa31ca2d3ec513f353aaed00700185), [`ccb2eabe8b5dd1e8cec9f1fc73ac4f1c0d5a8fc4`](https://github.com/wso2/identity-apps/commit/ccb2eabe8b5dd1e8cec9f1fc73ac4f1c0d5a8fc4)]:
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.213
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.215
+  - @wso2is/admin.registration-flow-builder.v1@0.10.175
+  - @wso2is/i18n@2.42.4
+  - @wso2is/admin.applications.v1@2.42.32
+
 ## 4.9.6
 
 ### Patch Changes

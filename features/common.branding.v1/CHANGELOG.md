@@ -1,5 +1,11 @@
 # @wso2is/common.branding.v1
 
+## 2.28.5
+
+### Patch Changes
+
+- [#10354](https://github.com/wso2/identity-apps/pull/10354) [`719f2bb79f04803d0fa0c74206f0d326bac10f55`](https://github.com/wso2/identity-apps/commit/719f2bb79f04803d0fa0c74206f0d326bac10f55) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Define a version to auth react sdk dep
+
 ## 2.28.4
 
 ### Patch Changes

@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.ask-password-flow-builder.v1",
-    "version": "1.1.214",
+    "version": "1.1.215",
     "description": "Ask password flow builder package for the WSO2 Identity Server admin portal.",
     "author": "WSO2",
     "license": "Apache-2.0",
