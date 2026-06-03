@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 4.10.0
+
+### Minor Changes
+
+- [#10356](https://github.com/wso2/identity-apps/pull/10356) [`de8887b851eefa9c3e5330b6cd96c4687cb68b24`](https://github.com/wso2/identity-apps/commit/de8887b851eefa9c3e5330b6cd96c4687cb68b24) Thanks [@Thumimku](https://github.com/Thumimku)! - Add graceful refresh token rotation support.
+
+### Patch Changes
+
+- Updated dependencies [[`de8887b851eefa9c3e5330b6cd96c4687cb68b24`](https://github.com/wso2/identity-apps/commit/de8887b851eefa9c3e5330b6cd96c4687cb68b24)]:
+  - @wso2is/access-control@3.6.0
+  - @wso2is/admin.applications.v1@2.43.0
+  - @wso2is/i18n@2.43.0
+
 ## 4.9.7
 
 ### Patch Changes
