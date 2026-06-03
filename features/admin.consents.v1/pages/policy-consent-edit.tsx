@@ -20,8 +20,6 @@ import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
-import { BrandingPreferenceTypes } from "@wso2is/common.branding.v1/models";
 import { deletePurpose, useGetPurpose } from "@wso2is/common.consents.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -40,7 +38,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { EditPolicyConsent } from "../components/edit-policy-consent";
-import { DEFAULT_POLICY_PATH_MAP } from "../constants/default-policies";
+import { DEFAULT_POLICY_DISPLAY_NAMES, DEFAULT_POLICY_PATH_MAP } from "../constants/default-policies";
 
 /**
  * Props interface for the Policy Consent edit page component.
@@ -49,7 +47,7 @@ interface PolicyConsentEditPageProps extends IdentifiableComponentInterface, Rou
 
 /**
  * Policy Consent edit page.
- * Also handles the 3 built-in default policies accessed via constant URL slugs
+ * Also handles the 3 built-in default policies accessed via constant URL paths
  * (e.g. /policy-consents/privacy-policy).
  *
  * @param props - Props injected to the component.
@@ -64,8 +62,8 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
     } = props;
 
     const id: string = match?.params?.id;
-    const slugConfig: string | undefined = DEFAULT_POLICY_PATH_MAP[id];
-    const isDefaultPolicy: boolean = !!slugConfig;
+    const defaultPolicyPath: string | undefined = DEFAULT_POLICY_PATH_MAP[id];
+    const isDefaultPolicy: boolean = !!defaultPolicyPath;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
@@ -83,11 +81,6 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
         isDefaultPolicy ? null : id
     );
 
-    const { isLoading: isBrandingLoading } = useGetBrandingPreferenceResolve(
-        isDefaultPolicy ? AppConstants.getTenant() : null,
-        BrandingPreferenceTypes.ORG
-    );
-
     const purposeId: string | undefined = useMemo((): string | undefined => {
         return isDefaultPolicy ? undefined : consent?.id;
     }, [ isDefaultPolicy, consent ]);
@@ -101,12 +94,15 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
     }, [ isDefaultPolicy, consent, currentTenantDomain ]);
 
     const displayName: string = isDefaultPolicy
-        ? slugConfig
+        ? defaultPolicyPath
         : (consent?.displayName || "");
 
-    const isLoading: boolean = isDefaultPolicy ? isBrandingLoading : isConsentLoading;
+    const isLoading: boolean = isDefaultPolicy ? false : isConsentLoading;
 
-    const isReady: boolean = isDefaultPolicy ? !isBrandingLoading : !!consent;
+    const isReady: boolean = isDefaultPolicy ? true : !!consent;
+
+    const showDefaultChip: boolean = isDefaultPolicy
+        || DEFAULT_POLICY_DISPLAY_NAMES.includes(consent?.name ?? "");
 
     const handleBackButtonClick = (): void => {
         window.history.back();
@@ -172,7 +168,7 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
         <PageLayout
             pageTitle={ t("consents:policyConsents.pages.edit.title") }
             title={ displayName }
-            description={ isDefaultPolicy && (
+            description={ showDefaultChip && (
                 <Chip
                     label={ t("common:default") }
                     size="medium"
@@ -208,7 +204,8 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
                 <>
                     <EditPolicyConsent
                         purposeId={ purposeId }
-                        defaultName={ slugConfig }
+                        defaultName={ defaultPolicyPath }
+                        isDefault={ showDefaultChip }
                         readOnly={ isCrossTenant }
                     />
                     { hasDeletePermission && purposeId && !isCrossTenant && (

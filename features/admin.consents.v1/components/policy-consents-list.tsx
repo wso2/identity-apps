@@ -149,7 +149,7 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
             {
                 "data-componentid": `${componentId}-item-delete-button`,
                 hidden: (item: ListItem): boolean =>
-                    !hasDeletePermission || item?.isDefault === true || isCrossTenant(item),
+                    !hasDeletePermission || item?.id === null || isCrossTenant(item),
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (_e: SyntheticEvent, consent: ListItem): void =>
                     onDeleteConsentClick(consent),

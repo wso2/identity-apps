@@ -135,8 +135,12 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                 type: "Policy"
             }));
 
+        const defaultNameSet: Set<string> = new Set(DEFAULT_POLICY_DISPLAY_NAMES);
         const existingWithDefaults: PolicyConsentListItemInterface[] = (consents ?? []).map(
-            (c: ConsentListItemInterface): PolicyConsentListItemInterface => ({ ...c })
+            (c: ConsentListItemInterface): PolicyConsentListItemInterface => ({
+                ...c,
+                isDefault: defaultNameSet.has(c.name)
+            })
         );
 
         return [ ...syntheticDefaults, ...existingWithDefaults ];
@@ -371,7 +375,7 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                                 AppConstants.getPaths().get("POLICY_CONSENTS_TERMS_OF_SERVICE")
                         };
 
-                        if (consent.isDefault) {
+                        if (consent.id === null) {
                             history.push(displayNameToPath[consent.name]);
                         } else {
                             history.push(AppConstants.getPaths().get("POLICY_CONSENTS_EDIT")

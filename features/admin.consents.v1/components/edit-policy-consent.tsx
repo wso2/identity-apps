@@ -70,6 +70,7 @@ import { ConsentVersionDropdown } from "./consent-version-dropdown";
 
 interface EditPolicyConsentProps extends IdentifiableComponentInterface {
     defaultName?: string;
+    isDefault?: boolean;
     purposeId?: string;
     readOnly?: boolean;
 }
@@ -124,7 +125,7 @@ const validateTemplatableURL = (value: string, errorMessage: string): string | u
 export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
     props: EditPolicyConsentProps
 ): ReactElement => {
-    const { purposeId, defaultName, readOnly = false } = props;
+    const { purposeId, defaultName, isDefault = false, readOnly = false } = props;
 
     const isCreateMode: boolean = !purposeId;
 
@@ -155,7 +156,10 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
         data: brandingPreference,
         isLoading: isBrandingLoading,
         mutate: mutateBranding
-    } = useGetBrandingPreferenceResolve(AppConstants.getTenant(), BrandingPreferenceTypes.ORG);
+    } = useGetBrandingPreferenceResolve(
+        isCreateMode ? AppConstants.getTenant() : null,
+        BrandingPreferenceTypes.ORG
+    );
 
     const { error: brandingPreferenceError } = useGetBrandingPreference(
         AppConstants.getTenant(), BrandingPreferenceTypes.ORG
@@ -366,12 +370,13 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
         }
 
         const updatedUrls: BrandingPreferenceInterface["urls"] = { ...brandingPreference.preference.urls };
+        const policyName: string = consent?.name ?? defaultName ?? "";
 
-        if (defaultName === "Privacy Policy") {
+        if (policyName === "Privacy Policy") {
             updatedUrls.privacyPolicyURL = values.policyUrl?.trim() ?? "";
-        } else if (defaultName === "Terms of Service") {
+        } else if (policyName === "Terms of Service") {
             updatedUrls.termsOfUseURL = values.policyUrl?.trim() ?? "";
-        } else if (defaultName === "Cookie Policy") {
+        } else if (policyName === "Cookie Policy") {
             updatedUrls.cookiePolicyURL = values.policyUrl?.trim() ?? "";
         }
 
@@ -504,18 +509,14 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                         <FinalForm
                             key={ isCreateMode ? "create" : consent?.version }
                             onSubmit={ (values: PolicyFormValuesInterface) => {
-                                if (isCreateMode) {
-                                    if (defaultName) {
-                                        updateDefaultPolicyUrl(values);
-                                    }
-                                    pendingValues.current = values;
-                                    setModalPromptOnLogin(false);
-                                    setShowVersionWarningModal(true);
-                                } else {
-                                    pendingValues.current = values;
-                                    setModalPromptOnLogin(values.promptOnLogin === "true");
-                                    setShowVersionWarningModal(true);
+                                if (isDefault) {
+                                    updateDefaultPolicyUrl(values);
                                 }
+                                pendingValues.current = values;
+                                setModalPromptOnLogin(
+                                    isCreateMode ? false : values.promptOnLogin === "true"
+                                );
+                                setShowVersionWarningModal(true);
                             } }
                             validate={ isCreateMode ? validateCreateForm : undefined }
                             initialValues={ initialValues }
