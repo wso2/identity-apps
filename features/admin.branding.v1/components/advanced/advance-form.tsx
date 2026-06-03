@@ -243,7 +243,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                         }
                         listen={ (value: string) => setPrivacyPolicyURL(value) }
                         width={ 16 }
-                        data-testid={ `${ componentId }-privacy-policy-url` }
+                        data-componentid={ `${ componentId }-privacy-policy-url` }
                         validation={ validateTemplatableURLs }
                     />
                     <Field.Input
@@ -273,7 +273,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                         minLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.TOS_URL_MIN_LENGTH }
                         listen={ (value: string) => setTermsOfUseURL(value) }
                         width={ 16 }
-                        data-testid={ `${ componentId }-tos-url` }
+                        data-componentid={ `${ componentId }-tos-url` }
                         validation={ validateTemplatableURLs }
                     />
                     <Field.Input
@@ -307,7 +307,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                         }
                         listen={ (value: string) => setCookiePolicyURL(value) }
                         width={ 16 }
-                        data-testid={ `${ componentId }-cookie-policy-url` }
+                        data-componentid={ `${ componentId }-cookie-policy-url` }
                         validation={ validateTemplatableURLs }
                     />
                 </>

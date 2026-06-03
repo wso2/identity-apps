@@ -23,10 +23,7 @@ import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
-import {
-    BrandingPreferenceAPIResponseInterface,
-    BrandingPreferenceTypes
-} from "@wso2is/common.branding.v1/models";
+import { BrandingPreferenceTypes } from "@wso2is/common.branding.v1/models";
 import {
     ConsentListItemInterface,
     deletePurpose,
@@ -47,29 +44,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { PolicyConsentsList, PolicyConsentListItemInterface } from "../components/policy-consents-list";
-
-interface DefaultPolicyConfigInterface {
-    displayName: string;
-    getBrandingUrl: (pref: BrandingPreferenceAPIResponseInterface) => string;
-}
-
-const DEFAULT_POLICIES: DefaultPolicyConfigInterface[] = [
-    {
-        displayName: "Cookie Policy",
-        getBrandingUrl: (pref: BrandingPreferenceAPIResponseInterface): string =>
-            pref.preference.urls.cookiePolicyURL ?? ""
-    },
-    {
-        displayName: "Privacy Policy",
-        getBrandingUrl: (pref: BrandingPreferenceAPIResponseInterface): string =>
-            pref.preference.urls.privacyPolicyURL ?? ""
-    },
-    {
-        displayName: "Terms of Service",
-        getBrandingUrl: (pref: BrandingPreferenceAPIResponseInterface): string =>
-            pref.preference.urls.termsOfUseURL ?? ""
-    }
-];
+import {
+    DEFAULT_POLICY_DISPLAY_NAMES,
+    DEFAULT_POLICY_PATH_MAP
+} from "../constants/default-policies";
 
 /**
  * Props interface for the Policy Consents page component.
@@ -146,14 +124,14 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
             (consents ?? []).map((c: ConsentListItemInterface) => c.name)
         );
 
-        const syntheticDefaults: PolicyConsentListItemInterface[] = DEFAULT_POLICIES
-            .filter((def: DefaultPolicyConfigInterface) => !existingNames.has(def.displayName))
-            .map((def: DefaultPolicyConfigInterface): PolicyConsentListItemInterface => ({
+        const syntheticDefaults: PolicyConsentListItemInterface[] = DEFAULT_POLICY_DISPLAY_NAMES
+            .filter((displayName: string) => !existingNames.has(displayName))
+            .map((displayName: string): PolicyConsentListItemInterface => ({
                 description: "",
-                displayName: def.displayName,
+                displayName,
                 id: null,
                 isDefault: true,
-                name: def.displayName,
+                name: displayName,
                 type: "Policy"
             }));
 
@@ -384,14 +362,17 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                         history.push(AppConstants.getPaths().get("POLICY_CONSENTS_NEW"));
                     } }
                     onEditConsentClick={ (consent: PolicyConsentListItemInterface) => {
-                        const defaultSlugMap: Record<string, string> = {
-                            "Cookie Policy": AppConstants.getPaths().get("POLICY_CONSENTS_COOKIE_POLICY"),
-                            "Privacy Policy": AppConstants.getPaths().get("POLICY_CONSENTS_PRIVACY_POLICY"),
-                            "Terms of Service": AppConstants.getPaths().get("POLICY_CONSENTS_TERMS_OF_SERVICE")
+                        const displayNameToPath: Record<string, string> = {
+                            [DEFAULT_POLICY_PATH_MAP["cookie-policy"]]:
+                                AppConstants.getPaths().get("POLICY_CONSENTS_COOKIE_POLICY"),
+                            [DEFAULT_POLICY_PATH_MAP["privacy-policy"]]:
+                                AppConstants.getPaths().get("POLICY_CONSENTS_PRIVACY_POLICY"),
+                            [DEFAULT_POLICY_PATH_MAP["terms-of-service"]]:
+                                AppConstants.getPaths().get("POLICY_CONSENTS_TERMS_OF_SERVICE")
                         };
 
                         if (consent.isDefault) {
-                            history.push(defaultSlugMap[consent.name]);
+                            history.push(displayNameToPath[consent.name]);
                         } else {
                             history.push(AppConstants.getPaths().get("POLICY_CONSENTS_EDIT")
                                 .replace(":id", consent.id));

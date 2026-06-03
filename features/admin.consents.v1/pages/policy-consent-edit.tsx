@@ -40,16 +40,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { EditPolicyConsent } from "../components/edit-policy-consent";
-
-interface DefaultPolicySlugConfigInterface {
-    displayName: string;
-}
-
-const DEFAULT_POLICY_SLUG_MAP: Record<string, DefaultPolicySlugConfigInterface> = {
-    "cookie-policy": { displayName: "Cookie Policy" },
-    "privacy-policy": { displayName: "Privacy Policy" },
-    "terms-of-service": { displayName: "Terms of Service" }
-};
+import { DEFAULT_POLICY_PATH_MAP } from "../constants/default-policies";
 
 /**
  * Props interface for the Policy Consent edit page component.
@@ -73,7 +64,7 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
     } = props;
 
     const id: string = match?.params?.id;
-    const slugConfig: DefaultPolicySlugConfigInterface | undefined = DEFAULT_POLICY_SLUG_MAP[id];
+    const slugConfig: string | undefined = DEFAULT_POLICY_PATH_MAP[id];
     const isDefaultPolicy: boolean = !!slugConfig;
 
     const { t } = useTranslation();
@@ -101,7 +92,7 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
     }, [ isDefaultPolicy, consent ]);
 
     const displayName: string = isDefaultPolicy
-        ? slugConfig.displayName
+        ? slugConfig
         : (consent?.displayName || "");
 
     const isLoading: boolean = isDefaultPolicy ? isBrandingLoading : isConsentLoading;
@@ -205,7 +196,7 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
                 <>
                     <EditPolicyConsent
                         purposeId={ purposeId }
-                        defaultName={ slugConfig?.displayName }
+                        defaultName={ slugConfig }
                     />
                     { hasDeletePermission && purposeId && (
                         <DangerZoneGroup

@@ -31,6 +31,8 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { updateBrandingPreference } from "@wso2is/admin.branding.v1/api/branding-preferences";
+import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants/branding-preferences-constants";
+import useGetBrandingPreference from "@wso2is/common.branding.v1/api/use-get-branding-preference";
 import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
 import { BrandingPreferenceInterface, BrandingPreferenceTypes } from "@wso2is/common.branding.v1/models";
 import {
@@ -153,6 +155,10 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
         isLoading: isBrandingLoading,
         mutate: mutateBranding
     } = useGetBrandingPreferenceResolve(AppConstants.getTenant(), BrandingPreferenceTypes.ORG);
+
+    const { error: brandingPreferenceError } = useGetBrandingPreference(
+        AppConstants.getTenant(), BrandingPreferenceTypes.ORG
+    );
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ showVersionWarningModal, setShowVersionWarningModal ] = useState<boolean>(false);
@@ -373,31 +379,21 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
             urls: updatedUrls
         };
 
-        setIsSubmitting(true);
+        const isBrandingPersisted: boolean =
+            brandingPreferenceError?.response?.data?.code
+            !== BrandingPreferencesConstants.BRANDING_NOT_CONFIGURED_ERROR_CODE;
 
         updateBrandingPreference(
-            true,
+            isBrandingPersisted,
             AppConstants.getTenant(),
             updatedPreference,
             BrandingPreferenceTypes.ORG
         )
             .then((): void => {
-                dispatch(addAlert({
-                    description: t("consents:policyConsents.notifications.update.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("consents:policyConsents.notifications.update.success.message")
-                }));
                 mutateBranding();
             })
             .catch((): void => {
-                dispatch(addAlert({
-                    description: t("consents:policyConsents.notifications.update.error.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("consents:policyConsents.notifications.update.error.message")
-                }));
-            })
-            .finally((): void => {
-                setIsSubmitting(false);
+                // Branding update is best-effort; proceed with purpose creation on failure.
             });
     };
 
@@ -742,7 +738,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                     <PrimaryButton
                                                         type="submit"
                                                         loading={ isSubmitting }
-                                                        disabled={ isUnchanged }
+                                                        disabled={ isUnchanged || (isCreateMode && isBrandingLoading) }
                                                     >
                                                         { isCreateMode
                                                             ? t("common:create")
