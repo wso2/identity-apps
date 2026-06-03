@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.42.4
+
+### Patch Changes
+
+- [#10350](https://github.com/wso2/identity-apps/pull/10350) [`2282759fcffa31ca2d3ec513f353aaed00700185`](https://github.com/wso2/identity-apps/commit/2282759fcffa31ca2d3ec513f353aaed00700185) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Add user_identifier to flow builder.
+
 ## 2.42.3
 
 ### Patch Changes

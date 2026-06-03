@@ -1,5 +1,14 @@
 # @wso2is/admin.ask-password-flow-builder.v1
 
+## 1.1.215
+
+### Patch Changes
+
+- [#10350](https://github.com/wso2/identity-apps/pull/10350) [`2282759fcffa31ca2d3ec513f353aaed00700185`](https://github.com/wso2/identity-apps/commit/2282759fcffa31ca2d3ec513f353aaed00700185) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Add user_identifier to flow builder.
+
+- Updated dependencies [[`2282759fcffa31ca2d3ec513f353aaed00700185`](https://github.com/wso2/identity-apps/commit/2282759fcffa31ca2d3ec513f353aaed00700185)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.218
+
 ## 1.1.214
 
 ### Patch Changes
