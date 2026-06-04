@@ -72,3 +72,24 @@ export const resolveElementText = (translations, text) => {
 
     return text;
 };
+
+/**
+ * Looks up a translation key and interpolates `{param}` placeholders.
+ * Falls back to `fallback` when the key is missing from the translations map.
+ * @param {Object} translations - The translations object.
+ * @param {string} key - The flat translation key.
+ * @param {Object} [params] - Optional map of placeholder values.
+ * @param {string} [fallback] - Value returned when the key is absent.
+ * @returns {string}
+ */
+export const t = (translations, key, params, fallback) => {
+    const raw = (translations && translations[key]) || fallback || key;
+
+    if (!params) {
+        return raw;
+    }
+
+    return raw.replace(/\{(\w+)\}/g, (_, name) =>
+        params[name] !== undefined ? String(params[name]) : `{${name}}`
+    );
+};
