@@ -28,7 +28,7 @@ export type {
     MoesifDashboardInfoInterface
 } from "./models/moesif-analytics";
 export { createMoesifPublisher } from "./api/create-moesif-publisher";
-export { getMoesifPublisher } from "./api/get-moesif-publisher";
+export { useGetMoesifPublisher } from "./api/use-get-moesif-publisher";
 export { getMoesifDashboardInfo } from "./api/get-moesif-dashboard-info";
 export { updateMoesifPublisher } from "./api/update-moesif-publisher";
 export { deleteMoesifPublisher } from "./api/delete-moesif-publisher";

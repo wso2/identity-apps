@@ -2367,6 +2367,13 @@ export interface Extensions {
                 settingsIconTooltip: string;
                 title: string;
             };
+            dashboard: {
+                errors: {
+                    loadFailure: string;
+                    portalUrlNotConfigured: string;
+                };
+                iframeTitle: string;
+            };
             settingsPage: {
                 title: string;
                 pageTitle: string;

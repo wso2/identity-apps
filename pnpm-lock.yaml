@@ -1508,6 +1508,9 @@ importers:
       '@asgardeo/auth-react':
         specifier: ^5.6.1
         version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@mui/material':
+        specifier: ^5.13.0
+        version: 5.18.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@oxygen-ui/react':
         specifier: 'catalog:'
         version: 2.4.6(43a10c969c8ffe9f55ba3c36a34c927d)
@@ -1520,6 +1523,9 @@ importers:
       '@wso2is/admin.org-insights.v1':
         specifier: workspace:^
         version: link:../admin.org-insights.v1
+      '@wso2is/admin.subscription.v1':
+        specifier: workspace:^
+        version: link:../admin.subscription.v1
       '@wso2is/admin.tenants.v1':
         specifier: workspace:^
         version: link:../admin.tenants.v1

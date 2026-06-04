@@ -16,18 +16,24 @@
  * under the License.
  */
 
+import { amber, blue, deepOrange, green, indigo, orange, purple, teal } from "@mui/material/colors";
+import { Theme, styled, useTheme } from "@mui/material/styles";
+import Box from "@oxygen-ui/react/Box";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Typography from "@oxygen-ui/react/Typography";
-import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
 import React, {
     FunctionComponent,
     ReactElement,
     useCallback,
     useEffect,
+    useMemo,
     useRef,
     useState
 } from "react";
+import { useTranslation } from "react-i18next";
 import { getMoesifDashboardInfo } from "../api/get-moesif-dashboard-info";
+import { MoesifDashboardConstants } from "../constants/moesif-dashboard-constants";
 import { MoesifDashboardInfoInterface } from "../models/moesif-analytics";
 
 /**
@@ -56,6 +62,61 @@ const EMBEDDED_POST_MESSAGE_TYPES: {
 const TOKEN_REFRESH_INTERVAL_MS: number = 50 * 60 * 1000;
 
 /**
+ * Minimum height of the embedded canvas area.
+ */
+const CANVAS_MIN_HEIGHT: string = "600px";
+
+/**
+ * Chart series colors for the embedded dashboards, from the standard
+ * MUI color palette. Warm hues aligned with the primary (orange) brand
+ * color come first; the remaining standard dashboard colors follow.
+ */
+const CHART_COLORS: string[] = [
+    orange[500],
+    deepOrange[500],
+    amber[600],
+    blue[500],
+    teal[500],
+    green[600],
+    indigo[400],
+    purple[400]
+];
+
+const ErrorContainer: typeof Box = styled(Box)(() => ({
+    alignItems: "center",
+    display: "flex",
+    height: "60vh",
+    justifyContent: "center",
+    width: "100%"
+}));
+
+const CanvasContainer: typeof Box = styled(Box)(() => ({
+    "& iframe": {
+        border: "none",
+        height: "100%",
+        minHeight: CANVAS_MIN_HEIGHT,
+        width: "100%"
+    },
+    height: "100%",
+    minHeight: CANVAS_MIN_HEIGHT,
+    position: "relative",
+    width: "100%"
+}));
+
+const LoaderOverlay: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    alignItems: "center",
+    backgroundColor: theme.palette.background.paper,
+    display: "flex",
+    height: "100%",
+    justifyContent: "center",
+    left: 0,
+    position: "absolute",
+    top: 0,
+    width: "100%",
+    zIndex: 10
+}));
+
+/**
  * Props for the MoesifCanvasIframe component.
  */
 interface MoesifCanvasIframePropsInterface {
@@ -75,13 +136,12 @@ interface MoesifCanvasIframePropsInterface {
  *
  * Handshake order (mirrors Canvas.jsx):
  *  1. Dashboard info (token, orgId, appId) fetched from tenant-mgt on mount.
- *  2. Static canvas template loaded from public assets.
- *  3. iframe.onLoad fires            → parent sends SET_TOKEN.
- *  4. iframe auths, loads orgs       → iframe sends ORG_LOAD_FINISHED (parent hides spinner).
- *  5. iframe Canvas component mounts → iframe sends CANVAS_READY.
- *  6. parent sends CANVAS_INIT with template → canvas renders.
+ *  2. iframe.onLoad fires            → parent sends SET_TOKEN.
+ *  3. iframe auths, loads orgs       → iframe sends ORG_LOAD_FINISHED (parent hides spinner).
+ *  4. iframe Canvas component mounts → iframe sends CANVAS_READY.
+ *  5. parent sends CANVAS_INIT with template → canvas renders.
  *
- * Steps 4 and 5 can arrive in either order. CANVAS_INIT is only sent after BOTH
+ * Steps 3 and 4 can arrive in either order. CANVAS_INIT is only sent after BOTH
  * ORG_LOAD_FINISHED AND CANVAS_READY are received, preventing dropped messages.
  */
 const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = (
@@ -89,10 +149,13 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = 
 ): ReactElement => {
     const { "data-componentid": componentId = "moesif-canvas-iframe", embeddingDomain } = props;
 
+    const { t } = useTranslation();
+    const theme: Theme = useTheme();
+    const { tierName }: UseSubscriptionInterface = useSubscription();
+
     const [ dashboardInfo, setDashboardInfo ] = useState<MoesifDashboardInfoInterface | null>(null);
-    const [ template, setTemplate ] = useState<Record<string, unknown> | null>(null);
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
-    const [ error, setError ] = useState<string>("");
+    const [ errorMessageKey, setErrorMessageKey ] = useState<string>("");
     const [ isIframeDomLoaded, setIsIframeDomLoaded ] = useState<boolean>(false);
     const [ hasAuthCompleted, setHasAuthCompleted ] = useState<boolean>(false);
     const [ isChildReady, setIsChildReady ] = useState<boolean>(false);
@@ -102,6 +165,14 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = 
 
     // Derive the allowed origin from embeddingDomain for postMessage security.
     const embeddedOrigin: string = embeddingDomain ? new URL(embeddingDomain).origin : "";
+
+    // Tier-specific canvas template. Re-resolves when the subscription tier
+    // resolves/changes (e.g. Free → Essentials), which re-fires CANVAS_INIT
+    // and swaps the dashboards live.
+    const template: Record<string, unknown> = useMemo(
+        () => MoesifDashboardConstants.getTemplate(tierName),
+        [ tierName ]
+    );
 
     useEffect(() => {
         isMounted.current = true;
@@ -127,8 +198,7 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = 
             if (!isMounted.current) {
                 return;
             }
-            setError("Failed to load the analytics dashboard. Please try again later.");
-            // setIsLoading(false);
+            setErrorMessageKey("extensions:develop.moesifAnalytics.dashboard.errors.loadFailure");
         }
     }, []);
 
@@ -153,22 +223,22 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = 
                 {
                     template,
                     theme: {
-                        "brandColor": "#FB7B45",
-                        "brandTextColor": "#FB7B45",
-                        "chartColors": [ "#FB7B45", "#406dde", "#32df7d", "#e5e644", "#e55b9b", "#8a5de8" ],
-                        "navigation": { "showIcons": false, "type": "tabs" }
+                        brandColor: theme.palette.primary.main,
+                        brandTextColor: theme.palette.primary.main,
+                        chartColors: CHART_COLORS,
+                        navigation: { showIcons: false, type: "tabs" }
                     },
                     type: EMBEDDED_POST_MESSAGE_TYPES.CANVAS_INIT
                 },
                 embeddedOrigin
             );
         }
-    }, [ template, embeddedOrigin ]);
+    }, [ template, embeddedOrigin, theme ]);
 
     // Fetch dashboard info on mount and refresh periodically.
     useEffect(() => {
         if (!embeddingDomain) {
-            setError("Moesif Embedded Portal URL is not configured.");
+            setErrorMessageKey("extensions:develop.moesifAnalytics.dashboard.errors.portalUrlNotConfigured");
             setIsLoading(false);
 
             return;
@@ -180,25 +250,6 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = 
 
         return () => clearInterval(intervalId);
     }, [ fetchDashboardInfo, embeddingDomain ]);
-
-    // Fetch the static canvas template from the console's public assets on mount.
-    useEffect(() => {
-        const basename: string = AppConstants.getAppBasename() ? `/${ AppConstants.getAppBasename() }` : "";
-        const templateUrl: string =
-            `${ window.location.origin }${ basename }/resources/assets/canvas_wso2_identity_platform.json`;
-
-        fetch(templateUrl)
-            .then((res: Response) => res.json())
-            .then((json: Record<string, unknown>) => {
-                if (!isMounted.current) {
-                    return;
-                }
-                setTemplate(json);
-            })
-            .catch(() => {
-                // Non-fatal: canvas will render but without a preconfigured template.
-            });
-    }, []);
 
     // 1. Send SET_TOKEN when the iframe DOM is ready or when the token refreshes.
     useEffect(() => {
@@ -259,22 +310,13 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = 
         return () => window.removeEventListener("message", handleMessage);
     }, [ embeddedOrigin, fetchDashboardInfo ]);
 
-    if (error) {
+    if (errorMessageKey) {
         return (
-            <div
-                data-componentid={ `${ componentId }-error` }
-                style={ {
-                    alignItems: "center",
-                    display: "flex",
-                    height: "60vh",
-                    justifyContent: "center",
-                    width: "100%"
-                } }
-            >
+            <ErrorContainer data-componentid={ `${ componentId }-error` }>
                 <Typography color="error" variant="body1">
-                    { error }
+                    { t(errorMessageKey) }
                 </Typography>
-            </div>
+            </ErrorContainer>
         );
     }
 
@@ -283,47 +325,24 @@ const MoesifCanvasIframe: FunctionComponent<MoesifCanvasIframePropsInterface> = 
         : "";
 
     return (
-        <div
-            data-componentid={ componentId }
-            style={ { height: "100%", minHeight: "600px", position: "relative", width: "100%" } }
-        >
+        <CanvasContainer data-componentid={ componentId }>
             { (isLoading || !dashboardInfo) && (
-                <div
-                    data-componentid={ `${ componentId }-loader` }
-                    style={ {
-                        alignItems: "center",
-                        backgroundColor: "rgb(255, 255, 255)",
-                        display: "flex",
-                        height: "100%",
-                        justifyContent: "center",
-                        left: 0,
-                        position: "absolute",
-                        top: 0,
-                        width: "100%",
-                        zIndex: 10
-                    } }
-                >
+                <LoaderOverlay data-componentid={ `${ componentId }-loader` }>
                     <CircularProgress size={ 40 } />
-                </div>
+                </LoaderOverlay>
             ) }
             { dashboardInfo && (
                 <iframe
                     ref={ iframeRef }
                     data-componentid={ `${ componentId }-frame` }
                     src={ iframeSrc }
-                    style={ {
-                        border: "none",
-                        height: "100%",
-                        minHeight: "600px",
-                        width: "100%"
-                    } }
-                    title="Moesif Analytics Dashboard"
+                    title={ t("extensions:develop.moesifAnalytics.dashboard.iframeTitle") }
                     onLoad={ () => {
                         setIsIframeDomLoaded(true);
                     } }
                 />
             ) }
-        </div>
+        </CanvasContainer>
     );
 };
 

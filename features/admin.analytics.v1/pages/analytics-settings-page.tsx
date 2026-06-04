@@ -27,6 +27,7 @@ import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -49,8 +50,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { createMoesifPublisher } from "../api/create-moesif-publisher";
 import { deleteMoesifPublisher } from "../api/delete-moesif-publisher";
-import { getMoesifPublisher } from "../api/get-moesif-publisher";
 import { updateMoesifPublisher } from "../api/update-moesif-publisher";
+import { useGetMoesifPublisher } from "../api/use-get-moesif-publisher";
 import {
     MoesifEventPublisherKey,
     MoesifPublisherInterface,
@@ -121,7 +122,6 @@ const AnalyticsSettingsPage: FunctionComponent = (): ReactElement => {
         return !!(moesif?.dashboardEnabled) && !!(moesif?.embeddedPortalUrl);
     });
 
-    const [ isLoading, setIsLoading ] = useState<boolean>(true);
     const [ existingPublisher, setExistingPublisher ] = useState<MoesifPublisherInterface | null>(null);
     const [ apiKey, setApiKey ] = useState<string>("");
     const [ publisherEnablement, setPublisherEnablement ] =
@@ -130,24 +130,24 @@ const AnalyticsSettingsPage: FunctionComponent = (): ReactElement => {
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
     const [ showRevertConfirmationModal, setShowRevertConfirmationModal ] = useState<boolean>(false);
 
+    // A 404 error means the publisher is not configured yet — defaults are kept in that case.
+    const {
+        data: moesifPublisher,
+        isLoading,
+        mutate: mutateMoesifPublisher
+    }: RequestResultInterface<MoesifPublisherInterface, RequestErrorInterface> = useGetMoesifPublisher();
+
     useEffect(() => {
-        getMoesifPublisher()
-            .then((publisher: MoesifPublisherInterface | null) => {
-                if (publisher !== null) {
-                    setExistingPublisher(publisher);
-                    setPublisherEnablement({
-                        ...DEFAULT_PUBLISHER_ENABLEMENT,
-                        ...(publisher.eventPublisherEnablement ?? {})
-                    });
-                }
-            })
-            .catch(() => {
-                // Publisher not configured — leave defaults.
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
-    }, []);
+        if (!moesifPublisher) {
+            return;
+        }
+
+        setExistingPublisher(moesifPublisher);
+        setPublisherEnablement({
+            ...DEFAULT_PUBLISHER_ENABLEMENT,
+            ...(moesifPublisher.eventPublisherEnablement ?? {})
+        });
+    }, [ moesifPublisher ]);
 
     const handleToggle = (key: string): void => {
         setPublisherEnablement((prev: Record<string, boolean>) => ({
@@ -187,6 +187,7 @@ const AnalyticsSettingsPage: FunctionComponent = (): ReactElement => {
 
             setExistingPublisher(saved);
             setApiKey("");
+            mutateMoesifPublisher();
 
             dispatch(addAlert({
                 description: t(
@@ -230,6 +231,8 @@ const AnalyticsSettingsPage: FunctionComponent = (): ReactElement => {
             setExistingPublisher(null);
             setApiKey("");
             setPublisherEnablement(DEFAULT_PUBLISHER_ENABLEMENT);
+            // Clear the cached publisher without revalidating — the endpoint now responds with a 404.
+            mutateMoesifPublisher(undefined, { revalidate: false });
 
             dispatch(addAlert({
                 description: t(

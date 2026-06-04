@@ -2520,6 +2520,13 @@ export const extensions: Extensions = {
                 settingsIconTooltip: "Configure Analytics",
                 title: "Analytics Settings"
             },
+            dashboard: {
+                errors: {
+                    loadFailure: "Failed to load the analytics dashboard. Please try again later.",
+                    portalUrlNotConfigured: "Moesif Embedded Portal URL is not configured."
+                },
+                iframeTitle: "Moesif Analytics Dashboard"
+            },
             settingsPage: {
                 apiKeySection: {
                     description: "Enter your Moesif collector API key to enable analytics event publishing.",
