@@ -484,7 +484,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
             { isDefault && !isBrandingLoading && !isBrandingEnabled && (
                 <Message warning className="mb-5">
                     <Trans i18nKey="consents:policyConsents.pages.list.brandingRequired">
-                        Enable branding to update default policies.{ " " }
+                        Enable branding to update default policies.
                         <Link onClick={ (): void => history.push(AppConstants.getPaths().get("BRANDING")) }>
                             Go to Branding
                         </Link>

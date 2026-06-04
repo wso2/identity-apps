@@ -315,7 +315,7 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
             { !isBrandingEnabled && (
                 <Message warning className="mb-5" data-componentid={ `${componentId}-branding-required-message` }>
                     <Trans i18nKey="consents:policyConsents.pages.list.brandingRequired">
-                        Enable branding to update default policies.{ " " }
+                        Enable branding to update default policies.
                         <Link onClick={ (): void => history.push(AppConstants.getPaths().get("BRANDING")) }>
                             Go to Branding
                         </Link>

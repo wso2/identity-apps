@@ -29,6 +29,7 @@ import { URLUtils } from "@wso2is/core/utils";
 import { Field, Form, FormPropsInterface } from "@wso2is/forms";
 import { Heading } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import React, { FunctionComponent, MutableRefObject, ReactElement, Ref, forwardRef, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -202,10 +203,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                 <Alert severity="info">
                     <Trans i18nKey="extensions:develop.branding.forms.advance.links.policyMgtMessage">
                         Policy URLs are managed in
-                        <Link
-                            href={ AppConstants.getPaths().get("POLICY_CONSENTS") }
-                            sx={ { cursor: "pointer", paddingLeft: 0.5 } }
-                        >
+                        <Link onClick={ (): void => history.push(AppConstants.getPaths().get("POLICY_CONSENTS")) }>
                             Policy Management
                         </Link>.
                     </Trans>
