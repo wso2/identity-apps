@@ -1332,10 +1332,13 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:develop.sidePanel.categories.monitor",
-            component: lazy(() => import("@wso2is/admin.org-insights.v1/pages/org-insights")),
+            component: lazy(() =>
+                import(
+                    "@wso2is/admin.analytics.v1/pages/insights-page"
+                )
+            ),
             exact: true,
             featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.INSIGHTS,
-            featureGateIds: [ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER ],
             icon: {
                 icon: <LightbulbOnIcon fill="black" className="icon" />
             },
@@ -1345,6 +1348,23 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             path: AppConstants.getPaths().get("INSIGHTS"),
             protected: true,
             showOnSidePanel: true
+        },
+        {
+            component: lazy(() =>
+                import(
+                    "@wso2is/admin.analytics.v1/pages/analytics-settings-page"
+                )
+            ),
+            exact: true,
+            icon: {
+                icon: <LightbulbOnIcon fill="black" className="icon" />
+            },
+            id: "insightsSettings",
+            name: "Insights Settings",
+            order: 24,
+            path: AppConstants.getPaths().get("INSIGHTS_SETTINGS"),
+            protected: true,
+            showOnSidePanel: false
         },
         {
             category: "extensions:manage.sidePanel.categories.monitor",
@@ -1359,7 +1379,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             },
             id: "analytics",
             name: "Analytics",
-            order: 24,
+            order: 26,
             path: AppConstants.getPaths().get("ANALYTICS")
                 .replace(
                     ":categoryId",
@@ -1400,7 +1420,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             },
             id: "approvals",
             name: "common:approvals",
-            order: 26,
+            order: 27,
             path: AppConstants.getPaths().get("APPROVALS"),
             protected: true,
             showOnSidePanel: true
@@ -1493,7 +1513,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             },
             id: "certificates",
             name: "console:manage.features.sidePanel.certificates",
-            order: 27,
+            order: 28,
             path: AppConstants.getPaths().get("CERTIFICATES"),
             protected: true,
             showOnSidePanel: false
@@ -1517,7 +1537,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             icon: { icon: getSidePanelIcons().secrets },
             id: "secretsManagement",
             name: "secrets:routes.name",
-            order: 28,
+            order: 29,
             path: AppConstants.getPaths().get("SECRETS"),
             protected: true,
             showOnSidePanel: false
@@ -1567,7 +1587,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             },
             id: "consoleSettings",
             name: "Console Settings",
-            order: 29,
+            order: 30,
             path: AppConstants.getPaths().get("CONSOLE_SETTINGS"),
             protected: true,
             // hide console settings from the side panel until it is onboarded.
@@ -1702,7 +1722,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             },
             id: "actions",
             name: "pages:actions.title",
-            order: 30,
+            order: 31,
             path: AppConstants.getPaths().get("ACTIONS"),
             protected: true,
             showOnSidePanel: true
@@ -1778,7 +1798,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             },
             id: "customerDataProfiles",
             name: "customerDataService:sidePanel.Profiles",
-            order: 32,
+            order: 33,
             path: AppConstants.getPaths().get("PROFILES"),
             protected: true,
             showOnSidePanel: true

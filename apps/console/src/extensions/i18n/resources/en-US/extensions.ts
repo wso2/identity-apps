@@ -2498,6 +2498,94 @@ export const extensions: Extensions = {
             emailTemplates: "Email Templates",
             organizationInfo: "Organization Info"
         },
+        moesifAnalytics: {
+            collectorKeySettings: {
+                cancelButton: "Cancel",
+                description: "Configure the Moesif collector API key used to publish analytics events.",
+                keyField: {
+                    label: "Collector API Key",
+                    placeholder: "Enter the Moesif collector API key"
+                },
+                notifications: {
+                    updateError: {
+                        description: "An error occurred while updating the analytics configuration.",
+                        message: "Update failed"
+                    },
+                    updateSuccess: {
+                        description: "Analytics configuration updated successfully.",
+                        message: "Update successful"
+                    }
+                },
+                saveButton: "Save",
+                settingsIconTooltip: "Configure Analytics",
+                title: "Analytics Settings"
+            },
+            dashboard: {
+                errors: {
+                    loadFailure: "Failed to load the analytics dashboard. Please try again later.",
+                    portalUrlNotConfigured: "Moesif Embedded Portal URL is not configured."
+                },
+                iframeTitle: "Moesif Analytics Dashboard"
+            },
+            settingsPage: {
+                apiKeySection: {
+                    description: "Enter your Moesif collector API key to enable analytics event publishing.",
+                    existingKeyHint: "Leave blank to keep the existing key",
+                    heading: "Collector API Key"
+                },
+                description: "Configure analytics event publishing for this deployment.",
+                disableButton: "Disable",
+                pageTitle: "Analytics",
+                publishers: {
+                    authentication: "Authentication",
+                    flow: "Flow",
+                    orgSwitch: "Organization Switch",
+                    registration: "Registration",
+                    session: "Session",
+                    token: "Token"
+                },
+                publishersSection: {
+                    description: "Select which events should be published to Moesif.",
+                    heading: "Event Publishers"
+                },
+                title: "Analytics",
+                toggle: {
+                    description: "Enable analytics event publishing for this deployment.",
+                    label: "Analytic Events Publishing"
+                }
+            },
+            publisherSettings: {
+                createTitle: "Configure Analytics",
+                dangerZone: {
+                    confirmation: {
+                        assertionHint: "Please confirm your action.",
+                        content: "Removing the configuration will stop all analytics event publishing and " +
+                            "delete the stored collector API key. You will need to configure it again to " +
+                            "resume publishing.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently remove the analytics " +
+                            "configuration."
+                    },
+                    deleteButton: "Remove Configuration",
+                    description: "Removing the configuration will stop all analytics event publishing. " +
+                        "This action cannot be undone.",
+                    heading: "Remove Analytics Configuration",
+                    sectionHeader: "Danger Zone"
+                },
+                enableButton: "Enable",
+                notifications: {
+                    deleteError: {
+                        description: "Failed to remove the analytics configuration.",
+                        message: "Delete failed"
+                    },
+                    deleteSuccess: {
+                        description: "Analytics configuration has been removed successfully.",
+                        message: "Configuration removed"
+                    }
+                },
+                updateTitle: "Analytics Configuration"
+            }
+        },
         eventPublishing: {
             eventsConfiguration: {
                 heading: "Configure Events",

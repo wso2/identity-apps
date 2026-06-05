@@ -30,10 +30,10 @@ interface UseMoesifAnalyticsReturn {
     /**
      * Fires a Moesif action event with optional metadata.
      *
-     * @param eventName - The event name (e.g. "Onboarding-Step-Completed").
-     * @param metadata - Optional metadata key-value pairs attached to the event.
+     * @param _eventName - The event name (e.g. "Onboarding-Step-Completed").
+     * @param _metadata - Optional metadata key-value pairs attached to the event.
      */
-    track: (eventName: string, metadata?: Record<string, unknown>) => void;
+    track: (_eventName: string, _metadata?: Record<string, unknown>) => void;
 }
 
 // No-op fallback for when the hook is used outside the provider (e.g. tests).

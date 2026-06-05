@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,13 +17,8 @@
  */
 
 /**
- * Interface for the Tenant Management feature resource endpoints.
+ * Interface for the Analytics feature resource endpoints.
  */
-export interface TenantResourceEndpointsInterface {
-    deploymentUnits: string;
-    tenantAssociationApi: string;
-    tenantManagementApi: string;
-    tenantMoesifDashboardInfo: string;
-    tenantSubscriptionApi: string;
-    tenants: string;
+export interface AnalyticsResourceEndpointsInterface {
+    moesifPublishers: string;
 }

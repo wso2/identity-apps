@@ -422,6 +422,7 @@ export class AppConstants {
             [ "ALTERNATIVE_LOGIN_IDENTIFIER_EDIT",
                 `${AppConstants.getAdminViewBasePath()}/edit-alternative-login-identifier` ],
             [ "INSIGHTS", `${AppConstants.getAdminViewBasePath()}/insights` ],
+            [ "INSIGHTS_SETTINGS", `${AppConstants.getAdminViewBasePath()}/insights/settings` ],
             [ "REMOTE_LOGGING", `${AppConstants.getAdminViewBasePath()}/server/logs` ],
             [ "LOGS", `${ AppConstants.getAdminViewBasePath() }/logs` ],
             [ "LOG_SETTINGS", `${ AppConstants.getAdminViewBasePath() }/log-settings` ],

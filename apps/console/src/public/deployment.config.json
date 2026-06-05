@@ -30,8 +30,12 @@
     "docSiteUrl": "https://is.docs.wso2.com/en/latest",
     "extensions": {
         "analytics": {
+            "collectorKey": {
+                "settingsEnabled": false
+            },
             "moesif": {
-                "applicationId": ""
+                "dashboardEnabled": false,
+                "embeddedPortalUrl": ""
             }
         },
         "defaultBrandedLoginScreenCopyright": "${copyright} ${year} WSO2 LLC.",

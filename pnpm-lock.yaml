@@ -412,9 +412,6 @@ importers:
       '@wso2is/admin.onboarding.v1':
         specifier: workspace:^
         version: link:../../features/admin.onboarding.v1
-      '@wso2is/admin.org-insights.v1':
-        specifier: ^2.26.4
-        version: link:../../features/admin.org-insights.v1
       '@wso2is/admin.organization-discovery.v1':
         specifier: ^2.25.210
         version: link:../../features/admin.organization-discovery.v1
@@ -1511,15 +1508,36 @@ importers:
       '@asgardeo/auth-react':
         specifier: ^5.6.1
         version: 5.6.1(@babel/runtime-corejs3@7.29.2)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@mui/material':
+        specifier: ^5.13.0
+        version: 5.18.0(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react@18.3.1))(@types/react@18.0.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@oxygen-ui/react':
+        specifier: 'catalog:'
+        version: 2.4.6(43a10c969c8ffe9f55ba3c36a34c927d)
+      '@oxygen-ui/react-icons':
+        specifier: ^2.4.6
+        version: 2.4.6(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)
       '@wso2is/admin.core.v1':
         specifier: ^2.57.3
         version: link:../admin.core.v1
+      '@wso2is/admin.org-insights.v1':
+        specifier: workspace:^
+        version: link:../admin.org-insights.v1
+      '@wso2is/admin.subscription.v1':
+        specifier: workspace:^
+        version: link:../admin.subscription.v1
       '@wso2is/admin.tenants.v1':
         specifier: workspace:^
         version: link:../admin.tenants.v1
       '@wso2is/core':
         specifier: ^2.12.13
         version: link:../../modules/core
+      '@wso2is/react-components':
+        specifier: ^2.9.16
+        version: link:../../modules/react-components
+      i18next:
+        specifier: ^21.9.1
+        version: 21.10.0
       moesif-browser-js:
         specifier: ^1.8.0
         version: 1.10.0
@@ -1529,6 +1547,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
+      react-i18next:
+        specifier: ^11.18.5
+        version: 11.18.6(i18next@21.10.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       react-redux:
         specifier: ^7.2.9
         version: 7.2.9(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
