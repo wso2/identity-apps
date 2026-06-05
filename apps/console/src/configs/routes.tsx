@@ -575,9 +575,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 {
                     component: lazy(() => import("@wso2is/admin.consents.v1/pages/policy-consent-new")),
                     exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
                     id: "consents-new",
                     name: "Consent New",
                     path: AppConstants.getPaths().get("POLICY_CONSENTS_NEW"),
@@ -587,37 +584,25 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 {
                     component: lazy(() => import("@wso2is/admin.consents.v1/pages/policy-consent-edit")),
                     exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
                     id: "consents-edit",
                     name: "Consent Edit",
                     path: AppConstants.getPaths().get("POLICY_CONSENTS_EDIT"),
                     protected: true,
                     showOnSidePanel: false
-                }
-            ],
-            component: lazy(() => import("@wso2is/admin.consents.v1/pages/policy-consents")),
-            exact: true,
-            icon: {
-                icon: getSidePanelIcons().consents
-            },
-            id: "consents",
-            name: "extensions:develop.sidePanel.consents",
-            order: 7,
-            path: AppConstants.getPaths().get("POLICY_CONSENTS"),
-            protected: true,
-            showOnSidePanel: false
-        },
-        {
-            category: "extensions:manage.sidePanel.categories.userManagement",
-            children: [
+                },
                 {
-                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/preference-management-new")),
+                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/preference-management")),
                     exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
+                    id: "preferenceManagement",
+                    name: "extensions:develop.sidePanel.preferenceManagement",
+                    path: AppConstants.getPaths().get("PREFERENCE_MANAGEMENT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.consents.v1/pages/preference-management-new")),
+                    exact: true,
                     id: "preference-management-new",
                     name: "Preference Management New",
                     path: AppConstants.getPaths().get("PREFERENCE_MANAGEMENT_NEW"),
@@ -625,11 +610,9 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 },
                 {
-                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/preference-management-edit")),
+                    component: lazy(() =>
+                        import("@wso2is/admin.consents.v1/pages/preference-management-edit")),
                     exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
                     id: "preference-management-edit",
                     name: "Preference Management Edit",
                     path: AppConstants.getPaths().get("PREFERENCE_MANAGEMENT_EDIT"),
@@ -637,15 +620,13 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 }
             ],
-            component: lazy(() => import("@wso2is/admin.consents.v1/pages/preference-management")),
+            component: lazy(() => import("@wso2is/admin.consents.v1/pages/policy-consents")),
             exact: true,
-            icon: {
-                icon: getSidePanelIcons().consents
-            },
-            id: "preferenceManagement",
-            name: "extensions:develop.sidePanel.preferenceManagement",
-            order: 8,
-            path: AppConstants.getPaths().get("PREFERENCE_MANAGEMENT"),
+            icon: null,
+            id: "consents",
+            name: "extensions:develop.sidePanel.consents",
+            order: 7,
+            path: AppConstants.getPaths().get("POLICY_CONSENTS"),
             protected: true,
             showOnSidePanel: false
         },
