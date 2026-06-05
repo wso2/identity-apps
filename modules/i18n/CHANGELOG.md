@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.43.1
+
+### Patch Changes
+
+- [#10353](https://github.com/wso2/identity-apps/pull/10353) [`a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83`](https://github.com/wso2/identity-apps/commit/a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add moesif dashboards and settings pages
+
 ## 2.43.0
 
 ### Minor Changes
