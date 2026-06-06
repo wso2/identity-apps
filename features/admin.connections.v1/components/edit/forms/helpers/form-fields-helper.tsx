@@ -27,7 +27,7 @@ import {
 import { I18n } from "@wso2is/i18n";
 import { CopyInputField, GenericIcon, Hint, P12FileStrategy } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement } from "react";
 import { Grid } from "semantic-ui-react";
 import { Pkcs12FileField } from "./pkcs12-file-field";
 import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
@@ -553,13 +553,13 @@ const getDropDownField = (eachProp: CommonPluggableComponentPropertyInterface,
     );
 };
 
-/* eslint-disable react-hooks/rules-of-hooks */
+
 const getFilePicker = (eachProp: CommonPluggableComponentPropertyInterface,
     propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
     testId?: string,
     onCertificateChange?: ( newFile: string) => void): ReactElement => {
 
-    const [ data, setData ] = useState<string>(eachProp?.value);
+    const data: string = eachProp?.value ?? "";
 
     return (
         <>
@@ -592,7 +592,6 @@ const getFilePicker = (eachProp: CommonPluggableComponentPropertyInterface,
                     <Pkcs12FileField
                         onCertificateChange={ (newData: string) =>
                         {
-                            setData(newData);
                             onCertificateChange(data);
                         } }
                     />
