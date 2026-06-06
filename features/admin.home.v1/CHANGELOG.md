@@ -1,5 +1,14 @@
 # @wso2is/admin.home.v1
 
+## 1.7.194
+
+### Patch Changes
+
+- [#10312](https://github.com/wso2/identity-apps/pull/10312) [`4280339831613d9ac3ebf2ebdb4a24e91ef04efc`](https://github.com/wso2/identity-apps/commit/4280339831613d9ac3ebf2ebdb4a24e91ef04efc) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show CDS banner in admin console carousal
+
+- Updated dependencies [[`4280339831613d9ac3ebf2ebdb4a24e91ef04efc`](https://github.com/wso2/identity-apps/commit/4280339831613d9ac3ebf2ebdb4a24e91ef04efc)]:
+  - @wso2is/admin.feature-gate.v1@1.9.8
+
 ## 1.7.193
 
 ### Patch Changes

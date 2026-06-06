@@ -23,7 +23,7 @@ import { render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import { RoleGroupsList } from "../edit-role-groups";
 
-jest.mock("@wso2is/admin.identity-providers.v1/api/identity-provider", () => (
+vi.mock("@wso2is/admin.identity-providers.v1/api/identity-provider", () => (
     {
         useIdentityProviderList: () => ({
             data: {
@@ -92,7 +92,7 @@ jest.mock("@wso2is/admin.identity-providers.v1/api/identity-provider", () => (
     }
 ));
 
-jest.mock("@wso2is/admin.applications.v1/api/use-get-application", () => ({
+vi.mock("@wso2is/admin.applications.v1/api/use-get-application", () => ({
     useGetApplication: () => ({
         data: {
             "id": "d04e18f0-a1c5-4966-b4fb-7d9e1b57c011",

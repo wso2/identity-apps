@@ -1,5 +1,15 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.38.54
+
+### Patch Changes
+
+- [#10365](https://github.com/wso2/identity-apps/pull/10365) [`1a44df3584ecfda4561f682f75be6688866ba97e`](https://github.com/wso2/identity-apps/commit/1a44df3584ecfda4561f682f75be6688866ba97e) Thanks [@hwupathum](https://github.com/hwupathum)! - Fix routing in preference management
+
+- Updated dependencies [[`1a44df3584ecfda4561f682f75be6688866ba97e`](https://github.com/wso2/identity-apps/commit/1a44df3584ecfda4561f682f75be6688866ba97e), [`a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83`](https://github.com/wso2/identity-apps/commit/a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83)]:
+  - @wso2is/admin.core.v1@2.57.16
+  - @wso2is/i18n@2.43.1
+
 ## 2.38.53
 
 ### Patch Changes

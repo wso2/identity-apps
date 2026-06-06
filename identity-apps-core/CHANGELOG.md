@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 5.1.4
+
+### Patch Changes
+
+- [#10343](https://github.com/wso2/identity-apps/pull/10343) [`28ec58c9b1974471af7daf0b3d4dd1a75226375a`](https://github.com/wso2/identity-apps/commit/28ec58c9b1974471af7daf0b3d4dd1a75226375a) Thanks [@Zeta201](https://github.com/Zeta201)! - Add CIBA user mismatch i18n strings to authentication portal
+
 ## 5.1.3
 
 ### Patch Changes

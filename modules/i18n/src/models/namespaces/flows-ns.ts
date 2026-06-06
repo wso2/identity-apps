@@ -314,6 +314,10 @@ export interface flowsNS {
                     actionId: string;
                 };
             };
+            userResolveExecutorFields: {
+                message: string;
+                messageWithUserIdentifier: string;
+            };
         };
         steps: {
             end: {

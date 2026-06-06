@@ -22,7 +22,7 @@ import { fullPermissions } from "./__mocks__/getting-started-permissions";
 import HomePage from "../home-page";
 import "@testing-library/jest-dom";
 
-jest.mock("@wso2is/admin.onboarding.v1/public-api", () => ({
+vi.mock("@wso2is/admin.onboarding.v1/public-api", () => ({
     OnboardingFab: () => null
 }));
 

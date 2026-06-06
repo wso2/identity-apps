@@ -30,8 +30,12 @@
     "docSiteUrl": "https://is.docs.wso2.com/en/latest",
     "extensions": {
         "analytics": {
+            "collectorKey": {
+                "settingsEnabled": false
+            },
             "moesif": {
-                "applicationId": ""
+                "dashboardEnabled": false,
+                "embeddedPortalUrl": ""
             }
         },
         "defaultBrandedLoginScreenCopyright": "${copyright} ${year} WSO2 LLC.",
@@ -578,6 +582,10 @@
                     "applications.adaptiveAuth.orgGovernance"
                 ],
                 "enabled": true,
+                "properties": {
+                    "maxGracefulRefreshTokenReuseLimit": 5,
+                    "maxGracefulRefreshTokenRotationValidityPeriod": 60
+                },
                 "featureFlags": [
                     {
                         "feature": "applications",
@@ -2257,7 +2265,6 @@
                 "groups": "v0.0.0",
                 "identityProviders": "v0.0.0",
                 "loginAndRegistration": "v1.0.0",
-                "preferenceManagement": "v0.0.0",
                 "mcpServers": "v0.0.0",
                 "oidcScopes": "v0.0.0",
                 "organizations": "v0.0.0",

@@ -29,7 +29,7 @@ import AuthenticationFlowOptionAddModal, {
     AuthenticationFlowOptionAddModalPropsInterface
 } from "../authentication-flow-option-add-modal";
 
-jest.mock("@wso2is/admin.connections.v1/api/use-get-connection-templates", () => (
+vi.mock("@wso2is/admin.connections.v1/api/use-get-connection-templates", () => (
     {
         useGetConnectionTemplates: () => ([
             {

@@ -183,7 +183,7 @@ const MoesifAnalyticsProvider: FunctionComponent<PropsWithChildren> = (
      * Fires a Moesif action event with optional metadata.
      * On the first call, lazily triggers user and company identification.
      */
-    const track: (eventName: string, metadata?: Record<string, unknown>) => void = useCallback(
+    const track: (_eventName: string, _metadata?: Record<string, unknown>) => void = useCallback(
         (eventName: string, metadata?: Record<string, unknown>): void => {
             if (!isInitializedRef.current) {
                 return;

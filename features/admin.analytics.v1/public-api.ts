@@ -19,3 +19,16 @@
 export { default as MoesifAnalyticsProvider } from "./providers/moesif-analytics-provider";
 export { useMoesifAnalytics } from "./hooks/use-moesif-analytics";
 export type { MoesifAnalyticsContextInterface } from "./context/moesif-analytics-context";
+export { default as InsightsPage } from "./pages/insights-page";
+export { MoesifEventPublisherKey } from "./models/moesif-analytics";
+export type {
+    MoesifPublisherInterface,
+    MoesifPublisherCreateRequest,
+    MoesifPublisherUpdateRequest,
+    MoesifDashboardInfoInterface
+} from "./models/moesif-analytics";
+export { createMoesifPublisher } from "./api/create-moesif-publisher";
+export { useGetMoesifPublisher } from "./api/use-get-moesif-publisher";
+export { getMoesifDashboardInfo } from "./api/get-moesif-dashboard-info";
+export { updateMoesifPublisher } from "./api/update-moesif-publisher";
+export { deleteMoesifPublisher } from "./api/delete-moesif-publisher";

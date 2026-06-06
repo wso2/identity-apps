@@ -60,12 +60,25 @@ const useGetSupportedProfileAttributes = <Data = Attribute[], Error = RequestErr
     );
 
     /**
-     * Transform the claims to ensure the username claim is always included.
-     * Sort the claims by displayName alphabetically.
+     * Resolve supported attributes from the meta endpoint as primary source.
+     * Falls back to local claims API if metadata is not available.
+     * Ensures the username claim is always included and sorts alphabetically.
      */
     const sortedAttributesWithUsername: Attribute[] = useMemo(() => {
+        const metadataAttributes: Attribute[] = (metadata?.attributeMetadata ?? []).map(
+            (attr: { claimURI: string; name: string }) => ({
+                claimURI: attr.claimURI,
+                displayName: attr.name
+            })
+        ) as Attribute[];
+
+        if (metadataAttributes.length > 0) {
+            return transformClaimsWithUsername(metadataAttributes);
+        }
+
+        // Fallback to local claims API if metadata attributes are not available
         return transformClaimsWithUsername(data as Attribute[]);
-    }, [ data ]);
+    }, [ metadata?.attributeMetadata, data ]);
 
     return {
         data: sortedAttributesWithUsername as Data,

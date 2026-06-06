@@ -1,5 +1,57 @@
 # @wso2is/console
 
+## 4.10.1
+
+### Patch Changes
+
+- [#10365](https://github.com/wso2/identity-apps/pull/10365) [`1a44df3584ecfda4561f682f75be6688866ba97e`](https://github.com/wso2/identity-apps/commit/1a44df3584ecfda4561f682f75be6688866ba97e) Thanks [@hwupathum](https://github.com/hwupathum)! - Fix routing in preference management
+
+* [#10353](https://github.com/wso2/identity-apps/pull/10353) [`a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83`](https://github.com/wso2/identity-apps/commit/a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add moesif dashboards and settings pages
+
+* Updated dependencies [[`1a44df3584ecfda4561f682f75be6688866ba97e`](https://github.com/wso2/identity-apps/commit/1a44df3584ecfda4561f682f75be6688866ba97e), [`a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83`](https://github.com/wso2/identity-apps/commit/a8a05f0ba1e7f5d29d8751ca0405dfef53eefa83)]:
+  - @wso2is/admin.core.v1@2.57.16
+  - @wso2is/admin.server-configurations.v1@2.38.54
+  - @wso2is/admin.analytics.v1@0.0.7
+  - @wso2is/admin.tenants.v1@2.29.30
+  - @wso2is/i18n@2.43.1
+  - @wso2is/admin.onboarding.v1@1.0.85
+
+## 4.10.0
+
+### Minor Changes
+
+- [#10356](https://github.com/wso2/identity-apps/pull/10356) [`de8887b851eefa9c3e5330b6cd96c4687cb68b24`](https://github.com/wso2/identity-apps/commit/de8887b851eefa9c3e5330b6cd96c4687cb68b24) Thanks [@Thumimku](https://github.com/Thumimku)! - Add graceful refresh token rotation support.
+
+### Patch Changes
+
+- Updated dependencies [[`de8887b851eefa9c3e5330b6cd96c4687cb68b24`](https://github.com/wso2/identity-apps/commit/de8887b851eefa9c3e5330b6cd96c4687cb68b24)]:
+  - @wso2is/access-control@3.6.0
+  - @wso2is/admin.applications.v1@2.43.0
+  - @wso2is/i18n@2.43.0
+
+## 4.9.7
+
+### Patch Changes
+
+- [#10350](https://github.com/wso2/identity-apps/pull/10350) [`2282759fcffa31ca2d3ec513f353aaed00700185`](https://github.com/wso2/identity-apps/commit/2282759fcffa31ca2d3ec513f353aaed00700185) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Add user_identifier to flow builder.
+
+- Updated dependencies [[`2282759fcffa31ca2d3ec513f353aaed00700185`](https://github.com/wso2/identity-apps/commit/2282759fcffa31ca2d3ec513f353aaed00700185), [`ccb2eabe8b5dd1e8cec9f1fc73ac4f1c0d5a8fc4`](https://github.com/wso2/identity-apps/commit/ccb2eabe8b5dd1e8cec9f1fc73ac4f1c0d5a8fc4)]:
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.213
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.215
+  - @wso2is/admin.registration-flow-builder.v1@0.10.175
+  - @wso2is/i18n@2.42.4
+  - @wso2is/admin.applications.v1@2.42.32
+
+## 4.9.6
+
+### Patch Changes
+
+- [#10312](https://github.com/wso2/identity-apps/pull/10312) [`4280339831613d9ac3ebf2ebdb4a24e91ef04efc`](https://github.com/wso2/identity-apps/commit/4280339831613d9ac3ebf2ebdb4a24e91ef04efc) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Show CDS banner in admin console carousal
+
+- Updated dependencies [[`4280339831613d9ac3ebf2ebdb4a24e91ef04efc`](https://github.com/wso2/identity-apps/commit/4280339831613d9ac3ebf2ebdb4a24e91ef04efc)]:
+  - @wso2is/admin.feature-gate.v1@1.9.8
+  - @wso2is/admin.home.v1@1.7.194
+
 ## 4.9.5
 
 ### Patch Changes
