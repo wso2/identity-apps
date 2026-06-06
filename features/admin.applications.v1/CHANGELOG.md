@@ -1,5 +1,15 @@
 # @wso2is/admin.applications.v1
 
+## 2.43.1
+
+### Patch Changes
+
+- [#10369](https://github.com/wso2/identity-apps/pull/10369) [`b92163d50018fee53956290dbcb1e46d80f693a9`](https://github.com/wso2/identity-apps/commit/b92163d50018fee53956290dbcb1e46d80f693a9) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve application v3 update message readability
+
+- Updated dependencies [[`23f5a8fd478b609f7f0d28f67c211c12a15450a5`](https://github.com/wso2/identity-apps/commit/23f5a8fd478b609f7f0d28f67c211c12a15450a5), [`b92163d50018fee53956290dbcb1e46d80f693a9`](https://github.com/wso2/identity-apps/commit/b92163d50018fee53956290dbcb1e46d80f693a9)]:
+  - @wso2is/admin.roles.v2@2.27.384
+  - @wso2is/i18n@2.43.2
+
 ## 2.43.0
 
 ### Minor Changes

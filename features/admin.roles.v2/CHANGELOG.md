@@ -1,5 +1,15 @@
 # @wso2is/admin.roles.v2
 
+## 2.27.384
+
+### Patch Changes
+
+- [#10345](https://github.com/wso2/identity-apps/pull/10345) [`23f5a8fd478b609f7f0d28f67c211c12a15450a5`](https://github.com/wso2/identity-apps/commit/23f5a8fd478b609f7f0d28f67c211c12a15450a5) Thanks [@KethniiImasha](https://github.com/KethniiImasha)! - Fix: show audience-specific message in API resource dropdown no options text
+
+- Updated dependencies [[`23f5a8fd478b609f7f0d28f67c211c12a15450a5`](https://github.com/wso2/identity-apps/commit/23f5a8fd478b609f7f0d28f67c211c12a15450a5), [`b92163d50018fee53956290dbcb1e46d80f693a9`](https://github.com/wso2/identity-apps/commit/b92163d50018fee53956290dbcb1e46d80f693a9)]:
+  - @wso2is/i18n@2.43.2
+  - @wso2is/admin.applications.v1@2.43.1
+
 ## 2.27.383
 
 ### Patch Changes
