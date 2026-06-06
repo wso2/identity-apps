@@ -419,6 +419,10 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
 
 
 
+        const isLoading: boolean = roleAudience === RoleAudienceTypes.APPLICATION
+            ? isAuthorizedAPIListForApplicationLoading
+            : iscurrentAPIResourcesListLoading;
+
         return (
             <Grid container direction="column" justifyContent="center" alignItems="flex-start" spacing={ 2 }>
                 { isEnforceRoleOperationPermissionEnabled && !hasRolePermissionUpdatePermission && (
@@ -513,7 +517,11 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                                 APIResourceUtils.sortApiResourceTypes(a, b)
                             )
                         }
-                        noOptionsText={ t("common:noResultsFound") }
+                        noOptionsText={ isLoading
+                            ? t("common:searching")
+                            : t("roles:addRoleWizard.forms.rolePermission.apiResource.hint.noApiResourcesAvailable")
+
+                        }
                         renderInput={ (params: AutocompleteRenderInputParams) => (
                             <TextField
                                 { ...params }

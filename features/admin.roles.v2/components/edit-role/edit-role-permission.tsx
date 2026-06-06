@@ -647,7 +647,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                             APIResourceUtils.sortApiResourceTypes(a, b)
                         )
                     }
-                    noOptionsText={ t("common:noResultsFound") }
+                    noOptionsText={ role?.audience?.type?.toUpperCase() === RoleAudienceTypes.APPLICATION ? t("roles:addRoleWizard.forms.rolePermission.apiResource.hint.noApiResourcesAvailable") : t("common:noResultsFound") }
                     renderInput={ (params: AutocompleteRenderInputParams) => (
                         <TextField
                             { ...params }
