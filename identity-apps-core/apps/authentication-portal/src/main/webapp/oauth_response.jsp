@@ -506,9 +506,25 @@
     <% if (overrideStylesheet != null) { %>
     <link rel="stylesheet" href="<%= StringEscapeUtils.escapeHtml4(overrideStylesheet) %>">
     <% } %>
+
+    <script type="text/javascript">
+        var submitted = false;
+        function submitOAuthResponse() {
+            if (!submitted) {
+                submitted = true;
+                document.getElementById('oauth-response').submit();
+                // If still on this page after 10 seconds, the submission likely
+                // failed. Show the "Click here" fallback so the user can retry.
+                setTimeout(function() {
+                    submitted = false;
+                    document.getElementById('fallback-submit').style.display = 'inline';
+                }, 10000);
+            }
+        }
+    </script>
 </head>
 
-<body class="login-portal layout recovery-layout" onload="javascript:document.getElementById('oauth-response').submit()" data-page="<%= request.getAttribute("pageName") %>">
+<body class="login-portal layout recovery-layout" onload="javascript:submitOAuthResponse()" data-page="<%= request.getAttribute("pageName") %>">
     <div class="page-wrapper">
         <main class="center-segment registration-loader">
             <div class="ui container aligned middle aligned text-center">
@@ -544,9 +560,9 @@
                         </div>
                     <% } %>
                 </div>
-                <p class="message-description">
+                <p class="message-description" id="fallback-submit" style="display:none;">
                     <a class="primary-color-btn button"
-                        href="javascript:document.getElementById('oauth-response').submit()">
+                        href="javascript:submitOAuthResponse()">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "click.here")%>
                     </a>
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "if.you.have.been.waiting.for.too.long")%>
@@ -554,6 +570,13 @@
                 <form id="oauth-response" method="post" action="${redirectURI}">
                 <% String params = (String) request.getAttribute("params"); %>
                 <%= params %>
+                <noscript>
+                    <p class="message-description">
+                        <input type="submit" class="ui button primary-color-btn"
+                            value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "click.here")%>" />
+                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "if.you.have.been.waiting.for.too.long")%>
+                    </p>
+                </noscript>
                 </form>
             </div>
         </main>
