@@ -36,7 +36,6 @@ concurrency:
 env:
     GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
     SHOULD_GENERATE_CHANGESET: 'true'
-    USE_INTERNAL_CHANGESET_AUTOPUBLISH: 'true'
     BRANCH: ${{ github.ref_name }}
     IS_HOTFIX: 'false'
     BOT_USERNAME: ${{ secrets.RELEASE_BOT_USER_NAME }}
@@ -169,20 +168,8 @@ jobs:
                   restore-keys: |
                       ${{ runner.os }}-maven-
 
-            - name: 📣 Auto Publish Changesets
-              if: ${{ env.SHOULD_GENERATE_CHANGESET == 'true' && env.USE_INTERNAL_CHANGESET_AUTOPUBLISH == 'true' }}
-              id: autopublish-changesets
-              run: bash .github/workflows/scripts/autopublish-changesets.sh
-              env:
-                  BRANCH: ${{ github.ref_name }}
-                  COMMIT_MESSAGE: "[WSO2 Release] [GitHub Action] [Release] [${{ github.ref_name }}] [skip ci] update package versions"
-                  VERSION_SCRIPT: pnpm run version:packages
-                  PUBLISH_SCRIPT: pnpm run publish:packages
-                  BOT_USERNAME: ${{ env.BOT_USERNAME }}
-                  BOT_EMAIL: ${{ env.BOT_EMAIL }}
-
             - name: 📣 Create Release Pull Request or Publish to npm
-              if: ${{ env.SHOULD_GENERATE_CHANGESET == 'true' && env.USE_INTERNAL_CHANGESET_AUTOPUBLISH != 'true' }}
+              if: ${{ env.SHOULD_GENERATE_CHANGESET == 'true' }}
               id: changesets
               uses: changesets/action@v1.4.9
               with:
@@ -193,24 +180,9 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ env.GH_TOKEN }}
 
-            - name: 🧾 Resolve Published Packages
-              id: changeset-results
-              run: |
-                  if [ "${{ env.USE_INTERNAL_CHANGESET_AUTOPUBLISH }}" = "true" ]; then
-                      PACKAGES='${{ steps.autopublish-changesets.outputs.publishedPackages }}'
-                  else
-                      PACKAGES='${{ steps.changesets.outputs.publishedPackages }}'
-                  fi
-
-                  if [ -z "$PACKAGES" ]; then
-                      PACKAGES="[]"
-                  fi
-
-                  echo "publishedPackages=$PACKAGES" >> "$GITHUB_OUTPUT"
-
             - name: 🚀 Perform Release
               id: perform-release
               working-directory: .github/workflows
               run: |
-                  PACKAGES='${{ steps.changeset-results.outputs.publishedPackages }}'
+                  PACKAGES="${{ toJson(steps.changesets.outputs.publishedPackages) }}"
                   bash ./scripts/release.sh "$PACKAGES" ${{ github.run_number }} ${{ env.IS_HOTFIX }}
