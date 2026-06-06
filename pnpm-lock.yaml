@@ -332,7 +332,7 @@ importers:
         specifier: ^1.6.1
         version: link:../../features/admin.application-templates.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.43.0
+        specifier: ^2.43.1
         version: link:../../features/admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
         specifier: ^1.3.31
@@ -434,7 +434,7 @@ importers:
         specifier: ^2.25.205
         version: link:../../features/admin.remote-repository-configuration.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.383
+        specifier: ^2.27.384
         version: link:../../features/admin.roles.v2
       '@wso2is/admin.saml2-configuration.v1':
         specifier: ^2.25.208
@@ -494,7 +494,7 @@ importers:
         specifier: ^2.13.3
         version: link:../../modules/core
       '@wso2is/i18n':
-        specifier: ^2.43.1
+        specifier: ^2.43.2
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.2
@@ -1987,7 +1987,7 @@ importers:
         specifier: ^2.28.4
         version: link:../admin.organizations.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.383
+        specifier: ^2.27.384
         version: link:../admin.roles.v2
       '@wso2is/admin.secrets.v1':
         specifier: ^2.25.205
@@ -2020,7 +2020,7 @@ importers:
         specifier: ^2.3.27
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.43.0
+        specifier: ^2.43.2
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.0
@@ -8095,7 +8095,7 @@ importers:
         specifier: ^2.26.11
         version: link:../admin.api-resources.v2
       '@wso2is/admin.applications.v1':
-        specifier: ^2.42.31
+        specifier: ^2.43.1
         version: link:../admin.applications.v1
       '@wso2is/admin.connections.v1':
         specifier: ^2.37.4
@@ -8131,7 +8131,7 @@ importers:
         specifier: ^2.3.27
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.39.2
+        specifier: ^2.43.2
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.10.0
