@@ -37,7 +37,7 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { SemanticICONS } from "semantic-ui-react";
+import { Label, SemanticICONS } from "semantic-ui-react";
 
 /**
  * Props interface for the Policy Consents list component.
@@ -123,8 +123,8 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
         return [
             {
                 "data-componentid": `${componentId}-item-view-button`,
-                hidden: (item: ListItem): boolean =>
-                    isCrossTenant(item) ? !hasReadPermission : (hasUpdatePermission || !hasReadPermission),
+                hidden: (_item: ListItem): boolean =>
+                    hasUpdatePermission || !hasReadPermission,
                 icon: (): SemanticICONS => "eye",
                 onClick: (_e: SyntheticEvent, consent: ListItem): void =>
                     onEditConsentClick(consent),
@@ -133,8 +133,8 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
             },
             {
                 "data-componentid": `${componentId}-item-edit-button`,
-                hidden: (item: ListItem): boolean =>
-                    !hasUpdatePermission || isCrossTenant(item),
+                hidden: (_item: ListItem): boolean =>
+                    !hasUpdatePermission,
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (_e: SyntheticEvent, consent: ListItem): void =>
                     onEditConsentClick(consent),
@@ -188,6 +188,11 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
                             <Typography variant="body1">
                                 { consent.name }
                             </Typography>
+                            { isCrossTenant(consent) && (
+                                <Label size="mini" className="ml-2">
+                                    { t("consents:policyConsents.list.labels.sharedPolicy") }
+                                </Label>
+                            ) }
                         </Box>
                     );
                 },

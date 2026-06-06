@@ -43,6 +43,9 @@ export const consents: ConsentsNS = {
                 action: "Clear search",
                 subtitle: "No preferences found for the search query.",
                 title: "No results found"
+            },
+            labels: {
+                sharedPreference: "Shared preference"
             }
         },
         notifications: {
@@ -206,6 +209,9 @@ export const consents: ConsentsNS = {
                 action: "Clear search",
                 subtitle: "No policies found for the search query.",
                 title: "No results found"
+            },
+            labels: {
+                sharedPolicy: "Shared policy"
             }
         },
         notifications: {

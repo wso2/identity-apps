@@ -37,7 +37,7 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { SemanticICONS } from "semantic-ui-react";
+import { Label, SemanticICONS } from "semantic-ui-react";
 
 /**
  * Props interface for the Preference management list component.
@@ -121,8 +121,8 @@ export const PreferenceManagementList: FunctionComponent<PreferenceManagementLis
         return [
             {
                 "data-componentid": `${componentId}-item-view-button`,
-                hidden: (item: ConsentListItemInterface): boolean =>
-                    isCrossTenant(item) ? !hasReadPermission : (hasUpdatePermission || !hasReadPermission),
+                hidden: (_item: ConsentListItemInterface): boolean =>
+                    hasUpdatePermission || !hasReadPermission,
                 icon: (): SemanticICONS => "eye",
                 onClick: (_e: SyntheticEvent, consent: ConsentListItemInterface): void =>
                     onEditConsentClick(consent),
@@ -131,7 +131,7 @@ export const PreferenceManagementList: FunctionComponent<PreferenceManagementLis
             },
             {
                 "data-componentid": `${componentId}-item-edit-button`,
-                hidden: (item: ConsentListItemInterface): boolean => !hasUpdatePermission || isCrossTenant(item),
+                hidden: (_item: ConsentListItemInterface): boolean => !hasUpdatePermission,
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (_e: SyntheticEvent, consent: ConsentListItemInterface): void =>
                     onEditConsentClick(consent),
@@ -184,6 +184,11 @@ export const PreferenceManagementList: FunctionComponent<PreferenceManagementLis
                             <Typography variant="body1">
                                 { consent.name }
                             </Typography>
+                            { isCrossTenant(consent) && (
+                                <Label size="mini" className="ml-2">
+                                    { t("consents:preferenceManagement.list.labels.sharedPreference") }
+                                </Label>
+                            ) }
                         </Box>
                     );
                 },

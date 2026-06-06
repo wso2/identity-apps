@@ -84,6 +84,9 @@ export interface ConsentsNS {
                 subtitle: string;
                 title: string;
             };
+            labels: {
+                sharedPreference: string;
+            };
         };
         notifications: ConsentNotificationsNS;
         pages: {
@@ -172,6 +175,9 @@ export interface ConsentsNS {
                 action: string;
                 subtitle: string;
                 title: string;
+            };
+            labels: {
+                sharedPolicy: string;
             };
         };
         notifications: ConsentNotificationsNS;
