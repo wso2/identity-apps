@@ -491,6 +491,7 @@
             if (!i18Resource.equals(errorCode1)) {
                 request.setAttribute(ERROR_MESSAGE, i18Resource);
             }
+            request.setAttribute("isRegValidationErrorFromUsernameRequestPage", "true");
             if (isSelfRegistrationWithVerification) {
                 request.getRequestDispatcher(SELF_REGISTRATION_WITH_VERIFICATION_PAGE).forward(request,
                         response);
