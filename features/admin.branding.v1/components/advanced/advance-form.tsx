@@ -182,92 +182,103 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                 { t("extensions:develop.branding.forms.advance.links.heading") }
             </Heading>
             <Field.Input
-                ariaLabel="Branding preference privacy policy URL"
-                inputType="url"
-                name="urls.privacyPolicyURL"
-                label={ t("extensions:develop.branding.forms.advance.links.fields.privacyPolicyURL.label") }
-                placeholder={
-                    t("extensions:develop.branding.forms.advance.links.fields.privacyPolicyURL.placeholder")
-                }
-                hint={ (
-                    <Trans
-                        i18nKey="extensions:develop.branding.forms.advance.links.fields.privacyPolicyURL.hint"
-                    >
-                        Link to a statement or a legal document that states how your organization collects,
-                        handles, and processes the data of your customers and visitors. You can use placeholders like
-                        <Code>&#123;&#123;lang&#125;&#125;</Code>, <Code>&#123;&#123;country&#125;&#125;</Code>,
-                        or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
-                        regions or languages.
-                    </Trans>
-                ) }
-                required={ false }
-                value={ initialValues.urls.privacyPolicyURL }
-                readOnly={ readOnly }
-                maxLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.PRIVACY_POLICY_URL_MAX_LENGTH }
-                minLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.PRIVACY_POLICY_URL_MIN_LENGTH }
-                listen={ (value: string) =>  setPrivacyPolicyURL(value) }
-                width={ 16 }
-                data-testid={ `${ componentId }-tos-url` }
-                validation={ validateTemplatableURLs }
-            />
-            <Field.Input
-                ariaLabel="Branding preference terms of service URL"
-                inputType="url"
-                name="urls.termsOfUseURL"
-                label={ t("extensions:develop.branding.forms.advance.links.fields.termsOfUseURL.label") }
-                placeholder={
-                    t("extensions:develop.branding.forms.advance.links.fields.termsOfUseURL.placeholder")
-                }
-                hint={ (
-                    <Trans
-                        i18nKey="extensions:develop.branding.forms.advance.links.fields.termsOfUseURL.hint"
-                    >
-                        Link to an agreement that your customers must agree to and abide by in order to use your
-                        organization&apos;s applications or other services. You can use placeholders like
-                        <Code>&#123;&#123;lang&#125;&#125;</Code>, <Code>&#123;&#123;country&#125;&#125;</Code>,
-                        or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
-                        regions or languages.
-                    </Trans>
-                ) }
-                required={ false }
-                value={ initialValues.urls.termsOfUseURL }
-                readOnly={ readOnly }
-                maxLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.TOS_URL_MAX_LENGTH }
-                minLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.TOS_URL_MIN_LENGTH }
-                listen={ (value: string) =>  setTermsOfUseURL(value) }
-                width={ 16 }
-                data-testid={ `${ componentId }-tos-url` }
-                validation={ validateTemplatableURLs }
-            />
-            <Field.Input
-                ariaLabel="Branding preference cookie policy URL"
-                inputType="url"
-                name="urls.cookiePolicyURL"
-                label={ t("extensions:develop.branding.forms.advance.links.fields.cookiePolicyURL.label") }
-                placeholder={
-                    t("extensions:develop.branding.forms.advance.links.fields.cookiePolicyURL.placeholder")
-                }
-                hint={ (
-                    <Trans
-                        i18nKey="extensions:develop.branding.forms.advance.links.fields.cookiePolicyURL.hint"
-                    >
-                        Link to a document or a webpage with detailed information on all cookies used by your
-                        applications and the purpose of each of them. You can use placeholders like
-                        <Code>&#123;&#123;lang&#125;&#125;</Code>, <Code>&#123;&#123;country&#125;&#125;</Code>,
-                        or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
-                        regions or languages.
-                    </Trans>
-                ) }
-                required={ false }
-                value={ initialValues.urls.cookiePolicyURL }
-                readOnly={ readOnly }
-                maxLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.COOKIE_POLICY_URL_MAX_LENGTH }
-                minLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.COOKIE_POLICY_URL_MIN_LENGTH }
-                listen={ (value: string) =>  setCookiePolicyURL(value) }
-                width={ 16 }
-                data-testid={ `${ componentId }-cookie-policy-url` }
-                validation={ validateTemplatableURLs }
-            />
+                        ariaLabel="Branding preference privacy policy URL"
+                        inputType="url"
+                        name="urls.privacyPolicyURL"
+                        label={ t("extensions:develop.branding.forms.advance.links.fields.privacyPolicyURL.label") }
+                        placeholder={
+                            t("extensions:develop.branding.forms.advance.links.fields.privacyPolicyURL.placeholder")
+                        }
+                        hint={ (
+                            <Trans
+                                i18nKey="extensions:develop.branding.forms.advance.links.fields.privacyPolicyURL.hint"
+                            >
+                                Link to a statement or a legal document that states how your organization collects,
+                                handles, and processes the data of your customers and visitors. You can use
+                                placeholders like <Code>&#123;&#123;lang&#125;&#125;</Code>,
+                                <Code>&#123;&#123;country&#125;&#125;</Code>,
+                                or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
+                                regions or languages.
+                            </Trans>
+                        ) }
+                        required={ false }
+                        value={ initialValues.urls.privacyPolicyURL }
+                        readOnly={ readOnly }
+                        maxLength={
+                            BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.PRIVACY_POLICY_URL_MAX_LENGTH
+                        }
+                        minLength={
+                            BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.PRIVACY_POLICY_URL_MIN_LENGTH
+                        }
+                        listen={ (value: string) => setPrivacyPolicyURL(value) }
+                        width={ 16 }
+                        data-componentid={ `${ componentId }-privacy-policy-url` }
+                        validation={ validateTemplatableURLs }
+                    />
+                    <Field.Input
+                        ariaLabel="Branding preference terms of service URL"
+                        inputType="url"
+                        name="urls.termsOfUseURL"
+                        label={ t("extensions:develop.branding.forms.advance.links.fields.termsOfUseURL.label") }
+                        placeholder={
+                            t("extensions:develop.branding.forms.advance.links.fields.termsOfUseURL.placeholder")
+                        }
+                        hint={ (
+                            <Trans
+                                i18nKey="extensions:develop.branding.forms.advance.links.fields.termsOfUseURL.hint"
+                            >
+                                Link to an agreement that your customers must agree to and abide by in order to use
+                                your organization&apos;s applications or other services. You can use placeholders like
+                                <Code>&#123;&#123;lang&#125;&#125;</Code>,
+                                <Code>&#123;&#123;country&#125;&#125;</Code>,
+                                or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
+                                regions or languages.
+                            </Trans>
+                        ) }
+                        required={ false }
+                        value={ initialValues.urls.termsOfUseURL }
+                        readOnly={ readOnly }
+                        maxLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.TOS_URL_MAX_LENGTH }
+                        minLength={ BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.TOS_URL_MIN_LENGTH }
+                        listen={ (value: string) => setTermsOfUseURL(value) }
+                        width={ 16 }
+                        data-componentid={ `${ componentId }-tos-url` }
+                        validation={ validateTemplatableURLs }
+                    />
+                    <Field.Input
+                        ariaLabel="Branding preference cookie policy URL"
+                        inputType="url"
+                        name="urls.cookiePolicyURL"
+                        label={ t("extensions:develop.branding.forms.advance.links.fields.cookiePolicyURL.label") }
+                        placeholder={
+                            t("extensions:develop.branding.forms.advance.links.fields.cookiePolicyURL.placeholder")
+                        }
+                        hint={ (
+                            <Trans
+                                i18nKey="extensions:develop.branding.forms.advance.links.fields.cookiePolicyURL.hint"
+                            >
+                                Link to a document or a webpage with detailed information on all cookies used by your
+                                applications and the purpose of each of them. You can use placeholders like
+                                <Code>&#123;&#123;lang&#125;&#125;</Code>,
+                                <Code>&#123;&#123;country&#125;&#125;</Code>,
+                                or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
+                                regions or languages.
+                            </Trans>
+                        ) }
+                        required={ false }
+                        value={ initialValues.urls.cookiePolicyURL }
+                        readOnly={ readOnly }
+                        maxLength={
+                            BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.COOKIE_POLICY_URL_MAX_LENGTH
+                        }
+                        minLength={
+                            BrandingPreferencesConstants.ADVANCE_FORM_FIELD_CONSTRAINTS.COOKIE_POLICY_URL_MIN_LENGTH
+                        }
+                        listen={ (value: string) => setCookiePolicyURL(value) }
+                        width={ 16 }
+                        data-componentid={ `${ componentId }-cookie-policy-url` }
+                        validation={ validateTemplatableURLs }
+                    />
             { (invitedUserRegistrationFlowConfig?.isEnabled || passwordRecoveryFlowConfig?.isEnabled) && ( <Field.Input
                 ariaLabel="Branding preference recovery portal URL"
                 inputType="url"

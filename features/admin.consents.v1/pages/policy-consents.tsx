@@ -109,21 +109,17 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
         }
     };
 
-    const hasNextPage: boolean = useMemo((): boolean => {
-        return !!consentResponse?.links?.find(l => l.rel === "next");
-    }, [ consentResponse ]);
+    const hasNextPage: boolean = !!consentResponse?.links?.find(
+        (l: { rel: string; href: string }) => l.rel === "next"
+    );
 
-    const hasPreviousPage: boolean = useMemo((): boolean => {
-        return pageHistory.length > 0 || !!consentResponse?.links?.find(l => l.rel === "previous");
-    }, [ consentResponse, pageHistory ]);
+    const hasPreviousPage: boolean = pageHistory.length > 0 || !!consentResponse?.links?.find(
+        (l: { rel: string; href: string }) => l.rel === "previous"
+    );
 
-    const activePage: number = useMemo((): number => {
-        return pageHistory.length + 1;
-    }, [ pageHistory ]);
+    const activePage: number = pageHistory.length + 1;
 
-    const virtualTotalPages: number = useMemo((): number => {
-        return activePage + (hasNextPage ? 1 : 0);
-    }, [ activePage, hasNextPage ]);
+    const virtualTotalPages: number = activePage + (hasNextPage ? 1 : 0);
 
     /**
      * Handles the search filter.
@@ -306,7 +302,11 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                 showPagination={ true }
                 showTopActionPanel={ true }
                 totalPages={ virtualTotalPages }
-                totalListSize={ (activePage - 1) * listItemLimit + (consents?.length ?? 0) + (hasNextPage ? 1 : 0) }
+                totalListSize={
+                    (activePage - 1) * listItemLimit
+                    + (consents?.length ?? 0)
+                    + (hasNextPage ? 1 : 0)
+                }
                 isLoading={ isConsentsLoading }
                 paginationOptions={ {
                     disableNextButton: !hasNextPage,

@@ -31,7 +31,7 @@ import {
     DangerZoneGroup,
     PageLayout
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -59,27 +59,34 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
 
     const id: string = match?.params?.id;
 
-    const { data: consent, isLoading: isConsentRequestLoading } = useGetPurpose(id);
-
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
     const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
     );
+    const currentTenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const hasDeletePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.delete);
 
-    const [ showDeleteConfirmation, setShowDeleteConfirmation ] = React.useState<boolean>(false);
-    const [ isDeleting, setIsDeleting ] = React.useState<boolean>(false);
+    const [ showDeleteConfirmation, setShowDeleteConfirmation ] = useState<boolean>(false);
+    const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
+
+    const { data: consent, isLoading: isConsentLoading } = useGetPurpose(id);
+
+    const isCrossTenant: boolean = !!consent?.tenantDomain && consent.tenantDomain !== currentTenantDomain;
 
     const handleBackButtonClick = (): void => {
         window.history.back();
     };
 
     const handleDeleteConsent = (): void => {
+        if (!consent?.id) {
+            return;
+        }
+
         setIsDeleting(true);
 
-        deletePurpose(id)
+        deletePurpose(consent.id)
             .then((): void => {
                 dispatch(addAlert({
                     description: t("consents:policyConsents.notifications.delete.success.description"),
@@ -106,7 +113,9 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
                         break;
                     default:
                         if (status >= 500) {
-                            description = t("consents:policyConsents.notifications.delete.error.serverError.description");
+                            description = t(
+                                "consents:policyConsents.notifications.delete.error.serverError.description"
+                            );
                             message = t("consents:policyConsents.notifications.delete.error.serverError.message");
                         } else {
                             description = t("consents:policyConsents.notifications.delete.error.description");
@@ -125,7 +134,6 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
                 setShowDeleteConfirmation(false);
             });
     };
-
 
     return (
         <PageLayout
@@ -146,7 +154,7 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
             titleTextAlign="left"
             bottomMargin={ false }
             data-componentid={ `${componentId}-layout` }
-            isLoading={ isConsentRequestLoading }
+            isLoading={ isConsentLoading }
             backButton={ {
                 "data-componentid": `${componentId}-page-back-button`,
                 onClick: handleBackButtonClick,
@@ -155,8 +163,11 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
         >
             { consent && (
                 <>
-                    <EditPolicyConsent purposeId={ consent.id } />
-                    { hasDeletePermission && (
+                    <EditPolicyConsent
+                        purposeId={ consent.id }
+                        readOnly={ isCrossTenant }
+                    />
+                    { hasDeletePermission && !isCrossTenant && (
                         <DangerZoneGroup
                             sectionHeader={ t("common:dangerZone") }
                         >

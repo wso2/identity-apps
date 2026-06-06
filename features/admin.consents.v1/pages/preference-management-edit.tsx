@@ -68,7 +68,10 @@ const PreferenceManagementEditPage: FunctionComponent<PreferenceManagementEditPa
     const preferenceManagementFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
     );
+    const currentTenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const hasDeletePermission: boolean = useRequiredScopes(preferenceManagementFeatureConfig?.scopes?.delete);
+
+    const isCrossTenant: boolean = !!consent?.tenantDomain && consent.tenantDomain !== currentTenantDomain;
 
     const [ showDeleteConfirmation, setShowDeleteConfirmation ] = React.useState<boolean>(false);
     const [ isDeleting, setIsDeleting ] = React.useState<boolean>(false);
@@ -165,8 +168,8 @@ const PreferenceManagementEditPage: FunctionComponent<PreferenceManagementEditPa
         >
             { consent && (
                 <>
-                    <EditPreferenceManagement purposeId={ consent.id } />
-                    { hasDeletePermission && (
+                    <EditPreferenceManagement purposeId={ consent.id } readOnly={ isCrossTenant } />
+                    { hasDeletePermission && !isCrossTenant && (
                         <DangerZoneGroup
                             sectionHeader={ t("common:dangerZone") }
                         >

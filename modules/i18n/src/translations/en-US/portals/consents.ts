@@ -173,7 +173,7 @@ export const consents: ConsentsNS = {
                 placeholder: "Privacy Policy"
             },
             policyUrl: {
-                hint: "Enter the URL of the full policy document. Use {{lang}}, {{country}}, or {{locale}} as placeholders to support multiple regions or languages.",
+                hint: "Link to the full policy document. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
                 label: "Policy URL",
                 versionHint: "To create a new version, update the policy URL, description, or prompt settings above."
             },
@@ -186,10 +186,15 @@ export const consents: ConsentsNS = {
                 currentVersionLabel: "Version {{version}} (current)",
                 trigger: "Version {{version}}"
             },
-            versionModal: {
-                createNewVersion: "Save as New Version?",
+            createModal: {
+                header: "Create Policy",
                 promptAtLogin: "Prompt users to accept at next login",
-                promptDescription: "Choose whether existing users should be prompted to review and accept this updated policy at their next login."
+                promptDescription: "Choose whether existing users should be prompted to review and accept this new policy at their next login. This setting cannot be changed later."
+            },
+            versionModal: {
+                createNewVersion: "Save as New Version",
+                promptAtLogin: "Prompt users to accept at next login",
+                promptDescription: "Choose whether users should be prompted to review and accept this updated policy at their next login. Note: users who have not yet accepted a previously prompted version will still be prompted, regardless of this setting."
             }
         },
         list: {
@@ -293,12 +298,12 @@ export const consents: ConsentsNS = {
                 actions: {
                     addPolicy: "New Policy"
                 },
-                description: "Manage policy consents for your organization.",
-                heading: "Policy Consents",
+                description: "Manage policies for your organization.",
+                heading: "Policy Management",
                 search: {
                     placeholder: "Search by policy name"
                 },
-                title: "Policy Consents"
+                title: "Policy Management"
             },
             new: {
                 backButton: "Back to Policies",
@@ -311,7 +316,7 @@ export const consents: ConsentsNS = {
                     description: {
                         configureTranslation: "Configure translation",
                         i18nCard: {
-                            brandingRequired: "Enable branding to configure translations.",
+                            brandingRequired: "Enable branding to update translations. <1>Go to Branding</1>",
                             createTitle: "Create Translation",
                             deleteError: {
                                 description: "Failed to delete the translation. Please try again.",
@@ -367,7 +372,7 @@ export const consents: ConsentsNS = {
         attributeName: "Attribute Name",
         attributes: "User Attributes",
         noPreference: "No preferences available. Create them from Preference Management.",
-        noPolicies: "No policies available. Create policies from Policy Consents.",
+        noPolicies: "No policies available. Create policies from Policy Management.",
         purposeDescription: "Description",
         purposeLabel: "Purpose {{index}}",
         purposeName: "Purpose Name",

@@ -63,6 +63,7 @@ export interface PurposeSummaryDTOInterface {
         version: string;
     } | null;
     name: string;
+    tenantDomain?: string;
     type: string;
 }
 
@@ -117,6 +118,7 @@ export interface PurposeDTOInterface {
         policyUrl?: string;
         promptOnLogin?: string;
     };
+    tenantDomain?: string;
     type: string;
 }
 
@@ -207,6 +209,7 @@ export interface ConsentInterface {
     name: string;
     policyUrl?: string;
     promptOnLogin?: string;
+    tenantDomain?: string;
     type: string;
     /**
      * Version label, e.g. "v1".
@@ -225,6 +228,7 @@ export interface ConsentListItemInterface {
     description: string;
     id: string;
     name: string;
+    tenantDomain?: string;
     type: string;
 }
 

@@ -98,11 +98,14 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
         ["data-componentid"]: componentId
     } = props;
 
+    type ListItem = ConsentListItemInterface;
+
     const { t } = useTranslation();
 
     const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
     );
+    const currentTenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const hasCreatePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.create);
     const hasReadPermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.read);
     const hasUpdatePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.update);
@@ -113,31 +116,37 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
      *
      * @returns TableActionsInterface[]
      */
+    const isCrossTenant = (item: ListItem): boolean =>
+        !!item.tenantDomain && item.tenantDomain !== currentTenantDomain;
+
     const resolveTableActions = (): TableActionsInterface[] => {
         return [
             {
                 "data-componentid": `${componentId}-item-view-button`,
-                hidden: (): boolean => hasUpdatePermission || !hasReadPermission,
+                hidden: (item: ListItem): boolean =>
+                    isCrossTenant(item) ? !hasReadPermission : (hasUpdatePermission || !hasReadPermission),
                 icon: (): SemanticICONS => "eye",
-                onClick: (_e: SyntheticEvent, consent: ConsentListItemInterface): void =>
+                onClick: (_e: SyntheticEvent, consent: ListItem): void =>
                     onEditConsentClick(consent),
                 popupText: (): string => t("common:view"),
                 renderer: "semantic-icon"
             },
             {
                 "data-componentid": `${componentId}-item-edit-button`,
-                hidden: (): boolean => !hasUpdatePermission,
+                hidden: (item: ListItem): boolean =>
+                    !hasUpdatePermission || isCrossTenant(item),
                 icon: (): SemanticICONS => "pencil alternate",
-                onClick: (_e: SyntheticEvent, consent: ConsentListItemInterface): void =>
+                onClick: (_e: SyntheticEvent, consent: ListItem): void =>
                     onEditConsentClick(consent),
                 popupText: (): string => t("common:edit"),
                 renderer: "semantic-icon"
             },
             {
                 "data-componentid": `${componentId}-item-delete-button`,
-                hidden: (): boolean => !hasDeletePermission,
+                hidden: (item: ListItem): boolean =>
+                    !hasDeletePermission || isCrossTenant(item),
                 icon: (): SemanticICONS => "trash alternate",
-                onClick: (_e: SyntheticEvent, consent: ConsentListItemInterface): void =>
+                onClick: (_e: SyntheticEvent, consent: ListItem): void =>
                     onDeleteConsentClick(consent),
                 popupText: (): string => t("common:delete"),
                 renderer: "semantic-icon"
@@ -157,7 +166,7 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
                 dataIndex: "name",
                 id: "name",
                 key: "name",
-                render: (consent: ConsentListItemInterface): ReactNode => {
+                render: (consent: ListItem): ReactNode => {
                     return (
                         <Box
                             alignItems="center"
@@ -250,14 +259,14 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
     };
 
     return (
-        <DataTable<ConsentListItemInterface>
+        <DataTable<ListItem>
             className="consents-table"
             externalSearch={ advancedSearch }
             isLoading={ isLoading }
             actions={ resolveTableActions() }
             columns={ resolveTableColumns() }
             data={ list }
-            onRowClick={ (_e: SyntheticEvent, consent: ConsentListItemInterface): void => {
+            onRowClick={ (_e: SyntheticEvent, consent: ListItem): void => {
                 if (consent.id !== null) {
                     onEditConsentClick(consent);
                 }

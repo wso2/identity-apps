@@ -152,6 +152,11 @@ export interface ConsentsNS {
                 trigger: string;
                 currentVersionLabel: string;
             };
+            createModal: {
+                header: string;
+                promptAtLogin: string;
+                promptDescription: string;
+            };
             versionModal: {
                 createNewVersion: string;
                 promptAtLogin: string;

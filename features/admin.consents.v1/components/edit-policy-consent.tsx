@@ -18,6 +18,7 @@
 
 import Box from "@oxygen-ui/react/Box";
 import Card from "@oxygen-ui/react/Card";
+import Code from "@oxygen-ui/react/Code";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import InputLabel from "@oxygen-ui/react/InputLabel";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
@@ -29,8 +30,6 @@ import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
-import { BrandingPreferenceTypes } from "@wso2is/common.branding.v1/models";
 import {
     PurposeDTOInterface,
     PurposeVersionSummaryDTOInterface,
@@ -66,6 +65,7 @@ import { ConsentVersionDropdown } from "./consent-version-dropdown";
 
 interface EditPolicyConsentProps extends IdentifiableComponentInterface {
     purposeId?: string;
+    readOnly?: boolean;
 }
 
 interface PolicyFormValuesInterface {
@@ -118,7 +118,7 @@ const validateTemplatableURL = (value: string, errorMessage: string): string | u
 export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
     props: EditPolicyConsentProps
 ): ReactElement => {
-    const { purposeId } = props;
+    const { purposeId, readOnly = false } = props;
 
     const isCreateMode: boolean = !purposeId;
 
@@ -142,33 +142,12 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
         mutate: mutateVersions
     } = useGetPurposeVersions(purposeId ?? "");
 
-    const {
-        data: brandingPreference,
-        isLoading: isBrandingLoading
-    } = useGetBrandingPreferenceResolve(AppConstants.getTenant(), BrandingPreferenceTypes.ORG);
-
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ showVersionWarningModal, setShowVersionWarningModal ] = useState<boolean>(false);
     const [ modalPromptOnLogin, setModalPromptOnLogin ] = useState<boolean>(false);
     const pendingValues: MutableRefObject<PolicyFormValuesInterface | null> =
         useRef<PolicyFormValuesInterface | null>(null);
     const nameValidationTokenRef: MutableRefObject<number> = useRef<number>(0);
-
-    const brandingPolicyUrl: string = useMemo((): string => {
-        if (!brandingPreference) {
-            return "";
-        }
-
-        if (consent?.name === "privacy_policy") {
-            return brandingPreference.preference.urls.privacyPolicyURL;
-        } else if (consent?.name === "terms_and_conditions") {
-            return brandingPreference.preference.urls.termsOfUseURL;
-        } else if (consent?.name === "cookie_policy") {
-            return brandingPreference.preference.urls.cookiePolicyURL;
-        }
-
-        return "";
-    }, [ brandingPreference, consent ]);
 
     const initialValues: PolicyFormValuesInterface | null = useMemo(
         (): PolicyFormValuesInterface | null => {
@@ -189,10 +168,10 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
             return {
                 description: consent.description ?? "",
                 mandatory: consent.mandatory ?? false,
-                policyUrl: consent.policyUrl ?? brandingPolicyUrl,
+                policyUrl: consent.policyUrl ?? "",
                 promptOnLogin: consent.promptOnLogin ?? "false"
             };
-        }, [ isCreateMode, consent, brandingPolicyUrl ]);
+        }, [ isCreateMode, consent ]);
 
     const sortedConsentVersions: PurposeVersionSummaryDTOInterface[] = useMemo(
         (): PurposeVersionSummaryDTOInterface[] => {
@@ -289,7 +268,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
             values.policyUrl?.trim() ?? "",
             values.description,
             values.mandatory,
-            values.promptOnLogin
+            String(modalPromptOnLogin)
         )
             .then((created: PurposeDTOInterface): void => {
                 dispatch(addAlert({
@@ -402,7 +381,9 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
             });
     };
 
-    const isLoading: boolean = !isCreateMode && (isPolicyInfoLoading || isBrandingLoading || isVersionsLoading);
+    const isEffectivelyReadOnly: boolean = readOnly;
+
+    const isLoading: boolean = !isCreateMode && (isPolicyInfoLoading || isVersionsLoading);
     const registrationFlowBuilderPath: string = AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER");
 
     const handleRegFlowBuilderClick = (): void => {
@@ -444,13 +425,11 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                         <FinalForm
                             key={ isCreateMode ? "create" : consent?.version }
                             onSubmit={ (values: PolicyFormValuesInterface) => {
-                                if (isCreateMode) {
-                                    createNewPurpose(values);
-                                } else {
-                                    pendingValues.current = values;
-                                    setModalPromptOnLogin(values.promptOnLogin === "true");
-                                    setShowVersionWarningModal(true);
-                                }
+                                pendingValues.current = values;
+                                setModalPromptOnLogin(
+                                    isCreateMode ? false : values.promptOnLogin === "true"
+                                );
+                                setShowVersionWarningModal(true);
                             } }
                             validate={ isCreateMode ? validateCreateForm : undefined }
                             initialValues={ initialValues }
@@ -483,7 +462,6 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                 {
                                                     !isCreateMode
                                                     && !isPolicyInfoLoading
-                                                    && !isBrandingLoading
                                                     && !isVersionsLoading
                                                     && consent?.version !== undefined
                                                     && (
@@ -506,6 +484,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                                 type="text"
                                                                 component={ TextFieldAdapter }
                                                                 validate={ validateName }
+                                                                disabled={ isEffectivelyReadOnly }
                                                             />
                                                         </Box>
                                                     ) }
@@ -535,9 +514,19 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                                         )
                                                                     )
                                                             }
+                                                            disabled={ isEffectivelyReadOnly }
                                                         />
                                                         <Hint>
-                                                            { t("consents:policyConsents.form.policyUrl.hint") }
+                                                            <Trans
+                                                                i18nKey="consents:policyConsents.form.policyUrl.hint"
+                                                            >
+                                                                Link to the full policy document. You can use
+                                                                placeholders like
+                                                                <Code>&#123;&#123;lang&#125;&#125;</Code>,
+                                                                <Code>&#123;&#123;country&#125;&#125;</Code>,
+                                                                or <Code>&#123;&#123;locale&#125;&#125;</Code>
+                                                                to customize the URL for different regions or languages.
+                                                            </Trans>
                                                         </Hint>
                                                     </Box>
                                                     <Box>
@@ -574,6 +563,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                                             }
                                                                         }
                                                                         variant="policy"
+                                                                        disabled={ isEffectivelyReadOnly }
                                                                     />
                                                                 );
                                                             } }
@@ -596,6 +586,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                                             ) => {
                                                                                 input.onChange(e.target.checked);
                                                                             } }
+                                                                            disabled={ isEffectivelyReadOnly }
                                                                         />
                                                                     ) }
                                                                     label={ t("consents:policyConsents.form.mandatory.label") }
@@ -635,38 +626,6 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                             />
                                                         ) }
                                                     </Box>
-                                                    { isCreateMode && (
-                                                        <Field
-                                                            name="promptOnLogin"
-                                                            subscription={ { value: true } }
-                                                            render={ (
-                                                                { input }: { input: FieldInputProps<string> }
-                                                            ) => (
-                                                                <Box>
-                                                                    <FormControlLabel
-                                                                        control={ (
-                                                                            <Switch
-                                                                                name={ input.name }
-                                                                                checked={ input.value === "true" }
-                                                                                onChange={ ( e:
-                                                                                    React.ChangeEvent<HTMLInputElement>
-                                                                                ) => {
-                                                                                    input.onChange(
-                                                                                        String(e.target.checked)
-                                                                                    );
-                                                                                } }
-                                                                            />
-                                                                        ) }
-                                                                        label={ t("consents:policyConsents.form.promptOnLogin.label") }
-                                                                        sx={ { mr: 0 } }
-                                                                    />
-                                                                    <Hint>
-                                                                        { t("consents:policyConsents.form.promptOnLogin.hint") }
-                                                                    </Hint>
-                                                                </Box>
-                                                            ) }
-                                                        />
-                                                    ) }
                                                 </Box>
                                             </Grid>
                                             { /* Preview column */ }
@@ -685,15 +644,17 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                     policyName={ isCreateMode ? _values?.name : consent?.name }
                                                 />
                                             </Grid>
-                                            <Grid xs={ 12 } padding={ 2 }>
-                                                {
-                                                    !isCreateMode && (
+                                            { (isCreateMode ? hasCreatePermission : hasUpdatePermission)
+                                                && !isEffectivelyReadOnly && (
+                                                <Grid xs={ 12 } padding={ 2 }>
+                                                    { !isCreateMode && (
                                                         <Hint>
-                                                            { t("consents:policyConsents.form.policyUrl.versionHint") }
+                                                            { t(
+                                                                "consents:policyConsents.form" +
+                                                                ".policyUrl.versionHint"
+                                                            ) }
                                                         </Hint>
-                                                    )
-                                                }
-                                                { (isCreateMode ? hasCreatePermission : hasUpdatePermission) && (
+                                                    ) }
                                                     <PrimaryButton
                                                         type="submit"
                                                         loading={ isSubmitting }
@@ -704,8 +665,8 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                             : t("consents:policyConsents.form.createNewVersion")
                                                         }
                                                     </PrimaryButton>
-                                                ) }
-                                            </Grid>
+                                                </Grid>
+                                            ) }
                                         </Grid>
                                     </form>
                                 );
@@ -724,17 +685,27 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                 onPrimaryActionClick={ () => {
                     setShowVersionWarningModal(false);
                     if (pendingValues.current) {
-                        updatePolicyInfo(pendingValues.current);
+                        if (isCreateMode) {
+                            createNewPurpose(pendingValues.current);
+                        } else {
+                            updatePolicyInfo(pendingValues.current);
+                        }
                     }
                 } }
                 closeOnDimmerClick={ false }
                 primaryActionLoading={ isSubmitting }
             >
                 <ConfirmationModal.Header>
-                    { t("consents:policyConsents.form.versionModal.createNewVersion") }
+                    { isCreateMode
+                        ? t("consents:policyConsents.form.createModal.header")
+                        : t("consents:policyConsents.form.versionModal.createNewVersion")
+                    }
                 </ConfirmationModal.Header>
                 <ConfirmationModal.Content>
-                    { t("consents:policyConsents.form.versionModal.promptDescription") }
+                    { isCreateMode
+                        ? t("consents:policyConsents.form.createModal.promptDescription")
+                        : t("consents:policyConsents.form.versionModal.promptDescription")
+                    }
                     <Box sx={ { mt: 2 } }>
                         <FormControlLabel
                             control={ (
@@ -745,7 +716,10 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                     } }
                                 />
                             ) }
-                            label={ t("consents:policyConsents.form.versionModal.promptAtLogin") }
+                            label={ isCreateMode
+                                ? t("consents:policyConsents.form.createModal.promptAtLogin")
+                                : t("consents:policyConsents.form.versionModal.promptAtLogin")
+                            }
                             sx={ { mr: 0 } }
                         />
                     </Box>

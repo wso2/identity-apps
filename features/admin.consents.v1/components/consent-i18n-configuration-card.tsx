@@ -29,6 +29,7 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select, { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
+import Link from "@oxygen-ui/react/Link";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { PenToSquareIcon, PlusIcon, XMarkIcon } from "@oxygen-ui/react-icons";
@@ -38,6 +39,8 @@ import useGetCustomTextPreferenceFallbacks from
 import useGetCustomTextPreferenceMeta from
     "@wso2is/common.branding.v1/api/use-get-custom-text-preference-meta";
 import useGetCustomTextPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-custom-text-preference-resolve";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetBrandingPreference from "@wso2is/common.branding.v1/api/use-get-branding-preference";
 import { BrandingPreferenceTypes, PreviewScreenType } from "@wso2is/common.branding.v1/models";
@@ -53,14 +56,13 @@ import React, {
     ReactElement,
     RefObject,
     SyntheticEvent,
-    useCallback,
     useEffect,
     useMemo,
     useRef,
     useState
 } from "react";
 import { createPortal } from "react-dom";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 
@@ -162,6 +164,10 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
     const { t } = useTranslation();
 
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
+
+    const handleNavigateToBranding: () => void = (): void => {
+        history.push(AppConstants.getPaths().get("BRANDING"));
+    };
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
     );
@@ -181,10 +187,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
     const { data: brandingPreference } = useGetBrandingPreference(tenantDomain);
     const { data: customTextMeta, isLoading: metaLoading } = useGetCustomTextPreferenceMeta();
 
-    const isBrandingEnabled: boolean = useMemo(
-        () => brandingPreference?.preference?.configs?.isBrandingEnabled ?? false,
-        [ brandingPreference ]
-    );
+    const isBrandingEnabled: boolean = brandingPreference?.preference?.configs?.isBrandingEnabled ?? false;
 
     const supportedLocales: SupportedLanguagesMeta = useMemo(() => {
         if (!supportedI18nLanguages || !customTextMeta?.locales?.length) {
@@ -224,12 +227,9 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
         return merge({}, fallbackTextData?.preference?.text ?? {}, userTextData?.preference?.text ?? {});
     }, [ fallbackTextData, userTextData ]);
 
-    const isAlreadyConfigured: boolean = useMemo(
-        () => Object.keys(userTextData?.preference?.text ?? {}).length > 0,
-        [ userTextData ]
-    );
+    const isAlreadyConfigured: boolean = Object.keys(userTextData?.preference?.text ?? {}).length > 0;
 
-    const availableKeys: string[] = useMemo(() => Object.keys(i18nText), [ i18nText ]);
+    const availableKeys: string[] = Object.keys(i18nText);
 
     const i18nTextRef: MutableRefObject<Record<string, string>> = useRef<Record<string, string>>(i18nText);
 
@@ -241,7 +241,6 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
         } else {
             setLanguageText("");
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ i18nKeyInput ]);
 
     useEffect(() => {
@@ -300,7 +299,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
         }
     }, [ open, isCustomizeView ]);
 
-    const handleSave: () => Promise<void> = useCallback(async (): Promise<void> => {
+    const handleSave: () => Promise<void> = async (): Promise<void> => {
         if (!i18nKeyInput || !selectedLanguage) return;
 
         setIsSubmitting(true);
@@ -323,7 +322,9 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
             );
 
             dispatch(addAlert({
-                description: t("consents:policyConsents.wizard.create.form.description.i18nCard.saveSuccess.description"),
+                description: t(
+                    "consents:policyConsents.wizard.create.form.description.i18nCard.saveSuccess.description"
+                ),
                 level: AlertLevels.SUCCESS,
                 message: t("consents:policyConsents.wizard.create.form.description.i18nCard.saveSuccess.message")
             }));
@@ -340,7 +341,7 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
         } finally {
             setIsSubmitting(false);
         }
-    }, [ i18nKeyInput, selectedLanguage, languageText, isAlreadyConfigured, userTextData, tenantDomain, onChange ]);
+    };
 
     const handleBack: () => void = (): void => {
         isCreationMode.current = false;
@@ -490,7 +491,10 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                             multiline
                             rows={ 4 }
                             placeholder={
-                                t("consents:policyConsents.wizard.create.form.description.i18nCard.translationPlaceholder")
+                                t(
+                                    // eslint-disable-next-line max-len
+                                    "consents:policyConsents.wizard.create.form.description.i18nCard.translationPlaceholder"
+                                )
                             }
                             value={ languageText }
                             onChange={ (e: ChangeEvent<HTMLInputElement>) => setLanguageText(e.target.value) }
@@ -541,10 +545,8 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                             { selectedI18nKey && (
                                 <>
                                     <Tooltip
-                                        title={ !isBrandingEnabled
-                                            ? t("consents:policyConsents.wizard.create.form.description.i18nCard.brandingRequired")
-                                            : t("consents:policyConsents.wizard.create.form.description.i18nCard.editTooltip")
-                                        }
+                                        title={ t("consents:policyConsents.wizard.create.form" +
+                                            ".description.i18nCard.editTooltip") }
                                         placement="top"
                                     >
                                         <span>
@@ -569,10 +571,18 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                             ) }
                             { !selectedI18nKey && (
                                 <Tooltip
-                                    title={ !isBrandingEnabled
-                                        ? t("consents:policyConsents.wizard.create.form.description.i18nCard.brandingRequired")
-                                        : t("consents:policyConsents.wizard.create.form.description.i18nCard.newTooltip")
-                                    }
+                                    title={ !isBrandingEnabled ? (
+                                        <Trans
+                                            i18nKey={ "consents:policyConsents.wizard.create.form" +
+                                                ".description.i18nCard.brandingRequired" }
+                                        >
+                                            Enable <Link
+                                                onClick={ handleNavigateToBranding }
+                                                className="branding-link"
+                                            >branding</Link> to update translation text.
+                                        </Trans>
+                                    ) : t("consents:policyConsents.wizard.create.form" +
+                                        ".description.i18nCard.newTooltip") }
                                     placement="top"
                                 >
                                     <span>
