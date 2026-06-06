@@ -103,6 +103,10 @@
 
     try {
         ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
+        if (StringUtils.isNotBlank(sp)
+                && (StringUtils.isBlank(spId) || StringUtils.equalsIgnoreCase(spId, "null"))) {
+            spId = applicationDataRetrievalClient.getApplicationID(tenantDomain, Encode.forJava(sp));
+        }
         applicationAccessURLWithoutEncoding = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain,
             Encode.forJava(sp));
         applicationAccessURLWithoutEncoding = IdentityManagementEndpointUtil.replaceUserTenantHintPlaceholder(
