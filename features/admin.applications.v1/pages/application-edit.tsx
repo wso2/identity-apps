@@ -840,12 +840,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                                     + ".version300.linkedLocalAccountAttributeHandling.instruction")
                                                 }
                                             >
-                                                When you enable the use of linked local account attributes
-                                                instead of federated attributes and mandate that a linked local account
-                                                must exist, this configuration previously applied only to the
-                                                <Code withBackground>token exchange</Code> flow. With this update,
-                                                the same restriction now also applies to
-                                                <Code withBackground>login</Code> scenarios.
+                                                Previously, the "Use linked local account attributes" setting, when
+                                                combined with the requirement for a linked local account, was enforced
+                                                only during the <Code withBackground>token exchange</Code> flows. With this update, the same
+                                                requirement will be enforced during <Code withBackground>login</Code> flows as well.
                                             </Trans>
                                         </Typography>
                                         <DocumentationLink
