@@ -592,7 +592,7 @@ const getFilePicker = (eachProp: CommonPluggableComponentPropertyInterface,
                     <Pkcs12FileField
                         onCertificateChange={ (newData: string) =>
                         {
-                            onCertificateChange(data);
+                            onCertificateChange(newData);
                         } }
                     />
                     { propertyMetadata?.description
