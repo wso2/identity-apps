@@ -23,10 +23,13 @@ import Button from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import FormLabel from "@oxygen-ui/react/FormLabel";
 import Typography from "@oxygen-ui/react/Typography";
+import useGetBrandingPreference from "@wso2is/common.branding.v1/api/use-get-branding-preference";
 import { sanitizedHtml } from "@wso2is/common.branding.v1/utils/sanitized-html";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import parse from "html-react-parser";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Header } from "semantic-ui-react";
 
 const PreviewContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
@@ -110,6 +113,20 @@ export const PolicyConsentPreview: FunctionComponent<PolicyConsentPreviewPropsIn
     policyName
 }: PolicyConsentPreviewPropsInterface): ReactElement => {
     const { t } = useTranslation();
+
+    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
+    const { data: brandingPreference } = useGetBrandingPreference(tenantDomain);
+
+    const activeTheme: string | undefined = brandingPreference?.preference?.theme?.activeTheme;
+    const primaryColor: string | undefined = activeTheme
+        ? brandingPreference?.preference?.theme?.[activeTheme]?.colors?.primary?.main
+        : undefined;
+    const buttonFontColor: string | undefined = activeTheme
+        ? brandingPreference?.preference?.theme?.[activeTheme]?.buttons?.primary?.base?.font?.color
+        : undefined;
+    const secondaryColor: string | undefined = activeTheme
+        ? brandingPreference?.preference?.theme?.[activeTheme]?.colors?.secondary?.main
+        : undefined;
 
     const [ isChecked, setIsChecked ] = useState<boolean>(false);
 
@@ -198,7 +215,11 @@ export const PolicyConsentPreview: FunctionComponent<PolicyConsentPreviewPropsIn
                         type="button"
                         fullWidth
                         variant="contained"
-                        sx={ { mb: 1 } }
+                        sx={ {
+                            ...(primaryColor && { background: primaryColor }),
+                            ...(buttonFontColor && { color: buttonFontColor }),
+                            mb: 1
+                        } }
                     >
                         { t("common:continue") }
                     </Button>
@@ -206,7 +227,11 @@ export const PolicyConsentPreview: FunctionComponent<PolicyConsentPreviewPropsIn
                         type="button"
                         fullWidth
                         variant="contained"
-                        color="secondary"
+                        sx={ {
+                            ...(secondaryColor && { background: secondaryColor }),
+                            ...(buttonFontColor && { color: buttonFontColor }),
+                            mb: 1
+                        } }
                     >
                         { t("common:cancel") }
                     </Button>
