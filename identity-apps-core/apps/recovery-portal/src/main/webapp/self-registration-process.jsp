@@ -100,7 +100,7 @@
     char[] password = request.getParameter("password") != null ? request.getParameter("password").toCharArray() : null;
     String sessionDataKey = request.getParameter("sessionDataKey");
     String sp = Encode.forJava(request.getParameter("sp"));
-    String spId = "";
+    String spId = Encode.forJava(request.getParameter("spId"));
     String applicationAccessUrl = "";
     JSONObject usernameValidityResponse;
     SelfRegistrationMgtClient selfRegistrationMgtClient = new SelfRegistrationMgtClient();
@@ -124,13 +124,13 @@
             spId = "My_Account";
         } else {
             ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
-            spId = applicationDataRetrievalClient.getApplicationID(tenantDomain, sp);
+            if (StringUtils.isBlank(spId) || StringUtils.equalsIgnoreCase(spId, "null")) {
+                spId = applicationDataRetrievalClient.getApplicationID(tenantDomain, sp);
+            }
             applicationAccessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
         }
     } catch (Exception e) {
-        spId = (StringUtils.isBlank(spId) || (request.getParameter("spId") != "null" ))?
-                    Encode.forJava(request.getParameter("spId")) :
-                    "";
+        // Ignored.
     }
 
     Boolean isValidCallBackURL = false;

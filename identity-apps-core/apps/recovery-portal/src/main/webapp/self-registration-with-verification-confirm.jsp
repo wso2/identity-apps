@@ -66,6 +66,7 @@
     String callback = request.getParameter("callback");
     String httpMethod = request.getMethod();
     String sp = Encode.forJava(request.getParameter("sp"));
+    String spId = Encode.forJava(request.getParameter("spId"));
     PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
     Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterSelfRegistrationEnabled(tenantDomain);
 
@@ -86,6 +87,9 @@
     try {
         if (StringUtils.isNotBlank(sp)) {
             ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
+            if (StringUtils.isBlank(spId) || StringUtils.equalsIgnoreCase(spId, "null")) {
+                spId = applicationDataRetrievalClient.getApplicationID(tenantDomain, sp);
+            }
             applicationAccessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
         }
     } catch (ApplicationDataRetrievalClientException e) {
@@ -143,6 +147,10 @@
         tenantDomainProperty.setKey(MultitenantConstants.TENANT_DOMAIN);
         tenantDomainProperty.setValue(tenantDomain);
         properties.add(tenantDomainProperty);
+        Property spIdProperty = new Property();
+        spIdProperty.setKey("spId");
+        spIdProperty.setValue(spId);
+        properties.add(spIdProperty);
 
         validationRequest.setCode(confirmationKey);
         validationRequest.setProperties(properties);
