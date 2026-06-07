@@ -16,7 +16,11 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import Button from "@oxygen-ui/react/Button";
+import OxygenLink from "@oxygen-ui/react/Link";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
 import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
@@ -320,6 +324,25 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                 <AdvanceForm
                     ref={ formRef }
                     onSubmit={ onSubmit }
+                    banner={
+                        !(brandingMode === BrandingModes.APPLICATION &&
+                            brandingPreference.configs.isBrandingEnabled) && (
+                            <Alert severity="info">
+                                <Trans i18nKey="extensions:develop.branding.tabs.advance.policyManagementBanner">
+                                    Policy URLs can be managed centrally from{ " " }
+                                    <OxygenLink
+                                        onClick={ (): void => {
+                                            history.push(AppConstants.getPaths().get("POLICY_CONSENTS"));
+                                        } }
+                                        sx={ { cursor: "pointer" } }
+                                        data-componentid="branding-advanced-policy-management-link"
+                                    >
+                                        Policy Management
+                                    </OxygenLink>.
+                                </Trans>
+                            </Alert>
+                        )
+                    }
                     initialValues={ {
                         urls: {
                             cookiePolicyURL: brandingPreference.urls?.cookiePolicyURL,

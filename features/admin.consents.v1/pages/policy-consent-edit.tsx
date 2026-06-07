@@ -38,6 +38,7 @@ import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
 import { EditPolicyConsent } from "../components/edit-policy-consent";
+import { DEFAULT_POLICY_PATH_MAP } from "../constants/default-policies";
 
 /**
  * Props interface for the Policy Consent edit page component.
@@ -69,10 +70,15 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
     const currentTenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const hasDeletePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.delete);
 
+    // Check if the route param is a known default policy slug (not a UUID).
+    const defaultPolicyName: string | null = DEFAULT_POLICY_PATH_MAP[id] ?? null;
+    const isDefaultPolicy: boolean = defaultPolicyName !== null;
+
     const [ showDeleteConfirmation, setShowDeleteConfirmation ] = useState<boolean>(false);
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
 
-    const { data: consent, isLoading: isConsentLoading } = useGetPurpose(id);
+    // Only fetch from the API when the id is a real UUID, not a default-policy slug.
+    const { data: consent, isLoading: isConsentLoading } = useGetPurpose(isDefaultPolicy ? "" : id);
 
     const isCrossTenant: boolean = !!consent?.tenantDomain && consent.tenantDomain !== currentTenantDomain;
 
@@ -136,21 +142,37 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
             });
     };
 
+    const pageTitle: string = isDefaultPolicy
+        ? defaultPolicyName
+        : (consent?.displayName || "");
+
+    const descriptionLabel: ReactElement | undefined = (() => {
+        if (isCrossTenant) {
+            return (
+                <Label size="mini" className=" ml-0" style={ { fontSize: "11px" } }>
+                    { t("consents:policyConsents.list.labels.sharedPolicy") }
+                </Label>
+            );
+        }
+        if (isDefaultPolicy) {
+            return (
+                <Label size="mini" className=" ml-0" style={ { fontSize: "11px" } }>
+                    { t("consents:policyConsents.list.labels.defaultPolicy") }
+                </Label>
+            );
+        }
+
+        return undefined;
+    })();
+
     return (
         <PageLayout
             pageTitle={ t("consents:policyConsents.pages.edit.title") }
-            title={ consent?.displayName || "" }
-            description={ isCrossTenant
-                ? (
-                    <Label size="mini" className=" ml-0" style={ { fontSize: "11px" } }>
-                        { t("consents:policyConsents.list.labels.sharedPolicy") }
-                    </Label>
-                )
-                : undefined
-            }
+            title={ pageTitle }
+            description={ descriptionLabel }
             image={ (
                 <AnimatedAvatar
-                    name={ consent?.displayName }
+                    name={ pageTitle }
                     size="tiny"
                     floated="left"
                 />
@@ -169,13 +191,15 @@ const PolicyConsentEditPage: FunctionComponent<PolicyConsentEditPageProps> = (
                 text: t("consents:policyConsents.pages.edit.backButton")
             } }
         >
-            { consent && (
+            { (isDefaultPolicy || consent) && (
                 <>
                     <EditPolicyConsent
-                        purposeId={ consent.id }
+                        purposeId={ isDefaultPolicy ? undefined : consent?.id }
                         readOnly={ isCrossTenant }
+                        isDefault={ isDefaultPolicy }
+                        defaultName={ isDefaultPolicy ? defaultPolicyName : undefined }
                     />
-                    { hasDeletePermission && !isCrossTenant && (
+                    { hasDeletePermission && !isCrossTenant && !isDefaultPolicy && (
                         <DangerZoneGroup
                             sectionHeader={ t("common:dangerZone") }
                         >

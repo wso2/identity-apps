@@ -591,6 +591,33 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 },
                 {
+                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/policy-consent-edit")),
+                    exact: true,
+                    id: "consents-edit",
+                    name: "Privacy Policy",
+                    path: AppConstants.getPaths().get("PRIVACY_POLICY"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/policy-consent-edit")),
+                    exact: true,
+                    id: "consents-edit",
+                    name: "Terms of Service",
+                    path: AppConstants.getPaths().get("TERMS_OF_SERVICE"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.consents.v1/pages/policy-consent-edit")),
+                    exact: true,
+                    id: "consents-edit",
+                    name: "Cookie Policy",
+                    path: AppConstants.getPaths().get("COOKIE_POLICY"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
                     component: lazy(() => import("@wso2is/admin.consents.v1/pages/preference-management")),
                     exact: true,
                     id: "preferenceManagement",

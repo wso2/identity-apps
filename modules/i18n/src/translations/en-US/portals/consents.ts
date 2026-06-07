@@ -158,6 +158,7 @@ export const consents: ConsentsNS = {
         }
     },
     policyConsents: {
+        brandingRequired: "Enable branding to update default policies. <1>Go to Branding</1>",
         form: {
             createNewVersion: "Create New Version",
             description: {
@@ -211,6 +212,7 @@ export const consents: ConsentsNS = {
                 title: "No results found"
             },
             labels: {
+                defaultPolicy: "Default",
                 sharedPolicy: "Shared policy"
             }
         },

@@ -545,7 +545,17 @@ const ConsentI18nConfigurationCard: FunctionComponent<ConsentI18nConfigurationCa
                             { selectedI18nKey && (
                                 <>
                                     <Tooltip
-                                        title={ t("consents:policyConsents.wizard.create.form" +
+                                        title={ !isBrandingEnabled ? (
+                                            <Trans
+                                                i18nKey={ "consents:policyConsents.wizard.create.form" +
+                                                    ".description.i18nCard.brandingRequired" }
+                                            >
+                                                Enable <Link
+                                                    onClick={ handleNavigateToBranding }
+                                                    className="branding-link"
+                                                >branding</Link> to update translation text.
+                                            </Trans>
+                                        ) : t("consents:policyConsents.wizard.create.form" +
                                             ".description.i18nCard.editTooltip") }
                                         placement="top"
                                     >

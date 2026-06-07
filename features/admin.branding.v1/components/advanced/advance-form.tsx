@@ -36,6 +36,10 @@ import { BrandingURLPreferenceConstants } from "../../constants/url-preference-c
  */
 interface AdvanceFormPropsInterface extends IdentifiableComponentInterface {
     /**
+     * Optional banner rendered after the section heading.
+     */
+    banner?: React.ReactNode;
+    /**
      * Broadcast realtime edited values to subscribers.
      * @param values - Form values.
      */
@@ -85,6 +89,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
     ref: MutableRefObject<FormPropsInterface>): ReactElement => {
 
     const {
+        banner,
         broadcastValues,
         initialValues,
         isLoading,
@@ -181,6 +186,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
             <Heading as="h4">
                 { t("extensions:develop.branding.forms.advance.links.heading") }
             </Heading>
+            { banner }
             <Field.Input
                         ariaLabel="Branding preference privacy policy URL"
                         inputType="url"

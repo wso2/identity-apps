@@ -124,6 +124,7 @@ export interface ConsentsNS {
         };
     };
     policyConsents: {
+        brandingRequired: string;
         form: {
             createNewVersion: string;
             description: {
@@ -177,6 +178,7 @@ export interface ConsentsNS {
                 title: string;
             };
             labels: {
+                defaultPolicy: string;
                 sharedPolicy: string;
             };
         };

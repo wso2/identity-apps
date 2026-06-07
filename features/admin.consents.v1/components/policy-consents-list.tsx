@@ -40,6 +40,15 @@ import { useSelector } from "react-redux";
 import { Label, SemanticICONS } from "semantic-ui-react";
 
 /**
+ * Extends the base list item with UI-only fields for default policy synthesis.
+ */
+export interface PolicyConsentListItemInterface extends ConsentListItemInterface {
+    displayName?: string;
+    isDefault?: boolean;
+    slug?: string;
+}
+
+/**
  * Props interface for the Policy Consents list component.
  */
 interface PolicyConsentsListProps extends IdentifiableComponentInterface {
@@ -48,13 +57,17 @@ interface PolicyConsentsListProps extends IdentifiableComponentInterface {
      */
     advancedSearch?: ReactNode;
     /**
+     * Whether branding is enabled for the tenant. When false, view/edit actions are hidden for default policies.
+     */
+    isBrandingEnabled?: boolean;
+    /**
      * Is the list loading.
      */
     isLoading?: boolean;
     /**
      * Consent list.
      */
-    list: ConsentListItemInterface[];
+    list: PolicyConsentListItemInterface[];
     /**
      * Callback for when the add consent button is clicked.
      */
@@ -62,11 +75,11 @@ interface PolicyConsentsListProps extends IdentifiableComponentInterface {
     /**
      * Callback for when a consent is clicked for editing.
      */
-    onEditConsentClick: (consent: ConsentListItemInterface) => void;
+    onEditConsentClick: (consent: PolicyConsentListItemInterface) => void;
     /**
      * Callback for when a consent is clicked for deletion.
      */
-    onDeleteConsentClick: (consent: ConsentListItemInterface) => void;
+    onDeleteConsentClick: (consent: PolicyConsentListItemInterface) => void;
     /**
      * Callback to clear the active search query.
      */
@@ -88,6 +101,7 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
 ): ReactElement => {
     const {
         advancedSearch,
+        isBrandingEnabled = true,
         isLoading,
         list,
         onAddConsentClick,
@@ -98,7 +112,7 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
         ["data-componentid"]: componentId
     } = props;
 
-    type ListItem = ConsentListItemInterface;
+    type ListItem = PolicyConsentListItemInterface;
 
     const { t } = useTranslation();
 
@@ -123,8 +137,8 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
         return [
             {
                 "data-componentid": `${componentId}-item-view-button`,
-                hidden: (_item: ListItem): boolean =>
-                    hasUpdatePermission || !hasReadPermission,
+                hidden: (item: ListItem): boolean =>
+                    !hasReadPermission || (hasUpdatePermission && (!item.isDefault || isBrandingEnabled)),
                 icon: (): SemanticICONS => "eye",
                 onClick: (_e: SyntheticEvent, consent: ListItem): void =>
                     onEditConsentClick(consent),
@@ -133,8 +147,8 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
             },
             {
                 "data-componentid": `${componentId}-item-edit-button`,
-                hidden: (_item: ListItem): boolean =>
-                    !hasUpdatePermission,
+                hidden: (item: ListItem): boolean =>
+                    !hasUpdatePermission || (!!item.isDefault && !isBrandingEnabled),
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (_e: SyntheticEvent, consent: ListItem): void =>
                     onEditConsentClick(consent),
@@ -144,7 +158,7 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
             {
                 "data-componentid": `${componentId}-item-delete-button`,
                 hidden: (item: ListItem): boolean =>
-                    !hasDeletePermission || isCrossTenant(item),
+                    !hasDeletePermission || isCrossTenant(item) || !!item.isDefault,
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (_e: SyntheticEvent, consent: ListItem): void =>
                     onDeleteConsentClick(consent),
@@ -186,11 +200,16 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
                                 data-componentid={ `${componentId}-item-display-name` }
                             />
                             <Typography variant="body1">
-                                { consent.name }
+                                { consent.displayName ?? consent.name }
                             </Typography>
                             { isCrossTenant(consent) && (
                                 <Label size="mini" className="ml-2">
                                     { t("consents:policyConsents.list.labels.sharedPolicy") }
+                                </Label>
+                            ) }
+                            { consent.isDefault && (
+                                <Label size="mini" className="ml-2">
+                                    { t("consents:policyConsents.list.labels.defaultPolicy") }
                                 </Label>
                             ) }
                         </Box>
@@ -272,6 +291,11 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
             columns={ resolveTableColumns() }
             data={ list }
             onRowClick={ (_e: SyntheticEvent, consent: ListItem): void => {
+                if (consent.isDefault && !consent.id) {
+                    onEditConsentClick(consent);
+
+                    return;
+                }
                 if (consent.id !== null) {
                     onEditConsentClick(consent);
                 }

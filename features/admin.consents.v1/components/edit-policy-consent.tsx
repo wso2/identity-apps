@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Card from "@oxygen-ui/react/Card";
 import Code from "@oxygen-ui/react/Code";
@@ -27,9 +28,16 @@ import Link from "@oxygen-ui/react/Link";
 import Switch from "@oxygen-ui/react/Switch";
 import Typography from "@oxygen-ui/react/Typography";
 import { useRequiredScopes } from "@wso2is/access-control";
+import { updateBrandingPreference } from "@wso2is/admin.branding.v1/api/branding-preferences";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import useGetBrandingPreferenceResolve from "@wso2is/common.branding.v1/api/use-get-branding-preference-resolve";
+import {
+    BrandingPreferenceAPIResponseInterface,
+    BrandingPreferenceTypes,
+    BrandingPreferenceURLInterface
+} from "@wso2is/common.branding.v1/models/branding-preferences";
 import {
     PurposeDTOInterface,
     PurposeVersionSummaryDTOInterface,
@@ -62,10 +70,13 @@ import { Dispatch } from "redux";
 import { ConsentDescriptionEditor } from "./consent-description-editor";
 import { PolicyConsentPreview } from "./policy-consent-preview";
 import { ConsentVersionDropdown } from "./consent-version-dropdown";
+import { DEFAULT_POLICY_NAMES } from "../constants/default-policies";
 
 interface EditPolicyConsentProps extends IdentifiableComponentInterface {
     purposeId?: string;
     readOnly?: boolean;
+    isDefault?: boolean;
+    defaultName?: string;
 }
 
 interface PolicyFormValuesInterface {
@@ -118,7 +129,7 @@ const validateTemplatableURL = (value: string, errorMessage: string): string | u
 export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
     props: EditPolicyConsentProps
 ): ReactElement => {
-    const { purposeId, readOnly = false } = props;
+    const { purposeId, readOnly = false, isDefault = false, defaultName } = props;
 
     const isCreateMode: boolean = !purposeId;
 
@@ -128,8 +139,21 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
     const consentsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consents
     );
+    const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
+    const serverOrigin: string = useSelector(
+        (state: AppState) => state?.config?.deployment?.serverOrigin ?? ""
+    );
     const hasCreatePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.create);
     const hasUpdatePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.update);
+
+    const { data: brandingPreference } = useGetBrandingPreferenceResolve(
+        tenantDomain,
+        BrandingPreferenceTypes.ORG
+    );
+
+    const isBrandingEnabled: boolean =
+        (brandingPreference as BrandingPreferenceAPIResponseInterface)
+            ?.preference?.configs?.isBrandingEnabled ?? false;
 
     const {
         data: consent,
@@ -149,8 +173,35 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
         useRef<PolicyFormValuesInterface | null>(null);
     const nameValidationTokenRef: MutableRefObject<number> = useRef<number>(0);
 
+    const brandingUrlForDefault = (name: string): string => {
+        const urls: BrandingPreferenceURLInterface | undefined =
+            (brandingPreference as BrandingPreferenceAPIResponseInterface)?.preference?.urls;
+
+        if (name === DEFAULT_POLICY_NAMES.privacyPolicy) {
+            return urls?.privacyPolicyURL || `${serverOrigin}/authenticationendpoint/privacy_policy.do`;
+        }
+        if (name === DEFAULT_POLICY_NAMES.termsOfService) {
+            return urls?.termsOfUseURL || "https://wso2.com/terms-of-use/";
+        }
+        if (name === DEFAULT_POLICY_NAMES.cookiePolicy) {
+            return urls?.cookiePolicyURL || `${serverOrigin}/authenticationendpoint/cookie_policy.do`;
+        }
+
+        return "";
+    };
+
     const initialValues: PolicyFormValuesInterface | null = useMemo(
         (): PolicyFormValuesInterface | null => {
+            if (isDefault && isCreateMode) {
+                return {
+                    description: "",
+                    mandatory: false,
+                    name: defaultName ?? "",
+                    policyUrl: brandingUrlForDefault(defaultName ?? ""),
+                    promptOnLogin: "false"
+                };
+            }
+
             if (isCreateMode) {
                 return {
                     description: "",
@@ -171,7 +222,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                 policyUrl: consent.policyUrl ?? "",
                 promptOnLogin: consent.promptOnLogin ?? "false"
             };
-        }, [ isCreateMode, consent ]);
+        }, [ isCreateMode, isDefault, defaultName, consent, brandingPreference ]);
 
     const sortedConsentVersions: PurposeVersionSummaryDTOInterface[] = useMemo(
         (): PurposeVersionSummaryDTOInterface[] => {
@@ -256,6 +307,36 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
     };
 
     /**
+     * Syncs the policy URL back to branding preferences (best-effort, non-blocking).
+     */
+    const syncUrlToBranding = (name: string, policyUrl: string): void => {
+        const existing: BrandingPreferenceAPIResponseInterface | undefined =
+            brandingPreference as BrandingPreferenceAPIResponseInterface | undefined;
+
+        if (!existing?.preference) {
+            return;
+        }
+
+        const urlKey: keyof BrandingPreferenceURLInterface | null =
+            name === DEFAULT_POLICY_NAMES.privacyPolicy ? "privacyPolicyURL"
+                : name === DEFAULT_POLICY_NAMES.termsOfService ? "termsOfUseURL"
+                    : name === DEFAULT_POLICY_NAMES.cookiePolicy ? "cookiePolicyURL"
+                        : null;
+
+        if (!urlKey) {
+            return;
+        }
+
+        const updatedPreference: typeof existing.preference = {
+            ...existing.preference,
+            urls: { ...existing.preference.urls, [urlKey]: policyUrl }
+        };
+
+        updateBrandingPreference(true, tenantDomain, updatedPreference, BrandingPreferenceTypes.ORG)
+            .catch(() => { /* best-effort */ });
+    };
+
+    /**
      * Creates a new purpose.
      *
      * @param values - Form values containing name, policy URL, description, consent flag, and promptOnLogin.
@@ -263,14 +344,21 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
     const createNewPurpose = (values: PolicyFormValuesInterface): void => {
         setIsSubmitting(true);
 
+        const nameToCreate: string = isDefault && defaultName
+            ? defaultName
+            : (values.name?.trim() ?? "");
+
         createPurpose(
-            values.name?.trim() ?? "",
+            nameToCreate,
             values.policyUrl?.trim() ?? "",
             values.description,
             values.mandatory,
             String(modalPromptOnLogin)
         )
             .then((created: PurposeDTOInterface): void => {
+                if (isDefault && defaultName) {
+                    syncUrlToBranding(defaultName, values.policyUrl?.trim() ?? "");
+                }
                 dispatch(addAlert({
                     description: t("consents:policyConsents.notifications.create.success.description"),
                     level: AlertLevels.SUCCESS,
@@ -336,6 +424,9 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
             String(modalPromptOnLogin)
         )
             .then((): void => {
+                if (isDefault && defaultName) {
+                    syncUrlToBranding(defaultName, values.policyUrl?.trim() ?? "");
+                }
                 dispatch(addAlert({
                     description: t("consents:policyConsents.notifications.update.success.description"),
                     level: AlertLevels.SUCCESS,
@@ -381,13 +472,18 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
             });
     };
 
-    const isEffectivelyReadOnly: boolean = readOnly;
+    const isEffectivelyReadOnly: boolean = readOnly || (isDefault && !isBrandingEnabled);
 
     const isLoading: boolean = !isCreateMode && (isPolicyInfoLoading || isVersionsLoading);
     const registrationFlowBuilderPath: string = AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER");
+    const brandingPath: string = AppConstants.getPaths().get("BRANDING");
 
     const handleRegFlowBuilderClick = (): void => {
         history.push(registrationFlowBuilderPath);
+    };
+
+    const handleNavigateToBranding = (): void => {
+        history.push(brandingPath);
     };
 
     return (
@@ -471,8 +567,33 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
                                                         />
                                                     )
                                                 }
+                                                { isDefault && !isBrandingEnabled && (
+                                                    <Alert severity="info">
+                                                        <Trans
+                                                            i18nKey="consents:policyConsents.brandingRequired"
+                                                        >
+                                                            Enable branding to update default policies.{ " " }
+                                                            <Link
+                                                                onClick={ handleNavigateToBranding }
+                                                                sx={ { cursor: "pointer" } }
+                                                            >
+                                                                Go to Branding
+                                                            </Link>
+                                                        </Trans>
+                                                    </Alert>
+                                                ) }
                                                 <Box sx={ { display: "flex", flexDirection: "column", gap: 2 } }>
-                                                    { isCreateMode && (
+                                                    { isCreateMode && isDefault && defaultName && (
+                                                        <Box>
+                                                            <InputLabel>
+                                                                { t("consents:policyConsents.form.name.label") }
+                                                            </InputLabel>
+                                                            <Typography variant="body1">
+                                                                { defaultName }
+                                                            </Typography>
+                                                        </Box>
+                                                    ) }
+                                                    { isCreateMode && !isDefault && (
                                                         <Box>
                                                             <FinalFormField
                                                                 name="name"
