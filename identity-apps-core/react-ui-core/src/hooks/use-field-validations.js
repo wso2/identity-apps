@@ -31,6 +31,7 @@ import { validateWithRegex } from "../utils/validation-utils";
  */
 const useFieldValidation = (validationConfig) => {
     const [ fieldErrors, setFieldErrors ] = useState([]);
+    const [ failedRuleNames, setFailedRuleNames ] = useState([]);
 
     /**
      * Utility: Extract a numeric condition (e.g. "min.length") from the conditions array.
@@ -66,17 +67,17 @@ const useFieldValidation = (validationConfig) => {
 
                 if (minLen && maxLen) {
                     if (value.length < minLen || value.length > maxLen) {
-                        return `Must be between ${minLen} and ${maxLen} characters long.`;
+                        return { message: `Must be between ${minLen} and ${maxLen} characters long.`, ruleName: name };
                     }
                 }
                 else if (minLen) {
                     if (value.length < minLen) {
-                        return `Must be at least ${minLen} characters long.`;
+                        return { message: `Must be at least ${minLen} characters long.`, ruleName: name };
                     }
                 }
                 else if (maxLen) {
                     if (value.length > maxLen) {
-                        return `Must be at most ${maxLen} characters long.`;
+                        return { message: `Must be at most ${maxLen} characters long.`, ruleName: name };
                     }
                 }
 
@@ -90,7 +91,7 @@ const useFieldValidation = (validationConfig) => {
                     const digitCount = (value.match(/\d/g) || []).length;
 
                     if (digitCount < minNumbers) {
-                        return `Must contain at least ${minNumbers} number(s).`;
+                        return { message: `Must contain at least ${minNumbers} number(s).`, ruleName: name };
                     }
                 }
 
@@ -104,7 +105,7 @@ const useFieldValidation = (validationConfig) => {
                     const upperCount = (value.match(/[A-Z]/g) || []).length;
 
                     if (upperCount < minUpper) {
-                        return `Must contain at least ${minUpper} uppercase letter(s).`;
+                        return { message: `Must contain at least ${minUpper} uppercase letter(s).`, ruleName: name };
                     }
                 }
 
@@ -118,7 +119,7 @@ const useFieldValidation = (validationConfig) => {
                     const lowerCount = (value.match(/[a-z]/g) || []).length;
 
                     if (lowerCount < minLower) {
-                        return `Must contain at least ${minLower} lowercase letter(s).`;
+                        return { message: `Must contain at least ${minLower} lowercase letter(s).`, ruleName: name };
                     }
                 }
 
@@ -132,7 +133,7 @@ const useFieldValidation = (validationConfig) => {
                     const specialCount = (value.match(/[^a-zA-Z0-9]/g) || []).length;
 
                     if (specialCount < minSpecial) {
-                        return `Must contain at least ${minSpecial} special character(s).`;
+                        return { message: `Must contain at least ${minSpecial} special character(s).`, ruleName: name };
                     }
                 }
 
@@ -146,7 +147,7 @@ const useFieldValidation = (validationConfig) => {
                     const re = new RegExp(pattern);
 
                     if (!re.test(value)) {
-                        return "Invalid format.";
+                        return { message: "Invalid format.", ruleName: name };
                     }
                 }
 
@@ -160,7 +161,7 @@ const useFieldValidation = (validationConfig) => {
                     const re = new RegExp(pattern);
 
                     if (!re.test(value)) {
-                        return "Please enter a valid phone number.";
+                        return { message: "Please enter a valid phone number.", ruleName: name };
                     }
                 }
 
@@ -169,7 +170,7 @@ const useFieldValidation = (validationConfig) => {
 
             case "ConfirmPasswordValidator": {
                 if (value !== compareValue) {
-                    return "Must match with the password.";
+                    return { message: "Must match with the password.", ruleName: name };
                 }
 
                 break;
@@ -177,7 +178,7 @@ const useFieldValidation = (validationConfig) => {
 
             case "EmailFormatValidator": {
                 if (!validateWithRegex(value, DEFAULT_EMAIL_REGEX)) {
-                    return "Must use a valid email address.";
+                    return { message: "Must use a valid email address.", ruleName: name };
                 }
 
                 break;
@@ -185,7 +186,7 @@ const useFieldValidation = (validationConfig) => {
 
             case "AlphanumericValidator": {
                 if (!validateWithRegex(value, DEFAULT_ALPHANUMERIC_REGEX)) {
-                    return "Must contain only alphanumeric characters.";
+                    return { message: "Must contain only alphanumeric characters.", ruleName: name };
                 }
 
                 break;
@@ -203,31 +204,34 @@ const useFieldValidation = (validationConfig) => {
      * and all rule arrays in config.validations.
      */
     const validate = useCallback((config, value, compareValue) => {
-        const validationErrors = [];
+        const validationMessages = [];
+        const failedRules = [];
 
         if (config.required && !value) {
-            validationErrors.push("This field is required.");
+            validationMessages.push("This field is required.");
         }
 
         const validations = validationConfig || [];
 
         for (const rule of validations) {
-            const error = validateRule(rule, value, compareValue);
+            const result = validateRule(rule, value, compareValue);
 
-            if (error) {
-                validationErrors.push(error);
+            if (result) {
+                validationMessages.push(result.message);
+                failedRules.push(result.ruleName);
             }
         }
 
-        setFieldErrors(validationErrors);
+        setFieldErrors(validationMessages);
+        setFailedRuleNames(failedRules);
 
         return {
-            errors: validationErrors,
-            isValid: validationErrors.length === 0
+            errors: validationMessages,
+            isValid: validationMessages.length === 0
         };
     }, [ validationConfig, validateRule ]);
 
-    return { fieldErrors, validate };
+    return { failedRuleNames, fieldErrors, validate };
 };
 
 export default useFieldValidation;

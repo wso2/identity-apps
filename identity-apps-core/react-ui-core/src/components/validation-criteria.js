@@ -219,7 +219,7 @@ const ValidationCriteria = ({ validationConfig, errors = [], value = "" }) => {
                         return null;
                     }
 
-                    const hasError = errors.some((err) => err.includes(label));
+                    const hasError = errors.some((err) => err === rule.name || err.includes(label));
 
                     return (
                         <div key={ ruleIndex } className="mt-1">
