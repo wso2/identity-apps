@@ -36,15 +36,6 @@ export const DEFAULT_POLICY_PATH_MAP: Record<string, string> = {
 };
 
 /**
- * Canonical policy name → human-readable display name.
- */
-export const DEFAULT_POLICY_DISPLAY_NAMES: Record<string, string> = {
-    [DEFAULT_POLICY_NAMES.cookiePolicy]: "Cookie Policy",
-    [DEFAULT_POLICY_NAMES.privacyPolicy]: "Privacy Policy",
-    [DEFAULT_POLICY_NAMES.termsOfService]: "Terms of Service"
-};
-
-/**
  * Ordered list used when synthesizing default policy entries in the list page.
  */
 export const DEFAULT_POLICY_ORDER: { name: string; slug: string }[] = [

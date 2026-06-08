@@ -325,6 +325,7 @@ export const consents: ConsentsNS = {
                         configureTranslation: "Configure translation",
                         i18nCard: {
                             brandingRequired: "Enable branding to update translations. <1>Go to Branding</1>",
+                            brandingRequiredShort: "Enable branding to update translations.",
                             createTitle: "Create Translation",
                             deleteError: {
                                 description: "Failed to delete the translation. Please try again.",

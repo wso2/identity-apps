@@ -146,7 +146,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
     const hasCreatePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.create);
     const hasUpdatePermission: boolean = useRequiredScopes(consentsFeatureConfig?.scopes?.update);
 
-    const { data: brandingPreference } = useGetBrandingPreferenceResolve(
+    const { data: brandingPreference, isLoading: isBrandingLoading } = useGetBrandingPreferenceResolve(
         tenantDomain,
         BrandingPreferenceTypes.ORG
     );
@@ -474,7 +474,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
 
     const isEffectivelyReadOnly: boolean = readOnly || (isDefault && !isBrandingEnabled);
 
-    const isLoading: boolean = !isCreateMode && (isPolicyInfoLoading || isVersionsLoading);
+    const isLoading: boolean = isBrandingLoading || (!isCreateMode && (isPolicyInfoLoading || isVersionsLoading));
     const registrationFlowBuilderPath: string = AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER");
     const brandingPath: string = AppConstants.getPaths().get("BRANDING");
 

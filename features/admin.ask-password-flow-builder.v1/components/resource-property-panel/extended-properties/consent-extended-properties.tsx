@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import Autocomplete, { AutocompleteRenderInputParams, AutocompleteRenderOptionState } from "@oxygen-ui/react/Autocomplete";
+import Chip from "@oxygen-ui/react/Chip";
 import Stack from "@oxygen-ui/react/Stack";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
@@ -24,10 +25,12 @@ import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 import { PurposeInterface } from "@wso2is/admin.flow-builder-core.v1/models/purpose";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { ConsentListItemInterface, useGetPurposes } from "@wso2is/common.consents.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useMemo } from "react";
+import React, { FunctionComponent, HTMLAttributes, ReactElement, SyntheticEvent, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 /**
  * Props interface for generic consent extended properties
@@ -59,6 +62,8 @@ const ConsentExtendedProperties: FunctionComponent<ConsentExtendedPropertiesInte
     preserveAttributes = false
 }: ConsentExtendedPropertiesInterface): ReactElement => {
     const { t } = useTranslation();
+
+    const currentTenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
 
     const purposes: PurposeInterface[] = useMemo(
         (): PurposeInterface[] => resource.config?.purposes ?? [],
@@ -141,6 +146,30 @@ const ConsentExtendedProperties: FunctionComponent<ConsentExtendedPropertiesInte
                 ): boolean => option.id === value.id }
                 onChange={ handleSelectConsent }
                 disabled={ isConsentsLoading }
+                renderOption={ (
+                    optionProps: HTMLAttributes<HTMLLIElement>,
+                    option: ConsentListItemInterface,
+                    _state: AutocompleteRenderOptionState
+                ): ReactElement => {
+                    const isShared: boolean =
+                        !!option.tenantDomain && option.tenantDomain !== currentTenantDomain;
+
+                    return (
+                        <li { ...optionProps } key={ option.id }>
+                            <Stack direction="row" alignItems="center" spacing={ 1 }>
+                                <span>{ option.name }</span>
+                                { isShared && (
+                                    <Chip
+                                        label={ t("consents:policyConsents.list.labels.sharedPolicy") }
+                                        size="small"
+                                        color="primary"
+                                        variant="outlined"
+                                    />
+                                ) }
+                            </Stack>
+                        </li>
+                    );
+                } }
                 renderInput={ (params: AutocompleteRenderInputParams): ReactElement => (
                     <TextField
                         { ...params }

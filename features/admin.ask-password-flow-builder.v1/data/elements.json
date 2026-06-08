@@ -6,7 +6,7 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "Preference",
+            "label": "Preference Consent",
             "image": "assets/images/icons/email-down.svg",
             "showOnResourcePanel": true
         },

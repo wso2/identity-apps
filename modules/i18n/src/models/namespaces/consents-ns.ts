@@ -217,6 +217,7 @@ export interface ConsentsNS {
                         configureTranslation: string;
                         i18nCard: {
                             brandingRequired: string;
+                            brandingRequiredShort: string;
                             createTitle: string;
                             deleteError: { description: string; message: string };
                             deleteSuccess: { description: string; message: string };
