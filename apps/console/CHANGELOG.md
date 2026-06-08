@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 4.10.3
+
+### Patch Changes
+
+- [#10376](https://github.com/wso2/identity-apps/pull/10376) [`9391371247ed9c663e0e0bb89e44020358ed1ada`](https://github.com/wso2/identity-apps/commit/9391371247ed9c663e0e0bb89e44020358ed1ada) Thanks [@savindi7](https://github.com/savindi7)! - Minor style fix in banner.
+
+- Updated dependencies [[`9391371247ed9c663e0e0bb89e44020358ed1ada`](https://github.com/wso2/identity-apps/commit/9391371247ed9c663e0e0bb89e44020358ed1ada)]:
+  - @wso2is/admin.home.v1@1.7.195
+
 ## 4.10.2
 
 ### Patch Changes
