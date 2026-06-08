@@ -1584,7 +1584,7 @@ export const extensions: Extensions = {
             tabs: {
                 advance: {
                     label: "Advanced",
-                    policyManagementBanner: "Policy URLs can be managed centrally from <1>Policy Management</1>."
+                    policyManagementBanner: "Policy URLs are managed from <1>Policy Management</1>."
                 },
                 design: {
                     label: "Design",

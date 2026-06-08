@@ -400,7 +400,7 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
                 totalPages={ virtualTotalPages }
                 totalListSize={
                     (activePage - 1) * listItemLimit
-                    + (consents?.length ?? 0)
+                    + synthesizedList.length
                     + (hasNextPage ? 1 : 0)
                 }
                 isLoading={ isConsentsLoading }
