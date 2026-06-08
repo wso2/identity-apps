@@ -112,12 +112,12 @@ const BlobThree: typeof Box = styled(Blob)(({ theme }: { theme: Theme }) => ({
 const ContentArea: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
     flexDirection: "column",
-    maxWidth: "75%",
+    maxWidth: "65%",
     padding: theme.spacing(3),
     position: "relative",
     zIndex: 1,
     [theme.breakpoints.down(968)]: {
-        maxWidth: "70%"
+        maxWidth: "60%"
     },
     [theme.breakpoints.down(720)]: {
         maxWidth: "100%"
