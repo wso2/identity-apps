@@ -179,6 +179,7 @@ export interface ConsentsNS {
             };
             labels: {
                 defaultPolicy: string;
+                notConfigured: string;
                 sharedPolicy: string;
             };
         };

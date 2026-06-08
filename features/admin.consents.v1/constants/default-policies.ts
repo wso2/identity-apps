@@ -20,7 +20,6 @@
  * Canonical backend name for each default policy type.
  */
 export const DEFAULT_POLICY_NAMES: Record<string, string> = {
-    cookiePolicy: "Cookie Policy",
     privacyPolicy: "Privacy Policy",
     termsOfService: "Terms of Service"
 };
@@ -30,7 +29,6 @@ export const DEFAULT_POLICY_NAMES: Record<string, string> = {
  * Used in the edit page to detect when a slug (not a UUID) is in the URL.
  */
 export const DEFAULT_POLICY_PATH_MAP: Record<string, string> = {
-    "cookie-policy": DEFAULT_POLICY_NAMES.cookiePolicy,
     "privacy-policy": DEFAULT_POLICY_NAMES.privacyPolicy,
     "terms-of-service": DEFAULT_POLICY_NAMES.termsOfService
 };
@@ -40,6 +38,5 @@ export const DEFAULT_POLICY_PATH_MAP: Record<string, string> = {
  */
 export const DEFAULT_POLICY_ORDER: { name: string; slug: string }[] = [
     { name: DEFAULT_POLICY_NAMES.privacyPolicy, slug: "privacy-policy" },
-    { name: DEFAULT_POLICY_NAMES.termsOfService, slug: "terms-of-service" },
-    { name: DEFAULT_POLICY_NAMES.cookiePolicy, slug: "cookie-policy" }
+    { name: DEFAULT_POLICY_NAMES.termsOfService, slug: "terms-of-service" }
 ];

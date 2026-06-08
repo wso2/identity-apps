@@ -183,9 +183,6 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
         if (name === DEFAULT_POLICY_NAMES.termsOfService) {
             return urls?.termsOfUseURL || "https://wso2.com/terms-of-use/";
         }
-        if (name === DEFAULT_POLICY_NAMES.cookiePolicy) {
-            return urls?.cookiePolicyURL || `${serverOrigin}/authenticationendpoint/cookie_policy.do`;
-        }
 
         return "";
     };
@@ -320,8 +317,7 @@ export const EditPolicyConsent: FunctionComponent<EditPolicyConsentProps> = (
         const urlKey: keyof BrandingPreferenceURLInterface | null =
             name === DEFAULT_POLICY_NAMES.privacyPolicy ? "privacyPolicyURL"
                 : name === DEFAULT_POLICY_NAMES.termsOfService ? "termsOfUseURL"
-                    : name === DEFAULT_POLICY_NAMES.cookiePolicy ? "cookiePolicyURL"
-                        : null;
+                    : null;
 
         if (!urlKey) {
             return;

@@ -212,6 +212,11 @@ export const PolicyConsentsList: FunctionComponent<PolicyConsentsListProps> = (
                                     { t("consents:policyConsents.list.labels.defaultPolicy") }
                                 </Label>
                             ) }
+                            { consent.isDefault && !consent.id && (
+                                <Label size="mini" className="ml-2">
+                                    { t("consents:policyConsents.list.labels.notConfigured") }
+                                </Label>
+                            ) }
                         </Box>
                     );
                 },

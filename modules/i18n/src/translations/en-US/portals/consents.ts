@@ -213,6 +213,7 @@ export const consents: ConsentsNS = {
             },
             labels: {
                 defaultPolicy: "Default",
+                notConfigured: "Not configured",
                 sharedPolicy: "Shared policy"
             }
         },
