@@ -96,6 +96,10 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
     const [ before, setBefore ] = useState<string>(undefined);
     const [ pageHistory, setPageHistory ] = useState<string[]>([]);
 
+    const effectiveLimit: number = (!after && !searchQuery)
+        ? Math.max(1, listItemLimit - DEFAULT_POLICY_ORDER.length)
+        : listItemLimit;
+
     const {
         data: consentResponse,
         mappedData: consents,
@@ -107,7 +111,7 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
         filter: searchQuery
             ? `${searchQuery} and type eq Policy`
             : "type eq Policy",
-        limit: listItemLimit
+        limit: effectiveLimit
     });
 
     const getCursorFromHref = (rel: "next" | "previous"): string | undefined => {
@@ -147,6 +151,23 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
     const synthesizedList: PolicyConsentListItemInterface[] = useMemo(
         (): PolicyConsentListItemInterface[] => {
             const apiItems: ConsentListItemInterface[] = consents ?? [];
+            const isFirstPage: boolean = !after;
+            const hasFilter: boolean = !!searchQuery;
+
+            // Only synthesize default slots on the first page with no active search filter.
+            if (!isFirstPage || hasFilter) {
+                return apiItems.map(
+                    (c: ConsentListItemInterface): PolicyConsentListItemInterface => {
+                        const isOwnDefault: boolean =
+                            DEFAULT_POLICY_ORDER.some(
+                                (d: { name: string }): boolean => d.name === c.name
+                            ) && (!c.tenantDomain || c.tenantDomain === currentTenantDomain);
+
+                        return isOwnDefault ? { ...c, isDefault: true } : c;
+                    }
+                );
+            }
+
             const handledIds: Set<string> = new Set<string>();
 
             const defaults: PolicyConsentListItemInterface[] = DEFAULT_POLICY_ORDER.map(
@@ -180,7 +201,7 @@ const PolicyConsentsPage: FunctionComponent<PolicyConsentsPageProps> = (props: P
 
             return [ ...defaults, ...rest ];
         },
-        [ consents, currentTenantDomain ]
+        [ consents, currentTenantDomain, after, searchQuery ]
     );
 
     /**
