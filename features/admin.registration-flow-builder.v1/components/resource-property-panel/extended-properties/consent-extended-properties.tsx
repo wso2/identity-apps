@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import Autocomplete, { AutocompleteRenderInputParams, AutocompleteRenderOptionState } from "@oxygen-ui/react/Autocomplete";
+import Autocomplete, {
+    AutocompleteRenderGetTagProps,
+    AutocompleteRenderInputParams,
+    AutocompleteRenderOptionState
+} from "@oxygen-ui/react/Autocomplete";
+import Box from "@oxygen-ui/react/Box";
 import Chip from "@oxygen-ui/react/Chip";
 import Stack from "@oxygen-ui/react/Stack";
 import TextField from "@oxygen-ui/react/TextField";
@@ -146,6 +151,32 @@ const ConsentExtendedProperties: FunctionComponent<ConsentExtendedPropertiesInte
                 ): boolean => option.id === value.id }
                 onChange={ handleSelectConsent }
                 disabled={ isConsentsLoading }
+                renderTags={ (
+                    value: ConsentListItemInterface[],
+                    getTagProps: AutocompleteRenderGetTagProps
+                ): ReactElement => (
+                    <Box display="flex" flexWrap="wrap" gap={ 0.5 }>
+                        { value.map((option: ConsentListItemInterface, index: number): ReactElement => {
+                            const isShared: boolean =
+                                !!option.tenantDomain && option.tenantDomain !== currentTenantDomain;
+
+                            return (
+                                <Chip
+                                    key={ option.id }
+                                    { ...getTagProps({ index }) }
+                                    size="small"
+                                    label={
+                                        isShared
+                                            ? `${option.name} (${t(
+                                                "consents:policyConsents.list.labels.sharedPolicy"
+                                            )})`
+                                            : option.name
+                                    }
+                                />
+                            );
+                        }) }
+                    </Box>
+                ) }
                 renderOption={ (
                     optionProps: HTMLAttributes<HTMLLIElement>,
                     option: ConsentListItemInterface,
