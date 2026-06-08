@@ -1,5 +1,17 @@
 # @wso2is/identity-apps-core
 
+## 5.1.5
+
+### Patch Changes
+
+- [#10373](https://github.com/wso2/identity-apps/pull/10373) [`9c3465cd94536b02ca8d048bf32575736d5e75ac`](https://github.com/wso2/identity-apps/commit/9c3465cd94536b02ca8d048bf32575736d5e75ac) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Hide the click_here url for 10s.
+
+* [#10360](https://github.com/wso2/identity-apps/pull/10360) [`c64b8ecc87195bb12f23250c976f9f36c10eb3a6`](https://github.com/wso2/identity-apps/commit/c64b8ecc87195bb12f23250c976f9f36c10eb3a6) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Add double submit prevention for email OTP
+
+- [#10372](https://github.com/wso2/identity-apps/pull/10372) [`b433fcc0b6c18fc3649dd7bd37c1e6f58a5dab06`](https://github.com/wso2/identity-apps/commit/b433fcc0b6c18fc3649dd7bd37c1e6f58a5dab06) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix self registration page inconsistencies when claim uniquness error is occured.
+
+* [#10371](https://github.com/wso2/identity-apps/pull/10371) [`321bcf96ddf37cf303f144bc5e01d01466bf7277`](https://github.com/wso2/identity-apps/commit/321bcf96ddf37cf303f144bc5e01d01466bf7277) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Add sp id to recovery v2 requests.
+
 ## 5.1.4
 
 ### Patch Changes
