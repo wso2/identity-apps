@@ -524,6 +524,10 @@ export class Config {
             privacyPolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.privacyPolicyUrl,
             productName: window[ "AppUtils" ]?.getConfig()?.ui?.productName,
             productVersionConfig: window[ "AppUtils" ]?.getConfig()?.ui?.productVersionConfig,
+            pushAuthenticator: {
+                maxDeviceLimitUpperBound:
+                    window[ "AppUtils" ]?.getConfig()?.ui?.pushAuthenticator?.maxDeviceLimitUpperBound
+            },
             routes: window[ "AppUtils" ]?.getConfig()?.ui?.routes ?? {
                 organizationEnabledRoutes: AppConstants.ORGANIZATION_ENABLED_ROUTES
             },

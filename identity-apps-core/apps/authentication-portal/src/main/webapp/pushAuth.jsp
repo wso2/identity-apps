@@ -90,6 +90,9 @@
 
     String noAuthResponseMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "push.notification.no.auth.response");
     String mobileResponseReceived = AuthenticationEndpointUtil.i18n(resourceBundle, "push.notification.mobile.response.received");
+
+    // Whether the user is allowed to enroll an additional device. Sent by the push authenticator.
+    boolean canRegisterDevice = Boolean.parseBoolean(request.getParameter("canRegisterDevice"));
 %>
 
 <% request.setAttribute("pageName", "push-auth"); %>
@@ -215,6 +218,17 @@
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.push.notification")%>
                                 </button>
 
+                                <% if (canRegisterDevice) { %>
+                                    <div class="ui divider hidden"></div>
+                                    <a
+                                        class="ui fluid primary basic button link-button"
+                                        id="registerNewDeviceLink"
+                                        href="javascript:void(0);"
+                                    >
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "push.register.new.device")%>
+                                    </a>
+                                <% } %>
+
                                 <%
                                     String multiOptionURI = request.getParameter("multiOptionURI");
                                     if (multiOptionURI != null && AuthenticationEndpointUtil.isValidMultiOptionURI(multiOptionURI) && isMultiAuthAvailable(multiOptionURI, request.getParameter("authenticators"))) {
@@ -267,6 +281,13 @@
             $(document).ready(function () {
                 $("#resend").click(function () {
                     document.getElementById("scenario").value = "RESEND_PUSH_NOTIFICATION";
+                    $("#submitForm").submit();
+                });
+
+                $("#registerNewDeviceLink").click(function () {
+                    // Stop polling for the current authentication and route the user to enroll a new device.
+                    stopPolling();
+                    document.getElementById("scenario").value = "PUSH_DEVICE_ENROLLMENT";
                     $("#submitForm").submit();
                 });
             });

@@ -956,8 +956,10 @@ export const myAccount: MyAccountNS = {
                 deleteHint: "Remove",
                 description: "You can use the push authenticator app to get login prompts as push notifications for " +
                     "two-factor authentication.",
+                deviceLimitReachedHint: "Maximum device limit of {{limit}} reached",
                 heading: "Push Authenticator",
                 hint: "View",
+                lastUsedDeviceChip: "Last used",
                 modals: {
                     deviceDeleteConfirmation: {
                         assertionHint: "Please confirm your action.",
@@ -974,6 +976,12 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 notifications: {
+                    configFetchError: {
+                        genericError: {
+                            description: "An error occurred while retrieving the push authenticator configuration.",
+                            message: "Something went wrong"
+                        }
+                    },
                     delete: {
                         error: {
                             description: "{{error}}",

@@ -16,14 +16,28 @@
  * under the License.
  */
 
+import isEmpty from "lodash-es/isEmpty";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
+import { useDispatch, useSelector } from "react-redux";
+import { AnyAction, Dispatch } from "redux";
 import useGetPushAuthRegisteredDevices from "./use-get-push-auth-registered-devices";
-import { deletePushAuthRegisteredDevice, initPushAuthenticatorQRCode } from "../api/multi-factor-push";
+import {
+    deletePushAuthRegisteredDevice,
+    getConfigPreferences,
+    initPushAuthenticatorQRCode
+} from "../api/multi-factor-push";
+import { PushAuthenticatorConstants } from "../constants/mfa-constants";
+import { SCIMConfigs } from "../extensions/configs/scim";
 import { AlertLevels } from "../models/alert";
 import { HttpResponse } from "../models/api";
+import { BasicProfileInterface } from "../models/profile";
+import {
+    ConfigPreferenceRespInterface,
+    PushDeviceMgtConfigInterface
+} from "../models/push-authenticator";
+import { AppState } from "../store";
+import { getProfileInformation } from "../store/actions";
 import { addAlert } from "../store/actions/global";
 
 /**
@@ -32,27 +46,96 @@ import { addAlert } from "../store/actions/global";
 const usePushAuthenticator = () => {
     const {
         data: registeredDeviceList,
-        isLoading:isRegisteredDeviceListLoading,
+        isLoading: isRegisteredDeviceListLoading,
         error: registeredDeviceListFetchError,
         mutate: updateRegisteredDeviceList
     } = useGetPushAuthRegisteredDevices();
 
     const dispatch: Dispatch = useDispatch();
 
+    // The full SCIM2 `Me` profile is already loaded into the store on this page, so the last accessed
+    // push device claim is read from there instead of issuing a redundant request.
+    const profileInfo: BasicProfileInterface = useSelector(
+        (state: AppState) => state.authenticationInformation.profileInfo
+    );
+
+    const lastAccessedDeviceId: string | undefined = profileInfo?.[SCIMConfigs.scim.systemSchema]
+        ?.[PushAuthenticatorConstants.LAST_ACCESSED_PUSH_DEVICE_ATTRIBUTE];
+
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ isConfigPushAuthenticatorModalOpen, setIsConfigPushAuthenticatorModalOpen ] = useState<boolean>(false);
     const [ qrCode, setQrCode ] = useState<string>(null);
+    const [ isPushDeviceMgtConfigLoading, setIsPushDeviceMgtConfigLoading ] = useState<boolean>(false);
+    const [ pushDeviceMgtConfig, setPushDeviceMgtConfig ] = useState<PushDeviceMgtConfigInterface>(null);
 
     const { t } = useTranslation();
 
     const translateKey: string = "myAccount:components.mfa.pushAuthenticatorApp.";
 
+    const isMultipleDeviceEnrollmentEnabled: boolean =
+        pushDeviceMgtConfig?.enableMultipleDeviceEnrollment ?? false;
+
+    const deviceLimit: number = isMultipleDeviceEnrollmentEnabled
+        ? (pushDeviceMgtConfig?.maximumDeviceLimit ?? 1)
+        : 1;
+
+    const isDeviceLimitReached: boolean = (registeredDeviceList?.length ?? 0) >= deviceLimit;
+
+    useEffect(() => {
+        if (isEmpty(profileInfo)) {
+            dispatch(getProfileInformation() as unknown as AnyAction);
+        }
+    }, []);
+
+    useEffect(() => {
+        setIsPushDeviceMgtConfigLoading(true);
+
+        getConfigPreferences([
+            {
+                properties: [
+                    PushAuthenticatorConstants.PROPERTY_ENABLE_MULTIPLE_DEVICE_ENROLLMENT,
+                    PushAuthenticatorConstants.PROPERTY_MAXIMUM_DEVICE_LIMIT
+                ],
+                resourceName: PushAuthenticatorConstants.DEVICE_MGT_RESOURCE_NAME,
+                resourceType: PushAuthenticatorConstants.RESOURCE_TYPE
+            }
+        ])
+            .then((response: ConfigPreferenceRespInterface[]) => {
+                const resource: ConfigPreferenceRespInterface | undefined = response?.find(
+                    (item: ConfigPreferenceRespInterface) =>
+                        item.resourceType === PushAuthenticatorConstants.RESOURCE_TYPE &&
+                        item.resourceName === PushAuthenticatorConstants.DEVICE_MGT_RESOURCE_NAME
+                );
+
+                if (resource) {
+                    const getValue = (name: string): string | undefined =>
+                        resource.properties.find((p) => p.name === name)?.value;
+
+                    setPushDeviceMgtConfig({
+                        enableMultipleDeviceEnrollment:
+                            getValue(PushAuthenticatorConstants.PROPERTY_ENABLE_MULTIPLE_DEVICE_ENROLLMENT) === "true",
+                        maximumDeviceLimit: parseInt(
+                            getValue(PushAuthenticatorConstants.PROPERTY_MAXIMUM_DEVICE_LIMIT) ?? "1", 10
+                        )
+                    });
+                }
+            })
+            .catch(() => {
+                dispatch(addAlert({
+                    description: t(translateKey + "notifications.configFetchError.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t(translateKey + "notifications.configFetchError.genericError.message")
+                }));
+            })
+            .finally(() => {
+                setIsPushDeviceMgtConfigLoading(false);
+            });
+    }, []);
+
     useEffect(() => {
         if (registeredDeviceListFetchError && !isRegisteredDeviceListLoading) {
             dispatch(addAlert({
-                description: t(translateKey +
-                    "notifications.deviceListFetchError.error.description"
-                ),
+                description: t(translateKey + "notifications.deviceListFetchError.error.description"),
                 level: AlertLevels.ERROR,
                 message: t(translateKey + "notifications.deviceListFetchError.error.message")
             }));
@@ -62,7 +145,11 @@ const usePushAuthenticator = () => {
     /**
      * Initiate the push authenticator configuration flow.
      */
-    const initPushAuthenticatorRegFlow = () => {
+    const initPushAuthenticatorRegFlow = (): void => {
+        if (isDeviceLimitReached) {
+            return;
+        }
+
         setIsLoading(true);
 
         initPushAuthenticatorQRCode()
@@ -101,7 +188,7 @@ const usePushAuthenticator = () => {
     const handlePushAuthenticatorSetupSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
         updateRegisteredDeviceList();
-        // setIsConfigPushAuthenticatorModalOpen(false);
+        setQrCode(null);
     };
 
     /**
@@ -122,9 +209,9 @@ const usePushAuthenticator = () => {
             }
         ).catch((_err: any) => {
             dispatch(addAlert({
-                description: t(translateKey + "notifications.deleteError.genericError.description"),
+                description: t(translateKey + "notifications.delete.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t(translateKey + "notifications.deleteError.genericError.message")
+                message: t(translateKey + "notifications.delete.genericError.message")
             }));
         }).finally(() => {
             setIsLoading(false);
@@ -133,12 +220,17 @@ const usePushAuthenticator = () => {
 
     return {
         deleteRegisteredDevice,
+        deviceLimit,
         handlePushAuthenticatorInitCancel,
         handlePushAuthenticatorSetupSubmit,
         initPushAuthenticatorRegFlow,
         isConfigPushAuthenticatorModalOpen,
+        isDeviceLimitReached,
         isLoading,
+        isPushDeviceMgtConfigLoading,
+        isMultipleDeviceEnrollmentEnabled,
         isRegisteredDeviceListLoading,
+        lastAccessedDeviceId,
         qrCode,
         registeredDeviceList,
         setIsConfigPushAuthenticatorModalOpen,

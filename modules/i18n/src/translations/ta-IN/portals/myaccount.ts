@@ -967,6 +967,8 @@ export const myAccount: MyAccountNS = {
                 "configuredDescription": "இரு காரணி அங்கீகாரத்திற்கு, உங்கள் அமைக்கப்பட்ட push authenticator செயலியில் இருந்து உருவாக்கப்படும் உள்நுழைவு கோரிக்கைகளை பயன்படுத்தலாம். செயலிக்கு அணுகல் இல்லை என்றால், இங்கே புதிய authenticator செயலியை அமைக்கலாம்.",
                 "deleteHint": "அகற்று",
                 "description": "Push authenticator செயலியை பயன்படுத்தி உள்நுழைவு கோரிக்கைகளை push அறிவிப்புகளாகப் பெறலாம், இது இரு காரணி அங்கீகாரத்திற்கு உதவும்.",
+                "deviceLimitReachedHint": "அதிகபட்ச சாதன வரம்பு ({{limit}}) எட்டப்பட்டது",
+                "lastUsedDeviceChip": "கடைசியாகப் பயன்படுத்தியது",
                 "heading": "Push Authenticator",
                 "hint": "பார்க்க",
                 "modals": {
@@ -997,6 +999,12 @@ export const myAccount: MyAccountNS = {
                         "success": {
                             "description": "பதிவுசெய்யப்பட்ட சாதனம் வெற்றிகரமாக அகற்றப்பட்டது",
                             "message": "சாதனம் வெற்றிகரமாக அகற்றப்பட்டது"
+                        }
+                    },
+                    "configFetchError": {
+                        "genericError": {
+                            "description": "Push authenticator கட்டமைப்பை பெறும்போது பிழை ஏற்பட்டது.",
+                            "message": "ஏதோ தவறு ஏற்பட்டது"
                         }
                     },
                     "deviceListFetchError": {

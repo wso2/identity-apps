@@ -2792,6 +2792,9 @@
             {% endfor %}
             {% endif %}
         },
+        "pushAuthenticator": {
+            "maxDeviceLimitUpperBound": {{ push_authenticator.device_management.max_device_limit_upper_bound }}
+        },
         "routes": {
             "organizationEnabledRoutes": {
             {% if console.ui.routes.organizationEnabledRoutes.items() is defined %}

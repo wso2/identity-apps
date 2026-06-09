@@ -925,6 +925,8 @@ export const myAccount: MyAccountNS = {
                 "configuredDescription": "您可以使用已配置的推送认证器应用生成的登录提示进行双因素认证。如果您无法访问该应用，可以从这里设置一个新的认证器应用。",
                 "deleteHint": "移除",
                 "description": "您可以使用推送认证器应用，通过推送通知接收登录提示以进行双因素认证。",
+                "deviceLimitReachedHint": "已达到设备数量上限（{{limit}}）",
+                "lastUsedDeviceChip": "最近使用",
                 "heading": "推送认证器",
                 "hint": "查看",
                 "modals": {
@@ -955,6 +957,12 @@ export const myAccount: MyAccountNS = {
                         "success": {
                             "description": "已成功移除注册设备",
                             "message": "设备已成功删除"
+                        }
+                    },
+                    "configFetchError": {
+                        "genericError": {
+                            "description": "检索推送认证配置时发生错误。",
+                            "message": "出了点问题"
                         }
                     },
                     "deviceListFetchError": {

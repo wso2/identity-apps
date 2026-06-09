@@ -17,6 +17,18 @@
  */
 
 /**
+ * Class containing push authenticator specific constants.
+ */
+export class PushAuthenticatorConstants {
+
+    public static readonly RESOURCE_TYPE: string = "DEVICE_MANAGEMENT";
+    public static readonly DEVICE_MGT_RESOURCE_NAME: string = "PUSH_DEVICE_MANAGEMENT";
+    public static readonly PROPERTY_ENABLE_MULTIPLE_DEVICE_ENROLLMENT: string = "enableMultipleDeviceEnrollment";
+    public static readonly PROPERTY_MAXIMUM_DEVICE_LIMIT: string = "maximumDeviceLimit";
+    public static readonly LAST_ACCESSED_PUSH_DEVICE_ATTRIBUTE: string = "lastAccessedPushDevice";
+}
+
+/**
  * Class containing multi factor authentication constants.
  */
 export class MultiFactorAuthenticationConstants {

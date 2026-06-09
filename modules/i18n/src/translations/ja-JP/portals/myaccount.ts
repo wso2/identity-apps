@@ -925,6 +925,8 @@ export const myAccount: MyAccountNS = {
                 "configuredDescription": "設定済みのプッシュ認証アプリから生成されたログインプロンプトを使用して、二要素認証を行うことができます。アプリにアクセスできない場合は、ここから新しい認証アプリを設定できます。",
                 "deleteHint": "削除",
                 "description": "プッシュ認証アプリを使用して、二要素認証のためのログインプロンプトをプッシュ通知として受け取ることができます。",
+                "deviceLimitReachedHint": "デバイスの最大登録数（{{limit}}台）に達しました",
+                "lastUsedDeviceChip": "最終使用",
                 "heading": "プッシュ認証アプリ",
                 "hint": "表示",
                 "modals": {
@@ -955,6 +957,12 @@ export const myAccount: MyAccountNS = {
                         "success": {
                             "description": "登録されたデバイスが正常に削除されました",
                             "message": "デバイスが正常に削除されました"
+                        }
+                    },
+                    "configFetchError": {
+                        "genericError": {
+                            "description": "プッシュ認証設定の取得中にエラーが発生しました。",
+                            "message": "問題が発生しました"
                         }
                     },
                     "deviceListFetchError": {

@@ -61,6 +61,8 @@
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
             } else if (errorMessage.equalsIgnoreCase("error.push.registered.device.not.found")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.push.registered.device.not.found");
+            } else if (errorMessage.equalsIgnoreCase("error.push.max.device.limit.reached")) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.push.max.device.limit.reached");             
             } else if (errorMessage.equalsIgnoreCase("error.push.resent.count.exceeded")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.push.resent.count.exceeded");
             } else if (errorMessage.equalsIgnoreCase("error.push.user.denied.consent")) {

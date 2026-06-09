@@ -559,6 +559,7 @@ export interface MyAccountNS {
                 hint: string;
                 addHint: string;
                 deleteHint: string;
+                lastUsedDeviceChip: string;
                 modals: {
                     scan: {
                         heading: string;
@@ -586,8 +587,12 @@ export interface MyAccountNS {
                     };
                     deviceListFetchError: {
                         error: NotificationItem;
+                    };
+                    configFetchError: {
+                        genericError: NotificationItem;
                     }
                 };
+                deviceLimitReachedHint: string;
             },
             backupCode: {
                 actions: {

@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
 import { default as OxygenList }from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
@@ -59,11 +61,15 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
 
     const {
         deleteRegisteredDevice,
+        deviceLimit,
         handlePushAuthenticatorInitCancel,
         handlePushAuthenticatorSetupSubmit,
         initPushAuthenticatorRegFlow,
         isConfigPushAuthenticatorModalOpen,
+        isDeviceLimitReached,
+        isPushDeviceMgtConfigLoading,
         isRegisteredDeviceListLoading,
+        lastAccessedDeviceId,
         qrCode,
         registeredDeviceList,
         setIsConfigPushAuthenticatorModalOpen,
@@ -93,7 +99,7 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
                 <Modal.Content data-componentId={ `${ componentId }-modal-content` } scrolling>
                     { renderPushAuthenticatorWizardContent() }
                 </Modal.Content>
-                { registeredDeviceList?.length > 0 && (
+                { (
                     <Modal.Actions
                         data-componentId={ `${ componentId }-view-modal-actions` }
                         className ="actions"
@@ -111,7 +117,7 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
      * @returns Modal content
      */
     const renderPushAuthenticatorWizardContent = (): React.ReactElement => {
-        if (!registeredDeviceList || registeredDeviceList?.length === 0) {
+        if (qrCode) {
             return (
                 <Segment basic>
                     <h5 className=" text-center"> { t(translateKey + "modals.scan.heading") }</h5>
@@ -195,7 +201,7 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
      * @returns Modal actions
      */
     const renderPushAuthenticatorWizardActions = (): React.ReactElement => {
-        if (registeredDeviceList?.length > 0) {
+        if (!qrCode) {
             return (
                 <Button
                     primary
@@ -279,22 +285,31 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
                         </List.Content>
                     </Grid.Column>
                     <Grid.Column width={ 3 } className="last-column">
-                        { (!registeredDeviceList || registeredDeviceList?.length === 0) && (
+                        {(
                             <List.Content floated="right">
                                 <Popup
                                     trigger={
                                         (<Icon
-                                            link={ true }
-                                            onClick={ initPushAuthenticatorRegFlow }
+                                            link={ !isDeviceLimitReached }
+                                            onClick={ isDeviceLimitReached ? undefined : initPushAuthenticatorRegFlow }
                                             className="list-icon padded-icon"
                                             size="small"
                                             color="grey"
                                             name="plus"
-                                            disabled={ isRegisteredDeviceListLoading }
+                                            disabled={
+                                                isRegisteredDeviceListLoading
+                                                || isPushDeviceMgtConfigLoading
+                                                || isDeviceLimitReached
+                                            }
                                             data-componentId={ `${componentId}-view-button` }
                                         />)
                                     }
-                                    content={ t(translateKey + "addHint") }
+                                    content={
+                                        isDeviceLimitReached
+                                            ? t(translateKey + "deviceLimitReachedHint",
+                                                { limit: deviceLimit })
+                                            : t(translateKey + "addHint")
+                                    }
                                     inverted
                                 />
                             </List.Content>
@@ -334,7 +349,29 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
                                                 className="device-icon"
                                             />
                                             <ListItemText
-                                                primary={ registeredDevice?.name }
+                                                primary={ (
+                                                    <Box
+                                                        display="flex"
+                                                        alignItems="center"
+                                                        gap={ 1 }
+                                                    >
+                                                        { registeredDevice?.name }
+                                                        { registeredDevice?.deviceId
+                                                            && registeredDevice.deviceId === lastAccessedDeviceId && (
+                                                            <Chip
+                                                                size="small"
+                                                                color="primary"
+                                                                variant="outlined"
+                                                                label={
+                                                                    t(translateKey + "lastUsedDeviceChip")
+                                                                }
+                                                                data-componentId={
+                                                                    `${ componentId }-last-used-device-chip`
+                                                                }
+                                                            />
+                                                        ) }
+                                                    </Box>
+                                                ) }
                                                 secondary={ registeredDevice?.model }
                                             />
                                         </ListItem>

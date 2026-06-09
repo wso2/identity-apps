@@ -132,7 +132,7 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
         setIsSubmitting(true);
 
         const i18nKeyForMFAAuthenticator: string = getI18nKeyForMultiFactorAuthenticator(authenticator);
-        debugger;
+
         updateMultiFactorAuthenticatorDetails(authenticator.id, values)
             .then(() => {
                 dispatch(addAlert({

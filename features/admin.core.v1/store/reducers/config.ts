@@ -159,6 +159,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             passwordPolicy: "",
             permission: "",
             publicCertificates: "",
+            pushDeviceMgtConfigs: "",
             remoteLogPublishEndpoint: "",
             remoteLogging: "",
             requestPathAuthenticators: "",
@@ -336,6 +337,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             privacyPolicyConfigs: null,
             productName: "",
             productVersionConfig: null,
+            pushAuthenticator: {
+                maxDeviceLimitUpperBound: undefined
+            },
             routes: {
                 organizationEnabledRoutes: undefined
             },
