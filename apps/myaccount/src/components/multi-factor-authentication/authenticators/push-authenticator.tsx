@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import Box from "@oxygen-ui/react/Box";
-import Chip from "@oxygen-ui/react/Chip";
 import { default as OxygenList }from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
@@ -69,7 +67,6 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
         isDeviceLimitReached,
         isPushDeviceMgtConfigLoading,
         isRegisteredDeviceListLoading,
-        lastAccessedDeviceId,
         qrCode,
         registeredDeviceList,
         setIsConfigPushAuthenticatorModalOpen,
@@ -349,29 +346,7 @@ export const PushAuthenticator: React.FunctionComponent<PushAuthenticatorProps> 
                                                 className="device-icon"
                                             />
                                             <ListItemText
-                                                primary={ (
-                                                    <Box
-                                                        display="flex"
-                                                        alignItems="center"
-                                                        gap={ 1 }
-                                                    >
-                                                        { registeredDevice?.name }
-                                                        { registeredDevice?.deviceId
-                                                            && registeredDevice.deviceId === lastAccessedDeviceId && (
-                                                            <Chip
-                                                                size="small"
-                                                                color="primary"
-                                                                variant="outlined"
-                                                                label={
-                                                                    t(translateKey + "lastUsedDeviceChip")
-                                                                }
-                                                                data-componentId={
-                                                                    `${ componentId }-last-used-device-chip`
-                                                                }
-                                                            />
-                                                        ) }
-                                                    </Box>
-                                                ) }
+                                                primary={ registeredDevice?.name }
                                                 secondary={ registeredDevice?.model }
                                             />
                                         </ListItem>

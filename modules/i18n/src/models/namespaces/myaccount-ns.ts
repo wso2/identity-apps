@@ -559,7 +559,6 @@ export interface MyAccountNS {
                 hint: string;
                 addHint: string;
                 deleteHint: string;
-                lastUsedDeviceChip: string;
                 modals: {
                     scan: {
                         heading: string;

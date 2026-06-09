@@ -968,7 +968,6 @@ export const myAccount: MyAccountNS = {
                 "deleteHint": "அகற்று",
                 "description": "Push authenticator செயலியை பயன்படுத்தி உள்நுழைவு கோரிக்கைகளை push அறிவிப்புகளாகப் பெறலாம், இது இரு காரணி அங்கீகாரத்திற்கு உதவும்.",
                 "deviceLimitReachedHint": "அதிகபட்ச சாதன வரம்பு ({{limit}}) எட்டப்பட்டது",
-                "lastUsedDeviceChip": "கடைசியாகப் பயன்படுத்தியது",
                 "heading": "Push Authenticator",
                 "hint": "பார்க்க",
                 "modals": {

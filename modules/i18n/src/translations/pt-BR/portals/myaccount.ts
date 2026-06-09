@@ -931,7 +931,6 @@ export const myAccount: MyAccountNS = {
                 "deleteHint": "Remover",
                 "description": "Você pode usar o aplicativo autenticador push para receber prompts de login como notificações push para autenticação de dois fatores.",
                 "deviceLimitReachedHint": "Limite máximo de {{limit}} dispositivos atingido",
-                "lastUsedDeviceChip": "Usado por último",
                 "heading": "Autenticador Push",
                 "hint": "Ver",
                 "modals": {

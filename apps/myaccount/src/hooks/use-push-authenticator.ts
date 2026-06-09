@@ -16,28 +16,23 @@
  * under the License.
  */
 
-import isEmpty from "lodash-es/isEmpty";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { AnyAction, Dispatch } from "redux";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import useGetPushAuthRegisteredDevices from "./use-get-push-auth-registered-devices";
 import {
     deletePushAuthRegisteredDevice,
     getConfigPreferences,
     initPushAuthenticatorQRCode
 } from "../api/multi-factor-push";
-import { PushAuthenticatorConstants } from "../constants/mfa-constants";
-import { SCIMConfigs } from "../extensions/configs/scim";
 import { AlertLevels } from "../models/alert";
 import { HttpResponse } from "../models/api";
-import { BasicProfileInterface } from "../models/profile";
+import { PushAuthenticatorConstants } from "../constants/mfa-constants";
 import {
     ConfigPreferenceRespInterface,
     PushDeviceMgtConfigInterface
 } from "../models/push-authenticator";
-import { AppState } from "../store";
-import { getProfileInformation } from "../store/actions";
 import { addAlert } from "../store/actions/global";
 
 /**
@@ -52,15 +47,6 @@ const usePushAuthenticator = () => {
     } = useGetPushAuthRegisteredDevices();
 
     const dispatch: Dispatch = useDispatch();
-
-    // The full SCIM2 `Me` profile is already loaded into the store on this page, so the last accessed
-    // push device claim is read from there instead of issuing a redundant request.
-    const profileInfo: BasicProfileInterface = useSelector(
-        (state: AppState) => state.authenticationInformation.profileInfo
-    );
-
-    const lastAccessedDeviceId: string | undefined = profileInfo?.[SCIMConfigs.scim.systemSchema]
-        ?.[PushAuthenticatorConstants.LAST_ACCESSED_PUSH_DEVICE_ATTRIBUTE];
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ isConfigPushAuthenticatorModalOpen, setIsConfigPushAuthenticatorModalOpen ] = useState<boolean>(false);
@@ -80,12 +66,6 @@ const usePushAuthenticator = () => {
         : 1;
 
     const isDeviceLimitReached: boolean = (registeredDeviceList?.length ?? 0) >= deviceLimit;
-
-    useEffect(() => {
-        if (isEmpty(profileInfo)) {
-            dispatch(getProfileInformation() as unknown as AnyAction);
-        }
-    }, []);
 
     useEffect(() => {
         setIsPushDeviceMgtConfigLoading(true);
@@ -230,7 +210,6 @@ const usePushAuthenticator = () => {
         isPushDeviceMgtConfigLoading,
         isMultipleDeviceEnrollmentEnabled,
         isRegisteredDeviceListLoading,
-        lastAccessedDeviceId,
         qrCode,
         registeredDeviceList,
         setIsConfigPushAuthenticatorModalOpen,

@@ -983,7 +983,6 @@ export const myAccount: MyAccountNS = {
                 "deleteHint": "Supprimer",
                 "description": "Vous pouvez utiliser l'application d'authentification push pour recevoir des notifications de connexion sous forme de notifications push pour l'authentification à deux facteurs.",
                 "deviceLimitReachedHint": "Limite maximale de {{limit}} appareils atteinte",
-                "lastUsedDeviceChip": "Dernière utilisation",
                 "heading": "Authentificateur Push",
                 "hint": "Voir",
                 "modals": {

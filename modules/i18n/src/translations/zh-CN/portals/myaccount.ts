@@ -926,7 +926,6 @@ export const myAccount: MyAccountNS = {
                 "deleteHint": "移除",
                 "description": "您可以使用推送认证器应用，通过推送通知接收登录提示以进行双因素认证。",
                 "deviceLimitReachedHint": "已达到设备数量上限（{{limit}}）",
-                "lastUsedDeviceChip": "最近使用",
                 "heading": "推送认证器",
                 "hint": "查看",
                 "modals": {

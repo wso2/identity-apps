@@ -959,7 +959,6 @@ export const myAccount: MyAccountNS = {
                 deviceLimitReachedHint: "Maximum device limit of {{limit}} reached",
                 heading: "Push Authenticator",
                 hint: "View",
-                lastUsedDeviceChip: "Last used",
                 modals: {
                     deviceDeleteConfirmation: {
                         assertionHint: "Please confirm your action.",

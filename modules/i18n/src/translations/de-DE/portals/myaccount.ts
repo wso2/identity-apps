@@ -929,7 +929,6 @@ export const myAccount: MyAccountNS = {
                 "deleteHint": "Entfernen",
                 "description": "Sie können die Push-Authentifikator-App verwenden, um Login-Eingabeaufforderungen als Push-Benachrichtigungen für die Zwei-Faktor-Authentifizierung zu erhalten.",
                 "deviceLimitReachedHint": "Maximale Geräteanzahl von {{limit}} erreicht",
-                "lastUsedDeviceChip": "Zuletzt verwendet",
                 "heading": "Push-Authentifikator",
                 "hint": "Anzeigen",
                 "modals": {

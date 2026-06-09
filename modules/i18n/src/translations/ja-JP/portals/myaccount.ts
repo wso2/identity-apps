@@ -926,7 +926,6 @@ export const myAccount: MyAccountNS = {
                 "deleteHint": "削除",
                 "description": "プッシュ認証アプリを使用して、二要素認証のためのログインプロンプトをプッシュ通知として受け取ることができます。",
                 "deviceLimitReachedHint": "デバイスの最大登録数（{{limit}}台）に達しました",
-                "lastUsedDeviceChip": "最終使用",
                 "heading": "プッシュ認証アプリ",
                 "hint": "表示",
                 "modals": {
