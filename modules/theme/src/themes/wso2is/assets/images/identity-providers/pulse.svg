@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ *
+ * This software is the property of WSO2 LLC. and its suppliers, if any.
+ * Dissemination of any information or reproduction of any material contained
+ * herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
+ * You may not alter or remove any copyright or other notice from copies of this content.
+-->
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 525.38 525.38">
+  <path d="M293.19,358.72c-.22,0-.44,0-.66-.02-4.77-.29-8.83-3.58-10.09-8.19l-36.05-132.2-18.46,61.66c-1.41,4.71-5.75,7.95-10.67,7.95h-69.15c-6.15,0-11.14-4.99-11.14-11.14s4.99-11.14,11.14-11.14h60.86l27.26-91.03c1.42-4.72,5.75-7.95,10.67-7.95.04,0,.09,0,.14,0,4.97.06,9.3,3.41,10.61,8.21l37.62,137.94,16.3-40.22c1.7-4.21,5.79-6.96,10.33-6.96h55.4c6.15,0,11.14,4.99,11.14,11.14s-4.99,11.14-11.14,11.14h-47.9l-25.87,63.84c-1.71,4.22-5.81,6.96-10.32,6.96Z"/>
+  <path d="M262.69,458.58c-108.01,0-195.89-87.87-195.89-195.89s87.87-195.89,195.89-195.89,195.89,87.88,195.89,195.89-87.88,195.89-195.89,195.89ZM262.69,89.08c-95.72,0-173.6,77.88-173.6,173.61s77.88,173.6,173.6,173.6,173.6-77.88,173.6-173.6-77.88-173.61-173.6-173.61Z"/>
+</svg>

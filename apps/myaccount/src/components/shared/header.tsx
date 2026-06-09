@@ -416,6 +416,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     return (
         <OxygenHeader
             className="is-header"
+            sx={ {
+                "&&.is-header.oxygen-header .oxygen-brand-logo": {
+                    height: "unset"
+                }
+            } }
             brand={ {
                 logo: {
                     desktop: (

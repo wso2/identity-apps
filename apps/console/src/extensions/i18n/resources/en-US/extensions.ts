@@ -392,7 +392,7 @@ export const extensions: Extensions = {
         applications: {
             asgardeoTryIt: {
                 description:
-                    "You can try out different login flows of Asgardeo with our Try It app."
+                    "You can try out different login flows of WSO2 Identity Platform with our Try It app."
             },
             edit: {
                 sections: {
